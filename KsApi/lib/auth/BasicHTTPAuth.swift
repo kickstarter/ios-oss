@@ -1,6 +1,6 @@
 /**
  A type that understands basic HTTP authentication: username and password.
-*/
+ */
 public protocol BasicHTTPAuthType {
   var username: String { get }
   var password: String { get }
@@ -21,7 +21,7 @@ public func == (lhs: BasicHTTPAuthType?, rhs: BasicHTTPAuthType?) -> Bool {
 extension BasicHTTPAuthType {
   /**
    Contents of the `Authorization` header needed to perform basic HTTP auth.
-  */
+   */
   var authorizationHeader: String? {
     let string = "\(username):\(password)"
     if let data = string.data(using: .utf8) {

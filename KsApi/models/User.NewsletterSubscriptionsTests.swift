@@ -1,8 +1,7 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class NewsletterSubscriptionsTests: XCTestCase {
-
   func testJsonEncoding() {
     let json: [String: Any] = [
       "games_newsletter": false,
@@ -61,7 +60,9 @@ final class NewsletterSubscriptionsTests: XCTestCase {
 
     let newsletters = json.value
 
-    XCTAssertEqual(newsletters,
-                   User.NewsletterSubscriptions.decodeJSONDictionary(newsletters?.encode() ?? [:]).value)
+    XCTAssertEqual(
+      newsletters,
+      User.NewsletterSubscriptions.decodeJSONDictionary(newsletters?.encode() ?? [:]).value
+    )
   }
 }

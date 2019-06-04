@@ -1,9 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol SettingsNotificationsViewModelInputs {
   func didSelectRow(cellType: SettingsNotificationCellType)
@@ -15,11 +14,11 @@ public protocol SettingsNotificationsViewModelInputs {
 }
 
 public protocol SettingsNotificationsViewModelOutputs {
-  var goToManageProjectNotifications: Signal<Void, NoError> { get }
-  var pickerViewIsHidden: Signal<Bool, NoError> { get }
-  var pickerViewSelectedRow: Signal<EmailFrequency, NoError> { get }
-  var updateCurrentUser: Signal<User, NoError> { get }
-  var unableToSaveError: Signal<String, NoError> { get }
+  var goToManageProjectNotifications: Signal<Void, Never> { get }
+  var pickerViewIsHidden: Signal<Bool, Never> { get }
+  var pickerViewSelectedRow: Signal<EmailFrequency, Never> { get }
+  var updateCurrentUser: Signal<User, Never> { get }
+  var unableToSaveError: Signal<String, Never> { get }
 }
 
 public protocol SettingsNotificationsViewModelType {
@@ -30,22 +29,22 @@ public protocol SettingsNotificationsViewModelType {
 }
 
 public final class SettingsNotificationsViewModel: SettingsNotificationsViewModelType,
-SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
+  SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
   public init() {
-    let initialUser = viewDidLoadProperty.signal
+    let initialUser = self.viewDidLoadProperty.signal
       .flatMap {
         AppEnvironment.current.apiService.fetchUserSelf()
-        .wrapInOptional()
-        .prefix(value: AppEnvironment.current.currentUser)
-        .demoteErrors()
-    }.skipNil()
+          .wrapInOptional()
+          .prefix(value: AppEnvironment.current.currentUser)
+          .demoteErrors()
+      }.skipNil()
 
-    let userAttributeChanged = emailFrequencyProperty.signal
+    let userAttributeChanged = self.emailFrequencyProperty.signal
       .map { frequency -> (UserAttribute, Bool) in
         let digestValue = frequency == .dailySummary ? true : false
 
         return (UserAttribute.notification(.creatorDigest), digestValue)
-    }
+      }
 
     let updatedUser = initialUser.signal
       .switchMap { user in
@@ -53,29 +52,30 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
           let (attribute, on) = attributeAndOn
           return user |> attribute.keyPath .~ on
         }
-    }
+      }
 
     let updateEvent = updatedUser
       .switchMap {
         AppEnvironment.current.apiService.updateUserSelf($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     let updateEmailFrequencyError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
-    }
+      }
 
     let emailFrequencyUpdated = updateEvent.values()
 
     self.unableToSaveError = Signal.merge(
-      updateUserErrorProperty.signal.skipNil(),
-      updateEmailFrequencyError.signal)
+      self.updateUserErrorProperty.signal.skipNil(),
+      updateEmailFrequencyError.signal
+    )
 
     self.updateCurrentUser = Signal.merge(
       initialUser,
-      updatedUserProperty.signal.skipNil(),
+      self.updatedUserProperty.signal.skipNil(),
       emailFrequencyUpdated
     )
 
@@ -88,8 +88,8 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
 
     self.pickerViewIsHidden = Signal.merge(
       emailFrequencyCellSelected.signal.mapConst(false),
-      emailFrequencyProperty.signal.mapConst(true),
-      dismissPickerTapProperty.signal.mapConst(true),
+      self.emailFrequencyProperty.signal.mapConst(true),
+      self.dismissPickerTapProperty.signal.mapConst(true),
       projectActivityEmailFrequencyDisabled.signal.mapConst(true)
     ).skipRepeats()
 
@@ -97,8 +97,8 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
       .map { $0 |> UserAttribute.notification(.creatorDigest).keyPath.view }
       .skipNil()
       .map { creatorDigest -> EmailFrequency in
-        return creatorDigest ? EmailFrequency.dailySummary : EmailFrequency.twiceADaySummary
-    }
+        creatorDigest ? EmailFrequency.dailySummary : EmailFrequency.twiceADaySummary
+      }
 
     let manageProjectNotificationsSelected = self.selectedCellType.signal
       .skipNil()
@@ -149,11 +149,11 @@ SettingsNotificationsViewModelInputs, SettingsNotificationsViewModelOutputs {
     self.updateUserErrorProperty.value = error
   }
 
-  public let goToManageProjectNotifications: Signal<Void, NoError>
-  public let pickerViewIsHidden: Signal<Bool, NoError>
-  public let pickerViewSelectedRow: Signal<EmailFrequency, NoError>
-  public let unableToSaveError: Signal<String, NoError>
-  public let updateCurrentUser: Signal<User, NoError>
+  public let goToManageProjectNotifications: Signal<Void, Never>
+  public let pickerViewIsHidden: Signal<Bool, Never>
+  public let pickerViewSelectedRow: Signal<EmailFrequency, Never>
+  public let unableToSaveError: Signal<String, Never>
+  public let updateCurrentUser: Signal<User, Never>
 
   public var inputs: SettingsNotificationsViewModelInputs { return self }
   public var outputs: SettingsNotificationsViewModelOutputs { return self }

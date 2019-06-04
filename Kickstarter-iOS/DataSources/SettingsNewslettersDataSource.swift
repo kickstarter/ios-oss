@@ -1,15 +1,13 @@
-import Library
 import KsApi
+import Library
 import UIKit
 
 internal final class SettingsNewslettersDataSource: ValueCellDataSource {
-
   internal enum Section: Int {
     case newsletters
   }
 
   internal func load(newsletters: [Newsletter], user: User) {
-
     let section = Section.newsletters.rawValue
 
     self.clearValues(section: section)

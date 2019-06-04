@@ -2,11 +2,9 @@ import KsApi
 import MessageUI
 import Prelude
 import ReactiveSwift
-import Result
 import WebKit
 
 public protocol ProjectUpdatesViewModelInputs {
-
   /// Call to set whether Mail can be composed.
   func canSendEmail(_ canSend: Bool)
 
@@ -32,28 +30,28 @@ public protocol ProjectUpdatesViewModelInputs {
 
 public protocol ProjectUpdatesViewModelOutputs {
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<URL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, Never> { get }
 
   /// Emits with the project and update when we should go to the update.
-  var goToUpdate: Signal<(Project, Update), NoError> { get }
+  var goToUpdate: Signal<(Project, Update), Never> { get }
 
   /// Emits with the project when we should go to the update comments.
-  var goToUpdateComments: Signal<Update, NoError> { get }
+  var goToUpdateComments: Signal<Update, Never> { get }
 
   /// Emits when the webview content is loading.
-  var isActivityIndicatorHidden: Signal<Bool, NoError> { get }
+  var isActivityIndicatorHidden: Signal<Bool, Never> { get }
 
   /// Emits when app should make phone call.
-  var makePhoneCall: Signal<URL, NoError> { get }
+  var makePhoneCall: Signal<URL, Never> { get }
 
   /// Emits to show a MFMailComposeViewController.
-  var showMailCompose: Signal<String, NoError> { get }
+  var showMailCompose: Signal<String, Never> { get }
 
   /// Emits to show an alert when device can not send emails.
-  var showNoEmailError: Signal<UIAlertController, NoError> { get }
+  var showNoEmailError: Signal<UIAlertController, Never> { get }
 
   /// Emits a request that should be loaded into the web view.
-  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
 
 public protocol ProjectUpdatesViewModelType {
@@ -62,8 +60,7 @@ public protocol ProjectUpdatesViewModelType {
 }
 
 public final class ProjectUpdatesViewModel: ProjectUpdatesViewModelType, ProjectUpdatesViewModelInputs,
-ProjectUpdatesViewModelOutputs {
-
+  ProjectUpdatesViewModelOutputs {
   public init() {
     let navigationAction = self.navigationAction.signal.skipNil()
 
@@ -100,16 +97,16 @@ ProjectUpdatesViewModelOutputs {
         action.navigationType == .other || action.targetFrame?.mainFrame == .some(false)
           ? .allow
           : .cancel
-    }
+      }
 
     self.goToSafariBrowser = navigationAction
       .filter {
         $0.navigationType == .linkActivated &&
-        !isGoToCommentsRequest(request: $0.request) &&
-        !isGoToUpdateRequest(request: $0.request) &&
-        !isUpdatesRequest(request: $0.request) &&
-        !isPhoneLink(action: $0) &&
-        !isEmailLink(action: $0)
+          !isGoToCommentsRequest(request: $0.request) &&
+          !isGoToUpdateRequest(request: $0.request) &&
+          !isUpdatesRequest(request: $0.request) &&
+          !isPhoneLink(action: $0) &&
+          !isEmailLink(action: $0)
       }
       .map { $0.request.url }
       .skipNil()
@@ -154,8 +151,8 @@ ProjectUpdatesViewModelOutputs {
     self.goToUpdateComments = goToCommentsRequest
       .switchMap { projectParam, updateId in
         AppEnvironment.current.apiService.fetchUpdate(updateId: updateId, projectParam: projectParam)
-        .demoteErrors()
-    }
+          .demoteErrors()
+      }
 
     self.isActivityIndicatorHidden = Signal.merge(
       self.webViewDidFinishNavigationProperty.signal.mapConst(true),
@@ -169,7 +166,7 @@ ProjectUpdatesViewModelOutputs {
       .takeWhen(self.goToSafariBrowser)
       .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdates)
-    }
+      }
   }
 
   fileprivate let canSendEmailProperty = MutableProperty<Bool?>(nil)
@@ -185,7 +182,7 @@ ProjectUpdatesViewModelOutputs {
   fileprivate let navigationAction = MutableProperty<WKNavigationActionData?>(nil)
   fileprivate let decidedPolicy = MutableProperty(WKNavigationActionPolicy.cancel)
   public func decidePolicy(forNavigationAction action: WKNavigationActionData)
-          -> WKNavigationActionPolicy {
+    -> WKNavigationActionPolicy {
     self.navigationAction.value = action
     return self.decidedPolicy.value
   }
@@ -212,14 +209,14 @@ ProjectUpdatesViewModelOutputs {
     self.webViewDidStartProvisionalNavigationProperty.value = ()
   }
 
-  public let goToSafariBrowser: Signal<URL, NoError>
-  public let goToUpdate: Signal<(Project, Update), NoError>
-  public let goToUpdateComments: Signal<Update, NoError>
-  public let isActivityIndicatorHidden: Signal<Bool, NoError>
-  public let makePhoneCall: Signal<URL, NoError>
-  public let showMailCompose: Signal<String, NoError>
-  public let showNoEmailError: Signal<UIAlertController, NoError>
-  public let webViewLoadRequest: Signal<URLRequest, NoError>
+  public let goToSafariBrowser: Signal<URL, Never>
+  public let goToUpdate: Signal<(Project, Update), Never>
+  public let goToUpdateComments: Signal<Update, Never>
+  public let isActivityIndicatorHidden: Signal<Bool, Never>
+  public let makePhoneCall: Signal<URL, Never>
+  public let showMailCompose: Signal<String, Never>
+  public let showNoEmailError: Signal<UIAlertController, Never>
+  public let webViewLoadRequest: Signal<URLRequest, Never>
 
   public var inputs: ProjectUpdatesViewModelInputs { return self }
   public var outputs: ProjectUpdatesViewModelOutputs { return self }

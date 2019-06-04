@@ -1,18 +1,17 @@
+@testable import KsApi
 import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
-@testable import KsApi
 
 internal final class BackingCellViewModelTests: TestCase {
   fileprivate let vm: BackingCellViewModelType = BackingCellViewModel()
 
-  private let backingInfoButtonIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let delivery = TestObserver<String, NoError>()
-  fileprivate let pledged = TestObserver<String, NoError>()
-  fileprivate let reward = TestObserver<String, NoError>()
-  fileprivate let rootStackViewAlignment = TestObserver<UIStackView.Alignment, NoError>()
+  private let backingInfoButtonIsHidden = TestObserver<Bool, Never>()
+  fileprivate let delivery = TestObserver<String, Never>()
+  fileprivate let pledged = TestObserver<String, Never>()
+  fileprivate let reward = TestObserver<String, Never>()
+  fileprivate let rootStackViewAlignment = TestObserver<UIStackView.Alignment, Never>()
 
   override func setUp() {
     super.setUp()
@@ -38,14 +37,17 @@ internal final class BackingCellViewModelTests: TestCase {
     self.pledged.assertValueCount(1)
     self.reward.assertValues([(backing.reward?.description)!])
     self.delivery.assertValues([
-      Strings.backing_info_estimated_delivery_date(delivery_date:
+      Strings.backing_info_estimated_delivery_date(
+        delivery_date:
         Format.date(
           secondsInUTC: reward.estimatedDeliveryOn!, template: "MMMMyyyy", timeZone: UTCTimeZone
         )
-      )], "Emits the estimated delivery date")
+      )
+    ], "Emits the estimated delivery date")
 
     self.rootStackViewAlignment.assertValues([UIStackView.Alignment.leading])
   }
+
   // swiftlint:enable force_unwrapping
 
   func testRootStackViewAlignment() {

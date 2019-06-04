@@ -1,29 +1,28 @@
-// swiftlint:disable force_unwrapping
-import XCTest
-import Result
-import ReactiveSwift
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Prelude
+import ReactiveSwift
+// swiftlint:disable force_unwrapping
+import XCTest
 
 internal final class CommentsViewModelTests: TestCase {
   internal let vm: CommentsViewModelType = CommentsViewModel()
 
-  internal let emptyStateVisible = TestObserver<Bool, NoError>()
-  internal let hasComments = TestObserver<Bool, NoError>()
-  internal let commentBarButtonVisible = TestObserver<Bool, NoError>()
-  internal let presentPostCommentDialog = TestObserver<(Project, Update?), NoError>()
-  internal let loginToutIsOpen = TestObserver<Bool, NoError>()
-  internal let commentsAreLoading = TestObserver<Bool, NoError>()
+  internal let emptyStateVisible = TestObserver<Bool, Never>()
+  internal let hasComments = TestObserver<Bool, Never>()
+  internal let commentBarButtonVisible = TestObserver<Bool, Never>()
+  internal let presentPostCommentDialog = TestObserver<(Project, Update?), Never>()
+  internal let loginToutIsOpen = TestObserver<Bool, Never>()
+  internal let commentsAreLoading = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.dataSource.map { _, _, _, _, visible in visible }.observe(self.emptyStateVisible.observer)
     self.vm.outputs.dataSource.map { comments, _, _, _, _ in !comments.isEmpty }
-        .observe(self.hasComments.observer)
+      .observe(self.hasComments.observer)
     self.vm.outputs.commentBarButtonVisible.observe(self.commentBarButtonVisible.observer)
     self.vm.outputs.commentsAreLoading.observe(self.commentsAreLoading.observer)
     self.vm.outputs.presentPostCommentDialog.observe(self.presentPostCommentDialog.observer)
@@ -50,8 +49,10 @@ internal final class CommentsViewModelTests: TestCase {
 
       XCTAssertEqual(["Project Comment View", "Viewed Comments"], self.trackingClient.events)
       XCTAssertEqual("project", self.trackingClient.properties.last!["context"] as? String)
-      XCTAssertEqual([true, nil],
-                     self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+      XCTAssertEqual(
+        [true, nil],
+        self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
+      )
     }
   }
 
@@ -77,8 +78,10 @@ internal final class CommentsViewModelTests: TestCase {
       self.emptyStateVisible.assertDidNotEmitValue()
       self.commentBarButtonVisible.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: .template |> Project.lens.personalization.isBacking .~ false,
-                                   update: nil)
+      self.vm.inputs.configureWith(
+        project: .template |> Project.lens.personalization.isBacking .~ false,
+        update: nil
+      )
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
@@ -96,8 +99,10 @@ internal final class CommentsViewModelTests: TestCase {
       self.emptyStateVisible.assertDidNotEmitValue()
       self.commentBarButtonVisible.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: .template |> Project.lens.personalization.isBacking .~ true,
-                                   update: nil)
+      self.vm.inputs.configureWith(
+        project: .template |> Project.lens.personalization.isBacking .~ true,
+        update: nil
+      )
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
@@ -107,7 +112,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-   func testRefreshing() {
+  func testRefreshing() {
     let comment = Comment.template
 
     withEnvironment(apiService: MockService(fetchCommentsResponse: [comment])) {
@@ -137,8 +142,10 @@ internal final class CommentsViewModelTests: TestCase {
       self.commentsAreLoading.assertValues([true])
       XCTAssertEqual(["Project Comment View", "Viewed Comments"], self.trackingClient.events)
       XCTAssertEqual("project", self.trackingClient.properties.last!["context"] as? String)
-      XCTAssertEqual([true, nil],
-                     self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+      XCTAssertEqual(
+        [true, nil],
+        self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
+      )
 
       self.scheduler.advance()
 
@@ -158,9 +165,12 @@ internal final class CommentsViewModelTests: TestCase {
         self.commentsAreLoading.assertValues([true, false, true, false])
         XCTAssertEqual(
           ["Project Comment View", "Viewed Comments", "Project Comment Load Older", "Loaded Older Comments"],
-          self.trackingClient.events)
-        XCTAssertEqual([true, nil, true, nil],
-                       self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+          self.trackingClient.events
+        )
+        XCTAssertEqual(
+          [true, nil, true, nil],
+          self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
+        )
         XCTAssertEqual("project", self.trackingClient.properties.last!["context"] as? String)
 
         self.vm.inputs.refresh()
@@ -172,10 +182,13 @@ internal final class CommentsViewModelTests: TestCase {
             "Project Comment View", "Viewed Comments", "Project Comment Load Older", "Loaded Older Comments",
             "Project Comment Load New", "Loaded Newer Comments"
           ],
-          self.trackingClient.events)
+          self.trackingClient.events
+        )
         XCTAssertEqual("project", self.trackingClient.properties.last!["context"] as? String)
-        XCTAssertEqual([true, nil, true, nil, true, nil],
-                       self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+        XCTAssertEqual(
+          [true, nil, true, nil, true, nil],
+          self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
+        )
       }
     }
   }
@@ -183,7 +196,7 @@ internal final class CommentsViewModelTests: TestCase {
   func testPaginationAndRefresh_Update() {
     let update = Update.template
 
-    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(.template))) {
+    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
       self.vm.inputs.configureWith(project: nil, update: update)
       self.vm.inputs.viewDidLoad()
 
@@ -196,7 +209,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([true], "A set of comments is emitted.")
       self.commentsAreLoading.assertValues([true, false])
 
-      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(.template))) {
+      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
         self.hasComments.assertValues([true], "No new comments are emitted.")
@@ -217,8 +230,10 @@ internal final class CommentsViewModelTests: TestCase {
 
         self.hasComments.assertValues([true, true, true], "Another set of comments are emitted.")
         XCTAssertEqual(
-          ["Update Comment View", "Viewed Comments", "Update Comment Load Older", "Loaded Older Comments",
-           "Update Comment Load New", "Loaded Newer Comments"],
+          [
+            "Update Comment View", "Viewed Comments", "Update Comment Load Older", "Loaded Older Comments",
+            "Update Comment Load New", "Loaded Newer Comments"
+          ],
           self.trackingClient.events
         )
         XCTAssertEqual("update", self.trackingClient.properties.last!["context"] as? String)
@@ -229,7 +244,7 @@ internal final class CommentsViewModelTests: TestCase {
   func testUpdateComments_NoProjectProvided() {
     let update = Update.template
 
-    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(.template))) {
+    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
       self.vm.inputs.configureWith(project: nil, update: update)
       self.vm.inputs.viewDidLoad()
 
@@ -242,7 +257,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([true], "A set of comments is emitted.")
       self.commentsAreLoading.assertValues([true, false])
 
-      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(.template))) {
+      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
         self.hasComments.assertValues([true], "No new comments are emitted.")
@@ -263,8 +278,10 @@ internal final class CommentsViewModelTests: TestCase {
 
         self.hasComments.assertValues([true, true, true], "Another set of comments are emitted.")
         XCTAssertEqual(
-          ["Update Comment View", "Viewed Comments", "Update Comment Load Older", "Loaded Older Comments",
-           "Update Comment Load New", "Loaded Newer Comments"],
+          [
+            "Update Comment View", "Viewed Comments", "Update Comment Load Older", "Loaded Older Comments",
+            "Update Comment Load New", "Loaded Newer Comments"
+          ],
           self.trackingClient.events
         )
         XCTAssertEqual("update", self.trackingClient.properties.last!["context"] as? String)
@@ -294,7 +311,8 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([false], "Empty set of comments is emitted.")
       self.emptyStateVisible.assertValues([true])
       self.commentBarButtonVisible.assertValues(
-        [false], "Comment button is not visible since there's a button in the empty state.")
+        [false], "Comment button is not visible since there's a button in the empty state."
+      )
 
       self.vm.inputs.commentButtonPressed()
 
@@ -333,7 +351,6 @@ internal final class CommentsViewModelTests: TestCase {
       self.loginToutIsOpen.assertValues([true], "Login prompt is opened.")
 
       withEnvironment(apiService: MockService(fetchProjectResponse: backingProject)) {
-
         AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
         self.vm.inputs.userSessionStarted()
 
@@ -341,7 +358,8 @@ internal final class CommentsViewModelTests: TestCase {
         self.hasComments.assertValues([false, false, false], "Still no comments are emitted.")
         self.emptyStateVisible.assertValues([true, true, true], "Empty state for backer shown.")
         self.commentBarButtonVisible.assertValues(
-          [false], "Comment button is not visible since there's a button in the empty state.")
+          [false], "Comment button is not visible since there's a button in the empty state."
+        )
         self.presentPostCommentDialog.assertValueCount(1, "Immediately open the post comment dialog.")
       }
     }

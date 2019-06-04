@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ProjectNavigatorViewModelInputs {
   /// Call with the config data given to the view.
@@ -11,10 +10,12 @@ public protocol ProjectNavigatorViewModelInputs {
   func pageTransition(completed: Bool, from index: Int?)
 
   /// Call with panning data.
-  func panning(contentOffset: CGPoint,
-               translation: CGPoint,
-               velocity: CGPoint,
-               isDragging: Bool)
+  func panning(
+    contentOffset: CGPoint,
+    translation: CGPoint,
+    velocity: CGPoint,
+    isDragging: Bool
+  )
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -25,28 +26,28 @@ public protocol ProjectNavigatorViewModelInputs {
 
 public protocol ProjectNavigatorViewModelOutputs {
   /// Emits when the transition animator should be canceled.
-  var cancelInteractiveTransition: Signal<(), NoError> { get }
+  var cancelInteractiveTransition: Signal<(), Never> { get }
 
   /// Emits when the controller should be dismissed.
-  var dismissViewController: Signal<(), NoError> { get }
+  var dismissViewController: Signal<(), Never> { get }
 
   /// Emits when the transition animator should be finished.
-  var finishInteractiveTransition: Signal<(), NoError> { get }
+  var finishInteractiveTransition: Signal<(), Never> { get }
 
   /// Emits when to notify delegate that a transition was completed with the current row index.
-  var notifyDelegateTransitionedToProjectIndex: Signal<Int, NoError> { get }
+  var notifyDelegateTransitionedToProjectIndex: Signal<Int, Never> { get }
 
   /// Emits when the initial view controllers should be set on the page controller.
-  var setInitialPagerViewController: Signal<(), NoError> { get }
+  var setInitialPagerViewController: Signal<(), Never> { get }
 
   /// Emits when the controller's `setNeedsStatusBarAppearanceUpdate` method needs to be called
-  var setNeedsStatusBarAppearanceUpdate: Signal<(), NoError> { get }
+  var setNeedsStatusBarAppearanceUpdate: Signal<(), Never> { get }
 
   /// Emits when the transition animator needs to have its `isInFlight` property updated.
-  var setTransitionAnimatorIsInFlight: Signal<Bool, NoError> { get }
+  var setTransitionAnimatorIsInFlight: Signal<Bool, Never> { get }
 
   /// Emits when the transition animator should be updated.
-  var updateInteractiveTransition: Signal<CGFloat, NoError> { get }
+  var updateInteractiveTransition: Signal<CGFloat, Never> { get }
 }
 
 public protocol ProjectNavigatorViewModelType {
@@ -55,14 +56,13 @@ public protocol ProjectNavigatorViewModelType {
 }
 
 public final class ProjectNavigatorViewModel: ProjectNavigatorViewModelType,
-ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
-
+  ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-      )
-      .map(first)
+    )
+    .map(first)
 
     let pageTransitionCompletedFromIndex = self.pageTransitionCompletedFromIndexProperty.signal.skipNil()
       .filter { completed, _ in completed }
@@ -85,20 +85,20 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
         if data.contentOffset.y > 0 {
           return phase == .none ? .none : .canceling
         }
-        if data.isDragging && data.translation.y > 0 && !phase.active {
+        if data.isDragging, data.translation.y > 0, !phase.active {
           return .started
         }
-        if data.isDragging && data.translation.y > 0 && phase.active {
+        if data.isDragging, data.translation.y > 0, phase.active {
           return .updating
         }
-        if data.isDragging && data.translation.y < 0 && phase.active {
+        if data.isDragging, data.translation.y < 0, phase.active {
           return .canceling
         }
-        if !data.isDragging && data.translation.y > 0 && phase.active {
+        if !data.isDragging, data.translation.y > 0, phase.active {
           return data.velocity.y > 0 ? .finishing : .canceling
         }
         return phase
-    }
+      }
 
     self.setInitialPagerViewController = self.viewDidLoadProperty.signal
 
@@ -141,7 +141,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
       .observeValues { configData, pii in
         let type = swipeType(currentIndex: pii.currentIndex, previousIndex: pii.previousIndex)
         AppEnvironment.current.koala.trackSwipedProject(pii.project, refTag: configData.refTag, type: type)
-    }
+      }
 
     Signal.combineLatest(configData, currentProject)
       .takeWhen(self.finishInteractiveTransition)
@@ -151,7 +151,7 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
           refTag: configData.refTag,
           gestureType: .swipe
         )
-    }
+      }
   }
 
   fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
@@ -175,24 +175,28 @@ ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
   }
 
   fileprivate let panningDataProperty = MutableProperty<PanningData?>(nil)
-  public func panning(contentOffset: CGPoint,
-                      translation: CGPoint,
-                      velocity: CGPoint,
-                      isDragging: Bool) {
-    self.panningDataProperty.value = PanningData(contentOffset: contentOffset,
-                                                 isDragging: isDragging,
-                                                 translation: translation,
-                                                 velocity: velocity)
+  public func panning(
+    contentOffset: CGPoint,
+    translation: CGPoint,
+    velocity: CGPoint,
+    isDragging: Bool
+  ) {
+    self.panningDataProperty.value = PanningData(
+      contentOffset: contentOffset,
+      isDragging: isDragging,
+      translation: translation,
+      velocity: velocity
+    )
   }
 
-  public let cancelInteractiveTransition: Signal<(), NoError>
-  public let dismissViewController: Signal<(), NoError>
-  public let finishInteractiveTransition: Signal<(), NoError>
-  public let notifyDelegateTransitionedToProjectIndex: Signal<Int, NoError>
-  public let setInitialPagerViewController: Signal<(), NoError>
-  public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
-  public let setTransitionAnimatorIsInFlight: Signal<Bool, NoError>
-  public let updateInteractiveTransition: Signal<CGFloat, NoError>
+  public let cancelInteractiveTransition: Signal<(), Never>
+  public let dismissViewController: Signal<(), Never>
+  public let finishInteractiveTransition: Signal<(), Never>
+  public let notifyDelegateTransitionedToProjectIndex: Signal<Int, Never>
+  public let setInitialPagerViewController: Signal<(), Never>
+  public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
+  public let setTransitionAnimatorIsInFlight: Signal<Bool, Never>
+  public let updateInteractiveTransition: Signal<CGFloat, Never>
 
   public var inputs: ProjectNavigatorViewModelInputs { return self }
   public var outputs: ProjectNavigatorViewModelOutputs { return self }

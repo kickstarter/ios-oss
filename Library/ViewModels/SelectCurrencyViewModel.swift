@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public struct SelectedCurrencyData: Equatable {
   public let currency: Currency
@@ -17,14 +16,14 @@ public protocol SelectCurrencyViewModelInputs {
 }
 
 public protocol SelectCurrencyViewModelOutputs {
-  var activityIndicatorShouldShow: Signal<Bool, NoError> { get }
-  var deselectCellAtIndex: Signal<Int, NoError> { get }
-  var didUpdateCurrency: Signal<(), NoError> { get }
-  var reloadDataWithCurrencies: Signal<([SelectedCurrencyData], Bool), NoError> { get }
-  var saveButtonIsEnabled: Signal<Bool, NoError> { get }
-  var selectCellAtIndex: Signal<Int, NoError> { get }
-  var updateCurrencyDidFailWithError: Signal<String, NoError> { get }
-  var updateCurrencyDidSucceed: Signal<Void, NoError> { get }
+  var activityIndicatorShouldShow: Signal<Bool, Never> { get }
+  var deselectCellAtIndex: Signal<Int, Never> { get }
+  var didUpdateCurrency: Signal<(), Never> { get }
+  var reloadDataWithCurrencies: Signal<([SelectedCurrencyData], Bool), Never> { get }
+  var saveButtonIsEnabled: Signal<Bool, Never> { get }
+  var selectCellAtIndex: Signal<Int, Never> { get }
+  var updateCurrencyDidFailWithError: Signal<String, Never> { get }
+  var updateCurrencyDidSucceed: Signal<Void, Never> { get }
 }
 
 public protocol SelectCurrencyViewModelType {
@@ -32,9 +31,8 @@ public protocol SelectCurrencyViewModelType {
   var outputs: SelectCurrencyViewModelOutputs { get }
 }
 
-final public class SelectCurrencyViewModel: SelectCurrencyViewModelType, SelectCurrencyViewModelInputs,
-SelectCurrencyViewModelOutputs {
-
+public final class SelectCurrencyViewModel: SelectCurrencyViewModelType, SelectCurrencyViewModelInputs,
+  SelectCurrencyViewModelOutputs {
   public init() {
     let initialChosenCurrency = Signal.combineLatest(
       self.selectedCurrencySignal,
@@ -70,7 +68,7 @@ SelectCurrencyViewModelOutputs {
       selectedCurrency,
       initialChosenCurrency
     )
-    .map { currencies(orderedBySelected: $1).index(of: $0) }
+    .map { currencies(orderedBySelected: $1).firstIndex(of: $0) }
     .skipNil()
 
     self.deselectCellAtIndex = self.selectCellAtIndex
@@ -85,7 +83,7 @@ SelectCurrencyViewModelOutputs {
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { _ in input }
           .materialize()
-    }
+      }
 
     self.updateCurrencyDidSucceed = updateCurrencyEvent.values().ignoreValues()
 
@@ -125,35 +123,35 @@ SelectCurrencyViewModelOutputs {
     self.didUpdateCurrency = updateCurrencyEvent.values().ignoreValues()
   }
 
-  private let (selectedCurrencySignal, selectedCurrencyObserver) = Signal<Currency, NoError>.pipe()
+  private let (selectedCurrencySignal, selectedCurrencyObserver) = Signal<Currency, Never>.pipe()
   public func configure(with selectedCurrency: Currency) {
     self.selectedCurrencyObserver.send(value: selectedCurrency)
   }
 
   private let (didSelectCurrencyAtIndexSignal, didSelectCurrencyAtIndexObserver)
-    = Signal<Int, NoError>.pipe()
+    = Signal<Int, Never>.pipe()
   public func didSelectCurrency(atIndex index: Int) {
     self.didSelectCurrencyAtIndexObserver.send(value: index)
   }
 
-  private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), NoError>.pipe()
+  private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
   public func viewDidLoad() {
     self.viewDidLoadObserver.send(value: ())
   }
 
-  private let (saveButtonTappedSignal, saveButtonTappedObserver) = Signal<(), NoError>.pipe()
+  private let (saveButtonTappedSignal, saveButtonTappedObserver) = Signal<(), Never>.pipe()
   public func saveButtonTapped() {
     self.saveButtonTappedObserver.send(value: ())
   }
 
-  public let activityIndicatorShouldShow: Signal<Bool, NoError>
-  public let deselectCellAtIndex: Signal<Int, NoError>
-  public let didUpdateCurrency: Signal<(), NoError>
-  public let reloadDataWithCurrencies: Signal<([SelectedCurrencyData], Bool), NoError>
-  public let saveButtonIsEnabled: Signal<Bool, NoError>
-  public let selectCellAtIndex: Signal<Int, NoError>
-  public let updateCurrencyDidFailWithError: Signal<String, NoError>
-  public let updateCurrencyDidSucceed: Signal<Void, NoError>
+  public let activityIndicatorShouldShow: Signal<Bool, Never>
+  public let deselectCellAtIndex: Signal<Int, Never>
+  public let didUpdateCurrency: Signal<(), Never>
+  public let reloadDataWithCurrencies: Signal<([SelectedCurrencyData], Bool), Never>
+  public let saveButtonIsEnabled: Signal<Bool, Never>
+  public let selectCellAtIndex: Signal<Int, Never>
+  public let updateCurrencyDidFailWithError: Signal<String, Never>
+  public let updateCurrencyDidSucceed: Signal<Void, Never>
 
   public var inputs: SelectCurrencyViewModelInputs { return self }
   public var outputs: SelectCurrencyViewModelOutputs { return self }
@@ -165,5 +163,5 @@ internal func currencies(orderedBySelected selected: Currency) -> [Currency] {
 
 internal func selectedCurrencyData(with currencies: [Currency], selected: Currency)
   -> [SelectedCurrencyData] {
-    return currencies.map { currency in .init(currency: currency, selected: currency == selected) }
+  return currencies.map { currency in .init(currency: currency, selected: currency == selected) }
 }

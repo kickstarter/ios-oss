@@ -1,14 +1,13 @@
-import XCTest
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
-import Result
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ProjectActivityLaunchCellViewModelTests: TestCase {
   fileprivate let vm: ProjectActivityLaunchCellViewModelType = ProjectActivityLaunchCellViewModel()
 
-  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -20,7 +19,7 @@ internal final class ProjectActivityLaunchCellViewModelTests: TestCase {
 
   func testTitle() {
     let country = Project.Country.us
-    let goal = 5000
+    let goal = 5_000
     let projectName = "Sick Skull Graphic Watch"
     let launchedAt = Date().timeIntervalSince1970
 

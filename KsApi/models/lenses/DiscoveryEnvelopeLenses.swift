@@ -46,12 +46,12 @@ extension DiscoveryEnvelope.StatsEnvelope {
 
 extension Lens where Whole == DiscoveryEnvelope, Part == DiscoveryEnvelope.UrlsEnvelope {
   public var api: Lens<DiscoveryEnvelope, DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope> {
-    return DiscoveryEnvelope.lens.urls..DiscoveryEnvelope.UrlsEnvelope.lens.api
+    return DiscoveryEnvelope.lens.urls .. DiscoveryEnvelope.UrlsEnvelope.lens.api
   }
 }
 
 extension Lens where Whole == DiscoveryEnvelope, Part == DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope {
   public var moreProjects: Lens<DiscoveryEnvelope, String> {
-    return DiscoveryEnvelope.lens.urls.api..DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope.lens.moreProjects
+    return DiscoveryEnvelope.lens.urls.api .. DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope.lens.moreProjects
   }
 }

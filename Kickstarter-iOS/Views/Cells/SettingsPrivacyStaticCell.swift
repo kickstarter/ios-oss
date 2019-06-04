@@ -3,7 +3,7 @@ import Prelude
 import UIKit
 
 internal final class SettingsPrivacyStaticCell: UITableViewCell, ValueCell {
-  @IBOutlet fileprivate weak var privacyInfoLabel: UILabel!
+  @IBOutlet fileprivate var privacyInfoLabel: UILabel!
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -24,11 +24,11 @@ internal final class SettingsPrivacyStaticCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-      _ = self
-        |> baseTableViewCellStyle()
-        |> UITableViewCell.lens.backgroundColor .~ .ksr_grey_100
+    _ = self
+      |> baseTableViewCellStyle()
+      |> UITableViewCell.lens.backgroundColor .~ .ksr_grey_100
 
-      _ = self.privacyInfoLabel
-        |> UILabel.lens.font .~ .ksr_body(size: 13)
-    }
+    _ = self.privacyInfoLabel
+      |> UILabel.lens.font .~ .ksr_body(size: 13)
   }
+}

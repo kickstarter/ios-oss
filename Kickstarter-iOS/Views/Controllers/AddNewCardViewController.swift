@@ -5,32 +5,36 @@ import ReactiveSwift
 import Stripe
 import UIKit
 
-internal protocol AddNewCardViewControllerDelegate: class {
-  func addNewCardViewController(_ viewController: AddNewCardViewController,
-                                didSucceedWithMessage message: String)
+internal protocol AddNewCardViewControllerDelegate: AnyObject {
+  func addNewCardViewController(
+    _ viewController: AddNewCardViewController,
+    didSucceedWithMessage message: String
+  )
   func addNewCardViewControllerDismissed(_ viewController: AddNewCardViewController)
 }
 
 internal final class AddNewCardViewController: UIViewController,
-STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
+  STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
   internal weak var delegate: AddNewCardViewControllerDelegate?
 
-  @IBOutlet private weak var cardholderNameLabel: UILabel!
-  @IBOutlet private weak var cardholderNameTextField: UITextField!
-  @IBOutlet private weak var creditCardTextField: STPPaymentCardTextField!
-  @IBOutlet private weak var creditCardValidationErrorLabel: UILabel!
-  @IBOutlet private weak var creditCardValidationErrorContainer: UIView!
-  @IBOutlet private weak var scrollView: UIScrollView!
-  @IBOutlet private weak var stackView: UIStackView!
-  @IBOutlet private weak var zipcodeView: SettingsFormFieldView!
+  @IBOutlet private var cardholderNameLabel: UILabel!
+  @IBOutlet private var cardholderNameTextField: UITextField!
+  @IBOutlet private var creditCardTextField: STPPaymentCardTextField!
+  @IBOutlet private var creditCardValidationErrorLabel: UILabel!
+  @IBOutlet private var creditCardValidationErrorContainer: UIView!
+  @IBOutlet private var scrollView: UIScrollView!
+  @IBOutlet private var stackView: UIStackView!
+  @IBOutlet private var zipcodeView: SettingsFormFieldView!
 
-  private let supportedCardBrands: [STPCardBrand] = [.amex,
-                                                     .dinersClub,
-                                                     .discover,
-                                                     .JCB,
-                                                     .masterCard,
-                                                     .unionPay,
-                                                     .visa]
+  private let supportedCardBrands: [STPCardBrand] = [
+    .amex,
+    .dinersClub,
+    .discover,
+    .JCB,
+    .masterCard,
+    .unionPay,
+    .visa
+  ]
 
   private var saveButtonView: LoadingBarButtonItemView!
 
@@ -47,33 +51,43 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
-    self.cardholderNameTextField.addTarget(self,
-                                           action: #selector(cardholderNameTextFieldReturn),
-                                           for: .editingDidEndOnExit)
+    self.cardholderNameTextField.addTarget(
+      self,
+      action: #selector(self.cardholderNameTextFieldReturn),
+      for: .editingDidEndOnExit
+    )
 
-    self.cardholderNameTextField.addTarget(self,
-                                           action: #selector(cardholderNameTextFieldChanged(_:)),
-                                           for: [.editingDidEndOnExit, .editingChanged])
+    self.cardholderNameTextField.addTarget(
+      self,
+      action: #selector(self.cardholderNameTextFieldChanged(_:)),
+      for: [.editingDidEndOnExit, .editingChanged]
+    )
 
-    let cancelButton = UIBarButtonItem(title: Strings.Cancel(),
-                                       style: .plain,
-                                       target: self,
-                                       action: #selector(cancelButtonTapped))
+    let cancelButton = UIBarButtonItem(
+      title: Strings.Cancel(),
+      style: .plain,
+      target: self,
+      action: #selector(self.cancelButtonTapped)
+    )
     cancelButton.tintColor = .ksr_green_700
     self.navigationItem.leftBarButtonItem = cancelButton
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
-    self.saveButtonView.addTarget(self, action: #selector(saveButtonTapped))
+    self.saveButtonView.addTarget(self, action: #selector(self.saveButtonTapped))
 
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
 
-    self.zipcodeView.textField.addTarget(self, action: #selector(zipcodeTextFieldDoneEditing),
-                                         for: .editingDidEndOnExit)
+    self.zipcodeView.textField.addTarget(
+      self, action: #selector(zipcodeTextFieldDoneEditing),
+      for: .editingDidEndOnExit
+    )
 
-    self.zipcodeView.textField.addTarget(self, action: #selector(zipcodeTextFieldChanged(textField:)),
-                                         for: .editingChanged)
+    self.zipcodeView.textField.addTarget(
+      self, action: #selector(zipcodeTextFieldChanged(textField:)),
+      for: .editingChanged
+    )
 
     self.creditCardTextField.delegate = self
 
@@ -136,39 +150,41 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
       .filter(isFalse)
       .observeForUI()
       .observeValues { _ in
-        UIAccessibility.post(notification: .layoutChanged,
-                             argument: self.creditCardValidationErrorLabel)
-    }
+        UIAccessibility.post(
+          notification: .layoutChanged,
+          argument: self.creditCardValidationErrorLabel
+        )
+      }
 
     self.viewModel.outputs.paymentDetailsBecomeFirstResponder
       .observeForUI()
       .observeValues { [weak self] in
         self?.creditCardTextField.becomeFirstResponder()
-    }
+      }
 
     self.viewModel.outputs.saveButtonIsEnabled
       .observeForUI()
-      .observeValues { [weak self] (isEnabled) in
+      .observeValues { [weak self] isEnabled in
         self?.saveButtonView.setIsEnabled(isEnabled: isEnabled)
-    }
+      }
 
     self.viewModel.outputs.setStripePublishableKey
       .observeForUI()
       .observeValues {
         STPPaymentConfiguration.shared().publishableKey = $0
-    }
+      }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
       .observeValues { [weak self] _ in
         self?.dismissKeyboard()
-    }
+      }
 
     self.viewModel.outputs.paymentDetails
       .observeForUI()
       .observeValues { [weak self] paymentDetails in
         self?.createStripeToken(with: paymentDetails)
-    }
+      }
 
     self.viewModel.outputs.activityIndicatorShouldShow
       .observeForUI()
@@ -178,31 +194,31 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
         } else {
           self?.saveButtonView.stopAnimating()
         }
-    }
+      }
 
     self.viewModel.outputs.addNewCardSuccess
       .observeForControllerAction()
       .observeValues { [weak self] message in
         self?.dismissAndPresentMessageBanner(with: message)
-    }
+      }
 
     self.viewModel.outputs.addNewCardFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
-    }
+      }
 
     self.viewModel.outputs.zipcodeTextFieldBecomeFirstResponder
       .observeForControllerAction()
       .observeValues { [weak self] _ in
         self?.zipcodeView.textField.becomeFirstResponder()
-    }
+      }
 
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
         self?.scrollView.handleKeyboardVisibilityDidChange(change)
-    }
+      }
   }
 
   @objc fileprivate func cancelButtonTapped() {
@@ -217,11 +233,12 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     self.viewModel.inputs.cardholderNameChanged(textField.text)
   }
 
-  @objc func cardholderNameTextFieldReturn(_ textField: UITextField) {
+  @objc func cardholderNameTextFieldReturn(_: UITextField) {
     self.viewModel.inputs.cardholderNameTextFieldReturn()
   }
 
   // MARK: - Private Functions
+
   private func createStripeToken(with paymentDetails: PaymentDetails) {
     let cardParams = STPCardParams()
     cardParams.name = paymentDetails.cardholderName
@@ -240,7 +257,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
     }
   }
 
-  private func cardBrandIsSupported(brand: STPCardBrand, supportedCardBrands: [STPCardBrand]) -> Bool {
+  private func cardBrandIsSupported(brand: STPCardBrand, supportedCardBrands _: [STPCardBrand]) -> Bool {
     return self.supportedCardBrands.contains(brand)
   }
 
@@ -255,6 +272,7 @@ STPPaymentCardTextFieldDelegate, MessageBannerViewControllerPresenting {
 }
 
 // MARK: - Zipcode UITextField Delegate
+
 extension AddNewCardViewController {
   @objc internal func zipcodeTextFieldDoneEditing() {
     self.viewModel.inputs.zipcodeTextFieldDidEndEditing()
@@ -266,6 +284,7 @@ extension AddNewCardViewController {
 }
 
 // MARK: - STPPaymentCardTextFieldDelegate
+
 extension AddNewCardViewController {
   internal func paymentCardTextFieldDidChange(_ textField: STPPaymentCardTextField) {
     self.viewModel.inputs.paymentInfo(isValid: textField.isValid)
@@ -279,12 +298,13 @@ extension AddNewCardViewController {
 
     self.viewModel.inputs.cardBrand(isValid: isValid)
 
-    self.viewModel.inputs.creditCardChanged(cardDetails: (cardnumber, textField.expirationMonth,
-                                                          textField.expirationYear, textField.cvc))
-
+    self.viewModel.inputs.creditCardChanged(cardDetails: (
+      cardnumber, textField.expirationMonth,
+      textField.expirationYear, textField.cvc
+    ))
   }
 
-  internal func paymentCardTextFieldDidEndEditing(_ textField: STPPaymentCardTextField) {
+  internal func paymentCardTextFieldDidEndEditing(_: STPPaymentCardTextField) {
     self.viewModel.inputs.paymentCardTextFieldDidEndEditing()
   }
 }
@@ -305,7 +325,8 @@ private let cardholderNameTextFieldStyle: TextFieldStyle = { (textField: UITextF
     |> \.textColor .~ .ksr_text_dark_grey_500
     |> \.attributedPlaceholder .~ NSAttributedString(
       string: Strings.Name(),
-      attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400])
+      attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400]
+    )
 }
 
 private typealias PaymentCardTextFieldStyle = (STPPaymentCardTextField) -> STPPaymentCardTextField

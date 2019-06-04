@@ -9,8 +9,7 @@ public protocol HTTPCookieStorageProtocol {
   func setCookie(_ cookie: HTTPCookie)
 }
 
-extension HTTPCookieStorage: HTTPCookieStorageProtocol {
-}
+extension HTTPCookieStorage: HTTPCookieStorageProtocol {}
 
 internal final class MockCookieStorage: HTTPCookieStorageProtocol {
   fileprivate var storage: Set<HTTPCookie> = []
@@ -20,7 +19,7 @@ internal final class MockCookieStorage: HTTPCookieStorageProtocol {
   }
 
   internal func deleteCookie(_ cookie: HTTPCookie) {
-    if let idx = self.storage.index(of: cookie) {
+    if let idx = self.storage.firstIndex(of: cookie) {
       self.storage.remove(at: idx)
     }
   }

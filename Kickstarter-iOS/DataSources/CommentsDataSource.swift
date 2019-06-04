@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import UIKit
 
 internal final class CommentsDataSource: ValueCellDataSource {
@@ -8,20 +8,25 @@ internal final class CommentsDataSource: ValueCellDataSource {
     case comments
   }
 
-  internal func load(comments: [Comment],
-                     project: Project,
-                     update: Update?,
-                     loggedInUser: User?,
-                     shouldShowEmptyState: Bool) {
-
+  internal func load(
+    comments: [Comment],
+    project: Project,
+    update: Update?,
+    loggedInUser: User?,
+    shouldShowEmptyState: Bool
+  ) {
     if comments.isEmpty {
-      self.set(values: shouldShowEmptyState ? [(project, update)] : [],
-              cellClass: CommentsEmptyStateCell.self,
-              inSection: Section.emptyState.rawValue)
+      self.set(
+        values: shouldShowEmptyState ? [(project, update)] : [],
+        cellClass: CommentsEmptyStateCell.self,
+        inSection: Section.emptyState.rawValue
+      )
     } else {
-      self.set(values: comments.map { ($0, project, loggedInUser) } ,
-             cellClass: CommentCell.self,
-             inSection: Section.comments.rawValue)
+      self.set(
+        values: comments.map { ($0, project, loggedInUser) },
+        cellClass: CommentCell.self,
+        inSection: Section.comments.rawValue
+      )
     }
   }
 

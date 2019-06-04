@@ -1,54 +1,50 @@
-import XCTest
-@testable import KsApi
 import Argo
+@testable import KsApi
 import Prelude
+import XCTest
 
 class CategoryTests: XCTestCase {
-
   private var json: String {
-       return  """
-               {
-                  "rootCategories": [ {
-                     "id":"Q2F0ZWdvcnktMQ==",
-                     "name":"Art",
-                     "subcategories":{
-                        "nodes": [{
-                           "id":"Q2F0ZWdvcnktMjg3",
-                           "name":"Ceramics",
-                           "parentCategory":{
-                              "id":"Q2F0ZWdvcnktMQ==",
-                              "name":"Art"
-                                            }
-                                 }],
-                     "parentId":"Q2F0ZWdvcnktMQ==",
-                     "totalCount":8
-                                      }
-                                   } ]
+    return """
+    {
+       "rootCategories": [ {
+          "id":"Q2F0ZWdvcnktMQ==",
+          "name":"Art",
+          "subcategories":{
+             "nodes": [{
+                "id":"Q2F0ZWdvcnktMjg3",
+                "name":"Ceramics",
+                "parentCategory":{
+                   "id":"Q2F0ZWdvcnktMQ==",
+                   "name":"Art"
+                                 }
+                      }],
+          "parentId":"Q2F0ZWdvcnktMQ==",
+          "totalCount":8
+                           }
+                        } ]
 
-                       }
+            }
 
-               """
+    """
   }
 
   func testDecode_WithNilValues() {
-
     if let decodedData = categoriesFromJSON() {
-        XCTAssertNotNil(decodedData.rootCategories)
+      XCTAssertNotNil(decodedData.rootCategories)
 
-        let category = decodedData.rootCategories[0]
-        XCTAssertEqual(category.id, "Q2F0ZWdvcnktMQ==")
-        XCTAssertEqual(category.name, "Art")
-        XCTAssertNil(category.parent)
-        XCTAssertNil(category.parentId)
+      let category = decodedData.rootCategories[0]
+      XCTAssertEqual(category.id, "Q2F0ZWdvcnktMQ==")
+      XCTAssertEqual(category.name, "Art")
+      XCTAssertNil(category.parent)
+      XCTAssertNil(category.parentId)
     } else {
       XCTFail("Data should be decoded")
     }
   }
 
   func testDecode_Subcategories() {
-
     if let decodedData = categoriesFromJSON() {
-
       let category = decodedData.rootCategories.first
       let subcategory = category?.subcategories?.nodes.first
       XCTAssertNotNil(subcategory)
@@ -59,7 +55,7 @@ class CategoryTests: XCTestCase {
     } else {
       XCTFail("Data should be decoded")
     }
-}
+  }
 
   func testParent() {
     XCTAssertEqual(Category.illustration.parent, Category.art)
@@ -67,8 +63,10 @@ class CategoryTests: XCTestCase {
   }
 
   func testParentCategoryType() {
-    let parent = ParentCategory(id: Category.art.id,
-                                name: Category.art.name)
+    let parent = ParentCategory(
+      id: Category.art.id,
+      name: Category.art.name
+    )
     XCTAssertEqual(parent.categoryType, Category.illustration.parent)
   }
 
@@ -82,8 +80,9 @@ class CategoryTests: XCTestCase {
     XCTAssertEqual(Category.illustration.isRoot, false)
     XCTAssertEqual(Category.art.root, Category.art)
     XCTAssertEqual(Category.art.isRoot, true)
-    XCTAssertNil((Category.illustration
-                  |> Category.lens.parent .~ nil).root,
+    XCTAssertNil(
+      (Category.illustration
+        |> Category.lens.parent .~ nil).root,
       "A subcategory with no parent category present does not have a root."
     )
   }
@@ -106,7 +105,7 @@ class CategoryTests: XCTestCase {
 
   func testIntID_invalidInput() {
     let art = Category.art
-              |> Category.lens.id .~ "1"
+      |> Category.lens.id .~ "1"
     XCTAssertNil(art.intID, "intID should be resulted from a base64 decoded string")
   }
 

@@ -7,16 +7,16 @@ import UIKit
 internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: ActivityFriendBackingViewModel = ActivityFriendBackingViewModel()
 
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var containerView: UIView!
-  @IBOutlet fileprivate weak var friendImageView: UIImageView!
-  @IBOutlet fileprivate weak var friendTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
-  @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
-  @IBOutlet fileprivate weak var fundingProgressLabel: UILabel!
-  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
-  @IBOutlet fileprivate weak var projectImageView: UIImageView!
-  @IBOutlet fileprivate weak var projectTextContainerView: UIView!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var containerView: UIView!
+  @IBOutlet fileprivate var friendImageView: UIImageView!
+  @IBOutlet fileprivate var friendTitleLabel: UILabel!
+  @IBOutlet fileprivate var fundingProgressBarView: UIView!
+  @IBOutlet fileprivate var fundingProgressContainerView: UIView!
+  @IBOutlet fileprivate var fundingProgressLabel: UILabel!
+  @IBOutlet fileprivate var projectNameLabel: UILabel!
+  @IBOutlet fileprivate var projectImageView: UIImageView!
+  @IBOutlet fileprivate var projectTextContainerView: UIView!
 
   func configureWith(value: Activity) {
     self.viewModel.inputs.configureWith(activity: value)
@@ -38,7 +38,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
       .skipNil()
       .observeValues { [weak friendImageView] url in
         friendImageView?.ksr_setImageWithURL(url)
-    }
+      }
 
     self.viewModel.outputs.fundingProgressPercentage
       .observeForUI()
@@ -46,7 +46,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
         let anchorX = progress == 0 ? 0 : 0.5 / progress
         self?.fundingProgressBarView.layer.anchorPoint = CGPoint(x: CGFloat(anchorX), y: 0.5)
         self?.fundingProgressBarView.transform = CGAffineTransform(scaleX: CGFloat(progress), y: 1.0)
-    }
+      }
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
@@ -57,7 +57,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
       .skipNil()
       .observeValues { [weak projectImageView] url in
         projectImageView?.ksr_setImageWithURL(url)
-    }
+      }
   }
 
   override func bindStyles() {
@@ -68,7 +68,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
       |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
 
     _ = self.cardView
-     |> cardStyle()
+      |> cardStyle()
 
     _ = self.containerView
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(2))
@@ -91,7 +91,9 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
 
     _ = self.projectTextContainerView
       |> UIView.lens.alpha .~ 0.96
-      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.gridHalf(5),
-                                            leftRight: Styles.grid(2))
+      |> UIView.lens.layoutMargins .~ .init(
+        topBottom: Styles.gridHalf(5),
+        leftRight: Styles.grid(2)
+      )
   }
 }

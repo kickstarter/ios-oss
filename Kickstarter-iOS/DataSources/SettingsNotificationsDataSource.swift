@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import Prelude
 
 final class SettingsNotificationsDataSource: ValueCellDataSource {
@@ -12,13 +12,15 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
       .map { index, section -> Void in
 
         let values = section.cellRowsForSection.map { cellType in
-           return SettingsNotificationCellValue(cellType: cellType, user: user)
-         }
+          SettingsNotificationCellValue(cellType: cellType, user: user)
+        }
 
-         self.set(values: values,
-                  cellClass: SettingsNotificationCell.self,
-                  inSection: index)
-    }
+        self.set(
+          values: values,
+          cellClass: SettingsNotificationCell.self,
+          inSection: index
+        )
+      }
 
     let pledgeActivityEnabled = (user
       |> UserAttribute.notification(.pledgeActivity).keyPath.view) ?? false
@@ -31,10 +33,12 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
   func insertEmailFrequencyCell(user: User) -> IndexPath {
     let cellValue = SettingsNotificationCellValue(cellType: .emailFrequency, user: user)
 
-    return self.insertRow(value: cellValue,
-                          cellClass: SettingsNotificationPickerCell.self,
-                          atIndex: 1,
-                          inSection: SettingsNotificationSectionType.creator.rawValue)
+    return self.insertRow(
+      value: cellValue,
+      cellClass: SettingsNotificationPickerCell.self,
+      atIndex: 1,
+      inSection: SettingsNotificationSectionType.creator.rawValue
+    )
   }
 
   func sectionType(section: Int, user: User?) -> SettingsNotificationSectionType? {
@@ -62,7 +66,7 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as SettingsNotificationCell, value as SettingsNotificationCellValue):
       cell.configureWith(value: value)
-      cell.delegate = cellDelegate
+      cell.delegate = self.cellDelegate
     case let (cell as SettingsNotificationPickerCell, value as SettingsNotificationCellValue):
       cell.configureWith(value: value)
     default:
@@ -71,6 +75,7 @@ final class SettingsNotificationsDataSource: ValueCellDataSource {
   }
 
   // MARK: Helpers
+
   func filterCreatorForSection(_ section: SettingsNotificationSectionType, user: User) -> Bool {
     return user.isCreator ? true : (section != .creator)
   }

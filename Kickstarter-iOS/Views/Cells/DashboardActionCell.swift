@@ -4,7 +4,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal protocol DashboardActionCellDelegate: class {
+internal protocol DashboardActionCellDelegate: AnyObject {
   /// Call with project value when navigating to activity screen.
   func goToActivity(_ cell: DashboardActionCell?, project: Project)
 
@@ -19,32 +19,35 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
   internal weak var delegate: DashboardActionCellDelegate?
   fileprivate let viewModel: DashboardActionCellViewModelType = DashboardActionCellViewModel()
 
-  @IBOutlet fileprivate weak var activityButton: UIButton!
-  @IBOutlet fileprivate weak var activityRowStackView: UIStackView!
-  @IBOutlet fileprivate weak var lastUpdatePublishedAtLabel: UILabel!
-  @IBOutlet fileprivate weak var messagesButton: UIButton!
-  @IBOutlet fileprivate weak var messagesRowStackView: UIStackView!
-  @IBOutlet fileprivate weak var postUpdateButton: UIButton!
-  @IBOutlet fileprivate weak var separatorView: UIView!
-  @IBOutlet fileprivate weak var unseenActivitiesCountView: CountBadgeView!
-  @IBOutlet fileprivate weak var unreadMessagesCountView: CountBadgeView!
+  @IBOutlet fileprivate var activityButton: UIButton!
+  @IBOutlet fileprivate var activityRowStackView: UIStackView!
+  @IBOutlet fileprivate var lastUpdatePublishedAtLabel: UILabel!
+  @IBOutlet fileprivate var messagesButton: UIButton!
+  @IBOutlet fileprivate var messagesRowStackView: UIStackView!
+  @IBOutlet fileprivate var postUpdateButton: UIButton!
+  @IBOutlet fileprivate var separatorView: UIView!
+  @IBOutlet fileprivate var unseenActivitiesCountView: CountBadgeView!
+  @IBOutlet fileprivate var unreadMessagesCountView: CountBadgeView!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.activityButton.addTarget(self, action: #selector(activityTapped), for: .touchUpInside)
+    self.activityButton.addTarget(self, action: #selector(self.activityTapped), for: .touchUpInside)
 
-    self.messagesButton.addTarget(self, action: #selector(messagesTapped), for: .touchUpInside)
+    self.messagesButton.addTarget(self, action: #selector(self.messagesTapped), for: .touchUpInside)
 
-    self.postUpdateButton.addTarget(self,
-                                    action: #selector(postUpdateTapped),
-                                    for: .touchUpInside)
+    self.postUpdateButton.addTarget(
+      self,
+      action: #selector(self.postUpdateTapped),
+      for: .touchUpInside
+    )
   }
 
   internal override func bindStyles() {
     _ = self |> baseTableViewCellStyle()
     self.isAccessibilityElement = false
     self.accessibilityElements = [self.activityButton, self.messagesButton, self.postUpdateButton]
+      .compact()
     _ = self.activityButton |> dashboardActivityButtonStyle
     _ = self.lastUpdatePublishedAtLabel |> dashboardLastUpdatePublishedAtLabelStyle
     _ = self.messagesButton |> dashboardMessagesButtonStyle
@@ -70,7 +73,7 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] project in
         self?.delegate?.goToActivity(self, project: project)
-    }
+      }
 
     self.viewModel.outputs.goToMessages
       .observeForUI()
@@ -80,7 +83,7 @@ internal final class DashboardActionCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] project in
         self?.delegate?.goToPostUpdate(self, project: project)
-    }
+      }
   }
 
   internal func configureWith(value: Project) {

@@ -5,7 +5,7 @@ import Prelude_UIKit
 import ReactiveSwift
 import UIKit
 
-internal protocol SettingsFollowCellDelegate: class {
+internal protocol SettingsFollowCellDelegate: AnyObject {
   /// Called when follow switch is switched off
   func settingsFollowCellDidDisableFollowing(_ cell: SettingsFollowCell)
   func settingsFollowCellDidUpdate(user: User)
@@ -15,16 +15,16 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
   fileprivate let viewModel = SettingsFollowCellViewModel()
   internal weak var delegate: SettingsFollowCellDelegate?
 
-  @IBOutlet fileprivate weak var followingLabel: UILabel!
-  @IBOutlet fileprivate weak var followStackView: UIStackView!
-  @IBOutlet fileprivate weak var followingSwitch: UISwitch!
+  @IBOutlet fileprivate var followingLabel: UILabel!
+  @IBOutlet fileprivate var followStackView: UIStackView!
+  @IBOutlet fileprivate var followingSwitch: UISwitch!
   @IBOutlet fileprivate var separatorView: [UIView]!
 
   override func awakeFromNib() {
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.followingSwitch]
+      |> \.accessibilityElements .~ [self.followingSwitch].compact()
 
     _ = self.followingSwitch
       |> \.accessibilityLabel %~ { _ in Strings.Following() }
@@ -46,7 +46,7 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
           : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-    }
+      }
 
     _ = self.separatorView
       ||> settingsSeparatorStyle
@@ -64,14 +64,14 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] user in
         self?.delegate?.settingsFollowCellDidUpdate(user: user)
-    }
+      }
 
     self.viewModel.outputs.showPrivacyFollowingPrompt
       .observeForUI()
       .observeValues { [weak self] in
         guard let _self = self else { return }
         self?.delegate?.settingsFollowCellDidDisableFollowing(_self)
-    }
+      }
 
     self.followingSwitch.rac.on = self.viewModel.outputs.followingPrivacyOn
   }

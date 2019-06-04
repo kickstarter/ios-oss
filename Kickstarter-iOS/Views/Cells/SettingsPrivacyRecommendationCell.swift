@@ -8,15 +8,15 @@ import UIKit
 internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCell {
   fileprivate let viewModel = SettingsRecommendationsCellViewModel()
 
-  @IBOutlet fileprivate weak var recommendationsLabel: UILabel!
-  @IBOutlet fileprivate weak var recommendationsSwitch: UISwitch!
+  @IBOutlet fileprivate var recommendationsLabel: UILabel!
+  @IBOutlet fileprivate var recommendationsSwitch: UISwitch!
   @IBOutlet fileprivate var separatorView: [UIView]!
 
   override func awakeFromNib() {
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.recommendationsSwitch]
+      |> \.accessibilityElements .~ [self.recommendationsSwitch].compact()
 
     _ = self.recommendationsSwitch
       |> \.accessibilityLabel %~ { _ in Strings.Recommendations() }
@@ -36,7 +36,8 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
-          : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2)) }
+          : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+      }
 
     _ = self.separatorView
       ||> settingsSeparatorStyle
@@ -48,6 +49,10 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.postNotification
+      .observeForUI()
+      .observeValues { NotificationCenter.default.post($0) }
 
     self.viewModel.outputs.updateCurrentUser
       .observeForUI()

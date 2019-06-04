@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ActivityUpdateViewModelInputs {
   /// Call to configure with the activity.
@@ -13,28 +12,28 @@ public protocol ActivityUpdateViewModelInputs {
 
 public protocol ActivityUpdateViewModelOutputs {
   /// Emits the update's body to be displayed.
-  var body: Signal<String, NoError> { get }
+  var body: Signal<String, Never> { get }
 
   /// Emits the cell's accessibility label to be read by voiceover.
-  var cellAccessibilityLabel: Signal<String, NoError> { get }
+  var cellAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits when we should notify the delegate that the project image button was tapped.
-  var notifyDelegateTappedProjectImage: Signal<Activity, NoError> { get }
+  var notifyDelegateTappedProjectImage: Signal<Activity, Never> { get }
 
   /// Emits the project button's accessibility label to be read by voiceover.
-  var projectButtonAccessibilityLabel: Signal<String, NoError> { get }
+  var projectButtonAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits the project image URL to be displayed.
-  var projectImageURL: Signal<URL?, NoError> { get }
+  var projectImageURL: Signal<URL?, Never> { get }
 
   /// Emits the project name to be displayed.
-  var projectName: Signal<String, NoError> { get }
+  var projectName: Signal<String, Never> { get }
 
   /// Emits an attributed string for the update sequence title.
-  var sequenceTitle: Signal<NSAttributedString, NoError> { get }
+  var sequenceTitle: Signal<NSAttributedString, Never> { get }
 
   /// Emits the update title to be displayed.
-  var title: Signal<String, NoError> { get }
+  var title: Signal<String, Never> { get }
 }
 
 public protocol ActivityUpdateViewModelType {
@@ -43,8 +42,7 @@ public protocol ActivityUpdateViewModelType {
 }
 
 public final class ActivityUpdateViewModel: ActivityUpdateViewModelType, ActivityUpdateViewModelInputs,
-ActivityUpdateViewModelOutputs {
-
+  ActivityUpdateViewModelOutputs {
   public init() {
     let activity = self.activityProperty.signal.skipNil()
     let project = activity.map { $0.project }.skipNil()
@@ -73,19 +71,20 @@ ActivityUpdateViewModelOutputs {
   public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
+
   fileprivate let tappedProjectImageProperty = MutableProperty(())
   public func tappedProjectImage() {
     self.tappedProjectImageProperty.value = ()
   }
 
-  public let body: Signal<String, NoError>
-  public let cellAccessibilityLabel: Signal<String, NoError>
-  public let notifyDelegateTappedProjectImage: Signal<Activity, NoError>
-  public let projectButtonAccessibilityLabel: Signal<String, NoError>
-  public let projectImageURL: Signal<URL?, NoError>
-  public let projectName: Signal<String, NoError>
-  public let sequenceTitle: Signal<NSAttributedString, NoError>
-  public let title: Signal<String, NoError>
+  public let body: Signal<String, Never>
+  public let cellAccessibilityLabel: Signal<String, Never>
+  public let notifyDelegateTappedProjectImage: Signal<Activity, Never>
+  public let projectButtonAccessibilityLabel: Signal<String, Never>
+  public let projectImageURL: Signal<URL?, Never>
+  public let projectName: Signal<String, Never>
+  public let sequenceTitle: Signal<NSAttributedString, Never>
+  public let title: Signal<String, Never>
 
   public var inputs: ActivityUpdateViewModelInputs { return self }
   public var outputs: ActivityUpdateViewModelOutputs { return self }
@@ -103,31 +102,31 @@ private func updatePostedString(forActivity activity: Activity) -> NSAttributedS
   )
 
   let attributedString = fullString.simpleHtmlAttributedString(
-      base: [
-        NSAttributedString.Key.font: UIFont.ksr_footnote(),
-        NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-      ],
-      bold: [
-        NSAttributedString.Key.font: UIFont.ksr_headline(size: 13.0),
-        NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-      ]
-    )
-    ?? .init(string: "")
+    base: [
+      NSAttributedString.Key.font: UIFont.ksr_footnote(),
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+    ],
+    bold: [
+      NSAttributedString.Key.font: UIFont.ksr_headline(size: 13.0),
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+    ]
+  ) ?? .init(string: "")
 
   let mutableString = NSMutableAttributedString(attributedString: attributedString)
 
   let timeNumber = time.components(separatedBy: decimalCharacterSet).first
 
   if let timeRange = mutableString.string.range(of: time), let timeNumber = timeNumber {
-
     let timeStartIndex = mutableString.string
       .distance(from: mutableString.string.startIndex, to: timeRange.lowerBound)
     let timeNumberStartIndex = mutableString.string
       .distance(from: time.startIndex, to: timeNumber.startIndex)
 
     mutableString.addAttributes(
-      [NSAttributedString.Key.font: UIFont.ksr_headline(size: 13.0),
-       NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black],
+      [
+        NSAttributedString.Key.font: UIFont.ksr_headline(size: 13.0),
+        NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+      ],
       range: NSRange(location: timeStartIndex + timeNumberStartIndex, length: timeNumber.count)
     )
   }

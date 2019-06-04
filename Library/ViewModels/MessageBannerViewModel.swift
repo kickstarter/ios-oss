@@ -1,7 +1,6 @@
 import Foundation
 import Prelude
 import ReactiveSwift
-import Result
 
 public typealias MessageBannerConfiguration = (type: MessageBannerType, message: String)
 
@@ -12,15 +11,15 @@ public protocol MessageBannerViewModelInputs {
 }
 
 public protocol MessageBannerViewModelOutputs {
-  var bannerBackgroundColor: Signal<UIColor, NoError> { get }
-  var bannerMessage: Signal<String, NoError> { get }
-  var bannerMessageAccessibilityLabel: Signal<String, NoError> { get }
-  var iconImageName: Signal<String, NoError> { get }
-  var iconIsHidden: Signal<Bool, NoError> { get }
-  var iconTintColor: Signal<UIColor, NoError> { get }
-  var messageBannerViewIsHidden: Signal<Bool, NoError> { get }
-  var messageTextAlignment: Signal<NSTextAlignment, NoError> { get }
-  var messageTextColor: Signal<UIColor, NoError> { get }
+  var bannerBackgroundColor: Signal<UIColor, Never> { get }
+  var bannerMessage: Signal<String, Never> { get }
+  var bannerMessageAccessibilityLabel: Signal<String, Never> { get }
+  var iconImageName: Signal<String, Never> { get }
+  var iconIsHidden: Signal<Bool, Never> { get }
+  var iconTintColor: Signal<UIColor, Never> { get }
+  var messageBannerViewIsHidden: Signal<Bool, Never> { get }
+  var messageTextAlignment: Signal<NSTextAlignment, Never> { get }
+  var messageTextColor: Signal<UIColor, Never> { get }
 }
 
 public protocol MessageBannerViewModelType {
@@ -29,7 +28,7 @@ public protocol MessageBannerViewModelType {
 }
 
 public class MessageBannerViewModel: MessageBannerViewModelType,
-MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
+  MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
   public init() {
     let bannerType = self.messageBannerConfiguration.signal
       .skipNil()
@@ -101,15 +100,15 @@ MessageBannerViewModelInputs, MessageBannerViewModelOutputs {
     self.messageBannerConfiguration.value = configuration
   }
 
-  public let bannerBackgroundColor: Signal<UIColor, NoError>
-  public let bannerMessage: Signal<String, NoError>
-  public let bannerMessageAccessibilityLabel: Signal<String, NoError>
-  public let iconImageName: Signal<String, NoError>
-  public let iconIsHidden: Signal<Bool, NoError>
-  public let iconTintColor: Signal<UIColor, NoError>
-  public let messageBannerViewIsHidden: Signal<Bool, NoError>
-  public let messageTextAlignment: Signal<NSTextAlignment, NoError>
-  public let messageTextColor: Signal<UIColor, NoError>
+  public let bannerBackgroundColor: Signal<UIColor, Never>
+  public let bannerMessage: Signal<String, Never>
+  public let bannerMessageAccessibilityLabel: Signal<String, Never>
+  public let iconImageName: Signal<String, Never>
+  public let iconIsHidden: Signal<Bool, Never>
+  public let iconTintColor: Signal<UIColor, Never>
+  public let messageBannerViewIsHidden: Signal<Bool, Never>
+  public let messageTextAlignment: Signal<NSTextAlignment, Never>
+  public let messageTextColor: Signal<UIColor, Never>
 
   public var inputs: MessageBannerViewModelInputs {
     return self

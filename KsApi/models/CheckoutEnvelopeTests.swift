@@ -1,6 +1,6 @@
-import XCTest
-@testable import KsApi
 import Argo
+@testable import KsApi
+import XCTest
 
 final class CheckoutEnvelopeTests: XCTestCase {
   func testJsonDecoding() {

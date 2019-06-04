@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol SettingsNewslettersViewModelInputs {
   func didUpdate(user: User)
@@ -9,7 +8,7 @@ public protocol SettingsNewslettersViewModelInputs {
 }
 
 public protocol SettingsNewslettersViewModelOutputs {
-  var currentUser: Signal<User, NoError> { get }
+  var currentUser: Signal<User, Never> { get }
 }
 
 public protocol SettingsNewslettersViewModelType {
@@ -18,10 +17,8 @@ public protocol SettingsNewslettersViewModelType {
 }
 
 public final class SettingsNewslettersViewModel: SettingsNewslettersViewModelType,
-SettingsNewslettersViewModelInputs, SettingsNewslettersViewModelOutputs {
-
+  SettingsNewslettersViewModelInputs, SettingsNewslettersViewModelOutputs {
   public init() {
-
     let initialUser = self.viewDidLoadProperty.signal
       .flatMap {
         AppEnvironment.current.apiService.fetchUserSelf()
@@ -47,7 +44,7 @@ SettingsNewslettersViewModelInputs, SettingsNewslettersViewModelOutputs {
     self.didUpdateUserProperty.value = user
   }
 
-  public let currentUser: Signal<User, NoError>
+  public let currentUser: Signal<User, Never>
 
   public var inputs: SettingsNewslettersViewModelInputs { return self }
   public var outputs: SettingsNewslettersViewModelOutputs { return self }

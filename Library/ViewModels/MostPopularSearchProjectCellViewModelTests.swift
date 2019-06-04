@@ -1,19 +1,18 @@
-import Prelude
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class MostPopularSearchProjectCellViewModelTests: TestCase {
   private let vm: MostPopularSearchProjectCellViewModelType = MostPopularSearchProjectCellViewModel()
 
-  private let metadataText = TestObserver<String, NoError>()
-  private let percentFundedText = TestObserver<String, NoError>()
-  private let progress = TestObserver<Float, NoError>()
-  private let progressBarColor = TestObserver<UIColor, NoError>()
-  private let projectImageUrl = TestObserver<String, NoError>()
-  private let projectName = TestObserver<String, NoError>()
+  private let metadataText = TestObserver<String, Never>()
+  private let percentFundedText = TestObserver<String, Never>()
+  private let progress = TestObserver<Float, Never>()
+  private let progressBarColor = TestObserver<UIColor, Never>()
+  private let projectImageUrl = TestObserver<String, Never>()
+  private let projectName = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

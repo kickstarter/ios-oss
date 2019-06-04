@@ -1,18 +1,17 @@
-import Prelude
-import ReactiveSwift
-import Result
-import WebKit
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import WebKit
+import XCTest
 
 internal final class WebModalViewModelTests: TestCase {
   fileprivate let vm: WebModalViewModelType = WebModalViewModel()
 
-  fileprivate let dismissViewController = TestObserver<Void, NoError>()
-  fileprivate let webViewLoadRequest = TestObserver<URLRequest, NoError>()
-  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
+  fileprivate let dismissViewController = TestObserver<Void, Never>()
+  fileprivate let webViewLoadRequest = TestObserver<URLRequest, Never>()
+  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -24,7 +23,6 @@ internal final class WebModalViewModelTests: TestCase {
   }
 
   func testDismissViewControllerOnCloseButtonTapped() {
-
     self.vm.inputs.configureWith(request: self.request)
     self.vm.inputs.viewDidLoad()
     self.dismissViewController.assertDidNotEmitValue()
@@ -34,8 +32,7 @@ internal final class WebModalViewModelTests: TestCase {
   }
 
   func testWebViewLoadRequest() {
-
-    self.vm.inputs.configureWith(request: request)
+    self.vm.inputs.configureWith(request: self.request)
     self.vm.inputs.viewDidLoad()
 
     self.webViewLoadRequest.assertValueCount(1)
@@ -44,9 +41,9 @@ internal final class WebModalViewModelTests: TestCase {
     let decision = self.vm.inputs.decidePolicyFor(
       navigationAction: WKNavigationActionData(
         navigationType: .other,
-        request: request,
-        sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
-        targetFrame: WKFrameInfoData(mainFrame: true, request: request)
+        request: self.request,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: self.request),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: self.request)
       )
     )
 

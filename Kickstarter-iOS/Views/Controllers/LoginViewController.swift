@@ -6,15 +6,15 @@ import ReactiveSwift
 import UIKit
 
 internal final class LoginViewController: UIViewController {
-  @IBOutlet fileprivate weak var emailTextField: UITextField!
-  @IBOutlet fileprivate weak var forgotPasswordButton: UIButton!
-  @IBOutlet fileprivate weak var formBackgroundView: UIView!
-  @IBOutlet fileprivate weak var formDividerView: UIView!
-  @IBOutlet fileprivate weak var loginButton: UIButton!
-  @IBOutlet fileprivate weak var onePasswordButton: UIButton!
-  @IBOutlet fileprivate weak var passwordTextField: UITextField!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
-  @IBOutlet fileprivate weak var showHidePasswordButton: UIButton!
+  @IBOutlet fileprivate var emailTextField: UITextField!
+  @IBOutlet fileprivate var forgotPasswordButton: UIButton!
+  @IBOutlet fileprivate var formBackgroundView: UIView!
+  @IBOutlet fileprivate var formDividerView: UIView!
+  @IBOutlet fileprivate var loginButton: UIButton!
+  @IBOutlet fileprivate var onePasswordButton: UIButton!
+  @IBOutlet fileprivate var passwordTextField: UITextField!
+  @IBOutlet fileprivate var rootStackView: UIStackView!
+  @IBOutlet fileprivate var showHidePasswordButton: UIButton!
 
   internal let viewModel: LoginViewModelType = LoginViewModel()
 
@@ -25,32 +25,44 @@ internal final class LoginViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
     self.view.addGestureRecognizer(tap)
 
-    self.onePasswordButton.addTarget(self,
-                                     action: #selector(onePasswordButtonTapped),
-                                     for: .touchUpInside)
+    self.onePasswordButton.addTarget(
+      self,
+      action: #selector(self.onePasswordButtonTapped),
+      for: .touchUpInside
+    )
 
-    self.emailTextField.addTarget(self,
-                                  action: #selector(emailTextFieldDoneEditing),
-                                  for: .editingDidEndOnExit)
+    self.emailTextField.addTarget(
+      self,
+      action: #selector(self.emailTextFieldDoneEditing),
+      for: .editingDidEndOnExit
+    )
 
-    self.emailTextField.addTarget(self,
-                                  action: #selector(emailTextFieldChanged(_:)),
-                                  for: [.editingDidEndOnExit, .editingChanged])
+    self.emailTextField.addTarget(
+      self,
+      action: #selector(self.emailTextFieldChanged(_:)),
+      for: [.editingDidEndOnExit, .editingChanged]
+    )
 
-    self.passwordTextField.addTarget(self,
-                                     action: #selector(passwordTextFieldDoneEditing),
-                                     for: .editingDidEndOnExit)
+    self.passwordTextField.addTarget(
+      self,
+      action: #selector(self.passwordTextFieldDoneEditing),
+      for: .editingDidEndOnExit
+    )
 
-    self.passwordTextField.addTarget(self,
-                                     action: #selector(passwordTextFieldChanged(_:)),
-                                     for: .editingChanged)
+    self.passwordTextField.addTarget(
+      self,
+      action: #selector(self.passwordTextFieldChanged(_:)),
+      for: .editingChanged
+    )
 
-    self.showHidePasswordButton.addTarget(self,
-                                          action: #selector(showHidePasswordButtonTapped),
-                                          for: .touchUpInside)
+    self.showHidePasswordButton.addTarget(
+      self,
+      action: #selector(self.showHidePasswordButtonTapped),
+      for: .touchUpInside
+    )
 
     self.viewModel.inputs.onePassword(
       isAvailable: OnePasswordExtension.shared().isAppExtensionAvailable()
@@ -76,9 +88,11 @@ internal final class LoginViewController: UIViewController {
 
     _ = self.showHidePasswordButton |> showHidePasswordButtonStyle
       |> \.frame .~ CGRect(x: 0, y: 0, width: 45, height: 30)
-      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--eye",
-                                                    inBundle: Bundle.framework,
-                                                    compatibleWithTraitCollection: nil)
+      |> UIButton.lens.image(for: .normal) .~ image(
+        named: "icon--eye",
+        inBundle: Bundle.framework,
+        compatibleWithTraitCollection: nil
+      )
       |> UIButton.lens.accessibilityValue %~ { _ in
         Strings.Show_password()
       }
@@ -107,47 +121,47 @@ internal final class LoginViewController: UIViewController {
     self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
 
     self.viewModel.outputs.showHidePasswordButtonToggled
-    .observeForUI()
-    .observeValues { [weak self] shouldShow in
-      self?.updateShowHidePassword(shouldShow)
-    }
+      .observeForUI()
+      .observeValues { [weak self] shouldShow in
+        self?.updateShowHidePassword(shouldShow)
+      }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
       .observeValues { [weak self] _ in
         self?.dismissKeyboard()
-    }
+      }
 
     self.viewModel.outputs.postNotification
       .observeForUI()
       .observeValues {
         NotificationCenter.default.post($0.0)
         NotificationCenter.default.post($0.1)
-    }
+      }
 
     self.viewModel.outputs.logIntoEnvironment
       .observeValues { [weak self] env in
         AppEnvironment.login(env)
         self?.viewModel.inputs.environmentLoggedIn()
-    }
+      }
 
     self.viewModel.outputs.showResetPassword
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.startResetPasswordViewController()
-    }
+      }
 
     self.viewModel.outputs.showError
       .observeForControllerAction()
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true, completion: nil)
-    }
+      }
 
     self.viewModel.outputs.tfaChallenge
       .observeForControllerAction()
-      .observeValues { [weak self] (email, password) in
+      .observeValues { [weak self] email, password in
         self?.startTwoFactorViewController(email, password: password)
-    }
+      }
 
     self.viewModel.outputs.onePasswordFindLoginForURLString
       .observeForControllerAction()
@@ -155,7 +169,6 @@ internal final class LoginViewController: UIViewController {
   }
 
   fileprivate func onePasswordFindLogin(forURLString string: String) {
-
     OnePasswordExtension.shared()
       .findLogin(forURLString: string, for: self, sender: self.onePasswordButton) { result, _ in
         guard let result = result else { return }
@@ -164,7 +177,7 @@ internal final class LoginViewController: UIViewController {
           email: result[AppExtensionUsernameKey] as? String,
           password: result[AppExtensionPasswordKey] as? String
         )
-    }
+      }
   }
 
   fileprivate func startTwoFactorViewController(_ email: String, password: String) {
@@ -173,7 +186,7 @@ internal final class LoginViewController: UIViewController {
   }
 
   fileprivate func startResetPasswordViewController() {
-    let vc = ResetPasswordViewController.configuredWith(email: emailTextField.text)
+    let vc = ResetPasswordViewController.configuredWith(email: self.emailTextField.text)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -195,7 +208,7 @@ internal final class LoginViewController: UIViewController {
   }
 
   @IBAction
-  internal func loginButtonPressed(_ sender: UIButton) {
+  internal func loginButtonPressed(_: UIButton) {
     self.viewModel.inputs.loginButtonPressed()
   }
 
@@ -216,7 +229,7 @@ internal final class LoginViewController: UIViewController {
   }
 
   @IBAction
-  internal func resetPasswordButtonPressed(_ sender: UIButton) {
+  internal func resetPasswordButtonPressed(_: UIButton) {
     self.viewModel.inputs.resetPasswordButtonPressed()
   }
 

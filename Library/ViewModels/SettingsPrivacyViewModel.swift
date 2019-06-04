@@ -1,9 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol SettingsPrivacyViewModelInputs {
   func didCancelSocialOptOut()
@@ -14,11 +13,11 @@ public protocol SettingsPrivacyViewModelInputs {
 }
 
 public protocol SettingsPrivacyViewModelOutputs {
-  var focusScreenReaderOnFollowingCell: Signal<Void, NoError> { get }
-  var reloadData: Signal<User, NoError> { get }
-  var resetFollowingSection: Signal<Void, NoError> { get }
-  var unableToSaveError: Signal<String, NoError> { get }
-  var updateCurrentUser: Signal<User, NoError> { get }
+  var focusScreenReaderOnFollowingCell: Signal<Void, Never> { get }
+  var reloadData: Signal<User, Never> { get }
+  var resetFollowingSection: Signal<Void, Never> { get }
+  var unableToSaveError: Signal<String, Never> { get }
+  var updateCurrentUser: Signal<User, Never> { get }
 }
 
 public protocol SettingsPrivacyViewModelType {
@@ -27,8 +26,7 @@ public protocol SettingsPrivacyViewModelType {
 }
 
 public final class SettingsPrivacyViewModel: SettingsPrivacyViewModelType,
-SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
-
+  SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
   public init() {
     let initialUser = self.viewDidLoadProperty.signal
       .flatMap {
@@ -36,19 +34,19 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
           .wrapInOptional()
           .prefix(value: AppEnvironment.current.currentUser)
           .demoteErrors()
-    }
-    .skipNil()
+      }
+      .skipNil()
 
     self.reloadData = initialUser
 
-    let privateProfileAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
+    let privateProfileAttributeChanged: Signal<(UserAttribute, Bool), Never> =
       self.privateProfileProperty.signal.negate()
       .map { (UserAttribute.privacy(UserAttribute.Privacy.showPublicProfile), $0) }
 
     let followingAttributeChanged = self.didConfirmSocialOptOutProperty.signal
       .map {
         (UserAttribute.privacy(UserAttribute.Privacy.following), false)
-    }
+      }
 
     let userAttributeChanged = Signal.merge(privateProfileAttributeChanged, followingAttributeChanged)
 
@@ -58,21 +56,21 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
           let (attribute, on) = attributeAndOn
           return user |> attribute.keyPath .~ on
         }
-    }
+      }
 
     let updateEvent = Signal.merge(updatedUser, self.updateUserProperty.signal.skipNil())
       .switchMap {
         AppEnvironment.current.apiService.updateUserSelf($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     let updatedFetchedUser = updateEvent.values()
 
     self.unableToSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
-    }
+      }
 
     let previousUserOnError = Signal.merge(initialUser, updatedUser)
       .combinePrevious()
@@ -115,11 +113,11 @@ SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let focusScreenReaderOnFollowingCell: Signal<Void, NoError>
-  public let reloadData: Signal<User, NoError>
-  public let resetFollowingSection: Signal<Void, NoError>
-  public let unableToSaveError: Signal<String, NoError>
-  public let updateCurrentUser: Signal<User, NoError>
+  public let focusScreenReaderOnFollowingCell: Signal<Void, Never>
+  public let reloadData: Signal<User, Never>
+  public let resetFollowingSection: Signal<Void, Never>
+  public let unableToSaveError: Signal<String, Never>
+  public let updateCurrentUser: Signal<User, Never>
 
   public var inputs: SettingsPrivacyViewModelInputs { return self }
   public var outputs: SettingsPrivacyViewModelOutputs { return self }

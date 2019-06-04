@@ -1,12 +1,10 @@
-import Library
-import Prelude
-import Result
-import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
+import Library
+import Prelude
+import XCTest
 
 internal final class TwoFactorViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)

@@ -1,10 +1,10 @@
+@testable import Kickstarter_Framework
 @testable import KsApi
 import Library
+import PlaygroundSupport
 import Prelude
 import Prelude_UIKit
 import UIKit
-import PlaygroundSupport
-@testable import Kickstarter_Framework
 
 let project = .cosmicSurgery
   |> Project.lens.state .~ .failed
@@ -16,7 +16,7 @@ let project = .cosmicSurgery
 //    .template
 //      |> Backing.lens.rewardId .~ project.rewards.first?.id
 //      |> Backing.lens.reward .~ project.rewards.first
-//}
+// }
 
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
@@ -36,5 +36,3 @@ let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .por
 let frame = parent.view.frame |> CGRect.lens.size.height .~ 1_800
 PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
-
-

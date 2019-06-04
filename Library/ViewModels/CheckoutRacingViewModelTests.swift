@@ -1,15 +1,14 @@
-import XCTest
-@testable import Library
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
+@testable import Library
 import Prelude
-import Result
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 final class CheckoutRacingViewModelTests: TestCase {
   fileprivate let vm: CheckoutRacingViewModelType = CheckoutRacingViewModel()
 
-  fileprivate let goToThanks = TestObserver<Void, NoError>()
-  fileprivate let showAlert = TestObserver<String, NoError>()
+  fileprivate let goToThanks = TestObserver<Void, Never>()
+  fileprivate let showAlert = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -103,7 +102,7 @@ final class CheckoutRacingViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchCheckoutResponse: .successful)) {
       self.vm.inputs.configureWith(url: racingURL())
       self.goToThanks.assertDidNotEmitValue()
-        self.showAlert.assertDidNotEmitValue()
+      self.showAlert.assertDidNotEmitValue()
 
       self.scheduler.advance(by: .seconds(1))
       self.goToThanks.assertValueCount(1)

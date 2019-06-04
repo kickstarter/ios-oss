@@ -1,17 +1,16 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class GraphUserCreditCardTests: XCTestCase {
-
   func testCreditCardsDecoding_noCards() {
     let jsonString = """
-      {
-        "storedCards": {
-            "nodes": [],
-            "totalCount": 0
-        }
+    {
+      "storedCards": {
+          "nodes": [],
+          "totalCount": 0
       }
-      """
+    }
+    """
     let data = jsonString.data(using: .utf8)
 
     do {
@@ -26,26 +25,26 @@ final class GraphUserCreditCardTests: XCTestCase {
 
   func testCreditCardsDecoding_hasCards() {
     let jsonString = """
-        {
-          "storedCards": {
-            "nodes": [
-               {
-                  "expirationDate": "2023-02-01",
-                  "lastFour": "4242",
-                  "id": "3021",
-                  "type": "VISA"
-                },
-                {
-                  "expirationDate": "2020-02-01",
-                  "lastFour": "1111",
-                  "id": "2768",
-                  "type": "VISA"
-                }
-            ],
-            "totalCount": 0
+    {
+      "storedCards": {
+        "nodes": [
+           {
+              "expirationDate": "2023-02-01",
+              "lastFour": "4242",
+              "id": "3021",
+              "type": "VISA"
+            },
+            {
+              "expirationDate": "2020-02-01",
+              "lastFour": "1111",
+              "id": "2768",
+              "type": "VISA"
             }
+        ],
+        "totalCount": 0
         }
-        """
+    }
+    """
 
     let data = jsonString.data(using: .utf8)
 
@@ -71,19 +70,19 @@ final class GraphUserCreditCardTests: XCTestCase {
 
   func testCreditCardsDecoding_nilCardType() {
     let jsonString = """
-        {
-          "storedCards": {
-            "nodes": [
-                {
-                  "expirationDate": "2020-02-01",
-                  "lastFour": "1111",
-                  "id": "2768"
-                }
-            ],
-            "totalCount": 0
-          }
-        }
-        """
+    {
+      "storedCards": {
+        "nodes": [
+            {
+              "expirationDate": "2020-02-01",
+              "lastFour": "1111",
+              "id": "2768"
+            }
+        ],
+        "totalCount": 0
+      }
+    }
+    """
 
     let data = jsonString.data(using: .utf8)
 
@@ -107,20 +106,20 @@ final class GraphUserCreditCardTests: XCTestCase {
 
   func testCreditCardsDecoding_unrecognizedCardType() {
     let jsonString = """
-        {
-          "storedCards": {
-            "nodes": [
-                {
-                  "expirationDate": "2020-02-01",
-                  "lastFour": "1111",
-                  "type": "UNKNOWN",
-                  "id": "2768"
-                }
-            ],
-            "totalCount": 0
-          }
-        }
-        """
+    {
+      "storedCards": {
+        "nodes": [
+            {
+              "expirationDate": "2020-02-01",
+              "lastFour": "1111",
+              "type": "UNKNOWN",
+              "id": "2768"
+            }
+        ],
+        "totalCount": 0
+      }
+    }
+    """
 
     let data = jsonString.data(using: .utf8)
 

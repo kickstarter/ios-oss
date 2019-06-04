@@ -1,7 +1,6 @@
 import KsApi
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol DashboardActionCellViewModelInputs {
   /// Call when the activity button is tapped.
@@ -19,49 +18,49 @@ public protocol DashboardActionCellViewModelInputs {
 
 public protocol DashboardActionCellViewModelOutputs {
   /// Emits the activity button label and unseen activities count to be read by voiceover.
-  var activityButtonAccessibilityLabel: Signal<String, NoError> { get }
+  var activityButtonAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the activity row is hidden.
-  var activityRowHidden: Signal<Bool, NoError> { get }
+  var activityRowHidden: Signal<Bool, Never> { get }
 
   /// Emits with the project when should go to activity screen.
-  var goToActivity: Signal<Project, NoError> { get }
+  var goToActivity: Signal<Project, Never> { get }
 
   /// Emits with the project when should go to messages screen.
-  var goToMessages: Signal<(), NoError> { get }
+  var goToMessages: Signal<(), Never> { get }
 
   /// Emits with the project when should go to post update screen.
-  var goToPostUpdate: Signal<Project, NoError> { get }
+  var goToPostUpdate: Signal<Project, Never> { get }
 
   /// Emits the last update published time to display.
-  var lastUpdatePublishedAt: Signal<String, NoError> { get }
+  var lastUpdatePublishedAt: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the last update published label should be hidden.
-  var lastUpdatePublishedLabelHidden: Signal<Bool, NoError> { get }
+  var lastUpdatePublishedLabelHidden: Signal<Bool, Never> { get }
 
   /// Emits the messages button label and unread messages count to be read by voiceover.
-  var messagesButtonAccessibilityLabel: Signal<String, NoError> { get }
+  var messagesButtonAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the messages row should be hidden.
-  var messagesRowHidden: Signal<Bool, NoError> { get }
+  var messagesRowHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the post update button should be hidden
-  var postUpdateButtonHidden: Signal<Bool, NoError> { get }
+  var postUpdateButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits the last update published at value to be read by voiceover.
-  var postUpdateButtonAccessibilityValue: Signal<String, NoError> { get }
+  var postUpdateButtonAccessibilityValue: Signal<String, Never> { get }
 
   /// Emits the count of unread messages to be displayed.
-  var unreadMessagesCount: Signal<String, NoError> { get }
+  var unreadMessagesCount: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the unread messages indicator should be hidden.
-  var unreadMessagesCountHidden: Signal<Bool, NoError> { get }
+  var unreadMessagesCountHidden: Signal<Bool, Never> { get }
 
   /// Emits the count of unseen activities to be displayed.
-  var unseenActivitiesCount: Signal<String, NoError> { get }
+  var unseenActivitiesCount: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the unseen activities indicator should be hidden.
-  var unseenActivitiesCountHidden: Signal<Bool, NoError> { get }
+  var unseenActivitiesCountHidden: Signal<Bool, Never> { get }
 }
 
 public protocol DashboardActionCellViewModelType {
@@ -71,7 +70,6 @@ public protocol DashboardActionCellViewModelType {
 
 public final class DashboardActionCellViewModel: DashboardActionCellViewModelInputs,
   DashboardActionCellViewModelOutputs, DashboardActionCellViewModelType {
-
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
@@ -94,7 +92,7 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
         } else {
           return Strings.No_one_has_posted_an_update_yet()
         }
-    }
+      }
 
     self.postUpdateButtonAccessibilityValue = self.lastUpdatePublishedAt
 
@@ -106,12 +104,12 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
     self.activityButtonAccessibilityLabel = self.unseenActivitiesCount
       .map {
         Strings.activity_navigation_title_activity() + ", " + $0 + " unseen"
-    }
+      }
 
     self.messagesButtonAccessibilityLabel = self.unreadMessagesCount
       .map {
         Strings.profile_buttons_messages() + ", " + $0 + " unread"
-    }
+      }
 
     self.lastUpdatePublishedLabelHidden = project.map { !$0.memberData.permissions.contains(.post) }
     self.postUpdateButtonHidden = self.lastUpdatePublishedLabelHidden
@@ -123,17 +121,17 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
 
   fileprivate let activityTappedProperty = MutableProperty(())
   public func activityTapped() {
-    activityTappedProperty.value = ()
+    self.activityTappedProperty.value = ()
   }
 
   fileprivate let messagesTappedProperty = MutableProperty(())
   public func messagesTapped() {
-    messagesTappedProperty.value = ()
+    self.messagesTappedProperty.value = ()
   }
 
   fileprivate let postUpdateTappedProperty = MutableProperty(())
   public func postUpdateTapped() {
-    postUpdateTappedProperty.value = ()
+    self.postUpdateTappedProperty.value = ()
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -141,21 +139,21 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
     self.projectProperty.value = project
   }
 
-  public let activityButtonAccessibilityLabel: Signal<String, NoError>
-  public let activityRowHidden: Signal<Bool, NoError>
-  public let goToActivity: Signal<Project, NoError>
-  public let goToMessages: Signal<(), NoError>
-  public let goToPostUpdate: Signal<Project, NoError>
-  public let lastUpdatePublishedAt: Signal<String, NoError>
-  public let lastUpdatePublishedLabelHidden: Signal<Bool, NoError>
-  public let messagesButtonAccessibilityLabel: Signal<String, NoError>
-  public let messagesRowHidden: Signal<Bool, NoError>
-  public let postUpdateButtonAccessibilityValue: Signal<String, NoError>
-  public let postUpdateButtonHidden: Signal<Bool, NoError>
-  public let unreadMessagesCount: Signal<String, NoError>
-  public let unreadMessagesCountHidden: Signal<Bool, NoError>
-  public let unseenActivitiesCount: Signal<String, NoError>
-  public let unseenActivitiesCountHidden: Signal<Bool, NoError>
+  public let activityButtonAccessibilityLabel: Signal<String, Never>
+  public let activityRowHidden: Signal<Bool, Never>
+  public let goToActivity: Signal<Project, Never>
+  public let goToMessages: Signal<(), Never>
+  public let goToPostUpdate: Signal<Project, Never>
+  public let lastUpdatePublishedAt: Signal<String, Never>
+  public let lastUpdatePublishedLabelHidden: Signal<Bool, Never>
+  public let messagesButtonAccessibilityLabel: Signal<String, Never>
+  public let messagesRowHidden: Signal<Bool, Never>
+  public let postUpdateButtonAccessibilityValue: Signal<String, Never>
+  public let postUpdateButtonHidden: Signal<Bool, Never>
+  public let unreadMessagesCount: Signal<String, Never>
+  public let unreadMessagesCountHidden: Signal<Bool, Never>
+  public let unseenActivitiesCount: Signal<String, Never>
+  public let unseenActivitiesCountHidden: Signal<Bool, Never>
 
   public var inputs: DashboardActionCellViewModelInputs { return self }
   public var outputs: DashboardActionCellViewModelOutputs { return self }

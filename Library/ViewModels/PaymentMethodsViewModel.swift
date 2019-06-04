@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol PaymentMethodsViewModelInputs {
   func addNewCardSucceeded(with message: String)
@@ -16,15 +15,15 @@ public protocol PaymentMethodsViewModelInputs {
 }
 
 public protocol PaymentMethodsViewModelOutputs {
-  var editButtonIsEnabled: Signal<Bool, NoError> { get }
-  var editButtonTitle: Signal<String, NoError> { get }
-  var errorLoadingPaymentMethods: Signal<String, NoError> { get }
-  var goToAddCardScreen: Signal<Void, NoError> { get }
-  var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError> { get }
-  var presentBanner: Signal<String, NoError> { get }
-  var reloadData: Signal<Void, NoError> { get }
-  var showAlert: Signal<String, NoError> { get }
-  var tableViewIsEditing: Signal<Bool, NoError> { get }
+  var editButtonIsEnabled: Signal<Bool, Never> { get }
+  var editButtonTitle: Signal<String, Never> { get }
+  var errorLoadingPaymentMethods: Signal<String, Never> { get }
+  var goToAddCardScreen: Signal<Void, Never> { get }
+  var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
+  var presentBanner: Signal<String, Never> { get }
+  var reloadData: Signal<Void, Never> { get }
+  var showAlert: Signal<String, Never> { get }
+  var tableViewIsEditing: Signal<Bool, Never> { get }
 }
 
 public protocol PaymentMethodsViewModelType {
@@ -33,8 +32,7 @@ public protocol PaymentMethodsViewModelType {
 }
 
 public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
-PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
-
+  PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   public init() {
     self.reloadData = self.viewDidLoadProperty.signal
 
@@ -55,7 +53,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
         AppEnvironment.current.apiService.deletePaymentMethod(input: .init(paymentSourceId: creditCard.id))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     let deletePaymentMethodEventsErrors = deletePaymentMethodEvents.errors()
 
@@ -63,7 +61,7 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
       .ignoreValues()
       .map {
         Strings.Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again()
-    }
+      }
 
     let initialPaymentMethodsValues = paymentMethodsEvent
       .values().map { $0.me.storedCards.nodes }
@@ -139,13 +137,15 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
   private let tableViewIsEditingProperty = MutableProperty<Bool>(false)
 
   fileprivate let (didDeleteCreditCardSignal, didDeleteCreditCardObserver) =
-    Signal<(GraphUserCreditCard.CreditCard, Int),
-    NoError>.pipe()
+    Signal<
+      (GraphUserCreditCard.CreditCard, Int),
+      Never
+    >.pipe()
   public func didDelete(_ creditCard: GraphUserCreditCard.CreditCard, visibleCellCount: Int) {
     self.didDeleteCreditCardObserver.send(value: (creditCard, visibleCellCount))
   }
 
-  fileprivate let (editButtonTappedSignal, editButtonTappedObserver) = Signal<(), NoError>.pipe()
+  fileprivate let (editButtonTappedSignal, editButtonTappedObserver) = Signal<(), Never>.pipe()
   public func editButtonTapped() {
     self.editButtonTappedObserver.send(value: ())
   }
@@ -175,20 +175,20 @@ PaymentMethodsViewModelInputs, PaymentMethodsViewModelOutputs {
     self.addNewCardDismissedProperty.value = ()
   }
 
-  fileprivate let (addNewCardPresentedSignal, addNewCardPresentedObserver) = Signal<(), NoError>.pipe()
+  fileprivate let (addNewCardPresentedSignal, addNewCardPresentedObserver) = Signal<(), Never>.pipe()
   public func addNewCardPresented() {
     self.addNewCardPresentedObserver.send(value: ())
   }
 
-  public let editButtonIsEnabled: Signal<Bool, NoError>
-  public let editButtonTitle: Signal<String, NoError>
-  public let errorLoadingPaymentMethods: Signal<String, NoError>
-  public let goToAddCardScreen: Signal<Void, NoError>
-  public let paymentMethods: Signal<[GraphUserCreditCard.CreditCard], NoError>
-  public let presentBanner: Signal<String, NoError>
-  public let reloadData: Signal<Void, NoError>
-  public let showAlert: Signal<String, NoError>
-  public let tableViewIsEditing: Signal<Bool, NoError>
+  public let editButtonIsEnabled: Signal<Bool, Never>
+  public let editButtonTitle: Signal<String, Never>
+  public let errorLoadingPaymentMethods: Signal<String, Never>
+  public let goToAddCardScreen: Signal<Void, Never>
+  public let paymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
+  public let presentBanner: Signal<String, Never>
+  public let reloadData: Signal<Void, Never>
+  public let showAlert: Signal<String, Never>
+  public let tableViewIsEditing: Signal<Bool, Never>
 
   public var inputs: PaymentMethodsViewModelInputs { return self }
   public var outputs: PaymentMethodsViewModelOutputs { return self }

@@ -1,27 +1,28 @@
+@testable import KsApi
 import Library
 import Prelude
-import Result
-import XCTest
-@testable import KsApi
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 final class SettingsNotificationPickerViewModelTests: TestCase {
   private let vm = SettingsNotificationPickerViewModel()
 
-  let frequencyValueText = TestObserver<String, NoError>()
+  let frequencyValueText = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.frequencyValueText.observe(frequencyValueText.observer)
+    self.vm.outputs.frequencyValueText.observe(self.frequencyValueText.observer)
   }
 
   func testConfigure_userCreatorDigest_enabled() {
     let user = User.template
       |> UserAttribute.notification(.creatorDigest).keyPath .~ true
 
-    let cellValue = SettingsNotificationCellValue(cellType: .emailFrequency,
-                                                  user: user)
+    let cellValue = SettingsNotificationCellValue(
+      cellType: .emailFrequency,
+      user: user
+    )
 
     self.vm.configure(with: cellValue)
 
@@ -32,8 +33,10 @@ final class SettingsNotificationPickerViewModelTests: TestCase {
     let user = User.template
       |> UserAttribute.notification(.creatorDigest).keyPath .~ false
 
-    let cellValue = SettingsNotificationCellValue(cellType: .emailFrequency,
-                                                  user: user)
+    let cellValue = SettingsNotificationCellValue(
+      cellType: .emailFrequency,
+      user: user
+    )
 
     self.vm.configure(with: cellValue)
 

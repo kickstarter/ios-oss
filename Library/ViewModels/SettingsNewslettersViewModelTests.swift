@@ -1,16 +1,15 @@
 import Foundation
-import XCTest
-import ReactiveSwift
-import Result
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class SettingsNewslettersViewModelTests: TestCase {
   let vm = SettingsNewslettersViewModel()
 
-  let currentUser = TestObserver<User, NoError>()
+  let currentUser = TestObserver<User, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -18,7 +17,6 @@ internal final class SettingsNewslettersViewModelTests: TestCase {
   }
 
   func testCurrentUserEmits_OnViewDidLoad() {
-
     let user = User.template
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
@@ -30,7 +28,6 @@ internal final class SettingsNewslettersViewModelTests: TestCase {
   }
 
   func testCurrentUserEmits_WhenDelegateIsCalled() {
-
     let user = User.template
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 

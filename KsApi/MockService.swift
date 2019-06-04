@@ -1,694 +1,695 @@
 #if DEBUG
-import Foundation
-import Prelude
-import ReactiveSwift
-import Result
+  import Foundation
+  import Prelude
+  import ReactiveSwift
 
-internal struct MockService: ServiceType {
-  internal let appId: String
-  internal let serverConfig: ServerConfigType
-  internal let oauthToken: OauthTokenAuthType?
-  internal let language: String
-  internal let currency: String
-  internal let buildVersion: String
+  internal struct MockService: ServiceType {
+    internal let appId: String
+    internal let serverConfig: ServerConfigType
+    internal let oauthToken: OauthTokenAuthType?
+    internal let language: String
+    internal let currency: String
+    internal let buildVersion: String
 
-  fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>?
+    fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>?
 
-  fileprivate let changeCurrencyResponse: GraphMutationEmptyResponseEnvelope?
-  fileprivate let changeCurrencyError: GraphError?
+    fileprivate let changeCurrencyResponse: GraphMutationEmptyResponseEnvelope?
+    fileprivate let changeCurrencyError: GraphError?
 
-  fileprivate let changeEmailError: GraphError?
-  fileprivate let changeEmailResponse: UserEnvelope<UserEmailFields>?
+    fileprivate let changeEmailError: GraphError?
+    fileprivate let changeEmailResponse: UserEnvelope<UserEmailFields>?
 
-  fileprivate let changePasswordError: GraphError?
+    fileprivate let changePasswordError: GraphError?
 
-  fileprivate let createPasswordError: GraphError?
+    fileprivate let createPasswordError: GraphError?
 
-  fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
+    fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
-  fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>?
+    fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>?
 
-  fileprivate let createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>?
+    fileprivate let createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>?
 
-  fileprivate let facebookConnectResponse: User?
-  fileprivate let facebookConnectError: ErrorEnvelope?
+    fileprivate let facebookConnectResponse: User?
+    fileprivate let facebookConnectError: ErrorEnvelope?
 
-  fileprivate let fetchActivitiesResponse: [Activity]?
-  fileprivate let fetchActivitiesError: ErrorEnvelope?
+    fileprivate let fetchActivitiesResponse: [Activity]?
+    fileprivate let fetchActivitiesError: ErrorEnvelope?
 
-  fileprivate let fetchBackingResponse: Backing
-  fileprivate let backingUpdate: Backing
+    fileprivate let fetchBackingResponse: Backing
+    fileprivate let backingUpdate: Backing
 
-  fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
+    fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
 
-  fileprivate let fetchCheckoutResponse: CheckoutEnvelope?
-  fileprivate let fetchCheckoutError: ErrorEnvelope?
+    fileprivate let fetchCheckoutResponse: CheckoutEnvelope?
+    fileprivate let fetchCheckoutError: ErrorEnvelope?
 
-  fileprivate let fetchCommentsResponse: [Comment]?
-  fileprivate let fetchCommentsError: ErrorEnvelope?
+    fileprivate let fetchCommentsResponse: [Comment]?
+    fileprivate let fetchCommentsError: ErrorEnvelope?
 
-  fileprivate let fetchConfigResponse: Config?
+    fileprivate let fetchConfigResponse: Config?
 
-  fileprivate let fetchDiscoveryResponse: DiscoveryEnvelope?
-  fileprivate let fetchDiscoveryError: ErrorEnvelope?
+    fileprivate let fetchDiscoveryResponse: DiscoveryEnvelope?
+    fileprivate let fetchDiscoveryError: ErrorEnvelope?
 
-  fileprivate let fetchFriendsResponse: FindFriendsEnvelope?
-  fileprivate let fetchFriendsError: ErrorEnvelope?
+    fileprivate let fetchFriendsResponse: FindFriendsEnvelope?
+    fileprivate let fetchFriendsError: ErrorEnvelope?
 
-  fileprivate let fetchFriendStatsResponse: FriendStatsEnvelope?
-  fileprivate let fetchFriendStatsError: ErrorEnvelope?
+    fileprivate let fetchFriendStatsResponse: FriendStatsEnvelope?
+    fileprivate let fetchFriendStatsError: ErrorEnvelope?
 
-  fileprivate let fetchExportStateResponse: ExportDataEnvelope?
-  fileprivate let fetchExportStateError: ErrorEnvelope?
+    fileprivate let fetchExportStateResponse: ExportDataEnvelope?
+    fileprivate let fetchExportStateError: ErrorEnvelope?
 
-  fileprivate let exportDataError: ErrorEnvelope?
+    fileprivate let exportDataError: ErrorEnvelope?
 
-  fileprivate let fetchDraftResponse: UpdateDraft?
-  fileprivate let fetchDraftError: ErrorEnvelope?
+    fileprivate let fetchDraftResponse: UpdateDraft?
+    fileprivate let fetchDraftError: ErrorEnvelope?
 
-  fileprivate let fetchGraphUserEmailFieldsResponse: UserEmailFields?
+    fileprivate let fetchGraphUserEmailFieldsResponse: UserEmailFields?
 
-  fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>?
-  fileprivate let fetchGraphCreditCardsError: GraphError?
+    fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>?
+    fileprivate let fetchGraphCreditCardsError: GraphError?
 
-  fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>?
-  fileprivate let fetchGraphUserAccountFieldsError: GraphError?
+    fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>?
+    fileprivate let fetchGraphUserAccountFieldsError: GraphError?
 
-  fileprivate let addAttachmentResponse: UpdateDraft.Image?
-  fileprivate let addAttachmentError: ErrorEnvelope?
-  fileprivate let removeAttachmentResponse: UpdateDraft.Image?
-  fileprivate let removeAttachmentError: ErrorEnvelope?
+    fileprivate let addAttachmentResponse: UpdateDraft.Image?
+    fileprivate let addAttachmentError: ErrorEnvelope?
+    fileprivate let removeAttachmentResponse: UpdateDraft.Image?
+    fileprivate let removeAttachmentError: ErrorEnvelope?
 
-  fileprivate let publishUpdateError: ErrorEnvelope?
+    fileprivate let publishUpdateError: ErrorEnvelope?
 
-  fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
-  fileprivate let fetchMessageThreadsResponse: [MessageThread]
+    fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
+    fileprivate let fetchMessageThreadsResponse: [MessageThread]
 
-  fileprivate let fetchProjectResponse: Project?
-  fileprivate let fetchProjectError: ErrorEnvelope?
+    fileprivate let fetchProjectResponse: Project?
+    fileprivate let fetchProjectError: ErrorEnvelope?
 
-  fileprivate let fetchProjectNotificationsResponse: [ProjectNotification]
+    fileprivate let fetchProjectNotificationsResponse: [ProjectNotification]
 
-  fileprivate let fetchProjectsResponse: [Project]?
-  fileprivate let fetchProjectsError: ErrorEnvelope?
+    fileprivate let fetchProjectsResponse: [Project]?
+    fileprivate let fetchProjectsError: ErrorEnvelope?
 
-  fileprivate let fetchProjectStatsResponse: ProjectStatsEnvelope?
-  fileprivate let fetchProjectStatsError: ErrorEnvelope?
+    fileprivate let fetchProjectStatsResponse: ProjectStatsEnvelope?
+    fileprivate let fetchProjectStatsError: ErrorEnvelope?
 
-  fileprivate let fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>?
+    fileprivate let fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>?
 
-  fileprivate let fetchSurveyResponseResponse: SurveyResponse?
-  fileprivate let fetchSurveyResponseError: ErrorEnvelope?
+    fileprivate let fetchSurveyResponseResponse: SurveyResponse?
+    fileprivate let fetchSurveyResponseError: ErrorEnvelope?
 
-  fileprivate let fetchUnansweredSurveyResponsesResponse: [SurveyResponse]
-
-  fileprivate let fetchUpdateCommentsResponse: Result<CommentsEnvelope, ErrorEnvelope>?
-
-  fileprivate let fetchUpdateResponse: Update
-
-  fileprivate let fetchUserProjectsBackedResponse: [Project]?
-  fileprivate let fetchUserProjectsBackedError: ErrorEnvelope?
-
-  fileprivate let fetchUserResponse: User?
-  fileprivate let fetchUserError: ErrorEnvelope?
-
-  fileprivate let fetchUserSelfResponse: User?
-  fileprivate let fetchUserSelfError: ErrorEnvelope?
-
-  fileprivate let followFriendError: ErrorEnvelope?
-
-  fileprivate let incrementVideoCompletionError: ErrorEnvelope?
-
-  fileprivate let incrementVideoStartError: ErrorEnvelope?
-
-  fileprivate let postCommentResponse: Comment?
-  fileprivate let postCommentError: ErrorEnvelope?
-
-  fileprivate let fetchProjectActivitiesResponse: [Activity]?
-  fileprivate let fetchProjectActivitiesError: ErrorEnvelope?
-
-  fileprivate let loginResponse: AccessTokenEnvelope?
-  fileprivate let loginError: ErrorEnvelope?
-  fileprivate let resendCodeResponse: ErrorEnvelope?
-  fileprivate let resendCodeError: ErrorEnvelope?
-
-  fileprivate let resetPasswordResponse: User?
-  fileprivate let resetPasswordError: ErrorEnvelope?
-
-  fileprivate let sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope?
-  fileprivate let sendEmailVerificationError: GraphError?
-
-  fileprivate let signupResponse: AccessTokenEnvelope?
-  fileprivate let signupError: ErrorEnvelope?
-
-  fileprivate let submitApplePayResponse: SubmitApplePayEnvelope
-
-  fileprivate let unfollowFriendError: ErrorEnvelope?
-
-  fileprivate let updateDraftError: ErrorEnvelope?
-
-  fileprivate let updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>?
-
-  fileprivate let updateProjectNotificationResponse: ProjectNotification?
-  fileprivate let updateProjectNotificationError: ErrorEnvelope?
-
-  fileprivate let updateUserSelfError: ErrorEnvelope?
-
-  fileprivate let unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope,
-  GraphError>?
-
-  fileprivate let watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>?
-
-  internal init(appId: String = "com.kickstarter.kickstarter.mock",
-                serverConfig: ServerConfigType,
-                oauthToken: OauthTokenAuthType?,
-                language: String,
-                currency: String,
-                buildVersion: String = "1") {
-
-    self.init(
-      appId: appId,
-      serverConfig: serverConfig,
-      oauthToken: oauthToken,
-      language: language,
-      currency: currency,
-      buildVersion: buildVersion,
-      fetchActivitiesResponse: nil
-    )
-  }
-
-  internal init(appId: String = "com.kickstarter.kickstarter.mock",
-                serverConfig: ServerConfigType = ServerConfig.production,
-                oauthToken: OauthTokenAuthType? = nil,
-                language: String = "en",
-                currency: String = "USD",
-                buildVersion: String = "1",
-                addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
-                changeEmailError: GraphError? = nil,
-                changeEmailResponse: UserEnvelope<UserEmailFields>? = UserEnvelope<UserEmailFields>(
-                                                                       me: .template
-                                                                     ),
-                changePasswordError: GraphError? = nil,
-                createPasswordError: GraphError? = nil,
-                changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
-                changeCurrencyError: GraphError? = nil,
-                changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
-                deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>? = nil,
-                createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
-                facebookConnectResponse: User? = nil,
-                facebookConnectError: ErrorEnvelope? = nil,
-                fetchActivitiesResponse: [Activity]? = nil,
-                fetchActivitiesError: ErrorEnvelope? = nil,
-                fetchBackingResponse: Backing = .template,
-                backingUpdate: Backing = .template,
-                fetchGraphCategoriesResponse: RootCategoriesEnvelope? = nil,
-                fetchCheckoutResponse: CheckoutEnvelope? = nil,
-                fetchCheckoutError: ErrorEnvelope? = nil,
-                fetchCommentsResponse: [Comment]? = nil,
-                fetchCommentsError: ErrorEnvelope? = nil,
-                fetchConfigResponse: Config? = nil,
-                fetchDiscoveryResponse: DiscoveryEnvelope? = nil,
-                fetchDiscoveryError: ErrorEnvelope? = nil,
-                fetchFriendsResponse: FindFriendsEnvelope? = nil,
-                fetchFriendsError: ErrorEnvelope? = nil,
-                fetchFriendStatsResponse: FriendStatsEnvelope? = nil,
-                fetchFriendStatsError: ErrorEnvelope? = nil,
-                fetchExportStateResponse: ExportDataEnvelope? = nil,
-                fetchExportStateError: ErrorEnvelope? = nil,
-                fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>? = nil,
-                fetchGraphCreditCardsError: GraphError? = nil,
-                exportDataError: ErrorEnvelope? = nil,
-                fetchDraftResponse: UpdateDraft? = nil,
-                fetchDraftError: ErrorEnvelope? = nil,
-                fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
-                fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>? = nil,
-                fetchGraphUserAccountFieldsError: GraphError? = nil,
-                addAttachmentResponse: UpdateDraft.Image? = nil,
-                addAttachmentError: ErrorEnvelope? = nil,
-                removeAttachmentResponse: UpdateDraft.Image? = nil,
-                removeAttachmentError: ErrorEnvelope? = nil,
-                publishUpdateError: ErrorEnvelope? = nil,
-                fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
-                fetchMessageThreadsResponse: [MessageThread]? = nil,
-                fetchProjectActivitiesResponse: [Activity]? = nil,
-                fetchProjectActivitiesError: ErrorEnvelope? = nil,
-                fetchProjectResponse: Project? = nil,
-                fetchProjectError: ErrorEnvelope? = nil,
-                fetchProjectNotificationsResponse: [ProjectNotification]? = nil,
-                fetchProjectsResponse: [Project]? = nil,
-                fetchProjectsError: ErrorEnvelope? = nil,
-                fetchProjectStatsResponse: ProjectStatsEnvelope? = nil,
-                fetchProjectStatsError: ErrorEnvelope? = nil,
-                fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>? = nil,
-                fetchUserProjectsBackedResponse: [Project]? = nil,
-                fetchUserProjectsBackedError: ErrorEnvelope? = nil,
-                fetchUserResponse: User? = nil,
-                fetchUserError: ErrorEnvelope? = nil,
-                fetchUserSelfResponse: User? = nil,
-                followFriendError: ErrorEnvelope? = nil,
-                incrementVideoCompletionError: ErrorEnvelope? = nil,
-                incrementVideoStartError: ErrorEnvelope? = nil,
-                fetchSurveyResponseResponse: SurveyResponse? = nil,
-                fetchSurveyResponseError: ErrorEnvelope? = nil,
-                fetchUnansweredSurveyResponsesResponse: [SurveyResponse] = [],
-                fetchUpdateCommentsResponse: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
-                fetchUpdateResponse: Update = .template,
-                fetchUserSelfError: ErrorEnvelope? = nil,
-                postCommentResponse: Comment? = nil,
-                postCommentError: ErrorEnvelope? = nil,
-                loginResponse: AccessTokenEnvelope? = nil,
-                loginError: ErrorEnvelope? = nil,
-                resendCodeResponse: ErrorEnvelope? = nil,
-                resendCodeError: ErrorEnvelope? = nil,
-                resetPasswordResponse: User? = nil,
-                resetPasswordError: ErrorEnvelope? = nil,
-                sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope? = nil,
-                sendEmailVerificationError: GraphError? = nil,
-                signupResponse: AccessTokenEnvelope? = nil,
-                signupError: ErrorEnvelope? = nil,
-                submitApplePayResponse: SubmitApplePayEnvelope = .template,
-                unfollowFriendError: ErrorEnvelope? = nil,
-                updateDraftError: ErrorEnvelope? = nil,
-                updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>? = nil,
-                updateProjectNotificationResponse: ProjectNotification? = nil,
-                updateProjectNotificationError: ErrorEnvelope? = nil,
-                updateUserSelfError: ErrorEnvelope? = nil,
-                // swiftlint:disable:next line_length
-                unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil,
-                // swiftlint:disable:next line_length
-                watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil) {
-
-    self.appId = appId
-    self.serverConfig = serverConfig
-    self.oauthToken = oauthToken
-    self.language = language
-    self.currency = currency
-    self.buildVersion = buildVersion
-
-    self.addNewCreditCardResult = addNewCreditCardResult
-
-    self.changeCurrencyResponse = changeCurrencyResponse
-    self.changeCurrencyError = changeCurrencyError
-
-    self.changeEmailResponse = changeEmailResponse
-    self.changeEmailError = changeEmailError
-
-    self.changePasswordError = changePasswordError
-
-    self.createPasswordError = createPasswordError
-
-    self.changePaymentMethodResult = changePaymentMethodResult
-    self.deletePaymentMethodResult = deletePaymentMethodResult
-    self.createPledgeResult = createPledgeResult
-
-    self.facebookConnectResponse = facebookConnectResponse
-    self.facebookConnectError = facebookConnectError
-
-    self.fetchActivitiesResponse = fetchActivitiesResponse ?? [
-      .template,
-      .template |> Activity.lens.category .~ .backing,
-      .template |> Activity.lens.category .~ .success
-    ]
-
-    self.fetchActivitiesError = fetchActivitiesError
-
-    self.fetchBackingResponse = fetchBackingResponse
-
-    self.backingUpdate = backingUpdate
-
-    self.fetchGraphCategoriesResponse = fetchGraphCategoriesResponse ?? (.template
-      |> RootCategoriesEnvelope.lens.categories .~ [
-        .art,
-        .filmAndVideo,
-        .illustration,
-        .documentary
+    fileprivate let fetchUnansweredSurveyResponsesResponse: [SurveyResponse]
+
+    fileprivate let fetchUpdateCommentsResponse: Result<CommentsEnvelope, ErrorEnvelope>?
+
+    fileprivate let fetchUpdateResponse: Update
+
+    fileprivate let fetchUserProjectsBackedResponse: [Project]?
+    fileprivate let fetchUserProjectsBackedError: ErrorEnvelope?
+
+    fileprivate let fetchUserResponse: User?
+    fileprivate let fetchUserError: ErrorEnvelope?
+
+    fileprivate let fetchUserSelfResponse: User?
+    fileprivate let fetchUserSelfError: ErrorEnvelope?
+
+    fileprivate let followFriendError: ErrorEnvelope?
+
+    fileprivate let incrementVideoCompletionError: ErrorEnvelope?
+
+    fileprivate let incrementVideoStartError: ErrorEnvelope?
+
+    fileprivate let postCommentResponse: Comment?
+    fileprivate let postCommentError: ErrorEnvelope?
+
+    fileprivate let fetchProjectActivitiesResponse: [Activity]?
+    fileprivate let fetchProjectActivitiesError: ErrorEnvelope?
+
+    fileprivate let loginResponse: AccessTokenEnvelope?
+    fileprivate let loginError: ErrorEnvelope?
+    fileprivate let resendCodeResponse: ErrorEnvelope?
+    fileprivate let resendCodeError: ErrorEnvelope?
+
+    fileprivate let resetPasswordResponse: User?
+    fileprivate let resetPasswordError: ErrorEnvelope?
+
+    fileprivate let sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope?
+    fileprivate let sendEmailVerificationError: GraphError?
+
+    fileprivate let signupResponse: AccessTokenEnvelope?
+    fileprivate let signupError: ErrorEnvelope?
+
+    fileprivate let submitApplePayResponse: SubmitApplePayEnvelope
+
+    fileprivate let unfollowFriendError: ErrorEnvelope?
+
+    fileprivate let updateDraftError: ErrorEnvelope?
+
+    fileprivate let updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>?
+
+    fileprivate let updateProjectNotificationResponse: ProjectNotification?
+    fileprivate let updateProjectNotificationError: ErrorEnvelope?
+
+    fileprivate let updateUserSelfError: ErrorEnvelope?
+
+    fileprivate let unwatchProjectMutationResult: Result<
+      GraphMutationWatchProjectResponseEnvelope,
+      GraphError
+    >?
+
+    fileprivate let watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>?
+
+    internal init(
+      appId: String = "com.kickstarter.kickstarter.mock",
+      serverConfig: ServerConfigType,
+      oauthToken: OauthTokenAuthType?,
+      language: String,
+      currency: String,
+      buildVersion: String = "1"
+    ) {
+      self.init(
+        appId: appId,
+        serverConfig: serverConfig,
+        oauthToken: oauthToken,
+        language: language,
+        currency: currency,
+        buildVersion: buildVersion,
+        fetchActivitiesResponse: nil
+      )
+    }
+
+    internal init(
+      appId: String = "com.kickstarter.kickstarter.mock",
+      serverConfig: ServerConfigType = ServerConfig.production,
+      oauthToken: OauthTokenAuthType? = nil,
+      language: String = "en",
+      currency: String = "USD",
+      buildVersion: String = "1",
+      addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
+      changeEmailError: GraphError? = nil,
+      changeEmailResponse: UserEnvelope<UserEmailFields>? = UserEnvelope<UserEmailFields>(
+        me: .template
+      ),
+      changePasswordError: GraphError? = nil,
+      createPasswordError: GraphError? = nil,
+      changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
+      changeCurrencyError: GraphError? = nil,
+      changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
+      deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>? = nil,
+      createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
+      facebookConnectResponse: User? = nil,
+      facebookConnectError: ErrorEnvelope? = nil,
+      fetchActivitiesResponse: [Activity]? = nil,
+      fetchActivitiesError: ErrorEnvelope? = nil,
+      fetchBackingResponse: Backing = .template,
+      backingUpdate: Backing = .template,
+      fetchGraphCategoriesResponse: RootCategoriesEnvelope? = nil,
+      fetchCheckoutResponse: CheckoutEnvelope? = nil,
+      fetchCheckoutError: ErrorEnvelope? = nil,
+      fetchCommentsResponse: [Comment]? = nil,
+      fetchCommentsError: ErrorEnvelope? = nil,
+      fetchConfigResponse: Config? = nil,
+      fetchDiscoveryResponse: DiscoveryEnvelope? = nil,
+      fetchDiscoveryError: ErrorEnvelope? = nil,
+      fetchFriendsResponse: FindFriendsEnvelope? = nil,
+      fetchFriendsError: ErrorEnvelope? = nil,
+      fetchFriendStatsResponse: FriendStatsEnvelope? = nil,
+      fetchFriendStatsError: ErrorEnvelope? = nil,
+      fetchExportStateResponse: ExportDataEnvelope? = nil,
+      fetchExportStateError: ErrorEnvelope? = nil,
+      fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>? = nil,
+      fetchGraphCreditCardsError: GraphError? = nil,
+      exportDataError: ErrorEnvelope? = nil,
+      fetchDraftResponse: UpdateDraft? = nil,
+      fetchDraftError: ErrorEnvelope? = nil,
+      fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
+      fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>? = nil,
+      fetchGraphUserAccountFieldsError: GraphError? = nil,
+      addAttachmentResponse: UpdateDraft.Image? = nil,
+      addAttachmentError: ErrorEnvelope? = nil,
+      removeAttachmentResponse: UpdateDraft.Image? = nil,
+      removeAttachmentError: ErrorEnvelope? = nil,
+      publishUpdateError: ErrorEnvelope? = nil,
+      fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
+      fetchMessageThreadsResponse: [MessageThread]? = nil,
+      fetchProjectActivitiesResponse: [Activity]? = nil,
+      fetchProjectActivitiesError: ErrorEnvelope? = nil,
+      fetchProjectResponse: Project? = nil,
+      fetchProjectError: ErrorEnvelope? = nil,
+      fetchProjectNotificationsResponse: [ProjectNotification]? = nil,
+      fetchProjectsResponse: [Project]? = nil,
+      fetchProjectsError: ErrorEnvelope? = nil,
+      fetchProjectStatsResponse: ProjectStatsEnvelope? = nil,
+      fetchProjectStatsError: ErrorEnvelope? = nil,
+      fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>? = nil,
+      fetchUserProjectsBackedResponse: [Project]? = nil,
+      fetchUserProjectsBackedError: ErrorEnvelope? = nil,
+      fetchUserResponse: User? = nil,
+      fetchUserError: ErrorEnvelope? = nil,
+      fetchUserSelfResponse: User? = nil,
+      followFriendError: ErrorEnvelope? = nil,
+      incrementVideoCompletionError: ErrorEnvelope? = nil,
+      incrementVideoStartError: ErrorEnvelope? = nil,
+      fetchSurveyResponseResponse: SurveyResponse? = nil,
+      fetchSurveyResponseError: ErrorEnvelope? = nil,
+      fetchUnansweredSurveyResponsesResponse: [SurveyResponse] = [],
+      fetchUpdateCommentsResponse: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
+      fetchUpdateResponse: Update = .template,
+      fetchUserSelfError: ErrorEnvelope? = nil,
+      postCommentResponse: Comment? = nil,
+      postCommentError: ErrorEnvelope? = nil,
+      loginResponse: AccessTokenEnvelope? = nil,
+      loginError: ErrorEnvelope? = nil,
+      resendCodeResponse: ErrorEnvelope? = nil,
+      resendCodeError: ErrorEnvelope? = nil,
+      resetPasswordResponse: User? = nil,
+      resetPasswordError: ErrorEnvelope? = nil,
+      sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope? = nil,
+      sendEmailVerificationError: GraphError? = nil,
+      signupResponse: AccessTokenEnvelope? = nil,
+      signupError: ErrorEnvelope? = nil,
+      submitApplePayResponse: SubmitApplePayEnvelope = .template,
+      unfollowFriendError: ErrorEnvelope? = nil,
+      updateDraftError: ErrorEnvelope? = nil,
+      updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>? = nil,
+      updateProjectNotificationResponse: ProjectNotification? = nil,
+      updateProjectNotificationError: ErrorEnvelope? = nil,
+      updateUserSelfError: ErrorEnvelope? = nil,
+      // swiftlint:disable:next line_length
+      unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil,
+      // swiftlint:disable:next line_length
+      watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil
+    ) {
+      self.appId = appId
+      self.serverConfig = serverConfig
+      self.oauthToken = oauthToken
+      self.language = language
+      self.currency = currency
+      self.buildVersion = buildVersion
+
+      self.addNewCreditCardResult = addNewCreditCardResult
+
+      self.changeCurrencyResponse = changeCurrencyResponse
+      self.changeCurrencyError = changeCurrencyError
+
+      self.changeEmailResponse = changeEmailResponse
+      self.changeEmailError = changeEmailError
+
+      self.changePasswordError = changePasswordError
+
+      self.createPasswordError = createPasswordError
+
+      self.changePaymentMethodResult = changePaymentMethodResult
+      self.deletePaymentMethodResult = deletePaymentMethodResult
+      self.createPledgeResult = createPledgeResult
+
+      self.facebookConnectResponse = facebookConnectResponse
+      self.facebookConnectError = facebookConnectError
+
+      self.fetchActivitiesResponse = fetchActivitiesResponse ?? [
+        .template,
+        .template |> Activity.lens.category .~ .backing,
+        .template |> Activity.lens.category .~ .success
       ]
-    )
 
-    self.fetchGraphUserAccountFieldsResponse = fetchGraphUserAccountFieldsResponse
-      ?? UserEnvelope(me: UserAccountFields.template)
-    self.fetchGraphUserAccountFieldsError = fetchGraphUserAccountFieldsError
+      self.fetchActivitiesError = fetchActivitiesError
 
-    self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
+      self.fetchBackingResponse = fetchBackingResponse
 
-    self.fetchCheckoutResponse = fetchCheckoutResponse
-    self.fetchCheckoutError = fetchCheckoutError
+      self.backingUpdate = backingUpdate
 
-    self.fetchCommentsResponse = fetchCommentsResponse ?? [
-      .template |> Comment.lens.id .~ 2,
-      .template |> Comment.lens.id .~ 1
-    ]
+      self.fetchGraphCategoriesResponse = fetchGraphCategoriesResponse ?? (.template
+        |> RootCategoriesEnvelope.lens.categories .~ [
+          .art,
+          .filmAndVideo,
+          .illustration,
+          .documentary
+        ]
+      )
 
-    self.fetchCommentsError = fetchCommentsError
+      self.fetchGraphUserAccountFieldsResponse = fetchGraphUserAccountFieldsResponse
+        ?? UserEnvelope(me: UserAccountFields.template)
+      self.fetchGraphUserAccountFieldsError = fetchGraphUserAccountFieldsError
 
-    self.fetchConfigResponse = fetchConfigResponse ?? .template
+      self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
 
-    self.fetchDiscoveryResponse = fetchDiscoveryResponse
-    self.fetchDiscoveryError = fetchDiscoveryError
+      self.fetchCheckoutResponse = fetchCheckoutResponse
+      self.fetchCheckoutError = fetchCheckoutError
 
-    self.fetchFriendsResponse = fetchFriendsResponse
-    self.fetchFriendsError = fetchFriendsError
+      self.fetchCommentsResponse = fetchCommentsResponse ?? [
+        .template |> Comment.lens.id .~ 2,
+        .template |> Comment.lens.id .~ 1
+      ]
 
-    self.fetchFriendStatsResponse = fetchFriendStatsResponse
-    self.fetchFriendStatsError = fetchFriendStatsError
+      self.fetchCommentsError = fetchCommentsError
 
-    self.fetchExportStateResponse = fetchExportStateResponse
-    self.fetchExportStateError = fetchExportStateError
+      self.fetchConfigResponse = fetchConfigResponse ?? .template
 
-    self.exportDataError = exportDataError
+      self.fetchDiscoveryResponse = fetchDiscoveryResponse
+      self.fetchDiscoveryError = fetchDiscoveryError
 
-    self.fetchDraftResponse = fetchDraftResponse
-    self.fetchDraftError = fetchDraftError
+      self.fetchFriendsResponse = fetchFriendsResponse
+      self.fetchFriendsError = fetchFriendsError
 
-    self.addAttachmentResponse = addAttachmentResponse
-    self.addAttachmentError = addAttachmentError
-    self.removeAttachmentResponse = removeAttachmentResponse
-    self.removeAttachmentError = removeAttachmentError
+      self.fetchFriendStatsResponse = fetchFriendStatsResponse
+      self.fetchFriendStatsError = fetchFriendStatsError
 
-    self.publishUpdateError = publishUpdateError
+      self.fetchExportStateResponse = fetchExportStateResponse
+      self.fetchExportStateError = fetchExportStateError
 
-    self.fetchMessageThreadResult = fetchMessageThreadResult
+      self.exportDataError = exportDataError
 
-    self.fetchMessageThreadsResponse = fetchMessageThreadsResponse ?? [
-      .template |> MessageThread.lens.id .~ 1,
-      .template |> MessageThread.lens.id .~ 2,
-      .template |> MessageThread.lens.id .~ 3
-    ]
+      self.fetchDraftResponse = fetchDraftResponse
+      self.fetchDraftError = fetchDraftError
 
-    self.fetchProjectActivitiesResponse = fetchProjectActivitiesResponse ?? [
-      .template,
-      .template |> Activity.lens.category .~ .backing,
-      .template |> Activity.lens.category .~ .commentProject
+      self.addAttachmentResponse = addAttachmentResponse
+      self.addAttachmentError = addAttachmentError
+      self.removeAttachmentResponse = removeAttachmentResponse
+      self.removeAttachmentError = removeAttachmentError
+
+      self.publishUpdateError = publishUpdateError
+
+      self.fetchMessageThreadResult = fetchMessageThreadResult
+
+      self.fetchMessageThreadsResponse = fetchMessageThreadsResponse ?? [
+        .template |> MessageThread.lens.id .~ 1,
+        .template |> MessageThread.lens.id .~ 2,
+        .template |> MessageThread.lens.id .~ 3
+      ]
+
+      self.fetchProjectActivitiesResponse = fetchProjectActivitiesResponse ?? [
+        .template,
+        .template |> Activity.lens.category .~ .backing,
+        .template |> Activity.lens.category .~ .commentProject
       ]
       .enumerated()
       .map(Activity.lens.id.set)
 
-    self.fetchProjectActivitiesError = fetchProjectActivitiesError
+      self.fetchProjectActivitiesError = fetchProjectActivitiesError
 
-    self.fetchProjectResponse = fetchProjectResponse
-    self.fetchProjectError = fetchProjectError
+      self.fetchProjectResponse = fetchProjectResponse
+      self.fetchProjectError = fetchProjectError
 
-    self.fetchProjectNotificationsResponse = fetchProjectNotificationsResponse ?? [
-      .template |> ProjectNotification.lens.id .~ 1,
-      .template |> ProjectNotification.lens.id .~ 2,
-      .template |> ProjectNotification.lens.id .~ 3
-    ]
+      self.fetchProjectNotificationsResponse = fetchProjectNotificationsResponse ?? [
+        .template |> ProjectNotification.lens.id .~ 1,
+        .template |> ProjectNotification.lens.id .~ 2,
+        .template |> ProjectNotification.lens.id .~ 3
+      ]
 
-    self.fetchProjectsResponse = fetchProjectsResponse ?? []
+      self.fetchProjectsResponse = fetchProjectsResponse ?? []
 
-    self.fetchProjectsError = fetchProjectsError
+      self.fetchProjectsError = fetchProjectsError
 
-    self.fetchProjectStatsResponse = fetchProjectStatsResponse
-    self.fetchProjectStatsError = fetchProjectStatsError
+      self.fetchProjectStatsResponse = fetchProjectStatsResponse
+      self.fetchProjectStatsError = fetchProjectStatsError
 
-    self.fetchShippingRulesResult = fetchShippingRulesResult
+      self.fetchShippingRulesResult = fetchShippingRulesResult
 
-    self.fetchSurveyResponseResponse = fetchSurveyResponseResponse
-    self.fetchSurveyResponseError = fetchSurveyResponseError
+      self.fetchSurveyResponseResponse = fetchSurveyResponseResponse
+      self.fetchSurveyResponseError = fetchSurveyResponseError
 
-    self.fetchUnansweredSurveyResponsesResponse = fetchUnansweredSurveyResponsesResponse
+      self.fetchUnansweredSurveyResponsesResponse = fetchUnansweredSurveyResponsesResponse
 
-    self.fetchUpdateCommentsResponse = fetchUpdateCommentsResponse
+      self.fetchUpdateCommentsResponse = fetchUpdateCommentsResponse
 
-    self.fetchUpdateResponse = fetchUpdateResponse
+      self.fetchUpdateResponse = fetchUpdateResponse
 
-    self.fetchUserProjectsBackedResponse = fetchUserProjectsBackedResponse
-    self.fetchUserProjectsBackedError = fetchUserProjectsBackedError
+      self.fetchUserProjectsBackedResponse = fetchUserProjectsBackedResponse
+      self.fetchUserProjectsBackedError = fetchUserProjectsBackedError
 
-    self.fetchUserResponse = fetchUserResponse
-    self.fetchUserError = fetchUserError
-    self.fetchGraphCreditCardsError = fetchGraphCreditCardsError
+      self.fetchUserResponse = fetchUserResponse
+      self.fetchUserError = fetchUserError
+      self.fetchGraphCreditCardsError = fetchGraphCreditCardsError
 
-    self.fetchGraphCreditCardsResponse = fetchGraphCreditCardsResponse
+      self.fetchGraphCreditCardsResponse = fetchGraphCreditCardsResponse
 
-    self.fetchUserSelfResponse = fetchUserSelfResponse ?? .template
-    self.fetchUserSelfError = fetchUserSelfError
+      self.fetchUserSelfResponse = fetchUserSelfResponse ?? .template
+      self.fetchUserSelfError = fetchUserSelfError
 
-    self.followFriendError = followFriendError
+      self.followFriendError = followFriendError
 
-    self.incrementVideoCompletionError = incrementVideoCompletionError
+      self.incrementVideoCompletionError = incrementVideoCompletionError
 
-    self.incrementVideoStartError = incrementVideoStartError
+      self.incrementVideoStartError = incrementVideoStartError
 
-    self.postCommentResponse = postCommentResponse ?? .template
+      self.postCommentResponse = postCommentResponse ?? .template
 
-    self.postCommentError = postCommentError
+      self.postCommentError = postCommentError
 
-    self.loginResponse = loginResponse
+      self.loginResponse = loginResponse
 
-    self.loginError = loginError
+      self.loginError = loginError
 
-    self.resendCodeResponse = resendCodeResponse
+      self.resendCodeResponse = resendCodeResponse
 
-    self.resendCodeError = resendCodeError
+      self.resendCodeError = resendCodeError
 
-    self.resetPasswordResponse = resetPasswordResponse
+      self.resetPasswordResponse = resetPasswordResponse
 
-    self.resetPasswordError = resetPasswordError
+      self.resetPasswordError = resetPasswordError
 
-    self.sendEmailVerificationResponse = sendEmailVerificationResponse
+      self.sendEmailVerificationResponse = sendEmailVerificationResponse
 
-    self.sendEmailVerificationError = sendEmailVerificationError
+      self.sendEmailVerificationError = sendEmailVerificationError
 
-    self.signupResponse = signupResponse
+      self.signupResponse = signupResponse
 
-    self.signupError = signupError
+      self.signupError = signupError
 
-    self.submitApplePayResponse = submitApplePayResponse
+      self.submitApplePayResponse = submitApplePayResponse
 
-    self.unfollowFriendError = unfollowFriendError
+      self.unfollowFriendError = unfollowFriendError
 
-    self.updateDraftError = updateDraftError
+      self.updateDraftError = updateDraftError
 
-    self.updatePledgeResult = updatePledgeResult
+      self.updatePledgeResult = updatePledgeResult
 
-    self.updateProjectNotificationResponse = updateProjectNotificationResponse
+      self.updateProjectNotificationResponse = updateProjectNotificationResponse
 
-    self.updateProjectNotificationError = updateProjectNotificationError
+      self.updateProjectNotificationError = updateProjectNotificationError
 
-    self.updateUserSelfError = updateUserSelfError
+      self.updateUserSelfError = updateUserSelfError
 
-    self.unwatchProjectMutationResult = unwatchProjectMutationResult
+      self.unwatchProjectMutationResult = unwatchProjectMutationResult
 
-    self.watchProjectMutationResult = watchProjectMutationResult
-  }
+      self.watchProjectMutationResult = watchProjectMutationResult
+    }
 
-  public func addNewCreditCard(input: CreatePaymentSourceInput)
-    -> SignalProducer<CreatePaymentSourceEnvelope, GraphError> {
+    public func addNewCreditCard(input _: CreatePaymentSourceInput)
+      -> SignalProducer<CreatePaymentSourceEnvelope, GraphError> {
+      return producer(for: self.addNewCreditCardResult)
+    }
 
-     return producer(for: addNewCreditCardResult)
-  }
-
-  internal func changeEmail(input: ChangeEmailInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-
+    internal func changeEmail(input _: ChangeEmailInput) ->
+      SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
       if let error = self.changeEmailError {
         return SignalProducer(error: error)
       }
 
       return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
-  }
-
-  internal func createPledge(project: Project,
-                             amount: Double,
-                             reward: Reward?,
-                             shippingLocation: Location?,
-                             tappedReward: Bool) -> SignalProducer<CreatePledgeEnvelope, ErrorEnvelope> {
-
-    if let error = self.createPledgeResult?.error {
-      return SignalProducer(error: error)
     }
 
-    return SignalProducer(value: self.createPledgeResult?.value ?? .template)
-  }
+    internal func createPledge(
+      project _: Project,
+      amount _: Double,
+      reward _: Reward?,
+      shippingLocation _: Location?,
+      tappedReward _: Bool
+    ) -> SignalProducer<CreatePledgeEnvelope, ErrorEnvelope> {
+      if let error = self.createPledgeResult?.error {
+        return SignalProducer(error: error)
+      }
 
-  internal func facebookConnect(facebookAccessToken token: String)
-    -> SignalProducer<User, ErrorEnvelope> {
+      return SignalProducer(value: self.createPledgeResult?.value ?? .template)
+    }
 
+    internal func facebookConnect(facebookAccessToken _: String)
+      -> SignalProducer<User, ErrorEnvelope> {
       if let response = facebookConnectResponse {
         return SignalProducer(value: response)
       } else if let error = facebookConnectError {
         return SignalProducer(error: error)
       }
 
-      return SignalProducer(value:
+      return SignalProducer(
+        value:
         User.template
           |> \.id .~ 1
           |> \.facebookConnected .~ true
       )
-  }
+    }
 
-  internal func changePassword(input: ChangePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    internal func changePassword(input _: ChangePasswordInput) ->
+      SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
       if let error = self.changePasswordError {
         return SignalProducer(error: error)
       } else {
         return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
       }
-  }
+    }
 
-  internal func createPassword(input: CreatePasswordInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    internal func createPassword(input _: CreatePasswordInput) ->
+      SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
       if let error = self.createPasswordError {
         return SignalProducer(error: error)
       } else {
         return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
       }
-  }
-
-  internal func changeCurrency(input: ChangeCurrencyInput) ->
-   SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-    if let response = self.changeCurrencyResponse {
-      return SignalProducer(value: response)
-    } else if let error = self.changeCurrencyError {
-      return SignalProducer(error: error)
-    }
-    return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
-  }
-
-  internal func fetchCheckout(checkoutUrl url: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope> {
-    if let response = fetchCheckoutResponse {
-      return SignalProducer(value: response)
-    } else if let error = fetchCheckoutError {
-      return SignalProducer(error: error)
     }
 
-    return SignalProducer(value: .template)
-  }
+    internal func changeCurrency(input _: ChangeCurrencyInput) ->
+      SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      if let response = self.changeCurrencyResponse {
+        return SignalProducer(value: response)
+      } else if let error = self.changeCurrencyError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+    }
 
-  internal func fetchComments(project: Project) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    internal func fetchCheckout(checkoutUrl _: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope> {
+      if let response = fetchCheckoutResponse {
+        return SignalProducer(value: response)
+      } else if let error = fetchCheckoutError {
+        return SignalProducer(error: error)
+      }
 
-    if let error = fetchCommentsError {
-      return SignalProducer(error: error)
-    } else if let comments = fetchCommentsResponse {
-      return SignalProducer(
-        value: CommentsEnvelope(
-          comments: comments,
-          urls: CommentsEnvelope.UrlsEnvelope(
-            api: CommentsEnvelope.UrlsEnvelope.ApiEnvelope(
-              moreComments: ""
+      return SignalProducer(value: .template)
+    }
+
+    internal func fetchComments(project _: Project) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+      if let error = fetchCommentsError {
+        return SignalProducer(error: error)
+      } else if let comments = fetchCommentsResponse {
+        return SignalProducer(
+          value: CommentsEnvelope(
+            comments: comments,
+            urls: CommentsEnvelope.UrlsEnvelope(
+              api: CommentsEnvelope.UrlsEnvelope.ApiEnvelope(
+                moreComments: ""
+              )
             )
           )
         )
-      )
+      }
+      return .empty
     }
-    return .empty
-  }
 
-  internal func fetchComments(paginationUrl url: String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    if let error = fetchCommentsError {
-      return SignalProducer(error: error)
-    } else if let comments = fetchCommentsResponse {
-      return SignalProducer(
-        value: CommentsEnvelope(
-          comments: comments,
-          urls: CommentsEnvelope.UrlsEnvelope(
-            api: CommentsEnvelope.UrlsEnvelope.ApiEnvelope(
-              moreComments: ""
+    internal func fetchComments(paginationUrl _: String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+      if let error = fetchCommentsError {
+        return SignalProducer(error: error)
+      } else if let comments = fetchCommentsResponse {
+        return SignalProducer(
+          value: CommentsEnvelope(
+            comments: comments,
+            urls: CommentsEnvelope.UrlsEnvelope(
+              api: CommentsEnvelope.UrlsEnvelope.ApiEnvelope(
+                moreComments: ""
+              )
             )
           )
         )
+      }
+      return .empty
+    }
+
+    internal func fetchComments(update _: Update) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+      if let error = fetchUpdateCommentsResponse?.error {
+        return SignalProducer(error: error)
+      } else if let comments = fetchUpdateCommentsResponse {
+        return SignalProducer(value: comments.value ?? .template)
+      }
+      return .empty
+    }
+
+    internal func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
+      guard let config = self.fetchConfigResponse else { return .empty }
+      return SignalProducer(value: config)
+    }
+
+    internal func fetchFriends() -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
+      if let response = fetchFriendsResponse {
+        return SignalProducer(value: response)
+      } else if let error = fetchFriendsError {
+        return SignalProducer(error: error)
+      }
+
+      return SignalProducer(value: .template)
+    }
+
+    internal func fetchFriends(paginationUrl _: String)
+      -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
+      return self.fetchFriends()
+    }
+
+    internal func fetchFriendStats() -> SignalProducer<FriendStatsEnvelope, ErrorEnvelope> {
+      if let response = fetchFriendStatsResponse {
+        return SignalProducer(value: response)
+      } else if let error = fetchFriendStatsError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: .template)
+    }
+
+    internal func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
+      return SignalProducer(value: VoidEnvelope())
+    }
+
+    internal func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
+      if let error = exportDataError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: VoidEnvelope())
+    }
+
+    internal func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope> {
+      if let error = followFriendError {
+        return SignalProducer(error: error)
+      }
+
+      return SignalProducer(
+        value:
+        User.template
+          |> \.id .~ id
+          |> \.isFriend .~ true
       )
     }
-    return .empty
-  }
 
-  internal func fetchComments(update: Update) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-
-    if let error = fetchUpdateCommentsResponse?.error {
-      return SignalProducer(error: error)
-    } else if let comments = fetchUpdateCommentsResponse {
-      return SignalProducer(value: comments.value ?? .template)
-    }
-    return .empty
-  }
-
-  internal func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
-    guard let config = self.fetchConfigResponse else { return .empty }
-    return SignalProducer(value: config)
-  }
-
-  internal func fetchFriends() -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
-    if let response = fetchFriendsResponse {
-      return SignalProducer(value: response)
-    } else if let error = fetchFriendsError {
-      return SignalProducer(error: error)
+    internal func fetchGraphCategories(query _: NonEmptySet<Query>)
+      -> SignalProducer<RootCategoriesEnvelope, GraphError> {
+      if let response = self.fetchGraphCategoriesResponse {
+        return SignalProducer(value: response)
+      }
+      return .empty
     }
 
-    return SignalProducer(value: .template)
-  }
-
-  internal func fetchFriends(paginationUrl: String)
-    -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
-    return self.fetchFriends()
-  }
-
-  internal func fetchFriendStats() -> SignalProducer<FriendStatsEnvelope, ErrorEnvelope> {
-    if let response = fetchFriendStatsResponse {
-      return SignalProducer(value: response)
-    } else if let error = fetchFriendStatsError {
-      return SignalProducer(error: error)
-    }
-    return SignalProducer(value: .template)
-  }
-
-  internal func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    return SignalProducer(value: VoidEnvelope())
-  }
-
-  internal func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    if let error = exportDataError {
-      return SignalProducer(error: error)
-    }
-    return SignalProducer(value: VoidEnvelope())
-  }
-
-  internal func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope> {
-    if let error = followFriendError {
-      return SignalProducer(error: error)
-    }
-
-    return SignalProducer(value:
-      User.template
-        |> \.id .~ id
-        |> \.isFriend .~ true
-    )
-  }
-
-  internal func fetchGraphCategories(query: NonEmptySet<Query>)
-    -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-    if let response = self.fetchGraphCategoriesResponse {
-      return SignalProducer(value: response)
-    }
-    return .empty
-  }
-
-  internal func fetchGraphCategory(query: NonEmptySet<Query>)
-    -> SignalProducer<CategoryEnvelope, GraphError> {
+    internal func fetchGraphCategory(query: NonEmptySet<Query>)
+      -> SignalProducer<CategoryEnvelope, GraphError> {
       return SignalProducer(value: CategoryEnvelope(node: .template |> Category.lens.id .~ "\(query.head)"))
-  }
+    }
 
-  internal func fetchGraphCreditCards(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError> {
+    internal func fetchGraphCreditCards(query _: NonEmptySet<Query>)
+      -> SignalProducer<UserEnvelope<GraphUserCreditCard>, GraphError> {
       if let error = fetchGraphCreditCardsError {
         return SignalProducer(error: error)
       }
 
       return SignalProducer(
-        value: fetchGraphCreditCardsResponse ??
+        value: self.fetchGraphCreditCardsResponse ??
           UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
       )
-  }
+    }
 
-  internal func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
+    internal func fetchGraphUserEmailFields(query _: NonEmptySet<Query>)
+      -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
       let response = self.fetchGraphUserEmailFieldsResponse ?? .template
 
       return SignalProducer(value: UserEnvelope(me: response))
-  }
+    }
 
-  internal func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError> {
+    internal func fetchGraphUserAccountFields(query _: NonEmptySet<Query>)
+      -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError> {
       if let error = self.fetchGraphUserAccountFieldsError {
         return SignalProducer(error: error)
       } else if let response = self.fetchGraphUserAccountFieldsResponse {
@@ -696,78 +697,76 @@ internal struct MockService: ServiceType {
       } else {
         return .empty
       }
-  }
-
-  internal func fetchGraph<A>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> where A: Decodable {
-    return .empty
-  }
-
-  internal func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    if let error = unfollowFriendError {
-      return SignalProducer(error: error)
     }
 
-    return SignalProducer(value: VoidEnvelope())
-  }
+    internal func fetchGraph<A>(
+      query _: NonEmptySet<Query>
+    ) -> SignalProducer<A, GraphError> where A: Decodable {
+      return .empty
+    }
 
-  internal func login(_ oauthToken: OauthTokenAuthType) -> MockService {
-    return self |> MockService.lens.oauthToken .~ oauthToken
-  }
+    internal func unfollowFriend(userId _: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
+      if let error = unfollowFriendError {
+        return SignalProducer(error: error)
+      }
 
-  internal func logout() -> MockService {
-    return self |> MockService.lens.oauthToken .~ nil
-  }
+      return SignalProducer(value: VoidEnvelope())
+    }
 
-  internal func fetchActivities(count: Int?) -> SignalProducer<ActivityEnvelope, ErrorEnvelope> {
+    internal func login(_ oauthToken: OauthTokenAuthType) -> MockService {
+      return self |> MockService.lens.oauthToken .~ oauthToken
+    }
 
-    if let error = fetchActivitiesError {
-      return SignalProducer(error: error)
-    } else if let activities = fetchActivitiesResponse {
-      return SignalProducer(
-        value: ActivityEnvelope(
-          activities: activities,
-          urls: ActivityEnvelope.UrlsEnvelope(
-            api: ActivityEnvelope.UrlsEnvelope.ApiEnvelope(
-              moreActivities: "http://\(Secrets.Api.Endpoint.production)/gimme/more"
+    internal func logout() -> MockService {
+      return self |> MockService.lens.oauthToken .~ nil
+    }
+
+    internal func fetchActivities(count _: Int?) -> SignalProducer<ActivityEnvelope, ErrorEnvelope> {
+      if let error = fetchActivitiesError {
+        return SignalProducer(error: error)
+      } else if let activities = fetchActivitiesResponse {
+        return SignalProducer(
+          value: ActivityEnvelope(
+            activities: activities,
+            urls: ActivityEnvelope.UrlsEnvelope(
+              api: ActivityEnvelope.UrlsEnvelope.ApiEnvelope(
+                moreActivities: "http://\(Secrets.Api.Endpoint.production)/gimme/more"
+              )
             )
           )
         )
+      }
+      return .empty
+    }
+
+    internal func fetchActivities(paginationUrl _: String)
+      -> SignalProducer<ActivityEnvelope, ErrorEnvelope> {
+      return self.fetchActivities(count: nil)
+    }
+
+    func fetchBacking(forProject project: Project, forUser user: User)
+      -> SignalProducer<Backing, ErrorEnvelope> {
+      return SignalProducer(
+        value: self.fetchBackingResponse
+          |> Backing.lens.backer .~ user
+          |> Backing.lens.backerId .~ user.id
+          |> Backing.lens.projectId .~ project.id
       )
     }
-    return .empty
-  }
 
-  internal func fetchActivities(paginationUrl: String)
-    -> SignalProducer<ActivityEnvelope, ErrorEnvelope> {
-      return self.fetchActivities(count: nil)
-  }
-
-  func fetchBacking(forProject project: Project, forUser user: User)
-    -> SignalProducer<Backing, ErrorEnvelope> {
-
-    return SignalProducer(
-      value: fetchBackingResponse
-        |> Backing.lens.backer .~ user
-        |> Backing.lens.backerId .~ user.id
-        |> Backing.lens.projectId .~ project.id
-    )
-  }
-
-  func backingUpdate(forProject project: Project, forUser user: User, received: Bool)
-    -> SignalProducer<Backing, ErrorEnvelope> {
-
+    func backingUpdate(forProject project: Project, forUser user: User, received: Bool)
+      -> SignalProducer<Backing, ErrorEnvelope> {
       return SignalProducer(
-        value: fetchBackingResponse
+        value: self.fetchBackingResponse
           |> Backing.lens.backer .~ user
           |> Backing.lens.backerId .~ user.id
           |> Backing.lens.projectId .~ project.id
           |> Backing.lens.backerCompleted .~ received
       )
-  }
+    }
 
-  internal func fetchDiscovery(paginationUrl: String)
-    -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
-
+    internal func fetchDiscovery(paginationUrl: String)
+      -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
       if let error = fetchDiscoveryError {
         return SignalProducer(error: error)
       }
@@ -781,11 +780,10 @@ internal struct MockService: ServiceType {
       )
 
       return SignalProducer(value: envelope)
-  }
+    }
 
-  internal func fetchDiscovery(params: DiscoveryParams)
-    -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
-
+    internal func fetchDiscovery(params: DiscoveryParams)
+      -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
       if let error = fetchDiscoveryError {
         return SignalProducer(error: error)
       }
@@ -798,10 +796,10 @@ internal struct MockService: ServiceType {
       )
 
       return SignalProducer(value: envelope)
-  }
+    }
 
-  internal func fetchMessageThread(messageThreadId: Int)
-    -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
+    internal func fetchMessageThread(messageThreadId _: Int)
+      -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
       if let error = self.fetchMessageThreadResult?.error {
         return SignalProducer(error: error)
       }
@@ -817,10 +815,10 @@ internal struct MockService: ServiceType {
           messageThread: self.fetchMessageThreadResult?.value as? MessageThread ?? .template
         )
       )
-  }
+    }
 
-  internal func fetchMessageThread(backing: Backing)
-    -> SignalProducer<MessageThreadEnvelope?, ErrorEnvelope> {
+    internal func fetchMessageThread(backing _: Backing)
+      -> SignalProducer<MessageThreadEnvelope?, ErrorEnvelope> {
       if let error = self.fetchMessageThreadResult?.error {
         return SignalProducer(error: error)
       }
@@ -840,12 +838,12 @@ internal struct MockService: ServiceType {
       } else {
         return SignalProducer(value: nil)
       }
-  }
+    }
 
-  internal func fetchMessageThreads(mailbox: Mailbox, project: Project?)
-    -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
-
-      return SignalProducer(value:
+    internal func fetchMessageThreads(mailbox _: Mailbox, project _: Project?)
+      -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
+      return SignalProducer(
+        value:
         MessageThreadsEnvelope(
           messageThreads: self.fetchMessageThreadsResponse,
           urls: MessageThreadsEnvelope.UrlsEnvelope(
@@ -855,12 +853,12 @@ internal struct MockService: ServiceType {
           )
         )
       )
-  }
+    }
 
-  internal func fetchMessageThreads(paginationUrl: String)
-    -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
-
-      return SignalProducer(value:
+    internal func fetchMessageThreads(paginationUrl _: String)
+      -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
+      return SignalProducer(
+        value:
         MessageThreadsEnvelope(
           messageThreads: self.fetchMessageThreadsResponse,
           urls: MessageThreadsEnvelope.UrlsEnvelope(
@@ -870,110 +868,109 @@ internal struct MockService: ServiceType {
           )
         )
       )
-  }
-
-  internal func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope> {
-    return SignalProducer(value: self.fetchProjectNotificationsResponse)
-  }
-
-  internal func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope> {
-    if let error = self.fetchProjectError {
-      return SignalProducer(error: error)
     }
-    if let project = self.fetchProjectResponse {
-      return SignalProducer(value: project)
-    }
-    return SignalProducer(
-      value: .template
-        |> Project.lens.id %~ { param.id ?? $0 }
-        |> Project.lens.slug %~ { param.slug ?? $0 }
-    )
-  }
 
-  internal func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
-    if let envelope = self.fetchDiscoveryResponse {
+    internal func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope> {
+      return SignalProducer(value: self.fetchProjectNotificationsResponse)
+    }
+
+    internal func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope> {
+      if let error = self.fetchProjectError {
+        return SignalProducer(error: error)
+      }
+      if let project = self.fetchProjectResponse {
+        return SignalProducer(value: project)
+      }
+      return SignalProducer(
+        value: .template
+          |> Project.lens.id %~ { param.id ?? $0 }
+          |> Project.lens.slug %~ { param.slug ?? $0 }
+      )
+    }
+
+    internal func fetchProject(
+      _ params: DiscoveryParams
+    ) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
+      if let envelope = self.fetchDiscoveryResponse {
+        return SignalProducer(value: envelope)
+      }
+      let envelope = .template
+        |> DiscoveryEnvelope.lens.projects .~ [
+          .template |> Project.lens.id .~ params.hashValue
+        ]
       return SignalProducer(value: envelope)
     }
-    let envelope = .template
-      |> DiscoveryEnvelope.lens.projects .~ [
-        .template |> Project.lens.id .~ params.hashValue
-    ]
-    return SignalProducer(value: envelope)
-  }
 
-  internal func fetchProject(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
-    if let project = self.fetchProjectResponse {
+    internal func fetchProject(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
+      if let project = self.fetchProjectResponse {
+        return SignalProducer(value: project)
+      }
       return SignalProducer(value: project)
     }
-    return SignalProducer(value: project)
-  }
 
-  internal func fetchProjectActivities(forProject project: Project) ->
-    SignalProducer<ProjectActivityEnvelope, ErrorEnvelope> {
-
-    if let error = fetchProjectActivitiesError {
-      return SignalProducer(error: error)
-    } else if let activities = fetchProjectActivitiesResponse {
-      return SignalProducer(
-        value: ProjectActivityEnvelope(
-          activities: activities,
-          urls: ProjectActivityEnvelope.UrlsEnvelope(
-            api: ProjectActivityEnvelope.UrlsEnvelope.ApiEnvelope(
-              moreActivities: "http://\(Secrets.Api.Endpoint.production)/gimme/more"
+    internal func fetchProjectActivities(forProject _: Project) ->
+      SignalProducer<ProjectActivityEnvelope, ErrorEnvelope> {
+      if let error = fetchProjectActivitiesError {
+        return SignalProducer(error: error)
+      } else if let activities = fetchProjectActivitiesResponse {
+        return SignalProducer(
+          value: ProjectActivityEnvelope(
+            activities: activities,
+            urls: ProjectActivityEnvelope.UrlsEnvelope(
+              api: ProjectActivityEnvelope.UrlsEnvelope.ApiEnvelope(
+                moreActivities: "http://\(Secrets.Api.Endpoint.production)/gimme/more"
+              )
             )
           )
         )
-      )
+      }
+      return .empty
     }
-    return .empty
-  }
 
-  internal func fetchProjectActivities(paginationUrl: String)
-    -> SignalProducer<ProjectActivityEnvelope, ErrorEnvelope> {
-
-    if let error = fetchProjectActivitiesError {
-      return SignalProducer(error: error)
-    } else if let activities = fetchProjectActivitiesResponse {
-      return SignalProducer(
-        value: ProjectActivityEnvelope(
-          activities: activities,
-          urls: ProjectActivityEnvelope.UrlsEnvelope(
-            api: ProjectActivityEnvelope.UrlsEnvelope.ApiEnvelope(
-              moreActivities: ""
+    internal func fetchProjectActivities(paginationUrl _: String)
+      -> SignalProducer<ProjectActivityEnvelope, ErrorEnvelope> {
+      if let error = fetchProjectActivitiesError {
+        return SignalProducer(error: error)
+      } else if let activities = fetchProjectActivitiesResponse {
+        return SignalProducer(
+          value: ProjectActivityEnvelope(
+            activities: activities,
+            urls: ProjectActivityEnvelope.UrlsEnvelope(
+              api: ProjectActivityEnvelope.UrlsEnvelope.ApiEnvelope(
+                moreActivities: ""
+              )
             )
           )
         )
-      )
+      }
+      return .empty
     }
-    return .empty
-  }
 
-  internal func fetchProjects(member: Bool) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-
-    if let error = fetchProjectsError {
-      return SignalProducer(error: error)
-    } else if let projects = fetchProjectsResponse {
-      return SignalProducer(
-        value: ProjectsEnvelope(
-          projects: projects,
-          urls: ProjectsEnvelope.UrlsEnvelope(
-            api: ProjectsEnvelope.UrlsEnvelope.ApiEnvelope(
-              moreProjects: ""
+    internal func fetchProjects(member _: Bool) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
+      if let error = fetchProjectsError {
+        return SignalProducer(error: error)
+      } else if let projects = fetchProjectsResponse {
+        return SignalProducer(
+          value: ProjectsEnvelope(
+            projects: projects,
+            urls: ProjectsEnvelope.UrlsEnvelope(
+              api: ProjectsEnvelope.UrlsEnvelope.ApiEnvelope(
+                moreProjects: ""
+              )
             )
           )
         )
-      )
+      }
+      return .empty
     }
-    return .empty
-  }
 
-  internal func fetchProjects(paginationUrl: String) ->
-    SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-      return fetchProjects(member: true)
-  }
+    internal func fetchProjects(paginationUrl _: String) ->
+      SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
+      return self.fetchProjects(member: true)
+    }
 
-  internal func fetchProjectStats(projectId: Int) ->
-    SignalProducer<ProjectStatsEnvelope, ErrorEnvelope> {
+    internal func fetchProjectStats(projectId _: Int) ->
+      SignalProducer<ProjectStatsEnvelope, ErrorEnvelope> {
       if let error = fetchProjectStatsError {
         return SignalProducer(error: error)
       } else if let response = fetchProjectStatsResponse {
@@ -981,203 +978,198 @@ internal struct MockService: ServiceType {
       }
 
       return SignalProducer(value: .template)
-  }
+    }
 
-  internal func fetchRewardShippingRules(projectId: Int, rewardId: Int)
-    -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope> {
-
+    internal func fetchRewardShippingRules(projectId _: Int, rewardId _: Int)
+      -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope> {
       if let error = self.fetchShippingRulesResult?.error {
         return SignalProducer(error: error)
       }
 
       return SignalProducer(value: .init(shippingRules: self.fetchShippingRulesResult?.value ?? [.template]))
-  }
+    }
 
-  internal func fetchUserProjectsBacked() -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-    if let error = fetchUserProjectsBackedError {
-      return SignalProducer(error: error)
-    } else if let projects = fetchUserProjectsBackedResponse {
-      return SignalProducer(
-        value: ProjectsEnvelope(
-          projects: projects,
-          urls: ProjectsEnvelope.UrlsEnvelope(
-            api: ProjectsEnvelope.UrlsEnvelope.ApiEnvelope(
-              moreProjects: ""
+    internal func fetchUserProjectsBacked() -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
+      if let error = fetchUserProjectsBackedError {
+        return SignalProducer(error: error)
+      } else if let projects = fetchUserProjectsBackedResponse {
+        return SignalProducer(
+          value: ProjectsEnvelope(
+            projects: projects,
+            urls: ProjectsEnvelope.UrlsEnvelope(
+              api: ProjectsEnvelope.UrlsEnvelope.ApiEnvelope(
+                moreProjects: ""
+              )
             )
           )
         )
-      )
-    }
-    return .empty
-  }
-
-  internal func fetchUserProjectsBacked(paginationUrl url: String)
-    -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-
-    if let error = fetchUserProjectsBackedError {
-      return SignalProducer(error: error)
-    } else if let projects = fetchUserProjectsBackedResponse {
-      return SignalProducer(
-        value: ProjectsEnvelope(
-          projects: projects,
-          urls: ProjectsEnvelope.UrlsEnvelope(
-            api: ProjectsEnvelope.UrlsEnvelope.ApiEnvelope(
-              moreProjects: ""
-            )
-          )
-        )
-      )
-    }
-    return .empty
-  }
-
-  internal func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope> {
-    if let error = fetchUserSelfError {
-      return SignalProducer(error: error)
-    }
-
-    return SignalProducer(value: self.fetchUserSelfResponse ?? .template)
-  }
-
-  internal func fetchSurveyResponse(surveyResponseId id: Int)
-    -> SignalProducer<SurveyResponse, ErrorEnvelope> {
-    if let response = fetchSurveyResponseResponse {
-      return SignalProducer(value: response)
-    } else if let error = fetchSurveyResponseError {
-      return SignalProducer(error: error)
-    }
-    return SignalProducer(value: .template |> SurveyResponse.lens.id .~ id)
-  }
-
-  internal func fetchUnansweredSurveyResponses() -> SignalProducer<[SurveyResponse], ErrorEnvelope> {
-    return SignalProducer(value: self.fetchUnansweredSurveyResponsesResponse)
-  }
-
-  internal func fetchUser(userId: Int) -> SignalProducer<User, ErrorEnvelope> {
-    if let error = self.fetchUserError {
-      return SignalProducer(error: error)
-    }
-    return SignalProducer(value: self.fetchUserResponse ?? (.template |> \.id .~ userId))
-  }
-
-  internal func fetchUser(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
-    if let error = self.fetchUserError {
-      return SignalProducer(error: error)
-    }
-    return SignalProducer(value: fetchUserResponse ?? user)
-  }
-
-  internal func fetchCategory(param: Param)
-    -> SignalProducer<KsApi.Category, GraphError> {
-    switch param {
-    case let .id(id):
-      return SignalProducer(value: .template |> Category.lens.id .~ "\(id)")
-    default:
-      return .empty
       }
-  }
+      return .empty
+    }
 
-  internal func incrementVideoCompletion(forProject project: Project) ->
-    SignalProducer<VoidEnvelope, ErrorEnvelope> {
+    internal func fetchUserProjectsBacked(paginationUrl _: String)
+      -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
+      if let error = fetchUserProjectsBackedError {
+        return SignalProducer(error: error)
+      } else if let projects = fetchUserProjectsBackedResponse {
+        return SignalProducer(
+          value: ProjectsEnvelope(
+            projects: projects,
+            urls: ProjectsEnvelope.UrlsEnvelope(
+              api: ProjectsEnvelope.UrlsEnvelope.ApiEnvelope(
+                moreProjects: ""
+              )
+            )
+          )
+        )
+      }
+      return .empty
+    }
+
+    internal func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope> {
+      if let error = fetchUserSelfError {
+        return SignalProducer(error: error)
+      }
+
+      return SignalProducer(value: self.fetchUserSelfResponse ?? .template)
+    }
+
+    internal func fetchSurveyResponse(surveyResponseId id: Int)
+      -> SignalProducer<SurveyResponse, ErrorEnvelope> {
+      if let response = fetchSurveyResponseResponse {
+        return SignalProducer(value: response)
+      } else if let error = fetchSurveyResponseError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: .template |> SurveyResponse.lens.id .~ id)
+    }
+
+    internal func fetchUnansweredSurveyResponses() -> SignalProducer<[SurveyResponse], ErrorEnvelope> {
+      return SignalProducer(value: self.fetchUnansweredSurveyResponsesResponse)
+    }
+
+    internal func fetchUser(userId: Int) -> SignalProducer<User, ErrorEnvelope> {
+      if let error = self.fetchUserError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: self.fetchUserResponse ?? (.template |> \.id .~ userId))
+    }
+
+    internal func fetchUser(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
+      if let error = self.fetchUserError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: self.fetchUserResponse ?? user)
+    }
+
+    internal func fetchCategory(param: Param)
+      -> SignalProducer<KsApi.Category, GraphError> {
+      switch param {
+      case let .id(id):
+        return SignalProducer(value: .template |> Category.lens.id .~ "\(id)")
+      default:
+        return .empty
+      }
+    }
+
+    internal func incrementVideoCompletion(forProject _: Project) ->
+      SignalProducer<VoidEnvelope, ErrorEnvelope> {
       if let error = incrementVideoCompletionError {
         return .init(error: error)
       } else {
         return .init(value: VoidEnvelope())
       }
-  }
+    }
 
-  internal func incrementVideoStart(forProject project: Project) ->
-    SignalProducer<VoidEnvelope, ErrorEnvelope> {
+    internal func incrementVideoStart(forProject _: Project) ->
+      SignalProducer<VoidEnvelope, ErrorEnvelope> {
       if let error = incrementVideoStartError {
         return .init(error: error)
       } else {
         return .init(value: VoidEnvelope())
       }
-  }
-
-  internal func login(email: String, password: String, code: String?) ->
-    SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-
-    if let error = loginError {
-      return SignalProducer(error: error)
-    } else if let accessTokenEnvelope = loginResponse {
-      return SignalProducer(value: accessTokenEnvelope)
-    } else if let resendCodeResponse = resendCodeResponse {
-      return SignalProducer(error: resendCodeResponse)
-    } else if let resendCodeError = resendCodeError {
-      return SignalProducer(error: resendCodeError)
     }
 
-    return SignalProducer(value: AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-  }
+    internal func login(email _: String, password _: String, code _: String?) ->
+      SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
+      if let error = loginError {
+        return SignalProducer(error: error)
+      } else if let accessTokenEnvelope = loginResponse {
+        return SignalProducer(value: accessTokenEnvelope)
+      } else if let resendCodeResponse = resendCodeResponse {
+        return SignalProducer(error: resendCodeResponse)
+      } else if let resendCodeError = resendCodeError {
+        return SignalProducer(error: resendCodeError)
+      }
 
-  internal func login(facebookAccessToken: String, code: String?) ->
-    SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-
-    if let error = loginError {
-      return SignalProducer(error: error)
-    } else if let accessTokenEnvelope = loginResponse {
-      return SignalProducer(value: accessTokenEnvelope)
-    } else if let resendCodeResponse = resendCodeResponse {
-      return SignalProducer(error: resendCodeResponse)
-    } else if let resendCodeError = resendCodeError {
-      return SignalProducer(error: resendCodeError)
+      return SignalProducer(value: AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
     }
 
-    return SignalProducer(value: AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-  }
+    internal func login(facebookAccessToken _: String, code _: String?) ->
+      SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
+      if let error = loginError {
+        return SignalProducer(error: error)
+      } else if let accessTokenEnvelope = loginResponse {
+        return SignalProducer(value: accessTokenEnvelope)
+      } else if let resendCodeResponse = resendCodeResponse {
+        return SignalProducer(error: resendCodeResponse)
+      } else if let resendCodeError = resendCodeError {
+        return SignalProducer(error: resendCodeError)
+      }
 
-  internal func markAsRead(messageThread: MessageThread)
-    -> SignalProducer<MessageThread, ErrorEnvelope> {
+      return SignalProducer(value: AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
+    }
+
+    internal func markAsRead(messageThread: MessageThread)
+      -> SignalProducer<MessageThread, ErrorEnvelope> {
       return SignalProducer(value: messageThread)
-  }
-
-  internal func postComment(_ body: String, toProject project: Project) ->
-    SignalProducer<Comment, ErrorEnvelope> {
-
-    if let error = self.postCommentError {
-      return SignalProducer(error: error)
-    } else if let comment = self.postCommentResponse {
-      return SignalProducer(value: comment)
     }
-    return .empty
-  }
 
-  func postComment(_ body: String, toUpdate update: Update) -> SignalProducer<Comment, ErrorEnvelope> {
-
-    if let error = self.postCommentError {
-      return SignalProducer(error: error)
-    } else if let comment = self.postCommentResponse {
-      return SignalProducer(value: comment)
+    internal func postComment(_: String, toProject _: Project) ->
+      SignalProducer<Comment, ErrorEnvelope> {
+      if let error = self.postCommentError {
+        return SignalProducer(error: error)
+      } else if let comment = self.postCommentResponse {
+        return SignalProducer(value: comment)
+      }
+      return .empty
     }
-    return .empty
-  }
 
-  func resetPassword(email: String) -> SignalProducer<User, ErrorEnvelope> {
-    if let response = resetPasswordResponse {
-      return SignalProducer(value: response)
-    } else if let error = resetPasswordError {
-      return SignalProducer(error: error)
+    func postComment(_: String, toUpdate _: Update) -> SignalProducer<Comment, ErrorEnvelope> {
+      if let error = self.postCommentError {
+        return SignalProducer(error: error)
+      } else if let comment = self.postCommentResponse {
+        return SignalProducer(value: comment)
+      }
+      return .empty
     }
-    return SignalProducer(value: .template)
-  }
 
-  func register(pushToken: String) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    return SignalProducer(value: VoidEnvelope())
-  }
-
-  func exportDataState() -> SignalProducer<ExportDataEnvelope, ErrorEnvelope> {
-    if let response = fetchExportStateResponse {
-      return SignalProducer(value: response)
-    } else if let error = fetchExportStateError {
-      return SignalProducer(error: error)
+    func resetPassword(email _: String) -> SignalProducer<User, ErrorEnvelope> {
+      if let response = resetPasswordResponse {
+        return SignalProducer(value: response)
+      } else if let error = resetPasswordError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: .template)
     }
-    return SignalProducer(value: .template)
-  }
 
-  internal func searchMessages(query: String, project: Project?)
-    -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
-      return SignalProducer(value:
+    func register(pushToken _: String) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
+      return SignalProducer(value: VoidEnvelope())
+    }
+
+    func exportDataState() -> SignalProducer<ExportDataEnvelope, ErrorEnvelope> {
+      if let response = fetchExportStateResponse {
+        return SignalProducer(value: response)
+      } else if let error = fetchExportStateError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: .template)
+    }
+
+    internal func searchMessages(query _: String, project _: Project?)
+      -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
+      return SignalProducer(
+        value:
         MessageThreadsEnvelope(
           messageThreads: self.fetchMessageThreadsResponse,
           urls: MessageThreadsEnvelope.UrlsEnvelope(
@@ -1187,104 +1179,104 @@ internal struct MockService: ServiceType {
           )
         )
       )
-  }
+    }
 
-  internal func sendMessage(body: String, toSubject subject: MessageSubject)
-    -> SignalProducer<Message, ErrorEnvelope> {
-
+    internal func sendMessage(body: String, toSubject _: MessageSubject)
+      -> SignalProducer<Message, ErrorEnvelope> {
       return SignalProducer(
         value: .template
           |> Message.lens.id .~ body.hashValue
           |> Message.lens.body .~ body
       )
-  }
-
-  internal func sendVerificationEmail(input: EmptyInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-
-    if let error = sendEmailVerificationError {
-      return SignalProducer(error: error)
     }
-    return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
-  }
 
-  internal func signup(name: String,
-                       email: String,
-                       password: String,
-                       passwordConfirmation: String,
-                       sendNewsletters: Bool) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-    if let error = signupError {
-      return SignalProducer(error: error)
-    } else if let accessTokenEnvelope = signupResponse {
-      return SignalProducer(value: accessTokenEnvelope)
+    internal func sendVerificationEmail(input _: EmptyInput)
+      -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      if let error = sendEmailVerificationError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
     }
-    return SignalProducer(value:
-      AccessTokenEnvelope(
-        accessToken: "deadbeef",
-        user: .template
-          |> \.name .~ name
-          |> \.newsletters.weekly .~ sendNewsletters
+
+    internal func signup(
+      name: String,
+      email _: String,
+      password _: String,
+      passwordConfirmation _: String,
+      sendNewsletters: Bool
+    ) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
+      if let error = signupError {
+        return SignalProducer(error: error)
+      } else if let accessTokenEnvelope = signupResponse {
+        return SignalProducer(value: accessTokenEnvelope)
+      }
+      return SignalProducer(
+        value:
+        AccessTokenEnvelope(
+          accessToken: "deadbeef",
+          user: .template
+            |> \.name .~ name
+            |> \.newsletters.weekly .~ sendNewsletters
+        )
       )
-    )
-  }
-
-  internal func signup(facebookAccessToken: String, sendNewsletters: Bool) ->
-    SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-
-    if let error = signupError {
-      return SignalProducer(error: error)
-    } else if let accessTokenEnvelope = signupResponse {
-      return SignalProducer(value: accessTokenEnvelope)
     }
-    return SignalProducer(value:
-      AccessTokenEnvelope(
-        accessToken: "deadbeef",
-        user: .template
+
+    internal func signup(facebookAccessToken _: String, sendNewsletters _: Bool) ->
+      SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
+      if let error = signupError {
+        return SignalProducer(error: error)
+      } else if let accessTokenEnvelope = signupResponse {
+        return SignalProducer(value: accessTokenEnvelope)
+      }
+      return SignalProducer(
+        value:
+        AccessTokenEnvelope(
+          accessToken: "deadbeef",
+          user: .template
+        )
       )
-    )
-  }
+    }
 
-  func submitApplePay(checkoutUrl: String,
-                      stripeToken: String,
-                      paymentInstrumentName: String,
-                      paymentNetwork: String,
-                      transactionIdentifier: String) ->
-    SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope> {
+    func submitApplePay(
+      checkoutUrl _: String,
+      stripeToken _: String,
+      paymentInstrumentName _: String,
+      paymentNetwork _: String,
+      transactionIdentifier _: String
+    ) ->
+      SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope> {
+      return SignalProducer(value: self.submitApplePayResponse)
+    }
 
-    return SignalProducer(value: self.submitApplePayResponse)
-  }
-
-  internal func updateProjectNotification(_ notification: ProjectNotification)
-    -> SignalProducer<ProjectNotification, ErrorEnvelope> {
+    internal func updateProjectNotification(_ notification: ProjectNotification)
+      -> SignalProducer<ProjectNotification, ErrorEnvelope> {
       if let error = updateProjectNotificationError {
         return SignalProducer(error: error)
       }
       return SignalProducer(value: notification)
-  }
-
-  internal func updateUserSelf(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
-    if let error = updateUserSelfError {
-      return SignalProducer(error: error)
     }
-    return SignalProducer(value: user)
-  }
 
-  internal func fetchUpdate(updateId: Int, projectParam: Param)
-    -> SignalProducer<Update, ErrorEnvelope> {
+    internal func updateUserSelf(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
+      if let error = updateUserSelfError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: user)
+    }
 
+    internal func fetchUpdate(updateId: Int, projectParam _: Param)
+      -> SignalProducer<Update, ErrorEnvelope> {
       return SignalProducer(value: self.fetchUpdateResponse |> Update.lens.id .~ updateId)
-  }
-
-  internal func fetchUpdateDraft(forProject project: Project) -> SignalProducer<UpdateDraft, ErrorEnvelope> {
-    if let error = self.fetchDraftError {
-      return SignalProducer(error: error)
     }
-    return SignalProducer(value: fetchDraftResponse ?? .template)
-  }
 
-  internal func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)
-    -> SignalProducer<UpdateDraft, ErrorEnvelope> {
+    internal func fetchUpdateDraft(forProject _: Project) -> SignalProducer<UpdateDraft, ErrorEnvelope> {
+      if let error = self.fetchDraftError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: self.fetchDraftResponse ?? .template)
+    }
 
+    internal func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)
+      -> SignalProducer<UpdateDraft, ErrorEnvelope> {
       if let error = self.updateDraftError {
         return SignalProducer(error: error)
       }
@@ -1294,190 +1286,186 @@ internal struct MockService: ServiceType {
         |> UpdateDraft.lens.update.isPublic .~ isPublic
 
       return SignalProducer(value: updatedDraft)
-  }
-
-  internal func updatePledge(
-    project: Project,
-    amount: Double,
-    reward: Reward?,
-    shippingLocation: Location?,
-    tappedReward: Bool) -> SignalProducer<UpdatePledgeEnvelope, ErrorEnvelope> {
-
-    if let error = self.updatePledgeResult?.error {
-      return SignalProducer(error: error)
     }
 
-    return SignalProducer(value: self.updatePledgeResult?.value ?? .template)
-  }
+    internal func updatePledge(
+      project _: Project,
+      amount _: Double,
+      reward _: Reward?,
+      shippingLocation _: Location?,
+      tappedReward _: Bool
+    ) -> SignalProducer<UpdatePledgeEnvelope, ErrorEnvelope> {
+      if let error = self.updatePledgeResult?.error {
+        return SignalProducer(error: error)
+      }
 
-  internal func unwatchProject(input: WatchProjectInput)
-    -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+      return SignalProducer(value: self.updatePledgeResult?.value ?? .template)
+    }
+
+    internal func unwatchProject(input _: WatchProjectInput)
+      -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
       return producer(for: self.unwatchProjectMutationResult)
-  }
+    }
 
-  internal func watchProject(input: WatchProjectInput)
-    -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
+    internal func watchProject(input _: WatchProjectInput)
+      -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
       return producer(for: self.watchProjectMutationResult)
-  }
+    }
 
-  internal func addImage(file fileURL: URL, toDraft draft: UpdateDraft)
-    -> SignalProducer<UpdateDraft.Image, ErrorEnvelope> {
-
+    internal func addImage(file _: URL, toDraft _: UpdateDraft)
+      -> SignalProducer<UpdateDraft.Image, ErrorEnvelope> {
       if let error = addAttachmentError {
         return SignalProducer(error: error)
       }
 
-      return SignalProducer(value: addAttachmentResponse ?? .template)
-  }
+      return SignalProducer(value: self.addAttachmentResponse ?? .template)
+    }
 
-  internal func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
-    -> SignalProducer<UpdateDraft.Image, ErrorEnvelope> {
-
+    internal func delete(image _: UpdateDraft.Image, fromDraft _: UpdateDraft)
+      -> SignalProducer<UpdateDraft.Image, ErrorEnvelope> {
       if let error = removeAttachmentError {
         return SignalProducer(error: error)
       }
 
-      return SignalProducer(value: removeAttachmentResponse ?? .template)
-  }
+      return SignalProducer(value: self.removeAttachmentResponse ?? .template)
+    }
 
-  internal func addVideo(file fileURL: URL, toDraft draft: UpdateDraft)
-    -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
-
+    internal func addVideo(file _: URL, toDraft _: UpdateDraft)
+      -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
       return .empty
-  }
+    }
 
-  internal func changePaymentMethod(project: Project)
-    -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope> {
-
+    internal func changePaymentMethod(project _: Project)
+      -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope> {
       if let error = self.changePaymentMethodResult?.error {
         return SignalProducer(error: error)
       }
 
       return SignalProducer(value: self.changePaymentMethodResult?.value ?? .template)
-  }
-
-  internal func deletePaymentMethod(input: PaymentSourceDeleteInput) -> SignalProducer<
-    DeletePaymentMethodEnvelope, GraphError> {
-    return producer(for: self.deletePaymentMethodResult)
-  }
-
-  internal func delete(video: UpdateDraft.Video, fromDraft draft: UpdateDraft)
-    -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
-
-      return .empty
-  }
-
-  internal func publish(draft: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {
-    if let error = publishUpdateError {
-      return SignalProducer(error: error)
     }
 
-    return SignalProducer(value: fetchUpdateResponse)
-  }
+    internal func deletePaymentMethod(input _: PaymentSourceDeleteInput) -> SignalProducer<
+      DeletePaymentMethodEnvelope, GraphError
+    > {
+      return producer(for: self.deletePaymentMethodResult)
+    }
 
-  internal func previewUrl(forDraft draft: UpdateDraft) -> URL? {
-    return URL(
-      string: "https://\(Secrets.Api.Endpoint.production)/projects/\(draft.update.projectId)/updates/"
-        + "\(draft.update.id)/preview"
-    )
-  }
-}
+    internal func delete(video _: UpdateDraft.Video, fromDraft _: UpdateDraft)
+      -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
+      return .empty
+    }
 
-private extension MockService {
-    enum lens {
-    static let oauthToken = Lens<MockService, OauthTokenAuthType?>(
-      view: { $0.oauthToken },
-      set: {
-        MockService(
-          appId: $1.appId,
-          serverConfig: $1.serverConfig,
-          oauthToken: $0,
-          language: $1.language,
-          buildVersion: $1.buildVersion,
-          addNewCreditCardResult: $1.addNewCreditCardResult,
-          changePaymentMethodResult: $1.changePaymentMethodResult,
-          deletePaymentMethodResult: $1.deletePaymentMethodResult,
-          createPledgeResult: $1.createPledgeResult,
-          facebookConnectResponse: $1.facebookConnectResponse,
-          facebookConnectError: $1.facebookConnectError,
-          fetchActivitiesResponse: $1.fetchActivitiesResponse,
-          fetchActivitiesError: $1.fetchActivitiesError,
-          fetchBackingResponse: $1.fetchBackingResponse,
-          fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
-          fetchCommentsResponse: $1.fetchCommentsResponse,
-          fetchCommentsError: $1.fetchCommentsError,
-          fetchConfigResponse: $1.fetchConfigResponse,
-          fetchDiscoveryResponse: $1.fetchDiscoveryResponse,
-          fetchDiscoveryError: $1.fetchDiscoveryError,
-          fetchFriendsResponse: $1.fetchFriendsResponse,
-          fetchFriendsError: $1.fetchFriendsError,
-          fetchFriendStatsResponse: $1.fetchFriendStatsResponse,
-          fetchFriendStatsError: $1.fetchFriendStatsError,
-          fetchExportStateResponse: $1.fetchExportStateResponse,
-          fetchExportStateError: $1.fetchExportStateError,
-          exportDataError: $1.exportDataError,
-          fetchDraftResponse: $1.fetchDraftResponse,
-          fetchDraftError: $1.fetchDraftError,
-          addAttachmentResponse: $1.addAttachmentResponse,
-          addAttachmentError: $1.addAttachmentError,
-          removeAttachmentResponse: $1.removeAttachmentResponse,
-          removeAttachmentError: $1.removeAttachmentError,
-          publishUpdateError: $1.publishUpdateError,
-          fetchMessageThreadResult: $1.fetchMessageThreadResult,
-          fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
-          fetchProjectActivitiesResponse: $1.fetchProjectActivitiesResponse,
-          fetchProjectActivitiesError: $1.fetchProjectActivitiesError,
-          fetchProjectResponse: $1.fetchProjectResponse,
-          fetchProjectNotificationsResponse: $1.fetchProjectNotificationsResponse,
-          fetchProjectsResponse: $1.fetchProjectsResponse,
-          fetchProjectsError: $1.fetchProjectsError,
-          fetchProjectStatsResponse: $1.fetchProjectStatsResponse,
-          fetchProjectStatsError: $1.fetchProjectStatsError,
-          fetchShippingRulesResult: $1.fetchShippingRulesResult,
-          fetchUserProjectsBackedResponse: $1.fetchUserProjectsBackedResponse,
-          fetchUserProjectsBackedError: $1.fetchUserProjectsBackedError,
-          fetchUserResponse: $1.fetchUserResponse,
-          fetchUserError: $1.fetchUserError,
-          fetchUserSelfResponse: $1.fetchUserSelfResponse,
-          followFriendError: $1.followFriendError,
-          incrementVideoCompletionError: $1.incrementVideoCompletionError,
-          incrementVideoStartError: $1.incrementVideoStartError,
-          fetchSurveyResponseResponse: $1.fetchSurveyResponseResponse,
-          fetchSurveyResponseError: $1.fetchSurveyResponseError,
-          fetchUnansweredSurveyResponsesResponse: $1.fetchUnansweredSurveyResponsesResponse,
-          fetchUpdateCommentsResponse: $1.fetchUpdateCommentsResponse,
-          fetchUpdateResponse: $1.fetchUpdateResponse,
-          fetchUserSelfError: $1.fetchUserSelfError,
-          postCommentResponse: $1.postCommentResponse,
-          postCommentError: $1.postCommentError,
-          loginResponse: $1.loginResponse,
-          loginError: $1.loginError,
-          resendCodeResponse: $1.resendCodeResponse,
-          resendCodeError: $1.resendCodeError,
-          resetPasswordResponse: $1.resetPasswordResponse,
-          resetPasswordError: $1.resetPasswordError,
-          signupResponse: $1.signupResponse,
-          signupError: $1.signupError,
-          submitApplePayResponse: $1.submitApplePayResponse,
-          unfollowFriendError: $1.unfollowFriendError,
-          updateDraftError: $1.updateDraftError,
-          updatePledgeResult: $1.updatePledgeResult,
-          updateProjectNotificationResponse: $1.updateProjectNotificationResponse,
-          updateProjectNotificationError: $1.updateProjectNotificationError,
-          updateUserSelfError: $1.updateUserSelfError,
-          unwatchProjectMutationResult: $1.unwatchProjectMutationResult,
-          watchProjectMutationResult: $1.watchProjectMutationResult
-        )
+    internal func publish(draft _: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {
+      if let error = publishUpdateError {
+        return SignalProducer(error: error)
       }
-    )
-  }
-}
 
-private func producer<T, E>(for property: Result<T, E>?) -> SignalProducer<T, E> {
-  guard let result = property else { return .empty }
-  switch result {
-  case .success(let value): return .init(value: value)
-  case .failure(let error): return .init(error: error)
+      return SignalProducer(value: self.fetchUpdateResponse)
+    }
+
+    internal func previewUrl(forDraft draft: UpdateDraft) -> URL? {
+      return URL(
+        string: "https://\(Secrets.Api.Endpoint.production)/projects/\(draft.update.projectId)/updates/"
+          + "\(draft.update.id)/preview"
+      )
+    }
   }
-}
+
+  private extension MockService {
+    enum lens {
+      static let oauthToken = Lens<MockService, OauthTokenAuthType?>(
+        view: { $0.oauthToken },
+        set: {
+          MockService(
+            appId: $1.appId,
+            serverConfig: $1.serverConfig,
+            oauthToken: $0,
+            language: $1.language,
+            buildVersion: $1.buildVersion,
+            addNewCreditCardResult: $1.addNewCreditCardResult,
+            changePaymentMethodResult: $1.changePaymentMethodResult,
+            deletePaymentMethodResult: $1.deletePaymentMethodResult,
+            createPledgeResult: $1.createPledgeResult,
+            facebookConnectResponse: $1.facebookConnectResponse,
+            facebookConnectError: $1.facebookConnectError,
+            fetchActivitiesResponse: $1.fetchActivitiesResponse,
+            fetchActivitiesError: $1.fetchActivitiesError,
+            fetchBackingResponse: $1.fetchBackingResponse,
+            fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
+            fetchCommentsResponse: $1.fetchCommentsResponse,
+            fetchCommentsError: $1.fetchCommentsError,
+            fetchConfigResponse: $1.fetchConfigResponse,
+            fetchDiscoveryResponse: $1.fetchDiscoveryResponse,
+            fetchDiscoveryError: $1.fetchDiscoveryError,
+            fetchFriendsResponse: $1.fetchFriendsResponse,
+            fetchFriendsError: $1.fetchFriendsError,
+            fetchFriendStatsResponse: $1.fetchFriendStatsResponse,
+            fetchFriendStatsError: $1.fetchFriendStatsError,
+            fetchExportStateResponse: $1.fetchExportStateResponse,
+            fetchExportStateError: $1.fetchExportStateError,
+            exportDataError: $1.exportDataError,
+            fetchDraftResponse: $1.fetchDraftResponse,
+            fetchDraftError: $1.fetchDraftError,
+            addAttachmentResponse: $1.addAttachmentResponse,
+            addAttachmentError: $1.addAttachmentError,
+            removeAttachmentResponse: $1.removeAttachmentResponse,
+            removeAttachmentError: $1.removeAttachmentError,
+            publishUpdateError: $1.publishUpdateError,
+            fetchMessageThreadResult: $1.fetchMessageThreadResult,
+            fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
+            fetchProjectActivitiesResponse: $1.fetchProjectActivitiesResponse,
+            fetchProjectActivitiesError: $1.fetchProjectActivitiesError,
+            fetchProjectResponse: $1.fetchProjectResponse,
+            fetchProjectNotificationsResponse: $1.fetchProjectNotificationsResponse,
+            fetchProjectsResponse: $1.fetchProjectsResponse,
+            fetchProjectsError: $1.fetchProjectsError,
+            fetchProjectStatsResponse: $1.fetchProjectStatsResponse,
+            fetchProjectStatsError: $1.fetchProjectStatsError,
+            fetchShippingRulesResult: $1.fetchShippingRulesResult,
+            fetchUserProjectsBackedResponse: $1.fetchUserProjectsBackedResponse,
+            fetchUserProjectsBackedError: $1.fetchUserProjectsBackedError,
+            fetchUserResponse: $1.fetchUserResponse,
+            fetchUserError: $1.fetchUserError,
+            fetchUserSelfResponse: $1.fetchUserSelfResponse,
+            followFriendError: $1.followFriendError,
+            incrementVideoCompletionError: $1.incrementVideoCompletionError,
+            incrementVideoStartError: $1.incrementVideoStartError,
+            fetchSurveyResponseResponse: $1.fetchSurveyResponseResponse,
+            fetchSurveyResponseError: $1.fetchSurveyResponseError,
+            fetchUnansweredSurveyResponsesResponse: $1.fetchUnansweredSurveyResponsesResponse,
+            fetchUpdateCommentsResponse: $1.fetchUpdateCommentsResponse,
+            fetchUpdateResponse: $1.fetchUpdateResponse,
+            fetchUserSelfError: $1.fetchUserSelfError,
+            postCommentResponse: $1.postCommentResponse,
+            postCommentError: $1.postCommentError,
+            loginResponse: $1.loginResponse,
+            loginError: $1.loginError,
+            resendCodeResponse: $1.resendCodeResponse,
+            resendCodeError: $1.resendCodeError,
+            resetPasswordResponse: $1.resetPasswordResponse,
+            resetPasswordError: $1.resetPasswordError,
+            signupResponse: $1.signupResponse,
+            signupError: $1.signupError,
+            submitApplePayResponse: $1.submitApplePayResponse,
+            unfollowFriendError: $1.unfollowFriendError,
+            updateDraftError: $1.updateDraftError,
+            updatePledgeResult: $1.updatePledgeResult,
+            updateProjectNotificationResponse: $1.updateProjectNotificationResponse,
+            updateProjectNotificationError: $1.updateProjectNotificationError,
+            updateUserSelfError: $1.updateUserSelfError,
+            unwatchProjectMutationResult: $1.unwatchProjectMutationResult,
+            watchProjectMutationResult: $1.watchProjectMutationResult
+          )
+        }
+      )
+    }
+  }
+
+  private func producer<T, E>(for property: Result<T, E>?) -> SignalProducer<T, E> {
+    guard let result = property else { return .empty }
+    switch result {
+    case let .success(value): return .init(value: value)
+    case let .failure(error): return .init(error: error)
+    }
+  }
 #endif

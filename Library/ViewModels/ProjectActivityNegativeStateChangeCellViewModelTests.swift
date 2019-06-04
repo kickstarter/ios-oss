@@ -1,15 +1,14 @@
-import XCTest
 @testable import KsApi
 @testable import Library
-import ReactiveExtensions_TestHelpers
 import Prelude
-import Result
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ProjectActivityNegativeStateChangeCellViewModelTests: TestCase {
   fileprivate let vm: ProjectActivityNegativeStateChangeCellViewModel =
     ProjectActivityNegativeStateChangeCellViewModel()
 
-  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

@@ -1,3 +1,3 @@
 import UIKit
 
-extension UIApplication: UIApplicationType { }
+extension UIApplication: UIApplicationType {}

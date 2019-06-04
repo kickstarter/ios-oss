@@ -7,8 +7,10 @@ import Prelude_UIKit
 public protocol ProjectPamphletContentViewControllerDelegate: VideoViewControllerDelegate {
   func projectPamphletContent(_ controller: ProjectPamphletContentViewController, imageIsVisible: Bool)
   func projectPamphletContent(_ controller: ProjectPamphletContentViewController, didScrollToTop: Bool)
-  func projectPamphletContent(_ controller: ProjectPamphletContentViewController,
-                              scrollViewPanGestureRecognizerDidChange recognizer: UIPanGestureRecognizer)
+  func projectPamphletContent(
+    _ controller: ProjectPamphletContentViewController,
+    scrollViewPanGestureRecognizerDidChange recognizer: UIPanGestureRecognizer
+  )
 }
 
 public final class ProjectPamphletContentViewController: UITableViewController {
@@ -24,9 +26,10 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.dataSource = dataSource
+    self.tableView.dataSource = self.dataSource
     self.tableView.panGestureRecognizer.addTarget(
-      self, action: #selector(scrollViewPanGestureRecognizerDidChange(_:))
+      self,
+      action: #selector(ProjectPamphletContentViewController.scrollViewPanGestureRecognizerDidChange(_:))
     )
 
     self.tableView.register(nib: .DeprecatedRewardCell)
@@ -49,8 +52,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 450)
-      |> (UITableViewController.lens.tableView..UITableView.lens.delaysContentTouches) .~ false
-      |> (UITableViewController.lens.tableView..UITableView.lens.canCancelContentTouches) .~ true
+      |> (UITableViewController.lens.tableView .. UITableView.lens.delaysContentTouches) .~ false
+      |> (UITableViewController.lens.tableView .. UITableView.lens.canCancelContentTouches) .~ true
   }
 
   public override func bindViewModel() {
@@ -59,16 +62,16 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     self.viewModel.outputs.loadProjectIntoDataSource
       .observeForUI()
       .observeValues { [weak self] project, visible in
-        self?.dataSource.load(project: project, visible: visible )
+        self?.dataSource.load(project: project, visible: visible)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.loadMinimalProjectIntoDataSource
       .observeForUI()
       .observeValues { [weak self] project in
         self?.dataSource.loadMinimal(project: project)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.goToBacking
       .observeForControllerAction()
@@ -86,10 +89,10 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project, reward in
         self?.goToRewardPledge(project: project, reward: reward)
-    }
+      }
   }
 
-  public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  public override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let (_, rewardOrBacking) = self.dataSource[indexPath] as? (Project, Either<Reward, Backing>) {
       self.viewModel.inputs.tapped(rewardOrBacking: rewardOrBacking)
     } else if self.dataSource.indexPathIsPledgeAnyAmountCell(indexPath) {
@@ -101,10 +104,11 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     }
   }
 
-  public override func tableView(_ tableView: UITableView,
-                                 willDisplay cell: UITableViewCell,
-                                 forRowAt indexPath: IndexPath) {
-
+  public override func tableView(
+    _: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt _: IndexPath
+  ) {
     if let cell = cell as? ProjectPamphletMainCell {
       cell.delegate = self
     } else if let cell = cell as? DeprecatedRewardCell {
@@ -113,12 +117,13 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   }
 
   fileprivate func goToRewardPledge(project: Project, reward: Reward) {
-
     let applePayCapable = PKPaymentAuthorizationViewController.applePayCapable(for: project)
 
-    let vc = DeprecatedRewardPledgeViewController.configuredWith(project: project,
-                                                                 reward: reward,
-                                                                 applePayCapable: applePayCapable)
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(
+      project: project,
+      reward: reward,
+      applePayCapable: applePayCapable
+    )
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
     self.present(nav, animated: true, completion: nil)
@@ -153,8 +158,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  override public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
+  public override func scrollViewDidScroll(_ scrollView: UIScrollView) {
     guard self.scrollingIsAllowed(scrollView) else {
       scrollView.contentOffset = .zero
       return
@@ -163,12 +167,12 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     if let
       cell = self.tableView.cellForRow(at: self.dataSource.indexPathForMainCell() as IndexPath),
       let mainCell = cell as? ProjectPamphletMainCell {
-        mainCell.scrollContentOffset(scrollView.contentOffset.y + scrollView.contentInset.top)
+      mainCell.scrollContentOffset(scrollView.contentOffset.y + scrollView.contentInset.top)
     }
 
     self.delegate?.projectPamphletContent(
       self,
-      imageIsVisible: scrollView.contentOffset.y < scrollView.bounds.width * 9/16
+      imageIsVisible: scrollView.contentOffset.y < scrollView.bounds.width * 9 / 16
     )
 
     self.delegate?.projectPamphletContent(
@@ -188,24 +192,28 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 }
 
 extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate {
-  internal func projectPamphletMainCell(_ cell: ProjectPamphletMainCell,
-                                        goToCampaignForProject project: Project) {
-
+  internal func projectPamphletMainCell(
+    _: ProjectPamphletMainCell,
+    goToCampaignForProject project: Project
+  ) {
     let vc = ProjectDescriptionViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  internal func projectPamphletMainCell(_ cell: ProjectPamphletMainCell,
-                                        addChildController child: UIViewController) {
+  internal func projectPamphletMainCell(
+    _: ProjectPamphletMainCell,
+    addChildController child: UIViewController
+  ) {
     self.addChild(child)
     child.beginAppearanceTransition(true, animated: false)
     child.didMove(toParent: self)
     child.endAppearanceTransition()
   }
 
-  internal func projectPamphletMainCell(_ cell: ProjectPamphletMainCell,
-                                        goToCreatorForProject project: Project) {
-
+  internal func projectPamphletMainCell(
+    _: ProjectPamphletMainCell,
+    goToCreatorForProject project: Project
+  ) {
     let vc = ProjectCreatorViewController.configuredWith(project: project)
 
     if self.traitCollection.userInterfaceIdiom == .pad {
@@ -219,7 +227,6 @@ extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate 
 }
 
 extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
-
   public func videoViewControllerDidFinish(_ controller: VideoViewController) {
     self.delegate?.videoViewControllerDidFinish(controller)
   }

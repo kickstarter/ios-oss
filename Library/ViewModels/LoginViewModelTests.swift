@@ -1,28 +1,27 @@
-import Prelude
-import XCTest
-@testable import Library
 @testable import KsApi
-import ReactiveSwift
+@testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
+import ReactiveSwift
+import XCTest
 
 final class LoginViewModelTests: TestCase {
   fileprivate let vm: LoginViewModelType = LoginViewModel()
-  fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  fileprivate let isFormValid = TestObserver<Bool, NoError>()
-  fileprivate let dismissKeyboard = TestObserver<(), NoError>()
-  fileprivate let postNotificationName = TestObserver<(Notification.Name, Notification.Name), NoError>()
-  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  fileprivate let showError = TestObserver<String, NoError>()
-  fileprivate let tfaChallenge = TestObserver<String, NoError>()
-  fileprivate let emailText = TestObserver<String, NoError>()
-  fileprivate let tfaChallengePasswordText = TestObserver<String, NoError>()
-  fileprivate let onePasswordButtonIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
-  fileprivate let passwordText = TestObserver<String, NoError>()
-  fileprivate let showHidePassword = TestObserver<Bool, NoError>()
+  fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  fileprivate let isFormValid = TestObserver<Bool, Never>()
+  fileprivate let dismissKeyboard = TestObserver<(), Never>()
+  fileprivate let postNotificationName = TestObserver<(Notification.Name, Notification.Name), Never>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let showError = TestObserver<String, Never>()
+  fileprivate let tfaChallenge = TestObserver<String, Never>()
+  fileprivate let emailText = TestObserver<String, Never>()
+  fileprivate let tfaChallengePasswordText = TestObserver<String, Never>()
+  fileprivate let onePasswordButtonIsHidden = TestObserver<Bool, Never>()
+  fileprivate let onePasswordFindLoginForURLString = TestObserver<String, Never>()
+  fileprivate let passwordText = TestObserver<String, Never>()
+  fileprivate let showHidePassword = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -56,14 +55,20 @@ final class LoginViewModelTests: TestCase {
 
     XCTAssertEqual(["User Login", "Viewed Login"], trackingClient.events, "Koala login is tracked")
 
-    XCTAssertEqual([false, nil],
-                   self.trackingClient.properties(forKey: "1password_extension_available", as: Bool.self))
+    XCTAssertEqual(
+      [false, nil],
+      self.trackingClient.properties(forKey: "1password_extension_available", as: Bool.self)
+    )
 
-    XCTAssertEqual([nil, false],
-                   self.trackingClient.properties(forKey: "one_password_extension_available", as: Bool.self))
+    XCTAssertEqual(
+      [nil, false],
+      self.trackingClient.properties(forKey: "one_password_extension_available", as: Bool.self)
+    )
 
-    XCTAssertEqual([true, nil],
-                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+    XCTAssertEqual(
+      [true, nil],
+      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
+    )
 
     self.isFormValid.assertValues([false], "Form is not valid")
 
@@ -83,16 +88,22 @@ final class LoginViewModelTests: TestCase {
 
     self.dismissKeyboard.assertValueCount(1, "Keyboard is dismissed")
     self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(["User Login", "Viewed Login", "Login", "Logged In"], trackingClient.events,
-                   "Koala login is tracked")
+    XCTAssertEqual(
+      ["User Login", "Viewed Login", "Login", "Logged In"], trackingClient.events,
+      "Koala login is tracked"
+    )
     // swiftlint:disable:next force_unwrapping
     XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
 
     self.vm.inputs.environmentLoggedIn()
-    XCTAssertEqual(self.postNotificationName.values.first?.0, .ksr_sessionStarted,
-                   "Login notification posted.")
-    XCTAssertEqual(self.postNotificationName.values.first?.1, .ksr_showNotificationsDialog,
-                   "Contextual Dialog notification posted.")
+    XCTAssertEqual(
+      self.postNotificationName.values.first?.0, .ksr_sessionStarted,
+      "Login notification posted."
+    )
+    XCTAssertEqual(
+      self.postNotificationName.values.first?.1, .ksr_showNotificationsDialog,
+      "Contextual Dialog notification posted."
+    )
 
     self.showError.assertValueCount(0, "Error did not happen")
     self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
@@ -128,8 +139,10 @@ final class LoginViewModelTests: TestCase {
       self.vm.inputs.loginButtonPressed()
 
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      XCTAssertEqual(["User Login", "Viewed Login", "Errored User Login", "Errored Login"],
-                     trackingClient.events)
+      XCTAssertEqual(
+        ["User Login", "Viewed Login", "Errored User Login", "Errored Login"],
+        trackingClient.events
+      )
       // swiftlint:disable:next force_unwrapping
       XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
       self.showError.assertValues(["Unable to log in."], "Login errored")
@@ -153,8 +166,10 @@ final class LoginViewModelTests: TestCase {
       self.vm.inputs.loginButtonPressed()
 
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      XCTAssertEqual(["User Login", "Viewed Login", "Errored User Login", "Errored Login"],
-                     trackingClient.events)
+      XCTAssertEqual(
+        ["User Login", "Viewed Login", "Errored User Login", "Errored Login"],
+        trackingClient.events
+      )
       // swiftlint:disable:next force_unwrapping
       XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
       self.showError.assertValues([Strings.login_errors_unable_to_log_in()], "Login errored")
@@ -178,11 +193,15 @@ final class LoginViewModelTests: TestCase {
       self.vm.inputs.loginButtonPressed()
 
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      XCTAssertEqual(["User Login", "Viewed Login"],
-                     self.trackingClient.events, "Tfa Challenge error was not tracked")
+      XCTAssertEqual(
+        ["User Login", "Viewed Login"],
+        self.trackingClient.events, "Tfa Challenge error was not tracked"
+      )
       self.showError.assertValueCount(0, "Login error did not happen")
-      self.tfaChallenge.assertValues(["nativesquad@kickstarter.com"],
-                                     "Two factor challenge emitted with email and password")
+      self.tfaChallenge.assertValues(
+        ["nativesquad@kickstarter.com"],
+        "Two factor challenge emitted with email and password"
+      )
       self.tfaChallengePasswordText.assertValues(["helloooooo"], "Two factor challenge emitted with password")
     }
   }
@@ -247,14 +266,20 @@ final class LoginViewModelTests: TestCase {
       self.emailText.assertValues(["nativesquad@gmail.com"])
       self.passwordText.assertValues(["hello"])
       self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
-      XCTAssertEqual(["User Login", "Viewed Login", "Login", "Logged In", "Attempting 1password Login",
-                      "Triggered 1Password"], self.trackingClient.events, "Koala login is tracked")
+      XCTAssertEqual([
+        "User Login", "Viewed Login", "Login", "Logged In", "Attempting 1password Login",
+        "Triggered 1Password"
+      ], self.trackingClient.events, "Koala login is tracked")
 
       self.vm.inputs.environmentLoggedIn()
-      XCTAssertEqual(self.postNotificationName.values.first?.0, .ksr_sessionStarted,
-                     "Login notification posted.")
-      XCTAssertEqual(self.postNotificationName.values.first?.1, .ksr_showNotificationsDialog,
-                     "Contextual Dialog notification posted.")
+      XCTAssertEqual(
+        self.postNotificationName.values.first?.0, .ksr_sessionStarted,
+        "Login notification posted."
+      )
+      XCTAssertEqual(
+        self.postNotificationName.values.first?.1, .ksr_showNotificationsDialog,
+        "Contextual Dialog notification posted."
+      )
 
       self.showError.assertValueCount(0, "Error did not happen")
       self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
@@ -276,12 +301,16 @@ final class LoginViewModelTests: TestCase {
       self.vm.inputs.onePasswordFoundLogin(email: "nativesquad@gmail.com", password: "hello")
 
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      XCTAssertEqual(["User Login", "Viewed Login", "Attempting 1password Login", "Triggered 1Password"],
-                     self.trackingClient.events,
-                     "Tfa Challenge error was not tracked")
+      XCTAssertEqual(
+        ["User Login", "Viewed Login", "Attempting 1password Login", "Triggered 1Password"],
+        self.trackingClient.events,
+        "Tfa Challenge error was not tracked"
+      )
       self.showError.assertValueCount(0, "Login error did not happen")
-      self.tfaChallenge.assertValues(["nativesquad@gmail.com"],
-                                     "Two factor challenge emitted with email and password")
+      self.tfaChallenge.assertValues(
+        ["nativesquad@gmail.com"],
+        "Two factor challenge emitted with email and password"
+      )
     }
   }
 

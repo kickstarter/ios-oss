@@ -3,18 +3,17 @@ import Library
 import Prelude
 import UIKit
 
-protocol SettingsNewslettersTopCellDelegate: class {
+protocol SettingsNewslettersTopCellDelegate: AnyObject {
   func didUpdateAllNewsletters(user: User)
   func failedToUpdateAllNewsletters(_ message: String)
 }
 
-final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
-
+internal final class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
   private let viewModel: SettingsNewslettersCellViewModelType = SettingsNewsletterCellViewModel()
 
-  @IBOutlet fileprivate weak var descriptionLabel: UILabel!
-  @IBOutlet fileprivate weak var newsletterSwitch: UISwitch!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var descriptionLabel: UILabel!
+  @IBOutlet fileprivate var newsletterSwitch: UISwitch!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
@@ -24,7 +23,7 @@ final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.newsletterSwitch]
+      |> \.accessibilityElements .~ [self.newsletterSwitch].compact()
 
     _ = self.descriptionLabel
       |> \.text %~ { _ in Strings.Stay_up_to_date_newsletter() }
@@ -63,14 +62,14 @@ final internal class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.updateCurrentUser
       .observeForUI()
       .observeValues { [weak self] in
-         self?.delegate?.didUpdateAllNewsletters(user: $0)
-    }
+        self?.delegate?.didUpdateAllNewsletters(user: $0)
+      }
 
     self.viewModel.outputs.unableToSaveError
       .observeForUI()
       .observeValues { [weak self] in
         self?.delegate?.failedToUpdateAllNewsletters($0)
-    }
+      }
 
     self.newsletterSwitch.rac.on = self.viewModel.outputs.subscribeToAllSwitchIsOn.skipNil()
   }

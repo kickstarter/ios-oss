@@ -1,9 +1,8 @@
-import Library
-import Prelude
-import Result
-import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
+import Library
+import Prelude
+import XCTest
 
 private let tolerance: CGFloat = 0.0001
 
@@ -14,7 +13,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
   fileprivate let cosmicReward = Project.cosmicSurgery.rewards.last!
     |> Reward.lens.shipping.enabled .~ true
     |> Reward.lens.shipping.summary .~ "Wherever"
-    |> Reward.lens.estimatedDeliveryOn .~ 1506031200
+    |> Reward.lens.estimatedDeliveryOn .~ 1_506_031_200
 
   override func setUp() {
     super.setUp()
@@ -22,11 +21,11 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(
       apiService: MockService(
-        fetchShippingRulesResult: Result([
+        fetchShippingRulesResult: Result(success: [
           .template |> ShippingRule.lens.location .~ .usa,
           .template |> ShippingRule.lens.location .~ .canada,
           .template |> ShippingRule.lens.location .~ .greatBritain,
-          .template |> ShippingRule.lens.location .~ .australia,
+          .template |> ShippingRule.lens.location .~ .australia
         ])
       ),
       mainBundle: Bundle.framework
@@ -45,7 +44,6 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [false, true]).forEach { language, applePayCapable in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
-
         let vc = DeprecatedRewardPledgeViewController.configuredWith(
           project: project, reward: reward, applePayCapable: applePayCapable
         )
@@ -81,12 +79,14 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
   }
 
   func testPledge_ApplePayCapable_UnsupportedCountry() {
-    let unsupportedCountry = Project.Country(countryCode: "ZZ",
-                                             currencyCode: "ZZD",
-                                             currencySymbol: "µ",
-                                             maxPledge: 10_000,
-                                             minPledge: 1,
-                                             trailingCode: true)
+    let unsupportedCountry = Project.Country(
+      countryCode: "ZZ",
+      currencyCode: "ZZD",
+      currencySymbol: "µ",
+      maxPledge: 10_000,
+      minPledge: 1,
+      trailingCode: true
+    )
     let project = self.cosmicSurgery
       |> Project.lens.country .~ unsupportedCountry
     let reward = self.cosmicReward |> Reward.lens.rewardsItems .~ []
@@ -198,7 +198,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.amount .~ (reward.minimum + 10.00)
           |> Backing.lens.shippingAmount .~ 10
-    )
+      )
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
@@ -223,7 +223,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
         .template
           |> Backing.lens.reward .~ reward
           |> Backing.lens.amount .~ 10
-    )
+      )
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
@@ -247,7 +247,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
         .template
           |> Backing.lens.reward .~ reward
           |> Backing.lens.amount .~ 10
-    )
+      )
 
     let vc = DeprecatedRewardPledgeViewController.configuredWith(
       project: project, reward: reward, applePayCapable: true
@@ -273,7 +273,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
           |> Backing.lens.reward .~ oldReward
           |> Backing.lens.amount .~ (oldReward.minimum + 10.00)
           |> Backing.lens.shippingAmount .~ 10
-    )
+      )
 
     combos(Language.allLanguages, [true, false]).forEach { language, applePayCapable in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
@@ -306,7 +306,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
           |> Backing.lens.reward .~ oldReward
           |> Backing.lens.amount .~ (oldReward.minimum + 10.00)
           |> Backing.lens.shippingAmount .~ 10
-    )
+      )
 
     let vc = DeprecatedRewardPledgeViewController.configuredWith(
       project: project, reward: newReward, applePayCapable: true

@@ -5,7 +5,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import UIKit
 
-internal protocol SettingsPrivacyDeleteAccountCellDelegate: class {
+internal protocol SettingsPrivacyDeleteAccountCellDelegate: AnyObject {
   func settingsPrivacyDeleteAccountCellTapped(_ cell: SettingsPrivacyDeleteAccountCell, with url: URL)
 }
 
@@ -13,20 +13,20 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
   fileprivate let viewModel = SettingsDeleteAccountCellViewModel()
   internal weak var delegate: SettingsPrivacyDeleteAccountCellDelegate?
 
-  @IBOutlet fileprivate weak var deleteAccountButton: UIButton!
-  @IBOutlet fileprivate weak var deleteAccountLabel: UILabel!
+  @IBOutlet fileprivate var deleteAccountButton: UIButton!
+  @IBOutlet fileprivate var deleteAccountLabel: UILabel!
   @IBOutlet fileprivate var separatorView: [UIView]!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
     _ = self
-      |> \.accessibilityElements .~ [self.deleteAccountButton]
+      |> \.accessibilityElements .~ [self.deleteAccountButton].compact()
 
     _ = self.deleteAccountButton
       |> \.accessibilityLabel %~ { _ in Strings.Delete_my_Kickstarter_Account() }
 
-    self.deleteAccountButton.addTarget(self, action: #selector(deleteAccountTapped), for: .touchUpInside)
+    self.deleteAccountButton.addTarget(self, action: #selector(self.deleteAccountTapped), for: .touchUpInside)
   }
 
   internal func configureWith(value user: User) {
@@ -41,7 +41,8 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
       |> UITableViewCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
-          : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2)) }
+          : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+      }
 
     _ = self.separatorView
       ||> settingsSeparatorStyle
@@ -61,7 +62,7 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
       .observeValues { [weak self] url in
         guard let _self = self else { return }
         self?.delegate?.settingsPrivacyDeleteAccountCellTapped(_self, with: url)
-    }
+      }
   }
 
   @objc fileprivate func deleteAccountTapped() {

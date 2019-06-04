@@ -4,12 +4,12 @@ import Prelude
 import UIKit
 
 internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
-  @IBOutlet private weak var countContainerView: UIView!
-  @IBOutlet private weak var countLabel: UILabel!
-  @IBOutlet private weak var rootStackView: UIStackView!
-  @IBOutlet private weak var separatorView: UIView!
-  @IBOutlet private weak var subpageLabel: UILabel!
-  @IBOutlet private weak var topSeparatorView: UIView!
+  @IBOutlet private var countContainerView: UIView!
+  @IBOutlet private var countLabel: UILabel!
+  @IBOutlet private var rootStackView: UIStackView!
+  @IBOutlet private var separatorView: UIView!
+  @IBOutlet private var subpageLabel: UILabel!
+  @IBOutlet private var topSeparatorView: UIView!
 
   private let viewModel: ProjectPamphletSubpageCellViewModelType = ProjectPamphletSubpageCellViewModel()
 
@@ -28,7 +28,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.gridHalf(5), leftRight: Styles.grid(16))
           : .init(topBottom: Styles.gridHalf(5), leftRight: Styles.gridHalf(7))
-    }
+      }
 
     _ = self.countContainerView
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
@@ -69,7 +69,7 @@ internal final class ProjectPamphletSubpageCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] in
         self?.countContainerView.layer.borderColor = $0.cgColor
-    }
+      }
 
     self.topSeparatorView.rac.hidden = self.viewModel.outputs.topSeparatorViewHidden
     self.separatorView.rac.hidden = self.viewModel.outputs.separatorViewHidden

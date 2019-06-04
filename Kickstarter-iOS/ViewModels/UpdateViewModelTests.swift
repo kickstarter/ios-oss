@@ -1,15 +1,13 @@
-// swiftlint:disable force_unwrapping
-@testable import Library
 @testable import Kickstarter_Framework
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
-import KsApi
+@testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
 import WebKit
 import XCTest
 
+// swiftlint:disable force_unwrapping
 final class UpdateViewModelTests: TestCase {
   fileprivate let vm: UpdateViewModelType = UpdateViewModel()
 
@@ -17,11 +15,11 @@ final class UpdateViewModelTests: TestCase {
   fileprivate let update = .template
     |> Update.lens.projectId .~ 1
 
-  fileprivate let goToComments = TestObserver<Update, NoError>()
-  fileprivate let goToProject = TestObserver<Project, NoError>()
-  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
-  fileprivate let title = TestObserver<String, NoError>()
-  fileprivate let webViewLoadRequest = TestObserver<String?, NoError>()
+  fileprivate let goToComments = TestObserver<Update, Never>()
+  fileprivate let goToProject = TestObserver<Project, Never>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
+  fileprivate let title = TestObserver<String, Never>()
+  fileprivate let webViewLoadRequest = TestObserver<String?, Never>()
 
   override func setUp() {
     super.setUp()
@@ -66,7 +64,6 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchUpdateResponse: prevUpdate)) {
-
       let request = URLRequest(url: prevUpdateUrl)
       let navigationAction = WKNavigationActionData(
         navigationType: .linkActivated,
@@ -108,7 +105,6 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchProjectResponse: anotherProject)) {
-
       let request = URLRequest(url: anotherProjectUrl)
       let navigationAction = WKNavigationActionData(
         navigationType: .linkActivated,
@@ -146,8 +142,10 @@ final class UpdateViewModelTests: TestCase {
       targetFrame: WKFrameInfoData(mainFrame: true, request: commentsRequest)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
-                   self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
+    XCTAssertEqual(
+      WKNavigationActionPolicy.cancel.rawValue,
+      self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue
+    )
     self.goToComments.assertValues([self.update])
   }
 
@@ -163,8 +161,10 @@ final class UpdateViewModelTests: TestCase {
       targetFrame: WKFrameInfoData(mainFrame: true, request: updateRequest)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue,
-                   self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
+    XCTAssertEqual(
+      WKNavigationActionPolicy.allow.rawValue,
+      self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue
+    )
     self.webViewLoadRequest.assertValueCount(1)
 
     let outsideUrl = URL(string: "http://www.wikipedia.com")!
@@ -177,8 +177,10 @@ final class UpdateViewModelTests: TestCase {
       targetFrame: WKFrameInfoData(mainFrame: true, request: outsideRequest)
     )
 
-    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
-                   self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue)
+    XCTAssertEqual(
+      WKNavigationActionPolicy.cancel.rawValue,
+      self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue
+    )
     self.goToComments.assertValueCount(0)
     self.goToProject.assertValueCount(0)
     self.webViewLoadRequest.assertValueCount(1)

@@ -1,10 +1,10 @@
+@testable import Kickstarter_Framework
 @testable import KsApi
 import Library
+import PlaygroundSupport
 import Prelude
 import Prelude_UIKit
 import UIKit
-import PlaygroundSupport
-@testable import Kickstarter_Framework
 
 let project = Project.cosmicSurgery
   |> Project.lens.stats.staticUsdRate .~ 1.32
@@ -14,7 +14,7 @@ let project = Project.cosmicSurgery
       |> Backing.lens.reward .~ Project.cosmicSurgery.rewards.last
       |> Backing.lens.shippingAmount .~ 10
       |> Backing.lens.amount .~ 700
-)
+  )
 
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
@@ -28,7 +28,7 @@ AppEnvironment.replaceCurrentEnvironment(
 
 initialize()
 let controller = DeprecatedRewardPledgeViewController
-  .configuredWith(project: project , reward: project.rewards.last!)
+  .configuredWith(project: project, reward: project.rewards.last!)
 
 let (parent, _) = playgroundControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 

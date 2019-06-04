@@ -16,14 +16,13 @@ public struct CommentsEnvelope: Swift.Decodable {
 }
 
 extension CommentsEnvelope.UrlsEnvelope {
-
   enum CodingKeys: String, CodingKey {
     case api
     case moreComments = "more_comments"
   }
 
   public init(from decoder: Decoder) throws {
-    let  values = try decoder.container(keyedBy: CodingKeys.self)
+    let values = try decoder.container(keyedBy: CodingKeys.self)
     do {
       let moreComments = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .api)
         .decode(String.self, forKey: .moreComments)

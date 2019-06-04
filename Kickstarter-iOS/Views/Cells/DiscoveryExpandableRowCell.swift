@@ -5,8 +5,8 @@ import UIKit
 internal final class DiscoveryExpandableRowCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: DiscoveryExpandableRowCellViewModelType = DiscoveryExpandableRowCellViewModel()
 
-  @IBOutlet fileprivate weak var filterTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var projectsCountLabel: UILabel!
+  @IBOutlet fileprivate var filterTitleLabel: UILabel!
+  @IBOutlet fileprivate var projectsCountLabel: UILabel!
 
   internal func configureWith(value: (row: ExpandableRow, categoryId: Int?)) {
     self.viewModel.inputs.configureWith(row: value.0, categoryId: value.1)
@@ -26,7 +26,7 @@ internal final class DiscoveryExpandableRowCell: UITableViewCell, ValueCell {
         label.traitCollection.isRegularRegular
           ? UIFont.ksr_headline(size: 13)
           : UIFont.ksr_headline(size: 11)
-    }
+      }
   }
 
   internal override func bindViewModel() {
@@ -44,15 +44,15 @@ internal final class DiscoveryExpandableRowCell: UITableViewCell, ValueCell {
       .observeValues { [weak filterTitleLabel] expandableRow, categoryId in
         guard let filterTitleLabel = filterTitleLabel else { return }
         _ = filterTitleLabel
-          |>  discoveryFilterLabelStyle(categoryId: categoryId, isSelected: expandableRow.isExpanded)
-    }
+          |> discoveryFilterLabelStyle(categoryId: categoryId, isSelected: expandableRow.isExpanded)
+      }
 
     self.viewModel.outputs.filterIsExpanded
       .observeForUI()
       .observeValues { [weak filterTitleLabel] filterIsExpanded in
         guard let filterTitleLabel = filterTitleLabel else { return }
         _ = filterTitleLabel |> discoveryFilterLabelFontStyle(isSelected: filterIsExpanded)
-    }
+      }
   }
 
   internal func willDisplay() {

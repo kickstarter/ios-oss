@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol MessageDialogViewModelInputs {
   /// Call when the message text changes.
@@ -22,25 +21,25 @@ public protocol MessageDialogViewModelInputs {
 
 public protocol MessageDialogViewModelOutputs {
   /// Emits a boolean that determines if the keyboard is shown or not.
-  var keyboardIsVisible: Signal<Bool, NoError> { get }
+  var keyboardIsVisible: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the loading view is hidden or not.
-  var loadingViewIsHidden: Signal<Bool, NoError> { get }
+  var loadingViewIsHidden: Signal<Bool, Never> { get }
 
   /// Emits the message just successfully posted.
-  var notifyPresenterCommentWasPostedSuccesfully: Signal<Message, NoError> { get }
+  var notifyPresenterCommentWasPostedSuccesfully: Signal<Message, Never> { get }
 
   /// Emits when the dialog should be dismissed.
-  var notifyPresenterDialogWantsDismissal: Signal<(), NoError> { get }
+  var notifyPresenterDialogWantsDismissal: Signal<(), Never> { get }
 
   /// Emits a boolean that determines if the post button is enabled.
-  var postButtonEnabled: Signal<Bool, NoError> { get }
+  var postButtonEnabled: Signal<Bool, Never> { get }
 
   /// Emits the recipient's name.
-  var recipientName: Signal<String, NoError> { get }
+  var recipientName: Signal<String, Never> { get }
 
   /// Emits a string that should be alerted to the user.
-  var showAlertMessage: Signal<String, NoError> { get }
+  var showAlertMessage: Signal<String, Never> { get }
 }
 
 public protocol MessageDialogViewModelType {
@@ -49,9 +48,8 @@ public protocol MessageDialogViewModelType {
 }
 
 public final class MessageDialogViewModel: MessageDialogViewModelType, MessageDialogViewModelInputs,
-MessageDialogViewModelOutputs {
-
-    public init() {
+  MessageDialogViewModelOutputs {
+  public init() {
     let messageSubject = self.messageSubjectProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 
@@ -60,7 +58,7 @@ MessageDialogViewModelOutputs {
       .skipNil()
       .flatMap {
         AppEnvironment.current.apiService.fetchProject(param: .id($0.projectId)).demoteErrors()
-    }
+      }
 
     let project = Signal.merge(
       projectFromBacking,
@@ -82,13 +80,13 @@ MessageDialogViewModelOutputs {
     let sendMessageResult = Signal.combineLatest(
       body,
       messageSubject
-      )
-      .takeWhen(self.postButtonPressedProperty.signal)
-      .switchMap { body, messageSubject in
+    )
+    .takeWhen(self.postButtonPressedProperty.signal)
+    .switchMap { body, messageSubject in
 
-        AppEnvironment.current.apiService.sendMessage(body: body, toSubject: messageSubject)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
+      AppEnvironment.current.apiService.sendMessage(body: body, toSubject: messageSubject)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
     }
 
     self.notifyPresenterCommentWasPostedSuccesfully = sendMessageResult.values()
@@ -109,7 +107,7 @@ MessageDialogViewModelOutputs {
 
     self.recipientName = messageSubject
       .take(first: 1)
-      .flatMap { messageSubject -> SignalProducer<String, NoError> in
+      .flatMap { messageSubject -> SignalProducer<String, Never> in
         switch messageSubject {
         case let .backing(backing):
           guard let name = backing.backer?.name else { return fetchBackerName(backing: backing) }
@@ -119,7 +117,7 @@ MessageDialogViewModelOutputs {
         case let .project(project):
           return .init(value: project.creator.name)
         }
-    }
+      }
 
     self.keyboardIsVisible = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
@@ -138,39 +136,45 @@ MessageDialogViewModelOutputs {
   public func bodyTextChanged(_ body: String) {
     self.bodyTextChangedProperty.value = body
   }
+
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
   public func cancelButtonPressed() {
     self.cancelButtonPressedProperty.value = ()
   }
+
   fileprivate let messageSubjectProperty = MutableProperty<MessageSubject?>(nil)
   fileprivate let contextProperty = MutableProperty<Koala.MessageDialogContext?>(nil)
-  public func configureWith(messageSubject: MessageSubject,
-                            context: Koala.MessageDialogContext) {
+  public func configureWith(
+    messageSubject: MessageSubject,
+    context: Koala.MessageDialogContext
+  ) {
     self.messageSubjectProperty.value = messageSubject
     self.contextProperty.value = context
   }
+
   fileprivate let postButtonPressedProperty = MutableProperty(())
   public func postButtonPressed() {
     self.postButtonPressedProperty.value = ()
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let loadingViewIsHidden: Signal<Bool, NoError>
-  public let postButtonEnabled: Signal<Bool, NoError>
-  public let notifyPresenterDialogWantsDismissal: Signal<(), NoError>
-  public let notifyPresenterCommentWasPostedSuccesfully: Signal<Message, NoError>
-  public let recipientName: Signal<String, NoError>
-  public let keyboardIsVisible: Signal<Bool, NoError>
-  public let showAlertMessage: Signal<String, NoError>
+  public let loadingViewIsHidden: Signal<Bool, Never>
+  public let postButtonEnabled: Signal<Bool, Never>
+  public let notifyPresenterDialogWantsDismissal: Signal<(), Never>
+  public let notifyPresenterCommentWasPostedSuccesfully: Signal<Message, Never>
+  public let recipientName: Signal<String, Never>
+  public let keyboardIsVisible: Signal<Bool, Never>
+  public let showAlertMessage: Signal<String, Never>
 
   public var inputs: MessageDialogViewModelInputs { return self }
   public var outputs: MessageDialogViewModelOutputs { return self }
 }
 
-func fetchBackerName(backing: Backing) -> SignalProducer<String, NoError> {
+func fetchBackerName(backing: Backing) -> SignalProducer<String, Never> {
   return AppEnvironment.current.apiService.fetchUser(userId: backing.backerId)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
     .demoteErrors()

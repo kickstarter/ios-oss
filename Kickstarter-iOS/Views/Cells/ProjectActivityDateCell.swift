@@ -1,11 +1,11 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
 
 internal final class ProjectActivityDateCell: UITableViewCell, ValueCell {
-  @IBOutlet fileprivate weak var dateLabel: UILabel!
+  @IBOutlet fileprivate var dateLabel: UILabel!
 
   internal func configureWith(value date: Date) {
     self.dateLabel.text = Format.date(
@@ -20,12 +20,14 @@ internal final class ProjectActivityDateCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> ProjectActivityDateCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+      |> ProjectActivityDateCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
-          ? .init(top: Styles.grid(4),
-                  left: projectActivityRegularRegularLeftRight,
-                  bottom: 0,
-                  right: projectActivityRegularRegularLeftRight)
+          ? .init(
+            top: Styles.grid(4),
+            left: projectActivityRegularRegularLeftRight,
+            bottom: 0,
+            right: projectActivityRegularRegularLeftRight
+          )
           : .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(1), right: Styles.grid(2))
       }
 

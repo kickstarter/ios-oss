@@ -1,9 +1,8 @@
-import XCTest
 import KsApi
 @testable import Library
+import XCTest
 
 final class FormatTests: TestCase {
-
   func testWholeNumber() {
     withEnvironment(locale: Locale(identifier: "en")) {
       XCTAssertEqual(Format.wholeNumber(10), "10")
@@ -42,7 +41,6 @@ final class FormatTests: TestCase {
   }
 
   func testPercentages() {
-
     withEnvironment(locale: Locale(identifier: "en")) {
       XCTAssertEqual(Format.percentage(50), "50%")
       XCTAssertEqual(Format.percentage(1_000), "1,000%")
@@ -262,8 +260,43 @@ final class FormatTests: TestCase {
     }
   }
 
+  func testPlusSign() {
+    withEnvironment(language: .de) {
+      XCTAssertEqual(Format.attributedPlusSign().string, "+")
+    }
+
+    withEnvironment(language: .en) {
+      XCTAssertEqual(Format.attributedPlusSign().string, "+")
+    }
+
+    withEnvironment(language: .es) {
+      XCTAssertEqual(Format.attributedPlusSign().string, "+")
+    }
+
+    withEnvironment(language: .fr) {
+      XCTAssertEqual(Format.attributedPlusSign().string, "+ ")
+    }
+
+    withEnvironment(language: .ja) {
+      XCTAssertEqual(Format.attributedPlusSign().string, "+")
+    }
+  }
+
+  func testPlusSignAttributes() {
+    let expectedAttributes: String.Attributes = [
+      .font: UIFont.ksr_body(),
+      .foregroundColor: UIColor.red
+    ]
+
+    let attributedString = Format.attributedPlusSign(expectedAttributes)
+    let attributes = attributedString.attributes(at: 0, effectiveRange: nil)
+
+    XCTAssertEqual("+", attributedString.string)
+    XCTAssertTrue(expectedAttributes == attributes)
+  }
+
   func testDate() {
-    let date = 434592000.0 // Oct 10 1983 in UTC
+    let date = 434_592_000.0 // Oct 10 1983 in UTC
     // swiftlint:disable force_unwrapping
     let UTC = TimeZone(abbreviation: "UTC")!
     let EST = TimeZone(abbreviation: "EST")!
@@ -333,7 +366,7 @@ final class FormatTests: TestCase {
   }
 
   func testDateWithDateFormat() {
-    let date = 434592000.0 // Oct 10 1983 in UTC
+    let date = 434_592_000.0 // Oct 10 1983 in UTC
     // swiftlint:disable force_unwrapping
     let UTC = TimeZone(abbreviation: "UTC")!
     let EST = TimeZone(abbreviation: "EST")!
@@ -525,10 +558,14 @@ final class FormatTests: TestCase {
       XCTAssertEqual("in 1 day", Format.relative(secondsInUTC: tomorrow))
       XCTAssertEqual("2 days ago", Format.relative(secondsInUTC: daysAgo))
       XCTAssertEqual("in 2 days", Format.relative(secondsInUTC: inDays))
-      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .none),
-                     Format.relative(secondsInUTC: awhileAgo))
-      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .none),
-                     Format.relative(secondsInUTC: inAwhile))
+      XCTAssertEqual(
+        Format.date(secondsInUTC: awhileAgo, timeStyle: .none),
+        Format.relative(secondsInUTC: awhileAgo)
+      )
+      XCTAssertEqual(
+        Format.date(secondsInUTC: inAwhile, timeStyle: .none),
+        Format.relative(secondsInUTC: inAwhile)
+      )
 
       XCTAssertEqual("just now", Format.relative(secondsInUTC: justNow, abbreviate: true))
       XCTAssertEqual("right now", Format.relative(secondsInUTC: rightNow, abbreviate: true))
@@ -540,10 +577,14 @@ final class FormatTests: TestCase {
       XCTAssertEqual("in 1 day", Format.relative(secondsInUTC: tomorrow, abbreviate: true))
       XCTAssertEqual("2 days ago", Format.relative(secondsInUTC: daysAgo, abbreviate: true))
       XCTAssertEqual("in 2 days", Format.relative(secondsInUTC: inDays, abbreviate: true))
-      XCTAssertEqual(Format.date(secondsInUTC: awhileAgo, timeStyle: .none),
-                     Format.relative(secondsInUTC: awhileAgo, abbreviate: true))
-      XCTAssertEqual(Format.date(secondsInUTC: inAwhile, timeStyle: .none),
-                     Format.relative(secondsInUTC: inAwhile, abbreviate: true))
+      XCTAssertEqual(
+        Format.date(secondsInUTC: awhileAgo, timeStyle: .none),
+        Format.relative(secondsInUTC: awhileAgo, abbreviate: true)
+      )
+      XCTAssertEqual(
+        Format.date(secondsInUTC: inAwhile, timeStyle: .none),
+        Format.relative(secondsInUTC: inAwhile, abbreviate: true)
+      )
     }
 
     withEnvironment(language: .de, locale: Locale(identifier: "de"), mainBundle: MockBundle()) {

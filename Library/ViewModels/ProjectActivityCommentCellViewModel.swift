@@ -1,8 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol ProjectActivityCommentCellViewModelInputs {
   /// Call when the backing button is pressed.
@@ -17,28 +16,28 @@ public protocol ProjectActivityCommentCellViewModelInputs {
 
 public protocol ProjectActivityCommentCellViewModelOutputs {
   /// Emits the author's image URL.
-  var authorImageURL: Signal<URL?, NoError> { get }
+  var authorImageURL: Signal<URL?, Never> { get }
 
   /// Emits the body of the comment.
-  var body: Signal<String, NoError> { get }
+  var body: Signal<String, Never> { get }
 
   /// Emits the cell's accessibility label.
-  var cellAccessibilityLabel: Signal<String, NoError> { get }
+  var cellAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits the cell's accessibility value.
-  var cellAccessibilityValue: Signal<String, NoError> { get }
+  var cellAccessibilityValue: Signal<String, Never> { get }
 
   /// Go to the backing info screen.
-  var notifyDelegateGoToBacking: Signal<(Project, User), NoError> { get }
+  var notifyDelegateGoToBacking: Signal<(Project, User), Never> { get }
 
   /// Go to the comment reply dialog for the project/update comment.
-  var notifyDelegateGoToSendReply: Signal<(Project, Update?, Comment), NoError> { get }
+  var notifyDelegateGoToSendReply: Signal<(Project, Update?, Comment), Never> { get }
 
   /// Emits a Bool whether the footer pledge and reply stack view is hidden or not.
-  var pledgeFooterIsHidden: Signal<Bool, NoError> { get }
+  var pledgeFooterIsHidden: Signal<Bool, Never> { get }
 
   /// Emits the activity's title.
-  var title: Signal<String, NoError> { get }
+  var title: Signal<String, Never> { get }
 }
 
 public protocol ProjectActivityCommentCellViewModelType {
@@ -47,8 +46,7 @@ public protocol ProjectActivityCommentCellViewModelType {
 }
 
 public final class ProjectActivityCommentCellViewModel: ProjectActivityCommentCellViewModelType,
-ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOutputs {
-
+  ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOutputs {
   public init() {
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let activity = activityAndProject.map(first)
@@ -67,17 +65,17 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
 
     let projectComment = activityAndProject
       .filter { activity, _ in activity.category == .commentProject }
-      .flatMap { activity, project -> SignalProducer<(Project, Update?, Comment), NoError> in
+      .flatMap { activity, project -> SignalProducer<(Project, Update?, Comment), Never> in
         guard let comment = activity.comment else { return .empty }
         return .init(value: (project, nil, comment))
-    }
+      }
 
     let updateComment = activityAndProject
       .filter { activity, _ in activity.category == .commentPost }
-      .flatMap { activity, project -> SignalProducer<(Project, Update?, Comment), NoError> in
+      .flatMap { activity, project -> SignalProducer<(Project, Update?, Comment), Never> in
         guard let update = activity.update, let comment = activity.comment else { return .empty }
         return .init(value: (project, update, comment))
-    }
+      }
 
     self.notifyDelegateGoToSendReply = Signal.merge(projectComment, updateComment)
       .takeWhen(self.replyButtonPressedProperty.signal)
@@ -100,7 +98,7 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
       .map { activity, project in
         activity.user == AppEnvironment.current.currentUser
           && project.creator == AppEnvironment.current.currentUser
-    }
+      }
   }
 
   fileprivate let backingButtonPressedProperty = MutableProperty(())
@@ -118,14 +116,14 @@ ProjectActivityCommentCellViewModelInputs, ProjectActivityCommentCellViewModelOu
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let authorImageURL: Signal<URL?, NoError>
-  public let body: Signal<String, NoError>
-  public let cellAccessibilityLabel: Signal<String, NoError>
-  public let cellAccessibilityValue: Signal<String, NoError>
-  public let notifyDelegateGoToBacking: Signal<(Project, User), NoError>
-  public let notifyDelegateGoToSendReply: Signal<(Project, Update?, Comment), NoError>
-  public let pledgeFooterIsHidden: Signal<Bool, NoError>
-  public let title: Signal<String, NoError>
+  public let authorImageURL: Signal<URL?, Never>
+  public let body: Signal<String, Never>
+  public let cellAccessibilityLabel: Signal<String, Never>
+  public let cellAccessibilityValue: Signal<String, Never>
+  public let notifyDelegateGoToBacking: Signal<(Project, User), Never>
+  public let notifyDelegateGoToSendReply: Signal<(Project, Update?, Comment), Never>
+  public let pledgeFooterIsHidden: Signal<Bool, Never>
+  public let title: Signal<String, Never>
 
   public var inputs: ProjectActivityCommentCellViewModelInputs { return self }
   public var outputs: ProjectActivityCommentCellViewModelOutputs { return self }

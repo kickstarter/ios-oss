@@ -1,38 +1,37 @@
-import Prelude
-import ReactiveSwift
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   fileprivate let vm: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
-  fileprivate let animateArrowToDown = TestObserver<Bool, NoError>()
-  fileprivate let arrowOpacity = TestObserver<CGFloat, NoError>()
-  fileprivate let arrowOpacityAnimated = TestObserver<Bool, NoError>()
-  fileprivate let debugContainerViewIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let dividerIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let exploreLabelIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let logoutWithParams = TestObserver<DiscoveryParams, NoError>()
-  fileprivate let primaryLabelOpacity = TestObserver<CGFloat, NoError>()
-  fileprivate let primaryLabelOpacityAnimated = TestObserver<Bool, NoError>()
-  fileprivate let primaryLabelText = TestObserver<String, NoError>()
-  fileprivate let dismissDiscoveryFilters = TestObserver<(), NoError>()
-  fileprivate let notifyDelegateFilterSelectedParams = TestObserver<DiscoveryParams, NoError>()
-  fileprivate let secondaryLabelText = TestObserver<String, NoError>()
-  fileprivate let secondaryLabelIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let titleAccessibilityHint = TestObserver<String, NoError>()
-  fileprivate let titleAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let showDiscoveryFiltersRow = TestObserver<SelectableRow, NoError>()
-  fileprivate let favoriteButtonAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let favoriteViewIsDimmed = TestObserver<Bool, NoError>()
-  fileprivate let favoriteViewIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let showFavoriteOnboardingAlert = TestObserver<String, NoError>()
-  fileprivate let updateFavoriteButtonSelected = TestObserver<Bool, NoError>()
-  fileprivate let updateFavoriteButtonAnimated = TestObserver<Bool, NoError>()
+  fileprivate let animateArrowToDown = TestObserver<Bool, Never>()
+  fileprivate let arrowOpacity = TestObserver<CGFloat, Never>()
+  fileprivate let arrowOpacityAnimated = TestObserver<Bool, Never>()
+  fileprivate let debugContainerViewIsHidden = TestObserver<Bool, Never>()
+  fileprivate let dividerIsHidden = TestObserver<Bool, Never>()
+  fileprivate let exploreLabelIsHidden = TestObserver<Bool, Never>()
+  fileprivate let logoutWithParams = TestObserver<DiscoveryParams, Never>()
+  fileprivate let primaryLabelOpacity = TestObserver<CGFloat, Never>()
+  fileprivate let primaryLabelOpacityAnimated = TestObserver<Bool, Never>()
+  fileprivate let primaryLabelText = TestObserver<String, Never>()
+  fileprivate let dismissDiscoveryFilters = TestObserver<(), Never>()
+  fileprivate let notifyDelegateFilterSelectedParams = TestObserver<DiscoveryParams, Never>()
+  fileprivate let secondaryLabelText = TestObserver<String, Never>()
+  fileprivate let secondaryLabelIsHidden = TestObserver<Bool, Never>()
+  fileprivate let titleAccessibilityHint = TestObserver<String, Never>()
+  fileprivate let titleAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let showDiscoveryFiltersRow = TestObserver<SelectableRow, Never>()
+  fileprivate let favoriteButtonAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let favoriteViewIsDimmed = TestObserver<Bool, Never>()
+  fileprivate let favoriteViewIsHidden = TestObserver<Bool, Never>()
+  fileprivate let showFavoriteOnboardingAlert = TestObserver<String, Never>()
+  fileprivate let updateFavoriteButtonSelected = TestObserver<Bool, Never>()
+  fileprivate let updateFavoriteButtonAnimated = TestObserver<Bool, Never>()
 
   let initialParams = .defaults
     |> DiscoveryParams.lens.includePOTD .~ true
@@ -73,11 +72,11 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
   func testShowFilters() {
     let initialRow = SelectableRow(isSelected: true, params: initialParams)
-    let starredRow = selectableRow |> SelectableRow.lens.params .~ starredParams
-    let artRow = selectableRow |> SelectableRow.lens.params .~ categoryParams
+    let starredRow = self.selectableRow |> SelectableRow.lens.params .~ self.starredParams
+    let artRow = self.selectableRow |> SelectableRow.lens.params .~ self.categoryParams
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(params: initialParams)
+    self.vm.inputs.configureWith(params: self.initialParams)
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
     self.showDiscoveryFiltersRow.assertValueCount(0)
@@ -100,8 +99,10 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.vm.inputs.titleButtonTapped()
 
-    self.showDiscoveryFiltersRow.assertValues([initialRow, starredRow],
-                                              "Show filters does not emit on close.")
+    self.showDiscoveryFiltersRow.assertValues(
+      [initialRow, starredRow],
+      "Show filters does not emit on close."
+    )
 
     self.vm.inputs.titleButtonTapped()
 
@@ -117,7 +118,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     let initialRow = SelectableRow(isSelected: true, params: initialParams)
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(params: initialParams)
+    self.vm.inputs.configureWith(params: self.initialParams)
 
     self.showDiscoveryFiltersRow.assertValueCount(0)
     self.dismissDiscoveryFilters.assertValueCount(0)
@@ -126,15 +127,19 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.inputs.titleButtonTapped()
     self.scheduler.advance(by: .milliseconds(400))
 
-    self.showDiscoveryFiltersRow.assertValues([initialRow],
-                                              "Filters are shown even before categories are fetched.")
+    self.showDiscoveryFiltersRow.assertValues(
+      [initialRow],
+      "Filters are shown even before categories are fetched."
+    )
     self.dismissDiscoveryFilters.assertValueCount(0, "Dismissing is not emitted.")
 
     // Wait enough time for categories to come back
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
-    self.showDiscoveryFiltersRow.assertValues([initialRow],
-                                              "Nothing new is emitted once categories are fetched.")
+    self.showDiscoveryFiltersRow.assertValues(
+      [initialRow],
+      "Nothing new is emitted once categories are fetched."
+    )
     self.dismissDiscoveryFilters.assertValueCount(0, "Dismissing is not emitted.")
 
     // Tap title again to dismiss
@@ -148,8 +153,10 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.inputs.titleButtonTapped()
     self.scheduler.advance(by: .milliseconds(400))
 
-    self.showDiscoveryFiltersRow.assertValues([initialRow, initialRow],
-                                              "Filters are shown again.")
+    self.showDiscoveryFiltersRow.assertValues(
+      [initialRow, initialRow],
+      "Filters are shown again."
+    )
     self.dismissDiscoveryFilters.assertValueCount(1, "Dismissing is not emitted.")
   }
 
@@ -171,7 +178,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.titleAccessibilityHint.assertValueCount(0)
     self.titleAccessibilityLabel.assertValueCount(0)
 
-    self.vm.inputs.configureWith(params: initialParams)
+    self.vm.inputs.configureWith(params: self.initialParams)
 
     self.arrowOpacity.assertValues([0.0, 1.0])
     self.arrowOpacityAnimated.assertValues([false, true])
@@ -197,10 +204,12 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.secondaryLabelText.assertValues(["", ""])
     self.secondaryLabelIsHidden.assertValues([true])
     self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
-      Strings.Filter_by_all_projects()])
+    self.titleAccessibilityLabel.assertValues([
+      Strings.Filter_by_all_projects(),
+      Strings.Filter_by_all_projects()
+    ])
 
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ starredParams)
+    self.vm.inputs.filtersSelected(row: self.selectableRow |> SelectableRow.lens.params .~ self.starredParams)
 
     self.arrowOpacity.assertValues([0.0, 1.0])
     self.arrowOpacityAnimated.assertValues([false, true])
@@ -208,14 +217,20 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.primaryLabelOpacityAnimated.assertValues([false, true, true, true])
     self.animateArrowToDown.assertValues([true, false, true])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
-      Strings.Saved()])
+    self.primaryLabelText.assertValues([
+      Strings.All_Projects(), Strings.All_Projects(),
+      Strings.Saved()
+    ])
     self.secondaryLabelText.assertValues(["", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
-    self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
-      Strings.Opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
-      Strings.Filter_by_all_projects(), Strings.Filter_by_saved_projects()])
+    self.titleAccessibilityHint.assertValues([
+      Strings.Opens_filters(), Strings.Closes_filters(),
+      Strings.Opens_filters()
+    ])
+    self.titleAccessibilityLabel.assertValues([
+      Strings.Filter_by_all_projects(),
+      Strings.Filter_by_all_projects(), Strings.Filter_by_saved_projects()
+    ])
 
     self.vm.inputs.titleButtonTapped()
 
@@ -225,17 +240,25 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.primaryLabelOpacityAnimated.assertValues([false, true, true, true, true])
     self.animateArrowToDown.assertValues([true, false, true, false])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
-      Strings.Saved(), Strings.Saved()])
+    self.primaryLabelText.assertValues([
+      Strings.All_Projects(), Strings.All_Projects(),
+      Strings.Saved(), Strings.Saved()
+    ])
     self.secondaryLabelText.assertValues(["", "", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
-    self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
-      Strings.Opens_filters(), Strings.Closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
+    self.titleAccessibilityHint.assertValues([
+      Strings.Opens_filters(), Strings.Closes_filters(),
+      Strings.Opens_filters(), Strings.Closes_filters()
+    ])
+    self.titleAccessibilityLabel.assertValues([
+      Strings.Filter_by_all_projects(),
       Strings.Filter_by_all_projects(), Strings.Filter_by_saved_projects(),
-      Strings.Filter_by_saved_projects()])
+      Strings.Filter_by_saved_projects()
+    ])
 
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ categoryParams)
+    self.vm.inputs.filtersSelected(
+      row: self.selectableRow |> SelectableRow.lens.params .~ self.categoryParams
+    )
 
     self.arrowOpacity.assertValues([0.0, 1.0])
     self.arrowOpacityAnimated.assertValues([false, true])
@@ -243,16 +266,22 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.primaryLabelOpacityAnimated.assertValues([false, true, true, true, true, true])
     self.animateArrowToDown.assertValues([true, false, true, false, true])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
-      Strings.Saved(), Strings.Saved(), Strings.All_Art_Projects()])
+    self.primaryLabelText.assertValues([
+      Strings.All_Projects(), Strings.All_Projects(),
+      Strings.Saved(), Strings.Saved(), Strings.All_Art_Projects()
+    ])
     self.secondaryLabelText.assertValues(["", "", "", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
-    self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
-      Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
+    self.titleAccessibilityHint.assertValues([
+      Strings.Opens_filters(), Strings.Closes_filters(),
+      Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters()
+    ])
+    self.titleAccessibilityLabel.assertValues([
+      Strings.Filter_by_all_projects(),
       Strings.Filter_by_all_projects(), Strings.Filter_by_saved_projects(),
       Strings.Filter_by_saved_projects(),
-      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? "")])
+      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? "")
+    ])
 
     self.vm.inputs.titleButtonTapped()
 
@@ -262,21 +291,28 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.primaryLabelOpacityAnimated.assertValues([false, true, true, true, true, true, true])
     self.animateArrowToDown.assertValues([true, false, true, false, true, false])
     self.dividerIsHidden.assertValues([true])
-    self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
+    self.primaryLabelText.assertValues([
+      Strings.All_Projects(), Strings.All_Projects(),
       Strings.Saved(), Strings.Saved(), Strings.All_Art_Projects(),
-      Strings.All_Art_Projects()])
+      Strings.All_Art_Projects()
+    ])
     self.secondaryLabelText.assertValues(["", "", "", "", "", ""])
     self.secondaryLabelIsHidden.assertValues([true])
-    self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
-      Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters(), Strings.Closes_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
+    self.titleAccessibilityHint.assertValues([
+      Strings.Opens_filters(), Strings.Closes_filters(),
+      Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters(), Strings.Closes_filters()
+    ])
+    self.titleAccessibilityLabel.assertValues([
+      Strings.Filter_by_all_projects(),
       Strings.Filter_by_all_projects(), Strings.Filter_by_saved_projects(),
       Strings.Filter_by_saved_projects(),
       Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
       Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? "")
     ])
 
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ subcategoryParams)
+    self.vm.inputs.filtersSelected(
+      row: self.selectableRow |> SelectableRow.lens.params .~ self.subcategoryParams
+    )
 
     self.arrowOpacity.assertValues([0.0, 1.0])
     self.arrowOpacityAnimated.assertValues([false, true])
@@ -284,31 +320,37 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.primaryLabelOpacityAnimated.assertValues([false, true, true, true, true, true, true, true])
     self.animateArrowToDown.assertValues([true, false, true, false, true, false, true])
     self.dividerIsHidden.assertValues([true, false])
-    self.primaryLabelText.assertValues([Strings.All_Projects(), Strings.All_Projects(),
+    self.primaryLabelText.assertValues([
+      Strings.All_Projects(), Strings.All_Projects(),
       Strings.Saved(), Strings.Saved(), Strings.All_Art_Projects(),
-      Strings.All_Art_Projects(), "Film & Video"])
+      Strings.All_Art_Projects(), "Film & Video"
+    ])
     self.secondaryLabelText.assertValues(["", "", "", "", "", "", "Documentary"])
     self.secondaryLabelIsHidden.assertValues([true, false])
-    self.titleAccessibilityHint.assertValues([Strings.Opens_filters(), Strings.Closes_filters(),
+    self.titleAccessibilityHint.assertValues([
+      Strings.Opens_filters(), Strings.Closes_filters(),
       Strings.Opens_filters(), Strings.Closes_filters(), Strings.Opens_filters(), Strings.Closes_filters(),
-      Strings.Opens_filters()])
-    self.titleAccessibilityLabel.assertValues([Strings.Filter_by_all_projects(),
+      Strings.Opens_filters()
+    ])
+    self.titleAccessibilityLabel.assertValues([
+      Strings.Filter_by_all_projects(),
       Strings.Filter_by_all_projects(), Strings.Filter_by_saved_projects(),
       Strings.Filter_by_saved_projects(),
       Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
       Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
       Strings.Filter_by_subcategory_name_in_category_name(
         subcategory_name: subcategoryParams.category?.name ?? "",
-        category_name: subcategoryParams.category?._parent?.name ?? "")
-      ])
+        category_name: subcategoryParams.category?._parent?.name ?? ""
+      )
+    ])
   }
 
   func testExploreLabelIsHidden_ifSelectedFilterIsNotDefault() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(params: initialParams)
+    self.vm.inputs.configureWith(params: self.initialParams)
 
     self.vm.inputs.filtersSelected(
-      row: selectableRow |> SelectableRow.lens.params .~ categoryParams
+      row: self.selectableRow |> SelectableRow.lens.params .~ self.categoryParams
     )
 
     self.exploreLabelIsHidden.assertValues([true])
@@ -316,33 +358,35 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
   func testExploreLabelIsNotHidden_ifSelectedFilterIsDefault() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(params: initialParams)
+    self.vm.inputs.configureWith(params: self.initialParams)
 
-    self.vm.inputs.filtersSelected(row: selectableRow)
+    self.vm.inputs.filtersSelected(row: self.selectableRow)
 
     self.exploreLabelIsHidden.assertValues([false])
   }
 
   func testNotifyFilterSelectedParams() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(params: initialParams)
+    self.vm.inputs.configureWith(params: self.initialParams)
 
     self.notifyDelegateFilterSelectedParams.assertValueCount(0)
 
-    self.vm.inputs.filtersSelected(row: selectableRow)
+    self.vm.inputs.filtersSelected(row: self.selectableRow)
 
     self.notifyDelegateFilterSelectedParams.assertValues([DiscoveryParams.defaults])
 
-    self.vm.inputs.filtersSelected(row: selectableRow |> SelectableRow.lens.params .~ categoryParams)
+    self.vm.inputs.filtersSelected(
+      row: self.selectableRow |> SelectableRow.lens.params .~ self.categoryParams
+    )
 
     self.notifyDelegateFilterSelectedParams.assertValues([DiscoveryParams.defaults, categoryParams])
   }
 
   func testFavoriting() {
-    let artSelectableRow = selectableRow |> SelectableRow.lens.params .~ categoryParams
+    let artSelectableRow = self.selectableRow |> SelectableRow.lens.params .~ self.categoryParams
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(params: initialParams)
+    self.vm.inputs.configureWith(params: self.initialParams)
 
     self.favoriteViewIsHidden.assertValues([true])
 
@@ -375,7 +419,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.favoriteButtonAccessibilityLabel.assertValues([
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
-      ])
+    ])
 
     XCTAssertEqual(["Added Favorite Category", "Discover Category Favorite"], self.trackingClient.events)
     XCTAssertEqual([1, 1], self.trackingClient.properties(forKey: "category_id", as: Int.self))
@@ -390,7 +434,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.favoriteButtonAccessibilityLabel.assertValues([
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
-      ])
+    ])
 
     self.vm.inputs.titleButtonTapped()
 
@@ -402,12 +446,16 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.favoriteButtonAccessibilityLabel.assertValues([
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label()
-      ])
+    ])
 
-    XCTAssertEqual(["Added Favorite Category", "Discover Category Favorite", "Closed Discovery Filter"],
-                   self.trackingClient.events)
-    XCTAssertEqual([nil, nil, 1],
-                   self.trackingClient.properties(forKey: "discover_category_id", as: Int.self))
+    XCTAssertEqual(
+      ["Added Favorite Category", "Discover Category Favorite", "Closed Discovery Filter"],
+      self.trackingClient.events
+    )
+    XCTAssertEqual(
+      [nil, nil, 1],
+      self.trackingClient.properties(forKey: "discover_category_id", as: Int.self)
+    )
 
     self.vm.inputs.favoriteButtonTapped()
 
@@ -422,10 +470,13 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
     ])
 
-    XCTAssertEqual([
-      "Added Favorite Category", "Discover Category Favorite", "Closed Discovery Filter",
-      "Removed Favorite Category", "Discover Category Favorite"],
-                   self.trackingClient.events)
+    XCTAssertEqual(
+      [
+        "Added Favorite Category", "Discover Category Favorite", "Closed Discovery Filter",
+        "Removed Favorite Category", "Discover Category Favorite"
+      ],
+      self.trackingClient.events
+    )
     XCTAssertEqual([1, 1, nil, 1, 1], self.trackingClient.properties(forKey: "category_id", as: Int.self))
 
     self.vm.inputs.titleButtonTapped()
@@ -439,9 +490,9 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
-      ])
+    ])
 
-    self.vm.inputs.filtersSelected(row: selectableRow)
+    self.vm.inputs.filtersSelected(row: self.selectableRow)
 
     self.favoriteViewIsHidden.assertValues([true, false, true])
     self.favoriteViewIsDimmed.assertValues([false, true, false, true])
@@ -452,16 +503,16 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_unfavorite_a11y_label(),
       Strings.discovery_favorite_categories_buttons_favorite_a11y_label()
-      ])
+    ])
   }
 
   func testCloseFiltersTracking() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configureWith(params: initialParams)
+    self.vm.inputs.configureWith(params: self.initialParams)
 
     self.vm.inputs.titleButtonTapped()
 
-    self.vm.inputs.filtersSelected(row: selectableRow)
+    self.vm.inputs.filtersSelected(row: self.selectableRow)
 
     self.vm.inputs.titleButtonTapped()
 
@@ -473,7 +524,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
     self.vm.inputs.titleButtonTapped()
 
-    self.vm.inputs.filtersSelected(row: selectableRow)
+    self.vm.inputs.filtersSelected(row: self.selectableRow)
 
     self.vm.inputs.titleButtonTapped()
 
@@ -486,7 +537,6 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
   func testEnvironmentButtonIsNotHidden_Alpha() {
     withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue)) {
-
       self.vm.inputs.viewDidLoad()
 
       self.debugContainerViewIsHidden.assertValue(false)
@@ -495,7 +545,6 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
   func testEnvironmentButtonIsNotHidden_Beta() {
     withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue)) {
-
       self.vm.inputs.viewDidLoad()
 
       self.debugContainerViewIsHidden.assertValue(false)
@@ -504,7 +553,6 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
 
   func testEnvironmentButtonIsHidden_Release() {
     withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue)) {
-
       self.vm.inputs.viewDidLoad()
 
       self.debugContainerViewIsHidden.assertValue(true)

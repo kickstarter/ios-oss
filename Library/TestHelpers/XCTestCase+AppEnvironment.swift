@@ -1,13 +1,10 @@
-import XCTest
-@testable import Library
 import Foundation
 import KsApi
+@testable import Library
 import ReactiveSwift
-import Result
-import KsApi
+import XCTest
 
 extension XCTestCase {
-
   // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   func withEnvironment(_ env: Environment, body: () -> Void) {
     AppEnvironment.pushEnvironment(env)
@@ -42,9 +39,9 @@ extension XCTestCase {
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
-    body: () -> Void) {
-
-    withEnvironment(
+    body: () -> Void
+  ) {
+    self.withEnvironment(
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,

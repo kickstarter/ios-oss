@@ -1,13 +1,15 @@
-import XCTest
 @testable import Kickstarter_Framework
-@testable import Library
 @testable import KsApi
+@testable import Library
 import Prelude
+import XCTest
 
 final class ThanksProjectsDataSourceTests: XCTestCase {
   let dataSource = ThanksProjectsDataSource()
-  let collectionView = UICollectionView(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 0.0),
-                                        collectionViewLayout: UICollectionViewLayout())
+  let collectionView = UICollectionView(
+    frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 0.0),
+    collectionViewLayout: UICollectionViewLayout()
+  )
 
   func testLoadData() {
     let projects = [
@@ -17,9 +19,8 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
     ]
     dataSource.loadData(projects: projects, category: Category.games)
 
-    XCTAssertEqual(1, self.dataSource.numberOfSections(in: collectionView))
-    XCTAssertEqual(4, self.dataSource.collectionView(collectionView, numberOfItemsInSection: 0))
-
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.collectionView))
+    XCTAssertEqual(4, self.dataSource.collectionView(self.collectionView, numberOfItemsInSection: 0))
   }
 
   func testProjectAtIndexPaths() {
@@ -35,10 +36,10 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
     let indexPath2 = IndexPath(item: 2, section: 0)
     let indexPath3 = IndexPath(item: 3, section: 0)
 
-    XCTAssertEqual(Project.template |> Project.lens.id .~ 1, dataSource.projectAtIndexPath(indexPath0))
-    XCTAssertEqual(Project.template |> Project.lens.id .~ 2, dataSource.projectAtIndexPath(indexPath1))
-    XCTAssertEqual(Project.template |> Project.lens.id .~ 3, dataSource.projectAtIndexPath(indexPath2))
-    XCTAssertNil(dataSource.projectAtIndexPath(indexPath3), "Project is nil for non-project item")
+    XCTAssertEqual(Project.template |> Project.lens.id .~ 1, self.dataSource.projectAtIndexPath(indexPath0))
+    XCTAssertEqual(Project.template |> Project.lens.id .~ 2, self.dataSource.projectAtIndexPath(indexPath1))
+    XCTAssertEqual(Project.template |> Project.lens.id .~ 3, self.dataSource.projectAtIndexPath(indexPath2))
+    XCTAssertNil(self.dataSource.projectAtIndexPath(indexPath3), "Project is nil for non-project item")
   }
 
   func testCategoryAtIndexPaths() {
@@ -55,8 +56,8 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
     let indexPath3 = IndexPath(item: 3, section: 0)
 
     XCTAssertNil(dataSource.categoryAtIndexPath(indexPath0), "Category is nil for non-category item")
-    XCTAssertNil(dataSource.categoryAtIndexPath(indexPath1), "Category is nil for non-category item")
-    XCTAssertNil(dataSource.categoryAtIndexPath(indexPath2), "Category is nil for non-category item")
-    XCTAssertEqual(Category.games, dataSource.categoryAtIndexPath(indexPath3))
+    XCTAssertNil(self.dataSource.categoryAtIndexPath(indexPath1), "Category is nil for non-category item")
+    XCTAssertNil(self.dataSource.categoryAtIndexPath(indexPath2), "Category is nil for non-category item")
+    XCTAssertEqual(Category.games, self.dataSource.categoryAtIndexPath(indexPath3))
   }
 }

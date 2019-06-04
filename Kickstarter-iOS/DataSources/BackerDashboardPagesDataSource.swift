@@ -5,17 +5,21 @@ import UIKit
 internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControllerDataSource {
   private let viewControllers: [UIViewController]
 
-  internal init(delegate: UIViewController, sort: DiscoveryParams.Sort) {
-    let backedController = BackerDashboardProjectsViewController.configuredWith(projectsType: .backed,
-                                                                                sort: sort)
+  internal init(delegate _: UIViewController, sort: DiscoveryParams.Sort) {
+    let backedController = BackerDashboardProjectsViewController.configuredWith(
+      projectsType: .backed,
+      sort: sort
+    )
 
-    let savedController = BackerDashboardProjectsViewController.configuredWith(projectsType: .saved,
-                                                                               sort: sort)
+    let savedController = BackerDashboardProjectsViewController.configuredWith(
+      projectsType: .saved,
+      sort: sort
+    )
 
     self.viewControllers = BackerDashboardTab.allTabs.map { tab in
       switch tab {
       case .backed: return backedController
-      case .saved:  return savedController
+      case .saved: return savedController
       }
     }
   }
@@ -26,18 +30,18 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
   }
 
   internal func indexFor(controller: UIViewController) -> Int? {
-    return self.viewControllers.index(of: controller)
+    return self.viewControllers.firstIndex(of: controller)
   }
 
   internal func indexFor(tab: BackerDashboardTab) -> Int? {
-    return BackerDashboardTab.allTabs.index(of: tab)
+    return BackerDashboardTab.allTabs.firstIndex(of: tab)
   }
 
   internal func pageViewController(
-    _ pageViewController: UIPageViewController,
-    viewControllerAfter viewController: UIViewController) -> UIViewController? {
-
-    guard let pageIdx = self.viewControllers.index(of: viewController) else {
+    _: UIPageViewController,
+    viewControllerAfter viewController: UIViewController
+  ) -> UIViewController? {
+    guard let pageIdx = self.viewControllers.firstIndex(of: viewController) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
 
@@ -50,10 +54,10 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
   }
 
   internal func pageViewController(
-    _ pageViewController: UIPageViewController,
-    viewControllerBefore viewController: UIViewController) -> UIViewController? {
-
-    guard let pageIdx = self.viewControllers.index(of: viewController) else {
+    _: UIPageViewController,
+    viewControllerBefore viewController: UIViewController
+  ) -> UIViewController? {
+    guard let pageIdx = self.viewControllers.firstIndex(of: viewController) else {
       fatalError("Couldn't find \(viewController) in \(self.viewControllers)")
     }
 
@@ -66,7 +70,7 @@ internal final class BackerDashboardPagesDataSource: NSObject, UIPageViewControl
   }
 
   private func tabFor(controller: UIViewController) -> BackerDashboardTab? {
-    guard let index = self.viewControllers.index(of: controller) else { return nil }
+    guard let index = self.viewControllers.firstIndex(of: controller) else { return nil }
 
     return BackerDashboardTab.allTabs[index]
   }

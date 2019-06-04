@@ -7,6 +7,8 @@ internal final class DiscoveryViewController: UIViewController {
   fileprivate let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
   fileprivate var dataSource: DiscoveryPagesDataSource!
 
+  private var recommendationsChangedObserver: Any?
+
   private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
@@ -35,7 +37,20 @@ internal final class DiscoveryViewController: UIViewController {
       .compactMap { $0 as? DiscoveryNavigationHeaderViewController }.first
     self.navigationHeaderViewController.delegate = self
 
+    self.recommendationsChangedObserver = NotificationCenter.default
+      .addObserver(
+        forName: Notification.Name.ksr_recommendationsSettingChanged,
+        object: nil,
+        queue: nil
+      ) { [weak self] _ in
+        self?.viewModel.inputs.didChangeRecommendationsSetting()
+      }
+
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  deinit {
+    self.recommendationsChangedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -74,7 +89,7 @@ internal final class DiscoveryViewController: UIViewController {
         self?.pageViewController.setViewControllers(
           [controller], direction: direction, animated: true, completion: nil
         )
-    }
+      }
 
     self.viewModel.outputs.selectSortPage
       .observeForControllerAction()
@@ -85,7 +100,7 @@ internal final class DiscoveryViewController: UIViewController {
       .observeValues { [weak self] in
         self?.sortPagerViewController.setSortPagerEnabled($0)
         self?.setPageViewControllerScrollEnabled($0)
-    }
+      }
 
     self.viewModel.outputs.updateSortPagerStyle
       .observeForControllerAction()
@@ -121,18 +136,19 @@ internal final class DiscoveryViewController: UIViewController {
 }
 
 extension DiscoveryViewController: UIPageViewControllerDelegate {
-  internal func pageViewController(_ pageViewController: UIPageViewController,
-                                   didFinishAnimating finished: Bool,
-                                   previousViewControllers: [UIViewController],
-                                   transitionCompleted completed: Bool) {
-
+  internal func pageViewController(
+    _: UIPageViewController,
+    didFinishAnimating _: Bool,
+    previousViewControllers _: [UIViewController],
+    transitionCompleted completed: Bool
+  ) {
     self.viewModel.inputs.pageTransition(completed: completed)
   }
 
   internal func pageViewController(
-    _ pageViewController: UIPageViewController,
-    willTransitionTo pendingViewControllers: [UIViewController]) {
-
+    _: UIPageViewController,
+    willTransitionTo pendingViewControllers: [UIViewController]
+  ) {
     guard let idx = pendingViewControllers.first.flatMap(self.dataSource.indexFor(controller:)) else {
       return
     }
@@ -142,7 +158,7 @@ extension DiscoveryViewController: UIPageViewControllerDelegate {
 }
 
 extension DiscoveryViewController: SortPagerViewControllerDelegate {
-  internal func sortPager(_ viewController: UIViewController, selectedSort sort: DiscoveryParams.Sort) {
+  internal func sortPager(_: UIViewController, selectedSort sort: DiscoveryParams.Sort) {
     self.viewModel.inputs.sortPagerSelected(sort: sort)
   }
 }

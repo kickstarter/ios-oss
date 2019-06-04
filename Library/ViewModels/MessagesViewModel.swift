@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol MessagesViewModelInputs {
   /// Call when the backing button is pressed.
@@ -24,35 +23,35 @@ public protocol MessagesViewModelInputs {
 }
 
 public protocol MessagesViewModelOutputs {
-  /** 
+  /**
    Emits a Backing and Project that can be used to populate the BackingCell.
    The boolean tells if navigation to this screen occurred from the backing info screen.
-  */
-  var backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), NoError> { get }
+   */
+  var backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), Never> { get }
 
   /// Emits a boolean that determines if the empty state is visible and a message to display.
-  var emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), NoError> { get }
+  var emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), Never> { get }
 
   /// Emits when we should go to the backing screen.
-  var goToBacking: Signal<(Project, User), NoError> { get }
+  var goToBacking: Signal<(Project, User), Never> { get }
 
   /// Emits when we should go to the projet.
-  var goToProject: Signal<(Project, RefTag), NoError> { get }
+  var goToProject: Signal<(Project, RefTag), Never> { get }
 
   /// Emits a list of messages to be displayed.
-  var messages: Signal<[Message], NoError> { get }
+  var messages: Signal<[Message], Never> { get }
 
   /// Emits when we should show the message dialog.
-  var presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), NoError> { get }
+  var presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), Never> { get }
 
   /// Emits the project we are viewing the messages for.
-  var project: Signal<Project, NoError> { get }
+  var project: Signal<Project, Never> { get }
 
   /// Emits a bool whether the reply button is enabled.
-  var replyButtonIsEnabled: Signal<Bool, NoError> { get }
+  var replyButtonIsEnabled: Signal<Bool, Never> { get }
 
   /// Emits when the thread has been marked as read.
-  var successfullyMarkedAsRead: Signal<(), NoError> { get }
+  var successfullyMarkedAsRead: Signal<(), Never> { get }
 }
 
 public protocol MessagesViewModelType {
@@ -61,9 +60,8 @@ public protocol MessagesViewModelType {
 }
 
 public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelInputs,
-MessagesViewModelOutputs {
-
-    public init() {
+  MessagesViewModelOutputs {
+  public init() {
     let configData = self.configData.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
 
@@ -84,7 +82,7 @@ MessagesViewModelOutputs {
         case let .right((project, _)):
           return project
         }
-    }
+      }
 
     let backingOrThread = Signal.merge(
       configBacking.skipNil().map(Either.left),
@@ -94,20 +92,20 @@ MessagesViewModelOutputs {
     let messageThreadEnvelopeEvent = Signal.merge(
       backingOrThread,
       backingOrThread.takeWhen(self.messageSentProperty.signal)
-      )
-      .switchMap { backingOrThread
-        -> SignalProducer<Signal<MessageThreadEnvelope?, ErrorEnvelope>.Event, NoError> in
-        switch backingOrThread {
-        case let .left(backing):
-          return AppEnvironment.current.apiService.fetchMessageThread(backing: backing)
-            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-            .materialize()
-        case let .right(thread):
-          return AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: thread.id)
-            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-            .map(MessageThreadEnvelope?.some)
-            .materialize()
-        }
+    )
+    .switchMap { backingOrThread
+      -> SignalProducer<Signal<MessageThreadEnvelope?, ErrorEnvelope>.Event, Never> in
+      switch backingOrThread {
+      case let .left(backing):
+        return AppEnvironment.current.apiService.fetchMessageThread(backing: backing)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      case let .right(thread):
+        return AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: thread.id)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map(MessageThreadEnvelope?.some)
+          .materialize()
+      }
     }
 
     let messageThreadEnvelope = messageThreadEnvelopeEvent.values().skipNil()
@@ -116,21 +114,21 @@ MessagesViewModelOutputs {
 
     self.backingAndProjectAndIsFromBacking = Signal.combineLatest(
       configBacking, self.project, participant, currentUser
-      )
-      .switchMap { value -> SignalProducer<(Backing, Project, Bool), NoError> in
-        let (backing, project, participant, currentUser) = value
+    )
+    .switchMap { value -> SignalProducer<(Backing, Project, Bool), Never> in
+      let (backing, project, participant, currentUser) = value
 
-        if let backing = backing {
-          return SignalProducer(value: (backing, project, true))
-        }
+      if let backing = backing {
+        return SignalProducer(value: (backing, project, true))
+      }
 
-        let request = project.personalization.isBacking == .some(true)
-          ? AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: currentUser)
-          : AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: participant)
+      let request = project.personalization.isBacking == .some(true)
+        ? AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: currentUser)
+        : AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: participant)
 
-        return request
-          .map { ($0, project, false) }
-          .demoteErrors()
+      return request
+        .map { ($0, project, false) }
+        .demoteErrors()
     }
 
     self.messages = messageThreadEnvelope
@@ -143,14 +141,14 @@ MessagesViewModelOutputs {
         messageThreadEnvelopeEvent.values().filter(isNil),
         configBacking.skipNil(),
         self.project
-        )
-        .map { _, backing, project in
-          let isCreatorOrCollaborator = !project.memberData.permissions.isEmpty
-            && backing.backer != AppEnvironment.current.currentUser
-          let message = isCreatorOrCollaborator
-            ? Strings.messages_empty_state_message_creator()
-            : Strings.messages_empty_state_message_backer()
-          return (true, message)
+      )
+      .map { _, backing, project in
+        let isCreatorOrCollaborator = !project.memberData.permissions.isEmpty
+          && backing.backer != AppEnvironment.current.currentUser
+        let message = isCreatorOrCollaborator
+          ? Strings.messages_empty_state_message_creator()
+          : Strings.messages_empty_state_message_backer()
+        return (true, message)
       }
     )
 
@@ -169,7 +167,7 @@ MessagesViewModelOutputs {
         env.messageThread.project.personalization.isBacking == .some(true)
           ? (env.messageThread.project, currentUser)
           : (env.messageThread.project, env.messageThread.participant)
-    }
+      }
 
     self.goToProject = self.project.takeWhen(self.projectBannerTappedProperty.signal)
       .map { ($0, .messageThread) }
@@ -181,17 +179,18 @@ MessagesViewModelOutputs {
       }
       .ignoreValues()
 
-    Signal.combineLatest(project, self.viewDidLoadProperty.signal)
+    Signal.combineLatest(self.project, self.viewDidLoadProperty.signal)
       .take(first: 1)
       .observeValues { project, _ in
         AppEnvironment.current.koala.trackMessageThreadView(project: project)
-    }
+      }
   }
 
   private let backingInfoPressedProperty = MutableProperty(())
   public func backingInfoPressed() {
     self.backingInfoPressedProperty.value = ()
   }
+
   private let configData = MutableProperty<Either<MessageThread, (project: Project, backing: Backing)>?>(nil)
   public func configureWith(data: Either<MessageThread, (project: Project, backing: Backing)>) {
     self.configData.value = data
@@ -201,28 +200,31 @@ MessagesViewModelOutputs {
   public func messageSent(_ message: Message) {
     self.messageSentProperty.value = message
   }
+
   private let projectBannerTappedProperty = MutableProperty(())
   public func projectBannerTapped() {
     self.projectBannerTappedProperty.value = ()
   }
+
   private let replyButtonPressedProperty = MutableProperty(())
   public func replyButtonPressed() {
     self.replyButtonPressedProperty.value = ()
   }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), NoError>
-  public let emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), NoError>
-  public let goToBacking: Signal<(Project, User), NoError>
-  public let goToProject: Signal<(Project, RefTag), NoError>
-  public let messages: Signal<[Message], NoError>
-  public let presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), NoError>
-  public let project: Signal<Project, NoError>
-  public let replyButtonIsEnabled: Signal<Bool, NoError>
-  public let successfullyMarkedAsRead: Signal<(), NoError>
+  public let backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), Never>
+  public let emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), Never>
+  public let goToBacking: Signal<(Project, User), Never>
+  public let goToProject: Signal<(Project, RefTag), Never>
+  public let messages: Signal<[Message], Never>
+  public let presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), Never>
+  public let project: Signal<Project, Never>
+  public let replyButtonIsEnabled: Signal<Bool, Never>
+  public let successfullyMarkedAsRead: Signal<(), Never>
 
   public var inputs: MessagesViewModelInputs { return self }
   public var outputs: MessagesViewModelOutputs { return self }

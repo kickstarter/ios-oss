@@ -1,8 +1,7 @@
-import XCTest
 @testable import Library
+import XCTest
 
 final class LaunchedCountriesTests: XCTestCase {
-
   func testCurrencyNeedsCode() {
     let launchedCountries = LaunchedCountries()
 

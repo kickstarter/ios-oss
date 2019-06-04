@@ -1,11 +1,10 @@
-import XCTest
 @testable import Kickstarter_Framework
-@testable import Library
 @testable import KsApi
+@testable import Library
 import Prelude
+import XCTest
 
 internal final class PaymentMethodsDataSourceTests: XCTestCase {
-
   let dataSource = PaymentMethodsDataSource()
   let tableView = UITableView(frame: .zero)
 

@@ -1,17 +1,16 @@
-import Prelude
-import ReactiveSwift
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class ActivitySampleBackingCellViewModelTests: TestCase {
   internal let vm = ActivitySampleBackingCellViewModel()
-  internal let backingTitleText = TestObserver<String, NoError>()
-  internal let backerImage = TestObserver<String?, NoError>()
-  internal let goToActivity = TestObserver<Void, NoError>()
+  internal let backingTitleText = TestObserver<String, Never>()
+  internal let backerImage = TestObserver<String?, Never>()
+  internal let goToActivity = TestObserver<Void, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -39,8 +38,10 @@ internal final class ActivitySampleBackingCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity)
 
-    self.backingTitleText.assertValues(["Best Friend backed Super Sweet Project Name by Super Cool Creator"],
-                                       "Attributed backing string emits.")
+    self.backingTitleText.assertValues(
+      ["Best Friend backed Super Sweet Project Name by Super Cool Creator"],
+      "Attributed backing string emits."
+    )
     self.backerImage.assertValues([backer.avatar.medium])
   }
 

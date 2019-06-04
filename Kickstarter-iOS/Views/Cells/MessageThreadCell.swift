@@ -7,14 +7,14 @@ import UIKit
 internal final class MessageThreadCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: MessageThreadCellViewModelType = MessageThreadCellViewModel()
 
-  @IBOutlet private weak var avatarImageView: UIImageView!
-  @IBOutlet private weak var bodyLabel: UILabel!
-  @IBOutlet private weak var dateLabel: UILabel!
-  @IBOutlet private weak var dividerView: UIView!
-  @IBOutlet private weak var nameLabel: UILabel!
-  @IBOutlet private weak var projectNameLabel: UILabel!
-  @IBOutlet private weak var replyIndicator: UIView!
-  @IBOutlet private weak var unreadIndicatorView: UIView!
+  @IBOutlet private var avatarImageView: UIImageView!
+  @IBOutlet private var bodyLabel: UILabel!
+  @IBOutlet private var dateLabel: UILabel!
+  @IBOutlet private var dividerView: UIView!
+  @IBOutlet private var nameLabel: UILabel!
+  @IBOutlet private var projectNameLabel: UILabel!
+  @IBOutlet private var replyIndicator: UIView!
+  @IBOutlet private var unreadIndicatorView: UIView!
 
   func configureWith(value: MessageThread) {
     self.viewModel.inputs.configureWith(messageThread: value)
@@ -32,11 +32,11 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
       |> MessageThreadCell.lens.backgroundColor .~ .white
-      |> MessageThreadCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+      |> MessageThreadCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
           : .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
-    }
+      }
 
     _ = self.avatarImageView
       |> ignoresInvertColorsImageViewStyle
@@ -62,7 +62,6 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
   }
 
   internal override func bindViewModel() {
-
     self.viewModel.outputs.participantAvatarURL
       .observeForUI()
       .on(event: { [weak self] _ in
@@ -72,13 +71,13 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
       .skipNil()
       .observeValues { [weak self] url in
         self?.avatarImageView.af_setImage(withURL: url)
-    }
+      }
 
     self.viewModel.outputs.participantName
       .observeForUI()
       .observeValues { [weak self] in
         self?.nameLabel.setHTML($0)
-    }
+      }
 
     self.replyIndicator?.rac.hidden = self.viewModel.outputs.replyIndicatorHidden
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName

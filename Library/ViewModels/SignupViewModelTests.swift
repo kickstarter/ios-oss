@@ -1,20 +1,19 @@
-import XCTest
 @testable import KsApi
 @testable import Library
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
+import XCTest
 
 internal final class SignupViewModelTests: TestCase {
   fileprivate let vm: SignupViewModelType = SignupViewModel()
-  fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  fileprivate let isSignupButtonEnabled = TestObserver<Bool, NoError>()
-  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, NoError>()
-  fileprivate let nameTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  fileprivate let postNotification = TestObserver<Notification.Name, NoError>()
-  fileprivate let setWeeklyNewsletterState = TestObserver<Bool, NoError>()
-  fileprivate let showError = TestObserver<String, NoError>()
+  fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  fileprivate let isSignupButtonEnabled = TestObserver<Bool, Never>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let nameTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  fileprivate let postNotification = TestObserver<Notification.Name, Never>()
+  fileprivate let setWeeklyNewsletterState = TestObserver<Bool, Never>()
+  fileprivate let showError = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -80,10 +79,14 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.inputs.environmentLoggedIn()
 
     self.scheduler.advance()
-    XCTAssertEqual(["User Signup", "Viewed Signup", "New User", "Signed Up", "Login", "Logged In"],
-                   self.trackingClient.events)
-    self.postNotification.assertValues([.ksr_sessionStarted],
-                                  "Notification posted after scheduler advances.")
+    XCTAssertEqual(
+      ["User Signup", "Viewed Signup", "New User", "Signed Up", "Login", "Logged In"],
+      self.trackingClient.events
+    )
+    self.postNotification.assertValues(
+      [.ksr_sessionStarted],
+      "Notification posted after scheduler advances."
+    )
   }
 
   func testBecomeFirstResponder() {
@@ -140,16 +143,20 @@ internal final class SignupViewModelTests: TestCase {
       self.scheduler.advance()
       self.logIntoEnvironment.assertValueCount(0, "Should not login.")
       self.showError.assertValues([error], "Signup error.")
-      XCTAssertEqual(["User Signup", "Viewed Signup", "Errored User Signup", "Errored Signup"],
-                     self.trackingClient.events)
+      XCTAssertEqual(
+        ["User Signup", "Viewed Signup", "Errored User Signup", "Errored Signup"],
+        self.trackingClient.events
+      )
 
       self.vm.inputs.passwordTextFieldReturn()
       self.showError.assertValueCount(1)
 
       scheduler.advance()
       self.showError.assertValues([error, error], "Signup error.")
-      XCTAssertEqual(["User Signup", "Viewed Signup", "Errored User Signup", "Errored Signup",
-        "Errored User Signup", "Errored Signup"], self.trackingClient.events)
+      XCTAssertEqual([
+        "User Signup", "Viewed Signup", "Errored User Signup", "Errored Signup",
+        "Errored User Signup", "Errored Signup"
+      ], self.trackingClient.events)
       // swiftlint:disable:next force_unwrapping
       XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
     }
@@ -160,18 +167,26 @@ internal final class SignupViewModelTests: TestCase {
     XCTAssertEqual(["User Signup", "Viewed Signup"], self.trackingClient.events)
 
     self.vm.inputs.weeklyNewsletterChanged(true)
-    XCTAssertEqual(["User Signup", "Viewed Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle"],
-                   self.trackingClient.events)
-    XCTAssertEqual([true],
-                   self.trackingClient.properties.compactMap { $0["send_newsletters"] as? Bool })
+    XCTAssertEqual(
+      ["User Signup", "Viewed Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle"],
+      self.trackingClient.events
+    )
+    XCTAssertEqual(
+      [true],
+      self.trackingClient.properties.compactMap { $0["send_newsletters"] as? Bool }
+    )
 
     self.vm.inputs.weeklyNewsletterChanged(false)
     XCTAssertEqual(
-      ["User Signup", "Viewed Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle",
-       "Unsubscribed From Newsletter", "Signup Newsletter Toggle"],
+      [
+        "User Signup", "Viewed Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle",
+        "Unsubscribed From Newsletter", "Signup Newsletter Toggle"
+      ],
       self.trackingClient.events
     )
-    XCTAssertEqual([true, false],
-                   self.trackingClient.properties.compactMap { $0["send_newsletters"] as? Bool })
+    XCTAssertEqual(
+      [true, false],
+      self.trackingClient.properties.compactMap { $0["send_newsletters"] as? Bool }
+    )
   }
 }

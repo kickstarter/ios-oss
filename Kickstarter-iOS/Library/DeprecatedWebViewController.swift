@@ -73,8 +73,8 @@ internal class DeprecatedWebViewController: UIViewController {
             self?.activityIndicator.stopAnimating()
             self?.loadingOverlayView.isHidden = true
           }
-      })
-    }
+        })
+      }
   }
 
   deinit {
@@ -84,17 +84,17 @@ internal class DeprecatedWebViewController: UIViewController {
 
 extension DeprecatedWebViewController: UIWebViewDelegate {
   // Call super from subclasses that override this method.
-  internal func webViewDidStartLoad(_ webView: UIWebView) {
+  internal func webViewDidStartLoad(_: UIWebView) {
     self.viewModel.inputs.webViewDidStartLoad()
   }
 
   // Call super from subclasses that override this method.
-  internal func webViewDidFinishLoad(_ webView: UIWebView) {
+  internal func webViewDidFinishLoad(_: UIWebView) {
     self.viewModel.inputs.webViewDidFinishLoad()
   }
 
   // Call super from subclasses that override this method.
-  internal func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+  internal func webView(_: UIWebView, didFailLoadWithError error: Error) {
     self.viewModel.inputs.webViewDidFail(withError: error)
   }
 }

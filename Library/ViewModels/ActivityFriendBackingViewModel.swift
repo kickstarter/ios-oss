@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ActivityFriendBackingViewModelInputs {
   /// Call to configure with an Activity.
@@ -10,28 +9,28 @@ public protocol ActivityFriendBackingViewModelInputs {
 
 public protocol ActivityFriendBackingViewModelOutputs {
   /// Emits an a11y label for the cell.
-  var cellAccessibilityLabel: Signal<String, NoError> { get }
+  var cellAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits an URL for the friend avatar image view.
-  var friendImageURL: Signal<URL?, NoError> { get }
+  var friendImageURL: Signal<URL?, Never> { get }
 
   /// Emits an attributed string for the "friend backed" label.
-  var friendTitle: Signal<NSAttributedString, NoError> { get }
+  var friendTitle: Signal<NSAttributedString, Never> { get }
 
   /// Emits a color for the funding progress bar.
-  var fundingBarColor: Signal<UIColor, NoError> { get }
+  var fundingBarColor: Signal<UIColor, Never> { get }
 
   /// Emits a percentage between 0.0 and 1.0 that can be used to render the funding progress bar.
-  var fundingProgressPercentage: Signal<Float, NoError> { get }
+  var fundingProgressPercentage: Signal<Float, Never> { get }
 
   /// Emits an attributed string for percent funded label.
-  var percentFundedText: Signal<NSAttributedString, NoError> { get }
+  var percentFundedText: Signal<NSAttributedString, Never> { get }
 
   /// Emits a url to the project image.
-  var projectImageURL: Signal<URL?, NoError> { get }
+  var projectImageURL: Signal<URL?, Never> { get }
 
   /// Emits text for the project name label.
-  var projectName: Signal<String, NoError> { get }
+  var projectName: Signal<String, Never> { get }
 }
 
 public protocol ActivityFriendBackingViewModelType {
@@ -40,8 +39,7 @@ public protocol ActivityFriendBackingViewModelType {
 }
 
 public final class ActivityFriendBackingViewModel: ActivityFriendBackingViewModelType,
-ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
-
+  ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
   public init() {
     let activity = self.activityProperty.signal.skipNil()
     let project = activity.map { $0.project }.skipNil()
@@ -68,9 +66,10 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
           italic: [
             NSAttributedString.Key.font: UIFont.ksr_subhead(size: 12),
             NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-          ])
+          ]
+        )
           ?? .init()
-    }
+      }
 
     self.fundingBarColor = activity.map { progressBarColor(forActivityCategory: $0.category) }
 
@@ -93,14 +92,14 @@ ActivityFriendBackingViewModelInputs, ActivityFriendBackingViewModelOutputs {
     self.activityProperty.value = activity
   }
 
-  public let friendImageURL: Signal<URL?, NoError>
-  public let friendTitle: Signal<NSAttributedString, NoError>
-  public let fundingBarColor: Signal<UIColor, NoError>
-  public let fundingProgressPercentage: Signal<Float, NoError>
-  public let percentFundedText: Signal<NSAttributedString, NoError>
-  public let projectName: Signal<String, NoError>
-  public let projectImageURL: Signal<URL?, NoError>
-  public let cellAccessibilityLabel: Signal<String, NoError>
+  public let friendImageURL: Signal<URL?, Never>
+  public let friendTitle: Signal<NSAttributedString, Never>
+  public let fundingBarColor: Signal<UIColor, Never>
+  public let fundingProgressPercentage: Signal<Float, Never>
+  public let percentFundedText: Signal<NSAttributedString, Never>
+  public let projectName: Signal<String, Never>
+  public let projectImageURL: Signal<URL?, Never>
+  public let cellAccessibilityLabel: Signal<String, Never>
 
   public var inputs: ActivityFriendBackingViewModelInputs { return self }
   public var outputs: ActivityFriendBackingViewModelOutputs { return self }
@@ -121,21 +120,21 @@ private func progressBarColor(forActivityCategory category: Activity.Category) -
 private func string(forCategoryId id: String, friendName: String) -> String {
   let root = RootCategory(categoryId: Int(id) ?? -1)
   switch root {
-  case .art:          return Strings.Friend_backed_art_project(friend_name: friendName)
-  case .comics:       return Strings.Friend_backed_comics_project(friend_name: friendName)
-  case .dance:        return Strings.Friend_backed_dance_project(friend_name: friendName)
-  case .design:       return Strings.Friend_backed_design_project(friend_name: friendName)
-  case .fashion:      return Strings.Friend_backed_fashion_project(friend_name: friendName)
-  case .food:         return Strings.Friend_backed_food_project(friend_name: friendName)
-  case .film:         return Strings.Friend_backed_film_project(friend_name: friendName)
-  case .games:        return Strings.Friend_backed_games_project(friend_name: friendName)
-  case .journalism:   return Strings.Friend_backed_journalism_project(friend_name: friendName)
-  case .music:        return Strings.Friend_backed_music_project(friend_name: friendName)
-  case .photography:  return Strings.Friend_backed_photography_project(friend_name: friendName)
-  case .tech:         return Strings.Friend_backed_tech_project(friend_name: friendName)
-  case .theater:      return Strings.Friend_backed_theater_project(friend_name: friendName)
-  case .publishing:   return Strings.Friend_backed_publishing_project(friend_name: friendName)
-  case .crafts:       return Strings.Friend_backed_crafts_project(friend_name: friendName)
+  case .art: return Strings.Friend_backed_art_project(friend_name: friendName)
+  case .comics: return Strings.Friend_backed_comics_project(friend_name: friendName)
+  case .dance: return Strings.Friend_backed_dance_project(friend_name: friendName)
+  case .design: return Strings.Friend_backed_design_project(friend_name: friendName)
+  case .fashion: return Strings.Friend_backed_fashion_project(friend_name: friendName)
+  case .food: return Strings.Friend_backed_food_project(friend_name: friendName)
+  case .film: return Strings.Friend_backed_film_project(friend_name: friendName)
+  case .games: return Strings.Friend_backed_games_project(friend_name: friendName)
+  case .journalism: return Strings.Friend_backed_journalism_project(friend_name: friendName)
+  case .music: return Strings.Friend_backed_music_project(friend_name: friendName)
+  case .photography: return Strings.Friend_backed_photography_project(friend_name: friendName)
+  case .tech: return Strings.Friend_backed_tech_project(friend_name: friendName)
+  case .theater: return Strings.Friend_backed_theater_project(friend_name: friendName)
+  case .publishing: return Strings.Friend_backed_publishing_project(friend_name: friendName)
+  case .crafts: return Strings.Friend_backed_crafts_project(friend_name: friendName)
   case .unrecognized: return ""
   }
 }
@@ -145,8 +144,8 @@ private func percentFundedString(forActivity activity: Activity) -> NSAttributed
 
   let percentage = Format.percentage(project.stats.percentFunded)
 
-    return NSAttributedString(string: percentage, attributes: [
-      NSAttributedString.Key.font: UIFont.ksr_caption1(size: 10),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_green_700
-      ])
+  return NSAttributedString(string: percentage, attributes: [
+    NSAttributedString.Key.font: UIFont.ksr_caption1(size: 10),
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_green_700
+  ])
 }

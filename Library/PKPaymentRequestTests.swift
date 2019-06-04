@@ -1,11 +1,10 @@
 import Argo
-import Runes
-import PassKit
-import XCTest
 @testable import Library
+import PassKit
+import Runes
+import XCTest
 
 public final class PKPaymentRequestTests: XCTestCase {
-
   func testDecodingSnakeCase_MinimalData() {
     let json: [String: Any] = [
       "country_code": "US",
@@ -80,7 +79,7 @@ public final class PKPaymentRequestTests: XCTestCase {
         ]
       ],
       "supportedNetworks": ["Visa", "MasterCard", "AmEx", "Discover"]
-      ])
+    ])
 
     XCTAssertNil(decoded.error)
     XCTAssertNotNil(decoded.value)
@@ -109,7 +108,7 @@ public final class PKPaymentRequestTests: XCTestCase {
       ],
       "shippingType": "Delivery",
       "supportedNetworks": ["Visa", "MasterCard", "AmEx", "Discover"]
-      ])
+    ])
 
     XCTAssertNil(decoded.error)
     XCTAssertNotNil(decoded.value)
@@ -124,7 +123,6 @@ public final class PKPaymentRequestTests: XCTestCase {
     XCTAssertEqual(PKPaymentSummaryItemType.pending, decoded.value?.paymentSummaryItems.first?.type)
     XCTAssertEqual(PKShippingType.delivery, decoded.value?.shippingType)
     XCTAssertEqual([.visa, .masterCard, .amex, .discover], decoded.value?.supportedNetworks ?? [])
-
   }
 
   func testEncoding() {

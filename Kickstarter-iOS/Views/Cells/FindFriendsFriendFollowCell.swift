@@ -5,14 +5,13 @@ import ReactiveSwift
 import UIKit
 
 internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
-
-  @IBOutlet fileprivate weak var avatarImageView: CircleAvatarImageView!
-  @IBOutlet fileprivate weak var friendNameLabel: UILabel!
-  @IBOutlet fileprivate weak var friendLocationLabel: UILabel!
-  @IBOutlet fileprivate weak var projectsBackedLabel: UILabel!
-  @IBOutlet fileprivate weak var projectsCreatedLabel: UILabel!
-  @IBOutlet fileprivate weak var followButton: UIButton!
-  @IBOutlet fileprivate weak var unfollowButton: UIButton!
+  @IBOutlet fileprivate var avatarImageView: CircleAvatarImageView!
+  @IBOutlet fileprivate var friendNameLabel: UILabel!
+  @IBOutlet fileprivate var friendLocationLabel: UILabel!
+  @IBOutlet fileprivate var projectsBackedLabel: UILabel!
+  @IBOutlet fileprivate var projectsCreatedLabel: UILabel!
+  @IBOutlet fileprivate var followButton: UIButton!
+  @IBOutlet fileprivate var unfollowButton: UIButton!
 
   fileprivate let viewModel: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
 
@@ -50,11 +49,11 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
       .on(event: { [weak avatarImageView] _ in
         avatarImageView?.af_cancelImageRequest()
         avatarImageView?.image = nil
-        })
+      })
       .skipNil()
       .observeValues { [weak avatarImageView] url in
         avatarImageView?.ksr_setImageWithURL(url)
-    }
+      }
   }
 
   override func bindStyles() {
@@ -92,7 +91,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
       |> UIButton.lens.targets .~ [(self, action: #selector(unfollowButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.social_following_friend_buttons_following()
-    }
+      }
 
     _ = self
       |> baseTableViewCellStyle()
@@ -101,7 +100,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(20))
           : .init(all: Styles.grid(2))
-    }
+      }
   }
 
   @objc func followButtonTapped() {

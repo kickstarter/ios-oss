@@ -1,19 +1,18 @@
-import XCTest
-import Result
-import ReactiveSwift
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class DashboardProjectsDrawerViewModelTests: TestCase {
   internal let vm: DashboardProjectsDrawerViewModelType = DashboardProjectsDrawerViewModel()
 
-  let projectsDrawerData = TestObserver<[ProjectsDrawerData], NoError>()
-  let notifyDelegateToCloseDrawer = TestObserver<(), NoError>()
-  let notifyDelegateDidAnimateOut = TestObserver<(), NoError>()
-  let notifyDelegateProjectCellTapped = TestObserver<Project, NoError>()
-  let focusScreenReaderOnFirstProject = TestObserver<(), NoError>()
+  let projectsDrawerData = TestObserver<[ProjectsDrawerData], Never>()
+  let notifyDelegateToCloseDrawer = TestObserver<(), Never>()
+  let notifyDelegateDidAnimateOut = TestObserver<(), Never>()
+  let notifyDelegateProjectCellTapped = TestObserver<Project, Never>()
+  let focusScreenReaderOnFirstProject = TestObserver<(), Never>()
 
   let project1 = .template |> Project.lens.id .~ 4
   let project2 = .template |> Project.lens.id .~ 6
@@ -22,11 +21,13 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
     ProjectsDrawerData(
       project: .template |> Project.lens.id .~ 4,
       indexNum: 0,
-      isChecked: true),
+      isChecked: true
+    ),
     ProjectsDrawerData(
       project: .template |> Project.lens.id .~ 6,
       indexNum: 1,
-      isChecked: false)
+      isChecked: false
+    )
   ]
 
   internal override func setUp() {
@@ -40,7 +41,7 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
   }
 
   func testConfigureWith() {
-    self.vm.inputs.configureWith(data: data1)
+    self.vm.inputs.configureWith(data: self.data1)
 
     self.projectsDrawerData.assertValueCount(0)
 
@@ -48,7 +49,7 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
 
     self.projectsDrawerData.assertValues([data1])
 
-    self.vm.inputs.configureWith(data: data2)
+    self.vm.inputs.configureWith(data: self.data2)
 
     self.projectsDrawerData.assertValueCount(1)
 
@@ -58,18 +59,18 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
   }
 
   func testProjectTapped() {
-    self.vm.inputs.configureWith(data: data1)
+    self.vm.inputs.configureWith(data: self.data1)
     self.vm.inputs.viewDidLoad()
 
     self.notifyDelegateProjectCellTapped.assertValueCount(0)
 
-    self.vm.inputs.projectCellTapped(project1)
+    self.vm.inputs.projectCellTapped(self.project1)
 
     self.notifyDelegateProjectCellTapped.assertValues([project1])
   }
 
   func testAnimateOut_OnBackgroundTapped() {
-    self.vm.inputs.configureWith(data: data1)
+    self.vm.inputs.configureWith(data: self.data1)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.animateInCompleted()
 

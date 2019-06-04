@@ -1,13 +1,12 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class ProjectPhotoTests: XCTestCase {
-
   func testJSONParsing_WithPartialData() {
     let photo = Project.Photo.decodeJSONDictionary([
       "full": "http://www.kickstarter.com/full.jpg",
-      "med": "http://www.kickstarter.com/med.jpg",
-      ])
+      "med": "http://www.kickstarter.com/med.jpg"
+    ])
 
     XCTAssertNotNil(photo.error)
   }
@@ -16,8 +15,8 @@ final class ProjectPhotoTests: XCTestCase {
     let photo = Project.Photo.decodeJSONDictionary([
       "full": "http://www.kickstarter.com/full.jpg",
       "med": "http://www.kickstarter.com/med.jpg",
-      "small": "http://www.kickstarter.com/small.jpg",
-      ])
+      "small": "http://www.kickstarter.com/small.jpg"
+    ])
 
     XCTAssertNil(photo.error)
     XCTAssertEqual(photo.value?.full, "http://www.kickstarter.com/full.jpg")
@@ -31,8 +30,8 @@ final class ProjectPhotoTests: XCTestCase {
       "full": "http://www.kickstarter.com/full.jpg",
       "med": "http://www.kickstarter.com/med.jpg",
       "small": "http://www.kickstarter.com/small.jpg",
-      "1024x768": "http://www.kickstarter.com/1024x768.jpg",
-      ])
+      "1024x768": "http://www.kickstarter.com/1024x768.jpg"
+    ])
 
     XCTAssertNil(photo.error)
     XCTAssertEqual(photo.value?.full, "http://www.kickstarter.com/full.jpg")
