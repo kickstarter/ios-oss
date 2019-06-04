@@ -5,7 +5,7 @@ import ReactiveSwift
 import ReactiveExtensions
 
 public protocol ProjectStatesContainerViewViewModelInputs {
-  func configureWith(project: Project, user: User, backing: Backing)
+  func configureWith(project: Project, user: User)
 }
 
 public protocol ProjectStatesContainerViewViewModelOutputs {
@@ -24,24 +24,42 @@ public final class ProjectStatesContainerViewViewModel: ProjectStatesContainerVi
   ProjectStatesContainerViewViewModelInputs, ProjectStatesContainerViewViewModelOutputs {
 
   public init() {
-    let projectAndUser = self.projectAndBackingProperty.signal.skipNil()
+    let projectAndUser = self.projectAndUserProperty.signal.skipNil()
 
     let projectState = projectAndUser
-      .map { project, user, _ in projectStateButton(backer: user, project: project) }
+      .map { project, user in projectStateButton(backer: user, project: project) }
 
-    let backing = projectAndUser
-      .map { _, _, backing in backing }
+    let backingEvent = projectAndUser
+      .switchMap { project, user in
+        AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+    }
+
+    let backing = backingEvent.values()
+    let project = projectAndUser.map { $0.0 }
+    let projectAndBacking = Signal.combineLatest(project, backing)
 
     self.buttonTitleText = projectState.map { $0.buttonTitle }
     self.buttonBackgroundColor = projectState.map { $0.buttonBackgroundColor }
     self.stackViewIsHidden = projectState.map { $0.stackViewIsHidden }
-    self.rewardTitle = backing.map {
-      $0.reward?.title ?? "Thank you for supporting this project" }
+
+    self.rewardTitle = projectAndBacking
+      .map { (arg) -> String in
+
+        let (project, backing) = arg
+        let amount = Format.currency(Int(ceil(Float(backing.amount) * (project.stats.currentCurrencyRate ?? project.stats.staticUsdRate))),
+                                     country: project.stats.currentCountry ?? .us,
+                                     omitCurrencyCode: project.stats.omitUSCurrencyCode)
+
+        guard let rewardTitle = backing.reward?.title else { return "\(amount)" }
+
+        return "\(amount) • \(rewardTitle)" }
   }
 
-  fileprivate let projectAndBackingProperty = MutableProperty<(Project, User, Backing)?>(nil)
-  public func configureWith(project: Project, user: User, backing: Backing) {
-    self.projectAndBackingProperty.value = (project, user, backing)
+  fileprivate let projectAndUserProperty = MutableProperty<(Project, User)?>(nil)
+  public func configureWith(project: Project, user: User) {
+    self.projectAndUserProperty.value = (project, user)
   }
 
   public var inputs: ProjectStatesContainerViewViewModelInputs { return self }

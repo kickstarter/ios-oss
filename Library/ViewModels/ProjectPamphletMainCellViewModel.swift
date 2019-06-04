@@ -18,9 +18,6 @@ public protocol ProjectPamphletMainCellViewModelInputs {
 
   /// Call when the read more button is tapped.
   func readMoreButtonTapped()
-
-  func videoDidFinish()
-  func videoDidStart()
 }
 
 public protocol ProjectPamphletMainCellViewModelOutputs {
@@ -105,9 +102,6 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a string to use for the stats stack view accessibility value.
   var statsStackViewAccessibilityLabel: Signal<String, NoError> { get }
-
-  /// Emits a boolean that determines if the "you're a backer" label should be hidden.
-  var youreABackerLabelHidden: Signal<Bool, NoError> { get }
 }
 
 public protocol ProjectPamphletMainCellViewModelType {
@@ -152,18 +146,6 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
         UIColor.ksr_green_700 : UIColor.ksr_text_dark_grey_500 }
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
-
-    let videoIsPlaying = Signal.merge(
-      project.take(first: 1).mapConst(false),
-      self.videoDidStartProperty.signal.mapConst(true),
-      self.videoDidFinishProperty.signal.mapConst(false)
-    )
-
-    self.youreABackerLabelHidden = Signal.combineLatest(project, videoIsPlaying)
-      .map { project, videoIsPlaying in
-        project.personalization.isBacking != true || videoIsPlaying
-      }
-      .skipRepeats()
 
     let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
@@ -254,16 +236,6 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
     self.readMoreButtonTappedProperty.value = ()
   }
 
-  fileprivate let videoDidFinishProperty = MutableProperty(())
-  public func videoDidFinish() {
-    self.videoDidFinishProperty.value = ()
-  }
-
-  fileprivate let videoDidStartProperty = MutableProperty(())
-  public func videoDidStart() {
-    self.videoDidStartProperty.value = ()
-  }
-
   public let backersSubtitleLabelText: Signal<String, NoError>
   public let backersTitleLabelText: Signal<String, NoError>
   public let categoryNameLabelText: Signal<String, NoError>
@@ -291,7 +263,6 @@ ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs 
   public let projectUnsuccessfulLabelTextColor: Signal<UIColor, NoError>
   public let stateLabelHidden: Signal<Bool, NoError>
   public let statsStackViewAccessibilityLabel: Signal<String, NoError>
-  public let youreABackerLabelHidden: Signal<Bool, NoError>
 
   public var inputs: ProjectPamphletMainCellViewModelInputs { return self }
   public var outputs: ProjectPamphletMainCellViewModelOutputs { return self }

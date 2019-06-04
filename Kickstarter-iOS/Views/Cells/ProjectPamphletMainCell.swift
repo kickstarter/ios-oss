@@ -224,16 +224,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.statsStackView
       |> UIStackView.lens.isAccessibilityElement .~ true
       |> UIStackView.lens.backgroundColor .~ .white
-
-    _ = self.youreABackerContainerView
-      |> roundedStyle(cornerRadius: 2)
-      |> UIView.lens.backgroundColor .~ .ksr_green_500
-      |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
-
-    _ = self.youreABackerLabel
-      |> UILabel.lens.textColor .~ .white
-      |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
   }
 
     internal override func bindViewModel() {
@@ -263,7 +253,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
     self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
     self.statsStackView.rac.accessibilityLabel = self.viewModel.outputs.statsStackViewAccessibilityLabel
-    self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
 
     self.viewModel.outputs.configureVideoPlayerController
       .observeForUI()
@@ -317,7 +306,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   fileprivate func configureVideoPlayerController(forProject project: Project) {
     let vc = VideoViewController.configuredWith(project: project)
-    vc.delegate = self
     vc.view.translatesAutoresizingMaskIntoConstraints = false
     self.projectImageContainerView.addSubview(vc.view)
 
@@ -338,17 +326,5 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   @objc fileprivate func creatorButtonTapped() {
     self.viewModel.inputs.creatorButtonTapped()
-  }
-}
-
-extension ProjectPamphletMainCell: VideoViewControllerDelegate {
-  internal func videoViewControllerDidFinish(_ controller: VideoViewController) {
-    self.delegate?.videoViewControllerDidFinish(controller)
-    self.viewModel.inputs.videoDidFinish()
-  }
-
-  internal func videoViewControllerDidStart(_ controller: VideoViewController) {
-    self.delegate?.videoViewControllerDidStart(controller)
-    self.viewModel.inputs.videoDidStart()
   }
 }

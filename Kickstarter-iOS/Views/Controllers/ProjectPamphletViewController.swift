@@ -98,11 +98,7 @@ public final class ProjectPamphletViewController: UIViewController {
 
   private func configureViews() {
     // Configure subviews
-//    self.backThisProjectContainerView.addSubview(self.backThisProjectButton)
-
     self.view.addSubview(self.backThisProjectContainerView)
-
-//    self.backThisProjectButton.addTarget(self, action: #selector(backThisProjectTapped), for: .touchUpInside)
 
     // Configure constraints
     let backThisProjectContainerViewConstraints = [
@@ -110,17 +106,6 @@ public final class ProjectPamphletViewController: UIViewController {
       self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.backThisProjectContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
     ]
-//
-//    let containerMargins = self.backThisProjectContainerView.layoutMarginsGuide
-//    let minHeight = Styles.minTouchSize.height
-
-//    let backThisProjectButtonConstraints = [
-//      self.backThisProjectButton.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-//      self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-//      self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
-//      self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
-//      self.backThisProjectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight)
-//    ]
 
     NSLayoutConstraint.activate(backThisProjectContainerViewConstraints)// + backThisProjectButtonConstraints)
   }
@@ -130,15 +115,6 @@ public final class ProjectPamphletViewController: UIViewController {
 
     _ = self.backThisProjectContainerView
       |> \.layoutMargins .~ .init(all: backThisProjectContainerViewMargins)
-
-//    _ = self.backThisProjectButton
-//      |> checkoutGreenButtonStyle
-//      |> UIButton.lens.title(for: .normal) %~ { _ in
-//        return Strings.project_back_button()
-//    }
-//
-//    _ = self.backThisProjectButton.titleLabel
-//      ?|> checkoutGreenButtonTitleLabelStyle
   }
 
   public override func bindViewModel() {
@@ -175,16 +151,10 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.navBarTopConstraint.constant = value
     }
 
-//    self.viewModel.outputs.projectAndUser // Project, Reward, Backing is here
-//      .observeForUI()
-//      .observeValues { [weak self] project, user in
-//        self?.backThisProjectContainerView.configureWith(project: project, user: user)
-//    }
-
-    self.viewModel.outputs.projectAndBacking
+    self.viewModel.outputs.projectAndUser
       .observeForUI()
-      .observeValues { [weak self] project, user, backing in
-        self?.backThisProjectContainerView.configureWith(project: project, user: user, backing: backing)
+      .observeValues { [weak self] project, user in
+        self?.backThisProjectContainerView.configureWith(project: project, user: user)
     }
   }
 

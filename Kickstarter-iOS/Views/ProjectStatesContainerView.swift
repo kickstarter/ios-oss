@@ -40,13 +40,13 @@ class ProjectStatesContainerView: UIView {
     self.label.rac.text = self.vm.outputs.rewardTitle
   }
 
-  func configureWith(project: Project, user: User, backing: Backing) {
+  func configureWith(project: Project, user: User) {
     _ = self.button
       |> projectStateButtonStyle
 
     _ = self.backerLabel
       |> \.font .~ .ksr_headline(size: 14)
-      |> \.text %~ { _ in "You're a backer"}
+      |> \.text %~ { _ in Strings.Youre_a_backer() }
 
     _ = self.label
       |> \.font .~ .ksr_caption1(size: 14)
@@ -60,7 +60,7 @@ class ProjectStatesContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.isLayoutMarginsRelativeArrangement .~ true
 
-    self.vm.inputs.configureWith(project: project, user: user, backing: backing)
+    self.vm.inputs.configureWith(project: project, user: user)
   }
 
   required init?(coder aDecoder: NSCoder) {

@@ -47,9 +47,6 @@ public protocol ProjectPamphletViewModelOutputs {
   var topLayoutConstraintConstant: Signal<CGFloat, NoError> { get }
 
   var projectAndUser: Signal<(Project, User), NoError> { get }
-
-  var projectAndBacking: Signal <(Project, User, Backing), NoError> { get }
-
 }
 
 public protocol ProjectPamphletViewModelType {
@@ -76,11 +73,8 @@ ProjectPamphletViewModelOutputs {
     }
 
     let user = viewDidLoadProperty.signal
-      .switchMap { _ in
-        AppEnvironment.current.apiService.fetchUserSelf()
-          .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
-          .demoteErrors()
-    }
+      .map { AppEnvironment.current.currentUser }
+      .skipNil()
 
     self.goToRewards = freshProjectAndLiveStreamsAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
@@ -198,7 +192,6 @@ ProjectPamphletViewModelOutputs {
   public let topLayoutConstraintConstant: Signal<CGFloat, NoError>
 
   public let projectAndUser: Signal<(Project, User), NoError>
-  public let projectAndBacking: Signal<(Project, User, Backing), NoError>
 
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }
@@ -275,8 +268,6 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
 
   return HTTPCookie(properties: properties)
 }
-
-
 
 private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
   -> SignalProducer<(Project, [LiveStreamEvent]?), NoError> {
