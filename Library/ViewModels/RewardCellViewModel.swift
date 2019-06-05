@@ -70,22 +70,13 @@ RewardCellViewModelOutputs {
       .map(Strings.About_reward_amount(reward_amount:))
 
     self.rewardMinimumLabelText = projectAndRewardOrBacking
-      .map { project, rewardOrBacking in
-        switch rewardOrBacking {
-        case let .left(reward):
-          let minimumFormattedAmount = formattedAmountForRewardOrBacking(project: project, rewardOrBacking: rewardOrBacking)
-
-          return reward == Reward.noReward
-            ? Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
-            : minimumFormattedAmount
-
-        case let .right(backing):
-          return formattedAmountForRewardOrBacking(project: project, rewardOrBacking: rewardOrBacking)
-        }
-    }
+      .map { formattedAmountForRewardOrBacking(project: $0, rewardOrBacking: $1) }
 
     self.descriptionLabelText = reward
       .map { $0 == Reward.noReward ? "" : $0.description }
+
+    self.descriptionStackViewHidden = reward.map { $0 == Reward.noReward }
+      .logEvents(identifier: "**DESCRIPTION STACK VIEW HIDDEN**")
 
     self.rewardTitleLabelHidden = reward
       .map { $0.title == nil && $0 != Reward.noReward }
@@ -96,8 +87,10 @@ RewardCellViewModelOutputs {
     let rewardItemsIsEmpty = reward
       .map { $0.rewardsItems.isEmpty }
 
-    self.includedItemsStackViewHidden = reward.map { $0.remaining == 0 || $0.rewardsItems.isEmpty }
-      .skipRepeats()
+    let rewardAvailable = reward
+      .map { $0.remaining == 0 }.negate()
+
+    self.includedItemsStackViewHidden = rewardItemsIsEmpty.skipRepeats()
 
     self.items = reward
       .map { reward in
@@ -108,19 +101,14 @@ RewardCellViewModelOutputs {
         }
     }
 
-    self.pledgeButtonTitleText = projectAndRewardOrBacking.map { project, rewardOrBacking in
-      let minimumFormattedAmount = formattedAmountForRewardOrBacking(project: project, rewardOrBacking: rewardOrBacking)
-      return project.personalization.isBacking == true
-        ? Strings.Select_this_reward_instead()
-        : Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
-    }
+    self.pledgeButtonTitleText = projectAndRewardOrBacking
+      .map { pledgeButtonTitle(project: $0, rewardOrBacking: $1) }
 
     self.rewardSelected = reward
       .takeWhen(self.pledgeButtonTappedProperty.signal)
       .map { $0.id }
 
-    self.descriptionStackViewHidden = projectAndRewardOrBacking.mapConst(false)
-    self.pledgeButtonEnabled = projectAndRewardOrBacking.mapConst(true)
+    self.pledgeButtonEnabled = rewardAvailable
   }
 
   private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
@@ -154,8 +142,9 @@ private func needsConversion(project: Project) -> Bool {
   return project.stats.needsConversion
 }
 
-private func backingReward(fromProject project: Project) -> Reward? {
+// MARK: - Private Helpers
 
+private func backingReward(fromProject project: Project) -> Reward? {
   guard let backing = project.personalization.backing else {
     return nil
   }
@@ -167,41 +156,25 @@ private func backingReward(fromProject project: Project) -> Reward? {
 }
 
 private func rewardTitle(project: Project, reward: Reward) -> String {
-
   guard project.personalization.isBacking == true else {
     return reward == Reward.noReward
-      ? Strings.Id_just_like_to_support_the_project()
+      ? Strings.Make_a_pledge_without_a_reward()
       : (reward.title ?? "")
   }
 
   return reward.title ?? Strings.Thank_you_for_supporting_this_project()
 }
 
-private func footerString(project: Project, reward: Reward) -> String {
-  var parts: [String] = []
-
-  if let endsAt = reward.endsAt, project.state == .live
-    && endsAt > 0
-    && endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
-
-    let (time, unit) = Format.duration(secondsInUTC: min(endsAt, project.dates.deadline),
-                                       abbreviate: true,
-                                       useToGo: false)
-
-    parts.append(Strings.Time_left_left(time_left: time + " " + unit))
+private func pledgeButtonTitle(project: Project, rewardOrBacking: Either<Reward, Backing>) -> String {
+  if case let .left(reward) = rewardOrBacking, reward.remaining == 0 {
+    return "No longer available"
   }
 
-  if let remaining = reward.remaining, reward.limit != nil && project.state == .live {
-    parts.append(Strings.Left_count_left(left_count: remaining))
-  }
-
-  if let backersCount = reward.backersCount {
-    parts.append(Strings.general_backer_count_backers(backer_count: backersCount))
-  }
-
-  return parts
-    .map { part in part.nonBreakingSpaced() }
-    .joined(separator: " • ")
+  let minimumFormattedAmount = formattedAmountForRewardOrBacking(project: project,
+                                                                 rewardOrBacking: rewardOrBacking)
+  return project.personalization.isBacking == true
+    ? Strings.Select_this_reward_instead()
+    : Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
 }
 
 private func formattedAmount(for backing: Backing) -> String {
@@ -212,7 +185,8 @@ private func formattedAmount(for backing: Backing) -> String {
   return backingAmount
 }
 
-private func formattedAmountForRewardOrBacking(project: Project, rewardOrBacking: Either<Reward, Backing>) -> String {
+private func formattedAmountForRewardOrBacking(project: Project,
+                                               rewardOrBacking: Either<Reward, Backing>) -> String {
   switch rewardOrBacking {
   case let .left(reward):
     let min = minPledgeAmount(forProject: project, reward: reward)

@@ -104,7 +104,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     self.minimumPriceConversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.minimumPriceConversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
-    self.descriptionLabel.rac.hidden = self.viewModel.outputs.descriptionStackViewHidden
+    self.descriptionStackView.rac.hidden = self.viewModel.outputs.descriptionStackViewHidden
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
     self.includedItemsStackView.rac.hidden = self.viewModel.outputs.includedItemsStackViewHidden
     self.minimumPriceLabel.rac.text = self.viewModel.outputs.rewardMinimumLabelText
@@ -217,7 +217,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       pledgeButtonLayoutGuide.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
       pledgeButtonLayoutGuide.topAnchor.constraint(equalTo: baseStackView.bottomAnchor,
                                                    constant: Styles.grid(3)),
-      pledgeButtonLayoutGuide.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
+      pledgeButtonLayoutGuide.heightAnchor.constraint(equalTo: pledgeButton.heightAnchor)
       ])
   }
 
@@ -277,7 +277,7 @@ private let baseStackViewStyle: StackViewStyle = { stackView in
 private let minimumPriceLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_green_500
-    |> \.font .~ UIFont.ksr_headline().bolded
+    |> \.font .~ UIFont.ksr_headline(size: 24).bolded
 }
 
 private let minimumPriceConversionLabelStyle: LabelStyle = { label in
