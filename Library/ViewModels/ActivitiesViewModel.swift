@@ -56,8 +56,11 @@ public protocol ActitiviesViewModelInputs {
 }
 
 public protocol ActivitiesViewModelOutputs {
-  /// Emits an array of activities that should be displayed
+  /// Emits an array of activities that should be displayed.
   var activities: Signal<[Activity], Never> { get }
+
+  /// Emits when the tab bar item's badge value should be cleared.
+  var clearBadgeValue: Signal<(), Never> { get }
 
   /// Emits when should remove Facebook Connect section
   var deleteFacebookConnectSection: Signal<(), Never> { get }
@@ -156,6 +159,16 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       }
 
     self.activities = Signal.merge(clearedActivitiesOnSessionEnd, updatedActivities)
+    self.clearBadgeValue = Signal.zip(
+      self.refreshProperty.signal,
+      updatedActivities
+    )
+    .on(
+      value: { _ in
+        _ = AppEnvironment.current.apiService.clearUserUnseenActivity(input: EmptyInput())
+      }
+    )
+    .ignoreValues()
 
     let currentUser = Signal
       .merge(
@@ -359,6 +372,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   }
 
   public let activities: Signal<[Activity], Never>
+  public let clearBadgeValue: Signal<(), Never>
   public let deleteFacebookConnectSection: Signal<(), Never>
   public let deleteFindFriendsSection: Signal<(), Never>
   public let hideEmptyState: Signal<(), Never>

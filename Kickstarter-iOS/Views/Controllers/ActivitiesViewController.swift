@@ -169,6 +169,12 @@ internal final class ActivitiesViewController: UITableViewController {
       .observeValues { [weak self] project, update in
         self?.goToUpdate(project: project, update: update)
       }
+
+    self.viewModel.outputs.clearBadgeValue
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.parent?.tabBarItem.badgeValue = nil
+      }
   }
 
   internal override func tableView(

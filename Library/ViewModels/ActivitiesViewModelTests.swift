@@ -8,6 +8,7 @@ final class ActivitiesViewModelTests: TestCase {
   fileprivate let vm: ActivitiesViewModelType! = ActivitiesViewModel()
 
   fileprivate let activitiesPresent = TestObserver<Bool, Never>()
+  fileprivate let clearBadgeValue = TestObserver<(), Never>()
   fileprivate let isRefreshing = TestObserver<Bool, Never>()
   fileprivate let goToProject = TestObserver<Project, Never>()
   fileprivate let goToSurveyResponse = TestObserver<SurveyResponse, Never>()
@@ -28,6 +29,7 @@ final class ActivitiesViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.activities.map { !$0.isEmpty }.observe(self.activitiesPresent.observer)
+    self.vm.outputs.clearBadgeValue.observe(self.clearBadgeValue.observer)
     self.vm.outputs.hideEmptyState.observe(self.hideEmptyState.observer)
     self.vm.outputs.isRefreshing.observe(self.isRefreshing.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
@@ -212,6 +214,31 @@ final class ActivitiesViewModelTests: TestCase {
         self.scheduler.advance()
 
         self.activitiesPresent.assertValues([true, true, true], "New activities emit on refresh.")
+      }
+    }
+  }
+
+  func testClearBadgeValueOnRefreshActivities() {
+    self.clearBadgeValue.assertValueCount(0)
+
+    withEnvironment(
+      apiService: MockService(fetchActivitiesResponse: [activity1, activity2]),
+      currentUser: .template
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.userSessionStarted()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.scheduler.advance()
+
+      self.activitiesPresent.assertValues([true], "Activities load immediately after session starts.")
+      self.clearBadgeValue.assertValueCount(0)
+
+      withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity1, activity2, activity3])) {
+        self.vm.inputs.refresh()
+        self.scheduler.advance()
+
+        self.activitiesPresent.assertValues([true, true], "New activities emit on refresh.")
+        self.clearBadgeValue.assertValueCount(1)
       }
     }
   }

@@ -275,17 +275,17 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       )
       .map { _, index -> RootTabBarItemBadgeValueData in (nil, index) }
 
-    let badgeValueOnUserSessionStarted = self.userSessionStartedProperty.signal
+    let badgeValueOnUserUpdated = self.currentUserUpdatedProperty.signal
       .map { _ in AppEnvironment.current.currentUser?.unseenActivityCount }
 
     let updateBadgeValueFromNotification = selectedIndexAndActivityViewControllerIndex
       .takePairWhen(self.didReceiveBadgeValueSignal)
 
-    let updateBadgeValueOnUserSessionStarted = selectedIndexAndActivityViewControllerIndex
-      .takePairWhen(badgeValueOnUserSessionStarted)
+    let updateBadgeValueOnUserUpdated = selectedIndexAndActivityViewControllerIndex
+      .takePairWhen(badgeValueOnUserUpdated)
 
-    let updateBadgeValueOnUserSessionStartedOrFromNotification = Signal.merge(
-      updateBadgeValueOnUserSessionStarted,
+    let updateBadgeValueOnUserUpdatedOrFromNotification = Signal.merge(
+      updateBadgeValueOnUserUpdated,
       updateBadgeValueFromNotification
     )
     .map(unpack)
@@ -302,7 +302,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     self.setBadgeValueAtIndex = Signal.merge(
       updateBadgeValueOnLifecycleEvents,
-      updateBadgeValueOnUserSessionStartedOrFromNotification,
+      updateBadgeValueOnUserUpdatedOrFromNotification,
       clearBadgeValueOnUserSessionEnded,
       clearBadgeValueOnActivitiesTabSelected
     )
