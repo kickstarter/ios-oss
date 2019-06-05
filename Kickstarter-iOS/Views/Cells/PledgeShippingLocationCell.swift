@@ -118,7 +118,7 @@ private let countryButtonTitleLabelStyle: LabelStyle = { (label: UILabel) in
 }
 
 // MARK: - Functions
-
+// TODO: Move this to the future `PledgeShippingLocationCellViewModel`
 private func shippingValue(for shippingCost: Double, project: Project) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
