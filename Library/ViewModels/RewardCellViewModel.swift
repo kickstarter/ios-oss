@@ -11,7 +11,6 @@ public protocol RewardCellViewModelInputs {
 public protocol RewardCellViewModelOutputs {
   var conversionLabelHidden: Signal<Bool, Never> { get }
   var conversionLabelText: Signal<String, Never> { get }
-  var descriptionStackViewHidden: Signal<Bool, Never> { get }
   var descriptionLabelText: Signal<String, Never> { get }
   var items: Signal<[String], Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
@@ -73,13 +72,12 @@ RewardCellViewModelOutputs {
       .map { formattedAmountForRewardOrBacking(project: $0, rewardOrBacking: $1) }
 
     self.descriptionLabelText = reward
-      .map { $0 == Reward.noReward ? "" : $0.description }
+      .map { $0.isNoReward ?
+        Strings.Pledge_any_amount_to_help_bring_this_project_to_life() : $0.description }
 
-    self.descriptionStackViewHidden = reward.map { $0 == Reward.noReward }
-      .logEvents(identifier: "**DESCRIPTION STACK VIEW HIDDEN**")
 
     self.rewardTitleLabelHidden = reward
-      .map { $0.title == nil && $0 != Reward.noReward }
+      .map { $0.title == nil && !$0.isNoReward }
 
     self.rewardTitleLabelText = projectAndReward
       .map(rewardTitle(project:reward:))
@@ -123,7 +121,6 @@ RewardCellViewModelOutputs {
 
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
-  public let descriptionStackViewHidden: Signal<Bool, Never>
   public let descriptionLabelText: Signal<String, Never>
   public let items: Signal<[String], Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
@@ -157,7 +154,7 @@ private func backingReward(fromProject project: Project) -> Reward? {
 
 private func rewardTitle(project: Project, reward: Reward) -> String {
   guard project.personalization.isBacking == true else {
-    return reward == Reward.noReward
+    return reward.isNoReward
       ? Strings.Make_a_pledge_without_a_reward()
       : (reward.title ?? "")
   }

@@ -25,7 +25,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     UICollectionViewFlowLayout()
       |> \.minimumLineSpacing .~ Styles.grid(3)
       |> \.minimumInteritemSpacing .~ 0
-      |> \.sectionInset .~ .init(topBottom: Styles.grid(6))
+      |> \.sectionInset .~ .zero
       |> \.scrollDirection .~ .horizontal
   }()
 
@@ -232,7 +232,9 @@ extension RewardsCollectionViewController {
   }
 
   override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    (cell as? RewardCell)?.delegate = self
+    if let rewardCell = cell as? RewardCell {
+      rewardCell.delegate = self
+    }
   }
 }
 

@@ -104,7 +104,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     self.minimumPriceConversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.minimumPriceConversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
-    self.descriptionStackView.rac.hidden = self.viewModel.outputs.descriptionStackViewHidden
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
     self.includedItemsStackView.rac.hidden = self.viewModel.outputs.includedItemsStackViewHidden
     self.minimumPriceLabel.rac.text = self.viewModel.outputs.rewardMinimumLabelText
