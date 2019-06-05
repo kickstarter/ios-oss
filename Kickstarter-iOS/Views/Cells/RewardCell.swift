@@ -168,6 +168,9 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     self.setupConstraints()
 
     self.pledgeButton.addTarget(self, action: #selector(pledgeButtonTapped), for: .touchUpInside)
+
+    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(rewardCardTapped))
+    self.containerView.addGestureRecognizer(tapGestureRecognizer)
   }
 
   private func setupConstraints() {
@@ -246,8 +249,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     _ = (allItemViews, self.includedItemsStackView)
       |> ksr_addArrangedSubviewsToStackView()
-
-    self.setNeedsLayout()
   }
 
   internal func configureWith(value: (Project, Either<Reward, Backing>)) {
@@ -256,6 +257,10 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
   @objc func pledgeButtonTapped() {
     self.viewModel.inputs.pledgeButtonTapped()
+  }
+
+  @objc func rewardCardTapped() {
+    self.viewModel.inputs.rewardCardTapped()
   }
 }
 
@@ -298,6 +303,7 @@ private let rewardTitleLabelStyle: LabelStyle = { label in
 
 private let scrollViewStyle: ScrollStyle = { scrollView in
   scrollView
+    |> \.contentInset .~ .init(topBottom: Styles.grid(6))
     |> \.showsVerticalScrollIndicator .~ false
 }
 

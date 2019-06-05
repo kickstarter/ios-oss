@@ -6,6 +6,7 @@ import Result
 public protocol RewardCellViewModelInputs {
   func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
   func pledgeButtonTapped()
+  func rewardCardTapped()
 }
 
 public protocol RewardCellViewModelOutputs {
@@ -103,7 +104,8 @@ RewardCellViewModelOutputs {
       .map { pledgeButtonTitle(project: $0, rewardOrBacking: $1) }
 
     self.rewardSelected = reward
-      .takeWhen(self.pledgeButtonTappedProperty.signal)
+      .takeWhen(Signal.merge(self.pledgeButtonTappedProperty.signal,
+                             self.rewardCardTappedProperty.signal))
       .map { $0.id }
 
     self.pledgeButtonEnabled = rewardAvailable
@@ -117,6 +119,11 @@ RewardCellViewModelOutputs {
   private let pledgeButtonTappedProperty = MutableProperty(())
   public func pledgeButtonTapped() {
     self.pledgeButtonTappedProperty.value = ()
+  }
+
+  private let rewardCardTappedProperty = MutableProperty(())
+  public func rewardCardTapped() {
+    self.rewardCardTappedProperty.value = ()
   }
 
   public let conversionLabelHidden: Signal<Bool, Never>

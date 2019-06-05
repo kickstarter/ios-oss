@@ -11,7 +11,6 @@ public protocol RewardsCollectionViewModelOutputs {
 
 public protocol RewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?)
-  func rewardSelected(at index: Int)
   func rewardSelected(with rewardId: Int)
   func viewDidLoad()
 }
@@ -40,19 +39,15 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         return rewards.map { (project, Either<Reward, Backing>.left($0)) }
       }
 
-    let selectedReward = rewards
-      .takePairWhen(self.rewardSelectedIndexProperty.signal.skipNil())
-      .map { rewards, index in rewards[index] }
-
     let selectedRewardFromId = rewards
       .takePairWhen(self.rewardSelectedWithRewardIdProperty.signal.skipNil())
       .map { rewards, rewardId in
         return rewards.first(where: { $0.id == rewardId })
-    }.skipNil()
+      }.skipNil()
 
     self.goToPledge = Signal.combineLatest(
       self.configureWithProjectProperty.signal.skipNil(),
-      Signal.merge(selectedReward, selectedRewardFromId),
+      selectedRewardFromId,
       self.configureWithRefTagProperty.signal
     )
     .map { project, reward, refTag in
@@ -67,11 +62,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.configureWithProjectProperty.value = project
     self.configureWithRewardsProperty.value = project.rewards
     self.configureWithRefTagProperty.value = refTag
-  }
-
-  private let rewardSelectedIndexProperty = MutableProperty<Int?>(nil)
-  public func rewardSelected(at index: Int) {
-    self.rewardSelectedIndexProperty.value = index
   }
 
   private let rewardSelectedWithRewardIdProperty = MutableProperty<Int?>(nil)
