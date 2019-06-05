@@ -1,3 +1,4 @@
+import KsApi
 import Library
 import Prelude
 import UIKit
@@ -80,10 +81,18 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: (location: String, amount: NSAttributedString?)) {
-    self.countryButton.setTitle(value.location, for: .normal)
-    self.amountLabel.attributedText = value.amount
+  func configureWith(value: PledgeDataSource.PledgeInputRow) {
+    guard case let .shippingLocation(location, shippingCost, project) = value else {
+      return
+    }
+
+    self.countryButton.setTitle(location, for: .normal)
+    self.amountLabel.attributedText = shippingValue(for: shippingCost, project: project)
   }
+
+  // MARK: - Public Functions
+
+  func animate(_: Bool) {}
 }
 
 // MARK: - Styles
@@ -106,4 +115,23 @@ private let countryButtonStyle: ButtonStyle = { (button: UIButton) in
 private let countryButtonTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.lineBreakMode .~ .byTruncatingTail
+}
+
+// MARK: - Functions
+// TODO: Move this to the future `PledgeShippingLocationCellViewModel`
+private func shippingValue(for shippingCost: Double, project: Project) -> NSAttributedString? {
+  let defaultAttributes = checkoutCurrencyDefaultAttributes()
+  let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
+  guard
+    let attributedCurrency = Format.attributedCurrency(
+      shippingCost,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode,
+      defaultAttributes: defaultAttributes,
+      superscriptAttributes: superscriptAttributes
+    ) else { return nil }
+
+  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { _, new in new }
+
+  return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }

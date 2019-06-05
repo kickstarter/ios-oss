@@ -1017,7 +1017,7 @@ private func paymentSummaryItems(
   return paymentSummaryItems
 }
 
-private func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]) -> ShippingRule? {
+internal func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]) -> ShippingRule? {
   let shippingRuleFromCurrentLocation = shippingRules
     .filter { shippingRule in shippingRule.location.country == AppEnvironment.current.config?.countryCode }
     .first
