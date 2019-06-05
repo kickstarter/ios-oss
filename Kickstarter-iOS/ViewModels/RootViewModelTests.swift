@@ -87,6 +87,108 @@ final class RootViewModelTests: TestCase {
     }
   }
 
+  func testSetBadgeValueAtIndex_AppWillEnterForeground() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 100
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+
+    mockApplication.applicationIconBadgeNumber = 50
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.applicationWillEnterForeground()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "50"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+    }
+  }
+
+  func testClearBadgeValueOnActivitiesTabSelected() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 100
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+
+      self.vm.inputs.didSelect(index: 1)
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+    }
+  }
+
+  func testSetBadgeValueAtIndex_UserSessionStarted_Ended() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 0
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+
+    let user = .template
+      |> User.lens.unseenActivityCount .~ 50
+
+    withEnvironment(application: mockApplication) {
+      AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
+      self.vm.inputs.userSessionStarted()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil, "50"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+
+      AppEnvironment.logout()
+
+      self.vm.inputs.userSessionEnded()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil, "50", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+    }
+  }
+
+  func testSetBadgeValueAtIndex_FromNotification() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 100
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+
+      self.vm.inputs.didReceiveBadgeValue(10)
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "10"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+
+      self.vm.inputs.didReceiveBadgeValue(0)
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "10", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+    }
+  }
+
   func testSetViewControllers() {
     let viewControllerNames = TestObserver<[String], Never>()
     vm.outputs.setViewControllers.map(extractRootNames)

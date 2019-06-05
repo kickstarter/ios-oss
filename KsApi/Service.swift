@@ -95,6 +95,11 @@ public struct Service: ServiceType {
     return request(.changePaymentMethod(project: project))
   }
 
+  public func clearUserUnseenActivity(input: EmptyInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    return applyMutation(mutation: ClearUserUnseenActivityMutation(input: input))
+  }
+
   public func deletePaymentMethod(input: PaymentSourceDeleteInput)
     -> SignalProducer<DeletePaymentMethodEnvelope, GraphError> {
     return applyMutation(mutation: PaymentSourceDeleteMutation(input: input))

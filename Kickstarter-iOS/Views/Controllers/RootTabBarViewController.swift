@@ -17,6 +17,7 @@ extension TabBarControllerScrollable where Self: UIViewController {
 }
 
 public final class RootTabBarViewController: UITabBarController {
+  private var applicationWillEnterForegroundObserver: Any?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
   private var userUpdatedObserver: Any?
@@ -27,6 +28,15 @@ public final class RootTabBarViewController: UITabBarController {
   public override func viewDidLoad() {
     super.viewDidLoad()
     self.delegate = self
+
+    self.applicationWillEnterForegroundObserver = NotificationCenter
+      .default
+      .addObserver(
+        forName: UIApplication.willEnterForegroundNotification,
+        object: nil, queue: nil
+      ) { [weak self] _ in
+        self?.viewModel.inputs.applicationWillEnterForeground()
+      }
 
     self.sessionStartedObserver = NotificationCenter
       .default
@@ -64,6 +74,7 @@ public final class RootTabBarViewController: UITabBarController {
     self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
     self.userUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.applicationWillEnterForegroundObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   public override func bindStyles() {
@@ -260,6 +271,12 @@ public final class RootTabBarViewController: UITabBarController {
       }
     }
     return nil
+  }
+
+  // MARK: - Accessors
+
+  public func didReceiveBadgeValue(_ value: Int?) {
+    self.viewModel.inputs.didReceiveBadgeValue(value)
   }
 }
 

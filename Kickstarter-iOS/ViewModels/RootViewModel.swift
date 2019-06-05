@@ -88,14 +88,20 @@ internal enum TabBarItem {
 }
 
 internal protocol RootViewModelInputs {
+  /// Call when the application will enter foreground.
+  func applicationWillEnterForeground()
+
   /// Call when the controller has received a user updated notification.
   func currentUserUpdated()
 
-  /// Call before selected tab bar index changes.
-  func shouldSelect(index: RootViewControllerIndex?)
+  /// Call when a badge value was received via push notification.
+  func didReceiveBadgeValue(_ value: Int?)
 
   /// Call when selected tab bar index changes.
   func didSelect(index: RootViewControllerIndex)
+
+  /// Call before selected tab bar index changes.
+  func shouldSelect(index: RootViewControllerIndex?)
 
   /// Call when we should switch to the activities tab.
   func switchToActivities()
@@ -244,9 +250,62 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .skipNil()
       .map { $0 as RootViewControllerIndex }
 
-    self.setBadgeValueAtIndex = activityViewControllerIndex
-      .takeWhen(self.viewDidLoadProperty.signal)
-      .map { index in (activitiesBadgeValue(), index) }
+    let lifecycleEvents = Signal.merge(
+      self.viewDidLoadProperty.signal,
+      self.applicationWillEnterForegroundSignal
+    )
+
+    let updateBadgeValueOnLifecycleEvents = activityViewControllerIndex
+      .takeWhen(lifecycleEvents)
+      .map { index in
+        (activitiesBadgeValue(with: AppEnvironment.current.application.applicationIconBadgeNumber), index)
+      }
+
+    let selectedIndexAndActivityViewControllerIndex = Signal.combineLatest(
+      self.selectedIndex,
+      activityViewControllerIndex
+    )
+
+    let clearBadgeValueOnActivitiesTabSelected = selectedIndexAndActivityViewControllerIndex
+      .filter(==)
+      .on(
+        value: { _ in
+          _ = AppEnvironment.current.apiService.clearUserUnseenActivity(input: EmptyInput())
+        }
+      )
+      .map { _, index -> RootTabBarItemBadgeValueData in (nil, index) }
+
+    let badgeValueOnUserSessionStarted = self.userSessionStartedProperty.signal
+      .map { _ in AppEnvironment.current.currentUser?.unseenActivityCount }
+
+    let updateBadgeValueFromNotification = selectedIndexAndActivityViewControllerIndex
+      .takePairWhen(self.didReceiveBadgeValueSignal)
+
+    let updateBadgeValueOnUserSessionStarted = selectedIndexAndActivityViewControllerIndex
+      .takePairWhen(badgeValueOnUserSessionStarted)
+
+    let updateBadgeValueOnUserSessionStartedOrFromNotification = Signal.merge(
+      updateBadgeValueOnUserSessionStarted,
+      updateBadgeValueFromNotification
+    )
+    .map(unpack)
+    .filter { selectedIndex, activitiesViewControllerIndex, _ in
+      selectedIndex != activitiesViewControllerIndex
+    }
+    .map { _, index, value in
+      (activitiesBadgeValue(with: value), index)
+    }
+
+    let clearBadgeValueOnUserSessionEnded = activityViewControllerIndex
+      .takePairWhen(self.userSessionEndedProperty.signal)
+      .map { index, _ in (activitiesBadgeValue(with: nil), index) }
+
+    self.setBadgeValueAtIndex = Signal.merge(
+      updateBadgeValueOnLifecycleEvents,
+      updateBadgeValueOnUserSessionStartedOrFromNotification,
+      clearBadgeValueOnUserSessionEnded,
+      clearBadgeValueOnActivitiesTabSelected
+    )
 
     let shouldSelectIndex = self.shouldSelectIndexProperty.signal
       .skipNil()
@@ -266,19 +325,30 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     .map(tabData(forUser:))
   }
 
+  private let (applicationWillEnterForegroundSignal, applicationWillEnterForegroundObserver)
+    = Signal<(), Never>.pipe()
+  func applicationWillEnterForeground() {
+    self.applicationWillEnterForegroundObserver.send(value: ())
+  }
+
   fileprivate let currentUserUpdatedProperty = MutableProperty(())
   internal func currentUserUpdated() {
     self.currentUserUpdatedProperty.value = ()
   }
 
-  fileprivate let shouldSelectIndexProperty = MutableProperty<Int?>(nil)
-  internal func shouldSelect(index: Int?) {
-    self.shouldSelectIndexProperty.value = index
+  private let (didReceiveBadgeValueSignal, didReceiveBadgeValueObserver) = Signal<Int?, Never>.pipe()
+  func didReceiveBadgeValue(_ value: Int?) {
+    self.didReceiveBadgeValueObserver.send(value: value)
   }
 
   fileprivate let didSelectIndexProperty = MutableProperty(0)
   internal func didSelect(index: Int) {
     self.didSelectIndexProperty.value = index
+  }
+
+  fileprivate let shouldSelectIndexProperty = MutableProperty<Int?>(nil)
+  internal func shouldSelect(index: Int?) {
+    self.shouldSelectIndexProperty.value = index
   }
 
   fileprivate let switchToActivitiesProperty = MutableProperty(())
@@ -398,15 +468,20 @@ extension TabBarItem: Equatable {
   }
 }
 
-private func activitiesBadgeValue() -> String? {
+private func activitiesBadgeValue(with value: Int?) -> String? {
   let maxBadgeValue = 99
+  let badgeValue = value ?? 0
+  let clampedBadgeValue = min(badgeValue, maxBadgeValue)
 
-  let applicationIconBadgeNumber = AppEnvironment.current.application.applicationIconBadgeNumber
-  let count = min(applicationIconBadgeNumber, maxBadgeValue)
+  guard clampedBadgeValue > 0 else { return nil }
 
-  guard count > 0 else { return nil }
+  guard badgeValue > maxBadgeValue else {
+    return "\(clampedBadgeValue)"
+  }
 
-  let plusSign = applicationIconBadgeNumber > maxBadgeValue ? "+" : ""
-
-  return "\(count)\(plusSign)"
+  return localizedString(
+    key: "activities_badge_value_plus",
+    defaultValue: "%{activities_badge_value}+",
+    substitutions: ["activities_badge_value": "\(clampedBadgeValue)"]
+  )
 }

@@ -25,6 +25,8 @@
 
     fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
 
+    fileprivate let clearUserUnseenActivityResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>?
+
     fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>?
 
     fileprivate let createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>?
@@ -196,6 +198,7 @@
       changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
       changeCurrencyError: GraphError? = nil,
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
+      clearUserUnseenActivityResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>? = nil,
       deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>? = nil,
       createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
       facebookConnectResponse: User? = nil,
@@ -297,6 +300,8 @@
       self.changeEmailError = changeEmailError
 
       self.changePasswordError = changePasswordError
+
+      self.clearUserUnseenActivityResult = clearUserUnseenActivityResult
 
       self.createPasswordError = createPasswordError
 
@@ -546,6 +551,11 @@
         return SignalProducer(error: error)
       }
       return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+    }
+
+    internal func clearUserUnseenActivity(input _: EmptyInput)
+      -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return producer(for: self.clearUserUnseenActivityResult)
     }
 
     internal func fetchCheckout(checkoutUrl _: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope> {
@@ -1384,6 +1394,7 @@
             buildVersion: $1.buildVersion,
             addNewCreditCardResult: $1.addNewCreditCardResult,
             changePaymentMethodResult: $1.changePaymentMethodResult,
+            clearUserUnseenActivityResult: $1.clearUserUnseenActivityResult,
             deletePaymentMethodResult: $1.deletePaymentMethodResult,
             createPledgeResult: $1.createPledgeResult,
             facebookConnectResponse: $1.facebookConnectResponse,
