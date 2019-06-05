@@ -161,7 +161,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     self.activities = Signal.merge(clearedActivitiesOnSessionEnd, updatedActivities)
     self.clearBadgeValue = Signal.zip(
       self.refreshProperty.signal,
-      updatedActivities
+      updatedActivities.skip(first: 1)
     )
     .on(
       value: { _ in

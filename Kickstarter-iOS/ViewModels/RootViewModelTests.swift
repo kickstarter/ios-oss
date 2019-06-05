@@ -131,7 +131,7 @@ final class RootViewModelTests: TestCase {
     }
   }
 
-  func testSetBadgeValueAtIndex_UserSessionStarted_Ended() {
+  func testSetBadgeValueAtIndex_CurrentUserUpdated_SessionEnded() {
     let mockApplication = MockApplication()
     mockApplication.applicationIconBadgeNumber = 0
 
@@ -150,7 +150,7 @@ final class RootViewModelTests: TestCase {
 
     withEnvironment(application: mockApplication) {
       AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
-      self.vm.inputs.userSessionStarted()
+      self.vm.inputs.currentUserUpdated()
 
       self.setBadgeValueAtIndexValue.assertValues([nil, "50"])
       self.setBadgeValueAtIndexIndex.assertValues([1, 1])
