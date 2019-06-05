@@ -4,8 +4,13 @@ import Library
 import Prelude
 import ReactiveSwift
 
+protocol RewardCellDelegate: class {
+  func rewardCellDidTapPledgeButton(_ rewardCell: RewardCell, rewardId: Int)
+}
+
 final class RewardCell: UICollectionViewCell, ValueCell {
-  private let viewModel: DeprecatedRewardCellViewModelType = DeprecatedRewardCellViewModel()
+  internal weak var delegate: RewardCellDelegate?
+  private let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
   private let scrollView = UIScrollView(frame: .zero)
   private let pledgeButtonLayoutGuide = UILayoutGuide()
@@ -37,8 +42,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
-  func configureWith(value: Reward) {}
 
   override func bindStyles() {
     super.bindStyles()
@@ -99,33 +102,28 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-//    self.allGoneContainerView.rac.hidden = self.viewModel.outputs.allGoneHidden
     self.minimumPriceConversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.minimumPriceConversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
-//    self.conversionLabel.rac.textColor = self.viewModel.outputs.minimumAndConversionLabelsColor
-    self.descriptionLabel.rac.hidden = self.viewModel.outputs.descriptionLabelHidden
+    self.descriptionLabel.rac.hidden = self.viewModel.outputs.descriptionStackViewHidden
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
-//    self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
-//    self.footerStackView.rac.hidden = self.viewModel.outputs.footerStackViewHidden
-//    self.footerLabel.rac.text = self.viewModel.outputs.footerLabelText
-    self.includedItemsStackView.rac.hidden = self.viewModel.outputs.itemsContainerHidden
-//    self.manageRewardButton.rac.hidden = self.viewModel.outputs.manageButtonHidden
-    self.minimumPriceLabel.rac.text = self.viewModel.outputs.minimumLabelText
-//    self.minimumLabel.rac.textColor = self.viewModel.outputs.minimumAndConversionLabelsColor
-    self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.titleLabelHidden
-    self.rewardTitleLabel.rac.text = self.viewModel.outputs.titleLabelText
-//    self.rewardTitleLabel.rac.textColor = self.viewModel.outputs.titleLabelTextColor
-    self.pledgeButton.rac.hidden = self.viewModel.outputs.pledgeButtonHidden
+    self.includedItemsStackView.rac.hidden = self.viewModel.outputs.includedItemsStackViewHidden
+    self.minimumPriceLabel.rac.text = self.viewModel.outputs.rewardMinimumLabelText
+    self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.rewardTitleLabelHidden
+    self.rewardTitleLabel.rac.text = self.viewModel.outputs.rewardTitleLabelText
     self.pledgeButton.rac.title = self.viewModel.outputs.pledgeButtonTitleText
-//    self.shippingLocationsStackView.rac.hidden = self.viewModel.outputs.shippingLocationsStackViewHidden
-//    self.shippingLocationsSummaryLabel.rac.text = self.viewModel.outputs.shippingLocationsSummaryLabelText
-//    self.viewYourPledgeButton.rac.hidden = self.viewModel.outputs.viewPledgeButtonHidden
-//    self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerViewHidden
-//    self.youreABackerLabel.rac.text = self.viewModel.outputs.youreABackerLabelText
+    self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
 
     self.viewModel.outputs.items
       .observeForUI()
       .observeValues { [weak self] in self?.load(items: $0) }
+
+    self.viewModel.outputs.rewardSelected
+      .observeForUI()
+      .observeValues { [weak self] rewardId in
+        guard let _self = self else { return }
+
+        self?.delegate?.rewardCellDidTapPledgeButton(_self, rewardId: rewardId)
+    }
   }
 
   // MARK: - Private Helpers
@@ -153,7 +151,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     self.containerView.addLayoutGuide(self.pledgeButtonLayoutGuide)
 
-    _ = ([self.priceStackView, self.includedItemsStackView, self.descriptionStackView], self.baseStackView)
+    _ = ([self.priceStackView, self.rewardTitleLabel, self.includedItemsStackView, self.descriptionStackView], self.baseStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([minimumPriceLabel, minimumPriceConversionLabel], self.priceStackView)
@@ -169,6 +167,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> ksr_addSubviewToParent()
 
     self.setupConstraints()
+
+    self.pledgeButton.addTarget(self, action: #selector(pledgeButtonTapped), for: .touchUpInside)
   }
 
   private func setupConstraints() {
@@ -207,7 +207,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
                                  // swiftlint:disable:next line_length
                                  pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: contentMargins.bottomAnchor),
                                  // swiftlint:disable:next line_length
-                                 pledgeButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
+                                 pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
       ])
 
     // Pledge button layout anchor
@@ -253,6 +253,10 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
   internal func configureWith(value: (Project, Either<Reward, Backing>)) {
     self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
+  }
+
+  @objc func pledgeButtonTapped() {
+    self.viewModel.inputs.pledgeButtonTapped()
   }
 }
 

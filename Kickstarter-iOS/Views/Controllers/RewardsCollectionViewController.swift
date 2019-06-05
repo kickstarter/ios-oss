@@ -230,6 +230,10 @@ extension RewardsCollectionViewController {
   override func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     self.viewModel.inputs.rewardSelected(at: indexPath.row)
   }
+
+  override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    (cell as? RewardCell)?.delegate = self
+  }
 }
 
 // MARK: - UIScrollViewDelegate
@@ -259,6 +263,12 @@ extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
     layout.itemSize = self.calculateItemSize(from: layout, using: collectionView)
 
     return layout.itemSize
+  }
+}
+
+extension RewardsCollectionViewController: RewardCellDelegate {
+  func rewardCellDidTapPledgeButton(_ rewardCell: RewardCell, rewardId: Int) {
+    self.viewModel.inputs.rewardSelected(with: rewardId)
   }
 }
 
