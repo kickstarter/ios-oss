@@ -7,6 +7,7 @@ class PledgeTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let dataSource: PledgeDataSource = PledgeDataSource()
+  private weak var shippingLocationCell: PledgeShippingLocationCell?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
   // MARK: - Lifecycle
@@ -51,11 +52,30 @@ class PledgeTableViewController: UITableViewController {
 
     self.viewModel.outputs.reloadWithData
       .observeForUI()
-      .observeValues { [weak self] amount, currency, delivery, shipping, isLoggedIn in
-        self?.dataSource.load(
-          amount: amount, currency: currency, delivery: delivery, shipping: shipping, isLoggedIn: isLoggedIn
-        )
+      .observeValues { [weak self] data in
+        self?.dataSource.load(data: data)
+
         self?.tableView.reloadData()
+
+        self?.viewModel.inputs.didReloadData()
+      }
+
+    self.viewModel.outputs.selectedShippingRuleData
+      .observeForUI()
+      .observeValues { [weak self] selectedShippingRuleData in
+        self?.dataSource.loadSelectedShippingRule(data: selectedShippingRuleData)
+
+        guard let shippingIndexPath = self?.dataSource.shippingCellIndexPath() else {
+          return
+        }
+
+        self?.tableView.reloadRows(at: [shippingIndexPath], with: .automatic)
+      }
+
+    self.viewModel.outputs.shippingIsLoading
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        self?.shippingLocationCell?.animate(isLoading)
       }
   }
 
@@ -75,6 +95,8 @@ class PledgeTableViewController: UITableViewController {
   ) {
     if let descriptionCell = cell as? PledgeDescriptionCell {
       descriptionCell.delegate = self
+    } else if let shippingLocationCell = cell as? PledgeShippingLocationCell {
+      self.shippingLocationCell = shippingLocationCell
     }
   }
 }
