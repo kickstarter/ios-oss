@@ -1,5 +1,7 @@
 import Foundation
+@testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
@@ -180,5 +182,60 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(ksr_isOSVersionAvailable(12.1))
     XCTAssertTrue(ksr_isOSVersionAvailable(12.123))
     XCTAssertTrue(ksr_isOSVersionAvailable(12.9))
+  }
+
+  func testDefaultShippingRule_Empty() {
+    XCTAssertEqual(nil, defaultShippingRule(fromShippingRules: []))
+  }
+
+  func testDefaultShippingRule_DoesNotMatchCountryCode_DoesNotMatchUSA() {
+    let config = Config.template
+      |> Config.lens.countryCode .~ "JP"
+
+    withEnvironment(config: config) {
+      let locations = [
+        Location.template |> Location.lens.country .~ "DE",
+        Location.template |> Location.lens.country .~ "CZ",
+        Location.template |> Location.lens.country .~ "CA"
+      ]
+      let shippingRules = locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0
+      }
+      let shippingRule = defaultShippingRule(fromShippingRules: shippingRules)
+      XCTAssertEqual(shippingRules[0], shippingRule)
+    }
+  }
+
+  func testDefaultShippingRule_DoesNotMatchCountryCode_MatchesUSA() {
+    let config = Config.template
+      |> Config.lens.countryCode .~ "JP"
+
+    withEnvironment(config: config) {
+      let locations = [
+        Location.template |> Location.lens.country .~ "US",
+        Location.template |> Location.lens.country .~ "CZ",
+        Location.template |> Location.lens.country .~ "CA"
+      ]
+      let shippingRules = locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0
+      }
+      let shippingRule = defaultShippingRule(fromShippingRules: shippingRules)
+      XCTAssertEqual(shippingRules[1], shippingRule)
+    }
+  }
+
+  func testDefaultShippingRule_MatchesCountryCode() {
+    let config = Config.template
+      |> Config.lens.countryCode .~ "CZ"
+
+    withEnvironment(config: config) {
+      let locations = [
+        Location.template |> Location.lens.country .~ "US",
+        Location.template |> Location.lens.country .~ "CZ",
+        Location.template |> Location.lens.country .~ "CA"
+      ]
+      let shippingRules = locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0
+      }
+      let shippingRule = defaultShippingRule(fromShippingRules: shippingRules)
+      XCTAssertEqual(shippingRules[2], shippingRule)
+    }
   }
 }
