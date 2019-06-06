@@ -81,6 +81,14 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.includedItemsTitleLabel
       |> \.text %~ { _ in Strings.project_view_pledge_includes() }
 
+    self.includedItemsStackView.subviews.enumerated().forEach { (index, view) in
+      guard index != 0 else { return }
+
+      _ = (view as? UILabel)
+        ?|> baseRewardLabelStyle
+        ?|> sectionBodyLabelStyle
+    }
+
     _ = self.descriptionTitleLabel
       |> \.text %~ { _ in "Description" }
 
