@@ -55,7 +55,7 @@ public protocol ServiceType {
 
   /// Clears the user's unseen activity count.
   func clearUserUnseenActivity(input: EmptyInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError>
 
   func createPassword(input: CreatePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>

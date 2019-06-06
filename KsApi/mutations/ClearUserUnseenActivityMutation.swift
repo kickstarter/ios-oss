@@ -10,6 +10,7 @@ public struct ClearUserUnseenActivityMutation<T: GraphMutationInput>: GraphMutat
     mutation clearUserUnseenActivity($input: ClearUserUnseenActivityInput!) {
       clearUserUnseenActivity(input: $input) {
         clientMutationId
+        activityIndicatorCount
       }
     }
     """

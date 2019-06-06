@@ -156,6 +156,9 @@ internal protocol RootViewModelOutputs {
 
   /// Emits data for setting tab bar item styles.
   var tabBarItemsData: Signal<TabBarItemsData, Never> { get }
+
+  /// Emits a User that can be used to replace the current user in the environment.
+  var updateUserInEnvironment: Signal<User, Never> { get }
 }
 
 internal protocol RootViewModelType {
@@ -266,15 +269,6 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       activityViewControllerIndex
     )
 
-    let clearBadgeValueOnActivitiesTabSelected = selectedIndexAndActivityViewControllerIndex
-      .filter(==)
-      .on(
-        value: { _ in
-          _ = AppEnvironment.current.apiService.clearUserUnseenActivity(input: EmptyInput())
-        }
-      )
-      .map { _, index -> RootTabBarItemBadgeValueData in (nil, index) }
-
     let badgeValueOnUserUpdated = self.currentUserUpdatedProperty.signal
       .map { _ in AppEnvironment.current.currentUser?.unseenActivityCount }
 
@@ -289,9 +283,6 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       updateBadgeValueFromNotification
     )
     .map(unpack)
-    .filter { selectedIndex, activitiesViewControllerIndex, _ in
-      selectedIndex != activitiesViewControllerIndex
-    }
     .map { _, index, value in
       (activitiesBadgeValue(with: value), index)
     }
@@ -300,12 +291,27 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       .takePairWhen(self.userSessionEndedProperty.signal)
       .map { index, _ in (activitiesBadgeValue(with: nil), index) }
 
+    let currentBadgeValue = MutableProperty<String?>(nil)
+
+    let clearBadgeValueOnActivitiesTabSelected = selectedIndexAndActivityViewControllerIndex.filter(==)
+      .flatMap { _, index in currentBadgeValue.producer.map { ($0, index) } }
+      .filter { value, _ in value != nil }
+      .map { _, index -> RootTabBarItemBadgeValueData in (nil, index) }
+
     self.setBadgeValueAtIndex = Signal.merge(
       updateBadgeValueOnLifecycleEvents,
       updateBadgeValueOnUserUpdatedOrFromNotification,
       clearBadgeValueOnUserSessionEnded,
       clearBadgeValueOnActivitiesTabSelected
     )
+
+    currentBadgeValue <~ self.setBadgeValueAtIndex.map { $0.0 }
+
+    self.updateUserInEnvironment = clearBadgeValueOnActivitiesTabSelected
+      .switchMap { _ in
+        updatedUserWithClearedActivityCountProducer()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+      }
 
     let shouldSelectIndex = self.shouldSelectIndexProperty.signal
       .skipNil()
@@ -408,6 +414,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
   internal let setViewControllers: Signal<[RootViewControllerData], Never>
   internal let switchDashboardProject: Signal<(Int, Param), Never>
   internal let tabBarItemsData: Signal<TabBarItemsData, Never>
+  internal let updateUserInEnvironment: Signal<User, Never>
 
   internal var inputs: RootViewModelInputs { return self }
   internal var outputs: RootViewModelOutputs { return self }

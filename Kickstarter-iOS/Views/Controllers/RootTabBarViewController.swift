@@ -56,6 +56,12 @@ public final class RootTabBarViewController: UITabBarController {
         self?.viewModel.inputs.currentUserUpdated()
       }
 
+    self.viewModel.outputs.updateUserInEnvironment
+      .observeValues { [weak self] user in
+        AppEnvironment.updateCurrentUser(user)
+        NotificationCenter.default.post(.init(name: .ksr_userUpdated))
+      }
+
     self.userLocalePreferencesChanged = NotificationCenter
       .default
       .addObserver(

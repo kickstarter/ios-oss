@@ -96,7 +96,7 @@ public struct Service: ServiceType {
   }
 
   public func clearUserUnseenActivity(input: EmptyInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError> {
     return applyMutation(mutation: ClearUserUnseenActivityMutation(input: input))
   }
 

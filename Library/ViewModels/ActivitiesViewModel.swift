@@ -100,6 +100,9 @@ public protocol ActivitiesViewModelOutputs {
 
   /// Emits a non-`nil` survey response if there is an unanswered one available, and `nil` otherwise.
   var unansweredSurveys: Signal<[SurveyResponse], Never> { get }
+
+  /// Emits a User that can be used to replace the current user in the environment.
+  var updateUserInEnvironment: Signal<User, Never> { get }
 }
 
 public protocol ActivitiesViewModelType {
@@ -163,12 +166,13 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       self.refreshProperty.signal,
       updatedActivities.skip(first: 1)
     )
-    .on(
-      value: { _ in
-        _ = AppEnvironment.current.apiService.clearUserUnseenActivity(input: EmptyInput())
-      }
-    )
     .ignoreValues()
+
+    self.updateUserInEnvironment = self.clearBadgeValue
+      .switchMap { _ in
+        updatedUserWithClearedActivityCountProducer()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+      }
 
     let currentUser = Signal
       .merge(
@@ -386,6 +390,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   public let showFacebookConnectSection: Signal<(FriendsSource, Bool), Never>
   public let showFacebookConnectErrorAlert: Signal<AlertError, Never>
   public let unansweredSurveys: Signal<[SurveyResponse], Never>
+  public let updateUserInEnvironment: Signal<User, Never>
 
   public var inputs: ActitiviesViewModelInputs { return self }
   public var outputs: ActivitiesViewModelOutputs { return self }

@@ -24,6 +24,7 @@ final class ActivitiesViewModelTests: TestCase {
   fileprivate let showFindFriendsSectionSource = TestObserver<FriendsSource, Never>()
   fileprivate let showFacebookConnectErrorAlert = TestObserver<AlertError, Never>()
   fileprivate let unansweredSurveyResponse = TestObserver<[SurveyResponse], Never>()
+  fileprivate let updateUserInEnvironment = TestObserver<User, Never>()
 
   override func setUp() {
     super.setUp()
@@ -46,6 +47,7 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.outputs.showFindFriendsSection.map { $0.0 }.observe(self.showFindFriendsSectionSource.observer)
     self.vm.outputs.showFacebookConnectErrorAlert.observe(self.showFacebookConnectErrorAlert.observer)
     self.vm.outputs.unansweredSurveys.observe(self.unansweredSurveyResponse.observer)
+    self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
   }
 
   // Tests the flow of logging in with a user that has activities.
@@ -219,26 +221,46 @@ final class ActivitiesViewModelTests: TestCase {
   }
 
   func testClearBadgeValueOnRefreshActivities() {
+    self.updateUserInEnvironment.assertValues([])
     self.clearBadgeValue.assertValueCount(0)
 
+    let mockService1 = MockService(
+      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0)),
+      fetchActivitiesResponse: [activity1, activity2]
+    )
+
+    let mockService2 = MockService(
+      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0)),
+      fetchActivitiesResponse: [activity1, activity2, activity3]
+    )
+
+    let user = User.template
+      |> User.lens.unseenActivityCount .~ 100
+
     withEnvironment(
-      apiService: MockService(fetchActivitiesResponse: [activity1, activity2]),
-      currentUser: .template
+      apiService: mockService1,
+      currentUser: user
     ) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.userSessionStarted()
       self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advance()
 
+      self.updateUserInEnvironment.assertValues([])
       self.activitiesPresent.assertValues([true], "Activities load immediately after session starts.")
       self.clearBadgeValue.assertValueCount(0)
 
-      withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity1, activity2, activity3])) {
+      withEnvironment(apiService: mockService2) {
         self.vm.inputs.refresh()
         self.scheduler.advance()
 
         self.activitiesPresent.assertValues([true, true], "New activities emit on refresh.")
         self.clearBadgeValue.assertValueCount(1)
+        XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
+
+        self.scheduler.advance()
+
+        XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
       }
     }
   }

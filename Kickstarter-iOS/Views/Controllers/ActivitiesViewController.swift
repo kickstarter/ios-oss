@@ -175,6 +175,12 @@ internal final class ActivitiesViewController: UITableViewController {
       .observeValues { [weak self] in
         self?.parent?.tabBarItem.badgeValue = nil
       }
+
+    self.viewModel.outputs.updateUserInEnvironment
+      .observeValues { [weak self] user in
+        AppEnvironment.updateCurrentUser(user)
+        NotificationCenter.default.post(.init(name: .ksr_userUpdated))
+      }
   }
 
   internal override func tableView(

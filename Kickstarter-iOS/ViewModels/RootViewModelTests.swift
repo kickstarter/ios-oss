@@ -17,6 +17,7 @@ final class RootViewModelTests: TestCase {
   let scrollToTopControllerName = TestObserver<String, Never>()
   let switchDashboardProject = TestObserver<Param, Never>()
   let tabBarItemsData = TestObserver<TabBarItemsData, Never>()
+  let updateUserInEnvironment = TestObserver<User, Never>()
 
   override func setUp() {
     super.setUp()
@@ -30,6 +31,7 @@ final class RootViewModelTests: TestCase {
     self.vm.outputs.setBadgeValueAtIndex.map { $0.0 }.observe(self.setBadgeValueAtIndexValue.observer)
     self.vm.outputs.setBadgeValueAtIndex.map { $0.1 }.observe(self.setBadgeValueAtIndexIndex.observer)
     self.vm.outputs.switchDashboardProject.map(second).observe(self.switchDashboardProject.observer)
+    self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
 
     let viewControllers = self.vm.outputs.setViewControllers
       .map { $0.map { $0.viewController }.compact() }
@@ -112,20 +114,38 @@ final class RootViewModelTests: TestCase {
   }
 
   func testClearBadgeValueOnActivitiesTabSelected() {
-    let mockApplication = MockApplication()
-    mockApplication.applicationIconBadgeNumber = 100
+    let initialActivitiesCount = 100
 
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    self.updateUserInEnvironment.assertValues([])
     self.setBadgeValueAtIndexValue.assertValues([])
     self.setBadgeValueAtIndexIndex.assertValues([])
 
-    withEnvironment(application: mockApplication) {
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0))
+    )
+
+    let user = User.template
+      |> User.lens.unseenActivityCount .~ initialActivitiesCount
+
+    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
       self.vm.inputs.viewDidLoad()
 
+      self.updateUserInEnvironment.assertValues([])
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
       self.setBadgeValueAtIndexIndex.assertValues([1])
 
       self.vm.inputs.didSelect(index: 1)
 
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
       self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
       self.setBadgeValueAtIndexIndex.assertValues([1, 1])
     }
