@@ -78,6 +78,8 @@
 		3706408622A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408522A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift */; };
 		3706408822A8A6F200889CBD /* PledgeShippingLocationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408722A8A6F200889CBD /* PledgeShippingLocationCellViewModelTests.swift */; };
 		3706408A22A8B2B700889CBD /* ShippingTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408922A8B2B700889CBD /* ShippingTemplates.swift */; };
+		3706408D22A9BE8100889CBD /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408C22A9BE8100889CBD /* DateFormatter.swift */; };
+		3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408F22A9BE9400889CBD /* DateFormatterTests.swift */; };
 		3708DD43220A5A5700F8E569 /* SettingsGroupedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */; };
 		3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */; };
 		370ACB00225D337900C8745F /* PledgeAmountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370ACAFF225D337900C8745F /* PledgeAmountCell.swift */; };
@@ -1317,6 +1319,8 @@
 		3706408522A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationCellViewModel.swift; sourceTree = "<group>"; };
 		3706408722A8A6F200889CBD /* PledgeShippingLocationCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationCellViewModelTests.swift; sourceTree = "<group>"; };
 		3706408922A8B2B700889CBD /* ShippingTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingTemplates.swift; sourceTree = "<group>"; };
+		3706408C22A9BE8100889CBD /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		3706408F22A9BE9400889CBD /* DateFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterTests.swift; sourceTree = "<group>"; };
 		3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedFooterView.swift; sourceTree = "<group>"; };
 		3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordTableControllerTests.swift; sourceTree = "<group>"; };
 		370ACAFF225D337900C8745F /* PledgeAmountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountCell.swift; sourceTree = "<group>"; };
@@ -2812,6 +2816,8 @@
 				77556F1C20A09993008CEA57 /* Config+Helpers.swift */,
 				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
 				D798A6AD21656D970053D097 /* Currency.swift */,
+				3706408C22A9BE8100889CBD /* DateFormatter.swift */,
+				3706408F22A9BE9400889CBD /* DateFormatterTests.swift */,
 				A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */,
 				77F6E73421222E7C005A5C55 /* EmailFrequency.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
@@ -4417,6 +4423,7 @@
 				A72C3A8C1D00F6A80075227E /* ExpandableRow.swift in Sources */,
 				D04AAC25218BB70D00CF713E /* FindFriendsCellViewModel.swift in Sources */,
 				9DBF80DF1D666CAC007F2843 /* CheckoutModels.swift in Sources */,
+				3706408D22A9BE8100889CBD /* DateFormatter.swift in Sources */,
 				D04AABF8218BB2FD00CF713E /* SettingsNotificationsViewModel.swift in Sources */,
 				9DC204B71D1B46BD003C1636 /* ProjectActivityNegativeStateChangeCellViewModel.swift in Sources */,
 				A7698B2A1D00602800953FD3 /* LoginViewModel.swift in Sources */,
@@ -4506,6 +4513,7 @@
 				A7ED1FFF1E831C5C00BFFA01 /* RewardShippingPickerViewModelTests.swift in Sources */,
 				A7ED1FDF1E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift in Sources */,
 				A7ED1FDC1E831C5C00BFFA01 /* DashboardVideoCellViewModelTests.swift in Sources */,
+				3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */,
 				A7ED1F2C1E830FDC00BFFA01 /* KSCacheTests.swift in Sources */,
 				D7237096211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift in Sources */,
 				A7ED1FCF1E831C5C00BFFA01 /* CheckoutRacingViewModelTests.swift in Sources */,

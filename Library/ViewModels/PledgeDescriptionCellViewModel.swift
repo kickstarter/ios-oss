@@ -26,7 +26,7 @@ public final class PledgeDescriptionCellViewModel: PledgeDescriptionCellViewMode
       .skipNil()
       .map { $0.estimatedDeliveryOn }
       .skipNil()
-      .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) }
+      .map { Format.date(secondsInUTC: $0, template: DateFormatter.monthYear, timeZone: UTCTimeZone) }
 
     self.presentTrustAndSafety = self.learnMoreTappedProperty.signal
   }
