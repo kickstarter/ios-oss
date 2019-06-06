@@ -101,11 +101,9 @@ final class RootViewModelTests: TestCase {
 
       self.setBadgeValueAtIndexValue.assertValues(["99+"])
       self.setBadgeValueAtIndexIndex.assertValues([1])
-    }
 
-    mockApplication.applicationIconBadgeNumber = 50
+      mockApplication.applicationIconBadgeNumber = 50
 
-    withEnvironment(application: mockApplication) {
       self.vm.inputs.applicationWillEnterForeground()
 
       self.setBadgeValueAtIndexValue.assertValues(["99+", "50"])
