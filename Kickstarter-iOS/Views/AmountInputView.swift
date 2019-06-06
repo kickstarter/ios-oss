@@ -5,8 +5,8 @@ import UIKit
 class AmountInputView: UIView {
   // MARK: - Properties
 
-  private lazy var label: UILabel = { UILabel(frame: .zero) }()
-  private lazy var textField: UITextField = { UITextField(frame: .zero) }()
+  private(set) lazy var label: UILabel = { UILabel(frame: .zero) }()
+  private(set) lazy var textField: UITextField = { UITextField(frame: .zero) }()
   private lazy var stackView: UIStackView = { UIStackView(frame: .zero) }()
   private var labelCenterYAnchor: NSLayoutConstraint?
 
