@@ -28,8 +28,8 @@ final class RewardsCollectionViewControllerTests: TestCase {
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = RewardsCollectionViewController.instantiate(with: project, refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
-        parent.view.frame.size.width = device == .pad ? 5_300 : 2_300
+        parent.view.frame.size.height = device == .pad ? 1_800 : 1_000
+        parent.view.frame.size.width = device == .pad ? 2_300 : 1_800
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
