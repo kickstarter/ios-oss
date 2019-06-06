@@ -48,6 +48,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
   func testGoToPledge() {
     let project = Project.cosmicSurgery
+    let firstRewardId = project.rewards.first!.id
 
     self.vm.inputs.configure(with: project, refTag: .activity)
     self.vm.inputs.viewDidLoad()
@@ -56,7 +57,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.goToPledgeReward.assertDidNotEmitValue()
     self.goToPledgeRefTag.assertDidNotEmitValue()
 
-    self.vm.inputs.rewardSelected(with: 0)
+    self.vm.inputs.rewardSelected(with: firstRewardId)
 
     self.goToPledgeProject.assertValues([project])
     self.goToPledgeReward.assertValues([project.rewards[0]])
