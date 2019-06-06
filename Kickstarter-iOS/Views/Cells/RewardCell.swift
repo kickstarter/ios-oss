@@ -4,7 +4,7 @@ import Library
 import Prelude
 import ReactiveSwift
 
-protocol RewardCellDelegate: class {
+protocol RewardCellDelegate: AnyObject {
   func rewardCellDidTapPledgeButton(_ rewardCell: RewardCell, rewardId: Int)
 }
 
@@ -55,13 +55,15 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.scrollView
       |> scrollViewStyle
 
-    [self.baseStackView,
-     self.priceStackView,
-     self.includedItemsStackView,
-     self.descriptionStackView]
-      .forEach { stackView in
-        _ = stackView
-          |> sectionStackViewStyle
+    [
+      self.baseStackView,
+      self.priceStackView,
+      self.includedItemsStackView,
+      self.descriptionStackView
+    ]
+    .forEach { stackView in
+      _ = stackView
+        |> sectionStackViewStyle
     }
 
     _ = self.baseStackView
@@ -122,14 +124,14 @@ final class RewardCell: UICollectionViewCell, ValueCell {
         guard let _self = self else { return }
 
         self?.delegate?.rewardCellDidTapPledgeButton(_self, rewardId: rewardId)
-    }
+      }
 
     self.viewModel.outputs.cardUserInteractionIsEnabled
       .observeForUI()
       .observeValues { [weak self] isUserInteractionEnabled in
         _ = self?.containerView
           ?|> \.isUserInteractionEnabled .~ isUserInteractionEnabled
-    }
+      }
   }
 
   // MARK: - Private Helpers
@@ -155,7 +157,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = (self.baseStackView, self.containerView)
       |> ksr_addSubviewToParent()
 
-    self.containerView.addLayoutGuide(self.pledgeButtonLayoutGuide)
+    _ = (self.pledgeButtonLayoutGuide, self.containerView)
+      |> ksr_addLayoutGuideToView()
 
     _ = ([self.priceStackView, self.rewardTitleLabel, self.includedItemsStackView, self.descriptionStackView], self.baseStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -174,9 +177,9 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     self.setupConstraints()
 
-    self.pledgeButton.addTarget(self, action: #selector(pledgeButtonTapped), for: .touchUpInside)
+    self.pledgeButton.addTarget(self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside)
 
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(rewardCardTapped))
+    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.rewardCardTapped))
     self.containerView.addGestureRecognizer(tapGestureRecognizer)
   }
 
@@ -195,10 +198,11 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     let containerMargins = containerView.layoutMarginsGuide
 
-    NSLayoutConstraint.activate([baseStackView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-                                 baseStackView.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-                                 baseStackView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
-      ])
+    NSLayoutConstraint.activate([
+      baseStackView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+      baseStackView.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+      baseStackView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
+    ])
 
     // Pledge button
     _ = pledgeButton
@@ -211,23 +215,26 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     let contentMargins = self.contentView.layoutMarginsGuide
 
-    NSLayoutConstraint.activate([pledgeButton.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
-                                 pledgeButton.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
-                                 // swiftlint:disable:next line_length
-                                 pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: contentMargins.bottomAnchor),
-                                 // swiftlint:disable:next line_length
-                                 pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-      ])
+    NSLayoutConstraint.activate([
+      pledgeButton.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
+      pledgeButton.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
+      // swiftlint:disable:next line_length
+      pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: contentMargins.bottomAnchor),
+      // swiftlint:disable:next line_length
+      pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    ])
 
     // Pledge button layout anchor
     NSLayoutConstraint.activate([
       pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
       pledgeButtonLayoutGuide.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
       pledgeButtonLayoutGuide.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      pledgeButtonLayoutGuide.topAnchor.constraint(equalTo: baseStackView.bottomAnchor,
-                                                   constant: Styles.grid(3)),
+      pledgeButtonLayoutGuide.topAnchor.constraint(
+        equalTo: baseStackView.bottomAnchor,
+        constant: Styles.grid(3)
+      ),
       pledgeButtonLayoutGuide.heightAnchor.constraint(equalTo: pledgeButton.heightAnchor)
-      ])
+    ])
   }
 
   fileprivate func load(items: [String]) {

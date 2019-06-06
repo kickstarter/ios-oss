@@ -227,7 +227,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
 // MARK: - UICollectionViewDelegate
 
 extension RewardsCollectionViewController {
-  override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+  override func collectionView(_: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt _: IndexPath) {
     if let rewardCell = cell as? RewardCell {
       rewardCell.delegate = self
     }
@@ -265,7 +265,7 @@ extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension RewardsCollectionViewController: RewardCellDelegate {
-  func rewardCellDidTapPledgeButton(_ rewardCell: RewardCell, rewardId: Int) {
+  func rewardCellDidTapPledgeButton(_: RewardCell, rewardId: Int) {
     self.viewModel.inputs.rewardSelected(with: rewardId)
   }
 }

@@ -30,8 +30,7 @@ public protocol RewardCellViewModelType {
 }
 
 public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewModelInputs,
-RewardCellViewModelOutputs {
-
+  RewardCellViewModelOutputs {
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
       self.projectAndRewardOrBackingProperty.signal.skipNil()
@@ -44,31 +43,35 @@ RewardCellViewModelOutputs {
           ?? rewardOrBacking.right?.reward
           ?? backingReward(fromProject: project)
           ?? Reward.noReward
-    }
+      }
 
     let projectAndReward = Signal.zip(project, reward)
 
     self.conversionLabelHidden = project.map(needsConversion(project:) >>> negate)
     /* The conversion logic here is currently the same as what we already have, but note that
-        this will likely change to make rounding more consistent
-    */
+     this will likely change to make rounding more consistent
+     */
     self.conversionLabelText = projectAndRewardOrBacking
       .filter(first >>> needsConversion(project:))
       .map { project, rewardOrBacking in
         let (country, rate) = zip(
           project.stats.currentCountry,
           project.stats.currentCurrencyRate
-          ) ?? (.us, project.stats.staticUsdRate)
+        ) ?? (.us, project.stats.staticUsdRate)
         switch rewardOrBacking {
         case let .left(reward):
           let min = minPledgeAmount(forProject: project, reward: reward)
-          return Format.currency(max(1, Int(Float(min) * rate)),
-                                 country: country,
-                                 omitCurrencyCode: project.stats.omitUSCurrencyCode)
+          return Format.currency(
+            max(1, Int(Float(min) * rate)),
+            country: country,
+            omitCurrencyCode: project.stats.omitUSCurrencyCode
+          )
         case let .right(backing):
-          return Format.currency(Int(ceil(Float(backing.amount) * rate)),
-                                 country: country,
-                                 omitCurrencyCode: project.stats.omitUSCurrencyCode)
+          return Format.currency(
+            Int(ceil(Float(backing.amount) * rate)),
+            country: country,
+            omitCurrencyCode: project.stats.omitUSCurrencyCode
+          )
         }
       }
       .map(Strings.About_reward_amount(reward_amount:))
@@ -78,8 +81,8 @@ RewardCellViewModelOutputs {
 
     self.descriptionLabelText = reward
       .map { $0.isNoReward ?
-        Strings.Pledge_any_amount_to_help_bring_this_project_to_life() : $0.description }
-
+        Strings.Pledge_any_amount_to_help_bring_this_project_to_life() : $0.description
+      }
 
     self.rewardTitleLabelHidden = reward
       .map { $0.title == nil && !$0.isNoReward }
@@ -102,14 +105,16 @@ RewardCellViewModelOutputs {
             ? "(\(Format.wholeNumber(rewardsItem.quantity))) \(rewardsItem.item.name)"
             : rewardsItem.item.name
         }
-    }
+      }
 
     self.pledgeButtonTitleText = projectAndRewardOrBacking
       .map { pledgeButtonTitle(project: $0, rewardOrBacking: $1) }
 
     self.rewardSelected = reward
-      .takeWhen(Signal.merge(self.pledgeButtonTappedProperty.signal,
-                             self.rewardCardTappedProperty.signal))
+      .takeWhen(Signal.merge(
+        self.pledgeButtonTappedProperty.signal,
+        self.rewardCardTappedProperty.signal
+      ))
       .map { $0.id }
 
     self.pledgeButtonEnabled = rewardAvailable
@@ -176,8 +181,10 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
 }
 
 private func pledgeButtonTitle(project: Project, rewardOrBacking: Either<Reward, Backing>) -> String {
-  let minimumFormattedAmount = formattedAmountForRewardOrBacking(project: project,
-                                                                 rewardOrBacking: rewardOrBacking)
+  let minimumFormattedAmount = formattedAmountForRewardOrBacking(
+    project: project,
+    rewardOrBacking: rewardOrBacking
+  )
   return project.personalization.isBacking == true
     ? Strings.Select_this_reward_instead()
     : Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
@@ -191,21 +198,27 @@ private func formattedAmount(for backing: Backing) -> String {
   return backingAmount
 }
 
-private func formattedAmountForRewardOrBacking(project: Project,
-                                               rewardOrBacking: Either<Reward, Backing>) -> String {
+private func formattedAmountForRewardOrBacking(
+  project: Project,
+  rewardOrBacking: Either<Reward, Backing>
+) -> String {
   switch rewardOrBacking {
   case let .left(reward):
     let min = minPledgeAmount(forProject: project, reward: reward)
-    return Format.currency(min,
-                           country: project.country,
-                           omitCurrencyCode: project.stats.omitUSCurrencyCode)
+    return Format.currency(
+      min,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode
+    )
   case let .right(backing):
     let amount = backing.amount
     let backingAmount = floor(amount) == backing.amount
       ? String(Int(amount))
       : String(format: "%.2f", backing.amount)
-    return Format.formattedCurrency(backingAmount,
-                                   country: project.country,
-                                   omitCurrencyCode: project.stats.omitUSCurrencyCode)
+    return Format.formattedCurrency(
+      backingAmount,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode
+    )
   }
 }

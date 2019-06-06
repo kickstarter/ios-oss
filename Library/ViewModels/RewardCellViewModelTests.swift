@@ -114,14 +114,14 @@ final class RewardCellViewModelTests: TestCase {
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The thing"
-        ),
+          ),
         .template
           |> RewardsItem.lens.quantity .~ 1_000
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The other thing"
-        )
-    ]
+          )
+      ]
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -139,12 +139,12 @@ final class RewardCellViewModelTests: TestCase {
   }
 
   // MARK: Description Label
+
   func testDescriptionLabel() {
     let project = Project.template
     let reward = Reward.template
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
-
 
     self.descriptionLabelText.assertValues([reward.description])
   }

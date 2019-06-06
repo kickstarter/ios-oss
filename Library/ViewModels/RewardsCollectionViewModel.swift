@@ -27,22 +27,23 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       self.configureWithProjectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
-      .map(first)
+    .map(first)
 
     let rewards = Signal.combineLatest(
       self.configureWithRewardsProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal)
-      .map(first)
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
 
     self.reloadDataWithValues = Signal.combineLatest(project, rewards)
       .map { project, rewards in
-        return rewards.map { (project, Either<Reward, Backing>.left($0)) }
+        rewards.map { (project, Either<Reward, Backing>.left($0)) }
       }
 
     let selectedRewardFromId = rewards
       .takePairWhen(self.rewardSelectedWithRewardIdProperty.signal.skipNil())
       .map { rewards, rewardId in
-        return rewards.first(where: { $0.id == rewardId })
+        rewards.first(where: { $0.id == rewardId })
       }.skipNil()
 
     self.goToPledge = Signal.combineLatest(
@@ -68,7 +69,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public func rewardSelected(with rewardId: Int) {
     self.rewardSelectedWithRewardIdProperty.value = rewardId
   }
-
 
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
