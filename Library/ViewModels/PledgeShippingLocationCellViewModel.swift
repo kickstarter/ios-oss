@@ -21,7 +21,7 @@ public protocol PledgeShippingLocationCellViewModelType {
 }
 
 public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCellViewModelType,
-PledgeShippingLocationCellViewModelInputs, PledgeShippingLocationCellViewModelOutputs {
+  PledgeShippingLocationCellViewModelInputs, PledgeShippingLocationCellViewModelOutputs {
   public init() {
     let project = self.projectAndRewardProperty.signal.skipNil().map(first)
     let reward = self.projectAndRewardProperty.signal.skipNil().map(second)
@@ -37,7 +37,7 @@ PledgeShippingLocationCellViewModelInputs, PledgeShippingLocationCellViewModelOu
           .map(ShippingRulesEnvelope.lens.shippingRules.view)
           .retry(upTo: 3)
           .materialize()
-    }
+      }
 
     let defaultSelectedShippingRule = shippingRulesEvent.values()
       .map(defaultShippingRule(fromShippingRules:))

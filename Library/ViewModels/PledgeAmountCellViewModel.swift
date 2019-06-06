@@ -19,7 +19,7 @@ public protocol PledgeAmountCellViewModelType {
 }
 
 public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
-PledgeAmountCellViewModelInputs, PledgeAmountCellViewModelOutputs {
+  PledgeAmountCellViewModelInputs, PledgeAmountCellViewModelOutputs {
   public init() {
     let project = self.projectAndRewardProperty.signal
       .skipNil()

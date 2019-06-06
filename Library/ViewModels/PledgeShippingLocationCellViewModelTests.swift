@@ -1,11 +1,11 @@
 import Foundation
-import Prelude
-import ReactiveExtensions
-import ReactiveSwift
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
+import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 private let locations: [Location] = [
   .usa,

@@ -95,7 +95,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] isLoading in
         self?.animate(isLoading)
-    }
+      }
   }
 
   // MARK: - Configuration
@@ -106,7 +106,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Public Functions
 
-  func animate(_: Bool) { }
+  func animate(_: Bool) {}
 }
 
 // MARK: - Styles
