@@ -10,6 +10,7 @@ public protocol RewardCellViewModelInputs {
 }
 
 public protocol RewardCellViewModelOutputs {
+  var cardUserInteractionIsEnabled: Signal<Bool, Never> { get }
   var conversionLabelHidden: Signal<Bool, Never> { get }
   var conversionLabelText: Signal<String, Never> { get }
   var descriptionLabelText: Signal<String, Never> { get }
@@ -48,6 +49,9 @@ RewardCellViewModelOutputs {
     let projectAndReward = Signal.zip(project, reward)
 
     self.conversionLabelHidden = project.map(needsConversion(project:) >>> negate)
+    /* The conversion logic here is currently the same as what we already have, but note that
+        this will likely change to make rounding more consistent
+    */
     self.conversionLabelText = projectAndRewardOrBacking
       .filter(first >>> needsConversion(project:))
       .map { project, rewardOrBacking in
@@ -109,6 +113,7 @@ RewardCellViewModelOutputs {
       .map { $0.id }
 
     self.pledgeButtonEnabled = rewardAvailable
+    self.cardUserInteractionIsEnabled = rewardAvailable
   }
 
   private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
@@ -126,6 +131,7 @@ RewardCellViewModelOutputs {
     self.rewardCardTappedProperty.value = ()
   }
 
+  public let cardUserInteractionIsEnabled: Signal<Bool, Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
   public let descriptionLabelText: Signal<String, Never>
@@ -170,10 +176,6 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
 }
 
 private func pledgeButtonTitle(project: Project, rewardOrBacking: Either<Reward, Backing>) -> String {
-  if case let .left(reward) = rewardOrBacking, reward.remaining == 0 {
-    return "No longer available"
-  }
-
   let minimumFormattedAmount = formattedAmountForRewardOrBacking(project: project,
                                                                  rewardOrBacking: rewardOrBacking)
   return project.personalization.isBacking == true

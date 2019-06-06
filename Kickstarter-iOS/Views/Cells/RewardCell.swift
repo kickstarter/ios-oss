@@ -123,6 +123,13 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
         self?.delegate?.rewardCellDidTapPledgeButton(_self, rewardId: rewardId)
     }
+
+    self.viewModel.outputs.cardUserInteractionIsEnabled
+      .observeForUI()
+      .observeValues { [weak self] isUserInteractionEnabled in
+        _ = self?.containerView
+          ?|> \.isUserInteractionEnabled .~ isUserInteractionEnabled
+    }
   }
 
   // MARK: - Private Helpers
