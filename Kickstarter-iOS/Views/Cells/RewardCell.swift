@@ -160,7 +160,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = (self.pledgeButtonLayoutGuide, self.containerView)
       |> ksr_addLayoutGuideToView()
 
-    _ = ([self.priceStackView, self.rewardTitleLabel, self.includedItemsStackView, self.descriptionStackView], self.baseStackView)
+    _ = ([self.priceStackView, self.rewardTitleLabel, self.includedItemsStackView,
+          self.descriptionStackView], self.baseStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([minimumPriceLabel, minimumPriceConversionLabel], self.priceStackView)

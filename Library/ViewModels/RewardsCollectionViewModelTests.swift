@@ -23,8 +23,10 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.goToPledge.map { $0.reward }.observe(self.goToPledgeReward.observer)
     self.vm.outputs.goToPledge.map { $0.refTag }.observe(self.goToPledgeRefTag.observer)
     self.vm.outputs.reloadDataWithValues.observe(self.reloadDataWithValues.observer)
-    self.vm.outputs.reloadDataWithValues.map { $0.map { $0.0 } }.observe(self.reloadDataWithValuesProject.observer)
-    self.vm.outputs.reloadDataWithValues.map { $0.map { $0.1 } }.observe(self.reloadDataWithValuesRewardOrBacking.observer)
+    self.vm.outputs.reloadDataWithValues.map { $0.map { $0.0 } }
+      .observe(self.reloadDataWithValuesProject.observer)
+    self.vm.outputs.reloadDataWithValues.map { $0.map { $0.1 } }
+      .observe(self.reloadDataWithValuesRewardOrBacking.observer)
   }
 
   func testConfigureWithProject() {

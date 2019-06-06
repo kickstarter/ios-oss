@@ -17,6 +17,7 @@ final class RewardsCollectionViewDataSourceTests: XCTestCase {
     self.dataSource.load(rewardsData)
 
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.collectionView))
-    XCTAssertEqual(project.rewards.count, self.dataSource.collectionView(self.collectionView, numberOfItemsInSection: 0))
+    XCTAssertEqual(project.rewards.count, self.dataSource.collectionView(self.collectionView,
+                                                                         numberOfItemsInSection: 0))
   }
 }
