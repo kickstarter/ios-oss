@@ -90,7 +90,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     }
 
     _ = self.descriptionTitleLabel
-      |> \.text %~ { _ in "Description" }
+      |> \.text %~ { _ in Strings.Description() }
 
     _ = self.descriptionLabel
       |> baseRewardLabelStyle
