@@ -293,10 +293,12 @@ private let baseRewardLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 0
     |> \.textAlignment .~ .left
     |> \.lineBreakMode .~ .byWordWrapping
+    |> \.backgroundColor .~ .white
 }
 
 private let baseStackViewStyle: StackViewStyle = { stackView in
   stackView
+    |> \.backgroundColor .~ .white
     |> \.spacing .~ Styles.grid(3)
 }
 
@@ -325,6 +327,7 @@ private let rewardTitleLabelStyle: LabelStyle = { label in
 
 private let scrollViewStyle: ScrollStyle = { scrollView in
   scrollView
+    |> \.backgroundColor .~ .clear
     |> \.contentInset .~ .init(topBottom: Styles.grid(6))
     |> \.showsVerticalScrollIndicator .~ false
 }
