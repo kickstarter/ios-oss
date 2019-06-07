@@ -93,7 +93,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.rewardMinimumLabelText.assertValues(
         ["$1,000"],
-        "Reward minimum appears in project's currency, without a currency symbol.")
+        "Reward minimum appears in project's currency, without a currency symbol."
+      )
     }
   }
 
@@ -107,7 +108,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.rewardMinimumLabelText.assertValues(
         ["US$ 1,000"],
-        "Reward minimum appears in project's currency, with a currency symbol.")
+        "Reward minimum appears in project's currency, with a currency symbol."
+      )
     }
   }
 
@@ -124,7 +126,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.rewardMinimumLabelText.assertValues(
         ["£1,000"],
-        "Reward minimum always appears in the project's currency.")
+        "Reward minimum always appears in the project's currency."
+      )
     }
   }
 
@@ -141,7 +144,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.rewardMinimumLabelText.assertValues(
         ["£1,000"],
-        "Reward minimum always appears in the project's currency.")
+        "Reward minimum always appears in the project's currency."
+      )
     }
   }
 
@@ -170,7 +174,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.rewardMinimumLabelText.assertValues(
         ["US$ 1"],
-        "No-reward min appears in the project's currency with a currency symbol")
+        "No-reward min appears in the project's currency with a currency symbol"
+      )
     }
   }
 
@@ -277,7 +282,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues(
         [true],
-        "US user with US currency preferences, viewing US project does not see conversion.")
+        "US user with US currency preferences, viewing US project does not see conversion."
+      )
       self.conversionLabelText.assertValueCount(0)
     }
   }
@@ -366,7 +372,8 @@ final class RewardCellViewModelTests: TestCase {
         """
         User with US currency preferences, non-US location, viewing non-US project
         sees conversion.
-        """)
+        """
+      )
       self.conversionLabelText.assertValues(["About US$ 2"], "Conversion label shows US symbol.")
     }
   }
@@ -388,7 +395,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues(
         [false],
-        "US User currency in non-US location viewing non-US project sees conversion.")
+        "US User currency in non-US location viewing non-US project sees conversion."
+      )
       self.conversionLabelText.assertValues(["About US$ 4"], "Conversion label shows US symbol.")
     }
   }
@@ -406,7 +414,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues(
         [true],
-        "Unknown-location, unknown-currency user viewing US project does not see conversion.")
+        "Unknown-location, unknown-currency user viewing US project does not see conversion."
+      )
     }
   }
 
@@ -426,7 +435,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues(
         [true],
-        "Unknown-location, unknown-currency user viewing US project does not see conversion.")
+        "Unknown-location, unknown-currency user viewing US project does not see conversion."
+      )
     }
   }
 
@@ -444,7 +454,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues(
         [false],
-        "Unknown-location, unknown-currency user viewing non-US project sees conversion to USD.")
+        "Unknown-location, unknown-currency user viewing non-US project sees conversion to USD."
+      )
       self.conversionLabelText.assertValues(["About US$ 1"], "Conversion label rounds up.")
     }
   }
@@ -466,7 +477,8 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues(
         [false],
-        "Unknown-location, unknown-currency user viewing non-US project sees conversion to USD.")
+        "Unknown-location, unknown-currency user viewing non-US project sees conversion to USD."
+      )
       self.conversionLabelText.assertValues(["About US$ 2"], "Conversion label rounds up.")
     }
   }
@@ -479,7 +491,8 @@ final class RewardCellViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
     let reward = .template |> Reward.lens.minimum .~ 1
 
-    withEnvironment(apiService: MockService(currency: "MXN"), countryCode: "MX"
+    withEnvironment(
+      apiService: MockService(currency: "MXN"), countryCode: "MX"
     ) {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 

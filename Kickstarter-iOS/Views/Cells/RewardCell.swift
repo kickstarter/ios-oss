@@ -78,7 +78,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.includedItemsTitleLabel
       |> \.text %~ { _ in Strings.project_view_pledge_includes() }
 
-    self.includedItemsStackView.subviews.enumerated().forEach { (index, view) in
+    self.includedItemsStackView.subviews.enumerated().forEach { index, view in
       guard index != 0 else { return }
 
       _ = (view as? UILabel)
@@ -165,8 +165,10 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = (self.pledgeButtonLayoutGuide, self.containerView)
       |> ksr_addLayoutGuideToView()
 
-    _ = ([self.priceStackView, self.rewardTitleLabel, self.includedItemsStackView,
-          self.descriptionStackView], self.baseStackView)
+    _ = ([
+      self.priceStackView, self.rewardTitleLabel, self.includedItemsStackView,
+      self.descriptionStackView
+    ], self.baseStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([minimumPriceLabel, minimumPriceConversionLabel], self.priceStackView)
