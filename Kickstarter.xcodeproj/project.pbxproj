@@ -92,6 +92,7 @@
 		379CFFFD2242DAEB00F6F0C2 /* NSBundle-Framework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFEB2242DAC200F6F0C2 /* NSBundle-Framework.swift */; };
 		379CFFFE2242DAF400F6F0C2 /* Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFEE2242DAC300F6F0C2 /* Storyboard.swift */; };
 		379CFFFF2242DAF900F6F0C2 /* UIImageView+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */; };
+		37B4ED0322AA30D2007CAE60 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 37B4ED0222AA30D2007CAE60 /* AlamofireImage */; };
 		37BB45C92243031200E7392A /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BB45C82243031100E7392A /* UIView+AutoLayout.swift */; };
 		37BFD8802208F24300815C9C /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
 		37CBA64D221E10E100E6CAB6 /* HelpTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */; };
@@ -2209,6 +2210,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37B4ED0322AA30D2007CAE60 /* AlamofireImage in Frameworks */,
 				D00A373F2258270600F46F47 /* Alamofire.framework in Frameworks */,
 				37F648A422A8750D00516071 /* ReactiveSwift in Frameworks */,
 				D00A3720225815FA00F46F47 /* AlamofireImage.framework in Frameworks */,
@@ -3619,6 +3621,7 @@
 				37F6489122A870B900516071 /* Argo */,
 				37F6489A22A8716800516071 /* Curry */,
 				37F648A322A8750D00516071 /* ReactiveSwift */,
+				37B4ED0222AA30D2007CAE60 /* AlamofireImage */,
 			);
 			productName = "Kickstarter-iOS-Framework";
 			productReference = A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */;
@@ -3818,6 +3821,7 @@
 				37F6488C22A8706A00516071 /* XCRemoteSwiftPackageReference "Argo" */,
 				37F6489522A8715B00516071 /* XCRemoteSwiftPackageReference "Curry" */,
 				37F6489E22A874FF00516071 /* XCRemoteSwiftPackageReference "ReactiveSwift" */,
+				37B4ED0122AA30D2007CAE60 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 			);
 			productRefGroup = A7E06C7A1C5A6EB300EBDCC2 /* Products */;
 			projectDirPath = "";
@@ -5516,7 +5520,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 802800571C88F64D00141235 /* Base.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -5975,7 +5978,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 802800571C88F64D00141235 /* Base.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -6328,6 +6330,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		37B4ED0122AA30D2007CAE60 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/AlamofireImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.5.2;
+			};
+		};
 		37F6488C22A8706A00516071 /* XCRemoteSwiftPackageReference "Argo" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/thoughtbot/Argo";
@@ -6355,6 +6365,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		37B4ED0222AA30D2007CAE60 /* AlamofireImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 37B4ED0122AA30D2007CAE60 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			productName = AlamofireImage;
+		};
 		37F6488D22A8706A00516071 /* Argo */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 37F6488C22A8706A00516071 /* XCRemoteSwiftPackageReference "Argo" */;
