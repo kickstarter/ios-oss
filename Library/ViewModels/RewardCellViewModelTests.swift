@@ -13,8 +13,8 @@ final class RewardCellViewModelTests: TestCase {
   private let conversionLabelHidden = TestObserver<Bool, Never>()
   private let conversionLabelText = TestObserver<String, Never>()
   private let descriptionLabelText = TestObserver<String, Never>()
-  private let items = TestObserver<[String], Never>()
   private let includedItemsStackViewHidden = TestObserver<Bool, Never>()
+  private let items = TestObserver<[String], Never>()
   private let pledgeButtonEnabled = TestObserver<Bool, Never>()
   private let pledgeButtonTitleText = TestObserver<String, Never>()
   private let rewardMinimumLabelText = TestObserver<String, Never>()
@@ -42,8 +42,6 @@ final class RewardCellViewModelTests: TestCase {
   // MARK: - Reward Title
 
   func testTitleLabel() {
-    print("**HERE 2**")
-
     let reward = .template
       |> Reward.lens.title .~ "The thing"
       |> Reward.lens.remaining .~ nil
@@ -71,38 +69,145 @@ final class RewardCellViewModelTests: TestCase {
     self.rewardTitleLabelText.assertValues([""])
   }
 
-  func testTitleLabel_EmptyTitle() {
-    let reward = .template
-      |> Reward.lens.title .~ nil
-      |> Reward.lens.remaining .~ nil
+  func testTitleLabel_NoTitle_NoReward() {
+    let reward = Reward.noReward
 
     self.vm.inputs.configureWith(
       project: .template,
       rewardOrBacking: .left(reward)
     )
 
-    self.rewardTitleLabelHidden.assertValues([true])
-    self.rewardTitleLabelText.assertValues([""])
+    self.rewardTitleLabelHidden.assertValues([false])
+    self.rewardTitleLabelText.assertValues(["Make a pledge without a reward"])
   }
 
   // MARK: - Reward Minimum
 
-  func testMinimumLabel() {
+  func testMinimumLabel_US_Project_US_UserLocation() {
     let project = Project.template
+      |> Project.lens.country .~ .us
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    withEnvironment(countryCode: "US") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-    self.rewardMinimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+      self.rewardMinimumLabelText.assertValues(
+        ["$1,000"],
+        "Reward minimum appears in project's currency, without a currency symbol.")
+    }
   }
 
-  func testMinimumLabel_NoReward() {
+  func testMinimumLabel_US_Project_NonUS_UserLocation() {
     let project = Project.template
+      |> Project.lens.country .~ .us
+    let reward = .template |> Reward.lens.minimum .~ 1_000
+
+    withEnvironment(countryCode: "MX") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+      self.rewardMinimumLabelText.assertValues(
+        ["US$ 1,000"],
+        "Reward minimum appears in project's currency, with a currency symbol.")
+    }
+  }
+
+  func testMinimumLabel_NonUS_Project_US_User_Currency_US_UserLocation() {
+    let project = Project.template
+      |> Project.lens.country .~ .gb
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 0.5
+    let reward = .template |> Reward.lens.minimum .~ 1_000
+
+    withEnvironment(countryCode: "US") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+      self.rewardMinimumLabelText.assertValues(
+        ["£1,000"],
+        "Reward minimum always appears in the project's currency.")
+    }
+  }
+
+  func testMinimumLabel_NonUs_Project_US_UserCurrency_NonUS_UserLocation() {
+    let project = Project.template
+      |> Project.lens.country .~ .gb
+      |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 0.5
+    let reward = .template |> Reward.lens.minimum .~ 1_000
+
+    withEnvironment(countryCode: "MX") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+      self.rewardMinimumLabelText.assertValues(
+        ["£1,000"],
+        "Reward minimum always appears in the project's currency.")
+    }
+  }
+
+  func testMinimumLabel_NoReward_US_Project_US_UserLocation() {
+    let project = Project.template
+      |> Project.lens.country .~ .us
     let reward = Reward.noReward
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    withEnvironment(countryCode: "US") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-    self.rewardMinimumLabelText.assertValues(["$1"])
+      self.rewardMinimumLabelText.assertValues(
+        ["$1"],
+        "No-reward min appears in the project's currency without a currency symbol"
+      )
+    }
+  }
+
+  func testMinimumLabel_NoReward_US_Project_NonUS_UserLocation() {
+    let project = Project.template
+      |> Project.lens.country .~ .us
+    let reward = Reward.noReward
+
+    withEnvironment(countryCode: "MX") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+      self.rewardMinimumLabelText.assertValues(
+        ["US$ 1"],
+        "No-reward min appears in the project's currency with a currency symbol")
+    }
+  }
+
+  func testMinimumLabel_NoReward_NonUS_Project_US_UserLocation() {
+    let project = Project.template
+      |> Project.lens.country .~ Project.Country.mx
+    let reward = Reward.noReward
+
+    withEnvironment(countryCode: "US") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+      self.rewardMinimumLabelText.assertValues(
+        ["MX$ 10"],
+        """
+        No-reward min always appears in the project's currency,
+        with the amount depending on the project's country
+        """
+      )
+    }
+  }
+
+  func testMinimumLabel_NoReward_NonUS_Project_NonUS_UserLocation() {
+    let project = Project.template
+      |> Project.lens.country .~ Project.Country.mx
+    let reward = Reward.noReward
+
+    withEnvironment(countryCode: "CA") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+      self.rewardMinimumLabelText.assertValues(
+        ["MX$ 10"],
+        """
+        No-reward min always appears in the project's currency,
+        with the amount depending on the project's country
+        """
+      )
+    }
   }
 
   // MARK: - Included Items
@@ -160,149 +265,290 @@ final class RewardCellViewModelTests: TestCase {
 
   // MARK: Conversion Label
 
-  func testConversionLabel_US_User_US_Project_ConfiguredWithReward() {
-    let project = .template |> Project.lens.country .~ .us
+  func testConversionLabel_US_UserCurrency_US_Location_US_Project_ConfiguredWithReward() {
+    let project = .template
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ "USD"
+      |> Project.lens.stats.currentCurrency .~ "USD"
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
+    withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-      self.conversionLabelHidden.assertValues([true], "US user viewing US project does not see conversion.")
+      self.conversionLabelHidden.assertValues(
+        [true],
+        "US user with US currency preferences, viewing US project does not see conversion.")
       self.conversionLabelText.assertValueCount(0)
     }
   }
 
-  func testConversionLabel_US_User_US_Project_ConfiguredWithBacking() {
-    let project = .template |> Project.lens.country .~ .us
+  func testConversionLabel_US_UserCurrency_US_Location_US_Project_ConfiguredWithBacking() {
+    let project = .template
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ "USD"
+      |> Project.lens.stats.currentCurrency .~ "USD"
     let reward = .template |> Reward.lens.minimum .~ 30
     let backing = .template
       |> Backing.lens.amount .~ 42
       |> Backing.lens.reward .~ reward
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
+    withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
 
       self.conversionLabelHidden.assertValues(
         [true],
-        "US user viewing US project does not see conversion."
+        "US user with US currency preferences, viewing US project does not see conversion."
       )
       self.conversionLabelText.assertValueCount(0)
     }
   }
 
-  func testConversionLabel_US_User_NonUS_Project_ConfiguredWithReward() {
-    let project = .template
-      |> Project.lens.country .~ .ca
-      |> Project.lens.stats.staticUsdRate .~ 0.76
-      |> Project.lens.stats.currentCurrency .~ "MXN"
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
-    let reward = .template |> Reward.lens.minimum .~ 1
-
-    withEnvironment(
-      apiService: MockService(currency: "MXN"),
-      config: .template |> Config.lens.countryCode .~ "MX"
-    ) {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
-
-      self.conversionLabelHidden.assertValues(
-        [false],
-        "Mexican user viewing non-Mexican project sees conversion."
-      )
-      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
-    }
-  }
-
-  func testConversionLabel_US_User_NonUS_Project_ConfiguredWithReward_WithoutCurrentCurrency() {
+  func testConversionLabel_US_UserCurrency_US_Location_NonUS_Project_ConfiguredWithReward() {
     let project = .template
       |> Project.lens.country .~ .ca
       |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 0.76
-      |> Project.lens.stats.currentCurrencyRate .~ nil
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 2.0
     let reward = .template |> Reward.lens.minimum .~ 1
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-      self.conversionLabelHidden.assertValues([false], "US user viewing non-US project sees conversion.")
-      self.conversionLabelText.assertValues(["About $1"], "Conversion label rounds up.")
+      self.conversionLabelHidden.assertValues(
+        [false],
+        """
+        US user with US currency preferences, viewing non-US project
+        sees conversion.
+        """
+      )
+      self.conversionLabelText.assertValues(["About $2"], "Conversion without a currency symbol")
     }
   }
 
-  func testConversionLabel_US_User_NonUS_Project_ConfiguredWithBacking() {
+  func testConversionLabel_US_UserCurrency_US_Location_NonUS_Project_ConfiguredWithBacking() {
     let project = .template
       |> Project.lens.country .~ .ca
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+    let reward = .template |> Reward.lens.minimum .~ 30
+    let backing = .template
+      |> Backing.lens.amount .~ 42
+      |> Backing.lens.reward .~ reward
+
+    withEnvironment(countryCode: "US") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+
+      self.conversionLabelHidden.assertValues(
+        [false],
+        """
+        US user with US currency preferences, viewing non-US project
+        sees conversion.
+        """
+      )
+      self.conversionLabelText.assertValues(["About $84"], "Conversion label rounds up.")
+    }
+  }
+
+  func testConversionLabel_US_Currency_NonUS_Location_NonUS_Project_ConfiguredWithReward() {
+    let project = .template
+      |> Project.lens.country .~ .ca
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+    let reward = .template |> Reward.lens.minimum .~ 1
+
+    withEnvironment(countryCode: "MX") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+      self.conversionLabelHidden.assertValues(
+        [false],
+        """
+        User with US currency preferences, non-US location, viewing non-US project
+        sees conversion.
+        """)
+      self.conversionLabelText.assertValues(["About US$ 2"], "Conversion label shows US symbol.")
+    }
+  }
+
+  func testConversionLabel_US_Currency_NonUS_Location_NonUS_Project_ConfiguredWithBacking() {
+    let project = .template
+      |> Project.lens.country .~ .ca
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
       |> Project.lens.stats.staticUsdRate .~ 0.76
-      |> Project.lens.stats.currentCurrency .~ "MXN"
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
     let reward = .template |> Reward.lens.minimum .~ 1
     let backing = .template
       |> Backing.lens.amount .~ 2
       |> Backing.lens.reward .~ reward
 
-    withEnvironment(
-      apiService: MockService(currency: "MXN"),
-      config: .template |> Config.lens.countryCode .~ "MX"
-    ) {
+    withEnvironment(countryCode: "MX") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
 
       self.conversionLabelHidden.assertValues(
         [false],
-        "Mexican user viewing non-Mexican project sees conversion."
-      )
-      self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds up.")
+        "US User currency in non-US location viewing non-US project sees conversion.")
+      self.conversionLabelText.assertValues(["About US$ 4"], "Conversion label shows US symbol.")
     }
   }
 
-  func testConversionLabel_US_User_NonUS_Project_ConfiguredWithBacking_WithoutCurrentCurrency() {
+  func testConversionLabel_Unknown_Location_US_Project_ConfiguredWithReward_WithoutUserCurrency() {
     let project = .template
-      |> Project.lens.country .~ .ca
-      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 0.76
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrency .~ nil
+      |> Project.lens.stats.currentCurrencyRate .~ nil
+    let reward = .template |> Reward.lens.minimum .~ 1
+
+    withEnvironment(countryCode: "XX") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+      self.conversionLabelHidden.assertValues(
+        [true],
+        "Unknown-location, unknown-currency user viewing US project does not see conversion.")
+    }
+  }
+
+  func testConversionLabel_Unknown_Location_US_Project_ConfiguredWithBacking_WithoutUserCurrency() {
+    let project = .template
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template |> Reward.lens.minimum .~ 1
     let backing = .template
       |> Backing.lens.amount .~ 2
       |> Backing.lens.reward .~ reward
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
+    withEnvironment(countryCode: "XX") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+
+      self.conversionLabelHidden.assertValues(
+        [true],
+        "Unknown-location, unknown-currency user viewing US project does not see conversion.")
+    }
+  }
+
+  func testConversionLabel_Unknown_Location_NonUS_Project_ConfiguredWithReward_WithoutUserCurrency() {
+    let project = .template
+      |> Project.lens.country .~ .ca
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
+      |> Project.lens.stats.staticUsdRate .~ 0.76
+      |> Project.lens.stats.currentCurrency .~ nil
+      |> Project.lens.stats.currentCurrencyRate .~ nil
+    let reward = .template |> Reward.lens.minimum .~ 1
+
+    withEnvironment(countryCode: "XX") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+      self.conversionLabelHidden.assertValues(
+        [false],
+        "Unknown-location, unknown-currency user viewing non-US project sees conversion to USD.")
+      self.conversionLabelText.assertValues(["About US$ 1"], "Conversion label rounds up.")
+    }
+  }
+
+  func testConversionLabel_Unknown_Location_NonUS_Project_ConfiguredWithBacking_WithoutUserCurrency() {
+    let project = .template
+      |> Project.lens.country .~ .ca
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
+      |> Project.lens.stats.staticUsdRate .~ 0.76
+      |> Project.lens.stats.currentCurrency .~ nil
+      |> Project.lens.stats.currentCurrencyRate .~ nil
+    let reward = .template |> Reward.lens.minimum .~ 1
+    let backing = .template
+      |> Backing.lens.amount .~ 2
+      |> Backing.lens.reward .~ reward
+
+    withEnvironment(countryCode: "XX") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
 
       self.conversionLabelHidden.assertValues(
         [false],
-        "US user viewing non-US project sees conversion."
-      )
-      self.conversionLabelText.assertValues(["About $2"], "Conversion label rounds up.")
+        "Unknown-location, unknown-currency user viewing non-US project sees conversion to USD.")
+      self.conversionLabelText.assertValues(["About US$ 2"], "Conversion label rounds up.")
     }
   }
 
-  func testConversionLabel_NonUS_User_US_Project() {
-    let project = .template |> Project.lens.country .~ .us
+  func testConversionLabel_NonUS_Location_NonUS_Locale_US_Project_ConfiguredWithReward() {
+    let project = .template
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+    let reward = .template |> Reward.lens.minimum .~ 1
+
+    withEnvironment(apiService: MockService(currency: "MXN"), countryCode: "MX"
+    ) {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+      self.conversionLabelHidden.assertValues(
+        [false],
+        "Mexican user viewing US project sees conversion."
+      )
+      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
+    }
+  }
+
+  func testConversionLabel_NonUS_Location_NonUS_Locale_US_Project_ConfiguredWithBacking() {
+    let project = .template
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+    let reward = .template |> Reward.lens.minimum .~ 1
+    let backing = .template
+      |> Backing.lens.amount .~ 2
+      |> Backing.lens.reward .~ reward
+
+    withEnvironment(apiService: MockService(currency: "MXN"), countryCode: "MX") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+
+      self.conversionLabelHidden.assertValues(
+        [false],
+        "Mexican user viewing US project sees conversion."
+      )
+      self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds up.")
+    }
+  }
+
+  func testConversionLabel_NonUS_Location_US_UserCurrency_US_Project_ConfiguredWithReward() {
+    let project = .template
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 1.0
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
+    withEnvironment(countryCode: "GB") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
       self.conversionLabelHidden.assertValues(
         [true],
-        "Non-US user viewing US project does not see conversion."
+        "Non-US user location with USD user preferences viewing US project does not see conversion."
       )
       self.conversionLabelText.assertValueCount(0)
     }
   }
 
-  func testConversionLabel_NonUS_User_NonUS_Project() {
+  func testConversionLabel_NonUS_Location_US_UserCurrency_US_Project_ConfiguredWithBacking() {
     let project = .template
-      |> Project.lens.country .~ .gb
-      |> Project.lens.stats.staticUsdRate .~ 2
-      |> Project.lens.stats.currentCurrencyRate .~ nil
+      |> Project.lens.country .~ .us
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 1.0
     let reward = .template |> Reward.lens.minimum .~ 1_000
+    let backing = .template
+      |> Backing.lens.amount .~ 2_000
+      |> Backing.lens.reward .~ reward
 
-    withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    withEnvironment(countryCode: "GB") {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
 
       self.conversionLabelHidden.assertValues(
         [true],
-        "Non-US user viewing non-US project does not see conversion."
+        "Non-US user location with USD user preferences viewing US project does not see conversion."
       )
       self.conversionLabelText.assertValueCount(0)
     }

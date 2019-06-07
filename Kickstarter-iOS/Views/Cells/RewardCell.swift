@@ -9,28 +9,25 @@ protocol RewardCellDelegate: AnyObject {
 }
 
 final class RewardCell: UICollectionViewCell, ValueCell {
-  internal weak var delegate: RewardCellDelegate?
+  weak var delegate: RewardCellDelegate?
   private let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
-  private let scrollView = UIScrollView(frame: .zero)
-  private let pledgeButtonLayoutGuide = UILayoutGuide()
+  // MARK: - Properties
 
-  // UIStackViews
-  private let containerView = UIView(frame: .zero)
   private let baseStackView = UIStackView(frame: .zero)
-  private let descriptionStackView = UIStackView(frame: .zero)
-  private let includedItemsStackView = UIStackView(frame: .zero)
-  private let priceStackView = UIStackView(frame: .zero)
-
-  // UILabels
-  private let minimumPriceLabel = UILabel(frame: .zero)
-  private let minimumPriceConversionLabel = UILabel(frame: .zero)
-  private let rewardTitleLabel = UILabel(frame: .zero)
-  private let includedItemsTitleLabel = UILabel(frame: .zero)
-  private let descriptionTitleLabel = UILabel(frame: .zero)
+  private let containerView = UIView(frame: .zero)
   private let descriptionLabel = UILabel(frame: .zero)
-
+  private let descriptionStackView = UIStackView(frame: .zero)
+  private let descriptionTitleLabel = UILabel(frame: .zero)
+  private let includedItemsStackView = UIStackView(frame: .zero)
+  private let includedItemsTitleLabel = UILabel(frame: .zero)
+  private let minimumPriceConversionLabel = UILabel(frame: .zero)
+  private let minimumPriceLabel = UILabel(frame: .zero)
   private let pledgeButton = MultiLineButton(type: .custom)
+  private let pledgeButtonLayoutGuide = UILayoutGuide()
+  private let priceStackView = UIStackView(frame: .zero)
+  private let rewardTitleLabel = UILabel(frame: .zero)
+  private let scrollView = UIScrollView(frame: .zero)
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -238,10 +235,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
       pledgeButtonLayoutGuide.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
       pledgeButtonLayoutGuide.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      pledgeButtonLayoutGuide.topAnchor.constraint(
-        equalTo: baseStackView.bottomAnchor,
-        constant: Styles.grid(3)
-      ),
+      // swiftlint:disable:next line_length
+      pledgeButtonLayoutGuide.topAnchor.constraint(equalTo: baseStackView.bottomAnchor, constant: Styles.grid(3)),
       pledgeButtonLayoutGuide.heightAnchor.constraint(equalTo: pledgeButton.heightAnchor)
     ])
   }
@@ -277,6 +272,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   internal func configureWith(value: (Project, Either<Reward, Backing>)) {
     self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
   }
+
+  // MARK: - Selectors
 
   @objc func pledgeButtonTapped() {
     self.viewModel.inputs.pledgeButtonTapped()

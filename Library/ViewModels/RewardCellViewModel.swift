@@ -76,7 +76,7 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
       .map(Strings.About_reward_amount(reward_amount:))
 
     self.rewardMinimumLabelText = projectAndRewardOrBacking
-      .map { formattedAmountForRewardOrBacking(project: $0, rewardOrBacking: $1) }
+      .map(formattedAmountForRewardOrBacking(project:rewardOrBacking:))
 
     self.descriptionLabelText = reward
       .map { $0.isNoReward ?
@@ -107,7 +107,7 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
       }
 
     self.pledgeButtonTitleText = projectAndRewardOrBacking
-      .map { pledgeButtonTitle(project: $0, rewardOrBacking: $1) }
+      .map(pledgeButtonTitle(project:rewardOrBacking:))
 
     self.rewardSelected = reward
       .takeWhen(Signal.merge(
@@ -152,11 +152,11 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
   public var outputs: RewardCellViewModelOutputs { return self }
 }
 
+// MARK: - Private Helpers
+
 private func needsConversion(project: Project) -> Bool {
   return project.stats.needsConversion
 }
-
-// MARK: - Private Helpers
 
 private func backingReward(fromProject project: Project) -> Reward? {
   guard let backing = project.personalization.backing else {
@@ -187,14 +187,6 @@ private func pledgeButtonTitle(project: Project, rewardOrBacking: Either<Reward,
   return project.personalization.isBacking == true
     ? Strings.Select_this_reward_instead()
     : Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
-}
-
-private func formattedAmount(for backing: Backing) -> String {
-  let amount = backing.amount
-  let backingAmount = floor(amount) == backing.amount
-    ? String(Int(amount))
-    : String(format: "%.2f", backing.amount)
-  return backingAmount
 }
 
 private func formattedAmountForRewardOrBacking(
