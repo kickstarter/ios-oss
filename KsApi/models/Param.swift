@@ -1,4 +1,5 @@
 import Argo
+import Foundation
 
 /// Represents a way to paramterize a model by either an `id` integer or `slug` string.
 public enum Param {

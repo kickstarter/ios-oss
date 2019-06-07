@@ -1,3 +1,4 @@
+import Foundation
 import ReactiveSwift
 
 public protocol DeprecatedWebViewModelInputs {

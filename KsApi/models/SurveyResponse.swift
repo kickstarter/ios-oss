@@ -1,5 +1,6 @@
 import Argo
 import Curry
+import Foundation
 import Runes
 
 public struct SurveyResponse {
