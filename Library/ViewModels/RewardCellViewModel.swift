@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol RewardCellViewModelInputs {
   func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
