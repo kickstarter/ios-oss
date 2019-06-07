@@ -71,80 +71,80 @@ extension Project {
     |> Project.lens.stats.currentCurrency .~ "USD"
     |> Project.lens.stats.currentCurrencyRate .~ 1.31
     |> (Project.lens.location .. Location.lens.displayableName) .~ "Hastings, UK"
-    |> Project.lens.rewards .~ [
-      .template
-        |> Reward.lens.id .~ 20
-        |> Reward.lens.minimum .~ 6
-        |> Reward.lens.limit .~ nil
-        |> Reward.lens.backersCount .~ 23
-        |> Reward.lens.title .~ "Postcards"
-        |> Reward.lens.description .~ "Pack of 5 postcards - images from the Cosmic Surgery series.",
-
-      .template
-        |> Reward.lens.id .~ 1
-        |> Reward.lens.minimum .~ 25
-        |> Reward.lens.limit .~ 100
-        |> Reward.lens.backersCount .~ 100
-        |> Reward.lens.remaining .~ 0
-        |> Reward.lens.title .~ "‘EARLYBIRD’ COSMIC SURGERY BOOK"
-        |> Reward.lens.description .~ "You will be the first to receive a copy of the book at this special ‘earlybird’ price. Limited to the first 100 copies.",
-
-      .template
-        |> Reward.lens.id .~ 2
-        |> Reward.lens.minimum .~ 30
-        |> Reward.lens.backersCount .~ 83
-        |> Reward.lens.title .~ "COSMIC SURGERY BOOK"
-        |> Reward.lens.description .~ "You will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.",
-
-      .template
-        |> Reward.lens.id .~ 3
-        |> Reward.lens.minimum .~ 650
-        |> Reward.lens.limit .~ 10
-        |> Reward.lens.backersCount .~ 3
-        |> Reward.lens.title .~ "‘PATIENT NO. 16’ PRINT"
-        |> Reward.lens.description .~ "This is a newly released print available in the Cosmic Surgery print series."
-        |> Reward.lens.rewardsItems .~ [
-          .template
-            |> RewardsItem.lens.id .~ 1
-            |> RewardsItem.lens.item .~ (
-              .template
-                |> Item.lens.description .~ "60x60cm Fine Art Print on Fine Art Felt 310gsm Paper. Edition of 10."
-                |> Item.lens.name .~ "60x60cm Fine Art Print on Fine Art Felt 310gsm Paper. Edition of 10."
-            )
-            |> RewardsItem.lens.quantity .~ 1
-            |> RewardsItem.lens.rewardId .~ 3,
-
-          .template
-            |> RewardsItem.lens.id .~ 1
-            |> RewardsItem.lens.item .~ (
-              .template
-                |> Item.lens.description .~ "Signed copy of book."
-                |> Item.lens.name .~ "Signed copy of book."
-            )
-            |> RewardsItem.lens.quantity .~ 1
-            |> RewardsItem.lens.rewardId .~ 3,
-
-          .template
-            |> RewardsItem.lens.id .~ 1
-            |> RewardsItem.lens.item .~ (
-              .template
-                |> Item.lens.description .~ "Invite to book launch party."
-                |> Item.lens.name .~ "Invite to book launch party."
-            )
-            |> RewardsItem.lens.quantity .~ 1
-            |> RewardsItem.lens.rewardId .~ 3
-        ]
-    ]
+//    |> Project.lens.rewards .~ [
+//      .template
+//        |> Reward.lens.id .~ 20
+//        |> Reward.lens.minimum .~ 6.0
+//        |> Reward.lens.limit .~ nil
+//        |> Reward.lens.backersCount .~ 23
+//        |> Reward.lens.title .~ "Postcards"
+//        |> Reward.lens.description .~ "Pack of 5 postcards - images from the Cosmic Surgery series.",
+//
+//      .template
+//        |> Reward.lens.id .~ 1
+//        |> Reward.lens.minimum .~ 25.0
+//        |> Reward.lens.limit .~ 100
+//        |> Reward.lens.backersCount .~ 100
+//        |> Reward.lens.remaining .~ 0
+//        |> Reward.lens.title .~ "‘EARLYBIRD’ COSMIC SURGERY BOOK"
+//        |> Reward.lens.description .~ "You will be the first to receive a copy of the book at this special ‘earlybird’ price. Limited to the first 100 copies.",
+//
+//      .template
+//        |> Reward.lens.id .~ 2
+//        |> Reward.lens.minimum .~ 30.0
+//        |> Reward.lens.backersCount .~ 83
+//        |> Reward.lens.title .~ "COSMIC SURGERY BOOK"
+//        |> Reward.lens.description .~ "You will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.",
+//
+//      .template
+//        |> Reward.lens.id .~ 3
+//        |> Reward.lens.minimum .~ 650.0
+//        |> Reward.lens.limit .~ 10
+//        |> Reward.lens.backersCount .~ 3
+//        |> Reward.lens.title .~ "‘PATIENT NO. 16’ PRINT"
+//        |> Reward.lens.description .~ "This is a newly released print available in the Cosmic Surgery print series."
+//        |> Reward.lens.rewardsItems .~ [
+//          .template
+//            |> RewardsItem.lens.id .~ 1
+//            |> RewardsItem.lens.item .~ (
+//              .template
+//                |> Item.lens.description .~ "60x60cm Fine Art Print on Fine Art Felt 310gsm Paper. Edition of 10."
+//                |> Item.lens.name .~ "60x60cm Fine Art Print on Fine Art Felt 310gsm Paper. Edition of 10."
+//            )
+//            |> RewardsItem.lens.quantity .~ 1
+//            |> RewardsItem.lens.rewardId .~ 3,
+//
+//          .template
+//            |> RewardsItem.lens.id .~ 1
+//            |> RewardsItem.lens.item .~ (
+//              .template
+//                |> Item.lens.description .~ "Signed copy of book."
+//                |> Item.lens.name .~ "Signed copy of book."
+//            )
+//            |> RewardsItem.lens.quantity .~ 1
+//            |> RewardsItem.lens.rewardId .~ 3,
+//
+//          .template
+//            |> RewardsItem.lens.id .~ 1
+//            |> RewardsItem.lens.item .~ (
+//              .template
+//                |> Item.lens.description .~ "Invite to book launch party."
+//                |> Item.lens.name .~ "Invite to book launch party."
+//            )
+//            |> RewardsItem.lens.quantity .~ 1
+//            |> RewardsItem.lens.rewardId .~ 3
+//        ]
+//    ]
     |> Project.lens.country .~ .gb
-    |> Project.lens.creator .~ (
-      User.template
-        |> \.id .~ "Alma Haser".hash
-        |> \.name .~ "Alma Haser"
-        |> \.avatar.large .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
-        |> \.avatar.medium .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
-        |> \.avatar.small .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
-    )
-    |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1171937901/cosmic-surgery"
+//    |> Project.lens.creator .~ (
+//      User.template
+//        |> \.id .~ "Alma Haser".hash
+//        |> \.name .~ "Alma Haser"
+//        |> \.avatar.large .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
+//        |> \.avatar.medium .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
+//        |> \.avatar.small .~ "https://ksr-ugc.imgix.net/assets/006/286/957/203502774070f5c0bf5ddcbb58e13000_original.jpg?w=80&h=80&fit=crop&v=1461378633&auto=format&q=92&s=68edc5b8d1b110634b59589253801ea1"
+//    )
+//    |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1171937901/cosmic-surgery"
 
   internal static let anomalisa = .template
     |> Project.lens.photo.full .~ "https://ksr-ugc.imgix.net/assets/011/388/954/25e113da402393de9de995619428d10d_original.png?w=1024&h=576&fit=fill&bg=000000&v=1463681956&auto=format&q=92&s=2a9b6a90e1f52b96d7cbdcad28319f9d"

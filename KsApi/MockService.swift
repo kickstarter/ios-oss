@@ -884,7 +884,7 @@
       return SignalProducer(
         value: .template
           |> Project.lens.id %~ { param.id ?? $0 }
-          |> Project.lens.slug %~ { param.slug ?? $0 }
+//          |> Project.lens.slug %~ { param.slug ?? $0 }
       )
     }
 
