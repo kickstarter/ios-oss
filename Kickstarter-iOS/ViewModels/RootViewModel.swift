@@ -294,7 +294,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     let currentBadgeValue = MutableProperty<String?>(nil)
 
     let clearBadgeValueOnActivitiesTabSelected = selectedIndexAndActivityViewControllerIndex.filter(==)
-      .flatMap { _, index in currentBadgeValue.producer.map { ($0, index) } }
+      .flatMap { _, index in currentBadgeValue.producer.map { ($0, index) }.take(first: 1) }
       .filter { value, _ in value != nil }
       .map { _, index -> RootTabBarItemBadgeValueData in (nil, index) }
 
