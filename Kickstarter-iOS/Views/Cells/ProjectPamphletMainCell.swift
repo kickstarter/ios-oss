@@ -49,8 +49,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate weak var readMoreButton: UIButton!
   @IBOutlet fileprivate weak var stateLabel: UILabel!
   @IBOutlet fileprivate weak var statsStackView: UIStackView!
-  @IBOutlet fileprivate weak var youreABackerContainerView: UIView!
-  @IBOutlet fileprivate weak var youreABackerLabel: UILabel!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
