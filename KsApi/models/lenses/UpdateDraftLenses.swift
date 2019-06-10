@@ -59,26 +59,26 @@ extension UpdateDraft.Video {
 
 extension Lens where Whole == UpdateDraft, Part == Update {
   public var id: Lens<UpdateDraft, Int> {
-    return UpdateDraft.lens.update..Update.lens.id
+    return UpdateDraft.lens.update .. Update.lens.id
   }
 
   public var projectId: Lens<UpdateDraft, Int> {
-    return UpdateDraft.lens.update..Update.lens.projectId
+    return UpdateDraft.lens.update .. Update.lens.projectId
   }
 
   public var title: Lens<UpdateDraft, String> {
-    return UpdateDraft.lens.update..Update.lens.title
+    return UpdateDraft.lens.update .. Update.lens.title
   }
 
   public var body: Lens<UpdateDraft, String?> {
-    return UpdateDraft.lens.update..Update.lens.body
+    return UpdateDraft.lens.update .. Update.lens.body
   }
 
   public var isPublic: Lens<UpdateDraft, Bool> {
-    return UpdateDraft.lens.update..Update.lens.isPublic
+    return UpdateDraft.lens.update .. Update.lens.isPublic
   }
 
   public var sequence: Lens<UpdateDraft, Int> {
-    return UpdateDraft.lens.update..Update.lens.sequence
+    return UpdateDraft.lens.update .. Update.lens.sequence
   }
 }

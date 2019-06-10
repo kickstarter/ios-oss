@@ -7,6 +7,7 @@ class PledgeTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let dataSource: PledgeDataSource = PledgeDataSource()
+  private weak var shippingLocationCell: PledgeShippingLocationCell?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
   // MARK: - Lifecycle
@@ -51,11 +52,31 @@ class PledgeTableViewController: UITableViewController {
 
     self.viewModel.outputs.reloadWithData
       .observeForUI()
-      .observeValues { [weak self] (amount, currency, delivery, isLoggedIn) in
-        self?.dataSource.load(amount: amount, currency: currency, delivery: delivery, isLoggedIn: isLoggedIn)
+      .observeValues { [weak self] data in
+        self?.dataSource.load(data: data)
 
         self?.tableView.reloadData()
-    }
+
+        self?.viewModel.inputs.didReloadData()
+      }
+
+    self.viewModel.outputs.selectedShippingRuleData
+      .observeForUI()
+      .observeValues { [weak self] selectedShippingRuleData in
+        self?.dataSource.loadSelectedShippingRule(data: selectedShippingRuleData)
+
+        guard let shippingIndexPath = self?.dataSource.shippingCellIndexPath() else {
+          return
+        }
+
+        self?.tableView.reloadRows(at: [shippingIndexPath], with: .automatic)
+      }
+
+    self.viewModel.outputs.shippingIsLoading
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        self?.shippingLocationCell?.animate(isLoading)
+      }
   }
 
   // MARK: - UITableViewDelegate
@@ -67,17 +88,21 @@ class PledgeTableViewController: UITableViewController {
     return footerView
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
+  internal override func tableView(
+    _: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt _: IndexPath
+  ) {
     if let descriptionCell = cell as? PledgeDescriptionCell {
       descriptionCell.delegate = self
+    } else if let shippingLocationCell = cell as? PledgeShippingLocationCell {
+      self.shippingLocationCell = shippingLocationCell
     }
   }
 }
 
 extension PledgeTableViewController: PledgeDescriptionCellDelegate {
- internal func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell) {
+  internal func pledgeDescriptionCellDidPresentTrustAndSafety(_: PledgeDescriptionCell) {
     let vc = HelpWebViewController.configuredWith(helpType: .trust)
     let nav = UINavigationController(rootViewController: vc)
     self.present(nav, animated: true, completion: nil)
@@ -93,17 +118,6 @@ private func tableViewStyle(_ tableView: UITableView) -> UITableView {
     |> \.contentInset .~ UIEdgeInsets(top: -35)
     |> \.sectionFooterHeight .~ PledgeFooterView.defaultHeight
     |> \.sectionHeaderHeight .~ 0
-
-  if #available(iOS 11, *) { } else {
-    let estimatedHeight: CGFloat = 44
-
-    return style
-      |> \.contentInset .~ UIEdgeInsets(top: 30)
-      |> \.estimatedSectionFooterHeight .~ estimatedHeight
-      |> \.estimatedSectionHeaderHeight .~ estimatedHeight
-      |> \.estimatedRowHeight .~ estimatedHeight
-      |> \.rowHeight .~ UITableView.automaticDimension
-  }
 
   return style
 }

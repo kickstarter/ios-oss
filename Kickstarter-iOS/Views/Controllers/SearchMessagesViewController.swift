@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import ReactiveExtensions
 import UIKit
 
@@ -7,8 +7,8 @@ internal final class SearchMessagesViewController: UITableViewController {
   fileprivate let viewModel: MessagesSearchViewModelType = MessagesSearchViewModel()
   fileprivate let dataSource = SearchMessagesDataSource()
 
-  @IBOutlet fileprivate weak var searchTextField: UITextField!
-  @IBOutlet fileprivate weak var loadingView: UIActivityIndicatorView!
+  @IBOutlet fileprivate var searchTextField: UITextField!
+  @IBOutlet fileprivate var loadingView: UIActivityIndicatorView!
 
   internal func configureWith(project: Project?) {
     self.viewModel.inputs.configureWith(project: project)
@@ -43,22 +43,21 @@ internal final class SearchMessagesViewController: UITableViewController {
       .observeValues { [weak self] messageThreads in
         self?.dataSource.load(messageThreads: messageThreads)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.emptyStateIsVisible
       .observeForControllerAction()
       .observeValues { [weak self] isVisible in
         self?.dataSource.emptyState(isVisible: isVisible)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.goToMessageThread
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goTo(messageThread: $0) }
   }
 
-  internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+  internal override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let messageThread = self.dataSource[indexPath] as? MessageThread {
       self.viewModel.inputs.tappedMessageThread(messageThread)
     }
@@ -75,7 +74,7 @@ internal final class SearchMessagesViewController: UITableViewController {
 }
 
 extension SearchMessagesViewController: UITextFieldDelegate {
-  internal func textFieldShouldClear(_ textField: UITextField) -> Bool {
+  internal func textFieldShouldClear(_: UITextField) -> Bool {
     self.viewModel.inputs.clearSearchText()
     return true
   }

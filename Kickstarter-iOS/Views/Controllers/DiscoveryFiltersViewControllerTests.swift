@@ -2,7 +2,6 @@
 @testable import KsApi
 @testable import Library
 import Prelude
-import Result
 import XCTest
 
 internal final class DiscoveryFiltersViewControllerTests: TestCase {
@@ -46,13 +45,15 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
     <> Category.lens.parentId .~ Category.games.id
     <> Category.lens.parent .~ ParentCategory(id: Category.games.id, name: Category.games.name)
 
-  fileprivate let categories = [Category.art, ceramics, .illustration, comics, crafts, dance, design, fashion,
-                            .filmAndVideo, action, .documentary, .games, mobileGames, .tabletopGames]
+  fileprivate let categories = [
+    Category.art, ceramics, .illustration, comics, crafts, dance, design, fashion,
+    .filmAndVideo, action, .documentary, .games, mobileGames, .tabletopGames
+  ]
 
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-    self.cache[KSCache.ksr_discoveryFiltersCategories] = categories
+    self.cache[KSCache.ksr_discoveryFiltersCategories] = self.categories
     UIView.setAnimationsEnabled(false)
   }
 
@@ -63,14 +64,14 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
   }
 
   func testDefaultRow_Selected_View() {
-    let staffPicksRow = selectableRowTemplate
+    let staffPicksRow = self.selectableRowTemplate
       |> SelectableRow.lens.params.staffPicks .~ true
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: staffPicksRow)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1000
+        parent.view.frame.size.height = 1_000
 
         FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
       }
@@ -78,14 +79,14 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
   }
 
   func testDefaultRow_Selected_iPad_View() {
-    let staffPicksRow = selectableRowTemplate
+    let staffPicksRow = self.selectableRowTemplate
       |> SelectableRow.lens.params.staffPicks .~ true
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: staffPicksRow)
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1500
+        parent.view.frame.size.height = 1_500
 
         FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
       }
@@ -93,14 +94,14 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
   }
 
   func testCategoryRow_Selected_Art_iPad_View() {
-    let artSelectableRow = selectableRowTemplate
+    let artSelectableRow = self.selectableRowTemplate
       |> SelectableRow.lens.params.category .~ .illustration
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: artSelectableRow)
         let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1000
+        parent.view.frame.size.height = 1_000
 
         FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
       }
@@ -108,14 +109,14 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
   }
 
   func testCategoryRow_Selected_Art_View() {
-    let artSelectableRow = selectableRowTemplate
+    let artSelectableRow = self.selectableRowTemplate
       |> SelectableRow.lens.params.category .~ .illustration
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
         let controller = DiscoveryFiltersViewController.configuredWith(selectedRow: artSelectableRow)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 1000
+        parent.view.frame.size.height = 1_000
 
         FBSnapshotVerifyView(parent.view, identifier: "Filters - lang_\(language)")
       }

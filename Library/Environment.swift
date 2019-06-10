@@ -1,10 +1,8 @@
 import AVFoundation
+import FBSDKCoreKit
 import Foundation
 import KsApi
-import LiveStream
 import ReactiveSwift
-import Result
-import FBSDKCoreKit
 
 /**
  A collection of **all** global variables and singletons that the app wants access to.
@@ -75,9 +73,6 @@ public struct Environment {
   /// The current set of launched countries for Kickstarter.
   public let launchedCountries: LaunchedCountries
 
-  /// The current service being used for live stream requests.
-  public let liveStreamService: LiveStreamServiceProtocol
-
   /// The user’s current locale, which determines how numbers are formatted. Default value is
   /// `Locale.current`.
   public let locale: Locale
@@ -89,7 +84,7 @@ public struct Environment {
   public let pushRegistrationType: PushRegistrationType.Type
 
   /// A reachability signal producer.
-  public let reachability: SignalProducer<Reachability, NoError>
+  public let reachability: SignalProducer<Reachability, Never>
 
   /// A scheduler to use for all time-based RAC operators. Default value is
   /// `QueueScheduler.mainQueueScheduler`.
@@ -122,15 +117,14 @@ public struct Environment {
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
-    liveStreamService: LiveStreamServiceProtocol = LiveStreamService(),
     locale: Locale = .current,
     mainBundle: NSBundleType = Bundle.main,
     pushRegistrationType: PushRegistrationType.Type = PushRegistration.self,
-    reachability: SignalProducer<Reachability, NoError> = Reachability.signalProducer,
+    reachability: SignalProducer<Reachability, Never> = Reachability.signalProducer,
     scheduler: DateScheduler = QueueScheduler.main,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
-    userDefaults: KeyValueStoreType = UserDefaults.standard) {
-
+    userDefaults: KeyValueStoreType = UserDefaults.standard
+  ) {
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
     self.application = application
@@ -151,7 +145,6 @@ public struct Environment {
     self.koala = koala
     self.language = language
     self.launchedCountries = launchedCountries
-    self.liveStreamService = liveStreamService
     self.locale = locale
     self.mainBundle = mainBundle
     self.pushRegistrationType = pushRegistrationType

@@ -7,26 +7,26 @@ import UIKit
 internal final class DashboardFundingCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: DashboardFundingCellViewModelType = DashboardFundingCellViewModel()
 
-  @IBOutlet fileprivate weak var backersTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var deadlineDateLabel: UILabel!
-  @IBOutlet fileprivate weak var fundingProgressTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var graphAxisSeparatorView: UIView!
-  @IBOutlet fileprivate weak var graphBackgroundView: UIView!
-  @IBOutlet fileprivate weak var graphView: FundingGraphView!
-  @IBOutlet fileprivate weak var graphViewHeightConstraint: NSLayoutConstraint!
-  @IBOutlet fileprivate weak var graphXAxisStackView: UIStackView!
-  @IBOutlet fileprivate weak var graphYAxisBottomLabel: UILabel!
-  @IBOutlet fileprivate weak var graphYAxisMiddleLabel: UILabel!
-  @IBOutlet fileprivate weak var graphYAxisTopLabel: UILabel!
-  @IBOutlet fileprivate weak var launchDateLabel: UILabel!
-  @IBOutlet fileprivate weak var pledgedSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var pledgedTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate var backersTitleLabel: UILabel!
+  @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var deadlineDateLabel: UILabel!
+  @IBOutlet fileprivate var fundingProgressTitleLabel: UILabel!
+  @IBOutlet fileprivate var graphAxisSeparatorView: UIView!
+  @IBOutlet fileprivate var graphBackgroundView: UIView!
+  @IBOutlet fileprivate var graphView: FundingGraphView!
+  @IBOutlet fileprivate var graphViewHeightConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate var graphXAxisStackView: UIStackView!
+  @IBOutlet fileprivate var graphYAxisBottomLabel: UILabel!
+  @IBOutlet fileprivate var graphYAxisMiddleLabel: UILabel!
+  @IBOutlet fileprivate var graphYAxisTopLabel: UILabel!
+  @IBOutlet fileprivate var launchDateLabel: UILabel!
+  @IBOutlet fileprivate var pledgedSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var pledgedTitleLabel: UILabel!
+  @IBOutlet fileprivate var rootStackView: UIStackView!
   @IBOutlet fileprivate var separatorViews: [UIView]!
-  @IBOutlet fileprivate weak var statsStackView: UIStackView!
-  @IBOutlet fileprivate weak var timeRemainingSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var timeRemainingTitleLabel: UILabel!
+  @IBOutlet fileprivate var statsStackView: UIStackView!
+  @IBOutlet fileprivate var timeRemainingSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var timeRemainingTitleLabel: UILabel!
 
   internal override func bindStyles() {
     super.bindStyles()
@@ -63,7 +63,7 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
         stack.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(4), leftRight: Styles.grid(12))
           : .init(all: 0.0)
-    }
+      }
 
     _ = self.separatorViews ||> separatorStyle
     _ = self.statsStackView |> dashboardFundingStatsStackView
@@ -94,7 +94,7 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
         self?.graphView.project = data.project
         self?.graphView.stats = data.stats
         self?.graphView.yAxisTickSize = data.yAxisTickSize
-    }
+      }
   }
 
   internal func configureWith(value: ([ProjectStatsEnvelope.FundingDateStats], Project)) {

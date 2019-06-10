@@ -1,8 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol ActivitySampleBackingCellViewModelInputs {
   /// Call to configure cell with activity value.
@@ -14,13 +13,13 @@ public protocol ActivitySampleBackingCellViewModelInputs {
 
 public protocol ActivitySampleBackingCellViewModelOutputs {
   /// Emits the backer image url to be displayed.
-  var backerImageURL: Signal<URL?, NoError> { get }
+  var backerImageURL: Signal<URL?, Never> { get }
 
   /// Emits the backing message to be displayed.
-  var backingTitleText: Signal<NSAttributedString, NoError> { get }
+  var backingTitleText: Signal<NSAttributedString, Never> { get }
 
   /// Emits when should go to activities screen.
-  var goToActivity: Signal<Void, NoError> { get }
+  var goToActivity: Signal<Void, Never> { get }
 }
 
 public protocol ActivitySampleBackingCellViewModelType {
@@ -30,7 +29,6 @@ public protocol ActivitySampleBackingCellViewModelType {
 
 public final class ActivitySampleBackingCellViewModel: ActivitySampleBackingCellViewModelInputs,
   ActivitySampleBackingCellViewModelOutputs, ActivitySampleBackingCellViewModelType {
-
   public init() {
     let activity = self.activityProperty.signal.skipNil()
 
@@ -60,9 +58,9 @@ public final class ActivitySampleBackingCellViewModel: ActivitySampleBackingCell
     self.seeAllActivityTappedProperty.value = ()
   }
 
-  public let backingTitleText: Signal<NSAttributedString, NoError>
-  public let backerImageURL: Signal<URL?, NoError>
-  public let goToActivity: Signal<Void, NoError>
+  public let backingTitleText: Signal<NSAttributedString, Never>
+  public let backerImageURL: Signal<URL?, Never>
+  public let goToActivity: Signal<Void, Never>
 
   public var inputs: ActivitySampleBackingCellViewModelInputs { return self }
   public var outputs: ActivitySampleBackingCellViewModelOutputs { return self }

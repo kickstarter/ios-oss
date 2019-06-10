@@ -1,8 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol ProjectActivityLaunchCellViewModelInputs {
   /// Call to set the activity and project.
@@ -11,10 +10,10 @@ public protocol ProjectActivityLaunchCellViewModelInputs {
 
 public protocol ProjectActivityLaunchCellViewModelOutputs {
   /// Emits the background image URL.
-  var backgroundImageURL: Signal<URL?, NoError> { get }
+  var backgroundImageURL: Signal<URL?, Never> { get }
 
   /// Emits the title of the activity.
-  var title: Signal<String, NoError> { get }
+  var title: Signal<String, Never> { get }
 }
 
 public protocol ProjectActivityLaunchCellViewModelType {
@@ -23,8 +22,7 @@ public protocol ProjectActivityLaunchCellViewModelType {
 }
 
 public final class ProjectActivityLaunchCellViewModel: ProjectActivityLaunchCellViewModelType,
-ProjectActivityLaunchCellViewModelInputs, ProjectActivityLaunchCellViewModelOutputs {
-
+  ProjectActivityLaunchCellViewModelInputs, ProjectActivityLaunchCellViewModelOutputs {
   public init() {
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let project = activityAndProject.map(second)
@@ -34,8 +32,10 @@ ProjectActivityLaunchCellViewModelInputs, ProjectActivityLaunchCellViewModelOutp
     self.title = project.map { project in
       Strings.dashboard_activity_project_name_launched(
         project_name: project.name,
-        launch_date: Format.date(secondsInUTC: project.dates.launchedAt,
-          dateStyle: .long, timeStyle: .none).nonBreakingSpaced(),
+        launch_date: Format.date(
+          secondsInUTC: project.dates.launchedAt,
+          dateStyle: .long, timeStyle: .none
+        ).nonBreakingSpaced(),
         goal: Format.currency(project.stats.goal, country: project.country).nonBreakingSpaced()
       )
     }
@@ -46,8 +46,8 @@ ProjectActivityLaunchCellViewModelInputs, ProjectActivityLaunchCellViewModelOutp
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let backgroundImageURL: Signal<URL?, NoError>
-  public let title: Signal<String, NoError>
+  public let backgroundImageURL: Signal<URL?, Never>
+  public let title: Signal<String, Never>
 
   public var inputs: ProjectActivityLaunchCellViewModelInputs { return self }
   public var outputs: ProjectActivityLaunchCellViewModelOutputs { return self }

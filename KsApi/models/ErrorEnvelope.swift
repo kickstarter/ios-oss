@@ -9,8 +9,10 @@ public struct ErrorEnvelope {
   public let exception: Exception?
   public let facebookUser: FacebookUser?
 
-  public init(errorMessages: [String], ksrCode: KsrCode?, httpCode: Int, exception: Exception?,
-              facebookUser: FacebookUser? = nil) {
+  public init(
+    errorMessages: [String], ksrCode: KsrCode?, httpCode: Int, exception: Exception?,
+    facebookUser: FacebookUser? = nil
+  ) {
     self.errorMessages = errorMessages
     self.ksrCode = ksrCode
     self.httpCode = httpCode
@@ -53,7 +55,7 @@ public struct ErrorEnvelope {
 
   /**
    A general error that JSON could not be parsed.
-  */
+   */
   internal static let couldNotParseJSON = ErrorEnvelope(
     errorMessages: [],
     ksrCode: .JSONParsingFailed,
@@ -64,7 +66,7 @@ public struct ErrorEnvelope {
 
   /**
    A general error that the error envelope JSON could not be parsed.
-  */
+   */
   internal static let couldNotParseErrorEnvelopeJSON = ErrorEnvelope(
     errorMessages: [],
     ksrCode: .ErrorEnvelopeJSONParsingFailed,
@@ -110,7 +112,6 @@ extension ErrorEnvelope: Error {}
 
 extension ErrorEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope> {
-
     // Typically API errors come back in this form...
     let standardErrorEnvelope = curry(ErrorEnvelope.init)
       <^> json <|| "error_messages"
@@ -124,8 +125,8 @@ extension ErrorEnvelope: Argo.Decodable {
       curry(ErrorEnvelope.init)
         <^> concatSuccesses([
           json <|| ["data", "errors", "amount"],
-          json <|| ["data", "errors", "backer_reward"],
-          ])
+          json <|| ["data", "errors", "backer_reward"]
+        ])
         <*> .success(ErrorEnvelope.KsrCode.UnknownCode)
         <*> json <| "status"
         <*> .success(nil)
@@ -167,8 +168,7 @@ extension ErrorEnvelope.FacebookUser: Argo.Decodable {
 // Concats an array of decoded arrays into a decoded array. Ignores all failed decoded values, and so
 // always returns a successfully decoded value.
 private func concatSuccesses<A>(_ decodeds: [Decoded<[A]>]) -> Decoded<[A]> {
-
   return decodeds.reduce(Decoded.success([])) { accum, decoded in
-    .success( (accum.value ?? []) + (decoded.value ?? []) )
+    .success((accum.value ?? []) + (decoded.value ?? []))
   }
 }

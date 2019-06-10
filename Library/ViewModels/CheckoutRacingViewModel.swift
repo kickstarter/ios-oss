@@ -1,8 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 private struct CheckoutRetryError: Error {}
 
@@ -13,10 +12,10 @@ public protocol CheckoutRacingViewModelInputs {
 
 public protocol CheckoutRacingViewModelOutputs {
   /// Emits when an alert should be shown.
-  var showAlert: Signal<String, NoError> { get }
+  var showAlert: Signal<String, Never> { get }
 
   /// Emits when the checkout's state is successful.
-  var goToThanks: Signal<Void, NoError> { get }
+  var goToThanks: Signal<Void, Never> { get }
 }
 
 public protocol CheckoutRacingViewModelType: CheckoutRacingViewModelInputs, CheckoutRacingViewModelOutputs {
@@ -26,8 +25,7 @@ public protocol CheckoutRacingViewModelType: CheckoutRacingViewModelInputs, Chec
 
 public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
   public init() {
-
-    let envelope = initialURLProperty.signal.skipNil()
+    let envelope = self.initialURLProperty.signal.skipNil()
       .map { $0.absoluteString }
       .promoteError(CheckoutRetryError.self)
       .switchMap { url in
@@ -36,7 +34,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
           .flatMap {
             AppEnvironment.current.apiService.fetchCheckout(checkoutUrl: url)
               .flatMapError { _ in
-                return SignalProducer(error: CheckoutRetryError())
+                SignalProducer(error: CheckoutRetryError())
               }
               .flatMap { envelope -> SignalProducer<CheckoutEnvelope, CheckoutRetryError> in
 
@@ -46,7 +44,7 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
                 case .failed, .successful:
                   return SignalProducer(value: envelope)
                 }
-            }
+              }
           }
           .retry(upTo: 9)
           .timeout(after: 10, raising: CheckoutRetryError(), on: AppEnvironment.current.scheduler)
@@ -74,8 +72,8 @@ public final class CheckoutRacingViewModel: CheckoutRacingViewModelType {
     self.initialURLProperty.value = url
   }
 
-  public let goToThanks: Signal<Void, NoError>
-  public let showAlert: Signal<String, NoError>
+  public let goToThanks: Signal<Void, Never>
+  public let showAlert: Signal<String, Never>
 
   public var inputs: CheckoutRacingViewModelInputs { return self }
   public var outputs: CheckoutRacingViewModelOutputs { return self }

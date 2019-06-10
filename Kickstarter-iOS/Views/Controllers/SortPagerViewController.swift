@@ -4,7 +4,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal protocol SortPagerViewControllerDelegate: class {
+internal protocol SortPagerViewControllerDelegate: AnyObject {
   func sortPager(_ viewController: UIViewController, selectedSort sort: DiscoveryParams.Sort)
 }
 
@@ -12,12 +12,12 @@ internal final class SortPagerViewController: UIViewController {
   internal weak var delegate: SortPagerViewControllerDelegate?
   fileprivate let viewModel: SortPagerViewModelType = SortPagerViewModel()
 
-  @IBOutlet fileprivate weak var borderLineView: UIView!
-  @IBOutlet fileprivate weak var indicatorView: UIView!
-  @IBOutlet fileprivate weak var indicatorViewLeadingConstraint: NSLayoutConstraint!
-  @IBOutlet fileprivate weak var indicatorViewWidthConstraint: NSLayoutConstraint!
-  @IBOutlet fileprivate weak var scrollView: UIScrollView!
-  @IBOutlet fileprivate weak var sortsStackView: UIStackView!
+  @IBOutlet fileprivate var borderLineView: UIView!
+  @IBOutlet fileprivate var indicatorView: UIView!
+  @IBOutlet fileprivate var indicatorViewLeadingConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate var indicatorViewWidthConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate var scrollView: UIScrollView!
+  @IBOutlet fileprivate var sortsStackView: UIStackView!
   @IBOutlet fileprivate var sortsStackViewLeadingConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var sortsStackViewTrailingConstraint: NSLayoutConstraint!
   fileprivate var sortsStackViewCenterXConstraint: NSLayoutConstraint?
@@ -64,32 +64,32 @@ internal final class SortPagerViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.createSortButtons($0)
-    }
+      }
 
     self.viewModel.outputs.setSelectedButton
       .observeForUI()
       .observeValues { [weak self] in
         self?.selectButton(atIndex: $0)
-    }
+      }
 
     self.viewModel.outputs.pinSelectedIndicatorToPage
       .observeForUI()
       .observeValues { [weak self] page, animated in
         self?.pinSelectedIndicator(toPage: page, animated: animated)
-    }
+      }
 
     self.viewModel.outputs.updateSortStyle
       .observeForUI()
-      .observeValues { [weak self] (id, sorts, animated) in
+      .observeValues { [weak self] id, sorts, animated in
         self?.updateSortStyle(forCategoryId: id, sorts: sorts, animated: animated)
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateOfSelectedSort
       .observeForUI()
       .observeValues { [weak self] sort in
         guard let _self = self else { return }
         _self.delegate?.sortPager(_self, selectedSort: sort)
-    }
+      }
   }
 
   internal override func bindStyles() {
@@ -115,12 +115,14 @@ internal final class SortPagerViewController: UIViewController {
     }
   }
 
-  override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation,
-                           duration: TimeInterval) {
+  override func willRotate(
+    to _: UIInterfaceOrientation,
+    duration _: TimeInterval
+  ) {
     self.viewModel.inputs.willRotateToInterfaceOrientation()
   }
 
-  internal override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+  internal override func didRotate(from _: UIInterfaceOrientation) {
     self.viewModel.inputs.didRotateFromInterfaceOrientation()
   }
 
@@ -139,13 +141,13 @@ internal final class SortPagerViewController: UIViewController {
   fileprivate func createSortButtons(_ sorts: [DiscoveryParams.Sort]) {
     _ = self.sortsStackView
       |> UIStackView.lens.arrangedSubviews .~ sorts.enumerated().map { idx, _ in
-          UIButton()
-            |> UIButton.lens.backgroundColor .~ .white
-            |> UIButton.lens.tag .~ idx
-            |> UIButton.lens.targets .~ [
-              (self, #selector(sortButtonTapped(_:)), .touchUpInside)
+        UIButton()
+          |> UIButton.lens.backgroundColor .~ .white
+          |> UIButton.lens.tag .~ idx
+          |> UIButton.lens.targets .~ [
+            (self, #selector(sortButtonTapped(_:)), .touchUpInside)
           ]
-    }
+      }
   }
 
   fileprivate func selectButton(atIndex index: Int) {
@@ -171,27 +173,32 @@ internal final class SortPagerViewController: UIViewController {
       self.scrollView.layoutIfNeeded()
 
       if rightSort > self.view.bounds.width {
-        self.scrollView.contentOffset = CGPoint(x: self.scrollView.contentSize.width - self.view.bounds.width,
-                                                y: 0)
+        self.scrollView.contentOffset = CGPoint(
+          x: self.scrollView.contentSize.width - self.view.bounds.width,
+          y: 0
+        )
       } else if leftSort < 0.0 {
         self.scrollView.contentOffset = CGPoint(x: 0.0, y: 0)
       }
     })
   }
 
-  fileprivate func updateSortStyle(forCategoryId categoryId: Int?,
-                                   sorts: [DiscoveryParams.Sort],
-                                   animated: Bool) {
-
+  fileprivate func updateSortStyle(
+    forCategoryId categoryId: Int?,
+    sorts: [DiscoveryParams.Sort],
+    animated: Bool
+  ) {
     let zipped = zip(sorts, self.sortsStackView.arrangedSubviews)
     for (sort, view) in zipped {
-      let index = sorts.index(of: sort)
+      let index = sorts.firstIndex(of: sort)
       _ = (view as? UIButton)
-        ?|> discoverySortPagerButtonStyle(sort: sort,
-                                          categoryId: categoryId,
-                                          isLeftMost: index == 0,
-                                          isRightMost: index == sorts.count - 1,
-                                          isRegularRegular: view.traitCollection.isRegularRegular)
+        ?|> discoverySortPagerButtonStyle(
+          sort: sort,
+          categoryId: categoryId,
+          isLeftMost: index == 0,
+          isRightMost: index == sorts.count - 1,
+          isRegularRegular: view.traitCollection.isRegularRegular
+        )
     }
     self.scrollView.layoutIfNeeded()
 
@@ -203,7 +210,8 @@ internal final class SortPagerViewController: UIViewController {
         _ = [self.indicatorView, self.borderLineView]
           ||> UIView.lens.backgroundColor .~ discoveryPrimaryColor()
       },
-      completion: nil)
+      completion: nil
+    )
   }
 
   @objc fileprivate func sortButtonTapped(_ button: UIButton) {

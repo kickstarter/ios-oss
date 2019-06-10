@@ -1,24 +1,22 @@
 import Foundation
-import XCTest
-import ReactiveSwift
-import Result
 @testable import KsApi
 @testable import Library
-import ReactiveExtensions_TestHelpers
 import Prelude
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class PaymentMethodsViewModelTests: TestCase {
-
   private let vm = PaymentMethodsViewModel()
-  private let editButtonIsEnabled = TestObserver<Bool, NoError>()
-  private let editButtonTitle = TestObserver<String, NoError>()
-  private let errorLoadingPaymentMethods = TestObserver<String, NoError>()
-  private let goToAddCardScreen = TestObserver<Void, NoError>()
-  private let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], NoError>()
-  private let presentBanner = TestObserver<String, NoError>()
-  private let reloadData = TestObserver<Void, NoError>()
-  private let showAlert = TestObserver<String, NoError>()
-  private let tableViewIsEditing = TestObserver<Bool, NoError>()
+  private let editButtonIsEnabled = TestObserver<Bool, Never>()
+  private let editButtonTitle = TestObserver<String, Never>()
+  private let errorLoadingPaymentMethods = TestObserver<String, Never>()
+  private let goToAddCardScreen = TestObserver<Void, Never>()
+  private let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
+  private let presentBanner = TestObserver<String, Never>()
+  private let reloadData = TestObserver<Void, Never>()
+  private let showAlert = TestObserver<String, Never>()
+  private let tableViewIsEditing = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -68,7 +66,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testPaymentMethodsFetch_OnAddNewCardSucceeded() {
-
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let apiService = MockService(fetchGraphCreditCardsResponse: response)
 
@@ -107,7 +104,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testEditButtonIsNotEnabled_OnViewDidLoad() {
-
     self.editButtonIsEnabled.assertDidNotEmitValue()
     self.vm.viewDidLoad()
     self.editButtonIsEnabled.assertValue(false)
@@ -119,7 +115,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     )
     let apiService = MockService(fetchGraphCreditCardsResponse: response)
     withEnvironment(apiService: apiService) {
-
       self.editButtonIsEnabled.assertDidNotEmitValue()
       self.editButtonTitle.assertDidNotEmitValue()
 
@@ -149,7 +144,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     )
     let apiService = MockService(fetchGraphCreditCardsResponse: response)
     withEnvironment(apiService: apiService) {
-
       self.editButtonIsEnabled.assertDidNotEmitValue()
       self.vm.inputs.viewDidLoad()
 
@@ -193,7 +187,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testEditButtonNotEnabled_AfterDeleteLastPaymentMethod() {
-
     guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
       XCTFail("Card should exist")
       return
@@ -264,7 +257,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     let apiService = MockService(deletePaymentMethodResult: .success(result))
     withEnvironment(apiService: apiService) {
-
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
 
@@ -300,7 +292,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     let apiService = MockService(deletePaymentMethodResult: .failure(.invalidInput))
     withEnvironment(apiService: apiService) {
-
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
 
@@ -321,7 +312,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.tableViewIsEditing.assertValues([false, true], "Editing mode remains enabled")
       self.showAlert.assertValues([
-        "Something went wrong and we were unable to remove your payment method, please try again."])
+        "Something went wrong and we were unable to remove your payment method, please try again."
+      ])
       self.paymentMethods.assertValues(
         [GraphUserCreditCard.template.storedCards.nodes, GraphUserCreditCard.template.storedCards.nodes],
         "Emits again to reload the tableview after an error occurred"
@@ -339,7 +331,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     let apiService1 = MockService(deletePaymentMethodResult: .success(result1))
     withEnvironment(apiService: apiService1) {
-
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
 
@@ -376,7 +367,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.advance()
       self.showAlert.assertValues([
-        "Something went wrong and we were unable to remove your payment method, please try again."])
+        "Something went wrong and we were unable to remove your payment method, please try again."
+      ])
       self.paymentMethods.assertValues(
         [GraphUserCreditCard.template.storedCards.nodes, result1.storedCards],
         // swiftlint:disable:next line_length
@@ -393,9 +385,11 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         [false, true, false], "Editing mode reenabled as last card removal failed"
       )
       self.paymentMethods.assertValues(
-        [GraphUserCreditCard.template.storedCards.nodes,
-         result1.storedCards,
-         GraphUserCreditCard.template.storedCards.nodes],
+        [
+          GraphUserCreditCard.template.storedCards.nodes,
+          result1.storedCards,
+          GraphUserCreditCard.template.storedCards.nodes
+        ],
         "Cards are refreshed normally"
       )
     }
@@ -417,7 +411,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     let apiService = MockService(deletePaymentMethodResult: .success(result))
     withEnvironment(apiService: apiService) {
-
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)
@@ -435,7 +428,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     let apiService = MockService(deletePaymentMethodResult: .failure(.invalidInput))
     withEnvironment(apiService: apiService) {
-
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.didDelete(card, visibleCellCount: 1)

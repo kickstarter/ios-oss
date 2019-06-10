@@ -1,8 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol ProjectActivityUpdateCellViewModelInputs {
   /// Call to set the activity and project.
@@ -11,25 +10,25 @@ public protocol ProjectActivityUpdateCellViewModelInputs {
 
 public protocol ProjectActivityUpdateCellViewModelOutputs {
   /// Emits the update's author and sequence.
-  var activityTitle: Signal<String, NoError> { get }
+  var activityTitle: Signal<String, Never> { get }
 
   /// Emits the update's body.
-  var body: Signal<String, NoError> { get }
+  var body: Signal<String, Never> { get }
 
   /// Emits the cell's accessibility label.
-  var cellAccessibilityLabel: Signal<String, NoError> { get }
+  var cellAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits the cell's accessibility value.
-  var cellAccessibilityValue: Signal<String, NoError> { get }
+  var cellAccessibilityValue: Signal<String, Never> { get }
 
   /// Emits the number of comments.
-  var commentsCount: Signal<String, NoError> { get }
+  var commentsCount: Signal<String, Never> { get }
 
   /// Emits the number of likes.
-  var likesCount: Signal<String, NoError> { get }
+  var likesCount: Signal<String, Never> { get }
 
   /// Emits the title of the update.
-  var updateTitle: Signal<String, NoError> { get }
+  var updateTitle: Signal<String, Never> { get }
 }
 
 public protocol ProjectActivityUpdateCellViewModelType {
@@ -38,7 +37,7 @@ public protocol ProjectActivityUpdateCellViewModelType {
 }
 
 public final class ProjectActivityUpdateCellViewModel: ProjectActivityUpdateCellViewModelType,
-ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutputs {
+  ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutputs {
   public init() {
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
     let activity = activityAndProject.map(first)
@@ -51,7 +50,7 @@ ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutp
     }
 
     self.cellAccessibilityLabel = activity.map { activity in
-      return updateNumber(activity: activity).htmlStripped() ?? ""
+      updateNumber(activity: activity).htmlStripped() ?? ""
     }
 
     self.cellAccessibilityValue = activity.map(title(activity:))
@@ -76,13 +75,13 @@ ProjectActivityUpdateCellViewModelInputs, ProjectActivityUpdateCellViewModelOutp
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let activityTitle: Signal<String, NoError>
-  public let body: Signal<String, NoError>
-  public let cellAccessibilityLabel: Signal<String, NoError>
-  public let cellAccessibilityValue: Signal<String, NoError>
-  public let commentsCount: Signal<String, NoError>
-  public let likesCount: Signal<String, NoError>
-  public let updateTitle: Signal<String, NoError>
+  public let activityTitle: Signal<String, Never>
+  public let body: Signal<String, Never>
+  public let cellAccessibilityLabel: Signal<String, Never>
+  public let cellAccessibilityValue: Signal<String, Never>
+  public let commentsCount: Signal<String, Never>
+  public let likesCount: Signal<String, Never>
+  public let updateTitle: Signal<String, Never>
 
   public var inputs: ProjectActivityUpdateCellViewModelInputs { return self }
   public var outputs: ProjectActivityUpdateCellViewModelOutputs { return self }

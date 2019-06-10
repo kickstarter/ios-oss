@@ -1,7 +1,7 @@
 import Argo
 import Curry
-import Runes
 import Foundation
+import Runes
 
 public struct Message {
   public let body: String

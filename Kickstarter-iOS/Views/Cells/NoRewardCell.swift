@@ -4,16 +4,15 @@ import Prelude
 import UIKit
 
 internal final class NoRewardCell: UITableViewCell, ValueCell {
-
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var pledgeButton: UIButton!
-  @IBOutlet fileprivate weak var pledgeTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var pledgeSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
-  @IBOutlet fileprivate weak var copyStackView: UIStackView!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var pledgeButton: UIButton!
+  @IBOutlet fileprivate var pledgeTitleLabel: UILabel!
+  @IBOutlet fileprivate var pledgeSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var rootStackView: UIStackView!
+  @IBOutlet fileprivate var copyStackView: UIStackView!
 
   // value required to bind value to data source
-  internal func configureWith(value: Project) {}
+  internal func configureWith(value _: Project) {}
 
   internal override func bindStyles() {
     super.bindStyles()
@@ -21,12 +20,12 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
       |> NoRewardCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
-      |> (NoRewardCell.lens.contentView..UIView.lens.layoutMargins) %~~ { _, cell in
+      |> (NoRewardCell.lens.contentView .. UIView.lens.layoutMargins) %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(1), left: Styles.grid(16), bottom: Styles.grid(2), right: Styles.grid(16))
           : .init(top: Styles.grid(1), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
       }
-      |> NoRewardCell.lens.contentView..UIView.lens.backgroundColor .~ projectCellBackgroundColor()
+      |> NoRewardCell.lens.contentView .. UIView.lens.backgroundColor .~ projectCellBackgroundColor()
 
     _ = self.cardView
       |> darkCardStyle(cornerRadius: 0)
@@ -56,7 +55,7 @@ internal final class NoRewardCell: UITableViewCell, ValueCell {
     _ = self.rootStackView
       |> UIStackView.lens.spacing .~ Styles.grid(3)
       |> UIStackView.lens.layoutMargins .~
-        .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+      .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.copyStackView

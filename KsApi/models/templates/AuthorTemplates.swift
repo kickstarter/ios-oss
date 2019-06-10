@@ -1,10 +1,12 @@
 import Foundation
 
 extension Author {
-  internal static let template = Author(avatar: .template,
-                                        id: 1,
-                                        name: "Nino Teixeira",
-                                        urls: .template)
+  internal static let template = Author(
+    avatar: .template,
+    id: 1,
+    name: "Nino Teixeira",
+    urls: .template
+  )
 }
 
 extension Author.Avatar {

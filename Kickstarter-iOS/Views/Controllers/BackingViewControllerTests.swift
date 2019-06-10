@@ -1,15 +1,14 @@
-import Library
-import Prelude
-import Result
-import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
+import Library
+import Prelude
+import XCTest
 
 internal final class BackingViewControllerTests: TestCase {
   private let cosmicSurgery = Project.cosmicSurgery
     |> Project.lens.state .~ .successful
   private let backing = Backing.template
-    |> Backing.lens.pledgedAt .~ 1468527587.32843
+    |> Backing.lens.pledgedAt .~ 1_468_527_587.32843
   private let brando = User.brando |> \.avatar.small .~ ""
   private let creator = User.template |> \.id .~ 42
 
@@ -27,8 +26,10 @@ internal final class BackingViewControllerTests: TestCase {
 
   func testCurrentUserIsBacker() {
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: self.backing), currentUser: self.brando,
-      language: language) {
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: self.backing), currentUser: self.brando,
+        language: language
+      ) {
         let controller = BackingViewController.configuredWith(project: self.cosmicSurgery, backer: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
@@ -43,19 +44,25 @@ internal final class BackingViewControllerTests: TestCase {
     let backingCanceled = self.backing |> Backing.lens.status .~ .canceled
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: backingCanceled),
-                      currentUser: self.brando,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
-                        let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
-                                                                              backer: nil)
-                        let (parent, _) = traitControllers(device: .phone4_7inch,
-                                                           orientation: .portrait,
-                                                           child: controller)
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: backingCanceled),
+        currentUser: self.brando,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
+        let controller = BackingViewController.configuredWith(
+          project: self.cosmicSurgery,
+          backer: nil
+        )
+        let (parent, _) = traitControllers(
+          device: .phone4_7inch,
+          orientation: .portrait,
+          child: controller
+        )
 
-                        self.scheduler.run()
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -64,19 +71,25 @@ internal final class BackingViewControllerTests: TestCase {
     let backingCollected = self.backing |> Backing.lens.status .~ .collected
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: backingCollected),
-                      currentUser: self.brando,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
-                        let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
-                                                                              backer: nil)
-                        let (parent, _) = traitControllers(device: .phone4_7inch,
-                                                           orientation: .portrait,
-                                                           child: controller)
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: backingCollected),
+        currentUser: self.brando,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
+        let controller = BackingViewController.configuredWith(
+          project: self.cosmicSurgery,
+          backer: nil
+        )
+        let (parent, _) = traitControllers(
+          device: .phone4_7inch,
+          orientation: .portrait,
+          child: controller
+        )
 
-                        self.scheduler.run()
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -85,19 +98,25 @@ internal final class BackingViewControllerTests: TestCase {
     let backingDropped = self.backing |> Backing.lens.status .~ .dropped
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: backingDropped),
-                      currentUser: self.brando,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
-                        let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
-                                                                              backer: nil)
-                        let (parent, _) = traitControllers(device: .phone4_7inch,
-                                                           orientation: .portrait,
-                                                           child: controller)
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: backingDropped),
+        currentUser: self.brando,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
+        let controller = BackingViewController.configuredWith(
+          project: self.cosmicSurgery,
+          backer: nil
+        )
+        let (parent, _) = traitControllers(
+          device: .phone4_7inch,
+          orientation: .portrait,
+          child: controller
+        )
 
-                        self.scheduler.run()
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -106,19 +125,25 @@ internal final class BackingViewControllerTests: TestCase {
     let backingErrored = self.backing |> Backing.lens.status .~ .errored
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: backingErrored),
-                      currentUser: self.brando,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
-                        let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
-                                                                              backer: nil)
-                        let (parent, _) = traitControllers(device: .phone4_7inch,
-                                                           orientation: .portrait,
-                                                           child: controller)
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: backingErrored),
+        currentUser: self.brando,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
+        let controller = BackingViewController.configuredWith(
+          project: self.cosmicSurgery,
+          backer: nil
+        )
+        let (parent, _) = traitControllers(
+          device: .phone4_7inch,
+          orientation: .portrait,
+          child: controller
+        )
 
-                        self.scheduler.run()
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -127,19 +152,25 @@ internal final class BackingViewControllerTests: TestCase {
     let projectFailed = self.cosmicSurgery |> Project.lens.state .~ .failed
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: self.backing),
-                      currentUser: self.brando,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
-                        let controller = BackingViewController.configuredWith(project: projectFailed,
-                                                                              backer: nil)
-                        let (parent, _) = traitControllers(device: .phone4_7inch,
-                                                           orientation: .portrait,
-                                                           child: controller)
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: self.backing),
+        currentUser: self.brando,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
+        let controller = BackingViewController.configuredWith(
+          project: projectFailed,
+          backer: nil
+        )
+        let (parent, _) = traitControllers(
+          device: .phone4_7inch,
+          orientation: .portrait,
+          child: controller
+        )
 
-                        self.scheduler.run()
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -148,18 +179,24 @@ internal final class BackingViewControllerTests: TestCase {
     let reward = Reward.noReward
     let backingNoReward = self.backing |> Backing.lens.reward .~ reward
 
-    withEnvironment(apiService: MockService(fetchBackingResponse: backingNoReward),
-                    currentUser: self.brando,
-                    language: .en) {
-                      let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
-                                                                            backer: self.brando)
-                      let (parent, _) = traitControllers(device: .phone4_7inch,
-                                                         orientation: .portrait,
-                                                         child: controller)
+    withEnvironment(
+      apiService: MockService(fetchBackingResponse: backingNoReward),
+      currentUser: self.brando,
+      language: .en
+    ) {
+      let controller = BackingViewController.configuredWith(
+        project: self.cosmicSurgery,
+        backer: self.brando
+      )
+      let (parent, _) = traitControllers(
+        device: .phone4_7inch,
+        orientation: .portrait,
+        child: controller
+      )
 
-                      self.scheduler.run()
+      self.scheduler.run()
 
-                      FBSnapshotVerifyView(parent.view, identifier: "lang_en")
+      FBSnapshotVerifyView(parent.view, identifier: "lang_en")
     }
   }
 
@@ -168,13 +205,15 @@ internal final class BackingViewControllerTests: TestCase {
       |> Project.lens.creator .~ self.creator
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: self.backing), currentUser: self.creator,
-      language: language,
-      locale: .init(identifier: language.rawValue)) {
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: self.backing), currentUser: self.creator,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
         let controller = BackingViewController.configuredWith(project: project, backer: .template)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
-         self.scheduler.run()
+        self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
@@ -185,19 +224,25 @@ internal final class BackingViewControllerTests: TestCase {
     let backingCanceled = self.backing |> Backing.lens.status .~ .canceled
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: backingCanceled),
-                      currentUser: self.creator,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
-                        let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
-                                                                              backer: .template)
-                        let (parent, _) = traitControllers(device: .phone4_7inch,
-                                                           orientation: .portrait,
-                                                           child: controller)
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: backingCanceled),
+        currentUser: self.creator,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
+        let controller = BackingViewController.configuredWith(
+          project: self.cosmicSurgery,
+          backer: .template
+        )
+        let (parent, _) = traitControllers(
+          device: .phone4_7inch,
+          orientation: .portrait,
+          child: controller
+        )
 
-                        self.scheduler.run()
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -206,19 +251,25 @@ internal final class BackingViewControllerTests: TestCase {
     let backingCollected = self.backing |> Backing.lens.status .~ .collected
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: backingCollected),
-                      currentUser: self.creator,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
-                        let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
-                                                                              backer: .template)
-                        let (parent, _) = traitControllers(device: .phone4_7inch,
-                                                           orientation: .portrait,
-                                                           child: controller)
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: backingCollected),
+        currentUser: self.creator,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
+        let controller = BackingViewController.configuredWith(
+          project: self.cosmicSurgery,
+          backer: .template
+        )
+        let (parent, _) = traitControllers(
+          device: .phone4_7inch,
+          orientation: .portrait,
+          child: controller
+        )
 
-                        self.scheduler.run()
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -227,19 +278,25 @@ internal final class BackingViewControllerTests: TestCase {
     let backingDropped = self.backing |> Backing.lens.status .~ .dropped
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: backingDropped),
-                      currentUser: self.creator,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
-                        let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
-                                                                              backer: .template)
-                        let (parent, _) = traitControllers(device: .phone4_7inch,
-                                                           orientation: .portrait,
-                                                           child: controller)
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: backingDropped),
+        currentUser: self.creator,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
+        let controller = BackingViewController.configuredWith(
+          project: self.cosmicSurgery,
+          backer: .template
+        )
+        let (parent, _) = traitControllers(
+          device: .phone4_7inch,
+          orientation: .portrait,
+          child: controller
+        )
 
-                        self.scheduler.run()
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -248,19 +305,25 @@ internal final class BackingViewControllerTests: TestCase {
     let backingErrored = self.backing |> Backing.lens.status .~ .errored
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: backingErrored),
-                      currentUser: self.creator,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
-                        let controller = BackingViewController.configuredWith(project: self.cosmicSurgery,
-                                                                              backer: .template)
-                        let (parent, _) = traitControllers(device: .phone4_7inch,
-                                                           orientation: .portrait,
-                                                           child: controller)
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: backingErrored),
+        currentUser: self.creator,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
+        let controller = BackingViewController.configuredWith(
+          project: self.cosmicSurgery,
+          backer: .template
+        )
+        let (parent, _) = traitControllers(
+          device: .phone4_7inch,
+          orientation: .portrait,
+          child: controller
+        )
 
-                        self.scheduler.run()
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -269,19 +332,25 @@ internal final class BackingViewControllerTests: TestCase {
     let projectFailed = self.cosmicSurgery |> Project.lens.state .~ .failed
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: MockService(fetchBackingResponse: self.backing),
-                      currentUser: self.creator,
-                      language: language,
-                      locale: .init(identifier: language.rawValue)) {
-                        let controller = BackingViewController.configuredWith(project: projectFailed,
-                                                                              backer: .template)
-                        let (parent, _) = traitControllers(device: .phone4_7inch,
-                                                           orientation: .portrait,
-                                                           child: controller)
+      withEnvironment(
+        apiService: MockService(fetchBackingResponse: self.backing),
+        currentUser: self.creator,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
+        let controller = BackingViewController.configuredWith(
+          project: projectFailed,
+          backer: .template
+        )
+        let (parent, _) = traitControllers(
+          device: .phone4_7inch,
+          orientation: .portrait,
+          child: controller
+        )
 
-                        self.scheduler.run()
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }

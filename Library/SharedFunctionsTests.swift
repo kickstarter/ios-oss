@@ -1,21 +1,21 @@
 import Foundation
-import ReactiveSwift
-import Result
 @testable import Library
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 import XCTest
 
+// swiftlint:disable line_length
 final class SharedFunctionsTests: TestCase {
-
   func testCountdownProducer() {
-    let future: TimeInterval = TimeInterval(1*60*60*24) + TimeInterval(16*60*60) + TimeInterval(34*60) + 2
+    // swiftlint:disable:next line_length
+    let future: TimeInterval = TimeInterval(1 * 60 * 60 * 24) + TimeInterval(16 * 60 * 60) + TimeInterval(34 * 60) + 2
     let futureDate = MockDate().addingTimeInterval(future).date
     let countdown = countdownProducer(to: futureDate)
 
-    let dayTest = TestObserver<String, NoError>()
-    let hourTest = TestObserver<String, NoError>()
-    let minuteTest = TestObserver<String, NoError>()
-    let secondTest = TestObserver<String, NoError>()
+    let dayTest = TestObserver<String, Never>()
+    let hourTest = TestObserver<String, Never>()
+    let minuteTest = TestObserver<String, Never>()
+    let secondTest = TestObserver<String, Never>()
 
     countdown.map { $0.day }.start(dayTest.observer)
     countdown.map { $0.hour }.start(hourTest.observer)
@@ -50,19 +50,18 @@ final class SharedFunctionsTests: TestCase {
   }
 
   func testCountdownProducer_FractionalStartSecond() {
-
     let fractionalSecondScheduler = TestScheduler(startDate: MockDate().addingTimeInterval(-0.5).date)
 
     withEnvironment(scheduler: fractionalSecondScheduler) {
-
-      let future: TimeInterval = TimeInterval(1*60*60*24) + TimeInterval(16*60*60) + TimeInterval(34*60) + 2
+      // swiftlint:disable:next line_length
+      let future: TimeInterval = TimeInterval(1 * 60 * 60 * 24) + TimeInterval(16 * 60 * 60) + TimeInterval(34 * 60) + 2
       let futureDate = MockDate().addingTimeInterval(future).date
       let countdown = countdownProducer(to: futureDate)
 
-      let dayTest = TestObserver<String, NoError>()
-      let hourTest = TestObserver<String, NoError>()
-      let minuteTest = TestObserver<String, NoError>()
-      let secondTest = TestObserver<String, NoError>()
+      let dayTest = TestObserver<String, Never>()
+      let hourTest = TestObserver<String, Never>()
+      let minuteTest = TestObserver<String, Never>()
+      let secondTest = TestObserver<String, Never>()
 
       countdown.map { $0.day }.start(dayTest.observer)
       countdown.map { $0.hour }.start(hourTest.observer)
@@ -110,10 +109,10 @@ final class SharedFunctionsTests: TestCase {
   func testCountdownProducer_CompletesWhenReachesDate() {
     let countdown = countdownProducer(to: MockDate().addingTimeInterval(2).date)
 
-    let dayTest = TestObserver<String, NoError>()
-    let hourTest = TestObserver<String, NoError>()
-    let minuteTest = TestObserver<String, NoError>()
-    let secondTest = TestObserver<String, NoError>()
+    let dayTest = TestObserver<String, Never>()
+    let hourTest = TestObserver<String, Never>()
+    let minuteTest = TestObserver<String, Never>()
+    let secondTest = TestObserver<String, Never>()
 
     countdown.map { $0.day }.start(dayTest.observer)
     countdown.map { $0.hour }.start(hourTest.observer)

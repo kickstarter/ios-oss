@@ -1,22 +1,21 @@
-// swiftlint:disable force_unwrapping
-import Prelude
-import ReactiveSwift
-import Result
-import WebKit
-import XCTest
 @testable import KsApi
 @testable import Library
+// swiftlint:disable force_unwrapping
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import WebKit
+import XCTest
 
 final class ProjectDescriptionViewModelTests: TestCase {
   fileprivate let vm: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
 
-  fileprivate let goBackToProject = TestObserver<(), NoError>()
-  fileprivate let goToMessageDialog = TestObserver<(MessageSubject, Koala.MessageDialogContext), NoError>()
-  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
-  fileprivate let isLoading = TestObserver<Bool, NoError>()
-  fileprivate let loadWebViewRequest = TestObserver<URLRequest, NoError>()
-  fileprivate let showErrorAlert = TestObserver<NSError, NoError>()
+  fileprivate let goBackToProject = TestObserver<(), Never>()
+  fileprivate let goToMessageDialog = TestObserver<(MessageSubject, Koala.MessageDialogContext), Never>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
+  fileprivate let isLoading = TestObserver<Bool, Never>()
+  fileprivate let loadWebViewRequest = TestObserver<URLRequest, Never>()
+  fileprivate let showErrorAlert = TestObserver<NSError, Never>()
 
   override func setUp() {
     super.setUp()
@@ -53,8 +52,10 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
     self.vm.inputs.webViewDidStartProvisionalNavigation()
 
-    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
-                   self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
+    XCTAssertEqual(
+      WKNavigationActionPolicy.cancel.rawValue,
+      self.vm.outputs.decidedPolicyForNavigationAction.rawValue
+    )
 
     self.vm.inputs.webViewDidFinishNavigation()
 
@@ -87,8 +88,10 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
     self.vm.inputs.webViewDidStartProvisionalNavigation()
 
-    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
-                   self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
+    XCTAssertEqual(
+      WKNavigationActionPolicy.cancel.rawValue,
+      self.vm.outputs.decidedPolicyForNavigationAction.rawValue
+    )
 
     self.scheduler.advance()
     self.vm.inputs.webViewDidFinishNavigation()
@@ -121,8 +124,10 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
     self.vm.inputs.webViewDidStartProvisionalNavigation()
 
-    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue,
-                   self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
+    XCTAssertEqual(
+      WKNavigationActionPolicy.cancel.rawValue,
+      self.vm.outputs.decidedPolicyForNavigationAction.rawValue
+    )
     XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
     XCTAssertEqual(["project_description"], self.trackingClient.properties(forKey: "context"))
 
@@ -155,8 +160,10 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
     self.vm.inputs.webViewDidStartProvisionalNavigation()
 
-    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue,
-                   self.vm.outputs.decidedPolicyForNavigationAction.rawValue)
+    XCTAssertEqual(
+      WKNavigationActionPolicy.allow.rawValue,
+      self.vm.outputs.decidedPolicyForNavigationAction.rawValue
+    )
 
     self.scheduler.advance()
     self.vm.inputs.webViewDidFinishNavigation()
@@ -187,9 +194,11 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
     self.vm.inputs.webViewDidStartProvisionalNavigation()
 
-    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue,
-                   self.vm.outputs.decidedPolicyForNavigationAction.rawValue,
-                   "Loading non-main frame requests permitted, e.g. youtube.")
+    XCTAssertEqual(
+      WKNavigationActionPolicy.allow.rawValue,
+      self.vm.outputs.decidedPolicyForNavigationAction.rawValue,
+      "Loading non-main frame requests permitted, e.g. youtube."
+    )
 
     self.scheduler.advance()
     self.vm.inputs.webViewDidFinishNavigation()

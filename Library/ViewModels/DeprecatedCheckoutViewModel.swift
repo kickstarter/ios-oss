@@ -1,21 +1,22 @@
 import Argo
-import Runes
 import KsApi
 import PassKit
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
+import Runes
 
 public protocol DeprecatedCheckoutViewModelInputs {
   /// Call when the back button is tapped.
   func cancelButtonTapped()
 
   /// Call with the data passed to the view.
-  func configureWith(initialRequest: URLRequest,
-                     project: Project,
-                     reward: Reward,
-                     applePayCapable: Bool)
+  func configureWith(
+    initialRequest: URLRequest,
+    project: Project,
+    reward: Reward,
+    applePayCapable: Bool
+  )
 
   /// Call when the failure alert OK button is tapped.
   func failureAlertButtonTapped()
@@ -44,53 +45,52 @@ public protocol DeprecatedCheckoutViewModelInputs {
 
 public protocol DeprecatedCheckoutViewModelOutputs {
   /// Emits when the login tout should be closed.
-  var closeLoginTout: Signal<Void, NoError> { get }
+  var closeLoginTout: Signal<Void, Never> { get }
 
   /// Emits when the modal view controller should be dismissed.
-  var dismissViewController: Signal<Void, NoError> { get }
+  var dismissViewController: Signal<Void, Never> { get }
 
   /// Emits a string that should be evaluated as javascript in the webview.
-  var evaluateJavascript: Signal<String, NoError> { get }
+  var evaluateJavascript: Signal<String, Never> { get }
 
   /// Emits a payment request object that is to be used to present a payment authorization controller.
-  var goToPaymentAuthorization: Signal<PKPaymentRequest, NoError> { get }
+  var goToPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
 
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<URL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, Never> { get }
 
   /// Emits when the thanks screen should be loaded.
-  var goToThanks: Signal<Project, NoError> { get }
+  var goToThanks: Signal<Project, Never> { get }
 
   /// Emits when the web modal should be loaded.
-  var goToWebModal: Signal<URLRequest, NoError> { get }
+  var goToWebModal: Signal<URLRequest, Never> { get }
 
   /// Emits when the login tout should be opened.
-  var openLoginTout: Signal<Void, NoError> { get }
+  var openLoginTout: Signal<Void, Never> { get }
 
   /// Emits when the view controller should be popped.
-  var popViewController: Signal<Void, NoError> { get }
+  var popViewController: Signal<Void, Never> { get }
 
   /// Emits a string to be used to set the Stripe library's apple merchant identifier.
-  var setStripeAppleMerchantIdentifier: Signal<String, NoError> { get }
+  var setStripeAppleMerchantIdentifier: Signal<String, Never> { get }
 
   /// Emits a string to be used to set the Stripe library's publishable key.
-  var setStripePublishableKey: Signal<String, NoError> { get }
+  var setStripePublishableKey: Signal<String, Never> { get }
 
   /// Emits when an alert should be shown.
-  var showAlert: Signal<String, NoError> { get }
+  var showAlert: Signal<String, Never> { get }
 
   /// Emits a request that should be loaded into the webview.
-  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
 
 public protocol DeprecatedCheckoutViewModelType:
-DeprecatedCheckoutViewModelInputs, DeprecatedCheckoutViewModelOutputs {
+  DeprecatedCheckoutViewModelInputs, DeprecatedCheckoutViewModelOutputs {
   var inputs: DeprecatedCheckoutViewModelInputs { get }
   var outputs: DeprecatedCheckoutViewModelOutputs { get }
 }
 
 public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType {
-
   fileprivate let checkoutRacingViewModel: CheckoutRacingViewModelType = CheckoutRacingViewModel()
 
   public init() {
@@ -109,11 +109,13 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
 
         let shouldStartLoad = isLoadableByWebView(request: request, navigation: navigation)
 
-        return RequestData(request: request,
+        return RequestData(
+          request: request,
           navigation: navigation,
           shouldStartLoad: shouldStartLoad,
-          webViewNavigationType: navigationType)
-    }
+          webViewNavigationType: navigationType
+        )
+      }
 
     let projectRequest = requestData
       .filter { requestData in
@@ -147,7 +149,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
         if let navigation = requestData.navigation,
           case .project(_, .pledge(.bigPrint), _) = navigation { return Either.left(requestData.request) }
         return Either.right(requestData.request)
-    }
+      }
 
     let retryAfterSessionStartedRequest = requestData
       .combinePrevious()
@@ -157,7 +159,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
     let thanksRequestOrRacingRequest = requestData
       .map { requestData -> Either<URLRequest, URLRequest>? in
         guard let navigation = requestData.navigation else { return nil }
-        if case .project(_, .checkout(_, .thanks(let racing)), _) = navigation {
+        if case .project(_, let .checkout(_, .thanks(racing)), _) = navigation {
           guard let r = racing else { return Either.left(requestData.request) }
           return r ? Either.right(requestData.request) : Either.left(requestData.request)
         }
@@ -199,7 +201,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
     let checkoutCancelled = Signal.merge(
       projectRequest,
       self.cancelButtonTappedProperty.signal
-      )
+    )
 
     self.popViewController = Signal.merge(
       self.failureAlertButtonTappedProperty.signal,
@@ -223,8 +225,8 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
     self.webViewLoadRequest = Signal.combineLatest(
       Signal.merge(initialRequest, retryAfterSessionStartedRequest, webViewRequest),
       applePayCapable
-      )
-      .map(prepared(request:applePayCapable:))
+    )
+    .map(prepared(request:applePayCapable:))
 
     let stripeToken = self.stripeTokenAndErrorProperty.signal.map(first).skipNil()
 
@@ -249,7 +251,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
       .observeValues { [weak self] request in
         guard let url = request.url?.deletingLastPathComponent() else { return }
         self?.checkoutRacingViewModel.inputs.configureWith(url: url)
-    }
+      }
 
     configData
       .takeWhen(self.paymentAuthorizationWillAuthorizeProperty.signal)
@@ -259,7 +261,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
           reward: $0.reward,
           pledgeContext: $0.pledgeContext
         )
-    }
+      }
 
     configData
       .takeWhen(self.didAuthorizePaymentProperty.signal)
@@ -269,7 +271,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
           reward: $0.reward,
           pledgeContext: $0.pledgeContext
         )
-    }
+      }
 
     configData
       .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(first >>> isNotNil))
@@ -279,7 +281,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
           reward: $0.reward,
           pledgeContext: $0.pledgeContext
         )
-    }
+      }
 
     configData
       .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(second >>> isNotNil))
@@ -289,7 +291,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
           reward: $0.reward,
           pledgeContext: $0.pledgeContext
         )
-    }
+      }
 
     let applePaySuccessful = Signal.merge(
       self.paymentAuthorizationWillAuthorizeProperty.signal.mapConst(false),
@@ -313,7 +315,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
             pledgeContext: configData.pledgeContext
           )
         }
-    }
+      }
 
     configData
       .takeWhen(checkoutCancelled)
@@ -323,22 +325,25 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
           reward: $0.reward,
           pledgeContext: $0.pledgeContext
         )
-    }
+      }
   }
 
   fileprivate let cancelButtonTappedProperty = MutableProperty(())
   public func cancelButtonTapped() { self.cancelButtonTappedProperty.value = () }
 
   fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
-  public func configureWith(initialRequest: URLRequest,
-                            project: Project,
-                            reward: Reward,
-                            applePayCapable: Bool) {
-
-    self.configDataProperty.value = ConfigData(initialRequest: initialRequest,
-                                               project: project,
-                                               reward: reward,
-                                               applePayCapable: applePayCapable)
+  public func configureWith(
+    initialRequest: URLRequest,
+    project: Project,
+    reward: Reward,
+    applePayCapable: Bool
+  ) {
+    self.configDataProperty.value = ConfigData(
+      initialRequest: initialRequest,
+      project: project,
+      reward: reward,
+      applePayCapable: applePayCapable
+    )
   }
 
   fileprivate let failureAlertButtonTappedProperty = MutableProperty(())
@@ -361,8 +366,10 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
 
   fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebView.NavigationType)?>(nil)
   fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
-  public func shouldStartLoad(withRequest request: URLRequest,
-                              navigationType: UIWebView.NavigationType) -> Bool {
+  public func shouldStartLoad(
+    withRequest request: URLRequest,
+    navigationType: UIWebView.NavigationType
+  ) -> Bool {
     self.shouldStartLoadProperty.value = (request, navigationType)
     return self.shouldStartLoadResponseProperty.value
   }
@@ -371,9 +378,8 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
   fileprivate let paymentAuthorizationStatusProperty = MutableProperty(PKPaymentAuthorizationStatus.failure)
   public func stripeCreatedToken(stripeToken: String?, error: Error?)
     -> PKPaymentAuthorizationStatus {
-
-      self.stripeTokenAndErrorProperty.value = (stripeToken, error)
-      return self.paymentAuthorizationStatusProperty.value
+    self.stripeTokenAndErrorProperty.value = (stripeToken, error)
+    return self.paymentAuthorizationStatusProperty.value
   }
 
   fileprivate let userSessionStartedProperty = MutableProperty(())
@@ -384,21 +390,22 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
     self.viewDidLoadProperty.value = ()
   }
 
-  public let closeLoginTout: Signal<Void, NoError>
-  public let dismissViewController: Signal<Void, NoError>
-  public let evaluateJavascript: Signal<String, NoError>
-  public let goToPaymentAuthorization: Signal<PKPaymentRequest, NoError>
-  public let goToSafariBrowser: Signal<URL, NoError>
-  public let goToThanks: Signal<Project, NoError>
-  public let goToWebModal: Signal<URLRequest, NoError>
-  public let openLoginTout: Signal<Void, NoError>
-  public let popViewController: Signal<Void, NoError>
-  public let setStripeAppleMerchantIdentifier: Signal<String, NoError>
-  public let setStripePublishableKey: Signal<String, NoError>
-  public var showAlert: Signal<String, NoError> {
+  public let closeLoginTout: Signal<Void, Never>
+  public let dismissViewController: Signal<Void, Never>
+  public let evaluateJavascript: Signal<String, Never>
+  public let goToPaymentAuthorization: Signal<PKPaymentRequest, Never>
+  public let goToSafariBrowser: Signal<URL, Never>
+  public let goToThanks: Signal<Project, Never>
+  public let goToWebModal: Signal<URLRequest, Never>
+  public let openLoginTout: Signal<Void, Never>
+  public let popViewController: Signal<Void, Never>
+  public let setStripeAppleMerchantIdentifier: Signal<String, Never>
+  public let setStripePublishableKey: Signal<String, Never>
+  public var showAlert: Signal<String, Never> {
     return self.checkoutRacingViewModel.outputs.showAlert
   }
-  public let webViewLoadRequest: Signal<URLRequest, NoError>
+
+  public let webViewLoadRequest: Signal<URLRequest, Never>
 
   public var inputs: DeprecatedCheckoutViewModelInputs { return self }
   public var outputs: DeprecatedCheckoutViewModelOutputs { return self }
@@ -439,35 +446,31 @@ private func isStripeRequest(request: URLRequest) -> Bool {
   return request.url?.host?.hasSuffix("stripe.com") == true
 }
 
-private func applePayCheckoutNextJS(forPaymentData paymentData: PaymentData, stripeToken: String)
-  -> String? {
+private func applePayCheckoutNextJS(forPaymentData paymentData: PaymentData, stripeToken: String) -> String? {
+  let tokenData = paymentData.tokenData
 
-    let tokenData = paymentData.tokenData
+  var json: [String: [String: String]] = [:]
 
-    var json: [String: [String: String]] = [:]
+  json["apple_pay_token"] = [:]
+  json["apple_pay_token"]?["transaction_identifier"] = tokenData.transactionIdentifier
+  json["apple_pay_token"]?["payment_network"] = tokenData.paymentMethodData.network?.rawValue
+  json["apple_pay_token"]?["payment_instrument_name"] = tokenData.paymentMethodData.displayName
 
-    json["apple_pay_token"] = [:]
-    json["apple_pay_token"]?["transaction_identifier"] = tokenData.transactionIdentifier
-    json["apple_pay_token"]?["payment_network"] = tokenData.paymentMethodData.network?.rawValue
-    json["apple_pay_token"]?["payment_instrument_name"] = tokenData.paymentMethodData.displayName
+  json["stripe_token"] = [:]
+  json["stripe_token"]?["id"] = stripeToken
 
-    json["stripe_token"] = [:]
-    json["stripe_token"]?["id"] = stripeToken
-
-    return (try? JSONSerialization.data(withJSONObject: json, options: []))
-      .flatMap { String(data: $0, encoding: String.Encoding.utf8) }
-      .map { json in "window.checkout_apple_pay_next(\(json));" }
+  return (try? JSONSerialization.data(withJSONObject: json, options: []))
+    .flatMap { String(data: $0, encoding: String.Encoding.utf8) }
+    .map { json in "window.checkout_apple_pay_next(\(json));" }
 }
 
 private func paymentRequest(fromBase64Payload payload: String) -> PKPaymentRequest? {
-
   return Data(base64Encoded: payload, options: [])
     .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) }
     .flatMap { (decode($0) as Decoded<PKPaymentRequest>).value }
 }
 
 private func prepared(request baseRequest: URLRequest, applePayCapable: Bool) -> URLRequest {
-
   var applePayHeader: [String: String] = [:]
   applePayHeader["Kickstarter-Apple-Pay"] = applePayCapable ? "1" : nil
 

@@ -1,9 +1,8 @@
-import XCTest
-@testable import Library
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
 import Prelude
+import XCTest
 
 internal final class ProjectActivitiesDataSourceTests: XCTestCase {
   let dataSource = ProjectActivitiesDataSource()
@@ -21,24 +20,26 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
       let activities = [
         Activity.template
           |> Activity.lens.category .~ Activity.Category.backing
-          |> Activity.lens.createdAt .~ 1474606800 // 2016-09-23T05:00:00Z
+          |> Activity.lens.createdAt .~ 1_474_606_800 // 2016-09-23T05:00:00Z
           |> Activity.lens.project .~ project,
         Activity.template
           |> Activity.lens.category .~ Activity.Category.commentPost
-          |> Activity.lens.createdAt .~ 1474605000 // 2016-09-23T04:30:00Z
+          |> Activity.lens.createdAt .~ 1_474_605_000 // 2016-09-23T04:30:00Z
           |> Activity.lens.project .~ project,
         Activity.template
           |> Activity.lens.category .~ Activity.Category.success
-          |> Activity.lens.createdAt .~ 1474700400 // 2016-09-24T07:00:00Z
+          |> Activity.lens.createdAt .~ 1_474_700_400 // 2016-09-24T07:00:00Z
           |> Activity.lens.project .~ project,
         Activity.template
           |> Activity.lens.category .~ Activity.Category.launch
-          |> Activity.lens.createdAt .~ 1474538400 // 2016-09-22T10:00:00Z
+          |> Activity.lens.createdAt .~ 1_474_538_400 // 2016-09-22T10:00:00Z
           |> Activity.lens.project .~ project
       ]
 
-      self.dataSource.load(projectActivityData:
-        ProjectActivityData(activities: activities, project: project, groupedDates: true))
+      self.dataSource.load(
+        projectActivityData:
+        ProjectActivityData(activities: activities, project: project, groupedDates: true)
+      )
 
       XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: tableView))
       XCTAssertEqual(7, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
@@ -64,22 +65,26 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
       let activities = [
         Activity.template
           |> Activity.lens.category .~ Activity.Category.backing
-          |> Activity.lens.createdAt .~ 1474606800 // 2016-09-23T05:00:00Z
+          |> Activity.lens.createdAt .~ 1_474_606_800 // 2016-09-23T05:00:00Z
           |> Activity.lens.project .~ project,
         Activity.template
           |> Activity.lens.category .~ Activity.Category.success
-          |> Activity.lens.createdAt .~ 1474605000 // 2016-09-23T04:30:00Z
-          |> Activity.lens.project .~ project,
+          |> Activity.lens.createdAt .~ 1_474_605_000 // 2016-09-23T04:30:00Z
+          |> Activity.lens.project .~ project
       ]
 
-      self.dataSource.load(projectActivityData:
-        ProjectActivityData(activities: activities, project: project, groupedDates: false))
+      self.dataSource.load(
+        projectActivityData:
+        ProjectActivityData(activities: activities, project: project, groupedDates: false)
+      )
 
       XCTAssertEqual(4, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
       XCTAssertEqual("ProjectActivityDateCell", self.dataSource.reusableId(item: 0, section: section))
       XCTAssertEqual("ProjectActivityBackingCell", self.dataSource.reusableId(item: 1, section: section))
-      XCTAssertEqual("ProjectActivityDateCell", self.dataSource.reusableId(item: 2, section: section),
-                     "Should append second date cell, even though date is the same as the first date cell")
+      XCTAssertEqual(
+        "ProjectActivityDateCell", self.dataSource.reusableId(item: 2, section: section),
+        "Should append second date cell, even though date is the same as the first date cell"
+      )
       XCTAssertEqual("ProjectActivitySuccessCell", self.dataSource.reusableId(item: 3, section: section))
     }
   }
@@ -88,7 +93,7 @@ internal final class ProjectActivitiesDataSourceTests: XCTestCase {
     let section = ProjectActivitiesDataSource.Section.emptyState.rawValue
     self.dataSource.emptyState(visible: true)
 
-    XCTAssertEqual(1, self.dataSource.tableView(tableView, numberOfRowsInSection: section))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
     XCTAssertEqual("ProjectActivityEmptyStateCell", self.dataSource.reusableId(item: 0, section: section))
   }
 }

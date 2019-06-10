@@ -1,24 +1,23 @@
-import Result
-import Prelude
-import XCTest
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 final class LoadingBarButtonItemViewModelTests: TestCase {
   private let vm: LoadingBarButtonItemViewModelType = LoadingBarButtonItemViewModel()
 
-  private let activityIndicatorIsLoading = TestObserver<Bool, NoError>()
-  private let titleButtonIsEnabled = TestObserver<Bool, NoError>()
-  private let titleButtonIsHidden = TestObserver<Bool, NoError>()
-  private let titleButtonText = TestObserver<String, NoError>()
+  private let activityIndicatorIsLoading = TestObserver<Bool, Never>()
+  private let titleButtonIsEnabled = TestObserver<Bool, Never>()
+  private let titleButtonIsHidden = TestObserver<Bool, Never>()
+  private let titleButtonText = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.activityIndicatorIsLoading.observe(activityIndicatorIsLoading.observer)
-    self.vm.outputs.titleButtonIsEnabled.observe(titleButtonIsEnabled.observer)
-    self.vm.outputs.titleButtonIsHidden.observe(titleButtonIsHidden.observer)
-    self.vm.outputs.titleButtonText.observe(titleButtonText.observer)
+    self.vm.outputs.activityIndicatorIsLoading.observe(self.activityIndicatorIsLoading.observer)
+    self.vm.outputs.titleButtonIsEnabled.observe(self.titleButtonIsEnabled.observer)
+    self.vm.outputs.titleButtonIsHidden.observe(self.titleButtonIsHidden.observer)
+    self.vm.outputs.titleButtonText.observe(self.titleButtonText.observer)
   }
 
   func testSetIsEnabled() {

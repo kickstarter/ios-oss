@@ -1,22 +1,20 @@
-import XCTest
-import UIKit
 @testable import Kickstarter_Framework
-@testable import Library
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
-import KsApi
-import Result
-import ReactiveSwift
+@testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import UIKit
+import XCTest
 
 final class RootViewModelTests: TestCase {
   let vm: RootViewModelType = RootViewModel()
-  let viewControllerNames = TestObserver<[String], NoError>()
-  let filterDiscovery = TestObserver<DiscoveryParams, NoError>()
-  let selectedIndex = TestObserver<RootViewControllerIndex, NoError>()
-  let scrollToTopControllerName = TestObserver<String, NoError>()
-  let switchDashboardProject = TestObserver<Param, NoError>()
-  let tabBarItemsData = TestObserver<TabBarItemsData, NoError>()
+  let viewControllerNames = TestObserver<[String], Never>()
+  let filterDiscovery = TestObserver<DiscoveryParams, Never>()
+  let selectedIndex = TestObserver<RootViewControllerIndex, Never>()
+  let scrollToTopControllerName = TestObserver<String, Never>()
+  let switchDashboardProject = TestObserver<Param, Never>()
+  let tabBarItemsData = TestObserver<TabBarItemsData, Never>()
 
   override func setUp() {
     super.setUp()
@@ -33,7 +31,7 @@ final class RootViewModelTests: TestCase {
       .map { $0.map { $0.viewController }.compact() }
 
     Signal.combineLatest(viewControllers, self.vm.outputs.scrollToTop)
-      .map { (vcs, idx) in vcs[clamp(0, vcs.count - 1)(idx)] }
+      .map { vcs, idx in vcs[clamp(0, vcs.count - 1)(idx)] }
       .map(extractName)
       .observe(self.scrollToTopControllerName.observer)
 
@@ -41,11 +39,11 @@ final class RootViewModelTests: TestCase {
   }
 
   func testSetViewControllers() {
-    let viewControllerNames = TestObserver<[String], NoError>()
+    let viewControllerNames = TestObserver<[String], Never>()
     vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
     viewControllerNames.assertValues(
       [
@@ -55,7 +53,7 @@ final class RootViewModelTests: TestCase {
     )
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-    vm.inputs.userSessionStarted()
+    self.vm.inputs.userSessionStarted()
 
     viewControllerNames.assertValues(
       [
@@ -66,7 +64,7 @@ final class RootViewModelTests: TestCase {
     )
 
     AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
-    vm.inputs.currentUserUpdated()
+    self.vm.inputs.currentUserUpdated()
 
     viewControllerNames.assertValues(
       [
@@ -78,14 +76,14 @@ final class RootViewModelTests: TestCase {
     )
 
     AppEnvironment.logout()
-    vm.inputs.userSessionEnded()
+    self.vm.inputs.userSessionEnded()
 
     viewControllerNames.assertValues(
       [
         ["Discovery", "Activities", "Search", "LoginTout"],
         ["Discovery", "Activities", "Search", "BackerDashboard"],
         ["Discovery", "Activities", "Search", "Dashboard", "BackerDashboard"],
-        ["Discovery", "Activities", "Search", "LoginTout"],
+        ["Discovery", "Activities", "Search", "LoginTout"]
       ],
       "Show the logged out tabs."
     )
@@ -123,7 +121,7 @@ final class RootViewModelTests: TestCase {
   }
 
   func testViewControllersDontOverEmit() {
-    let viewControllerNames = TestObserver<[String], NoError>()
+    let viewControllerNames = TestObserver<[String], Never>()
     vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
@@ -137,7 +135,7 @@ final class RootViewModelTests: TestCase {
   }
 
   func testUpdateUserLocalePreferences() {
-    let viewControllerNames = TestObserver<[String], NoError>()
+    let viewControllerNames = TestObserver<[String], Never>()
     vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
@@ -202,7 +200,7 @@ final class RootViewModelTests: TestCase {
 
   func testSwitchingTabs() {
     self.vm.inputs.viewDidLoad()
-    self.selectedIndex.assertValues([0, ])
+    self.selectedIndex.assertValues([0])
     self.vm.inputs.switchToDiscovery(params: nil)
     self.selectedIndex.assertValues([0, 0])
     self.vm.inputs.switchToActivities()
@@ -239,8 +237,10 @@ final class RootViewModelTests: TestCase {
 
     let param = Param.id(1)
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template
-      |> \.stats.memberProjectsCount .~ 1))
+    AppEnvironment.login(AccessTokenEnvelope(
+      accessToken: "deadbeef", user: .template
+        |> \.stats.memberProjectsCount .~ 1
+    ))
     self.vm.inputs.userSessionStarted()
 
     self.switchDashboardProject.assertValues([])
@@ -308,24 +308,24 @@ final class RootViewModelTests: TestCase {
   func testSetViewControllers_DoesNotFilterDiscovery() {
     self.filterDiscovery.assertValueCount(0)
 
-    let viewControllerNames = TestObserver<[String], NoError>()
+    let viewControllerNames = TestObserver<[String], Never>()
     vm.outputs.setViewControllers.map(extractRootNames)
       .observe(viewControllerNames.observer)
 
-    vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLoad()
 
     let params = DiscoveryParams.defaults
     self.vm.inputs.switchToDiscovery(params: params)
     self.filterDiscovery.assertValues([params])
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-    vm.inputs.userSessionStarted()
+    self.vm.inputs.userSessionStarted()
 
     AppEnvironment.updateCurrentUser(.template |> \.stats.memberProjectsCount .~ 1)
-    vm.inputs.currentUserUpdated()
+    self.vm.inputs.currentUserUpdated()
 
     AppEnvironment.logout()
-    vm.inputs.userSessionEnded()
+    self.vm.inputs.userSessionEnded()
 
     self.viewControllerNames.assertValueCount(4)
     self.filterDiscovery.assertValues([params])

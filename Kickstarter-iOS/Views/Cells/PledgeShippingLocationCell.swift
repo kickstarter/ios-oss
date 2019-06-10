@@ -1,3 +1,4 @@
+import KsApi
 import Library
 import Prelude
 import UIKit
@@ -38,7 +39,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -56,6 +57,8 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       )
 
     _ = self.amountLabel
+      |> checkoutBackgroundStyle
+    _ = self.amountLabel
       |> amountLabelStyle
 
     _ = self.countryButton
@@ -67,6 +70,8 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       ?|> countryButtonTitleLabelStyle
 
     _ = self.titleLabel
+      |> checkoutBackgroundStyle
+    _ = self.titleLabel
       |> checkoutTitleLabelStyle
       |> \.text %~ { _ in Strings.Your_shipping_location() }
 
@@ -76,10 +81,18 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: (location: String, currency: String, rate: Double)) {
-    self.countryButton.setTitle(value.location, for: .normal)
-    self.amountLabel.text = "+\(value.currency)\(value.rate)"
+  func configureWith(value: PledgeDataSource.PledgeInputRow) {
+    guard case let .shippingLocation(location, shippingCost, project) = value else {
+      return
+    }
+
+    self.countryButton.setTitle(location, for: .normal)
+    self.amountLabel.attributedText = shippingValue(for: shippingCost, project: project)
   }
+
+  // MARK: - Public Functions
+
+  func animate(_: Bool) {}
 }
 
 // MARK: - Styles
@@ -87,8 +100,6 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 private let amountLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.font .~ UIFont.ksr_title1()
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
 }
 
 private let countryButtonStyle: ButtonStyle = { (button: UIButton) in
@@ -104,4 +115,23 @@ private let countryButtonStyle: ButtonStyle = { (button: UIButton) in
 private let countryButtonTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.lineBreakMode .~ .byTruncatingTail
+}
+
+// MARK: - Functions
+// TODO: Move this to the future `PledgeShippingLocationCellViewModel`
+private func shippingValue(for shippingCost: Double, project: Project) -> NSAttributedString? {
+  let defaultAttributes = checkoutCurrencyDefaultAttributes()
+  let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
+  guard
+    let attributedCurrency = Format.attributedCurrency(
+      shippingCost,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode,
+      defaultAttributes: defaultAttributes,
+      superscriptAttributes: superscriptAttributes
+    ) else { return nil }
+
+  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { _, new in new }
+
+  return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }

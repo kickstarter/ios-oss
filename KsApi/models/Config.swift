@@ -1,11 +1,10 @@
 public enum Experiment {
-
   public enum Name: String {
     case creatorsNameDiscovery = "show_created_by_discovery"
   }
 
   public enum Variant: String {
-    case control //default
+    case control // default
     case experimental
   }
 }
@@ -13,18 +12,18 @@ public enum Experiment {
 public typealias Features = [String: Bool]
 
 public struct Config {
-  public private(set) var abExperiments: [String: String]
-  public private(set) var appId: Int
-  public private(set) var applePayCountries: [String]
-  public private(set) var countryCode: String
-  public private(set) var features: Features
-  public private(set) var iTunesLink: String
-  public private(set) var launchedCountries: [Project.Country]
-  public private(set) var locale: String
-  public private(set) var stripePublishableKey: String
+  public var abExperiments: [String: String]
+  public var appId: Int
+  public var applePayCountries: [String]
+  public var countryCode: String
+  public var features: Features
+  public var iTunesLink: String
+  public var launchedCountries: [Project.Country]
+  public var locale: String
+  public var stripePublishableKey: String
 
   public var abExperimentsArray: [String] {
-    let stringsArray = self.abExperiments.map { (key, value) in
+    let stringsArray = self.abExperiments.map { key, value in
       key + "[\(value)]"
     }
     return stringsArray
@@ -32,7 +31,6 @@ public struct Config {
 }
 
 extension Config: Swift.Decodable {
-
   enum CodingKeys: String, CodingKey {
     case abExperiments = "ab_experiments"
     case appId = "app_id"
@@ -65,8 +63,8 @@ extension Config: Swift.Decodable {
   }
 }
 
-extension Config: Equatable {
-}
+extension Config: Equatable {}
+
 public func == (lhs: Config, rhs: Config) -> Bool {
   return lhs.abExperiments == rhs.abExperiments &&
     lhs.appId == rhs.appId &&

@@ -1,22 +1,20 @@
-@testable import Library
 @testable import Kickstarter_Framework
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
-import KsApi
+@testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
 import WebKit
 import XCTest
 
 final class UpdatePreviewViewModelTests: TestCase {
   fileprivate let vm: UpdatePreviewViewModelType = UpdatePreviewViewModel()
 
-  fileprivate let showPublishConfirmation = TestObserver<String, NoError>()
-  fileprivate let showPublishFailure = TestObserver<(), NoError>()
-  fileprivate let goToUpdate = TestObserver<Update, NoError>()
-  fileprivate let goToUpdateProject = TestObserver<Project, NoError>()
-  fileprivate let webViewLoadRequest = TestObserver<String?, NoError>()
+  fileprivate let showPublishConfirmation = TestObserver<String, Never>()
+  fileprivate let showPublishFailure = TestObserver<(), Never>()
+  fileprivate let goToUpdate = TestObserver<Update, Never>()
+  fileprivate let goToUpdateProject = TestObserver<Project, Never>()
+  fileprivate let webViewLoadRequest = TestObserver<String?, Never>()
 
   override func setUp() {
     super.setUp()
@@ -79,7 +77,7 @@ final class UpdatePreviewViewModelTests: TestCase {
       self.showPublishConfirmation.assertValueCount(0)
       self.vm.inputs.publishButtonTapped()
       let confirmation =
-      "This will notify 1,024 backers that a new update is available. Are you sure you want to post?"
+        "This will notify 1,024 backers that a new update is available. Are you sure you want to post?"
       self.showPublishConfirmation.assertValues([confirmation])
 
       self.goToUpdate.assertValues([])
@@ -98,7 +96,8 @@ final class UpdatePreviewViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Triggered Publish Confirmation Modal", "Confirmed Publish", "Published Update", "Update Published"],
-        trackingClient.events, "Koala event is tracked.")
+        trackingClient.events, "Koala event is tracked."
+      )
     }
   }
 
@@ -118,7 +117,7 @@ final class UpdatePreviewViewModelTests: TestCase {
       self.showPublishConfirmation.assertValueCount(0)
       self.vm.inputs.publishButtonTapped()
       let confirmation =
-      "This will notify 1,024 backers that a new update is available. Are you sure you want to post?"
+        "This will notify 1,024 backers that a new update is available. Are you sure you want to post?"
       self.showPublishConfirmation.assertValues([confirmation])
 
       self.goToUpdate.assertValues([])
@@ -133,7 +132,8 @@ final class UpdatePreviewViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Triggered Publish Confirmation Modal", "Canceled Publish"],
-        trackingClient.events, "Koala event is tracked.")
+        trackingClient.events, "Koala event is tracked."
+      )
     }
   }
 
@@ -160,7 +160,9 @@ final class UpdatePreviewViewModelTests: TestCase {
       self.showPublishFailure.assertValueCount(1)
     }
 
-    XCTAssertEqual(["Triggered Publish Confirmation Modal", "Confirmed Publish"],
-                   trackingClient.events, "Koala event is not tracked.")
+    XCTAssertEqual(
+      ["Triggered Publish Confirmation Modal", "Confirmed Publish"],
+      trackingClient.events, "Koala event is not tracked."
+    )
   }
 }

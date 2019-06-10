@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 import WebKit
 
 public protocol ProjectCreatorViewModelInputs {
@@ -18,19 +17,19 @@ public protocol ProjectCreatorViewModelInputs {
 
 public protocol ProjectCreatorViewModelOutputs {
   /// Emits when we should return to project page.
-  var goBackToProject: Signal<(), NoError> { get }
+  var goBackToProject: Signal<(), Never> { get }
 
   /// Emits when the LoginToutViewController should be presented.
-  var goToLoginTout: Signal<LoginIntent, NoError> { get }
+  var goToLoginTout: Signal<LoginIntent, Never> { get }
 
   /// Emits when we should navigate to the message dialog.
-  var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError> { get }
+  var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
 
   /// Emits when we should open a safari browser with the URL.
-  var goToSafariBrowser: Signal<URL, NoError> { get }
+  var goToSafariBrowser: Signal<URL, Never> { get }
 
   /// Emits a request that should be loaded into the web view.
-  var loadWebViewRequest: Signal<URLRequest, NoError> { get }
+  var loadWebViewRequest: Signal<URLRequest, Never> { get }
 }
 
 public protocol ProjectCreatorViewModelType {
@@ -39,8 +38,7 @@ public protocol ProjectCreatorViewModelType {
 }
 
 public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, ProjectCreatorViewModelInputs,
-ProjectCreatorViewModelOutputs {
-
+  ProjectCreatorViewModelOutputs {
   public init() {
     let navigationAction = self.navigationAction.signal.skipNil()
     let project = Signal.combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
@@ -53,9 +51,9 @@ ProjectCreatorViewModelOutputs {
 
     self.loadWebViewRequest = project.map {
       URL(string: $0.urls.web.project)?.appendingPathComponent("creator_bio")
-      }
-      .skipNil()
-      .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
+    }
+    .skipNil()
+    .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
 
     self.decidedPolicy <~ navigationAction
       .map { $0.navigationType == .other ? .allow : .cancel }
@@ -72,7 +70,7 @@ ProjectCreatorViewModelOutputs {
     self.goBackToProject = Signal.combineLatest(project, navigationAction)
       .filter { $1.navigationType == .linkActivated }
       .filter { project, navigation in
-         project.urls.web.project == navigation.request.url?.absoluteString
+        project.urls.web.project == navigation.request.url?.absoluteString
       }
       .ignoreValues()
 
@@ -89,7 +87,7 @@ ProjectCreatorViewModelOutputs {
       .takeWhen(self.goToSafariBrowser)
       .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectCreator)
-    }
+      }
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -108,11 +106,12 @@ ProjectCreatorViewModelOutputs {
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  public let goBackToProject: Signal<(), NoError>
-  public let goToLoginTout: Signal<LoginIntent, NoError>
-  public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), NoError>
-  public let goToSafariBrowser: Signal<URL, NoError>
-  public let loadWebViewRequest: Signal<URLRequest, NoError>
+
+  public let goBackToProject: Signal<(), Never>
+  public let goToLoginTout: Signal<LoginIntent, Never>
+  public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
+  public let goToSafariBrowser: Signal<URL, Never>
+  public let loadWebViewRequest: Signal<URLRequest, Never>
 
   public var inputs: ProjectCreatorViewModelInputs { return self }
   public var outputs: ProjectCreatorViewModelOutputs { return self }

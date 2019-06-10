@@ -3,38 +3,37 @@ import Curry
 import Runes
 
 public struct User {
-  public private(set) var avatar: Avatar
-  public private(set) var facebookConnected: Bool?
-  public private(set) var id: Int
-  public private(set) var isFriend: Bool?
-  public private(set) var liveAuthToken: String?
-  public private(set) var location: Location?
-  public private(set) var name: String
-  public private(set) var needsFreshFacebookToken: Bool?
-  public private(set) var newsletters: NewsletterSubscriptions
-  public private(set) var notifications: Notifications
-  public private(set) var optedOutOfRecommendations: Bool?
-  public private(set) var showPublicProfile: Bool?
-  public private(set) var social: Bool?
-  public private(set) var stats: Stats
+  public var avatar: Avatar
+  public var facebookConnected: Bool?
+  public var id: Int
+  public var isFriend: Bool?
+  public var location: Location?
+  public var name: String
+  public var needsFreshFacebookToken: Bool?
+  public var newsletters: NewsletterSubscriptions
+  public var notifications: Notifications
+  public var optedOutOfRecommendations: Bool?
+  public var showPublicProfile: Bool?
+  public var social: Bool?
+  public var stats: Stats
 
   public struct Avatar {
-    public private(set) var large: String?
-    public private(set) var medium: String
-    public private(set) var small: String
+    public var large: String?
+    public var medium: String
+    public var small: String
   }
 
   public struct NewsletterSubscriptions {
-    public private(set) var arts: Bool?
-    public private(set) var games: Bool?
-    public private(set) var happening: Bool?
-    public private(set) var invent: Bool?
-    public private(set) var promo: Bool?
-    public private(set) var weekly: Bool?
-    public private(set) var films: Bool?
-    public private(set) var publishing: Bool?
-    public private(set) var alumni: Bool?
-    public private(set) var music: Bool?
+    public var arts: Bool?
+    public var games: Bool?
+    public var happening: Bool?
+    public var invent: Bool?
+    public var promo: Bool?
+    public var weekly: Bool?
+    public var films: Bool?
+    public var publishing: Bool?
+    public var alumni: Bool?
+    public var music: Bool?
 
     public static func all(on: Bool) -> NewsletterSubscriptions {
       return NewsletterSubscriptions(
@@ -53,32 +52,32 @@ public struct User {
   }
 
   public struct Notifications {
-    public private(set) var backings: Bool?
-    public private(set) var commentReplies: Bool?
-    public private(set) var comments: Bool?
-    public private(set) var creatorDigest: Bool?
-    public private(set) var creatorTips: Bool?
-    public private(set) var follower: Bool?
-    public private(set) var friendActivity: Bool?
-    public private(set) var messages: Bool?
-    public private(set) var mobileBackings: Bool?
-    public private(set) var mobileComments: Bool?
-    public private(set) var mobileFollower: Bool?
-    public private(set) var mobileFriendActivity: Bool?
-    public private(set) var mobileMessages: Bool?
-    public private(set) var mobilePostLikes: Bool?
-    public private(set) var mobileUpdates: Bool?
-    public private(set) var postLikes: Bool?
-    public private(set) var updates: Bool?
+    public var backings: Bool?
+    public var commentReplies: Bool?
+    public var comments: Bool?
+    public var creatorDigest: Bool?
+    public var creatorTips: Bool?
+    public var follower: Bool?
+    public var friendActivity: Bool?
+    public var messages: Bool?
+    public var mobileBackings: Bool?
+    public var mobileComments: Bool?
+    public var mobileFollower: Bool?
+    public var mobileFriendActivity: Bool?
+    public var mobileMessages: Bool?
+    public var mobilePostLikes: Bool?
+    public var mobileUpdates: Bool?
+    public var postLikes: Bool?
+    public var updates: Bool?
   }
 
   public struct Stats {
-    public private(set) var backedProjectsCount: Int?
-    public private(set) var createdProjectsCount: Int?
-    public private(set) var memberProjectsCount: Int?
-    public private(set) var starredProjectsCount: Int?
-    public private(set) var unansweredSurveysCount: Int?
-    public private(set) var unreadMessagesCount: Int?
+    public var backedProjectsCount: Int?
+    public var createdProjectsCount: Int?
+    public var memberProjectsCount: Int?
+    public var starredProjectsCount: Int?
+    public var unansweredSurveysCount: Int?
+    public var unreadMessagesCount: Int?
   }
 
   public var isCreator: Bool {
@@ -93,7 +92,7 @@ public func == (lhs: User, rhs: User) -> Bool {
 
 extension User: CustomDebugStringConvertible {
   public var debugDescription: String {
-    return "User(id: \(id), name: \"\(name)\")"
+    return "User(id: \(self.id), name: \"\(self.name)\")"
   }
 }
 
@@ -105,7 +104,6 @@ extension User: Argo.Decodable {
       <*> json <| "id"
     let tmp2 = tmp1
       <*> json <|? "is_friend"
-      <*> json <|? "ksr_live_token"
       <*> (json <|? "location" <|> .success(nil))
     let tmp3 = tmp2
       <*> json <| "name"
@@ -127,7 +125,6 @@ extension User: EncodableType {
     result["facebook_connected"] = self.facebookConnected ?? false
     result["id"] = self.id
     result["is_friend"] = self.isFriend ?? false
-    result["ksr_live_token"] = self.liveAuthToken
     result["location"] = self.location?.encode()
     result["name"] = self.name
     result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? false
@@ -165,7 +162,6 @@ extension User.Avatar: EncodableType {
 
 extension User.NewsletterSubscriptions: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.NewsletterSubscriptions> {
-
     return curry(User.NewsletterSubscriptions.init)
       <^> json <|? "arts_culture_newsletter"
       <*> json <|? "games_newsletter"
@@ -295,12 +291,12 @@ extension User.Stats: Argo.Decodable {
 extension User.Stats: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]
-    result["backed_projects_count"] =  self.backedProjectsCount
+    result["backed_projects_count"] = self.backedProjectsCount
     result["created_projects_count"] = self.createdProjectsCount
     result["member_projects_count"] = self.memberProjectsCount
     result["starred_projects_count"] = self.starredProjectsCount
     result["unanswered_surveys_count"] = self.unansweredSurveysCount
-    result["unread_messages_count"] =  self.unreadMessagesCount
+    result["unread_messages_count"] = self.unreadMessagesCount
     return result
   }
 }

@@ -8,16 +8,16 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   fileprivate let viewModel: SignupViewModelType = SignupViewModel()
   fileprivate let helpViewModel = HelpViewModel()
 
-  @IBOutlet fileprivate weak var scrollView: UIScrollView!
-  @IBOutlet fileprivate weak var disclaimerButton: UIButton!
-  @IBOutlet fileprivate weak var emailTextField: UITextField!
-  @IBOutlet fileprivate weak var formBackgroundView: UIView!
-  @IBOutlet fileprivate weak var nameTextField: UITextField!
-  @IBOutlet fileprivate weak var newsletterLabel: UILabel!
-  @IBOutlet fileprivate weak var newsletterSwitch: UISwitch!
-  @IBOutlet fileprivate weak var passwordTextField: UITextField!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
-  @IBOutlet fileprivate weak var signupButton: UIButton!
+  @IBOutlet fileprivate var scrollView: UIScrollView!
+  @IBOutlet fileprivate var disclaimerButton: UIButton!
+  @IBOutlet fileprivate var emailTextField: UITextField!
+  @IBOutlet fileprivate var formBackgroundView: UIView!
+  @IBOutlet fileprivate var nameTextField: UITextField!
+  @IBOutlet fileprivate var newsletterLabel: UILabel!
+  @IBOutlet fileprivate var newsletterSwitch: UISwitch!
+  @IBOutlet fileprivate var passwordTextField: UITextField!
+  @IBOutlet fileprivate var rootStackView: UIStackView!
+  @IBOutlet fileprivate var signupButton: UIButton!
 
   internal static func instantiate() -> SignupViewController {
     let vc = Storyboard.Login.instantiate(SignupViewController.self)
@@ -29,33 +29,49 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.nameTextField.addTarget(self,
-                                 action: #selector(nameTextFieldReturn),
-                                 for: .editingDidEndOnExit)
+    self.nameTextField.addTarget(
+      self,
+      action: #selector(self.nameTextFieldReturn),
+      for: .editingDidEndOnExit
+    )
 
-    self.nameTextField.addTarget(self,
-                                 action: #selector(nameTextFieldChanged(_:)),
-                                 for: [.editingDidEndOnExit, .editingChanged])
+    self.nameTextField.addTarget(
+      self,
+      action: #selector(self.nameTextFieldChanged(_:)),
+      for: [.editingDidEndOnExit, .editingChanged]
+    )
 
-    self.emailTextField.addTarget(self,
-                                  action: #selector(emailTextFieldReturn),
-                                  for: .editingDidEndOnExit)
+    self.emailTextField.addTarget(
+      self,
+      action: #selector(self.emailTextFieldReturn),
+      for: .editingDidEndOnExit
+    )
 
-    self.emailTextField.addTarget(self,
-                                  action: #selector(emailTextFieldChanged(_:)),
-                                  for: [.editingDidEndOnExit, .editingChanged])
+    self.emailTextField.addTarget(
+      self,
+      action: #selector(self.emailTextFieldChanged(_:)),
+      for: [.editingDidEndOnExit, .editingChanged]
+    )
 
-    self.passwordTextField.addTarget(self,
-                                     action: #selector(passwordTextFieldReturn),
-                                     for: .editingDidEndOnExit)
+    self.passwordTextField.addTarget(
+      self,
+      action: #selector(self.passwordTextFieldReturn),
+      for: .editingDidEndOnExit
+    )
 
-    self.passwordTextField.addTarget(self,
-                                     action: #selector(passwordTextFieldChanged(_:)),
-                                     for: [.editingChanged])
+    self.passwordTextField.addTarget(
+      self,
+      action: #selector(self.passwordTextFieldChanged(_:)),
+      for: [.editingChanged]
+    )
 
-    self.disclaimerButton.addTarget(self, action: #selector(disclaimerButtonPressed), for: .touchUpInside)
-    let newsletterLabelTapGesture = UITapGestureRecognizer(target: self,
-                                                           action: #selector(newsletterLabelTapped))
+    self.disclaimerButton.addTarget(
+      self, action: #selector(self.disclaimerButtonPressed), for: .touchUpInside
+    )
+    let newsletterLabelTapGesture = UITapGestureRecognizer(
+      target: self,
+      action: #selector(self.newsletterLabelTapped)
+    )
     self.newsletterLabel.addGestureRecognizer(newsletterLabelTapGesture)
 
     self.viewModel.inputs.viewDidLoad()
@@ -119,13 +135,13 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
           UIAlertController.alert(nil, message: message),
           animated: true, completion: nil
         )
-    }
+      }
 
     self.helpViewModel.outputs.showHelpSheet
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.showHelpSheet(helpTypes: $0)
-    }
+      }
 
     self.helpViewModel.outputs.showMailCompose
       .observeForControllerAction()
@@ -134,19 +150,19 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
         let controller = MFMailComposeViewController.support()
         controller.mailComposeDelegate = _self
         _self.present(controller, animated: true, completion: nil)
-    }
+      }
 
     self.helpViewModel.outputs.showNoEmailError
       .observeForControllerAction()
       .observeValues { [weak self] alert in
         self?.present(alert, animated: true, completion: nil)
-    }
+      }
 
     self.helpViewModel.outputs.showWebHelp
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
         self?.goToHelpType(helpType)
-    }
+      }
 
     Keyboard.change.observeForUI()
       .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
@@ -156,7 +172,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.viewModel.inputs.emailChanged(textField.text ?? "")
   }
 
-  @objc internal func emailTextFieldReturn(_ textField: UITextField) {
+  @objc internal func emailTextFieldReturn(_: UITextField) {
     self.viewModel.inputs.emailTextFieldReturn()
   }
 
@@ -164,7 +180,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.viewModel.inputs.nameChanged(textField.text ?? "")
   }
 
-  @objc internal func nameTextFieldReturn(_ textField: UITextField) {
+  @objc internal func nameTextFieldReturn(_: UITextField) {
     self.viewModel.inputs.nameTextFieldReturn()
   }
 
@@ -172,7 +188,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.viewModel.inputs.passwordChanged(textField.text ?? "")
   }
 
-  @objc internal func passwordTextFieldReturn(_ textField: UITextField) {
+  @objc internal func passwordTextFieldReturn(_: UITextField) {
     self.viewModel.inputs.passwordTextFieldReturn()
   }
 
@@ -192,9 +208,11 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
-  @objc internal func mailComposeController(_ controller: MFMailComposeViewController,
-                                            didFinishWith result: MFMailComposeResult,
-                                            error: Error?) {
+  @objc internal func mailComposeController(
+    _: MFMailComposeViewController,
+    didFinishWith result: MFMailComposeResult,
+    error _: Error?
+  ) {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
     self.dismiss(animated: true, completion: nil)
   }
@@ -202,7 +220,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
     UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
       self.scrollView.contentInset.bottom = change.frame.height
-      }, completion: nil)
+    }, completion: nil)
   }
 
   fileprivate func goToHelpType(_ helpType: HelpType) {
@@ -221,13 +239,15 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       )
     }
 
-    helpSheet.addAction(UIAlertAction(title: Strings.login_tout_help_sheet_cancel(),
+    helpSheet.addAction(UIAlertAction(
+      title: Strings.login_tout_help_sheet_cancel(),
       style: .cancel,
       handler: { [weak helpVM = self.helpViewModel] _ in
         helpVM?.inputs.cancelHelpSheetButtonTapped()
-      }))
+      }
+    ))
 
-    //iPad provision
+    // iPad provision
     helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
     self.present(helpSheet, animated: true, completion: nil)

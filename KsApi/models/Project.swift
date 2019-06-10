@@ -1,42 +1,41 @@
 import Argo
 import Curry
-import Runes
 import Prelude
+import Runes
 
 public struct Project {
-
-  public private(set) var blurb: String
-  public private(set) var category: Category
-  public private(set) var country: Country
-  public private(set) var creator: User
-  public private(set) var memberData: MemberData
-  public private(set) var dates: Dates
-  public private(set) var id: Int
-  public private(set) var location: Location
-  public private(set) var name: String
-  public private(set) var personalization: Personalization
-  public private(set) var photo: Photo
-  public private(set) var rewards: [Reward]
-  public private(set) var slug: String
-  public private(set) var staffPick: Bool
-  public private(set) var state: State
-  public private(set) var stats: Stats
-  public private(set) var urls: UrlsEnvelope
-  public private(set) var video: Video?
+  public var blurb: String
+  public var category: Category
+  public var country: Country
+  public var creator: User
+  public var memberData: MemberData
+  public var dates: Dates
+  public var id: Int
+  public var location: Location
+  public var name: String
+  public var personalization: Personalization
+  public var photo: Photo
+  public var rewards: [Reward]
+  public var slug: String
+  public var staffPick: Bool
+  public var state: State
+  public var stats: Stats
+  public var urls: UrlsEnvelope
+  public var video: Video?
 
   public struct UrlsEnvelope {
-    public private(set) var web: WebEnvelope
+    public var web: WebEnvelope
 
     public struct WebEnvelope {
-      public private(set) var project: String
-      public private(set) var updates: String?
+      public var project: String
+      public var updates: String?
     }
   }
 
   public struct Video {
-    public private(set) var id: Int
-    public private(set) var high: String
-    public private(set) var hls: String?
+    public var id: Int
+    public var high: String
+    public var hls: String?
   }
 
   public enum State: String, Argo.Decodable {
@@ -51,19 +50,19 @@ public struct Project {
   }
 
   public struct Stats {
-    public private(set) var backersCount: Int
-    public private(set) var commentsCount: Int?
+    public var backersCount: Int
+    public var commentsCount: Int?
     /// The currency code of the project ex. USD
-    public private(set) var currency: String
+    public var currency: String
     /// The currency code of the User's preferred currency ex. SEK
-    public private(set) var currentCurrency: String?
+    public var currentCurrency: String?
     /// The currency conversion rate between the User's preferred currency
     /// and the Project's currency
-    public private(set) var currentCurrencyRate: Float?
-    public private(set) var goal: Int
-    public private(set) var pledged: Int
-    public private(set) var staticUsdRate: Float
-    public private(set) var updatesCount: Int?
+    public var currentCurrencyRate: Float?
+    public var goal: Int
+    public var pledged: Int
+    public var staticUsdRate: Float
+    public var updatesCount: Int?
 
     /// Percent funded as measured from `0.0` to `1.0`. See `percentFunded` for a value from `0` to `100`.
     public var fundingProgress: Float {
@@ -121,41 +120,41 @@ public struct Project {
   }
 
   public struct MemberData {
-    public private(set) var lastUpdatePublishedAt: TimeInterval?
-    public private(set) var permissions: [Permission]
-    public private(set) var unreadMessagesCount: Int?
-    public private(set) var unseenActivityCount: Int?
+    public var lastUpdatePublishedAt: TimeInterval?
+    public var permissions: [Permission]
+    public var unreadMessagesCount: Int?
+    public var unseenActivityCount: Int?
 
     public enum Permission: String {
       case editProject = "edit_project"
       case editFaq = "edit_faq"
-      case post = "post"
-      case comment = "comment"
+      case post
+      case comment
       case viewPledges = "view_pledges"
-      case fulfillment = "fulfillment"
-      case unknown = "unknown"
+      case fulfillment
+      case unknown
     }
   }
 
   public struct Dates {
-    public private(set) var deadline: TimeInterval
-    public private(set) var featuredAt: TimeInterval?
-    public private(set) var launchedAt: TimeInterval
-    public private(set) var stateChangedAt: TimeInterval
+    public var deadline: TimeInterval
+    public var featuredAt: TimeInterval?
+    public var launchedAt: TimeInterval
+    public var stateChangedAt: TimeInterval
   }
 
   public struct Personalization {
-    public private(set) var backing: Backing?
-    public private(set) var friends: [User]?
-    public private(set) var isBacking: Bool?
-    public private(set) var isStarred: Bool?
+    public var backing: Backing?
+    public var friends: [User]?
+    public var isBacking: Bool?
+    public var isStarred: Bool?
   }
 
   public struct Photo {
-    public private(set) var full: String
-    public private(set) var med: String
-    public private(set) var size1024x768: String?
-    public private(set) var small: String
+    public var full: String
+    public var med: String
+    public var size1024x768: String?
+    public var small: String
   }
 
   public func endsIn48Hours(today: Date = Date()) -> Bool {
@@ -165,7 +164,7 @@ public struct Project {
 
   public func isFeaturedToday(today: Date = Date(), calendar: Calendar = .current) -> Bool {
     guard let featuredAt = self.dates.featuredAt else { return false }
-    return isDateToday(date: featuredAt, today: today, calendar: calendar)
+    return self.isDateToday(date: featuredAt, today: today, calendar: calendar)
   }
 
   private func isDateToday(date: TimeInterval, today: Date, calendar: Calendar) -> Bool {
@@ -186,7 +185,7 @@ extension Project: CustomDebugStringConvertible {
 }
 
 extension Project: Argo.Decodable {
-  static public func decode(_ json: JSON) -> Decoded<Project> {
+  public static func decode(_ json: JSON) -> Decoded<Project> {
     let tmp1 = curry(Project.init)
       <^> json <| "blurb"
       <*> ((json <| "category" >>- decodeToGraphCategory) as Decoded<Category>)
@@ -213,7 +212,7 @@ extension Project: Argo.Decodable {
 }
 
 extension Project.UrlsEnvelope: Argo.Decodable {
-  static public func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope> {
+  public static func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope> {
     return curry(Project.UrlsEnvelope.init)
       <^> json <| "web"
   }
@@ -274,8 +273,7 @@ extension Project.Personalization: Argo.Decodable {
 }
 
 extension Project.Photo: Argo.Decodable {
-  static public func decode(_ json: JSON) -> Decoded<Project.Photo> {
-
+  public static func decode(_ json: JSON) -> Decoded<Project.Photo> {
     let url1024: Decoded<String?> = ((json <| "1024x768") <|> (json <| "1024x576"))
       // swiftlint:disable:next syntactic_sugar
       .map(Optional<String>.init)
@@ -291,7 +289,7 @@ extension Project.Photo: Argo.Decodable {
 
 extension Project.MemberData.Permission: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.MemberData.Permission> {
-    if case .string(let permission) = json {
+    if case let .string(permission) = json {
       return self.init(rawValue: permission).map(pure) ?? .success(.unknown)
     }
     return .success(.unknown)
@@ -314,16 +312,17 @@ private func toInt(string: String) -> Decoded<Int> {
  code to use exclusively Swift's native Decodable.
  */
 private func decodeToGraphCategory(_ json: JSON?) -> Decoded<Category> {
-
   guard let jsonObj = json else {
     return .success(Category(id: "-1", name: "Unknown Category"))
   }
 
   switch jsonObj {
-  case .object(let dic):
-    let category = Category(id: categoryInfo(dic).0,
-                            name: categoryInfo(dic).1,
-                            parentId: categoryInfo(dic).2)
+  case let .object(dic):
+    let category = Category(
+      id: categoryInfo(dic).0,
+      name: categoryInfo(dic).1,
+      parentId: categoryInfo(dic).2
+    )
     return .success(category)
   default:
     return .failure(DecodeError.custom("JSON should be object type"))
@@ -331,19 +330,18 @@ private func decodeToGraphCategory(_ json: JSON?) -> Decoded<Category> {
 }
 
 private func categoryInfo(_ json: [String: JSON]) -> (String, String, String?) {
-
   guard let name = json["name"], let id = json["id"] else {
-    return("", "", nil)
+    return ("", "", nil)
   }
   let parentId = json["parent_id"]
 
   switch (id, name, parentId) {
-  case (.number(let id), .string(let name), .number(let parentId)?):
+  case let (.number(id), .string(name), .number(parentId)?):
     return ("\(id)", name, "\(parentId)")
-  case (.number(let id), .string(let name), nil):
+  case (let .number(id), let .string(name), nil):
     return ("\(id)", name, nil)
   default:
-    return("", "", nil)
+    return ("", "", nil)
   }
 }
 

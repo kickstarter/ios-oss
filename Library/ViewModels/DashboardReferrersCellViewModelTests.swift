@@ -1,25 +1,24 @@
-import Prelude
-import ReactiveSwift
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class DashboardReferrersCellViewModelTests: TestCase {
   internal let vm = DashboardReferrersCellViewModel()
-  internal let averagePledgeText = TestObserver<String, NoError>()
-  internal let customPercentText = TestObserver<String, NoError>()
-  internal let customPledgedText = TestObserver<String, NoError>()
-  internal let externalPercentText = TestObserver<String, NoError>()
-  internal let externalPledgedText = TestObserver<String, NoError>()
-  internal let internalPercentText = TestObserver<String, NoError>()
-  internal let internalPledgedText = TestObserver<String, NoError>()
-  internal let notifyDelegateAddedReferrerRows = TestObserver<Void, NoError>()
-  internal let referrersRowCountry = TestObserver<Project.Country, NoError>()
-  internal let referrersRowReferrers = TestObserver<[ProjectStatsEnvelope.ReferrerStats], NoError>()
-  internal let showMoreReferrersButtonHidden = TestObserver<Bool, NoError>()
+  internal let averagePledgeText = TestObserver<String, Never>()
+  internal let customPercentText = TestObserver<String, Never>()
+  internal let customPledgedText = TestObserver<String, Never>()
+  internal let externalPercentText = TestObserver<String, Never>()
+  internal let externalPledgedText = TestObserver<String, Never>()
+  internal let internalPercentText = TestObserver<String, Never>()
+  internal let internalPledgedText = TestObserver<String, Never>()
+  internal let notifyDelegateAddedReferrerRows = TestObserver<Void, Never>()
+  internal let referrersRowCountry = TestObserver<Project.Country, Never>()
+  internal let referrersRowReferrers = TestObserver<[ProjectStatsEnvelope.ReferrerStats], Never>()
+  internal let showMoreReferrersButtonHidden = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -48,15 +47,17 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
       |> ProjectStatsEnvelope.ReferralAggregateStats.lens.external .~ 100.00
       |> ProjectStatsEnvelope.ReferralAggregateStats.lens.custom .~ 100.00
 
-    self.vm.inputs.configureWith(cumulative: cumulative, project: project,
-                                 referralAggregates: referralAggregates, referrers: referrers)
+    self.vm.inputs.configureWith(
+      cumulative: cumulative, project: project,
+      referralAggregates: referralAggregates, referrers: referrers
+    )
 
     self.externalPledgedText.assertValues(["$100"])
-    self.externalPercentText.assertValues(["33%" ])
+    self.externalPercentText.assertValues(["33%"])
     self.customPledgedText.assertValues(["$100"])
     self.customPercentText.assertValues(["33%"])
     self.internalPledgedText.assertValues(["$100"])
-    self.internalPercentText.assertValues(["33%" ])
+    self.internalPercentText.assertValues(["33%"])
   }
 
   func testZeroPledges() {
@@ -71,15 +72,17 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
       |> ProjectStatsEnvelope.ReferralAggregateStats.lens.external .~ 0.0
       |> ProjectStatsEnvelope.ReferralAggregateStats.lens.custom .~ 0.0
 
-    self.vm.inputs.configureWith(cumulative: cumulative, project: project,
-                                 referralAggregates: referralAggregates, referrers: referrers)
+    self.vm.inputs.configureWith(
+      cumulative: cumulative, project: project,
+      referralAggregates: referralAggregates, referrers: referrers
+    )
 
     self.externalPledgedText.assertValues(["$0"])
-    self.externalPercentText.assertValues(["0%" ])
+    self.externalPercentText.assertValues(["0%"])
     self.customPledgedText.assertValues(["$0"])
     self.customPercentText.assertValues(["0%"])
     self.internalPledgedText.assertValues(["$0"])
-    self.internalPercentText.assertValues(["0%" ])
+    self.internalPercentText.assertValues(["0%"])
   }
 
   func testCumulativeDataEmits() {
@@ -90,8 +93,10 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     let referrers = [ProjectStatsEnvelope.ReferrerStats.template]
     let referralAggregates = ProjectStatsEnvelope.ReferralAggregateStats.template
 
-    self.vm.inputs.configureWith(cumulative: cumulative, project: project,
-                                 referralAggregates: referralAggregates, referrers: referrers)
+    self.vm.inputs.configureWith(
+      cumulative: cumulative, project: project,
+      referralAggregates: referralAggregates, referrers: referrers
+    )
     self.averagePledgeText.assertValues(["$50"], "Average pledge amount emits.")
   }
 
@@ -113,11 +118,15 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     let referrers = [stats1, stats2, stats3, stats4, stats5, stats6, stats7, stats8, stats9, stats10]
     let referralAggregates = ProjectStatsEnvelope.ReferralAggregateStats.template
 
-    self.vm.inputs.configureWith(cumulative: cumulative, project: project,
-                                 referralAggregates: referralAggregates, referrers: referrers)
+    self.vm.inputs.configureWith(
+      cumulative: cumulative, project: project,
+      referralAggregates: referralAggregates, referrers: referrers
+    )
     self.referrersRowCountry.assertValues([country], "Project country emits.")
-    self.referrersRowReferrers.assertValues([[stats1, stats2, stats3]],
-                                            "First four referrer stats emit.")
+    self.referrersRowReferrers.assertValues(
+      [[stats1, stats2, stats3]],
+      "First four referrer stats emit."
+    )
     self.showMoreReferrersButtonHidden.assertValues([false], "Button shown when there are more referrers.")
     XCTAssertEqual([], self.trackingClient.events)
 
@@ -172,8 +181,10 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     let referrers = [stats1, stats2, stats3, stats4, stats5]
     let referralAggregates = ProjectStatsEnvelope.ReferralAggregateStats.template
 
-    self.vm.inputs.configureWith(cumulative: cumulative, project: project,
-                                 referralAggregates: referralAggregates, referrers: referrers)
+    self.vm.inputs.configureWith(
+      cumulative: cumulative, project: project,
+      referralAggregates: referralAggregates, referrers: referrers
+    )
     self.referrersRowReferrers.assertValues(
       [[stats2, stats1, stats3, stats5, stats4]],
       "Initial stats emit sorted by descending pledge amount."

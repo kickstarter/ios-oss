@@ -1,19 +1,18 @@
 import Foundation
-import XCTest
-import ReactiveSwift
-import Result
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class SettingsPrivacyViewModelTests: TestCase {
   let vm = SettingsPrivacyViewModel()
-  internal let focusScreenReaderOnFollowingCell = TestObserver<Void, NoError>()
-  internal let reloadData = TestObserver<User, NoError>()
-  internal let resetFollowingSection = TestObserver<Void, NoError>()
-  internal let unableToSaveError = TestObserver<String, NoError>()
-  internal let updateCurrentUser = TestObserver<User, NoError>()
+  internal let focusScreenReaderOnFollowingCell = TestObserver<Void, Never>()
+  internal let reloadData = TestObserver<User, Never>()
+  internal let resetFollowingSection = TestObserver<Void, Never>()
+  internal let unableToSaveError = TestObserver<String, Never>()
+  internal let updateCurrentUser = TestObserver<User, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -44,7 +43,7 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
 
   func testResetFollowingSection_WhenCancelingSocialOptOut() {
     let user = User.template
-    |> \.social .~ true
+      |> \.social .~ true
 
     let mockService = MockService(fetchUserSelfResponse: user)
 
@@ -92,7 +91,6 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testFollowingSwitchTapped_updatesCurrentUser() {
-
     self.vm.viewDidLoad()
 
     self.vm.didCancelSocialOptOut()
@@ -106,7 +104,6 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testUpdateCurrentUser() {
-
     let mockService = MockService(fetchUserSelfResponse: User.template)
 
     withEnvironment(apiService: mockService) {

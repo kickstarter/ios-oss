@@ -1,12 +1,11 @@
 import Foundation
 import KsApi
 import Prelude
-import Result
 import ReactiveSwift
 
 public protocol SettingsPrivacySwitchCellViewModelOutputs {
-  var privacySwitchIsOn: Signal<Bool, NoError> { get }
-  var privacySwitchToggledOn: Signal<Bool, NoError> { get }
+  var privacySwitchIsOn: Signal<Bool, Never> { get }
+  var privacySwitchToggledOn: Signal<Bool, Never> { get }
 }
 
 public protocol SettingsPrivacySwitchCellViewModelInputs {
@@ -20,14 +19,14 @@ public protocol SettingsPrivacySwitchCellViewModelType {
 }
 
 public final class SettingsPrivacySwitchCellViewModel: SettingsPrivacySwitchCellViewModelType,
-SettingsPrivacySwitchCellViewModelInputs, SettingsPrivacySwitchCellViewModelOutputs {
+  SettingsPrivacySwitchCellViewModelInputs, SettingsPrivacySwitchCellViewModelOutputs {
   public init() {
-    self.privacySwitchIsOn = userProperty.signal
+    self.privacySwitchIsOn = self.userProperty.signal
       .skipNil()
       .map { ($0 |> (\User.showPublicProfile).view) ?? false }
       .negate()
 
-    self.privacySwitchToggledOn = switchToggledProperty.signal
+    self.privacySwitchToggledOn = self.switchToggledProperty.signal
   }
 
   private let userProperty = MutableProperty<User?>(nil)
@@ -40,8 +39,8 @@ SettingsPrivacySwitchCellViewModelInputs, SettingsPrivacySwitchCellViewModelOutp
     self.switchToggledProperty.value = on
   }
 
-  public let privacySwitchIsOn: Signal<Bool, NoError>
-  public let privacySwitchToggledOn: Signal<Bool, NoError>
+  public let privacySwitchIsOn: Signal<Bool, Never>
+  public let privacySwitchToggledOn: Signal<Bool, Never>
 
   public var inputs: SettingsPrivacySwitchCellViewModelInputs {
     return self

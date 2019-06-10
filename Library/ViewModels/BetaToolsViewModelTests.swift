@@ -1,20 +1,19 @@
-import XCTest
-import ReactiveSwift
-import Result
 @testable import KsApi
 @testable import Library
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 import Foundation
 
 final class BetaToolsViewModelTests: TestCase {
   let vm: BetaToolsViewModelType = BetaToolsViewModel()
 
-  let currentLanguage = TestObserver<Language, NoError>()
-  let environmentSwitcherButtonTitle = TestObserver<String, NoError>()
-  let goToBetaFeedback = TestObserver<(), NoError>()
-  let betaFeedbackMailDisabled = TestObserver<(), NoError>()
-  let logoutWithParams = TestObserver<DiscoveryParams, NoError>()
+  let currentLanguage = TestObserver<Language, Never>()
+  let environmentSwitcherButtonTitle = TestObserver<String, Never>()
+  let goToBetaFeedback = TestObserver<(), Never>()
+  let betaFeedbackMailDisabled = TestObserver<(), Never>()
+  let logoutWithParams = TestObserver<DiscoveryParams, Never>()
 
   override func setUp() {
     super.setUp()
@@ -41,7 +40,6 @@ final class BetaToolsViewModelTests: TestCase {
   }
 
   func testLogoutWithParamsEmits_WhenEnvironmentChanges() {
-
     withEnvironment(apiService: MockService(serverConfig: ServerConfig.production)) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.environmentSwitcherButtonTapped(environment: EnvironmentType.staging)

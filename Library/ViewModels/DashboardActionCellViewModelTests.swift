@@ -1,26 +1,25 @@
-import Prelude
-import ReactiveSwift
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class DashboardActionCellViewModelTests: TestCase {
   fileprivate let vm = DashboardActionCellViewModel()
 
-  fileprivate let activityButtonAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let activityRowHidden = TestObserver<Bool, NoError>()
-  fileprivate let goToActivity = TestObserver<Project, NoError>()
-  fileprivate let goToMessages = TestObserver<(), NoError>()
-  fileprivate let goToPostUpdate = TestObserver<Project, NoError>()
-  fileprivate let lastUpdatePublishedAt = TestObserver<String, NoError>()
-  fileprivate let lastUpdatePublishedLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let messagesButtonAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let messagesRowHidden = TestObserver<Bool, NoError>()
-  fileprivate let postUpdateButtonAccessibilityValue = TestObserver<String, NoError>()
-  fileprivate let postUpdateButtonHidden = TestObserver<Bool, NoError>()
+  fileprivate let activityButtonAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let activityRowHidden = TestObserver<Bool, Never>()
+  fileprivate let goToActivity = TestObserver<Project, Never>()
+  fileprivate let goToMessages = TestObserver<(), Never>()
+  fileprivate let goToPostUpdate = TestObserver<Project, Never>()
+  fileprivate let lastUpdatePublishedAt = TestObserver<String, Never>()
+  fileprivate let lastUpdatePublishedLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let messagesButtonAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let messagesRowHidden = TestObserver<Bool, Never>()
+  fileprivate let postUpdateButtonAccessibilityValue = TestObserver<String, Never>()
+  fileprivate let postUpdateButtonHidden = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -163,8 +162,10 @@ internal final class DashboardActionCellViewModelTests: TestCase {
       self.lastUpdatePublishedLabelHidden
         .assertValues([true], "Last update label is hidden without post permissions.")
       self.messagesRowHidden.assertValues([true], "Messages row is hidden for non-creator.")
-      self.postUpdateButtonHidden.assertValues([true],
-                                               "Post update button is hidden without post permissions.")
+      self.postUpdateButtonHidden.assertValues(
+        [true],
+        "Post update button is hidden without post permissions."
+      )
     }
   }
 }

@@ -8,11 +8,12 @@ import UIKit
  - parameter size:         The size of the UIView
  - parameter columnsCount: Number of columns to use in the palette.
  */
-public func colorPalette(colors: [(color: UIColor, name: String)],
+public func colorPalette(
+  colors: [(color: UIColor, name: String)],
   size: CGSize = CGSize(width: 800.0, height: 400.0),
-  columnsCount: Int = 6)
+  columnsCount: Int = 6
+)
   -> UIView {
-
   let palette = UIView(frame: CGRect(origin: .zero, size: size))
   palette.backgroundColor = .clear
 
@@ -24,11 +25,12 @@ public func colorPalette(colors: [(color: UIColor, name: String)],
     let row = Int(idx / columnsCount)
     let column = idx % columnsCount
 
-    let view = UIView(frame: CGRect(
-      x: CGFloat(column) * columnWidth,
-      y: CGFloat(row) * rowHeight,
-      width: columnWidth,
-      height: rowHeight
+    let view = UIView(
+      frame: CGRect(
+        x: CGFloat(column) * columnWidth,
+        y: CGFloat(row) * rowHeight,
+        width: columnWidth,
+        height: rowHeight
       )
     )
     view.backgroundColor = data.color

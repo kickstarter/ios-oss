@@ -1,32 +1,33 @@
 import AlamofireImage
 import ReactiveExtensions
 import ReactiveSwift
-import Result
 import UIKit
 
 extension UIImageView {
-
   public func ksr_setImageWithURL(_ url: URL) {
-
-    self.af_setImage(withURL: url,
-                     placeholderImage: nil,
-                     filter: nil,
-                     progress: nil,
-                     progressQueue: DispatchQueue.main,
-                     imageTransition: .crossDissolve(0.3),
-                     runImageTransitionIfCached: false,
-                     completion: nil)
+    self.af_setImage(
+      withURL: url,
+      placeholderImage: nil,
+      filter: nil,
+      progress: nil,
+      progressQueue: DispatchQueue.main,
+      imageTransition: .crossDissolve(0.3),
+      runImageTransitionIfCached: false,
+      completion: nil
+    )
   }
 
   public func ksr_setRoundedImageWith(_ url: URL) {
-    self.af_setImage(withURL: url,
-                     placeholderImage: nil,
-                     filter: CircleFilter(),
-                     progress: nil,
-                     progressQueue: DispatchQueue.main,
-                     imageTransition: .crossDissolve(0.3),
-                     runImageTransitionIfCached: false,
-                     completion: nil)
+    self.af_setImage(
+      withURL: url,
+      placeholderImage: nil,
+      filter: CircleFilter(),
+      progress: nil,
+      progressQueue: DispatchQueue.main,
+      imageTransition: .crossDissolve(0.3),
+      runImageTransitionIfCached: false,
+      completion: nil
+    )
   }
 }
 
@@ -35,7 +36,7 @@ private enum Associations {
 }
 
 extension Rac where Object: UIImageView {
-  public var imageUrl: Signal<URL?, NoError> {
+  public var imageUrl: Signal<URL?, Never> {
     nonmutating set {
       let prop: MutableProperty<URL?> = lazyMutableProperty(
         object,
@@ -46,7 +47,8 @@ extension Rac where Object: UIImageView {
           guard let url = url else { return }
           object?.ksr_setImageWithURL(url)
         },
-        getter: { nil })
+        getter: { nil }
+      )
 
       prop <~ newValue.observeForUI()
     }

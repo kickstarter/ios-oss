@@ -5,7 +5,7 @@ public struct SelectableRow {
   public let isSelected: Bool
   public let params: DiscoveryParams
 
-    public enum lens {
+  public enum lens {
     public static let isSelected = Lens<SelectableRow, Bool>(
       view: { $0.isSelected },
       set: { SelectableRow(isSelected: $0, params: $1.params) }
@@ -19,29 +19,32 @@ public struct SelectableRow {
 }
 
 public extension Lens where Whole == SelectableRow, Part == DiscoveryParams {
-  public var social: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params..DiscoveryParams.lens.social
+  var social: Lens<SelectableRow, Bool?> {
+    return SelectableRow.lens.params .. DiscoveryParams.lens.social
   }
-  public var staffPicks: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params..DiscoveryParams.lens.staffPicks
+
+  var staffPicks: Lens<SelectableRow, Bool?> {
+    return SelectableRow.lens.params .. DiscoveryParams.lens.staffPicks
   }
-  public var starred: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params..DiscoveryParams.lens.starred
+
+  var starred: Lens<SelectableRow, Bool?> {
+    return SelectableRow.lens.params .. DiscoveryParams.lens.starred
   }
-  public var category: Lens<SelectableRow, KsApi.Category?> {
-    return SelectableRow.lens.params..DiscoveryParams.lens.category
+
+  var category: Lens<SelectableRow, KsApi.Category?> {
+    return SelectableRow.lens.params .. DiscoveryParams.lens.category
   }
-  public var hasLiveStreams: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params..DiscoveryParams.lens.hasLiveStreams
+
+  var includePOTD: Lens<SelectableRow, Bool?> {
+    return SelectableRow.lens.params .. DiscoveryParams.lens.includePOTD
   }
-  public var includePOTD: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params..DiscoveryParams.lens.includePOTD
+
+  var recommended: Lens<SelectableRow, Bool?> {
+    return SelectableRow.lens.params .. DiscoveryParams.lens.recommended
   }
-  public var recommended: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params..DiscoveryParams.lens.recommended
-  }
-  public var backed: Lens<SelectableRow, Bool?> {
-    return SelectableRow.lens.params..DiscoveryParams.lens.backed
+
+  var backed: Lens<SelectableRow, Bool?> {
+    return SelectableRow.lens.params .. DiscoveryParams.lens.backed
   }
 }
 

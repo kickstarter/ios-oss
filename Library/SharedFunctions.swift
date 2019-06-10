@@ -1,8 +1,6 @@
 import KsApi
-import LiveStream
 import Prelude
 import ReactiveSwift
-import Result
 import UserNotifications
 
 /**
@@ -49,7 +47,6 @@ internal func pledgeContext(forProject project: Project, reward: Reward) -> Koal
  */
 internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?)
   -> (min: Double, max: Double) {
-
   // The country on the project cannot be trusted to have the min/max values, so first try looking
   // up the country in our launched countries array that we get back from the server config.
   let country = AppEnvironment.current.launchedCountries.countries
@@ -75,7 +72,6 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
  - returns: The minimum amount needed to pledge to the reward.
  */
 internal func minPledgeAmount(forProject project: Project, reward: Reward?) -> Double {
-
   return minAndMaxPledgeAmount(forProject: project, reward: reward).min
 }
 
@@ -89,10 +85,11 @@ internal func minPledgeAmount(forProject project: Project, reward: Reward?) -> D
 
  - returns: The currency symbol that can be used for currency display.
  */
-public func currencySymbol(forCountry country: Project.Country,
-                           omitCurrencyCode: Bool = true,
-                           env: Environment = AppEnvironment.current) -> String {
-
+public func currencySymbol(
+  forCountry country: Project.Country,
+  omitCurrencyCode: Bool = true,
+  env: Environment = AppEnvironment.current
+) -> String {
   guard env.launchedCountries.currencyNeedsCode(country.currencySymbol) else {
     // Currencies that dont have ambigious currencies can just use their symbol.
     return country.currencySymbol
@@ -113,47 +110,45 @@ public func currencySymbol(forCountry country: Project.Country,
   }
 }
 
-/// Returns a signal producer that emits, every second, the number of days/hours/minutes/seconds until 
+/// Returns a signal producer that emits, every second, the number of days/hours/minutes/seconds until
 /// a date is reached, at which point it completes.
 ///
 /// - parameter untilDate: The date to countdown to.
 ///
 /// - returns: A signal producer.
 public func countdownProducer(to date: Date)
-  -> SignalProducer<(day: String, hour: String, minute: String, second: String), NoError> {
+  -> SignalProducer<(day: String, hour: String, minute: String, second: String), Never> {
+  func formattedComponents(dateComponents: DateComponents)
+    -> (day: String, hour: String, minute: String, second: String) {
+    return (
+      day: String(format: "%02d", max(0, dateComponents.day ?? 0)),
+      hour: String(format: "%02d", max(0, dateComponents.hour ?? 0)),
+      minute: String(format: "%02d", max(0, dateComponents.minute ?? 0)),
+      second: String(format: "%02d", max(0, dateComponents.second ?? 0))
+    )
+  }
 
-    func formattedComponents(dateComponents: DateComponents)
-      -> (day: String, hour: String, minute: String, second: String) {
+  let now = AppEnvironment.current.scheduler.currentDate
+  let timeUntilNextRoundSecond = ceil(now.timeIntervalSince1970) - now.timeIntervalSince1970
 
-        return (
-          day: String(format: "%02d", max(0, dateComponents.day ?? 0)),
-          hour: String(format: "%02d", max(0, dateComponents.hour ?? 0)),
-          minute: String(format: "%02d", max(0, dateComponents.minute ?? 0)),
-          second: String(format: "%02d", max(0, dateComponents.second ?? 0))
-        )
-    }
+  // A timer that emits every second, but with a small delay so that it emits on a roundeded second.
+  let everySecond = SignalProducer<(), Never>(value: ())
+    .ksr_delay(.milliseconds(Int(timeUntilNextRoundSecond * 1_000)), on: AppEnvironment.current.scheduler)
+    .flatMap { SignalProducer.timer(interval: .seconds(1), on: AppEnvironment.current.scheduler) }
 
-    let now = AppEnvironment.current.scheduler.currentDate
-    let timeUntilNextRoundSecond = ceil(now.timeIntervalSince1970) - now.timeIntervalSince1970
-
-    // A timer that emits every second, but with a small delay so that it emits on a roundeded second.
-    let everySecond = SignalProducer<(), NoError>(value: ())
-      .ksr_delay(.milliseconds(Int(timeUntilNextRoundSecond * 1000)), on: AppEnvironment.current.scheduler)
-      .flatMap { SignalProducer.timer(interval: .seconds(1), on: AppEnvironment.current.scheduler) }
-
-    return SignalProducer.merge(
-      SignalProducer<Date, NoError>(value: now),
-      everySecond
-      )
-      .map { currentDate in
-        AppEnvironment.current.calendar.dateComponents(
-          [.day, .hour, .minute, .second],
-          from: currentDate,
-          to: Date(timeIntervalSince1970: ceil(date.timeIntervalSince1970))
-        )
-      }
-      .take(while: { ($0.second ?? 0) >= 0 })
-      .map(formattedComponents(dateComponents:))
+  return SignalProducer.merge(
+    SignalProducer<Date, Never>(value: now),
+    everySecond
+  )
+  .map { currentDate in
+    AppEnvironment.current.calendar.dateComponents(
+      [.day, .hour, .minute, .second],
+      from: currentDate,
+      to: Date(timeIntervalSince1970: ceil(date.timeIntervalSince1970))
+    )
+  }
+  .take(while: { ($0.second ?? 0) >= 0 })
+  .map(formattedComponents(dateComponents:))
 }
 
 internal func is1PasswordButtonHidden(_ isHidden: Bool) -> Bool {

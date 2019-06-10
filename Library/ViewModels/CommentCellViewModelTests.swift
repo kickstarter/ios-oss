@@ -1,22 +1,21 @@
-import XCTest
-@testable import Library
-import ReactiveExtensions_TestHelpers
 @testable import KsApi
-import ReactiveSwift
-import Result
+@testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 final class CommentCellViewModelTest: TestCase {
   let vm: CommentCellViewModelType = CommentCellViewModel()
 
-  let avatarUrl = TestObserver<URL?, NoError>()
-  let body = TestObserver<String, NoError>()
-  let bodyColor = TestObserver<UIColor, NoError>()
-  let bodyFont = TestObserver<UIFont, NoError>()
-  let creatorHidden = TestObserver<Bool, NoError>()
-  let commenterName = TestObserver<String, NoError>()
-  let timestamp = TestObserver<String, NoError>()
-  let youHidden = TestObserver<Bool, NoError>()
+  let avatarUrl = TestObserver<URL?, Never>()
+  let body = TestObserver<String, Never>()
+  let bodyColor = TestObserver<UIColor, Never>()
+  let bodyFont = TestObserver<UIFont, Never>()
+  let creatorHidden = TestObserver<Bool, Never>()
+  let commenterName = TestObserver<String, Never>()
+  let timestamp = TestObserver<String, Never>()
+  let youHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -34,7 +33,7 @@ final class CommentCellViewModelTest: TestCase {
   func testOutputs() {
     let comment = Comment.template
     let project = .template |> Project.lens.creator.id .~ 222
-    let viewer = User.template |> \.id .~ 12345
+    let viewer = User.template |> \.id .~ 12_345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 
@@ -67,7 +66,7 @@ final class CommentCellViewModelTest: TestCase {
   func testPersonalizedLabels_ViewerIs_NotCreator_NotAuthor() {
     let comment = Comment.template
     let project = .template |> Project.lens.creator.id .~ 222
-    let viewer = User.template |> \.id .~ 12345
+    let viewer = User.template |> \.id .~ 12_345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 
@@ -76,13 +75,15 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_NotCreator_Author() {
-    let author  = Author.template |> \.id .~ 12345
+    let author = Author.template |> \.id .~ 12_345
     let viewer = User.template |> \.id .~ author.id
-    let comment = Comment(author: author,
-                          body: "HELLO",
-                          createdAt: 123456789.0,
-                          deletedAt: nil,
-                          id: 1)
+    let comment = Comment(
+      author: author,
+      body: "HELLO",
+      createdAt: 123_456_789.0,
+      deletedAt: nil,
+      id: 1
+    )
     let project = Project.template
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
@@ -96,11 +97,13 @@ final class CommentCellViewModelTest: TestCase {
     let author = Author.template
       |> \.id .~ project.creator.id
 
-    let comment = Comment(author: author,
-                          body: "HELLO",
-                          createdAt: 123456789.0,
-                          deletedAt: nil,
-                          id: 1)
+    let comment = Comment(
+      author: author,
+      body: "HELLO",
+      createdAt: 123_456_789.0,
+      deletedAt: nil,
+      id: 1
+    )
     let viewer = User.template
       |> \.id .~ project.creator.id
 
@@ -111,12 +114,14 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_Creator_NonAuthor() {
-    let project = .template |> Project.lens.creator.id .~ 11111
-    let comment = Comment(author: Author.template |> \.id .~ 12345,
-                          body: "HELLO",
-                          createdAt: 123456789.0,
-                          deletedAt: nil,
-                          id: 1)
+    let project = .template |> Project.lens.creator.id .~ 11_111
+    let comment = Comment(
+      author: Author.template |> \.id .~ 12_345,
+      body: "HELLO",
+      createdAt: 123_456_789.0,
+      deletedAt: nil,
+      id: 1
+    )
     let viewer = project.creator
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
@@ -126,9 +131,9 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testDeletedComment() {
-    let comment = .template |> Comment.lens.deletedAt .~ 123456789.0
-    let project = .template |> Project.lens.creator.id .~ 11111
-    let viewer = User.template |> \.id .~ 12345
+    let comment = .template |> Comment.lens.deletedAt .~ 123_456_789.0
+    let project = .template |> Project.lens.creator.id .~ 11_111
+    let viewer = User.template |> \.id .~ 12_345
 
     self.vm.inputs.comment(comment, project: project, viewer: viewer)
 

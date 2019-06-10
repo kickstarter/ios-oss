@@ -2,7 +2,6 @@ import KsApi
 import PassKit
 
 extension PKPaymentAuthorizationViewController {
-
   public static var merchantIdentifier: String {
     return "merchant.com.kickstarter"
   }
@@ -22,12 +21,11 @@ extension PKPaymentAuthorizationViewController {
   }
 
   public static func supportedNetworks(for project: Project) -> [PKPaymentNetwork] {
-
     let countryCode = AppEnvironment.current.countryCode
 
     if (countryCode == "US" && project.country != Project.Country.us) ||
       countryCode != "US" {
-       return PaymentNetworks.US.supported
+      return PaymentNetworks.US.supported
     }
 
     return PaymentNetworks.all
@@ -41,7 +39,7 @@ extension PKPaymentAuthorizationViewController {
 // MARK: - Payment networks
 
 // swiftlint:disable private_over_fileprivate
-fileprivate struct PaymentNetworks {
+private struct PaymentNetworks {
   fileprivate static var all: [PKPaymentNetwork] {
     return [.amex, .masterCard, .visa, .discover, .chinaUnionPay]
   }
@@ -56,4 +54,5 @@ fileprivate struct PaymentNetworks {
     }
   }
 }
+
 // swiftlint:enable private_over_fileprivate

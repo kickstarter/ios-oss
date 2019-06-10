@@ -1,18 +1,17 @@
-import Prelude
-import ReactiveSwift
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class SettingsFollowCellViewModelTests: TestCase {
   internal let vm = SettingsFollowCellViewModel()
 
-  internal let followingPrivacyOn = TestObserver<Bool, NoError>()
-  internal let showPrivacyFollowingPrompt = TestObserver<(), NoError>()
-  internal let updateCurrentUser = TestObserver<User, NoError>()
+  internal let followingPrivacyOn = TestObserver<Bool, Never>()
+  internal let showPrivacyFollowingPrompt = TestObserver<(), Never>()
+  internal let updateCurrentUser = TestObserver<User, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -23,7 +22,7 @@ internal final class SettingsFollowCellViewModelTests: TestCase {
 
   func testPresentPrivacyFollowingPrompt() {
     let user = User.template
-     |> \.social .~ true
+      |> \.social .~ true
 
     self.vm.inputs.configureWith(user: user)
     self.followingPrivacyOn.assertValues([true])

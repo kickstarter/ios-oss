@@ -1,15 +1,14 @@
-import ReactiveExtensions_TestHelpers
 @testable import KsApi
 @testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
 import XCTest
 
 internal final class EmptyStatesViewModelTests: TestCase {
   internal let vm: EmptyStatesViewModelType = EmptyStatesViewModel()
-  internal let notifyDelegateToGoToDiscovery = TestObserver<DiscoveryParams?, NoError>()
-  internal let notifyDelegateToGoToFriends = TestObserver<(), NoError>()
+  internal let notifyDelegateToGoToDiscovery = TestObserver<DiscoveryParams?, Never>()
+  internal let notifyDelegateToGoToFriends = TestObserver<(), Never>()
 
   internal override func setUp() {
     super.setUp()

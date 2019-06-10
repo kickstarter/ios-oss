@@ -1,27 +1,24 @@
 @testable import KsApi
 @testable import Library
-import ReactiveExtensions_TestHelpers
 import Prelude
+import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
 import UIKit
 import XCTest
 
 internal final class DiscoveryViewModelTests: TestCase {
   fileprivate let vm: DiscoveryViewModelType = DiscoveryViewModel()
 
-  fileprivate let configureDataSource = TestObserver<[DiscoveryParams.Sort], NoError>()
-  fileprivate let configureNavigationHeader = TestObserver<DiscoveryParams, NoError>()
-  fileprivate let loadFilterIntoDataSource = TestObserver<DiscoveryParams, NoError>()
-  fileprivate let navigateToSort = TestObserver<DiscoveryParams.Sort, NoError>()
-  fileprivate let navigateDirection = TestObserver<UIPageViewController.NavigationDirection, NoError>()
-  fileprivate let selectSortPage = TestObserver<DiscoveryParams.Sort, NoError>()
-  fileprivate let updateSortPagerStyle = TestObserver<Int?, NoError>()
+  fileprivate let configureDataSource = TestObserver<[DiscoveryParams.Sort], Never>()
+  fileprivate let configureNavigationHeader = TestObserver<DiscoveryParams, Never>()
+  fileprivate let loadFilterIntoDataSource = TestObserver<DiscoveryParams, Never>()
+  fileprivate let navigateToSort = TestObserver<DiscoveryParams.Sort, Never>()
+  fileprivate let navigateDirection = TestObserver<UIPageViewController.NavigationDirection, Never>()
+  fileprivate let selectSortPage = TestObserver<DiscoveryParams.Sort, Never>()
+  fileprivate let updateSortPagerStyle = TestObserver<Int?, Never>()
 
-  let recsInitialParams = .defaults
-    |> DiscoveryParams.lens.recommended .~ true
-    |> DiscoveryParams.lens.backed .~ false
-  let initialParams = .defaults |> DiscoveryParams.lens.includePOTD .~ true
+  let initialParams = .defaults
+    |> DiscoveryParams.lens.includePOTD .~ true
 
   let categoryParams = .defaults |> DiscoveryParams.lens.category .~ .art
   let subcategoryParams = .defaults |> DiscoveryParams.lens.category .~ .documentary
@@ -57,7 +54,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     XCTAssertEqual(["magic"], self.trackingClient.properties(forKey: "discover_sort"))
     XCTAssertEqual([true], self.trackingClient.properties(forKey: "discover_staff_picks", as: Bool.self))
 
-    self.vm.inputs.filter(withParams: categoryParams)
+    self.vm.inputs.filter(withParams: self.categoryParams)
 
     XCTAssertEqual(["Viewed Discovery", "Viewed Discovery"], self.trackingClient.events)
     XCTAssertEqual(["magic", "magic"], self.trackingClient.properties(forKey: "discover_sort"))
@@ -76,13 +73,73 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: false)
 
-    self.loadFilterIntoDataSource.assertValues([initialParams],
-                                               "Initial params load into data source immediately.")
+    self.loadFilterIntoDataSource.assertValues(
+      [initialParams],
+      "Initial params load into data source immediately."
+    )
 
-    self.vm.inputs.filter(withParams: starredParams)
+    self.vm.inputs.filter(withParams: self.starredParams)
 
-    self.loadFilterIntoDataSource.assertValues([initialParams, starredParams],
-                                               "New params load into data source after selecting.")
+    self.loadFilterIntoDataSource.assertValues(
+      [initialParams, starredParams],
+      "New params load into data source after selecting."
+    )
+  }
+
+  func testLoadRecommendedProjectsIntoDataSource_UserRecommendationsOptedOut() {
+    let user = User.template
+      |> \.optedOutOfRecommendations .~ true
+
+    withEnvironment(config: Config.template, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertValues([initialParams])
+    }
+  }
+
+  func testLoadRecommendedProjectsIntoDataSource_UserRecommendationsOptedIn() {
+    let recsInitialParams = .defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.backed .~ false
+
+    let user = User.template
+      |> \.optedOutOfRecommendations .~ false
+
+    withEnvironment(config: Config.template, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertValues([recsInitialParams])
+    }
+  }
+
+  func testLoadRecommendedProjectsIntoDataSource_AfterChangingSetting() {
+    let recsInitialParams = .defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+      |> DiscoveryParams.lens.recommended .~ true
+      |> DiscoveryParams.lens.backed .~ false
+
+    let user = User.template
+      |> \.optedOutOfRecommendations .~ false
+
+    let optedOutUser = User.template
+      |> \.optedOutOfRecommendations .~ true
+
+    withEnvironment(config: Config.template, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertValues([recsInitialParams])
+
+      withEnvironment(currentUser: optedOutUser) {
+        self.vm.inputs.didChangeRecommendationsSetting()
+        self.vm.inputs.viewWillAppear(animated: false)
+
+        self.configureNavigationHeader.assertValues([recsInitialParams, initialParams])
+      }
+    }
   }
 
   func testConfigureNavigationHeader() {
@@ -95,7 +152,7 @@ internal final class DiscoveryViewModelTests: TestCase {
   }
 
   func testOrdering() {
-    let test = TestObserver<String, NoError>()
+    let test = TestObserver<String, Never>()
     Signal.merge(
       self.vm.outputs.configurePagerDataSource.mapConst("configureDataSource"),
       self.vm.outputs.loadFilterIntoDataSource.mapConst("loadFilterIntoDataSource")
@@ -104,8 +161,10 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: false)
 
-    test.assertValues(["configureDataSource", "loadFilterIntoDataSource"],
-                      "The data source should be configured first, and then the filter changed.")
+    test.assertValues(
+      ["configureDataSource", "loadFilterIntoDataSource"],
+      "The data source should be configured first, and then the filter changed."
+    )
   }
 
   /**
@@ -157,12 +216,18 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.vm.inputs.sortPagerSelected(sort: .magic)
 
-    self.selectSortPage.assertValues([.popular, .newest, .magic],
-                                     "Selecting the same page again emits nothing new.")
-    self.navigateToSort.assertValues([.magic],
-                                     "Selecting the same page again emits nothing new.")
-    self.navigateDirection.assertValues([.reverse],
-                                        "Selecting the same page again emits nothing new.")
+    self.selectSortPage.assertValues(
+      [.popular, .newest, .magic],
+      "Selecting the same page again emits nothing new."
+    )
+    self.navigateToSort.assertValues(
+      [.magic],
+      "Selecting the same page again emits nothing new."
+    )
+    self.navigateDirection.assertValues(
+      [.reverse],
+      "Selecting the same page again emits nothing new."
+    )
   }
 
   /**
@@ -187,29 +252,41 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.vm.inputs.pageTransition(completed: true)
 
-    XCTAssertEqual(["Selected Discovery Sort"], self.trackingClient.events,
-                   "Swipe event tracked once the transition completes.")
-    XCTAssertEqual(["popularity"], self.trackingClient.properties(forKey: "discover_sort"),
-                   "Correct sort is tracked.")
+    XCTAssertEqual(
+      ["Selected Discovery Sort"], self.trackingClient.events,
+      "Swipe event tracked once the transition completes."
+    )
+    XCTAssertEqual(
+      ["popularity"], self.trackingClient.properties(forKey: "discover_sort"),
+      "Correct sort is tracked."
+    )
     XCTAssertEqual(["swipe"], self.trackingClient.properties(forKey: "gesture_type"))
 
     self.vm.inputs.sortPagerSelected(sort: .newest)
 
-    XCTAssertEqual(["Selected Discovery Sort", "Selected Discovery Sort"],
-                   self.trackingClient.events,
-                   "Event is tracked when a sort is chosen from the pager.")
-    XCTAssertEqual(["popularity", "newest"],
-                   self.trackingClient.properties(forKey: "discover_sort"),
-                   "Correct sort is tracked.")
+    XCTAssertEqual(
+      ["Selected Discovery Sort", "Selected Discovery Sort"],
+      self.trackingClient.events,
+      "Event is tracked when a sort is chosen from the pager."
+    )
+    XCTAssertEqual(
+      ["popularity", "newest"],
+      self.trackingClient.properties(forKey: "discover_sort"),
+      "Correct sort is tracked."
+    )
     XCTAssertEqual(["swipe", "tap"], self.trackingClient.properties(forKey: "gesture_type"))
 
     self.vm.inputs.sortPagerSelected(sort: .newest)
 
-    XCTAssertEqual(["Selected Discovery Sort", "Selected Discovery Sort"],
-                   self.trackingClient.events,
-                   "Selecting the same sort again does not track another event.")
-    XCTAssertEqual(["popularity", "newest"],
-                   self.trackingClient.properties(forKey: "discover_sort"))
+    XCTAssertEqual(
+      ["Selected Discovery Sort", "Selected Discovery Sort"],
+      self.trackingClient.events,
+      "Selecting the same sort again does not track another event."
+    )
+    XCTAssertEqual(
+      ["popularity", "newest"],
+      self.trackingClient.properties(forKey: "discover_sort")
+    )
   }
 
   func testUpdateSortPagerStyle() {
@@ -217,15 +294,15 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.updateSortPagerStyle.assertValueCount(0)
 
-    self.vm.inputs.filter(withParams: categoryParams)
+    self.vm.inputs.filter(withParams: self.categoryParams)
 
     self.updateSortPagerStyle.assertValues([1], "Emits the category id")
 
-    self.vm.inputs.filter(withParams: categoryParams)
+    self.vm.inputs.filter(withParams: self.categoryParams)
 
     self.updateSortPagerStyle.assertValues([1], "Does not emit a repeat value.")
 
-    self.vm.inputs.filter(withParams: subcategoryParams)
+    self.vm.inputs.filter(withParams: self.subcategoryParams)
 
     self.updateSortPagerStyle.assertValues([1, 30], "Emits root category id.")
   }

@@ -1,30 +1,29 @@
-import Prelude
-import XCTest
-import Result
+@testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-@testable import Kickstarter_Framework
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class SettingsViewModelTests: TestCase {
   let vm = SettingsViewModel(SettingsViewController.viewController(for:))
 
-  private let findFriendsDisabled = TestObserver<Bool, NoError>()
-  private let goToAppStoreRating = TestObserver<String, NoError>()
-  private let logout = TestObserver<DiscoveryParams, NoError>()
-  private let reloadDataWithUser = TestObserver<User, NoError>()
-  private let showConfirmLogout = TestObserver<Void, NoError>()
-  private let transitionToViewController = TestObserver<UIViewController, NoError>()
+  private let findFriendsDisabled = TestObserver<Bool, Never>()
+  private let goToAppStoreRating = TestObserver<String, Never>()
+  private let logout = TestObserver<DiscoveryParams, Never>()
+  private let reloadDataWithUser = TestObserver<User, Never>()
+  private let showConfirmLogout = TestObserver<Void, Never>()
+  private let transitionToViewController = TestObserver<UIViewController, Never>()
 
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.findFriendsDisabledProperty.signal.observe(findFriendsDisabled.observer)
-    self.vm.outputs.goToAppStoreRating.observe(goToAppStoreRating.observer)
-    self.vm.outputs.logoutWithParams.observe(logout.observer)
-    self.vm.outputs.reloadDataWithUser.observe(reloadDataWithUser.observer)
-    self.vm.outputs.showConfirmLogoutPrompt.signal.mapConst(()).observe(showConfirmLogout.observer)
-    self.vm.outputs.transitionToViewController.observe(transitionToViewController.observer)
+    self.vm.outputs.findFriendsDisabledProperty.signal.observe(self.findFriendsDisabled.observer)
+    self.vm.outputs.goToAppStoreRating.observe(self.goToAppStoreRating.observer)
+    self.vm.outputs.logoutWithParams.observe(self.logout.observer)
+    self.vm.outputs.reloadDataWithUser.observe(self.reloadDataWithUser.observer)
+    self.vm.outputs.showConfirmLogoutPrompt.signal.mapConst(()).observe(self.showConfirmLogout.observer)
+    self.vm.outputs.transitionToViewController.observe(self.transitionToViewController.observer)
   }
 
   func testViewDidLoad_withSocialEnabledUser() {

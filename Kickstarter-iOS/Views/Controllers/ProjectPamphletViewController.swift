@@ -3,12 +3,16 @@ import Library
 import Prelude
 import UIKit
 
-public protocol ProjectPamphletViewControllerDelegate: class {
-  func projectPamphlet(_ controller: ProjectPamphletViewController,
-                       panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer)
-  func projectPamphletViewController(_ projectPamphletViewController: ProjectPamphletViewController,
-                                     didTapBackThisProject project: Project,
-                                     refTag: RefTag?)
+public protocol ProjectPamphletViewControllerDelegate: AnyObject {
+  func projectPamphlet(
+    _ controller: ProjectPamphletViewController,
+    panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer
+  )
+  func projectPamphletViewController(
+    _ projectPamphletViewController: ProjectPamphletViewController,
+    didTapBackThisProject project: Project,
+    refTag: RefTag?
+  )
 }
 
 public final class ProjectPamphletViewController: UIViewController {
@@ -18,16 +22,18 @@ public final class ProjectPamphletViewController: UIViewController {
   fileprivate var navBarController: ProjectNavBarViewController!
   fileprivate var contentController: ProjectPamphletContentViewController!
 
-  @IBOutlet weak private var navBarTopConstraint: NSLayoutConstraint!
+  @IBOutlet private var navBarTopConstraint: NSLayoutConstraint!
 
   private let backThisProjectContainerViewMargins = Styles.grid(3)
   private let backThisProjectContainerView: ProjectStatesContainerView = {
     return ProjectStatesContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let backThisProjectButton: UIButton = {
-     return MultiLineButton(type: .custom)
+    MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let backThisProjectContainerSublayer: CAShapeLayer = {
     let mask = CAShapeLayer()
       |> \.fillColor .~ UIColor.white.cgColor
@@ -54,7 +60,7 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    if shouldShowNativeCheckout() {
+    if self.shouldShowNativeCheckout() {
       self.configureViews()
     }
 
@@ -66,7 +72,7 @@ public final class ProjectPamphletViewController: UIViewController {
       .compactMap { $0 as? ProjectPamphletContentViewController }.first
     self.contentController.delegate = self
 
-    self.viewModel.inputs.initial(topConstraint: initialTopConstraint)
+    self.viewModel.inputs.initial(topConstraint: self.initialTopConstraint)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -78,11 +84,12 @@ public final class ProjectPamphletViewController: UIViewController {
 
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.setInitial(constraints: [navBarTopConstraint],
-                    constant: initialTopConstraint)
+    self.setInitial(
+      constraints: [navBarTopConstraint],
+      constant: self.initialTopConstraint
+    )
 
     if self.shouldShowNativeCheckout() {
-      self.configureSublayers()
       self.updateContentInsets()
     }
   }
@@ -126,14 +133,14 @@ public final class ProjectPamphletViewController: UIViewController {
         let (project, refTag) = params
 
         self?.goToRewards(project: project, refTag: refTag)
-    }
+      }
 
-    self.viewModel.outputs.configureChildViewControllersWithProjectAndLiveStreams
+    self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
-      .observeValues { [weak self] project, liveStreamEvents, refTag in
-        self?.contentController.configureWith(project: project, liveStreamEvents: liveStreamEvents)
+      .observeValues { [weak self] project, refTag in
+        self?.contentController.configureWith(project: project)
         self?.navBarController.configureWith(project: project, refTag: refTag)
-    }
+      }
 
     self.viewModel.outputs.setNavigationBarHiddenAnimated
       .observeForUI()
@@ -143,7 +150,7 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         UIView.animate(withDuration: 0.3) { self?.setNeedsStatusBarAppearanceUpdate() }
-    }
+      }
 
     self.viewModel.outputs.topLayoutConstraintConstant
       .observeForUI()
@@ -158,24 +165,48 @@ public final class ProjectPamphletViewController: UIViewController {
     }
   }
 
-  public override func willTransition(to newCollection: UITraitCollection,
-                                      with coordinator: UIViewControllerTransitionCoordinator) {
+  public override func willTransition(
+    to newCollection: UITraitCollection,
+    with _: UIViewControllerTransitionCoordinator
+  ) {
     self.viewModel.inputs.willTransition(toNewCollection: newCollection)
   }
 
   // MARK: - Private View Setup Functions
-  private func configureSublayers() {
-    let updatedPath = UIBezierPath(roundedRect: self.backThisProjectContainerView.bounds,
-                                   byRoundingCorners: [.topLeft, .topRight],
-                                   cornerRadii: CGSize(width: 16, height: 16))
 
-    _ = self.backThisProjectContainerSublayer
-      |> \.path .~ updatedPath.cgPath
+  private func configureViews() {
+    _ = (self.backThisProjectButton, self.backThisProjectContainerView)
+      |> ksr_addSubviewToParent()
 
-    if self.backThisProjectContainerView.layer.sublayers?.count == 1 {
-      self.backThisProjectContainerView.layer.insertSublayer(self.backThisProjectContainerSublayer, at: 0)
-    }
+    _ = (self.backThisProjectContainerView, self.view)
+      |> ksr_addSubviewToParent()
+
+    self.backThisProjectButton.addTarget(
+      self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
+    )
+
+    // Configure constraints
+    let backThisProjectContainerViewConstraints = [
+      self.backThisProjectContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.backThisProjectContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    ]
+
+    let containerMargins = self.backThisProjectContainerView.layoutMarginsGuide
+    let minHeight = Styles.minTouchSize.height
+
+    let backThisProjectButtonConstraints = [
+      self.backThisProjectButton.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+      self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+      self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
+      self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
+      self.backThisProjectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight)
+    ]
+
+    NSLayoutConstraint.activate(backThisProjectContainerViewConstraints + backThisProjectButtonConstraints)
   }
+
+  // MARK: - Private Helpers
 
   private func setInitial(constraints: [NSLayoutConstraint?], constant: CGFloat) {
     constraints.forEach {
@@ -184,12 +215,13 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
-    self.delegate?.projectPamphletViewController(self,
-                                                 didTapBackThisProject: project,
-                                                 refTag: refTag)
+    self.delegate?.projectPamphletViewController(
+      self,
+      didTapBackThisProject: project,
+      refTag: refTag
+    )
   }
 
-  // MARK: - Private Helpers
   private func shouldShowNativeCheckout() -> Bool {
     // Show native checkout only if the `ios_native_checkout` flag is enabled
     return AppEnvironment.current.config?.features[Feature.checkout.rawValue] == .some(true)
@@ -199,16 +231,7 @@ public final class ProjectPamphletViewController: UIViewController {
     let buttonSize = self.backThisProjectButton.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     let bottomInset = buttonSize.height + 2 * self.backThisProjectContainerViewMargins
 
-    if #available(iOS 11.0, *) {
-      self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)
-    } else {
-      let insets = self.contentController.tableView.contentInset
-
-      self.contentController.tableView.contentInset = UIEdgeInsets(top: insets.top,
-                                                                   left: insets.left,
-                                                                   bottom: bottomInset,
-                                                                   right: insets.right)
-    }
+    self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)
   }
 
   // MARK: - Selectors
@@ -219,36 +242,40 @@ public final class ProjectPamphletViewController: UIViewController {
 }
 
 extension ProjectPamphletViewController: ProjectPamphletContentViewControllerDelegate {
-  public func projectPamphletContent(_ controller: ProjectPamphletContentViewController,
-                                     didScrollToTop: Bool) {
+  public func projectPamphletContent(
+    _: ProjectPamphletContentViewController,
+    didScrollToTop: Bool
+  ) {
     self.navBarController.setDidScrollToTop(didScrollToTop)
   }
 
-  public func projectPamphletContent(_ controller: ProjectPamphletContentViewController,
-                                     imageIsVisible: Bool) {
+  public func projectPamphletContent(
+    _: ProjectPamphletContentViewController,
+    imageIsVisible: Bool
+  ) {
     self.navBarController.setProjectImageIsVisible(imageIsVisible)
   }
 
   public func projectPamphletContent(
-    _ controller: ProjectPamphletContentViewController,
-    scrollViewPanGestureRecognizerDidChange recognizer: UIPanGestureRecognizer) {
-
-      self.delegate?.projectPamphlet(self, panGestureRecognizerDidChange: recognizer)
+    _: ProjectPamphletContentViewController,
+    scrollViewPanGestureRecognizerDidChange recognizer: UIPanGestureRecognizer
+  ) {
+    self.delegate?.projectPamphlet(self, panGestureRecognizerDidChange: recognizer)
   }
 }
 
 extension ProjectPamphletViewController: VideoViewControllerDelegate {
-  public func videoViewControllerDidFinish(_ controller: VideoViewController) {
+  public func videoViewControllerDidFinish(_: VideoViewController) {
     self.navBarController.projectVideoDidFinish()
   }
 
-  public func videoViewControllerDidStart(_ controller: VideoViewController) {
+  public func videoViewControllerDidStart(_: VideoViewController) {
     self.navBarController.projectVideoDidStart()
   }
 }
 
 extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
-  public func projectNavBarControllerDidTapTitle(_ controller: ProjectNavBarViewController) {
+  public func projectNavBarControllerDidTapTitle(_: ProjectNavBarViewController) {
     self.contentController.tableView.scrollToTop()
   }
 }

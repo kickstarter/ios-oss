@@ -1,9 +1,8 @@
-import Library
 @testable import Kickstarter_Framework
+import Library
 import XCTest
 
 internal final class LoginToutViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
@@ -15,9 +14,8 @@ internal final class LoginToutViewControllerTests: TestCase {
   }
 
   func testLoginToutView() {
-
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
-    let intents = [LoginIntent.generic, .starProject, .messageCreator, .backProject, .liveStreamSubscribe]
+    let intents = [LoginIntent.generic, .starProject, .messageCreator, .backProject]
 
     combos(Language.allLanguages, devices, intents).forEach { language, device, intent in
       withEnvironment(language: language) {

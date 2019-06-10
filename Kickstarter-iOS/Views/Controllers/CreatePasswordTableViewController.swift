@@ -1,6 +1,5 @@
 import Library
 import Prelude
-import Result
 import ReactiveSwift
 import UIKit
 
@@ -37,12 +36,13 @@ extension CreatePasswordRow {
 }
 
 // swiftlint:disable line_length
-protocol CreatePasswordTableViewControllerDelegate: class {
+protocol CreatePasswordTableViewControllerDelegate: AnyObject {
   func createPasswordTableViewController(_ viewController: CreatePasswordTableViewController, setSaveButtonIsEnabled isEnabled: Bool)
   func createPasswordTableViewControllerStartAnimatingSaveButton(_ viewController: CreatePasswordTableViewController)
   func createPasswordTableViewControllerStopAnimatingSaveButton(_ viewController: CreatePasswordTableViewController)
   func createPasswordTableViewController(_ viewController: CreatePasswordTableViewController, showErrorMessage message: String)
 }
+
 // swiftlint:enable line_length
 
 final class CreatePasswordTableViewController: UITableViewController {
@@ -98,71 +98,71 @@ final class CreatePasswordTableViewController: UITableViewController {
         } else {
           self.delegate?.createPasswordTableViewControllerStopAnimatingSaveButton(self)
         }
-    }
+      }
 
     self.viewModel.outputs.accessibilityFocusValidationLabel
       .observeForUI()
       .observeValues { [weak self] _ in
         UIAccessibility.post(notification: .layoutChanged, argument: self?.groupedFooterView?.label)
-    }
+      }
 
     self.viewModel.outputs.cellAtIndexPathDidBecomeFirstResponder
       .observeForUI()
       .observeValues { [weak self] indexPath in
         guard let cell = self?.tableView.cellForRow(at: indexPath) as? SettingsTextInputCell else { return }
         cell.textField.becomeFirstResponder()
-    }
+      }
 
     self.viewModel.outputs.createPasswordFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
         guard let self = self else { return }
         self.delegate?.createPasswordTableViewController(self, showErrorMessage: errorMessage)
-    }
+      }
 
     self.viewModel.outputs.createPasswordSuccess
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let self = self else { return }
         logoutAndDismiss(viewController: self)
-    }
+      }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.tableView.endEditing(true)
-    }
+      }
 
     self.viewModel.outputs.newPasswordTextFieldDidBecomeFirstResponder
       .observeForUI()
       .observeValues { [weak self] in
         self?.newPasswordTextField?.becomeFirstResponder()
-    }
+      }
 
     self.viewModel.outputs.newPasswordConfirmationTextFieldDidBecomeFirstResponder
       .observeForUI()
       .observeValues { [weak self] in
         self?.newPasswordConfirmationTextField?.becomeFirstResponder()
-    }
+      }
 
     self.viewModel.outputs.newPasswordConfirmationTextFieldDidResignFirstResponder
       .observeForUI()
       .observeValues { [weak self] in
         self?.newPasswordConfirmationTextField?.resignFirstResponder()
-    }
+      }
 
     self.viewModel.outputs.saveButtonIsEnabled
       .observeForUI()
       .observeValues { [weak self] isEnabled in
         guard let self = self else { return }
         self.delegate?.createPasswordTableViewController(self, setSaveButtonIsEnabled: isEnabled)
-    }
+      }
 
     self.viewModel.outputs.validationLabelIsHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
         self?.groupedFooterView?.isHidden = isHidden
-    }
+      }
 
     self.viewModel.outputs.validationLabelText
       .observeForUI()
@@ -174,18 +174,18 @@ final class CreatePasswordTableViewController: UITableViewController {
 
           self?.tableView.endUpdates()
         }
-    }
+      }
   }
 
   // MARK: - Actions
 
-  @objc func saveButtonTapped(_ sender: Any) {
+  @objc func saveButtonTapped(_: Any) {
     self.viewModel.inputs.saveButtonTapped()
   }
 
   // MARK: - UITableViewDataSource
 
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
     return CreatePasswordRow.allCases.count
   }
 
@@ -204,11 +204,11 @@ final class CreatePasswordTableViewController: UITableViewController {
 
   // MARK: - UITableViewDelegate
 
-  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     self.viewModel.inputs.cellAtIndexPathShouldBecomeFirstResponder(indexPath)
   }
 
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection _: Int) -> UIView? {
     let className = SettingsGroupedHeaderView.self
 
     guard let headerView = tableView.dequeueReusableHeaderFooterView(withClass: className)
@@ -222,7 +222,7 @@ final class CreatePasswordTableViewController: UITableViewController {
     return headerView
   }
 
-  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+  override func tableView(_ tableView: UITableView, viewForFooterInSection _: Int) -> UIView? {
     let className = SettingsGroupedFooterView.self
     guard let footerView = tableView.dequeueReusableHeaderFooterView(withClass: className)
       as? SettingsGroupedFooterView else { return nil }
@@ -234,7 +234,7 @@ final class CreatePasswordTableViewController: UITableViewController {
   }
 
   // swiftlint:disable line_length
-  override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+  override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     guard let textInputCell = cell as? SettingsTextInputCell else { return }
 
     let row = CreatePasswordRow.allCases[indexPath.row]
@@ -246,11 +246,12 @@ final class CreatePasswordTableViewController: UITableViewController {
     }
   }
 
-  override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+  override func tableView(_: UITableView, willDisplayFooterView view: UIView, forSection _: Int) {
     guard let groupedFooterView = view as? SettingsGroupedFooterView else { return }
 
     self.groupedFooterView = groupedFooterView
   }
+
   // swiftlint:enable line_length
 }
 
@@ -259,7 +260,7 @@ extension CreatePasswordTableViewController: CreatePasswordTableViewControllerTy
     self.viewModel.inputs.newPasswordTextFieldChanged(text: sender.text)
   }
 
-  @objc func newPasswordTextFieldDidReturn(_ sender: UITextField) {
+  @objc func newPasswordTextFieldDidReturn(_: UITextField) {
     self.viewModel.inputs.newPasswordTextFieldDidReturn()
   }
 
@@ -267,7 +268,7 @@ extension CreatePasswordTableViewController: CreatePasswordTableViewControllerTy
     self.viewModel.inputs.newPasswordConfirmationTextFieldChanged(text: sender.text)
   }
 
-  @objc func newPasswordConfirmationTextFieldDidReturn(_ sender: UITextField) {
+  @objc func newPasswordConfirmationTextFieldDidReturn(_: UITextField) {
     self.viewModel.inputs.newPasswordConfirmationTextFieldDidReturn()
   }
 }
@@ -291,4 +292,5 @@ func textFieldTargetActions(for controller: CreatePasswordTableViewControllerTyp
     (controller.self, didReturnSelector, .editingDidEndOnExit)
   ]
 }
+
 // swiftlint:enable line_length

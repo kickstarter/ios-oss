@@ -1,7 +1,7 @@
 import Foundation
+import KsApi
 import Library
 import UIKit
-import KsApi
 
 internal final class MessagesDataSource: ValueCellDataSource {
   fileprivate enum Section: Int {
@@ -12,27 +12,35 @@ internal final class MessagesDataSource: ValueCellDataSource {
   }
 
   internal func emptyState(isVisible: Bool, messageToUser: String) {
-    self.set(values: isVisible ? [messageToUser] : [],
-             cellClass: MessagesEmptyStateCell.self,
-             inSection: Section.emptyState.rawValue)
+    self.set(
+      values: isVisible ? [messageToUser] : [],
+      cellClass: MessagesEmptyStateCell.self,
+      inSection: Section.emptyState.rawValue
+    )
   }
 
   internal func load(project: Project) {
-    self.set(values: [project],
-             cellClass: ProjectBannerCell.self,
-             inSection: Section.projectBanner.rawValue)
+    self.set(
+      values: [project],
+      cellClass: ProjectBannerCell.self,
+      inSection: Section.projectBanner.rawValue
+    )
   }
 
   internal func load(backing: Backing, project: Project, isFromBacking: Bool) {
-    self.set(values: [(backing, project, isFromBacking)],
-             cellClass: BackingCell.self,
-             inSection: Section.backing.rawValue)
+    self.set(
+      values: [(backing, project, isFromBacking)],
+      cellClass: BackingCell.self,
+      inSection: Section.backing.rawValue
+    )
   }
 
   internal func load(messages: [Message]) {
-    self.set(values: messages,
-             cellClass: MessageCell.self,
-             inSection: Section.messages.rawValue)
+    self.set(
+      values: messages,
+      cellClass: MessageCell.self,
+      inSection: Section.messages.rawValue
+    )
   }
 
   internal func isProjectBanner(indexPath: IndexPath) -> Bool {
@@ -44,7 +52,6 @@ internal final class MessagesDataSource: ValueCellDataSource {
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
-
     switch (cell, value) {
     case let (cell as ProjectBannerCell, value as Project):
       cell.configureWith(value: value)

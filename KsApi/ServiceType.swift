@@ -18,12 +18,14 @@ public protocol ServiceType {
   var currency: String { get }
   var buildVersion: String { get }
 
-  init(appId: String,
-       serverConfig: ServerConfigType,
-       oauthToken: OauthTokenAuthType?,
-       language: String,
-       currency: String,
-       buildVersion: String)
+  init(
+    appId: String,
+    serverConfig: ServerConfigType,
+    oauthToken: OauthTokenAuthType?,
+    language: String,
+    currency: String,
+    buildVersion: String
+  )
 
   /// Returns a new service with the oauth token replaced.
   func login(_ oauthToken: OauthTokenAuthType) -> Self
@@ -65,11 +67,13 @@ public protocol ServiceType {
     SignalProducer<DeletePaymentMethodEnvelope, GraphError>
 
   /// Performs the first step of checkout by creating a pledge on the server.
-  func createPledge(project: Project,
-                    amount: Double,
-                    reward: Reward?,
-                    shippingLocation: Location?,
-                    tappedReward: Bool) -> SignalProducer<CreatePledgeEnvelope, ErrorEnvelope>
+  func createPledge(
+    project: Project,
+    amount: Double,
+    reward: Reward?,
+    shippingLocation: Location?,
+    tappedReward: Bool
+  ) -> SignalProducer<CreatePledgeEnvelope, ErrorEnvelope>
 
   /// Removes an image from a project update draft.
   func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
@@ -276,28 +280,34 @@ public protocol ServiceType {
     -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 
   /// Signup with email.
-  func signup(name: String, email: String, password: String, passwordConfirmation: String,
-              sendNewsletters: Bool) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
+  func signup(
+    name: String, email: String, password: String, passwordConfirmation: String,
+    sendNewsletters: Bool
+  ) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
 
   /// Signup with Facebook access token and newsletter bool.
   func signup(facebookAccessToken: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
 
-  func submitApplePay(checkoutUrl: String,
-                      stripeToken: String,
-                      paymentInstrumentName: String,
-                      paymentNetwork: String,
-                      transactionIdentifier: String) -> SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope>
+  func submitApplePay(
+    checkoutUrl: String,
+    stripeToken: String,
+    paymentInstrumentName: String,
+    paymentNetwork: String,
+    transactionIdentifier: String
+  ) -> SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope>
 
   /// Unfollow a user with their id.
   func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope>
 
   /// Performs the first step of checkout by creating a pledge on the server.
-  func updatePledge(project: Project,
-                    amount: Double,
-                    reward: Reward?,
-                    shippingLocation: Location?,
-                    tappedReward: Bool) -> SignalProducer<UpdatePledgeEnvelope, ErrorEnvelope>
+  func updatePledge(
+    project: Project,
+    amount: Double,
+    reward: Reward?,
+    shippingLocation: Location?,
+    tappedReward: Bool
+  ) -> SignalProducer<UpdatePledgeEnvelope, ErrorEnvelope>
 
   /// Update the project notification setting.
   func updateProjectNotification(_ notification: ProjectNotification)
@@ -327,10 +337,10 @@ extension ServiceType {
 public func == (lhs: ServiceType, rhs: ServiceType) -> Bool {
   return
     type(of: lhs) == type(of: rhs) &&
-      lhs.serverConfig == rhs.serverConfig &&
-      lhs.oauthToken == rhs.oauthToken &&
-      lhs.language == rhs.language &&
-      lhs.buildVersion == rhs.buildVersion
+    lhs.serverConfig == rhs.serverConfig &&
+    lhs.oauthToken == rhs.oauthToken &&
+    lhs.language == rhs.language &&
+    lhs.buildVersion == rhs.buildVersion
 }
 
 public func != (lhs: ServiceType, rhs: ServiceType) -> Bool {
@@ -338,7 +348,6 @@ public func != (lhs: ServiceType, rhs: ServiceType) -> Bool {
 }
 
 extension ServiceType {
-
   /**
    Prepares a URL request to be sent to the server.
 
@@ -349,39 +358,38 @@ extension ServiceType {
    */
   public func preparedRequest(forRequest originalRequest: URLRequest, query: [String: Any] = [:])
     -> URLRequest {
+    var request = originalRequest
+    guard let URL = request.url else {
+      return originalRequest
+    }
 
-      var request = originalRequest
-      guard let URL = request.url else {
-        return originalRequest
+    var headers = self.defaultHeaders
+
+    let method = request.httpMethod?.uppercased()
+    // swiftlint:disable:next force_unwrapping
+    var components = URLComponents(url: URL, resolvingAgainstBaseURL: false)!
+    var queryItems = components.queryItems ?? []
+    queryItems.append(contentsOf: self.defaultQueryParams.map(URLQueryItem.init(name:value:)))
+
+    if method == .some("POST") || method == .some("PUT") {
+      if request.httpBody == nil {
+        headers["Content-Type"] = "application/json; charset=utf-8"
+        request.httpBody = try? JSONSerialization.data(withJSONObject: query, options: [])
       }
+    } else {
+      queryItems.append(
+        contentsOf: query
+          .flatMap(self.queryComponents)
+          .map(URLQueryItem.init(name:value:))
+      )
+    }
+    components.queryItems = queryItems.sorted { $0.name < $1.name }
+    request.url = components.url
 
-      var headers = self.defaultHeaders
+    let currentHeaders = request.allHTTPHeaderFields ?? [:]
+    request.allHTTPHeaderFields = currentHeaders.withAllValuesFrom(headers)
 
-      let method = request.httpMethod?.uppercased()
-      // swiftlint:disable:next force_unwrapping
-      var components = URLComponents(url: URL, resolvingAgainstBaseURL: false)!
-      var queryItems = components.queryItems ?? []
-      queryItems.append(contentsOf: self.defaultQueryParams.map(URLQueryItem.init(name:value:)))
-
-      if method == .some("POST") || method == .some("PUT") {
-        if request.httpBody == nil {
-          headers["Content-Type"] = "application/json; charset=utf-8"
-          request.httpBody = try? JSONSerialization.data(withJSONObject: query, options: [])
-        }
-      } else {
-        queryItems.append(
-          contentsOf: query
-            .flatMap(queryComponents)
-            .map(URLQueryItem.init(name:value:))
-        )
-      }
-      components.queryItems = queryItems.sorted { $0.name < $1.name }
-      request.url = components.url
-
-      let currentHeaders = request.allHTTPHeaderFields ?? [:]
-      request.allHTTPHeaderFields = currentHeaders.withAllValuesFrom(headers)
-
-      return request
+    return request
   }
 
   /**
@@ -395,10 +403,9 @@ extension ServiceType {
    */
   public func preparedRequest(forURL url: URL, method: Method = .GET, query: [String: Any] = [:])
     -> URLRequest {
-
-      var request = URLRequest(url: url)
-      request.httpMethod = method.rawValue
-      return self.preparedRequest(forRequest: request, query: query)
+    var request = URLRequest(url: url)
+    request.httpMethod = method.rawValue
+    return self.preparedRequest(forRequest: request, query: query)
   }
 
   /**
@@ -411,41 +418,41 @@ extension ServiceType {
    */
   public func preparedRequest(forRequest originalRequest: URLRequest, queryString: String)
     -> URLRequest {
+    var request = originalRequest
+    guard let URL = request.url else {
+      return originalRequest
+    }
 
-      var request = originalRequest
-      guard let URL = request.url else {
-        return originalRequest
-      }
+    request.httpBody = "query=\(queryString)".data(using: .utf8)
 
-      request.httpBody = "query=\(queryString)".data(using: .utf8)
+    // swiftlint:disable:next force_unwrapping
+    let components = URLComponents(url: URL, resolvingAgainstBaseURL: false)!
+    request.url = components.url
+    request.allHTTPHeaderFields = self.defaultHeaders
 
-      // swiftlint:disable:next force_unwrapping
-      let components = URLComponents(url: URL, resolvingAgainstBaseURL: false)!
-      request.url = components.url
-      request.allHTTPHeaderFields = self.defaultHeaders
-
-      return request
+    return request
   }
 
   public func preparedRequest(forURL url: URL, queryString: String)
     -> URLRequest {
-
-      var request = URLRequest(url: url)
-      request.httpMethod = Method.POST.rawValue
-      return self.preparedRequest(forRequest: request, queryString: queryString)
+    var request = URLRequest(url: url)
+    request.httpMethod = Method.POST.rawValue
+    return self.preparedRequest(forRequest: request, queryString: queryString)
   }
 
   /**
-   Prepares a URL request to be sent to the server.
-   - parameter originalRequest: The request that should be prepared
-   - parameter queryString: The GraphQL mutation string description
-   - parameter input: The input for the mutation
+     Prepares a URL request to be sent to the server.
+     - parameter originalRequest: The request that should be prepared
+     - parameter queryString: The GraphQL mutation string description
+     - parameter input: The input for the mutation
 
-   - returns: A new URL request that is properly configured for the server
- **/
-  public func preparedGraphRequest(forURL url: URL,
-                                   queryString: String,
-                                   input: [String: Any]) throws -> URLRequest {
+     - returns: A new URL request that is properly configured for the server
+   **/
+  public func preparedGraphRequest(
+    forURL url: URL,
+    queryString: String,
+    input: [String: Any]
+  ) throws -> URLRequest {
     var request = URLRequest(url: url)
     request.httpMethod = Method.POST.rawValue
 
@@ -470,7 +477,7 @@ extension ServiceType {
   }
 
   public func isPrepared(request: URLRequest) -> Bool {
-    return request.value(forHTTPHeaderField: "Authorization") == authorizationHeader
+    return request.value(forHTTPHeaderField: "Authorization") == self.authorizationHeader
       && request.value(forHTTPHeaderField: "Kickstarter-iOS-App") != nil
   }
 
@@ -487,13 +494,12 @@ extension ServiceType {
 
   func graphMutationRequestBody(mutation: String, input: [String: Any]) -> [String: Any] {
     return [
-    "query": mutation,
-    "variables": ["input": input]
+      "query": mutation,
+      "variables": ["input": input]
     ]
   }
 
   public static var userAgent: String {
-
     let executable = Bundle.main.infoDictionary?["CFBundleExecutable"] as? String
     let bundleIdentifier = Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String
     let app: String = executable ?? bundleIdentifier ?? "Kickstarter"
@@ -526,11 +532,11 @@ extension ServiceType {
 
     if let dictionary = value as? [String: Any] {
       for (nestedKey, value) in dictionary {
-        components += queryComponents("\(key)[\(nestedKey)]", value)
+        components += self.queryComponents("\(key)[\(nestedKey)]", value)
       }
     } else if let array = value as? [Any] {
       for value in array {
-        components += queryComponents("\(key)[]", value)
+        components += self.queryComponents("\(key)[]", value)
       }
     } else {
       components.append((key, String(describing: value)))

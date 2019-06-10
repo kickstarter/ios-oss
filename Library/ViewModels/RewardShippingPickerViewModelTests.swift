@@ -1,12 +1,11 @@
-// swiftlint:disable force_unwrapping
-import Prelude
-import ReactiveSwift
-import ReactiveExtensions
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+// swiftlint:disable force_unwrapping
+import Prelude
+import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 private let locations: [Location] = [
   .usa,
@@ -21,7 +20,7 @@ private let shippingRules = locations
     .template
       |> ShippingRule.lens.location .~ location
       |> ShippingRule.lens.cost .~ Double(idx + 1)
-}
+  }
 
 private let sortedShippingRules = shippingRules
   .sorted { lhs, rhs in lhs.location.displayableName < rhs.location.displayableName }
@@ -29,11 +28,11 @@ private let sortedShippingRules = shippingRules
 internal final class RewardShippingPickerViewModelTests: TestCase {
   fileprivate let vm: RewardShippingPickerViewModelType = RewardShippingPickerViewModel()
 
-  fileprivate let dataSource = TestObserver<[String], NoError>()
-  fileprivate let doneButtonAccessibilityHint = TestObserver<String, NoError>()
-  fileprivate let notifyDelegateChoseShippingRule = TestObserver<ShippingRule, NoError>()
-  fileprivate let notifyDelegateToCancel = TestObserver<(), NoError>()
-  fileprivate let selectRow = TestObserver<Int, NoError>()
+  fileprivate let dataSource = TestObserver<[String], Never>()
+  fileprivate let doneButtonAccessibilityHint = TestObserver<String, Never>()
+  fileprivate let notifyDelegateChoseShippingRule = TestObserver<ShippingRule, Never>()
+  fileprivate let notifyDelegateToCancel = TestObserver<(), Never>()
+  fileprivate let selectRow = TestObserver<Int, Never>()
 
   override func setUp() {
     super.setUp()
@@ -46,9 +45,11 @@ internal final class RewardShippingPickerViewModelTests: TestCase {
   }
 
   func testDataSource() {
-    self.vm.inputs.configureWith(project: .template,
-                                 shippingRules: shippingRules,
-                                 selectedShippingRule: shippingRules.first!)
+    self.vm.inputs.configureWith(
+      project: .template,
+      shippingRules: shippingRules,
+      selectedShippingRule: shippingRules.first!
+    )
     self.vm.inputs.viewDidLoad()
 
     self.dataSource.assertValues([
@@ -63,11 +64,13 @@ internal final class RewardShippingPickerViewModelTests: TestCase {
 
   func testLocalizedDataSource() {
     let localizedRules =
-      shippingRules ||> ShippingRule.lens.location..Location.lens.localizedName %~ { "Local " + $0 }
+      shippingRules ||> ShippingRule.lens.location .. Location.lens.localizedName %~ { "Local " + $0 }
 
-    self.vm.inputs.configureWith(project: .template,
-                                 shippingRules: localizedRules,
-                                 selectedShippingRule: localizedRules.first!)
+    self.vm.inputs.configureWith(
+      project: .template,
+      shippingRules: localizedRules,
+      selectedShippingRule: localizedRules.first!
+    )
     self.vm.inputs.viewDidLoad()
 
     self.dataSource.assertValues([
@@ -83,9 +86,11 @@ internal final class RewardShippingPickerViewModelTests: TestCase {
   func testDoneButtonAccessibilityHint() {
     let selectedShippingRule = shippingRules.first!
 
-    self.vm.inputs.configureWith(project: .template,
-                                 shippingRules: shippingRules,
-                                 selectedShippingRule: selectedShippingRule)
+    self.vm.inputs.configureWith(
+      project: .template,
+      shippingRules: shippingRules,
+      selectedShippingRule: selectedShippingRule
+    )
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
 
@@ -95,9 +100,11 @@ internal final class RewardShippingPickerViewModelTests: TestCase {
   func testNotifyDelegateChoseShippingRule_MakeNoChoice() {
     let selectedShippingRule = shippingRules.first!
 
-    self.vm.inputs.configureWith(project: .template,
-                                 shippingRules: shippingRules,
-                                 selectedShippingRule: selectedShippingRule)
+    self.vm.inputs.configureWith(
+      project: .template,
+      shippingRules: shippingRules,
+      selectedShippingRule: selectedShippingRule
+    )
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.doneButtonTapped()
@@ -106,9 +113,11 @@ internal final class RewardShippingPickerViewModelTests: TestCase {
   }
 
   func testNotifyDelegateChoseShippingRule_MakeAChoice() {
-    self.vm.inputs.configureWith(project: .template,
-                                 shippingRules: shippingRules,
-                                 selectedShippingRule: shippingRules.first!)
+    self.vm.inputs.configureWith(
+      project: .template,
+      shippingRules: shippingRules,
+      selectedShippingRule: shippingRules.first!
+    )
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
 
@@ -119,9 +128,11 @@ internal final class RewardShippingPickerViewModelTests: TestCase {
   }
 
   func testNotifyDelegateToCancel() {
-    self.vm.inputs.configureWith(project: .template,
-                                 shippingRules: shippingRules,
-                                 selectedShippingRule: shippingRules.first!)
+    self.vm.inputs.configureWith(
+      project: .template,
+      shippingRules: shippingRules,
+      selectedShippingRule: shippingRules.first!
+    )
     self.vm.inputs.viewDidLoad()
 
     self.notifyDelegateToCancel.assertValueCount(0)
@@ -134,9 +145,11 @@ internal final class RewardShippingPickerViewModelTests: TestCase {
 
   func testSelectRow() {
     withEnvironment(config: .template |> Config.lens.countryCode .~ "AU") {
-      self.vm.inputs.configureWith(project: .template,
-                                   shippingRules: shippingRules,
-                                   selectedShippingRule: sortedShippingRules.last!)
+      self.vm.inputs.configureWith(
+        project: .template,
+        shippingRules: shippingRules,
+        selectedShippingRule: sortedShippingRules.last!
+      )
       self.vm.inputs.viewDidLoad()
 
       self.selectRow.assertValues([])

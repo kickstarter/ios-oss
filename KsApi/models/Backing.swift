@@ -28,8 +28,8 @@ public struct Backing {
   }
 }
 
-extension Backing: Equatable {
-}
+extension Backing: Equatable {}
+
 public func == (lhs: Backing, rhs: Backing) -> Bool {
   return lhs.id == rhs.id
 }
@@ -64,5 +64,4 @@ extension Backing: EncodableType {
   }
 }
 
-extension Backing.Status: Argo.Decodable {
-}
+extension Backing.Status: Argo.Decodable {}

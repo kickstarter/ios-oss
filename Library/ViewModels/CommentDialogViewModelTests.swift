@@ -1,21 +1,20 @@
-import XCTest
-import Result
-import ReactiveSwift
 @testable import KsApi
 @testable import Library
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class CommentDialogViewModelTests: TestCase {
   internal let vm: CommentDialogViewModelType = CommentDialogViewModel()
 
-  internal let bodyTextViewText = TestObserver<String, NoError>()
-  internal var postButtonEnabled = TestObserver<Bool, NoError>()
-  internal var loadingViewIsHidden = TestObserver<Bool, NoError>()
-  internal var presentError = TestObserver<String, NoError>()
-  internal let notifyPresenterCommentWasPostedSuccesfully = TestObserver<Comment, NoError>()
-  internal let notifyPresenterDialogWantsDismissal = TestObserver<(), NoError>()
-  internal let showKeyboard = TestObserver<Bool, NoError>()
+  internal let bodyTextViewText = TestObserver<String, Never>()
+  internal var postButtonEnabled = TestObserver<Bool, Never>()
+  internal var loadingViewIsHidden = TestObserver<Bool, Never>()
+  internal var presentError = TestObserver<String, Never>()
+  internal let notifyPresenterCommentWasPostedSuccesfully = TestObserver<Comment, Never>()
+  internal let notifyPresenterDialogWantsDismissal = TestObserver<(), Never>()
+  internal let showKeyboard = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -40,10 +39,12 @@ internal final class CommentDialogViewModelTests: TestCase {
 
   func testBodyTextViewText_WithRecipient() {
     let author = Author.template
-    self.vm.inputs.configureWith(project: .template,
-                                 update: nil,
-                                 recipient: author,
-                                 context: .projectComments)
+    self.vm.inputs.configureWith(
+      project: .template,
+      update: nil,
+      recipient: author,
+      context: .projectComments
+    )
     self.vm.inputs.viewWillAppear()
 
     self.bodyTextViewText.assertValues(["@\(author.name): "])
@@ -68,26 +69,36 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.vm.inputs.commentBodyChanged("hell")
     self.vm.inputs.commentBodyChanged("hello")
 
-    self.postButtonEnabled.assertValues([false, true, false, true],
-                                        "Button re-enabled after typing comment body.")
+    self.postButtonEnabled.assertValues(
+      [false, true, false, true],
+      "Button re-enabled after typing comment body."
+    )
 
     self.vm.inputs.postButtonPressed()
 
-    self.loadingViewIsHidden.assertValues([true, false, true],
-                                          "Comment is posting and then done after pressing button.")
+    self.loadingViewIsHidden.assertValues(
+      [true, false, true],
+      "Comment is posting and then done after pressing button."
+    )
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1, "Comment posts successfully.")
     self.notifyPresenterDialogWantsDismissal
       .assertValueCount(1, "Dialog is dismissed after posting of comment.")
 
-    XCTAssertEqual(["Opened Comment Editor", "Project Comment Create", "Posted Comment"],
-                   self.trackingClient.events, "Koala event is tracked.")
-    XCTAssertEqual(["project", nil, "project"],
-                   self.trackingClient.properties(forKey: "type", as: String.self))
+    XCTAssertEqual(
+      ["Opened Comment Editor", "Project Comment Create", "Posted Comment"],
+      self.trackingClient.events, "Koala event is tracked."
+    )
+    XCTAssertEqual(
+      ["project", nil, "project"],
+      self.trackingClient.properties(forKey: "type", as: String.self)
+    )
   }
 
   internal func testPostingFlow_Update() {
-    self.vm.inputs.configureWith(project: .template, update: .template, recipient: nil,
-                                 context: .updateComments)
+    self.vm.inputs.configureWith(
+      project: .template, update: .template, recipient: nil,
+      context: .updateComments
+    )
     self.vm.inputs.viewWillAppear()
 
     self.postButtonEnabled.assertValues([false], "Button is not enabled initially.")
@@ -105,21 +116,29 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.vm.inputs.commentBodyChanged("hell")
     self.vm.inputs.commentBodyChanged("hello")
 
-    self.postButtonEnabled.assertValues([false, true, false, true],
-                                        "Button re-enabled after typing comment body.")
+    self.postButtonEnabled.assertValues(
+      [false, true, false, true],
+      "Button re-enabled after typing comment body."
+    )
 
     self.vm.inputs.postButtonPressed()
 
-    self.loadingViewIsHidden.assertValues([true, false, true],
-                                          "Comment is posting and then done after pressing button.")
+    self.loadingViewIsHidden.assertValues(
+      [true, false, true],
+      "Comment is posting and then done after pressing button."
+    )
     self.notifyPresenterCommentWasPostedSuccesfully.assertValueCount(1, "Comment posts successfully.")
     self.notifyPresenterDialogWantsDismissal
       .assertValueCount(1, "Dialog is dismissed after posting of comment.")
 
-    XCTAssertEqual(["Opened Comment Editor", "Update Comment Create", "Posted Comment"],
-                   self.trackingClient.events, "Koala event is tracked.")
-    XCTAssertEqual(["update", nil, "update"],
-                   self.trackingClient.properties(forKey: "type", as: String.self))
+    XCTAssertEqual(
+      ["Opened Comment Editor", "Update Comment Create", "Posted Comment"],
+      self.trackingClient.events, "Koala event is tracked."
+    )
+    XCTAssertEqual(
+      ["update", nil, "update"],
+      self.trackingClient.properties(forKey: "type", as: String.self)
+    )
   }
 
   internal func testPostingErrorFlow() {
@@ -138,8 +157,10 @@ internal final class CommentDialogViewModelTests: TestCase {
       self.vm.inputs.postButtonPressed()
 
       self.presentError.assertValues(["ijc"], "Error message is emitted.")
-      self.loadingViewIsHidden.assertValues([true, false, true],
-                                            "Comment is posting and then done after pressing button.")
+      self.loadingViewIsHidden.assertValues(
+        [true, false, true],
+        "Comment is posting and then done after pressing button."
+      )
 
       self.notifyPresenterCommentWasPostedSuccesfully
         .assertValueCount(0, "Comment does not post successfuly.")
@@ -178,8 +199,10 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.vm.inputs.cancelButtonPressed()
     self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
 
-    XCTAssertEqual(["Opened Comment Editor", "Canceled Comment Editor"],
-                   self.trackingClient.events)
+    XCTAssertEqual(
+      ["Opened Comment Editor", "Canceled Comment Editor"],
+      self.trackingClient.events
+    )
   }
 
   func testShowKeyboard() {

@@ -1,6 +1,6 @@
+@testable import Kickstarter_Framework
 import Library
 import PlaygroundSupport
-@testable import Kickstarter_Framework
 
 // Instantiate the Login Tout view controller.
 initialize()

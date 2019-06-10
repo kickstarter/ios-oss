@@ -4,20 +4,19 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-protocol FindFriendsFacebookConnectCellDelegate: class {
+protocol FindFriendsFacebookConnectCellDelegate: AnyObject {
   func findFriendsFacebookConnectCellDidFacebookConnectUser()
   func findFriendsFacebookConnectCellDidDismissHeader()
   func findFriendsFacebookConnectCellShowErrorAlert(_ alert: AlertError)
 }
 
 internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell {
-
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var closeButton: UIButton!
-  @IBOutlet fileprivate weak var containerView: UIView!
-  @IBOutlet fileprivate weak var facebookConnectButton: UIButton!
-  @IBOutlet fileprivate weak var subtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var closeButton: UIButton!
+  @IBOutlet fileprivate var containerView: UIView!
+  @IBOutlet fileprivate var facebookConnectButton: UIButton!
+  @IBOutlet fileprivate var subtitleLabel: UILabel!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   internal weak var delegate: FindFriendsFacebookConnectCellDelegate?
 
@@ -45,19 +44,19 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.attemptFacebookLogin()
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateToDismissHeader
       .observeForUI()
       .observeValues { [weak self] in
         self?.delegate?.findFriendsFacebookConnectCellDidDismissHeader()
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateUserFacebookConnected
       .observeForUI()
       .observeValues { [weak self] in
         self?.delegate?.findFriendsFacebookConnectCellDidFacebookConnectUser()
-    }
+      }
 
     self.viewModel.outputs.postUserUpdatedNotification
       .observeValues(NotificationCenter.default.post)
@@ -66,13 +65,13 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
       .observeForUI()
       .observeValues { [weak self] alert in
         self?.delegate?.findFriendsFacebookConnectCellShowErrorAlert(alert)
-    }
+      }
 
     self.viewModel.outputs.updateUserInEnvironment
       .observeValues { [weak self] user in
         AppEnvironment.updateCurrentUser(user)
         self?.viewModel.inputs.userUpdated()
-    }
+      }
   }
 
   internal override func bindStyles() {
@@ -98,8 +97,10 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
     _ = self.closeButton
       |> UIButton.lens.tintColor .~ .ksr_soft_black
       |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .touchUpInside)]
-      |> UIButton.lens.contentEdgeInsets .~ .init(top: Styles.grid(1), left: Styles.grid(3),
-                                                  bottom: Styles.grid(3), right: Styles.grid(2))
+      |> UIButton.lens.contentEdgeInsets .~ .init(
+        top: Styles.grid(1), left: Styles.grid(3),
+        bottom: Styles.grid(3), right: Styles.grid(2)
+      )
 
     _ = self.facebookConnectButton
       |> facebookButtonStyle
@@ -110,6 +111,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
   }
 
   // MARK: Facebook Login
+
   fileprivate func attemptFacebookLogin() {
     self.fbLoginManager
       .logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: nil) { result, error in
@@ -118,7 +120,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
         } else if let result = result, !result.isCancelled {
           self.viewModel.inputs.facebookLoginSuccess(result: result)
         }
-    }
+      }
   }
 
   @objc func closeButtonTapped() {

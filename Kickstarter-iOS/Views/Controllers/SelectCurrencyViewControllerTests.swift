@@ -1,9 +1,8 @@
-import Library
-import Prelude
-import Result
-import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
+import Library
+import Prelude
+import XCTest
 
 internal final class SelectCurrencyViewControllerTests: TestCase {
   override func setUp() {
@@ -26,6 +25,6 @@ internal final class SelectCurrencyViewControllerTests: TestCase {
 
           FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
         }
-    }
+      }
   }
 }

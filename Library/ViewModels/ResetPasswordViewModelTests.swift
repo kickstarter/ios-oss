@@ -1,18 +1,17 @@
-import XCTest
-import ReactiveSwift
-import ReactiveExtensions_TestHelpers
 @testable import KsApi
-import Result
 @testable import Library
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 final class ResetPasswordViewModelTests: TestCase {
   internal let vm: ResetPasswordViewModelType = ResetPasswordViewModel()
-  internal let emailTextFieldBecomeFirstResponder = TestObserver<(), NoError>()
-  internal let formIsValid = TestObserver<Bool, NoError>()
-  internal let showResetSuccess = TestObserver<String, NoError>()
-  internal let returnToLogin = TestObserver<(), NoError>()
-  internal let showError = TestObserver<String, NoError>()
-  internal let setEmailInitial = TestObserver<String, NoError>()
+  internal let emailTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  internal let formIsValid = TestObserver<Bool, Never>()
+  internal let showResetSuccess = TestObserver<String, Never>()
+  internal let returnToLogin = TestObserver<(), Never>()
+  internal let showError = TestObserver<String, Never>()
+  internal let setEmailInitial = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -101,12 +100,16 @@ final class ResetPasswordViewModelTests: TestCase {
     self.vm.inputs.resetButtonPressed()
 
     self.showResetSuccess.assertValues(
-      [Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
-        email: "lisa@kickstarter.com")
+      [
+        Strings.forgot_password_we_sent_an_email_to_email_address_with_instructions_to_reset_your_password(
+          email: "lisa@kickstarter.com"
+        )
       ]
     )
-    XCTAssertEqual(["Forgot Password View", "Viewed Forgot Password", "Forgot Password Requested",
-      "Requested Password Reset"], trackingClient.events)
+    XCTAssertEqual([
+      "Forgot Password View", "Viewed Forgot Password", "Forgot Password Requested",
+      "Requested Password Reset"
+    ], trackingClient.events)
   }
 
   func testResetConfirmation() {
@@ -129,8 +132,10 @@ final class ResetPasswordViewModelTests: TestCase {
       self.vm.inputs.emailChanged("bad@email")
       self.vm.inputs.resetButtonPressed()
 
-      self.showError.assertValues([Strings.forgot_password_error()],
-                                  "Error alert is shown on bad request")
+      self.showError.assertValues(
+        [Strings.forgot_password_error()],
+        "Error alert is shown on bad request"
+      )
     }
   }
 

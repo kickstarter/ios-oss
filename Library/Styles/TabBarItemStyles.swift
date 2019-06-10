@@ -11,8 +11,7 @@ private let paddingY: CGFloat = 6.0
 
 private let baseTabBarItemStyle = UITabBarItem.lens.title .~ nil
 
-public func activityTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
-
+public func activityTabBarItemStyle(isMember _: Bool) -> (UITabBarItem) -> UITabBarItem {
   return baseTabBarItemStyle
     <> UITabBarItem.lens.title %~ { _ in Strings.tabbar_activity() }
     <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-activity")
@@ -26,8 +25,7 @@ public let dashboardTabBarItemStyle = baseTabBarItemStyle
   <> UITabBarItem.lens.selectedImage .~ image(named: "tabbar-icon-dashboard-selected")
   <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.tabbar_dashboard() }
 
-public func homeTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
-
+public func homeTabBarItemStyle(isMember _: Bool) -> (UITabBarItem) -> UITabBarItem {
   return baseTabBarItemStyle
     <> UITabBarItem.lens.title %~ { _ in Strings.Explore() }
     <> UITabBarItem.lens.image .~ image(named: "tabbar-icon-home")
@@ -35,8 +33,7 @@ public func homeTabBarItemStyle(isMember: Bool) -> (UITabBarItem) -> UITabBarIte
     <> UITabBarItem.lens.accessibilityLabel %~ { _ in Strings.Explore() }
 }
 
-public func profileTabBarItemStyle(isLoggedIn: Bool, isMember: Bool) -> (UITabBarItem) -> UITabBarItem {
-
+public func profileTabBarItemStyle(isLoggedIn: Bool, isMember _: Bool) -> (UITabBarItem) -> UITabBarItem {
   let imageName = isLoggedIn ? "tabbar-icon-profile-logged-in" : "tabbar-icon-profile-logged-out"
   let accLabel = isLoggedIn ? Strings.tabbar_profile() : Strings.tabbar_login()
 

@@ -1,22 +1,21 @@
-import Prelude
-import ReactiveSwift
-import Result
-import XCTest
-@testable import Library
 @testable import KsApi
+@testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 import Foundation
 
 internal final class FindFriendsCellViewModelTests: TestCase {
   private let vm = FindFriendsCellViewModel()
 
-  private let isDisabled = TestObserver<Bool, NoError>()
+  private let isDisabled = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.isDisabled.observe(isDisabled.observer)
+    self.vm.outputs.isDisabled.observe(self.isDisabled.observer)
   }
 
   func testCell_userFollowingEnabled() {

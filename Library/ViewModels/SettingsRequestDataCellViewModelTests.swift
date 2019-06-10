@@ -1,24 +1,23 @@
-import Prelude
-import ReactiveSwift
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class SettingsRequestDataCellViewModelTests: TestCase {
   internal let vm = SettingsRequestDataCellViewModel()
-  internal let dataExpirationAndChevronHidden = TestObserver<Bool, NoError>()
-  internal let goToSafari = TestObserver<String, NoError>()
-  internal let requestDataButtonEnabled = TestObserver<Bool, NoError>()
-  internal let requestedDataExpirationDate = TestObserver<String, NoError>()
-  internal let requestDataLoadingIndicator = TestObserver<Bool, NoError>()
-  internal let requestDataText = TestObserver<String, NoError>()
-  internal let requestDataTextHidden = TestObserver<Bool, NoError>()
-  internal let showPreparingDataAndCheckBackLaterText = TestObserver<Bool, NoError>()
-  internal let showRequestDataPrompt = TestObserver<String, NoError>()
-  internal let unableToRequestDataError = TestObserver<String, NoError>()
+  internal let dataExpirationAndChevronHidden = TestObserver<Bool, Never>()
+  internal let goToSafari = TestObserver<String, Never>()
+  internal let requestDataButtonEnabled = TestObserver<Bool, Never>()
+  internal let requestedDataExpirationDate = TestObserver<String, Never>()
+  internal let requestDataLoadingIndicator = TestObserver<Bool, Never>()
+  internal let requestDataText = TestObserver<String, Never>()
+  internal let requestDataTextHidden = TestObserver<Bool, Never>()
+  internal let showPreparingDataAndCheckBackLaterText = TestObserver<Bool, Never>()
+  internal let showRequestDataPrompt = TestObserver<String, Never>()
+  internal let unableToRequestDataError = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -82,15 +81,19 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchExportStateResponse: export)) {
       self.vm.inputs.awakeFromNib()
-      self.requestDataText.assertValues([Strings.Request_my_personal_data()],
-                                        "Should emit on awakeFromNib to set initial value")
+      self.requestDataText.assertValues(
+        [Strings.Request_my_personal_data()],
+        "Should emit on awakeFromNib to set initial value"
+      )
 
       self.vm.inputs.configureWith(user: user)
 
       self.scheduler.advance()
 
-      self.requestDataText.assertValues([Strings.Request_my_personal_data(),
-                                         Strings.Request_my_personal_data()])
+      self.requestDataText.assertValues([
+        Strings.Request_my_personal_data(),
+        Strings.Request_my_personal_data()
+      ])
 
       self.vm.inputs.exportDataTapped()
 
@@ -101,9 +104,11 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
         self.scheduler.advance()
 
-        self.requestDataText.assertValues([Strings.Request_my_personal_data(),
-                                           Strings.Request_my_personal_data(),
-                                           Strings.Download_your_personal_data()])
+        self.requestDataText.assertValues([
+          Strings.Request_my_personal_data(),
+          Strings.Request_my_personal_data(),
+          Strings.Download_your_personal_data()
+        ])
       }
     }
   }
@@ -113,13 +118,17 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchExportStateResponse: .template)) {
       self.vm.inputs.awakeFromNib()
-      self.requestDataText.assertValues([Strings.Request_my_personal_data()],
-                                        "Should emit on awakeFromNib to set initial value")
+      self.requestDataText.assertValues(
+        [Strings.Request_my_personal_data()],
+        "Should emit on awakeFromNib to set initial value"
+      )
       self.dataExpirationAndChevronHidden.assertValues([true])
       self.vm.inputs.configureWith(user: user)
       self.scheduler.advance()
-      self.requestDataText.assertValues([Strings.Request_my_personal_data(),
-                                         Strings.Download_your_personal_data()])
+      self.requestDataText.assertValues([
+        Strings.Request_my_personal_data(),
+        Strings.Download_your_personal_data()
+      ])
       self.dataExpirationAndChevronHidden.assertValues([true, false])
     }
   }
@@ -137,7 +146,8 @@ internal final class SettingsRequestDataCellViewModelTests: TestCase {
       self.scheduler.advance()
       self.vm.inputs.exportDataTapped()
       self.showRequestDataPrompt.assertValues([
-        Strings.Youll_receive_an_email_at_email_when_your_download_is_ready(email: "ksr@kickstarter.com")])
+        Strings.Youll_receive_an_email_at_email_when_your_download_is_ready(email: "ksr@kickstarter.com")
+      ])
     }
   }
 

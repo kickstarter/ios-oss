@@ -9,6 +9,7 @@ public struct CheckoutEnvelope {
     case successful
     case verifying
   }
+
   public let state: State
   public let stateReason: String
 }
@@ -21,5 +22,4 @@ extension CheckoutEnvelope: Argo.Decodable {
   }
 }
 
-extension CheckoutEnvelope.State: Argo.Decodable {
-}
+extension CheckoutEnvelope.State: Argo.Decodable {}

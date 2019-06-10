@@ -1,33 +1,32 @@
-// swiftlint:disable force_unwrapping
-// swiftlint:disable force_cast
-import XCTest
-@testable import Library
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
-import Result
-import KsApi
+@testable import Library
 import PassKit
 import Prelude
+import ReactiveExtensions_TestHelpers
+import XCTest
+
+// swiftlint:disable force_unwrapping
+// swiftlint:disable force_cast
 
 private let questionMark = CharacterSet(charactersIn: "?")
 
 final class DeprecatedCheckoutViewModelTests: TestCase {
   fileprivate let vm: DeprecatedCheckoutViewModelType = DeprecatedCheckoutViewModel()
 
-  fileprivate let closeLoginTout = TestObserver<(), NoError>()
-  fileprivate let dismissViewController = TestObserver<(), NoError>()
-  fileprivate let evaluateJavascript = TestObserver<String, NoError>()
-  fileprivate let goToPaymentAuthorization = TestObserver<NSDictionary, NoError>()
-  fileprivate let goToSafariBrowser = TestObserver<URL, NoError>()
-  fileprivate let goToThanks = TestObserver<Project, NoError>()
-  fileprivate let goToWebModal = TestObserver<URLRequest, NoError>()
-  fileprivate let openLoginTout = TestObserver<(), NoError>()
-  fileprivate let popViewController = TestObserver<(), NoError>()
-  fileprivate let setStripeAppleMerchantIdentifier = TestObserver<String, NoError>()
-  fileprivate let setStripePublishableKey = TestObserver<String, NoError>()
-  fileprivate let showAlert = TestObserver<String, NoError>()
-  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
-  fileprivate let webViewLoadRequestURL = TestObserver<String, NoError>()
+  fileprivate let closeLoginTout = TestObserver<(), Never>()
+  fileprivate let dismissViewController = TestObserver<(), Never>()
+  fileprivate let evaluateJavascript = TestObserver<String, Never>()
+  fileprivate let goToPaymentAuthorization = TestObserver<NSDictionary, Never>()
+  fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
+  fileprivate let goToThanks = TestObserver<Project, Never>()
+  fileprivate let goToWebModal = TestObserver<URLRequest, Never>()
+  fileprivate let openLoginTout = TestObserver<(), Never>()
+  fileprivate let popViewController = TestObserver<(), Never>()
+  fileprivate let setStripeAppleMerchantIdentifier = TestObserver<String, Never>()
+  fileprivate let setStripePublishableKey = TestObserver<String, Never>()
+  fileprivate let showAlert = TestObserver<String, Never>()
+  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, Never>()
+  fileprivate let webViewLoadRequestURL = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -65,10 +64,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
   func testCancelButtonPopsViewController() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
-                                 project: project,
-                                 reward: .template,
-                                 applePayCapable: false)
+    self.vm.inputs.configureWith(
+      initialRequest: newPaymentsRequest().prepared(),
+      project: project,
+      reward: .template,
+      applePayCapable: false
+    )
     self.vm.inputs.viewDidLoad()
 
     XCTAssertTrue(self.vm.inputs.shouldStartLoad(withRequest: stripeRequest(), navigationType: .other))
@@ -79,10 +80,14 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
     self.vm.inputs.cancelButtonTapped()
     self.popViewController.assertValueCount(1)
-    XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"],
-                   self.trackingClient.events, "Cancel event and its deprecated version are tracked")
-    XCTAssertEqual(["new_pledge", "new_pledge"],
-                   self.trackingClient.properties(forKey: "pledge_context", as: String.self))
+    XCTAssertEqual(
+      ["Checkout Cancel", "Canceled Checkout"],
+      self.trackingClient.events, "Cancel event and its deprecated version are tracked"
+    )
+    XCTAssertEqual(
+      ["new_pledge", "new_pledge"],
+      self.trackingClient.properties(forKey: "pledge_context", as: String.self)
+    )
   }
 
   func testNewPledgeRequestDismissesViewController() {
@@ -91,10 +96,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     self.webViewLoadRequestURL.assertDidNotEmitValue()
 
     // 1: Open new payments form
-    self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
-                                 project: project,
-                                 reward: .template,
-                                 applePayCapable: false)
+    self.vm.inputs.configureWith(
+      initialRequest: newPaymentsRequest().prepared(),
+      project: project,
+      reward: .template,
+      applePayCapable: false
+    )
     self.vm.inputs.viewDidLoad()
 
     self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
@@ -107,7 +114,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(
         withRequest: newPaymentsRequest().prepared(),
-        navigationType: .other)
+        navigationType: .other
+      )
     )
 
     self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -136,10 +144,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(initialRequest: editPledgeRequest(project: project).prepared(),
-                                   project: project,
-                                   reward: .template,
-                                   applePayCapable: false)
+      self.vm.inputs.configureWith(
+        initialRequest: editPledgeRequest(project: project).prepared(),
+        project: project,
+        reward: .template,
+        applePayCapable: false
+      )
       self.vm.inputs.viewDidLoad()
 
       // 1: Show reward and shipping form
@@ -196,8 +206,10 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(withRequest: projectRequest(project: project), navigationType: .other)
       )
-      XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"],
-                     self.trackingClient.events)
+      XCTAssertEqual(
+        ["Checkout Cancel", "Canceled Checkout"],
+        self.trackingClient.events
+      )
       self.dismissViewController.assertValueCount(1)
     }
 
@@ -209,10 +221,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(initialRequest: editPledgeRequest(project: project).prepared(),
-                                   project: project,
-                                   reward: .template,
-                                   applePayCapable: false)
+      self.vm.inputs.configureWith(
+        initialRequest: editPledgeRequest(project: project).prepared(),
+        project: project,
+        reward: .template,
+        applePayCapable: false
+      )
       self.vm.inputs.viewDidLoad()
 
       // 1: Show reward and shipping form
@@ -295,7 +309,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
           withRequest: thanksRequest(
-            project: project, racing: false),
+            project: project, racing: false
+          ),
           navigationType: .other
         ),
         "Not prepared"
@@ -312,10 +327,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
       // 1: Open new payments form
-      self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
-                                   project: project,
-                                   reward: .template,
-                                   applePayCapable: false)
+      self.vm.inputs.configureWith(
+        initialRequest: newPaymentsRequest().prepared(),
+        project: project,
+        reward: .template,
+        applePayCapable: false
+      )
       self.vm.inputs.viewDidLoad()
 
       self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
@@ -328,7 +345,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: newPaymentsRequest().prepared(),
-          navigationType: .other)
+          navigationType: .other
+        )
       )
 
       self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -382,10 +400,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
       // 1: Open new payments form
-      self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
-                                   project: project,
-                                   reward: .template,
-                                   applePayCapable: false)
+      self.vm.inputs.configureWith(
+        initialRequest: newPaymentsRequest().prepared(),
+        project: project,
+        reward: .template,
+        applePayCapable: false
+      )
       self.vm.inputs.viewDidLoad()
 
       self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
@@ -398,7 +418,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: newPaymentsRequest().prepared(),
-          navigationType: .other)
+          navigationType: .other
+        )
       )
 
       self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -449,10 +470,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
   func testLoginDuringCheckout() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
-                                 project: project,
-                                 reward: .template,
-                                 applePayCapable: false)
+    self.vm.inputs.configureWith(
+      initialRequest: newPaymentsRequest().prepared(),
+      project: project,
+      reward: .template,
+      applePayCapable: false
+    )
     self.vm.inputs.viewDidLoad()
 
     // 1: Show reward and shipping form
@@ -544,10 +567,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(initialRequest: editPledgeRequest(project: project).prepared(),
-                                   project: project,
-                                   reward: .template,
-                                   applePayCapable: false)
+      self.vm.inputs.configureWith(
+        initialRequest: editPledgeRequest(project: project).prepared(),
+        project: project,
+        reward: .template,
+        applePayCapable: false
+      )
       self.vm.inputs.viewDidLoad()
 
       // 1: Show reward and shipping form
@@ -603,28 +628,36 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
   func testModalRequests() {
     let project = Project.template
-    self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
-                                 project: project,
-                                 reward: .template,
-                                 applePayCapable: false)
+    self.vm.inputs.configureWith(
+      initialRequest: newPaymentsRequest().prepared(),
+      project: project,
+      reward: .template,
+      applePayCapable: false
+    )
     self.vm.inputs.viewDidLoad()
 
     XCTAssertTrue(
-      self.vm.inputs.shouldStartLoad(withRequest: newPaymentsRequest().prepared(),
-        navigationType: .other)
+      self.vm.inputs.shouldStartLoad(
+        withRequest: newPaymentsRequest().prepared(),
+        navigationType: .other
+      )
     )
     self.goToWebModal.assertValueCount(0)
 
     XCTAssertFalse(
-      self.vm.inputs.shouldStartLoad(withRequest: creatorRequest(project: project),
-        navigationType: .linkClicked)
+      self.vm.inputs.shouldStartLoad(
+        withRequest: creatorRequest(project: project),
+        navigationType: .linkClicked
+      )
     )
     self.goToSafariBrowser.assertValueCount(0)
     self.goToWebModal.assertValueCount(1)
 
     XCTAssertFalse(
-      self.vm.inputs.shouldStartLoad(withRequest: privacyPolicyRequest(project: project),
-        navigationType: .linkClicked)
+      self.vm.inputs.shouldStartLoad(
+        withRequest: privacyPolicyRequest(project: project),
+        navigationType: .linkClicked
+      )
     )
     self.goToSafariBrowser.assertValueCount(1)
     self.goToWebModal.assertValueCount(1)
@@ -637,10 +670,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
       // 1: Open new payments form
-      self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
-                                   project: project,
-                                   reward: .template,
-                                   applePayCapable: false)
+      self.vm.inputs.configureWith(
+        initialRequest: newPaymentsRequest().prepared(),
+        project: project,
+        reward: .template,
+        applePayCapable: false
+      )
       self.vm.inputs.viewDidLoad()
 
       self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
@@ -653,7 +688,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: newPaymentsRequest().prepared(),
-          navigationType: .other)
+          navigationType: .other
+        )
       )
 
       self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -717,10 +753,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
       // 1: Open new payments form
-      self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
-                                   project: project,
-                                   reward: .template,
-                                   applePayCapable: false)
+      self.vm.inputs.configureWith(
+        initialRequest: newPaymentsRequest().prepared(),
+        project: project,
+        reward: .template,
+        applePayCapable: false
+      )
       self.vm.inputs.viewDidLoad()
 
       self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
@@ -733,7 +771,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: newPaymentsRequest().prepared(),
-          navigationType: .other)
+          navigationType: .other
+        )
       )
 
       self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -789,10 +828,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     self.webViewLoadRequestURL.assertDidNotEmitValue()
 
     // 1: Open new payments form
-    self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
-                                 project: project,
-                                 reward: .template,
-                                 applePayCapable: false)
+    self.vm.inputs.configureWith(
+      initialRequest: newPaymentsRequest().prepared(),
+      project: project,
+      reward: .template,
+      applePayCapable: false
+    )
     self.vm.inputs.viewDidLoad()
 
     self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
@@ -805,7 +846,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     XCTAssertTrue(
       self.vm.inputs.shouldStartLoad(
         withRequest: newPaymentsRequest().prepared(),
-        navigationType: .other)
+        navigationType: .other
+      )
     )
 
     self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -827,8 +869,10 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     )
 
     self.dismissViewController.assertValueCount(1)
-    XCTAssertEqual(["Checkout Cancel", "Canceled Checkout"],
-                   self.trackingClient.events, "Cancel event and its deprecated version are tracked")
+    XCTAssertEqual(
+      ["Checkout Cancel", "Canceled Checkout"],
+      self.trackingClient.events, "Cancel event and its deprecated version are tracked"
+    )
   }
 
   func testEmbeddedApplePayFlow() {
@@ -843,10 +887,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       self.webViewLoadRequestURL.assertDidNotEmitValue()
 
       // 1: Open new payments form
-      self.vm.inputs.configureWith(initialRequest: newPaymentsRequest().prepared(),
-                                   project: project,
-                                   reward: .template,
-                                   applePayCapable: true)
+      self.vm.inputs.configureWith(
+        initialRequest: newPaymentsRequest().prepared(),
+        project: project,
+        reward: .template,
+        applePayCapable: true
+      )
       self.vm.inputs.viewDidLoad()
 
       self.webViewLoadRequestURL.assertValues([newPaymentsURL()])
@@ -859,7 +905,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       XCTAssertTrue(
         self.vm.inputs.shouldStartLoad(
           withRequest: newPaymentsRequest().prepared(),
-          navigationType: .other)
+          navigationType: .other
+        )
       )
 
       self.webViewLoadRequestIsPrepared.assertValues([true, true])
@@ -912,21 +959,27 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay"],
-        self.trackingClient.events)
+        self.trackingClient.events
+      )
 
       let status = self.vm.inputs.stripeCreatedToken(stripeToken: "stripe_deadbeef", error: nil)
       XCTAssertEqual(.success, status)
 
       XCTAssertEqual(
-        ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
-          "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token"],
-        self.trackingClient.events)
+        [
+          "Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
+          "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token"
+        ],
+        self.trackingClient.events
+      )
 
       self.vm.inputs.paymentAuthorizationDidFinish()
 
       XCTAssertEqual(
-        ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
-          "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token", "Apple Pay Finished"],
+        [
+          "Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
+          "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token", "Apple Pay Finished"
+        ],
         self.trackingClient.events
       )
 
@@ -967,8 +1020,9 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
         self.vm.inputs.shouldStartLoad(withRequest: paymentsRequest().prepared(), navigationType: .other)
       )
       XCTAssertEqual(
-        ["Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
-          "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token", "Apple Pay Finished",
+        [
+          "Apple Pay Show Sheet", "Showed Apple Pay Sheet", "Apple Pay Authorized", "Authorized Apple Pay",
+          "Apple Pay Stripe Token Created", "Created Apple Pay Stripe Token", "Apple Pay Finished"
         ],
         self.trackingClient.events
       )
@@ -989,20 +1043,24 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
   }
 
   func testSetStripeAppleMerchantIdentifier_NotApplePayCapable() {
-    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
-                                 project: .template,
-                                 reward: .template,
-                                 applePayCapable: false)
+    self.vm.inputs.configureWith(
+      initialRequest: newPledgeRequest(project: .template).prepared(),
+      project: .template,
+      reward: .template,
+      applePayCapable: false
+    )
     self.vm.inputs.viewDidLoad()
 
     self.setStripeAppleMerchantIdentifier.assertValueCount(0)
   }
 
   func testSetStripeAppleMerchantIdentifier_ApplePayCapable() {
-    self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
-                                 project: .template,
-                                 reward: .template,
-                                 applePayCapable: true)
+    self.vm.inputs.configureWith(
+      initialRequest: newPledgeRequest(project: .template).prepared(),
+      project: .template,
+      reward: .template,
+      applePayCapable: true
+    )
     self.vm.inputs.viewDidLoad()
 
     self.setStripeAppleMerchantIdentifier.assertValues(
@@ -1012,10 +1070,12 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
   func testSetStripePublishableKey_NotApplePayCapable() {
     withEnvironment(config: .template |> Config.lens.stripePublishableKey .~ "deadbeef") {
-      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
-                                   project: .template,
-                                   reward: .template,
-                                   applePayCapable: false)
+      self.vm.inputs.configureWith(
+        initialRequest: newPledgeRequest(project: .template).prepared(),
+        project: .template,
+        reward: .template,
+        applePayCapable: false
+      )
       self.vm.inputs.viewDidLoad()
 
       self.setStripePublishableKey.assertValueCount(0)
@@ -1024,25 +1084,28 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
   func testSetStripePublishableKey_ApplePayCapable() {
     withEnvironment(config: .template |> Config.lens.stripePublishableKey .~ "deadbeef") {
-      self.vm.inputs.configureWith(initialRequest: newPledgeRequest(project: .template).prepared(),
-                                   project: .template,
-                                   reward: .template,
-                                   applePayCapable: true)
+      self.vm.inputs.configureWith(
+        initialRequest: newPledgeRequest(project: .template).prepared(),
+        project: .template,
+        reward: .template,
+        applePayCapable: true
+      )
       self.vm.inputs.viewDidLoad()
 
       self.setStripePublishableKey.assertValues(["deadbeef"])
     }
   }
 
-  private func dictionaryFromJavascript(string: String) -> [String: Any] {
-
+  private func dictionaryFromJavascript(string _: String) -> [String: Any] {
     let formattedString = "{\"stripe_token\":{\"id\":\"stripe_deadbeef\"}," +
-    "\"apple_pay_token\":{\"payment_instrument_name\":\"AmEx 1111\",\"payment_network\":\"AmEx\"," +
-    "\"transaction_identifier\":\"apple_pay_deadbeef\"}}"
+      "\"apple_pay_token\":{\"payment_instrument_name\":\"AmEx 1111\",\"payment_network\":\"AmEx\"," +
+      "\"transaction_identifier\":\"apple_pay_deadbeef\"}}"
 
     do {
-      return try JSONSerialization.jsonObject(with: formattedString.data(using: .utf8)!,
-                                              options: []) as! [String: Any]
+      return try JSONSerialization.jsonObject(
+        with: formattedString.data(using: .utf8)!,
+        options: []
+      ) as! [String: Any]
     } catch {
       return [:]
     }
@@ -1050,21 +1113,22 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 }
 
 internal extension URLRequest {
-  internal func prepared() -> URLRequest {
+  func prepared() -> URLRequest {
     return AppEnvironment.current.apiService.preparedRequest(forRequest: self)
   }
 }
 
-private func applePayUrlRequest(project: Project,
-                                amount: Int,
-                                reward: Reward,
-                                location: Location) -> URLRequest {
-
+private func applePayUrlRequest(
+  project: Project,
+  amount: Int,
+  reward _: Reward,
+  location _: Location
+) -> URLRequest {
   let payload: [String: Any] = [
     "country_code": project.country.countryCode,
     "currency_code": project.country.currencyCode,
     "merchant_identifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-    "supported_networks": [ "AmEx", "Visa", "MasterCard", "Discover" ],
+    "supported_networks": ["AmEx", "Visa", "MasterCard", "Discover"],
     "payment_summary_items": [
       [
         "label": project.name,
@@ -1154,7 +1218,8 @@ private func pledgeURL(project: Project) -> String {
 }
 
 private func privacyPolicyRequest(project: Project) -> URLRequest {
-  return URLRequest(url:
+  return URLRequest(
+    url:
     URL(string: privacyPolicyURL(project: project))!
   )
 }

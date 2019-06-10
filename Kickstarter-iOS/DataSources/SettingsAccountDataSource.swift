@@ -4,13 +4,13 @@ import Library
 import UIKit
 
 final class SettingsAccountDataSource: ValueCellDataSource {
-
   private var filteredSections: [SettingsAccountSectionType] = []
 
-  func configureRows(currency: Currency?,
-                     shouldHideEmailWarning: Bool,
-                     shouldHideEmailPasswordSection: Bool) {
-
+  func configureRows(
+    currency: Currency?,
+    shouldHideEmailWarning: Bool,
+    shouldHideEmailPasswordSection: Bool
+  ) {
     self.filteredSections = shouldHideEmailPasswordSection
       ? SettingsAccountSectionType.allCases.filter { $0 != .changeEmailPassword }
       : SettingsAccountSectionType.allCases.filter { $0 != .createPassword }
@@ -24,9 +24,11 @@ final class SettingsAccountDataSource: ValueCellDataSource {
 
       guard let index = self.index(of: section) else { return }
 
-      self.set(values: values,
-               cellClass: SettingsTableViewCell.self,
-               inSection: index)
+      self.set(
+        values: values,
+        cellClass: SettingsTableViewCell.self,
+        inSection: index
+      )
 
       if section == .changeEmailPassword {
         self.insertChangeEmailCell(shouldHideEmailWarning)
@@ -39,10 +41,12 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   func insertChangeEmailCell(_ shouldHideEmailWarning: Bool) {
     guard let section = self.index(of: .changeEmailPassword) else { return }
 
-    self.insertRow(value: shouldHideEmailWarning,
-                   cellClass: SettingsAccountWarningCell.self,
-                   atIndex: 0,
-                   inSection: section)
+    self.insertRow(
+      value: shouldHideEmailWarning,
+      cellClass: SettingsAccountWarningCell.self,
+      atIndex: 0,
+      inSection: section
+    )
   }
 
   func insertCurrencyCell(with currency: Currency?) -> IndexPath? {
@@ -52,9 +56,11 @@ final class SettingsAccountDataSource: ValueCellDataSource {
 
     let cellValue = SettingsCellValue(cellType: cellType)
 
-    return self.appendRow(value: cellValue,
-                          cellClass: SettingsTableViewCell.self,
-                          toSection: section)
+    return self.appendRow(
+      value: cellValue,
+      cellClass: SettingsTableViewCell.self,
+      toSection: section
+    )
   }
 
   func cellTypeForIndexPath(indexPath: IndexPath) -> SettingsAccountCellType? {
@@ -82,6 +88,6 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   }
 
   private func index(of section: SettingsAccountSectionType) -> Int? {
-    return self.filteredSections.index(of: section)
+    return self.filteredSections.firstIndex(of: section)
   }
 }

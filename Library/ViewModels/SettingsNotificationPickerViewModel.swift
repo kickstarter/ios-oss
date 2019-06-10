@@ -1,10 +1,9 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol SettingsNotificationPickerViewModelOutputs {
-  var frequencyValueText: Signal<String, NoError> { get }
+  var frequencyValueText: Signal<String, Never> { get }
 }
 
 public protocol SettingsNotificationPickerViewModelInputs {
@@ -18,16 +17,15 @@ public protocol SettingsNotificationPickerViewModelType {
 
 public final class SettingsNotificationPickerViewModel: SettingsNotificationPickerViewModelOutputs,
   SettingsNotificationPickerViewModelInputs, SettingsNotificationPickerViewModelType {
-
   public init() {
-    let initialUser = initialUserProperty.signal.skipNil()
+    let initialUser = self.initialUserProperty.signal.skipNil()
 
     let userDefinedEmailFrequency = initialUser.signal
       .map { user in
         user |> UserAttribute.notification(.creatorDigest).keyPath.view
       }.skipNil()
       .map { creatorDigestEnabled in
-        return creatorDigestEnabled ? EmailFrequency.dailySummary : EmailFrequency.twiceADaySummary
+        creatorDigestEnabled ? EmailFrequency.dailySummary : EmailFrequency.twiceADaySummary
       }
 
     self.frequencyValueText = userDefinedEmailFrequency.signal
@@ -39,7 +37,7 @@ public final class SettingsNotificationPickerViewModel: SettingsNotificationPick
     self.initialUserProperty.value = cellValue.user
   }
 
-  public let frequencyValueText: Signal<String, NoError>
+  public let frequencyValueText: Signal<String, Never>
 
   public var outputs: SettingsNotificationPickerViewModelOutputs {
     return self

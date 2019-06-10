@@ -1,8 +1,6 @@
 import KsApi
-import LiveStream
 import Prelude
 import ReactiveSwift
-import Result
 
 public struct ShareActivityCompletionData {
   internal let activityType: UIActivity.ActivityType?
@@ -10,10 +8,12 @@ public struct ShareActivityCompletionData {
   internal let returnedItems: [Any]?
   internal let activityError: Error?
 
-  public init(activityType: UIActivity.ActivityType?,
-              completed: Bool,
-              returnedItems: [Any]?,
-              activityError: Error?) {
+  public init(
+    activityType: UIActivity.ActivityType?,
+    completed: Bool,
+    returnedItems: [Any]?,
+    activityError: Error?
+  ) {
     self.activityType = activityType
     self.completed = completed
     self.returnedItems = returnedItems
@@ -41,7 +41,7 @@ public protocol ShareViewModelInputs {
 
 public protocol ShareViewModelOutputs {
   /// Emits when the share sheet should be presented.
-  var showShareSheet: Signal<(UIActivityViewController, UIView?), NoError> { get }
+  var showShareSheet: Signal<(UIActivityViewController, UIView?), Never> { get }
 }
 
 public protocol ShareViewModelType {
@@ -50,7 +50,6 @@ public protocol ShareViewModelType {
 }
 
 public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, ShareViewModelOutputs {
-
   public init() {
     let shareContextAndView = self.shareContextProperty.signal.skipNil()
     let shareContext = self.shareContextProperty.signal.skipNil().map(first)
@@ -82,13 +81,13 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
 
     shareActivityCompletion
       .filter { _, completion in completion.activityType != nil }
-      .observeValues { (arg) in
+      .observeValues { arg in
 
         let (shareContext, completion) = arg
         AppEnvironment.current.koala.trackShowedShare(
           shareContext: shareContext, shareActivityType: completion.activityType
         )
-    }
+      }
 
     shareActivityCompletion
       .filter { _, completion in
@@ -98,13 +97,13 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
         SignalProducer(value: $0)
           .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       }
-      .observeValues { (arg) in
+      .observeValues { arg in
 
         let (shareContext, completion) = arg
         AppEnvironment.current.koala.trackShared(
           shareContext: shareContext, shareActivityType: completion.activityType
         )
-    }
+      }
 
     canceledShare
       .filter { _, completion in completion.activityType.map(firstPartyShareTypes.contains) == .some(true) }
@@ -112,43 +111,42 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
         SignalProducer(value: $0)
           .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
       }
-      .observeValues { (arg) in
+      .observeValues { arg in
 
         let (shareContext, completion) = arg
         AppEnvironment.current.koala.trackCanceledShare(
           shareContext: shareContext, shareActivityType: completion.activityType
         )
-    }
+      }
   }
 
   fileprivate let shareContextProperty = MutableProperty<(ShareContext, UIView?)?>(nil)
   public func configureWith(shareContext: ShareContext, shareContextView: UIView?) {
     self.shareContextProperty.value = (shareContext, shareContextView)
   }
+
   fileprivate let shareButtonTappedProperty = MutableProperty(())
   public func shareButtonTapped() {
     self.shareButtonTappedProperty.value = ()
   }
+
   fileprivate let shareActivityCompletionProperty = MutableProperty<ShareActivityCompletionData?>(nil)
   public func shareActivityCompletion(with data: ShareActivityCompletionData) {
     self.shareActivityCompletionProperty.value = data
   }
 
-  public let showShareSheet: Signal<(UIActivityViewController, UIView?), NoError>
+  public let showShareSheet: Signal<(UIActivityViewController, UIView?), Never>
 
   public var inputs: ShareViewModelInputs { return self }
   public var outputs: ShareViewModelOutputs { return self }
 }
 
 private func activityItemProvider(forShareContext shareContext: ShareContext) -> UIActivityItemProvider {
-
   switch shareContext {
   case let .creatorDashboard(project):
     return ProjectActivityItemProvider(project: project)
   case let .discovery(project):
     return ProjectActivityItemProvider(project: project)
-  case let .liveStream(_, liveStreamEvent):
-    return LiveStreamActivityItemProvider(liveStreamEvent: liveStreamEvent)
   case let .project(project):
     return ProjectActivityItemProvider(project: project)
   case let .thanks(project):
@@ -159,7 +157,6 @@ private func activityItemProvider(forShareContext shareContext: ShareContext) ->
 }
 
 private func shareUrl(forShareContext shareContext: ShareContext) -> URL? {
-
   switch shareContext {
   case let .creatorDashboard(project):
     return URL(string: project.urls.web.project)
@@ -171,13 +168,10 @@ private func shareUrl(forShareContext shareContext: ShareContext) -> URL? {
     return URL(string: project.urls.web.project)
   case let .update(_, update):
     return URL(string: update.urls.web.update)
-  case let .liveStream(_, liveStreamEvent):
-    return URL(string: liveStreamEvent.webUrl)
   }
 }
 
 private func excludedActivityTypes(forShareContext shareContext: ShareContext) -> [UIActivity.ActivityType] {
-
   switch shareContext {
   case let .update(_, update) where !update.isPublic:
     return [.mail, .message, .postToFacebook, .postToTwitter, .postToWeibo]
@@ -192,8 +186,10 @@ private func activityController(forShareContext shareContext: ShareContext) -> U
   let provider = activityItemProvider(forShareContext: shareContext)
   let safariUrl = SafariURL(url: url)
 
-  let controller = UIActivityViewController(activityItems: [provider, safariUrl],
-                                            applicationActivities: [SafariActivity(url: safariUrl)])
+  let controller = UIActivityViewController(
+    activityItems: [provider, safariUrl],
+    applicationActivities: [SafariActivity(url: safariUrl)]
+  )
 
   controller.excludedActivityTypes = excludedActivityTypes(forShareContext: shareContext)
 
@@ -206,8 +202,6 @@ private func twitterInitialText(forShareContext shareContext: ShareContext) -> S
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
   case let .discovery(project):
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
-  case let .liveStream(_, liveStreamEvent):
-    return twitterInitialText(forLiveStreamEvent: liveStreamEvent)
   case let .project(project):
     return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
   case let .thanks(project):
@@ -217,19 +211,4 @@ private func twitterInitialText(forShareContext shareContext: ShareContext) -> S
   case let .update(_, update):
     return Strings.social_update_number(update_number: String(update.sequence)) + ": " + update.title
   }
-}
-
-private func twitterInitialText(forLiveStreamEvent liveStreamEvent: LiveStreamEvent) -> String {
-  if liveStreamEvent.liveNow {
-    return Strings.Creator_name_is_streaming_live_on_Kickstarter(creator_name: liveStreamEvent.creator.name)
-  }
-
-  if liveStreamEvent.startDate < AppEnvironment.current.dateType.init().date {
-    return Strings.Creator_name_was_streaming_live_on_Kickstarter(creator_name: liveStreamEvent.creator.name)
-  }
-
-  return Strings.Creator_name_will_be_streaming_live_on_Kickstarter_in_duration(
-    creator_name: liveStreamEvent.creator.name,
-    in_duration: Format.relative(secondsInUTC: liveStreamEvent.startDate.timeIntervalSince1970)
-  )
 }

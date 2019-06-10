@@ -1,9 +1,8 @@
-import Library
-import Prelude
-import Result
-import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
+import Library
+import Prelude
+import XCTest
 
 internal final class SettingsPrivacyViewControllerTests: TestCase {
   override func setUp() {
@@ -23,14 +22,18 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
       |> \.social .~ false
     let exportData = ExportDataEnvelope.template
 
-    let mockService = MockService(fetchExportStateResponse: exportData,
-                                  fetchUserSelfResponse: currentUser)
+    let mockService = MockService(
+      fetchExportStateResponse: exportData,
+      fetchUserSelfResponse: currentUser
+    )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(apiService: mockService,
-                      currentUser: currentUser,
-                      language: language) {
+      withEnvironment(
+        apiService: mockService,
+        currentUser: currentUser,
+        language: language
+      ) {
         let vc = Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -51,14 +54,18 @@ internal final class SettingsPrivacyViewControllerTests: TestCase {
       |> ExportDataEnvelope.lens.dataUrl .~ nil
       |> ExportDataEnvelope.lens.expiresAt .~ nil
 
-    let mockService = MockService(fetchExportStateResponse: exportData,
-                                  fetchUserSelfResponse: currentUser)
+    let mockService = MockService(
+      fetchExportStateResponse: exportData,
+      fetchUserSelfResponse: currentUser
+    )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(apiService: mockService,
-                      currentUser: currentUser,
-                      language: language) {
+      withEnvironment(
+        apiService: mockService,
+        currentUser: currentUser,
+        language: language
+      ) {
         let vc = Storyboard.SettingsPrivacy.instantiate(SettingsPrivacyViewController.self)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)

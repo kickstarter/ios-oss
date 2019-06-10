@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import ReactiveSwift
 import UIKit
@@ -8,8 +8,8 @@ internal final class MessageThreadsViewController: UITableViewController {
   fileprivate let viewModel: MessageThreadsViewModelType = MessageThreadsViewModel()
   fileprivate let dataSource = MessageThreadsDataSource()
 
-  @IBOutlet fileprivate weak var footerView: UIView!
-  @IBOutlet fileprivate weak var mailboxLabel: UILabel!
+  @IBOutlet fileprivate var footerView: UIView!
+  @IBOutlet fileprivate var mailboxLabel: UILabel!
 
   internal static func configuredWith(project: Project?, refTag: RefTag?) -> MessageThreadsViewController {
     let vc = Storyboard.Messages.instantiate(MessageThreadsViewController.self)
@@ -50,14 +50,14 @@ internal final class MessageThreadsViewController: UITableViewController {
       .observeValues { [weak self] threads in
         self?.dataSource.load(messageThreads: threads)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.emptyStateIsVisible
       .observeForUI()
       .observeValues { [weak self] isVisible in
         self?.dataSource.emptyState(isVisible: isVisible)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.showMailboxChooserActionSheet
       .observeForControllerAction()
@@ -68,17 +68,21 @@ internal final class MessageThreadsViewController: UITableViewController {
       .observeValues { [weak self] in self?.goToSearch() }
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
-
-    self.viewModel.inputs.willDisplayRow(self.dataSource.itemIndexAt(indexPath),
-                                         outOf: self.dataSource.numberOfItems())
+  internal override func tableView(
+    _: UITableView,
+    willDisplay _: UITableViewCell,
+    forRowAt indexPath: IndexPath
+  ) {
+    self.viewModel.inputs.willDisplayRow(
+      self.dataSource.itemIndexAt(indexPath),
+      outOf: self.dataSource.numberOfItems()
+    )
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   didSelectRowAt indexPath: IndexPath) {
-
+  internal override func tableView(
+    _: UITableView,
+    didSelectRowAt indexPath: IndexPath
+  ) {
     if let messageThread = self.dataSource[indexPath] as? MessageThread {
       let vc = MessagesViewController.configuredWith(messageThread: messageThread)
       self.navigationController?.pushViewController(vc, animated: true)
@@ -129,7 +133,7 @@ internal final class MessageThreadsViewController: UITableViewController {
   fileprivate func goToSearch() {
     guard let vc = self.storyboard?.instantiateViewController(withIdentifier: "SearchMessagesViewController"),
       let search = vc as? SearchMessagesViewController else {
-        fatalError("Could not instantiate SearchMessagesViewController.")
+      fatalError("Could not instantiate SearchMessagesViewController.")
     }
 
     self.navigationController?.pushViewController(search, animated: true)

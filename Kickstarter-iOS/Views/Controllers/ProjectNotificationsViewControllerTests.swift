@@ -1,9 +1,8 @@
-import Prelude
-import Result
-import XCTest
 @testable import Kickstarter_Framework
-@testable import Library
 @testable import KsApi
+@testable import Library
+import Prelude
+import XCTest
 
 internal final class ProjectNotificationsViewControllerTests: TestCase {
   override func setUp() {
@@ -24,15 +23,19 @@ internal final class ProjectNotificationsViewControllerTests: TestCase {
       |> ProjectNotification.lens.email .~ true
       |> ProjectNotification.lens.mobile .~ true
 
-    let projectNotifications = [ProjectNotification.template,
-                                enabledProject]
+    let projectNotifications = [
+      ProjectNotification.template,
+      enabledProject
+    ]
 
     let service = MockService(fetchProjectNotificationsResponse: projectNotifications)
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(apiService: service,
-                      language: language) {
+      withEnvironment(
+        apiService: service,
+        language: language
+      ) {
         let vc = ProjectNotificationsViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 

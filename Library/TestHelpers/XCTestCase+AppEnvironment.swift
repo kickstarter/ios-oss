@@ -1,15 +1,10 @@
-import XCTest
-@testable import Library
-import AVFoundation
 import Foundation
 import KsApi
+@testable import Library
 import ReactiveSwift
-import Result
-import KsApi
-import LiveStream
+import XCTest
 
 extension XCTestCase {
-
   // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   func withEnvironment(_ env: Environment, body: () -> Void) {
     AppEnvironment.pushEnvironment(env)
@@ -38,16 +33,15 @@ extension XCTestCase {
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
-    liveStreamService: LiveStreamServiceProtocol = AppEnvironment.current.liveStreamService,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
-    body: () -> Void) {
-
-    withEnvironment(
+    body: () -> Void
+  ) {
+    self.withEnvironment(
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
@@ -68,7 +62,6 @@ extension XCTestCase {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
-        liveStreamService: liveStreamService,
         locale: locale,
         mainBundle: mainBundle,
         pushRegistrationType: pushRegistrationType,

@@ -1,7 +1,6 @@
+import MessageUI
 import Prelude
 import ReactiveSwift
-import Result
-import MessageUI
 
 public enum HelpContext {
   case loginTout
@@ -45,16 +44,16 @@ public protocol HelpViewModelInputs {
 
 public protocol HelpViewModelOutputs {
   /// Emits to show an alert when Mail is not available.
-  var showNoEmailError: Signal<UIAlertController, NoError> { get }
+  var showNoEmailError: Signal<UIAlertController, Never> { get }
 
   /// Emits when to show the help actionsheet.
-  var showHelpSheet: Signal<[HelpType], NoError> { get }
+  var showHelpSheet: Signal<[HelpType], Never> { get }
 
   /// Emits when to show a MFMailComposeViewController to contact support.
-  var showMailCompose: Signal<(), NoError> { get }
+  var showMailCompose: Signal<(), Never> { get }
 
   /// Emits when to show a WebViewController with a HelpType.
-  var showWebHelp: Signal<HelpType, NoError> { get }
+  var showWebHelp: Signal<HelpType, Never> { get }
 }
 
 public protocol HelpViewModelType {
@@ -63,7 +62,7 @@ public protocol HelpViewModelType {
 }
 
 public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpViewModelOutputs {
-    public init() {
+  public init() {
     let context = self.helpContextProperty.signal.skipNil()
     let canSendEmail = self.canSendEmailProperty.signal.skipNil()
     let helpTypeTapped = self.helpTypeButtonTappedProperty.signal.skipNil()
@@ -110,37 +109,42 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
       .filter { $1 == .cancelled }
       .observeValues { context, _ in
         AppEnvironment.current.koala.trackCanceledContactEmail(context: context)
-    }
+      }
   }
 
   public var inputs: HelpViewModelInputs { return self }
   public var outputs: HelpViewModelOutputs { return self }
 
-  public let showNoEmailError: Signal<UIAlertController, NoError>
-  public let showHelpSheet: Signal<[HelpType], NoError>
-  public let showMailCompose: Signal<(), NoError>
-  public let showWebHelp: Signal<HelpType, NoError>
+  public let showNoEmailError: Signal<UIAlertController, Never>
+  public let showHelpSheet: Signal<[HelpType], Never>
+  public let showMailCompose: Signal<(), Never>
+  public let showWebHelp: Signal<HelpType, Never>
 
   fileprivate let canSendEmailProperty = MutableProperty<Bool?>(nil)
   public func canSendEmail(_ canSend: Bool) {
     self.canSendEmailProperty.value = canSend
   }
+
   fileprivate let cancelHelpSheetButtonTappedProperty = MutableProperty(())
   public func cancelHelpSheetButtonTapped() {
     self.cancelHelpSheetButtonTappedProperty.value = ()
   }
+
   fileprivate let helpContextProperty = MutableProperty<HelpContext?>(nil)
   public func configureWith(helpContext: HelpContext) {
     self.helpContextProperty.value = helpContext
   }
+
   fileprivate let showHelpSheetButtonTappedProperty = MutableProperty(())
   public func showHelpSheetButtonTapped() {
     self.showHelpSheetButtonTappedProperty.value = ()
   }
+
   fileprivate let helpTypeButtonTappedProperty = MutableProperty<HelpType?>(nil)
   public func helpTypeButtonTapped(_ helpType: HelpType) {
     self.helpTypeButtonTappedProperty.value = helpType
   }
+
   fileprivate let mailComposeCompletionProperty = MutableProperty<MFMailComposeResult?>(nil)
   public func mailComposeCompletion(result: MFMailComposeResult) {
     self.mailComposeCompletionProperty.value = result

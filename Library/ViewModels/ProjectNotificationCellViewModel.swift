@@ -1,8 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol ProjectNotificationCellViewModelInputs {
   /// Call with the initial cell notification value.
@@ -14,13 +13,13 @@ public protocol ProjectNotificationCellViewModelInputs {
 
 public protocol ProjectNotificationCellViewModelOutputs {
   /// Emits the project name.
-  var name: Signal<String, NoError> { get }
+  var name: Signal<String, Never> { get }
 
   /// Emits true when the notification is turned on, false otherwise.
-  var notificationOn: Signal<Bool, NoError> { get }
+  var notificationOn: Signal<Bool, Never> { get }
 
   /// Emits when an update error has occurred and a message should be displayed.
-  var notifyDelegateOfSaveError: Signal<String, NoError> { get }
+  var notifyDelegateOfSaveError: Signal<String, Never> { get }
 }
 
 public protocol ProjectNotificationCellViewModelType {
@@ -30,8 +29,7 @@ public protocol ProjectNotificationCellViewModelType {
 
 public final class ProjectNotificationCellViewModel: ProjectNotificationCellViewModelType,
   ProjectNotificationCellViewModelInputs, ProjectNotificationCellViewModelOutputs {
-
-    public init() {
+  public init() {
     let notification = self.notificationProperty.signal.skipNil()
       .map(cached(notification:))
 
@@ -39,23 +37,23 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
 
     let toggledNotification = notification
       .takePairWhen(self.notificationTappedProperty.signal)
-      .map { (notification, on) in
+      .map { notification, on in
         notification
           |> ProjectNotification.lens.email .~ on
           |> ProjectNotification.lens.mobile .~ on
-    }
+      }
 
     let updateEvent = toggledNotification
       .switchMap {
         AppEnvironment.current.apiService.updateProjectNotification($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.notifyDelegateOfSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
-    }
+      }
 
     let previousNotificationOnError = notification
       .switchMap {
@@ -75,9 +73,9 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
       notification,
       toggledNotification,
       previousNotificationOnError
-      )
-      .map { $0.email && $0.mobile }
-      .skipRepeats()
+    )
+    .map { $0.email && $0.mobile }
+    .skipRepeats()
 
     notification
       .takeWhen(self.notificationTappedProperty.signal)
@@ -94,9 +92,9 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
     self.notificationTappedProperty.value = on
   }
 
-  public let name: Signal<String, NoError>
-  public let notificationOn: Signal<Bool, NoError>
-  public let notifyDelegateOfSaveError: Signal<String, NoError>
+  public let name: Signal<String, Never>
+  public let notificationOn: Signal<Bool, Never>
+  public let notifyDelegateOfSaveError: Signal<String, Never>
 
   public var inputs: ProjectNotificationCellViewModelInputs { return self }
   public var outputs: ProjectNotificationCellViewModelOutputs { return self }

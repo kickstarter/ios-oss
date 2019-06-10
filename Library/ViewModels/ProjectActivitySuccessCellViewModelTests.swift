@@ -1,15 +1,14 @@
-import XCTest
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
-import Result
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ProjectActivitySuccessViewModelTests: TestCase {
   fileprivate let vm: ProjectActivitySuccessCellViewModelType = ProjectActivitySuccessCellViewModel()
 
-  fileprivate let backgroundImage = TestObserver<String?, NoError>()
-  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let backgroundImage = TestObserver<String?, Never>()
+  fileprivate let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -34,9 +33,9 @@ internal final class ProjectActivitySuccessViewModelTests: TestCase {
 
   func testTitle() {
     let country = Project.Country.us
-    let backersCount = 12345
+    let backersCount = 12_345
     let deadline = Date().timeIntervalSince1970
-    let pledged = 5000
+    let pledged = 5_000
 
     let project = .template
       |> Project.lens.country .~ country

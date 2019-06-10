@@ -1,10 +1,8 @@
 import Argo
 import KsApi
 import Library
-import LiveStream
 import Prelude
 import ReactiveSwift
-import Result
 import UserNotifications
 
 public struct HockeyConfigData {
@@ -47,10 +45,12 @@ public protocol AppDelegateViewModelInputs {
   func applicationDidReceiveMemoryWarning()
 
   /// Call to open a url that was sent to the app
-  func applicationOpenUrl(application: UIApplication?,
-                          url: URL,
-                          sourceApplication: String?,
-                          annotation: Any) -> Bool
+  func applicationOpenUrl(
+    application: UIApplication?,
+    url: URL,
+    sourceApplication: String?,
+    annotation: Any
+  ) -> Bool
 
   /// Call when the application receives a request to perform a shortcut action.
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
@@ -88,13 +88,13 @@ public protocol AppDelegateViewModelOutputs {
   var applicationDidFinishLaunchingReturnValue: Bool { get }
 
   /// Emits the application icon badge number
-  var applicationIconBadgeNumber: Signal<Int, NoError> { get }
+  var applicationIconBadgeNumber: Signal<Int, Never> { get }
 
   /// Emits when the application should configure Fabric
-  var configureFabric: Signal<(), NoError> { get}
+  var configureFabric: Signal<(), Never> { get }
 
   /// Emits an app identifier that should be used to configure the hockey app manager.
-  var configureHockey: Signal<HockeyConfigData, NoError> { get }
+  var configureHockey: Signal<HockeyConfigData, Never> { get }
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
@@ -103,73 +103,70 @@ public protocol AppDelegateViewModelOutputs {
   var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 
   /// Emits when the view needs to figure out the redirect URL for the emitted URL.
-  var findRedirectUrl: Signal<URL, NoError> { get }
+  var findRedirectUrl: Signal<URL, Never> { get }
 
   /// Emits when opening the app with an invalid access token.
-  var forceLogout: Signal<(), NoError> { get }
+  var forceLogout: Signal<(), Never> { get }
 
   /// Emits when the root view controller should navigate to activity.
-  var goToActivity: Signal<(), NoError> { get }
+  var goToActivity: Signal<(), Never> { get }
 
   /// Emits when application should navigate to the creator's message thread
-  var goToCreatorMessageThread: Signal<(Param, MessageThread), NoError> { get }
+  var goToCreatorMessageThread: Signal<(Param, MessageThread), Never> { get }
 
   /// Emits when the root view controller should navigate to the creator dashboard.
-  var goToDashboard: Signal<Param?, NoError> { get }
+  var goToDashboard: Signal<Param?, Never> { get }
 
   /// Emits when the root view controller should navigate to the creator dashboard.
-  var goToDiscovery: Signal<DiscoveryParams?, NoError> { get }
-
-  /// Emits everything needed to go a particular live stream of a project.
-  var goToLiveStream: Signal<(Project, LiveStreamEvent, RefTag?), NoError> { get }
+  var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
 
   /// Emits when the root view controller should navigate to the login screen.
-  var goToLogin: Signal<(), NoError> { get }
+  var goToLogin: Signal<(), Never> { get }
 
   /// Emits a message thread when we should navigate to it.
-  var goToMessageThread: Signal<MessageThread, NoError> { get }
+  var goToMessageThread: Signal<MessageThread, Never> { get }
 
   /// Emits when the root view controller should navigate to the user's profile.
-  var goToProfile: Signal<(), NoError> { get }
+  var goToProfile: Signal<(), Never> { get }
 
   /// Emits when should navigate to the project activities view
-  var goToProjectActivities: Signal<Param, NoError> { get }
+  var goToProjectActivities: Signal<Param, Never> { get }
 
   /// Emits a URL when we should open it in the safari browser.
-  var goToMobileSafari: Signal<URL, NoError> { get }
+  var goToMobileSafari: Signal<URL, Never> { get }
 
   /// Emits when the root view controller should navigate to search.
-  var goToSearch: Signal<(), NoError> { get }
+  var goToSearch: Signal<(), Never> { get }
 
   /// Emits an Notification that should be immediately posted.
-  var postNotification: Signal<Notification, NoError> { get }
+  var postNotification: Signal<Notification, Never> { get }
 
   /// Emits when a view controller should be presented.
-  var presentViewController: Signal<UIViewController, NoError> { get }
+  var presentViewController: Signal<UIViewController, Never> { get }
 
   /// Emits when the push token registration begins.
-  var pushTokenRegistrationStarted: Signal<(), NoError> { get }
+  var pushTokenRegistrationStarted: Signal<(), Never> { get }
 
   /// Emits the push token that has been successfully registered on the server.
-  var pushTokenSuccessfullyRegistered: Signal<String, NoError> { get }
+  var pushTokenSuccessfullyRegistered: Signal<String, Never> { get }
 
   /// Emits an array of short cut items to put into the shared application.
-  var setApplicationShortcutItems: Signal<[ShortcutItem], NoError> { get }
+  var setApplicationShortcutItems: Signal<[ShortcutItem], Never> { get }
 
   /// Emits when an alert should be shown.
-  var showAlert: Signal<Notification, NoError> { get }
+  var showAlert: Signal<Notification, Never> { get }
 
   /// Emits to synchronize iCloud on app launch.
-  var synchronizeUbiquitousStore: Signal<(), NoError> { get }
+  var synchronizeUbiquitousStore: Signal<(), Never> { get }
 
   /// Emits when we should unregister the user from notifications.
-  var unregisterForRemoteNotifications: Signal<(), NoError> { get }
+  var unregisterForRemoteNotifications: Signal<(), Never> { get }
 
   /// Emits a fresh user to be updated in the app environment.
-  var updateCurrentUserInEnvironment: Signal<User, NoError> { get }
+  var updateCurrentUserInEnvironment: Signal<User, Never> { get }
 
   /// Emits a config value that should be updated in the environment.
-  var updateConfigInEnvironment: Signal<Config, NoError> { get }
+  var updateConfigInEnvironment: Signal<Config, Never> { get }
 }
 
 public protocol AppDelegateViewModelType {
@@ -178,8 +175,7 @@ public protocol AppDelegateViewModelType {
 }
 
 public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
-AppDelegateViewModelOutputs {
-
+  AppDelegateViewModelOutputs {
   // swiftlint:disable cyclomatic_complexity
   public init() {
     let currentUserEvent = Signal
@@ -190,11 +186,11 @@ AppDelegateViewModelOutputs {
         self.userSessionStartedProperty.signal
       )
       .ksr_debounce(.seconds(5), on: AppEnvironment.current.scheduler)
-      .switchMap { _ -> SignalProducer<Signal<User?, ErrorEnvelope>.Event, NoError> in
+      .switchMap { _ -> SignalProducer<Signal<User?, ErrorEnvelope>.Event, Never> in
         AppEnvironment.current.apiService.isAuthenticated || AppEnvironment.current.currentUser != nil
           ? AppEnvironment.current.apiService.fetchUserSelf().wrapInOptional().materialize()
           : SignalProducer(value: .value(nil))
-    }
+      }
 
     self.updateCurrentUserInEnvironment = currentUserEvent
       .values()
@@ -208,7 +204,7 @@ AppDelegateViewModelOutputs {
     self.updateConfigInEnvironment = Signal.merge([
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      ])
+    ])
       .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
 
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
@@ -221,7 +217,7 @@ AppDelegateViewModelOutputs {
           appOptions.application,
           didFinishLaunchingWithOptions: appOptions.options
         )
-    }
+      }
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
 
@@ -260,7 +256,7 @@ AppDelegateViewModelOutputs {
           return PushNotificationDialog.canShowDialog(for: context)
         }
         return false
-    }
+      }
 
     self.unregisterForRemoteNotifications = self.userSessionEndedProperty.signal
 
@@ -276,7 +272,7 @@ AppDelegateViewModelOutputs {
 
     let deepLinkFromNotification = self.remoteNotificationProperty.signal.skipNil()
       .map(decode)
-      .map { $0?.value }
+      .map { $0.value }
       .skipNil()
       .map(navigation(fromPushEnvelope:))
 
@@ -298,7 +294,7 @@ AppDelegateViewModelOutputs {
           .filter { $0.activityType == NSUserActivityTypeBrowsingWeb }
           .map { $0.webpageURL }
           .skipNil()
-    )
+      )
 
     let deepLinkFromUrl = deepLinkUrl.map(Navigation.match)
 
@@ -307,9 +303,9 @@ AppDelegateViewModelOutputs {
       self.applicationLaunchOptionsProperty.signal
         .map { $0?.options?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem }
         .skipNil()
-      )
-      .map { ShortcutItem(typeString: $0.type) }
-      .skipNil()
+    )
+    .map { ShortcutItem(typeString: $0.type) }
+    .skipNil()
 
     let deepLinkFromShortcut = performShortcutItem
       .switchMap(navigation(fromShortcutItem:))
@@ -331,26 +327,23 @@ AppDelegateViewModelOutputs {
         return .some(rawParams)
       }
       .skipNil()
-      .switchMap { rawParams -> SignalProducer<DiscoveryParams?, NoError> in
+      .switchMap { rawParams -> SignalProducer<DiscoveryParams?, Never> in
         guard
           let rawParams = rawParams,
           let params = DiscoveryParams.decode(.init(rawParams)).value
-          else { return .init(value: nil) }
+        else { return .init(value: nil) }
 
         guard
           let rawCategoryParam = rawParams["category_id"],
           let categoryParam = Param.decode(.string(rawCategoryParam)).value
-          else { return .init(value: params) }
+        else { return .init(value: params) }
         // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
         return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)
           .map { $0.rootCategories.filter { $0.name.lowercased() == categoryParam.slug } }
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .demoteErrors()
           .map { params |> DiscoveryParams.lens.category .~ $0.first }
-    }
-
-    self.goToLiveStream = deepLink
-      .switchMap(liveStreamData(fromNavigation:))
+      }
 
     self.goToActivity = deepLink
       .filter { $0 == .tab(.activity) }
@@ -386,7 +379,7 @@ AppDelegateViewModelOutputs {
         AppEnvironment.current.apiService.fetchMessageThread(messageThreadId: $0)
           .demoteErrors()
           .map { $0.messageThread }
-     }
+      }
 
     self.goToProjectActivities = deepLink
       .map { navigation -> Param? in
@@ -403,12 +396,6 @@ AppDelegateViewModelOutputs {
       .filter { Navigation.deepLinkMatch($0) == nil }
 
     let projectLink = deepLink
-      .filter { link in
-        // NB: have to do this cause we handle the live stream subpage in a different manner than we do
-        // the other subpages.
-        if case .project(_, .liveStream, _) = link { return false }
-        return true
-      }
       .map { link -> (Param, Navigation.Project, RefTag?)? in
         guard case let .project(param, subpage, refTag) = link else { return nil }
         return (param, subpage, refTag)
@@ -419,10 +406,12 @@ AppDelegateViewModelOutputs {
           .demoteErrors()
           .observeForUI()
           .map { project -> (Project, Navigation.Project, [UIViewController]) in
-            (project, subpage,
-              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)])
-        }
-    }
+            (
+              project, subpage,
+              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)]
+            )
+          }
+      }
 
     self.goToDashboard = deepLink
       .map { link -> Param?? in
@@ -452,8 +441,8 @@ AppDelegateViewModelOutputs {
           .observeForUI()
           .map { surveyResponse -> [UIViewController] in
             [SurveyResponseViewController.configuredWith(surveyResponse: surveyResponse)]
-        }
-    }
+          }
+      }
 
     let campaignFaqLink = projectLink
       .filter { _, subpage, _ in subpage == .faqs }
@@ -478,12 +467,16 @@ AppDelegateViewModelOutputs {
               project,
               update,
               updateSubpage,
-              vcs + [UpdateViewController.configuredWith(project: project,
-                                                         update: update,
-                                                         context: .deepLink)]
+              vcs + [
+                UpdateViewController.configuredWith(
+                  project: project,
+                  update: update,
+                  context: .deepLink
+                )
+              ]
             )
-        }
-    }
+          }
+      }
 
     let updateRootLink = updateLink
       .filter { _, _, subpage, _ in subpage == .root }
@@ -515,18 +508,18 @@ AppDelegateViewModelOutputs {
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal
-      )
-      .filter { !AppEnvironment.current.mainBundle.isDebug }
-      .map { _ in
-        let mainBundle = AppEnvironment.current.mainBundle
-        let hockeyAppId = mainBundle.hockeyAppId ?? KsApi.Secrets.HockeyAppId.production
+    )
+    .filter { !AppEnvironment.current.mainBundle.isDebug }
+    .map { _ in
+      let mainBundle = AppEnvironment.current.mainBundle
+      let hockeyAppId = mainBundle.hockeyAppId ?? KsApi.Secrets.HockeyAppId.production
 
-        return HockeyConfigData(
-          appIdentifier: hockeyAppId,
-          disableUpdates: mainBundle.isRelease,
-          userId: (AppEnvironment.current.currentUser?.id).map(String.init) ?? "0",
-          userName: AppEnvironment.current.currentUser?.name ?? "anonymous"
-        )
+      return HockeyConfigData(
+        appIdentifier: hockeyAppId,
+        disableUpdates: mainBundle.isRelease,
+        userId: (AppEnvironment.current.currentUser?.id).map(String.init) ?? "0",
+        userName: AppEnvironment.current.currentUser?.name ?? "anonymous"
+      )
     }
 
     self.setApplicationShortcutItems = currentUserEvent
@@ -557,8 +550,8 @@ AppDelegateViewModelOutputs {
     Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.applicationWillEnterForegroundProperty.signal
-      )
-      .observeValues { AppEnvironment.current.koala.trackAppOpen() }
+    )
+    .observeValues { AppEnvironment.current.koala.trackAppOpen() }
 
     self.applicationDidEnterBackgroundProperty.signal
       .observeValues { AppEnvironment.current.koala.trackAppClose() }
@@ -573,18 +566,18 @@ AppDelegateViewModelOutputs {
       .take(first: 1)
       .observeValues { _ in
         visitorCookies().forEach(AppEnvironment.current.cookieStorage.setCookie)
-    }
+      }
 
     Signal.combineLatest(
       performShortcutItem.enumerated(),
       self.setApplicationShortcutItems
-      )
-      .skipRepeats { lhs, rhs in lhs.0.idx == rhs.0.idx }
-      .map { idxAndShortcutItem, availableShortcutItems in
-        (idxAndShortcutItem.value, availableShortcutItems)
-      }
-      .observeValues {
-        AppEnvironment.current.koala.trackPerformedShortcutItem($0, availableShortcutItems: $1)
+    )
+    .skipRepeats { lhs, rhs in lhs.0.idx == rhs.0.idx }
+    .map { idxAndShortcutItem, availableShortcutItems in
+      (idxAndShortcutItem.value, availableShortcutItems)
+    }
+    .observeValues {
+      AppEnvironment.current.koala.trackPerformedShortcutItem($0, availableShortcutItems: $1)
     }
 
     openUrl
@@ -603,13 +596,14 @@ AppDelegateViewModelOutputs {
       .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
 
     self.applicationIconBadgeNumber = Signal.merge(
-        self.applicationWillEnterForegroundProperty.signal,
-        self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      )
-      .flatMap { AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
-      .filter(isTrue)
-      .mapConst(0)
+      self.applicationWillEnterForegroundProperty.signal,
+      self.applicationLaunchOptionsProperty.signal.ignoreValues()
+    )
+    .flatMap { AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
+    .filter(isTrue)
+    .mapConst(0)
   }
+
   // swiftlint:enable cyclomatic_complexity
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -623,8 +617,10 @@ AppDelegateViewModelOutputs {
 
   fileprivate typealias ApplicationWithOptions = (application: UIApplication?, options: [AnyHashable: Any]?)
   fileprivate let applicationLaunchOptionsProperty = MutableProperty<ApplicationWithOptions?>(nil)
-  public func applicationDidFinishLaunching(application: UIApplication?,
-                                            launchOptions: [AnyHashable: Any]?) {
+  public func applicationDidFinishLaunching(
+    application: UIApplication?,
+    launchOptions: [AnyHashable: Any]?
+  ) {
     self.applicationLaunchOptionsProperty.value = (application, launchOptions)
   }
 
@@ -690,10 +686,12 @@ AppDelegateViewModelOutputs {
     annotation: Any
   )
   fileprivate let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
-  public func applicationOpenUrl(application: UIApplication?,
-                                 url: URL,
-                                 sourceApplication: String?,
-                                 annotation: Any) -> Bool {
+  public func applicationOpenUrl(
+    application: UIApplication?,
+    url: URL,
+    sourceApplication: String?,
+    annotation: Any
+  ) -> Bool {
     self.applicationOpenUrlProperty.value = (application, url, sourceApplication, annotation)
     return self.facebookOpenURLReturnValue.value
   }
@@ -715,37 +713,36 @@ AppDelegateViewModelOutputs {
 
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
   public var applicationDidFinishLaunchingReturnValue: Bool {
-    return applicationDidFinishLaunchingReturnValueProperty.value
+    return self.applicationDidFinishLaunchingReturnValueProperty.value
   }
 
-  public let applicationIconBadgeNumber: Signal<Int, NoError>
-  public let configureFabric: Signal<(), NoError>
-  public let configureHockey: Signal<HockeyConfigData, NoError>
+  public let applicationIconBadgeNumber: Signal<Int, Never>
+  public let configureFabric: Signal<(), Never>
+  public let configureHockey: Signal<HockeyConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let facebookOpenURLReturnValue = MutableProperty(false)
-  public let findRedirectUrl: Signal<URL, NoError>
-  public let forceLogout: Signal<(), NoError>
-  public let goToActivity: Signal<(), NoError>
-  public let goToCreatorMessageThread: Signal<(Param, MessageThread), NoError>
-  public let goToDashboard: Signal<Param?, NoError>
-  public let goToDiscovery: Signal<DiscoveryParams?, NoError>
-  public let goToLiveStream: Signal<(Project, LiveStreamEvent, RefTag?), NoError>
-  public let goToLogin: Signal<(), NoError>
-  public let goToMessageThread: Signal<MessageThread, NoError>
-  public let goToProfile: Signal<(), NoError>
-  public let goToProjectActivities: Signal<Param, NoError>
-  public let goToMobileSafari: Signal<URL, NoError>
-  public let goToSearch: Signal<(), NoError>
-  public let postNotification: Signal<Notification, NoError>
-  public let presentViewController: Signal<UIViewController, NoError>
-  public let pushTokenRegistrationStarted: Signal<(), NoError>
-  public let pushTokenSuccessfullyRegistered: Signal<String, NoError>
-  public let setApplicationShortcutItems: Signal<[ShortcutItem], NoError>
-  public let showAlert: Signal<Notification, NoError>
-  public let synchronizeUbiquitousStore: Signal<(), NoError>
-  public let unregisterForRemoteNotifications: Signal<(), NoError>
-  public let updateCurrentUserInEnvironment: Signal<User, NoError>
-  public let updateConfigInEnvironment: Signal<Config, NoError>
+  public let findRedirectUrl: Signal<URL, Never>
+  public let forceLogout: Signal<(), Never>
+  public let goToActivity: Signal<(), Never>
+  public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
+  public let goToDashboard: Signal<Param?, Never>
+  public let goToDiscovery: Signal<DiscoveryParams?, Never>
+  public let goToLogin: Signal<(), Never>
+  public let goToMessageThread: Signal<MessageThread, Never>
+  public let goToProfile: Signal<(), Never>
+  public let goToProjectActivities: Signal<Param, Never>
+  public let goToMobileSafari: Signal<URL, Never>
+  public let goToSearch: Signal<(), Never>
+  public let postNotification: Signal<Notification, Never>
+  public let presentViewController: Signal<UIViewController, Never>
+  public let pushTokenRegistrationStarted: Signal<(), Never>
+  public let pushTokenSuccessfullyRegistered: Signal<String, Never>
+  public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>
+  public let showAlert: Signal<Notification, Never>
+  public let synchronizeUbiquitousStore: Signal<(), Never>
+  public let unregisterForRemoteNotifications: Signal<(), Never>
+  public let updateCurrentUserInEnvironment: Signal<User, Never>
+  public let updateConfigInEnvironment: Signal<Config, Never>
 }
 
 private func deviceToken(fromData data: Data) -> String {
@@ -756,7 +753,6 @@ private func deviceToken(fromData data: Data) -> String {
 
 // swiftlint:disable:next cyclomatic_complexity
 private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? {
-
   if let activity = envelope.activity {
     switch activity.category {
     case .backing:
@@ -796,10 +792,6 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
     }
   }
 
-  if let liveStream = envelope.liveStream, let project = envelope.project {
-    return .project(.id(project.id), .liveStream(eventId: liveStream.id), refTag: .push)
-  }
-
   if let project = envelope.project {
     if envelope.forCreator == .some(true) {
       return .tab(.dashboard(project: .id(project.id)))
@@ -827,8 +819,7 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
 }
 
 // Figures out a `Navigation` to route the user to from a shortcut item.
-private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalProducer<Navigation?, NoError> {
-
+private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalProducer<Navigation?, Never> {
   switch shortcutItem {
   case .creatorDashboard:
     return SignalProducer(value: .tab(.dashboard(project: nil)))
@@ -851,8 +842,7 @@ private func navigation(fromShortcutItem shortcutItem: ShortcutItem) -> SignalPr
 }
 
 // Figures out which shortcut items to show to a user.
-private func shortcutItems(forUser user: User?) -> SignalProducer<[ShortcutItem], NoError> {
-
+private func shortcutItems(forUser user: User?) -> SignalProducer<[ShortcutItem], Never> {
   guard let user = user else {
     return SignalProducer(value: shortcutItems(isProjectMember: false, hasRecommendations: false))
   }
@@ -864,7 +854,7 @@ private func shortcutItems(forUser user: User?) -> SignalProducer<[ShortcutItem]
 
   let recommendationsCount = AppEnvironment.current.apiService.fetchDiscovery(params: recommendationParams)
     .map { $0.stats.count }
-    .flatMapError { _ in SignalProducer<Int, NoError>(value: 0) }
+    .flatMapError { _ in SignalProducer<Int, Never>(value: 0) }
 
   return recommendationsCount
     .map { recommendationsCount in
@@ -880,28 +870,26 @@ private func shortcutItems(forUser user: User?) -> SignalProducer<[ShortcutItem]
 // has recommendations.
 private func shortcutItems(isProjectMember: Bool, hasRecommendations: Bool)
   -> [ShortcutItem] {
+  var items: [ShortcutItem] = []
 
-    var items: [ShortcutItem] = []
+  if isProjectMember {
+    items.append(.creatorDashboard)
+  }
 
-    if isProjectMember {
-      items.append(.creatorDashboard)
-    }
+  if hasRecommendations {
+    items.append(.recommendedForYou)
+  }
 
-    if hasRecommendations {
-      items.append(.recommendedForYou)
-    }
+  items.append(.projectsWeLove)
 
-    items.append(.projectsWeLove)
+  if items.count < 4 {
+    items.append(.search)
+  }
 
-    if items.count < 4 {
-      items.append(.search)
-    }
-
-    return items
+  return items
 }
 
 private func dictionary(fromUrlComponents urlComponents: URLComponents) -> [String: String] {
-
   let queryItems = urlComponents.queryItems ?? []
   return [String: String?].keyValuePairs(queryItems.map { ($0.name, $0.value) }).compact()
 }
@@ -945,32 +933,11 @@ extension ShortcutItem {
   }
 }
 
-private func liveStreamData(fromNavigation nav: Navigation)
-  -> SignalProducer<(Project, LiveStreamEvent, RefTag?), NoError> {
-
-    guard case let .project(projectParam, .liveStream(eventId), refTag) = nav else { return .empty }
-
-    return SignalProducer.zip(
-      AppEnvironment.current.apiService.fetchProject(param: projectParam)
-        .demoteErrors(),
-
-      AppEnvironment.current.liveStreamService
-        .fetchEvent(eventId: eventId,
-                    uid: AppEnvironment.current.currentUser?.id,
-                    liveAuthToken: AppEnvironment.current.currentUser?.liveAuthToken)
-        .demoteErrors()
-      )
-      .map { project, liveStreamEvent -> (Project, LiveStreamEvent, RefTag?)? in
-        return (project, liveStreamEvent, refTag)
-      }
-      .skipNil()
-}
-
 private func visitorCookies() -> [HTTPCookie] {
-
   let uuidString = (AppEnvironment.current.device.identifierForVendor ?? UUID()).uuidString
 
-  return [HTTPCookie?].init(arrayLiteral:
+  return [HTTPCookie?].init(
+    arrayLiteral:
     HTTPCookie(
       properties: [
         .name: "vis",
@@ -979,8 +946,8 @@ private func visitorCookies() -> [HTTPCookie] {
         .path: "/",
         .version: 0,
         .expires: Date.distantFuture,
-        .secure: true,
-        ]
+        .secure: true
+      ]
     ),
     HTTPCookie(
       properties: [
@@ -990,8 +957,8 @@ private func visitorCookies() -> [HTTPCookie] {
         .path: "/",
         .version: 0,
         .expires: Date.distantFuture,
-        .secure: true,
-        ]
+        .secure: true
+      ]
     )
   )
   .compact()

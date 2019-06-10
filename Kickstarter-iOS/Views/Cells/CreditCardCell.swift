@@ -5,13 +5,12 @@ import ReactiveSwift
 import UIKit
 
 internal final class CreditCardCell: UITableViewCell, ValueCell {
-
   private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
 
-  @IBOutlet fileprivate weak var stackView: UIStackView!
-  @IBOutlet fileprivate weak var cardImageView: UIImageView!
-  @IBOutlet fileprivate weak var cardNumberLabel: UILabel!
-  @IBOutlet fileprivate weak var expirationDateLabel: UILabel!
+  @IBOutlet fileprivate var stackView: UIStackView!
+  @IBOutlet fileprivate var cardImageView: UIImageView!
+  @IBOutlet fileprivate var cardNumberLabel: UILabel!
+  @IBOutlet fileprivate var expirationDateLabel: UILabel!
 
   public func configureWith(value card: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: card)
@@ -48,6 +47,6 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
         guard let _self = self else { return }
         _ = _self.cardImageView
           ?|> \.image .~ image
-    }
+      }
   }
 }

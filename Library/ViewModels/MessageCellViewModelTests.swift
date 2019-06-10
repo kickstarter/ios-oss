@@ -1,17 +1,16 @@
+@testable import KsApi
 import Library
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
-@testable import KsApi
 
 internal final class MessageCellViewModelTests: TestCase {
   fileprivate let vm: MessageCellViewModelType = MessageCellViewModel()
 
-  fileprivate let avatarURL = TestObserver<URL?, NoError>()
-  fileprivate let body = TestObserver<String, NoError>()
-  fileprivate let _name = TestObserver<String, NoError>()
-  fileprivate let timestamp = TestObserver<String, NoError>()
-  fileprivate let timestampAccessibilityLabel = TestObserver<String, NoError>()
+  fileprivate let avatarURL = TestObserver<URL?, Never>()
+  fileprivate let body = TestObserver<String, Never>()
+  fileprivate let _name = TestObserver<String, Never>()
+  fileprivate let timestamp = TestObserver<String, Never>()
+  fileprivate let timestampAccessibilityLabel = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()

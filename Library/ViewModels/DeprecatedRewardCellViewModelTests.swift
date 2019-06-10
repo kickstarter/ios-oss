@@ -1,39 +1,38 @@
-import Prelude
-import ReactiveSwift
-import ReactiveExtensions
-import Result
-import XCTest
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
 @testable import Library
+import Prelude
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 final class DeprecatedRewardCellViewModelTests: TestCase {
   fileprivate let vm: RewardCellViewModelType = DeprecatedRewardCellViewModel()
 
-  fileprivate let allGoneHidden = TestObserver<Bool, NoError>()
-  fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let conversionLabelText = TestObserver<String, NoError>()
-  fileprivate let descriptionLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let descriptionLabelText = TestObserver<String, NoError>()
-  fileprivate let estimatedDeliveryDateLabelText = TestObserver<String, NoError>()
-  fileprivate let footerLabelText = TestObserver<String, NoError>()
-  fileprivate let footerStackViewHidden = TestObserver<Bool, NoError>()
-  fileprivate let items = TestObserver<[String], NoError>()
-  fileprivate let itemsContainerHidden = TestObserver<Bool, NoError>()
-  fileprivate let manageButtonHidden = TestObserver<Bool, NoError>() // todo
-  fileprivate let minimumAndConversionLabelsColor = TestObserver<UIColor, NoError>()
-  fileprivate let minimumLabelText = TestObserver<String, NoError>()
-  fileprivate let notifyDelegateRewardCellWantsExpansion = TestObserver<(), NoError>()
-  fileprivate let pledgeButtonHidden = TestObserver<Bool, NoError>() // todo
-  fileprivate let pledgeButtonTitleText = TestObserver<String, NoError>() // todo
-  fileprivate let titleLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let titleLabelText = TestObserver<String, NoError>()
-  fileprivate let titleLabelTextColor = TestObserver<UIColor, NoError>()
-  fileprivate let shippingLocationsStackViewHidden = TestObserver<Bool, NoError>()
-  fileprivate let shippingLocationsSummaryLabelText = TestObserver<String, NoError>()
-  fileprivate let updateTopMarginsForIsBacking = TestObserver<Bool, NoError>() // todo
-  fileprivate let viewPledgeButtonHidden = TestObserver<Bool, NoError>() // todo
-  fileprivate let youreABackerViewHidden = TestObserver<Bool, NoError>() // todo
+  fileprivate let allGoneHidden = TestObserver<Bool, Never>()
+  fileprivate let conversionLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let conversionLabelText = TestObserver<String, Never>()
+  fileprivate let descriptionLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let descriptionLabelText = TestObserver<String, Never>()
+  fileprivate let estimatedDeliveryDateLabelText = TestObserver<String, Never>()
+  fileprivate let footerLabelText = TestObserver<String, Never>()
+  fileprivate let footerStackViewHidden = TestObserver<Bool, Never>()
+  fileprivate let items = TestObserver<[String], Never>()
+  fileprivate let itemsContainerHidden = TestObserver<Bool, Never>()
+  fileprivate let manageButtonHidden = TestObserver<Bool, Never>() // todo
+  fileprivate let minimumAndConversionLabelsColor = TestObserver<UIColor, Never>()
+  fileprivate let minimumLabelText = TestObserver<String, Never>()
+  fileprivate let notifyDelegateRewardCellWantsExpansion = TestObserver<(), Never>()
+  fileprivate let pledgeButtonHidden = TestObserver<Bool, Never>() // todo
+  fileprivate let pledgeButtonTitleText = TestObserver<String, Never>() // todo
+  fileprivate let titleLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let titleLabelText = TestObserver<String, Never>()
+  fileprivate let titleLabelTextColor = TestObserver<UIColor, Never>()
+  fileprivate let shippingLocationsStackViewHidden = TestObserver<Bool, Never>()
+  fileprivate let shippingLocationsSummaryLabelText = TestObserver<String, Never>()
+  fileprivate let updateTopMarginsForIsBacking = TestObserver<Bool, Never>() // todo
+  fileprivate let viewPledgeButtonHidden = TestObserver<Bool, Never>() // todo
+  fileprivate let youreABackerViewHidden = TestObserver<Bool, Never>() // todo
 
   override func setUp() {
     super.setUp()
@@ -92,8 +91,10 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
       rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0)
     )
 
-    self.allGoneHidden.assertValues([true, false, true, false],
-                                    "All gone indicator visible when none remaining and project over.")
+    self.allGoneHidden.assertValues(
+      [true, false, true, false],
+      "All gone indicator visible when none remaining and project over."
+    )
   }
 
   func testConfiguredWithBacking() {
@@ -103,7 +104,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
         .template
           |> Reward.lens.minimum .~ 30
           |> Reward.lens.title .~ "The goods"
-    )
+      )
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .right(backing))
     self.vm.inputs.boundStyles()
@@ -133,6 +134,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   }
 
   // MARK: Conversion Label
+
   func testConversionLabel_US_User_US_Project_ConfiguredWithReward() {
     let project = .template |> Project.lens.country .~ .us
     let reward = .template |> Reward.lens.minimum .~ 1_000
@@ -155,8 +157,10 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
 
-      self.conversionLabelHidden.assertValues([true],
-                                              "US user viewing US project does not see conversion.")
+      self.conversionLabelHidden.assertValues(
+        [true],
+        "US user viewing US project does not see conversion."
+      )
       self.conversionLabelText.assertValueCount(0)
     }
   }
@@ -171,13 +175,15 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(currency: "MXN"),
-      config: .template |> Config.lens.countryCode .~ "MX") {
+      config: .template |> Config.lens.countryCode .~ "MX"
+    ) {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-        self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
-
-        self.conversionLabelHidden.assertValues([false],
-                                                "Mexican user viewing non-Mexican project sees conversion.")
-        self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
+      self.conversionLabelHidden.assertValues(
+        [false],
+        "Mexican user viewing non-Mexican project sees conversion."
+      )
+      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
     }
   }
 
@@ -210,13 +216,15 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(currency: "MXN"),
-      config: .template |> Config.lens.countryCode .~ "MX") {
+      config: .template |> Config.lens.countryCode .~ "MX"
+    ) {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
 
-        self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
-
-        self.conversionLabelHidden.assertValues([false],
-                                                "Mexican user viewing non-Mexican project sees conversion.")
-        self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds up.")
+      self.conversionLabelHidden.assertValues(
+        [false],
+        "Mexican user viewing non-Mexican project sees conversion."
+      )
+      self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds up.")
     }
   }
 
@@ -234,8 +242,10 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
 
-      self.conversionLabelHidden.assertValues([false],
-                                              "US user viewing non-US project sees conversion.")
+      self.conversionLabelHidden.assertValues(
+        [false],
+        "US user viewing non-US project sees conversion."
+      )
       self.conversionLabelText.assertValues(["About $2"], "Conversion label rounds up.")
     }
   }
@@ -247,8 +257,10 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
     withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-      self.conversionLabelHidden.assertValues([true],
-                                              "Non-US user viewing US project does not see conversion.")
+      self.conversionLabelHidden.assertValues(
+        [true],
+        "Non-US user viewing US project does not see conversion."
+      )
       self.conversionLabelText.assertValueCount(0)
     }
   }
@@ -263,8 +275,10 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
     withEnvironment(config: .template |> Config.lens.countryCode .~ "GB") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-      self.conversionLabelHidden.assertValues([true],
-                                              "Non-US user viewing non-US project does not see conversion.")
+      self.conversionLabelHidden.assertValues(
+        [true],
+        "Non-US user viewing non-US project does not see conversion."
+      )
       self.conversionLabelText.assertValueCount(0)
     }
   }
@@ -276,8 +290,10 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   }
 
   func testDescriptionLabelHidden_SoldOutReward_NonBacker() {
-    self.vm.inputs.configureWith(project: .template,
-                                 rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0))
+    self.vm.inputs.configureWith(
+      project: .template,
+      rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0)
+    )
 
     self.descriptionLabelHidden.assertValues([true])
 
@@ -287,7 +303,6 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   }
 
   func testDescriptionLabelHidden_SoldOutReward_Backer() {
-
     let reward = .template |> Reward.lens.remaining .~ 0
     self.vm.inputs.configureWith(
       project: .template
@@ -305,16 +320,19 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   }
 
   func testEstimatedDeliveryDateLabelText() {
-    let estimatedDelivery = 1468527587.32843
+    let estimatedDelivery = 1_468_527_587.32843
 
     let reward = .template
       |> Reward.lens.estimatedDeliveryOn .~ estimatedDelivery
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
-    self.estimatedDeliveryDateLabelText.assertValues([Format.date(
-      secondsInUTC: estimatedDelivery,
-      template: "MMMMyyyy",
-      timeZone: UTCTimeZone)], "Emits the estimated delivery date")
+    self.estimatedDeliveryDateLabelText.assertValues([
+      Format.date(
+        secondsInUTC: estimatedDelivery,
+        template: "MMMMyyyy",
+        timeZone: UTCTimeZone
+      )
+    ], "Emits the estimated delivery date")
   }
 
   func testFooterLabelText_NotLimited_NotScheduled_Live() {
@@ -341,8 +359,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
       |> Reward.lens.backersCount .~ 42
       |> Reward.lens.limit .~ 100
       |> Reward.lens.remaining .~ 20
-      |> Reward.lens.endsAt
-      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -353,8 +370,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
     let reward = .template
       |> Reward.lens.backersCount .~ 42
       |> Reward.lens.limit .~ nil
-      |> Reward.lens.endsAt
-      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -372,17 +388,19 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
     self.footerLabelText.assertValues(["42\u{00a0}backers"])
   }
 
+  // swiftlint:disable line_length
   func testFooterLabelText_NotLimited_Expired_Live() {
     let reward = .template
       |> Reward.lens.backersCount .~ 42
       |> Reward.lens.limit .~ nil
-      |> Reward.lens.endsAt
-        .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
     self.footerLabelText.assertValues(["42\u{00a0}backers"])
   }
+
+  // swiftlint:enable line_length
 
   func testFooterViewHidden_WithRewards() {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
@@ -420,14 +438,14 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The thing"
-        ),
+          ),
         .template
           |> RewardsItem.lens.quantity .~ 1_000
           |> RewardsItem.lens.item .~ (
             .template
               |> Item.lens.name .~ "The other thing"
-        ),
-    ]
+          )
+      ]
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -445,8 +463,10 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   }
 
   func testItemsContainerHidden_WithNoItems() {
-    self.vm.inputs.configureWith(project: .template,
-                                 rewardOrBacking: .left(.template |> Reward.lens.rewardsItems .~ []))
+    self.vm.inputs.configureWith(
+      project: .template,
+      rewardOrBacking: .left(.template |> Reward.lens.rewardsItems .~ [])
+    )
 
     self.itemsContainerHidden.assertValues([true])
   }
@@ -485,8 +505,10 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   }
 
   func testManageButtonHidden_SuccessfulProject_NonBacker() {
-    self.vm.inputs.configureWith(project: .template |> Project.lens.state .~ .successful,
-                                 rewardOrBacking: .left(.template))
+    self.vm.inputs.configureWith(
+      project: .template |> Project.lens.state .~ .successful,
+      rewardOrBacking: .left(.template)
+    )
     self.manageButtonHidden.assertValues([true])
   }
 
@@ -657,7 +679,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
           .template
             |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.reward .~ reward
-      ),
+        ),
       rewardOrBacking: .left(reward)
     )
 
@@ -683,7 +705,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
           .template
             |> Backing.lens.rewardId .~ backingReward.id
             |> Backing.lens.reward .~ backingReward
-      ),
+        ),
       rewardOrBacking: .left(reward)
     )
 
@@ -732,7 +754,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ reward
-    )
+      )
 
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
@@ -753,7 +775,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.reward .~ reward
-    )
+      )
 
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))

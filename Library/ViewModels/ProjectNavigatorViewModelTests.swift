@@ -1,23 +1,22 @@
 @testable import KsApi
 @testable import Library
-import ReactiveExtensions_TestHelpers
 import Prelude
+import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
 import UIKit
 import XCTest
 
 internal final class ProjectNavigatorViewModelTests: TestCase {
   fileprivate let vm: ProjectNavigatorViewModelType = ProjectNavigatorViewModel()
 
-  fileprivate let cancelInteractiveTransition = TestObserver<(), NoError>()
-  fileprivate let dismissViewController = TestObserver<(), NoError>()
-  fileprivate let finishInteractiveTransition = TestObserver<(), NoError>()
-  private let notifyDelegateTransitionedToProjectIndex = TestObserver<Int, NoError>()
-  fileprivate let setInitialPagerViewController = TestObserver<(), NoError>()
-  fileprivate let setNeedsStatusBarAppearanceUpdate = TestObserver<(), NoError>()
-  fileprivate let setTransitionAnimatorIsInFlight = TestObserver<Bool, NoError>()
-  fileprivate let updateInteractiveTransition = TestObserver<CGFloat, NoError>()
+  fileprivate let cancelInteractiveTransition = TestObserver<(), Never>()
+  fileprivate let dismissViewController = TestObserver<(), Never>()
+  fileprivate let finishInteractiveTransition = TestObserver<(), Never>()
+  private let notifyDelegateTransitionedToProjectIndex = TestObserver<Int, Never>()
+  fileprivate let setInitialPagerViewController = TestObserver<(), Never>()
+  fileprivate let setNeedsStatusBarAppearanceUpdate = TestObserver<(), Never>()
+  fileprivate let setTransitionAnimatorIsInFlight = TestObserver<Bool, Never>()
+  fileprivate let updateInteractiveTransition = TestObserver<CGFloat, Never>()
 
   override func setUp() {
     super.setUp()
@@ -43,10 +42,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(0)
     self.setTransitionAnimatorIsInFlight.assertValues([])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
-                           translation: CGPoint(x: 0, y: -20),
-                           velocity: CGPoint(x: 0, y: -20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: 20),
+      translation: CGPoint(x: 0, y: -20),
+      velocity: CGPoint(x: 0, y: -20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(0)
@@ -54,10 +55,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(0)
     self.setTransitionAnimatorIsInFlight.assertValues([false])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 0),
-                           translation: CGPoint(x: 0, y: 0),
-                           velocity: CGPoint(x: 0, y: 20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: 0),
+      translation: CGPoint(x: 0, y: 0),
+      velocity: CGPoint(x: 0, y: 20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(0)
@@ -65,10 +68,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(0)
     self.setTransitionAnimatorIsInFlight.assertValues([false])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 0),
-                           translation: CGPoint(x: 0, y: 0),
-                           velocity: CGPoint(x: 0, y: 0),
-                           isDragging: false)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: 0),
+      translation: CGPoint(x: 0, y: 0),
+      velocity: CGPoint(x: 0, y: 0),
+      isDragging: false
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(0)
@@ -87,10 +92,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(0)
     self.setTransitionAnimatorIsInFlight.assertValues([])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
-                           translation: CGPoint(x: 0, y: -20),
-                           velocity: CGPoint(x: 0, y: -20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: 20),
+      translation: CGPoint(x: 0, y: -20),
+      velocity: CGPoint(x: 0, y: -20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(0)
@@ -98,10 +105,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(0)
     self.setTransitionAnimatorIsInFlight.assertValues([false])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 0),
-                           translation: CGPoint(x: 0, y: 0),
-                           velocity: CGPoint(x: 0, y: 20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: 0),
+      translation: CGPoint(x: 0, y: 0),
+      velocity: CGPoint(x: 0, y: 20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(0)
@@ -109,10 +118,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(0)
     self.setTransitionAnimatorIsInFlight.assertValues([false])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -20),
-                           translation: CGPoint(x: 0, y: 20),
-                           velocity: CGPoint(x: 0, y: 20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: -20),
+      translation: CGPoint(x: 0, y: 20),
+      velocity: CGPoint(x: 0, y: 20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(1)
@@ -120,10 +131,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(1)
     self.setTransitionAnimatorIsInFlight.assertValues([false, true])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -40),
-                           translation: CGPoint(x: 0, y: 40),
-                           velocity: CGPoint(x: 0, y: 20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: -40),
+      translation: CGPoint(x: 0, y: 40),
+      velocity: CGPoint(x: 0, y: 20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(1)
@@ -131,10 +144,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(2)
     self.setTransitionAnimatorIsInFlight.assertValues([false, true])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -40),
-                           translation: CGPoint(x: 0, y: 40),
-                           velocity: CGPoint(x: 0, y: 20),
-                           isDragging: false)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: -40),
+      translation: CGPoint(x: 0, y: 40),
+      velocity: CGPoint(x: 0, y: 20),
+      isDragging: false
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(1)
@@ -143,9 +158,11 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.setTransitionAnimatorIsInFlight.assertValues([false, true, false])
 
     XCTAssertEqual(["Closed Project Page"], self.trackingClient.events)
-    XCTAssertEqual(["swipe"],
-                   self.trackingClient.properties(forKey: "gesture_type", as: String.self),
-                   "Track swiped to close.")
+    XCTAssertEqual(
+      ["swipe"],
+      self.trackingClient.properties(forKey: "gesture_type", as: String.self),
+      "Track swiped to close."
+    )
   }
 
   func testTransitionLifecycle_Overscroll_Cancel() {
@@ -158,10 +175,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(0)
     self.setTransitionAnimatorIsInFlight.assertValues([])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -20),
-                           translation: CGPoint(x: 0, y: 20),
-                           velocity: CGPoint(x: 0, y: 20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: -20),
+      translation: CGPoint(x: 0, y: 20),
+      velocity: CGPoint(x: 0, y: 20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(1)
@@ -169,10 +188,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(1)
     self.setTransitionAnimatorIsInFlight.assertValues([true])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -10),
-                           translation: CGPoint(x: 0, y: 10),
-                           velocity: CGPoint(x: 0, y: -10),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: -10),
+      translation: CGPoint(x: 0, y: 10),
+      velocity: CGPoint(x: 0, y: -10),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(1)
@@ -180,10 +201,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(2)
     self.setTransitionAnimatorIsInFlight.assertValues([true])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -10),
-                           translation: CGPoint(x: 0, y: 10),
-                           velocity: CGPoint(x: 0, y: -10),
-                           isDragging: false)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: -10),
+      translation: CGPoint(x: 0, y: 10),
+      velocity: CGPoint(x: 0, y: -10),
+      isDragging: false
+    )
 
     self.cancelInteractiveTransition.assertValueCount(1)
     self.dismissViewController.assertValueCount(1)
@@ -202,10 +225,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(0)
     self.setTransitionAnimatorIsInFlight.assertValues([])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -20),
-                           translation: CGPoint(x: 0, y: 20),
-                           velocity: CGPoint(x: 0, y: 20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: -20),
+      translation: CGPoint(x: 0, y: 20),
+      velocity: CGPoint(x: 0, y: 20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(1)
@@ -213,10 +238,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(1)
     self.setTransitionAnimatorIsInFlight.assertValues([true])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 0),
-                           translation: CGPoint(x: 0, y: 20),
-                           velocity: CGPoint(x: 0, y: -20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: 0),
+      translation: CGPoint(x: 0, y: 20),
+      velocity: CGPoint(x: 0, y: -20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(1)
@@ -224,10 +251,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(2)
     self.setTransitionAnimatorIsInFlight.assertValues([true])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
-                           translation: CGPoint(x: 0, y: -20),
-                           velocity: CGPoint(x: 0, y: -20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: 20),
+      translation: CGPoint(x: 0, y: -20),
+      velocity: CGPoint(x: 0, y: -20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(1)
     self.dismissViewController.assertValueCount(1)
@@ -235,10 +264,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(2)
     self.setTransitionAnimatorIsInFlight.assertValues([true, false])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
-                           translation: CGPoint(x: 0, y: -20),
-                           velocity: CGPoint(x: 0, y: -20),
-                           isDragging: false)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: 20),
+      translation: CGPoint(x: 0, y: -20),
+      velocity: CGPoint(x: 0, y: -20),
+      isDragging: false
+    )
 
     self.cancelInteractiveTransition.assertValueCount(1)
     self.dismissViewController.assertValueCount(1)
@@ -262,10 +293,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(0)
     self.setTransitionAnimatorIsInFlight.assertValueCount(0)
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: -20),
-                           translation: CGPoint(x: 0, y: 20),
-                           velocity: CGPoint(x: 0, y: 20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: -20),
+      translation: CGPoint(x: 0, y: 20),
+      velocity: CGPoint(x: 0, y: 20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(1)
@@ -273,10 +306,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(1)
     self.setTransitionAnimatorIsInFlight.assertValues([true])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 0),
-                           translation: CGPoint(x: 0, y: 0),
-                           velocity: CGPoint(x: 0, y: -20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: 0),
+      translation: CGPoint(x: 0, y: 0),
+      velocity: CGPoint(x: 0, y: -20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(0)
     self.dismissViewController.assertValueCount(1)
@@ -284,10 +319,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(2)
     self.setTransitionAnimatorIsInFlight.assertValues([true])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
-                           translation: CGPoint(x: 0, y: -20),
-                           velocity: CGPoint(x: 0, y: -20),
-                           isDragging: true)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: 20),
+      translation: CGPoint(x: 0, y: -20),
+      velocity: CGPoint(x: 0, y: -20),
+      isDragging: true
+    )
 
     self.cancelInteractiveTransition.assertValueCount(1)
     self.dismissViewController.assertValueCount(1)
@@ -295,10 +332,12 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.updateInteractiveTransition.assertValueCount(2)
     self.setTransitionAnimatorIsInFlight.assertValues([true, false])
 
-    self.vm.inputs.panning(contentOffset: CGPoint(x: 0, y: 20),
-                           translation: CGPoint(x: 0, y: -20),
-                           velocity: CGPoint(x: 0, y: 0),
-                           isDragging: false)
+    self.vm.inputs.panning(
+      contentOffset: CGPoint(x: 0, y: 20),
+      translation: CGPoint(x: 0, y: -20),
+      velocity: CGPoint(x: 0, y: 0),
+      isDragging: false
+    )
 
     self.cancelInteractiveTransition.assertValueCount(1)
     self.dismissViewController.assertValueCount(1)
@@ -357,28 +396,38 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1])
     XCTAssertEqual(["Swiped Project", "Project Navigate"], self.trackingClient.events)
-    XCTAssertEqual(["next", "next"],
-                   self.trackingClient.properties(forKey: "type", as: String.self),
-                   "Track next swipe.")
+    XCTAssertEqual(
+      ["next", "next"],
+      self.trackingClient.properties(forKey: "type", as: String.self),
+      "Track next swipe."
+    )
 
     self.vm.inputs.willTransition(toProject: playlist[1], at: 2)
     self.vm.inputs.pageTransition(completed: true, from: 1)
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2])
-    XCTAssertEqual(["Swiped Project", "Project Navigate", "Swiped Project", "Project Navigate"],
-                   self.trackingClient.events)
-    XCTAssertEqual(["next", "next", "next", "next"],
-                   self.trackingClient.properties(forKey: "type", as: String.self),
-                   "Track next swipe.")
+    XCTAssertEqual(
+      ["Swiped Project", "Project Navigate", "Swiped Project", "Project Navigate"],
+      self.trackingClient.events
+    )
+    XCTAssertEqual(
+      ["next", "next", "next", "next"],
+      self.trackingClient.properties(forKey: "type", as: String.self),
+      "Track next swipe."
+    )
 
     self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
     self.vm.inputs.pageTransition(completed: true, from: 2)
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2, 1])
-    XCTAssertEqual(["Swiped Project", "Project Navigate", "Swiped Project", "Project Navigate",
-                    "Swiped Project", "Project Navigate"], self.trackingClient.events)
-    XCTAssertEqual(["next", "next", "next", "next", "previous", "previous"],
-                   self.trackingClient.properties(forKey: "type", as: String.self),
-                   "Track previous swipe.")
+    XCTAssertEqual([
+      "Swiped Project", "Project Navigate", "Swiped Project", "Project Navigate",
+      "Swiped Project", "Project Navigate"
+    ], self.trackingClient.events)
+    XCTAssertEqual(
+      ["next", "next", "next", "next", "previous", "previous"],
+      self.trackingClient.properties(forKey: "type", as: String.self),
+      "Track previous swipe."
+    )
   }
 }

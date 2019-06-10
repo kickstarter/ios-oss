@@ -1,12 +1,11 @@
 import Foundation
 import ReactiveSwift
-import Result
 
 public protocol LoadingBarButtonItemViewModelOutputs {
-  var activityIndicatorIsLoading: Signal<Bool, NoError> { get }
-  var titleButtonIsEnabled: Signal<Bool, NoError> { get }
-  var titleButtonIsHidden: Signal<Bool, NoError> { get }
-  var titleButtonText: Signal<String, NoError> { get }
+  var activityIndicatorIsLoading: Signal<Bool, Never> { get }
+  var titleButtonIsEnabled: Signal<Bool, Never> { get }
+  var titleButtonIsHidden: Signal<Bool, Never> { get }
+  var titleButtonText: Signal<String, Never> { get }
 }
 
 public protocol LoadingBarButtonItemViewModelInputs {
@@ -21,8 +20,7 @@ public protocol LoadingBarButtonItemViewModelType {
 }
 
 public final class LoadingBarButtonItemViewModel: LoadingBarButtonItemViewModelType,
-LoadingBarButtonItemViewModelInputs, LoadingBarButtonItemViewModelOutputs {
-
+  LoadingBarButtonItemViewModelInputs, LoadingBarButtonItemViewModelOutputs {
   public init() {
     self.activityIndicatorIsLoading = self.isAnimatingProperty.signal
     self.titleButtonIsEnabled = self.isEnabledProperty.signal
@@ -45,10 +43,10 @@ LoadingBarButtonItemViewModelInputs, LoadingBarButtonItemViewModelOutputs {
     self.isAnimatingProperty.value = isAnimating
   }
 
-  public let activityIndicatorIsLoading: Signal<Bool, NoError>
-  public let titleButtonIsEnabled: Signal<Bool, NoError>
-  public let titleButtonIsHidden: Signal<Bool, NoError>
-  public let titleButtonText: Signal<String, NoError>
+  public let activityIndicatorIsLoading: Signal<Bool, Never>
+  public let titleButtonIsEnabled: Signal<Bool, Never>
+  public let titleButtonIsHidden: Signal<Bool, Never>
+  public let titleButtonText: Signal<String, Never>
 
   public var inputs: LoadingBarButtonItemViewModelInputs {
     return self

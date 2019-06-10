@@ -1,7 +1,6 @@
 import KsApi
-import ReactiveSwift
-import Result
 import Prelude
+import ReactiveSwift
 
 public protocol CommentsEmptyStateCellViewModelInputs {
   /// Call when back this project button is tapped.
@@ -19,28 +18,28 @@ public protocol CommentsEmptyStateCellViewModelInputs {
 
 public protocol CommentsEmptyStateCellViewModelOutputs {
   /// Emits a boolean to determine whether or not backProjectButton is hidden.
-  var backProjectButtonHidden: Signal<Bool, NoError> { get }
+  var backProjectButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits when to navigate back to the project.
-  var goBackToProject: Signal<(), NoError> { get }
+  var goBackToProject: Signal<(), Never> { get }
 
   /// Emits when we should go to the comment dialog screen.
-  var goToCommentDialog: Signal<Void, NoError> { get }
+  var goToCommentDialog: Signal<Void, Never> { get }
 
   /// Emits when we should go to the login tout.
-  var goToLoginTout: Signal<Void, NoError> { get }
+  var goToLoginTout: Signal<Void, Never> { get }
 
   /// Emits a boolean to determine whether or not the Leave a comment button should be hidden.
-  var leaveACommentButtonHidden: Signal<Bool, NoError> { get }
+  var leaveACommentButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean to determine whether or not the Login button should be hidden.
-  var loginButtonHidden: Signal<Bool, NoError> { get }
+  var loginButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits whether subtitle label is hidden.
-  var subtitleIsHidden: Signal<Bool, NoError> { get }
+  var subtitleIsHidden: Signal<Bool, Never> { get }
 
   /// Emits the subtitle label text.
-  var subtitleText: Signal<String, NoError> { get }
+  var subtitleText: Signal<String, Never> { get }
 }
 
 public protocol CommentsEmptyStateCellViewModelType {
@@ -49,8 +48,7 @@ public protocol CommentsEmptyStateCellViewModelType {
 }
 
 public final class CommentsEmptyStateCellViewModel: CommentsEmptyStateCellViewModelType,
-CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
-
+  CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
   public init() {
     let project = self.projectAndUpdateProperty.signal.skipNil().map(first)
 
@@ -75,7 +73,7 @@ CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
       .map { $0.isLoggedIn
         ? Strings.Become_a_backer_to_leave_a_comment()
         : Strings.Log_in_to_leave_a_comment()
-    }
+      }
 
     self.goToCommentDialog = self.leaveACommentTappedProperty.signal
 
@@ -104,14 +102,14 @@ CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
     self.projectAndUpdateProperty.value = (project, update)
   }
 
-  public let backProjectButtonHidden: Signal<Bool, NoError>
-  public let goBackToProject: Signal<(), NoError>
-  public let goToCommentDialog: Signal<Void, NoError>
-  public let goToLoginTout: Signal<Void, NoError>
-  public let leaveACommentButtonHidden: Signal<Bool, NoError>
-  public let loginButtonHidden: Signal<Bool, NoError>
-  public let subtitleIsHidden: Signal<Bool, NoError>
-  public let subtitleText: Signal<String, NoError>
+  public let backProjectButtonHidden: Signal<Bool, Never>
+  public let goBackToProject: Signal<(), Never>
+  public let goToCommentDialog: Signal<Void, Never>
+  public let goToLoginTout: Signal<Void, Never>
+  public let leaveACommentButtonHidden: Signal<Bool, Never>
+  public let loginButtonHidden: Signal<Bool, Never>
+  public let subtitleIsHidden: Signal<Bool, Never>
+  public let subtitleText: Signal<String, Never>
 
   public var inputs: CommentsEmptyStateCellViewModelInputs { return self }
   public var outputs: CommentsEmptyStateCellViewModelOutputs { return self }

@@ -1,8 +1,7 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class UpdatePledgeEnvelopeTests: XCTestCase {
-
   func testDecodingWithStringStatus() {
     let decoded = UpdatePledgeEnvelope.decodeJSONDictionary(["status": "200"])
     XCTAssertNil(decoded.error)

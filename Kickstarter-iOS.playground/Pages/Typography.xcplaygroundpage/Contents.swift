@@ -1,8 +1,8 @@
 import Library
+import PlaygroundSupport
 import Prelude
 import Prelude_UIKit
 import UIKit
-import PlaygroundSupport
 
 let liveView = UIView(frame: .init(x: 0, y: 0, width: 800, height: 600))
   |> UIView.lens.backgroundColor .~ .ksr_grey_100
@@ -28,7 +28,7 @@ let fonts: [(String, UIFont)] = [
   ("footnote", .ksr_footnote()),
   ("caption1", .ksr_caption1()),
   ("caption2", .ksr_caption2())
-  ].sorted { lhs, rhs in lhs.1.pointSize > rhs.1.pointSize }
+].sorted { lhs, rhs in lhs.1.pointSize > rhs.1.pointSize }
 
 let base = UILabel.lens.text .~ "The quick brown fox jumps over the lazy dog"
   <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500

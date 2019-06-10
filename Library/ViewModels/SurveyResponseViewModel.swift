@@ -1,7 +1,6 @@
 import KsApi
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol SurveyResponseViewModelInputs {
   /// Call when the alert OK button is tapped.
@@ -22,19 +21,19 @@ public protocol SurveyResponseViewModelInputs {
 
 public protocol SurveyResponseViewModelOutputs {
   /// Emits when the view controller should be dismissed.
-  var dismissViewController: Signal<Void, NoError> { get }
+  var dismissViewController: Signal<Void, Never> { get }
 
   /// Emits a project and ref tag that should be used to present a project controller.
-  var goToProject: Signal<(Param, RefTag?), NoError> { get }
+  var goToProject: Signal<(Param, RefTag?), Never> { get }
 
   /// Emits when an alert should be shown.
-  var showAlert: Signal<String, NoError> { get }
+  var showAlert: Signal<String, Never> { get }
 
   /// Set the navigation item's title.
-  var title: Signal<String, NoError> { get }
+  var title: Signal<String, Never> { get }
 
   /// Emits a request that should be loaded by the webview.
-  var webViewLoadRequest: Signal<URLRequest, NoError> { get }
+  var webViewLoadRequest: Signal<URLRequest, Never> { get }
 }
 
 public protocol SurveyResponseViewModelType: SurveyResponseViewModelInputs, SurveyResponseViewModelOutputs {
@@ -43,8 +42,7 @@ public protocol SurveyResponseViewModelType: SurveyResponseViewModelInputs, Surv
 }
 
 public final class SurveyResponseViewModel: SurveyResponseViewModelType {
-
-    public init() {
+  public init() {
     let initialRequest = self.surveyResponseProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { surveyResponse -> URLRequest? in
@@ -97,8 +95,8 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     self.webViewLoadRequest = Signal.merge(
       initialRequest,
       postRequest
-      )
-      .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
+    )
+    .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
   }
 
   fileprivate let alertButtonTappedProperty = MutableProperty(())
@@ -109,8 +107,10 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
   fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebView.NavigationType)?>(nil)
   fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
-  public func shouldStartLoad(withRequest request: URLRequest,
-                              navigationType: UIWebView.NavigationType) -> Bool {
+  public func shouldStartLoad(
+    withRequest request: URLRequest,
+    navigationType: UIWebView.NavigationType
+  ) -> Bool {
     self.shouldStartLoadProperty.value = (request, navigationType)
     return self.shouldStartLoadResponseProperty.value
   }
@@ -123,11 +123,11 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
-  public let dismissViewController: Signal<Void, NoError>
-  public let goToProject: Signal<(Param, RefTag?), NoError>
-  public let showAlert: Signal<String, NoError>
-  public let title: Signal<String, NoError>
-  public let webViewLoadRequest: Signal<URLRequest, NoError>
+  public let dismissViewController: Signal<Void, Never>
+  public let goToProject: Signal<(Param, RefTag?), Never>
+  public let showAlert: Signal<String, Never>
+  public let title: Signal<String, Never>
+  public let webViewLoadRequest: Signal<URLRequest, Never>
 
   public var inputs: SurveyResponseViewModelInputs { return self }
   public var outputs: SurveyResponseViewModelOutputs { return self }

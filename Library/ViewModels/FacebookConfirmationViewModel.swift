@@ -1,7 +1,6 @@
 import KsApi
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol FacebookConfirmationViewModelInputs {
   /// Call when view controller's viewDidLoad() is called
@@ -22,21 +21,21 @@ public protocol FacebookConfirmationViewModelInputs {
 
 public protocol FacebookConfirmationViewModelOutputs {
   /// Emits an email address to display
-  var displayEmail: Signal<String, NoError> { get }
+  var displayEmail: Signal<String, Never> { get }
   /// Emits whether to send newsletters with login
-  var sendNewsletters: Signal<Bool, NoError> { get }
+  var sendNewsletters: Signal<Bool, Never> { get }
   /// Emits when a login success notification should be posted.
-  var postNotification: Signal<Notification, NoError> { get }
+  var postNotification: Signal<Notification, Never> { get }
   /// Emits an access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, NoError> { get }
+  var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
   /// Emits to show the Login with Email flow
-  var showLogin: Signal<(), NoError> { get }
+  var showLogin: Signal<(), Never> { get }
   /// Emits whether a request is loading or not
-  var isLoading: Signal<Bool, NoError> { get }
+  var isLoading: Signal<Bool, Never> { get }
 }
 
 public protocol FacebookConfirmationViewModelErrors {
-  var showSignupError: Signal<String, NoError> { get }
+  var showSignupError: Signal<String, Never> { get }
 }
 
 public protocol FacebookConfirmationViewModelType {
@@ -46,15 +45,16 @@ public protocol FacebookConfirmationViewModelType {
 }
 
 public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelType,
-FacebookConfirmationViewModelInputs, FacebookConfirmationViewModelOutputs,
-FacebookConfirmationViewModelErrors {
-
+  FacebookConfirmationViewModelInputs, FacebookConfirmationViewModelOutputs,
+  FacebookConfirmationViewModelErrors {
   // MARK: FacebookConfirmationViewModelType
+
   public var inputs: FacebookConfirmationViewModelInputs { return self }
   public var outputs: FacebookConfirmationViewModelOutputs { return self }
   public var errors: FacebookConfirmationViewModelErrors { return self }
 
   // MARK: FacebookConfirmationViewModelInputs
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -91,15 +91,17 @@ FacebookConfirmationViewModelErrors {
   }
 
   // MARK: FacebookConfirmationViewModelOutputs
-  public let displayEmail: Signal<String, NoError>
-  public let sendNewsletters: Signal<Bool, NoError>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, NoError>
-  public let postNotification: Signal<Notification, NoError>
-  public let showLogin: Signal<(), NoError>
-  public let isLoading: Signal<Bool, NoError>
+
+  public let displayEmail: Signal<String, Never>
+  public let sendNewsletters: Signal<Bool, Never>
+  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public let postNotification: Signal<Notification, Never>
+  public let showLogin: Signal<(), Never>
+  public let isLoading: Signal<Bool, Never>
 
   // MARK: FacebookConfirmationViewModelErrors
-  public let showSignupError: Signal<String, NoError>
+
+  public let showSignupError: Signal<String, Never>
 
   public init() {
     let isLoading = MutableProperty(false)
@@ -123,10 +125,11 @@ FacebookConfirmationViewModelErrors {
             },
             terminated: {
               isLoading.value = false
-          })
+            }
+          )
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.logIntoEnvironment = signupEvent.values()
 
@@ -136,8 +139,8 @@ FacebookConfirmationViewModelErrors {
     self.showSignupError = signupEvent.errors()
       .map { error in
         error.errorMessages.first ??
-            Strings.facebook_confirmation_could_not_log_in()
-    }
+          Strings.facebook_confirmation_could_not_log_in()
+      }
 
     self.showLogin = self.loginButtonPressedProperty.signal
 
@@ -157,6 +160,6 @@ FacebookConfirmationViewModelErrors {
         AppEnvironment.current.koala.trackChangeNewsletter(
           newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .facebookSignup
         )
-    }
+      }
   }
 }

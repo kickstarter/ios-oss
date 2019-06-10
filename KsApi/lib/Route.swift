@@ -14,8 +14,10 @@ internal enum Route {
   case changePaymentMethod(project: Project)
   case checkout(String)
   case config
-  case createPledge(project: Project, amount: Double, reward: Reward?, shippingLocation: Location?,
-    tappedReward: Bool)
+  case createPledge(
+    project: Project, amount: Double, reward: Reward?, shippingLocation: Location?,
+    tappedReward: Bool
+  )
   case deleteImage(UpdateDraft.Image, fromDraft: UpdateDraft)
   case deleteVideo(UpdateDraft.Video, fromDraft: UpdateDraft)
   case discover(DiscoveryParams)
@@ -50,17 +52,23 @@ internal enum Route {
   case searchMessages(query: String, project: Project?)
   case sendMessage(body: String, messageSubject: MessageSubject)
   case shippingRules(projectId: Int, rewardId: Int)
-  case signup(name: String, email: String, password: String, passwordConfirmation: String,
-    sendNewsletters: Bool)
-  case submitApplePay(checkoutUrl: String, stripeToken: String, paymentInstrumentName: String,
-    paymentNetwork: String, transactionIdentifier: String)
+  case signup(
+    name: String, email: String, password: String, passwordConfirmation: String,
+    sendNewsletters: Bool
+  )
+  case submitApplePay(
+    checkoutUrl: String, stripeToken: String, paymentInstrumentName: String,
+    paymentNetwork: String, transactionIdentifier: String
+  )
   case surveyResponse(surveyResponseId: Int)
   case unansweredSurveyResponses
   case unfollowFriend(userId: Int)
   case update(updateId: Int, projectParam: Param)
   case updateComments(Update)
-  case updatePledge(project: Project, amount: Double, reward: Reward?, shippingLocation: Location?,
-    tappedReward: Bool)
+  case updatePledge(
+    project: Project, amount: Double, reward: Reward?, shippingLocation: Location?,
+    tappedReward: Bool
+  )
   case updateProjectNotification(notification: ProjectNotification)
   case updateUpdateDraft(UpdateDraft, title: String, body: String, isPublic: Bool)
   case updateUserSelf(User)
@@ -75,7 +83,6 @@ internal enum Route {
 
   internal var requestProperties:
     (method: Method, path: String, query: [String: Any], file: (name: UploadParam, url: URL)?) {
-
     switch self {
     case let .activities(categories, count):
       var params: [String: Any] = ["categories": categories.map { $0.rawValue }]
@@ -92,8 +99,10 @@ internal enum Route {
       return (.GET, "/v1/projects/\(projectId)/backers/\(backerId)", [:], nil)
 
     case let .backingUpdate(projectId, backerId, received):
-      return (.PUT, "/v1/projects/\(projectId)/backers/\(backerId)",
-        ["backer_completed_at": received ? "1" : "0"], nil)
+      return (
+        .PUT, "/v1/projects/\(projectId)/backers/\(backerId)",
+        ["backer_completed_at": received ? "1" : "0"], nil
+      )
 
     case .categories:
       return (.GET, "/v1/categories", [:], nil)
@@ -125,7 +134,7 @@ internal enum Route {
         "amount": String(amount),
         "backer_reward_id": reward.map { String($0.id) } ?? "",
         "location_id": shippingLocation.map { String($0.id) }
-        ].compact()
+      ].compact()
 
       return (.POST, pledgeUrl?.absoluteString ?? "", params, nil)
 
@@ -248,10 +257,12 @@ internal enum Route {
     case let .sendMessage(body, messageSubject):
       switch messageSubject {
       case let .backing(backing):
-        return (.POST,
-                "v1/projects/\(backing.projectId)/backers/\(backing.backerId)/messages",
-                ["body": body],
-                nil)
+        return (
+          .POST,
+          "v1/projects/\(backing.projectId)/backers/\(backing.backerId)/messages",
+          ["body": body],
+          nil
+        )
 
       case let .messageThread(messageThread):
         return (.POST, "/v1/message_threads/\(messageThread.id)/messages", ["body": body], nil)
@@ -274,8 +285,10 @@ internal enum Route {
       ]
       return (.POST, "/v1/users", params, nil)
 
-    case let .submitApplePay(checkoutUrl, stripeToken, paymentInstrumentName, paymentNetwork,
-      transactionIdentifier):
+    case let .submitApplePay(
+      checkoutUrl, stripeToken, paymentInstrumentName, paymentNetwork,
+      transactionIdentifier
+    ):
 
       let params = [
         "format": "json",
@@ -283,12 +296,12 @@ internal enum Route {
         "payment_network": paymentNetwork,
         "payment_type": "apple_pay",
         "token": stripeToken,
-        "transaction_identifier": transactionIdentifier,
-        ]
+        "transaction_identifier": transactionIdentifier
+      ]
 
       return (.POST, checkoutUrl, params, nil)
 
-    case let.surveyResponse(surveyResponseId):
+    case let .surveyResponse(surveyResponseId):
       return (.GET, "/v1/users/self/surveys/\(surveyResponseId)", [:], nil)
 
     case .unansweredSurveyResponses:
@@ -314,7 +327,7 @@ internal enum Route {
         "amount": String(amount),
         "backer_reward_id": reward.map { String($0.id) } ?? "",
         "location_id": shippingLocation.map { String($0.id) }
-        ].compact()
+      ].compact()
 
       return (.PUT, pledgeUrl?.absoluteString ?? "", params, nil)
 

@@ -2,11 +2,9 @@
 @testable import KsApi
 @testable import Library
 import Prelude
-import Result
 import XCTest
 
 internal final class DiscoveryNavigationHeaderViewControllerTests: TestCase {
-
   let initialParams = .defaults
     |> DiscoveryParams.lens.includePOTD .~ true
 

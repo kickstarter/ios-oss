@@ -1,6 +1,6 @@
 /**
  A type that can provide oauth token authentication, i.e. a user's personal token.
-*/
+ */
 public protocol OauthTokenAuthType {
   var token: String { get }
 }

@@ -1,20 +1,19 @@
-import XCTest
-@testable import Library
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
+@testable import Library
 import Prelude
-import Result
+import ReactiveExtensions_TestHelpers
 import WebKit
+import XCTest
 
 final class SurveyResponseViewModelTests: TestCase {
   fileprivate let vm: SurveyResponseViewModelType = SurveyResponseViewModel()
 
-  fileprivate let dismissViewController = TestObserver<Void, NoError>()
-  fileprivate let goToProjectParam = TestObserver<Param, NoError>()
-  fileprivate let showAlert = TestObserver<String, NoError>()
-  fileprivate let title = TestObserver<String, NoError>()
-  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, NoError>()
-  fileprivate let webViewLoadRequest = TestObserver<URLRequest, NoError>()
+  fileprivate let dismissViewController = TestObserver<Void, Never>()
+  fileprivate let goToProjectParam = TestObserver<Param, Never>()
+  fileprivate let showAlert = TestObserver<String, Never>()
+  fileprivate let title = TestObserver<String, Never>()
+  fileprivate let webViewLoadRequestIsPrepared = TestObserver<Bool, Never>()
+  fileprivate let webViewLoadRequest = TestObserver<URLRequest, Never>()
 
   override func setUp() {
     super.setUp()

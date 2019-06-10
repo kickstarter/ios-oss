@@ -1,6 +1,6 @@
 import Argo
-import Runes
 import KsApi
+import Runes
 
 public enum RefTag {
   case activity
@@ -13,10 +13,6 @@ public enum RefTag {
   case dashboardActivity
   case discovery
   case discoveryWithSort(DiscoveryParams.Sort)
-  case liveStream
-  case liveStreamCountdown
-  case liveStreamDiscovery
-  case liveStreamReplay
   case messageThread
   case profile
   case profileBacked
@@ -48,57 +44,53 @@ public enum RefTag {
   // swiftlint:disable:next cyclomatic_complexity
   public init(code: String) {
     switch code {
-    case "activity":                  self = .activity
-    case "category":                  self = .category
-    case "category_featured":         self = .categoryFeatured
+    case "activity": self = .activity
+    case "category": self = .category
+    case "category_featured": self = .categoryFeatured
     case "discovery_activity_sample": self = .activitySample
-    case "category_ending_soon":      self = .categoryWithSort(.endingSoon)
-    case "category_home":             self = .categoryWithSort(.magic)
-    case "category_newest":           self = .categoryWithSort(.newest)
-    case "category_popular":          self = .categoryWithSort(.popular)
-    case "city":                      self = .city
-    case "dashboard":                 self = .dashboard
-    case "dashboard_activity":        self = .dashboardActivity
-    case "discovery":                 self = .discovery
-    case "discovery_ending_soon":     self = .discoveryWithSort(.endingSoon)
-    case "discovery_home":            self = .discoveryWithSort(.magic)
-    case "discovery_newest":          self = .discoveryWithSort(.newest)
-    case "discovery_popular":         self = .discoveryWithSort(.popular)
-    case "live_stream":               self = .liveStream
-    case "live_stream_countdown":     self = .liveStreamCountdown
-    case "live_stream_discovery":     self = .liveStreamDiscovery
-    case "live_stream_replay":        self = .liveStreamReplay
-    case "message_thread":            self = .messageThread
-    case "profile":                   self = .profile
-    case "profile_backed":            self = .profileBacked
-    case "profile_saved":             self = .profileSaved
-    case "project_page":              self = .projectPage
-    case "push":                      self = .push
-    case "recommended":               self = .recommended
-    case "recommended_ending_soon":   self = .recommendedWithSort(.endingSoon)
-    case "recommended_home":          self = .recommendedWithSort(.magic)
-    case "recommended_newest":        self = .recommendedWithSort(.newest)
-    case "recommended_popular":       self = .recommendedWithSort(.popular)
-    case "recs_ending_soon":          self = .recsWithSort(.endingSoon)
-    case "recs_home":                 self = .recsWithSort(.magic)
-    case "recs_newest":               self = .recsWithSort(.newest)
-    case "recs_popular":              self = .recsWithSort(.popular)
-    case "search":                    self = .search
-    case "search_featured":           self = .searchFeatured
-    case "search_popular":            self = .searchPopular
-    case "search_popular_featured":   self = .searchPopularFeatured
-    case "social":                    self = .social
-    case "social_ending_soon":        self = .socialWithSort(.endingSoon)
-    case "social_home":               self = .socialWithSort(.magic)
-    case "social_newest":             self = .socialWithSort(.newest)
-    case "social_popular":            self = .socialWithSort(.popular)
-    case "starred_ending_soon":       self = .starredWithSort(.endingSoon)
-    case "starred_home":              self = .starredWithSort(.magic)
-    case "starred_newest":            self = .starredWithSort(.newest)
-    case "starred_popular":           self = .starredWithSort(.popular)
-    case "thanks":                    self = .thanks
-    case "update":                    self = .update
-    default:                          self = .unrecognized(code)
+    case "category_ending_soon": self = .categoryWithSort(.endingSoon)
+    case "category_home": self = .categoryWithSort(.magic)
+    case "category_newest": self = .categoryWithSort(.newest)
+    case "category_popular": self = .categoryWithSort(.popular)
+    case "city": self = .city
+    case "dashboard": self = .dashboard
+    case "dashboard_activity": self = .dashboardActivity
+    case "discovery": self = .discovery
+    case "discovery_ending_soon": self = .discoveryWithSort(.endingSoon)
+    case "discovery_home": self = .discoveryWithSort(.magic)
+    case "discovery_newest": self = .discoveryWithSort(.newest)
+    case "discovery_popular": self = .discoveryWithSort(.popular)
+    case "message_thread": self = .messageThread
+    case "profile": self = .profile
+    case "profile_backed": self = .profileBacked
+    case "profile_saved": self = .profileSaved
+    case "project_page": self = .projectPage
+    case "push": self = .push
+    case "recommended": self = .recommended
+    case "recommended_ending_soon": self = .recommendedWithSort(.endingSoon)
+    case "recommended_home": self = .recommendedWithSort(.magic)
+    case "recommended_newest": self = .recommendedWithSort(.newest)
+    case "recommended_popular": self = .recommendedWithSort(.popular)
+    case "recs_ending_soon": self = .recsWithSort(.endingSoon)
+    case "recs_home": self = .recsWithSort(.magic)
+    case "recs_newest": self = .recsWithSort(.newest)
+    case "recs_popular": self = .recsWithSort(.popular)
+    case "search": self = .search
+    case "search_featured": self = .searchFeatured
+    case "search_popular": self = .searchPopular
+    case "search_popular_featured": self = .searchPopularFeatured
+    case "social": self = .social
+    case "social_ending_soon": self = .socialWithSort(.endingSoon)
+    case "social_home": self = .socialWithSort(.magic)
+    case "social_newest": self = .socialWithSort(.newest)
+    case "social_popular": self = .socialWithSort(.popular)
+    case "starred_ending_soon": self = .starredWithSort(.endingSoon)
+    case "starred_home": self = .starredWithSort(.magic)
+    case "starred_newest": self = .starredWithSort(.newest)
+    case "starred_popular": self = .starredWithSort(.popular)
+    case "thanks": self = .thanks
+    case "update": self = .update
+    default: self = .unrecognized(code)
     }
   }
 
@@ -125,14 +117,6 @@ public enum RefTag {
       return "discovery"
     case let .discoveryWithSort(sort):
       return "discovery" + sortRefTagSuffix(sort)
-    case .liveStream:
-      return "live_stream"
-    case .liveStreamCountdown:
-      return "live_stream_countdown"
-    case .liveStreamDiscovery:
-      return "live_stream_discovery"
-    case .liveStreamReplay:
-      return "live_stream_replay"
     case .messageThread:
       return "message_thread"
     case .profile:
@@ -175,38 +159,7 @@ public enum RefTag {
   }
 }
 
-extension RefTag: Equatable {
-}
-public func == (lhs: RefTag, rhs: RefTag) -> Bool {
-  switch (lhs, rhs) {
-  case (.activity, .activity), (.category, .category), (.categoryFeatured, .categoryFeatured),
-    (.activitySample, .activitySample), (.city, .city), (.dashboard, .dashboard),
-    (.dashboardActivity, .dashboardActivity), (.discovery, .discovery),
-    (.liveStreamCountdown, .liveStreamCountdown), (.liveStreamDiscovery, .liveStreamDiscovery),
-    (.liveStreamReplay, .liveStreamReplay), (.messageThread, .messageThread), (.profile, .profile),
-    (.profileBacked, .profileBacked), (.profileSaved, .profileSaved), (.projectPage, .projectPage),
-    (.push, .push), (.recommended, .recommended), (.search, .search), (.searchFeatured, .searchFeatured),
-    (.searchPopular, .searchPopular), (.searchPopularFeatured, .searchPopularFeatured), (.social, .social),
-    (.thanks, .thanks), (.update, .update):
-    return true
-  case let (.categoryWithSort(lhs), .categoryWithSort(rhs)):
-    return lhs == rhs
-  case let (.discoveryWithSort(lhs), .discoveryWithSort(rhs)):
-    return lhs == rhs
-  case let (.recommendedWithSort(lhs), .recommendedWithSort(rhs)):
-    return lhs == rhs
-  case let (.recsWithSort(lhs), .recsWithSort(rhs)):
-    return lhs == rhs
-  case let (.socialWithSort(lhs), .socialWithSort(rhs)):
-    return lhs == rhs
-  case let (.starredWithSort(lhs), .starredWithSort(rhs)):
-    return lhs == rhs
-  case let (.unrecognized(lhs), .unrecognized(rhs)):
-    return lhs == rhs
-  default:
-    return false
-  }
-}
+extension RefTag: Equatable {}
 
 extension RefTag: CustomStringConvertible {
   public var description: String {

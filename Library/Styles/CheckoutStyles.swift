@@ -1,6 +1,24 @@
 import Prelude
 import UIKit
 
+// MARK: - Attributes
+
+public func checkoutCurrencyDefaultAttributes() -> String.Attributes {
+  return [
+    .font: UIFont.ksr_title1(),
+    .foregroundColor: UIColor.ksr_text_dark_grey_500
+  ]
+}
+
+public func checkoutCurrencySuperscriptAttributes() -> String.Attributes {
+  return [
+    .font: UIFont.ksr_body(),
+    .baselineOffset: UIFont.ksr_body().baselineOffsetToSuperscript(of: UIFont.ksr_title1())
+  ]
+}
+
+// MARK: - Styles
+
 public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
   return { (stackView: UIStackView) in
     let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
@@ -67,4 +85,9 @@ public let checkoutTitleLabelStyle: LabelStyle = { (label: UILabel) in
 public let checkoutWhiteBackgroundStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.white
+}
+
+public let checkoutLayerCardRoundedStyle: LayerStyle = { layer in
+  layer
+    |> \.cornerRadius .~ 16.0
 }

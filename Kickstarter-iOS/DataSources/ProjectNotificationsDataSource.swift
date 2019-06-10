@@ -1,12 +1,14 @@
-import Library
 import KsApi
+import Library
 import UIKit
 
 internal final class ProjectNotificationsDataSource: ValueCellDataSource {
   internal func load(notifications: [ProjectNotification]) {
-    self.set(values: notifications,
-             cellClass: ProjectNotificationCell.self,
-             inSection: 0)
+    self.set(
+      values: notifications,
+      cellClass: ProjectNotificationCell.self,
+      inSection: 0
+    )
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {

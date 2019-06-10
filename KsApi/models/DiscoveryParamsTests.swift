@@ -1,10 +1,9 @@
 import Argo
+@testable import KsApi
 import Prelude
 import XCTest
-@testable import KsApi
 
 class DiscoveryParamsTests: XCTestCase {
-
   func testDefault() {
     let params = DiscoveryParams.defaults
     XCTAssertNil(params.staffPicks)
@@ -63,15 +62,19 @@ class DiscoveryParamsTests: XCTestCase {
   func testPOTD() {
     let p1 = DiscoveryParams.defaults
       |> DiscoveryParams.lens.includePOTD .~ true
-    XCTAssertEqual([:], p1.queryParams,
-                   "POTD flag is included with no filter.")
+    XCTAssertEqual(
+      [:], p1.queryParams,
+      "POTD flag is included with no filter."
+    )
 
     let p2 = DiscoveryParams.defaults
       |> DiscoveryParams.lens.includePOTD .~ true
       |> DiscoveryParams.lens.sort .~ .magic
-    XCTAssertEqual(["sort": "magic"],
-                   p2.queryParams,
-                   "POTD flag is included with no filter + magic sort.")
+    XCTAssertEqual(
+      ["sort": "magic"],
+      p2.queryParams,
+      "POTD flag is included with no filter + magic sort."
+    )
   }
 
   func testDecode() {

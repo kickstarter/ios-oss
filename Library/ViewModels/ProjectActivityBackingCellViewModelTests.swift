@@ -1,28 +1,27 @@
-import XCTest
 @testable import KsApi
 @testable import Library
-import ReactiveExtensions_TestHelpers
 import Prelude
-import Result
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ProjectActivityBackingCellViewModelTests: TestCase {
   fileprivate let vm: ProjectActivityBackingCellViewModelType = ProjectActivityBackingCellViewModel()
 
-  fileprivate let backerImage = TestObserver<String?, NoError>()
-  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
+  fileprivate let backerImage = TestObserver<String?, Never>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let cellAccessibilityValue = TestObserver<String, Never>()
   fileprivate let defaultUser = User.template |> \.id .~ 90
-  fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), NoError>()
-  fileprivate let notifyDelegateGoToSendMessage = TestObserver<(Project, Backing), NoError>()
-  fileprivate let pledgeAmount = TestObserver<String, NoError>()
-  fileprivate let pledgeAmountLabelIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let pledgeAmountsStackViewIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let pledgeDetailsSeparatorStackViewIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let previousPledgeAmount = TestObserver<String, NoError>()
-  fileprivate let previousPledgeAmountLabelIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let reward = TestObserver<String, NoError>()
-  fileprivate let rewardLabelIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), Never>()
+  fileprivate let notifyDelegateGoToSendMessage = TestObserver<(Project, Backing), Never>()
+  fileprivate let pledgeAmount = TestObserver<String, Never>()
+  fileprivate let pledgeAmountLabelIsHidden = TestObserver<Bool, Never>()
+  fileprivate let pledgeAmountsStackViewIsHidden = TestObserver<Bool, Never>()
+  fileprivate let pledgeDetailsSeparatorStackViewIsHidden = TestObserver<Bool, Never>()
+  fileprivate let previousPledgeAmount = TestObserver<String, Never>()
+  fileprivate let previousPledgeAmountLabelIsHidden = TestObserver<Bool, Never>()
+  fileprivate let reward = TestObserver<String, Never>()
+  fileprivate let rewardLabelIsHidden = TestObserver<Bool, Never>()
+  fileprivate let title = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -93,7 +92,8 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = Strings.Amount_reward(
       amount: Format.currency(amount, country: project.country),
-      reward: Strings.dashboard_activity_reward_name(reward_name: title).htmlStripped() ?? "")
+      reward: Strings.dashboard_activity_reward_name(reward_name: title).htmlStripped() ?? ""
+    )
 
     self.cellAccessibilityValue.assertValues([expected], "Emits accessibility value")
   }
@@ -122,8 +122,11 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = Strings.Amount_previous_amount(
       amount: Format.currency(newAmount, country: project.country),
-                                 previous_amount: Format.currency(oldAmount,
-                                         country: project.country))
+      previous_amount: Format.currency(
+        oldAmount,
+        country: project.country
+      )
+    )
     self.cellAccessibilityValue.assertValues([expected], "Emits accessibility value")
   }
 
@@ -318,8 +321,10 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity2, project: project)
     let expected2 = Strings.dashboard_activity_reward_name(reward_name: reward2.description)
-    self.reward.assertValues([expected1, expected2],
-                             "Should emit reward description if title not present")
+    self.reward.assertValues(
+      [expected1, expected2],
+      "Should emit reward description if title not present"
+    )
     self.rewardLabelIsHidden.assertValues([false, false])
 
     let activity3 = .template
@@ -347,16 +352,18 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .backing
-      |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1001)
+      |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1_001)
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template
-        |> \.id .~ 1001
+        |> \.id .~ 1_001
         |> \.name .~ "Christopher"
-        )
+      )
     self.vm.inputs.configureWith(activity: activity, project: project)
 
-    self.title.assertValues([Strings.dashboard_activity_user_name_pledged(user_name: "Christopher")],
-                            "Should emit that the user pledged")
+    self.title.assertValues(
+      [Strings.dashboard_activity_user_name_pledged(user_name: "Christopher")],
+      "Should emit that the user pledged"
+    )
   }
 
   func testTitleBackingByCurrentUser() {
@@ -368,8 +375,10 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.user .~ self.defaultUser
     self.vm.inputs.configureWith(activity: activity, project: project)
 
-    self.title.assertValues([Strings.dashboard_activity_you_pledged()],
-                            "Should emit that 'you' pledged")
+    self.title.assertValues(
+      [Strings.dashboard_activity_you_pledged()],
+      "Should emit that 'you' pledged"
+    )
   }
 
   func testTitleBackingAmount() {
@@ -378,17 +387,18 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.category .~ .backingAmount
       |> Activity.lens.memberData.oldAmount .~ 15
       |> Activity.lens.memberData.newAmount .~ 25
-      |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1001)
+      |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1_001)
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template
-        |> \.id .~ 1001
+        |> \.id .~ 1_001
         |> \.name .~ "Christopher"
-        )
+      )
     self.vm.inputs.configureWith(activity: activity, project: project)
 
     self.title.assertValues(
       [Strings.dashboard_activity_user_name_adjusted_their_pledge(user_name: "Christopher")],
-      "Should emit that the user adjusted their pledge")
+      "Should emit that the user adjusted their pledge"
+    )
   }
 
   func testTitleBackingAmountByCurrentUser() {
@@ -402,20 +412,22 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.user .~ self.defaultUser
     self.vm.inputs.configureWith(activity: activity, project: project)
 
-    self.title.assertValues([Strings.dashboard_activity_you_adjusted_your_pledge()],
-                            "Should emit that 'you' adjusted your pledge")
+    self.title.assertValues(
+      [Strings.dashboard_activity_you_adjusted_your_pledge()],
+      "Should emit that 'you' adjusted your pledge"
+    )
   }
 
   func testTitleBackingCanceled() {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .backingCanceled
-      |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1001)
+      |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1_001)
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template
-        |> \.id .~ 1001
+        |> \.id .~ 1_001
         |> \.name .~ "Christopher"
-        )
+      )
     self.vm.inputs.configureWith(activity: activity, project: project)
 
     self.title.assertValues(
@@ -433,8 +445,10 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.user .~ self.defaultUser
     self.vm.inputs.configureWith(activity: activity, project: project)
 
-    self.title.assertValues([Strings.dashboard_activity_you_canceled_your_pledge()],
-                            "Should emit that 'you' canceled your pledge")
+    self.title.assertValues(
+      [Strings.dashboard_activity_you_canceled_your_pledge()],
+      "Should emit that 'you' canceled your pledge"
+    )
   }
 
   func testTitleBackingReward() {
@@ -445,12 +459,12 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.memberData.oldRewardId .~ 1
       |> Activity.lens.memberData.newAmount .~ 25
       |> Activity.lens.memberData.newRewardId .~ 2
-      |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1001)
+      |> Activity.lens.memberData.backing .~ (.template |> Backing.lens.backerId .~ 1_001)
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template
-        |> \.id .~ 1001
+        |> \.id .~ 1_001
         |> \.name .~ "Christopher"
-        )
+      )
     self.vm.inputs.configureWith(activity: activity, project: project)
 
     self.title.assertValues(
@@ -472,7 +486,9 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Activity.lens.user .~ self.defaultUser
     self.vm.inputs.configureWith(activity: activity, project: project)
 
-    self.title.assertValues([Strings.dashboard_activity_you_changed_your_reward()],
-                            "Should emit that 'you' changed your reward")
+    self.title.assertValues(
+      [Strings.dashboard_activity_you_changed_your_reward()],
+      "Should emit that 'you' changed your reward"
+    )
   }
 }

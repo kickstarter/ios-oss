@@ -1,10 +1,10 @@
-import Library
 import KsApi
-import Prelude
+import Library
 import MessageUI
+import Prelude
 
 final class HelpViewController: UIViewController {
-  @IBOutlet fileprivate weak var tableView: UITableView!
+  @IBOutlet fileprivate var tableView: UITableView!
 
   private let dataSource = HelpDataSource()
   fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
@@ -19,14 +19,14 @@ final class HelpViewController: UIViewController {
     self.helpViewModel.inputs.configureWith(helpContext: .settings)
     self.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
 
-    tableView.dataSource = dataSource
-    tableView.delegate = self
-    tableView.register(nib: .SettingsTableViewCell)
-    tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+    self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
+    self.tableView.register(nib: .SettingsTableViewCell)
+    self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
 
-    dataSource.configureRows()
+    self.dataSource.configureRows()
 
-    tableView.reloadData()
+    self.tableView.reloadData()
   }
 
   override func bindStyles() {
@@ -36,7 +36,7 @@ final class HelpViewController: UIViewController {
       |> settingsViewControllerStyle
       |> UIViewController.lens.title %~ { _ in Strings.profile_settings_about_title() }
 
-    _ = tableView
+    _ = self.tableView
       |> settingsTableViewStyle
       |> settingsTableViewSeparatorStyle
   }
@@ -50,19 +50,19 @@ final class HelpViewController: UIViewController {
         let controller = MFMailComposeViewController.support()
         controller.mailComposeDelegate = self
         self?.present(controller, animated: true, completion: nil)
-    }
+      }
 
     self.helpViewModel.outputs.showNoEmailError
       .observeForControllerAction()
       .observeValues { [weak self] alert in
         self?.present(alert, animated: true, completion: nil)
-    }
+      }
 
     self.helpViewModel.outputs.showWebHelp
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
         self?.goToHelpType(helpType)
-    }
+      }
   }
 
   fileprivate func goToHelpType(_ helpType: HelpType) {
@@ -72,15 +72,15 @@ final class HelpViewController: UIViewController {
 }
 
 extension HelpViewController: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
     return HelpSectionType.sectionHeaderHeight
   }
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+  func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
     return 0.1 // Required to remove the footer in UITableViewStyleGrouped
   }
 
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection _: Int) -> UIView? {
     return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
   }
 
@@ -96,9 +96,11 @@ extension HelpViewController: UITableViewDelegate {
 }
 
 extension HelpViewController: MFMailComposeViewControllerDelegate {
-  internal func mailComposeController(_ controller: MFMailComposeViewController,
-                                      didFinishWith result: MFMailComposeResult,
-                                      error: Error?) {
+  internal func mailComposeController(
+    _ controller: MFMailComposeViewController,
+    didFinishWith result: MFMailComposeResult,
+    error _: Error?
+  ) {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
 
     controller.dismiss(animated: true, completion: nil)

@@ -2,11 +2,10 @@ import KsApi
 import Library
 import Prelude
 import ReactiveSwift
-import Result
 import UIKit
 
 final class SettingsAccountViewController: UIViewController, MessageBannerViewControllerPresenting {
-  @IBOutlet private weak var tableView: UITableView!
+  @IBOutlet private var tableView: UITableView!
 
   private let dataSource = SettingsAccountDataSource()
   internal var messageBannerViewController: MessageBannerViewController?
@@ -22,7 +21,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.dataSource = dataSource
+    self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.estimatedSectionFooterHeight = SettingsGroupedFooterView.defaultHeight
 
@@ -52,28 +51,32 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.viewModel.outputs.reloadData
       .observeForUI()
       .observeValues { [weak self] currency, shouldHideEmailWarning, shouldHideEmailPasswordSection in
-        self?.dataSource.configureRows(currency: currency,
-                                       shouldHideEmailWarning: shouldHideEmailWarning,
-                                       shouldHideEmailPasswordSection: shouldHideEmailPasswordSection)
+        self?.dataSource.configureRows(
+          currency: currency,
+          shouldHideEmailWarning: shouldHideEmailWarning,
+          shouldHideEmailPasswordSection: shouldHideEmailPasswordSection
+        )
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.fetchAccountFieldsError
       .observeForUI()
       .observeValues { [weak self] in
-        self?.dataSource.configureRows(currency: nil,
-                                       shouldHideEmailWarning: true,
-                                       shouldHideEmailPasswordSection: false)
+        self?.dataSource.configureRows(
+          currency: nil,
+          shouldHideEmailWarning: true,
+          shouldHideEmailPasswordSection: false
+        )
         self?.tableView.reloadData()
 
         self?.showGeneralError()
-    }
+      }
 
     self.viewModel.outputs.transitionToViewController
       .observeForControllerAction()
-      .observeValues { [weak self] (viewController) in
+      .observeValues { [weak self] viewController in
         self?.navigationController?.pushViewController(viewController, animated: true)
-    }
+      }
   }
 
   override func bindStyles() {
@@ -83,14 +86,16 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
       |> settingsViewControllerStyle
       |> UIViewController.lens.title %~ { _ in Strings.Account() }
 
-    _ = tableView
+    _ = self.tableView
       |> settingsTableViewStyle
       |> settingsTableViewSeparatorStyle
   }
 
   private func showGeneralError() {
-    self.messageBannerViewController?.showBanner(with: .error,
-                                                 message: Strings.Something_went_wrong_please_try_again())
+    self.messageBannerViewController?.showBanner(
+      with: .error,
+      message: Strings.Something_went_wrong_please_try_again()
+    )
   }
 }
 
@@ -104,11 +109,11 @@ extension SettingsAccountViewController: UITableViewDelegate {
     self.viewModel.inputs.didSelectRow(cellType: cellType)
   }
 
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
     return SettingsSectionType.sectionHeaderHeight
   }
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+  func tableView(_: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     let (userHasPassword, _) = self.viewModel.outputs.userHasPasswordAndEmail
     guard section == SettingsAccountSectionType.createPassword.rawValue, !userHasPassword else {
       return 0.1
@@ -116,7 +121,7 @@ extension SettingsAccountViewController: UITableViewDelegate {
     return UITableView.automaticDimension
   }
 
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection _: Int) -> UIView? {
     return tableView.dequeueReusableHeaderFooterView(withIdentifier: Nib.SettingsHeaderView.rawValue)
   }
 
@@ -125,11 +130,12 @@ extension SettingsAccountViewController: UITableViewDelegate {
     guard let userEmail = email,
       !userHasPassword,
       section == SettingsAccountSectionType.createPassword.rawValue else {
-        return nil
+      return nil
     }
 
     let footerView = tableView.dequeueReusableHeaderFooterView(
-      withClass: SettingsGroupedFooterView.self) as? SettingsGroupedFooterView
+      withClass: SettingsGroupedFooterView.self
+    ) as? SettingsGroupedFooterView
 
     let text = Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: userEmail)
 

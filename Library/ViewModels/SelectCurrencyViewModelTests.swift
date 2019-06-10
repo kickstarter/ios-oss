@@ -1,26 +1,24 @@
 import Foundation
-import XCTest
 @testable import KsApi
-import ReactiveExtensions
-import ReactiveExtensions_TestHelpers
-import KsApi
-import ReactiveSwift
-import Result
 @testable import Library
 import Prelude
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class SelectCurrencyViewModelTests: TestCase {
   private let vm: SelectCurrencyViewModelType = SelectCurrencyViewModel()
 
-  private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
-  private let deselectCellAtIndex = TestObserver<Int, NoError>()
-  private let didUpdateCurrency = TestObserver<(), NoError>()
-  private let reloadDataWithCurrenciesData = TestObserver<[SelectedCurrencyData], NoError>()
-  private let reloadDataWithCurrenciesReload = TestObserver<Bool, NoError>()
-  private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
-  private let selectCellAtIndex = TestObserver<Int, NoError>()
-  private let updateCurrencyDidFailWithError = TestObserver<String, NoError>()
-  private let updateCurrencyDidSucceed = TestObserver<(), NoError>()
+  private let activityIndicatorShouldShow = TestObserver<Bool, Never>()
+  private let deselectCellAtIndex = TestObserver<Int, Never>()
+  private let didUpdateCurrency = TestObserver<(), Never>()
+  private let reloadDataWithCurrenciesData = TestObserver<[SelectedCurrencyData], Never>()
+  private let reloadDataWithCurrenciesReload = TestObserver<Bool, Never>()
+  private let saveButtonIsEnabled = TestObserver<Bool, Never>()
+  private let selectCellAtIndex = TestObserver<Int, Never>()
+  private let updateCurrencyDidFailWithError = TestObserver<String, Never>()
+  private let updateCurrencyDidSucceed = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -64,7 +62,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.selectCellAtIndex.assertValues([0])
 
     withEnvironment(apiService: MockService(changeCurrencyResponse: .init())) {
-      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.index(of: .AUD) ?? -1)
+      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .AUD) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
       let audSelectededCurrencyData = selectedCurrencyData(with: usdSelectedOrdering, selected: .AUD)
@@ -92,7 +90,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
       self.reloadDataWithCurrenciesData.assertValues([
         usdSelectededCurrencyData,
         audSelectededCurrencyData
-        ])
+      ])
       self.updateCurrencyDidFailWithError.assertValues([])
       self.updateCurrencyDidSucceed.assertValueCount(1)
       self.selectCellAtIndex.assertValues([0, 2])
@@ -127,7 +125,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     self.selectCellAtIndex.assertValues([0])
 
     withEnvironment(apiService: MockService(changeCurrencyError: .invalidInput)) {
-      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.index(of: .AUD) ?? -1)
+      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .AUD) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
       let audSelectededCurrencyData = selectedCurrencyData(with: usdSelectedOrdering, selected: .AUD)
@@ -140,7 +138,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
       self.reloadDataWithCurrenciesData.assertValues([
         usdSelectededCurrencyData,
         audSelectededCurrencyData
-        ])
+      ])
       self.updateCurrencyDidFailWithError.assertValues([])
       self.updateCurrencyDidSucceed.assertValueCount(0)
       self.selectCellAtIndex.assertValues([0, 2])
@@ -155,7 +153,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
       self.reloadDataWithCurrenciesData.assertValues([
         usdSelectededCurrencyData,
         audSelectededCurrencyData
-        ])
+      ])
       self.updateCurrencyDidFailWithError.assertValues(["Something went wrong."])
       self.updateCurrencyDidSucceed.assertValueCount(0)
       self.selectCellAtIndex.assertValues([0, 2])
@@ -171,7 +169,7 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
 
     withEnvironment(apiService: MockService(changeCurrencyResponse: .init())) {
-      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.index(of: .CHF) ?? -1)
+      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .CHF) ?? -1)
       self.vm.inputs.saveButtonTapped()
 
       self.scheduler.advance()
@@ -198,39 +196,41 @@ internal final class SelectCurrencyViewModelTests: TestCase {
   func testSelectedCurrencyDataWithCurrencies() {
     XCTAssertEqual(
       selectedCurrencyData(with: Currency.allCases, selected: .SEK),
-      [SelectedCurrencyData(currency: .EUR, selected: false),
-       SelectedCurrencyData(currency: .AUD, selected: false),
-       SelectedCurrencyData(currency: .CAD, selected: false),
-       SelectedCurrencyData(currency: .CHF, selected: false),
-       SelectedCurrencyData(currency: .DKK, selected: false),
-       SelectedCurrencyData(currency: .GBP, selected: false),
-       SelectedCurrencyData(currency: .HKD, selected: false),
-       SelectedCurrencyData(currency: .JPY, selected: false),
-       SelectedCurrencyData(currency: .MXN, selected: false),
-       SelectedCurrencyData(currency: .NOK, selected: false),
-       SelectedCurrencyData(currency: .NZD, selected: false),
-       SelectedCurrencyData(currency: .SEK, selected: true),
-       SelectedCurrencyData(currency: .SGD, selected: false),
-       SelectedCurrencyData(currency: .USD, selected: false)
+      [
+        SelectedCurrencyData(currency: .EUR, selected: false),
+        SelectedCurrencyData(currency: .AUD, selected: false),
+        SelectedCurrencyData(currency: .CAD, selected: false),
+        SelectedCurrencyData(currency: .CHF, selected: false),
+        SelectedCurrencyData(currency: .DKK, selected: false),
+        SelectedCurrencyData(currency: .GBP, selected: false),
+        SelectedCurrencyData(currency: .HKD, selected: false),
+        SelectedCurrencyData(currency: .JPY, selected: false),
+        SelectedCurrencyData(currency: .MXN, selected: false),
+        SelectedCurrencyData(currency: .NOK, selected: false),
+        SelectedCurrencyData(currency: .NZD, selected: false),
+        SelectedCurrencyData(currency: .SEK, selected: true),
+        SelectedCurrencyData(currency: .SGD, selected: false),
+        SelectedCurrencyData(currency: .USD, selected: false)
       ]
     )
 
     XCTAssertEqual(
       selectedCurrencyData(with: Currency.allCases, selected: .HKD),
-      [SelectedCurrencyData(currency: .EUR, selected: false),
-       SelectedCurrencyData(currency: .AUD, selected: false),
-       SelectedCurrencyData(currency: .CAD, selected: false),
-       SelectedCurrencyData(currency: .CHF, selected: false),
-       SelectedCurrencyData(currency: .DKK, selected: false),
-       SelectedCurrencyData(currency: .GBP, selected: false),
-       SelectedCurrencyData(currency: .HKD, selected: true),
-       SelectedCurrencyData(currency: .JPY, selected: false),
-       SelectedCurrencyData(currency: .MXN, selected: false),
-       SelectedCurrencyData(currency: .NOK, selected: false),
-       SelectedCurrencyData(currency: .NZD, selected: false),
-       SelectedCurrencyData(currency: .SEK, selected: false),
-       SelectedCurrencyData(currency: .SGD, selected: false),
-       SelectedCurrencyData(currency: .USD, selected: false)
+      [
+        SelectedCurrencyData(currency: .EUR, selected: false),
+        SelectedCurrencyData(currency: .AUD, selected: false),
+        SelectedCurrencyData(currency: .CAD, selected: false),
+        SelectedCurrencyData(currency: .CHF, selected: false),
+        SelectedCurrencyData(currency: .DKK, selected: false),
+        SelectedCurrencyData(currency: .GBP, selected: false),
+        SelectedCurrencyData(currency: .HKD, selected: true),
+        SelectedCurrencyData(currency: .JPY, selected: false),
+        SelectedCurrencyData(currency: .MXN, selected: false),
+        SelectedCurrencyData(currency: .NOK, selected: false),
+        SelectedCurrencyData(currency: .NZD, selected: false),
+        SelectedCurrencyData(currency: .SEK, selected: false),
+        SelectedCurrencyData(currency: .SGD, selected: false),
+        SelectedCurrencyData(currency: .USD, selected: false)
       ]
     )
   }

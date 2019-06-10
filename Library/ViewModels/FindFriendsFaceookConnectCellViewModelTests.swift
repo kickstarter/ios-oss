@@ -1,66 +1,66 @@
-// swiftlint:disable force_unwrapping
-// swiftlint:disable force_cast
-import XCTest
-import ReactiveSwift
-import UIKit.UIActivity
+@testable import FBSDKLoginKit
+@testable import KsApi
+@testable import Library
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
-@testable import KsApi
-@testable import Library
-@testable import FBSDKLoginKit
+import ReactiveSwift
+import UIKit.UIActivity
+// swiftlint:disable force_unwrapping
+// swiftlint:disable force_cast
+import XCTest
 
-  final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
+final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   let vm: FindFriendsFacebookConnectCellViewModelType = FindFriendsFacebookConnectCellViewModel()
 
-  let attemptFacebookLogin = TestObserver<(), NoError>()
-  let hideCloseButton = TestObserver<Bool, NoError>()
-  let isLoading = TestObserver<Bool, NoError>()
-  let notifyPresenterToDismissHeader = TestObserver<(), NoError>()
-  let notifyPresenterUserFacebookConnected = TestObserver<(), NoError>()
-  let postUserUpdatedNotification = TestObserver<Notification.Name, NoError>()
-  let updateUserInEnvironment = TestObserver<User, NoError>()
-  let showErrorAlert = TestObserver<AlertError, NoError>()
-  let subtitle = TestObserver<String, NoError>()
-  let title = TestObserver<String, NoError>()
+  let attemptFacebookLogin = TestObserver<(), Never>()
+  let hideCloseButton = TestObserver<Bool, Never>()
+  let isLoading = TestObserver<Bool, Never>()
+  let notifyPresenterToDismissHeader = TestObserver<(), Never>()
+  let notifyPresenterUserFacebookConnected = TestObserver<(), Never>()
+  let postUserUpdatedNotification = TestObserver<Notification.Name, Never>()
+  let updateUserInEnvironment = TestObserver<User, Never>()
+  let showErrorAlert = TestObserver<AlertError, Never>()
+  let subtitle = TestObserver<String, Never>()
+  let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
 
-    vm.outputs.attemptFacebookLogin.observe(attemptFacebookLogin.observer)
-    vm.outputs.facebookConnectCellTitle.observe(title.observer)
-    vm.outputs.facebookConnectCellSubtitle.observe(subtitle.observer)
-    vm.outputs.hideCloseButton.observe(hideCloseButton.observer)
-    vm.outputs.isLoading.observe(isLoading.observer)
-    vm.outputs.notifyDelegateToDismissHeader.observe(notifyPresenterToDismissHeader.observer)
-    vm.outputs.notifyDelegateUserFacebookConnected.observe(notifyPresenterUserFacebookConnected.observer)
-    vm.outputs.postUserUpdatedNotification.map { $0.name }
-      .observe(postUserUpdatedNotification.observer)
-    vm.outputs.updateUserInEnvironment.observe(updateUserInEnvironment.observer)
-    vm.outputs.showErrorAlert.observe(showErrorAlert.observer)
+    self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
+    self.vm.outputs.facebookConnectCellTitle.observe(self.title.observer)
+    self.vm.outputs.facebookConnectCellSubtitle.observe(self.subtitle.observer)
+    self.vm.outputs.hideCloseButton.observe(self.hideCloseButton.observer)
+    self.vm.outputs.isLoading.observe(self.isLoading.observer)
+    self.vm.outputs.notifyDelegateToDismissHeader.observe(self.notifyPresenterToDismissHeader.observer)
+    self.vm.outputs.notifyDelegateUserFacebookConnected
+      .observe(self.notifyPresenterUserFacebookConnected.observer)
+    self.vm.outputs.postUserUpdatedNotification.map { $0.name }
+      .observe(self.postUserUpdatedNotification.observer)
+    self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
+    self.vm.outputs.showErrorAlert.observe(self.showErrorAlert.observer)
   }
 
   func testHideCloseButton() {
-    vm.inputs.configureWith(source: .findFriends)
+    self.vm.inputs.configureWith(source: .findFriends)
 
     self.hideCloseButton.assertValue(true)
   }
 
   func testShowCloseButton() {
-    vm.inputs.configureWith(source: .activity)
+    self.vm.inputs.configureWith(source: .activity)
 
     self.hideCloseButton.assertValue(false)
   }
 
   func testDismissal() {
-    vm.inputs.configureWith(source: .activity)
+    self.vm.inputs.configureWith(source: .activity)
 
-    notifyPresenterToDismissHeader.assertValueCount(0)
+    self.notifyPresenterToDismissHeader.assertValueCount(0)
 
-    vm.inputs.closeButtonTapped()
+    self.vm.inputs.closeButtonTapped()
 
-    notifyPresenterToDismissHeader.assertValueCount(1)
+    self.notifyPresenterToDismissHeader.assertValueCount(1)
 
     XCTAssertEqual(["Close Facebook Connect"], self.trackingClient.events)
     XCTAssertEqual(["activity"], self.trackingClient.properties.map { $0["source"] as! String? })
@@ -76,13 +76,15 @@ import Result
   }
 
   func testLabels_needsReconnect() {
-    withEnvironment(currentUser: User.template
-      |> \.facebookConnected .~ true
-      |> \.needsFreshFacebookToken .~ true) {
-        vm.inputs.configureWith(source: .activity)
+    withEnvironment(
+      currentUser: User.template
+        |> \.facebookConnected .~ true
+        |> \.needsFreshFacebookToken .~ true
+    ) {
+      vm.inputs.configureWith(source: .activity)
 
-        title.assertValue(Strings.Facebook_reconnect())
-        subtitle.assertValue(Strings.Facebook_reconnect_description())
+      title.assertValue(Strings.Facebook_reconnect())
+      subtitle.assertValue(Strings.Facebook_reconnect_description())
     }
   }
 
@@ -113,8 +115,10 @@ import Result
 
       attemptFacebookLogin.assertValueCount(1, "Attempt Facebook Connect emitted")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
-      XCTAssertEqual(["activity", "activity"],
-        self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(
+        ["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
 
       vm.inputs.facebookLoginSuccess(result: result)
 
@@ -126,8 +130,10 @@ import Result
 
       vm.inputs.userUpdated()
 
-      postUserUpdatedNotification.assertValues([.ksr_userUpdated],
-                                               "User updated notification posted")
+      postUserUpdatedNotification.assertValues(
+        [.ksr_userUpdated],
+        "User updated notification posted"
+      )
       notifyPresenterUserFacebookConnected.assertValueCount(1, "Notify presenter that user was updated")
 
       self.showErrorAlert.assertValueCount(0, "Error alert does not emit")
@@ -135,34 +141,44 @@ import Result
   }
 
   func testFacebookConnectFlow_Error_LoginAttemptFail() {
-    let error = NSError(domain: "facebook.com",
-                        code: 404,
-                        userInfo: [
-                          FBSDKErrorLocalizedTitleKey: "Facebook Login Fail",
-                          FBSDKErrorLocalizedDescriptionKey: "Something went wrong yo."
-      ])
+    let error = NSError(
+      domain: "facebook.com",
+      code: 404,
+      userInfo: [
+        FBSDKErrorLocalizedTitleKey: "Facebook Login Fail",
+        FBSDKErrorLocalizedDescriptionKey: "Something went wrong yo."
+      ]
+    )
 
     vm.inputs.configureWith(source: .activity)
 
-    attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
+    self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login does not emit")
 
-    vm.inputs.facebookConnectButtonTapped()
+    self.vm.inputs.facebookConnectButtonTapped()
 
-    attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
-    showErrorAlert.assertValueCount(0, "Error alert does not emit")
+    self.attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
+    self.showErrorAlert.assertValueCount(0, "Error alert does not emit")
     XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
     XCTAssertEqual(["activity", "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
-    vm.inputs.facebookLoginFail(error: error)
+    self.vm.inputs.facebookLoginFail(error: error)
 
-    self.showErrorAlert.assertValues([AlertError.facebookLoginAttemptFail(error: error)],
-                                     "Show Facebook Attempt Login error")
-    updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
-    XCTAssertEqual(["Facebook Connect", "Connected Facebook",
-                    "Facebook Connect Error", "Errored Facebook Connect"], self.trackingClient.events)
-    XCTAssertEqual(["activity", "activity",
-                    "activity", "activity"],
-      self.trackingClient.properties.map { $0["source"] as! String? })
+    self.showErrorAlert.assertValues(
+      [AlertError.facebookLoginAttemptFail(error: error)],
+      "Show Facebook Attempt Login error"
+    )
+    self.updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
+    XCTAssertEqual([
+      "Facebook Connect", "Connected Facebook",
+      "Facebook Connect Error", "Errored Facebook Connect"
+    ], self.trackingClient.events)
+    XCTAssertEqual(
+      [
+        "activity", "activity",
+        "activity", "activity"
+      ],
+      self.trackingClient.properties.map { $0["source"] as! String? }
+    )
   }
 
   func testFacebookConnectFlow_Error_TokenFail() {
@@ -199,8 +215,10 @@ import Result
 
       attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
-      XCTAssertEqual(["activity", "activity"],
-        self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(
+        ["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
 
       vm.inputs.facebookLoginSuccess(result: result)
 
@@ -208,14 +226,22 @@ import Result
 
       scheduler.advance()
 
-      self.showErrorAlert.assertValues([AlertError.facebookTokenFail],
-                                       "Show Facebook token fail error")
+      self.showErrorAlert.assertValues(
+        [AlertError.facebookTokenFail],
+        "Show Facebook token fail error"
+      )
       updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
-      XCTAssertEqual(["Facebook Connect", "Connected Facebook",
-                      "Facebook Connect Error", "Errored Facebook Connect"], self.trackingClient.events)
-      XCTAssertEqual(["activity", "activity",
-                      "activity", "activity"],
-                     self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual([
+        "Facebook Connect", "Connected Facebook",
+        "Facebook Connect Error", "Errored Facebook Connect"
+      ], self.trackingClient.events)
+      XCTAssertEqual(
+        [
+          "activity", "activity",
+          "activity", "activity"
+        ],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
     }
   }
 
@@ -253,8 +279,10 @@ import Result
 
       attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
-      XCTAssertEqual(["activity", "activity"],
-        self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(
+        ["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
 
       vm.inputs.facebookLoginSuccess(result: result)
 
@@ -262,14 +290,22 @@ import Result
 
       scheduler.advance()
 
-      self.showErrorAlert.assertValues([AlertError.facebookConnectAccountTaken(envelope: error)],
-                                       "Show Facebook account taken error")
+      self.showErrorAlert.assertValues(
+        [AlertError.facebookConnectAccountTaken(envelope: error)],
+        "Show Facebook account taken error"
+      )
       updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
-      XCTAssertEqual(["Facebook Connect", "Connected Facebook",
-                      "Facebook Connect Error", "Errored Facebook Connect"], self.trackingClient.events)
-      XCTAssertEqual(["activity", "activity",
-                      "activity", "activity"],
-                     self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual([
+        "Facebook Connect", "Connected Facebook",
+        "Facebook Connect Error", "Errored Facebook Connect"
+      ], self.trackingClient.events)
+      XCTAssertEqual(
+        [
+          "activity", "activity",
+          "activity", "activity"
+        ],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
     }
   }
 
@@ -309,8 +345,10 @@ import Result
 
       attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
-      XCTAssertEqual(["activity", "activity"],
-        self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(
+        ["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
 
       vm.inputs.facebookLoginSuccess(result: result)
 
@@ -318,14 +356,22 @@ import Result
 
       scheduler.advance()
 
-      self.showErrorAlert.assertValues([AlertError.facebookConnectEmailTaken(envelope: error)],
-                                       "Show Facebook account taken error")
+      self.showErrorAlert.assertValues(
+        [AlertError.facebookConnectEmailTaken(envelope: error)],
+        "Show Facebook account taken error"
+      )
       updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
-      XCTAssertEqual(["Facebook Connect", "Connected Facebook",
-                      "Facebook Connect Error", "Errored Facebook Connect"], self.trackingClient.events)
-      XCTAssertEqual(["activity", "activity",
-                      "activity", "activity"],
-                     self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual([
+        "Facebook Connect", "Connected Facebook",
+        "Facebook Connect Error", "Errored Facebook Connect"
+      ], self.trackingClient.events)
+      XCTAssertEqual(
+        [
+          "activity", "activity",
+          "activity", "activity"
+        ],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
     }
   }
 
@@ -363,8 +409,10 @@ import Result
 
       attemptFacebookLogin.assertValueCount(1, "Attempt Facebook login emitted")
       XCTAssertEqual(["Facebook Connect", "Connected Facebook"], self.trackingClient.events)
-      XCTAssertEqual(["activity", "activity"],
-        self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual(
+        ["activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
 
       vm.inputs.facebookLoginSuccess(result: result)
 
@@ -372,13 +420,19 @@ import Result
 
       scheduler.advance()
 
-      self.showErrorAlert.assertValues([AlertError.genericFacebookError(envelope: error)],
-                                       "Show Facebook account taken error")
+      self.showErrorAlert.assertValues(
+        [AlertError.genericFacebookError(envelope: error)],
+        "Show Facebook account taken error"
+      )
       updateUserInEnvironment.assertValueCount(0, "Update user does not emit")
-      XCTAssertEqual(["Facebook Connect", "Connected Facebook",
-                      "Facebook Connect Error", "Errored Facebook Connect"], self.trackingClient.events)
-      XCTAssertEqual(["activity", "activity", "activity", "activity"],
-                     self.trackingClient.properties.map { $0["source"] as! String? })
+      XCTAssertEqual([
+        "Facebook Connect", "Connected Facebook",
+        "Facebook Connect Error", "Errored Facebook Connect"
+      ], self.trackingClient.events)
+      XCTAssertEqual(
+        ["activity", "activity", "activity", "activity"],
+        self.trackingClient.properties.map { $0["source"] as! String? }
+      )
     }
   }
 }

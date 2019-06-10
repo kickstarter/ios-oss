@@ -20,7 +20,7 @@ internal final class ProjectCreatorViewController: WebViewController {
     self.navigationItem.title = Strings.project_subpages_menu_buttons_creator()
 
     if self.traitCollection.userInterfaceIdiom == .pad {
-      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonTapped))
+      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonTapped))
     }
   }
 
@@ -43,7 +43,7 @@ internal final class ProjectCreatorViewController: WebViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToLoginTout($0)
-    }
+      }
 
     self.viewModel.outputs.loadWebViewRequest
       .observeForControllerAction()
@@ -57,7 +57,7 @@ internal final class ProjectCreatorViewController: WebViewController {
         } else {
           self?.navigationController?.popViewController(animated: true)
         }
-    }
+      }
 
     self.viewModel.outputs.goToMessageDialog
       .observeForControllerAction()
@@ -67,12 +67,14 @@ internal final class ProjectCreatorViewController: WebViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goTo(url: $0)
-    }
+      }
   }
 
-  internal func webView(_ webView: WKWebView,
-                        decidePolicyFor navigationAction: WKNavigationAction,
-                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+  internal func webView(
+    _: WKWebView,
+    decidePolicyFor navigationAction: WKNavigationAction,
+    decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+  ) {
     decisionHandler(
       self.viewModel.inputs.decidePolicy(
         forNavigationAction: WKNavigationActionData(navigationAction: navigationAction)
@@ -106,6 +108,5 @@ extension ProjectCreatorViewController: MessageDialogViewControllerDelegate {
     dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func messageDialog(_ dialog: MessageDialogViewController, postedMessage message: Message) {
-  }
+  internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
 }

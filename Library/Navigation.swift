@@ -1,8 +1,8 @@
 import Argo
-import Runes
 import Curry
 import Foundation
 import KsApi
+import Runes
 
 public enum Navigation {
   case checkout(Int, Navigation.Checkout)
@@ -28,7 +28,7 @@ public enum Navigation {
   }
 
   public enum Tab {
-    case discovery([String:String]?)
+    case discovery([String: String]?)
     case search
     case activity
     case dashboard(project: Param?)
@@ -44,7 +44,6 @@ public enum Navigation {
     case faqs
     case friends
     case messageCreator
-    case liveStream(eventId: Int)
     case pledge(Navigation.Project.Pledge)
     case updates
     case update(Int, Navigation.Project.Update)
@@ -89,8 +88,10 @@ public func == (lhs: Navigation, rhs: Navigation) -> Bool {
     return lhs == rhs
   case let (.project(lhsParam, lhsProject, lhsRefTag), .project(rhsParam, rhsProject, rhsRefTag)):
     return lhsParam == rhsParam && lhsProject == rhsProject && lhsRefTag == rhsRefTag
-  case let (.projectPreview(lhsParam, lhsProject, lhsRefTag, lhsToken),
-            .projectPreview(rhsParam, rhsProject, rhsRefTag, rhsToken)):
+  case let (
+    .projectPreview(lhsParam, lhsProject, lhsRefTag, lhsToken),
+    .projectPreview(rhsParam, rhsProject, rhsRefTag, rhsToken)
+  ):
     return lhsParam == rhsParam && lhsProject == rhsProject && lhsRefTag == rhsRefTag && lhsToken == rhsToken
   case let (.user(lhsParam, lhsUser), .user(rhsParam, rhsUser)):
     return lhsParam == rhsParam && lhsUser == rhsUser
@@ -137,8 +138,6 @@ public func == (lhs: Navigation.Project, rhs: Navigation.Project) -> Bool {
     return true
   case (.messageCreator, .messageCreator):
     return true
-  case let (.liveStream(eventId: lhs), .liveStream(eventId: rhs)):
-    return lhs == rhs
   case let (.pledge(lhsPledge), .pledge(rhsPledge)):
     return lhsPledge == rhsPledge
   case (.updates, .updates):
@@ -229,7 +228,7 @@ extension Navigation {
   }
 
   public static func match(_ request: URLRequest) -> Navigation? {
-    return request.url.flatMap(match)
+    return request.url.flatMap(self.match)
   }
 }
 
@@ -296,21 +295,22 @@ extension Navigation.Project {
   // swiftlint:disable conditional_binding_cascade
   public static func withRequest(_ request: URLRequest) -> (Param, RefTag?)? {
     guard let nav = Navigation.match(request), case let .project(project, .root, refTag) = nav
-      else { return nil }
+    else { return nil }
     return (project, refTag)
   }
 
   public static func updateWithRequest(_ request: URLRequest) -> (Param, Int)? {
     guard let nav = Navigation.match(request), case let .project(project, .update(update, .root), _) = nav
-      else { return nil }
+    else { return nil }
     return (project, update)
   }
 
   public static func updateCommentsWithRequest(_ request: URLRequest) -> (Param, Int)? {
     guard let nav = Navigation.match(request), case let .project(project, .update(update, .comments), _) = nav
-      else { return nil }
+    else { return nil }
     return (project, update)
   }
+
   // swiftlint:enable conditional_binding_cascade
 }
 
@@ -319,7 +319,7 @@ extension Navigation.Project {
 // Argo calls their nebulous data blob `JSON`, but we will interpret it as route params.
 public typealias RouteParams = JSON
 
-private func emailClick(_ params: RouteParams) -> Decoded<Navigation> {
+private func emailClick(_: RouteParams) -> Decoded<Navigation> {
   return .success(Navigation.emailClick)
 }
 
@@ -343,7 +343,6 @@ private func paymentsNew(_ params: RouteParams) -> Decoded<Navigation> {
 }
 
 private func paymentsApplePay(_ params: RouteParams) -> Decoded<Navigation> {
-
   return curry(Navigation.checkout)
     <^> (params <| "checkout_param" >>- stringToInt)
     <*> (curry(Navigation.Checkout.payments)
@@ -365,12 +364,12 @@ private func paymentsUseStoredCard(_ params: RouteParams) -> Decoded<Navigation>
 
 private func discovery(_ params: RouteParams) -> Decoded<Navigation> {
   guard case let .object(object) = params
-    else { return .failure(.custom("Failed to extact discovery params")) }
+  else { return .failure(.custom("Failed to extact discovery params")) }
 
   var discoveryParams: [String: String] = [:]
   for (key, value) in object {
     guard case let .string(stringValue) = value
-      else { return .failure(.custom("Failed to extact discovery params")) }
+    else { return .failure(.custom("Failed to extact discovery params")) }
     discoveryParams[key] = stringValue
   }
 
@@ -442,7 +441,7 @@ private func creatorBio(_ params: RouteParams) -> Decoded<Navigation> {
 
 private func dashboard(_ params: RouteParams) -> Decoded<Navigation> {
   guard let dashboard = (Navigation.Tab.dashboard <^> params <|? "project_param").value
-    else { return .failure(.custom("Failed to extract project param")) }
+  else { return .failure(.custom("Failed to extract project param")) }
 
   return .success(.tab(dashboard))
 }
@@ -551,8 +550,8 @@ private func updates(_ params: RouteParams) -> Decoded<Navigation> {
 
 private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.user)
-  <^> params <| "user_param"
-  <*> (Navigation.User.survey <^> (params <| "survey_response_id" >>- stringToInt))
+    <^> params <| "user_param"
+    <*> (Navigation.User.survey <^> (params <| "survey_response_id" >>- stringToInt))
 }
 
 // MARK: Helpers
@@ -592,7 +591,7 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
 
   // if we're parsing against the '/' emailClick template and this is a recognized email host
   // return the expected params for that route to be resolved
-  if templateComponents.isEmpty && isRecognizedEmailHost {
+  if templateComponents.isEmpty, isRecognizedEmailHost {
     return .object([:])
   }
 
@@ -614,7 +613,7 @@ private func parsedParams(url: URL, fromTemplate template: String) -> RouteParam
     .queryItems?
     .forEach { item in
       params[item.name] = item.value
-  }
+    }
 
   var object: [String: RouteParams] = [:]
   params.forEach { key, value in

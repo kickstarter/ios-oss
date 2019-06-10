@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol MostPopularSearchProjectCellViewModelInputs {
   func configureWith(project: Project)
@@ -9,22 +8,22 @@ public protocol MostPopularSearchProjectCellViewModelInputs {
 
 public protocol MostPopularSearchProjectCellViewModelOutputs {
   /// Emits text for metadata label.
-  var metadataText: Signal<String, NoError> { get }
+  var metadataText: Signal<String, Never> { get }
 
   /// Emits the attributed string for the percent funded label.
-  var percentFundedText: Signal<NSAttributedString, NoError> { get }
+  var percentFundedText: Signal<NSAttributedString, Never> { get }
 
   /// Emits the project's funding progress amount to be displayed.
-  var progress: Signal<Float, NoError> { get }
+  var progress: Signal<Float, Never> { get }
 
   /// Emits a color for the progress bar.
-  var progressBarColor: Signal<UIColor, NoError> { get }
+  var progressBarColor: Signal<UIColor, Never> { get }
 
   /// Emits the project's photo URL to be displayed.
-  var projectImageUrl: Signal<URL?, NoError> { get }
+  var projectImageUrl: Signal<URL?, Never> { get }
 
   /// Emits project name to be displayed.
-  var projectName: Signal<NSAttributedString, NoError> { get }
+  var projectName: Signal<NSAttributedString, Never> { get }
 }
 
 public protocol MostPopularSearchProjectCellViewModelType {
@@ -33,8 +32,7 @@ public protocol MostPopularSearchProjectCellViewModelType {
 }
 
 public final class MostPopularSearchProjectCellViewModel: MostPopularSearchProjectCellViewModelType,
-MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewModelOutputs {
-
+  MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewModelOutputs {
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
@@ -44,7 +42,7 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
 
     self.progress = project.map { $0.stats.fundingProgress }
 
-    self.progressBarColor = project.map(progressBarColor(for:))
+    self.progressBarColor = project.map(progressBarColorForProject)
 
     self.percentFundedText = project.map(percentFundedString(for:))
 
@@ -56,12 +54,12 @@ MostPopularSearchProjectCellViewModelInputs, MostPopularSearchProjectCellViewMod
     self.projectProperty.value = project
   }
 
-  public let metadataText: Signal<String, NoError>
-  public let percentFundedText: Signal<NSAttributedString, NoError>
-  public let progress: Signal<Float, NoError>
-  public let progressBarColor: Signal<UIColor, NoError>
-  public let projectImageUrl: Signal<URL?, NoError>
-  public let projectName: Signal<NSAttributedString, NoError>
+  public let metadataText: Signal<String, Never>
+  public let percentFundedText: Signal<NSAttributedString, Never>
+  public let progress: Signal<Float, Never>
+  public let progressBarColor: Signal<UIColor, Never>
+  public let projectImageUrl: Signal<URL?, Never>
+  public let projectName: Signal<NSAttributedString, Never>
 
   public var inputs: MostPopularSearchProjectCellViewModelInputs { return self }
   public var outputs: MostPopularSearchProjectCellViewModelOutputs { return self }
@@ -85,16 +83,16 @@ private func percentFundedString(for project: Project) -> NSAttributedString {
     return NSAttributedString(string: percentage, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1().bolded,
       NSAttributedString.Key.foregroundColor: UIColor.ksr_text_green_700
-      ])
+    ])
   default:
     return NSAttributedString(string: percentage, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1().bolded,
       NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400
-      ])
+    ])
   }
 }
 
-private func progressBarColor(for project: Project) -> UIColor {
+private func progressBarColorForProject(_ project: Project) -> UIColor {
   switch project.state {
   case .live, .successful:
     return .ksr_green_500
@@ -109,12 +107,12 @@ private func titleString(for project: Project) -> NSAttributedString {
     return NSAttributedString(string: project.name, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1(size: 13),
       NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-      ])
+    ])
   default:
     return NSAttributedString(string: project.name, attributes: [
       NSAttributedString.Key.font: UIFont.ksr_caption1(size: 13),
       NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400
-      ])
+    ])
   }
 }
 

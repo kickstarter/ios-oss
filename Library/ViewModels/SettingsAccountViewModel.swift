@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol SettingsAccountViewModelInputs {
   func didSelectRow(cellType: SettingsAccountCellType)
@@ -11,9 +10,9 @@ public protocol SettingsAccountViewModelInputs {
 }
 
 public protocol SettingsAccountViewModelOutputs {
-  var fetchAccountFieldsError: Signal<Void, NoError> { get }
-  var reloadData: Signal<(Currency, Bool, Bool), NoError> { get }
-  var transitionToViewController: Signal<UIViewController, NoError> { get }
+  var fetchAccountFieldsError: Signal<Void, Never> { get }
+  var reloadData: Signal<(Currency, Bool, Bool), Never> { get }
+  var transitionToViewController: Signal<UIViewController, Never> { get }
   var userHasPasswordAndEmail: (Bool, String?) { get }
 }
 
@@ -23,15 +22,14 @@ public protocol SettingsAccountViewModelType {
 }
 
 public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
-SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
-
+  SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public init(_ viewControllerFactory: @escaping (SettingsAccountCellType, Currency) -> UIViewController?) {
     let userAccountFields = self.viewWillAppearProperty.signal
       .switchMap { _ in
-        return AppEnvironment.current.apiService
+        AppEnvironment.current.apiService
           .fetchGraphUserAccountFields(query: UserQueries.account.query)
           .materialize()
-    }
+      }
 
     self.fetchAccountFieldsError = userAccountFields.errors().ignoreValues()
 
@@ -39,11 +37,11 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
       .map { response -> Bool in
         guard let isEmailVerified = response.me.isEmailVerified,
           let isDeliverable = response.me.isDeliverable else {
-            return true
+          return true
         }
 
         return isEmailVerified && isDeliverable
-    }
+      }
 
     let shouldHideEmailPasswordSection = userAccountFields.values()
       .map { $0.me.hasPassword == .some(false) }
@@ -95,9 +93,9 @@ SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
     return self.userHasPasswordAndEmailProperty.value
   }
 
-  public let fetchAccountFieldsError: Signal<Void, NoError>
-  public let reloadData: Signal<(Currency, Bool, Bool), NoError>
-  public let transitionToViewController: Signal<UIViewController, NoError>
+  public let fetchAccountFieldsError: Signal<Void, Never>
+  public let reloadData: Signal<(Currency, Bool, Bool), Never>
+  public let transitionToViewController: Signal<UIViewController, Never>
 
   public var inputs: SettingsAccountViewModelInputs { return self }
   public var outputs: SettingsAccountViewModelOutputs { return self }

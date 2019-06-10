@@ -19,8 +19,8 @@ public struct FindFriendsEnvelope {
 extension FindFriendsEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope> {
     return curry(FindFriendsEnvelope.init)
-      <^> json <|   "contacts_imported"
-      <*> json <|   "urls"
+      <^> json <| "contacts_imported"
+      <*> json <| "urls"
       <*> (json <|| "users" <|> .success([]))
   }
 }

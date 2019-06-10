@@ -1,9 +1,6 @@
 import KsApi
-import LiveStream
 import Prelude
 import ReactiveSwift
-import Result
-
 public protocol ProjectPamphletViewModelInputs {
   /// Call when "Back this project" is tapped
   func backThisProjectTapped()
@@ -28,25 +25,24 @@ public protocol ProjectPamphletViewModelInputs {
 
 public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
-  var configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
-    RefTag?), NoError> { get }
+  var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen
-  var goToRewards: Signal<(Project, RefTag?), NoError> { get }
+  var goToRewards: Signal<(Project, RefTag?), Never> { get }
 
   /// Return this value from the view's `prefersStatusBarHidden` method.
   var prefersStatusBarHidden: Bool { get }
 
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
-  var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), NoError> { get }
+  var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
 
   /// Emits when the `setNeedsStatusBarAppearanceUpdate` method should be called on the view.
-  var setNeedsStatusBarAppearanceUpdate: Signal<(), NoError> { get }
+  var setNeedsStatusBarAppearanceUpdate: Signal<(), Never> { get }
 
   /// Emits a float to update topLayoutConstraints constant.
-  var topLayoutConstraintConstant: Signal<CGFloat, NoError> { get }
+  var topLayoutConstraintConstant: Signal<CGFloat, Never> { get }
 
-  var projectAndUser: Signal<(Project, User), NoError> { get }
+  var projectAndUser: Signal<(Project, User), Never> { get }
 }
 
 public protocol ProjectPamphletViewModelType {
@@ -55,40 +51,38 @@ public protocol ProjectPamphletViewModelType {
 }
 
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
-ProjectPamphletViewModelOutputs {
-
+  ProjectPamphletViewModelOutputs {
   public init() {
-
-    let freshProjectAndLiveStreamsAndRefTag = self.configDataProperty.signal.skipNil()
+    let freshProjectAndRefTag = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
         self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
       ))
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
-        fetchProjectAndLiveStreams(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
-          .map { project, liveStreams in
-            (project, liveStreams, refTag.map(cleanUp(refTag:)))
-        }
-    }
+        fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
+          .map { project in
+            (project, refTag.map(cleanUp(refTag:)))
+          }
+      }
 
     let user = viewDidLoadProperty.signal
       .map { AppEnvironment.current.currentUser }
       .skipNil()
 
-    self.goToRewards = freshProjectAndLiveStreamsAndRefTag
+    self.goToRewards = freshProjectAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
-      .map { project, _, refTag in
-        return (project, refTag)
-    }
+      .map { project, refTag in
+        (project, refTag)
+      }
 
     let project = freshProjectAndLiveStreamsAndRefTag
       .map { project, _, _ in project }
 
     self.projectAndUser = Signal.combineLatest(project, user)
 
-    self.configureChildViewControllersWithProjectAndLiveStreams = freshProjectAndLiveStreamsAndRefTag
-      .map { project, liveStreams, refTag in (project, liveStreams ?? [], refTag) }
+    self.configureChildViewControllersWithProject = freshProjectAndRefTag
+      .map { project, refTag in (project, refTag) }
 
     self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
@@ -104,29 +98,30 @@ ProjectPamphletViewModelOutputs {
 
     self.topLayoutConstraintConstant = self.initialTopConstraintProperty.signal.skipNil()
       .takePairWhen(self.willTransitionToCollectionProperty.signal.skipNil())
-      .map(topLayoutConstraintConstant(initialTopConstraint:traitCollection:))
+      .map(layoutConstraintConstant(initialTopConstraint:traitCollection:))
 
-    let cookieRefTag = freshProjectAndLiveStreamsAndRefTag
-      .map { project, _, refTag in
+    let cookieRefTag = freshProjectAndRefTag
+      .map { project, refTag in
         cookieRefTagFor(project: project) ?? refTag
       }
       .take(first: 1)
 
-    Signal.combineLatest(freshProjectAndLiveStreamsAndRefTag,
-                         cookieRefTag,
-                         self.viewDidAppearAnimated.signal.ignoreValues()
+    Signal.combineLatest(
+      freshProjectAndRefTag,
+      cookieRefTag,
+      self.viewDidAppearAnimated.signal.ignoreValues()
+    )
+    .map { (project: $0.0, refTag: $0.1, cookieRefTag: $1, _: $2) }
+    .take(first: 1)
+    .observeValues { project, refTag, cookieRefTag, _ in
+      AppEnvironment.current.koala.trackProjectShow(
+        project,
+        refTag: refTag,
+        cookieRefTag: cookieRefTag
       )
-      .map { (project: $0.0, liveStreamEvents: $0.1, refTag: $0.2, cookieRefTag: $1, _: $2) }
-      .filter { _, liveStreamEvents, _, _, _ in liveStreamEvents != nil }
-      .take(first: 1)
-      .observeValues { project, liveStreamEvents, refTag, cookieRefTag, _ in
-        AppEnvironment.current.koala.trackProjectShow(project,
-                                                      liveStreamEvents: liveStreamEvents,
-                                                      refTag: refTag,
-                                                      cookieRefTag: cookieRefTag)
     }
 
-    Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndLiveStreamsAndRefTag.map(first))
+    Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
       .take(first: 1)
       .map(cookieFrom(refTag:project:))
       .skipNil()
@@ -169,17 +164,16 @@ ProjectPamphletViewModelOutputs {
     self.willTransitionToCollectionProperty.value = collection
   }
 
-  public let configureChildViewControllersWithProjectAndLiveStreams: Signal<(Project, [LiveStreamEvent],
-    RefTag?), NoError>
+  public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
   public var prefersStatusBarHidden: Bool {
     return self.prefersStatusBarHiddenProperty.value
   }
 
-  public let goToRewards: Signal<(Project, RefTag?), NoError>
-  public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), NoError>
-  public let setNeedsStatusBarAppearanceUpdate: Signal<(), NoError>
-  public let topLayoutConstraintConstant: Signal<CGFloat, NoError>
+  public let goToRewards: Signal<(Project, RefTag?), Never>
+  public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
+  public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
+  public let topLayoutConstraintConstant: Signal<CGFloat, Never>
 
   public let projectAndUser: Signal<(Project, User), NoError>
 
@@ -190,18 +184,19 @@ ProjectPamphletViewModelOutputs {
 private let cookieSeparator = "?"
 private let escapedCookieSeparator = "%3F"
 
-private func topLayoutConstraintConstant(initialTopConstraint: CGFloat,
-                                         traitCollection: UITraitCollection) -> CGFloat {
+private func layoutConstraintConstant(
+  initialTopConstraint: CGFloat,
+  traitCollection: UITraitCollection
+) -> CGFloat {
   guard !traitCollection.isRegularRegular else {
     return 0.0
   }
-   return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
+  return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
 }
 
 // Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
 // been previously set.
 private func cookieRefTagFor(project: Project) -> RefTag? {
-
   return AppEnvironment.current.cookieStorage.cookies?
     .filter { cookie in cookie.name == cookieName(project) }
     .first
@@ -217,7 +212,6 @@ private func cookieName(_ project: Project) -> String {
 // Tries to extract the name of the ref tag from a cookie. It has to do double work in case the cookie
 // is accidentally encoded with a `%3F` instead of a `?`.
 private func refTagName(fromCookie cookie: HTTPCookie) -> String {
-
   return cleanUp(refTagString: cookie.value)
 }
 
@@ -228,7 +222,6 @@ private func cleanUp(refTag: RefTag) -> RefTag {
 
 // Tries to remove cruft from a ref tag string.
 private func cleanUp(refTagString: String) -> String {
-
   let secondPass = refTagString.components(separatedBy: escapedCookieSeparator)
   if let name = secondPass.first, secondPass.count == 2 {
     return String(name)
@@ -244,14 +237,13 @@ private func cleanUp(refTagString: String) -> String {
 
 // Constructs a cookie from a ref tag and project.
 private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
-
   let timestamp = Int(AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970)
 
   var properties: [HTTPCookiePropertyKey: Any] = [:]
-  properties[.name]    = cookieName(project)
-  properties[.value]   = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
-  properties[.domain]  = URL(string: project.urls.web.project)?.host
-  properties[.path]    = URL(string: project.urls.web.project)?.path
+  properties[.name] = cookieName(project)
+  properties[.value] = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
+  properties[.domain] = URL(string: project.urls.web.project)?.host
+  properties[.path] = URL(string: project.urls.web.project)?.path
   properties[.version] = 0
   properties[.expires] = AppEnvironment.current.dateType
     .init(timeIntervalSince1970: project.dates.deadline).date
@@ -259,28 +251,17 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
   return HTTPCookie(properties: properties)
 }
 
-private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
-  -> SignalProducer<(Project, [LiveStreamEvent]?), NoError> {
+private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
+  -> SignalProducer<Project, Never> {
+  let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
 
-    let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
+  let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    .demoteErrors()
 
-    let projectAndLiveStreams = AppEnvironment.current.apiService.fetchProject(param: param)
-      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-      .demoteErrors()
-      .flatMap { project -> SignalProducer<(Project, [LiveStreamEvent]?), NoError> in
+  if let project = projectOrParam.left, shouldPrefix {
+    return projectProducer.prefix(value: project)
+  }
 
-        AppEnvironment.current.liveStreamService
-          .fetchEvents(forProjectId: project.id, uid: AppEnvironment.current.currentUser?.id)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .flatMapError { _ in SignalProducer(error: SomeError()) }
-          .timeout(after: 5, raising: SomeError(), on: AppEnvironment.current.scheduler)
-          .materialize()
-          .map { (project, .some($0.value?.liveStreamEvents ?? [])) }
-          .take(first: 1)
-    }
-
-    if let project = projectOrParam.left, shouldPrefix {
-      return projectAndLiveStreams.prefix(value: (project, nil))
-    }
-    return projectAndLiveStreams
+  return projectProducer
 }

@@ -14,6 +14,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var stepper: UIStepper = { UIStepper(frame: .zero) }()
 
   // MARK: - Lifecycle
@@ -37,7 +38,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -55,6 +56,8 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       )
 
     _ = self.titleLabel
+      |> checkoutBackgroundStyle
+    _ = self.titleLabel
       |> checkoutTitleLabelStyle
       |> \.text %~ { _ in Strings.Your_pledge_amount() }
 
@@ -67,11 +70,15 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  func configureWith(value: (amount: Double, currency: String)) {
+  func configureWith(value: PledgeDataSource.PledgeInputRow) {
+    guard case let .pledgeAmount(amount, currencySymbol) = value else {
+      return
+    }
+
     self.amountInputView.configureWith(
-      amount: String(format: "%i", value.amount),
+      amount: String(format: "%i", amount),
       placeholder: "\(0)",
-      currency: value.currency
+      currency: currencySymbol
     )
   }
 }

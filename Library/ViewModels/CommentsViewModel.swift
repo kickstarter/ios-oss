@@ -1,8 +1,7 @@
-import ReactiveSwift
-import ReactiveExtensions
-import Result
 import KsApi
 import Prelude
+import ReactiveExtensions
+import ReactiveSwift
 
 public protocol CommentsViewModelInputs {
   /// Call when the comment button is pressed.
@@ -33,22 +32,22 @@ public protocol CommentsViewModelInputs {
 
 public protocol CommentsViewModelOutputs {
   /// Emits a list of comments that should be displayed.
-  var dataSource: Signal<([Comment], Project, Update?, User?, Bool), NoError> { get }
+  var dataSource: Signal<([Comment], Project, Update?, User?, Bool), Never> { get }
 
   /// Emits a boolean that determines if the comment bar button is visible.
-  var commentBarButtonVisible: Signal<Bool, NoError> { get }
+  var commentBarButtonVisible: Signal<Bool, Never> { get }
 
   /// Emits a project and optional update when the comment dialog should be presented.
-  var presentPostCommentDialog: Signal<(Project, Update?), NoError> { get }
+  var presentPostCommentDialog: Signal<(Project, Update?), Never> { get }
 
   /// Emits when the login tout should be opened.
-  var openLoginTout: Signal<(), NoError> { get }
+  var openLoginTout: Signal<(), Never> { get }
 
   /// Emits when the login tout should be closed.
-  var closeLoginTout: Signal<(), NoError> { get }
+  var closeLoginTout: Signal<(), Never> { get }
 
   /// Emits a boolean that determines if comments are currently loading.
-  var commentsAreLoading: Signal<Bool, NoError> { get }
+  var commentsAreLoading: Signal<Bool, Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -57,26 +56,27 @@ public protocol CommentsViewModelType {
 }
 
 public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelInputs,
-CommentsViewModelOutputs {
-
-    public init() {
+  CommentsViewModelOutputs {
+  public init() {
     let projectOrUpdate = Signal.combineLatest(
       self.projectAndUpdateProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-      )
-      .map(first)
-      .flatMap { project, update in
-        return SignalProducer(value: project.map(Either.left) ?? update.map(Either.right))
-          .skipNil()
+    )
+    .map(first)
+    .flatMap { project, update in
+      SignalProducer(value: project.map(Either.left) ?? update.map(Either.right))
+        .skipNil()
     }
 
     let initialProject = projectOrUpdate
       .flatMap { projectOrUpdate in
-        projectOrUpdate.ifLeft(SignalProducer.init(value:),
+        projectOrUpdate.ifLeft(
+          SignalProducer.init(value:),
           ifRight: {
             AppEnvironment.current.apiService.fetchProject(param: .id($0.projectId)).demoteErrors()
-        })
-    }
+          }
+        )
+      }
 
     let refreshedProjectOnLogin = initialProject
       .takeWhen(self.userSessionStartedProperty.signal)
@@ -94,8 +94,8 @@ CommentsViewModelOutputs {
     let user = Signal.merge(
       self.viewDidLoadProperty.signal,
       self.userSessionStartedProperty.signal
-      )
-      .map { AppEnvironment.current.currentUser }
+    )
+    .map { AppEnvironment.current.currentUser }
 
     let requestFirstPageWith = Signal.merge(
       projectOrUpdate,
@@ -110,10 +110,13 @@ CommentsViewModelOutputs {
       valuesFromEnvelope: { $0.comments },
       cursorFromEnvelope: { $0.urls.api.moreComments },
       requestFromParams: { updateOrProject in
-        updateOrProject.ifLeft(AppEnvironment.current.apiService.fetchComments(project:),
-          ifRight: AppEnvironment.current.apiService.fetchComments(update:))
+        updateOrProject.ifLeft(
+          AppEnvironment.current.apiService.fetchComments(project:),
+          ifRight: AppEnvironment.current.apiService.fetchComments(update:)
+        )
       },
-      requestFromCursor: { AppEnvironment.current.apiService.fetchComments(paginationUrl: $0) })
+      requestFromCursor: { AppEnvironment.current.apiService.fetchComments(paginationUrl: $0) }
+    )
 
     self.commentsAreLoading = isLoading
 
@@ -133,8 +136,8 @@ CommentsViewModelOutputs {
     self.commentBarButtonVisible = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
       userCanComment
-      )
-      .skipRepeats()
+    )
+    .skipRepeats()
 
     self.presentPostCommentDialog = Signal.combineLatest(project, update)
       .takeWhen(
@@ -151,7 +154,7 @@ CommentsViewModelOutputs {
         AppEnvironment.current.koala.trackCommentsView(
           project: project, update: update, context: update == nil ? .project : .update
         )
-    }
+      }
 
     Signal.combineLatest(project, update)
       .takeWhen(pageCount.skip(first: 1).filter { $0 == 1 })
@@ -159,7 +162,7 @@ CommentsViewModelOutputs {
         AppEnvironment.current.koala.trackLoadNewerComments(
           project: project, update: update, context: update == nil ? .project : .update
         )
-    }
+      }
 
     Signal.combineLatest(project, update)
       .takePairWhen(pageCount.skip(first: 1).filter { $0 > 1 })
@@ -168,7 +171,7 @@ CommentsViewModelOutputs {
         AppEnvironment.current.koala.trackLoadOlderComments(
           project: project, update: update, page: pageCount, context: update == nil ? .project : .update
         )
-    }
+      }
   }
 
   fileprivate let commentButtonPressedProperty = MutableProperty(())
@@ -211,12 +214,12 @@ CommentsViewModelOutputs {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let closeLoginTout: Signal<(), NoError>
-  public let commentBarButtonVisible: Signal<Bool, NoError>
-  public let commentsAreLoading: Signal<Bool, NoError>
-  public let dataSource: Signal<([Comment], Project, Update?, User?, Bool), NoError>
-  public let openLoginTout: Signal<(), NoError>
-  public let presentPostCommentDialog: Signal<(Project, Update?), NoError>
+  public let closeLoginTout: Signal<(), Never>
+  public let commentBarButtonVisible: Signal<Bool, Never>
+  public let commentsAreLoading: Signal<Bool, Never>
+  public let dataSource: Signal<([Comment], Project, Update?, User?, Bool), Never>
+  public let openLoginTout: Signal<(), Never>
+  public let presentPostCommentDialog: Signal<(Project, Update?), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }

@@ -1,13 +1,13 @@
 import Prelude
 
-/// Graph Response
+// MARK: - Graph Response
 
 public struct GraphResponse<T: Decodable>: Decodable {
   let data: T?
   let errors: [GraphResponseError]?
 }
 
-/// Base Query Types
+// MARK: - Base Query Types
 
 extension Never: CustomStringConvertible {
   public var description: String {
@@ -16,12 +16,6 @@ extension Never: CustomStringConvertible {
 }
 
 public protocol QueryType: CustomStringConvertible, Hashable {}
-
-extension QueryType {
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine(self.description)
-  }
-}
 
 public enum Connection<Q: QueryType> {
   case pageInfo(NonEmptySet<PageInfo>)
@@ -36,10 +30,10 @@ public func == <Q: QueryType>(lhs: Q, rhs: Q) -> Bool {
 
 public func join<S: Sequence>(_ args: S, _ separator: String = " ") -> String
   where S.Iterator.Element: QueryType {
-    return args.map { $0.description }.sorted().joined(separator: separator)
+  return args.map { $0.description }.sorted().joined(separator: separator)
 }
 
-public func join<Q: QueryType>(_ nodes: NonEmptySet<Q>, _ separator: String = " ") -> String {
+public func join<Q: QueryType>(_ nodes: NonEmptySet<Q>, _: String = " ") -> String {
   return join(Array(nodes))
 }
 
@@ -49,12 +43,11 @@ public func decodeBase64(_ input: String) -> String? {
 }
 
 public func decompose(id: String) -> Int? {
-
   return decodeBase64(id)
     .flatMap { id -> Int? in
       let pair = id.split(separator: "-", maxSplits: 1)
       return pair.last.flatMap { Int($0) }
-  }
+    }
 }
 
 public struct RelayId: Swift.Decodable {
@@ -65,9 +58,11 @@ extension RelayId: ExpressibleByStringLiteral {
   public init(unicodeScalarLiteral value: String) {
     self.init(id: value)
   }
+
   public init(extendedGraphemeClusterLiteral value: String) {
     self.init(id: value)
   }
+
   public init(stringLiteral value: String) {
     self.init(id: value)
   }
@@ -116,7 +111,6 @@ public enum GraphError: Error {
 }
 
 public enum Query {
-
   case category(id: String, NonEmptySet<Category>)
   case project(slug: String, NonEmptySet<Project>)
   case rootCategories(NonEmptySet<Category>)
@@ -213,7 +207,6 @@ public enum Query {
     case isEmailVerified
     case isFollowing
     case isSocializing
-    case ksrLiveAuthToken
     case location(NonEmptySet<Location>)
     case membershipProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case name
@@ -289,7 +282,7 @@ extension EdgesContainerBody: QueryType {
 extension Edges: QueryType {
   public var description: String {
     switch self {
-    case .cursor:           return "cursor"
+    case .cursor: return "cursor"
     case let .node(fields): return "node { \(join(fields)) }"
     }
   }
@@ -321,15 +314,15 @@ extension PageInfo: QueryType {
 extension Connection: QueryType {
   public var description: String {
     switch self {
-    case let .nodes(fields):      return "nodes { \(join(fields)) }"
+    case let .nodes(fields): return "nodes { \(join(fields)) }"
     case let .pageInfo(pageInfo): return "pageInfo { \(join(pageInfo)) }"
-    case let .edges(fields):      return "edges { \(join(fields)) }"
-    case .totalCount:             return "totalCount"
+    case let .edges(fields): return "edges { \(join(fields)) }"
+    case .totalCount: return "totalCount"
     }
   }
 }
 
-/// Category
+// MARK: - Category
 
 extension Query.Category: QueryType {
   public var description: String {
@@ -355,68 +348,67 @@ extension Query.Category.ProjectsConnection.Argument: CustomStringConvertible {
   }
 }
 
-/// Project
+// MARK: - Project
 
 extension Query.Project: QueryType {
   public var description: String {
     switch self {
-    case .id:                        return "id"
-    case .slug:                      return "slug"
+    case .id: return "id"
+    case .slug: return "slug"
     case let .updates(args, fields): return "updates\(connection(args, fields))"
     }
   }
 }
 
-/// Update
+// MARK: - Update
 
 extension Query.Project.Update: QueryType {
   public var description: String {
     switch self {
     case let .author(fields): return "author { \(join(fields)) }"
-    case .id:                 return "id"
-    case .publishedAt:        return "publishedAt"
-    case .title:              return "title"
+    case .id: return "id"
+    case .publishedAt: return "publishedAt"
+    case .title: return "title"
     }
   }
 }
 
-// MARK: User
+// MARK: - User
 
 extension Query.User: QueryType {
   public var description: String {
     switch self {
-    case .biography:                            return "biography"
-    case let .backedProjects(args, fields):     return "backedProjects\(connection(args, fields))"
-    case let .conversations(args, fields):      return "conversations\(connection(args, fields))"
-    case .chosenCurrency:                       return "chosenCurrency"
-    case let .createdProjects(args, fields):    return "createdProjects\(connection(args, fields))"
-    case .drop:                                 return "drop"
-    case .email:                                return "email"
-    case let .followers(args, fields):          return "followers\(connection(args, fields))"
-    case let .following(args, fields):          return "following\(connection(args, fields))"
-    case .hasPassword:                          return "hasPassword"
-    case .hasUnreadMessages:                    return "hasUnreadMessages"
-    case .id:                                   return "id"
-    case let .image(alias, width):              return "\(alias): imageUrl(width: \(width))"
-    case let .imageUrl(alias, blur, width):     return "\(alias): imageUrl(blur: \(blur), width: \(width))"
-    case .isEmailDeliverable:                   return "isDeliverable"
-    case .isEmailVerified:                      return "isEmailVerified"
-    case .isFollowing:                          return "isFollowing"
-    case .isSocializing:                        return "isSocializing"
-    case .ksrLiveAuthToken:                     return "ksrLiveAuthToken"
-    case let .location(fields):                 return "location { \(join(fields)) }"
+    case .biography: return "biography"
+    case let .backedProjects(args, fields): return "backedProjects\(connection(args, fields))"
+    case let .conversations(args, fields): return "conversations\(connection(args, fields))"
+    case .chosenCurrency: return "chosenCurrency"
+    case let .createdProjects(args, fields): return "createdProjects\(connection(args, fields))"
+    case .drop: return "drop"
+    case .email: return "email"
+    case let .followers(args, fields): return "followers\(connection(args, fields))"
+    case let .following(args, fields): return "following\(connection(args, fields))"
+    case .hasPassword: return "hasPassword"
+    case .hasUnreadMessages: return "hasUnreadMessages"
+    case .id: return "id"
+    case let .image(alias, width): return "\(alias): imageUrl(width: \(width))"
+    case let .imageUrl(alias, blur, width): return "\(alias): imageUrl(blur: \(blur), width: \(width))"
+    case .isEmailDeliverable: return "isDeliverable"
+    case .isEmailVerified: return "isEmailVerified"
+    case .isFollowing: return "isFollowing"
+    case .isSocializing: return "isSocializing"
+    case let .location(fields): return "location { \(join(fields)) }"
     case let .membershipProjects(args, fields): return "membershipProjects\(connection(args, fields))"
-    case .name:                                 return "name"
-    case .needsFreshFacebookToken:              return "needsFreshFacebookToken"
-    case let .newletterSubscriptions(fields):   return "newslettersSubscriptions { \(join(fields)) }"
-    case let .notifications(fields):            return "notifications { \(join(fields)) }"
-    case .optedOutOfRecommendations:            return "optedOutOfRecommendations"
-    case let .savedProjects(args, fields):      return "savedProjects\(connection(args, fields))"
-    case .showPublicProfile:                    return "showPublicProfile"
-    case let .storedCards(args, fields):        return "storedCards\(connection(args, fields))"
-    case .slug:                                 return "slug"
-    case .url:                                  return "url"
-    case .userId:                               return "uid"
+    case .name: return "name"
+    case .needsFreshFacebookToken: return "needsFreshFacebookToken"
+    case let .newletterSubscriptions(fields): return "newslettersSubscriptions { \(join(fields)) }"
+    case let .notifications(fields): return "notifications { \(join(fields)) }"
+    case .optedOutOfRecommendations: return "optedOutOfRecommendations"
+    case let .savedProjects(args, fields): return "savedProjects\(connection(args, fields))"
+    case .showPublicProfile: return "showPublicProfile"
+    case let .storedCards(args, fields): return "storedCards\(connection(args, fields))"
+    case .slug: return "slug"
+    case .url: return "url"
+    case .userId: return "uid"
     }
   }
 }
@@ -427,21 +419,23 @@ extension Query.User.CreditCard: QueryType {
   }
 }
 
-// MARK: NewsletterSubscriptions
+// MARK: - NewsletterSubscriptions
+
 extension Query.NewsletterSubscriptions: QueryType {
   public var description: String {
     return self.rawValue
   }
 }
 
-// MARK: Notifications
+// MARK: - Notifications
+
 extension Query.Notifications: QueryType {
   public var description: String {
     return self.rawValue
   }
 }
 
-/// Location
+// MARK: - Location
 
 extension Query.Location: QueryType {
   public var description: String {
@@ -452,13 +446,13 @@ extension Query.Location: QueryType {
 extension Query.Amount: QueryType {
   public var description: String {
     switch self {
-    case .amount:   return "amount"
+    case .amount: return "amount"
     case .currency: return "currency"
     }
   }
 }
 
-/// Conversation
+// MARK: - Conversation
 
 extension Query.Conversation: QueryType {
   public var description: String {
@@ -468,7 +462,7 @@ extension Query.Conversation: QueryType {
   }
 }
 
-/// Helpers
+// MARK: - Helpers
 
 private func connection<T, U>(_ args: Set<QueryArg<T>>, _ fields: NonEmptySet<Connection<U>>) -> String {
   return "\(_args(args)) { \(join(fields)) }"
@@ -476,4 +470,42 @@ private func connection<T, U>(_ args: Set<QueryArg<T>>, _ fields: NonEmptySet<Co
 
 private func _args<T>(_ args: Set<QueryArg<T>>) -> String {
   return !args.isEmpty ? "(\(join(args)))" : ""
+}
+
+// MARK: - Hashable
+
+extension QueryType {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension Query.User.CreditCard {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension Query.Location {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension Query.NewsletterSubscriptions {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension PageInfo {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension Query.Notifications {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
 }

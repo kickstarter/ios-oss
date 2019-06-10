@@ -1,5 +1,5 @@
-import UIKit
 import class Foundation.NSCoder
+import UIKit
 
 public final class CircleAvatarImageView: UIImageView {
   public override func layoutSubviews() {

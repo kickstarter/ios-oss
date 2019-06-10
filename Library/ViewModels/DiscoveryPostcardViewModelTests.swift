@@ -1,42 +1,41 @@
-import Prelude
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 /* swiftlint:disable force_unwrapping */
 internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let vm = DiscoveryPostcardViewModel()
-  internal let backersTitleLabelText = TestObserver<String, NoError>()
-  internal let cellAccessibilityLabel = TestObserver<String, NoError>()
-  internal let cellAccessibilityValue = TestObserver<String, NoError>()
-  internal let deadlineSubtitleLabelText = TestObserver<String, NoError>()
-  internal let deadlineTitleLabelText = TestObserver<String, NoError>()
-  internal let fundingProgressBarViewHidden = TestObserver<Bool, NoError>()
-  internal let fundingProgressContainerViewHidden = TestObserver<Bool, NoError>()
-  internal let metadataIcon = TestObserver<UIImage?, NoError>()
-  internal let metadataIconTintColor = TestObserver<UIColor, NoError>()
-  internal let metadataTextColor = TestObserver<UIColor, NoError>()
-  internal let metadataLabelText = TestObserver<String, NoError>()
-  internal let metadataViewHidden = TestObserver<Bool, NoError>()
-  internal let percentFundedTitleLabelText = TestObserver<String, NoError>()
-  internal let progressPercentage = TestObserver<Float, NoError>()
-  internal let projectImageURL = TestObserver<String?, NoError>()
-  internal let projectNameAndBlurbLabelText = TestObserver<String, NoError>()
-  internal let projectStateIconHidden = TestObserver<Bool, NoError>()
-  internal let projectStateStackViewHidden = TestObserver<Bool, NoError>()
-  internal let projectStateSubtitleLabelText = TestObserver<String, NoError>()
-  internal let projectStateTitleLabelColor = TestObserver<UIColor, NoError>()
-  internal let projectStateTitleLabelText = TestObserver<String, NoError>()
-  internal let projectStatsStackViewHidden = TestObserver<Bool, NoError>()
-  internal let socialImageURL = TestObserver<String?, NoError>()
-  internal let socialLabelText = TestObserver<String, NoError>()
-  internal let socialStackViewHidden = TestObserver<Bool, NoError>()
-  internal let projectCategoryName = TestObserver<String, NoError>()
-  internal let projectCategoryViewHidden = TestObserver<Bool, NoError>()
-  internal let projectCategoryStackViewHidden = TestObserver<Bool, NoError>()
-  internal let projectIsStaffPickViewHidden = TestObserver<Bool, NoError>()
+  internal let backersTitleLabelText = TestObserver<String, Never>()
+  internal let cellAccessibilityLabel = TestObserver<String, Never>()
+  internal let cellAccessibilityValue = TestObserver<String, Never>()
+  internal let deadlineSubtitleLabelText = TestObserver<String, Never>()
+  internal let deadlineTitleLabelText = TestObserver<String, Never>()
+  internal let fundingProgressBarViewHidden = TestObserver<Bool, Never>()
+  internal let fundingProgressContainerViewHidden = TestObserver<Bool, Never>()
+  internal let metadataIcon = TestObserver<UIImage?, Never>()
+  internal let metadataIconTintColor = TestObserver<UIColor, Never>()
+  internal let metadataTextColor = TestObserver<UIColor, Never>()
+  internal let metadataLabelText = TestObserver<String, Never>()
+  internal let metadataViewHidden = TestObserver<Bool, Never>()
+  internal let percentFundedTitleLabelText = TestObserver<String, Never>()
+  internal let progressPercentage = TestObserver<Float, Never>()
+  internal let projectImageURL = TestObserver<String?, Never>()
+  internal let projectNameAndBlurbLabelText = TestObserver<String, Never>()
+  internal let projectStateIconHidden = TestObserver<Bool, Never>()
+  internal let projectStateStackViewHidden = TestObserver<Bool, Never>()
+  internal let projectStateSubtitleLabelText = TestObserver<String, Never>()
+  internal let projectStateTitleLabelColor = TestObserver<UIColor, Never>()
+  internal let projectStateTitleLabelText = TestObserver<String, Never>()
+  internal let projectStatsStackViewHidden = TestObserver<Bool, Never>()
+  internal let socialImageURL = TestObserver<String?, Never>()
+  internal let socialLabelText = TestObserver<String, Never>()
+  internal let socialStackViewHidden = TestObserver<Bool, Never>()
+  internal let projectCategoryName = TestObserver<String, Never>()
+  internal let projectCategoryViewHidden = TestObserver<Bool, Never>()
+  internal let projectCategoryStackViewHidden = TestObserver<Bool, Never>()
+  internal let projectIsStaffPickViewHidden = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -102,8 +101,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
 
     let featuredProject = .template
-      |> Project.lens.category.parent .~ ParentCategory(id: Category.art.id,
-                                                        name: Category.art.name)
+      |> Project.lens.category.parent .~ ParentCategory(
+        id: Category.art.id,
+        name: Category.art.name
+      )
       |> Project.lens.dates.featuredAt .~ featuredAt
 
     let backedColor: UIColor = .ksr_green_700
@@ -129,8 +130,9 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
 
       self.metadataLabelText.assertValues(
         [
-          Strings.discovery_baseball_card_metadata_backer(),
-        ], "Starred metadata takes precedence.")
+          Strings.discovery_baseball_card_metadata_backer()
+        ], "Starred metadata takes precedence."
+      )
 
       self.metadataViewHidden.assertValues([true, false])
       self.metadataIcon.assertValues([backedImage])
@@ -144,7 +146,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
           Strings.discovery_baseball_card_metadata_featured_project(
             category_name: featuredProject.category.name
           )
-        ], "Featured metadata emits.")
+        ], "Featured metadata emits."
+      )
 
       self.metadataViewHidden.assertValues([true, false, false])
       self.metadataIcon.assertValues([backedImage, featuredImage])
@@ -154,7 +157,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       AppEnvironment.logout()
 
       // Implement when updating DiscoveryPageVC logout behavior.
-       self.metadataViewHidden.assertValues([true, false, false])
+      self.metadataViewHidden.assertValues([true, false, false])
     }
   }
 
@@ -234,32 +237,44 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: projectOneFriend, category: nil)
     self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium])
     self.socialLabelText.assertValues(
-      [ "", "", Strings.project_social_friend_is_backer(friend_name: oneFriend[0].name) ]
+      ["", "", Strings.project_social_friend_is_backer(friend_name: oneFriend[0].name)]
     )
     self.socialStackViewHidden.assertValues([true, false])
 
     self.vm.inputs.configureWith(project: projectTwoFriends, category: nil)
-    self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium],
-                                     "First friend's avatar emits.")
+    self.socialImageURL.assertValues(
+      [nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium],
+      "First friend's avatar emits."
+    )
     self.socialLabelText.assertValues(
-      [ "", "",
+      [
+        "", "",
         Strings.project_social_friend_is_backer(friend_name: oneFriend.first?.name ?? ""),
-        Strings.project_social_friend_and_friend_are_backers(friend_name: twoFriends[0].name,
-          second_friend_name: twoFriends[1].name)
+        Strings.project_social_friend_and_friend_are_backers(
+          friend_name: twoFriends[0].name,
+          second_friend_name: twoFriends[1].name
+        )
       ]
     )
     self.socialStackViewHidden.assertValues([true, false])
 
     self.vm.inputs.configureWith(project: projectManyFriends, category: nil)
-    self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium,
-      manyFriends[0].avatar.medium], "First friend's avatar emits.")
+    self.socialImageURL.assertValues([
+      nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium,
+      manyFriends[0].avatar.medium
+    ], "First friend's avatar emits.")
     self.socialLabelText.assertValues(
-      [ "", "",
+      [
+        "", "",
         Strings.project_social_friend_is_backer(friend_name: oneFriend.first?.name ?? ""),
-        Strings.project_social_friend_and_friend_are_backers(friend_name: twoFriends[0].name,
-          second_friend_name: twoFriends[1].name),
-        Strings.discovery_baseball_card_social_friends_are_backers(friend_name: manyFriends[0].name,
-          second_friend_name: manyFriends[1].name, remaining_count: manyFriends.count - 2)
+        Strings.project_social_friend_and_friend_are_backers(
+          friend_name: twoFriends[0].name,
+          second_friend_name: twoFriends[1].name
+        ),
+        Strings.discovery_baseball_card_social_friends_are_backers(
+          friend_name: manyFriends[0].name,
+          second_friend_name: manyFriends[1].name, remaining_count: manyFriends.count - 2
+        )
       ]
     )
     self.socialStackViewHidden.assertValues([true, false])
@@ -285,8 +300,10 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: canceled, category: nil)
     self.projectStateIconHidden.assertValues([true, true])
     self.projectStateSubtitleLabelText.assertValueCount(2)
-    self.projectStateTitleLabelText.assertValues(["",
-      Strings.Project_cancelled()])
+    self.projectStateTitleLabelText.assertValues([
+      "",
+      Strings.Project_cancelled()
+    ])
     self.projectStateTitleLabelColor.assertValues([navyColor])
     self.projectStateStackViewHidden.assertValues([true, false])
     self.projectStatsStackViewHidden.assertValues([false, true])
@@ -346,6 +363,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   }
 
   // MARK: Project Category View
+
   func testShowsCategoryLabels_ParentCategorySelected() {
     let staffPickProject = Project.template
       |> Project.lens.staffPick .~ true
