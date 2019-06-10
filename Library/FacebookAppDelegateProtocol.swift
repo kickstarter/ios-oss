@@ -30,7 +30,8 @@ internal final class MockFacebookAppDelegate: FacebookAppDelegateProtocol {
   }
 
   internal func application(
-    _: UIApplication, open _: URL,
+    _: UIApplication,
+    open _: URL,
     sourceApplication _: String?,
     annotation _: Any?
   ) -> Bool {

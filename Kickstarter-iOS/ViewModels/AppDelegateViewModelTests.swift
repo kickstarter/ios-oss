@@ -443,7 +443,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchUserSelfError: error), currentUser: .template) {
       self.forceLogout.assertValueCount(0)
 
-      vm.inputs.applicationDidFinishLaunching(
+      self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
       )

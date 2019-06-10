@@ -215,18 +215,20 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.applicationLaunchOptionsProperty.signal.skipNil()
       .take(first: 1)
       .observeValues { appOptions in
-        guard let application = appOptions.application else { return }
         _ = AppEnvironment.current.facebookAppDelegate.application(
-          application,
+          appOptions.application ?? UIApplication.shared,
           didFinishLaunchingWithOptions: appOptions.options
         )
       }
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
 
-    self.facebookOpenURLReturnValue <~ openUrl.filter { $0.application != nil }.map {
+    self.facebookOpenURLReturnValue <~ openUrl.map {
       AppEnvironment.current.facebookAppDelegate.application(
-        $0.application!, open: $0.url, sourceApplication: $0.sourceApplication, annotation: $0.annotation
+        $0.application ?? UIApplication.shared,
+        open: $0.url,
+        sourceApplication: $0.sourceApplication,
+        annotation: $0.annotation
       )
     }
 
