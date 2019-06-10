@@ -79,4 +79,3 @@ internal final class ProjectStatesContainerViewViewModelTests: TestCase {
     self.stackViewIsHidden.assertValues([true])
   }
 }
-

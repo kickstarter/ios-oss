@@ -284,5 +284,3 @@ private func fetchProjectAndLiveStreams(projectOrParam: Either<Project, Param>, 
     }
     return projectAndLiveStreams
 }
-
-

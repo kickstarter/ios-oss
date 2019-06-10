@@ -48,7 +48,8 @@ public final class ProjectStatesContainerViewViewModel: ProjectStatesContainerVi
       .map { (arg) -> String in
 
         let (project, backing) = arg
-        let amount = Format.currency(Int(ceil(Float(backing.amount) * (project.stats.currentCurrencyRate ?? project.stats.staticUsdRate))),
+        let amount = Format.currency(Int(ceil(Float(backing.amount) *
+          (project.stats.currentCurrencyRate ?? project.stats.staticUsdRate))),
                                      country: project.stats.currentCountry ?? .us,
                                      omitCurrencyCode: project.stats.omitUSCurrencyCode)
 
