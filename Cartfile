@@ -7,6 +7,7 @@ github "kickstarter/Kickstarter-ReactiveExtensions" "665b5cd4941e54e5d120b80218f
 
 github "Alamofire/AlamofireImage" "c41f8b0acfbb3180fe045df73596e4332c338633"
 github "AgileBits/onepassword-extension" == 1.8.4
+github "facebook/facebook-objc-sdk" == 5.0.2
 github "ReactiveCocoa/ReactiveSwift" == 6.0.0
 github "stripe/stripe-ios" == 13.2.0
 github "uber/ios-snapshot-test-case" == 4.0.0

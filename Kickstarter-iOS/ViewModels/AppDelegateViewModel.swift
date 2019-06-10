@@ -33,7 +33,9 @@ public protocol AppDelegateViewModelInputs {
   func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool
 
   /// Call when the application finishes launching.
-  func applicationDidFinishLaunching(application: UIApplication?, launchOptions: [AnyHashable: Any]?)
+  func applicationDidFinishLaunching(
+    application: UIApplication?, launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  )
 
   /// Call when the application will enter foreground.
   func applicationWillEnterForeground()
@@ -213,17 +215,18 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.applicationLaunchOptionsProperty.signal.skipNil()
       .take(first: 1)
       .observeValues { appOptions in
+        guard let application = appOptions.application else { return }
         _ = AppEnvironment.current.facebookAppDelegate.application(
-          appOptions.application,
+          application,
           didFinishLaunchingWithOptions: appOptions.options
         )
       }
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
 
-    self.facebookOpenURLReturnValue <~ openUrl.map {
+    self.facebookOpenURLReturnValue <~ openUrl.filter { $0.application != nil }.map {
       AppEnvironment.current.facebookAppDelegate.application(
-        $0.application, open: $0.url, sourceApplication: $0.sourceApplication, annotation: $0.annotation
+        $0.application!, open: $0.url, sourceApplication: $0.sourceApplication, annotation: $0.annotation
       )
     }
 
@@ -615,11 +618,13 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     return self.continueUserActivityReturnValue.value
   }
 
-  fileprivate typealias ApplicationWithOptions = (application: UIApplication?, options: [AnyHashable: Any]?)
+  fileprivate typealias ApplicationWithOptions = (
+    application: UIApplication?, options: [UIApplication.LaunchOptionsKey: Any]?
+  )
   fileprivate let applicationLaunchOptionsProperty = MutableProperty<ApplicationWithOptions?>(nil)
   public func applicationDidFinishLaunching(
     application: UIApplication?,
-    launchOptions: [AnyHashable: Any]?
+    launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) {
     self.applicationLaunchOptionsProperty.value = (application, launchOptions)
   }

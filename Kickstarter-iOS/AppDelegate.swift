@@ -45,7 +45,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // NB: We have to push this shared instance directly because somehow we get two different shared
     //     instances if we use the one from `Environment.init`.
-    AppEnvironment.replaceCurrentEnvironment(facebookAppDelegate: FBSDKApplicationDelegate.sharedInstance())
+    AppEnvironment.replaceCurrentEnvironment(facebookAppDelegate: ApplicationDelegate.shared)
 
     #if DEBUG
       if KsApi.Secrets.isOSS {

@@ -111,7 +111,7 @@ public struct Environment {
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
     device: UIDeviceType = UIDevice.current,
     environmentVariables: EnvironmentVariables = EnvironmentVariables(),
-    facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
+    facebookAppDelegate: FacebookAppDelegateProtocol = ApplicationDelegate.shared,
     isOSVersionAvailable: @escaping (Double) -> Bool = ksr_isOSVersionAvailable,
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),

@@ -4,19 +4,19 @@ import UIKit
 
 public protocol FacebookAppDelegateProtocol {
   func application(
-    _ application: UIApplication!,
-    open url: URL!,
-    sourceApplication: String!,
-    annotation: Any!
+    _ application: UIApplication,
+    open url: URL,
+    sourceApplication: String?,
+    annotation: Any?
   ) -> Bool
 
   func application(
-    _ application: UIApplication!,
-    didFinishLaunchingWithOptions launchOptions: [AnyHashable: Any]!
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool
 }
 
-extension FBSDKApplicationDelegate: FacebookAppDelegateProtocol {}
+extension ApplicationDelegate: FacebookAppDelegateProtocol {}
 
 internal final class MockFacebookAppDelegate: FacebookAppDelegateProtocol {
   internal var didFinishLaunching = false
@@ -30,18 +30,17 @@ internal final class MockFacebookAppDelegate: FacebookAppDelegateProtocol {
   }
 
   internal func application(
-    _: UIApplication!,
-    didFinishLaunchingWithOptions _: [AnyHashable: Any]!
+    _: UIApplication, open _: URL,
+    sourceApplication _: String?,
+    annotation _: Any?
   ) -> Bool {
     self.didFinishLaunching = true
     return self.didFinishLaunchingReturnValue
   }
 
-  internal func application(
-    _: UIApplication!,
-    open _: URL!,
-    sourceApplication _: String!,
-    annotation _: Any!
+  func application(
+    _: UIApplication,
+    didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     self.openedUrl = true
     return self.openURLReturnValue
