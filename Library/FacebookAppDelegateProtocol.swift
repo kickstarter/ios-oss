@@ -31,17 +31,17 @@ internal final class MockFacebookAppDelegate: FacebookAppDelegateProtocol {
 
   internal func application(
     _: UIApplication,
-    open _: URL,
-    sourceApplication _: String?,
-    annotation _: Any?
+    didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     self.didFinishLaunching = true
     return self.didFinishLaunchingReturnValue
   }
 
-  func application(
+  internal func application(
     _: UIApplication,
-    didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?
+    open _: URL,
+    sourceApplication _: String?,
+    annotation _: Any?
   ) -> Bool {
     self.openedUrl = true
     return self.openURLReturnValue
