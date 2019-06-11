@@ -308,6 +308,7 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     currentBadgeValue <~ self.setBadgeValueAtIndex.map { $0.0 }
 
     self.updateUserInEnvironment = clearBadgeValueOnActivitiesTabSelected
+      .filter { _ in AppEnvironment.current.currentUser != nil }
       .switchMap { _ in
         updatedUserWithClearedActivityCountProducer()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)

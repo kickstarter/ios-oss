@@ -169,6 +169,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     .ignoreValues()
 
     self.updateUserInEnvironment = self.clearBadgeValue
+      .filter { _ in AppEnvironment.current.currentUser != nil }
       .switchMap { _ in
         updatedUserWithClearedActivityCountProducer()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)

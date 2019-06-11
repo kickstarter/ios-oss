@@ -149,6 +149,41 @@ final class RootViewModelTests: TestCase {
     }
   }
 
+  func testClearBadgeValueOnActivitiesTabSelected_LoggedOut() {
+    let initialActivitiesCount = 100
+
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    self.updateUserInEnvironment.assertValues([])
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0))
+    )
+
+    withEnvironment(apiService: mockService, application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+
+      self.vm.inputs.didSelect(index: 1)
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+
+      self.scheduler.advance()
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+    }
+  }
+
   func testSetBadgeValueAtIndex_CurrentUserUpdated_SessionEnded() {
     let mockApplication = MockApplication()
     mockApplication.applicationIconBadgeNumber = 0
