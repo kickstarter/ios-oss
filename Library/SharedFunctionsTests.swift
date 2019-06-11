@@ -182,7 +182,7 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(ksr_isOSVersionAvailable(12.9))
   }
 
-  func testupdatedUserWithClearedActivityCountProducer_Success() {
+  func testUpdatedUserWithClearedActivityCountProducer_Success() {
     let initialActivitiesCount = 100
     let values = TestObserver<User, Never>()
 
@@ -209,7 +209,7 @@ final class SharedFunctionsTests: TestCase {
     }
   }
 
-  func testupdatedUserWithClearedActivityCountProducer_Failure() {
+  func testUpdatedUserWithClearedActivityCountProducer_Failure() {
     let initialActivitiesCount = 100
     let values = TestObserver<User, Never>()
 
