@@ -76,8 +76,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
         (project, refTag)
       }
 
-    let project = freshProjectAndLiveStreamsAndRefTag
-      .map { project, _, _ in project }
+    let project = freshProjectAndRefTag
+      .map { project, _ in project }
 
     self.projectAndUser = Signal.combineLatest(project, user)
 
@@ -175,7 +175,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
   public let topLayoutConstraintConstant: Signal<CGFloat, Never>
 
-  public let projectAndUser: Signal<(Project, User), NoError>
+  public let projectAndUser: Signal<(Project, User), Never>
 
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }

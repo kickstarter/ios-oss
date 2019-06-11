@@ -34,17 +34,6 @@ public final class ProjectPamphletViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let backThisProjectContainerSublayer: CAShapeLayer = {
-    let mask = CAShapeLayer()
-      |> \.fillColor .~ UIColor.white.cgColor
-      |> \.shadowColor .~ UIColor.black.cgColor
-      |> \.shadowOpacity .~ 0.12
-      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
-      |> \.shadowRadius .~ 1.0
-
-    return mask
-  }()
-
   public static func configuredWith(projectOrParam: Either<Project, Param>,
                                     refTag: RefTag?) -> ProjectPamphletViewController {
 
@@ -122,6 +111,15 @@ public final class ProjectPamphletViewController: UIViewController {
 
     _ = self.backThisProjectContainerView
       |> \.layoutMargins .~ .init(all: backThisProjectContainerViewMargins)
+
+    _ = self.backThisProjectContainerView.layer
+      |> checkoutLayerCardRoundedStyle
+      |> \.backgroundColor .~ UIColor.white.cgColor
+      |> \.shadowColor .~ UIColor.black.cgColor
+      |> \.shadowOpacity .~ 0.12
+      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
+      |> \.shadowRadius .~ 1.0
+      |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
   }
 
   public override func bindViewModel() {
@@ -170,40 +168,6 @@ public final class ProjectPamphletViewController: UIViewController {
     with _: UIViewControllerTransitionCoordinator
   ) {
     self.viewModel.inputs.willTransition(toNewCollection: newCollection)
-  }
-
-  // MARK: - Private View Setup Functions
-
-  private func configureViews() {
-    _ = (self.backThisProjectButton, self.backThisProjectContainerView)
-      |> ksr_addSubviewToParent()
-
-    _ = (self.backThisProjectContainerView, self.view)
-      |> ksr_addSubviewToParent()
-
-    self.backThisProjectButton.addTarget(
-      self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
-    )
-
-    // Configure constraints
-    let backThisProjectContainerViewConstraints = [
-      self.backThisProjectContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.backThisProjectContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-    ]
-
-    let containerMargins = self.backThisProjectContainerView.layoutMarginsGuide
-    let minHeight = Styles.minTouchSize.height
-
-    let backThisProjectButtonConstraints = [
-      self.backThisProjectButton.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-      self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
-      self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
-      self.backThisProjectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight)
-    ]
-
-    NSLayoutConstraint.activate(backThisProjectContainerViewConstraints + backThisProjectButtonConstraints)
   }
 
   // MARK: - Private Helpers

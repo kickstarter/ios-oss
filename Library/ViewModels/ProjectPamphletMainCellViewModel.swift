@@ -272,7 +272,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let projectUnsuccessfulLabelTextColor: Signal<UIColor, Never>
   public let stateLabelHidden: Signal<Bool, Never>
   public let statsStackViewAccessibilityLabel: Signal<String, Never>
-  public let youreABackerLabelHidden: Signal<Bool, Never>
 
   public var inputs: ProjectPamphletMainCellViewModelInputs { return self }
   public var outputs: ProjectPamphletMainCellViewModelOutputs { return self }

@@ -1,6 +1,5 @@
 import KsApi
 import Prelude
-import Result
 import ReactiveSwift
 import ReactiveExtensions
 
@@ -9,10 +8,10 @@ public protocol ProjectStatesContainerViewViewModelInputs {
 }
 
 public protocol ProjectStatesContainerViewViewModelOutputs {
-  var buttonBackgroundColor: Signal<UIColor, NoError> { get }
-  var buttonTitleText: Signal<String, NoError> { get }
-  var rewardTitle: Signal<String, NoError> { get }
-  var stackViewIsHidden: Signal<Bool, NoError> { get }
+  var buttonBackgroundColor: Signal<UIColor, Never> { get }
+  var buttonTitleText: Signal<String, Never> { get }
+  var rewardTitle: Signal<String, Never> { get }
+  var stackViewIsHidden: Signal<Bool, Never> { get }
 }
 
 public protocol ProjectStatesContainerViewViewModelType {
@@ -66,10 +65,10 @@ public final class ProjectStatesContainerViewViewModel: ProjectStatesContainerVi
   public var inputs: ProjectStatesContainerViewViewModelInputs { return self }
   public var outputs: ProjectStatesContainerViewViewModelOutputs { return self }
 
-  public let buttonTitleText: Signal<String, NoError>
-  public let buttonBackgroundColor: Signal<UIColor, NoError>
-  public let stackViewIsHidden: Signal<Bool, NoError>
-  public let rewardTitle: Signal<String, NoError>
+  public let buttonTitleText: Signal<String, Never>
+  public let buttonBackgroundColor: Signal<UIColor, Never>
+  public let stackViewIsHidden: Signal<Bool, Never>
+  public let rewardTitle: Signal<String, Never>
 }
 
 private func projectStateButton(backer: User, project: Project) -> ProjectStateCTAType {
