@@ -41,7 +41,11 @@ public final class BackingCellViewModel: BackingCellViewModelType, BackingCellVi
     self.delivery = backing.map { backing in
       backing.reward?.estimatedDeliveryOn.map {
         Strings.backing_info_estimated_delivery_date(
-          delivery_date: Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone)
+          delivery_date: Format.date(
+            secondsInUTC: $0,
+            template: DateFormatter.monthYear,
+            timeZone: UTCTimeZone
+          )
         )
       }
     }

@@ -105,11 +105,7 @@ internal final class CommentsViewController: UITableViewController {
       }
   }
 
-  override func tableView(
-    _: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt indexPath: IndexPath
-  ) {
+  override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     if let emptyCell = cell as? CommentsEmptyStateCell {
       emptyCell.delegate = self
     }

@@ -148,7 +148,7 @@ public final class DeprecatedRewardCellViewModel: RewardCellViewModelType, Rewar
     self.estimatedDeliveryDateLabelText = reward
       .map { reward in
         reward.estimatedDeliveryOn.map {
-          Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone)
+          Format.date(secondsInUTC: $0, template: DateFormatter.monthYear, timeZone: UTCTimeZone)
         }
       }
       .skipNil()

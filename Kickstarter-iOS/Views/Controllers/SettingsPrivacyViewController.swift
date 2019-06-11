@@ -73,11 +73,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
       }
   }
 
-  internal override func tableView(
-    _: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt _: IndexPath
-  ) {
+  internal override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     if let followCell = cell as? SettingsFollowCell {
       followCell.delegate = self
     } else if let requestDataCell = cell as? SettingsPrivacyRequestDataCell {
