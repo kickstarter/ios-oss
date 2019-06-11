@@ -227,8 +227,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         AppEnvironment.current.facebookAppDelegate.application(
           options.application ?? UIApplication.shared,
           open: options.url,
-          sourceApplication: options.options[.sourceApplication] as? String,
-          annotation: options.options[.annotation]
+          options: options.options
         )
       }
 
