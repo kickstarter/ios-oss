@@ -234,30 +234,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(
-    _ app: UIApplication, open url: URL,
+    _ app: UIApplication,
+    open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
-    guard let sourceApplication = options[.sourceApplication] as? String else { return false }
-
     return self.viewModel.inputs.applicationOpenUrl(
       application: app,
       url: url,
-      sourceApplication: sourceApplication,
-      annotation: options[.annotation] as Any
-    )
-  }
-
-  func application(
-    _ application: UIApplication,
-    open url: URL,
-    sourceApplication: String?,
-    annotation: Any
-  ) -> Bool {
-    return self.viewModel.inputs.applicationOpenUrl(
-      application: application,
-      url: url,
-      sourceApplication: sourceApplication,
-      annotation: annotation
+      options: options
     )
   }
 

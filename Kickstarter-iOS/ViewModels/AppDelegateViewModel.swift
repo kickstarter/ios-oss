@@ -50,8 +50,7 @@ public protocol AppDelegateViewModelInputs {
   func applicationOpenUrl(
     application: UIApplication?,
     url: URL,
-    sourceApplication: String?,
-    annotation: Any
+    options: [UIApplication.OpenURLOptionsKey: Any]
   ) -> Bool
 
   /// Call when the application receives a request to perform a shortcut action.
@@ -223,14 +222,15 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
 
-    self.facebookOpenURLReturnValue <~ openUrl.map {
-      AppEnvironment.current.facebookAppDelegate.application(
-        $0.application ?? UIApplication.shared,
-        open: $0.url,
-        sourceApplication: $0.sourceApplication,
-        annotation: $0.annotation
-      )
-    }
+    self.facebookOpenURLReturnValue <~ openUrl
+      .map { options -> Bool in
+        AppEnvironment.current.facebookAppDelegate.application(
+          options.application ?? UIApplication.shared,
+          open: options.url,
+          sourceApplication: options.options[.sourceApplication] as? String,
+          annotation: options.options[.annotation]
+        )
+      }
 
     // iCloud
 
@@ -689,17 +689,15 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate typealias ApplicationOpenUrl = (
     application: UIApplication?,
     url: URL,
-    sourceApplication: String?,
-    annotation: Any
+    options: [UIApplication.OpenURLOptionsKey: Any]
   )
   fileprivate let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
   public func applicationOpenUrl(
     application: UIApplication?,
     url: URL,
-    sourceApplication: String?,
-    annotation: Any
+    options: [UIApplication.OpenURLOptionsKey: Any]
   ) -> Bool {
-    self.applicationOpenUrlProperty.value = (application, url, sourceApplication, annotation)
+    self.applicationOpenUrlProperty.value = (application, url, options)
     return self.facebookOpenURLReturnValue.value
   }
 
