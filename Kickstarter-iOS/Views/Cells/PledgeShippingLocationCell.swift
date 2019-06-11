@@ -6,6 +6,8 @@ import UIKit
 final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  private let viewModel = PledgeShippingLocationCellViewModel()
+
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var countryButton: UIButton = { UIButton(frame: .zero) }()
@@ -37,6 +39,8 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -79,15 +83,25 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       |> checkoutStackViewStyle
   }
 
+  // MARK: - Binding
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.countryButton.rac.title = self.viewModel.location
+    self.amountLabel.rac.attributedText = self.viewModel.amount
+
+    self.viewModel.shippingIsLoading
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        self?.animate(isLoading)
+      }
+  }
+
   // MARK: - Configuration
 
-  func configureWith(value: PledgeDataSource.PledgeInputRow) {
-    guard case let .shippingLocation(location, shippingCost, project) = value else {
-      return
-    }
-
-    self.countryButton.setTitle(location, for: .normal)
-    self.amountLabel.attributedText = shippingValue(for: shippingCost, project: project)
+  func configureWith(value: (project: Project, reward: Reward)) {
+    self.viewModel.inputs.configureWith(project: value.project, reward: value.reward)
   }
 
   // MARK: - Public Functions
@@ -115,23 +129,4 @@ private let countryButtonStyle: ButtonStyle = { (button: UIButton) in
 private let countryButtonTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.lineBreakMode .~ .byTruncatingTail
-}
-
-// MARK: - Functions
-// TODO: Move this to the future `PledgeShippingLocationCellViewModel`
-private func shippingValue(for shippingCost: Double, project: Project) -> NSAttributedString? {
-  let defaultAttributes = checkoutCurrencyDefaultAttributes()
-  let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
-  guard
-    let attributedCurrency = Format.attributedCurrency(
-      shippingCost,
-      country: project.country,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode,
-      defaultAttributes: defaultAttributes,
-      superscriptAttributes: superscriptAttributes
-    ) else { return nil }
-
-  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { _, new in new }
-
-  return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }

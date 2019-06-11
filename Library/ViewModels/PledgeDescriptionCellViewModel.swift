@@ -3,8 +3,9 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+
 public protocol PledgeDescriptionCellViewModelInputs {
-  func configureWith(estimatedDeliveryDate: String)
+  func configureWith(reward: Reward)
   func learnMoreTapped()
 }
 
@@ -21,14 +22,18 @@ public protocol PledgeDescriptionCellViewModelType {
 public final class PledgeDescriptionCellViewModel: PledgeDescriptionCellViewModelType,
   PledgeDescriptionCellViewModelInputs, PledgeDescriptionCellViewModelOutputs {
   public init() {
-    self.estimatedDeliveryText = self.estimatedDeliveryDateProperty.signal
+    self.estimatedDeliveryText = self.rewardProperty.signal
+      .skipNil()
+      .map { $0.estimatedDeliveryOn }
+      .skipNil()
+      .map { Format.date(secondsInUTC: $0, template: DateFormatter.monthYear, timeZone: UTCTimeZone) }
 
     self.presentTrustAndSafety = self.learnMoreTappedProperty.signal
   }
 
-  private let estimatedDeliveryDateProperty = MutableProperty<String>("")
-  public func configureWith(estimatedDeliveryDate: String) {
-    self.estimatedDeliveryDateProperty.value = estimatedDeliveryDate
+  private let rewardProperty = MutableProperty<Reward?>(nil)
+  public func configureWith(reward: Reward) {
+    self.rewardProperty.value = reward
   }
 
   private let learnMoreTappedProperty = MutableProperty(())
