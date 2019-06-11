@@ -198,10 +198,10 @@ final class SharedFunctionsTests: TestCase {
         Location.template |> Location.lens.country .~ "CZ",
         Location.template |> Location.lens.country .~ "CA"
       ]
-      let shippingRules = locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0
-      }
-      let shippingRule = defaultShippingRule(fromShippingRules: shippingRules)
-      XCTAssertEqual(shippingRules[0], shippingRule)
+      let shippingRule = defaultShippingRule(
+        fromShippingRules: locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0 }
+      )
+      XCTAssertEqual("DE", shippingRule?.location.country)
     }
   }
 
@@ -215,10 +215,10 @@ final class SharedFunctionsTests: TestCase {
         Location.template |> Location.lens.country .~ "CZ",
         Location.template |> Location.lens.country .~ "CA"
       ]
-      let shippingRules = locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0
-      }
-      let shippingRule = defaultShippingRule(fromShippingRules: shippingRules)
-      XCTAssertEqual(shippingRules[1], shippingRule)
+      let shippingRule = defaultShippingRule(
+        fromShippingRules: locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0 }
+      )
+      XCTAssertEqual("US", shippingRule?.location.country)
     }
   }
 
@@ -232,10 +232,10 @@ final class SharedFunctionsTests: TestCase {
         Location.template |> Location.lens.country .~ "CZ",
         Location.template |> Location.lens.country .~ "CA"
       ]
-      let shippingRules = locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0
-      }
-      let shippingRule = defaultShippingRule(fromShippingRules: shippingRules)
-      XCTAssertEqual(shippingRules[2], shippingRule)
+      let shippingRule = defaultShippingRule(
+        fromShippingRules: locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0 }
+      )
+      XCTAssertEqual("CZ", shippingRule?.location.country)
     }
   }
 }
