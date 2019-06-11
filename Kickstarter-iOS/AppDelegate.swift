@@ -362,9 +362,10 @@ extension AppDelegate: URLSessionTaskDelegate {
 extension AppDelegate: UNUserNotificationCenterDelegate {
   public func userNotificationCenter(
     _: UNUserNotificationCenter,
-    willPresent _: UNNotification,
+    willPresent notification: UNNotification,
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
+    self.rootTabBarController?.didReceiveBadgeValue(notification.request.content.badge as? Int)
     completionHandler(.alert)
   }
 
@@ -374,6 +375,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     withCompletionHandler completion: @escaping () -> Void
   ) {
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
+    self.rootTabBarController?.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
     completion()
   }
 }
