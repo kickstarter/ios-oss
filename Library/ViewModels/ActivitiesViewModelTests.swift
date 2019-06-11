@@ -265,6 +265,47 @@ final class ActivitiesViewModelTests: TestCase {
     }
   }
 
+  func testClearBadgeValueOnRefreshActivities_LoggedOut() {
+    self.updateUserInEnvironment.assertValues([])
+    self.clearBadgeValue.assertValueCount(0)
+
+    let mockService1 = MockService(
+      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0)),
+      fetchActivitiesResponse: [activity1, activity2]
+    )
+
+    let mockService2 = MockService(
+      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0)),
+      fetchActivitiesResponse: [activity1, activity2, activity3]
+    )
+
+    withEnvironment(
+      apiService: mockService1
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.userSessionStarted()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.scheduler.advance()
+
+      self.updateUserInEnvironment.assertValues([])
+      self.activitiesPresent.assertValues([])
+      self.clearBadgeValue.assertValueCount(0)
+
+      withEnvironment(apiService: mockService2) {
+        self.vm.inputs.refresh()
+        self.scheduler.advance()
+
+        self.activitiesPresent.assertValues([])
+        self.clearBadgeValue.assertValueCount(0)
+        self.updateUserInEnvironment.assertValues([])
+
+        self.scheduler.advance()
+
+        self.updateUserInEnvironment.assertValues([])
+      }
+    }
+  }
+
   func testGoToProject() {
     let activity = .template |> Activity.lens.category .~ .backing
     // swiftlint:disable:next force_unwrapping
