@@ -469,8 +469,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "http://www.fb.com")!,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -488,8 +487,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -540,8 +538,7 @@ final class AppDelegateViewModelTests: TestCase {
       var result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: projectUrl)!,
-        sourceApplication: nil,
-        annotation: 1
+        options: [:]
       )
       XCTAssertFalse(result)
 
@@ -551,8 +548,7 @@ final class AppDelegateViewModelTests: TestCase {
       result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: commentsUrl)!,
-        sourceApplication: nil,
-        annotation: 1
+        options: [:]
       )
       XCTAssertFalse(result)
 
@@ -562,8 +558,7 @@ final class AppDelegateViewModelTests: TestCase {
       result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: updatesUrl)!,
-        sourceApplication: nil,
-        annotation: 1
+        options: [:]
       )
       XCTAssertFalse(result)
 
@@ -573,8 +568,7 @@ final class AppDelegateViewModelTests: TestCase {
       result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: updateUrl)!,
-        sourceApplication: nil,
-        annotation: 1
+        options: [:]
       )
       XCTAssertFalse(result)
 
@@ -584,8 +578,7 @@ final class AppDelegateViewModelTests: TestCase {
       result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: updateCommentsUrl)!,
-        sourceApplication: nil,
-        annotation: 1
+        options: [:]
       )
       XCTAssertFalse(result)
 
@@ -604,8 +597,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/activity")!,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -624,8 +616,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: url)!,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -643,8 +634,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/discover?sort=newest")!,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -664,8 +654,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/discover")!,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -684,8 +673,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: url,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -706,8 +694,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/authorize")!,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -725,8 +712,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/profile/me")!,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -744,8 +730,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/search")!,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -1387,8 +1372,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: emailUrl,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -1456,8 +1440,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: emailUrl,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -1493,8 +1476,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: emailUrl,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -1530,8 +1512,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: emailUrl,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -1560,8 +1541,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: projectUrl)!,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 
@@ -1580,8 +1560,7 @@ final class AppDelegateViewModelTests: TestCase {
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: projectUrl)!,
-      sourceApplication: nil,
-      annotation: 1
+      options: [:]
     )
     XCTAssertFalse(result)
 

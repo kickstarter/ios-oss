@@ -6,7 +6,7 @@ public protocol FacebookAppDelegateProtocol {
   func application(
     _ application: UIApplication,
     open url: URL,
-    options: [UIApplication.OpenURLOptionsKey : Any]
+    options: [UIApplication.OpenURLOptionsKey: Any]
   ) -> Bool
 
   func application(
@@ -37,9 +37,9 @@ internal final class MockFacebookAppDelegate: FacebookAppDelegateProtocol {
   }
 
   internal func application(
-    _ application: UIApplication,
-    open url: URL,
-    options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+    _: UIApplication,
+    open _: URL,
+    options _: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
     self.openedUrl = true
     return self.openURLReturnValue
