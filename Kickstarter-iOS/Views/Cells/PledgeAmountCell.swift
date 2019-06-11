@@ -1,3 +1,4 @@
+import KsApi
 import Library
 import Prelude
 import Prelude_UIKit
@@ -5,6 +6,8 @@ import UIKit
 
 final class PledgeAmountCell: UITableViewCell, ValueCell {
   // MARK: - Properties
+
+  private let viewModel = PledgeAmountCellViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountInputView: AmountInputView = { AmountInputView(frame: .zero) }()
@@ -36,6 +39,8 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
+
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -68,18 +73,19 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       |> stepperStyle
   }
 
+  // MARK: - Binding
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.amountInputView.label.rac.text = self.viewModel.outputs.currency
+    self.amountInputView.textField.rac.text = self.viewModel.outputs.amount
+  }
+
   // MARK: - Configuration
 
-  func configureWith(value: PledgeDataSource.PledgeInputRow) {
-    guard case let .pledgeAmount(amount, currencySymbol) = value else {
-      return
-    }
-
-    self.amountInputView.configureWith(
-      amount: String(format: "%i", amount),
-      placeholder: "\(0)",
-      currency: currencySymbol
-    )
+  func configureWith(value: (project: Project, reward: Reward)) {
+    self.viewModel.inputs.configureWith(project: value.project, reward: value.reward)
   }
 }
 

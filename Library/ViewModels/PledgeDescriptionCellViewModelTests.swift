@@ -19,16 +19,17 @@ internal final class PledgeDescriptionCellViewModelTests: TestCase {
   }
 
   func testEstimatedDeliveryDate() {
-    let estimatedDelivery = 1_468_527_587.32843
+    let reward = Reward.template
+      |> Reward.lens.estimatedDeliveryOn .~ 1_468_527_587.32843
 
-    let date = Format.date(secondsInUTC: estimatedDelivery, template: "MMMMyyyy", timeZone: UTCTimeZone)
+    self.vm.inputs.configureWith(reward: reward)
 
-    self.vm.inputs.configureWith(estimatedDeliveryDate: date)
     self.estimatedDeliveryText.assertValues(["July 2016"], "Emits the estimated delivery date")
   }
 
   func testPresentTrustAndSafety() {
     self.vm.inputs.learnMoreTapped()
+
     self.presentTrustAndSafety.assertDidEmitValue()
   }
 }
