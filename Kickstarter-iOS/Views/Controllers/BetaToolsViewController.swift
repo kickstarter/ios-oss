@@ -193,11 +193,14 @@ internal final class BetaToolsViewController: UITableViewController {
 
   private func updateLanguage(language: Language) {
     AppEnvironment.updateLanguage(language)
+
     NotificationCenter.default.post(
       name: Notification.Name.ksr_userLocalePreferencesChanged,
       object: nil,
       userInfo: nil
     )
+
+    self.navigationController?.popViewController(animated: true)
   }
 
   private func updateEnvironment(environment: EnvironmentType) {
@@ -251,7 +254,7 @@ internal final class BetaToolsViewController: UITableViewController {
     // Refresh the discovery screens
     NotificationCenter.default.post(.init(name: .ksr_environmentChanged))
 
-    self.navigationController?.dismiss(animated: true, completion: nil)
+    self.navigationController?.popViewController(animated: true)
   }
 }
 
@@ -264,6 +267,8 @@ extension BetaToolsViewController {
     }
 
     self.viewModel.inputs.didSelectBetaToolsRow(row)
+
+    tableView.deselectRow(at: indexPath, animated: true)
   }
 }
 
