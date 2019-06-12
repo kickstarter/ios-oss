@@ -1,5 +1,5 @@
-import XCTest
 import Library
+import XCTest
 
 public final class PasswordValidationTests: XCTestCase {
   func testPasswordLenghtValid() {

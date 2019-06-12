@@ -1,22 +1,20 @@
-import XCTest
 @testable import Library
 import Prelude
-import ReactiveSwift
-import Result
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 final class PaginateTests: TestCase {
-
-  let (newRequest, newRequestObserver) = Signal<Int, NoError>.pipe()
-  let (nextPage, nextPageObserver) = Signal<(), NoError>.pipe()
-  let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in .init(value: [p]) }
-  let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: c <= 2 ? [c] : []) }
+  let (newRequest, newRequestObserver) = Signal<Int, Never>.pipe()
+  let (nextPage, nextPageObserver) = Signal<(), Never>.pipe()
+  let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { p in .init(value: [p]) }
+  let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { c in .init(value: c <= 2 ? [c] : []) }
   let valuesFromEnvelope: ([Int]) -> [Int] = id
   let cursorFromEnvelope: ([Int]) -> Int = { ($0.last ?? 0) + 1 }
 
   func testEmitsEmptyState_ClearOnNewRequest() {
-    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
-    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -28,9 +26,9 @@ final class PaginateTests: TestCase {
       requestFromCursor: requestFromCursor
     )
 
-    let valuesTest = TestObserver<[Int], NoError>()
+    let valuesTest = TestObserver<[Int], Never>()
     values.observe(valuesTest.observer)
-    let loadingTest = TestObserver<Bool, NoError>()
+    let loadingTest = TestObserver<Bool, Never>()
     loading.observe(loadingTest.observer)
 
     self.newRequestObserver.send(value: 1)
@@ -47,8 +45,8 @@ final class PaginateTests: TestCase {
   }
 
   func testEmitsEmptyState_ClearOnNewRequest_With_Repeats() {
-    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
-    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -61,9 +59,9 @@ final class PaginateTests: TestCase {
       requestFromCursor: requestFromCursor
     )
 
-    let valuesTest = TestObserver<[Int], NoError>()
+    let valuesTest = TestObserver<[Int], Never>()
     values.observe(valuesTest.observer)
-    let loadingTest = TestObserver<Bool, NoError>()
+    let loadingTest = TestObserver<Bool, Never>()
     loading.observe(loadingTest.observer)
 
     self.newRequestObserver.send(value: 1)
@@ -80,8 +78,8 @@ final class PaginateTests: TestCase {
   }
 
   func testEmitsEmptyState_DoNotClearOnNewRequest() {
-    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
-    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -93,9 +91,9 @@ final class PaginateTests: TestCase {
       requestFromCursor: requestFromCursor
     )
 
-    let valuesTest = TestObserver<[Int], NoError>()
+    let valuesTest = TestObserver<[Int], Never>()
     values.observe(valuesTest.observer)
-    let loadingTest = TestObserver<Bool, NoError>()
+    let loadingTest = TestObserver<Bool, Never>()
     loading.observe(loadingTest.observer)
 
     self.newRequestObserver.send(value: 1)
@@ -112,8 +110,8 @@ final class PaginateTests: TestCase {
   }
 
   func testEmitsEmptyState_DoNotClearOnNewRequest_With_Repeats() {
-    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in .init(value: []) }
-    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
+    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
     let (values, loading, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -126,9 +124,9 @@ final class PaginateTests: TestCase {
       requestFromCursor: requestFromCursor
     )
 
-    let valuesTest = TestObserver<[Int], NoError>()
+    let valuesTest = TestObserver<[Int], Never>()
     values.observe(valuesTest.observer)
-    let loadingTest = TestObserver<Bool, NoError>()
+    let loadingTest = TestObserver<Bool, Never>()
     loading.observe(loadingTest.observer)
 
     self.newRequestObserver.send(value: 1)
@@ -155,9 +153,9 @@ final class PaginateTests: TestCase {
       requestFromCursor: requestFromCursor
     )
 
-    let valuesTest = TestObserver<[Int], NoError>()
+    let valuesTest = TestObserver<[Int], Never>()
     values.observe(valuesTest.observer)
-    let loadingTest = TestObserver<Bool, NoError>()
+    let loadingTest = TestObserver<Bool, Never>()
     loading.observe(loadingTest.observer)
 
     valuesTest.assertDidNotEmitValue("No values emit immediately.")
@@ -231,8 +229,10 @@ final class PaginateTests: TestCase {
     self.scheduler.advance()
 
     valuesTest.assertValues([[1], [1, 2], [], [0], [0, 1]], "New page of values emits.")
-    loadingTest.assertValues([true, false, true, false, true, false, true, false, true, false],
-                             "Loading finishes.")
+    loadingTest.assertValues(
+      [true, false, true, false, true, false, true, false, true, false],
+      "Loading finishes."
+    )
   }
 
   func testPaginateFlow_With_Repeats() {
@@ -247,9 +247,9 @@ final class PaginateTests: TestCase {
       requestFromCursor: requestFromCursor
     )
 
-    let valuesTest = TestObserver<[Int], NoError>()
+    let valuesTest = TestObserver<[Int], Never>()
     values.observe(valuesTest.observer)
-    let loadingTest = TestObserver<Bool, NoError>()
+    let loadingTest = TestObserver<Bool, Never>()
     loading.observe(loadingTest.observer)
 
     valuesTest.assertDidNotEmitValue("No values emit immediately.")
@@ -323,8 +323,10 @@ final class PaginateTests: TestCase {
     self.scheduler.advance()
 
     valuesTest.assertValues([[1], [1, 2], [1, 2], [], [0], [], [0]], "Repeated value emits.")
-    loadingTest.assertValues([true, false, true, false, true, false, true, false, true, false],
-                             "Loading starts.")
+    loadingTest.assertValues(
+      [true, false, true, false, true, false, true, false, true, false],
+      "Loading starts."
+    )
   }
 
   func testPaginate_DoesntClearOnNewRequest() {
@@ -338,9 +340,9 @@ final class PaginateTests: TestCase {
       requestFromCursor: requestFromCursor
     )
 
-    let valuesTest = TestObserver<[Int], NoError>()
+    let valuesTest = TestObserver<[Int], Never>()
     values.observe(valuesTest.observer)
-    let loadingTest = TestObserver<Bool, NoError>()
+    let loadingTest = TestObserver<Bool, Never>()
     loading.observe(loadingTest.observer)
 
     valuesTest.assertDidNotEmitValue()
@@ -389,9 +391,9 @@ final class PaginateTests: TestCase {
         requestFromCursor: requestFromCursor
       )
 
-      let valuesTest = TestObserver<[Int], NoError>()
+      let valuesTest = TestObserver<[Int], Never>()
       values.observe(valuesTest.observer)
-      let loadingTest = TestObserver<Bool, NoError>()
+      let loadingTest = TestObserver<Bool, Never>()
       loading.observe(loadingTest.observer)
 
       self.newRequestObserver.send(value: 1)
@@ -431,9 +433,9 @@ final class PaginateTests: TestCase {
         requestFromCursor: requestFromCursor
       )
 
-      let valuesTest = TestObserver<[Int], NoError>()
+      let valuesTest = TestObserver<[Int], Never>()
       values.observe(valuesTest.observer)
-      let loadingTest = TestObserver<Bool, NoError>()
+      let loadingTest = TestObserver<Bool, Never>()
       loading.observe(loadingTest.observer)
 
       // Request the first page and wait enough time for request to finish.
@@ -482,9 +484,9 @@ final class PaginateTests: TestCase {
         requestFromCursor: requestFromCursor
       )
 
-      let valuesTest = TestObserver<[Int], NoError>()
+      let valuesTest = TestObserver<[Int], Never>()
       values.observe(valuesTest.observer)
-      let loadingTest = TestObserver<Bool, NoError>()
+      let loadingTest = TestObserver<Bool, Never>()
       loading.observe(loadingTest.observer)
 
       // Request the first page and wait enough time for request to finish.
@@ -526,10 +528,10 @@ final class PaginateTests: TestCase {
   //   * Try loading a different first page of values but the result is empty
   // Confirms that an empty list of values is emitted.
   func testEmptyState_AfterResultSetWasObtained() {
-    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = {
+    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = {
       p in p == 2 ? .init(value: []) : .init(value: [1, 2])
     }
-    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in .init(value: []) }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
     let (values, _, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -541,7 +543,7 @@ final class PaginateTests: TestCase {
       requestFromCursor: requestFromCursor
     )
 
-    let valuesTest = TestObserver<[Int], NoError>()
+    let valuesTest = TestObserver<[Int], Never>()
     values.observe(valuesTest.observer)
 
     // A first page request that does have values
@@ -565,11 +567,11 @@ final class PaginateTests: TestCase {
   // Confirms that no additional request is made for the fourth page.
   func testAdditionalPagesAreNotRequestedWhenNoMoreValues() {
     var numberOfRequests = 0
-    let requestFromParams: (Int) -> SignalProducer<[Int], NoError> = { p in
+    let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { p in
       numberOfRequests += 1
       return .init(value: [p])
     }
-    let requestFromCursor: (Int) -> SignalProducer<[Int], NoError> = { c in
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { c in
       numberOfRequests += 1
       return .init(value: c <= 2 ? [c] : [])
     }
@@ -584,9 +586,9 @@ final class PaginateTests: TestCase {
       requestFromCursor: requestFromCursor
     )
 
-    let valuesTest = TestObserver<[Int], NoError>()
+    let valuesTest = TestObserver<[Int], Never>()
     values.observe(valuesTest.observer)
-    let loadingTest = TestObserver<Bool, NoError>()
+    let loadingTest = TestObserver<Bool, Never>()
     loading.observe(loadingTest.observer)
 
     self.newRequestObserver.send(value: 1)
@@ -625,7 +627,7 @@ final class PaginateTests: TestCase {
       requestFromCursor: requestFromCursor
     )
 
-    let pageCountLoadedTest = TestObserver<Int, NoError>()
+    let pageCountLoadedTest = TestObserver<Int, Never>()
     pageCountLoaded.observe(pageCountLoadedTest.observer)
 
     self.newRequestObserver.send(value: 1)
@@ -680,7 +682,7 @@ final class PaginateTests: TestCase {
       requestFromCursor: requestFromCursor
     )
 
-    let pageCountLoadedTest = TestObserver<Int, NoError>()
+    let pageCountLoadedTest = TestObserver<Int, Never>()
     pageCountLoaded.observe(pageCountLoadedTest.observer)
 
     self.newRequestObserver.send(value: 1)

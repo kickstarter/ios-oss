@@ -1,15 +1,14 @@
-import UIKit
 import ReactiveSwift
+import UIKit
 
 public final class VideoGridView: UIView {
-
   public init() {
     super.init(frame: CGRect())
 
     self.backgroundColor = .black
   }
 
-  public required init?(coder aDecoder: NSCoder) {
+  public required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -43,13 +42,13 @@ public final class VideoGridView: UIView {
       case (1, 3): view.frame = .init(x: 0, y: halfHeight, width: halfWidth, height: halfHeight)
       case (2, 3): view.frame = .init(x: halfWidth, y: halfHeight, width: halfWidth, height: halfHeight)
 
-      //four views, in a 2x2 grid
+      // four views, in a 2x2 grid
       case (0, 4): view.frame = .init(x: 0, y: 0, width: halfWidth, height: halfHeight)
       case (1, 4): view.frame = .init(x: halfWidth, y: 0, width: halfWidth, height: halfHeight)
       case (2, 4): view.frame = .init(x: 0, y: halfHeight, width: halfWidth, height: halfHeight)
       case (3, 4): view.frame = .init(x: halfWidth, y: halfHeight, width: halfWidth, height: halfHeight)
 
-      //one view, fills bounds
+      // one view, fills bounds
       default: view.frame = self.bounds
       }
     }

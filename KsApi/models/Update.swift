@@ -1,6 +1,6 @@
-import Foundation
 import Argo
 import Curry
+import Foundation
 import Runes
 
 public struct Update {
@@ -27,44 +27,43 @@ public struct Update {
   }
 }
 
-extension Update: Equatable {
-}
+extension Update: Equatable {}
+
 public func == (lhs: Update, rhs: Update) -> Bool {
   return lhs.id == rhs.id
 }
 
 extension Update: Argo.Decodable {
-
   public static func decode(_ json: JSON) -> Decoded<Update> {
     let tmp1 = curry(Update.init)
-      <^> json <|?  "body"
+      <^> json <|? "body"
       <*> json <|? "comments_count"
       <*> json <|? "has_liked"
     let tmp2 = tmp1
-      <*> json <|  "id"
-      <*> json <|  "public"
+      <*> json <| "id"
+      <*> json <| "public"
       <*> json <|? "likes_count"
     let tmp3 = tmp2
-      <*> json <|  "project_id"
+      <*> json <| "project_id"
       <*> json <|? "published_at"
-      <*> json <|  "sequence"
+      <*> json <| "sequence"
       <*> (json <| "title" <|> .success(""))
     return tmp3
-      <*> json <|  "urls"
+      <*> json <| "urls"
       <*> json <|? "user"
-      <*> json <|?  "visible"
+      <*> json <|? "visible"
   }
 }
 
 extension Update.UrlsEnvelope: Argo.Decodable {
-  static public func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope> {
+  public static func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope> {
     return curry(Update.UrlsEnvelope.init)
       <^> json <| "web"
   }
 }
 
 extension Update.UrlsEnvelope.WebEnvelope: Argo.Decodable {
-  static public func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope.WebEnvelope> {
+  public static func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope.WebEnvelope> {
     return curry(Update.UrlsEnvelope.WebEnvelope.init)
       <^> json <| "update"
   }

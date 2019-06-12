@@ -2,17 +2,17 @@ import Library
 import Prelude
 import UIKit
 
-public protocol PaymentMethodsFooterViewDelegate: class {
+public protocol PaymentMethodsFooterViewDelegate: AnyObject {
   func paymentMethodsFooterViewDidTapAddNewCardButton(_ footerView: PaymentMethodsFooterView)
 }
 
 public final class PaymentMethodsFooterView: UIView, NibLoading {
   public weak var delegate: PaymentMethodsFooterViewDelegate?
 
-  @IBOutlet private weak var addCardButton: UIButton!
-  @IBOutlet private weak var separatorView: UIView!
+  @IBOutlet private var addCardButton: UIButton!
+  @IBOutlet private var separatorView: UIView!
 
-  override public func bindStyles() {
+  public override func bindStyles() {
     super.bindViewModel()
     _ = self.addCardButton
       |> \.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(4))
@@ -33,7 +33,7 @@ public final class PaymentMethodsFooterView: UIView, NibLoading {
       |> separatorStyle
   }
 
-  @IBAction func addNewCardButtonTapped(_ sender: Any) {
+  @IBAction func addNewCardButtonTapped(_: Any) {
     self.delegate?.paymentMethodsFooterViewDidTapAddNewCardButton(self)
   }
 }

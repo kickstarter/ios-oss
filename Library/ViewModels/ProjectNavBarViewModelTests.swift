@@ -1,25 +1,24 @@
-import Prelude
-import ReactiveSwift
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 final class ProjectNavBarViewModelTests: TestCase {
   fileprivate let vm: ProjectNavBarViewModelType = ProjectNavBarViewModel()
 
-  fileprivate let backgroundAnimate = TestObserver<Bool, NoError>()
-  fileprivate let backgroundOpaque = TestObserver<Bool, NoError>()
-  fileprivate let categoryButtonText = TestObserver<String, NoError>()
-  fileprivate let categoryButtonTintColor = TestObserver<UIColor, NoError>()
-  fileprivate let categoryButtonTitleColor = TestObserver<UIColor, NoError>()
-  fileprivate let categoryHidden = TestObserver<Bool, NoError>()
-  fileprivate let categoryAnimate = TestObserver<Bool, NoError>()
-  fileprivate let dismissViewController = TestObserver<(), NoError>()
-  fileprivate let projectName = TestObserver<String, NoError>()
-  fileprivate let titleAnimate = TestObserver<Bool, NoError>()
-  fileprivate let titleHidden = TestObserver<Bool, NoError>()
+  fileprivate let backgroundAnimate = TestObserver<Bool, Never>()
+  fileprivate let backgroundOpaque = TestObserver<Bool, Never>()
+  fileprivate let categoryButtonText = TestObserver<String, Never>()
+  fileprivate let categoryButtonTintColor = TestObserver<UIColor, Never>()
+  fileprivate let categoryButtonTitleColor = TestObserver<UIColor, Never>()
+  fileprivate let categoryHidden = TestObserver<Bool, Never>()
+  fileprivate let categoryAnimate = TestObserver<Bool, Never>()
+  fileprivate let dismissViewController = TestObserver<(), Never>()
+  fileprivate let projectName = TestObserver<String, Never>()
+  fileprivate let titleAnimate = TestObserver<Bool, Never>()
+  fileprivate let titleHidden = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()

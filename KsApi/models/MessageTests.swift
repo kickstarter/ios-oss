@@ -1,12 +1,12 @@
-import XCTest
-@testable import KsApi
 import Argo
+@testable import KsApi
+import XCTest
 
 internal final class MessageTests: XCTestCase {
   func testDecoding() {
     let result = Message.decodeJSONDictionary([
       "body": "Hello!",
-      "created_at": 123456789.0,
+      "created_at": 123_456_789.0,
       "id": 1,
       "recipient": [
         "id": 1,
@@ -14,7 +14,7 @@ internal final class MessageTests: XCTestCase {
         "avatar": [
           "medium": "img",
           "small": "img"
-        ],
+        ]
       ],
       "sender": [
         "id": 2,
@@ -22,7 +22,7 @@ internal final class MessageTests: XCTestCase {
         "avatar": [
           "medium": "img",
           "small": "img"
-        ],
+        ]
       ]
     ])
 

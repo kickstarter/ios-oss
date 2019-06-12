@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol MessageThreadsViewModelInputs {
   /// Call when the mailbox chooser button is pressed.
@@ -29,25 +28,25 @@ public protocol MessageThreadsViewModelInputs {
 
 public protocol MessageThreadsViewModelOutputs {
   /// Emits a boolean that determines if the empty state is visible.
-  var emptyStateIsVisible: Signal<Bool, NoError> { get }
+  var emptyStateIsVisible: Signal<Bool, Never> { get }
 
   /// Emits when we should go to the search messages screen.
-  var goToSearch: Signal<(), NoError> { get }
+  var goToSearch: Signal<(), Never> { get }
 
   /// Emits a boolean that determines if the footer loading view is hidden.
-  var loadingFooterIsHidden: Signal<Bool, NoError> { get }
+  var loadingFooterIsHidden: Signal<Bool, Never> { get }
 
   /// Emits a string of the mailbox we are currently viewing.
-  var mailboxName: Signal<String, NoError> { get }
+  var mailboxName: Signal<String, Never> { get }
 
   /// Emits an array of message threads to be displayed.
-  var messageThreads: Signal<[MessageThread], NoError> { get }
+  var messageThreads: Signal<[MessageThread], Never> { get }
 
   /// Emits when the refresh control should end refreshing.
-  var refreshControlEndRefreshing: Signal<(), NoError> { get }
+  var refreshControlEndRefreshing: Signal<(), Never> { get }
 
   /// Emits when an action sheet should be displayed that allows the user to choose mailboxes.
-  var showMailboxChooserActionSheet: Signal<(), NoError> { get }
+  var showMailboxChooserActionSheet: Signal<(), Never> { get }
 }
 
 public protocol MessageThreadsViewModelType {
@@ -56,9 +55,8 @@ public protocol MessageThreadsViewModelType {
 }
 
 public final class MessageThreadsViewModel: MessageThreadsViewModelType, MessageThreadsViewModelInputs,
-MessageThreadsViewModelOutputs {
-
-    public init() {
+  MessageThreadsViewModelOutputs {
+  public init() {
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .filter { _, total in total > 1 }
       .map { row, total in row >= total - 3 }
@@ -93,16 +91,17 @@ MessageThreadsViewModelOutputs {
           .promoteError(ErrorEnvelope.self)
           .flatMap { project in
             AppEnvironment.current.apiService.fetchMessageThreads(mailbox: mailbox, project: project)
-        }
+          }
       },
       requestFromCursor: {
         AppEnvironment.current.apiService.fetchMessageThreads(paginationUrl: $0)
-    })
+      }
+    )
 
     self.mailboxName = mailbox.map {
       switch $0 {
-      case .inbox:  return Strings.messages_navigation_inbox()
-      case .sent:   return Strings.messages_navigation_sent()
+      case .inbox: return Strings.messages_navigation_inbox()
+      case .sent: return Strings.messages_navigation_sent()
       }
     }
 
@@ -119,7 +118,7 @@ MessageThreadsViewModelOutputs {
       self.viewDidLoadProperty.signal.take(first: 1).mapConst(false),
       isCloseToBottom.mapConst(false),
       mailbox.mapConst(false),
-      isLoading.filter(isFalse).mapConst(true),
+      isLoading.filter(isFalse).mapConst(true)
     ]).skipRepeats()
 
     self.showMailboxChooserActionSheet = self.mailboxButtonPressedProperty.signal
@@ -129,10 +128,11 @@ MessageThreadsViewModelOutputs {
     configData
       .takePairWhen(mailbox)
       .observeValues { configData, mailbox in
-        AppEnvironment.current.koala.trackMessageThreadsView(mailbox: mailbox,
-                                                             project: configData.project,
-                                                             refTag: configData.refTag ?? .unrecognized(""))
-
+        AppEnvironment.current.koala.trackMessageThreadsView(
+          mailbox: mailbox,
+          project: configData.project,
+          refTag: configData.refTag ?? .unrecognized("")
+        )
       }
   }
 
@@ -140,38 +140,44 @@ MessageThreadsViewModelOutputs {
   public func mailboxButtonPressed() {
     self.mailboxButtonPressedProperty.value = ()
   }
+
   fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
   public func configureWith(project: Project?, refTag: RefTag?) {
     self.configDataProperty.value = ConfigData(project: project, refTag: refTag)
   }
+
   fileprivate let refreshProperty = MutableProperty(())
   public func refresh() {
     self.refreshProperty.value = ()
   }
+
   fileprivate let searchButtonPressedProperty = MutableProperty(())
   public func searchButtonPressed() {
     self.searchButtonPressedProperty.value = ()
   }
+
   fileprivate let switchToMailbox = MutableProperty<Mailbox?>(nil)
   public func switchTo(mailbox: Mailbox) {
     self.switchToMailbox.value = mailbox
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+
   fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let emptyStateIsVisible: Signal<Bool, NoError>
-  public let loadingFooterIsHidden: Signal<Bool, NoError>
-  public let goToSearch: Signal<(), NoError>
-  public let mailboxName: Signal<String, NoError>
-  public let messageThreads: Signal<[MessageThread], NoError>
-  public let refreshControlEndRefreshing: Signal<(), NoError>
-  public let showMailboxChooserActionSheet: Signal<(), NoError>
+  public let emptyStateIsVisible: Signal<Bool, Never>
+  public let loadingFooterIsHidden: Signal<Bool, Never>
+  public let goToSearch: Signal<(), Never>
+  public let mailboxName: Signal<String, Never>
+  public let messageThreads: Signal<[MessageThread], Never>
+  public let refreshControlEndRefreshing: Signal<(), Never>
+  public let showMailboxChooserActionSheet: Signal<(), Never>
 
   public var inputs: MessageThreadsViewModelInputs { return self }
   public var outputs: MessageThreadsViewModelOutputs { return self }

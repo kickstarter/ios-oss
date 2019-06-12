@@ -1,9 +1,8 @@
-import XCTest
 @testable import KsApi
 import Prelude
+import XCTest
 
 final class RewardTests: XCTestCase {
-
   func testIsNoReward() {
     XCTAssertEqual(Reward.noReward.isNoReward, true)
     XCTAssertEqual(Reward.template.isNoReward, false)
@@ -11,7 +10,7 @@ final class RewardTests: XCTestCase {
 
   func testEquatable() {
     XCTAssertEqual(Reward.template, Reward.template)
-    XCTAssertNotEqual(Reward.template, Reward.template |> Reward.lens.id %~ { $0 + 1})
+    XCTAssertNotEqual(Reward.template, Reward.template |> Reward.lens.id %~ { $0 + 1 })
     XCTAssertNotEqual(Reward.template, Reward.noReward)
   }
 
@@ -32,14 +31,13 @@ final class RewardTests: XCTestCase {
       "id": 1,
       "minimum": 10,
       "description": "cool stuff"
-      ])
+    ])
 
     XCTAssertNil(reward.error)
     XCTAssertEqual(reward.value?.id, 1)
     XCTAssertEqual(reward.value?.description, "cool stuff")
     XCTAssertNotNil(reward.value?.shipping)
     XCTAssertEqual(false, reward.value?.shipping.enabled)
-
   }
 
   func testJsonParsing_WithMinimalData_AndReward() {
@@ -47,7 +45,7 @@ final class RewardTests: XCTestCase {
       "id": 1,
       "minimum": 10,
       "reward": "cool stuff"
-      ])
+    ])
 
     XCTAssertNil(reward.error)
     XCTAssertEqual(reward.value?.id, 1)
@@ -61,7 +59,7 @@ final class RewardTests: XCTestCase {
       "description": "Some reward",
       "minimum": 10,
       "backers_count": 10
-      ])
+    ])
 
     XCTAssertNotNil(reward)
     XCTAssertEqual(reward.value?.id, 1)
@@ -71,7 +69,6 @@ final class RewardTests: XCTestCase {
   }
 
   func testJsonDecoding_WithShipping() {
-
     let reward = Reward.decodeJSONDictionary([
       "id": 1,
       "description": "Some reward",
@@ -80,7 +77,7 @@ final class RewardTests: XCTestCase {
       "shipping_enabled": true,
       "shipping_preference": "unrestricted",
       "shipping_summary": "Ships anywhere in the world."
-      ])
+    ])
 
     XCTAssertNotNil(reward)
     XCTAssertEqual(reward.value?.id, 1)

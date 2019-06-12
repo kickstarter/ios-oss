@@ -1,8 +1,8 @@
-import XCTest
 @testable import Kickstarter_Framework
-@testable import Library
 import KsApi
+@testable import Library
 import Prelude
+import XCTest
 
 private let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest]
 
@@ -12,15 +12,19 @@ internal final class DiscoveryPagesDataSourceTests: XCTestCase {
 
   func testIndex() {
     for sort in sorts {
-      XCTAssertEqual(sort,
-                     self.dataSource.controllerFor(sort: sort).flatMap(self.dataSource.sortFor(controller:)),
-                     "controllerFor(sort:) and sortFor(controller:) are inverses.")
+      XCTAssertEqual(
+        sort,
+        self.dataSource.controllerFor(sort: sort).flatMap(self.dataSource.sortFor(controller:)),
+        "controllerFor(sort:) and sortFor(controller:) are inverses."
+      )
     }
 
     for idx in sorts.indices {
-      XCTAssertEqual(idx,
-                     self.dataSource.controllerFor(index: idx).flatMap(self.dataSource.indexFor(controller:)),
-                     "controllerFor(index:) and indexFor(controller:) are inverses.")
+      XCTAssertEqual(
+        idx,
+        self.dataSource.controllerFor(index: idx).flatMap(self.dataSource.indexFor(controller:)),
+        "controllerFor(index:) and indexFor(controller:) are inverses."
+      )
     }
   }
 
@@ -69,5 +73,4 @@ internal final class DiscoveryPagesDataSourceTests: XCTestCase {
 
     XCTAssertNil(beforeFirstController)
   }
-
 }

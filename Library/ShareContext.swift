@@ -32,18 +32,18 @@ public enum ShareContext {
 
   public var project: Project {
     switch self {
-    case let .creatorDashboard(project):  return project
-    case let .discovery(project):         return project
-    case let .project(project):           return project
-    case let .thanks(project):            return project
-    case let .update(project, _):         return project
+    case let .creatorDashboard(project): return project
+    case let .discovery(project): return project
+    case let .project(project): return project
+    case let .thanks(project): return project
+    case let .update(project, _): return project
     }
   }
 
   public var update: Update? {
     switch self {
-    case let .update(_, update):  return update
-    default:                      return nil
+    case let .update(_, update): return update
+    default: return nil
     }
   }
 }

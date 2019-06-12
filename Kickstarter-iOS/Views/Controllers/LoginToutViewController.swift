@@ -1,22 +1,22 @@
-import ReactiveSwift
-import Foundation
-import UIKit
-import MessageUI
-import Library
-import KsApi
-import Prelude
 import FBSDKLoginKit
+import Foundation
+import KsApi
+import Library
+import MessageUI
+import Prelude
+import ReactiveSwift
+import UIKit
 
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
-  @IBOutlet fileprivate weak var contextLabel: UILabel!
-  @IBOutlet fileprivate weak var bringCreativeProjectsToLifeLabel: UILabel!
-  @IBOutlet fileprivate weak var fbLoginButton: UIButton!
-  @IBOutlet fileprivate weak var disclaimerButton: UIButton!
-  @IBOutlet fileprivate weak var loginButton: UIButton!
-  @IBOutlet fileprivate weak var signupButton: UIButton!
-  @IBOutlet fileprivate weak var loginContextStackView: UIStackView!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
-  @IBOutlet fileprivate weak var facebookDisclaimerLabel: UILabel!
+  @IBOutlet fileprivate var contextLabel: UILabel!
+  @IBOutlet fileprivate var bringCreativeProjectsToLifeLabel: UILabel!
+  @IBOutlet fileprivate var fbLoginButton: UIButton!
+  @IBOutlet fileprivate var disclaimerButton: UIButton!
+  @IBOutlet fileprivate var loginButton: UIButton!
+  @IBOutlet fileprivate var signupButton: UIButton!
+  @IBOutlet fileprivate var loginContextStackView: UIStackView!
+  @IBOutlet fileprivate var rootStackView: UIStackView!
+  @IBOutlet fileprivate var facebookDisclaimerLabel: UILabel!
 
   fileprivate let helpViewModel = HelpViewModel()
   private var sessionStartedObserver: Any?
@@ -45,14 +45,14 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
-    }
+      }
 
     if self.presentingViewController != nil {
-      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(closeButtonPressed))
+      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonPressed))
     }
-    self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(helpButtonPressed))
+    self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(self.helpButtonPressed))
 
-    self.disclaimerButton.addTarget(self, action: #selector(helpButtonPressed), for: .touchUpInside)
+    self.disclaimerButton.addTarget(self, action: #selector(self.helpButtonPressed), for: .touchUpInside)
   }
 
   deinit {
@@ -94,7 +94,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> UILabel.lens.font %~~ { _, l in
         l.traitCollection.isRegularRegular
           ? .ksr_subhead(size: 20)
-          : .ksr_subhead(size: 14)  }
+          : .ksr_subhead(size: 14)
+      }
 
     _ = self.loginContextStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -104,26 +105,26 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
           : .init(top: Styles.grid(10), left: 0, bottom: Styles.grid(5), right: 0)
       }
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-    }
+  }
 
-    override func bindViewModel() {
+  override func bindViewModel() {
     self.viewModel.outputs.startLogin
       .observeForControllerAction()
       .observeValues { [weak self] _ in
         self?.pushLoginViewController()
-    }
+      }
 
     self.viewModel.outputs.startSignup
       .observeForControllerAction()
       .observeValues { [weak self] _ in
         self?.pushSignupViewController()
-    }
+      }
 
     self.viewModel.outputs.logIntoEnvironment
       .observeValues { [weak self] accessTokenEnv in
         AppEnvironment.login(accessTokenEnv)
         self?.viewModel.inputs.environmentLoggedIn()
-    }
+      }
 
     self.viewModel.outputs.postNotification
       .observeForUI()
@@ -134,19 +135,19 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     self.viewModel.outputs.startFacebookConfirmation
       .observeForControllerAction()
-      .observeValues { [weak self] (user, token) in
+      .observeValues { [weak self] user, token in
         self?.pushFacebookConfirmationController(facebookUser: user, facebookToken: token)
-    }
+      }
 
     self.viewModel.outputs.startTwoFactorChallenge
       .observeForControllerAction()
       .observeValues { [weak self] token in
         self?.pushTwoFactorViewController(facebookAccessToken: token)
-    }
+      }
 
     self.viewModel.outputs.attemptFacebookLogin
       .observeValues { [weak self] _ in self?.attemptFacebookLogin()
-    }
+      }
 
     self.viewModel.outputs.showFacebookErrorAlert
       .observeForControllerAction()
@@ -156,19 +157,19 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
           animated: true,
           completion: nil
         )
-    }
+      }
 
     self.viewModel.outputs.dismissViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.dismiss(animated: true, completion: nil)
-    }
+      }
 
     self.helpViewModel.outputs.showHelpSheet
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.showHelpSheet(helpTypes: $0)
-    }
+      }
 
     self.helpViewModel.outputs.showMailCompose
       .observeForControllerAction()
@@ -177,27 +178,29 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         let controller = MFMailComposeViewController.support()
         controller.mailComposeDelegate = _self
         _self.present(controller, animated: true, completion: nil)
-    }
+      }
 
     self.helpViewModel.outputs.showNoEmailError
       .observeForControllerAction()
       .observeValues { [weak self] alert in
         self?.present(alert, animated: true, completion: nil)
-    }
+      }
 
     self.helpViewModel.outputs.showWebHelp
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
         self?.goToHelpType(helpType)
-    }
+      }
 
     self.contextLabel.rac.text = self.viewModel.outputs.logInContextText
     self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
   }
 
-  @objc internal func mailComposeController(_ controller: MFMailComposeViewController,
-                                            didFinishWith result: MFMailComposeResult,
-                                            error: Error?) {
+  @objc internal func mailComposeController(
+    _: MFMailComposeViewController,
+    didFinishWith result: MFMailComposeResult,
+    error _: Error?
+  ) {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
     self.dismiss(animated: true, completion: nil)
   }
@@ -219,8 +222,10 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
-  fileprivate func pushFacebookConfirmationController(facebookUser user: ErrorEnvelope.FacebookUser?,
-                                                      facebookToken token: String) {
+  fileprivate func pushFacebookConfirmationController(
+    facebookUser user: ErrorEnvelope.FacebookUser?,
+    facebookToken token: String
+  ) {
     let vc = FacebookConfirmationViewController
       .configuredWith(facebookUserEmail: user?.email ?? "", facebookAccessToken: token)
     self.navigationController?.pushViewController(vc, animated: true)
@@ -252,7 +257,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       }
     )
 
-    //iPad provision
+    // iPad provision
     helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
     self.present(helpSheet, animated: true, completion: nil)
@@ -268,7 +273,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         } else if let result = result, !result.isCancelled {
           self.viewModel.inputs.facebookLoginSuccess(result: result)
         }
-    }
+      }
   }
 
   @objc fileprivate func closeButtonPressed() {
@@ -279,11 +284,11 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
-  @IBAction fileprivate func loginButtonPressed(_ sender: UIButton) {
+  @IBAction fileprivate func loginButtonPressed(_: UIButton) {
     self.viewModel.inputs.loginButtonPressed()
   }
 
-  @IBAction fileprivate func facebookLoginButtonPressed(_ sender: UIButton) {
+  @IBAction fileprivate func facebookLoginButtonPressed(_: UIButton) {
     self.viewModel.inputs.facebookLoginButtonPressed()
   }
 

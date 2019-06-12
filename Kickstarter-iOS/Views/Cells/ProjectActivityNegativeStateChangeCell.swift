@@ -1,20 +1,21 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import Prelude_UIKit
 import UIKit
 
 internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, ValueCell {
-
   fileprivate let viewModel: ProjectActivityNegativeStateChangeCellViewModelType =
     ProjectActivityNegativeStateChangeCellViewModel()
 
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {
-    self.viewModel.inputs.configureWith(activity: activityAndProject.0,
-                                        project: activityAndProject.1)
+    self.viewModel.inputs.configureWith(
+      activity: activityAndProject.0,
+      project: activityAndProject.1
+    )
   }
 
   internal override func bindViewModel() {
@@ -24,7 +25,8 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
       .observeValues { [weak titleLabel] title in
         guard let titleLabel = titleLabel else { return }
 
-        titleLabel.attributedText = title.simpleHtmlAttributedString(font: .ksr_body(),
+        titleLabel.attributedText = title.simpleHtmlAttributedString(
+          font: .ksr_body(),
           bold: UIFont.ksr_body().bolded,
           italic: nil
         )
@@ -32,7 +34,7 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
         _ = titleLabel
           |> projectActivityStateChangeLabelStyle
           |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
-    }
+      }
   }
 
   internal override func bindStyles() {

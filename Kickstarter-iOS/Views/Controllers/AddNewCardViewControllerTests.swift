@@ -1,7 +1,7 @@
-import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import Prelude
 
 final class AddNewCardViewControllerTests: TestCase {
   override func setUp() {

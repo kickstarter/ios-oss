@@ -1,9 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol SettingsFollowCellViewModelInputs {
   func configureWith(user: User)
@@ -11,9 +10,9 @@ public protocol SettingsFollowCellViewModelInputs {
 }
 
 public protocol SettingsFollowCellViewModelOutputs {
-  var followingPrivacyOn: Signal<Bool, NoError> { get }
-  var showPrivacyFollowingPrompt: Signal<(), NoError> { get }
-  var updateCurrentUser: Signal<User, NoError> { get }
+  var followingPrivacyOn: Signal<Bool, Never> { get }
+  var showPrivacyFollowingPrompt: Signal<(), Never> { get }
+  var updateCurrentUser: Signal<User, Never> { get }
 }
 
 public protocol SettingsFollowCellViewModelType {
@@ -22,15 +21,14 @@ public protocol SettingsFollowCellViewModelType {
 }
 
 public final class SettingsFollowCellViewModel: SettingsFollowCellViewModelType,
-SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
-
+  SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
   public init() {
-    let initialUser = configureWithProperty.signal.skipNil()
+    let initialUser = self.configureWithProperty.signal.skipNil()
 
-    let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
+    let userAttributeChanged: Signal<(UserAttribute, Bool), Never> =
       self.followTappedProperty.signal.filter { $0 == true }.map {
         (UserAttribute.privacy(UserAttribute.Privacy.following), $0)
-    }
+      }
 
     self.updateCurrentUser = initialUser
       .switchMap { user in
@@ -38,7 +36,7 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
           let (attribute, on) = attributeAndOn
           return user |> attribute.keyPath .~ on
         }
-    }
+      }
 
     self.followingPrivacyOn = initialUser
       .map { $0.social }.skipNil()
@@ -58,9 +56,9 @@ SettingsFollowCellViewModelInputs, SettingsFollowCellViewModelOutputs {
     self.followTappedProperty.value = on
   }
 
-  public let followingPrivacyOn: Signal<Bool, NoError>
-  public let showPrivacyFollowingPrompt: Signal<(), NoError>
-  public let updateCurrentUser: Signal<User, NoError>
+  public let followingPrivacyOn: Signal<Bool, Never>
+  public let showPrivacyFollowingPrompt: Signal<(), Never>
+  public let updateCurrentUser: Signal<User, Never>
 
   public var inputs: SettingsFollowCellViewModelInputs { return self }
   public var outputs: SettingsFollowCellViewModelOutputs { return self }

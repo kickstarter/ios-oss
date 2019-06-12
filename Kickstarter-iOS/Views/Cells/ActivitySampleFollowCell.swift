@@ -1,9 +1,9 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import UIKit
 
-internal protocol ActivitySampleFollowCellDelegate: class {
+internal protocol ActivitySampleFollowCellDelegate: AnyObject {
   /// Call when should go to activity screen.
   func goToActivity()
 }
@@ -12,20 +12,20 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: ActivitySampleFollowCellViewModelType = ActivitySampleFollowCellViewModel()
   internal weak var delegate: ActivitySampleFollowCellDelegate?
 
-  @IBOutlet fileprivate weak var activityStackView: UIStackView!
-  @IBOutlet fileprivate weak var activityTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var cardView: UIView!
-  @IBOutlet fileprivate weak var friendFollowLabel: UILabel!
-  @IBOutlet fileprivate weak var friendImageAndFollowStackView: UIStackView!
-  @IBOutlet fileprivate weak var friendImageView: CircleAvatarImageView!
-  @IBOutlet fileprivate weak var seeAllActivityButton: UIButton!
+  @IBOutlet fileprivate var activityStackView: UIStackView!
+  @IBOutlet fileprivate var activityTitleLabel: UILabel!
+  @IBOutlet fileprivate var cardView: UIView!
+  @IBOutlet fileprivate var friendFollowLabel: UILabel!
+  @IBOutlet fileprivate var friendImageAndFollowStackView: UIStackView!
+  @IBOutlet fileprivate var friendImageView: CircleAvatarImageView!
+  @IBOutlet fileprivate var seeAllActivityButton: UIButton!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()
 
     self.seeAllActivityButton.addTarget(
       self,
-      action: #selector(seeAllActivityButtonTapped),
+      action: #selector(self.seeAllActivityButtonTapped),
       for: .touchUpInside
     )
   }
@@ -68,17 +68,17 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
       .on(event: { [weak self] _ in
         self?.friendImageView.af_cancelImageRequest()
         self?.friendImageView.image = nil
-        })
+      })
       .skipNil()
       .observeValues { [weak self] url in
         self?.friendImageView.af_setImage(withURL: url)
-    }
+      }
 
     self.viewModel.outputs.goToActivity
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.delegate?.goToActivity()
-    }
+      }
   }
 
   internal func configureWith(value: Activity) {

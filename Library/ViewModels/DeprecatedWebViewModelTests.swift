@@ -1,16 +1,14 @@
-import XCTest
-@testable import Library
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
-import Result
-import KsApi
+@testable import Library
 import Prelude
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 final class DeprecatedWebViewModelTests: TestCase {
   fileprivate let vm: DeprecatedWebViewModelType = DeprecatedWebViewModel()
 
-  fileprivate let loadingOverlayIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let loadingOverlayIsAnimated = TestObserver<Bool, NoError>()
+  fileprivate let loadingOverlayIsHidden = TestObserver<Bool, Never>()
+  fileprivate let loadingOverlayIsAnimated = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

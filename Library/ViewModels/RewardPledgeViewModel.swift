@@ -2,7 +2,6 @@ import KsApi
 import PassKit
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol RewardPledgeViewModelInputs {
   /// Call when the apple pay button is tapped.
@@ -74,131 +73,131 @@ public protocol RewardPledgeViewModelInputs {
 
 public protocol RewardPledgeViewModelOutputs {
   /// Emits a boolean that determines if the apple pay button is hidden.
-  var applePayButtonHidden: Signal<Bool, NoError> { get }
+  var applePayButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the cancel pledge button should be hidden.
-  var cancelPledgeButtonHidden: Signal<Bool, NoError> { get }
+  var cancelPledgeButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the change method button should be hidden.
-  var changePaymentMethodButtonHidden: Signal<Bool, NoError> { get }
+  var changePaymentMethodButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the "continue to payments" button is hidden.
-  var continueToPaymentsButtonHidden: Signal<Bool, NoError> { get }
+  var continueToPaymentsButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the conversion label is hidden.
-  var conversionLabelHidden: Signal<Bool, NoError> { get }
+  var conversionLabelHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be put into the conversion label.
-  var conversionLabelText: Signal<String, NoError> { get }
+  var conversionLabelText: Signal<String, Never> { get }
 
   /// Emits a string to be put into the shipping country label.
-  var countryLabelText: Signal<String, NoError> { get }
+  var countryLabelText: Signal<String, Never> { get }
 
   /// Emits a string to be put into the description label.
-  var descriptionLabelText: Signal<String, NoError> { get }
+  var descriptionLabelText: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the "different payment method" button is hidden.
-  var differentPaymentMethodButtonHidden: Signal<Bool, NoError> { get }
+  var differentPaymentMethodButtonHidden: Signal<Bool, Never> { get }
 
   /// Emits when the controller should be dismissed.
-  var dismissViewController: Signal<(), NoError> { get }
+  var dismissViewController: Signal<(), Never> { get }
 
   /// Emits a string to be put into the estimated delivery date label.
-  var estimatedDeliveryDateLabelText: Signal<String, NoError> { get }
+  var estimatedDeliveryDateLabelText: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the estimated fulfillment stack view should be hidden.
-  var estimatedFulfillmentStackViewHidden: Signal<Bool, NoError> { get }
+  var estimatedFulfillmentStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits when the reward description should be expanded.
-  var expandRewardDescription: Signal<(), NoError> { get }
+  var expandRewardDescription: Signal<(), Never> { get }
 
   /// Emits when the entire fulfillment and shipping stack view should be hidden.
-  var fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, NoError> { get }
+  var fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits when the checkout screen should be shown to the user.
-  var goToCheckout: Signal<(URLRequest, Project, Reward), NoError> { get }
+  var goToCheckout: Signal<(URLRequest, Project, Reward), Never> { get }
 
   /// Emits when the login tout should be shown to the user.
-  var goToLoginTout: Signal<(), NoError> { get }
+  var goToLoginTout: Signal<(), Never> { get }
 
   /// Emits a payment request object that is to be used to present a payment authorization controller.
-  var goToPaymentAuthorization: Signal<PKPaymentRequest, NoError> { get }
+  var goToPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
 
   /// Emits a project, list of shipping rules, and current selected shipping rule that are to be used to
   /// go to the shipping picker.
-  var goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), NoError> { get }
+  var goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
 
   /// Emits when we should go to the thanks screen.
-  var goToThanks: Signal<Project, NoError> { get }
+  var goToThanks: Signal<Project, Never> { get }
 
   /// Emits when we should go to the trust & safety page.
-  var goToTrustAndSafety: Signal<(), NoError> { get }
+  var goToTrustAndSafety: Signal<(), Never> { get }
 
   /// Emits an array of strings that are to be loaded into the itemization stack view.
-  var items: Signal<[String], NoError> { get }
+  var items: Signal<[String], Never> { get }
 
   /// Emits a boolean that determines if the itemization stack view is hidden.
-  var itemsContainerHidden: Signal<Bool, NoError> { get }
+  var itemsContainerHidden: Signal<Bool, Never> { get }
 
   /// Emits whether loading overlay view should be hidden.
-  var loadingOverlayIsHidden: Signal<Bool, NoError> { get }
+  var loadingOverlayIsHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be put into the minimum pledge label.
-  var minimumLabelText: Signal<String, NoError> { get }
+  var minimumLabelText: Signal<String, Never> { get }
 
   /// Emits a string for the title of the navigation controller.
-  var navigationTitle: Signal<String, NoError> { get }
+  var navigationTitle: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the -or- separator label should be hidden.
-  var orLabelHidden: Signal<Bool, NoError> { get }
+  var orLabelHidden: Signal<Bool, Never> { get }
 
   /// Emits a height constant for the padding view constraint.
-  var paddingViewHeightConstant: Signal<CGFloat, NoError> { get }
+  var paddingViewHeightConstant: Signal<CGFloat, Never> { get }
 
   /// Emits a string to be put into the currency label.
-  var pledgeCurrencyLabelText: Signal<String, NoError> { get }
+  var pledgeCurrencyLabelText: Signal<String, Never> { get }
 
   /// Emits a bool whether a pledge is loading for the indicator view.
-  var pledgeIsLoading: Signal<Bool, NoError> { get }
+  var pledgeIsLoading: Signal<Bool, Never> { get }
 
   /// Emits a string to be put into the pledge text field.
-  var pledgeTextFieldText: Signal<String, NoError> { get }
+  var pledgeTextFieldText: Signal<String, Never> { get }
 
   /// Emits a boolean when the read more container should be hidden.
-  var readMoreContainerViewHidden: Signal<Bool, NoError> { get }
+  var readMoreContainerViewHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be used to set the Stripe library's apple merchant identifier.
-  var setStripeAppleMerchantIdentifier: Signal<String, NoError> { get }
+  var setStripeAppleMerchantIdentifier: Signal<String, Never> { get }
 
   /// Emits a string to be used to set the Stripe library's publishable key.
-  var setStripePublishableKey: Signal<String, NoError> { get }
+  var setStripePublishableKey: Signal<String, Never> { get }
 
   /// Emits a string to be put into the shipping amount label.
-  var shippingAmountLabelText: Signal<String, NoError> { get }
+  var shippingAmountLabelText: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the shipping container view should be hidden.
-  var shippingInputStackViewHidden: Signal<Bool, NoError> { get }
+  var shippingInputStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean to determine if shipping loader should animate or not.
-  var shippingIsLoading: Signal<Bool, NoError> { get }
+  var shippingIsLoading: Signal<Bool, Never> { get }
 
   /// Emits a string that should be put into the shipping locations label.
-  var shippingLocationsLabelText: Signal<String, NoError> { get }
+  var shippingLocationsLabelText: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the top shipping stack view should be hidden.
-  var shippingStackViewHidden: Signal<Bool, NoError> { get }
+  var shippingStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be shown in an alert controller and whether closing it dismisses the view controller.
-  var showAlert: Signal<(message: String, shouldDismiss: Bool), NoError> { get }
+  var showAlert: Signal<(message: String, shouldDismiss: Bool), Never> { get }
 
   /// Emits a boolean that determines if the title label should be hidden.
-  var titleLabelHidden: Signal<Bool, NoError> { get }
+  var titleLabelHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be put into the title label.
-  var titleLabelText: Signal<String, NoError> { get }
+  var titleLabelText: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the update pledge button should be hidden.
-  var updatePledgeButtonHidden: Signal<Bool, NoError> { get }
+  var updatePledgeButtonHidden: Signal<Bool, Never> { get }
 }
 
 public protocol RewardPledgeViewModelType {
@@ -207,16 +206,15 @@ public protocol RewardPledgeViewModelType {
 }
 
 public final class RewardPledgeViewModel: RewardPledgeViewModelType, RewardPledgeViewModelInputs,
-RewardPledgeViewModelOutputs {
-
+  RewardPledgeViewModelOutputs {
   fileprivate let rewardViewModel: RewardCellViewModelType = RewardCellViewModel()
 
-    public init() {
+  public init() {
     let projectAndRewardAndApplePayCapable = Signal.combineLatest(
       self.projectAndRewardAndApplePayCapableProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-      )
-      .map(first)
+    )
+    .map(first)
 
     let projectAndReward = projectAndRewardAndApplePayCapable
       .map { project, reward, _ in (project, reward) }
@@ -232,25 +230,25 @@ RewardPledgeViewModelOutputs {
     let currentUser = Signal.merge([
       self.viewDidLoadProperty.signal,
       self.userSessionStartedProperty.signal
-      ])
+    ])
       .map { AppEnvironment.current.currentUser }
       .skipRepeats(==)
 
     let shippingRulesEvent = projectAndReward
       .switchMap { (project, reward)
-        -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, NoError> in
+        -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
         guard reward != Reward.noReward else {
           return SignalProducer(value: .value([]))
         }
 
         return AppEnvironment.current.apiService.fetchRewardShippingRules(
           projectId: project.id, rewardId: reward.id
-          )
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map(ShippingRulesEnvelope.lens.shippingRules.view)
-          .retry(upTo: 3)
-          .materialize()
-    }
+        )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .map(ShippingRulesEnvelope.lens.shippingRules.view)
+        .retry(upTo: 3)
+        .materialize()
+      }
 
     self.shippingIsLoading = Signal.merge(
       projectAndReward.map { _, reward in reward != Reward.noReward },
@@ -260,7 +258,7 @@ RewardPledgeViewModelOutputs {
     let shippingRules = shippingRulesEvent.values()
 
     self.navigationTitle = projectAndReward
-      .map(navigationTitle(forProject:reward:))
+      .map(navigationTitleForProject(_:reward:))
 
     self.setStripeAppleMerchantIdentifier = applePayCapable
       .filter(isTrue)
@@ -285,7 +283,7 @@ RewardPledgeViewModelOutputs {
     self.updatePledgeButtonHidden = projectAndReward
       .map { project, _ in
         project.personalization.isBacking != .some(true)
-    }
+      }
 
     self.cancelPledgeButtonHidden = projectAndReward
       .map { project, reward in !userIsBacking(reward: reward, inProject: project) }
@@ -309,8 +307,8 @@ RewardPledgeViewModelOutputs {
       project,
       shippingRules,
       selectedShipping.skipNil()
-      )
-      .takeWhen(self.shippingButtonTappedProperty.signal)
+    )
+    .takeWhen(self.shippingButtonTappedProperty.signal)
 
     self.paymentAuthorizationStatusProperty <~ self.stripeTokenAndErrorProperty.signal
       .map { _, error in error == nil ? .success : .failure }
@@ -323,15 +321,15 @@ RewardPledgeViewModelOutputs {
     let shippingAmount = Signal.combineLatest(
       project,
       selectedShipping.skipNil()
-      )
-      .map { project, shippingRule in
-        Strings.plus_shipping_cost(
-          shipping_cost: Format.currency(
-            Int(shippingRule.cost),
-            country: project.country,
-            omitCurrencyCode: project.stats.omitUSCurrencyCode
-          )
+    )
+    .map { project, shippingRule in
+      Strings.plus_shipping_cost(
+        shipping_cost: Format.currency(
+          Int(shippingRule.cost),
+          country: project.country,
+          omitCurrencyCode: project.stats.omitUSCurrencyCode
         )
+      )
     }
 
     self.shippingAmountLabelText = Signal.merge(
@@ -346,17 +344,17 @@ RewardPledgeViewModelOutputs {
           .skip(first: 1)
           .take(first: 1),
         reward.filter { $0.isNoReward }.mapConst(true)
-        )
-        .take(first: 1),
+      )
+      .take(first: 1),
 
       self.expandDescriptionTappedProperty.signal.mapConst(true)
     )
 
     self.itemsContainerHidden = Signal.combineLatest(
       reward, self.readMoreContainerViewHidden
-      ).map { reward, readMoreIsHidden in
-        reward.rewardsItems.isEmpty || (!reward.rewardsItems.isEmpty && !readMoreIsHidden)
-      }.skipRepeats()
+    ).map { reward, readMoreIsHidden in
+      reward.rewardsItems.isEmpty || (!reward.rewardsItems.isEmpty && !readMoreIsHidden)
+    }.skipRepeats()
 
     self.paddingViewHeightConstant = self.itemsContainerHidden.map { $0 ? 18.0 : 0.0 }
 
@@ -389,28 +387,28 @@ RewardPledgeViewModelOutputs {
       .map { project, reward -> Double in
         guard let backing = project.personalization.backing,
           userIsBacking(reward: reward, inProject: project) else {
-
-            return reward == Reward.noReward
-              ? minAndMaxPledgeAmount(forProject: project, reward: reward).min
-              : reward.minimum
+          return reward == Reward.noReward
+            ? minAndMaxPledgeAmount(forProject: project, reward: reward).min
+            : reward.minimum
         }
 
         return backing.amount - Double(backing.shippingAmount ?? 0)
-    }
+      }
 
     let userEnteredPledgeAmount = Signal.merge(
       initialPledgeTextFieldText,
       self.pledgeTextChangedProperty.signal.map { Double($0) ?? 0.00 }
-      )
+    )
 
     let pledgeTextFieldWhenReturnWithBadAmount = Signal.combineLatest(
       userEnteredPledgeAmount,
       projectAndReward.map(minAndMaxPledgeAmount(forProject:reward:))
-      )
-      .takeWhen(self.pledgeTextFieldDidEndEditingProperty.signal)
-      .filter { pledgeAmount, minAndMax in pledgeAmount < minAndMax.0
-        || pledgeAmount > minAndMax.1 }
-      .map { _, minAndMax in minAndMax.0 }
+    )
+    .takeWhen(self.pledgeTextFieldDidEndEditingProperty.signal)
+    .filter { pledgeAmount, minAndMax in pledgeAmount < minAndMax.0
+      || pledgeAmount > minAndMax.1
+    }
+    .map { _, minAndMax in minAndMax.0 }
 
     let pledgeAmount = Signal.merge(
       userEnteredPledgeAmount,
@@ -420,8 +418,8 @@ RewardPledgeViewModelOutputs {
     self.pledgeTextFieldText = Signal.merge(
       initialPledgeTextFieldText,
       pledgeTextFieldWhenReturnWithBadAmount
-      )
-      .map { String(format: "%.2f", $0) }
+    )
+    .map { String(format: "%.2f", $0) }
 
     let paymentMethodTapped = Signal.merge(
       self.continueToPaymentsButtonTappedProperty.signal,
@@ -444,20 +442,20 @@ RewardPledgeViewModelOutputs {
     let applePayEventAfterLogin = Signal.merge(
       loggedOutUserTappedApplePayButton.mapConst(true),
       loggedOutUserTappedPaymentMethodButton.mapConst(false)
-      )
-      .takeWhen(currentUser.filter(isNotNil))
-      .filter(isTrue)
-      .ignoreValues()
-      // introduce a small delay for this event since the login tout takes a moment to dismiss...
-      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+    )
+    .takeWhen(currentUser.filter(isNotNil))
+    .filter(isTrue)
+    .ignoreValues()
+    // introduce a small delay for this event since the login tout takes a moment to dismiss...
+    .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
 
     let paymentMethodEventAfterLogin = Signal.merge(
       loggedOutUserTappedApplePayButton.mapConst(true),
       loggedOutUserTappedPaymentMethodButton.mapConst(false)
-      )
-      .takeWhen(currentUser.filter(isNotNil))
-      .filter(isFalse)
-      .ignoreValues()
+    )
+    .takeWhen(currentUser.filter(isNotNil))
+    .filter(isFalse)
+    .ignoreValues()
 
     let loggedInUserTappedPaymentMethodButton = currentUser
       .takeWhen(paymentMethodTapped)
@@ -467,17 +465,17 @@ RewardPledgeViewModelOutputs {
     self.goToLoginTout = Signal.merge(
       loggedOutUserTappedApplePayButton,
       loggedOutUserTappedPaymentMethodButton
-      ).ignoreValues()
+    ).ignoreValues()
 
     self.goToPaymentAuthorization = Signal.combineLatest(
       projectAndReward,
       pledgeAmount,
       selectedShipping,
       self.setStripeAppleMerchantIdentifier
-      )
-      .map { ($0.0, $0.1, $1, $2, $3) }
-      .takeWhen(Signal.merge(applePayEventAfterLogin, loggedInUserTappedApplePayButton))
-      .map(paymentRequest(forProject:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
+    )
+    .map { ($0.0, $0.1, $1, $2, $3) }
+    .takeWhen(Signal.merge(applePayEventAfterLogin, loggedInUserTappedApplePayButton))
+    .map(paymentRequest(forProject:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
 
     let isLoading = MutableProperty(false)
     self.pledgeIsLoading = isLoading.signal
@@ -492,21 +490,21 @@ RewardPledgeViewModelOutputs {
       pledgeAmount,
       selectedShipping,
       self.didAuthorizePaymentProperty.signal.skipNil()
+    )
+    .takePairWhen(self.stripeTokenAndErrorProperty.signal.map(first).skipNil())
+    .map { ($0.0.0, $0.0.1, $0.1, $0.2, $0.3, $1) }
+    .switchMap { project, reward, amount, shipping, paymentData, stripeToken in
+      createApplePayPledge(
+        project: project,
+        reward: reward,
+        amount: amount,
+        shipping: shipping,
+        paymentData: paymentData,
+        stripeToken: stripeToken
       )
-      .takePairWhen(self.stripeTokenAndErrorProperty.signal.map(first).skipNil())
-      .map { ($0.0.0, $0.0.1, $0.1, $0.2, $0.3, $1) }
-      .switchMap { project, reward, amount, shipping, paymentData, stripeToken in
-        createApplePayPledge(
-          project: project,
-          reward: reward,
-          amount: amount,
-          shipping: shipping,
-          paymentData: paymentData,
-          stripeToken: stripeToken
-        )
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
-        .materialize()
+      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+      .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
+      .materialize()
     }
 
     self.goToTrustAndSafety = self.disclaimerButtonTappedProperty.signal
@@ -515,15 +513,15 @@ RewardPledgeViewModelOutputs {
       projectAndReward,
       pledgeAmount,
       selectedShipping
-      )
-      .takeWhen(Signal.merge(paymentMethodEventAfterLogin, loggedInUserTappedPaymentMethodButton))
-      .map { ($0.0, $0.1, $1, $2) }
-      .switchMap { project, reward, amount, shipping in
-        createPledge(project: project, reward: reward, amount: amount, shipping: shipping)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { ($0, project, reward) }
-          .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
-          .materialize()
+    )
+    .takeWhen(Signal.merge(paymentMethodEventAfterLogin, loggedInUserTappedPaymentMethodButton))
+    .map { ($0.0, $0.1, $1, $2) }
+    .switchMap { project, reward, amount, shipping in
+      createPledge(project: project, reward: reward, amount: amount, shipping: shipping)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .map { ($0, project, reward) }
+        .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
+        .materialize()
     }
 
     let cancelPledge = projectAndReward
@@ -543,15 +541,15 @@ RewardPledgeViewModelOutputs {
       projectAndReward,
       pledgeAmount,
       selectedShipping
-      )
-      .takeWhen(self.updatePledgeButtonTappedProperty.signal)
-      .map { ($0.0, $0.1, $1, $2) }
-      .switchMap { project, reward, amount, shipping in
-        updatePledge(project: project, reward: reward, amount: amount, shipping: shipping)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { ($0, project, reward) }
-          .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
-          .materialize()
+    )
+    .takeWhen(self.updatePledgeButtonTappedProperty.signal)
+    .map { ($0.0, $0.1, $1, $2) }
+    .switchMap { project, reward, amount, shipping in
+      updatePledge(project: project, reward: reward, amount: amount, shipping: shipping)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .map { ($0, project, reward) }
+        .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
+        .materialize()
     }
 
     let changePaymentMethodEvent = projectAndReward
@@ -562,7 +560,7 @@ RewardPledgeViewModelOutputs {
           .map { ($0, project, reward) }
           .on(starting: { isLoading.value = true }, terminated: { isLoading.value = false })
           .materialize()
-    }
+      }
 
     let completedPledge = Signal.merge(
       updatePledgeEvent.values().filter { request, _, _ in request == nil }.ignoreValues(),
@@ -573,10 +571,10 @@ RewardPledgeViewModelOutputs {
       .takeWhen(completedPledge)
 
     let updatedPledgeNeedsNewCheckout = updatePledgeEvent.values()
-      .flatMap { request, project, reward -> SignalProducer<(URLRequest, Project, Reward), NoError> in
+      .flatMap { request, project, reward -> SignalProducer<(URLRequest, Project, Reward), Never> in
         guard let request = request else { return .empty }
         return SignalProducer(value: (request, project, reward))
-    }
+      }
 
     self.goToCheckout = Signal.merge(
       createPledgeEvent.values(),
@@ -597,13 +595,18 @@ RewardPledgeViewModelOutputs {
         .map { error in
           let shouldDismiss = (error.errorEnvelope.errorMessages.first == nil
             || error.errorEnvelope.ksrCode == .UnknownCode)
-          return (message: error.errorEnvelope.errorMessages.first ?? Strings.general_error_something_wrong(),
-                  shouldDismiss: shouldDismiss)
-      },
+          return (
+            message: error.errorEnvelope.errorMessages.first ?? Strings.general_error_something_wrong(),
+            shouldDismiss: shouldDismiss
+          )
+        },
       shippingRulesEvent.errors()
         .map { _ in
-          (message: Strings.We_were_unable_to_load_the_shipping_destinations(),
-           shouldDismiss: true) }
+          (
+            message: Strings.We_were_unable_to_load_the_shipping_destinations(),
+            shouldDismiss: true
+          )
+        }
     )
 
     self.titleLabelText = reward
@@ -611,7 +614,7 @@ RewardPledgeViewModelOutputs {
         $0 == Reward.noReward
           ? Strings.Id_just_like_to_support_the_project()
           : ($0.title ?? "")
-    }
+      }
 
     self.dismissViewController = Signal.merge(
       self.closeButtonTappedProperty.signal,
@@ -625,19 +628,19 @@ RewardPledgeViewModelOutputs {
           reward: reward,
           pledgeContext: pledgeContext(forProject: project, reward: reward)
         )
-    }
+      }
 
     projectAndRewardAndPledgeContext
       .take(first: 1)
       .observeValues {
         AppEnvironment.current.koala.trackSelectedReward(project: $0, reward: $1, pledgeContext: $2)
-    }
+      }
 
     projectAndRewardAndPledgeContext
       .takeWhen(self.paymentAuthorizationWillAuthorizeProperty.signal)
       .observeValues {
         AppEnvironment.current.koala.trackShowApplePaySheet(project: $0, reward: $1, pledgeContext: $2)
-    }
+      }
 
     projectAndRewardAndPledgeContext
       .takeWhen(self.didAuthorizePaymentProperty.signal)
@@ -645,7 +648,7 @@ RewardPledgeViewModelOutputs {
         AppEnvironment.current.koala.trackApplePayAuthorizedPayment(
           project: $0, reward: $1, pledgeContext: $2
         )
-    }
+      }
 
     projectAndRewardAndPledgeContext
       .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(first >>> isNotNil))
@@ -653,7 +656,7 @@ RewardPledgeViewModelOutputs {
         AppEnvironment.current.koala.trackStripeTokenCreatedForApplePay(
           project: $0, reward: $1, pledgeContext: $2
         )
-    }
+      }
 
     projectAndRewardAndPledgeContext
       .takeWhen(self.stripeTokenAndErrorProperty.signal.filter(second >>> isNotNil))
@@ -661,7 +664,7 @@ RewardPledgeViewModelOutputs {
         AppEnvironment.current.koala.trackStripeTokenErroredForApplePay(
           project: $0, reward: $1, pledgeContext: $2
         )
-    }
+      }
 
     let applePaySuccessful = Signal.merge(
       self.paymentAuthorizationWillAuthorizeProperty.signal.mapConst(false),
@@ -683,19 +686,19 @@ RewardPledgeViewModelOutputs {
             project: project, reward: reward, pledgeContext: context
           )
         }
-    }
+      }
 
     projectAndReward
       .observeValues { [weak self] project, reward in
         self?.rewardViewModel.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
         self?.rewardViewModel.inputs.boundStyles()
-    }
+      }
 
     projectAndRewardAndPledgeContext
       .takeWhen(self.closeButtonTappedProperty.signal)
       .observeValues {
         AppEnvironment.current.koala.trackClosedReward(project: $0, reward: $1, pledgeContext: $2)
-    }
+      }
 
     projectAndRewardAndPledgeContext
       .takeWhen(self.pledgeTextChangedProperty.signal)
@@ -703,7 +706,7 @@ RewardPledgeViewModelOutputs {
         AppEnvironment.current.koala.trackChangedPledgeAmount(
           project, reward: reward, pledgeContext: context
         )
-    }
+      }
 
     projectAndRewardAndPledgeContext
       .takeWhen(self.changedShippingRuleProperty.signal)
@@ -711,7 +714,7 @@ RewardPledgeViewModelOutputs {
         AppEnvironment.current.koala.trackSelectedShippingDestination(
           project, reward: reward, pledgeContext: context
         )
-    }
+      }
 
     projectAndRewardAndPledgeContext
       .takeWhen(self.expandDescriptionTappedProperty.signal)
@@ -720,9 +723,9 @@ RewardPledgeViewModelOutputs {
         AppEnvironment.current.koala.trackExpandedRewardDescription(
           reward, project: project, pledgeContext: context
         )
-    }
+      }
 
-    let continueCheckoutType: Signal<Koala.ClickedRewardPledgeButtonType, NoError> = Signal.merge(
+    let continueCheckoutType: Signal<Koala.ClickedRewardPledgeButtonType, Never> = Signal.merge(
       self.continueToPaymentsButtonTappedProperty.signal.mapConst(.paymentMethods),
       self.applePayButtonTappedProperty.signal.mapConst(.applePay),
       self.differentPaymentMethodButtonTappedProperty.signal.mapConst(.paymentMethods),
@@ -743,7 +746,7 @@ RewardPledgeViewModelOutputs {
           pageContext: .rewardSelection,
           pledgeContext: context
         )
-    }
+      }
 
     projectAndRewardAndPledgeContext
       .takePairWhen(pledgeErrors)
@@ -763,7 +766,7 @@ RewardPledgeViewModelOutputs {
           pageContext: .rewardSelection,
           pledgeContext: context
         )
-    }
+      }
   }
 
   fileprivate let applePayButtonTappedProperty = MutableProperty(())
@@ -860,9 +863,8 @@ RewardPledgeViewModelOutputs {
   fileprivate let paymentAuthorizationStatusProperty = MutableProperty(PKPaymentAuthorizationStatus.failure)
   public func stripeCreatedToken(stripeToken: String?, error: Error?)
     -> PKPaymentAuthorizationStatus {
-
-      self.stripeTokenAndErrorProperty.value = (stripeToken, error)
-      return self.paymentAuthorizationStatusProperty.value
+    self.stripeTokenAndErrorProperty.value = (stripeToken, error)
+    return self.paymentAuthorizationStatusProperty.value
   }
 
   fileprivate let updatePledgeButtonTappedProperty = MutableProperty(())
@@ -880,71 +882,79 @@ RewardPledgeViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let applePayButtonHidden: Signal<Bool, NoError>
-  public let continueToPaymentsButtonHidden: Signal<Bool, NoError>
-  public var conversionLabelHidden: Signal<Bool, NoError> {
+  public let applePayButtonHidden: Signal<Bool, Never>
+  public let continueToPaymentsButtonHidden: Signal<Bool, Never>
+  public var conversionLabelHidden: Signal<Bool, Never> {
     return self.rewardViewModel.outputs.conversionLabelHidden
   }
-  public var conversionLabelText: Signal<String, NoError> {
+
+  public var conversionLabelText: Signal<String, Never> {
     return self.rewardViewModel.outputs.conversionLabelText
   }
-  public let countryLabelText: Signal<String, NoError>
-  public var descriptionLabelText: Signal<String, NoError> {
+
+  public let countryLabelText: Signal<String, Never>
+  public var descriptionLabelText: Signal<String, Never> {
     return self.rewardViewModel.outputs.descriptionLabelText
   }
-  public let differentPaymentMethodButtonHidden: Signal<Bool, NoError>
-  public let dismissViewController: Signal<(), NoError>
-  public let estimatedDeliveryDateLabelText: Signal<String, NoError>
-  public let estimatedFulfillmentStackViewHidden: Signal<Bool, NoError>
-  public let expandRewardDescription: Signal<(), NoError>
-  public let fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, NoError>
-  public let goToCheckout: Signal<(URLRequest, Project, Reward), NoError>
-  public let goToLoginTout: Signal<(), NoError>
-  public let goToPaymentAuthorization: Signal<PKPaymentRequest, NoError>
-  public let goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), NoError>
-  public let goToThanks: Signal<Project, NoError>
-  public let goToTrustAndSafety: Signal<(), NoError>
-  public var items: Signal<[String], NoError> {
+
+  public let differentPaymentMethodButtonHidden: Signal<Bool, Never>
+  public let dismissViewController: Signal<(), Never>
+  public let estimatedDeliveryDateLabelText: Signal<String, Never>
+  public let estimatedFulfillmentStackViewHidden: Signal<Bool, Never>
+  public let expandRewardDescription: Signal<(), Never>
+  public let fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, Never>
+  public let goToCheckout: Signal<(URLRequest, Project, Reward), Never>
+  public let goToLoginTout: Signal<(), Never>
+  public let goToPaymentAuthorization: Signal<PKPaymentRequest, Never>
+  public let goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), Never>
+  public let goToThanks: Signal<Project, Never>
+  public let goToTrustAndSafety: Signal<(), Never>
+  public var items: Signal<[String], Never> {
     return self.rewardViewModel.outputs.items
   }
-  public let itemsContainerHidden: Signal<Bool, NoError>
-  public let loadingOverlayIsHidden: Signal<Bool, NoError>
-  public var minimumLabelText: Signal<String, NoError> {
+
+  public let itemsContainerHidden: Signal<Bool, Never>
+  public let loadingOverlayIsHidden: Signal<Bool, Never>
+  public var minimumLabelText: Signal<String, Never> {
     return self.rewardViewModel.outputs.minimumLabelText
   }
-  public let navigationTitle: Signal<String, NoError>
-  public let orLabelHidden: Signal<Bool, NoError>
-  public let paddingViewHeightConstant: Signal<CGFloat, NoError>
-  public let pledgeCurrencyLabelText: Signal<String, NoError>
-  public let pledgeIsLoading: Signal<Bool, NoError>
-  public let pledgeTextFieldText: Signal<String, NoError>
-  public let readMoreContainerViewHidden: Signal<Bool, NoError>
-  public let setStripeAppleMerchantIdentifier: Signal<String, NoError>
-  public let setStripePublishableKey: Signal<String, NoError>
-  public let shippingAmountLabelText: Signal<String, NoError>
-  public let shippingInputStackViewHidden: Signal<Bool, NoError>
-  public let shippingIsLoading: Signal<Bool, NoError>
-  public let shippingLocationsLabelText: Signal<String, NoError>
-  public let shippingStackViewHidden: Signal<Bool, NoError>
-  public let showAlert: Signal<(message: String, shouldDismiss: Bool), NoError>
-  public var titleLabelHidden: Signal<Bool, NoError> {
+
+  public let navigationTitle: Signal<String, Never>
+  public let orLabelHidden: Signal<Bool, Never>
+  public let paddingViewHeightConstant: Signal<CGFloat, Never>
+  public let pledgeCurrencyLabelText: Signal<String, Never>
+  public let pledgeIsLoading: Signal<Bool, Never>
+  public let pledgeTextFieldText: Signal<String, Never>
+  public let readMoreContainerViewHidden: Signal<Bool, Never>
+  public let setStripeAppleMerchantIdentifier: Signal<String, Never>
+  public let setStripePublishableKey: Signal<String, Never>
+  public let shippingAmountLabelText: Signal<String, Never>
+  public let shippingInputStackViewHidden: Signal<Bool, Never>
+  public let shippingIsLoading: Signal<Bool, Never>
+  public let shippingLocationsLabelText: Signal<String, Never>
+  public let shippingStackViewHidden: Signal<Bool, Never>
+  public let showAlert: Signal<(message: String, shouldDismiss: Bool), Never>
+  public var titleLabelHidden: Signal<Bool, Never> {
     return self.rewardViewModel.outputs.titleLabelHidden
   }
-  public let titleLabelText: Signal<String, NoError>
 
-  public let updatePledgeButtonHidden: Signal<Bool, NoError>
-  public let changePaymentMethodButtonHidden: Signal<Bool, NoError>
-  public let cancelPledgeButtonHidden: Signal<Bool, NoError>
+  public let titleLabelText: Signal<String, Never>
+
+  public let updatePledgeButtonHidden: Signal<Bool, Never>
+  public let changePaymentMethodButtonHidden: Signal<Bool, Never>
+  public let cancelPledgeButtonHidden: Signal<Bool, Never>
 
   public var inputs: RewardPledgeViewModelInputs { return self }
   public var outputs: RewardPledgeViewModelOutputs { return self }
 }
 
-private func paymentRequest(forProject project: Project,
-                            reward: Reward,
-                            pledgeAmount: Double,
-                            selectedShippingRule: ShippingRule?,
-                            merchantIdentifier: String) -> PKPaymentRequest {
+private func paymentRequest(
+  forProject project: Project,
+  reward: Reward,
+  pledgeAmount: Double,
+  selectedShippingRule: ShippingRule?,
+  merchantIdentifier: String
+) -> PKPaymentRequest {
   let request = PKPaymentRequest()
   request.merchantIdentifier = merchantIdentifier
   request.supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks(for: project)
@@ -953,19 +963,22 @@ private func paymentRequest(forProject project: Project,
   request.currencyCode = project.country.currencyCode
   request.shippingType = .shipping
 
-  request.paymentSummaryItems = paymentSummaryItems(forProject: project,
-                                                    reward: reward,
-                                                    pledgeAmount: pledgeAmount,
-                                                    selectedShippingRule: selectedShippingRule)
+  request.paymentSummaryItems = paymentSummaryItems(
+    forProject: project,
+    reward: reward,
+    pledgeAmount: pledgeAmount,
+    selectedShippingRule: selectedShippingRule
+  )
 
   return request
 }
 
-private func paymentSummaryItems(forProject project: Project,
-                                 reward: Reward,
-                                 pledgeAmount: Double,
-                                 selectedShippingRule: ShippingRule?) -> [PKPaymentSummaryItem] {
-
+private func paymentSummaryItems(
+  forProject project: Project,
+  reward: Reward,
+  pledgeAmount: Double,
+  selectedShippingRule: ShippingRule?
+) -> [PKPaymentSummaryItem] {
   var paymentSummaryItems: [PKPaymentSummaryItem] = []
 
   paymentSummaryItems.append(
@@ -991,20 +1004,17 @@ private func paymentSummaryItems(forProject project: Project,
   }
 
   paymentSummaryItems.append(
-
     PKPaymentSummaryItem(
       label: Strings.Kickstarter_if_funded(),
       amount: total,
       type: .final
     )
-
   )
 
   return paymentSummaryItems
 }
 
 private func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]) -> ShippingRule? {
-
   let shippingRuleFromCurrentLocation = shippingRules
     .filter { shippingRule in shippingRule.location.country == AppEnvironment.current.config?.countryCode }
     .first
@@ -1021,7 +1031,6 @@ private func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]
 }
 
 private func backingError(forProject project: Project, amount: Double, reward: Reward?) -> PledgeError? {
-
   let (min, max) = minAndMaxPledgeAmount(forProject: project, reward: reward)
 
   guard amount >= min else {
@@ -1043,11 +1052,12 @@ private func backingError(forProject project: Project, amount: Double, reward: R
   return nil
 }
 
-private func createPledge(project: Project,
-                          reward: Reward?,
-                          amount: Double,
-                          shipping: ShippingRule?) -> SignalProducer<URLRequest, PledgeError> {
-
+private func createPledge(
+  project: Project,
+  reward: Reward?,
+  amount: Double,
+  shipping: ShippingRule?
+) -> SignalProducer<URLRequest, PledgeError> {
   if let error = backingError(forProject: project, amount: amount, reward: reward) {
     return SignalProducer(error: error)
   }
@@ -1060,24 +1070,25 @@ private func createPledge(project: Project,
     reward: reward,
     shippingLocation: shipping?.location,
     tappedReward: true
-    )
-    .mapError { PledgeError.other($0) }
-    .flatMap { env -> SignalProducer<URLRequest, PledgeError> in
+  )
+  .mapError { PledgeError.other($0) }
+  .flatMap { env -> SignalProducer<URLRequest, PledgeError> in
 
-      guard let url = env.newCheckoutUrl.map(AppEnvironment.current.apiService.serverConfig.webBaseUrl
-        .appendingPathComponent)
-        else { return .empty }
+    guard let url = env.newCheckoutUrl.map(AppEnvironment.current.apiService.serverConfig.webBaseUrl
+      .appendingPathComponent)
+    else { return .empty }
 
-      let request = URLRequest(url: url)
-      return SignalProducer(value: request)
+    let request = URLRequest(url: url)
+    return SignalProducer(value: request)
   }
 }
 
-private func updatePledge(project: Project,
-                          reward: Reward?,
-                          amount: Double,
-                          shipping: ShippingRule?) -> SignalProducer<URLRequest?, PledgeError> {
-
+private func updatePledge(
+  project: Project,
+  reward: Reward?,
+  amount: Double,
+  shipping: ShippingRule?
+) -> SignalProducer<URLRequest?, PledgeError> {
   if let error = backingError(forProject: project, amount: amount, reward: reward) {
     return SignalProducer(error: error)
   }
@@ -1090,15 +1101,15 @@ private func updatePledge(project: Project,
     reward: reward,
     shippingLocation: shipping?.location,
     tappedReward: true
-    )
-    .mapError { PledgeError.other($0) }
-    .flatMap { env -> SignalProducer<URLRequest?, PledgeError> in
+  )
+  .mapError { PledgeError.other($0) }
+  .flatMap { env -> SignalProducer<URLRequest?, PledgeError> in
 
-      let request = env.newCheckoutUrl
-        .flatMap(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)
-        .map { URLRequest(url: $0) }
+    let request = env.newCheckoutUrl
+      .flatMap(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)
+      .map { URLRequest(url: $0) }
 
-      return SignalProducer(value: request)
+    return SignalProducer(value: request)
   }
 }
 
@@ -1108,8 +1119,8 @@ private func createApplePayPledge(
   amount: Double,
   shipping: ShippingRule?,
   paymentData: PaymentData,
-  stripeToken: String) -> SignalProducer<SubmitApplePayEnvelope, PledgeError> {
-
+  stripeToken: String
+) -> SignalProducer<SubmitApplePayEnvelope, PledgeError> {
   if let error = backingError(forProject: project, amount: amount, reward: reward) {
     return SignalProducer(error: error)
   }
@@ -1122,40 +1133,38 @@ private func createApplePayPledge(
     reward: reward,
     shippingLocation: shipping?.location,
     tappedReward: true
+  )
+  .mapError { PledgeError.other($0) }
+  .flatMap { env -> SignalProducer<SubmitApplePayEnvelope, PledgeError> in
+
+    guard let checkoutUrl = env.checkoutUrl
+      .map(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)?
+      .absoluteString
+    else { return .empty }
+
+    return AppEnvironment.current.apiService.submitApplePay(
+      checkoutUrl: checkoutUrl,
+      stripeToken: stripeToken,
+      paymentInstrumentName: paymentData.tokenData.paymentMethodData.displayName ?? "",
+      paymentNetwork: paymentData.tokenData.paymentMethodData.network?.rawValue ?? "",
+      transactionIdentifier: paymentData.tokenData.transactionIdentifier
     )
     .mapError { PledgeError.other($0) }
-    .flatMap { env -> SignalProducer<SubmitApplePayEnvelope, PledgeError> in
-
-      guard let checkoutUrl = env.checkoutUrl
-        .map(AppEnvironment.current.apiService.serverConfig.webBaseUrl.appendingPathComponent)?
-        .absoluteString
-        else { return .empty }
-
-      return AppEnvironment.current.apiService.submitApplePay(
-        checkoutUrl: checkoutUrl,
-        stripeToken: stripeToken,
-        paymentInstrumentName: paymentData.tokenData.paymentMethodData.displayName ?? "",
-        paymentNetwork: paymentData.tokenData.paymentMethodData.network?.rawValue ?? "",
-        transactionIdentifier: paymentData.tokenData.transactionIdentifier
-        )
-        .mapError { PledgeError.other($0) }
   }
 }
 
 private func changePaymentMethod(project: Project) -> SignalProducer<URLRequest, PledgeError> {
-
-    return AppEnvironment.current.apiService.changePaymentMethod(project: project)
-      .mapError { PledgeError.other($0) }
-      .map { env -> URLRequest? in
-        env.newCheckoutUrl
-          .flatMap(URL.init(string:))
-          .map { URLRequest(url: $0) }
-      }
-      .skipNil()
+  return AppEnvironment.current.apiService.changePaymentMethod(project: project)
+    .mapError { PledgeError.other($0) }
+    .map { env -> URLRequest? in
+      env.newCheckoutUrl
+        .flatMap(URL.init(string:))
+        .map { URLRequest(url: $0) }
+    }
+    .skipNil()
 }
 
-private func navigationTitle(forProject project: Project, reward: Reward) -> String {
-
+private func navigationTitleForProject(_ project: Project, reward: Reward) -> String {
   guard project.personalization.isBacking != true else {
     if reward == Reward.noReward {
       return Strings.Manage_your_pledge()
@@ -1184,15 +1193,15 @@ private enum PledgeError: Error {
     switch self {
     case let .maximumAmount(env): return env
     case let .minimumAmount(env): return env
-    case let .other(env):         return env
+    case let .other(env): return env
     }
   }
 
   fileprivate var koalaErrorType: Koala.ErroredRewardPledgeButtonClickType? {
     switch self {
-    case .maximumAmount:  return .maximumAmount
-    case .minimumAmount:  return .minimumAmount
-    case .other:          return nil
+    case .maximumAmount: return .maximumAmount
+    case .minimumAmount: return .minimumAmount
+    case .other: return nil
     }
   }
 }

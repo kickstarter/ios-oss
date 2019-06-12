@@ -1,11 +1,10 @@
-import Prelude
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import Prelude
 import XCTest
 
 internal final class DashboardViewControllerTests: TestCase {
-
   override func setUp() {
     super.setUp()
     let project = cosmicSurgery
@@ -38,7 +37,6 @@ internal final class DashboardViewControllerTests: TestCase {
   }
 
   func testView() {
-
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
       withEnvironment(language: language) {
@@ -82,7 +80,7 @@ private let internalReferrerStats = .template
   |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.4
   |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 40
   |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "Search"
-  |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .`internal`
+  |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .internal
 
 private let customReferrerStats = .template
   |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 25
@@ -90,7 +88,7 @@ private let customReferrerStats = .template
   |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.35
   |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 35
   |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "Dfg"
-  |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .`custom`
+  |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .custom
 
 private let referrerStats = [externalReferrerStats, internalReferrerStats, customReferrerStats]
 
@@ -106,7 +104,7 @@ private let videoStats = .template
   |> ProjectStatsEnvelope.VideoStats.lens.externalCompletions .~ 51
   |> ProjectStatsEnvelope.VideoStats.lens.externalStarts .~ 212
   |> ProjectStatsEnvelope.VideoStats.lens.internalCompletions .~ 751
-  |> ProjectStatsEnvelope.VideoStats.lens.internalStarts .~ 1000
+  |> ProjectStatsEnvelope.VideoStats.lens.internalStarts .~ 1_000
 
 private let referralAggregateStats = .template
   |> ProjectStatsEnvelope.ReferralAggregateStats.lens.external .~ 455.00
@@ -119,7 +117,7 @@ private let cumulativeStats = .template
 
 private let cosmicSurgery = .cosmicSurgery
   |> Project.lens.stats.pledged .~ cumulativeStats.pledged
-  |> Project.lens.memberData.lastUpdatePublishedAt .~ 1477581146
+  |> Project.lens.memberData.lastUpdatePublishedAt .~ 1_477_581_146
   |> Project.lens.memberData.unreadMessagesCount .~ 42
   |> Project.lens.memberData.unseenActivityCount .~ 1_299
   |> Project.lens.memberData.permissions .~ [.post, .viewPledges]
@@ -131,5 +129,5 @@ private let fundingStats = stats.enumerated().map { idx, pledged in
   .template
     |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ pledged
     |> ProjectStatsEnvelope.FundingDateStats.lens.date
-      .~ (cosmicSurgery.dates.launchedAt + TimeInterval(idx * 86_400))
+    .~ (cosmicSurgery.dates.launchedAt + TimeInterval(idx * 86_400))
 }

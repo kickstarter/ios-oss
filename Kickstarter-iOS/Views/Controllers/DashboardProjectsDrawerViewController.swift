@@ -4,7 +4,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal protocol DashboardProjectsDrawerViewControllerDelegate: class {
+internal protocol DashboardProjectsDrawerViewControllerDelegate: AnyObject {
   /// Call when a project cell is tapped with the project.
   func dashboardProjectsDrawerCellDidTapProject(_ project: Project)
 
@@ -16,7 +16,6 @@ internal protocol DashboardProjectsDrawerViewControllerDelegate: class {
 }
 
 internal final class DashboardProjectsDrawerViewController: UITableViewController {
-
   internal weak var delegate: DashboardProjectsDrawerViewControllerDelegate?
 
   fileprivate let viewModel: DashboardProjectsDrawerViewModelType = DashboardProjectsDrawerViewModel()
@@ -24,10 +23,9 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
 
   internal static func configuredWith(data: [ProjectsDrawerData])
     -> DashboardProjectsDrawerViewController {
-
-      let vc = Storyboard.DashboardProjectsDrawer.instantiate(DashboardProjectsDrawerViewController.self)
-      vc.viewModel.inputs.configureWith(data: data)
-      return vc
+    let vc = Storyboard.DashboardProjectsDrawer.instantiate(DashboardProjectsDrawerViewController.self)
+    vc.viewModel.inputs.configureWith(data: data)
+    return vc
   }
 
   internal override func viewDidLoad() {
@@ -38,7 +36,7 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
+  override func viewWillDisappear(_: Bool) {
     if let tapGesture = self.tableView.backgroundView?.gestureRecognizers?.first {
       self.tableView.backgroundView?.removeGestureRecognizer(tapGesture)
     }
@@ -53,31 +51,31 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
         self?.dataSource.load(data: data)
         self?.tableView.reloadData()
         self?.animateIn()
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateToCloseDrawer
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.delegate?.dashboardProjectsDrawerHideDrawer()
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateDidAnimateOut
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.delegate?.dashboardProjectsDrawerDidAnimateOut()
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateProjectCellTapped
       .observeForControllerAction()
       .observeValues { [weak self] project in
         self?.delegate?.dashboardProjectsDrawerCellDidTapProject(project)
-    }
+      }
 
     self.viewModel.outputs.focusScreenReaderOnFirstProject
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.accessibilityFocusOnFirstProject()
-    }
+      }
   }
 
   override func bindStyles() {
@@ -94,7 +92,7 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
     self.animateIn()
   }
 
-  internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  internal override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let project = self.dataSource.projectAtIndexPath(indexPath) else { return }
 
     self.viewModel.inputs.projectCellTapped(project)
@@ -106,8 +104,8 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
     UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut, animations: {
       self.tableView.backgroundView?.alpha = 0.0
       self.tableView.contentOffset = CGPoint(x: 0.0, y: self.tableView.frame.size.height / 2)
-      }, completion: { _ in
-        self.viewModel.inputs.animateOutCompleted()
+    }, completion: { _ in
+      self.viewModel.inputs.animateOutCompleted()
     })
   }
 
@@ -116,19 +114,20 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
 
     UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
       self.tableView.backgroundView?.alpha = 0.4
-      }, completion: { _ in
-        self.tableView.backgroundView?.addGestureRecognizer(
-          UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped))
-        )
+    }, completion: { _ in
+      self.tableView.backgroundView?.addGestureRecognizer(
+        UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped))
+      )
     })
 
-    UIView.animate(withDuration: 0.3,
-                               delay: 0.0,
-                               usingSpringWithDamping: 0.95,
-                               initialSpringVelocity: 0.9,
-                               options: .curveEaseOut,
-                               animations: {
-      self.tableView.contentOffset = CGPoint(x: 0.0, y: 0.0)
+    UIView.animate(
+      withDuration: 0.3,
+      delay: 0.0,
+      usingSpringWithDamping: 0.95,
+      initialSpringVelocity: 0.9,
+      options: .curveEaseOut,
+      animations: {
+        self.tableView.contentOffset = CGPoint(x: 0.0, y: 0.0)
       }, completion: { _ in
         self.viewModel.inputs.animateInCompleted()
       }

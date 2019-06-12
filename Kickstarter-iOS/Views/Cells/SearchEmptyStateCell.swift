@@ -7,9 +7,9 @@ import UIKit
 internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: SearchEmptyStateCellViewModelType = SearchEmptyStateCellViewModel()
 
-  @IBOutlet fileprivate weak var noResultsLabel: UILabel!
-  @IBOutlet fileprivate weak var searchTermNotFoundLabel: UILabel!
-  @IBOutlet fileprivate weak var rootStackView: UIStackView!
+  @IBOutlet fileprivate var noResultsLabel: UILabel!
+  @IBOutlet fileprivate var searchTermNotFoundLabel: UILabel!
+  @IBOutlet fileprivate var rootStackView: UIStackView!
 
   internal func configureWith(value param: DiscoveryParams) {
     self.viewModel.inputs.configureWith(param: param)
@@ -25,7 +25,7 @@ internal final class SearchEmptyStateCell: UITableViewCell, ValueCell {
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(4), left: Styles.grid(24), bottom: Styles.grid(2), right: Styles.grid(24))
           : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(2))
-    }
+      }
 
     _ = self.noResultsLabel
       |> UILabel.lens.text %~ { _ in Strings.No_Results() }

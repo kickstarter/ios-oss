@@ -1,5 +1,4 @@
 import ReactiveSwift
-import Result
 
 public protocol DeprecatedWebViewModelInputs {
   /// Call when the view loads.
@@ -16,7 +15,7 @@ public protocol DeprecatedWebViewModelInputs {
 }
 
 public protocol DeprecatedWebViewModelOutputs {
-  var loadingOverlayIsHiddenAndAnimate: Signal<(isHidden: Bool, animate: Bool), NoError> { get }
+  var loadingOverlayIsHiddenAndAnimate: Signal<(isHidden: Bool, animate: Bool), Never> { get }
 }
 
 public protocol DeprecatedWebViewModelType {
@@ -25,8 +24,7 @@ public protocol DeprecatedWebViewModelType {
 }
 
 public final class DeprecatedWebViewModel: DeprecatedWebViewModelType, DeprecatedWebViewModelInputs,
-DeprecatedWebViewModelOutputs {
-
+  DeprecatedWebViewModelOutputs {
   public init() {
     self.loadingOverlayIsHiddenAndAnimate = Signal.merge(
       // Hide when first starting out
@@ -43,8 +41,8 @@ DeprecatedWebViewModelOutputs {
       self.webViewDidFailErrorProperty.signal
         .filter { ($0 as NSError?)?.code != .some(102) }
         .mapConst((true, true))
-      )
-      .skipRepeats(==)
+    )
+    .skipRepeats(==)
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
@@ -67,7 +65,7 @@ DeprecatedWebViewModelOutputs {
     self.webViewDidStartLoadProperty.value = ()
   }
 
-  public let loadingOverlayIsHiddenAndAnimate: Signal<(isHidden: Bool, animate: Bool), NoError>
+  public let loadingOverlayIsHiddenAndAnimate: Signal<(isHidden: Bool, animate: Bool), Never>
 
   public var inputs: DeprecatedWebViewModelInputs { return self }
   public var outputs: DeprecatedWebViewModelOutputs { return self }

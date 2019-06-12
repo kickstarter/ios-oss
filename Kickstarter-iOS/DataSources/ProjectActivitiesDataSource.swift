@@ -1,18 +1,19 @@
-import Library
 import KsApi
+import Library
 import UIKit
 
 internal final class ProjectActivitiesDataSource: ValueCellDataSource {
-
   internal enum Section: Int {
     case emptyState
     case activities
   }
 
   internal func emptyState(visible: Bool) {
-    self.set(values: visible ? [()] : [],
-             cellClass: ProjectActivityEmptyStateCell.self,
-             inSection: Section.emptyState.rawValue)
+    self.set(
+      values: visible ? [()] : [],
+      cellClass: ProjectActivityEmptyStateCell.self,
+      inSection: Section.emptyState.rawValue
+    )
   }
 
   internal func load(projectActivityData: ProjectActivityData) {
@@ -22,7 +23,7 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
 
     projectActivityData.activities
       .groupedBy { activity in
-        return AppEnvironment.current.calendar.startOfDay(
+        AppEnvironment.current.calendar.startOfDay(
           for: Date(timeIntervalSince1970: activity.createdAt)
         )
       }
@@ -40,12 +41,11 @@ internal final class ProjectActivitiesDataSource: ValueCellDataSource {
               appendDateRow(date: date, section: section)
             }
             appendActivityRow(activity: activity, project: projectActivityData.project, section: section)
-        }
-    }
+          }
+      }
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
-
     switch (cell, value) {
     case let (cell as ProjectActivityBackingCell, value as (Activity, Project)):
       cell.configureWith(value: value)

@@ -1,12 +1,11 @@
-import UIKit
 import KsApi
-import Prelude
-import ReactiveSwift
-import Result
-import ReactiveExtensions
 import Library
+import Prelude
+import ReactiveExtensions
+import ReactiveSwift
+import UIKit
 
-internal protocol CommentDialogDelegate: class {
+internal protocol CommentDialogDelegate: AnyObject {
   func commentDialogWantsDismissal(_ dialog: CommentDialogViewController)
   func commentDialog(_ dialog: CommentDialogViewController, postedComment: Comment)
 }
@@ -15,13 +14,13 @@ internal final class CommentDialogViewController: UIViewController {
   fileprivate let viewModel: CommentDialogViewModelType = CommentDialogViewModel()
   internal weak var delegate: CommentDialogDelegate?
 
-  @IBOutlet fileprivate weak var bottomConstraint: NSLayoutConstraint!
-  @IBOutlet fileprivate weak var cancelButton: UIBarButtonItem!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
-  @IBOutlet fileprivate weak var subtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var bodyTextView: UITextView!
-  @IBOutlet fileprivate weak var postButton: UIBarButtonItem!
-  @IBOutlet fileprivate weak var loadingView: UIView!
+  @IBOutlet fileprivate var bottomConstraint: NSLayoutConstraint!
+  @IBOutlet fileprivate var cancelButton: UIBarButtonItem!
+  @IBOutlet fileprivate var titleLabel: UILabel!
+  @IBOutlet fileprivate var subtitleLabel: UILabel!
+  @IBOutlet fileprivate var bodyTextView: UITextView!
+  @IBOutlet fileprivate var postButton: UIBarButtonItem!
+  @IBOutlet fileprivate var loadingView: UIView!
 
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -33,11 +32,15 @@ internal final class CommentDialogViewController: UIViewController {
     self.viewModel.inputs.viewWillDisappear()
   }
 
-  internal static func configuredWith(project: Project, update: Update?, recipient: Author?,
-                                      context: Koala.CommentDialogContext) -> CommentDialogViewController {
+  internal static func configuredWith(
+    project: Project, update: Update?, recipient: Author?,
+    context: Koala.CommentDialogContext
+  ) -> CommentDialogViewController {
     let vc = Storyboard.Comments.instantiate(CommentDialogViewController.self)
-    vc.viewModel.inputs.configureWith(project: project, update: update, recipient: recipient,
-                                      context: context)
+    vc.viewModel.inputs.configureWith(
+      project: project, update: update, recipient: recipient,
+      context: context
+    )
     return vc
   }
 
@@ -56,7 +59,7 @@ internal final class CommentDialogViewController: UIViewController {
     _ = self.cancelButton
       |> UIBarButtonItem.lens.title %~ { _ in
         Strings.dashboard_post_update_compose_attachment_buttons_cancel()
-    }
+      }
 
     _ = self.bodyTextView
       |> UITextView.lens.textColor .~ .ksr_soft_black
@@ -75,7 +78,7 @@ internal final class CommentDialogViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak textView = self.bodyTextView] show in
         _ = show ? textView?.becomeFirstResponder() : textView?.resignFirstResponder()
-    }
+      }
 
     self.viewModel.outputs.notifyPresenterDialogWantsDismissal
       .observeForControllerAction()
@@ -112,18 +115,19 @@ internal final class CommentDialogViewController: UIViewController {
   fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
     UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
       self.bottomConstraint.constant = -(change.frame.height + Styles.grid(2))
-      }, completion: nil)
+    }, completion: nil)
   }
 
   fileprivate func presentError(_ message: String) {
-    self.present(UIAlertController.genericError(message),
-                               animated: true,
-                               completion: nil)
+    self.present(
+      UIAlertController.genericError(message),
+      animated: true,
+      completion: nil
+    )
   }
 }
 
 extension CommentDialogViewController: UITextViewDelegate {
-
   internal func textViewDidChange(_ textView: UITextView) {
     self.viewModel.inputs.commentBodyChanged(textView.text)
   }

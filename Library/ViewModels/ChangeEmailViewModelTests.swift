@@ -1,34 +1,33 @@
-import Prelude
-import XCTest
-@testable import Library
 @testable import KsApi
-import ReactiveSwift
+@testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Result
+import ReactiveSwift
+import XCTest
 
 final class ChangeEmailViewModelTests: TestCase {
   fileprivate let vm: ChangeEmailViewModelType = ChangeEmailViewModel()
 
-  private let activityIndicatorShouldShow = TestObserver<Bool, NoError>()
-  private let didChangeEmail = TestObserver<Void, NoError>()
-  private let didFailToChangeEmail = TestObserver<String, NoError>()
-  private let didFailToSendVerificationEmail = TestObserver<String, NoError>()
-  private let didSendVerificationEmail = TestObserver<Void, NoError>()
-  private let dismissKeyboard = TestObserver<(), NoError>()
-  private let emailText = TestObserver<String, NoError>()
-  private let messageLabelViewHidden = TestObserver<Bool, NoError>()
-  private let onePasswordButtonIsHidden = TestObserver<Bool, NoError>()
-  private let onePasswordFindLoginForURLString = TestObserver<String, NoError>()
-  private let passwordFieldBecomeFirstResponder = TestObserver<Void, NoError>()
-  private let passwordText = TestObserver<String, NoError>()
-  private let resendVerificationEmailViewIsHidden = TestObserver<Bool, NoError>()
-  private let resetFields = TestObserver<String, NoError>()
-  private let saveButtonIsEnabled = TestObserver<Bool, NoError>()
-  private let textFieldsAreEnabled = TestObserver<Bool, NoError>()
-  private let unverifiedEmailLabelHidden = TestObserver<Bool, NoError>()
-  private let warningMessageLabelHidden = TestObserver<Bool, NoError>()
-  private let verificationEmailButtonTitle = TestObserver<String, NoError>()
+  private let activityIndicatorShouldShow = TestObserver<Bool, Never>()
+  private let didChangeEmail = TestObserver<Void, Never>()
+  private let didFailToChangeEmail = TestObserver<String, Never>()
+  private let didFailToSendVerificationEmail = TestObserver<String, Never>()
+  private let didSendVerificationEmail = TestObserver<Void, Never>()
+  private let dismissKeyboard = TestObserver<(), Never>()
+  private let emailText = TestObserver<String, Never>()
+  private let messageLabelViewHidden = TestObserver<Bool, Never>()
+  private let onePasswordButtonIsHidden = TestObserver<Bool, Never>()
+  private let onePasswordFindLoginForURLString = TestObserver<String, Never>()
+  private let passwordFieldBecomeFirstResponder = TestObserver<Void, Never>()
+  private let passwordText = TestObserver<String, Never>()
+  private let resendVerificationEmailViewIsHidden = TestObserver<Bool, Never>()
+  private let resetFields = TestObserver<String, Never>()
+  private let saveButtonIsEnabled = TestObserver<Bool, Never>()
+  private let textFieldsAreEnabled = TestObserver<Bool, Never>()
+  private let unverifiedEmailLabelHidden = TestObserver<Bool, Never>()
+  private let warningMessageLabelHidden = TestObserver<Bool, Never>()
+  private let verificationEmailButtonTitle = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -84,18 +83,18 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.didChangeEmail.assertDidEmitValue()
       self.emailText.assertValues(["ksr@kickstarter.com", "apple@kickstarter.com"])
-      self.resendVerificationEmailViewIsHidden.assertValues([true],
-                                                            "Resend verification email button does not show")
+      self.resendVerificationEmailViewIsHidden.assertValues(
+        [true],
+        "Resend verification email button does not show"
+      )
       self.unverifiedEmailLabelHidden.assertValues([true])
     }
   }
 
   func testDidFailToChangeEmailEmits_OnFailure() {
-
     let error = GraphError.emptyResponse(nil)
 
     withEnvironment(apiService: MockService(changeEmailError: error)) {
-
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@ksr.com")
       self.vm.inputs.passwordFieldTextDidChange(text: "123456")
 
@@ -143,29 +142,29 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testTrackingEventsIfOnePassword_IsAvailable() {
-
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.onePassword(isAvailable: true)
 
-    XCTAssertEqual([true, nil],
-                   self.trackingClient.properties(forKey: "1password_extension_available", as: Bool.self))
+    XCTAssertEqual(
+      [true, nil],
+      self.trackingClient.properties(forKey: "1password_extension_available", as: Bool.self)
+    )
 
-    XCTAssertEqual([nil, true],
-                   self.trackingClient.properties(forKey: "one_password_extension_available", as: Bool.self))
+    XCTAssertEqual(
+      [nil, true],
+      self.trackingClient.properties(forKey: "one_password_extension_available", as: Bool.self)
+    )
   }
 
   func testPasswordText_OnePassword() {
-
     self.vm.inputs.onePasswordFound(password: "123456")
     self.passwordText.assertValues(["123456"])
   }
 
   func testEmailText_AfterFetchingUsersEmail() {
-
     let response = UserEnvelope<UserEmailFields>(me: .template)
 
     withEnvironment(apiService: MockService(changeEmailResponse: response)) {
-
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
 
@@ -174,7 +173,6 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testOnePasswordFindLoginForURLString() {
-
     self.vm.inputs.onePasswordButtonTapped()
 
     self.onePasswordFindLoginForURLString.assertValues(
@@ -183,11 +181,9 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testSaveButtonEnabledStatus() {
-
     let response = UserEnvelope<UserEmailFields>(me: .template)
 
     withEnvironment(apiService: MockService(changeEmailResponse: response)) {
-
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -205,11 +201,9 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testSaveButtonEnablesAfter_OnePasswordPrefillsField() {
-
     let response = UserEnvelope<UserEmailFields>(me: .template)
 
     withEnvironment(apiService: MockService(changeEmailResponse: response)) {
-
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -322,11 +316,9 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testDidFailToSendVerificationEmailEmits_OnFailure() {
-
     let error = GraphError.invalidInput
 
     withEnvironment(apiService: MockService(sendEmailVerificationError: error)) {
-
       self.vm.inputs.resendVerificationEmailButtonTapped()
       self.scheduler.advance()
 
@@ -335,10 +327,10 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testDidSendVerificationEmailEmits_OnSuccess() {
-      self.vm.inputs.resendVerificationEmailButtonTapped()
-      self.scheduler.advance()
+    self.vm.inputs.resendVerificationEmailButtonTapped()
+    self.scheduler.advance()
 
-      self.didSendVerificationEmail.assertDidEmitValue()
+    self.didSendVerificationEmail.assertDidEmitValue()
   }
 
   func testVerificationEmailButtonTitle_Backer() {
@@ -346,7 +338,6 @@ final class ChangeEmailViewModelTests: TestCase {
       |> \.stats.createdProjectsCount .~ 0
 
     withEnvironment(currentUser: user) {
-
       self.vm.inputs.viewDidLoad()
 
       self.verificationEmailButtonTitle.assertValue(Strings.Send_verfication_email())
@@ -354,12 +345,10 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testVerificationEmailButtonTitle_Creator() {
-
     let user = User.template
       |> \.stats.createdProjectsCount .~ 1
 
     withEnvironment(currentUser: user) {
-
       self.vm.inputs.viewDidLoad()
 
       self.verificationEmailButtonTitle.assertValue(Strings.Resend_verification_email())
@@ -367,7 +356,6 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testDismissKeyboard_OnSuccess() {
-
     self.dismissKeyboard.assertDidNotEmitValue()
 
     self.vm.inputs.emailFieldTextDidChange(text: "new@email.com")
@@ -382,7 +370,6 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testDismissKeyboard_InvalidEmail() {
-
     self.dismissKeyboard.assertDidNotEmitValue()
 
     self.vm.inputs.emailFieldTextDidChange(text: "new@email.com.")
@@ -396,7 +383,6 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testPasswordFieldBecomeFirstResponder_WhenTappingNext() {
-
     self.vm.inputs.viewDidLoad()
     self.passwordFieldBecomeFirstResponder.assertValueCount(0)
 
@@ -408,7 +394,6 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testFieldsResetWithEmptyString_AfterChangingEmail() {
-
     self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
     self.vm.inputs.passwordFieldTextDidChange(text: "123456")
     self.vm.inputs.saveButtonIsEnabled(true)
@@ -427,7 +412,6 @@ final class ChangeEmailViewModelTests: TestCase {
   }
 
   func testTextFieldsAreEnabled() {
-
     self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
     self.vm.inputs.passwordFieldTextDidChange(text: "123456")
 

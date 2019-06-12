@@ -1,23 +1,22 @@
-import XCTest
-import Result
-import ReactiveSwift
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
-import Prelude
+import ReactiveSwift
+import XCTest
 
 internal final class CommentsEmptyStateCellViewModelTest: TestCase {
   fileprivate let vm: CommentsEmptyStateCellViewModelType = CommentsEmptyStateCellViewModel()
 
-  fileprivate let backProjectButtonHidden = TestObserver<Bool, NoError>()
-  fileprivate let goBackToProject = TestObserver<(), NoError>()
-  fileprivate let goToCommentDialog = TestObserver<Void, NoError>()
-  fileprivate let goToLoginTout = TestObserver<Void, NoError>()
-  fileprivate let leaveACommentButtonHidden = TestObserver<Bool, NoError>()
-  fileprivate let loginButtonHidden = TestObserver<Bool, NoError>()
-  fileprivate let subtitleIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let subtitleText = TestObserver<String, NoError>()
+  fileprivate let backProjectButtonHidden = TestObserver<Bool, Never>()
+  fileprivate let goBackToProject = TestObserver<(), Never>()
+  fileprivate let goToCommentDialog = TestObserver<Void, Never>()
+  fileprivate let goToLoginTout = TestObserver<Void, Never>()
+  fileprivate let leaveACommentButtonHidden = TestObserver<Bool, Never>()
+  fileprivate let loginButtonHidden = TestObserver<Bool, Never>()
+  fileprivate let subtitleIsHidden = TestObserver<Bool, Never>()
+  fileprivate let subtitleText = TestObserver<String, Never>()
 
   fileprivate let creator = User.template
     |> \.name .~ "Fuzzy Wuzzy"
@@ -38,7 +37,7 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
   internal func testGoBackToProject() {
     let project = .template
       |> Project.lens.personalization.isBacking .~ false
-      |> Project.lens.creator .~ creator
+      |> Project.lens.creator .~ self.creator
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
@@ -107,7 +106,7 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
 
     let projectBacking = .template
       |> Project.lens.personalization.isBacking .~ false
-      |> Project.lens.creator .~ creator
+      |> Project.lens.creator .~ self.creator
 
     self.vm.inputs.configureWith(project: project, update: nil)
 
@@ -132,14 +131,16 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
     self.leaveACommentButtonHidden.assertValues([true, true])
     self.loginButtonHidden.assertValues([false, true])
     self.subtitleIsHidden.assertValues([false, false])
-    self.subtitleText.assertValues([Strings.Log_in_to_leave_a_comment(),
-      Strings.Become_a_backer_to_leave_a_comment()])
+    self.subtitleText.assertValues([
+      Strings.Log_in_to_leave_a_comment(),
+      Strings.Become_a_backer_to_leave_a_comment()
+    ])
   }
 
   internal func testLoggedInNonBacking() {
     let project = .template
       |> Project.lens.personalization.isBacking .~ false
-      |> Project.lens.creator .~ creator
+      |> Project.lens.creator .~ self.creator
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
 
@@ -198,9 +199,9 @@ internal final class CommentsEmptyStateCellViewModelTest: TestCase {
   internal func testLoggedInCreator() {
     let project = .template
       |> Project.lens.personalization.isBacking .~ false
-      |> Project.lens.creator .~ creator
+      |> Project.lens.creator .~ self.creator
 
-    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: creator))
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: self.creator))
 
     self.vm.inputs.configureWith(project: project, update: nil)
 

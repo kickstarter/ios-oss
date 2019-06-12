@@ -1,21 +1,20 @@
-import XCTest
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
 @testable import Library
 import Prelude
-import Result
+import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
   fileprivate let vm: ProjectActivityUpdateCellViewModelType = ProjectActivityUpdateCellViewModel()
 
-  fileprivate let activityTitle = TestObserver<String, NoError>()
-  fileprivate let body = TestObserver<String, NoError>()
-  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let cellAccessibilityValue = TestObserver<String, NoError>()
-  fileprivate let commentsCount = TestObserver<String, NoError>()
+  fileprivate let activityTitle = TestObserver<String, Never>()
+  fileprivate let body = TestObserver<String, Never>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let cellAccessibilityValue = TestObserver<String, Never>()
+  fileprivate let commentsCount = TestObserver<String, Never>()
   fileprivate let defaultUser = User.template |> \.name .~ "Christopher"
-  fileprivate let likesCount = TestObserver<String, NoError>()
-  fileprivate let updateTitle = TestObserver<String, NoError>()
+  fileprivate let likesCount = TestObserver<String, Never>()
+  fileprivate let updateTitle = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -88,11 +87,11 @@ internal final class ProjectActivityUpdateCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(activity: activity, project: project)
     let expected = (Strings.dashboard_activity_update_number_posted_time_count_days_ago(
-        space: "\u{00a0}",
-        update_number: "9",
-        time_count_days_ago: Format.relative(secondsInUTC: publishedAt)
-      )
-      .htmlStripped() ?? "")
+      space: "\u{00a0}",
+      update_number: "9",
+      time_count_days_ago: Format.relative(secondsInUTC: publishedAt)
+    )
+    .htmlStripped() ?? "")
     self.cellAccessibilityLabel.assertValues([expected], "Emits accessibility label")
   }
 

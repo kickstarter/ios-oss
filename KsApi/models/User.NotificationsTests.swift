@@ -1,5 +1,5 @@
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class NotificationsTests: XCTestCase {
   func testJsonEncoding() {
@@ -90,7 +90,9 @@ final class NotificationsTests: XCTestCase {
 
     let notifications = json.value
 
-    XCTAssertEqual(notifications,
-                   User.Notifications.decodeJSONDictionary(notifications?.encode() ?? [:]).value)
+    XCTAssertEqual(
+      notifications,
+      User.Notifications.decodeJSONDictionary(notifications?.encode() ?? [:]).value
+    )
   }
 }

@@ -3,8 +3,8 @@ import UIKit
 extension UITableView {
   public func ksr_sizeHeaderFooterViewsToFit() {
     let keyPaths: [ReferenceWritableKeyPath<UITableView, UIView?>] = [
-      (\.tableHeaderView),
-      (\.tableFooterView)
+      \.tableHeaderView,
+      \.tableFooterView
     ]
 
     keyPaths.forEach { keyPath in

@@ -1,5 +1,5 @@
-import XCTest
 import Library
+import XCTest
 
 final class IsValidEmailTests: XCTestCase {
   func testIsValidEmail() {

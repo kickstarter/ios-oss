@@ -1,31 +1,30 @@
-import Prelude
-import ReactiveSwift
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class BackerDashboardViewModelTests: TestCase {
   private let vm: BackerDashboardViewModelType = BackerDashboardViewModel()
 
-  private let avatarURL = TestObserver<String, NoError>()
-  private let backedButtonTitleText = TestObserver<String, NoError>()
-  private let backerNameText = TestObserver<String, NoError>()
-  private let configurePagesDataSourceTab = TestObserver<BackerDashboardTab, NoError>()
-  private let configurePagesDataSourceSort = TestObserver<DiscoveryParams.Sort, NoError>()
-  private let embeddedViewTopConstraintConstant = TestObserver<CGFloat, NoError>()
-  private let goToMessages = TestObserver<(), NoError>()
-  private let goToProject = TestObserver<Project, NoError>()
-  private let goToSettings = TestObserver<(), NoError>()
-  private let navigateToTab = TestObserver<BackerDashboardTab, NoError>()
-  private let pinSelectedIndicatorToTab = TestObserver<BackerDashboardTab, NoError>()
-  private let pinSelectedIndicatorToTabAnimated = TestObserver<Bool, NoError>()
-  private let postNotification = TestObserver<Notification, NoError>()
-  private let savedButtonTitleText = TestObserver<String, NoError>()
-  private let setSelectedButton = TestObserver<BackerDashboardTab, NoError>()
-  private let sortBarIsHidden = TestObserver<Bool, NoError>()
-  private let updateCurrentUserInEnvironment = TestObserver<User, NoError>()
+  private let avatarURL = TestObserver<String, Never>()
+  private let backedButtonTitleText = TestObserver<String, Never>()
+  private let backerNameText = TestObserver<String, Never>()
+  private let configurePagesDataSourceTab = TestObserver<BackerDashboardTab, Never>()
+  private let configurePagesDataSourceSort = TestObserver<DiscoveryParams.Sort, Never>()
+  private let embeddedViewTopConstraintConstant = TestObserver<CGFloat, Never>()
+  private let goToMessages = TestObserver<(), Never>()
+  private let goToProject = TestObserver<Project, Never>()
+  private let goToSettings = TestObserver<(), Never>()
+  private let navigateToTab = TestObserver<BackerDashboardTab, Never>()
+  private let pinSelectedIndicatorToTab = TestObserver<BackerDashboardTab, Never>()
+  private let pinSelectedIndicatorToTabAnimated = TestObserver<Bool, Never>()
+  private let postNotification = TestObserver<Notification, Never>()
+  private let savedButtonTitleText = TestObserver<String, Never>()
+  private let setSelectedButton = TestObserver<BackerDashboardTab, Never>()
+  private let sortBarIsHidden = TestObserver<Bool, Never>()
+  private let updateCurrentUserInEnvironment = TestObserver<User, Never>()
 
   override func setUp() {
     super.setUp()
@@ -190,8 +189,10 @@ internal final class BackerDashboardViewModelTests: TestCase {
 
     self.vm.inputs.viewWillAppear(true)
 
-    XCTAssertEqual(["Profile View My", "Viewed Profile"], self.trackingClient.events,
-                   "Tracking does not emit")
+    XCTAssertEqual(
+      ["Profile View My", "Viewed Profile"], self.trackingClient.events,
+      "Tracking does not emit"
+    )
   }
 
   func testHeaderPanning() {

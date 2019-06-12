@@ -5,6 +5,6 @@ extension ProjectStatsEnvelope.ReferrerStats {
     percentageOfDollars: 0.0,
     pledged: 0,
     referrerName: "",
-    referrerType: .`internal`
+    referrerType: .internal
   )
 }

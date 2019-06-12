@@ -12,13 +12,14 @@ import Prelude
  - returns: The localized string. If the key does not exist the `defaultValue` will be returned,
  and if that is not specified an empty string will be returned.
  */
-public func localizedString(key: String,
-                            defaultValue: String = "",
-                            count: Int? = nil,
-                            substitutions: [String: String] = [:],
-                            env: Environment = AppEnvironment.current,
-                            bundle: NSBundleType = stringsBundle) -> String {
-
+public func localizedString(
+  key: String,
+  defaultValue: String = "",
+  count: Int? = nil,
+  substitutions: [String: String] = [:],
+  env: Environment = AppEnvironment.current,
+  bundle: NSBundleType = stringsBundle
+) -> String {
   // When a `count` is provided we need to augment the key with a pluralization suffix.
   let augmentedKey = count
     .flatMap { key + "." + keySuffixForCount($0) }
@@ -61,9 +62,8 @@ private func keySuffixForCount(_ count: Int) -> String {
 
 // Performs simple string interpolation on keys of the form `%{key}`.
 private func substitute(_ string: String, with substitutions: [String: String]) -> String {
-
   return substitutions.reduce(string) { accum, sub in
-    return accum.replacingOccurrences(of: "%{\(sub.0)}", with: sub.1)
+    accum.replacingOccurrences(of: "%{\(sub.0)}", with: sub.1)
   }
 }
 

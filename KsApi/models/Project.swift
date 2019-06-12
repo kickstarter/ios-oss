@@ -1,10 +1,9 @@
 import Argo
 import Curry
-import Runes
 import Prelude
+import Runes
 
 public struct Project {
-
   public var blurb: String
   public var category: Category
   public var country: Country
@@ -129,11 +128,11 @@ public struct Project {
     public enum Permission: String {
       case editProject = "edit_project"
       case editFaq = "edit_faq"
-      case post = "post"
-      case comment = "comment"
+      case post
+      case comment
       case viewPledges = "view_pledges"
-      case fulfillment = "fulfillment"
-      case unknown = "unknown"
+      case fulfillment
+      case unknown
     }
   }
 
@@ -165,7 +164,7 @@ public struct Project {
 
   public func isFeaturedToday(today: Date = Date(), calendar: Calendar = .current) -> Bool {
     guard let featuredAt = self.dates.featuredAt else { return false }
-    return isDateToday(date: featuredAt, today: today, calendar: calendar)
+    return self.isDateToday(date: featuredAt, today: today, calendar: calendar)
   }
 
   private func isDateToday(date: TimeInterval, today: Date, calendar: Calendar) -> Bool {
@@ -186,7 +185,7 @@ extension Project: CustomDebugStringConvertible {
 }
 
 extension Project: Argo.Decodable {
-  static public func decode(_ json: JSON) -> Decoded<Project> {
+  public static func decode(_ json: JSON) -> Decoded<Project> {
     let tmp1 = curry(Project.init)
       <^> json <| "blurb"
       <*> ((json <| "category" >>- decodeToGraphCategory) as Decoded<Category>)
@@ -213,7 +212,7 @@ extension Project: Argo.Decodable {
 }
 
 extension Project.UrlsEnvelope: Argo.Decodable {
-  static public func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope> {
+  public static func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope> {
     return curry(Project.UrlsEnvelope.init)
       <^> json <| "web"
   }
@@ -274,8 +273,7 @@ extension Project.Personalization: Argo.Decodable {
 }
 
 extension Project.Photo: Argo.Decodable {
-  static public func decode(_ json: JSON) -> Decoded<Project.Photo> {
-
+  public static func decode(_ json: JSON) -> Decoded<Project.Photo> {
     let url1024: Decoded<String?> = ((json <| "1024x768") <|> (json <| "1024x576"))
       // swiftlint:disable:next syntactic_sugar
       .map(Optional<String>.init)
@@ -291,7 +289,7 @@ extension Project.Photo: Argo.Decodable {
 
 extension Project.MemberData.Permission: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.MemberData.Permission> {
-    if case .string(let permission) = json {
+    if case let .string(permission) = json {
       return self.init(rawValue: permission).map(pure) ?? .success(.unknown)
     }
     return .success(.unknown)
@@ -314,16 +312,17 @@ private func toInt(string: String) -> Decoded<Int> {
  code to use exclusively Swift's native Decodable.
  */
 private func decodeToGraphCategory(_ json: JSON?) -> Decoded<Category> {
-
   guard let jsonObj = json else {
     return .success(Category(id: "-1", name: "Unknown Category"))
   }
 
   switch jsonObj {
-  case .object(let dic):
-    let category = Category(id: categoryInfo(dic).0,
-                            name: categoryInfo(dic).1,
-                            parentId: categoryInfo(dic).2)
+  case let .object(dic):
+    let category = Category(
+      id: categoryInfo(dic).0,
+      name: categoryInfo(dic).1,
+      parentId: categoryInfo(dic).2
+    )
     return .success(category)
   default:
     return .failure(DecodeError.custom("JSON should be object type"))
@@ -331,19 +330,18 @@ private func decodeToGraphCategory(_ json: JSON?) -> Decoded<Category> {
 }
 
 private func categoryInfo(_ json: [String: JSON]) -> (String, String, String?) {
-
   guard let name = json["name"], let id = json["id"] else {
-    return("", "", nil)
+    return ("", "", nil)
   }
   let parentId = json["parent_id"]
 
   switch (id, name, parentId) {
-  case (.number(let id), .string(let name), .number(let parentId)?):
+  case let (.number(id), .string(name), .number(parentId)?):
     return ("\(id)", name, "\(parentId)")
-  case (.number(let id), .string(let name), nil):
+  case (let .number(id), let .string(name), nil):
     return ("\(id)", name, nil)
   default:
-    return("", "", nil)
+    return ("", "", nil)
   }
 }
 

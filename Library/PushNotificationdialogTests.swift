@@ -1,15 +1,12 @@
-import XCTest
-@testable import Library
 @testable import KsApi
+@testable import Library
+import XCTest
 
 class PushNotificationDialogTests: XCTestCase {
-
   let userDefaults = MockKeyValueStore()
 
   func testTitleForDismissalIs_NotNow_WhenUserDeniedLessThanTwoTimes() {
-
-    withEnvironment(userDefaults: userDefaults) {
-
+    withEnvironment(userDefaults: self.userDefaults) {
       PushNotificationDialog.didDenyAccess(for: .save)
 
       XCTAssertEqual(PushNotificationDialog.titleForDismissal, "Not Now")
@@ -17,9 +14,7 @@ class PushNotificationDialogTests: XCTestCase {
   }
 
   func testTitleForDismissalIs_Never_WhenUserDeniedTwoTimes() {
-
-    withEnvironment(userDefaults: userDefaults) {
-
+    withEnvironment(userDefaults: self.userDefaults) {
       PushNotificationDialog.didDenyAccess(for: .login)
       PushNotificationDialog.didDenyAccess(for: .save)
 
@@ -28,9 +23,7 @@ class PushNotificationDialogTests: XCTestCase {
   }
 
   func testCanShowDialogIf_UserHasNeverDeniedForContext() {
-
-    withEnvironment(userDefaults: userDefaults) {
-
+    withEnvironment(userDefaults: self.userDefaults) {
       PushNotificationDialog.didDenyAccess(for: .save)
 
       XCTAssertTrue(PushNotificationDialog.canShowDialog(for: .message))
@@ -38,9 +31,7 @@ class PushNotificationDialogTests: XCTestCase {
   }
 
   func testCanNotShowDialogIf_UserDeniedForContext() {
-
-    withEnvironment(userDefaults: userDefaults) {
-
+    withEnvironment(userDefaults: self.userDefaults) {
       PushNotificationDialog.didDenyAccess(for: .save)
 
       XCTAssertFalse(PushNotificationDialog.canShowDialog(for: .save))
@@ -48,9 +39,7 @@ class PushNotificationDialogTests: XCTestCase {
   }
 
   func testCanShowDialogIf_UserDeniedLessThanThreeTimes() {
-
-    withEnvironment(userDefaults: userDefaults) {
-
+    withEnvironment(userDefaults: self.userDefaults) {
       PushNotificationDialog.didDenyAccess(for: .save)
       PushNotificationDialog.didDenyAccess(for: .message)
 
@@ -59,9 +48,7 @@ class PushNotificationDialogTests: XCTestCase {
   }
 
   func testCanNotShowDialogIf_UserDeniedThreeTimes() {
-
-    withEnvironment(userDefaults: userDefaults) {
-
+    withEnvironment(userDefaults: self.userDefaults) {
       PushNotificationDialog.didDenyAccess(for: .save)
       PushNotificationDialog.didDenyAccess(for: .message)
       PushNotificationDialog.didDenyAccess(for: .login)
@@ -71,30 +58,26 @@ class PushNotificationDialogTests: XCTestCase {
   }
 
   func testContextIsAddedToUserDefaults_AfterDenial() {
-
-    withEnvironment(userDefaults: userDefaults) {
-
+    withEnvironment(userDefaults: self.userDefaults) {
       PushNotificationDialog.didDenyAccess(for: .login)
-      XCTAssertEqual(["login"], userDefaults.deniedNotificationContexts )
+      XCTAssertEqual(["login"], userDefaults.deniedNotificationContexts)
 
       PushNotificationDialog.didDenyAccess(for: .save)
-      XCTAssertEqual(["login", "save"], userDefaults.deniedNotificationContexts )
+      XCTAssertEqual(["login", "save"], userDefaults.deniedNotificationContexts)
     }
   }
 
   func testContextsReset_AfterLogout() {
-
-    withEnvironment(userDefaults: userDefaults) {
-
+    withEnvironment(userDefaults: self.userDefaults) {
       PushNotificationDialog.didDenyAccess(for: .login)
       PushNotificationDialog.didDenyAccess(for: .save)
       PushNotificationDialog.didDenyAccess(for: .message)
       PushNotificationDialog.didDenyAccess(for: .pledge)
 
-      XCTAssertEqual(["login", "save", "message", "pledge"], userDefaults.deniedNotificationContexts )
+      XCTAssertEqual(["login", "save", "message", "pledge"], userDefaults.deniedNotificationContexts)
 
       PushNotificationDialog.resetAllContexts()
-      XCTAssertEqual([], userDefaults.deniedNotificationContexts )
+      XCTAssertEqual([], userDefaults.deniedNotificationContexts)
     }
   }
 }

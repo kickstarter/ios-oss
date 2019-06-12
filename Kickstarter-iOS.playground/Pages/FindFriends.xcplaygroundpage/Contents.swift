@@ -1,8 +1,8 @@
-import Library
-import Prelude
-import PlaygroundSupport
 @testable import Kickstarter_Framework
 @testable import KsApi
+import Library
+import PlaygroundSupport
+import Prelude
 
 let currentUser = .template
   |> \.facebookConnected .~ true
@@ -30,4 +30,3 @@ let (parent, _) = playgroundControllers(device: .phone5_5inch, orientation: .por
 let frame = parent.view.frame
 PlaygroundPage.current.liveView = parent
 parent.view.frame = frame
-

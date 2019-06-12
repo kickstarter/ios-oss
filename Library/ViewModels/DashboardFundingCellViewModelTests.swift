@@ -1,25 +1,24 @@
-import Prelude
-import ReactiveSwift
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class DashboardFundingCellViewModelTests: TestCase {
   internal let vm = DashboardFundingCellViewModel()
-  internal let backersText = TestObserver<String, NoError>()
-  internal let cellAccessibilityValue = TestObserver<String, NoError>()
-  internal let deadlineDateText = TestObserver<String, NoError>()
-  internal let goalText = TestObserver<String, NoError>()
-  internal let launchDateText = TestObserver<String, NoError>()
-  internal let pledgedText = TestObserver<String, NoError>()
-  internal let project = TestObserver<Project, NoError>()
-  internal let stats = TestObserver<[ProjectStatsEnvelope.FundingDateStats], NoError>()
-  internal let timeRemainingSubtitleText = TestObserver<String, NoError>()
-  internal let timeRemainingTitleText = TestObserver<String, NoError>()
-  internal let yAxisTickSize = TestObserver<CGFloat, NoError>()
+  internal let backersText = TestObserver<String, Never>()
+  internal let cellAccessibilityValue = TestObserver<String, Never>()
+  internal let deadlineDateText = TestObserver<String, Never>()
+  internal let goalText = TestObserver<String, Never>()
+  internal let launchDateText = TestObserver<String, Never>()
+  internal let pledgedText = TestObserver<String, Never>()
+  internal let project = TestObserver<Project, Never>()
+  internal let stats = TestObserver<[ProjectStatsEnvelope.FundingDateStats], Never>()
+  internal let timeRemainingSubtitleText = TestObserver<String, Never>()
+  internal let timeRemainingTitleText = TestObserver<String, Never>()
+  internal let yAxisTickSize = TestObserver<CGFloat, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -49,13 +48,15 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(fundingDateStats: stats, project: liveProject)
 
     self.cellAccessibilityValue.assertValues(
-      [Strings.dashboard_graphs_funding_accessibility_live_stat_value(
-        pledged: Format.currency(liveProject.stats.pledged, country: liveProject.country),
-        goal: Format.currency(liveProject.stats.goal, country: liveProject.country),
-        backers_count: liveProject.stats.backersCount,
-        time_left: Format.duration(secondsInUTC: liveProject.dates.deadline).time + " " +
-          Format.duration(secondsInUTC: liveProject.dates.deadline).unit
-      )],
+      [
+        Strings.dashboard_graphs_funding_accessibility_live_stat_value(
+          pledged: Format.currency(liveProject.stats.pledged, country: liveProject.country),
+          goal: Format.currency(liveProject.stats.goal, country: liveProject.country),
+          backers_count: liveProject.stats.backersCount,
+          time_left: Format.duration(secondsInUTC: liveProject.dates.deadline).time + " " +
+            Format.duration(secondsInUTC: liveProject.dates.deadline).unit
+        )
+      ],
       "Live project stats value emits."
     )
 
@@ -66,11 +67,11 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
     self.cellAccessibilityValue.assertValues(
       [
         Strings.dashboard_graphs_funding_accessibility_live_stat_value(
-        pledged: Format.currency(liveProject.stats.pledged, country: liveProject.country),
-        goal: Format.currency(liveProject.stats.goal, country: liveProject.country),
-        backers_count: liveProject.stats.backersCount,
-        time_left: Format.duration(secondsInUTC: liveProject.dates.deadline).time + " " +
-          Format.duration(secondsInUTC: liveProject.dates.deadline).unit
+          pledged: Format.currency(liveProject.stats.pledged, country: liveProject.country),
+          goal: Format.currency(liveProject.stats.goal, country: liveProject.country),
+          backers_count: liveProject.stats.backersCount,
+          time_left: Format.duration(secondsInUTC: liveProject.dates.deadline).time + " " +
+            Format.duration(secondsInUTC: liveProject.dates.deadline).unit
         ),
         Strings.dashboard_graphs_funding_accessibility_non_live_stat_value(
           pledged: Format.currency(nonLiveProject.stats.pledged, country: nonLiveProject.country),
@@ -78,7 +79,8 @@ internal final class DashboardFundingCellViewModelTests: TestCase {
           backers_count: nonLiveProject.stats.backersCount,
           time_left: Format.duration(secondsInUTC: nonLiveProject.dates.deadline).time + " " +
             Format.duration(secondsInUTC: nonLiveProject.dates.deadline).unit
-      )],
+        )
+      ],
       "Non live project stats value emits."
     )
   }

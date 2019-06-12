@@ -1,19 +1,22 @@
-import UIKit
-import Foundation
 import FBSDKCoreKit
+import Foundation
+import UIKit
 
 public protocol FacebookAppDelegateProtocol {
-  func application(_ application: UIApplication!,
-                   open url: URL!,
-                   sourceApplication: String!,
-                   annotation: Any!) -> Bool
+  func application(
+    _ application: UIApplication!,
+    open url: URL!,
+    sourceApplication: String!,
+    annotation: Any!
+  ) -> Bool
 
-  func application(_ application: UIApplication!,
-                   didFinishLaunchingWithOptions launchOptions: [AnyHashable: Any]!) -> Bool
+  func application(
+    _ application: UIApplication!,
+    didFinishLaunchingWithOptions launchOptions: [AnyHashable: Any]!
+  ) -> Bool
 }
 
-extension FBSDKApplicationDelegate: FacebookAppDelegateProtocol {
-}
+extension FBSDKApplicationDelegate: FacebookAppDelegateProtocol {}
 
 internal final class MockFacebookAppDelegate: FacebookAppDelegateProtocol {
   internal var didFinishLaunching = false
@@ -26,16 +29,20 @@ internal final class MockFacebookAppDelegate: FacebookAppDelegateProtocol {
     self.openURLReturnValue = openURLReturnValue
   }
 
-  internal func application(_ application: UIApplication!,
-                            didFinishLaunchingWithOptions launchOptions: [AnyHashable: Any]!) -> Bool {
+  internal func application(
+    _: UIApplication!,
+    didFinishLaunchingWithOptions _: [AnyHashable: Any]!
+  ) -> Bool {
     self.didFinishLaunching = true
     return self.didFinishLaunchingReturnValue
   }
 
-  internal func application(_ application: UIApplication!,
-                            open url: URL!,
-                            sourceApplication: String!,
-                            annotation: Any!) -> Bool {
+  internal func application(
+    _: UIApplication!,
+    open _: URL!,
+    sourceApplication _: String!,
+    annotation _: Any!
+  ) -> Bool {
     self.openedUrl = true
     return self.openURLReturnValue
   }

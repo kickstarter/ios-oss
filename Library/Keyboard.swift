@@ -1,25 +1,28 @@
 import Foundation
-import UIKit
 import ReactiveSwift
-import Result
+import UIKit
 
 public final class Keyboard {
-  public typealias Change = (frame: CGRect, duration: TimeInterval, options: UIView.AnimationOptions,
-    notificationName: Notification.Name)
+  public typealias Change = (
+    frame: CGRect, duration: TimeInterval, options: UIView.AnimationOptions,
+    notificationName: Notification.Name
+  )
 
   public static let shared = Keyboard()
-  private let (changeSignal, changeObserver) = Signal<Change, NoError>.pipe()
+  private let (changeSignal, changeObserver) = Signal<Change, Never>.pipe()
 
-  public static var change: Signal<Change, NoError> {
+  public static var change: Signal<Change, Never> {
     return self.shared.changeSignal
   }
 
   private init() {
     NotificationCenter.default.addObserver(
-      self, selector: #selector(change(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+      self, selector: #selector(self.change(_:)), name: UIResponder.keyboardWillShowNotification, object: nil
+    )
 
     NotificationCenter.default.addObserver(
-      self, selector: #selector(change(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+      self, selector: #selector(self.change(_:)), name: UIResponder.keyboardWillHideNotification, object: nil
+    )
   }
 
   @objc private func change(_ notification: Notification) {
@@ -28,8 +31,8 @@ public final class Keyboard {
       let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber,
       let curveNumber = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber,
       let curve = UIView.AnimationCurve(rawValue: curveNumber.intValue)
-      else {
-        return
+    else {
+      return
     }
 
     self.changeObserver.send(value: (

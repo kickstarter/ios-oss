@@ -1,9 +1,8 @@
-import Prelude
-import Result
-import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import Prelude
+import XCTest
 
 internal final class BackerDashboardProjectsViewControllerTests: TestCase {
   override func setUp() {
@@ -24,20 +23,20 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
 
     let liveProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.stats.fundingProgress .~ 0.5
 
     let deadProject = Project.anomalisa
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970
       |> Project.lens.state .~ .successful
 
     let failed = Project.cosmicSurgery
       |> Project.lens.name .~ "A Failed Project about Mittens and Let's Just Go to the Next Line Shall We"
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ self.dateType.init().timeIntervalSince1970
       |> Project.lens.stats.fundingProgress .~ 0.45
       |> Project.lens.state .~ .failed
@@ -45,7 +44,7 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
     let saved = Project.cosmicSurgery
       |> Project.lens.name .~ "A Saved Project, Very Nice Isn't It?"
       |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ deadline2
       |> Project.lens.stats.fundingProgress .~ 0.8
       |> Project.lens.personalization.isStarred .~ true
@@ -54,17 +53,21 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
-                      currentUser: User.template,
-                      language: language) {
-                        let controller = BackerDashboardProjectsViewController
-                          .configuredWith(projectsType: .backed, sort: .endingSoon)
-                        let (parent, _) = traitControllers(device: device,
-                                                           orientation: .portrait,
-                                                           child: controller)
-                        self.scheduler.run()
+      withEnvironment(
+        apiService: MockService(fetchDiscoveryResponse: env),
+        currentUser: User.template,
+        language: language
+      ) {
+        let controller = BackerDashboardProjectsViewController
+          .configuredWith(projectsType: .backed, sort: .endingSoon)
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -73,17 +76,21 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
     let env = .template |> DiscoveryEnvelope.lens.projects .~ []
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
-                      currentUser: User.template,
-                      language: language) {
-                        let controller = BackerDashboardProjectsViewController
-                          .configuredWith(projectsType: .backed, sort: .endingSoon)
-                        let (parent, _) = traitControllers(device: device,
-                                                           orientation: .portrait,
-                                                           child: controller)
-                        self.scheduler.run()
+      withEnvironment(
+        apiService: MockService(fetchDiscoveryResponse: env),
+        currentUser: User.template,
+        language: language
+      ) {
+        let controller = BackerDashboardProjectsViewController
+          .configuredWith(projectsType: .backed, sort: .endingSoon)
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -92,17 +99,21 @@ internal final class BackerDashboardProjectsViewControllerTests: TestCase {
     let env = .template |> DiscoveryEnvelope.lens.projects .~ []
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
-                      currentUser: User.template,
-                      language: language) {
-                        let controller = BackerDashboardProjectsViewController
-                          .configuredWith(projectsType: .saved, sort: .endingSoon)
-                        let (parent, _) = traitControllers(device: device,
-                                                           orientation: .portrait,
-                                                           child: controller)
-                        self.scheduler.run()
+      withEnvironment(
+        apiService: MockService(fetchDiscoveryResponse: env),
+        currentUser: User.template,
+        language: language
+      ) {
+        let controller = BackerDashboardProjectsViewController
+          .configuredWith(projectsType: .saved, sort: .endingSoon)
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+        self.scheduler.run()
 
-                        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }

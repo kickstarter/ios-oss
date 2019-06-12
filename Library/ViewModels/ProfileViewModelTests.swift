@@ -1,35 +1,33 @@
 import Foundation
-import XCTest
-import ReactiveSwift
-import Result
-import KsApi
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class ProfileViewModelTests: TestCase {
   private let vm = ProfileViewModel()
-  private let user = TestObserver<User, NoError>()
-  private let hasAddedProjects = TestObserver<Bool, NoError>()
-  private let hasBackedProjects = TestObserver<Bool, NoError>()
-  private let goToProject = TestObserver<Project, NoError>()
-  private let goToProjects = TestObserver<[Project], NoError>()
-  private let goToRefTag = TestObserver<RefTag, NoError>()
-  private let goToSettings = TestObserver<Void, NoError>()
-  private let scrollToProjectItem = TestObserver<Int, NoError>()
-  private let showEmptyState = TestObserver<Bool, NoError>()
+  private let user = TestObserver<User, Never>()
+  private let hasAddedProjects = TestObserver<Bool, Never>()
+  private let hasBackedProjects = TestObserver<Bool, Never>()
+  private let goToProject = TestObserver<Project, Never>()
+  private let goToProjects = TestObserver<[Project], Never>()
+  private let goToRefTag = TestObserver<RefTag, Never>()
+  private let goToSettings = TestObserver<Void, Never>()
+  private let scrollToProjectItem = TestObserver<Int, Never>()
+  private let showEmptyState = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.user.observe(user.observer)
-    self.vm.outputs.backedProjects.map { !$0.isEmpty }.observe(hasBackedProjects.observer)
-    self.vm.outputs.goToProject.map { $0.0 }.observe(goToProject.observer)
-    self.vm.outputs.goToProject.map { $0.1 }.observe(goToProjects.observer)
-    self.vm.outputs.goToProject.map { $0.2 }.observe(goToRefTag.observer)
-    self.vm.outputs.goToSettings.observe(goToSettings.observer)
+    self.vm.outputs.user.observe(self.user.observer)
+    self.vm.outputs.backedProjects.map { !$0.isEmpty }.observe(self.hasBackedProjects.observer)
+    self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
+    self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToProjects.observer)
+    self.vm.outputs.goToProject.map { $0.2 }.observe(self.goToRefTag.observer)
+    self.vm.outputs.goToSettings.observe(self.goToSettings.observer)
     self.vm.outputs.scrollToProjectItem.observe(self.scrollToProjectItem.observer)
-    self.vm.outputs.showEmptyState.observe(showEmptyState.observer)
+    self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
 
     self.vm.outputs.backedProjects
       .map { $0.count }
@@ -66,9 +64,10 @@ internal final class ProfileViewModelTests: TestCase {
     let env = .template |> DiscoveryEnvelope.lens.projects .~ projects
     let env2 = .template |> DiscoveryEnvelope.lens.projects .~ projectsWithNewProject
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: env),
-                    currentUser: user) {
-
+    withEnvironment(
+      apiService: MockService(fetchDiscoveryResponse: env),
+      currentUser: user
+    ) {
       self.vm.inputs.viewWillAppear(false)
       self.scheduler.advance()
 
@@ -85,8 +84,10 @@ internal final class ProfileViewModelTests: TestCase {
       self.hasBackedProjects.assertValues([true])
       self.showEmptyState.assertValues([false])
 
-      XCTAssertEqual(["Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile"],
-                     trackingClient.events)
+      XCTAssertEqual(
+        ["Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile"],
+        trackingClient.events
+      )
 
       self.vm.inputs.viewWillAppear(true)
       self.scheduler.advance()
@@ -95,13 +96,16 @@ internal final class ProfileViewModelTests: TestCase {
       self.hasBackedProjects.assertValues([true])
       self.showEmptyState.assertValues([false])
 
-      XCTAssertEqual(["Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile"],
-                     trackingClient.events, "Viewed Profile tracking does not emit.")
+      XCTAssertEqual(
+        ["Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile"],
+        trackingClient.events, "Viewed Profile tracking does not emit."
+      )
 
       // Come back after backing a project.
-      withEnvironment(apiService: MockService(fetchDiscoveryResponse: env2),
-                      currentUser: user) {
-
+      withEnvironment(
+        apiService: MockService(fetchDiscoveryResponse: env2),
+        currentUser: user
+      ) {
         self.vm.inputs.viewWillAppear(false)
         self.scheduler.advance()
 
@@ -109,9 +113,10 @@ internal final class ProfileViewModelTests: TestCase {
         self.hasBackedProjects.assertValues([true, true])
         self.showEmptyState.assertValues([false, false])
 
-        XCTAssertEqual(["Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile",
-          "Profile View My", "Viewed Profile"], trackingClient.events)
-
+        XCTAssertEqual([
+          "Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile",
+          "Profile View My", "Viewed Profile"
+        ], trackingClient.events)
       }
     }
   }

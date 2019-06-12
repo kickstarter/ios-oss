@@ -1,8 +1,7 @@
 import KsApi
 import Prelude
-import Result
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol DashboardProjectsDrawerViewModelInputs {
   /// Call when the view has completed animating in.
@@ -26,19 +25,19 @@ public protocol DashboardProjectsDrawerViewModelInputs {
 
 public protocol DashboardProjectsDrawerViewModelOutputs {
   /// Emits when to shift screen reader focus on first project cell.
-  var focusScreenReaderOnFirstProject: Signal<(), NoError> { get }
+  var focusScreenReaderOnFirstProject: Signal<(), Never> { get }
 
   /// Emits projects to display in tableview.
-  var projectsDrawerData: Signal<[ProjectsDrawerData], NoError> { get }
+  var projectsDrawerData: Signal<[ProjectsDrawerData], Never> { get }
 
   /// Emits to notify delegate to close the drawer on background tap.
-  var notifyDelegateToCloseDrawer: Signal<(), NoError> { get }
+  var notifyDelegateToCloseDrawer: Signal<(), Never> { get }
 
   /// Emits to notify delegate when view controller completed animating out.
-  var notifyDelegateDidAnimateOut: Signal<(), NoError> { get }
+  var notifyDelegateDidAnimateOut: Signal<(), Never> { get }
 
   /// Emits to notify delegate when project cell was tapped with project.
-  var notifyDelegateProjectCellTapped: Signal<Project, NoError> { get }
+  var notifyDelegateProjectCellTapped: Signal<Project, Never> { get }
 }
 
 public protocol DashboardProjectsDrawerViewModelType {
@@ -47,8 +46,7 @@ public protocol DashboardProjectsDrawerViewModelType {
 }
 
 public final class DashboardProjectsDrawerViewModel: DashboardProjectsDrawerViewModelType,
-DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs {
-
+  DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs {
   public init() {
     self.projectsDrawerData = self.projectsDrawerDataProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
@@ -66,32 +64,37 @@ DashboardProjectsDrawerViewModelInputs, DashboardProjectsDrawerViewModelOutputs 
   public var inputs: DashboardProjectsDrawerViewModelInputs { return self }
   public var outputs: DashboardProjectsDrawerViewModelOutputs { return self }
 
-  public let focusScreenReaderOnFirstProject: Signal<(), NoError>
-  public let projectsDrawerData: Signal<[ProjectsDrawerData], NoError>
-  public let notifyDelegateDidAnimateOut: Signal<(), NoError>
-  public var notifyDelegateToCloseDrawer: Signal<(), NoError>
-  public let notifyDelegateProjectCellTapped: Signal<Project, NoError>
+  public let focusScreenReaderOnFirstProject: Signal<(), Never>
+  public let projectsDrawerData: Signal<[ProjectsDrawerData], Never>
+  public let notifyDelegateDidAnimateOut: Signal<(), Never>
+  public var notifyDelegateToCloseDrawer: Signal<(), Never>
+  public let notifyDelegateProjectCellTapped: Signal<Project, Never>
 
   fileprivate let animateInCompletedProperty = MutableProperty(())
   public func animateInCompleted() {
     self.animateInCompletedProperty.value = ()
   }
+
   fileprivate let animateOutCompletedProperty = MutableProperty(())
   public func animateOutCompleted() {
     self.animateOutCompletedProperty.value = ()
   }
+
   fileprivate let backgroundTappedProperty = MutableProperty(())
   public func backgroundTapped() {
     self.backgroundTappedProperty.value = ()
   }
+
   fileprivate let projectsDrawerDataProperty = MutableProperty<[ProjectsDrawerData]?>(nil)
   public func configureWith(data: [ProjectsDrawerData]) {
     self.projectsDrawerDataProperty.value = data
   }
+
   fileprivate let projectCellTappedProperty = MutableProperty<Project?>(nil)
   public func projectCellTapped(_ project: Project) {
     self.projectCellTappedProperty.value = project
   }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()

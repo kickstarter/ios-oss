@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import Result
 
 public protocol MessageThreadCellViewModelInputs {
   func configureWith(messageThread: MessageThread)
@@ -10,15 +9,14 @@ public protocol MessageThreadCellViewModelInputs {
 }
 
 public protocol MessageThreadCellViewModelOutputs {
-  var date: Signal<String, NoError> { get }
-  var dateAccessibilityLabel: Signal<String, NoError> { get }
-  var messageBody: Signal<String, NoError> { get }
-  var participantAvatarURL: Signal<URL?, NoError> { get }
-  var participantName: Signal<String, NoError> { get }
-  var projectName: Signal<String, NoError> { get }
-  var replyIndicatorHidden: Signal<Bool, NoError> { get }
-  var unreadIndicatorHidden: Signal<Bool, NoError> { get }
-
+  var date: Signal<String, Never> { get }
+  var dateAccessibilityLabel: Signal<String, Never> { get }
+  var messageBody: Signal<String, Never> { get }
+  var participantAvatarURL: Signal<URL?, Never> { get }
+  var participantName: Signal<String, Never> { get }
+  var projectName: Signal<String, Never> { get }
+  var replyIndicatorHidden: Signal<Bool, Never> { get }
+  var unreadIndicatorHidden: Signal<Bool, Never> { get }
 }
 
 public protocol MessageThreadCellViewModelType {
@@ -28,7 +26,6 @@ public protocol MessageThreadCellViewModelType {
 
 public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
   MessageThreadCellViewModelInputs, MessageThreadCellViewModelOutputs {
-
   public init() {
     let messageThread = self.messageThreadProperty.signal.skipNil()
     self.date = messageThread.map {
@@ -74,19 +71,20 @@ public final class MessageThreadCellViewModel: MessageThreadCellViewModelType,
   public func configureWith(messageThread: MessageThread) {
     self.messageThreadProperty.value = messageThread
   }
+
   fileprivate let setSelectedProperty = MutableProperty<Bool>(false)
   public func setSelected(_ selected: Bool) {
     self.setSelectedProperty.value = selected
   }
 
-  public let date: Signal<String, NoError>
-  public let dateAccessibilityLabel: Signal<String, NoError>
-  public let messageBody: Signal<String, NoError>
-  public let participantAvatarURL: Signal<URL?, NoError>
-  public let participantName: Signal<String, NoError>
-  public let projectName: Signal<String, NoError>
-  public let replyIndicatorHidden: Signal<Bool, NoError>
-  public let unreadIndicatorHidden: Signal<Bool, NoError>
+  public let date: Signal<String, Never>
+  public let dateAccessibilityLabel: Signal<String, Never>
+  public let messageBody: Signal<String, Never>
+  public let participantAvatarURL: Signal<URL?, Never>
+  public let participantName: Signal<String, Never>
+  public let projectName: Signal<String, Never>
+  public let replyIndicatorHidden: Signal<Bool, Never>
+  public let unreadIndicatorHidden: Signal<Bool, Never>
 
   public var inputs: MessageThreadCellViewModelInputs { return self }
   public var outputs: MessageThreadCellViewModelOutputs { return self }

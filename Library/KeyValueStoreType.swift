@@ -12,7 +12,7 @@ public enum AppKeys: String {
   case seenGamesNewsletter = "com.kickstarter.KeyValueStoreType.hasSeenGamesNewsletter"
 }
 
-public protocol KeyValueStoreType: class {
+public protocol KeyValueStoreType: AnyObject {
   func set(_ value: Bool, forKey defaultName: String)
   func set(_ value: Int, forKey defaultName: String)
   func set(_ value: Any?, forKey defaultName: String)
@@ -119,8 +119,7 @@ extension KeyValueStoreType {
   }
 }
 
-extension UserDefaults: KeyValueStoreType {
-}
+extension UserDefaults: KeyValueStoreType {}
 
 extension NSUbiquitousKeyValueStore: KeyValueStoreType {
   public func integer(forKey defaultName: String) -> Int {
@@ -128,7 +127,7 @@ extension NSUbiquitousKeyValueStore: KeyValueStoreType {
   }
 
   public func set(_ value: Int, forKey defaultName: String) {
-    return set(Int64(value), forKey: defaultName)
+    return self.set(Int64(value), forKey: defaultName)
   }
 }
 

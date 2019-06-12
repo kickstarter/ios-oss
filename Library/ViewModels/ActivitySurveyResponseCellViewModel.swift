@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ActivitySurveyResponseCellViewModelInputs {
   /// Call to configure with survey response, number of surveys, and the cell's position in the survey stack.
@@ -13,22 +12,22 @@ public protocol ActivitySurveyResponseCellViewModelInputs {
 
 public protocol ActivitySurveyResponseCellViewModelOutputs {
   /// Emits image url to creator's avatar.
-  var creatorImageURL: Signal<URL?, NoError> { get }
+  var creatorImageURL: Signal<URL?, Never> { get }
 
   /// Emits text for the creator name label.
-  var creatorNameText: Signal<String, NoError> { get }
+  var creatorNameText: Signal<String, Never> { get }
 
   /// Emits the survey response for the delegate to respond to the survey.
-  var notifyDelegateToRespondToSurvey: Signal<SurveyResponse, NoError> { get }
+  var notifyDelegateToRespondToSurvey: Signal<SurveyResponse, Never> { get }
 
   /// Emits whether reward surveys count label is hidden.
-  var rewardSurveysCountIsHidden: Signal<Bool, NoError> { get }
+  var rewardSurveysCountIsHidden: Signal<Bool, Never> { get }
 
   /// Emits text for reward surveys count label.
-  var rewardSurveysCountText: Signal<String, NoError> { get }
+  var rewardSurveysCountText: Signal<String, Never> { get }
 
   /// Emits text for the survey label.
-  var surveyLabelText: Signal<NSAttributedString, NoError> { get }
+  var surveyLabelText: Signal<NSAttributedString, Never> { get }
 }
 
 public protocol ActivitySurveyResponseCellViewModelType {
@@ -37,8 +36,7 @@ public protocol ActivitySurveyResponseCellViewModelType {
 }
 
 public final class ActivitySurveyResponseCellViewModel: ActivitySurveyResponseCellViewModelType,
-ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOutputs {
-
+  ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOutputs {
   public init() {
     let surveyResponseAndCountAndPosition = self.surveyResponseCountPositionProperty.signal.skipNil()
     let project = surveyResponseAndCountAndPosition
@@ -62,7 +60,8 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
         bold: [
           NSAttributedString.Key.font: UIFont.ksr_headline(size: 14),
           NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-        ])
+        ]
+      )
         ?? NSAttributedString(string: "")
     }
 
@@ -82,17 +81,18 @@ ActivitySurveyResponseCellViewModelInputs, ActivitySurveyResponseCellViewModelOu
   public func configureWith(surveyResponse: SurveyResponse, count: Int, position: Int) {
     self.surveyResponseCountPositionProperty.value = (surveyResponse, count, position)
   }
+
   fileprivate let respondNowButtonTappedProperty = MutableProperty(())
   public func respondNowButtonTapped() {
     self.respondNowButtonTappedProperty.value = ()
   }
 
-  public let creatorImageURL: Signal<URL?, NoError>
-  public let creatorNameText: Signal<String, NoError>
-  public let notifyDelegateToRespondToSurvey: Signal<SurveyResponse, NoError>
-  public let rewardSurveysCountIsHidden: Signal<Bool, NoError>
-  public var rewardSurveysCountText: Signal<String, NoError>
-  public let surveyLabelText: Signal<NSAttributedString, NoError>
+  public let creatorImageURL: Signal<URL?, Never>
+  public let creatorNameText: Signal<String, Never>
+  public let notifyDelegateToRespondToSurvey: Signal<SurveyResponse, Never>
+  public let rewardSurveysCountIsHidden: Signal<Bool, Never>
+  public var rewardSurveysCountText: Signal<String, Never>
+  public let surveyLabelText: Signal<NSAttributedString, Never>
 
   public var inputs: ActivitySurveyResponseCellViewModelInputs { return self }
   public var outputs: ActivitySurveyResponseCellViewModelOutputs { return self }

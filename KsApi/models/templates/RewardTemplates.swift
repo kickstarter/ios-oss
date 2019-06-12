@@ -6,7 +6,8 @@ extension Reward {
     description: "A cool thing",
     endsAt: nil,
     estimatedDeliveryOn: Date(
-      timeIntervalSince1970: 1475361315).timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 365.0,
+      timeIntervalSince1970: 1_475_361_315
+    ).timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 365.0,
     id: 1,
     limit: 100,
     minimum: 10.00,
@@ -31,7 +32,8 @@ extension Reward {
     minimum: 0,
     remaining: nil,
     rewardsItems: [],
-    shipping: Reward.Shipping(enabled: false, preference: nil, summary: nil
+    shipping: Reward.Shipping(
+      enabled: false, preference: nil, summary: nil
     ),
     startsAt: nil,
     title: nil

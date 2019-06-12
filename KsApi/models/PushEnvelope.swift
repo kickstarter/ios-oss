@@ -48,7 +48,6 @@ public struct PushEnvelope {
 
 extension PushEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope> {
-
     let update: Decoded<Update> = json <| "update" <|> json <| "post"
     let optionalUpdate: Decoded<Update?> = update.map(Optional.some) <|> .success(nil)
 

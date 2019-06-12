@@ -6,5 +6,5 @@ extension ProjectStatsEnvelope.FundingDateStats {
       cumulativeBackersCount: 0,
       date: 0,
       pledged: 0
-  )
+    )
 }

@@ -1,17 +1,16 @@
 import KsApi
 import ReactiveSwift
-import Result
 
 public protocol MessageCellViewModelInputs {
   func configureWith(message: Message)
 }
 
 public protocol MessageCellViewModelOutputs {
-  var avatarURL: Signal<URL?, NoError> { get }
-  var name: Signal<String, NoError> { get }
-  var timestamp: Signal<String, NoError> { get }
-  var timestampAccessibilityLabel: Signal<String, NoError> { get }
-  var body: Signal<String, NoError> { get }
+  var avatarURL: Signal<URL?, Never> { get }
+  var name: Signal<String, Never> { get }
+  var timestamp: Signal<String, Never> { get }
+  var timestampAccessibilityLabel: Signal<String, Never> { get }
+  var body: Signal<String, Never> { get }
 }
 
 public protocol MessageCellViewModelType {
@@ -20,8 +19,7 @@ public protocol MessageCellViewModelType {
 }
 
 public final class MessageCellViewModel: MessageCellViewModelType, MessageCellViewModelInputs,
-MessageCellViewModelOutputs {
-
+  MessageCellViewModelOutputs {
   public init() {
     let message = self.messageProperty.signal.skipNil()
 
@@ -45,11 +43,11 @@ MessageCellViewModelOutputs {
     self.messageProperty.value = message
   }
 
-  public let avatarURL: Signal<URL?, NoError>
-  public let name: Signal<String, NoError>
-  public let timestamp: Signal<String, NoError>
-  public var timestampAccessibilityLabel: Signal<String, NoError>
-  public let body: Signal<String, NoError>
+  public let avatarURL: Signal<URL?, Never>
+  public let name: Signal<String, Never>
+  public let timestamp: Signal<String, Never>
+  public var timestampAccessibilityLabel: Signal<String, Never>
+  public let body: Signal<String, Never>
 
   public var inputs: MessageCellViewModelInputs { return self }
   public var outputs: MessageCellViewModelOutputs { return self }

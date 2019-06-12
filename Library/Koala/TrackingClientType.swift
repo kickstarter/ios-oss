@@ -14,7 +14,7 @@ public extension TrackingClientType {
 
    - parameter event: Name of the event.
    */
-  public func track(event: String) {
+  func track(event: String) {
     self.track(event: event, properties: [:])
   }
 }

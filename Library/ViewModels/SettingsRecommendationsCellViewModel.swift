@@ -1,9 +1,8 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol SettingsRecommendationsCellViewModelInputs {
   func configureWith(user: User)
@@ -11,10 +10,10 @@ public protocol SettingsRecommendationsCellViewModelInputs {
 }
 
 public protocol SettingsRecommendationsCellViewModelOutputs {
-  var postNotification: Signal<Notification, NoError> { get }
-  var recommendationsOn: Signal<Bool, NoError> { get }
-  var unableToSaveError: Signal<String, NoError> { get }
-  var updateCurrentUser: Signal<User, NoError> { get }
+  var postNotification: Signal<Notification, Never> { get }
+  var recommendationsOn: Signal<Bool, Never> { get }
+  var unableToSaveError: Signal<String, Never> { get }
+  var updateCurrentUser: Signal<User, Never> { get }
 }
 
 public protocol SettingsRecommendationsCellViewModelType {
@@ -23,15 +22,15 @@ public protocol SettingsRecommendationsCellViewModelType {
 }
 
 public final class SettingsRecommendationsCellViewModel: SettingsRecommendationsCellViewModelType,
-SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModelOutputs {
+  SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModelOutputs {
   public init() {
-    let initialUser = configureWithProperty.signal
+    let initialUser = self.configureWithProperty.signal
       .skipNil()
 
-    let userAttributeChanged: Signal<(UserAttribute, Bool), NoError> =
+    let userAttributeChanged: Signal<(UserAttribute, Bool), Never> =
       self.recommendationsTappedProperty.signal.map {
-      (UserAttribute.privacy(UserAttribute.Privacy.recommendations), !$0)
-    }
+        (UserAttribute.privacy(UserAttribute.Privacy.recommendations), !$0)
+      }
 
     let updatedUser = initialUser
       .switchMap { user in
@@ -39,14 +38,14 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
           let (attribute, on) = attributeAndOn
           return user |> attribute.keyPath .~ on
         }
-    }
+      }
 
     let updateEvent = updatedUser
       .switchMap {
         AppEnvironment.current.apiService.updateUserSelf($0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.postNotification = updateEvent.values()
       .map { _ in
@@ -54,12 +53,12 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
           name: .ksr_recommendationsSettingChanged,
           userInfo: nil
         )
-    }
+      }
 
     self.unableToSaveError = updateEvent.errors()
       .map { env in
         env.errorMessages.first ?? Strings.profile_settings_error()
-    }
+      }
 
     let previousUserOnError = Signal.merge(initialUser, updatedUser)
       .combinePrevious()
@@ -72,7 +71,7 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
       .map { $0.optedOutOfRecommendations }.skipNil().map { $0 ? false : true }.skipRepeats()
 
     self.recommendationsTappedProperty.signal
-      .observeValues { _ in  AppEnvironment.current.koala.trackRecommendationsOptIn() }
+      .observeValues { _ in AppEnvironment.current.koala.trackRecommendationsOptIn() }
   }
 
   fileprivate let configureWithProperty = MutableProperty<User?>(nil)
@@ -85,10 +84,10 @@ SettingsRecommendationsCellViewModelInputs, SettingsRecommendationsCellViewModel
     self.recommendationsTappedProperty.value = on
   }
 
-  public let postNotification: Signal<Notification, NoError>
-  public let recommendationsOn: Signal<Bool, NoError>
-  public let unableToSaveError: Signal<String, NoError>
-  public let updateCurrentUser: Signal<User, NoError>
+  public let postNotification: Signal<Notification, Never>
+  public let recommendationsOn: Signal<Bool, Never>
+  public let unableToSaveError: Signal<String, Never>
+  public let updateCurrentUser: Signal<User, Never>
 
   public var inputs: SettingsRecommendationsCellViewModelInputs { return self }
   public var outputs: SettingsRecommendationsCellViewModelOutputs { return self }

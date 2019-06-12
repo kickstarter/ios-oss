@@ -9,7 +9,6 @@ public struct Location {
 }
 
 extension Location: Swift.Decodable {
-
   enum CodingKeys: String, CodingKey {
     case country
     case displayableName = "displayable_name"

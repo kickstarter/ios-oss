@@ -1,21 +1,20 @@
-import Prelude
-import ReactiveSwift
-import Result
-import XCTest
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class BackerDashboardProjectsViewModelTests: TestCase {
   private let vm: BackerDashboardProjectsViewModelType = BackerDashboardProjectsViewModel()
 
-  private let emptyStateIsVisible = TestObserver<Bool, NoError>()
-  private let emptyStateProjectsType = TestObserver<ProfileProjectsType, NoError>()
-  private let isRefreshing = TestObserver<Bool, NoError>()
-  private let goToProject = TestObserver<Project, NoError>()
-  private let goToProjectRefTag = TestObserver<RefTag, NoError>()
-  private let projects = TestObserver<[Project], NoError>()
-  private let scrollToProjectRow = TestObserver<Int, NoError>()
+  private let emptyStateIsVisible = TestObserver<Bool, Never>()
+  private let emptyStateProjectsType = TestObserver<ProfileProjectsType, Never>()
+  private let isRefreshing = TestObserver<Bool, Never>()
+  private let goToProject = TestObserver<Project, Never>()
+  private let goToProjectRefTag = TestObserver<RefTag, Never>()
+  private let projects = TestObserver<[Project], Never>()
+  private let scrollToProjectRow = TestObserver<Int, Never>()
 
   override func setUp() {
     super.setUp()
@@ -178,7 +177,7 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
         self.scheduler.advance()
 
         self.scrollToProjectRow.assertValues([5, 6, 7, 8])
-        self.projects.assertValues([playlist, (playlist + playlist2)], "More projects are loaded.")
+        self.projects.assertValues([playlist, playlist + playlist2], "More projects are loaded.")
 
         self.vm.inputs.transitionedToProject(at: 7, outOf: playlist2.count)
 

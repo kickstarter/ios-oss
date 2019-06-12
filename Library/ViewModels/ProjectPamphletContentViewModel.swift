@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ProjectPamphletContentViewModelInputs {
   func configureWith(project: Project)
@@ -15,13 +14,13 @@ public protocol ProjectPamphletContentViewModelInputs {
 }
 
 public protocol ProjectPamphletContentViewModelOutputs {
-  var goToBacking: Signal<Project, NoError> { get }
-  var goToComments: Signal<Project, NoError> { get }
-  var goToRewardPledge: Signal<(Project, Reward), NoError> { get }
-  var goToUpdates: Signal<Project, NoError> { get }
-  var loadMinimalProjectIntoDataSource: Signal<Project, NoError> { get }
-  var loadProjectIntoDataSource: Signal<(Project, Bool), NoError> { get }
-  var rewardTitleCellVisible: Signal<Bool, NoError> { get }
+  var goToBacking: Signal<Project, Never> { get }
+  var goToComments: Signal<Project, Never> { get }
+  var goToRewardPledge: Signal<(Project, Reward), Never> { get }
+  var goToUpdates: Signal<Project, Never> { get }
+  var loadMinimalProjectIntoDataSource: Signal<Project, Never> { get }
+  var loadProjectIntoDataSource: Signal<(Project, Bool), Never> { get }
+  var rewardTitleCellVisible: Signal<Bool, Never> { get }
 }
 
 public protocol ProjectPamphletContentViewModelType {
@@ -30,8 +29,7 @@ public protocol ProjectPamphletContentViewModelType {
 }
 
 public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewModelType,
-ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
-
+  ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
   public init() {
     let project = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
@@ -45,7 +43,7 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
       .flatMap { _ in
         // NB: skip a run loop to ease the initial rendering of the cells and the swipe animation
         SignalProducer(value: ()).delay(0, on: AppEnvironment.current.scheduler)
-    }
+      }
 
     let loadDataSourceOnModalCompletion = self.viewWillAppearAnimatedProperty.signal
       .filter(isFalse)
@@ -54,8 +52,8 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     let timeToLoadDataSource = Signal.merge(
       loadDataSourceOnSwipeCompletion,
       loadDataSourceOnModalCompletion
-      )
-      .take(first: 1)
+    )
+    .take(first: 1)
 
     self.rewardTitleCellVisible = project
       .map { $0.state == .live && $0.personalization.isBacking == true }
@@ -135,20 +133,19 @@ ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
     self.viewWillAppearAnimatedProperty.value = animated
   }
 
-  public let goToBacking: Signal<Project, NoError>
-  public let goToComments: Signal<Project, NoError>
-  public let goToRewardPledge: Signal<(Project, Reward), NoError>
-  public let goToUpdates: Signal<Project, NoError>
-  public let loadMinimalProjectIntoDataSource: Signal<Project, NoError>
-  public let loadProjectIntoDataSource: Signal<(Project, Bool), NoError>
-  public let rewardTitleCellVisible: Signal<Bool, NoError>
+  public let goToBacking: Signal<Project, Never>
+  public let goToComments: Signal<Project, Never>
+  public let goToRewardPledge: Signal<(Project, Reward), Never>
+  public let goToUpdates: Signal<Project, Never>
+  public let loadMinimalProjectIntoDataSource: Signal<Project, Never>
+  public let loadProjectIntoDataSource: Signal<(Project, Bool), Never>
+  public let rewardTitleCellVisible: Signal<Bool, Never>
 
   public var inputs: ProjectPamphletContentViewModelInputs { return self }
   public var outputs: ProjectPamphletContentViewModelOutputs { return self }
 }
 
 private func reward(forBacking backing: Backing, inProject project: Project) -> Reward? {
-
   return backing.reward
     ?? project.rewards.filter { $0.id == backing.rewardId }.first
     ?? Reward.noReward
@@ -156,27 +153,25 @@ private func reward(forBacking backing: Backing, inProject project: Project) -> 
 
 private func goToRewardPledgeData(forProject project: Project, rewardOrBacking: Either<Reward, Backing>)
   -> (Project, Reward)? {
+  guard project.state == .live else { return nil }
 
-    guard project.state == .live else { return nil }
+  switch rewardOrBacking {
+  case let .left(reward):
+    guard reward.remaining != .some(0) else { return nil }
+    return (project, reward)
 
-    switch rewardOrBacking {
-    case let .left(reward):
-      guard reward.remaining != .some(0) else { return nil }
-      return (project, reward)
+  case let .right(backing):
+    guard let reward = reward(forBacking: backing, inProject: project) else { return nil }
 
-    case let .right(backing):
-      guard let reward = reward(forBacking: backing, inProject: project) else { return nil }
-
-      return (project, reward)
-    }
+    return (project, reward)
+  }
 }
 
 private func goToBackingData(forProject project: Project, rewardOrBacking: Either<Reward, Backing>)
   -> Project? {
+  guard project.state != .live, rewardOrBacking.right != nil else {
+    return nil
+  }
 
-    guard project.state != .live && rewardOrBacking.right != nil else {
-      return nil
-    }
-
-    return project
+  return project
 }

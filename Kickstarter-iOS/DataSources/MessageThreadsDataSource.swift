@@ -1,6 +1,6 @@
+import KsApi
 import Library
 import UIKit
-import KsApi
 
 internal final class MessageThreadsDataSource: ValueCellDataSource {
   fileprivate enum Section: Int {
@@ -11,18 +11,21 @@ internal final class MessageThreadsDataSource: ValueCellDataSource {
   internal static let emptyStateCellIdentifier = String(describing: MessageThreadEmptyStateCell.self)
 
   internal func load(messageThreads: [MessageThread]) {
-    self.set(values: messageThreads,
-             cellClass: MessageThreadCell.self,
-             inSection: Section.messageThreads.rawValue)
+    self.set(
+      values: messageThreads,
+      cellClass: MessageThreadCell.self,
+      inSection: Section.messageThreads.rawValue
+    )
   }
 
   internal func emptyState(isVisible: Bool) {
-    self.set(cellIdentifiers: isVisible ? [MessageThreadsDataSource.emptyStateCellIdentifier] : [],
-             inSection: Section.emptyState.rawValue)
+    self.set(
+      cellIdentifiers: isVisible ? [MessageThreadsDataSource.emptyStateCellIdentifier] : [],
+      inSection: Section.emptyState.rawValue
+    )
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
-
     switch (cell, value) {
     case let (cell as MessageThreadCell, value as MessageThread):
       cell.configureWith(value: value)

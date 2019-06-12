@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol ActivityFriendFollowCellViewModelInputs {
   /// Call to configure activity with Activity.
@@ -13,18 +12,17 @@ public protocol ActivityFriendFollowCellViewModelInputs {
 
 public protocol ActivityFriendFollowCellViewModelOutputs {
   /// Emits a URL to the friend image.
-  var friendImageURL: Signal<URL?, NoError> { get }
+  var friendImageURL: Signal<URL?, Never> { get }
 
   /// Emits whether to hide the follow button.
-  var hideFollowButton: Signal<Bool, NoError> { get }
+  var hideFollowButton: Signal<Bool, Never> { get }
 
   /// Emits text for title label.
-  var title: Signal<NSAttributedString, NoError> { get }
+  var title: Signal<NSAttributedString, Never> { get }
 }
 
 public final class ActivityFriendFollowCellViewModel: ActivityFriendFollowCellViewModelInputs,
-ActivityFriendFollowCellViewModelOutputs {
-
+  ActivityFriendFollowCellViewModelOutputs {
   public init() {
     let friend = self.activityProperty.signal.skipNil()
       .map(Activity.lens.user.view)
@@ -35,22 +33,24 @@ ActivityFriendFollowCellViewModelOutputs {
 
     self.title = friend.map {
       let string = Strings.activity_user_name_is_now_following_you(user_name: "<b>\($0.name)</b>")
-      return string.simpleHtmlAttributedString(base: [
-        NSAttributedString.Key.font: UIFont.ksr_subhead(size: 14.0),
-        NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+      return string.simpleHtmlAttributedString(
+        base: [
+          NSAttributedString.Key.font: UIFont.ksr_subhead(size: 14.0),
+          NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
         ],
         bold: [
           NSAttributedString.Key.font: UIFont.ksr_headline(size: 14.0),
           NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
-        ]) ?? NSAttributedString(string: "")
+        ]
+      ) ?? NSAttributedString(string: "")
     }
 
     let followFriendEvent = friend.takeWhen(self.followButtonTappedProperty.signal)
       .switchMap { user in
         AppEnvironment.current.apiService.followFriend(userId: user.id)
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .materialize()
-    }
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
 
     let followFriendSuccess = followFriendEvent.values()
       .on(value: { cache(friend: $0, isFriend: true) })
@@ -67,14 +67,15 @@ ActivityFriendFollowCellViewModelOutputs {
   public func configureWith(activity: Activity) {
     self.activityProperty.value = activity
   }
+
   fileprivate let followButtonTappedProperty = MutableProperty(())
   public func followButtonTapped() {
     self.followButtonTappedProperty.value = ()
   }
 
-  public let friendImageURL: Signal<URL?, NoError>
-  public let hideFollowButton: Signal<Bool, NoError>
-  public let title: Signal<NSAttributedString, NoError>
+  public let friendImageURL: Signal<URL?, Never>
+  public let hideFollowButton: Signal<Bool, Never>
+  public let title: Signal<NSAttributedString, Never>
 
   public var inputs: ActivityFriendFollowCellViewModelInputs { return self }
   public var outputs: ActivityFriendFollowCellViewModelOutputs { return self }

@@ -22,7 +22,7 @@ private let stores = [
     "dates.time_hours_ago_abbreviated.one": "%{time_count} hr ago",
     "dates.time_hours_ago_abbreviated.two": "%{time_count} hrs ago",
     "dates.time_hours_ago_abbreviated.few": "%{time_count} hrs ago",
-    "dates.time_hours_ago_abbreviated.many": "%{time_count} hrs ago",
+    "dates.time_hours_ago_abbreviated.many": "%{time_count} hrs ago"
   ],
   "de": [
     "test_count.zero": "de_zero",
@@ -34,10 +34,10 @@ private let stores = [
     "echo": "echo",
     "hello_format": "de_hello %{a} %{b}",
     "dates.time_hours_ago.one": "vor %{time_count} Stunde",
-    "dates.time_hours_ago_abbreviated.one": "vor %{time_count} Std",
+    "dates.time_hours_ago_abbreviated.one": "vor %{time_count} Std"
   ],
   "es": [
-    "placeholder_password": "el secreto",
+    "placeholder_password": "el secreto"
   ],
   "ja": [
     "dates.time_days.two": "2日"
@@ -48,7 +48,7 @@ internal struct MockBundle: NSBundleType {
   internal let bundleIdentifier: String?
   fileprivate let store: [String: String]
 
-  internal func path(forResource name: String?, ofType ext: String?) -> String? {
+  internal func path(forResource name: String?, ofType _: String?) -> String? {
     return name
   }
 
@@ -61,7 +61,7 @@ internal struct MockBundle: NSBundleType {
     return MockBundle(lang: path)
   }
 
-  internal func localizedString(forKey key: String, value: String?, table tableName: String?) -> String {
+  internal func localizedString(forKey key: String, value: String?, table _: String?) -> String {
     // A real `NSBundle` will return the key if the key is missing and value is `nil`.
     return self.store[key] ?? value ?? key
   }

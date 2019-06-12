@@ -1,37 +1,36 @@
-import Prelude
-import ReactiveSwift
-import ReactiveExtensions
-import Result
-import XCTest
 @testable import KsApi
-import ReactiveExtensions_TestHelpers
 @testable import Library
+import Prelude
+import ReactiveExtensions
+import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 final class ProjectPamphletMainCellViewModelTests: TestCase {
   fileprivate let vm: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
 
-  fileprivate let statsStackViewAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let backersTitleLabelText = TestObserver<String, NoError>()
-  fileprivate let conversionLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let conversionLabelText = TestObserver<String, NoError>()
-  fileprivate let creatorImageUrl = TestObserver<String?, NoError>()
-  fileprivate let creatorLabelText = TestObserver<String, NoError>()
-  fileprivate let deadlineSubtitleLabelText = TestObserver<String, NoError>()
-  fileprivate let deadlineTitleLabelText = TestObserver<String, NoError>()
-  fileprivate let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, NoError>()
-  private let opacityForViews = TestObserver<CGFloat, NoError>()
-  fileprivate let pledgedSubtitleLabelText = TestObserver<String, NoError>()
-  fileprivate let pledgedTitleLabelText = TestObserver<String, NoError>()
-  fileprivate let pledgedTitleLabelTextColor = TestObserver<UIColor, NoError>()
-  fileprivate let progressPercentage = TestObserver<Float, NoError>()
-  fileprivate let projectBlurbLabelText = TestObserver<String, NoError>()
-  fileprivate let projectImageUrl = TestObserver<String?, NoError>()
-  fileprivate let projectNameLabelText = TestObserver<String, NoError>()
-  fileprivate let projectStateLabelText = TestObserver<String, NoError>()
-  fileprivate let projectStateLabelTextColor = TestObserver<UIColor, NoError>()
-  fileprivate let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, NoError>()
-  fileprivate let stateLabelHidden = TestObserver<Bool, NoError>()
-  fileprivate let youreABackerLabelHidden = TestObserver<Bool, NoError>()
+  fileprivate let statsStackViewAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let backersTitleLabelText = TestObserver<String, Never>()
+  fileprivate let conversionLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let conversionLabelText = TestObserver<String, Never>()
+  fileprivate let creatorImageUrl = TestObserver<String?, Never>()
+  fileprivate let creatorLabelText = TestObserver<String, Never>()
+  fileprivate let deadlineSubtitleLabelText = TestObserver<String, Never>()
+  fileprivate let deadlineTitleLabelText = TestObserver<String, Never>()
+  fileprivate let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, Never>()
+  private let opacityForViews = TestObserver<CGFloat, Never>()
+  fileprivate let pledgedSubtitleLabelText = TestObserver<String, Never>()
+  fileprivate let pledgedTitleLabelText = TestObserver<String, Never>()
+  fileprivate let pledgedTitleLabelTextColor = TestObserver<UIColor, Never>()
+  fileprivate let progressPercentage = TestObserver<Float, Never>()
+  fileprivate let projectBlurbLabelText = TestObserver<String, Never>()
+  fileprivate let projectImageUrl = TestObserver<String?, Never>()
+  fileprivate let projectNameLabelText = TestObserver<String, Never>()
+  fileprivate let projectStateLabelText = TestObserver<String, Never>()
+  fileprivate let projectStateLabelTextColor = TestObserver<UIColor, Never>()
+  fileprivate let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, Never>()
+  fileprivate let stateLabelHidden = TestObserver<Bool, Never>()
+  fileprivate let youreABackerLabelHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -79,8 +78,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: nonUSProject)
 
     self.statsStackViewAccessibilityLabel.assertValues(
-      [ "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
-        "$1,200 of $2,400 goal, 10 backers so far, 10 days to go to go"]
+      [
+        "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
+        "$1,200 of $2,400 goal, 10 backers so far, 10 days to go to go"
+      ]
     )
 
     let nonUSUserCurrency = project
@@ -90,10 +91,11 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: nonUSUserCurrency)
 
     self.statsStackViewAccessibilityLabel.assertValues(
-      [ "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
+      [
+        "$1,000 of $2,000 goal, 10 backers so far, 10 days to go to go",
         "$1,200 of $2,400 goal, 10 backers so far, 10 days to go to go",
         "£2,000 of £4,000 goal, 10 backers so far, 10 days to go to go"
-        ]
+      ]
     )
   }
 
@@ -165,7 +167,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testCreatorImageUrl() {
     let project = .template
-      |> (Project.lens.creator.avatar..User.Avatar.lens.small) .~ "hello.jpg"
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ "hello.jpg"
     self.vm.inputs.configureWith(project: project)
     self.creatorImageUrl.assertValues(["hello.jpg"])
   }
@@ -218,8 +220,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testConversionLabel_WhenConversionNeeded_US_Project_NonUS_User() {
     let project = .template
       |> Project.lens.country .~ .us
-      |> Project.lens.stats.pledged .~ 1000
-      |> Project.lens.stats.goal .~ 2000
+      |> Project.lens.stats.pledged .~ 1_000
+      |> Project.lens.stats.goal .~ 2_000
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.ca.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 1.3

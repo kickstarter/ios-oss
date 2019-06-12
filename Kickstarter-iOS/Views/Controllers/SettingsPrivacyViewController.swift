@@ -3,7 +3,6 @@ import Library
 import Prelude
 import Prelude_UIKit
 import SafariServices
-import Result
 import UIKit
 
 internal final class SettingsPrivacyViewController: UITableViewController {
@@ -51,13 +50,13 @@ internal final class SettingsPrivacyViewController: UITableViewController {
         AppEnvironment.updateCurrentUser(user)
         NotificationCenter.default.post(Notification(name: .ksr_userUpdated))
         self?.dataSource.load(user: user)
-    }
+      }
 
     self.viewModel.outputs.unableToSaveError
       .observeForControllerAction()
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true, completion: nil)
-    }
+      }
 
     self.viewModel.outputs.resetFollowingSection
       .observeForUI()
@@ -65,18 +64,20 @@ internal final class SettingsPrivacyViewController: UITableViewController {
         let indexPath = IndexPath(row: 0, section: Section.following.rawValue)
         let cell = self?.tableView.cellForRow(at: indexPath) as? SettingsFollowCell
         cell?.toggleOn()
-    }
+      }
 
     self.viewModel.outputs.focusScreenReaderOnFollowingCell
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.accessibilityFocusOnFollowingCell()
-    }
+      }
   }
 
-  internal override func tableView(_ tableView: UITableView,
-                                   willDisplay cell: UITableViewCell,
-                                   forRowAt indexPath: IndexPath) {
+  internal override func tableView(
+    _: UITableView,
+    willDisplay cell: UITableViewCell,
+    forRowAt _: IndexPath
+  ) {
     if let followCell = cell as? SettingsFollowCell {
       followCell.delegate = self
     } else if let requestDataCell = cell as? SettingsPrivacyRequestDataCell {
@@ -97,13 +98,13 @@ internal final class SettingsPrivacyViewController: UITableViewController {
 }
 
 extension SettingsPrivacyViewController: SettingsPrivacySwitchCellDelegate {
-  func privacySettingsSwitchCell(_ cell: SettingsPrivacySwitchCell, didTogglePrivacySwitch on: Bool) {
+  func privacySettingsSwitchCell(_: SettingsPrivacySwitchCell, didTogglePrivacySwitch on: Bool) {
     self.viewModel.inputs.privateProfileToggled(on: on)
   }
 }
 
 extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
-  internal func settingsFollowCellDidDisableFollowing(_ cell: SettingsFollowCell) {
+  internal func settingsFollowCellDidDisableFollowing(_: SettingsFollowCell) {
     let followingAlert = UIAlertController.turnOffPrivacyFollowing(
       cancelHandler: { [weak self] _ in
         self?.viewModel.inputs.didCancelSocialOptOut()
@@ -121,16 +122,20 @@ extension SettingsPrivacyViewController: SettingsFollowCellDelegate {
 }
 
 extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
-  internal func settingsRequestDataCellDidPresentPrompt(_ cell: SettingsPrivacyRequestDataCell,
-                                                        alertMessage: String) {
+  internal func settingsRequestDataCellDidPresentPrompt(
+    _: SettingsPrivacyRequestDataCell,
+    alertMessage: String
+  ) {
     let exportDataSheet = UIAlertController(
       title: nil,
       message: alertMessage,
-      preferredStyle: .actionSheet)
+      preferredStyle: .actionSheet
+    )
 
-    let startTheRequest = UIAlertAction(title: Strings.Request_my_data(),
-                                        style: .default,
-                                        handler: { _ in
+    let startTheRequest = UIAlertAction(
+      title: Strings.Request_my_data(),
+      style: .default,
+      handler: { _ in
         NotificationCenter.default.post(name: Notification.Name.ksr_dataRequested, object: nil, userInfo: nil)
       }
     )
@@ -143,16 +148,20 @@ extension SettingsPrivacyViewController: SettingsRequestDataCellDelegate {
     self.present(exportDataSheet, animated: true, completion: nil)
   }
 
-  internal func settingsRequestDataCell(_ cell: SettingsPrivacyRequestDataCell,
-                                        requestedDataWith url: String) {
+  internal func settingsRequestDataCell(
+    _: SettingsPrivacyRequestDataCell,
+    requestedDataWith url: String
+  ) {
     guard let fileUrl = URL(string: url) else { return }
     UIApplication.shared.open(fileUrl)
   }
 }
 
 extension SettingsPrivacyViewController: SettingsPrivacyDeleteAccountCellDelegate {
-  internal func settingsPrivacyDeleteAccountCellTapped(_ cell: SettingsPrivacyDeleteAccountCell,
-                                                       with url: URL) {
+  internal func settingsPrivacyDeleteAccountCellTapped(
+    _: SettingsPrivacyDeleteAccountCell,
+    with url: URL
+  ) {
     self.goTo(url: url)
   }
 }

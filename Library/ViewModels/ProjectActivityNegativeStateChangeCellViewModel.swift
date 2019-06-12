@@ -1,8 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
-import Result
+import ReactiveSwift
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelInputs {
   /// Call to set the activity and project.
@@ -11,7 +10,7 @@ public protocol ProjectActivityNegativeStateChangeCellViewModelInputs {
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelOutputs {
   /// Emits the title of the activity.
-  var title: Signal<String, NoError> { get }
+  var title: Signal<String, Never> { get }
 }
 
 public protocol ProjectActivityNegativeStateChangeCellViewModelType {
@@ -20,36 +19,41 @@ public protocol ProjectActivityNegativeStateChangeCellViewModelType {
 }
 
 public final class ProjectActivityNegativeStateChangeCellViewModel:
-ProjectActivityNegativeStateChangeCellViewModelType, ProjectActivityNegativeStateChangeCellViewModelInputs,
-ProjectActivityNegativeStateChangeCellViewModelOutputs {
-
+  ProjectActivityNegativeStateChangeCellViewModelType, ProjectActivityNegativeStateChangeCellViewModelInputs,
+  ProjectActivityNegativeStateChangeCellViewModelOutputs {
   public init() {
     let activityAndProject = self.activityAndProjectProperty.signal.skipNil()
 
     self.title = activityAndProject.map { activity, project in
-        switch activity.category {
-        case .cancellation:
-          return Strings.dashboard_activity_project_name_was_canceled(
-            project_name: project.name,
-            cancellation_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .long,
-              timeStyle: .none).nonBreakingSpaced()
-          )
-        case .failure:
-          return Strings.dashboard_activity_project_name_was_unsuccessful(
-            project_name: project.name,
-            unsuccessful_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .long,
-              timeStyle: .none).nonBreakingSpaced()
-          )
-        case .suspension:
-          return Strings.dashboard_activity_project_name_was_suspended(
-            project_name: project.name,
-            suspension_date: Format.date(secondsInUTC: activity.createdAt, dateStyle: .long,
-              timeStyle: .none).nonBreakingSpaced()
-          )
-        default:
-          assertionFailure("Unrecognized activity: \(activity).")
-          return ""
-        }
+      switch activity.category {
+      case .cancellation:
+        return Strings.dashboard_activity_project_name_was_canceled(
+          project_name: project.name,
+          cancellation_date: Format.date(
+            secondsInUTC: activity.createdAt, dateStyle: .long,
+            timeStyle: .none
+          ).nonBreakingSpaced()
+        )
+      case .failure:
+        return Strings.dashboard_activity_project_name_was_unsuccessful(
+          project_name: project.name,
+          unsuccessful_date: Format.date(
+            secondsInUTC: activity.createdAt, dateStyle: .long,
+            timeStyle: .none
+          ).nonBreakingSpaced()
+        )
+      case .suspension:
+        return Strings.dashboard_activity_project_name_was_suspended(
+          project_name: project.name,
+          suspension_date: Format.date(
+            secondsInUTC: activity.createdAt, dateStyle: .long,
+            timeStyle: .none
+          ).nonBreakingSpaced()
+        )
+      default:
+        assertionFailure("Unrecognized activity: \(activity).")
+        return ""
+      }
     }
   }
 
@@ -58,7 +62,7 @@ ProjectActivityNegativeStateChangeCellViewModelOutputs {
     self.activityAndProjectProperty.value = (activity, project)
   }
 
-  public let title: Signal<String, NoError>
+  public let title: Signal<String, Never>
 
   public var inputs: ProjectActivityNegativeStateChangeCellViewModelInputs { return self }
   public var outputs: ProjectActivityNegativeStateChangeCellViewModelOutputs { return self }

@@ -1,26 +1,26 @@
 import Foundation
-import Prelude
-import Library
 import KsApi
+import Library
+import Prelude
 
-protocol SettingsNotificationCellDelegate: class {
+protocol SettingsNotificationCellDelegate: AnyObject {
   func settingsNotificationCell(_ cell: SettingsNotificationCell, didFailToUpdateUser errorMessage: String)
   func settingsNotificationCell(_ cell: SettingsNotificationCell, didUpdateUser user: User)
 }
 
 final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
-  @IBOutlet fileprivate weak var arrowImageView: UIImageView!
-  @IBOutlet fileprivate weak var emailNotificationsButton: UIButton!
-  @IBOutlet fileprivate weak var projectCountLabel: UILabel!
-  @IBOutlet fileprivate weak var pushNotificationsButton: UIButton!
-  @IBOutlet fileprivate weak var stackView: UIStackView!
-  @IBOutlet fileprivate weak var titleLabel: UILabel!
+  @IBOutlet fileprivate var arrowImageView: UIImageView!
+  @IBOutlet fileprivate var emailNotificationsButton: UIButton!
+  @IBOutlet fileprivate var projectCountLabel: UILabel!
+  @IBOutlet fileprivate var pushNotificationsButton: UIButton!
+  @IBOutlet fileprivate var stackView: UIStackView!
+  @IBOutlet fileprivate var titleLabel: UILabel!
 
   weak var delegate: SettingsNotificationCellDelegate?
 
   private let viewModel: SettingsNotificationCellViewModelType = SettingsNotificationCellViewModel()
   private lazy var tapGesture: UITapGestureRecognizer = {
-    return UITapGestureRecognizer(target: self, action: #selector(cellBackgroundTapped))
+    UITapGestureRecognizer(target: self, action: #selector(cellBackgroundTapped))
   }()
 
   private var notificationType: SettingsNotificationCellType?
@@ -44,7 +44,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
         accessibilityElementsHidden
           ? [self.emailNotificationsButton, self.pushNotificationsButton].compact()
           : nil
-    )
+      )
 
     _ = self.titleLabel
       |> UILabel.lens.text .~ cellValue.cellType.title
@@ -73,66 +73,78 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       |> UILabel.lens.font .~ .ksr_body()
 
     _ = self.emailNotificationsButton |> notificationButtonStyle
-      |> UIButton.lens.image(for: .normal) .~ Library.image(named: "email-icon",
-                                                              tintColor: .ksr_dark_grey_400,
-                                                              inBundle: Bundle.framework)
-      |> UIButton.lens.image(for: .highlighted) .~ Library.image(named: "email-icon",
-                                                            tintColor: .ksr_grey_500,
-                                                            inBundle: Bundle.framework)
-      |> UIButton.lens.image(for: .selected) .~ Library.image(named: "email-icon",
-                                                      tintColor: .ksr_green_700,
-                                                      inBundle: Bundle.framework)
+      |> UIButton.lens.image(for: .normal) .~ Library.image(
+        named: "email-icon",
+        tintColor: .ksr_dark_grey_400,
+        inBundle: Bundle.framework
+      )
+      |> UIButton.lens.image(for: .highlighted) .~ Library.image(
+        named: "email-icon",
+        tintColor: .ksr_grey_500,
+        inBundle: Bundle.framework
+      )
+      |> UIButton.lens.image(for: .selected) .~ Library.image(
+        named: "email-icon",
+        tintColor: .ksr_green_700,
+        inBundle: Bundle.framework
+      )
 
     _ = self.pushNotificationsButton
       |> notificationButtonStyle
-      |> UIButton.lens.image(for: .normal) .~ Library.image(named: "mobile-icon",
-                                                              tintColor: .ksr_dark_grey_400,
-                                                              inBundle: Bundle.framework)
-      |> UIButton.lens.image(for: .highlighted) .~ Library.image(named: "mobile-icon",
-                                                              tintColor: .ksr_grey_500,
-                                                              inBundle: Bundle.framework)
-      |> UIButton.lens.image(for: .selected) .~ Library.image(named: "mobile-icon",
-                                                      tintColor: .ksr_green_700,
-                                                      inBundle: Bundle.framework)
+      |> UIButton.lens.image(for: .normal) .~ Library.image(
+        named: "mobile-icon",
+        tintColor: .ksr_dark_grey_400,
+        inBundle: Bundle.framework
+      )
+      |> UIButton.lens.image(for: .highlighted) .~ Library.image(
+        named: "mobile-icon",
+        tintColor: .ksr_grey_500,
+        inBundle: Bundle.framework
+      )
+      |> UIButton.lens.image(for: .selected) .~ Library.image(
+        named: "mobile-icon",
+        tintColor: .ksr_green_700,
+        inBundle: Bundle.framework
+      )
   }
 
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.emailNotificationsButton.rac.selected = viewModel.outputs.emailNotificationsEnabled
-    self.emailNotificationsButton.rac.hidden = viewModel.outputs.emailNotificationButtonIsHidden
+    self.emailNotificationsButton.rac.selected = self.viewModel.outputs.emailNotificationsEnabled
+    self.emailNotificationsButton.rac.hidden = self.viewModel.outputs.emailNotificationButtonIsHidden
     self.emailNotificationsButton.rac.accessibilityLabel =
-      viewModel.outputs.emailNotificationsButtonAccessibilityLabel
-    self.projectCountLabel.rac.text = viewModel.outputs.projectCountText
-    self.pushNotificationsButton.rac.selected = viewModel.outputs.pushNotificationsEnabled
-    self.pushNotificationsButton.rac.hidden = viewModel.outputs.pushNotificationButtonIsHidden
+      self.viewModel.outputs.emailNotificationsButtonAccessibilityLabel
+    self.projectCountLabel.rac.text = self.viewModel.outputs.projectCountText
+    self.pushNotificationsButton.rac.selected = self.viewModel.outputs.pushNotificationsEnabled
+    self.pushNotificationsButton.rac.hidden = self.viewModel.outputs.pushNotificationButtonIsHidden
     self.pushNotificationsButton.rac.accessibilityLabel =
-      viewModel.outputs.pushNotificationsButtonAccessibilityLabel
+      self.viewModel.outputs.pushNotificationsButtonAccessibilityLabel
 
     self.viewModel.outputs.enableButtonAnimation
-    .observeForUI()
-    .observeValues { [weak self] enableAnimation in
-      guard let _self = self else { return }
+      .observeForUI()
+      .observeValues { [weak self] enableAnimation in
+        guard let _self = self else { return }
         if enableAnimation {
           _self.addGestureRecognizer(_self.tapGesture)
         } else {
           _self.removeGestureRecognizer(_self.tapGesture)
         }
-    }
+      }
 
     self.viewModel.outputs.updateCurrentUser
       .observeForControllerAction()
-      .observeValues { [weak self] (user) in
+      .observeValues { [weak self] user in
         guard let _self = self else { return }
         _self.delegate?.settingsNotificationCell(_self, didUpdateUser: user)
-    }
+      }
 
     self.viewModel.outputs.unableToSaveError
       .observeForControllerAction()
-      .observeValues { [weak self] (errorString) in
+      .observeValues { [weak self] errorString in
         guard let _self = self else { return }
         _self.delegate?.settingsNotificationCell(_self, didFailToUpdateUser: errorString)
-    }
+      }
   }
 
   @IBAction func emailNotificationsButtonTapped(_ sender: UIButton) {
@@ -143,28 +155,30 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
     self.viewModel.inputs.didTapPushNotificationsButton(selected: sender.isSelected)
   }
 
-  @IBAction func cellBackgroundTapped(_ sender: Any) {
+  @IBAction func cellBackgroundTapped(_: Any) {
     let sizeTransform = CGAffineTransform(scaleX: 1.2, y: 1.2)
     let animationDuration: TimeInterval = 0.15
 
     UIView.animate(withDuration: animationDuration, animations: { [weak self] in
       self?.pushNotificationsButton.transform = sizeTransform
-    }, completion: { [weak self] (_) in
+    }, completion: { [weak self] _ in
       guard let _self = self else { return }
 
       _self.identityAnimation(for: _self.pushNotificationsButton)
     })
 
-    UIView.animate(withDuration: animationDuration,
-                   delay: 0.1,
-                   options: .curveEaseInOut,
-                   animations: { [weak self] in
-      self?.emailNotificationsButton.transform = sizeTransform
-    }, completion: { [weak self] (_) in
-      guard let _self = self else { return }
+    UIView.animate(
+      withDuration: animationDuration,
+      delay: 0.1,
+      options: .curveEaseInOut,
+      animations: { [weak self] in
+        self?.emailNotificationsButton.transform = sizeTransform
+      }, completion: { [weak self] _ in
+        guard let _self = self else { return }
 
-      _self.identityAnimation(for: _self.emailNotificationsButton)
-    })
+        _self.identityAnimation(for: _self.emailNotificationsButton)
+      }
+    )
   }
 
   private func identityAnimation(for button: UIButton, duration: TimeInterval = 0.15) {

@@ -1,20 +1,19 @@
-import Prelude
-import Result
-import XCTest
-@testable import Library
 @testable import KsApi
+@testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 internal final class ActivityUpdateViewModelTests: TestCase {
   fileprivate let vm: ActivityUpdateViewModelType = ActivityUpdateViewModel()
-  fileprivate let body = TestObserver<String, NoError>()
-  fileprivate let cellAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let notifyDelegateTappedProjectImage = TestObserver<Activity, NoError>()
-  fileprivate let projectButtonAccessibilityLabel = TestObserver<String, NoError>()
-  fileprivate let projectImageURL = TestObserver<String?, NoError>()
-  fileprivate let projectName = TestObserver<String, NoError>()
-  fileprivate let sequenceTitle = TestObserver<String, NoError>()
-  fileprivate let title = TestObserver<String, NoError>()
+  fileprivate let body = TestObserver<String, Never>()
+  fileprivate let cellAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let notifyDelegateTappedProjectImage = TestObserver<Activity, Never>()
+  fileprivate let projectButtonAccessibilityLabel = TestObserver<String, Never>()
+  fileprivate let projectImageURL = TestObserver<String?, Never>()
+  fileprivate let projectName = TestObserver<String, Never>()
+  fileprivate let sequenceTitle = TestObserver<String, Never>()
+  fileprivate let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -46,7 +45,7 @@ internal final class ActivityUpdateViewModelTests: TestCase {
         space: " ",
         update_number: Format.wholeNumber(activity.update?.sequence ?? 1),
         time_count_days_ago: Format.relative(secondsInUTC: activity.createdAt)
-      ).htmlStripped()  ?? ""
+      ).htmlStripped() ?? ""
     ])
     self.title.assertValues([update.title])
   }
@@ -62,11 +61,11 @@ internal final class ActivityUpdateViewModelTests: TestCase {
 
     self.cellAccessibilityLabel.assertValues([
       "\(project.name) "
-      + (Strings.dashboard_activity_update_number_posted_time_count_days_ago(
-        space: " ",
-        update_number: Format.wholeNumber(activity.update?.sequence ?? 1),
-        time_count_days_ago: Format.relative(secondsInUTC: activity.createdAt)
-      ).htmlStripped() ?? "")
+        + (Strings.dashboard_activity_update_number_posted_time_count_days_ago(
+          space: " ",
+          update_number: Format.wholeNumber(activity.update?.sequence ?? 1),
+          time_count_days_ago: Format.relative(secondsInUTC: activity.createdAt)
+        ).htmlStripped() ?? "")
     ], "Cell a11y label emits sequence title.")
   }
 

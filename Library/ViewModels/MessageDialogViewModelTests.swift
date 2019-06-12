@@ -1,21 +1,20 @@
-import XCTest
+@testable import KsApi
 @testable import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-import Result
-@testable import KsApi
+import XCTest
 
 internal final class MessageDialogViewModelTests: TestCase {
   fileprivate let vm: MessageDialogViewModelType = MessageDialogViewModel()
 
-  fileprivate let loadingViewIsHidden = TestObserver<Bool, NoError>()
-  fileprivate let postButtonEnabled = TestObserver<Bool, NoError>()
-  fileprivate let notifyPresenterCommentWasPostedSuccesfully = TestObserver<Message, NoError>()
-  fileprivate let notifyPresenterDialogWantsDismissal = TestObserver<(), NoError>()
-  fileprivate let recipientName = TestObserver<String, NoError>()
-  fileprivate let keyboardIsVisible = TestObserver<Bool, NoError>()
-  fileprivate let showAlertMessage = TestObserver<String, NoError>()
+  fileprivate let loadingViewIsHidden = TestObserver<Bool, Never>()
+  fileprivate let postButtonEnabled = TestObserver<Bool, Never>()
+  fileprivate let notifyPresenterCommentWasPostedSuccesfully = TestObserver<Message, Never>()
+  fileprivate let notifyPresenterDialogWantsDismissal = TestObserver<(), Never>()
+  fileprivate let recipientName = TestObserver<String, Never>()
+  fileprivate let keyboardIsVisible = TestObserver<Bool, Never>()
+  fileprivate let showAlertMessage = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -41,7 +40,7 @@ internal final class MessageDialogViewModelTests: TestCase {
 
   func testRecipientNameWhenBackingHasNoBacker() {
     let backing = .template
-        |> Backing.lens.backer .~ nil
+      |> Backing.lens.backer .~ nil
     let name = "Blobber"
     let backer = User.template
       |> \.name .~ name
@@ -125,8 +124,10 @@ internal final class MessageDialogViewModelTests: TestCase {
     self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
 
     XCTAssertEqual(["Viewed Message Editor", "Message Sent", "Sent Message"], self.trackingClient.events)
-    XCTAssertEqual([nil, true, nil],
-                   self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self))
+    XCTAssertEqual(
+      [nil, true, nil],
+      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
+    )
   }
 
   func testPostingMessageToCreator() {

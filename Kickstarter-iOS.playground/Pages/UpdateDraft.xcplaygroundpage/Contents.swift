@@ -1,10 +1,10 @@
+@testable import Kickstarter_Framework
 @testable import KsApi
 import Library
+import PlaygroundSupport
 import Prelude
 import Prelude_UIKit
 import UIKit
-import PlaygroundSupport
-@testable import Kickstarter_Framework
 
 let w = 80
 
@@ -13,16 +13,16 @@ let draft = .blank
   |> UpdateDraft.lens.update.body .~ "Dolor sit amet!"
   |> UpdateDraft.lens.images .~ (0..<10).map { _ in
     .template |> UpdateDraft.Image.lens.thumb .~ "http://lorempixel.com/\(w)/\(w)/abstract"
-}
+  }
 
 AppEnvironment.replaceCurrentEnvironment(
-    apiService: MockService(
-        oauthToken: OauthToken(token: "deadbeef"),
-        fetchDraftResponse: draft
-    ),
-    //  language: .es, locale: Locale(identifier: "es"),
-    currentUser: Project.cosmicSurgery.creator,
-    mainBundle: Bundle.framework
+  apiService: MockService(
+    oauthToken: OauthToken(token: "deadbeef"),
+    fetchDraftResponse: draft
+  ),
+  //  language: .es, locale: Locale(identifier: "es"),
+  currentUser: Project.cosmicSurgery.creator,
+  mainBundle: Bundle.framework
 )
 
 initialize()

@@ -1,6 +1,6 @@
+import Library
 import Prelude
 import XCTest
-import Library
 
 @testable import Kickstarter_Framework
 
@@ -9,9 +9,11 @@ final class SettingsAccountDataSourceTests: XCTestCase {
   private let tableView = UITableView()
 
   func testConfigureRows_EmailPasswordRows_Shown() {
-    self.self.dataSource.configureRows(currency: Currency.USD,
-                                  shouldHideEmailWarning: true,
-                                  shouldHideEmailPasswordSection: false)
+    self.self.dataSource.configureRows(
+      currency: Currency.USD,
+      shouldHideEmailWarning: true,
+      shouldHideEmailPasswordSection: false
+    )
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
@@ -20,9 +22,11 @@ final class SettingsAccountDataSourceTests: XCTestCase {
   }
 
   func testConfigureRows_EmailPasswordRows_Hidden() {
-    self.dataSource.configureRows(currency: Currency.USD,
-                                  shouldHideEmailWarning: true,
-                                  shouldHideEmailPasswordSection: true)
+    self.dataSource.configureRows(
+      currency: Currency.USD,
+      shouldHideEmailWarning: true,
+      shouldHideEmailPasswordSection: true
+    )
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
@@ -37,9 +41,11 @@ final class SettingsAccountDataSourceTests: XCTestCase {
     let indexPath4 = IndexPath(item: 0, section: 2)
     let indexPath5 = IndexPath(item: 1, section: 2)
 
-    self.dataSource.configureRows(currency: .USD,
-                                  shouldHideEmailWarning: true,
-                                  shouldHideEmailPasswordSection: false)
+    self.dataSource.configureRows(
+      currency: .USD,
+      shouldHideEmailWarning: true,
+      shouldHideEmailPasswordSection: false
+    )
 
     XCTAssertEqual(
       SettingsAccountCellType.changeEmail, self.dataSource.cellTypeForIndexPath(indexPath: indexPath1)
@@ -64,9 +70,11 @@ final class SettingsAccountDataSourceTests: XCTestCase {
     let indexPath3 = IndexPath(item: 0, section: 2)
     let indexPath4 = IndexPath(item: 1, section: 2)
 
-    self.dataSource.configureRows(currency: .USD,
-                                  shouldHideEmailWarning: true,
-                                  shouldHideEmailPasswordSection: true)
+    self.dataSource.configureRows(
+      currency: .USD,
+      shouldHideEmailWarning: true,
+      shouldHideEmailPasswordSection: true
+    )
 
     XCTAssertEqual(
       SettingsAccountCellType.createPassword, self.dataSource.cellTypeForIndexPath(indexPath: indexPath1)

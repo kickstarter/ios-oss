@@ -1,10 +1,9 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol FindFriendsCellViewModelOutputs {
-  var isDisabled: Signal<Bool, NoError> { get }
+  var isDisabled: Signal<Bool, Never> { get }
 }
 
 public protocol FindFriendsCellViewModelInputs {
@@ -17,9 +16,9 @@ public protocol FindFriendsCellViewModelType {
 }
 
 public final class FindFriendsCellViewModel: FindFriendsCellViewModelInputs,
-FindFriendsCellViewModelOutputs, FindFriendsCellViewModelType {
+  FindFriendsCellViewModelOutputs, FindFriendsCellViewModelType {
   public init() {
-    let isFollowingEnabled = userProperty.signal
+    let isFollowingEnabled = self.userProperty.signal
       .skipNil()
       .map { $0 |> User.lens.social.view }
       .skipNil()
@@ -32,7 +31,7 @@ FindFriendsCellViewModelOutputs, FindFriendsCellViewModelType {
     self.userProperty.value = user
   }
 
-  public let isDisabled: Signal<Bool, NoError>
+  public let isDisabled: Signal<Bool, Never>
 
   public var outputs: FindFriendsCellViewModelOutputs {
     return self

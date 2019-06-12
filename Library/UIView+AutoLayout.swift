@@ -26,6 +26,6 @@ extension UIView {
       self.layoutMarginsGuide.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       self.layoutMarginsGuide.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       self.layoutMarginsGuide.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-      ])
+    ])
   }
 }

@@ -1,19 +1,21 @@
+@testable import Kickstarter_Framework
 @testable import KsApi
 import Library
+import PlaygroundSupport
 import Prelude
 import Prelude_UIKit
 import ReactiveSwift
 import UIKit
-import PlaygroundSupport
-@testable import Kickstarter_Framework
 
 initialize()
 let controller = BackingViewController.configuredWith(project: .template, backer: .template)
 
-AppEnvironment.login(AccessTokenEnvelope(accessToken: "cafebeef",
-  user: .template
-    |> \.avatar.small .~ "https://s-media-cache-ak0.pinimg.com/564x/fd/9a/25/fd9a25f4f454d86cfef6fe75ea9c7129.jpg"
-    |> \.name .~ "Darby"
+AppEnvironment.login(
+  AccessTokenEnvelope(
+    accessToken: "cafebeef",
+    user: .template
+      |> \.avatar.small .~ "https://s-media-cache-ak0.pinimg.com/564x/fd/9a/25/fd9a25f4f454d86cfef6fe75ea9c7129.jpg"
+      |> \.name .~ "Darby"
   )
 )
 

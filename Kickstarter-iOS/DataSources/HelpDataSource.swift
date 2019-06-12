@@ -1,15 +1,17 @@
 import Foundation
+import KsApi
 import Library
 import UIKit
-import KsApi
 
 final class HelpDataSource: ValueCellDataSource {
   func configureRows() {
     _ = HelpSectionType.allCases.map { section -> Void in
       let values = section.cellRowsForSection.map { SettingsCellValue(cellType: $0) }
-      self.set(values: values,
-               cellClass: SettingsTableViewCell.self,
-               inSection: section.rawValue)
+      self.set(
+        values: values,
+        cellClass: SettingsTableViewCell.self,
+        inSection: section.rawValue
+      )
     }
   }
 

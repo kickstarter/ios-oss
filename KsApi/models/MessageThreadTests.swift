@@ -1,6 +1,6 @@
-import XCTest
-@testable import KsApi
 import Argo
+@testable import KsApi
+import XCTest
 
 internal final class MessageThreadTests: XCTestCase {
   func testDecoding() {
@@ -9,7 +9,7 @@ internal final class MessageThreadTests: XCTestCase {
       "id": 1,
       "last_message": [
         "body": "Hello!",
-        "created_at": 123456789.0,
+        "created_at": 123_456_789.0,
         "id": 1,
         "recipient": [
           "id": 1,
@@ -17,7 +17,7 @@ internal final class MessageThreadTests: XCTestCase {
           "avatar": [
             "medium": "img",
             "small": "img"
-          ],
+          ]
         ],
         "sender": [
           "id": 2,
@@ -25,7 +25,7 @@ internal final class MessageThreadTests: XCTestCase {
           "avatar": [
             "medium": "img",
             "small": "img"
-          ],
+          ]
         ]
       ],
       "unread_messages_count": 1,
@@ -35,7 +35,7 @@ internal final class MessageThreadTests: XCTestCase {
         "avatar": [
           "medium": "img",
           "small": "img"
-        ],
+        ]
       ],
       "project": [
         "id": 1,
@@ -62,7 +62,7 @@ internal final class MessageThreadTests: XCTestCase {
           "full": "http://www.kickstarter.com/full.jpg",
           "med": "http://www.kickstarter.com/med.jpg",
           "small": "http://www.kickstarter.com/small.jpg",
-          "1024x768": "http://www.kickstarter.com/1024x768.jpg",
+          "1024x768": "http://www.kickstarter.com/1024x768.jpg"
         ],
         "location": [
           "country": "US",
@@ -79,9 +79,9 @@ internal final class MessageThreadTests: XCTestCase {
         "currency": "USD",
         "currency_trailing_code": false,
         "country": "US",
-        "launched_at": 1000,
-        "deadline": 1000,
-        "state_changed_at": 1000,
+        "launched_at": 1_000,
+        "deadline": 1_000,
+        "state_changed_at": 1_000,
         "static_usd_rate": 1.0,
         "slug": "project",
         "urls": [

@@ -1,8 +1,7 @@
-import XCTest
 @testable import Library
+import XCTest
 
 final class KSCacheTests: XCTestCase {
-
   func testCache() {
     let cache = KSCache()
 

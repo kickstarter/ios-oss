@@ -1,9 +1,8 @@
-import Library
-import Prelude
-import Result
-import XCTest
 @testable import Kickstarter_Framework
 @testable import KsApi
+import Library
+import Prelude
+import XCTest
 
 internal final class MessageBannerViewControllerTests: TestCase {
   override func setUp() {
@@ -24,8 +23,10 @@ internal final class MessageBannerViewControllerTests: TestCase {
       language, device in
       withEnvironment(language: language) {
         let nibName = Nib.MessageBannerViewController.rawValue
-        let messageBannerVC = MessageBannerViewController(nibName: nibName,
-                                                                      bundle: .framework)
+        let messageBannerVC = MessageBannerViewController(
+          nibName: nibName,
+          bundle: .framework
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: messageBannerVC)
         parent.view.frame.size.height = 200
@@ -45,8 +46,10 @@ internal final class MessageBannerViewControllerTests: TestCase {
       language, device in
       withEnvironment(language: language) {
         let nibName = Nib.MessageBannerViewController.rawValue
-        let messageBannerVC = MessageBannerViewController(nibName: nibName,
-                                                          bundle: .framework)
+        let messageBannerVC = MessageBannerViewController(
+          nibName: nibName,
+          bundle: .framework
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: messageBannerVC)
         parent.view.frame.size.height = 200
@@ -66,8 +69,10 @@ internal final class MessageBannerViewControllerTests: TestCase {
       language, device in
       withEnvironment(language: language) {
         let nibName = Nib.MessageBannerViewController.rawValue
-        let messageBannerVC = MessageBannerViewController(nibName: nibName,
-                                                          bundle: .framework)
+        let messageBannerVC = MessageBannerViewController(
+          nibName: nibName,
+          bundle: .framework
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: messageBannerVC)
         parent.view.frame.size.height = 200

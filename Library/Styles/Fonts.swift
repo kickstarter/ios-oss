@@ -34,7 +34,7 @@ extension UIFont {
             ]
           ]
         ]
-    )
+      )
 
     return UIFont(descriptor: monospacedDescriptor, size: 0.0)
   }
@@ -101,7 +101,7 @@ extension UIFont {
             ]
           ]
         ]
-    )
+      )
 
     return UIFont(descriptor: monospacedDescriptor, size: 0.0)
   }
@@ -110,22 +110,24 @@ extension UIFont {
   fileprivate static func preferredFont(style: UIFont.TextStyle, size: CGFloat? = nil) -> UIFont {
     let defaultSize: CGFloat
     switch style {
-    case UIFont.TextStyle.body:         defaultSize = 17
-    case UIFont.TextStyle.callout:      defaultSize = 16
-    case UIFont.TextStyle.caption1:     defaultSize = 12
-    case UIFont.TextStyle.caption2:     defaultSize = 11
-    case UIFont.TextStyle.footnote:     defaultSize = 13
-    case UIFont.TextStyle.headline:     defaultSize = 17
-    case UIFont.TextStyle.subheadline:  defaultSize = 15
-    case UIFont.TextStyle.title1:       defaultSize = 28
-    case UIFont.TextStyle.title2:       defaultSize = 22
-    case UIFont.TextStyle.title3:       defaultSize = 20
-    default:                           defaultSize = 17
+    case UIFont.TextStyle.body: defaultSize = 17
+    case UIFont.TextStyle.callout: defaultSize = 16
+    case UIFont.TextStyle.caption1: defaultSize = 12
+    case UIFont.TextStyle.caption2: defaultSize = 11
+    case UIFont.TextStyle.footnote: defaultSize = 13
+    case UIFont.TextStyle.headline: defaultSize = 17
+    case UIFont.TextStyle.subheadline: defaultSize = 15
+    case UIFont.TextStyle.title1: defaultSize = 28
+    case UIFont.TextStyle.title2: defaultSize = 22
+    case UIFont.TextStyle.title3: defaultSize = 20
+    default: defaultSize = 17
     }
 
     let font = UIFont.preferredFont(forTextStyle: style)
     let descriptor = font.fontDescriptor
-    return UIFont(descriptor: descriptor,
-                  size: ceil(font.pointSize / defaultSize * (size ?? defaultSize)))
+    return UIFont(
+      descriptor: descriptor,
+      size: ceil(font.pointSize / defaultSize * (size ?? defaultSize))
+    )
   }
 }

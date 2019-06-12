@@ -1,20 +1,19 @@
 import Foundation
-import XCTest
-import ReactiveSwift
-import Result
-import Prelude
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
+import XCTest
 
 internal final class SettingsNewsletterCellViewModelTests: TestCase {
   let vm = SettingsNewsletterCellViewModel()
 
-  let showOptInPrompt = TestObserver<String, NoError>()
-  let subscribeToAllSwitchIsOn = TestObserver<Bool?, NoError>()
-  let switchIsOn = TestObserver<Bool?, NoError>()
-  let unableToSaveError = TestObserver<String, NoError>()
-  let updateCurrentUser = TestObserver<User, NoError>()
+  let showOptInPrompt = TestObserver<String, Never>()
+  let subscribeToAllSwitchIsOn = TestObserver<Bool?, Never>()
+  let switchIsOn = TestObserver<Bool?, Never>()
+  let unableToSaveError = TestObserver<String, Never>()
+  let updateCurrentUser = TestObserver<User, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -26,7 +25,6 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
   }
 
   func test_SubscribeToAll_Toggled() {
-
     let user = User.template
       |> \.newsletters .~ User.NewsletterSubscriptions.all(on: true)
 
@@ -37,7 +35,6 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
   }
 
   func test_SubscribeToAll_Untoggled_IfAtLeastOneNewsletterIsUntoggled() {
-
     let user = User.template
       |> \.newsletters.arts .~ nil
 
@@ -84,7 +81,6 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
   }
 
   private func assertValue(for newsletter: Newsletter) {
-
     let user = User.template
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
 

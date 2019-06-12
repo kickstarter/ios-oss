@@ -9,14 +9,14 @@ internal final class BetaToolsViewController: UIViewController {
   fileprivate let viewModel: BetaToolsViewModelType = BetaToolsViewModel()
   fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
 
-  @IBOutlet fileprivate weak var doneButton: UIBarButtonItem!
-  @IBOutlet fileprivate weak var betaDebugPushNotificationsButton: UIButton!
-  @IBOutlet fileprivate weak var betaFeedbackButton: UIButton!
-  @IBOutlet fileprivate weak var betaTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var languageSwitcher: UIButton!
-  @IBOutlet fileprivate weak var languageTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var environmentSwitcher: UIButton!
-  @IBOutlet fileprivate weak var environmentTitleLabel: UILabel!
+  @IBOutlet fileprivate var doneButton: UIBarButtonItem!
+  @IBOutlet fileprivate var betaDebugPushNotificationsButton: UIButton!
+  @IBOutlet fileprivate var betaFeedbackButton: UIButton!
+  @IBOutlet fileprivate var betaTitleLabel: UILabel!
+  @IBOutlet fileprivate var languageSwitcher: UIButton!
+  @IBOutlet fileprivate var languageTitleLabel: UILabel!
+  @IBOutlet fileprivate var environmentSwitcher: UIButton!
+  @IBOutlet fileprivate var environmentTitleLabel: UILabel!
 
   internal static func instantiate() -> BetaToolsViewController {
     return Storyboard.BetaTools.instantiate(BetaToolsViewController.self)
@@ -25,11 +25,10 @@ internal final class BetaToolsViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    self.navigationItem.setRightBarButton(doneButton, animated: false)
+    self.navigationItem.setRightBarButton(self.doneButton, animated: false)
   }
 
   override func bindStyles() {
-
     _ = self.navigationController
       ?|> UINavigationController.lens.isNavigationBarHidden .~ false
 
@@ -89,36 +88,37 @@ internal final class BetaToolsViewController: UIViewController {
       .observeValues { [weak self] in self?.logoutAndDismiss(params: $0) }
   }
 
-  @IBAction fileprivate func betaFeedbackButtonTapped(_ sender: Any) {
+  @IBAction fileprivate func betaFeedbackButtonTapped(_: Any) {
     self.viewModel.inputs.betaFeedbackButtonTapped(canSendMail: MFMailComposeViewController.canSendMail())
   }
 
-  @IBAction fileprivate func betaDebugPushNotificationsButtonTapped(_ sender: Any) {
+  @IBAction fileprivate func betaDebugPushNotificationsButtonTapped(_: Any) {
     self.navigationController?.pushViewController(
       Storyboard.DebugPushNotifications.instantiate(DebugPushNotificationsViewController.self),
       animated: true
     )
   }
 
-  @IBAction func languageSwitcherTapped(_ sender: Any) {
+  @IBAction func languageSwitcherTapped(_: Any) {
     self.showLanguageActionSheet()
   }
 
-  @IBAction func environmentSwitcherTapped(_ sender: Any) {
+  @IBAction func environmentSwitcherTapped(_: Any) {
     self.showEnvironmentActionSheet()
   }
 
-  @IBAction func doneTapped(_ sender: Any) {
+  @IBAction func doneTapped(_: Any) {
     self.navigationController?.popViewController(animated: true)
   }
 
   // MARK: Private Helper Functions
 
   private func showLanguageActionSheet() {
-
-    let alert = UIAlertController.alert(title: "Change Language",
-                                        preferredStyle: .actionSheet,
-                                        sourceView: self.languageSwitcher)
+    let alert = UIAlertController.alert(
+      title: "Change Language",
+      preferredStyle: .actionSheet,
+      sourceView: self.languageSwitcher
+    )
 
     Language.allLanguages.forEach { language in
       alert.addAction(
@@ -136,9 +136,11 @@ internal final class BetaToolsViewController: UIViewController {
   }
 
   private func showEnvironmentActionSheet() {
-    let alert = UIAlertController.alert(title: "Change Environment",
-                                        preferredStyle: .actionSheet,
-                                        sourceView: self.environmentSwitcher)
+    let alert = UIAlertController.alert(
+      title: "Change Environment",
+      preferredStyle: .actionSheet,
+      sourceView: self.environmentSwitcher
+    )
 
     EnvironmentType.allCases.forEach { environment in
       alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in
@@ -155,9 +157,11 @@ internal final class BetaToolsViewController: UIViewController {
 
   private func languageDidChange(language: Language) {
     AppEnvironment.updateLanguage(language)
-    NotificationCenter.default.post(name: Notification.Name.ksr_userLocalePreferencesChanged,
-                                    object: nil,
-                                    userInfo: nil)
+    NotificationCenter.default.post(
+      name: Notification.Name.ksr_userLocalePreferencesChanged,
+      object: nil,
+      userInfo: nil
+    )
   }
 
   private func goToBetaFeedback() {
@@ -174,7 +178,7 @@ internal final class BetaToolsViewController: UIViewController {
       "\(userName) | \(userId) | \(version) | \(shortVersion) | " +
         "\(device.systemVersion) | \(device.modelCode)\n\n" +
         "Describe the bug here. Attach images if it helps!\n" +
-      "---------------------------\n\n\n\n\n\n",
+        "---------------------------\n\n\n\n\n\n",
       isHTML: false
     )
 
@@ -183,9 +187,11 @@ internal final class BetaToolsViewController: UIViewController {
   }
 
   private func showMailDisabledAlert() {
-    let alert = UIAlertController(title: "Cannot send mail",
-                                  message: "Mail is disabled. Please set up mail and try again.",
-                                  preferredStyle: .alert)
+    let alert = UIAlertController(
+      title: "Cannot send mail",
+      message: "Mail is disabled. Please set up mail and try again.",
+      preferredStyle: .alert
+    )
 
     alert.addAction(
       UIAlertAction.init(title: "Ok", style: .cancel)
@@ -194,7 +200,7 @@ internal final class BetaToolsViewController: UIViewController {
     self.present(alert, animated: true, completion: nil)
   }
 
-  private func logoutAndDismiss(params: DiscoveryParams) {
+  private func logoutAndDismiss(params _: DiscoveryParams) {
     AppEnvironment.logout()
 
     NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
@@ -206,9 +212,11 @@ internal final class BetaToolsViewController: UIViewController {
 }
 
 extension BetaToolsViewController: MFMailComposeViewControllerDelegate {
-  internal func mailComposeController(_ controller: MFMailComposeViewController,
-                                      didFinishWith result: MFMailComposeResult,
-                                      error: Error?) {
+  internal func mailComposeController(
+    _ controller: MFMailComposeViewController,
+    didFinishWith result: MFMailComposeResult,
+    error _: Error?
+  ) {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
     controller.dismiss(animated: true, completion: nil)
   }
