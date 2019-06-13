@@ -21,6 +21,7 @@ public typealias ImageViewStyle = (UIImageView) -> UIImageView
 public typealias LabelStyle = (UILabel) -> UILabel
 public typealias LayerStyle = (CALayer) -> CALayer
 public typealias StackViewStyle = (UIStackView) -> UIStackView
+public typealias SwitchControlStyle = (UISwitch) -> UISwitch
 public typealias TableViewStyle = (UITableView) -> UITableView
 public typealias TextFieldStyle = (UITextField) -> UITextField
 public typealias TextViewStyle = (UITextView) -> UITextView

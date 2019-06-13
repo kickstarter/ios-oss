@@ -130,10 +130,12 @@ internal final class BetaToolsViewController: UITableViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    let widthConstraint = self.betaFeedbackButton.widthAnchor.constraint(equalTo: self.tableView.layoutMarginsGuide.widthAnchor)
+    let widthConstraint = self.betaFeedbackButton.widthAnchor
+      .constraint(equalTo: self.tableView.layoutMarginsGuide.widthAnchor)
       |> \.priority .~ .defaultHigh
 
     NSLayoutConstraint.activate([widthConstraint,
+                                 // swiftlint:disable:next line_length
                                  self.betaFeedbackButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
       ])
   }
@@ -146,7 +148,9 @@ internal final class BetaToolsViewController: UITableViewController {
   }
 
   private func goToFeatureFlagTools() {
-    // TODO
+    let featureFlagToolsViewController = FeatureFlagToolsViewController.insantiate()
+
+    self.navigationController?.pushViewController(featureFlagToolsViewController, animated: true)
   }
 
   private func showLanguageActionSheet() {
