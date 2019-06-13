@@ -15,8 +15,8 @@ final class BetaToolsViewModelTests: TestCase {
   private let logoutWithParams = TestObserver<DiscoveryParams, Never>()
   private let reloadWithDataCurrentLanguage = TestObserver<String, Never>()
   private let reloadWithDataCurrentEnvironment = TestObserver<String, Never>()
-  private let showChangeEnvironmentSheet = TestObserver<(), Never>()
-  private let showChangeLanguageSheet = TestObserver<(), Never>()
+  private let showChangeEnvironmentSheetWithSourceViewIndex = TestObserver<Int, Never>()
+  private let showChangeLanguageSheetWithSourceViewIndex = TestObserver<Int, Never>()
   private let showMailDisabledAlert = TestObserver<(), Never>()
   private let updateLanguage = TestObserver<Language, Never>()
   private let updateEnvironment = TestObserver<EnvironmentType, Never>()
@@ -30,8 +30,10 @@ final class BetaToolsViewModelTests: TestCase {
     self.vm.outputs.logoutWithParams.observe(self.logoutWithParams.observer)
     self.vm.outputs.reloadWithData.map { $0.0 }.observe(self.reloadWithDataCurrentLanguage.observer)
     self.vm.outputs.reloadWithData.map { $0.1 }.observe(self.reloadWithDataCurrentEnvironment.observer)
-    self.vm.outputs.showChangeEnvironmentSheet.observe(self.showChangeEnvironmentSheet.observer)
-    self.vm.outputs.showChangeLanguageSheet.observe(self.showChangeLanguageSheet.observer)
+    self.vm.outputs.showChangeEnvironmentSheetWithSourceViewIndex
+      .observe(self.showChangeEnvironmentSheetWithSourceViewIndex.observer)
+    self.vm.outputs.showChangeLanguageSheetWithSourceViewIndex
+      .observe(self.showChangeLanguageSheetWithSourceViewIndex.observer)
     self.vm.outputs.showMailDisabledAlert.observe(self.showMailDisabledAlert.observer)
     self.vm.outputs.updateLanguage.observe(self.updateLanguage.observer)
     self.vm.outputs.updateEnvironment.observe(self.updateEnvironment.observer)
@@ -58,7 +60,8 @@ final class BetaToolsViewModelTests: TestCase {
 
       self.vm.inputs.didSelectBetaToolsRow(.changeEnvironment)
 
-      self.showChangeEnvironmentSheet.assertValueCount(1)
+      self.showChangeEnvironmentSheetWithSourceViewIndex
+        .assertValues([BetaToolsRow.changeEnvironment.rawValue])
 
       self.vm.inputs.setEnvironment(.production)
 
@@ -87,7 +90,8 @@ final class BetaToolsViewModelTests: TestCase {
 
       self.vm.inputs.didSelectBetaToolsRow(.changeLanguage)
 
-      self.showChangeLanguageSheet.assertDidEmitValue()
+      self.showChangeLanguageSheetWithSourceViewIndex
+        .assertValues([BetaToolsRow.changeLanguage.rawValue])
 
       self.vm.inputs.setCurrentLanguage(.en)
 
