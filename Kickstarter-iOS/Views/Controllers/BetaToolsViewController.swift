@@ -13,7 +13,6 @@ internal final class BetaToolsViewController: UITableViewController {
   private let betaFeedbackButton = UIButton(type: .custom)
   private var betaToolsData: BetaToolsData?
   private let helpViewModel: HelpViewModelType = HelpViewModel()
-  private let reuseId = "BetaTools.TableViewCell"
 
   internal static func instantiate() -> BetaToolsViewController {
     return BetaToolsViewController.init(nibName: nil, bundle: nil)
@@ -24,8 +23,6 @@ internal final class BetaToolsViewController: UITableViewController {
 
     _ = self.tableView
       |> \.dataSource .~ self
-
-    self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.reuseId)
 
     self.configureFooterView()
     self.betaFeedbackButton.addTarget(
