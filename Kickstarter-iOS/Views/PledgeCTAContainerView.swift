@@ -3,18 +3,18 @@ import KsApi
 import Prelude
 import UIKit
 
-class ProjectStatesContainerView: UIView {
-  fileprivate let vm: ProjectStatesContainerViewViewModelType = ProjectStatesContainerViewViewModel()
-  // MARK: - Properties
+class PledgeCTAContainerView: UIView {
+  fileprivate let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var labelStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var backerLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var label: UILabel = { UILabel(frame: .zero) }()
-  private lazy var button: UIButton = {
-     return MultiLineButton(type: .custom)
+  // MARK: - Properties
+  private lazy var amountAndRewardTitleStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var amountOrRewardLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var pledgeCTAbutton: UIButton = {
+    return MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var youreABackerLabel: UILabel = { UILabel(frame: .zero) }()
 
   // MARK: - Lifecycle
   override init(frame: CGRect) {
@@ -25,37 +25,37 @@ class ProjectStatesContainerView: UIView {
       |> ksr_constrainViewToEdgesInParent()
 
     NSLayoutConstraint.activate(
-      [self.button.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)]
+      [self.pledgeCTAbutton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)]
     )
 
-    _ = ([self.backerLabel, self.label], self.labelStackView)
+    _ = ([self.youreABackerLabel, self.amountOrRewardLabel], self.amountAndRewardTitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.labelStackView, self.button], self.rootStackView)
+    _ = ([self.amountAndRewardTitleStackView, self.pledgeCTAbutton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.button.rac.title = self.vm.outputs.buttonTitleText
-    self.button.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
-    self.labelStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
-    self.label.rac.text = self.vm.outputs.rewardTitle
+    self.pledgeCTAbutton.rac.title = self.vm.outputs.buttonTitleText
+    self.pledgeCTAbutton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
+    self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
+    self.amountOrRewardLabel.rac.text = self.vm.outputs.rewardTitle
   }
 
   func configureWith(project: Project, user: User) {
-    _ = self.button
+    _ = self.pledgeCTAbutton
       |> projectStateButtonStyle
 
-    _ = self.backerLabel
+    _ = self.youreABackerLabel
       |> \.font .~ .ksr_headline(size: 14)
       |> \.text %~ { _ in Strings.Youre_a_backer() }
 
-    _ = self.label
+    _ = self.amountOrRewardLabel
       |> \.font .~ .ksr_caption1(size: 14)
       |> \.textColor .~ .ksr_dark_grey_500
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
-    _ = self.labelStackView
+    _ = self.amountAndRewardTitleStackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.isLayoutMarginsRelativeArrangement .~ true

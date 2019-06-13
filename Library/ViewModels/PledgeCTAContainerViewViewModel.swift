@@ -3,24 +3,24 @@ import Prelude
 import ReactiveSwift
 import ReactiveExtensions
 
-public protocol ProjectStatesContainerViewViewModelInputs {
+public protocol PledgeCTAContainerViewViewModelInputs {
   func configureWith(project: Project, user: User)
 }
 
-public protocol ProjectStatesContainerViewViewModelOutputs {
+public protocol PledgeCTAContainerViewViewModelOutputs {
   var buttonBackgroundColor: Signal<UIColor, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
   var rewardTitle: Signal<String, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
 }
 
-public protocol ProjectStatesContainerViewViewModelType {
-  var inputs: ProjectStatesContainerViewViewModelInputs { get }
-  var outputs: ProjectStatesContainerViewViewModelOutputs { get }
+public protocol PledgeCTAContainerViewViewModelType {
+  var inputs: PledgeCTAContainerViewViewModelInputs { get }
+  var outputs: PledgeCTAContainerViewViewModelOutputs { get }
 }
 
-public final class ProjectStatesContainerViewViewModel: ProjectStatesContainerViewViewModelType,
-  ProjectStatesContainerViewViewModelInputs, ProjectStatesContainerViewViewModelOutputs {
+public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
+  PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
 
   public init() {
     let projectAndUser = self.projectAndUserProperty.signal.skipNil()
@@ -47,13 +47,13 @@ public final class ProjectStatesContainerViewViewModel: ProjectStatesContainerVi
       .map { (arg) -> String in
 
         let (project, backing) = arg
-        let amount = Format.currency(Int(ceil(Float(backing.amount) *
-          (project.stats.currentCurrencyRate ?? project.stats.staticUsdRate))),
-                                     country: project.stats.currentCountry ?? .us,
-                                     omitCurrencyCode: project.stats.omitUSCurrencyCode)
-
+        let basicPledge = backing.amount - Double(backing.shippingAmount ?? 0)
+        let amount = Format.currency(
+          basicPledge,
+          country: project.country,
+          omitCurrencyCode: project.stats.omitUSCurrencyCode
+        )
         guard let rewardTitle = backing.reward?.title else { return "\(amount)" }
-
         return "\(amount) • \(rewardTitle)" }
   }
 
@@ -62,8 +62,8 @@ public final class ProjectStatesContainerViewViewModel: ProjectStatesContainerVi
     self.projectAndUserProperty.value = (project, user)
   }
 
-  public var inputs: ProjectStatesContainerViewViewModelInputs { return self }
-  public var outputs: ProjectStatesContainerViewViewModelOutputs { return self }
+  public var inputs: PledgeCTAContainerViewViewModelInputs { return self }
+  public var outputs: PledgeCTAContainerViewViewModelOutputs { return self }
 
   public let buttonTitleText: Signal<String, Never>
   public let buttonBackgroundColor: Signal<UIColor, Never>
@@ -71,16 +71,16 @@ public final class ProjectStatesContainerViewViewModel: ProjectStatesContainerVi
   public let rewardTitle: Signal<String, Never>
 }
 
-private func projectStateButton(backer: User, project: Project) -> ProjectStateCTAType {
+private func projectStateButton(backer: User, project: Project) -> PledgeStateCTAType {
   guard let projectIsBacked = project.personalization.isBacking
-    else { return ProjectStateCTAType.viewRewards }
+    else { return PledgeStateCTAType.viewRewards }
 
   switch project.state {
   case .live:
-    return projectIsBacked ? ProjectStateCTAType.manage : ProjectStateCTAType.pledge
+    return projectIsBacked ? PledgeStateCTAType.manage : PledgeStateCTAType.pledge
   case .canceled, .failed, .suspended, .successful:
-    return projectIsBacked ? ProjectStateCTAType.viewBacking : ProjectStateCTAType.viewRewards
+    return projectIsBacked ? PledgeStateCTAType.viewBacking : PledgeStateCTAType.viewRewards
   default:
-    return ProjectStateCTAType.viewRewards
+    return PledgeStateCTAType.viewRewards
   }
 }

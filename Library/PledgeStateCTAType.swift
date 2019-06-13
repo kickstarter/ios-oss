@@ -1,6 +1,6 @@
 import UIKit
 
-public enum ProjectStateCTAType {
+public enum PledgeStateCTAType {
   case pledge
   case manage
   case viewBacking

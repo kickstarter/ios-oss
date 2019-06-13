@@ -24,12 +24,11 @@ public final class ProjectPamphletViewController: UIViewController {
 
   @IBOutlet private var navBarTopConstraint: NSLayoutConstraint!
 
-  private let backThisProjectContainerViewMargins = Styles.grid(3)
-  private let backThisProjectContainerView: ProjectStatesContainerView = {
-    return ProjectStatesContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private let pledgeCTAContainerViewMargins = Styles.grid(3)
+  private let pledgeCTAContainerView: PledgeCTAContainerView = {
+    return PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
-  private let backThisProjectButton: UIButton = {
+  private let pledgeCTAButton: UIButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -94,25 +93,25 @@ public final class ProjectPamphletViewController: UIViewController {
 
   private func configureViews() {
     // Configure subviews
-    self.view.addSubview(self.backThisProjectContainerView)
+    self.view.addSubview(self.pledgeCTAContainerView)
 
     // Configure constraints
-    let backThisProjectContainerViewConstraints = [
-      self.backThisProjectContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.backThisProjectContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    let pledgeCTAContainerViewConstraints = [
+      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
     ]
 
-    NSLayoutConstraint.activate(backThisProjectContainerViewConstraints)// + backThisProjectButtonConstraints)
+    NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
   public override func bindStyles() {
     super.bindStyles()
 
-    _ = self.backThisProjectContainerView
-      |> \.layoutMargins .~ .init(all: backThisProjectContainerViewMargins)
+    _ = self.pledgeCTAContainerView
+      |> \.layoutMargins .~ .init(all: pledgeCTAContainerViewMargins)
 
-    _ = self.backThisProjectContainerView.layer
+    _ = self.pledgeCTAContainerView.layer
       |> checkoutLayerCardRoundedStyle
       |> \.backgroundColor .~ UIColor.white.cgColor
       |> \.shadowColor .~ UIColor.black.cgColor
@@ -148,7 +147,7 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         UIView.animate(withDuration: 0.3) { self?.setNeedsStatusBarAppearanceUpdate() }
-      }
+    }
 
     self.viewModel.outputs.topLayoutConstraintConstant
       .observeForUI()
@@ -159,7 +158,7 @@ public final class ProjectPamphletViewController: UIViewController {
     self.viewModel.outputs.projectAndUser
       .observeForUI()
       .observeValues { [weak self] project, user in
-        self?.backThisProjectContainerView.configureWith(project: project, user: user)
+        self?.pledgeCTAContainerView.configureWith(project: project, user: user)
     }
   }
 
@@ -192,8 +191,8 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func updateContentInsets() {
-    let buttonSize = self.backThisProjectButton.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-    let bottomInset = buttonSize.height + 2 * self.backThisProjectContainerViewMargins
+    let buttonSize = self.pledgeCTAButton.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    let bottomInset = buttonSize.height + 2 * self.pledgeCTAContainerViewMargins
 
     self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)
   }
