@@ -483,13 +483,7 @@ private func activitiesBadgeValue(with value: Int?) -> String? {
 
   guard clampedBadgeValue > 0 else { return nil }
 
-  guard badgeValue > maxBadgeValue else {
-    return "\(clampedBadgeValue)"
-  }
-
-  return localizedString(
-    key: "activities_badge_value_plus",
-    defaultValue: "%{activities_badge_value}+",
-    substitutions: ["activities_badge_value": "\(clampedBadgeValue)"]
-  )
+  return badgeValue > maxBadgeValue
+    ? Strings.activities_badge_value_plus(activities_badge_value: "\(clampedBadgeValue)")
+    : "\(clampedBadgeValue)"
 }
