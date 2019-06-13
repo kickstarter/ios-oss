@@ -22,27 +22,29 @@ public protocol FeatureFlagToolsViewModelType {
 }
 
 public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, FeatureFlagToolsViewModelInputs,
-FeatureFlagToolsViewModelOutputs {
+  FeatureFlagToolsViewModelOutputs {
   public init() {
     let didUpdateConfigAndUI = self.didUpdateConfigProperty.signal
       .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
 
-    let features: Signal<[FeatureEnabled], Never> = Signal.merge(self.viewDidLoadProperty.signal,
-                                                                  didUpdateConfigAndUI)
-      .map { _ in AppEnvironment.current.config?.features }
-      .skipNil()
-      .map { configFeatures in
-        var features = [FeatureEnabled]()
+    let features: Signal<[FeatureEnabled], Never> = Signal.merge(
+      self.viewDidLoadProperty.signal,
+      didUpdateConfigAndUI
+    )
+    .map { _ in AppEnvironment.current.config?.features }
+    .skipNil()
+    .map { configFeatures in
+      var features = [FeatureEnabled]()
 
-        for (key, value) in configFeatures {
-          guard let feature = Feature(rawValue: key) else {
-            continue
-          }
-
-          features.append((feature: feature, isEnabled: value))
+      for (key, value) in configFeatures {
+        guard let feature = Feature(rawValue: key) else {
+          continue
         }
 
-        return features
+        features.append((feature: feature, isEnabled: value))
+      }
+
+      return features
     }
 
     self.reloadWithData = features

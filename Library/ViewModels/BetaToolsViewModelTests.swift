@@ -47,8 +47,10 @@ final class BetaToolsViewModelTests: TestCase {
   }
 
   func testBetaTools_SwitchesEnvironment() {
-    withEnvironment(apiService: MockService(serverConfig: ServerConfig.production),
-                    language: Language.en) {
+    withEnvironment(
+      apiService: MockService(serverConfig: ServerConfig.production),
+      language: Language.en
+    ) {
       self.vm.inputs.viewDidLoad()
 
       self.reloadWithDataCurrentLanguage.assertValues(["English"])
@@ -75,8 +77,10 @@ final class BetaToolsViewModelTests: TestCase {
   }
 
   func testUpdateCurrentLanguage() {
-    withEnvironment(apiService: MockService(serverConfig: ServerConfig.staging),
-                    language: Language.en) {
+    withEnvironment(
+      apiService: MockService(serverConfig: ServerConfig.staging),
+      language: Language.en
+    ) {
       self.vm.inputs.viewDidLoad()
 
       self.updateLanguage.assertDidNotEmitValue()
@@ -87,7 +91,7 @@ final class BetaToolsViewModelTests: TestCase {
 
       self.vm.inputs.setCurrentLanguage(.en)
 
-                      // swiftlint:disable:next line_length
+      // swiftlint:disable:next line_length
       self.updateLanguage.assertDidNotEmitValue("Doesn't update language when the chosen language is the same as the current language.")
 
       self.vm.inputs.setCurrentLanguage(.de)

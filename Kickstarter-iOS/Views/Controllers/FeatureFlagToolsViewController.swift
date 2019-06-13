@@ -20,7 +20,7 @@ final class FeatureFlagToolsViewController: UITableViewController {
     _ = self.tableView
       |> \.tableFooterView .~ UIView(frame: .zero)
 
-    self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseId)
+    self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.reuseId)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -34,13 +34,13 @@ final class FeatureFlagToolsViewController: UITableViewController {
         self?.features = features
 
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.updateConfigWithFeatures
       .observeForUI()
       .observeValues { [weak self] features in
         self?.updateConfig(with: features)
-    }
+      }
   }
 
   @objc func switchTogged(_ switchControl: UISwitch) {
@@ -63,24 +63,24 @@ final class FeatureFlagToolsViewController: UITableViewController {
 // MARK: - UITableViewDataSource
 
 extension FeatureFlagToolsViewController {
-  override func numberOfSections(in tableView: UITableView) -> Int {
+  override func numberOfSections(in _: UITableView) -> Int {
     return 1
   }
 
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return features.count
+  override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+    return self.features.count
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: reuseId, for: indexPath)
-    let feature = features[indexPath.row]
+    let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseId, for: indexPath)
+    let feature = self.features[indexPath.row]
 
     let switchControl = UISwitch(frame: .zero)
       |> switchStyle
       |> \.tag .~ indexPath.row
       |> \.isOn .~ feature.1
 
-    switchControl.addTarget(self, action: #selector(switchTogged(_:)), for: .valueChanged)
+    switchControl.addTarget(self, action: #selector(self.switchTogged(_:)), for: .valueChanged)
 
     _ = cell
       ?|> baseTableViewCellStyle()

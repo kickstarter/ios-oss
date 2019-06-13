@@ -23,8 +23,10 @@ internal final class BetaToolsViewController: UITableViewController {
       |> \.dataSource .~ self
 
     self.configureFooterView()
-    self.betaFeedbackButton.addTarget(self, action: #selector(betaFeedbackButtonTapped),
-                                      for: .touchUpInside)
+    self.betaFeedbackButton.addTarget(
+      self, action: #selector(self.betaFeedbackButtonTapped),
+      for: .touchUpInside
+    )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -51,61 +53,61 @@ internal final class BetaToolsViewController: UITableViewController {
         self?.betaToolsData = data
 
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.goToPushNotificationTools
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToDebugPushNotifications()
-    }
+      }
 
     self.viewModel.outputs.goToFeatureFlagTools
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToFeatureFlagTools()
-    }
+      }
 
     self.viewModel.outputs.goToBetaFeedback
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToBetaFeedback()
-    }
+      }
 
     self.viewModel.outputs.showChangeEnvironmentSheet
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.showEnvironmentActionSheet()
-    }
+      }
 
     self.viewModel.outputs.showChangeLanguageSheet
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.showLanguageActionSheet()
-    }
+      }
 
     self.viewModel.outputs.updateLanguage
       .observeForControllerAction()
       .observeValues { [weak self] language in
         self?.updateLanguage(language: language)
-    }
+      }
 
     self.viewModel.outputs.updateEnvironment
       .observeForControllerAction()
       .observeValues { [weak self] environment in
         self?.updateEnvironment(environment: environment)
-    }
+      }
 
     self.viewModel.outputs.logoutWithParams
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.logoutAndDismiss(params: $0)
-    }
+      }
 
     self.viewModel.outputs.showMailDisabledAlert
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.showMailDisabledAlert()
-    }
+      }
   }
 
   // MARK: - Selectors
@@ -134,10 +136,11 @@ internal final class BetaToolsViewController: UITableViewController {
       .constraint(equalTo: self.tableView.layoutMarginsGuide.widthAnchor)
       |> \.priority .~ .defaultHigh
 
-    NSLayoutConstraint.activate([widthConstraint,
-                                 // swiftlint:disable:next line_length
-                                 self.betaFeedbackButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-      ])
+    NSLayoutConstraint.activate([
+      widthConstraint,
+      // swiftlint:disable:next line_length
+      self.betaFeedbackButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    ])
   }
 
   private func goToDebugPushNotifications() {
@@ -279,15 +282,15 @@ extension BetaToolsViewController {
 // MARK: - UITableViewDataSource
 
 extension BetaToolsViewController {
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
     return BetaToolsRow.allCases.count
   }
 
-  override func numberOfSections(in tableView: UITableView) -> Int {
+  override func numberOfSections(in _: UITableView) -> Int {
     return 1
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let row = BetaToolsRow.init(rawValue: indexPath.row), let rowData = self.betaToolsData else {
       fatalError("Cannot create cell")
     }

@@ -101,14 +101,20 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
       .map(second)
       .skipNil()
 
-    let currentEnvironmentString = Signal.merge(serverConfigEnvironmentFromAppEnvironment,
-                                                self.updateEnvironment)
-      .map { $0.rawValue }
+    let currentEnvironmentString = Signal.merge(
+      serverConfigEnvironmentFromAppEnvironment,
+      self.updateEnvironment
+    )
+    .map { $0.rawValue }
 
-    self.reloadWithData = Signal.combineLatest(currentLanguageString,
-                                               currentEnvironmentString)
-      .map { BetaToolsData(currentLanguage: $0.0,
-                           currentEnvironment: $0.1) }
+    self.reloadWithData = Signal.combineLatest(
+      currentLanguageString,
+      currentEnvironmentString
+    )
+    .map { BetaToolsData(
+      currentLanguage: $0.0,
+      currentEnvironment: $0.1
+    ) }
 
     self.goToBetaFeedback = self.canSendMailProperty.signal.filter(isTrue).ignoreValues()
 

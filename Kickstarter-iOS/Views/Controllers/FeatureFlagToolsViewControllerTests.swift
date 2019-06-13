@@ -1,10 +1,9 @@
+import Foundation
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-import Foundation
 import Prelude
 import XCTest
-
 
 final class FeatureFlagToolsViewControllerTests: TestCase {
   override func setUp() {
@@ -23,14 +22,18 @@ final class FeatureFlagToolsViewControllerTests: TestCase {
 
   func testViewFeatureFlags_WithFlags() {
     let mockConfig = Config.template
-      |> \.features .~ [Feature.checkout.rawValue: true,
-                        "other_unknown_flag": false]
+      |> \.features .~ [
+        "ios_native_checkout": true,
+        "other_unknown_flag": false
+      ]
 
     withEnvironment(config: mockConfig) {
       let device = Device.phone5_8inch
       let controller = FeatureFlagToolsViewController.insantiate()
-      let (parent, _) = traitControllers(device: device, orientation: .portrait,
-                                         child: controller)
+      let (parent, _) = traitControllers(
+        device: device, orientation: .portrait,
+        child: controller
+      )
 
       FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
     }
@@ -43,8 +46,10 @@ final class FeatureFlagToolsViewControllerTests: TestCase {
     withEnvironment(config: mockConfig) {
       let device = Device.phone5_8inch
       let controller = FeatureFlagToolsViewController.insantiate()
-      let (parent, _) = traitControllers(device: device, orientation: .portrait,
-                                         child: controller)
+      let (parent, _) = traitControllers(
+        device: device, orientation: .portrait,
+        child: controller
+      )
 
       FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
     }

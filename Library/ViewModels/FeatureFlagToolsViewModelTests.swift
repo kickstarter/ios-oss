@@ -1,9 +1,9 @@
-@testable import Library
-@testable import KsApi
 import Foundation
+@testable import KsApi
+@testable import Library
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions_TestHelpers
+import ReactiveSwift
 import XCTest
 
 final class FeatureFlagToolsViewModelTests: TestCase {
@@ -47,8 +47,10 @@ final class FeatureFlagToolsViewModelTests: TestCase {
 
   func testUpdateFeatureFlagEnabledValue() {
     let mockConfig = Config.template
-      |> \.features .~ [Feature.checkout.rawValue: true,
-                        "some_unknown_feature": false]
+      |> \.features .~ [
+        Feature.checkout.rawValue: true,
+        "some_unknown_feature": false
+      ]
 
     let updatedFeatures = [Feature.checkout.rawValue: false, "some_unknown_feature": false]
 
@@ -65,8 +67,10 @@ final class FeatureFlagToolsViewModelTests: TestCase {
       self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: false)
 
       self.updateConfigWithFeatures
-        .assertValues([updatedFeatures],
-                      "Updates the correct feature.")
+        .assertValues(
+          [updatedFeatures],
+          "Updates the correct feature."
+        )
     }
 
     let updatedConfig = Config.template
