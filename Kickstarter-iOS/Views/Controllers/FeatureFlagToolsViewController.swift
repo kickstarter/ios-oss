@@ -6,8 +6,10 @@ import UIKit
 
 final class FeatureFlagToolsViewController: UITableViewController {
   private let viewModel = FeatureFlagToolsViewModel()
-  private var features = [(Feature, Bool)]()
 
+  // MARK: - Properties
+
+  private var features = [(Feature, Bool)]()
   private let reuseId = "FeatureFlagTools.TableViewCell"
 
   static func insantiate() -> FeatureFlagToolsViewController {

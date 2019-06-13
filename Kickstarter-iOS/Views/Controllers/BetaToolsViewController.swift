@@ -6,11 +6,14 @@ import SafariServices
 import UIKit
 
 internal final class BetaToolsViewController: UITableViewController {
-  fileprivate let viewModel: BetaToolsViewModelType = BetaToolsViewModel()
-  fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
+  private let viewModel: BetaToolsViewModelType = BetaToolsViewModel()
+
+  // MARK: - Properties
 
   private let betaFeedbackButton = UIButton(type: .custom)
   private var betaToolsData: BetaToolsData?
+  private let helpViewModel: HelpViewModelType = HelpViewModel()
+  private let reuseId = "BetaTools.TableViewCell"
 
   internal static func instantiate() -> BetaToolsViewController {
     return BetaToolsViewController.init(nibName: nil, bundle: nil)
@@ -21,6 +24,8 @@ internal final class BetaToolsViewController: UITableViewController {
 
     _ = self.tableView
       |> \.dataSource .~ self
+
+    self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: self.reuseId)
 
     self.configureFooterView()
     self.betaFeedbackButton.addTarget(
@@ -43,7 +48,7 @@ internal final class BetaToolsViewController: UITableViewController {
 
     _ = self.betaFeedbackButton
       |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Submit feedback for data"
+      |> UIButton.lens.title(for: .normal) .~ "Submit feedback for beta"
   }
 
   override func bindViewModel() {
@@ -73,16 +78,16 @@ internal final class BetaToolsViewController: UITableViewController {
         self?.goToBetaFeedback()
       }
 
-    self.viewModel.outputs.showChangeEnvironmentSheet
+    self.viewModel.outputs.showChangeEnvironmentSheetWithSourceViewIndex
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.showEnvironmentActionSheet()
+      .observeValues { [weak self] index in
+        self?.showEnvironmentActionSheet(sourceViewIndex: index)
       }
 
-    self.viewModel.outputs.showChangeLanguageSheet
+    self.viewModel.outputs.showChangeLanguageSheetWithSourceViewIndex
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.showLanguageActionSheet()
+      .observeValues { [weak self] index in
+        self?.showLanguageActionSheet(sourceViewIndex: index)
       }
 
     self.viewModel.outputs.updateLanguage
@@ -136,11 +141,11 @@ internal final class BetaToolsViewController: UITableViewController {
       .constraint(equalTo: self.tableView.layoutMarginsGuide.widthAnchor)
       |> \.priority .~ .defaultHigh
 
-    NSLayoutConstraint.activate([
-      widthConstraint,
-      // swiftlint:disable:next line_length
-      self.betaFeedbackButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-    ])
+    let heightConstraint = self.betaFeedbackButton.heightAnchor
+      .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      |> \.priority .~ .defaultHigh
+
+    NSLayoutConstraint.activate([widthConstraint, heightConstraint])
   }
 
   private func goToDebugPushNotifications() {
@@ -156,11 +161,16 @@ internal final class BetaToolsViewController: UITableViewController {
     self.navigationController?.pushViewController(featureFlagToolsViewController, animated: true)
   }
 
-  private func showLanguageActionSheet() {
+  private func showLanguageActionSheet(sourceViewIndex: Int) {
+    guard let sourceView = self.tableView
+      .cellForRow(at: IndexPath(row: sourceViewIndex, section: 0))?.detailTextLabel else {
+      return
+    }
+
     let alert = UIAlertController.alert(
       title: "Change Language",
       preferredStyle: .actionSheet,
-      sourceView: self.view
+      sourceView: sourceView
     )
 
     Language.allLanguages.forEach { language in
@@ -178,11 +188,16 @@ internal final class BetaToolsViewController: UITableViewController {
     self.present(alert, animated: true, completion: nil)
   }
 
-  private func showEnvironmentActionSheet() {
+  private func showEnvironmentActionSheet(sourceViewIndex: Int) {
+    guard let sourceView = self.tableView
+      .cellForRow(at: IndexPath(row: sourceViewIndex, section: 0))?.detailTextLabel else {
+        return
+    }
+
     let alert = UIAlertController.alert(
       title: "Change Environment",
       preferredStyle: .actionSheet,
-      sourceView: self.view
+      sourceView: sourceView
     )
 
     EnvironmentType.allCases.forEach { environment in
@@ -296,6 +311,7 @@ extension BetaToolsViewController {
     }
 
     let cell = UITableViewCell(style: row.cellStyle, reuseIdentifier: nil)
+      |> \.selectionStyle .~ row.selectionStyle
 
     if let imageName = row.rightIconImageName {
       let image = UIImage(named: imageName)

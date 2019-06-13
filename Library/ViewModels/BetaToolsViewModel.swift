@@ -17,6 +17,13 @@ public enum BetaToolsRow: Int, CaseIterable {
     }
   }
 
+  public var selectionStyle: UITableViewCell.SelectionStyle {
+    switch self {
+    case .changeEnvironment, .changeLanguage: return .none
+    default: return .default
+    }
+  }
+
   public var titleText: String {
     switch self {
     case .debugFeatureFlags: return "Feature Flags"
@@ -59,8 +66,8 @@ public protocol BetaToolsViewModelOutputs {
   var goToPushNotificationTools: Signal<(), Never> { get }
   var logoutWithParams: Signal<DiscoveryParams, Never> { get }
   var reloadWithData: Signal<BetaToolsData, Never> { get }
-  var showChangeEnvironmentSheet: Signal<(), Never> { get }
-  var showChangeLanguageSheet: Signal<(), Never> { get }
+  var showChangeEnvironmentSheetWithSourceViewIndex: Signal<Int, Never> { get }
+  var showChangeLanguageSheetWithSourceViewIndex: Signal<Int, Never> { get }
   var showMailDisabledAlert: Signal<(), Never> { get }
   var updateLanguage: Signal<Language, Never> { get }
   var updateEnvironment: Signal<EnvironmentType, Never> { get }
@@ -132,15 +139,15 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
       .filter { $0 == BetaToolsRow.debugFeatureFlags }
       .ignoreValues()
 
-    self.showChangeEnvironmentSheet = self.didSelectBetaToolsRowProperty.signal
+    self.showChangeEnvironmentSheetWithSourceViewIndex = self.didSelectBetaToolsRowProperty.signal
       .skipNil()
       .filter { $0 == BetaToolsRow.changeEnvironment }
-      .ignoreValues()
+      .map { $0.rawValue }
 
-    self.showChangeLanguageSheet = self.didSelectBetaToolsRowProperty.signal
+    self.showChangeLanguageSheetWithSourceViewIndex = self.didSelectBetaToolsRowProperty.signal
       .skipNil()
       .filter { $0 == BetaToolsRow.changeLanguage }
-      .ignoreValues()
+      .map { $0.rawValue }
 
     self.logoutWithParams = self.didUpdateEnvironmentProperty.signal
       .map {
@@ -188,6 +195,6 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
   public let logoutWithParams: Signal<DiscoveryParams, Never>
   public let reloadWithData: Signal<BetaToolsData, Never>
   public let showMailDisabledAlert: Signal<(), Never>
-  public let showChangeEnvironmentSheet: Signal<(), Never>
-  public let showChangeLanguageSheet: Signal<(), Never>
+  public let showChangeEnvironmentSheetWithSourceViewIndex: Signal<Int, Never>
+  public let showChangeLanguageSheetWithSourceViewIndex: Signal<Int, Never>
 }
