@@ -89,6 +89,35 @@ final class RootViewModelTests: TestCase {
     }
   }
 
+  func testSetBadgeValueAtIndex_MaxValueSet_ToggleVoiceOver() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 100
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication, isVoiceOverRunning: { false }) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+
+    withEnvironment(application: mockApplication, isVoiceOverRunning: { true }) {
+      self.vm.inputs.voiceOverStatusDidChange()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "100"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+    }
+
+    withEnvironment(application: mockApplication, isVoiceOverRunning: { false }) {
+      self.vm.inputs.voiceOverStatusDidChange()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "100", "99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+    }
+  }
+
   func testSetBadgeValueAtIndex_AppWillEnterForeground() {
     let mockApplication = MockApplication()
     mockApplication.applicationIconBadgeNumber = 100

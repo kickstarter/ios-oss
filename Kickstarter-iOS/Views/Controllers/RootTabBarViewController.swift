@@ -21,7 +21,8 @@ public final class RootTabBarViewController: UITabBarController {
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
   private var userUpdatedObserver: Any?
-  private var userLocalePreferencesChanged: Any?
+  private var userLocalePreferencesChangedObserver: Any?
+  private var voiceOverStatusDidChangeObserver: Any?
 
   fileprivate let viewModel: RootViewModelType = RootViewModel()
 
@@ -56,13 +57,21 @@ public final class RootTabBarViewController: UITabBarController {
         self?.viewModel.inputs.currentUserUpdated()
       }
 
+    self.voiceOverStatusDidChangeObserver = NotificationCenter
+      .default
+      .addObserver(
+        forName: UIAccessibility.voiceOverStatusDidChangeNotification, object: nil, queue: nil
+      ) { [weak self] _ in
+        self?.viewModel.inputs.voiceOverStatusDidChange()
+      }
+
     self.viewModel.outputs.updateUserInEnvironment
-      .observeValues { [weak self] user in
+      .observeValues { user in
         AppEnvironment.updateCurrentUser(user)
         NotificationCenter.default.post(.init(name: .ksr_userUpdated))
       }
 
-    self.userLocalePreferencesChanged = NotificationCenter
+    self.userLocalePreferencesChangedObserver = NotificationCenter
       .default
       .addObserver(
         forName: Notification.Name.ksr_userLocalePreferencesChanged,
@@ -77,10 +86,16 @@ public final class RootTabBarViewController: UITabBarController {
   }
 
   deinit {
-    self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
-    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
-    self.userUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
-    self.applicationWillEnterForegroundObserver.doIfSome(NotificationCenter.default.removeObserver)
+    [
+      self.applicationWillEnterForegroundObserver,
+      self.sessionStartedObserver,
+      self.sessionEndedObserver,
+      self.userUpdatedObserver,
+      self.userLocalePreferencesChangedObserver,
+      self.voiceOverStatusDidChangeObserver
+    ]
+    .compact()
+    .forEach(NotificationCenter.default.removeObserver)
   }
 
   public override func bindStyles() {

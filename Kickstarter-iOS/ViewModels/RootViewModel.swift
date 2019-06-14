@@ -132,6 +132,9 @@ internal protocol RootViewModelInputs {
 
   /// Call from the controller's `viewDidLoad` method.
   func viewDidLoad()
+
+  /// Call when voice over is enabled or disabled
+  func voiceOverStatusDidChange()
 }
 
 internal protocol RootViewModelOutputs {
@@ -260,8 +263,8 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
 
     let updateBadgeValueOnLifecycleEvents = activityViewControllerIndex
       .takeWhen(lifecycleEvents)
-      .map { index in
-        (activitiesBadgeValue(with: AppEnvironment.current.application.applicationIconBadgeNumber), index)
+      .map { index -> (Int?, RootViewControllerIndex) in
+        (AppEnvironment.current.application.applicationIconBadgeNumber, index)
       }
 
     let selectedIndexAndActivityViewControllerIndex = Signal.combineLatest(
@@ -283,27 +286,31 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
       updateBadgeValueFromNotification
     )
     .map(unpack)
-    .map { _, index, value in
-      (activitiesBadgeValue(with: value), index)
-    }
+    .map { _, index, value in (value, index) }
 
     let clearBadgeValueOnUserSessionEnded = activityViewControllerIndex
       .takePairWhen(self.userSessionEndedProperty.signal)
-      .map { index, _ in (activitiesBadgeValue(with: nil), index) }
+      .map { index, _ -> (Int?, RootViewControllerIndex) in (nil, index) }
 
     let currentBadgeValue = MutableProperty<String?>(nil)
 
     let clearBadgeValueOnActivitiesTabSelected = selectedIndexAndActivityViewControllerIndex.filter(==)
       .flatMap { _, index in currentBadgeValue.producer.map { ($0, index) }.take(first: 1) }
       .filter { value, _ in value != nil }
-      .map { _, index -> RootTabBarItemBadgeValueData in (nil, index) }
+      .map { _, index -> (Int?, RootViewControllerIndex) in (nil, index) }
 
-    self.setBadgeValueAtIndex = Signal.merge(
+    let integerBadgeValueAndIndex = Signal.merge(
       updateBadgeValueOnLifecycleEvents,
       updateBadgeValueOnUserUpdatedOrFromNotification,
       clearBadgeValueOnUserSessionEnded,
       clearBadgeValueOnActivitiesTabSelected
     )
+
+    self.setBadgeValueAtIndex = Signal.merge(
+      integerBadgeValueAndIndex,
+      integerBadgeValueAndIndex.takeWhen(self.voiceOverStatusDidChangeProperty.signal)
+    )
+    .map { value, index in (activitiesBadgeValue(with: value), index) }
 
     currentBadgeValue <~ self.setBadgeValueAtIndex.map { $0.0 }
 
@@ -408,6 +415,11 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     self.viewDidLoadProperty.value = ()
   }
 
+  fileprivate let voiceOverStatusDidChangeProperty = MutableProperty(())
+  internal func voiceOverStatusDidChange() {
+    self.voiceOverStatusDidChangeProperty.value = ()
+  }
+
   internal let filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), Never>
   internal let scrollToTop: Signal<RootViewControllerIndex, Never>
   internal let selectedIndex: Signal<RootViewControllerIndex, Never>
@@ -477,13 +489,14 @@ extension TabBarItem: Equatable {
 }
 
 private func activitiesBadgeValue(with value: Int?) -> String? {
-  let maxBadgeValue = 99
+  let isVoiceOverRunning = AppEnvironment.current.isVoiceOverRunning()
   let badgeValue = value ?? 0
+  let maxBadgeValue = !isVoiceOverRunning ? 99 : badgeValue
   let clampedBadgeValue = min(badgeValue, maxBadgeValue)
 
   guard clampedBadgeValue > 0 else { return nil }
 
-  return badgeValue > maxBadgeValue
+  return (badgeValue > maxBadgeValue) && !isVoiceOverRunning
     ? Strings.activities_badge_value_plus(activities_badge_value: "\(clampedBadgeValue)")
     : "\(clampedBadgeValue)"
 }
