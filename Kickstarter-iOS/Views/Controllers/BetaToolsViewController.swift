@@ -188,7 +188,7 @@ internal final class BetaToolsViewController: UITableViewController {
   private func showEnvironmentActionSheet(sourceViewIndex: Int) {
     guard let sourceView = self.tableView
       .cellForRow(at: IndexPath(row: sourceViewIndex, section: 0))?.detailTextLabel else {
-        return
+      return
     }
 
     let alert = UIAlertController.alert(
