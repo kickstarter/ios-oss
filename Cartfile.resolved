@@ -7,5 +7,5 @@ github "kickstarter/Kickstarter-ReactiveExtensions" "665b5cd4941e54e5d120b80218f
 github "stripe/stripe-ios" "v13.2.0"
 github "thoughtbot/Argo" "39f06f089d25c111444e5a85eef64586e54756ac"
 github "thoughtbot/Curry" "b6bf27ec9d711f607a8c7da9ca69ee9eaa201a22"
-github "thoughtbot/Runes" "v4.2.1"
+github "thoughtbot/Runes" "v4.2.2"
 github "uber/ios-snapshot-test-case" "4.0.0"
