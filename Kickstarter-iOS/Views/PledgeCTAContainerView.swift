@@ -3,7 +3,7 @@ import KsApi
 import Prelude
 import UIKit
 
-class PledgeCTAContainerView: UIView {
+final class PledgeCTAContainerView: UIView {
   fileprivate let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
   // MARK: - Properties
@@ -70,11 +70,11 @@ class PledgeCTAContainerView: UIView {
 
 private let projectStateButtonStyle: ButtonStyle = { (button: UIButton) in
   button
-      |> roundedStyle(cornerRadius: 12)
-      |> UIButton.lens.titleColor(for: .normal) .~ .white
-      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-      |> UIButton.lens.layer.borderWidth .~ 0
-      |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+    |> roundedStyle(cornerRadius: 12)
+    |> UIButton.lens.titleColor(for: .normal) .~ .white
+    |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
+    |> UIButton.lens.layer.borderWidth .~ 0
+    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
 }
 
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
