@@ -31,7 +31,6 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     let backingEvent = projectAndUser
       .switchMap { project, user in
         AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
     }
 
@@ -47,8 +46,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .map { (arg) -> String in
 
         let (project, backing) = arg
-        let basicPledge = backing.amount - Double(backing.shippingAmount ?? 0)
-        let amount = Format.currency(
+        let basicPledge = formattedAmount(for: backing)
+        let amount = Format.formattedCurrency(
           basicPledge,
           country: project.country,
           omitCurrencyCode: project.stats.omitUSCurrencyCode
@@ -83,4 +82,12 @@ private func projectStateButton(backer: User, project: Project) -> PledgeStateCT
   default:
     return PledgeStateCTAType.viewRewards
   }
+}
+
+private func formattedAmount(for backing: Backing) -> String {
+  let amount = backing.amount - Double(backing.shippingAmount ?? 0)
+  let backingAmount = floor(amount) == backing.amount
+    ? String(Int(amount))
+    : String(format: "%.2f", backing.amount)
+  return backingAmount
 }

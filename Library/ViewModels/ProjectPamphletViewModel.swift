@@ -27,11 +27,14 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
-  /// Emits a project and refTag to be used to navigate to the reward selection screen
+  /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
 
   /// Return this value from the view's `prefersStatusBarHidden` method.
   var prefersStatusBarHidden: Bool { get }
+
+  /// Emits a project and user.
+  var projectAndUser: Signal<(Project, User), Never> { get }
 
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
   var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
@@ -41,8 +44,6 @@ public protocol ProjectPamphletViewModelOutputs {
 
   /// Emits a float to update topLayoutConstraints constant.
   var topLayoutConstraintConstant: Signal<CGFloat, Never> { get }
-
-  var projectAndUser: Signal<(Project, User), Never> { get }
 }
 
 public protocol ProjectPamphletViewModelType {
@@ -171,11 +172,10 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let goToRewards: Signal<(Project, RefTag?), Never>
+  public let projectAndUser: Signal<(Project, User), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
   public let topLayoutConstraintConstant: Signal<CGFloat, Never>
-
-  public let projectAndUser: Signal<(Project, User), Never>
 
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }
