@@ -211,7 +211,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.baseStackView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
     ]
 
-    let topConstraint = self.pledgeButton.topAnchor.constraint(equalTo: self.pledgeButtonLayoutGuide.topAnchor)
+    let topConstraint = self.pledgeButton.topAnchor
+      .constraint(equalTo: self.pledgeButtonLayoutGuide.topAnchor)
       |> \.priority .~ .defaultLow
 
     let contentMargins = self.contentView.layoutMarginsGuide
