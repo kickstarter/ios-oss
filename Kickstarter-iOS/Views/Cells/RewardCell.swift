@@ -9,12 +9,16 @@ protocol RewardCellDelegate: AnyObject {
 }
 
 final class RewardCell: UICollectionViewCell, ValueCell {
-  weak var delegate: RewardCellDelegate?
-  private let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
   // MARK: - Properties
 
-  private let baseStackView = UIStackView(frame: .zero)
+  weak var delegate: RewardCellDelegate?
+  private let viewModel: RewardCellViewModelType = RewardCellViewModel()
+
+  private let baseStackView: UIStackView = {
+    return UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
   private let containerView = UIView(frame: .zero)
   private let descriptionLabel = UILabel(frame: .zero)
   private let descriptionStackView = UIStackView(frame: .zero)
@@ -23,7 +27,10 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   private let includedItemsTitleLabel = UILabel(frame: .zero)
   private let minimumPriceConversionLabel = UILabel(frame: .zero)
   private let minimumPriceLabel = UILabel(frame: .zero)
-  private let pledgeButton = MultiLineButton(type: .custom)
+  private let pledgeButton: MultiLineButton = {
+    return MultiLineButton(type: .custom)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
   private let pledgeButtonLayoutGuide = UILayoutGuide()
   private let priceStackView = UIStackView(frame: .zero)
   private let rewardTitleLabel = UILabel(frame: .zero)
@@ -52,14 +59,14 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.scrollView
       |> scrollViewStyle
 
-    [
+    _ = [
       self.baseStackView,
       self.priceStackView,
       self.includedItemsStackView,
       self.descriptionStackView
     ]
-    .forEach { stackView in
-      _ = stackView
+    ||> { stackView in
+      stackView
         |> sectionStackViewStyle
     }
 
@@ -69,22 +76,21 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.priceStackView
       |> priceStackViewStyle
 
-    [self.includedItemsTitleLabel, self.descriptionTitleLabel].forEach { label in
-      _ = label
+    _ = [self.includedItemsTitleLabel, self.descriptionTitleLabel]
+      ||> { label in
+      label
         |> baseRewardLabelStyle
         |> sectionTitleLabelStyle
-    }
+      }
 
     _ = self.includedItemsTitleLabel
       |> \.text %~ { _ in Strings.project_view_pledge_includes() }
 
-    self.includedItemsStackView.subviews.enumerated().forEach { index, view in
-      guard index != 0 else { return }
-
-      _ = (view as? UILabel)
-        ?|> baseRewardLabelStyle
-        ?|> sectionBodyLabelStyle
-    }
+    _ = self.includedItemsStackView.subviews
+      .dropFirst()
+      .compactMap { $0 as? UILabel }
+      ||> baseRewardLabelStyle
+      ||> sectionBodyLabelStyle
 
     _ = self.descriptionTitleLabel
       |> \.text %~ { _ in Strings.Description() }
@@ -126,9 +132,9 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     self.viewModel.outputs.rewardSelected
       .observeForUI()
       .observeValues { [weak self] rewardId in
-        guard let _self = self else { return }
+        guard let self = self else { return }
 
-        self?.delegate?.rewardCellDidTapPledgeButton(_self, rewardId: rewardId)
+        self?.delegate?.rewardCellDidTapPledgeButton(self, rewardId: rewardId)
       }
 
     self.viewModel.outputs.cardUserInteractionIsEnabled
@@ -192,80 +198,73 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   }
 
   private func setupConstraints() {
-    let baseStackView = self.baseStackView
-    let containerView = self.containerView
-    let pledgeButton = self.pledgeButton
-    let pledgeButtonLayoutGuide = self.pledgeButtonLayoutGuide
+    let containerConstraints = [
+      self.containerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)
+    ]
 
-    // Container view
-    NSLayoutConstraint.activate([containerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)])
+    let containerMargins = self.containerView.layoutMarginsGuide
 
-    // Base stack view
-    _ = baseStackView
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-
-    let containerMargins = containerView.layoutMarginsGuide
-
-    NSLayoutConstraint.activate([
-      baseStackView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-      baseStackView.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      baseStackView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
-    ])
-
-    // Pledge button
-    _ = pledgeButton
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    let baseStackViewConstraints = [
+      self.baseStackView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+      self.baseStackView.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+      self.baseStackView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
+    ]
 
     let topConstraint = pledgeButton.topAnchor.constraint(equalTo: pledgeButtonLayoutGuide.topAnchor)
-    _ = topConstraint
       |> \.priority .~ .defaultLow
-      |> \.isActive .~ true
 
     let contentMargins = self.contentView.layoutMarginsGuide
 
-    NSLayoutConstraint.activate([
-      pledgeButton.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
-      pledgeButton.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
-      // swiftlint:disable:next line_length
-      pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: contentMargins.bottomAnchor),
-      // swiftlint:disable:next line_length
-      pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-    ])
+    let pledgeButtonConstraints = [
+      topConstraint,
+      self.pledgeButton.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
+      self.pledgeButton.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
+      self.pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: contentMargins.bottomAnchor),
+      self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    ]
 
-    // Pledge button layout anchor
-    NSLayoutConstraint.activate([
-      pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
-      pledgeButtonLayoutGuide.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-      pledgeButtonLayoutGuide.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+    let pledgeButtonLayoutGuideConstraints = [
+      self.pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
+      self.pledgeButtonLayoutGuide.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+      self.pledgeButtonLayoutGuide.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
       // swiftlint:disable:next line_length
-      pledgeButtonLayoutGuide.topAnchor.constraint(equalTo: baseStackView.bottomAnchor, constant: Styles.grid(3)),
-      pledgeButtonLayoutGuide.heightAnchor.constraint(equalTo: pledgeButton.heightAnchor)
-    ])
+      self.pledgeButtonLayoutGuide.topAnchor.constraint(equalTo: self.baseStackView.bottomAnchor, constant: Styles.grid(3)),
+      self.pledgeButtonLayoutGuide.heightAnchor.constraint(equalTo: pledgeButton.heightAnchor)
+    ]
+
+    NSLayoutConstraint.activate([
+      containerConstraints,
+      baseStackViewConstraints,
+      pledgeButtonConstraints,
+      pledgeButtonLayoutGuideConstraints
+      ].flatMap { $0 })
   }
 
   fileprivate func load(items: [String]) {
-    self.includedItemsStackView.subviews.forEach { $0.removeFromSuperview() }
+    _ = self.includedItemsStackView.subviews
+      ||> { $0.removeFromSuperview() }
 
-    let includedItemViews = items.enumerated().map { (index, item) -> [UIView] in
+    let includedItemViews = items.map { item -> UIView in
       let label = UILabel()
         |> baseRewardLabelStyle
         |> sectionBodyLabelStyle
         |> \.text .~ item
 
+      return label
+    }
+
+    let separatedItemViews = includedItemViews.dropLast().map { view -> [UIView] in
       let separator = UIView()
         |> separatorStyle
       separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
-      var itemViews: [UIView] = [label]
-
-      if index != items.endIndex - 1 {
-        itemViews.append(separator)
+      return [view, separator]
       }
+      .flatMap { $0 }
 
-      return itemViews
-    }.flatMap { $0 }
-
-    let allItemViews = [self.includedItemsTitleLabel] + includedItemViews
+    let allItemViews = [self.includedItemsTitleLabel]
+      + separatedItemViews
+      + [includedItemViews.last].compact()
 
     _ = (allItemViews, self.includedItemsStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -322,7 +321,7 @@ private let priceStackViewStyle: StackViewStyle = { stackView in
 private let rewardTitleLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
-    |> \.font .~ UIFont.ksr_headline(size: 24).bolded
+    |> \.font .~ UIFont.preferredFont(style: .headline, size: 24, weight: .bold)
 }
 
 private let scrollViewStyle: ScrollStyle = { scrollView in
