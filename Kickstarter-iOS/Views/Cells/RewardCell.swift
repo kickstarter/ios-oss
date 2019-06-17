@@ -9,16 +9,16 @@ protocol RewardCellDelegate: AnyObject {
 }
 
 final class RewardCell: UICollectionViewCell, ValueCell {
-
   // MARK: - Properties
 
   weak var delegate: RewardCellDelegate?
   private let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
   private let baseStackView: UIStackView = {
-    return UIStackView(frame: .zero)
+    UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let containerView = UIView(frame: .zero)
   private let descriptionLabel = UILabel(frame: .zero)
   private let descriptionStackView = UIStackView(frame: .zero)
@@ -28,9 +28,10 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   private let minimumPriceConversionLabel = UILabel(frame: .zero)
   private let minimumPriceLabel = UILabel(frame: .zero)
   private let pledgeButton: MultiLineButton = {
-    return MultiLineButton(type: .custom)
+    MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let pledgeButtonLayoutGuide = UILayoutGuide()
   private let priceStackView = UIStackView(frame: .zero)
   private let rewardTitleLabel = UILabel(frame: .zero)
@@ -65,10 +66,10 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.includedItemsStackView,
       self.descriptionStackView
     ]
-    ||> { stackView in
-      stackView
-        |> sectionStackViewStyle
-    }
+      ||> { stackView in
+        stackView
+          |> sectionStackViewStyle
+      }
 
     _ = self.baseStackView
       |> baseStackViewStyle
@@ -78,9 +79,9 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     _ = [self.includedItemsTitleLabel, self.descriptionTitleLabel]
       ||> { label in
-      label
-        |> baseRewardLabelStyle
-        |> sectionTitleLabelStyle
+        label
+          |> baseRewardLabelStyle
+          |> sectionTitleLabelStyle
       }
 
     _ = self.includedItemsTitleLabel
@@ -210,7 +211,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.baseStackView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
     ]
 
-    let topConstraint = pledgeButton.topAnchor.constraint(equalTo: pledgeButtonLayoutGuide.topAnchor)
+    let topConstraint = self.pledgeButton.topAnchor.constraint(equalTo: self.pledgeButtonLayoutGuide.topAnchor)
       |> \.priority .~ .defaultLow
 
     let contentMargins = self.contentView.layoutMarginsGuide
@@ -237,7 +238,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       baseStackViewConstraints,
       pledgeButtonConstraints,
       pledgeButtonLayoutGuideConstraints
-      ].flatMap { $0 })
+    ].flatMap { $0 })
   }
 
   fileprivate func load(items: [String]) {
@@ -259,8 +260,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
       return [view, separator]
-      }
-      .flatMap { $0 }
+    }
+    .flatMap { $0 }
 
     let allItemViews = [self.includedItemsTitleLabel]
       + separatedItemViews
