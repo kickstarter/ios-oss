@@ -1,4 +1,6 @@
-<a href="https://www.kickstarter.com"><img src=".github/ksr-wordmark.svg" width="100%" alt="Kickstarter for iOS"></a>
+<a href="https://www.kickstarter.com"><img src="https://ksr-static.imgix.net/b9pm5duo-app-icon.png?ixlib=rb-2.0.0&s=cbd15b6544826e233bb3a14431d7ef5f" width="68" alt="Kickstarter for iOS"></a>
+
+# Kickstarter for iOS
 
 [![Circle CI](https://circleci.com/gh/kickstarter/ios-oss.svg?style=svg)](https://circleci.com/gh/kickstarter/ios-oss)
 
