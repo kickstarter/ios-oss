@@ -1935,6 +1935,23 @@ contributeurs"
     )
   }
   /**
+   "Description"
+
+   - **en**: "Description"
+   - **de**: "Beschreibung"
+   - **es**: "Descripción"
+   - **fr**: "Description"
+   - **ja**: "説明"
+  */
+  public static func Description() -> String {
+    return localizedString(
+      key: "Description",
+      defaultValue: "Description",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Developer"
 
    - **en**: "Developer"
@@ -3747,7 +3764,7 @@ with friends."
    - **es**: "Kickstarter no es una tienda."
    - **fr**: "Kickstarter n'est pas un magasin."
    - **ja**: "Kickstarterはオンラインストアではありません。"
-   */
+  */
   public static func Kickstarter_is_not_a_store() -> String {
     return localizedString(
       key: "Kickstarter_is_not_a_store",
