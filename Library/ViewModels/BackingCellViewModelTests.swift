@@ -1,5 +1,5 @@
 @testable import KsApi
-import Library
+@testable import Library
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
@@ -40,7 +40,7 @@ internal final class BackingCellViewModelTests: TestCase {
       Strings.backing_info_estimated_delivery_date(
         delivery_date:
         Format.date(
-          secondsInUTC: reward.estimatedDeliveryOn!, template: "MMMMyyyy", timeZone: UTCTimeZone
+          secondsInUTC: reward.estimatedDeliveryOn!, template: DateFormatter.monthYear, timeZone: UTCTimeZone
         )
       )
     ], "Emits the estimated delivery date")

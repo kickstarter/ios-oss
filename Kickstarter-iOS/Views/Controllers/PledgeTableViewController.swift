@@ -7,6 +7,7 @@ class PledgeTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let dataSource: PledgeDataSource = PledgeDataSource()
+  private weak var shippingLocationCell: PledgeShippingLocationCell?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
   // MARK: - Lifecycle
@@ -51,10 +52,8 @@ class PledgeTableViewController: UITableViewController {
 
     self.viewModel.outputs.reloadWithData
       .observeForUI()
-      .observeValues { [weak self] amount, currency, delivery, shipping, isLoggedIn in
-        self?.dataSource.load(
-          amount: amount, currency: currency, delivery: delivery, shipping: shipping, isLoggedIn: isLoggedIn
-        )
+      .observeValues { [weak self] project, reward, isLoggedIn in
+        self?.dataSource.load(project: project, reward: reward, isLoggedIn: isLoggedIn)
         self?.tableView.reloadData()
       }
   }
@@ -68,13 +67,11 @@ class PledgeTableViewController: UITableViewController {
     return footerView
   }
 
-  internal override func tableView(
-    _: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt _: IndexPath
-  ) {
+  internal override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     if let descriptionCell = cell as? PledgeDescriptionCell {
       descriptionCell.delegate = self
+    } else if let shippingLocationCell = cell as? PledgeShippingLocationCell {
+      self.shippingLocationCell = shippingLocationCell
     }
   }
 }

@@ -2,13 +2,6 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-public typealias PledgeTableViewData = (
-  amount: Double,
-  currency: String,
-  delivery: String,
-  shipping: (location: String, amount: NSAttributedString?),
-  isLoggedIn: Bool
-)
 
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
@@ -16,7 +9,7 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
-  var reloadWithData: Signal<PledgeTableViewData, Never> { get }
+  var reloadWithData: Signal<(Project, Reward, Bool), Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -32,30 +25,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map(first)
     .skipNil()
 
+    let project = projectAndReward.map(first)
+    let reward = projectAndReward.map(second)
     let isLoggedIn = projectAndReward
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    let amountCurrencyDeliveryShipping = projectAndReward.signal
-      .map { (project, reward) -> (Double, String, String, (String, NSAttributedString?)) in
-        let amount = reward.minimum
-        let currency = currencySymbol(forCountry: project.country).trimmed()
-        let delivery = reward.estimatedDeliveryOn
-          .map { Format.date(secondsInUTC: $0, template: "MMMMyyyy", timeZone: UTCTimeZone) } ?? ""
-        let shipping = (
-          "Brooklyn",
-          shippingValue(for: project)
-        )
-
-        return (amount, currency, delivery, shipping)
-      }
-
-    self.reloadWithData = Signal.combineLatest(amountCurrencyDeliveryShipping, isLoggedIn)
-      .map { amountCurrencyDeliveryShipping, isLoggedIn in
-        let (amount, currency, delivery, shipping) = amountCurrencyDeliveryShipping
-
-        return (amount, currency, delivery, shipping, isLoggedIn)
-      }
+    self.reloadWithData = Signal.combineLatest(project, reward, isLoggedIn)
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -68,27 +44,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let reloadWithData: Signal<PledgeTableViewData, Never>
+  public let reloadWithData: Signal<(Project, Reward, Bool), Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
-}
-
-// MARK: - Functions
-
-private func shippingValue(for project: Project) -> NSAttributedString? {
-  let defaultAttributes = checkoutCurrencyDefaultAttributes()
-  let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
-  guard
-    let attributedCurrency = Format.attributedCurrency(
-      7.5,
-      country: project.country,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode,
-      defaultAttributes: defaultAttributes,
-      superscriptAttributes: superscriptAttributes
-    ) else { return nil }
-
-  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { _, new in new }
-
-  return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }

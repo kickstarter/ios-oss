@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import Library
 import UIKit
 
@@ -9,30 +10,28 @@ final class PledgeDataSource: ValueCellDataSource {
     case summary
   }
 
-  func load(
-    amount: Double,
-    currency: String,
-    delivery: String,
-    shipping: (location: String, amount: NSAttributedString?),
-    isLoggedIn: Bool
-  ) {
+  // MARK: - Load
+
+  func load(project: Project, reward: Reward, isLoggedIn: Bool) {
     self.appendRow(
-      value: delivery,
+      value: reward,
       cellClass: PledgeDescriptionCell.self,
       toSection: Section.project.rawValue
     )
 
     self.appendRow(
-      value: (amount, currency),
+      value: (project, reward),
       cellClass: PledgeAmountCell.self,
       toSection: Section.inputs.rawValue
     )
 
-    self.appendRow(
-      value: shipping,
-      cellClass: PledgeShippingLocationCell.self,
-      toSection: Section.inputs.rawValue
-    )
+    if reward.shipping.enabled {
+      self.appendRow(
+        value: (project, reward),
+        cellClass: PledgeShippingLocationCell.self,
+        toSection: Section.inputs.rawValue
+      )
+    }
 
     self.appendRow(
       value: Strings.Total(),
@@ -51,15 +50,17 @@ final class PledgeDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as PledgeAmountCell, value as (Double, String)):
+    case let (cell as PledgeAmountCell, value as (Project, Reward)):
       cell.configureWith(value: value)
     case let (cell as PledgeContinueCell, value as ()):
       cell.configureWith(value: value)
-    case let (cell as PledgeDescriptionCell, value as String):
+    case let (cell as PledgeDescriptionCell, value as Reward):
       cell.configureWith(value: value)
     case let (cell as PledgeRowCell, value as String):
       cell.configureWith(value: value)
-    case let (cell as PledgeShippingLocationCell, value as (String, NSAttributedString?)):
+    case let (cell as PledgeShippingLocationCell, value as (Project, Reward)):
+      cell.configureWith(value: value)
+    case let (cell as PledgeContinueCell, value as ()):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

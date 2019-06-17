@@ -104,11 +104,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     }
   }
 
-  public override func tableView(
-    _: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt _: IndexPath
-  ) {
+  public override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     if let cell = cell as? ProjectPamphletMainCell {
       cell.delegate = self
     } else if let cell = cell as? DeprecatedRewardCell {

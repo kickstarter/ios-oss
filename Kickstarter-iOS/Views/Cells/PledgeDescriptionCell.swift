@@ -1,3 +1,4 @@
+import KsApi
 import Library
 import Prelude
 import UIKit
@@ -44,6 +45,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureSubviews()
+
     self.bindViewModel()
   }
 
@@ -144,8 +146,8 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  internal func configureWith(value: String) {
-    self.viewModel.inputs.configureWith(estimatedDeliveryDate: value)
+  internal func configureWith(value: Reward) {
+    self.viewModel.inputs.configureWith(reward: value)
   }
 }
 

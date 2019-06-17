@@ -169,3 +169,19 @@ public func ksr_isOSVersionAvailable(_ version: Double) -> Bool {
 
   return false
 }
+
+public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]) -> ShippingRule? {
+  let shippingRuleFromCurrentLocation = shippingRules
+    .filter { shippingRule in shippingRule.location.country == AppEnvironment.current.config?.countryCode }
+    .first
+
+  if let shippingRuleFromCurrentLocation = shippingRuleFromCurrentLocation {
+    return shippingRuleFromCurrentLocation
+  }
+
+  let shippingRuleInUSA = shippingRules
+    .filter { shippingRule in shippingRule.location.country == "US" }
+    .first
+
+  return shippingRuleInUSA ?? shippingRules.first
+}

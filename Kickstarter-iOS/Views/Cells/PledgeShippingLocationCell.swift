@@ -1,9 +1,12 @@
+import KsApi
 import Library
 import Prelude
 import UIKit
 
 final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   // MARK: - Properties
+
+  private let viewModel = PledgeShippingLocationCellViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
@@ -36,6 +39,8 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -78,12 +83,30 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       |> checkoutStackViewStyle
   }
 
+  // MARK: - Binding
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.countryButton.rac.title = self.viewModel.location
+    self.amountLabel.rac.attributedText = self.viewModel.amount
+
+    self.viewModel.shippingIsLoading
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        self?.animate(isLoading)
+      }
+  }
+
   // MARK: - Configuration
 
-  func configureWith(value: (location: String, amount: NSAttributedString?)) {
-    self.countryButton.setTitle(value.location, for: .normal)
-    self.amountLabel.attributedText = value.amount
+  func configureWith(value: (project: Project, reward: Reward)) {
+    self.viewModel.inputs.configureWith(project: value.project, reward: value.reward)
   }
+
+  // MARK: - Public Functions
+
+  func animate(_: Bool) {}
 }
 
 // MARK: - Styles
