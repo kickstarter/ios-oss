@@ -86,7 +86,7 @@ private func projectStateButton(backer: User, project: Project) -> PledgeStateCT
 
 private func formattedAmount(for backing: Backing) -> String {
   let amount = backing.amount - Double(backing.shippingAmount ?? 0)
-  let backingAmount = floor(amount) == backing.amount
+  let backingAmount = floor(amount) == amount
     ? String(Int(amount))
     : String(format: "%.2f", backing.amount)
   return backingAmount
