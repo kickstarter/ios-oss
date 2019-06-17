@@ -52,30 +52,9 @@ class PledgeTableViewController: UITableViewController {
 
     self.viewModel.outputs.reloadWithData
       .observeForUI()
-      .observeValues { [weak self] data in
-        self?.dataSource.load(data: data)
-
+      .observeValues { [weak self] project, reward, isLoggedIn in
+        self?.dataSource.load(project: project, reward: reward, isLoggedIn: isLoggedIn)
         self?.tableView.reloadData()
-
-        self?.viewModel.inputs.didReloadData()
-      }
-
-    self.viewModel.outputs.selectedShippingRuleData
-      .observeForUI()
-      .observeValues { [weak self] selectedShippingRuleData in
-        self?.dataSource.loadSelectedShippingRule(data: selectedShippingRuleData)
-
-        guard let shippingIndexPath = self?.dataSource.shippingCellIndexPath() else {
-          return
-        }
-
-        self?.tableView.reloadRows(at: [shippingIndexPath], with: .automatic)
-      }
-
-    self.viewModel.outputs.shippingIsLoading
-      .observeForUI()
-      .observeValues { [weak self] isLoading in
-        self?.shippingLocationCell?.animate(isLoading)
       }
   }
 
@@ -88,11 +67,7 @@ class PledgeTableViewController: UITableViewController {
     return footerView
   }
 
-  internal override func tableView(
-    _: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt _: IndexPath
-  ) {
+  internal override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     if let descriptionCell = cell as? PledgeDescriptionCell {
       descriptionCell.delegate = self
     } else if let shippingLocationCell = cell as? PledgeShippingLocationCell {
