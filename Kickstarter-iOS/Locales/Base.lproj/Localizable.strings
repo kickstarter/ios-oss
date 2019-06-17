@@ -532,6 +532,7 @@
 "accessibility.projects.buttons.star" = "Star";
 "accessibility.projects.buttons.star_hint_favorites_this_project" = "Favorites this project.";
 "accessibility.projects.buttons.star_hint_reminds_you" = "Reminds you 48 hours before this project ends.";
+"activities_badge_value_plus" = "%{activities_badge_value}+";
 "activity.by_creator" = "by %{creator_name}";
 "activity.creator.actions.user_name_adjusted_their_pledge" = "%{user_name} adjusted their pledge:";
 "activity.creator.actions.user_name_canceled_their_pledge" = "%{user_name} canceled their pledge:";
