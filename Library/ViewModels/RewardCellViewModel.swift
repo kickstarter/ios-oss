@@ -79,9 +79,7 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
       .map(formattedAmountForRewardOrBacking(project:rewardOrBacking:))
 
     self.descriptionLabelText = reward
-      .map { $0.isNoReward ?
-        Strings.Pledge_any_amount_to_help_bring_this_project_to_life() : $0.description
-      }
+      .map { $0.isNoReward ? Strings.Pledge_any_amount_to_help_bring_this_project_to_life() : $0.description }
 
     self.rewardTitleLabelHidden = reward
       .map { $0.title == nil && !$0.isNoReward }

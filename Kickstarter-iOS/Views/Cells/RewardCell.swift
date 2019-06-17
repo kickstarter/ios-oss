@@ -134,7 +134,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       .observeValues { [weak self] rewardId in
         guard let self = self else { return }
 
-        self?.delegate?.rewardCellDidTapPledgeButton(self, rewardId: rewardId)
+        self.delegate?.rewardCellDidTapPledgeButton(self, rewardId: rewardId)
       }
 
     self.viewModel.outputs.cardUserInteractionIsEnabled
@@ -321,7 +321,7 @@ private let priceStackViewStyle: StackViewStyle = { stackView in
 private let rewardTitleLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
-    |> \.font .~ UIFont.preferredFont(style: .headline, size: 24, weight: .bold)
+    |> \.font .~ UIFont.ksr_headline(size: 24).bolded
 }
 
 private let scrollViewStyle: ScrollStyle = { scrollView in

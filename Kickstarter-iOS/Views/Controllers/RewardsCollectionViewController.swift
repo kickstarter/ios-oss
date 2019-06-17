@@ -25,7 +25,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
     UICollectionViewFlowLayout()
       |> \.minimumLineSpacing .~ Styles.grid(3)
       |> \.minimumInteritemSpacing .~ 0
-      |> \.sectionInset .~ .zero
       |> \.scrollDirection .~ .horizontal
   }()
 
