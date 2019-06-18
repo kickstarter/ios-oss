@@ -41,6 +41,12 @@ final class PledgeCTAContainerView: UIView {
   }
 
   func configureWith(project: Project, user: User) {
+    self.vm.inputs.configureWith(project: project, user: user)
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
     _ = self.pledgeCTAbutton
       |> projectStateButtonStyle
 
@@ -59,8 +65,6 @@ final class PledgeCTAContainerView: UIView {
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.isLayoutMarginsRelativeArrangement .~ true
-
-    self.vm.inputs.configureWith(project: project, user: user)
   }
 
   required init?(coder aDecoder: NSCoder) {
