@@ -21,7 +21,7 @@ public protocol FacebookLoginViewModelOutputs {
   var applicationDidFinishLaunchingReturnValue: Bool { get }
 
   /// Return this value in the delegate method.
-  var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
+  var facebookOpenURLReturnValue: Bool { get }
 }
 
 public protocol FacebookLoginViewModelType {
@@ -43,7 +43,7 @@ public final class FacebookLoginViewModel: FacebookLoginViewModelType, FacebookL
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
 
-    self.facebookOpenURLReturnValue <~ openUrl
+    self.facebookOpenURLReturnValueProperty <~ openUrl
       .map { options -> Bool in
         AppEnvironment.current.facebookAppDelegate.application(
           options.application ?? UIApplication.shared,
@@ -79,7 +79,7 @@ public final class FacebookLoginViewModel: FacebookLoginViewModelType, FacebookL
     options: [UIApplication.OpenURLOptionsKey: Any]
   ) -> Bool {
     self.applicationOpenUrlProperty.value = (application, url, options)
-    return self.facebookOpenURLReturnValue.value
+    return self.facebookOpenURLReturnValue
   }
 
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
@@ -87,5 +87,8 @@ public final class FacebookLoginViewModel: FacebookLoginViewModelType, FacebookL
     return self.applicationDidFinishLaunchingReturnValueProperty.value
   }
 
-  public let facebookOpenURLReturnValue = MutableProperty(false)
+  fileprivate let facebookOpenURLReturnValueProperty = MutableProperty(false)
+  public var facebookOpenURLReturnValue: Bool {
+    return self.facebookOpenURLReturnValueProperty.value
+  }
 }
