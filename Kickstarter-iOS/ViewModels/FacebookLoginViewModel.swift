@@ -1,6 +1,6 @@
 import Library
-import UIKit
 import ReactiveSwift
+import UIKit
 
 public protocol FacebookLoginViewModelInputs {
   /// Call when the application finishes launching.

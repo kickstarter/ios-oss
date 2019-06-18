@@ -208,6 +208,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.window?.tintColor = .ksr_green_700
 
+    self.viewModel.inputs.applicationDidFinishLaunching(
+      application: application,
+      launchOptions: launchOptions
+    )
+
     self.fbLoginViewModel.inputs.applicationDidFinishLaunching(
       application: application,
       launchOptions: launchOptions
