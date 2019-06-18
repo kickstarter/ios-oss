@@ -40,6 +40,12 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
+    self.stepper.addTarget(
+      self,
+      action: #selector(PledgeAmountCell.stepperValueChanged(_:)),
+      for: .valueChanged
+    )
+
     self.bindViewModel()
   }
 
@@ -80,12 +86,44 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     self.amountInputView.label.rac.text = self.viewModel.outputs.currency
     self.amountInputView.textField.rac.text = self.viewModel.outputs.amount
+
+    self.viewModel.outputs.stepperInitialValue
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.stepper.value = value
+      }
+
+    self.viewModel.outputs.stepperMaxValue
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.stepper.maximumValue = value
+      }
+
+    self.viewModel.outputs.stepperMinValue
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.stepper.minimumValue = value
+      }
+
+    self.viewModel.outputs.generateSelectionFeedback
+      .observeForUI()
+      .observeValues { UIFeedbackGenerator.ksr_generateSelectionFeedback() }
+
+    self.viewModel.outputs.generateWarningFeedback
+      .observeForUI()
+      .observeValues { UIFeedbackGenerator.ksr_generateWarningFeedback() }
   }
 
   // MARK: - Configuration
 
   func configureWith(value: (project: Project, reward: Reward)) {
     self.viewModel.inputs.configureWith(project: value.project, reward: value.reward)
+  }
+
+  // MARK: - Actions
+
+  @objc func stepperValueChanged(_ stepper: UIStepper) {
+    self.viewModel.inputs.stepperValueChanged(stepper.value)
   }
 }
 
