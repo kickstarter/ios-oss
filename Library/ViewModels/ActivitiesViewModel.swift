@@ -56,8 +56,11 @@ public protocol ActitiviesViewModelInputs {
 }
 
 public protocol ActivitiesViewModelOutputs {
-  /// Emits an array of activities that should be displayed
+  /// Emits an array of activities that should be displayed.
   var activities: Signal<[Activity], Never> { get }
+
+  /// Emits when the tab bar item's badge value should be cleared.
+  var clearBadgeValue: Signal<(), Never> { get }
 
   /// Emits when should remove Facebook Connect section
   var deleteFacebookConnectSection: Signal<(), Never> { get }
@@ -97,6 +100,9 @@ public protocol ActivitiesViewModelOutputs {
 
   /// Emits a non-`nil` survey response if there is an unanswered one available, and `nil` otherwise.
   var unansweredSurveys: Signal<[SurveyResponse], Never> { get }
+
+  /// Emits a User that can be used to replace the current user in the environment.
+  var updateUserInEnvironment: Signal<User, Never> { get }
 }
 
 public protocol ActivitiesViewModelType {
@@ -156,6 +162,18 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       }
 
     self.activities = Signal.merge(clearedActivitiesOnSessionEnd, updatedActivities)
+    self.clearBadgeValue = Signal.zip(
+      self.refreshProperty.signal,
+      updatedActivities.skip(first: 1)
+    )
+    .ignoreValues()
+
+    self.updateUserInEnvironment = self.clearBadgeValue
+      .filter { _ in AppEnvironment.current.currentUser != nil }
+      .switchMap { _ in
+        updatedUserWithClearedActivityCountProducer()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+      }
 
     let currentUser = Signal
       .merge(
@@ -359,6 +377,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   }
 
   public let activities: Signal<[Activity], Never>
+  public let clearBadgeValue: Signal<(), Never>
   public let deleteFacebookConnectSection: Signal<(), Never>
   public let deleteFindFriendsSection: Signal<(), Never>
   public let hideEmptyState: Signal<(), Never>
@@ -372,6 +391,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   public let showFacebookConnectSection: Signal<(FriendsSource, Bool), Never>
   public let showFacebookConnectErrorAlert: Signal<AlertError, Never>
   public let unansweredSurveys: Signal<[SurveyResponse], Never>
+  public let updateUserInEnvironment: Signal<User, Never>
 
   public var inputs: ActitiviesViewModelInputs { return self }
   public var outputs: ActivitiesViewModelOutputs { return self }
