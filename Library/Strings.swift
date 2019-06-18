@@ -8701,6 +8701,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "%{activities_badge_value}+"
+
+   - **en**: "%{activities_badge_value}+"
+   - **de**: "%{activities_badge_value}+"
+   - **es**: "%{activities_badge_value}+"
+   - **fr**: "%{activities_badge_value}+"
+   - **ja**: "%{activities_badge_value}+"
+  */
+  public static func activities_badge_value_plus(activities_badge_value: String) -> String {
+    return localizedString(
+      key: "activities_badge_value_plus",
+      defaultValue: "%{activities_badge_value}+",
+      count: nil,
+      substitutions: ["activities_badge_value": activities_badge_value]
+    )
+  }
+  /**
    "by %{creator_name}"
 
    - **en**: "by %{creator_name}"
