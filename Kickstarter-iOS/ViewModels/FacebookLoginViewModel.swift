@@ -1,5 +1,5 @@
 import Library
-import Prelude
+import UIKit
 import ReactiveSwift
 
 public protocol FacebookLoginViewModelInputs {

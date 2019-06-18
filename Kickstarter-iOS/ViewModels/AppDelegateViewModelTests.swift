@@ -462,12 +462,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     XCTAssertEqual(
       ["App Open", "Opened App", "Smart App Banner Opened", "Opened App Banner"],
@@ -513,52 +512,47 @@ final class AppDelegateViewModelTests: TestCase {
       self.presentViewController.assertValues([])
 
       let projectUrl = rootUrl + "projects/tequila/help-me-transform-this-pile-of-wood"
-      var result = self.vm.inputs.applicationOpenUrl(
+      self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: projectUrl)!,
         options: [:]
       )
-      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1])
 
       let commentsUrl = projectUrl + "/comments"
-      result = self.vm.inputs.applicationOpenUrl(
+      self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: commentsUrl)!,
         options: [:]
       )
-      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2])
 
       let updatesUrl = projectUrl + "/posts"
-      result = self.vm.inputs.applicationOpenUrl(
+      self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: updatesUrl)!,
         options: [:]
       )
-      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2, 2])
 
       let updateUrl = projectUrl + "/posts/1399396"
-      result = self.vm.inputs.applicationOpenUrl(
+      self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: updateUrl)!,
         options: [:]
       )
-      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2, 2, 2])
 
       let updateCommentsUrl = updateUrl + "/comments"
-      result = self.vm.inputs.applicationOpenUrl(
+      self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: updateCommentsUrl)!,
         options: [:]
       )
-      XCTAssertFalse(result)
 
       self.presentViewController.assertValues([1, 2, 2, 2, 3])
     }
@@ -572,12 +566,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToActivity.assertValueCount(0)
 
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/activity")!,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.goToActivity.assertValueCount(1)
   }
@@ -591,12 +584,11 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDashboard.assertValueCount(0)
 
     let url = "https://www.kickstarter.com/projects/tequila/help-me-transform-this-pile-of-wood/dashboard"
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: url)!,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.goToDashboard.assertValueCount(1)
   }
@@ -609,12 +601,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToDiscovery.assertValues([])
 
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/discover?sort=newest")!,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     let params = .defaults
       |> DiscoveryParams.lens.sort .~ .newest
@@ -629,12 +620,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToDiscovery.assertValues([])
 
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/discover")!,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.goToDiscovery.assertValues([nil])
   }
@@ -648,12 +638,11 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToDiscovery.assertValues([])
 
     let url = URL(string: "https://www.kickstarter.com/discover/categories/art")!
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: url,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.scheduler.advance()
 
@@ -669,12 +658,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToLogin.assertValueCount(0)
 
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/authorize")!,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.goToLogin.assertValueCount(1)
   }
@@ -687,12 +675,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToProfile.assertValueCount(0)
 
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/profile/me")!,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.goToProfile.assertValueCount(1)
   }
@@ -705,12 +692,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToSearch.assertValueCount(0)
 
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: "https://www.kickstarter.com/search")!,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.goToSearch.assertValueCount(1)
   }
@@ -1347,12 +1333,11 @@ final class AppDelegateViewModelTests: TestCase {
     // We deep-link to an email url.
     self.vm.inputs.applicationDidEnterBackground()
     self.vm.inputs.applicationWillEnterForeground()
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: emailUrl,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
     self.presentViewController.assertValues([], "No view controller is presented yet.")
@@ -1415,12 +1400,11 @@ final class AppDelegateViewModelTests: TestCase {
     // We deep-link to an email url.
     self.vm.inputs.applicationDidEnterBackground()
     self.vm.inputs.applicationWillEnterForeground()
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: emailUrl,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
     self.presentViewController.assertValues([], "No view controller is presented.")
@@ -1451,12 +1435,11 @@ final class AppDelegateViewModelTests: TestCase {
     // We deep-link to an email url.
     self.vm.inputs.applicationDidEnterBackground()
     self.vm.inputs.applicationWillEnterForeground()
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: emailUrl,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
     self.presentViewController.assertValues([], "No view controller is presented.")
@@ -1487,12 +1470,11 @@ final class AppDelegateViewModelTests: TestCase {
     // We deep-link to an email url.
     self.vm.inputs.applicationDidEnterBackground()
     self.vm.inputs.applicationWillEnterForeground()
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: emailUrl,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
     self.presentViewController.assertValues([], "No view controller is presented yet.")
@@ -1516,12 +1498,11 @@ final class AppDelegateViewModelTests: TestCase {
 
     let projectUrl = "https://www.kickstarter.com"
       + "/projects/tequila/help-me-transform-this-pile-of-wood/surveys/123"
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: projectUrl)!,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.presentViewController.assertValues([1])
   }
@@ -1535,12 +1516,11 @@ final class AppDelegateViewModelTests: TestCase {
     self.presentViewController.assertValues([])
 
     let projectUrl = "https://www.kickstarter.com/users/tequila/surveys/123"
-    let result = self.vm.inputs.applicationOpenUrl(
+    self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
       url: URL(string: projectUrl)!,
       options: [:]
     )
-    XCTAssertFalse(result)
 
     self.presentViewController.assertValues([1])
   }

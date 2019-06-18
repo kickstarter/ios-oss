@@ -1,5 +1,4 @@
 @testable import Kickstarter_Framework
-@testable import KsApi
 @testable import Library
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
