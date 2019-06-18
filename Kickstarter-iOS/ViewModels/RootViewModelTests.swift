@@ -12,9 +12,12 @@ final class RootViewModelTests: TestCase {
   let viewControllerNames = TestObserver<[String], Never>()
   let filterDiscovery = TestObserver<DiscoveryParams, Never>()
   let selectedIndex = TestObserver<RootViewControllerIndex, Never>()
+  let setBadgeValueAtIndexValue = TestObserver<String?, Never>()
+  let setBadgeValueAtIndexIndex = TestObserver<RootViewControllerIndex, Never>()
   let scrollToTopControllerName = TestObserver<String, Never>()
   let switchDashboardProject = TestObserver<Param, Never>()
   let tabBarItemsData = TestObserver<TabBarItemsData, Never>()
+  let updateUserInEnvironment = TestObserver<User, Never>()
 
   override func setUp() {
     super.setUp()
@@ -25,7 +28,10 @@ final class RootViewModelTests: TestCase {
 
     self.vm.outputs.filterDiscovery.map(second).observe(self.filterDiscovery.observer)
     self.vm.outputs.selectedIndex.observe(self.selectedIndex.observer)
+    self.vm.outputs.setBadgeValueAtIndex.map { $0.0 }.observe(self.setBadgeValueAtIndexValue.observer)
+    self.vm.outputs.setBadgeValueAtIndex.map { $0.1 }.observe(self.setBadgeValueAtIndexIndex.observer)
     self.vm.outputs.switchDashboardProject.map(second).observe(self.switchDashboardProject.observer)
+    self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
 
     let viewControllers = self.vm.outputs.setViewControllers
       .map { $0.map { $0.viewController }.compact() }
@@ -36,6 +42,233 @@ final class RootViewModelTests: TestCase {
       .observe(self.scrollToTopControllerName.observer)
 
     self.vm.outputs.tabBarItemsData.observe(self.tabBarItemsData.observer)
+  }
+
+  func testSetBadgeValueAtIndex_NoValue() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 0
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+  }
+
+  func testSetBadgeValueAtIndex_ValueSet() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 5
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues(["5"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+  }
+
+  func testSetBadgeValueAtIndex_MaxValueSet() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 100
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+  }
+
+  func testSetBadgeValueAtIndex_MaxValueSet_ToggleVoiceOver() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 100
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication, isVoiceOverRunning: { false }) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+
+    withEnvironment(application: mockApplication, isVoiceOverRunning: { true }) {
+      self.vm.inputs.voiceOverStatusDidChange()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "100"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+    }
+
+    withEnvironment(application: mockApplication, isVoiceOverRunning: { false }) {
+      self.vm.inputs.voiceOverStatusDidChange()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "100", "99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+    }
+  }
+
+  func testSetBadgeValueAtIndex_AppWillEnterForeground() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 100
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+
+      mockApplication.applicationIconBadgeNumber = 50
+
+      self.vm.inputs.applicationWillEnterForeground()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "50"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+    }
+  }
+
+  func testClearBadgeValueOnActivitiesTabSelected() {
+    let initialActivitiesCount = 100
+
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    self.updateUserInEnvironment.assertValues([])
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0))
+    )
+
+    let user = User.template
+      |> User.lens.unseenActivityCount .~ initialActivitiesCount
+
+    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+
+      self.vm.inputs.didSelect(index: 1)
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+    }
+  }
+
+  func testClearBadgeValueOnActivitiesTabSelected_LoggedOut() {
+    let initialActivitiesCount = 100
+
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    self.updateUserInEnvironment.assertValues([])
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0))
+    )
+
+    withEnvironment(apiService: mockService, application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+
+      self.vm.inputs.didSelect(index: 1)
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+
+      self.scheduler.advance()
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+    }
+  }
+
+  func testSetBadgeValueAtIndex_CurrentUserUpdated_SessionEnded() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 0
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+
+    let user = .template
+      |> User.lens.unseenActivityCount .~ 50
+
+    withEnvironment(application: mockApplication) {
+      AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
+      self.vm.inputs.currentUserUpdated()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil, "50"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+
+      AppEnvironment.logout()
+
+      self.vm.inputs.userSessionEnded()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil, "50", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+    }
+  }
+
+  func testSetBadgeValueAtIndex_FromNotification() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 100
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+
+      self.vm.inputs.didReceiveBadgeValue(10)
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "10"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+
+      self.vm.inputs.didReceiveBadgeValue(0)
+
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "10", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+    }
   }
 
   func testSetViewControllers() {
