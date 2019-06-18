@@ -4,6 +4,7 @@ import KsApi
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable line_length
 extension XCTestCase {
   // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   func withEnvironment(_ env: Environment, body: () -> Void) {
@@ -33,10 +34,13 @@ extension XCTestCase {
     koala: Koala = AppEnvironment.current.koala,
     language: Language = AppEnvironment.current.language,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
+    lightImpactFeedbackGenerator: UIImpactFeedbackGeneratorType = AppEnvironment.current.lightImpactFeedbackGenerator,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    notificationFeedbackGenerator: UINotificationFeedbackGeneratorType = AppEnvironment.current.notificationFeedbackGenerator,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
+    selectionFeedbackGenerator: UISelectionFeedbackGeneratorType = AppEnvironment.current.selectionFeedbackGenerator,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
     body: () -> Void
@@ -62,10 +66,13 @@ extension XCTestCase {
         koala: koala,
         language: language,
         launchedCountries: launchedCountries,
+        lightImpactFeedbackGenerator: lightImpactFeedbackGenerator,
         locale: locale,
         mainBundle: mainBundle,
+        notificationFeedbackGenerator: notificationFeedbackGenerator,
         pushRegistrationType: pushRegistrationType,
         scheduler: scheduler,
+        selectionFeedbackGenerator: selectionFeedbackGenerator,
         ubiquitousStore: ubiquitousStore,
         userDefaults: userDefaults
       ),

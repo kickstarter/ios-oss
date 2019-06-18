@@ -122,21 +122,15 @@ public final class ProjectNavBarViewController: UIViewController {
 
     self.watchProjectViewModel.outputs.generateImpactFeedback
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.saveButton.generateImpactFeedback(style: .light)
-      }
+      .observeValues { UIFeedbackGenerator.ksr_generateImpactFeedback() }
 
     self.watchProjectViewModel.outputs.generateSuccessFeedback
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.saveButton.generateSuccessFeedback()
-      }
+      .observeValues { UIFeedbackGenerator.ksr_generateSuccessFeedback() }
 
     self.watchProjectViewModel.outputs.generateSelectionFeedback
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.saveButton.generateSelectionFeedback()
-      }
+      .observeValues { UIFeedbackGenerator.ksr_generateSelectionFeedback() }
 
     self.watchProjectViewModel.outputs.showProjectSavedAlert
       .observeForControllerAction()

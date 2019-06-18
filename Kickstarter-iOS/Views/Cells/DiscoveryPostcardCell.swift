@@ -257,21 +257,15 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.watchProjectViewModel.outputs.generateImpactFeedback
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.saveButton.generateImpactFeedback(style: .light)
-      }
+      .observeValues { _ in UIFeedbackGenerator.ksr_generateImpactFeedback() }
 
     self.watchProjectViewModel.outputs.generateSuccessFeedback
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.saveButton.generateSuccessFeedback()
-      }
+      .observeValues { UIFeedbackGenerator.ksr_generateSuccessFeedback() }
 
     self.watchProjectViewModel.outputs.generateSelectionFeedback
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.saveButton.generateSelectionFeedback()
-      }
+      .observeValues { UIFeedbackGenerator.ksr_generateSelectionFeedback() }
 
     self.viewModel.outputs.projectCategoryName
       .signal
