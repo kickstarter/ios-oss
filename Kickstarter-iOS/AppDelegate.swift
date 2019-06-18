@@ -220,7 +220,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     UNUserNotificationCenter.current().delegate = self
 
-    return self.fbLoginViewModel.outputs.applicationDidFinishLaunchingReturnValue
+    return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
 
   func applicationWillEnterForeground(_: UIApplication) {
