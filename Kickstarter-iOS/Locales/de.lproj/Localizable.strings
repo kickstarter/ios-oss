@@ -534,6 +534,7 @@
 "accessibility.projects.buttons.star" = "Favoriten";
 "accessibility.projects.buttons.star_hint_favorites_this_project" = "Fügt Projekt zu Favoriten hinzu.";
 "accessibility.projects.buttons.star_hint_reminds_you" = "Sendet dir eine Benachrichtigung 48 Stunden vor Ablauf des Projekts.";
+"activities_badge_value_plus" = "%{activities_badge_value}+";
 "activity.by_creator" = "von %{creator_name}";
 "activity.creator.actions.user_name_adjusted_their_pledge" = "Beitrag von %{user_name} wurde geändert:";
 "activity.creator.actions.user_name_canceled_their_pledge" = "Beitrag von %{user_name} wurde storniert:";
