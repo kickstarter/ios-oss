@@ -23,6 +23,13 @@ public func ksr_insertSubviewInParent(at index: Int) -> ((UIView, UIView) -> (UI
   }
 }
 
+public func ksr_addLayoutGuideToView() -> ((UILayoutGuide, UIView) -> (UILayoutGuide, UIView)) {
+  return { layoutGuide, view in
+    view.addLayoutGuide(layoutGuide)
+    return (layoutGuide, view)
+  }
+}
+
 public func ksr_constrainViewToEdgesInParent(priority: UILayoutPriority = .required)
   -> ((UIView, UIView) -> (UIView, UIView)) {
   return { subview, parent in

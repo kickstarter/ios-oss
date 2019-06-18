@@ -1,5 +1,6 @@
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
@@ -11,7 +12,9 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let goToPledgeProject = TestObserver<Project, Never>()
   private let goToPledgeRefTag = TestObserver<RefTag?, Never>()
   private let goToPledgeReward = TestObserver<Reward, Never>()
-  private let reloadDataWithRewards = TestObserver<[Reward], Never>()
+  private let reloadDataWithValues = TestObserver<[(Project, Either<Reward, Backing>)], Never>()
+  private let reloadDataWithValuesProject = TestObserver<[Project], Never>()
+  private let reloadDataWithValuesRewardOrBacking = TestObserver<[Either<Reward, Backing>], Never>()
 
   override func setUp() {
     super.setUp()
@@ -19,7 +22,11 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.goToPledge.map { $0.project }.observe(self.goToPledgeProject.observer)
     self.vm.outputs.goToPledge.map { $0.reward }.observe(self.goToPledgeReward.observer)
     self.vm.outputs.goToPledge.map { $0.refTag }.observe(self.goToPledgeRefTag.observer)
-    self.vm.outputs.reloadDataWithRewards.observe(self.reloadDataWithRewards.observer)
+    self.vm.outputs.reloadDataWithValues.observe(self.reloadDataWithValues.observer)
+    self.vm.outputs.reloadDataWithValues.map { $0.map { $0.0 } }
+      .observe(self.reloadDataWithValuesProject.observer)
+    self.vm.outputs.reloadDataWithValues.map { $0.map { $0.1 } }
+      .observe(self.reloadDataWithValuesRewardOrBacking.observer)
   }
 
   func testConfigureWithProject() {
@@ -28,19 +35,20 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: project, refTag: RefTag.category)
 
-    self.reloadDataWithRewards.assertDidNotEmitValue()
+    self.reloadDataWithValues.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
-    self.reloadDataWithRewards.assertDidEmitValue()
+    self.reloadDataWithValues.assertDidEmitValue()
 
-    let value = self.reloadDataWithRewards.values.last
+    let value = self.reloadDataWithValues.values.last
 
     XCTAssertTrue(value?.count == rewardsCount)
   }
 
   func testGoToPledge() {
     let project = Project.cosmicSurgery
+    let firstRewardId = project.rewards.first!.id
 
     self.vm.inputs.configure(with: project, refTag: .activity)
     self.vm.inputs.viewDidLoad()
@@ -49,15 +57,16 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.goToPledgeReward.assertDidNotEmitValue()
     self.goToPledgeRefTag.assertDidNotEmitValue()
 
-    self.vm.inputs.rewardSelected(at: 0)
+    self.vm.inputs.rewardSelected(with: firstRewardId)
 
     self.goToPledgeProject.assertValues([project])
     self.goToPledgeReward.assertValues([project.rewards[0]])
     self.goToPledgeRefTag.assertValues([.activity])
 
+    let lastCardRewardId = project.rewards.last!.id
     let endIndex = project.rewards.endIndex
 
-    self.vm.inputs.rewardSelected(at: endIndex - 1)
+    self.vm.inputs.rewardSelected(with: lastCardRewardId)
 
     self.goToPledgeProject.assertValues([project, project])
     self.goToPledgeReward.assertValues([project.rewards[0], project.rewards[endIndex - 1]])

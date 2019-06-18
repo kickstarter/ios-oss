@@ -1,12 +1,13 @@
 import Foundation
 import KsApi
 import Library
+import Prelude
 import UIKit
 
 final class RewardsCollectionViewDataSource: ValueCellDataSource {
-  func load(rewards: [Reward]) {
+  func load(_ values: [(Project, Either<Reward, Backing>)]) {
     self.set(
-      values: rewards,
+      values: values,
       cellClass: RewardCell.self,
       inSection: 0
     )
@@ -14,7 +15,7 @@ final class RewardsCollectionViewDataSource: ValueCellDataSource {
 
   override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as RewardCell, value as Reward):
+    case let (cell as RewardCell, value as (Project, Either<Reward, Backing>)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, value) combo.")
