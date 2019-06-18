@@ -51,4 +51,13 @@ final class UIViewAutoLayoutExtensionTests: TestCase {
     XCTAssertEqual(targetView.subviews.first, view1)
     XCTAssertEqual(targetView.subviews.last, view2)
   }
+
+  func testAddLayoutGuideToView() {
+    let layoutGuide = UILayoutGuide()
+    let view = UIView(frame: .zero)
+
+    _ = ksr_addLayoutGuideToView()(layoutGuide, view)
+
+    XCTAssertEqual(view.layoutGuides.count, 1)
+  }
 }

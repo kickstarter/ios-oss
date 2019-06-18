@@ -20,6 +20,7 @@ public typealias CollectionViewStyle = (UICollectionView) -> UICollectionView
 public typealias ImageViewStyle = (UIImageView) -> UIImageView
 public typealias LabelStyle = (UILabel) -> UILabel
 public typealias LayerStyle = (CALayer) -> CALayer
+public typealias ScrollStyle = (UIScrollView) -> UIScrollView
 public typealias StackViewStyle = (UIStackView) -> UIStackView
 public typealias SwitchControlStyle = (UISwitch) -> UISwitch
 public typealias TableViewStyle = (UITableView) -> UITableView

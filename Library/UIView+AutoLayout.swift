@@ -35,6 +35,12 @@ public func ksr_constrainViewToCenterInParent() -> ((UIView, UIView) -> (UIView,
     NSLayoutConstraint.activate(constraints)
 
     return (subview, parent)
+}
+
+public func ksr_addLayoutGuideToView() -> ((UILayoutGuide, UIView) -> (UILayoutGuide, UIView)) {
+  return { layoutGuide, view in
+    view.addLayoutGuide(layoutGuide)
+    return (layoutGuide, view)
   }
 }
 

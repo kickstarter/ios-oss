@@ -6,12 +6,12 @@ public typealias PledgeData = (project: Project, reward: Reward, refTag: RefTag?
 
 public protocol RewardsCollectionViewModelOutputs {
   var goToPledge: Signal<PledgeData, Never> { get }
-  var reloadDataWithRewards: Signal<[Reward], Never> { get }
+  var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
 }
 
 public protocol RewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?)
-  func rewardSelected(at index: Int)
+  func rewardSelected(with rewardId: Int)
   func viewDidLoad()
 }
 
@@ -23,20 +23,32 @@ protocol RewardsCollectionViewModelType {
 public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
   public init() {
-    self.reloadDataWithRewards = Signal.combineLatest(
+    let project = Signal.combineLatest(
       self.configureWithProjectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
-    .map { $0.rewards }
 
-    let selectedReward = self.reloadDataWithRewards
-      .takePairWhen(self.rewardSelectedIndexProperty.signal.skipNil())
-      .map { rewards, index in rewards[index] }
+    let rewards = Signal.combineLatest(
+      self.configureWithRewardsProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
+
+    self.reloadDataWithValues = Signal.combineLatest(project, rewards)
+      .map { project, rewards in
+        rewards.map { (project, Either<Reward, Backing>.left($0)) }
+      }
+
+    let selectedRewardFromId = rewards
+      .takePairWhen(self.rewardSelectedWithRewardIdProperty.signal.skipNil())
+      .map { rewards, rewardId in
+        rewards.first(where: { $0.id == rewardId })
+      }.skipNil()
 
     self.goToPledge = Signal.combineLatest(
       self.configureWithProjectProperty.signal.skipNil(),
-      selectedReward,
+      selectedRewardFromId,
       self.configureWithRefTagProperty.signal
     )
     .map { project, reward, refTag in
@@ -45,15 +57,17 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   }
 
   private let configureWithProjectProperty = MutableProperty<Project?>(nil)
+  private let configureWithRewardsProperty = MutableProperty<[Reward]?>(nil)
   private let configureWithRefTagProperty = MutableProperty<RefTag?>(nil)
   public func configure(with project: Project, refTag: RefTag?) {
     self.configureWithProjectProperty.value = project
+    self.configureWithRewardsProperty.value = project.rewards
     self.configureWithRefTagProperty.value = refTag
   }
 
-  private let rewardSelectedIndexProperty = MutableProperty<Int?>(nil)
-  public func rewardSelected(at index: Int) {
-    self.rewardSelectedIndexProperty.value = index
+  private let rewardSelectedWithRewardIdProperty = MutableProperty<Int?>(nil)
+  public func rewardSelected(with rewardId: Int) {
+    self.rewardSelectedWithRewardIdProperty.value = rewardId
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -62,7 +76,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   }
 
   public let goToPledge: Signal<PledgeData, Never>
-  public let reloadDataWithRewards: Signal<[Reward], Never>
+  public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>
 
   public var inputs: RewardsCollectionViewModelInputs { return self }
   public var outputs: RewardsCollectionViewModelOutputs { return self }
