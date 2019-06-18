@@ -5,19 +5,21 @@ import Prelude
 import UIKit
 
 final class FeatureFlagToolsViewController: UITableViewController {
-  private let viewModel = FeatureFlagToolsViewModel()
-
   // MARK: - Properties
 
   private var features = [(Feature, Bool)]()
   private let reuseId = "FeatureFlagTools.TableViewCell"
+  private let viewModel = FeatureFlagToolsViewModel()
 
   static func insantiate() -> FeatureFlagToolsViewController {
-    return FeatureFlagToolsViewController.init(nibName: nil, bundle: nil)
+    return FeatureFlagToolsViewController(style: .plain)
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    _ = self
+      |> \.title .~ "Feature flags"
 
     _ = self.tableView
       |> \.tableFooterView .~ UIView(frame: .zero)
@@ -45,7 +47,7 @@ final class FeatureFlagToolsViewController: UITableViewController {
       }
   }
 
-  @objc func switchTogged(_ switchControl: UISwitch) {
+  @objc private func switchTogged(_ switchControl: UISwitch) {
     self.viewModel.inputs.setFeatureAtIndexEnabled(index: switchControl.tag, isEnabled: switchControl.isOn)
   }
 
@@ -65,9 +67,6 @@ final class FeatureFlagToolsViewController: UITableViewController {
 // MARK: - UITableViewDataSource
 
 extension FeatureFlagToolsViewController {
-  override func numberOfSections(in _: UITableView) -> Int {
-    return 1
-  }
 
   override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
     return self.features.count
@@ -95,6 +94,8 @@ extension FeatureFlagToolsViewController {
     return cell
   }
 }
+
+// MARK: - Styles
 
 private let titleLabelStyle: LabelStyle = { label in
   label

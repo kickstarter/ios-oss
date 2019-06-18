@@ -138,12 +138,14 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.viewModel.outputs.showDiscoveryFilters
       .observeForControllerAction()
       .observeValues { [weak self] in
+        self?.betaToolsButton.tintAdjustmentMode = .dimmed
         self?.showDiscoveryFilters(selectedRow: $0)
       }
 
     self.viewModel.outputs.dismissDiscoveryFilters
       .observeForControllerAction()
       .observeValues { [weak self] in
+        self?.betaToolsButton.tintAdjustmentMode = .normal
         self?.dismiss(animated: false, completion: nil)
       }
 
@@ -327,8 +329,10 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
   @objc fileprivate func betaToolsButtonTapped() {
     let betaToolsViewController = BetaToolsViewController.instantiate()
+    let navigationController = UINavigationController(rootViewController: betaToolsViewController)
+    navigationController.modalPresentationStyle = .formSheet
 
-    self.navigationController?.pushViewController(betaToolsViewController, animated: true)
+    self.present(navigationController, animated: true)
   }
 
   @objc fileprivate func titleButtonTapped() {

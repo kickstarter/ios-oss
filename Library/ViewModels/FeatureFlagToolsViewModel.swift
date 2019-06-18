@@ -6,8 +6,8 @@ import ReactiveSwift
 public typealias FeatureEnabled = (feature: Feature, isEnabled: Bool)
 
 public protocol FeatureFlagToolsViewModelOutputs {
-  var updateConfigWithFeatures: Signal<Features, Never> { get }
   var reloadWithData: Signal<[FeatureEnabled], Never> { get }
+  var updateConfigWithFeatures: Signal<Features, Never> { get }
 }
 
 public protocol FeatureFlagToolsViewModelInputs {
@@ -81,9 +81,9 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-
-  public let updateConfigWithFeatures: Signal<Features, Never>
+  
   public let reloadWithData: Signal<[FeatureEnabled], Never>
+  public let updateConfigWithFeatures: Signal<Features, Never>
 
   public var inputs: FeatureFlagToolsViewModelInputs {
     return self

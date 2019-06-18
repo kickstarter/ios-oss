@@ -15,11 +15,14 @@ internal final class BetaToolsViewController: UITableViewController {
   private let helpViewModel: HelpViewModelType = HelpViewModel()
 
   internal static func instantiate() -> BetaToolsViewController {
-    return BetaToolsViewController.init(nibName: nil, bundle: nil)
+    return BetaToolsViewController(style: .plain)
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    _ = self
+      |> \.title .~ "Beta tools"
 
     _ = self.tableView
       |> \.dataSource .~ self
@@ -29,6 +32,12 @@ internal final class BetaToolsViewController: UITableViewController {
       self, action: #selector(self.betaFeedbackButtonTapped),
       for: .touchUpInside
     )
+
+    let doneButton = UIBarButtonItem(title: Strings.Done(), style: .done, target: self,
+                                     action: #selector(self.doneButtonTapped))
+
+    _ = self.navigationItem
+      ?|> \.rightBarButtonItem .~ doneButton
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -114,12 +123,12 @@ internal final class BetaToolsViewController: UITableViewController {
 
   // MARK: - Selectors
 
-  @objc func betaFeedbackButtonTapped() {
+  @objc private func betaFeedbackButtonTapped() {
     self.viewModel.inputs.betaFeedbackButtonTapped(canSendMail: MFMailComposeViewController.canSendMail())
   }
 
-  @objc func doneTapped() {
-    self.navigationController?.popViewController(animated: true)
+  @objc private func doneButtonTapped() {
+    self.navigationController?.dismiss(animated: true)
   }
 
   // MARK: Private Helper Functions
@@ -167,7 +176,8 @@ internal final class BetaToolsViewController: UITableViewController {
     let alert = UIAlertController.alert(
       title: "Change Language",
       preferredStyle: .actionSheet,
-      sourceView: sourceView
+      sourceView: sourceView,
+      sourceRect: sourceView.bounds
     )
 
     Language.allLanguages.forEach { language in
@@ -194,7 +204,8 @@ internal final class BetaToolsViewController: UITableViewController {
     let alert = UIAlertController.alert(
       title: "Change Environment",
       preferredStyle: .actionSheet,
-      sourceView: sourceView
+      sourceView: sourceView,
+      sourceRect: sourceView.bounds
     )
 
     EnvironmentType.allCases.forEach { environment in
