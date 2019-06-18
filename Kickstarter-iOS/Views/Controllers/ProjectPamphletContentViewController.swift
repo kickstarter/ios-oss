@@ -232,7 +232,7 @@ extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
   }
 }
 
-extension ProjectPamphletContentViewController: RewardCellDelegate {
+extension ProjectPamphletContentViewController: DeprecatedRewardCellDelegate {
   internal func rewardCellWantsExpansion(_ cell: DeprecatedRewardCell) {
     cell.contentView.setNeedsUpdateConstraints()
     self.tableView.beginUpdates()

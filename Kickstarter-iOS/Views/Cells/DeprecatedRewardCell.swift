@@ -2,14 +2,14 @@ import KsApi
 import Library
 import Prelude
 
-internal protocol RewardCellDelegate: AnyObject {
+internal protocol DeprecatedRewardCellDelegate: AnyObject {
   /// Called when the reward cell needs to perform an expansion animation.
   func rewardCellWantsExpansion(_ cell: DeprecatedRewardCell)
 }
 
 internal final class DeprecatedRewardCell: UITableViewCell, ValueCell {
-  internal var delegate: RewardCellDelegate?
-  fileprivate let viewModel: RewardCellViewModelType = DeprecatedRewardCellViewModel()
+  internal var delegate: DeprecatedRewardCellDelegate?
+  fileprivate let viewModel: DeprecatedRewardCellViewModelType = DeprecatedRewardCellViewModel()
 
   @IBOutlet fileprivate var allGoneContainerView: UIView!
   @IBOutlet fileprivate var allGoneLabel: UILabel!

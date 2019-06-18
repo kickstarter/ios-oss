@@ -210,7 +210,7 @@ private typealias Inputs = DeprecatedRewardPledgeViewModelInputs
 private typealias Outputs = DeprecatedRewardPledgeViewModelOutputs
 
 public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
-  fileprivate let rewardViewModel: RewardCellViewModelType = DeprecatedRewardCellViewModel()
+  fileprivate let rewardViewModel: DeprecatedRewardCellViewModelType = DeprecatedRewardCellViewModel()
 
   public init() {
     let projectAndRewardAndApplePayCapable = Signal.combineLatest(
