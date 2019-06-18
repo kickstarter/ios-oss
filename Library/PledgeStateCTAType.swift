@@ -11,11 +11,11 @@ public enum PledgeStateCTAType {
     case .pledge:
       return Strings.Back_this_project()
     case .manage:
-      return "Manage"
+      return Strings.Manage()
     case .viewBacking:
       return Strings.View_your_pledge()
     case .viewRewards:
-      return "View_rewards"
+      return Strings.View_rewards()
     }
   }
 
