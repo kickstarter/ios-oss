@@ -239,11 +239,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
-    return self.fbLoginViewModel.inputs.applicationOpenUrl(
-      application: app,
-      url: url,
-      options: options
-    )
+    self.viewModel.inputs.applicationOpenUrl(application: app, url: url, options: options)
+
+    return self.fbLoginViewModel.inputs.applicationOpenUrl(application: app, url: url, options: options)
   }
 
   // MARK: - Remote notifications
