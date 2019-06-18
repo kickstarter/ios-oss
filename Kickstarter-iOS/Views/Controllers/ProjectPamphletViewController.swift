@@ -26,16 +26,18 @@ public final class ProjectPamphletViewController: UIViewController {
 
   private let pledgeCTAContainerViewMargins = Styles.grid(3)
   private let pledgeCTAContainerView: PledgeCTAContainerView = {
-    return PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let pledgeCTAButton: UIButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  public static func configuredWith(projectOrParam: Either<Project, Param>,
-                                    refTag: RefTag?) -> ProjectPamphletViewController {
-
+  public static func configuredWith(
+    projectOrParam: Either<Project, Param>,
+    refTag: RefTag?
+  ) -> ProjectPamphletViewController {
     let vc = Storyboard.ProjectPamphlet.instantiate(ProjectPamphletViewController.self)
     vc.viewModel.inputs.configureWith(projectOrParam: projectOrParam, refTag: refTag)
     return vc
@@ -109,7 +111,7 @@ public final class ProjectPamphletViewController: UIViewController {
     super.bindStyles()
 
     _ = self.pledgeCTAContainerView
-      |> \.layoutMargins .~ .init(all: pledgeCTAContainerViewMargins)
+      |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
 
     _ = self.pledgeCTAContainerView.layer
       |> checkoutLayerCardRoundedStyle
@@ -147,19 +149,19 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         UIView.animate(withDuration: 0.3) { self?.setNeedsStatusBarAppearanceUpdate() }
-    }
+      }
 
     self.viewModel.outputs.topLayoutConstraintConstant
       .observeForUI()
       .observeValues { [weak self] value in
         self?.navBarTopConstraint.constant = value
-    }
+      }
 
     self.viewModel.outputs.projectAndUser
       .observeForUI()
       .observeValues { [weak self] project, user in
         self?.pledgeCTAContainerView.configureWith(project: project, user: user)
-    }
+      }
   }
 
   public override func willTransition(

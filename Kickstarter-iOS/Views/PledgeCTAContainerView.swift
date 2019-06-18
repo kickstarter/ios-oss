@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import UIKit
 
@@ -7,16 +7,19 @@ final class PledgeCTAContainerView: UIView {
   fileprivate let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
   // MARK: - Properties
+
   private lazy var amountAndRewardTitleStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountOrRewardLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var pledgeCTAbutton: UIButton = {
-    return MultiLineButton(type: .custom)
+    MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var youreABackerLabel: UILabel = { UILabel(frame: .zero) }()
 
   // MARK: - Lifecycle
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -67,7 +70,7 @@ final class PledgeCTAContainerView: UIView {
       |> \.isLayoutMarginsRelativeArrangement .~ true
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 }

@@ -20,36 +20,36 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   fileprivate weak var videoController: VideoViewController?
 
-  @IBOutlet fileprivate weak var backersSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var backersTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var blurbAndReadMoreStackView: UIStackView!
-  @IBOutlet fileprivate weak var categoryStackView: UIStackView!
-  @IBOutlet fileprivate weak var categoryAndLocationStackView: UIStackView!
-  @IBOutlet fileprivate weak var categoryIconImageView: UIImageView!
-  @IBOutlet fileprivate weak var categoryNameLabel: UILabel!
-  @IBOutlet fileprivate weak var contentStackView: UIStackView!
-  @IBOutlet fileprivate weak var conversionLabel: UILabel!
-  @IBOutlet fileprivate weak var creatorButton: UIButton!
-  @IBOutlet fileprivate weak var creatorImageView: UIImageView!
-  @IBOutlet fileprivate weak var creatorLabel: UILabel!
-  @IBOutlet fileprivate weak var creatorStackView: UIStackView!
-  @IBOutlet fileprivate weak var deadlineSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var deadlineTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var fundingProgressBarView: UIView!
-  @IBOutlet fileprivate weak var fundingProgressContainerView: UIView!
-  @IBOutlet fileprivate weak var locationImageView: UIImageView!
-  @IBOutlet fileprivate weak var locationNameLabel: UILabel!
-  @IBOutlet fileprivate weak var locationStackView: UIStackView!
-  @IBOutlet fileprivate weak var pledgeSubtitleLabel: UILabel!
-  @IBOutlet fileprivate weak var pledgedTitleLabel: UILabel!
-  @IBOutlet fileprivate weak var projectBlurbLabel: UILabel!
-  @IBOutlet fileprivate weak var projectImageContainerView: UIView!
-  @IBOutlet fileprivate weak var projectNameAndCreatorStackView: UIStackView!
-  @IBOutlet fileprivate weak var projectNameLabel: UILabel!
-  @IBOutlet fileprivate weak var progressBarAndStatsStackView: UIStackView!
-  @IBOutlet fileprivate weak var readMoreButton: UIButton!
-  @IBOutlet fileprivate weak var stateLabel: UILabel!
-  @IBOutlet fileprivate weak var statsStackView: UIStackView!
+  @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var backersTitleLabel: UILabel!
+  @IBOutlet fileprivate var blurbAndReadMoreStackView: UIStackView!
+  @IBOutlet fileprivate var categoryStackView: UIStackView!
+  @IBOutlet fileprivate var categoryAndLocationStackView: UIStackView!
+  @IBOutlet fileprivate var categoryIconImageView: UIImageView!
+  @IBOutlet fileprivate var categoryNameLabel: UILabel!
+  @IBOutlet fileprivate var contentStackView: UIStackView!
+  @IBOutlet fileprivate var conversionLabel: UILabel!
+  @IBOutlet fileprivate var creatorButton: UIButton!
+  @IBOutlet fileprivate var creatorImageView: UIImageView!
+  @IBOutlet fileprivate var creatorLabel: UILabel!
+  @IBOutlet fileprivate var creatorStackView: UIStackView!
+  @IBOutlet fileprivate var deadlineSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var deadlineTitleLabel: UILabel!
+  @IBOutlet fileprivate var fundingProgressBarView: UIView!
+  @IBOutlet fileprivate var fundingProgressContainerView: UIView!
+  @IBOutlet fileprivate var locationImageView: UIImageView!
+  @IBOutlet fileprivate var locationNameLabel: UILabel!
+  @IBOutlet fileprivate var locationStackView: UIStackView!
+  @IBOutlet fileprivate var pledgeSubtitleLabel: UILabel!
+  @IBOutlet fileprivate var pledgedTitleLabel: UILabel!
+  @IBOutlet fileprivate var projectBlurbLabel: UILabel!
+  @IBOutlet fileprivate var projectImageContainerView: UIView!
+  @IBOutlet fileprivate var projectNameAndCreatorStackView: UIStackView!
+  @IBOutlet fileprivate var projectNameLabel: UILabel!
+  @IBOutlet fileprivate var progressBarAndStatsStackView: UIStackView!
+  @IBOutlet fileprivate var readMoreButton: UIButton!
+  @IBOutlet fileprivate var stateLabel: UILabel!
+  @IBOutlet fileprivate var statsStackView: UIStackView!
 
   internal override func awakeFromNib() {
     super.awakeFromNib()

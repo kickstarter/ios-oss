@@ -1,6 +1,6 @@
+import Foundation
 @testable import KsApi
 @testable import Library
-import Foundation
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
@@ -16,10 +16,10 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.buttonBackgroundColor.observe(buttonBackgroundColor.observer)
-    self.vm.outputs.buttonTitleText.observe(buttonTitleText.observer)
-    self.vm.outputs.rewardTitle.observe(rewardTitle.observer)
-    self.vm.outputs.stackViewIsHidden.observe(stackViewIsHidden.observer)
+    self.vm.outputs.buttonBackgroundColor.observe(self.buttonBackgroundColor.observer)
+    self.vm.outputs.buttonTitleText.observe(self.buttonTitleText.observer)
+    self.vm.outputs.rewardTitle.observe(self.rewardTitle.observer)
+    self.vm.outputs.stackViewIsHidden.observe(self.stackViewIsHidden.observer)
   }
 
   func testPledgeCTA_Backer_LiveProject() {
@@ -28,7 +28,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Reward.lens.title .~ "Magic Lamp"
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.stats.currentCurrency .~  "USD"
+      |> Project.lens.stats.currentCurrency .~ "USD"
     let backing = .template
       |> Backing.lens.reward .~ reward
     let user = User.template

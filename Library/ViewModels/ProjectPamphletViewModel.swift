@@ -67,7 +67,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
           }
       }
 
-    let user = viewDidLoadProperty.signal
+    let user = self.viewDidLoadProperty.signal
       .map { AppEnvironment.current.currentUser }
       .skipNil()
 

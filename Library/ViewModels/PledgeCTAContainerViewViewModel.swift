@@ -1,7 +1,7 @@
 import KsApi
 import Prelude
-import ReactiveSwift
 import ReactiveExtensions
+import ReactiveSwift
 
 public protocol PledgeCTAContainerViewViewModelInputs {
   func configureWith(project: Project, user: User)
@@ -21,7 +21,6 @@ public protocol PledgeCTAContainerViewViewModelType {
 
 public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
-
   public init() {
     let projectAndUser = self.projectAndUserProperty.signal.skipNil()
 
@@ -31,8 +30,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     let backingEvent = projectAndUser
       .switchMap { project, user in
         AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
-        .materialize()
-    }
+          .materialize()
+      }
 
     let backing = backingEvent.values()
     let project = projectAndUser.map { $0.0 }
@@ -53,7 +52,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
           omitCurrencyCode: project.stats.omitUSCurrencyCode
         )
         guard let rewardTitle = backing.reward?.title else { return "\(amount)" }
-        return "\(amount) • \(rewardTitle)" }
+        return "\(amount) • \(rewardTitle)"
+      }
   }
 
   fileprivate let projectAndUserProperty = MutableProperty<(Project, User)?>(nil)
@@ -70,9 +70,9 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public let rewardTitle: Signal<String, Never>
 }
 
-private func projectStateButton(backer: User, project: Project) -> PledgeStateCTAType {
+private func projectStateButton(backer _: User, project: Project) -> PledgeStateCTAType {
   guard let projectIsBacked = project.personalization.isBacking
-    else { return PledgeStateCTAType.viewRewards }
+  else { return PledgeStateCTAType.viewRewards }
 
   switch project.state {
   case .live:
