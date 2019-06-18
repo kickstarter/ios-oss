@@ -21,6 +21,7 @@ import UserNotifications
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   fileprivate let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
+  fileprivate let fbLoginViewModel: FacebookLoginViewModelType = FacebookLoginViewModel()
 
   internal var rootTabBarController: RootTabBarViewController? {
     return self.window?.rootViewController as? RootTabBarViewController
@@ -207,14 +208,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.window?.tintColor = .ksr_green_700
 
-    self.viewModel.inputs.applicationDidFinishLaunching(
+    self.fbLoginViewModel.inputs.applicationDidFinishLaunching(
       application: application,
       launchOptions: launchOptions
     )
 
     UNUserNotificationCenter.current().delegate = self
 
-    return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
+    return self.fbLoginViewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
 
   func applicationWillEnterForeground(_: UIApplication) {
@@ -238,7 +239,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
-    return self.viewModel.inputs.applicationOpenUrl(
+    return self.fbLoginViewModel.inputs.applicationOpenUrl(
       application: app,
       url: url,
       options: options

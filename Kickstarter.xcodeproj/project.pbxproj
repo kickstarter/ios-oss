@@ -781,6 +781,9 @@
 		D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */; };
 		D0200A5721935F2D00F5CC27 /* GraphError+LocalizedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0200A5221935EDF00F5CC27 /* GraphError+LocalizedDescription.swift */; };
 		D0247A961DF9F29100D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */; };
+		D02D15FD22B85338002C50F1 /* FacebookLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D15FC22B85338002C50F1 /* FacebookLoginViewModel.swift */; };
+		D02D15FF22B85C91002C50F1 /* FacebookLoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D15FE22B85C91002C50F1 /* FacebookLoginViewModelTests.swift */; };
+		D02D160022B85C9A002C50F1 /* FacebookLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02D15FC22B85338002C50F1 /* FacebookLoginViewModel.swift */; };
 		D03BBA5C21A8E880005604A7 /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
 		D04307A221853D530004FDC0 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 770E45ED2114E15D00396D46 /* Crashlytics.framework */; };
 		D04AABF7218BB2F700CF713E /* SettingsNotificationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B6F8DF20EE7C8700A295F7 /* SettingsNotificationsViewModelTests.swift */; };
@@ -2013,6 +2016,8 @@
 		D0200A5221935EDF00F5CC27 /* GraphError+LocalizedDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GraphError+LocalizedDescription.swift"; sourceTree = "<group>"; };
 		D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBannerType.swift; sourceTree = "<group>"; };
 		D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletSubpageCellViewModel.swift; sourceTree = "<group>"; };
+		D02D15FC22B85338002C50F1 /* FacebookLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookLoginViewModel.swift; sourceTree = "<group>"; };
+		D02D15FE22B85C91002C50F1 /* FacebookLoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookLoginViewModelTests.swift; sourceTree = "<group>"; };
 		D04AAC08218BB70800CF713E /* SettingsNotificationCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellViewModel.swift; sourceTree = "<group>"; };
 		D04AAC09218BB70800CF713E /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTests.swift; sourceTree = "<group>"; };
 		D04AAC0A218BB70800CF713E /* ChangePasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModel.swift; sourceTree = "<group>"; };
@@ -2468,6 +2473,8 @@
 			children = (
 				A75CBDE61C8A26F800758C55 /* AppDelegateViewModel.swift */,
 				A7ED205D1E83256700BFFA01 /* AppDelegateViewModelTests.swift */,
+				D02D15FC22B85338002C50F1 /* FacebookLoginViewModel.swift */,
+				D02D15FE22B85C91002C50F1 /* FacebookLoginViewModelTests.swift */,
 				01940B2A1D46814E0074FCE3 /* HelpWebViewModel.swift */,
 				A7ED205E1E83256700BFFA01 /* HelpWebViewModelTests.swift */,
 				A775B5451CA871D700BBB587 /* RootViewModel.swift */,
@@ -4581,6 +4588,7 @@
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */,
+				D02D160022B85C9A002C50F1 /* FacebookLoginViewModel.swift in Sources */,
 				A7B1EBB31D90496A00BEE8B3 /* NoRewardCell.swift in Sources */,
 				01940B291D467ECE0074FCE3 /* HelpWebViewController.swift in Sources */,
 				A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */,
@@ -4681,6 +4689,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D02D15FD22B85338002C50F1 /* FacebookLoginViewModel.swift in Sources */,
 				A73924041D272404004524C3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4751,6 +4760,7 @@
 				A7ED204F1E8323E900BFFA01 /* CommentsViewControllerTests.swift in Sources */,
 				A78356081E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift in Sources */,
 				D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */,
+				D02D15FF22B85C91002C50F1 /* FacebookLoginViewModelTests.swift in Sources */,
 				D6B4F0032107B4760079159D /* SettingsNewslettersViewControllerTests.swift in Sources */,
 				A7ED205C1E83240D00BFFA01 /* FundingGraphViewTests.swift in Sources */,
 				D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */,
