@@ -14,7 +14,8 @@ extension User {
     optedOutOfRecommendations: false,
     showPublicProfile: false,
     social: nil,
-    stats: .template
+    stats: .template,
+    unseenActivityCount: nil
   )
 
   // swiftlint:disable line_length
