@@ -86,24 +86,9 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     self.amountInputView.label.rac.text = self.viewModel.outputs.currency
     self.amountInputView.textField.rac.text = self.viewModel.outputs.amount
-
-    self.viewModel.outputs.stepperInitialValue
-      .observeForUI()
-      .observeValues { [weak self] value in
-        self?.stepper.value = value
-      }
-
-    self.viewModel.outputs.stepperMaxValue
-      .observeForUI()
-      .observeValues { [weak self] value in
-        self?.stepper.maximumValue = value
-      }
-
-    self.viewModel.outputs.stepperMinValue
-      .observeForUI()
-      .observeValues { [weak self] value in
-        self?.stepper.minimumValue = value
-      }
+    self.stepper.rac.value = self.viewModel.outputs.stepperInitialValue
+    self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
+    self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
 
     self.viewModel.outputs.generateSelectionFeedback
       .observeForUI()
