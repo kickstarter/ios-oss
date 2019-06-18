@@ -80,7 +80,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project, user: user)
     self.buttonBackgroundColor.assertValues([viewRewardsCTAColor])
-    self.buttonTitleText.assertValues(["View_rewards"])
+    self.buttonTitleText.assertValues([Strings.View_rewards()])
     self.stackViewIsHidden.assertValues([true])
   }
 }
