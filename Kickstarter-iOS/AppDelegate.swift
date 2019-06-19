@@ -236,17 +236,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
-    let fbReturnValue = ApplicationDelegate.shared.application(app, open: url, options: options)
-
-    if !fbReturnValue {
-      return self.viewModel.inputs.applicationOpenUrl(
-        application: app,
-        url: url,
-        options: options
-      )
+    // if this is not a Facebook login call, handle the potential deep-link
+    guard !ApplicationDelegate.shared.application(app, open: url, options: options) else {
+      return true
     }
 
-    return fbReturnValue
+    return self.viewModel.inputs.applicationOpenUrl(
+      application: app,
+      url: url,
+      options: options
+    )
   }
 
   // MARK: - Remote notifications
