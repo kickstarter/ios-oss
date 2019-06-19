@@ -30,6 +30,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
 
@@ -42,10 +44,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         userDefaults: UserDefaults.standard
       )
     )
-
-    // NB: We have to push this shared instance directly because somehow we get two different shared
-    //     instances if we use the one from `Environment.init`.
-    AppEnvironment.replaceCurrentEnvironment(facebookAppDelegate: ApplicationDelegate.shared)
 
     #if DEBUG
       if KsApi.Secrets.isOSS {
@@ -238,6 +236,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
+    // if this is not a Facebook login call, handle the potential deep-link
+    guard !ApplicationDelegate.shared.application(app, open: url, options: options) else {
+      return true
+    }
+
     return self.viewModel.inputs.applicationOpenUrl(
       application: app,
       url: url,

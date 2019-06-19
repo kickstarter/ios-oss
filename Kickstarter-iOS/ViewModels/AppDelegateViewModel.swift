@@ -100,9 +100,6 @@ public protocol AppDelegateViewModelOutputs {
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
 
-  /// Return this value in the delegate method.
-  var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
-
   /// Emits when the view needs to figure out the redirect URL for the emitted URL.
   var findRedirectUrl: Signal<URL, Never> { get }
 
@@ -211,25 +208,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(Notification(name: .ksr_userUpdated, object: nil))
 
-    self.applicationLaunchOptionsProperty.signal.skipNil()
-      .take(first: 1)
-      .observeValues { appOptions in
-        _ = AppEnvironment.current.facebookAppDelegate.application(
-          appOptions.application ?? UIApplication.shared,
-          didFinishLaunchingWithOptions: appOptions.options
-        )
-      }
-
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
-
-    self.facebookOpenURLReturnValue <~ openUrl
-      .map { options -> Bool in
-        AppEnvironment.current.facebookAppDelegate.application(
-          options.application ?? UIApplication.shared,
-          open: options.url,
-          options: options.options
-        )
-      }
 
     // iCloud
 
@@ -697,7 +676,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     options: [UIApplication.OpenURLOptionsKey: Any]
   ) -> Bool {
     self.applicationOpenUrlProperty.value = (application, url, options)
-    return self.facebookOpenURLReturnValue.value
+    return true
   }
 
   fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
@@ -724,7 +703,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let configureFabric: Signal<(), Never>
   public let configureHockey: Signal<HockeyConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
-  public let facebookOpenURLReturnValue = MutableProperty(false)
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>

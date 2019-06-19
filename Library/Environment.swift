@@ -55,9 +55,6 @@ public struct Environment {
   /// The environment variables
   public let environmentVariables: EnvironmentVariables
 
-  /// A delegate to handle Facebook initialization and incoming url requests
-  public let facebookAppDelegate: FacebookAppDelegateProtocol
-
   /// A function that returns whether a specific OS version is available
   public let isOSVersionAvailable: (Double) -> Bool
 
@@ -111,7 +108,6 @@ public struct Environment {
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
     device: UIDeviceType = UIDevice.current,
     environmentVariables: EnvironmentVariables = EnvironmentVariables(),
-    facebookAppDelegate: FacebookAppDelegateProtocol = ApplicationDelegate.shared,
     isOSVersionAvailable: @escaping (Double) -> Bool = ksr_isOSVersionAvailable,
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
@@ -139,7 +135,6 @@ public struct Environment {
     self.debounceInterval = debounceInterval
     self.device = device
     self.environmentVariables = environmentVariables
-    self.facebookAppDelegate = facebookAppDelegate
     self.isOSVersionAvailable = isOSVersionAvailable
     self.isVoiceOverRunning = isVoiceOverRunning
     self.koala = koala
