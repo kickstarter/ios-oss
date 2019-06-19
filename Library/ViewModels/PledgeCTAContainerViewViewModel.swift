@@ -10,8 +10,10 @@ public protocol PledgeCTAContainerViewViewModelInputs {
 public protocol PledgeCTAContainerViewViewModelOutputs {
   var buttonBackgroundColor: Signal<UIColor, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
+  var buttonTitleTextColor: Signal<UIColor, Never> { get }
   var rewardTitle: Signal<String, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
+  var subtitleText: Signal<String, Never> { get }
 }
 
 public protocol PledgeCTAContainerViewViewModelType {
@@ -24,22 +26,24 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public init() {
     let projectAndUser = self.projectAndUserProperty.signal.skipNil()
 
-    let projectState = projectAndUser
-      .map { project, user in projectStateButton(backer: user, project: project) }
-
     let backingEvent = projectAndUser
       .switchMap { project, user in
         AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
           .materialize()
-      }
+    }
 
     let backing = backingEvent.values()
     let project = projectAndUser.map { $0.0 }
     let projectAndBacking = Signal.combineLatest(project, backing)
 
+    let projectState = projectAndBacking
+      .map { project, backing in projectStateButton(project: project, backing: backing) }
+
     self.buttonTitleText = projectState.map { $0.buttonTitle }
     self.buttonBackgroundColor = projectState.map { $0.buttonBackgroundColor }
     self.stackViewIsHidden = projectState.map { $0.stackViewIsHidden }
+    self.buttonTitleTextColor = projectState.map { $0.buttonTitleTextColor }
+    self.subtitleText = projectState.map { $0.subtitleLabel }.skipNil()
 
     self.rewardTitle = projectAndBacking
       .map { (arg) -> String in
@@ -51,6 +55,11 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
           country: project.country,
           omitCurrencyCode: project.stats.omitUSCurrencyCode
         )
+
+        if backing.status == .errored {
+          return "We couldn't process your pledge"
+        }
+
         guard let rewardTitle = backing.reward?.title else { return "\(amount)" }
         return "\(amount) • \(rewardTitle)"
       }
@@ -64,19 +73,22 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public var inputs: PledgeCTAContainerViewViewModelInputs { return self }
   public var outputs: PledgeCTAContainerViewViewModelOutputs { return self }
 
-  public let buttonTitleText: Signal<String, Never>
   public let buttonBackgroundColor: Signal<UIColor, Never>
-  public let stackViewIsHidden: Signal<Bool, Never>
+  public let buttonTitleText: Signal<String, Never>
+  public let buttonTitleTextColor: Signal<UIColor, Never>
   public let rewardTitle: Signal<String, Never>
+  public let stackViewIsHidden: Signal<Bool, Never>
+  public let subtitleText: Signal<String, Never>
 }
 
-private func projectStateButton(backer _: User, project: Project) -> PledgeStateCTAType {
+private func projectStateButton(project: Project, backing: Backing) -> PledgeStateCTAType {
   guard let projectIsBacked = project.personalization.isBacking
   else { return PledgeStateCTAType.viewRewards }
 
   switch project.state {
   case .live:
-    return projectIsBacked ? PledgeStateCTAType.manage : PledgeStateCTAType.pledge
+    let pledgeFailed = backing.status == .errored
+    return (projectIsBacked && pledgeFailed) ? PledgeStateCTAType.fix : PledgeStateCTAType.pledge
   case .canceled, .failed, .suspended, .successful:
     return projectIsBacked ? PledgeStateCTAType.viewBacking : PledgeStateCTAType.viewRewards
   default:

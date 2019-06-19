@@ -14,9 +14,8 @@ final class PledgeCTAContainerView: UIView {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var youreABackerLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -31,16 +30,23 @@ final class PledgeCTAContainerView: UIView {
       [self.pledgeCTAbutton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)]
     )
 
-    _ = ([self.youreABackerLabel, self.amountOrRewardLabel], self.amountAndRewardTitleStackView)
+    _ = ([self.subtitleLabel, self.amountOrRewardLabel], self.amountAndRewardTitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.amountAndRewardTitleStackView, self.pledgeCTAbutton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    self.vm.outputs.buttonTitleTextColor
+      .observeForUI()
+      .observeValues { [weak self] textColor in
+        self?.pledgeCTAbutton.setTitleColor(textColor, for: .normal)
+    }
+
     self.pledgeCTAbutton.rac.title = self.vm.outputs.buttonTitleText
     self.pledgeCTAbutton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
     self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
     self.amountOrRewardLabel.rac.text = self.vm.outputs.rewardTitle
+    self.subtitleLabel.rac.text = self.vm.outputs.subtitleText
   }
 
   func configureWith(project: Project, user: User) {
@@ -53,9 +59,8 @@ final class PledgeCTAContainerView: UIView {
     _ = self.pledgeCTAbutton
       |> projectStateButtonStyle
 
-    _ = self.youreABackerLabel
+    _ = self.subtitleLabel
       |> \.font .~ .ksr_headline(size: 14)
-      |> \.text %~ { _ in Strings.Youre_a_backer() }
 
     _ = self.amountOrRewardLabel
       |> \.font .~ .ksr_caption1(size: 14)
@@ -78,10 +83,9 @@ final class PledgeCTAContainerView: UIView {
 private let projectStateButtonStyle: ButtonStyle = { (button: UIButton) in
   button
     |> roundedStyle(cornerRadius: 12)
-    |> UIButton.lens.titleColor(for: .normal) .~ .white
     |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
     |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(6))
 }
 
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
