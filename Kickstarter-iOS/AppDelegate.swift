@@ -235,7 +235,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     _ app: UIApplication,
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-    ) -> Bool {
+  ) -> Bool {
     let fbReturnValue = ApplicationDelegate.shared.application(app, open: url, options: options)
 
     if !fbReturnValue {
