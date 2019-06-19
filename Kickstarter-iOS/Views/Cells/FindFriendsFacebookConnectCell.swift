@@ -23,9 +23,9 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
   fileprivate let viewModel: FindFriendsFacebookConnectCellViewModelType =
     FindFriendsFacebookConnectCellViewModel()
 
-  internal lazy var fbLoginManager: FBSDKLoginManager = {
-    let manager = FBSDKLoginManager()
-    manager.loginBehavior = .systemAccount
+  internal lazy var fbLoginManager: LoginManager = {
+    let manager = LoginManager()
+    manager.loginBehavior = .browser
     manager.defaultAudience = .friends
     return manager
   }()
@@ -113,14 +113,15 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
   // MARK: Facebook Login
 
   fileprivate func attemptFacebookLogin() {
-    self.fbLoginManager
-      .logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: nil) { result, error in
-        if let error = error {
-          self.viewModel.inputs.facebookLoginFail(error: error)
-        } else if let result = result, !result.isCancelled {
-          self.viewModel.inputs.facebookLoginSuccess(result: result)
-        }
+    self.fbLoginManager.logIn(
+      permissions: ["public_profile", "email", "user_friends"], from: nil
+    ) { result, error in
+      if let error = error {
+        self.viewModel.inputs.facebookLoginFail(error: error)
+      } else if let result = result, !result.isCancelled {
+        self.viewModel.inputs.facebookLoginSuccess(result: result)
       }
+    }
   }
 
   @objc func closeButtonTapped() {

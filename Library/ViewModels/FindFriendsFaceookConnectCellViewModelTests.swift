@@ -89,22 +89,24 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   }
 
   func testFacebookConnectFlow_Success() {
-    let token = FBSDKAccessToken(
+    let token = AccessToken(
       tokenString: "12344566",
-      permissions: nil,
-      declinedPermissions: nil,
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
       appID: "834987809",
       userID: "0000000001",
       expirationDate: Date(),
-      refreshDate: Date()
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    let result = FBSDKLoginManagerLoginResult(
+    let result = LoginManagerLoginResult(
       token: token,
       isCancelled: false,
-      grantedPermissions: nil,
-      declinedPermissions: nil
-    )!
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
 
     withEnvironment(currentUser: User.template) {
       vm.inputs.configureWith(source: .activity)
@@ -145,8 +147,8 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
       domain: "facebook.com",
       code: 404,
       userInfo: [
-        FBSDKErrorLocalizedTitleKey: "Facebook Login Fail",
-        FBSDKErrorLocalizedDescriptionKey: "Something went wrong yo."
+        ErrorLocalizedTitleKey: "Facebook Login Fail",
+        ErrorLocalizedDescriptionKey: "Something went wrong yo."
       ]
     )
 
@@ -182,22 +184,24 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   }
 
   func testFacebookConnectFlow_Error_TokenFail() {
-    let token = FBSDKAccessToken(
+    let token = AccessToken(
       tokenString: "spaghetti",
-      permissions: nil,
-      declinedPermissions: nil,
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
       appID: "834987809",
       userID: "0000000001",
       expirationDate: Date(),
-      refreshDate: Date()
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    let result = FBSDKLoginManagerLoginResult(
+    let result = LoginManagerLoginResult(
       token: token,
       isCancelled: false,
-      grantedPermissions: nil,
-      declinedPermissions: nil
-    )!
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
 
     let error = ErrorEnvelope(
       errorMessages: ["Couldn't log into Facebook."],
@@ -246,22 +250,24 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   }
 
   func testFacebookConnectFlow_Error_AccountTaken() {
-    let token = FBSDKAccessToken(
+    let token = AccessToken(
       tokenString: "spaghetti",
-      permissions: nil,
-      declinedPermissions: nil,
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
       appID: "834987809",
       userID: "0000000001",
       expirationDate: Date(),
-      refreshDate: Date()
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    let result = FBSDKLoginManagerLoginResult(
+    let result = LoginManagerLoginResult(
       token: token,
       isCancelled: false,
-      grantedPermissions: nil,
-      declinedPermissions: nil
-    )!
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
 
     let error = ErrorEnvelope(
       errorMessages: ["This Facebook account is already linked to another Kickstarter user."],
@@ -310,22 +316,24 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   }
 
   func testFacebookConnectFlow_Error_EmailTaken() {
-    let token = FBSDKAccessToken(
+    let token = AccessToken(
       tokenString: "spaghetti",
-      permissions: nil,
-      declinedPermissions: nil,
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
       appID: "834987809",
       userID: "0000000001",
       expirationDate: Date(),
-      refreshDate: Date()
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    let result = FBSDKLoginManagerLoginResult(
+    let result = LoginManagerLoginResult(
       token: token,
       isCancelled: false,
-      grantedPermissions: nil,
-      declinedPermissions: nil
-    )!
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
 
     let error = ErrorEnvelope(
       errorMessages: [
@@ -376,22 +384,24 @@ final class FindFriendsFacebookConnectCellViewModelTests: TestCase {
   }
 
   func testFacebookConnectFlow_Error_Generic() {
-    let token = FBSDKAccessToken(
+    let token = AccessToken(
       tokenString: "12344566",
-      permissions: nil,
-      declinedPermissions: nil,
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
       appID: "834987809",
       userID: "0000000001",
       expirationDate: Date(),
-      refreshDate: Date()
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    let result = FBSDKLoginManagerLoginResult(
+    let result = LoginManagerLoginResult(
       token: token,
       isCancelled: false,
-      grantedPermissions: nil,
-      declinedPermissions: nil
-    )!
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
 
     let error = ErrorEnvelope(
       errorMessages: ["Something went wrong."],
