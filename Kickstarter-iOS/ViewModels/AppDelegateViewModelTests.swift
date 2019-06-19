@@ -454,28 +454,6 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testFacebookAppDelegate() {
-    XCTAssertFalse(self.facebookAppDelegate.didFinishLaunching)
-    XCTAssertFalse(self.facebookAppDelegate.openedUrl)
-
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    XCTAssertTrue(self.facebookAppDelegate.didFinishLaunching)
-    XCTAssertFalse(self.facebookAppDelegate.openedUrl)
-
-    let result = self.vm.inputs.applicationOpenUrl(
-      application: UIApplication.shared,
-      url: URL(string: "http://www.fb.com")!,
-      options: [:]
-    )
-    XCTAssertFalse(result)
-
-    XCTAssertTrue(self.facebookAppDelegate.openedUrl)
-  }
-
   func testOpenAppBanner() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
@@ -489,7 +467,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     XCTAssertEqual(
       ["App Open", "Opened App", "Smart App Banner Opened", "Opened App Banner"],
@@ -540,7 +518,7 @@ final class AppDelegateViewModelTests: TestCase {
         url: URL(string: projectUrl)!,
         options: [:]
       )
-      XCTAssertFalse(result)
+      XCTAssertTrue(result)
 
       self.presentViewController.assertValues([1])
 
@@ -550,7 +528,7 @@ final class AppDelegateViewModelTests: TestCase {
         url: URL(string: commentsUrl)!,
         options: [:]
       )
-      XCTAssertFalse(result)
+      XCTAssertTrue(result)
 
       self.presentViewController.assertValues([1, 2])
 
@@ -560,7 +538,7 @@ final class AppDelegateViewModelTests: TestCase {
         url: URL(string: updatesUrl)!,
         options: [:]
       )
-      XCTAssertFalse(result)
+      XCTAssertTrue(result)
 
       self.presentViewController.assertValues([1, 2, 2])
 
@@ -570,7 +548,7 @@ final class AppDelegateViewModelTests: TestCase {
         url: URL(string: updateUrl)!,
         options: [:]
       )
-      XCTAssertFalse(result)
+      XCTAssertTrue(result)
 
       self.presentViewController.assertValues([1, 2, 2, 2])
 
@@ -580,7 +558,7 @@ final class AppDelegateViewModelTests: TestCase {
         url: URL(string: updateCommentsUrl)!,
         options: [:]
       )
-      XCTAssertFalse(result)
+      XCTAssertTrue(result)
 
       self.presentViewController.assertValues([1, 2, 2, 2, 3])
     }
@@ -599,7 +577,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: URL(string: "https://www.kickstarter.com/activity")!,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.goToActivity.assertValueCount(1)
   }
@@ -618,7 +596,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: URL(string: url)!,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.goToDashboard.assertValueCount(1)
   }
@@ -636,7 +614,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: URL(string: "https://www.kickstarter.com/discover?sort=newest")!,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     let params = .defaults
       |> DiscoveryParams.lens.sort .~ .newest
@@ -656,7 +634,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: URL(string: "https://www.kickstarter.com/discover")!,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.goToDiscovery.assertValues([nil])
   }
@@ -675,7 +653,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: url,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.scheduler.advance()
 
@@ -696,7 +674,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: URL(string: "https://www.kickstarter.com/authorize")!,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.goToLogin.assertValueCount(1)
   }
@@ -714,7 +692,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: URL(string: "https://www.kickstarter.com/profile/me")!,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.goToProfile.assertValueCount(1)
   }
@@ -732,7 +710,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: URL(string: "https://www.kickstarter.com/search")!,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.goToSearch.assertValueCount(1)
   }
@@ -1374,7 +1352,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: emailUrl,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
     self.presentViewController.assertValues([], "No view controller is presented yet.")
@@ -1442,7 +1420,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: emailUrl,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
     self.presentViewController.assertValues([], "No view controller is presented.")
@@ -1478,7 +1456,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: emailUrl,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
     self.presentViewController.assertValues([], "No view controller is presented.")
@@ -1514,7 +1492,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: emailUrl,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
     self.presentViewController.assertValues([], "No view controller is presented yet.")
@@ -1543,7 +1521,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: URL(string: projectUrl)!,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.presentViewController.assertValues([1])
   }
@@ -1562,7 +1540,7 @@ final class AppDelegateViewModelTests: TestCase {
       url: URL(string: projectUrl)!,
       options: [:]
     )
-    XCTAssertFalse(result)
+    XCTAssertTrue(result)
 
     self.presentViewController.assertValues([1])
   }
