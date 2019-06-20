@@ -10,7 +10,7 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
   private let amount = TestObserver<String, Never>()
   private let currency = TestObserver<String, Never>()
   private let generateSelectionFeedback = TestObserver<Void, Never>()
-  private let generateWarningFeedback = TestObserver<Void, Never>()
+  private let generateNotificationWarningFeedback = TestObserver<Void, Never>()
   private let stepperInitialValue = TestObserver<Double, Never>()
   private let stepperMinValue = TestObserver<Double, Never>()
   private let stepperMaxValue = TestObserver<Double, Never>()
@@ -21,7 +21,9 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.vm.outputs.amount.observe(self.amount.observer)
     self.vm.outputs.currency.observe(self.currency.observer)
     self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
-    self.vm.outputs.generateWarningFeedback.observe(self.generateWarningFeedback.observer)
+    self.vm.outputs.generateNotificationWarningFeedback.observe(
+      self.generateNotificationWarningFeedback.observer
+    )
     self.vm.outputs.stepperInitialValue.observe(self.stepperInitialValue.observer)
     self.vm.outputs.stepperMinValue.observe(self.stepperMinValue.observer)
     self.vm.outputs.stepperMaxValue.observe(self.stepperMaxValue.observer)
@@ -53,25 +55,25 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.generateSelectionFeedback.assertValueCount(3)
   }
 
-  func testGenerateWarningFeedback() {
+  func testGenerateNotificationWarningFeedback() {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
-    self.generateWarningFeedback.assertValueCount(0)
+    self.generateNotificationWarningFeedback.assertValueCount(0)
 
     self.vm.inputs.stepperValueChanged(16)
-    self.generateWarningFeedback.assertValueCount(0)
+    self.generateNotificationWarningFeedback.assertValueCount(0)
 
     self.vm.inputs.stepperValueChanged(20)
-    self.generateWarningFeedback.assertValueCount(1)
+    self.generateNotificationWarningFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(14)
-    self.generateWarningFeedback.assertValueCount(1)
+    self.generateNotificationWarningFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(10)
-    self.generateWarningFeedback.assertValueCount(2)
+    self.generateNotificationWarningFeedback.assertValueCount(2)
 
     self.vm.inputs.stepperValueChanged(15)
-    self.generateWarningFeedback.assertValueCount(2)
+    self.generateNotificationWarningFeedback.assertValueCount(2)
   }
 
   func testStepperInitialValue() {

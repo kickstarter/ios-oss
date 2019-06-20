@@ -73,7 +73,8 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
       .observeValues { [weak self] project in
-        UIFeedbackGenerator.ksr_generateSuccessFeedback()
+        generateNotificationSuccessFeedback()
+
         self?.goToThanks(project: project)
       }
 

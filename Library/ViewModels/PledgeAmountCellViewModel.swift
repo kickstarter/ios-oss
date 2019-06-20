@@ -13,7 +13,7 @@ public protocol PledgeAmountCellViewModelOutputs {
   var amount: Signal<String, Never> { get }
   var currency: Signal<String, Never> { get }
   var generateSelectionFeedback: Signal<Void, Never> { get }
-  var generateWarningFeedback: Signal<Void, Never> { get }
+  var generateNotificationWarningFeedback: Signal<Void, Never> { get }
   var stepperInitialValue: Signal<Double, Never> { get }
   var stepperMaxValue: Signal<Double, Never> { get }
   var stepperMinValue: Signal<Double, Never> { get }
@@ -68,7 +68,7 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
       .filter { min, max, value in min < value && value < max }
       .ignoreValues()
 
-    self.generateWarningFeedback = stepperValueChanged
+    self.generateNotificationWarningFeedback = stepperValueChanged
       .filter { min, max, value in value <= min || max <= value }
       .ignoreValues()
   }
@@ -86,7 +86,7 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
   public let amount: Signal<String, Never>
   public let currency: Signal<String, Never>
   public let generateSelectionFeedback: Signal<Void, Never>
-  public let generateWarningFeedback: Signal<Void, Never>
+  public let generateNotificationWarningFeedback: Signal<Void, Never>
   public let stepperInitialValue: Signal<Double, Never>
   public let stepperMaxValue: Signal<Double, Never>
   public let stepperMinValue: Signal<Double, Never>

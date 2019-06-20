@@ -539,7 +539,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
       .observeValues { [weak self] project in
-        UIFeedbackGenerator.ksr_generateSuccessFeedback()
+        generateNotificationSuccessFeedback()
+
         self?.goToThanks(project: project)
       }
 

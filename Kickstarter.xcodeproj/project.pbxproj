@@ -82,13 +82,13 @@
 		3706409022A9BE9400889CBD /* DateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408F22A9BE9400889CBD /* DateFormatterTests.swift */; };
 		3708DD43220A5A5700F8E569 /* SettingsGroupedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */; };
 		3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */; };
+		37096C3022BC238C003D1F40 /* MockFeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37096C2F22BC238C003D1F40 /* MockFeedbackGenerator.swift */; };
+		37096C3422BC24DD003D1F40 /* UIFeedbackGeneratorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37096C3322BC24DD003D1F40 /* UIFeedbackGeneratorType.swift */; };
+		37096C3522BC282E003D1F40 /* MockAppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37096C3122BC23AD003D1F40 /* MockAppEnvironment.swift */; };
 		370ACB00225D337900C8745F /* PledgeAmountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370ACAFF225D337900C8745F /* PledgeAmountCell.swift */; };
 		370BE71622541C8100B44DB2 /* UIViewController+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370BE71522541C8100B44DB2 /* UIViewController+URL.swift */; };
 		370F527A2254267900F159B9 /* UIApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52792254267900F159B9 /* UIApplicationType.swift */; };
 		370F52B3225426C700F159B9 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52B2225426C700F159B9 /* UIApplication.swift */; };
-		371947BF22B9599C0093DD2B /* UIFeedbackGeneratorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371947BE22B9599C0093DD2B /* UIFeedbackGeneratorType.swift */; };
-		371947C122B9727E0093DD2B /* UIFeedbackGenerator+ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371947C022B9727E0093DD2B /* UIFeedbackGenerator+ExtensionsTests.swift */; };
-		371947C322B978CD0093DD2B /* MockFeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371947C222B978CD0093DD2B /* MockFeedbackGenerator.swift */; };
 		37280272226F880100E0ACBB /* CheckoutStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37280250226F878300E0ACBB /* CheckoutStyles.swift */; };
 		37280273226F880700E0ACBB /* CheckoutStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37280270226F879300E0ACBB /* CheckoutStylesTests.swift */; };
 		3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */; };
@@ -1068,7 +1068,6 @@
 		D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */; };
 		D777442F217A3382008D679F /* ChangeCurrencyInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D777442E217A3382008D679F /* ChangeCurrencyInput.swift */; };
 		D7774466217A345D008D679F /* UpdateUserProfileMutation .swift in Sources */ = {isa = PBXBuildFile; fileRef = D77743E2217A2D67008D679F /* UpdateUserProfileMutation .swift */; };
-		D78E4EE3218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78E4EE2218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift */; };
 		D79440572203A63300D0A747 /* CreatePaymentSourceEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79440562203A63300D0A747 /* CreatePaymentSourceEnvelope.swift */; };
 		D79440902208970E00D0A747 /* CreatePaymentSourceTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D794408F2208970E00D0A747 /* CreatePaymentSourceTemplate.swift */; };
 		D796867C20FE655300E54C61 /* SettingsFollowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */; };
@@ -1325,14 +1324,14 @@
 		3706408F22A9BE9400889CBD /* DateFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterTests.swift; sourceTree = "<group>"; };
 		3708DD42220A5A5700F8E569 /* SettingsGroupedFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedFooterView.swift; sourceTree = "<group>"; };
 		3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordTableControllerTests.swift; sourceTree = "<group>"; };
+		37096C2F22BC238C003D1F40 /* MockFeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFeedbackGenerator.swift; sourceTree = "<group>"; };
+		37096C3122BC23AD003D1F40 /* MockAppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAppEnvironment.swift; sourceTree = "<group>"; };
+		37096C3322BC24DD003D1F40 /* UIFeedbackGeneratorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFeedbackGeneratorType.swift; sourceTree = "<group>"; };
 		370ACAFF225D337900C8745F /* PledgeAmountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountCell.swift; sourceTree = "<group>"; };
 		370BE71522541C8100B44DB2 /* UIViewController+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+URL.swift"; sourceTree = "<group>"; };
 		370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+URLTests.swift"; sourceTree = "<group>"; };
 		370F52792254267900F159B9 /* UIApplicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationType.swift; sourceTree = "<group>"; };
 		370F52B2225426C700F159B9 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
-		371947BE22B9599C0093DD2B /* UIFeedbackGeneratorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFeedbackGeneratorType.swift; sourceTree = "<group>"; };
-		371947C022B9727E0093DD2B /* UIFeedbackGenerator+ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFeedbackGenerator+ExtensionsTests.swift"; sourceTree = "<group>"; };
-		371947C222B978CD0093DD2B /* MockFeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFeedbackGenerator.swift; sourceTree = "<group>"; };
 		37280250226F878300E0ACBB /* CheckoutStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutStyles.swift; sourceTree = "<group>"; };
 		37280270226F879300E0ACBB /* CheckoutStylesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutStylesTests.swift; sourceTree = "<group>"; };
 		3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2260,7 +2259,6 @@
 		D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift; sourceTree = "<group>"; };
 		D77743E2217A2D67008D679F /* UpdateUserProfileMutation .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateUserProfileMutation .swift"; sourceTree = "<group>"; };
 		D777442E217A3382008D679F /* ChangeCurrencyInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCurrencyInput.swift; sourceTree = "<group>"; };
-		D78E4EE2218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFeedbackGenerator+Extensions.swift"; sourceTree = "<group>"; };
 		D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossDissolveTransitionAnimator.swift; sourceTree = "<group>"; };
 		D79440562203A63300D0A747 /* CreatePaymentSourceEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceEnvelope.swift; sourceTree = "<group>"; };
 		D794408F2208970E00D0A747 /* CreatePaymentSourceTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceTemplate.swift; sourceTree = "<group>"; };
@@ -2408,6 +2406,7 @@
 				D76436D1224040B700DAFC9E /* SharedFunctions.swift */,
 				D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */,
 				379CFFEE2242DAC300F6F0C2 /* Storyboard.swift */,
+				37096C3322BC24DD003D1F40 /* UIFeedbackGeneratorType.swift */,
 				379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */,
 				379CFFF12242DAC400F6F0C2 /* WebViewController.swift */,
 			);
@@ -2912,9 +2911,6 @@
 				0151AE871C8F60370067F1BE /* UIColor.swift */,
 				A7ED1F231E830FDC00BFFA01 /* UIColorTests.swift */,
 				A78537BB1CB5416700385B73 /* UIDeviceType.swift */,
-				D78E4EE2218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift */,
-				371947C022B9727E0093DD2B /* UIFeedbackGenerator+ExtensionsTests.swift */,
-				371947BE22B9599C0093DD2B /* UIFeedbackGeneratorType.swift */,
 				3757D0CD228E51F800241AE6 /* UIFont.swift */,
 				3757D106228E521600241AE6 /* UIFontTests.swift */,
 				A7C725951C85D36D005A016B /* UIGestureRecognizer-Extensions.swift */,
@@ -3113,7 +3109,6 @@
 				A7ED1F431E831BA200BFFA01 /* AlertError+Equatable.swift */,
 				A7ED1F441E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift */,
 				A7ED1F451E831BA200BFFA01 /* MockBundle.swift */,
-				371947C222B978CD0093DD2B /* MockFeedbackGenerator.swift */,
 				A7ED1F461E831BA200BFFA01 /* TestCase.swift */,
 				A7ED1F471E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift */,
 			);
@@ -3124,6 +3119,8 @@
 			isa = PBXGroup;
 			children = (
 				A7ED20211E83237F00BFFA01 /* Combos.swift */,
+				37096C3122BC23AD003D1F40 /* MockAppEnvironment.swift */,
+				37096C2F22BC238C003D1F40 /* MockFeedbackGenerator.swift */,
 				A7ED20221E83237F00BFFA01 /* TraitController.swift */,
 			);
 			path = TestHelpers;
@@ -4344,7 +4341,6 @@
 				9D89B7E51D6B8DB90021F6FF /* WebModalViewModel.swift in Sources */,
 				D0200A5721935F2D00F5CC27 /* GraphError+LocalizedDescription.swift in Sources */,
 				D0A787BB2204D66B006AE4F4 /* SelectCurrencyViewModel.swift in Sources */,
-				D78E4EE3218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift in Sources */,
 				A75C81261D210F1F00B5AD03 /* ShareContext.swift in Sources */,
 				A75511671C8642C3005355CF /* UIButton+LocalizedKey.swift in Sources */,
 				D60C8BE92142D61A00D96152 /* SettingsAccountCellType.swift in Sources */,
@@ -4428,7 +4424,6 @@
 				A72C3A8C1D00F6A80075227E /* ExpandableRow.swift in Sources */,
 				D04AAC25218BB70D00CF713E /* FindFriendsCellViewModel.swift in Sources */,
 				9DBF80DF1D666CAC007F2843 /* CheckoutModels.swift in Sources */,
-				371947BF22B9599C0093DD2B /* UIFeedbackGeneratorType.swift in Sources */,
 				3706408D22A9BE8100889CBD /* DateFormatter.swift in Sources */,
 				D04AABF8218BB2FD00CF713E /* SettingsNotificationsViewModel.swift in Sources */,
 				9DC204B71D1B46BD003C1636 /* ProjectActivityNegativeStateChangeCellViewModel.swift in Sources */,
@@ -4555,12 +4550,10 @@
 				A7ED1FE91E831C5C00BFFA01 /* DeprecatedWebViewModelTests.swift in Sources */,
 				D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */,
 				D66FB348218212B700A27BCC /* PaymentMethodsViewModelTests.swift in Sources */,
-				371947C122B9727E0093DD2B /* UIFeedbackGenerator+ExtensionsTests.swift in Sources */,
 				A7ED1FD01E831C5C00BFFA01 /* DashboardActionCellViewModelTests.swift in Sources */,
 				A7ED1FE21E831C5C00BFFA01 /* DiscoveryViewModelTests.swift in Sources */,
 				A7ED1FF81E831C5C00BFFA01 /* VideoViewModelTests.swift in Sources */,
 				A7ED1FCD1E831C5C00BFFA01 /* ProjectActivityUpdateCellViewModelTests.swift in Sources */,
-				371947C322B978CD0093DD2B /* MockFeedbackGenerator.swift in Sources */,
 				A7A6261B1E85B936004C931A /* BackerDashboardProjectsViewModelTests.swift in Sources */,
 				A7ED1FB41E831C5C00BFFA01 /* MessagesSearchViewModelTests.swift in Sources */,
 				A7A6261A1E85B936004C931A /* BackerDashboardViewModelTests.swift in Sources */,
@@ -4680,6 +4673,7 @@
 				379CFFFF2242DAF900F6F0C2 /* UIImageView+URL.swift in Sources */,
 				59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */,
 				A7FA38A41D9068940041FC9C /* PledgeTitleCell.swift in Sources */,
+				37096C3422BC24DD003D1F40 /* UIFeedbackGeneratorType.swift in Sources */,
 				59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */,
 				A757EABD1D19FAEE00A5C978 /* ProjectActivitiesViewController.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
@@ -4883,10 +4877,12 @@
 				A7ED20651E83256700BFFA01 /* UpdatePreviewViewModelTests.swift in Sources */,
 				77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */,
 				A7ED20571E8323E900BFFA01 /* ActivitiesViewControllerTests.swift in Sources */,
+				37096C3522BC282E003D1F40 /* MockAppEnvironment.swift in Sources */,
 				A7ED204A1E8323E900BFFA01 /* DeprecatedRewardPledgeViewControllerTests.swift in Sources */,
 				A7ED20401E8323E900BFFA01 /* DiscoveryFiltersViewControllerTests.swift in Sources */,
 				778215EE20F7AB8300F3D09F /* HelpViewControllerTests.swift in Sources */,
 				D6E7DAFC22089F9800689BD6 /* SettingsViewControllerTests.swift in Sources */,
+				37096C3022BC238C003D1F40 /* MockFeedbackGenerator.swift in Sources */,
 				D6E925CE211107CD00E13010 /* SettingsNewslettersDataSourceTests.swift in Sources */,
 				77FA6CD220F53E5E00809E31 /* SettingsDataSourceTests.swift in Sources */,
 				A7ED204D1E8323E900BFFA01 /* FindFriendsViewControllerTests.swift in Sources */,

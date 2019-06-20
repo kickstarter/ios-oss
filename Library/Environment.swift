@@ -73,18 +73,12 @@ public struct Environment {
   /// The current set of launched countries for Kickstarter.
   public let launchedCountries: LaunchedCountries
 
-  /// Impact haptic feedback with light style
-  public let lightImpactFeedbackGenerator: UIImpactFeedbackGeneratorType
-
   /// The user’s current locale, which determines how numbers are formatted. Default value is
   /// `Locale.current`.
   public let locale: Locale
 
   /// A type that exposes how to interface with an NSBundle. Default value is `Bundle.main`.
   public let mainBundle: NSBundleType
-
-  /// Notification haptic feedback
-  public let notificationFeedbackGenerator: UINotificationFeedbackGeneratorType
 
   /// A type that manages registration for push notifications.
   public let pushRegistrationType: PushRegistrationType.Type
@@ -95,9 +89,6 @@ public struct Environment {
   /// A scheduler to use for all time-based RAC operators. Default value is
   /// `QueueScheduler.mainQueueScheduler`.
   public let scheduler: DateScheduler
-
-  /// Selection haptic feedback
-  public let selectionFeedbackGenerator: UISelectionFeedbackGeneratorType
 
   /// A ubiquitous key-value store. Default value is `NSUbiquitousKeyValueStore.default`.
   public let ubiquitousStore: KeyValueStoreType
@@ -126,14 +117,11 @@ public struct Environment {
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
-    lightImpactFeedbackGenerator: UIImpactFeedbackGeneratorType = UIImpactFeedbackGenerator(style: .light),
     locale: Locale = .current,
     mainBundle: NSBundleType = Bundle.main,
-    notificationFeedbackGenerator: UINotificationFeedbackGeneratorType = UINotificationFeedbackGenerator(),
     pushRegistrationType: PushRegistrationType.Type = PushRegistration.self,
     reachability: SignalProducer<Reachability, Never> = Reachability.signalProducer,
     scheduler: DateScheduler = QueueScheduler.main,
-    selectionFeedbackGenerator: UISelectionFeedbackGeneratorType = UISelectionFeedbackGenerator(),
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
     userDefaults: KeyValueStoreType = UserDefaults.standard
   ) {
@@ -157,14 +145,11 @@ public struct Environment {
     self.koala = koala
     self.language = language
     self.launchedCountries = launchedCountries
-    self.lightImpactFeedbackGenerator = lightImpactFeedbackGenerator
     self.locale = locale
     self.mainBundle = mainBundle
-    self.notificationFeedbackGenerator = notificationFeedbackGenerator
     self.pushRegistrationType = pushRegistrationType
     self.reachability = reachability
     self.scheduler = scheduler
-    self.selectionFeedbackGenerator = selectionFeedbackGenerator
     self.ubiquitousStore = ubiquitousStore
     self.userDefaults = userDefaults
   }

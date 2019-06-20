@@ -92,11 +92,11 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.generateSelectionFeedback
       .observeForUI()
-      .observeValues { UIFeedbackGenerator.ksr_generateSelectionFeedback() }
+      .observeValues { generateSelectionFeedback() }
 
-    self.viewModel.outputs.generateWarningFeedback
+    self.viewModel.outputs.generateNotificationWarningFeedback
       .observeForUI()
-      .observeValues { UIFeedbackGenerator.ksr_generateWarningFeedback() }
+      .observeValues { generateNotificationWarningFeedback() }
   }
 
   // MARK: - Configuration
