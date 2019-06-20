@@ -6,13 +6,12 @@ import SafariServices
 import UIKit
 
 internal final class BetaToolsViewController: UITableViewController {
-  private let viewModel: BetaToolsViewModelType = BetaToolsViewModel()
-
   // MARK: - Properties
 
   private let betaFeedbackButton = UIButton(type: .custom)
   private var betaToolsData: BetaToolsData?
   private let helpViewModel: HelpViewModelType = HelpViewModel()
+  private let viewModel: BetaToolsViewModelType = BetaToolsViewModel()
 
   internal static func instantiate() -> BetaToolsViewController {
     return BetaToolsViewController(style: .plain)
