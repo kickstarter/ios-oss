@@ -93,6 +93,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.checkout.rawValue: true]
     let currentUser = User.template
     let backedProject = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .successful
 
@@ -116,6 +117,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.checkout.rawValue: true]
     let currentUser = User.template
     let backedProject = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.state .~ .successful
 
