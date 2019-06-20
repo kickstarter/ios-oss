@@ -136,12 +136,17 @@ internal final class BetaToolsViewController: UITableViewController {
   private func configureFooterView() {
     let containerView = UIView(frame: .zero)
 
-    _ = self.tableView
-      |> \.tableFooterView .~ containerView
+    /* Silences autolayout warnings between conflicting table view frame-based sizing and our
+        tableFooterView's autolayout constraints
+     */
+    let priority = UILayoutPriority(rawValue: 999)
 
     _ = (self.betaFeedbackButton, containerView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+      |> ksr_constrainViewToMarginsInParent(priority: priority)
+
+    _ = self.tableView
+      |> \.tableFooterView .~ containerView
 
     let widthConstraint = self.betaFeedbackButton.widthAnchor
       .constraint(equalTo: self.tableView.layoutMarginsGuide.widthAnchor)
@@ -162,7 +167,7 @@ internal final class BetaToolsViewController: UITableViewController {
   }
 
   private func goToFeatureFlagTools() {
-    let featureFlagToolsViewController = FeatureFlagToolsViewController.insantiate()
+    let featureFlagToolsViewController = FeatureFlagToolsViewController.instantiate()
 
     self.navigationController?.pushViewController(featureFlagToolsViewController, animated: true)
   }

@@ -33,31 +33,6 @@ public func baseControllerStyle<VC: UIViewControllerProtocol>() -> ((VC) -> VC) 
     <> (VC.lens.navigationController .. navBarLens) %~ { $0.map(baseNavigationBarStyle) }
 }
 
-public func baseTableControllerStyle<TVC: UITableViewControllerProtocol>
-(estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
-  let style = baseControllerStyle()
-    <> TVC.lens.view.backgroundColor .~ .white
-    <> TVC.lens.tableView.rowHeight .~ UITableView.automaticDimension
-    <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
-
-  return style <> TVC.lens.tableView.separatorStyle .~ .none
-}
-
-public func baseTableViewCellStyle<TVC: UITableViewCellProtocol>() -> ((TVC) -> TVC) {
-  return
-    TVC.lens.contentView.layoutMargins %~~ { _, cell in
-      if cell.traitCollection.isRegularRegular {
-        return .init(topBottom: Styles.grid(3), leftRight: Styles.grid(12))
-      }
-      return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-    }
-    <> TVC.lens.backgroundColor .~ .white
-    <> (TVC.lens.contentView .. UIView.lens.preservesSuperviewLayoutMargins) .~ false
-    <> TVC.lens.layoutMargins .~ .init(all: 0.0)
-    <> TVC.lens.preservesSuperviewLayoutMargins .~ false
-    <> TVC.lens.selectionStyle .~ .none
-}
-
 public func baseActivityIndicatorStyle(indicator: UIActivityIndicatorView) -> UIActivityIndicatorView {
   return indicator
     |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
@@ -153,6 +128,14 @@ public func roundedStyle<V: UIViewProtocol>(cornerRadius r: CGFloat = Styles.cor
     <> V.lens.layer.cornerRadius .~ r
 }
 
+public let baseSwitchControlStyle: SwitchControlStyle = { switchControl in
+  switchControl
+    |> \.onTintColor .~ .ksr_green_700
+    |> \.tintColor .~ .ksr_grey_600
+}
+
+// MARK: - Private Helpers
+
 // Just a lil helper lens for getting inside a nav controller's nav bar.
 private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
   view: { $0?.navigationBar },
@@ -166,3 +149,5 @@ private let baseNavigationBarStyle =
   <> UINavigationBar.lens.isTranslucent .~ false
   <> UINavigationBar.lens.barTintColor .~ .white
   <> UINavigationBar.lens.tintColor .~ .ksr_green_700
+
+

@@ -167,6 +167,7 @@
 		59D1E6261D1865AC00896A4C /* DashboardVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */; };
 		59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
+		7705563B22BC03A600DCB062 /* TableViewStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7705563A22BC03A600DCB062 /* TableViewStyles.swift */; };
 		770DF32A2106210900A6D0F1 /* SettingsNotificationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770DF3292106210900A6D0F1 /* SettingsNotificationsDataSource.swift */; };
 		770E441321137E7400396D46 /* SettingsNotificationPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770E441221137E7400396D46 /* SettingsNotificationPickerCell.swift */; };
 		770E441521137F3700396D46 /* SettingsNotificationPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */; };
@@ -1421,6 +1422,7 @@
 		59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCell.swift; sourceTree = "<group>"; };
 		59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardVideoCellViewModel.swift; sourceTree = "<group>"; };
 		59E877371DC9419700BCD1F7 /* Newsletter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Newsletter.swift; sourceTree = "<group>"; };
+		7705563A22BC03A600DCB062 /* TableViewStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewStyles.swift; sourceTree = "<group>"; };
 		770DF3292106210900A6D0F1 /* SettingsNotificationsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsDataSource.swift; sourceTree = "<group>"; };
 		770E441221137E7400396D46 /* SettingsNotificationPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationPickerCell.swift; sourceTree = "<group>"; };
 		770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNotificationPickerCell.xib; sourceTree = "<group>"; };
@@ -2496,6 +2498,7 @@
 				A796FF261D425A4500CD58AA /* ProjectStyles.swift */,
 				597582E21D5D12AE008765DE /* SettingsStyles.swift */,
 				01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */,
+				7705563A22BC03A600DCB062 /* TableViewStyles.swift */,
 				8001D4971D41568C009E6667 /* UpdateDraftStyles.swift */,
 			);
 			path = Styles;
@@ -4296,6 +4299,7 @@
 				59673CBF1D50EE9B0035AFD9 /* VideoViewModel.swift in Sources */,
 				9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */,
 				A72E75971CC313A400983066 /* ValueCell.swift in Sources */,
+				7705563B22BC03A600DCB062 /* TableViewStyles.swift in Sources */,
 				A75511601C8642C3005355CF /* GradientView.swift in Sources */,
 				A7CC13D31D00E6CF00035C52 /* FindFriendsFacebookConnectCellViewModel.swift in Sources */,
 				A75511611C8642C3005355CF /* Language.swift in Sources */,

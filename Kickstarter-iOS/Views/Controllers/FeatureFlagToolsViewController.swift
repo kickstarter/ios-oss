@@ -11,7 +11,7 @@ final class FeatureFlagToolsViewController: UITableViewController {
   private let reuseId = "FeatureFlagTools.TableViewCell"
   private let viewModel = FeatureFlagToolsViewModel()
 
-  static func insantiate() -> FeatureFlagToolsViewController {
+  static func instantiate() -> FeatureFlagToolsViewController {
     return FeatureFlagToolsViewController(style: .plain)
   }
 
@@ -77,7 +77,7 @@ extension FeatureFlagToolsViewController {
     let feature = self.features[indexPath.row]
 
     let switchControl = UISwitch(frame: .zero)
-      |> switchStyle
+      |> baseSwitchControlStyle
       |> \.tag .~ indexPath.row
       |> \.isOn .~ feature.1
 
@@ -88,23 +88,9 @@ extension FeatureFlagToolsViewController {
       ?|> \.accessoryView .~ switchControl
 
     _ = cell.textLabel
-      ?|> titleLabelStyle
+      ?|> baseTableViewCellTitleLabelStyle
       ?|> \.text .~ feature.0.description
 
     return cell
   }
-}
-
-// MARK: - Styles
-
-private let titleLabelStyle: LabelStyle = { label in
-  label
-    |> \.textColor .~ .ksr_soft_black
-    |> \.font .~ .ksr_body()
-}
-
-private let switchStyle: SwitchControlStyle = { switchControl in
-  switchControl
-    |> \.onTintColor .~ .ksr_green_700
-    |> \.tintColor .~ .ksr_grey_600
 }

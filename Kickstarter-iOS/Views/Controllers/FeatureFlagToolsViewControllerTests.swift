@@ -29,7 +29,7 @@ final class FeatureFlagToolsViewControllerTests: TestCase {
 
     withEnvironment(config: mockConfig) {
       let device = Device.phone5_8inch
-      let controller = FeatureFlagToolsViewController.insantiate()
+      let controller = FeatureFlagToolsViewController.instantiate()
       let (parent, _) = traitControllers(
         device: device, orientation: .portrait,
         child: controller
@@ -45,7 +45,7 @@ final class FeatureFlagToolsViewControllerTests: TestCase {
 
     withEnvironment(config: mockConfig) {
       let device = Device.phone5_8inch
-      let controller = FeatureFlagToolsViewController.insantiate()
+      let controller = FeatureFlagToolsViewController.instantiate()
       let (parent, _) = traitControllers(
         device: device, orientation: .portrait,
         child: controller
