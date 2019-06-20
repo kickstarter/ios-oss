@@ -23,23 +23,22 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
     let projectAndUser = self.projectAndUserProperty.signal.skipNil()
+    let project = projectAndUser.map { $0.0 }
 
-    let projectState = projectAndUser
-      .map { project, _ in pledgeStateButton(project: project) }
+    let pledgeState = project
+      .map { pledgeStateButton(project: $0) }
 
     let backingEvent = projectAndUser
       .switchMap { project, user in
         AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
           .materialize()
       }
-
     let backing = backingEvent.values()
-    let project = projectAndUser.map { $0.0 }
     let projectAndBacking = Signal.combineLatest(project, backing)
 
-    self.buttonTitleText = projectState.map { $0.buttonTitle }
-    self.buttonBackgroundColor = projectState.map { $0.buttonBackgroundColor }
-    self.stackViewIsHidden = projectState.map { $0.stackViewIsHidden }
+    self.buttonTitleText = pledgeState.map { $0.buttonTitle }
+    self.buttonBackgroundColor = pledgeState.map { $0.buttonBackgroundColor }
+    self.stackViewIsHidden = pledgeState.map { $0.stackViewIsHidden }
 
     self.rewardTitle = projectAndBacking
       .map { (arg) -> String in
@@ -64,10 +63,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public var inputs: PledgeCTAContainerViewViewModelInputs { return self }
   public var outputs: PledgeCTAContainerViewViewModelOutputs { return self }
 
-  public let buttonTitleText: Signal<String, Never>
   public let buttonBackgroundColor: Signal<UIColor, Never>
-  public let stackViewIsHidden: Signal<Bool, Never>
+  public let buttonTitleText: Signal<String, Never>
   public let rewardTitle: Signal<String, Never>
+  public let stackViewIsHidden: Signal<Bool, Never>
 }
 
 private func pledgeStateButton(project: Project) -> PledgeStateCTAType {
