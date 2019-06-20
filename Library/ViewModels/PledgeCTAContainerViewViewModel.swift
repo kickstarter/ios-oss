@@ -32,7 +32,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .switchMap { project, user in
         AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
           .materialize()
-      }
+    }
     let backing = backingEvent.values()
     let projectAndBacking = Signal.combineLatest(project, backing)
 
