@@ -25,7 +25,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     let projectAndUser = self.projectAndUserProperty.signal.skipNil()
 
     let projectState = projectAndUser
-      .map { project, user in projectStateButton(backer: user, project: project) }
+      .map { project, _ in pledgeStateButton(project: project) }
 
     let backingEvent = projectAndUser
       .switchMap { project, user in
@@ -70,7 +70,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public let rewardTitle: Signal<String, Never>
 }
 
-private func projectStateButton(backer _: User, project: Project) -> PledgeStateCTAType {
+private func pledgeStateButton(project: Project) -> PledgeStateCTAType {
   guard let projectIsBacked = project.personalization.isBacking
   else { return PledgeStateCTAType.viewRewards }
 
