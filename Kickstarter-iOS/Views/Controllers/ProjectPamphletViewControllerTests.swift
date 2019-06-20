@@ -99,7 +99,9 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     [Device.phone4inch, Device.phone5_5inch, Device.phone5_8inch].forEach { device in
       let language = Language.en
       withEnvironment(config: config, currentUser: currentUser, language: language) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(backedProject), refTag: nil)
+        let vc = ProjectPamphletViewController.configuredWith(
+          projectOrParam: .left(backedProject), refTag: nil
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
@@ -120,7 +122,9 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     [Device.phone4inch, Device.phone5_5inch, Device.phone5_8inch].forEach { device in
       let language = Language.en
       withEnvironment(config: config, currentUser: currentUser, language: language) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(backedProject), refTag: nil)
+        let vc = ProjectPamphletViewController.configuredWith(
+          projectOrParam: .left(backedProject), refTag: nil
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
