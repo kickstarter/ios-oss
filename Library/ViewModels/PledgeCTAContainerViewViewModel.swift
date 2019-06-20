@@ -22,9 +22,14 @@ public protocol PledgeCTAContainerViewViewModelType {
 }
 
 public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
-  PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
+PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
+
   public init() {
     let projectAndUser = self.projectAndUserProperty.signal.skipNil()
+    let project = projectAndUser.map { $0.0 }
+
+    let pledgeState = project
+      .map { pledgeStateButton(project: $0) }
 
     let backingEvent = projectAndUser
       .switchMap { project, user in
@@ -33,17 +38,13 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     }
 
     let backing = backingEvent.values()
-    let project = projectAndUser.map { $0.0 }
     let projectAndBacking = Signal.combineLatest(project, backing)
 
-    let projectState = projectAndBacking
-      .map { project, backing in projectStateButton(project: project, backing: backing) }
-
-    self.buttonTitleText = projectState.map { $0.buttonTitle }
-    self.buttonBackgroundColor = projectState.map { $0.buttonBackgroundColor }
-    self.stackViewIsHidden = projectState.map { $0.stackViewIsHidden }
-    self.buttonTitleTextColor = projectState.map { $0.buttonTitleTextColor }
-    self.subtitleText = projectState.map { $0.subtitleLabel }.skipNil()
+    self.buttonTitleText = pledgeState.map { $0.buttonTitle }
+    self.buttonTitleTextColor = .empty
+    self.buttonBackgroundColor = pledgeState.map { $0.buttonBackgroundColor }
+    self.stackViewIsHidden = pledgeState.map { $0.stackViewIsHidden }
+    self.subtitleText = .empty
 
     self.rewardTitle = projectAndBacking
       .map { (arg) -> String in
@@ -81,14 +82,13 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public let subtitleText: Signal<String, Never>
 }
 
-private func projectStateButton(project: Project, backing: Backing) -> PledgeStateCTAType {
+private func pledgeStateButton(project: Project) -> PledgeStateCTAType {
   guard let projectIsBacked = project.personalization.isBacking
   else { return PledgeStateCTAType.viewRewards }
 
   switch project.state {
   case .live:
-    let pledgeFailed = backing.status == .errored
-    return (projectIsBacked && pledgeFailed) ? PledgeStateCTAType.fix : PledgeStateCTAType.pledge
+    return projectIsBacked ? PledgeStateCTAType.fix : PledgeStateCTAType.pledge
   case .canceled, .failed, .suspended, .successful:
     return projectIsBacked ? PledgeStateCTAType.viewBacking : PledgeStateCTAType.viewRewards
   default:

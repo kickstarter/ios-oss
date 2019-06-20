@@ -428,6 +428,24 @@
                                                 </view>
                                             </subviews>
                                         </stackView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wDa-3z-Se6">
+                                            <rect key="frame" x="0.0" y="197" width="20.5" height="36.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fwt-iA-zud">
+                                                    <rect key="frame" x="8" y="8" width="4.5" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.1450980392" green="0.79607843140000001" blue="0.40784313729999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="fwt-iA-zud" secondAttribute="bottom" id="BN3-dl-i5j"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="fwt-iA-zud" secondAttribute="trailing" id="Cro-Xh-jnr"/>
+                                                <constraint firstItem="fwt-iA-zud" firstAttribute="leading" secondItem="wDa-3z-Se6" secondAttribute="leadingMargin" id="WV3-um-TmM"/>
+                                                <constraint firstItem="fwt-iA-zud" firstAttribute="top" secondItem="wDa-3z-Se6" secondAttribute="topMargin" id="mZA-6K-nMx"/>
+                                            </constraints>
+                                        </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pre-vA-2P0">
                                             <rect key="frame" x="0.0" y="240.5" width="400" height="44"/>
                                             <constraints>
@@ -451,9 +469,11 @@
                                         <constraint firstItem="Pre-vA-2P0" firstAttribute="centerY" secondItem="cpO-gj-8qb" secondAttribute="centerY" id="Km0-8K-pl6"/>
                                         <constraint firstAttribute="bottom" secondItem="QP9-3e-ZCa" secondAttribute="bottom" id="Lj1-Fs-T9E"/>
                                         <constraint firstItem="Pre-vA-2P0" firstAttribute="leading" secondItem="aTi-2P-dde" secondAttribute="leading" id="OAY-MJ-TKP"/>
+                                        <constraint firstItem="wDa-3z-Se6" firstAttribute="centerY" secondItem="L33-xl-Z3r" secondAttribute="top" constant="-9.75" id="VGQ-Ca-v2Y"/>
                                         <constraint firstItem="IK9-ug-5QA" firstAttribute="leading" secondItem="9h4-fT-eHX" secondAttribute="leading" id="fK0-jK-FWw"/>
                                         <constraint firstItem="QP9-3e-ZCa" firstAttribute="bottom" secondItem="IK9-ug-5QA" secondAttribute="bottom" id="gZL-ti-X7r"/>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="IK9-ug-5QA" secondAttribute="bottom" id="i6z-G2-rVD"/>
+                                        <constraint firstItem="wDa-3z-Se6" firstAttribute="leading" secondItem="1IS-yr-alv" secondAttribute="leadingMargin" id="zYn-30-syQ"/>
                                         <constraint firstItem="IK9-ug-5QA" firstAttribute="top" secondItem="9h4-fT-eHX" secondAttribute="top" id="zoK-u5-hc2"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -488,6 +508,8 @@
                                     <outlet property="readMoreButton" destination="wJh-2e-un6" id="9sF-rI-Jw6"/>
                                     <outlet property="stateLabel" destination="b0m-Ky-7kD" id="rf0-6I-cY1"/>
                                     <outlet property="statsStackView" destination="N0V-lF-GzK" id="rPf-34-EZf"/>
+                                    <outlet property="youreABackerContainerView" destination="wDa-3z-Se6" id="spi-eC-ggZ"/>
+                                    <outlet property="youreABackerLabel" destination="fwt-iA-zud" id="yBZ-uc-2Yd"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectPamphletSubpageCell" rowHeight="56" id="V7Q-FK-dC8" customClass="ProjectPamphletSubpageCell" customModule="Kickstarter_Framework" customModuleProvider="target">

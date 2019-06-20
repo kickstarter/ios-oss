@@ -10,7 +10,7 @@ public enum PledgeStateCTAType {
   public var buttonTitle: String {
     switch self {
     case .fix:
-      return Strings.Fix()
+      return "Fix"
     case .pledge:
       return Strings.Back_this_project()
     case .manage:

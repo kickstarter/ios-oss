@@ -17,6 +17,9 @@ public protocol ProjectPamphletMainCellViewModelInputs {
 
   /// Call when the read more button is tapped.
   func readMoreButtonTapped()
+
+  func videoDidFinish()
+  func videoDidStart()
 }
 
 public protocol ProjectPamphletMainCellViewModelOutputs {
@@ -100,6 +103,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a string to use for the stats stack view accessibility value.
   var statsStackViewAccessibilityLabel: Signal<String, Never> { get }
+
+  /// Emits a boolean that determines if the "you're a backer" label should be hidden.
+  var youreABackerLabelHidden: Signal<Bool, Never> { get }
 }
 
 public protocol ProjectPamphletMainCellViewModelType {
@@ -145,6 +151,18 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       }
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
+
+    let videoIsPlaying = Signal.merge(
+      project.take(first: 1).mapConst(false),
+      self.videoDidStartProperty.signal.mapConst(true),
+      self.videoDidFinishProperty.signal.mapConst(false)
+    )
+
+    self.youreABackerLabelHidden = Signal.combineLatest(project, videoIsPlaying)
+      .map { project, videoIsPlaying in
+        project.personalization.isBacking != true || videoIsPlaying
+      }
+      .skipRepeats()
 
     let backersTitleAndSubtitleText = project.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
@@ -272,6 +290,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let projectUnsuccessfulLabelTextColor: Signal<UIColor, Never>
   public let stateLabelHidden: Signal<Bool, Never>
   public let statsStackViewAccessibilityLabel: Signal<String, Never>
+  public let youreABackerLabelHidden: Signal<Bool, Never>
 
   public var inputs: ProjectPamphletMainCellViewModelInputs { return self }
   public var outputs: ProjectPamphletMainCellViewModelOutputs { return self }
