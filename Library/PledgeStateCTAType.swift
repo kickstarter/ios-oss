@@ -53,7 +53,7 @@ public enum PledgeStateCTAType {
     }
   }
 
-  public var subtitleLabel: String? {
+  public var titleLabel: String? { // rename to title
     switch self {
     case .fix:
       return "Check your payment details"
@@ -64,7 +64,7 @@ public enum PledgeStateCTAType {
     }
   }
 
-  public var titleLabel: String? {
+  public var subtitleLabel: String? {
     switch self {
     case .fix:
       return "We couldn't process your pledge."

@@ -9,13 +9,13 @@ final class PledgeCTAContainerView: UIView {
   // MARK: - Properties
 
   private lazy var amountAndRewardTitleStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var amountOrRewardLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var pledgeCTAbutton: UIButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -30,7 +30,7 @@ final class PledgeCTAContainerView: UIView {
       [self.pledgeCTAbutton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)]
     )
 
-    _ = ([self.subtitleLabel, self.amountOrRewardLabel], self.amountAndRewardTitleStackView)
+    _ = ([self.titleLabel, self.subtitleLabel], self.amountAndRewardTitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.amountAndRewardTitleStackView, self.pledgeCTAbutton], self.rootStackView)
@@ -45,8 +45,8 @@ final class PledgeCTAContainerView: UIView {
     self.pledgeCTAbutton.rac.title = self.vm.outputs.buttonTitleText
     self.pledgeCTAbutton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
     self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
-    self.amountOrRewardLabel.rac.text = self.vm.outputs.rewardTitle
     self.subtitleLabel.rac.text = self.vm.outputs.subtitleText
+    self.titleLabel.rac.text = self.vm.outputs.titleText
   }
 
   func configureWith(project: Project, user: User) {
@@ -59,10 +59,10 @@ final class PledgeCTAContainerView: UIView {
     _ = self.pledgeCTAbutton
       |> projectStateButtonStyle
 
-    _ = self.subtitleLabel
+    _ = self.titleLabel
       |> \.font .~ .ksr_headline(size: 14)
 
-    _ = self.amountOrRewardLabel
+    _ = self.subtitleLabel
       |> \.font .~ .ksr_caption1(size: 14)
       |> \.textColor .~ .ksr_dark_grey_500
 
