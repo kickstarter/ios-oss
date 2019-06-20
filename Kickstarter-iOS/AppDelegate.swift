@@ -30,7 +30,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    // FBSDK initialization
     ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+    Settings.shouldLimitEventAndDataUsage = true
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -236,7 +238,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
-    // if this is not a Facebook login call, handle the potential deep-link
+    // If this is not a Facebook login call, handle the potential deep-link
     guard !ApplicationDelegate.shared.application(app, open: url, options: options) else {
       return true
     }
