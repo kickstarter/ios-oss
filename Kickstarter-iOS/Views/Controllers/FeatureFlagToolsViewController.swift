@@ -67,7 +67,6 @@ final class FeatureFlagToolsViewController: UITableViewController {
 // MARK: - UITableViewDataSource
 
 extension FeatureFlagToolsViewController {
-
   override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
     return self.features.count
   }

@@ -33,8 +33,10 @@ internal final class BetaToolsViewController: UITableViewController {
       for: .touchUpInside
     )
 
-    let doneButton = UIBarButtonItem(title: Strings.Done(), style: .done, target: self,
-                                     action: #selector(self.doneButtonTapped))
+    let doneButton = UIBarButtonItem(
+      title: Strings.Done(), style: .done, target: self,
+      action: #selector(self.doneButtonTapped)
+    )
 
     _ = self.navigationItem
       ?|> \.rightBarButtonItem .~ doneButton
@@ -137,7 +139,7 @@ internal final class BetaToolsViewController: UITableViewController {
     let containerView = UIView(frame: .zero)
 
     /* Silences autolayout warnings between conflicting table view frame-based sizing and our
-        tableFooterView's autolayout constraints
+     tableFooterView's autolayout constraints
      */
     let priority = UILayoutPriority(rawValue: 999)
 

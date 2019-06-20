@@ -81,7 +81,7 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  
+
   public let reloadWithData: Signal<[FeatureEnabled], Never>
   public let updateConfigWithFeatures: Signal<Features, Never>
 

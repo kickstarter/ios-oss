@@ -1,11 +1,11 @@
 import Foundation
 import KsApi
-import UIKit
 import Prelude
 import Prelude_UIKit
+import UIKit
 
 public func baseTableControllerStyle<TVC: UITableViewControllerProtocol>
-  (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
+(estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
   let style = baseControllerStyle()
     <> TVC.lens.view.backgroundColor .~ .white
     <> TVC.lens.tableView.rowHeight .~ UITableView.automaticDimension
@@ -21,12 +21,12 @@ public func baseTableViewCellStyle<TVC: UITableViewCellProtocol>() -> ((TVC) -> 
         return .init(topBottom: Styles.grid(3), leftRight: Styles.grid(12))
       }
       return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-      }
-      <> TVC.lens.backgroundColor .~ .white
-      <> (TVC.lens.contentView .. UIView.lens.preservesSuperviewLayoutMargins) .~ false
-      <> TVC.lens.layoutMargins .~ .init(all: 0.0)
-      <> TVC.lens.preservesSuperviewLayoutMargins .~ false
-      <> TVC.lens.selectionStyle .~ .none
+    }
+    <> TVC.lens.backgroundColor .~ .white
+    <> (TVC.lens.contentView .. UIView.lens.preservesSuperviewLayoutMargins) .~ false
+    <> TVC.lens.layoutMargins .~ .init(all: 0.0)
+    <> TVC.lens.preservesSuperviewLayoutMargins .~ false
+    <> TVC.lens.selectionStyle .~ .none
 }
 
 public let baseTableViewCellTitleLabelStyle: LabelStyle = { label in
