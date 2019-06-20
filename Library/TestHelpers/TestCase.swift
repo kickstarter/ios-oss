@@ -14,7 +14,6 @@ internal class TestCase: FBSnapshotTestCase {
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
   internal let dateType = MockDate.self
-  internal let facebookAppDelegate = MockFacebookAppDelegate()
   internal let mainBundle = MockBundle()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
@@ -50,7 +49,6 @@ internal class TestCase: FBSnapshotTestCase {
       dateType: self.dateType,
       debounceInterval: .seconds(0),
       device: MockDevice(),
-      facebookAppDelegate: self.facebookAppDelegate,
       isOSVersionAvailable: isOSVersionAvailable,
       isVoiceOverRunning: isVoiceOverRunning,
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
