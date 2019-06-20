@@ -138,14 +138,12 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
     self.viewModel.outputs.showDiscoveryFilters
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.betaToolsButton.tintAdjustmentMode = .dimmed
         self?.showDiscoveryFilters(selectedRow: $0)
       }
 
     self.viewModel.outputs.dismissDiscoveryFilters
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.betaToolsButton.tintAdjustmentMode = .normal
         self?.dismiss(animated: false, completion: nil)
       }
 
@@ -165,6 +163,13 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
           completion: nil
         )
       }
+
+    self.viewModel.outputs.debugImageViewIsDimmed
+      .observeForUI()
+      .observeValues { [weak self] isDimmed in
+        _ = self?.debugImageView
+          ?|> \.tintAdjustmentMode .~ (isDimmed ? .dimmed : .normal)
+    }
   }
 
   internal override func bindStyles() {
