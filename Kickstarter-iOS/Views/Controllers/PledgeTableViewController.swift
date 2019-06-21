@@ -68,10 +68,15 @@ class PledgeTableViewController: UITableViewController {
   }
 
   internal override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
-    if let descriptionCell = cell as? PledgeDescriptionCell {
-      descriptionCell.delegate = self
-    } else if let shippingLocationCell = cell as? PledgeShippingLocationCell {
-      self.shippingLocationCell = shippingLocationCell
+    switch cell {
+    case is PledgeDescriptionCell:
+      (cell as? PledgeDescriptionCell)?.delegate = self
+    case is PledgeSummaryCell:
+      (cell as? PledgeSummaryCell)?.delegate = self
+    case is PledgeShippingLocationCell:
+      self.shippingLocationCell = (cell as? PledgeShippingLocationCell)
+    default:
+      break
     }
   }
 }
@@ -79,6 +84,14 @@ class PledgeTableViewController: UITableViewController {
 extension PledgeTableViewController: PledgeDescriptionCellDelegate {
   internal func pledgeDescriptionCellDidPresentTrustAndSafety(_: PledgeDescriptionCell) {
     let vc = HelpWebViewController.configuredWith(helpType: .trust)
+    let nav = UINavigationController(rootViewController: vc)
+    self.present(nav, animated: true, completion: nil)
+  }
+}
+
+extension PledgeTableViewController: PledgeSummaryCellDelegate {
+  internal func pledgeSummaryCell(_: PledgeSummaryCell, didOpen helpType: HelpType) {
+    let vc = HelpWebViewController.configuredWith(helpType: helpType)
     let nav = UINavigationController(rootViewController: vc)
     self.present(nav, animated: true, completion: nil)
   }

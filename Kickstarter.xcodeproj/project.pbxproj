@@ -829,6 +829,7 @@
 		D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */; };
 		D0200A5721935F2D00F5CC27 /* GraphError+LocalizedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0200A5221935EDF00F5CC27 /* GraphError+LocalizedDescription.swift */; };
 		D0237C1522BC2B640092C792 /* PledgeSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0237C1422BC2B640092C792 /* PledgeSummaryCell.swift */; };
+		D0237C2622BD7B540092C792 /* PledgeSummaryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0237C2522BD7B540092C792 /* PledgeSummaryCellViewModel.swift */; };
 		D0247A961DF9F29100D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */; };
 		D033E2C222A05B4800464E43 /* MockApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = D033E2C122A05B4800464E43 /* MockApplication.swift */; };
 		D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = D033E2C122A05B4800464E43 /* MockApplication.swift */; };
@@ -2119,6 +2120,7 @@
 		D0200A5221935EDF00F5CC27 /* GraphError+LocalizedDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GraphError+LocalizedDescription.swift"; sourceTree = "<group>"; };
 		D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBannerType.swift; sourceTree = "<group>"; };
 		D0237C1422BC2B640092C792 /* PledgeSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeSummaryCell.swift; sourceTree = "<group>"; };
+		D0237C2522BD7B540092C792 /* PledgeSummaryCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeSummaryCellViewModel.swift; sourceTree = "<group>"; };
 		D0247A911DF9F0EF00D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletSubpageCellViewModel.swift; sourceTree = "<group>"; };
 		D033E2C122A05B4800464E43 /* MockApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockApplication.swift; sourceTree = "<group>"; };
 		D04AAC08218BB70800CF713E /* SettingsNotificationCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCellViewModel.swift; sourceTree = "<group>"; };
@@ -3243,6 +3245,8 @@
 				A7ED1F7F1E831C5C00BFFA01 /* DashboardViewModelTests.swift */,
 				9DDE1F731D5926D80092D9A5 /* DeprecatedCheckoutViewModel.swift */,
 				A7ED1F511E831C5C00BFFA01 /* DeprecatedCheckoutViewModelTests.swift */,
+				A747A8EA1D45896000AF199A /* DeprecatedRewardCellViewModel.swift */,
+				A7ED1FA21E831C5C00BFFA01 /* DeprecatedRewardCellViewModelTests.swift */,
 				A774684A1D6E400D007DCDFC /* DeprecatedRewardPledgeViewModel.swift */,
 				A7ED1F7E1E831C5C00BFFA01 /* DeprecatedRewardPledgeViewModelTests.swift */,
 				A78851901D6C900000617930 /* DeprecatedWebViewModel.swift */,
@@ -3311,6 +3315,7 @@
 				D775953B22725289005EE69B /* PledgeDescriptionCellViewModelTests.swift */,
 				3706408522A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift */,
 				3706408722A8A6F200889CBD /* PledgeShippingLocationCellViewModelTests.swift */,
+				D0237C2522BD7B540092C792 /* PledgeSummaryCellViewModel.swift */,
 				37DEC1E62257C9F30051EF9B /* PledgeViewModel.swift */,
 				37DEC21F2257CA0A0051EF9B /* PledgeViewModelTests.swift */,
 				A7F441A31D005A9400FE6FC5 /* ProfileViewModel.swift */,
@@ -3357,8 +3362,6 @@
 				77D8DBCC22A82C5C00454120 /* RewardCellViewModelTests.swift */,
 				77EFBAE12268D44D00DA5C3C /* RewardsCollectionViewModel.swift */,
 				77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */,
-				A747A8EA1D45896000AF199A /* DeprecatedRewardCellViewModel.swift */,
-				A7ED1FA21E831C5C00BFFA01 /* DeprecatedRewardCellViewModelTests.swift */,
 				A75A9DBE1D6F3A3000603D1D /* RewardShippingPickerViewModel.swift */,
 				A7ED1FA31E831C5C00BFFA01 /* RewardShippingPickerViewModelTests.swift */,
 				D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */,
@@ -4442,6 +4445,7 @@
 				D798A6AE21656D970053D097 /* Currency.swift in Sources */,
 				77F6E73521222E7C005A5C55 /* EmailFrequency.swift in Sources */,
 				A7EDEE571D83453F00780B34 /* PKPaymentAuthorizationViewController.swift in Sources */,
+				D0237C2622BD7B540092C792 /* PledgeSummaryCellViewModel.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
 				D63BBD35217FAB85007E01F0 /* PaymentMethodsViewModel.swift in Sources */,

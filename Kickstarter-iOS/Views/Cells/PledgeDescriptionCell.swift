@@ -215,7 +215,7 @@ private func attributedLearnMoreText() -> NSAttributedString? {
     key: "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability",
     defaultValue: "<p>Kickstarter is not a store. It's a way to bring creative projects to life.</br><a href=\"%{trust_link}\">Learn more about accountability</a><p>",
     substitutions: [
-      "trust_link": urlForHelpType(.trust, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString
+      "trust_link": HelpType.trust.url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString
     ]
     .compactMapValues { $0.coalesceWith("") }
   )
