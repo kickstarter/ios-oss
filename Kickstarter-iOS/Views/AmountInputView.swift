@@ -15,7 +15,7 @@ private enum Layout {
 class AmountInputView: UIView {
   // MARK: - Properties
 
-  private lazy var doneButton: UIButton = {
+  private(set) lazy var doneButton: UIButton = {
     UIButton(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
