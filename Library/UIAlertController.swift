@@ -261,9 +261,9 @@ public extension UIAlertController {
 
   static func facebookLoginAttemptFail(_ error: NSError) -> UIAlertController {
     let alertController = UIAlertController(
-      title: error.userInfo[FBSDKErrorLocalizedTitleKey] as? String ??
+      title: error.userInfo[ErrorLocalizedTitleKey] as? String ??
         Strings.login_tout_errors_facebook_settings_disabled_title(),
-      message: error.userInfo[FBSDKErrorLocalizedDescriptionKey] as? String ??
+      message: error.userInfo[ErrorLocalizedDescriptionKey] as? String ??
         Strings.login_tout_errors_facebook_settings_disabled_message(),
       preferredStyle: .alert
     )

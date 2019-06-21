@@ -33,7 +33,9 @@ public protocol AppDelegateViewModelInputs {
   func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool
 
   /// Call when the application finishes launching.
-  func applicationDidFinishLaunching(application: UIApplication?, launchOptions: [AnyHashable: Any]?)
+  func applicationDidFinishLaunching(
+    application: UIApplication?, launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  )
 
   /// Call when the application will enter foreground.
   func applicationWillEnterForeground()
@@ -48,8 +50,7 @@ public protocol AppDelegateViewModelInputs {
   func applicationOpenUrl(
     application: UIApplication?,
     url: URL,
-    sourceApplication: String?,
-    annotation: Any
+    options: [UIApplication.OpenURLOptionsKey: Any]
   ) -> Bool
 
   /// Call when the application receives a request to perform a shortcut action.
@@ -98,9 +99,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
-
-  /// Return this value in the delegate method.
-  var facebookOpenURLReturnValue: MutableProperty<Bool> { get }
 
   /// Emits when the view needs to figure out the redirect URL for the emitted URL.
   var findRedirectUrl: Signal<URL, Never> { get }
@@ -210,22 +208,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(Notification(name: .ksr_userUpdated, object: nil))
 
-    self.applicationLaunchOptionsProperty.signal.skipNil()
-      .take(first: 1)
-      .observeValues { appOptions in
-        _ = AppEnvironment.current.facebookAppDelegate.application(
-          appOptions.application,
-          didFinishLaunchingWithOptions: appOptions.options
-        )
-      }
-
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
-
-    self.facebookOpenURLReturnValue <~ openUrl.map {
-      AppEnvironment.current.facebookAppDelegate.application(
-        $0.application, open: $0.url, sourceApplication: $0.sourceApplication, annotation: $0.annotation
-      )
-    }
 
     // iCloud
 
@@ -615,11 +598,13 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     return self.continueUserActivityReturnValue.value
   }
 
-  fileprivate typealias ApplicationWithOptions = (application: UIApplication?, options: [AnyHashable: Any]?)
+  fileprivate typealias ApplicationWithOptions = (
+    application: UIApplication?, options: [UIApplication.LaunchOptionsKey: Any]?
+  )
   fileprivate let applicationLaunchOptionsProperty = MutableProperty<ApplicationWithOptions?>(nil)
   public func applicationDidFinishLaunching(
     application: UIApplication?,
-    launchOptions: [AnyHashable: Any]?
+    launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) {
     self.applicationLaunchOptionsProperty.value = (application, launchOptions)
   }
@@ -682,18 +667,16 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate typealias ApplicationOpenUrl = (
     application: UIApplication?,
     url: URL,
-    sourceApplication: String?,
-    annotation: Any
+    options: [UIApplication.OpenURLOptionsKey: Any]
   )
   fileprivate let applicationOpenUrlProperty = MutableProperty<ApplicationOpenUrl?>(nil)
   public func applicationOpenUrl(
     application: UIApplication?,
     url: URL,
-    sourceApplication: String?,
-    annotation: Any
+    options: [UIApplication.OpenURLOptionsKey: Any]
   ) -> Bool {
-    self.applicationOpenUrlProperty.value = (application, url, sourceApplication, annotation)
-    return self.facebookOpenURLReturnValue.value
+    self.applicationOpenUrlProperty.value = (application, url, options)
+    return true
   }
 
   fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
@@ -720,7 +703,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let configureFabric: Signal<(), Never>
   public let configureHockey: Signal<HockeyConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
-  public let facebookOpenURLReturnValue = MutableProperty(false)
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>

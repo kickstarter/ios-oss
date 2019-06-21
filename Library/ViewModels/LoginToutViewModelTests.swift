@@ -103,22 +103,24 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testFacebookLoginFlow_Success() {
-    let token = FBSDKAccessToken(
+    let token = AccessToken(
       tokenString: "12344566",
-      permissions: nil,
-      declinedPermissions: nil,
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
       appID: "834987809",
       userID: "0000000001",
       expirationDate: Date(),
-      refreshDate: Date()
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    let result = FBSDKLoginManagerLoginResult(
+    let result = LoginManagerLoginResult(
       token: token,
       isCancelled: false,
-      grantedPermissions: nil,
-      declinedPermissions: nil
-    )!
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
 
     vm.inputs.viewWillAppear()
 
@@ -156,8 +158,8 @@ final class LoginToutViewModelTests: TestCase {
       domain: "facebook.com",
       code: 404,
       userInfo: [
-        FBSDKErrorLocalizedTitleKey: "Facebook Login Fail",
-        FBSDKErrorLocalizedDescriptionKey: "Something went wrong yo."
+        ErrorLocalizedTitleKey: "Facebook Login Fail",
+        ErrorLocalizedDescriptionKey: "Something went wrong yo."
       ]
     )
 
@@ -215,22 +217,24 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testLoginFacebookFlow_InvalidTokenFail() {
-    let token = FBSDKAccessToken(
+    let token = AccessToken(
       tokenString: "spaghetti",
-      permissions: nil,
-      declinedPermissions: nil,
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
       appID: "834987809",
       userID: "0000000001",
       expirationDate: Date(),
-      refreshDate: Date()
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    let result = FBSDKLoginManagerLoginResult(
+    let result = LoginManagerLoginResult(
       token: token,
       isCancelled: false,
-      grantedPermissions: nil,
-      declinedPermissions: nil
-    )!
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
 
     let error = ErrorEnvelope(
       errorMessages: ["Couldn't log into Facebook."],
@@ -259,22 +263,24 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testLoginFacebookFlow_GenericFail() {
-    let token = FBSDKAccessToken(
+    let token = AccessToken(
       tokenString: "12344566",
-      permissions: nil,
-      declinedPermissions: nil,
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
       appID: "834987809",
       userID: "0000000001",
       expirationDate: Date(),
-      refreshDate: Date()
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    let result = FBSDKLoginManagerLoginResult(
+    let result = LoginManagerLoginResult(
       token: token,
       isCancelled: false,
-      grantedPermissions: nil,
-      declinedPermissions: nil
-    )!
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
 
     let error = ErrorEnvelope(
       errorMessages: ["Something went wrong."],
@@ -303,22 +309,24 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testLoginFacebookFlow_GenericFail_WithDefaultMessage() {
-    let token = FBSDKAccessToken(
+    let token = AccessToken(
       tokenString: "12344566",
-      permissions: nil,
-      declinedPermissions: nil,
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
       appID: "834987809",
       userID: "0000000001",
       expirationDate: Date(),
-      refreshDate: Date()
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    let result = FBSDKLoginManagerLoginResult(
+    let result = LoginManagerLoginResult(
       token: token,
       isCancelled: false,
-      grantedPermissions: nil,
-      declinedPermissions: nil
-    )!
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
 
     let error = ErrorEnvelope(
       errorMessages: [],
@@ -347,22 +355,24 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testStartTwoFactorChallenge() {
-    let token = FBSDKAccessToken(
+    let token = AccessToken(
       tokenString: "12344566",
-      permissions: nil,
-      declinedPermissions: nil,
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
       appID: "834987809",
       userID: "0000000001",
       expirationDate: Date(),
-      refreshDate: Date()
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    let result = FBSDKLoginManagerLoginResult(
+    let result = LoginManagerLoginResult(
       token: token,
       isCancelled: false,
-      grantedPermissions: nil,
-      declinedPermissions: nil
-    )!
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
 
     let error = ErrorEnvelope(
       errorMessages: ["Two Factor Authenticaion is required."],
@@ -392,22 +402,24 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testStartFacebookConfirmation() {
-    let token = FBSDKAccessToken(
+    let token = AccessToken(
       tokenString: "12344566",
-      permissions: nil,
-      declinedPermissions: nil,
+      permissions: [],
+      declinedPermissions: [],
+      expiredPermissions: [],
       appID: "834987809",
       userID: "0000000001",
       expirationDate: Date(),
-      refreshDate: Date()
+      refreshDate: Date(),
+      dataAccessExpirationDate: Date()
     )
 
-    let result = FBSDKLoginManagerLoginResult(
+    let result = LoginManagerLoginResult(
       token: token,
       isCancelled: false,
-      grantedPermissions: nil,
-      declinedPermissions: nil
-    )!
+      grantedPermissions: [],
+      declinedPermissions: []
+    )
 
     let error = ErrorEnvelope(
       errorMessages: ["Confirm Facebook Signup"],
