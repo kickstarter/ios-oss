@@ -9,7 +9,7 @@ internal final class WatchProjectViewModelTests: TestCase {
 
   internal let generateImpactFeedback = TestObserver<(), Never>()
   internal let generateSelectionFeedback = TestObserver<(), Never>()
-  internal let generateNotificationSuccessFeedback = TestObserver<(), Never>()
+  internal let generateSuccessFeedback = TestObserver<(), Never>()
   internal let goToLoginTout = TestObserver<(), Never>()
   internal let postNotificationWithProject = TestObserver<Project, Never>() // fixme: test
   internal let saveButtonAccessibilityValue = TestObserver<String, Never>()
@@ -22,9 +22,7 @@ internal final class WatchProjectViewModelTests: TestCase {
 
     self.vm.outputs.generateImpactFeedback.observe(self.generateImpactFeedback.observer)
     self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
-    self.vm.outputs.generateNotificationSuccessFeedback.observe(
-      self.generateNotificationSuccessFeedback.observer
-    )
+    self.vm.outputs.generateSuccessFeedback.observe(self.generateSuccessFeedback.observer)
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
     self.vm.outputs.saveButtonAccessibilityValue.observe(self.saveButtonAccessibilityValue.observer)
     self.vm.outputs.saveButtonSelected.observe(self.saveButtonSelected.observer)
@@ -60,11 +58,11 @@ internal final class WatchProjectViewModelTests: TestCase {
       self.vm.inputs.saveButtonTapped(selected: true)
       self.scheduler.advance()
       self.generateSelectionFeedback.assertValueCount(1)
-      self.generateNotificationSuccessFeedback.assertValueCount(0)
+      self.generateSuccessFeedback.assertValueCount(0)
     }
   }
 
-  func testGenerateNotificationSuccessFeedback() {
+  func testGenerateSuccessFeedback() {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configure(with: .template)
       self.vm.inputs.viewDidLoad()
@@ -72,7 +70,7 @@ internal final class WatchProjectViewModelTests: TestCase {
       self.vm.inputs.saveButtonTapped(selected: false)
       self.scheduler.advance()
       self.generateSelectionFeedback.assertValueCount(0)
-      self.generateNotificationSuccessFeedback.assertValueCount(1)
+      self.generateSuccessFeedback.assertValueCount(1)
     }
   }
 
