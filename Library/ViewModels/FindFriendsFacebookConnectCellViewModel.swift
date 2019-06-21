@@ -18,7 +18,7 @@ public protocol FindFriendsFacebookConnectCellViewModelInputs {
   func facebookLoginFail(error: Error?)
 
   /// Call when Facebook login completed successfully with a result
-  func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult)
+  func facebookLoginSuccess(result: LoginManagerLoginResult)
 
   /// Call when the current user has been updated in the environment
   func userUpdated()
@@ -76,7 +76,7 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     self.attemptFacebookLogin = self.facebookConnectButtonTappedProperty.signal
 
     let tokenString: Signal<String, Never> = self.facebookLoginSuccessProperty.signal.skipNil()
-      .map { $0.token.tokenString ?? "" }
+      .map { $0.token?.tokenString ?? "" }
 
     let facebookConnect = tokenString
       .switchMap { token in
@@ -187,8 +187,8 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     self.facebookLoginFailProperty.value = error
   }
 
-  fileprivate let facebookLoginSuccessProperty = MutableProperty<FBSDKLoginManagerLoginResult?>(nil)
-  public func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult) {
+  fileprivate let facebookLoginSuccessProperty = MutableProperty<LoginManagerLoginResult?>(nil)
+  public func facebookLoginSuccess(result: LoginManagerLoginResult) {
     self.facebookLoginSuccessProperty.value = result
   }
 

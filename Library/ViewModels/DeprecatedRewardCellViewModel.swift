@@ -2,13 +2,13 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol RewardCellViewModelInputs {
+public protocol DeprecatedRewardCellViewModelInputs {
   func boundStyles()
   func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
   func tapped()
 }
 
-public protocol RewardCellViewModelOutputs {
+public protocol DeprecatedRewardCellViewModelOutputs {
   var allGoneHidden: Signal<Bool, Never> { get }
   var conversionLabelHidden: Signal<Bool, Never> { get }
   var conversionLabelText: Signal<String, Never> { get }
@@ -36,13 +36,13 @@ public protocol RewardCellViewModelOutputs {
   var youreABackerViewHidden: Signal<Bool, Never> { get }
 }
 
-public protocol RewardCellViewModelType {
-  var inputs: RewardCellViewModelInputs { get }
-  var outputs: RewardCellViewModelOutputs { get }
+public protocol DeprecatedRewardCellViewModelType {
+  var inputs: DeprecatedRewardCellViewModelInputs { get }
+  var outputs: DeprecatedRewardCellViewModelOutputs { get }
 }
 
-public final class DeprecatedRewardCellViewModel: RewardCellViewModelType, RewardCellViewModelInputs,
-  RewardCellViewModelOutputs {
+public final class DeprecatedRewardCellViewModel: DeprecatedRewardCellViewModelType,
+  DeprecatedRewardCellViewModelInputs, DeprecatedRewardCellViewModelOutputs {
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
       self.projectAndRewardOrBackingProperty.signal.skipNil()
@@ -294,8 +294,8 @@ public final class DeprecatedRewardCellViewModel: RewardCellViewModelType, Rewar
   public let youreABackerLabelText: Signal<String, Never>
   public let youreABackerViewHidden: Signal<Bool, Never>
 
-  public var inputs: RewardCellViewModelInputs { return self }
-  public var outputs: RewardCellViewModelOutputs { return self }
+  public var inputs: DeprecatedRewardCellViewModelInputs { return self }
+  public var outputs: DeprecatedRewardCellViewModelOutputs { return self }
 }
 
 private func minimumRewardAmountTextColor(project: Project, reward: Reward) -> UIColor {

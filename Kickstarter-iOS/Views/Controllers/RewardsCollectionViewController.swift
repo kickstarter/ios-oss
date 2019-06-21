@@ -25,7 +25,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
     UICollectionViewFlowLayout()
       |> \.minimumLineSpacing .~ Styles.grid(3)
       |> \.minimumInteritemSpacing .~ 0
-      |> \.sectionInset .~ .init(topBottom: Styles.grid(6))
       |> \.scrollDirection .~ .horizontal
   }()
 
@@ -107,10 +106,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.reloadDataWithRewards
+    self.viewModel.outputs.reloadDataWithValues
       .observeForUI()
-      .observeValues { [weak self] rewards in
-        self?.dataSource.load(rewards: rewards)
+      .observeValues { [weak self] values in
+        self?.dataSource.load(values)
         self?.collectionView.reloadData()
       }
 
@@ -227,8 +226,13 @@ final class RewardsCollectionViewController: UICollectionViewController {
 // MARK: - UICollectionViewDelegate
 
 extension RewardsCollectionViewController {
-  override func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    self.viewModel.inputs.rewardSelected(at: indexPath.row)
+  override func collectionView(
+    _: UICollectionView, willDisplay cell: UICollectionViewCell,
+    forItemAt _: IndexPath
+  ) {
+    if let rewardCell = cell as? RewardCell {
+      rewardCell.delegate = self
+    }
   }
 }
 
@@ -259,6 +263,12 @@ extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
     layout.itemSize = self.calculateItemSize(from: layout, using: collectionView)
 
     return layout.itemSize
+  }
+}
+
+extension RewardsCollectionViewController: RewardCellDelegate {
+  func rewardCellDidTapPledgeButton(_: RewardCell, rewardId: Int) {
+    self.viewModel.inputs.rewardSelected(with: rewardId)
   }
 }
 

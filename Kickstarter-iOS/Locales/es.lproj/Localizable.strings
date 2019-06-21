@@ -115,6 +115,7 @@
 "Data_will_appear_here_once" = "Los datos aparecerán aquí una vez que alguien patrocine tu proyecto.";
 "Delete_my_Kickstarter_Account" = "Eliminar mi cuenta de Kickstarter";
 "Delivered" = "Entregado";
+"Description" = "Descripción";
 "Developer" = "Desarrollador";
 "Discover_arts_news" = "Descubre proyectos e ideas innovadores, seleccionados exclusivamente para ti dos veces al mes por el equipo de Diseño & Tecnología de Kickstarter.";
 "Discover_more_projects" = "Descubre más proyectos.";
@@ -533,6 +534,7 @@
 "accessibility.projects.buttons.star" = "Favoritos";
 "accessibility.projects.buttons.star_hint_favorites_this_project" = "Añade este proyecto a tus favoritos.";
 "accessibility.projects.buttons.star_hint_reminds_you" = "Recibirás una notificación 48 horas antes de que finalice el proyecto.";
+"activities_badge_value_plus" = "%{activities_badge_value}+";
 "activity.by_creator" = "por %{creator_name}";
 "activity.creator.actions.user_name_adjusted_their_pledge" = "%{user_name} ajustó su contribución:";
 "activity.creator.actions.user_name_canceled_their_pledge" = "%{user_name} canceló su contribución:";

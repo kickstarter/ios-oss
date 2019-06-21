@@ -185,3 +185,12 @@ public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule])
 
   return shippingRuleInUSA ?? shippingRules.first
 }
+
+public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User, Never> {
+  return AppEnvironment.current.apiService.clearUserUnseenActivity(input: .init())
+    .filter { _ in AppEnvironment.current.currentUser != nil }
+    .map { $0.activityIndicatorCount }
+    .map { count in AppEnvironment.current.currentUser ?|> User.lens.unseenActivityCount .~ count }
+    .skipNil()
+    .demoteErrors()
+}
