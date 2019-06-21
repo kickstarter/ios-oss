@@ -163,6 +163,13 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
           completion: nil
         )
       }
+
+    self.viewModel.outputs.debugImageViewIsDimmed
+      .observeForUI()
+      .observeValues { [weak self] isDimmed in
+        _ = self?.debugImageView
+          ?|> \.tintAdjustmentMode .~ (isDimmed ? .dimmed : .normal)
+      }
   }
 
   internal override func bindStyles() {
@@ -327,8 +334,10 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
   @objc fileprivate func betaToolsButtonTapped() {
     let betaToolsViewController = BetaToolsViewController.instantiate()
+    let navigationController = UINavigationController(rootViewController: betaToolsViewController)
+    navigationController.modalPresentationStyle = .formSheet
 
-    self.navigationController?.pushViewController(betaToolsViewController, animated: true)
+    self.present(navigationController, animated: true)
   }
 
   @objc fileprivate func titleButtonTapped() {

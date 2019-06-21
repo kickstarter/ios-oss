@@ -8,6 +8,13 @@ internal final class DebugPushNotificationsViewController: UIViewController {
   @IBOutlet fileprivate var scrollView: UIScrollView!
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    _ = self
+      |> \.title .~ "Push notifications"
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 
