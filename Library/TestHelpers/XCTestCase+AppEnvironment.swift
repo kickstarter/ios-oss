@@ -4,6 +4,7 @@ import KsApi
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable line_length
 extension XCTestCase {
   // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   func withEnvironment(_ env: Environment, body: () -> Void) {
