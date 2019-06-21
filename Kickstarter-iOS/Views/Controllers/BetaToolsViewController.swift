@@ -5,119 +5,187 @@ import Prelude
 import SafariServices
 import UIKit
 
-internal final class BetaToolsViewController: UIViewController {
-  fileprivate let viewModel: BetaToolsViewModelType = BetaToolsViewModel()
-  fileprivate let helpViewModel: HelpViewModelType = HelpViewModel()
+internal final class BetaToolsViewController: UITableViewController {
+  // MARK: - Properties
 
-  @IBOutlet fileprivate var doneButton: UIBarButtonItem!
-  @IBOutlet fileprivate var betaDebugPushNotificationsButton: UIButton!
-  @IBOutlet fileprivate var betaFeedbackButton: UIButton!
-  @IBOutlet fileprivate var betaTitleLabel: UILabel!
-  @IBOutlet fileprivate var languageSwitcher: UIButton!
-  @IBOutlet fileprivate var languageTitleLabel: UILabel!
-  @IBOutlet fileprivate var environmentSwitcher: UIButton!
-  @IBOutlet fileprivate var environmentTitleLabel: UILabel!
+  private let betaFeedbackButton = UIButton(type: .custom)
+  private var betaToolsData: BetaToolsData?
+  private let helpViewModel: HelpViewModelType = HelpViewModel()
+  private let viewModel: BetaToolsViewModelType = BetaToolsViewModel()
 
   internal static func instantiate() -> BetaToolsViewController {
-    return Storyboard.BetaTools.instantiate(BetaToolsViewController.self)
+    return BetaToolsViewController(style: .plain)
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
-    self.navigationItem.setRightBarButton(self.doneButton, animated: false)
+    _ = self
+      |> \.title .~ "Beta tools"
+
+    _ = self.tableView
+      |> \.dataSource .~ self
+
+    self.configureFooterView()
+    self.betaFeedbackButton.addTarget(
+      self, action: #selector(self.betaFeedbackButtonTapped),
+      for: .touchUpInside
+    )
+
+    let doneButton = UIBarButtonItem(
+      title: Strings.Done(), style: .done, target: self,
+      action: #selector(self.doneButtonTapped)
+    )
+
+    _ = self.navigationItem
+      ?|> \.rightBarButtonItem .~ doneButton
+
+    self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
   override func bindStyles() {
     _ = self.navigationController
       ?|> UINavigationController.lens.isNavigationBarHidden .~ false
 
-    _ = self.betaDebugPushNotificationsButton
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
-      |> UIButton.lens.titleLabel.font .~ .ksr_body()
-      |> UIButton.lens.contentHorizontalAlignment .~ .left
-      |> UIButton.lens.title(for: .normal) .~ "Debug push notifications"
-
     _ = self.betaFeedbackButton
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) .~ "Submit feedback for beta"
-
-    _ = self.betaTitleLabel
-      |> settingsTitleLabelStyle
-      |> UILabel.lens.text .~ "Beta tools"
-
-    _ = self.languageSwitcher
-      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
-      |> UIButton.lens.title(for: .normal) .~ AppEnvironment.current.language.displayString
-
-    _ = self.languageTitleLabel
-      |> settingsTitleLabelStyle
-
-    _ = self.environmentSwitcher
-      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-      |> UIButton.lens.contentHorizontalAlignment .~ .left
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
-      |> UIButton.lens.title(for: .normal) .~
-      AppEnvironment.current.apiService.serverConfig.environment.rawValue
-
-    _ = self.environmentTitleLabel
-      |> settingsTitleLabelStyle
   }
 
   override func bindViewModel() {
-    self.environmentSwitcher.rac.title = self.viewModel.outputs.environmentSwitcherButtonTitle
-
-    self.languageSwitcher.rac.title = self.viewModel.outputs.currentLanguage
-      .map { $0.displayString }
-
-    self.viewModel.outputs.currentLanguage
+    self.viewModel.outputs.reloadWithData
       .observeForUI()
-      .observeValues { [weak self] language in self?.languageDidChange(language: language) }
+      .observeValues { [weak self] data in
+        self?.betaToolsData = data
+
+        self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.goToPushNotificationTools
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToDebugPushNotifications()
+      }
+
+    self.viewModel.outputs.goToFeatureFlagTools
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToFeatureFlagTools()
+      }
 
     self.viewModel.outputs.goToBetaFeedback
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.goToBetaFeedback() }
+      .observeValues { [weak self] in
+        self?.goToBetaFeedback()
+      }
 
-    self.viewModel.outputs.betaFeedbackMailDisabled
+    self.viewModel.outputs.showChangeEnvironmentSheetWithSourceViewIndex
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.showMailDisabledAlert() }
+      .observeValues { [weak self] index in
+        self?.showEnvironmentActionSheet(sourceViewIndex: index)
+      }
+
+    self.viewModel.outputs.showChangeLanguageSheetWithSourceViewIndex
+      .observeForControllerAction()
+      .observeValues { [weak self] index in
+        self?.showLanguageActionSheet(sourceViewIndex: index)
+      }
+
+    self.viewModel.outputs.updateLanguage
+      .observeForControllerAction()
+      .observeValues { [weak self] language in
+        self?.updateLanguage(language: language)
+      }
+
+    self.viewModel.outputs.updateEnvironment
+      .observeForControllerAction()
+      .observeValues { [weak self] environment in
+        self?.updateEnvironment(environment: environment)
+      }
 
     self.viewModel.outputs.logoutWithParams
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.logoutAndDismiss(params: $0) }
+      .observeValues { [weak self] in
+        self?.logoutAndDismiss(params: $0)
+      }
+
+    self.viewModel.outputs.showMailDisabledAlert
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.showMailDisabledAlert()
+      }
   }
 
-  @IBAction fileprivate func betaFeedbackButtonTapped(_: Any) {
+  // MARK: - Selectors
+
+  @objc private func betaFeedbackButtonTapped() {
     self.viewModel.inputs.betaFeedbackButtonTapped(canSendMail: MFMailComposeViewController.canSendMail())
   }
 
-  @IBAction fileprivate func betaDebugPushNotificationsButtonTapped(_: Any) {
+  @objc private func doneButtonTapped() {
+    self.navigationController?.dismiss(animated: true)
+  }
+
+  // MARK: Private Helper Functions
+
+  private func configureFooterView() {
+    let containerView = UIView(frame: .zero)
+
+    /* Silences autolayout warnings between conflicting table view frame-based sizing and our
+     tableFooterView's autolayout constraints
+     */
+    let priority = UILayoutPriority(rawValue: 999)
+
+    _ = (self.betaFeedbackButton, containerView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent(priority: priority)
+
+    _ = self.tableView
+      |> \.tableFooterView .~ containerView
+
+    let widthConstraint = self.betaFeedbackButton.widthAnchor
+      .constraint(equalTo: self.tableView.layoutMarginsGuide.widthAnchor)
+      |> \.priority .~ .defaultHigh
+
+    let heightConstraint = self.betaFeedbackButton.heightAnchor
+      .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      |> \.priority .~ .defaultHigh
+
+    NSLayoutConstraint.activate([widthConstraint, heightConstraint])
+  }
+
+  private func goToDebugPushNotifications() {
     self.navigationController?.pushViewController(
       Storyboard.DebugPushNotifications.instantiate(DebugPushNotificationsViewController.self),
       animated: true
     )
   }
 
-  @IBAction func languageSwitcherTapped(_: Any) {
-    self.showLanguageActionSheet()
+  private func goToFeatureFlagTools() {
+    let featureFlagToolsViewController = FeatureFlagToolsViewController.instantiate()
+
+    self.navigationController?.pushViewController(featureFlagToolsViewController, animated: true)
   }
 
-  @IBAction func environmentSwitcherTapped(_: Any) {
-    self.showEnvironmentActionSheet()
-  }
+  private func showLanguageActionSheet(sourceViewIndex: Int) {
+    guard let sourceView = self.tableView
+      .cellForRow(at: IndexPath(row: sourceViewIndex, section: 0))?.detailTextLabel else {
+      return
+    }
 
-  @IBAction func doneTapped(_: Any) {
-    self.navigationController?.popViewController(animated: true)
-  }
+    let preferredStyle: UIAlertController.Style = AppEnvironment.current.device.userInterfaceIdiom == .pad ?
+      .alert : .actionSheet
 
-  // MARK: - Private Helper Functions
-
-  private func showLanguageActionSheet() {
     let alert = UIAlertController.alert(
       title: "Change Language",
-      preferredStyle: .actionSheet,
-      sourceView: self.languageSwitcher
+      preferredStyle: preferredStyle,
+      sourceView: sourceView
     )
 
     Language.allLanguages.forEach { language in
@@ -135,16 +203,24 @@ internal final class BetaToolsViewController: UIViewController {
     self.present(alert, animated: true, completion: nil)
   }
 
-  private func showEnvironmentActionSheet() {
+  private func showEnvironmentActionSheet(sourceViewIndex: Int) {
+    guard let sourceView = self.tableView
+      .cellForRow(at: IndexPath(row: sourceViewIndex, section: 0))?.detailTextLabel else {
+      return
+    }
+
+    let preferredStyle: UIAlertController.Style = AppEnvironment.current.device.userInterfaceIdiom == .pad ?
+      .alert : .actionSheet
+
     let alert = UIAlertController.alert(
       title: "Change Environment",
-      preferredStyle: .actionSheet,
-      sourceView: self.environmentSwitcher
+      preferredStyle: preferredStyle,
+      sourceView: sourceView
     )
 
     EnvironmentType.allCases.forEach { environment in
       alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in
-        self?.viewModel.inputs.environmentSwitcherButtonTapped(environment: environment)
+        self?.viewModel.inputs.setEnvironment(environment)
       })
     }
 
@@ -155,13 +231,24 @@ internal final class BetaToolsViewController: UIViewController {
     self.present(alert, animated: true, completion: nil)
   }
 
-  private func languageDidChange(language: Language) {
+  private func updateLanguage(language: Language) {
     AppEnvironment.updateLanguage(language)
+
     NotificationCenter.default.post(
       name: Notification.Name.ksr_userLocalePreferencesChanged,
       object: nil,
       userInfo: nil
     )
+
+    self.navigationController?.popViewController(animated: true)
+  }
+
+  private func updateEnvironment(environment: EnvironmentType) {
+    let serverConfig = ServerConfig.config(for: environment)
+
+    AppEnvironment.updateServerConfig(serverConfig)
+
+    self.viewModel.inputs.didUpdateEnvironment()
   }
 
   private func goToBetaFeedback() {
@@ -207,7 +294,59 @@ internal final class BetaToolsViewController: UIViewController {
     // Refresh the discovery screens
     NotificationCenter.default.post(.init(name: .ksr_environmentChanged))
 
-    self.navigationController?.dismiss(animated: true, completion: nil)
+    self.navigationController?.popViewController(animated: true)
+  }
+}
+
+// MARK: - UITableViewDelegate
+
+extension BetaToolsViewController {
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let row = BetaToolsRow(rawValue: indexPath.row) else {
+      return
+    }
+
+    self.viewModel.inputs.didSelectBetaToolsRow(row)
+
+    tableView.deselectRow(at: indexPath, animated: true)
+  }
+}
+
+// MARK: - UITableViewDataSource
+
+extension BetaToolsViewController {
+  override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+    return BetaToolsRow.allCases.count
+  }
+
+  override func numberOfSections(in _: UITableView) -> Int {
+    return 1
+  }
+
+  override func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let row = BetaToolsRow.init(rawValue: indexPath.row), let rowData = self.betaToolsData else {
+      fatalError("Cannot create cell")
+    }
+
+    let cell = UITableViewCell(style: row.cellStyle, reuseIdentifier: nil)
+      |> \.selectionStyle .~ row.selectionStyle
+
+    if let imageName = row.rightIconImageName {
+      let image = UIImage(named: imageName)
+
+      _ = cell
+        |> \.accessoryView .~ UIImageView(image: image)
+    }
+
+    _ = cell.textLabel
+      ?|> titleLabelStyle
+      ?|> \.text .~ row.titleText
+
+    _ = cell.detailTextLabel
+      ?|> detailLabelStyle
+      ?|> \.text .~ row.detailText(from: rowData)
+
+    return cell
   }
 }
 
@@ -220,4 +359,18 @@ extension BetaToolsViewController: MFMailComposeViewControllerDelegate {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
     controller.dismiss(animated: true, completion: nil)
   }
+}
+
+private let detailLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ .ksr_headline(size: 15)
+    |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.lineBreakMode .~ .byWordWrapping
+    |> \.textAlignment .~ .right
+}
+
+private let titleLabelStyle: LabelStyle = { label in
+  label
+    |> \.textColor .~ .ksr_soft_black
+    |> \.font .~ .ksr_body()
 }
