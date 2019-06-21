@@ -12,7 +12,7 @@ internal final class SharedFunctionsTests: XCTestCase {
     XCTAssertTrue(mockFeedbackGenerator.impactOccurredWasCalled)
   }
 
-  func testGEnerateNotificationSuccessFeedback() {
+  func testGenerateNotificationSuccessFeedback() {
     let mockFeedbackGenerator = MockNotificationFeedbackGenerator()
 
     generateNotificationSuccessFeedback(feedbackGenerator: mockFeedbackGenerator)
