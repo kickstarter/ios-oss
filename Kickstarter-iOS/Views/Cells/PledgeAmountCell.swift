@@ -40,6 +40,12 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
+    self.amountInputView.doneButton.addTarget(
+      self,
+      action: #selector(PledgeAmountCell.doneButtonTapped(_:)),
+      for: .touchUpInside
+    )
+
     self.stepper.addTarget(
       self,
       action: #selector(PledgeAmountCell.stepperValueChanged(_:)),
@@ -85,6 +91,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.amountInputView.label.rac.text = self.viewModel.outputs.currency
+    self.amountInputView.textField.rac.isFirstResponder = self.viewModel.outputs.textFieldIsFirstResponder
     self.amountInputView.textField.rac.text = self.viewModel.outputs.amount
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
@@ -106,6 +113,10 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   }
 
   // MARK: - Actions
+
+  @objc func doneButtonTapped(_ button: UIButton) {
+    self.viewModel.inputs.doneButtonTapped()
+  }
 
   @objc func stepperValueChanged(_ stepper: UIStepper) {
     self.viewModel.inputs.stepperValueChanged(stepper.value)

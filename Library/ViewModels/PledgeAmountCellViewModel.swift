@@ -6,6 +6,7 @@ import ReactiveSwift
 
 public protocol PledgeAmountCellViewModelInputs {
   func configureWith(project: Project, reward: Reward)
+  func doneButtonTapped()
   func stepperValueChanged(_ value: Double)
 }
 
@@ -17,6 +18,7 @@ public protocol PledgeAmountCellViewModelOutputs {
   var stepperInitialValue: Signal<Double, Never> { get }
   var stepperMaxValue: Signal<Double, Never> { get }
   var stepperMinValue: Signal<Double, Never> { get }
+  var textFieldIsFirstResponder: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeAmountCellViewModelType {
@@ -71,11 +73,19 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
     self.generateNotificationWarningFeedback = stepperValueChanged
       .filter { min, max, value in value <= min || max <= value }
       .ignoreValues()
+
+    self.textFieldIsFirstResponder = self.doneButtonTappedProperty.signal
+      .mapConst(false)
   }
 
   private let projectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
   public func configureWith(project: Project, reward: Reward) {
     self.projectAndRewardProperty.value = (project, reward)
+  }
+
+  private let doneButtonTappedProperty = MutableProperty(())
+  public func doneButtonTapped() {
+    self.doneButtonTappedProperty.value = ()
   }
 
   private let stepperValueProperty = MutableProperty<Double>(0)
@@ -90,6 +100,7 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
   public let stepperInitialValue: Signal<Double, Never>
   public let stepperMaxValue: Signal<Double, Never>
   public let stepperMinValue: Signal<Double, Never>
+  public let textFieldIsFirstResponder: Signal<Bool, Never>
 
   public var inputs: PledgeAmountCellViewModelInputs { return self }
   public var outputs: PledgeAmountCellViewModelOutputs { return self }

@@ -14,6 +14,7 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
   private let stepperInitialValue = TestObserver<Double, Never>()
   private let stepperMinValue = TestObserver<Double, Never>()
   private let stepperMaxValue = TestObserver<Double, Never>()
+  private let textFieldIsFirstResponder = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -27,6 +28,7 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.vm.outputs.stepperInitialValue.observe(self.stepperInitialValue.observer)
     self.vm.outputs.stepperMinValue.observe(self.stepperMinValue.observer)
     self.vm.outputs.stepperMaxValue.observe(self.stepperMaxValue.observer)
+    self.vm.outputs.textFieldIsFirstResponder.observe(self.textFieldIsFirstResponder.observer)
   }
 
   func testAmountAndCurrency() {
@@ -92,5 +94,11 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
     self.stepperMaxValue.assertValue(20)
+  }
+
+  func testTextFieldIsFirstResponder() {
+    self.vm.inputs.doneButtonTapped()
+
+    self.textFieldIsFirstResponder.assertValue(false)
   }
 }
