@@ -4,6 +4,8 @@ $(SRCROOT)/Carthage/Build/iOS/Alamofire.framework
 $(SRCROOT)/Carthage/Build/iOS/AlamofireImage.framework
 $(SRCROOT)/Carthage/Build/iOS/Argo.framework
 $(SRCROOT)/Carthage/Build/iOS/Curry.framework
+$(SRCROOT)/Carthage/Build/iOS/FBSDKCoreKit.framework
+$(SRCROOT)/Carthage/Build/iOS/FBSDKLoginKit.framework
 $(SRCROOT)/Carthage/Build/iOS/OnePasswordExtension.framework
 $(SRCROOT)/Carthage/Build/iOS/Prelude.framework
 $(SRCROOT)/Carthage/Build/iOS/Prelude_UIKit.framework

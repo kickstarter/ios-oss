@@ -14,7 +14,7 @@ public protocol LoginToutViewModelInputs {
   func facebookLoginFail(error: Error?)
 
   /// Call when Facebook login completed successfully with a result
-  func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult)
+  func facebookLoginSuccess(result: LoginManagerLoginResult)
 
   /// Call to set the reason the user is attempting to log in
   func loginIntent(_ intent: LoginIntent)
@@ -99,7 +99,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.attemptFacebookLogin = self.facebookLoginButtonPressedProperty.signal
 
     let tokenString: Signal<String, Never> = self.facebookLoginSuccessProperty.signal.skipNil()
-      .map { $0.token.tokenString ?? "" }
+      .map { $0.token?.tokenString ?? "" }
 
     let facebookLogin = tokenString
       .switchMap { token in
@@ -207,8 +207,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.facebookLoginButtonPressedProperty.value = ()
   }
 
-  fileprivate let facebookLoginSuccessProperty = MutableProperty<FBSDKLoginManagerLoginResult?>(nil)
-  public func facebookLoginSuccess(result: FBSDKLoginManagerLoginResult) {
+  fileprivate let facebookLoginSuccessProperty = MutableProperty<LoginManagerLoginResult?>(nil)
+  public func facebookLoginSuccess(result: LoginManagerLoginResult) {
     self.facebookLoginSuccessProperty.value = result
   }
 

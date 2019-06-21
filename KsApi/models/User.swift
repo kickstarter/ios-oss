@@ -16,6 +16,7 @@ public struct User: Equatable {
   public var showPublicProfile: Bool?
   public var social: Bool?
   public var stats: Stats
+  public var unseenActivityCount: Int?
 
   public struct Avatar: Equatable {
     public var large: String?
@@ -110,6 +111,7 @@ extension User: Argo.Decodable {
       <*> json <|? "show_public_profile"
       <*> json <|? "social"
       <*> User.Stats.decode(json)
+      <*> json <|? "unseen_activity_count"
   }
 }
 

@@ -96,13 +96,6 @@ extension Project.Country {
   }
 }
 
-public func == (lhs: Project.Country, rhs: Project.Country) -> Bool {
-  return lhs.countryCode == rhs.countryCode
-    && lhs.currencySymbol == rhs.currencySymbol
-    && lhs.currencyCode == rhs.currencyCode
-    && lhs.trailingCode == rhs.trailingCode
-}
-
 extension Project.Country: CustomStringConvertible {
   public var description: String {
     return "(\(self.countryCode), \(self.currencyCode), \(self.currencySymbol))"

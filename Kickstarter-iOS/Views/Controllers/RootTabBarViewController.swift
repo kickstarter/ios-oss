@@ -17,16 +17,27 @@ extension TabBarControllerScrollable where Self: UIViewController {
 }
 
 public final class RootTabBarViewController: UITabBarController {
+  private var applicationWillEnterForegroundObserver: Any?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
   private var userUpdatedObserver: Any?
-  private var userLocalePreferencesChanged: Any?
+  private var userLocalePreferencesChangedObserver: Any?
+  private var voiceOverStatusDidChangeObserver: Any?
 
   fileprivate let viewModel: RootViewModelType = RootViewModel()
 
   public override func viewDidLoad() {
     super.viewDidLoad()
     self.delegate = self
+
+    self.applicationWillEnterForegroundObserver = NotificationCenter
+      .default
+      .addObserver(
+        forName: UIApplication.willEnterForegroundNotification,
+        object: nil, queue: nil
+      ) { [weak self] _ in
+        self?.viewModel.inputs.applicationWillEnterForeground()
+      }
 
     self.sessionStartedObserver = NotificationCenter
       .default
@@ -46,7 +57,21 @@ public final class RootTabBarViewController: UITabBarController {
         self?.viewModel.inputs.currentUserUpdated()
       }
 
-    self.userLocalePreferencesChanged = NotificationCenter
+    self.voiceOverStatusDidChangeObserver = NotificationCenter
+      .default
+      .addObserver(
+        forName: UIAccessibility.voiceOverStatusDidChangeNotification, object: nil, queue: nil
+      ) { [weak self] _ in
+        self?.viewModel.inputs.voiceOverStatusDidChange()
+      }
+
+    self.viewModel.outputs.updateUserInEnvironment
+      .observeValues { user in
+        AppEnvironment.updateCurrentUser(user)
+        NotificationCenter.default.post(.init(name: .ksr_userUpdated))
+      }
+
+    self.userLocalePreferencesChangedObserver = NotificationCenter
       .default
       .addObserver(
         forName: Notification.Name.ksr_userLocalePreferencesChanged,
@@ -61,9 +86,16 @@ public final class RootTabBarViewController: UITabBarController {
   }
 
   deinit {
-    self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
-    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
-    self.userUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    [
+      self.applicationWillEnterForegroundObserver,
+      self.sessionStartedObserver,
+      self.sessionEndedObserver,
+      self.userUpdatedObserver,
+      self.userLocalePreferencesChangedObserver,
+      self.voiceOverStatusDidChangeObserver
+    ]
+    .compact()
+    .forEach(NotificationCenter.default.removeObserver)
   }
 
   public override func bindStyles() {
@@ -119,6 +151,12 @@ public final class RootTabBarViewController: UITabBarController {
       }
       .skipNil()
       .observeValues { $0.switch(toProject: $1) }
+
+    self.viewModel.outputs.setBadgeValueAtIndex
+      .observeForUI()
+      .observeValues { [weak self] value, index in
+        self?.tabBarItem(atIndex: index)?.badgeValue = value
+      }
   }
 
   public func switchToActivities() {
@@ -254,6 +292,12 @@ public final class RootTabBarViewController: UITabBarController {
       }
     }
     return nil
+  }
+
+  // MARK: - Accessors
+
+  public func didReceiveBadgeValue(_ value: Int?) {
+    self.viewModel.inputs.didReceiveBadgeValue(value)
   }
 }
 
