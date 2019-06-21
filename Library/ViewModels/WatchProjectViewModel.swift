@@ -21,7 +21,7 @@ public protocol WatchProjectViewModelOutputs {
   var generateSelectionFeedback: Signal<(), Never> { get }
 
   /// Emits when haptic feedback should be generated
-  var generateNotificationSuccessFeedback: Signal<(), Never> { get }
+  var generateSuccessFeedback: Signal<(), Never> { get }
 
   /// Emits when the login tout should be shown to the user.
   var goToLoginTout: Signal<(), Never> { get }
@@ -165,7 +165,7 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
       .skipRepeats()
 
     self.generateImpactFeedback = self.saveButtonTouchedProperty.signal
-    self.generateNotificationSuccessFeedback = saveButtonTapped.signal.filter(isFalse).ignoreValues()
+    self.generateSuccessFeedback = saveButtonTapped.signal.filter(isFalse).ignoreValues()
     self.generateSelectionFeedback = saveButtonTapped.signal.filter(isTrue).ignoreValues()
 
     self.saveButtonAccessibilityValue = self.saveButtonSelected
@@ -219,7 +219,7 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
   }
 
   public let generateImpactFeedback: Signal<(), Never>
-  public let generateNotificationSuccessFeedback: Signal<(), Never>
+  public let generateSuccessFeedback: Signal<(), Never>
   public let generateSelectionFeedback: Signal<(), Never>
   public let goToLoginTout: Signal<(), Never>
   public let postNotificationWithProject: Signal<Project, Never>
