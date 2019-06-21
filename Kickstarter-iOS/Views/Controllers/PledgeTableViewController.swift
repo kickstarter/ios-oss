@@ -79,21 +79,25 @@ class PledgeTableViewController: UITableViewController {
       break
     }
   }
-}
 
-extension PledgeTableViewController: PledgeDescriptionCellDelegate {
-  internal func pledgeDescriptionCellDidPresentTrustAndSafety(_: PledgeDescriptionCell) {
-    let vc = HelpWebViewController.configuredWith(helpType: .trust)
+  // MARK: - Actions
+
+  private func presentHelpWebViewController(with helpType: HelpType) {
+    let vc = HelpWebViewController.configuredWith(helpType: helpType)
     let nav = UINavigationController(rootViewController: vc)
     self.present(nav, animated: true, completion: nil)
   }
 }
 
+extension PledgeTableViewController: PledgeDescriptionCellDelegate {
+  internal func pledgeDescriptionCellDidPresentTrustAndSafety(_: PledgeDescriptionCell) {
+    self.presentHelpWebViewController(with: .trust)
+  }
+}
+
 extension PledgeTableViewController: PledgeSummaryCellDelegate {
   internal func pledgeSummaryCell(_: PledgeSummaryCell, didOpen helpType: HelpType) {
-    let vc = HelpWebViewController.configuredWith(helpType: helpType)
-    let nav = UINavigationController(rootViewController: vc)
-    self.present(nav, animated: true, completion: nil)
+    self.presentHelpWebViewController(with: helpType)
   }
 }
 
