@@ -1,6 +1,38 @@
 import Library
 import UIKit
 
+// MARK: - Haptic feedback
+
+func generateImpactFeedback(
+  feedbackGenerator: UIImpactFeedbackGeneratorType = UIImpactFeedbackGenerator(style: .light)
+) {
+  feedbackGenerator.prepare()
+  feedbackGenerator.impactOccurred()
+}
+
+func generateNotificationSuccessFeedback(
+  feedbackGenerator: UINotificationFeedbackGeneratorType = UINotificationFeedbackGenerator()
+) {
+  feedbackGenerator.prepare()
+  feedbackGenerator.notificationOccurred(.success)
+}
+
+func generateNotificationWarningFeedback(
+  feedbackGenerator: UINotificationFeedbackGeneratorType = UINotificationFeedbackGenerator()
+) {
+  feedbackGenerator.prepare()
+  feedbackGenerator.notificationOccurred(.warning)
+}
+
+func generateSelectionFeedback(
+  feedbackGenerator: UISelectionFeedbackGeneratorType = UISelectionFeedbackGenerator()
+) {
+  feedbackGenerator.prepare()
+  feedbackGenerator.selectionChanged()
+}
+
+// MARK: - Login workflow
+
 public func logoutAndDismiss(
   viewController: UIViewController,
   appEnvironment: AppEnvironmentType.Type = AppEnvironment.self,
