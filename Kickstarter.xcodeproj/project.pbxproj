@@ -972,6 +972,7 @@
 		D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588211EEB2ED7006E7684 /* User.NewsletterSubscriptionsTests.swift */; };
 		D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588221EEB2ED7006E7684 /* User.NotificationsTests.swift */; };
 		D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588241EEB2ED7006E7684 /* UserTests.swift */; };
+		D0D19BCA22BD886F0043A4E5 /* PledgeSummaryCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D19BC922BD886F0043A4E5 /* PledgeSummaryCellViewModelTests.swift */; };
 		D0D2AB201E964485008D298A /* VideoGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D2AB1A1E96444B008D298A /* VideoGridView.swift */; };
 		D0D58D862257FAE000532AC1 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; };
 		D0D58D872257FAE000532AC1 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; };
@@ -2172,6 +2173,7 @@
 		D0B065E12281033100142B7A /* 1Password.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = 1Password.xcassets; path = "Carthage/Checkouts/onepassword-extension/1Password.xcassets"; sourceTree = SOURCE_ROOT; };
 		D0B7124522AEEDBC00317BAF /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Carthage/Build/iOS/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		D0C9BAD521B1AB920098CABA /* Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alpha.entitlements; sourceTree = "<group>"; };
+		D0D19BC922BD886F0043A4E5 /* PledgeSummaryCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeSummaryCellViewModelTests.swift; sourceTree = "<group>"; };
 		D0D2AB1A1E96444B008D298A /* VideoGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoGridView.swift; sourceTree = "<group>"; };
 		D0D58D792257FADE00532AC1 /* Prelude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Prelude.framework; path = Carthage/Build/iOS/Prelude.framework; sourceTree = "<group>"; };
 		D0D58D7A2257FADE00532AC1 /* Argo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Argo.framework; path = Carthage/Build/iOS/Argo.framework; sourceTree = "<group>"; };
@@ -3316,6 +3318,7 @@
 				3706408522A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift */,
 				3706408722A8A6F200889CBD /* PledgeShippingLocationCellViewModelTests.swift */,
 				D0237C2522BD7B540092C792 /* PledgeSummaryCellViewModel.swift */,
+				D0D19BC922BD886F0043A4E5 /* PledgeSummaryCellViewModelTests.swift */,
 				37DEC1E62257C9F30051EF9B /* PledgeViewModel.swift */,
 				37DEC21F2257CA0A0051EF9B /* PledgeViewModelTests.swift */,
 				A7F441A31D005A9400FE6FC5 /* ProfileViewModel.swift */,
@@ -4542,6 +4545,7 @@
 				A7ED1FF41E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift in Sources */,
 				D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */,
 				D093B4F021A8B14100910962 /* MockPushRegistration.swift in Sources */,
+				D0D19BCA22BD886F0043A4E5 /* PledgeSummaryCellViewModelTests.swift in Sources */,
 				A7ED1FEA1E831C5C00BFFA01 /* HelpViewModelTests.swift in Sources */,
 				A7ED1F301E830FDC00BFFA01 /* NavigationTests.swift in Sources */,
 				37CBA64D221E10E100E6CAB6 /* HelpTypeTests.swift in Sources */,
