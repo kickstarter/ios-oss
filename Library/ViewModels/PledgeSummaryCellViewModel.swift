@@ -16,7 +16,7 @@ public protocol PledgeSummaryCellViewModelType {
 }
 
 public class PledgeSummaryCellViewModel: PledgeSummaryCellViewModelType,
-PledgeSummaryCellViewModelInputs, PledgeSummaryCellViewModelOutputs {
+  PledgeSummaryCellViewModelInputs, PledgeSummaryCellViewModelOutputs {
   public init() {
     self.notifyDelegateOpenHelpType = self.tappedUrlSignal.map { url -> HelpType? in
       let helpType = HelpType.allCases.filter { helpType in
