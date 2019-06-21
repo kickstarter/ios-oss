@@ -189,6 +189,7 @@
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
+		775D922922BD7CFD00442301 /* DebugData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775D922822BD7CFD00442301 /* DebugData.swift */; };
 		776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */; };
 		77752F5E219B39EA00E7DA7D /* SettingsAccountWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */; };
 		77752F97219B3D7300E7DA7D /* SettingsAccountWarningCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */; };
@@ -1456,6 +1457,7 @@
 		77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThanksViewControllerTests.swift; sourceTree = "<group>"; };
 		7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCategoryView.swift; sourceTree = "<group>"; };
 		7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryProjectCategoryView.xib; sourceTree = "<group>"; };
+		775D922822BD7CFD00442301 /* DebugData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugData.swift; sourceTree = "<group>"; };
 		775DFA9C215E758400620CED /* GraphMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutation.swift; sourceTree = "<group>"; };
 		775DFAD4215EB2AB00620CED /* Service+RequestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Service+RequestHelpers.swift"; sourceTree = "<group>"; };
 		776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewController.swift; sourceTree = "<group>"; };
@@ -3483,8 +3485,8 @@
 				D015877C1EEB2ED6006E7684 /* Backing.swift */,
 				D015877D1EEB2ED6006E7684 /* BackingTests.swift */,
 				D6B9DF3E1F72E25A0064A4D8 /* Category.swift */,
+				D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */,
 				D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */,
-				D01587801EEB2ED6006E7684 /* CategoryTests.swift */,
 				D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */,
 				D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */,
 				D01587831EEB2ED6006E7684 /* CheckoutEnvelope.swift */,
@@ -3500,6 +3502,7 @@
 				D79440562203A63300D0A747 /* CreatePaymentSourceEnvelope.swift */,
 				D015878A1EEB2ED6006E7684 /* CreatePledgeEnvelope.swift */,
 				D015878B1EEB2ED6006E7684 /* CreatePledgeEnvelopeTests.swift */,
+				775D922822BD7CFD00442301 /* DebugData.swift */,
 				D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */,
 				D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */,
 				D015878C1EEB2ED6006E7684 /* DiscoveryEnvelope.swift */,
@@ -5076,6 +5079,7 @@
 				D015891F1EEB2ED7006E7684 /* ShippingRulesEnvelope.swift in Sources */,
 				D01588831EEB2ED7006E7684 /* BackingLenses.swift in Sources */,
 				D01588C51EEB2ED7006E7684 /* Reward.ShippingLenses.swift in Sources */,
+				775D922922BD7CFD00442301 /* DebugData.swift in Sources */,
 				D01588D51EEB2ED7006E7684 /* UpdateDraftLenses.swift in Sources */,
 				D01589211EEB2ED7006E7684 /* StarEnvelope.swift in Sources */,
 				D01588EF1EEB2ED7006E7684 /* MessageThread.swift in Sources */,

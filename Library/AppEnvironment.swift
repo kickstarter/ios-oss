@@ -45,6 +45,12 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
+  public static func updateDebugData(_ debugData: DebugData) {
+    self.replaceCurrentEnvironment(
+      debugData: debugData
+    )
+  }
+
   public static func updateServerConfig(_ config: ServerConfigType) {
     let service = Service(serverConfig: config)
 
@@ -54,10 +60,12 @@ public struct AppEnvironment: AppEnvironmentType {
   }
 
   public static func updateConfig(_ config: Config) {
+    let debugConfig = self.current.debugData?.config
+
     self.replaceCurrentEnvironment(
-      config: config,
-      countryCode: config.countryCode,
-      koala: AppEnvironment.current.koala |> Koala.lens.config .~ config
+      config: debugConfig ?? config,
+      countryCode: debugConfig?.countryCode ?? config.countryCode,
+      koala: AppEnvironment.current.koala |> Koala.lens.config .~ (debugConfig ?? config)
     )
   }
 
@@ -124,6 +132,7 @@ public struct AppEnvironment: AppEnvironmentType {
     currentUser: User? = AppEnvironment.current.currentUser,
     dateType: DateProtocol.Type = AppEnvironment.current.dateType,
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
+    debugData: DebugData? = AppEnvironment.current.debugData,
     device: UIDeviceType = AppEnvironment.current.device,
     isOSVersionAvailable: @escaping ((Double) -> Bool) = AppEnvironment.current.isOSVersionAvailable,
     isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
@@ -152,6 +161,7 @@ public struct AppEnvironment: AppEnvironmentType {
         currentUser: currentUser,
         dateType: dateType,
         debounceInterval: debounceInterval,
+        debugData: debugData,
         device: device,
         isOSVersionAvailable: isOSVersionAvailable,
         isVoiceOverRunning: isVoiceOverRunning,
@@ -184,6 +194,7 @@ public struct AppEnvironment: AppEnvironmentType {
     currentUser: User? = AppEnvironment.current.currentUser,
     dateType: DateProtocol.Type = AppEnvironment.current.dateType,
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
+    debugData: DebugData? = AppEnvironment.current.debugData,
     device: UIDeviceType = AppEnvironment.current.device,
     isOSVersionAvailable: @escaping ((Double) -> Bool) = AppEnvironment.current.isOSVersionAvailable,
     isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
@@ -212,6 +223,7 @@ public struct AppEnvironment: AppEnvironmentType {
         currentUser: currentUser,
         dateType: dateType,
         debounceInterval: debounceInterval,
+        debugData: debugData,
         device: device,
         isOSVersionAvailable: isOSVersionAvailable,
         isVoiceOverRunning: isVoiceOverRunning,
