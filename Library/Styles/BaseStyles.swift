@@ -22,6 +22,7 @@ public typealias LabelStyle = (UILabel) -> UILabel
 public typealias LayerStyle = (CALayer) -> CALayer
 public typealias ScrollStyle = (UIScrollView) -> UIScrollView
 public typealias StackViewStyle = (UIStackView) -> UIStackView
+public typealias SwitchControlStyle = (UISwitch) -> UISwitch
 public typealias TableViewStyle = (UITableView) -> UITableView
 public typealias TextFieldStyle = (UITextField) -> UITextField
 public typealias TextViewStyle = (UITextView) -> UITextView
@@ -30,31 +31,6 @@ public typealias ViewStyle = (UIView) -> UIView
 public func baseControllerStyle<VC: UIViewControllerProtocol>() -> ((VC) -> VC) {
   return VC.lens.view.backgroundColor .~ .white
     <> (VC.lens.navigationController .. navBarLens) %~ { $0.map(baseNavigationBarStyle) }
-}
-
-public func baseTableControllerStyle<TVC: UITableViewControllerProtocol>
-(estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
-  let style = baseControllerStyle()
-    <> TVC.lens.view.backgroundColor .~ .white
-    <> TVC.lens.tableView.rowHeight .~ UITableView.automaticDimension
-    <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
-
-  return style <> TVC.lens.tableView.separatorStyle .~ .none
-}
-
-public func baseTableViewCellStyle<TVC: UITableViewCellProtocol>() -> ((TVC) -> TVC) {
-  return
-    TVC.lens.contentView.layoutMargins %~~ { _, cell in
-      if cell.traitCollection.isRegularRegular {
-        return .init(topBottom: Styles.grid(3), leftRight: Styles.grid(12))
-      }
-      return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-    }
-    <> TVC.lens.backgroundColor .~ .white
-    <> (TVC.lens.contentView .. UIView.lens.preservesSuperviewLayoutMargins) .~ false
-    <> TVC.lens.layoutMargins .~ .init(all: 0.0)
-    <> TVC.lens.preservesSuperviewLayoutMargins .~ false
-    <> TVC.lens.selectionStyle .~ .none
 }
 
 public func baseActivityIndicatorStyle(indicator: UIActivityIndicatorView) -> UIActivityIndicatorView {
@@ -151,6 +127,14 @@ public func roundedStyle<V: UIViewProtocol>(cornerRadius r: CGFloat = Styles.cor
     <> V.lens.layer.masksToBounds .~ true
     <> V.lens.layer.cornerRadius .~ r
 }
+
+public let baseSwitchControlStyle: SwitchControlStyle = { switchControl in
+  switchControl
+    |> \.onTintColor .~ .ksr_green_700
+    |> \.tintColor .~ .ksr_grey_600
+}
+
+// MARK: - Private Helpers
 
 // Just a lil helper lens for getting inside a nav controller's nav bar.
 private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
