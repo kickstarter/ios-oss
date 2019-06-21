@@ -40,6 +40,12 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
+    self.stepper.addTarget(
+      self,
+      action: #selector(PledgeAmountCell.stepperValueChanged(_:)),
+      for: .valueChanged
+    )
+
     self.bindViewModel()
   }
 
@@ -80,12 +86,29 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     self.amountInputView.label.rac.text = self.viewModel.outputs.currency
     self.amountInputView.textField.rac.text = self.viewModel.outputs.amount
+    self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
+    self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
+    self.stepper.rac.value = self.viewModel.outputs.stepperInitialValue
+
+    self.viewModel.outputs.generateSelectionFeedback
+      .observeForUI()
+      .observeValues { generateSelectionFeedback() }
+
+    self.viewModel.outputs.generateNotificationWarningFeedback
+      .observeForUI()
+      .observeValues { generateNotificationWarningFeedback() }
   }
 
   // MARK: - Configuration
 
   func configureWith(value: (project: Project, reward: Reward)) {
     self.viewModel.inputs.configureWith(project: value.project, reward: value.reward)
+  }
+
+  // MARK: - Actions
+
+  @objc func stepperValueChanged(_ stepper: UIStepper) {
+    self.viewModel.inputs.stepperValueChanged(stepper.value)
   }
 }
 
