@@ -6,6 +6,17 @@ public enum PledgeStateCTAType {
   case viewBacking
   case viewRewards
 
+  public var buttonBackgroundColor: UIColor {
+    switch self {
+    case .pledge:
+      return .ksr_green_500
+    case .manage:
+      return .ksr_blue
+    case .viewBacking, .viewRewards:
+      return .ksr_soft_black
+    }
+  }
+
   public var buttonTitle: String {
     switch self {
     case .pledge:
@@ -16,17 +27,6 @@ public enum PledgeStateCTAType {
       return Strings.View_your_pledge()
     case .viewRewards:
       return Strings.View_rewards()
-    }
-  }
-
-  public var buttonBackgroundColor: UIColor {
-    switch self {
-    case .pledge:
-      return .ksr_green_500
-    case .manage:
-      return .ksr_blue
-    case .viewBacking, .viewRewards:
-      return .ksr_soft_black
     }
   }
 

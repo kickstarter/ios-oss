@@ -95,7 +95,8 @@ public final class ProjectPamphletViewController: UIViewController {
 
   private func configureViews() {
     // Configure subviews
-    self.view.addSubview(self.pledgeCTAContainerView)
+    _ = (self.pledgeCTAContainerView, self.view)
+      |> ksr_addSubviewToParent()
 
     // Configure constraints
     let pledgeCTAContainerViewConstraints = [

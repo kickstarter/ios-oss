@@ -4,9 +4,9 @@ import Prelude
 import UIKit
 
 final class PledgeCTAContainerView: UIView {
-  fileprivate let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
-
   // MARK: - Properties
+
+  private let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
   private lazy var amountAndRewardTitleStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountOrRewardLabel: UILabel = { UILabel(frame: .zero) }()
@@ -14,7 +14,6 @@ final class PledgeCTAContainerView: UIView {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var youreABackerLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -37,15 +36,14 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.amountAndRewardTitleStackView, self.pledgeCTAbutton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.pledgeCTAbutton.rac.title = self.vm.outputs.buttonTitleText
-    self.pledgeCTAbutton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
-    self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
-    self.amountOrRewardLabel.rac.text = self.vm.outputs.rewardTitle
+    self.bindViewModel()
   }
 
-  func configureWith(project: Project, user: User) {
-    self.vm.inputs.configureWith(project: project, user: user)
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
+
+  // MARK: - Styles
 
   override func bindStyles() {
     super.bindStyles()
@@ -70,10 +68,25 @@ final class PledgeCTAContainerView: UIView {
       |> \.isLayoutMarginsRelativeArrangement .~ true
   }
 
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+  // MARK: - Binding
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.pledgeCTAbutton.rac.title = self.vm.outputs.buttonTitleText
+    self.pledgeCTAbutton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
+    self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
+    self.amountOrRewardLabel.rac.text = self.vm.outputs.rewardTitle
+  }
+
+  // MARK: - Configuration
+
+  func configureWith(project: Project, user: User) {
+    self.vm.inputs.configureWith(project: project, user: user)
   }
 }
+
+// MARK: - Styles
 
 private let projectStateButtonStyle: ButtonStyle = { (button: UIButton) in
   button

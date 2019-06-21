@@ -78,7 +78,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
 
     let project = freshProjectAndRefTag
-      .map { project, _ in project }
+      .map(first)
 
     self.projectAndUser = Signal.combineLatest(project, user)
 
