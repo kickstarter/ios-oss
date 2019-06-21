@@ -179,11 +179,13 @@ internal final class BetaToolsViewController: UITableViewController {
       return
     }
 
+    let preferredStyle: UIAlertController.Style = AppEnvironment.current.device.userInterfaceIdiom == .pad ?
+      .alert : .actionSheet
+
     let alert = UIAlertController.alert(
       title: "Change Language",
-      preferredStyle: .actionSheet,
-      sourceView: sourceView,
-      sourceRect: sourceView.bounds
+      preferredStyle: preferredStyle,
+      sourceView: sourceView
     )
 
     Language.allLanguages.forEach { language in
@@ -207,11 +209,13 @@ internal final class BetaToolsViewController: UITableViewController {
       return
     }
 
+    let preferredStyle: UIAlertController.Style = AppEnvironment.current.device.userInterfaceIdiom == .pad ?
+      .alert : .actionSheet
+
     let alert = UIAlertController.alert(
       title: "Change Environment",
-      preferredStyle: .actionSheet,
-      sourceView: sourceView,
-      sourceRect: sourceView.bounds
+      preferredStyle: preferredStyle,
+      sourceView: sourceView
     )
 
     EnvironmentType.allCases.forEach { environment in

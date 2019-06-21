@@ -9,8 +9,7 @@ public extension UIAlertController {
     title: String,
     message: String? = nil,
     preferredStyle: UIAlertController.Style,
-    sourceView: UIView? = nil,
-    sourceRect: CGRect? = nil
+    sourceView: UIView? = nil
   ) -> UIAlertController {
     let alert = UIAlertController(
       title: title,
@@ -21,10 +20,6 @@ public extension UIAlertController {
     if UIAlertController.requiresPopOverConfiguration(preferredStyle) {
       alert.modalPresentationStyle = .popover
       alert.popoverPresentationController?.sourceView = sourceView
-
-      if let sourceRect = sourceRect {
-        alert.popoverPresentationController?.sourceRect = sourceRect
-      }
     }
 
     return alert
