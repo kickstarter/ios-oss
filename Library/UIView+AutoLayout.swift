@@ -23,6 +23,21 @@ public func ksr_insertSubviewInParent(at index: Int) -> ((UIView, UIView) -> (UI
   }
 }
 
+public func ksr_constrainViewToCenterInParent() -> ((UIView, UIView) -> (UIView, UIView)) {
+  return { subview, parent in
+    subview.translatesAutoresizingMaskIntoConstraints = false
+
+    let constraints = [
+      subview.centerXAnchor.constraint(equalTo: parent.centerXAnchor),
+      subview.centerYAnchor.constraint(equalTo: parent.centerYAnchor)
+    ]
+
+    NSLayoutConstraint.activate(constraints)
+
+    return (subview, parent)
+  }
+}
+
 public func ksr_addLayoutGuideToView() -> ((UILayoutGuide, UIView) -> (UILayoutGuide, UIView)) {
   return { layoutGuide, view in
     view.addLayoutGuide(layoutGuide)
@@ -50,7 +65,8 @@ public func ksr_constrainViewToEdgesInParent(priority: UILayoutPriority = .requi
   }
 }
 
-public func ksr_constrainViewToMarginsInParent() -> ((UIView, UIView) -> (UIView, UIView)) {
+public func ksr_constrainViewToMarginsInParent(priority: UILayoutPriority = .required)
+  -> ((UIView, UIView) -> (UIView, UIView)) {
   return { subview, parent in
     subview.translatesAutoresizingMaskIntoConstraints = false
 
@@ -60,6 +76,8 @@ public func ksr_constrainViewToMarginsInParent() -> ((UIView, UIView) -> (UIView
       subview.topAnchor.constraint(equalTo: parent.layoutMarginsGuide.topAnchor),
       subview.bottomAnchor.constraint(equalTo: parent.layoutMarginsGuide.bottomAnchor)
     ]
+
+    constraints.forEach { $0.priority = priority }
 
     NSLayoutConstraint.activate(constraints)
 
