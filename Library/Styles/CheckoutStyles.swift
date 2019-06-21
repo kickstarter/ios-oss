@@ -114,7 +114,7 @@ public func checkoutAttributedLink(with string: String) -> NSAttributedString? {
     data: Data(string.utf8),
     options: [.documentType: NSAttributedString.DocumentType.html],
     documentAttributes: nil
-    ) else { return nil }
+  ) else { return nil }
 
   let attributes: String.Attributes = [
     .font: UIFont.ksr_caption1(),
