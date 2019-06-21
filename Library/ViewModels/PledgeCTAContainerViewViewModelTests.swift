@@ -23,7 +23,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   }
 
   func testPledgeCTA_Backer_LiveProject() {
-    let manageCTAColor: UIColor = .ksr_blue
+    let manageCTAColor: UIColor = .ksr_blue_500
     let reward = .template
       |> Reward.lens.title .~ "Magic Lamp"
     let project = Project.template

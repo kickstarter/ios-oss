@@ -11,7 +11,7 @@ public enum PledgeStateCTAType {
     case .pledge:
       return .ksr_green_500
     case .manage:
-      return .ksr_blue
+      return .ksr_blue_500
     case .viewBacking, .viewRewards:
       return .ksr_soft_black
     }
