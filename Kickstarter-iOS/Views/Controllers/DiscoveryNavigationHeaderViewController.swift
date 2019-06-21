@@ -169,7 +169,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       .observeValues { [weak self] isDimmed in
         _ = self?.debugImageView
           ?|> \.tintAdjustmentMode .~ (isDimmed ? .dimmed : .normal)
-    }
+      }
   }
 
   internal override func bindStyles() {
