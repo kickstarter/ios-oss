@@ -129,8 +129,7 @@ final class PledgeViewModelTests: TestCase {
         reward.minimum,
         reward.minimum + shippingAmount,
         amountUpdate1 + shippingAmount
-      ]
-      )
+      ])
       self.reloadWithData.assertValueCount(1)
       self.updateWithData.assertValueCount(2)
 
@@ -144,8 +143,7 @@ final class PledgeViewModelTests: TestCase {
         reward.minimum + shippingAmount,
         amountUpdate1 + shippingAmount,
         amountUpdate2 + shippingAmount
-      ]
-      )
+      ])
       self.reloadWithData.assertValueCount(1)
       self.updateWithData.assertValueCount(3)
     }
