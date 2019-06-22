@@ -4,9 +4,14 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+protocol PledgeAmountCellDelegate: AnyObject {
+  func pledgeAmountCell(_ cell: PledgeAmountCell, didUpdateAmount amount: Double)
+}
+
 final class PledgeAmountCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  public weak var delegate: PledgeAmountCellDelegate?
   private let viewModel = PledgeAmountCellViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -39,6 +44,8 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
+
+    self.amountInputView.textField.addTarget(self, action: #selector(self.amountUpdated(_:)), for: .editingChanged)
 
     self.bindViewModel()
   }
@@ -80,6 +87,19 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     self.amountInputView.label.rac.text = self.viewModel.outputs.currency
     self.amountInputView.textField.rac.text = self.viewModel.outputs.amount
+
+    self.viewModel.outputs.amountPrimitive
+      .observeForUI()
+      .observeValues { [weak self] amount in
+        guard let self = self else { return }
+        self.delegate?.pledgeAmountCell(self, didUpdateAmount: amount)
+      }
+  }
+
+  // MARK: - Actions
+
+  @objc func amountUpdated(_ textField: UITextField) {
+    self.viewModel.inputs.amountUpdated(to: textField.text ?? "")
   }
 
   // MARK: - Configuration

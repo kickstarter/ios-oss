@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-public typealias PledgeSummaryCellData = (project: Project, pledgeTotal: Double, shippingTotal: Double)
+public typealias PledgeSummaryCellData = (project: Project, total: Double)
 
 internal protocol PledgeSummaryCellDelegate: AnyObject {
   func pledgeSummaryCell(_ cell: PledgeSummaryCell, didOpen helpType: HelpType)
@@ -190,7 +190,7 @@ private func attributedCurrency(with data: PledgeSummaryCellData) -> NSAttribute
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
     let attributedCurrency = Format.attributedCurrency(
-      data.pledgeTotal + data.shippingTotal,
+      data.total,
       country: data.project.country,
       omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,

@@ -12,34 +12,36 @@ final class PledgeDataSource: ValueCellDataSource {
 
   // MARK: - Load
 
-  func load(project: Project, reward: Reward, isLoggedIn: Bool) {
+  func load(data: PledgeViewData) {
+    self.clearValues()
+
     self.appendRow(
-      value: reward,
+      value: data.reward,
       cellClass: PledgeDescriptionCell.self,
       toSection: Section.project.rawValue
     )
 
     self.appendRow(
-      value: (project, reward),
+      value: (data.project, data.reward),
       cellClass: PledgeAmountCell.self,
       toSection: Section.inputs.rawValue
     )
 
-    if reward.shipping.enabled {
+    if data.reward.shipping.enabled {
       self.appendRow(
-        value: (project, reward),
+        value: (data.project, data.reward),
         cellClass: PledgeShippingLocationCell.self,
         toSection: Section.inputs.rawValue
       )
     }
 
     self.appendRow(
-      value: (project, 240, 25),
+      value: (data.project, data.total),
       cellClass: PledgeSummaryCell.self,
       toSection: Section.summary.rawValue
     )
 
-    if !isLoggedIn {
+    if !data.isLoggedIn {
       self.appendRow(
         value: (),
         cellClass: PledgeContinueCell.self,

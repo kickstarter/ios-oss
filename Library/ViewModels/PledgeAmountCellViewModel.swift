@@ -5,11 +5,13 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeAmountCellViewModelInputs {
+  func amountUpdated(to amount: String)
   func configureWith(project: Project, reward: Reward)
 }
 
 public protocol PledgeAmountCellViewModelOutputs {
   var amount: Signal<String, Never> { get }
+  var amountPrimitive: Signal<Double, Never> { get }
   var currency: Signal<String, Never> { get }
 }
 
@@ -32,8 +34,22 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
     self.amount = reward
       .map { String(format: "%.0f", $0.minimum) }
 
+    let updatedAmount = self.amountSignal
+      .map(Double.init)
+      .skipNil()
+
+    self.amountPrimitive = Signal.merge(
+      reward.map { $0.minimum },
+      updatedAmount
+    )
+
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
+  }
+
+  private let (amountSignal, amountObserver) = Signal<String, Never>.pipe()
+  public func amountUpdated(to amount: String) {
+    self.amountObserver.send(value: amount)
   }
 
   private let projectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -42,6 +58,7 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
   }
 
   public let amount: Signal<String, Never>
+  public let amountPrimitive: Signal<Double, Never>
   public let currency: Signal<String, Never>
 
   public var inputs: PledgeAmountCellViewModelInputs { return self }

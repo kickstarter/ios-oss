@@ -7,6 +7,7 @@ class PledgeTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let dataSource: PledgeDataSource = PledgeDataSource()
+  private weak var pledgeSummaryCell: PledgeSummaryCell?
   private weak var shippingLocationCell: PledgeShippingLocationCell?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
@@ -52,9 +53,15 @@ class PledgeTableViewController: UITableViewController {
 
     self.viewModel.outputs.reloadWithData
       .observeForUI()
-      .observeValues { [weak self] project, reward, isLoggedIn in
-        self?.dataSource.load(project: project, reward: reward, isLoggedIn: isLoggedIn)
+      .observeValues { [weak self] data in
+        self?.dataSource.load(data: data)
         self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.updateWithData
+      .observeValues { [weak self] data in
+        self?.dataSource.load(data: data)
+        self?.pledgeSummaryCell?.configureWith(value: (data.project, data.total))
       }
   }
 
@@ -69,12 +76,18 @@ class PledgeTableViewController: UITableViewController {
 
   internal override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     switch cell {
+    case is PledgeAmountCell:
+      (cell as? PledgeAmountCell)?.delegate = self
     case is PledgeDescriptionCell:
       (cell as? PledgeDescriptionCell)?.delegate = self
     case is PledgeSummaryCell:
-      (cell as? PledgeSummaryCell)?.delegate = self
+      let pledgeSummaryCell = (cell as? PledgeSummaryCell)
+      pledgeSummaryCell?.delegate = self
+      self.pledgeSummaryCell = pledgeSummaryCell
     case is PledgeShippingLocationCell:
-      self.shippingLocationCell = (cell as? PledgeShippingLocationCell)
+      let shippingLocationCell = (cell as? PledgeShippingLocationCell)
+      shippingLocationCell?.delegate = self
+      self.shippingLocationCell = shippingLocationCell
     default:
       break
     }
@@ -98,6 +111,18 @@ extension PledgeTableViewController: PledgeDescriptionCellDelegate {
 extension PledgeTableViewController: PledgeSummaryCellDelegate {
   internal func pledgeSummaryCell(_: PledgeSummaryCell, didOpen helpType: HelpType) {
     self.presentHelpWebViewController(with: helpType)
+  }
+}
+
+extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
+  func pledgeShippingCell(_: PledgeShippingLocationCell, didUpdateShippingAmount amount: Double) {
+    self.viewModel.inputs.shippingAmountDidUpdate(to: amount)
+  }
+}
+
+extension PledgeTableViewController: PledgeAmountCellDelegate {
+  func pledgeAmountCell(_: PledgeAmountCell, didUpdateAmount amount: Double) {
+    self.viewModel.inputs.pledgeAmountDidUpdate(to: amount)
   }
 }
 

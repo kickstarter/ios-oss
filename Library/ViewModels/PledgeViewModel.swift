@@ -3,13 +3,23 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias PledgeViewData = (
+  project: Project,
+  reward: Reward,
+  isLoggedIn: Bool,
+  total: Double
+)
+
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
+  func pledgeAmountDidUpdate(to amount: Double)
+  func shippingAmountDidUpdate(to amount: Double)
   func viewDidLoad()
 }
 
 public protocol PledgeViewModelOutputs {
-  var reloadWithData: Signal<(Project, Reward, Bool), Never> { get }
+  var reloadWithData: Signal<PledgeViewData, Never> { get }
+  var updateWithData: Signal<PledgeViewData, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -31,7 +41,26 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    self.reloadWithData = Signal.combineLatest(project, reward, isLoggedIn)
+    let shippingAmount = Signal.merge(
+      self.shippingAmountSignal,
+      projectAndReward.mapConst(0)
+    )
+
+    let pledgeAmount = Signal.merge(
+      self.pledgeAmountSignal,
+      projectAndReward.map { $1.minimum }
+    )
+
+    let total = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)
+
+    let data = Signal.combineLatest(project, reward, isLoggedIn, total)
+      .map { tuple -> PledgeViewData in tuple }
+
+    self.reloadWithData = data
+      .take(first: 1)
+
+    self.updateWithData = data
+      .skip(first: 1)
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -39,12 +68,23 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.configureProjectAndRewardProperty.value = (project, reward)
   }
 
+  private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
+  public func pledgeAmountDidUpdate(to amount: Double) {
+    self.pledgeAmountObserver.send(value: amount)
+  }
+
+  private let (shippingAmountSignal, shippingAmountObserver) = Signal<Double, Never>.pipe()
+  public func shippingAmountDidUpdate(to amount: Double) {
+    self.shippingAmountObserver.send(value: amount)
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let reloadWithData: Signal<(Project, Reward, Bool), Never>
+  public let reloadWithData: Signal<PledgeViewData, Never>
+  public var updateWithData: Signal<PledgeViewData, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
