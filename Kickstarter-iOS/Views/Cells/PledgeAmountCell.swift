@@ -45,7 +45,8 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
-    self.amountInputView.textField.addTarget(self, action: #selector(self.amountUpdated(_:)), for: .editingChanged)
+    self.amountInputView.textField
+      .addTarget(self, action: #selector(self.amountUpdated(_:)), for: .editingChanged)
 
     self.bindViewModel()
   }
