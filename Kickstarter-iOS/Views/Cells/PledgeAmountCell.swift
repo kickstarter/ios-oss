@@ -46,6 +46,12 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       for: .touchUpInside
     )
 
+    self.amountInputView.textField.addTarget(
+      self,
+      action: #selector(PledgeAmountCell.textFieldDidChange(_:)),
+      for: .editingChanged
+    )
+
     self.stepper.addTarget(
       self,
       action: #selector(PledgeAmountCell.stepperValueChanged(_:)),
@@ -90,12 +96,13 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.amountInputView.doneButton.rac.enabled = self.viewModel.outputs.doneButtonIsEnabled
     self.amountInputView.label.rac.text = self.viewModel.outputs.currency
     self.amountInputView.textField.rac.isFirstResponder = self.viewModel.outputs.textFieldIsFirstResponder
     self.amountInputView.textField.rac.text = self.viewModel.outputs.amount
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
-    self.stepper.rac.value = self.viewModel.outputs.stepperInitialValue
+    self.stepper.rac.value = self.viewModel.outputs.stepperValue
 
     self.viewModel.outputs.generateSelectionFeedback
       .observeForUI()
@@ -114,12 +121,16 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
   // MARK: - Actions
 
-  @objc func doneButtonTapped(_ button: UIButton) {
+  @objc func doneButtonTapped(_: UIButton) {
     self.viewModel.inputs.doneButtonTapped()
   }
 
   @objc func stepperValueChanged(_ stepper: UIStepper) {
     self.viewModel.inputs.stepperValueChanged(stepper.value)
+  }
+
+  @objc func textFieldDidChange(_ textField: UITextField) {
+    self.viewModel.inputs.textFieldValueChanged(textField.text)
   }
 }
 
