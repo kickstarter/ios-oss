@@ -86,8 +86,6 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
-
-
   func testNonBacker_NonLiveProject_NativeCheckout_Enabled_Landscape() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]

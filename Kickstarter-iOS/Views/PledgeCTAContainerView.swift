@@ -14,6 +14,7 @@ final class PledgeCTAContainerView: UIView {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var youreABackerLabel: UILabel = { UILabel(frame: .zero) }()
 
