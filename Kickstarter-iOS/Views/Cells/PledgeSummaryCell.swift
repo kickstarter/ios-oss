@@ -6,13 +6,14 @@ import UIKit
 public typealias PledgeSummaryCellData = (project: Project, pledgeTotal: Double, shippingTotal: Double)
 
 internal protocol PledgeSummaryCellDelegate: AnyObject {
-  func PledgeSummaryCellDidTap(_ helpType: HelpType)
+  func pledgeSummaryCell(_ cell: PledgeSummaryCell, didOpen helpType: HelpType)
 }
 
 final class PledgeSummaryCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   internal weak var delegate: PledgeSummaryCellDelegate?
+  private var viewModel = PledgeSummaryCellViewModel()
 
   // MARK: - Subview Properties
 
@@ -29,6 +30,8 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureSubviews()
+
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -74,6 +77,19 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
   }
 
+  // MARK: - Binding
+
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.notifyDelegateOpenHelpType
+      .observeForControllerAction()
+      .observeValues { [weak self] helpType in
+        guard let self = self else { return }
+        self.delegate?.pledgeSummaryCell(self, didOpen: helpType)
+      }
+  }
+
   // MARK: - Configuration
 
   internal func configureWith(value: PledgeSummaryCellData) {
@@ -94,7 +110,7 @@ extension PledgeSummaryCell: UITextViewDelegate {
     _: UITextView, shouldInteractWith url: URL, in _: NSRange,
     interaction _: UITextItemInteraction
   ) -> Bool {
-    print(url)
+    self.viewModel.inputs.tapped(url)
     return false
   }
 }
@@ -150,14 +166,16 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
 }
 
 private func attributedTermsText() -> NSAttributedString? {
+  let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
+
   // swiftlint:disable line_length
   let string = localizedString(
     key: "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy",
     defaultValue: "<p>By pledging you agree to Kickstarter's <a href=\"%{terms_of_use_link}\">Terms of Use</a>, <a href=\"%{privacy_policy_link}\">Privacy Policy</a> and <a href=\"%{cookie_policy_link}\">Cookie Policy</a>.<p>",
     substitutions: [
-      "terms_of_use_link": urlForHelpType(.terms, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString,
-      "privacy_policy_link": urlForHelpType(.privacy, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString,
-      "cookie_policy_link": urlForHelpType(.cookie, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString
+      "terms_of_use_link": HelpType.terms.url(withBaseUrl: baseUrl)?.absoluteString,
+      "privacy_policy_link": HelpType.privacy.url(withBaseUrl: baseUrl)?.absoluteString,
+      "cookie_policy_link": HelpType.cookie.url(withBaseUrl: baseUrl)?.absoluteString
     ]
     .compactMapValues { $0.coalesceWith("") }
   )
