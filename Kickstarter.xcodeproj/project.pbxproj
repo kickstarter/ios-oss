@@ -1953,7 +1953,6 @@
 		D015877B1EEB2ED6006E7684 /* ActivityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTests.swift; sourceTree = "<group>"; };
 		D015877C1EEB2ED6006E7684 /* Backing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Backing.swift; sourceTree = "<group>"; };
 		D015877D1EEB2ED6006E7684 /* BackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingTests.swift; sourceTree = "<group>"; };
-		D01587801EEB2ED6006E7684 /* CategoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryTests.swift; sourceTree = "<group>"; };
 		D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePaymentMethodEnvelope.swift; sourceTree = "<group>"; };
 		D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePaymentMethodEnvelopeTests.swift; sourceTree = "<group>"; };
 		D01587831EEB2ED6006E7684 /* CheckoutEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutEnvelope.swift; sourceTree = "<group>"; };
@@ -2463,14 +2462,6 @@
 				D6ED1B3C216D617E007F7547 /* inputs */,
 			);
 			path = mutations;
-			sourceTree = "<group>";
-		};
-		777B88E322BD8E620027640F /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				D01587801EEB2ED6006E7684 /* CategoryTests.swift */,
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		7798B5292174F3BC008BC50D /* queries */ = {
@@ -3049,7 +3040,6 @@
 				D01587511EEB2DE4006E7684 /* KsApi */,
 				A7C725771C85D36D005A016B /* Library */,
 				A7E06C7A1C5A6EB300EBDCC2 /* Products */,
-				777B88E322BD8E620027640F /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";

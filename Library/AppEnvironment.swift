@@ -60,12 +60,12 @@ public struct AppEnvironment: AppEnvironmentType {
   }
 
   public static func updateConfig(_ config: Config) {
-    let debugConfig = self.current.debugData?.config
+    let debugConfigOrConfig = self.current.debugData?.config ?? config
 
     self.replaceCurrentEnvironment(
-      config: debugConfig ?? config,
-      countryCode: debugConfig?.countryCode ?? config.countryCode,
-      koala: AppEnvironment.current.koala |> Koala.lens.config .~ (debugConfig ?? config)
+      config: debugConfigOrConfig,
+      countryCode: debugConfigOrConfig.countryCode,
+      koala: AppEnvironment.current.koala |> Koala.lens.config .~ debugConfigOrConfig
     )
   }
 
