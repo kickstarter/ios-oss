@@ -223,6 +223,7 @@
 		77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */; };
 		77C5E252214182CA002E1670 /* SettingsPrivacySwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */; };
 		77C7B654226E0E54001101AC /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */; };
+		77C93C1A22C13DED005D3195 /* PledgeContinueCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C93C1922C13DED005D3195 /* PledgeContinueCellViewModel.swift */; };
 		77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD894821791B05003066DA /* ProjectStatsTemplate.swift */; };
 		77CD8981217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */; };
 		77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */; };
@@ -1488,6 +1489,7 @@
 		77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsPrivacySwitchCell.xib; sourceTree = "<group>"; };
 		77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCell.swift; sourceTree = "<group>"; };
 		77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewModelTests.swift; sourceTree = "<group>"; };
+		77C93C1922C13DED005D3195 /* PledgeContinueCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeContinueCellViewModel.swift; sourceTree = "<group>"; };
 		77CD894821791B05003066DA /* ProjectStatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsTemplate.swift; sourceTree = "<group>"; };
 		77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletContentViewControllerConversionTests.swift; sourceTree = "<group>"; };
 		77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCellType.swift; sourceTree = "<group>"; };
@@ -3307,6 +3309,7 @@
 				D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */,
 				3706408122A8A66E00889CBD /* PledgeAmountCellViewModel.swift */,
 				3706408322A8A68600889CBD /* PledgeAmountCellViewModelTests.swift */,
+				77C93C1922C13DED005D3195 /* PledgeContinueCellViewModel.swift */,
 				D77594DB226F9C9B005EE69B /* PledgeDescriptionCellViewModel.swift */,
 				D775953B22725289005EE69B /* PledgeDescriptionCellViewModelTests.swift */,
 				3706408522A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift */,
@@ -4456,6 +4459,7 @@
 				A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */,
 				A721DF651C8CF5A3000CB97C /* KoalaTrackingClient.swift in Sources */,
 				77556F5420A099B3008CEA57 /* Config+Helpers.swift in Sources */,
+				77C93C1A22C13DED005D3195 /* PledgeContinueCellViewModel.swift in Sources */,
 				A76126BB1C90C94000EDCCB9 /* UITableView-Extensions.swift in Sources */,
 				9D9F58191D13243900CE81DE /* ProjectActivitiesViewModel.swift in Sources */,
 				A72C3A8E1D00F6A80075227E /* SelectableRow.swift in Sources */,

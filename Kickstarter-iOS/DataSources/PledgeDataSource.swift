@@ -13,6 +13,8 @@ final class PledgeDataSource: ValueCellDataSource {
   // MARK: - Load
 
   func load(project: Project, reward: Reward, isLoggedIn: Bool) {
+    self.clearValues()
+    
     self.appendRow(
       value: reward,
       cellClass: PledgeDescriptionCell.self,

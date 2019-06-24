@@ -8,6 +8,7 @@ class PledgeTableViewController: UITableViewController {
 
   private let dataSource: PledgeDataSource = PledgeDataSource()
   private weak var shippingLocationCell: PledgeShippingLocationCell?
+  private var sessionStartedObserver: Any?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
   // MARK: - Lifecycle
@@ -36,6 +37,10 @@ class PledgeTableViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
+  }
+
   // MARK: - Styles
 
   override func bindStyles() {
@@ -50,12 +55,33 @@ class PledgeTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.goToLoginSignup
+      .observeForControllerAction()
+      .observeValues { [weak self] intent in
+        self?.goToLoginSignup(with: intent)
+    }
+
     self.viewModel.outputs.reloadWithData
       .observeForUI()
       .observeValues { [weak self] project, reward, isLoggedIn in
         self?.dataSource.load(project: project, reward: reward, isLoggedIn: isLoggedIn)
         self?.tableView.reloadData()
       }
+
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
+  }
+
+  // MARK: - Private Helpers
+
+  private func goToLoginSignup(with intent: LoginIntent) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
+    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
+    let sheetOverlayViewController = SheetOverlayViewController(child: navigationController)
+
+    self.present(sheetOverlayViewController, animated: true)
   }
 
   // MARK: - UITableViewDelegate
@@ -72,6 +98,8 @@ class PledgeTableViewController: UITableViewController {
       descriptionCell.delegate = self
     } else if let shippingLocationCell = cell as? PledgeShippingLocationCell {
       self.shippingLocationCell = shippingLocationCell
+    } else if let pledgeContinueCell = cell as? PledgeContinueCell {
+      pledgeContinueCell.delegate = self
     }
   }
 }
@@ -81,6 +109,12 @@ extension PledgeTableViewController: PledgeDescriptionCellDelegate {
     let vc = HelpWebViewController.configuredWith(helpType: .trust)
     let nav = UINavigationController(rootViewController: vc)
     self.present(nav, animated: true, completion: nil)
+  }
+}
+
+extension PledgeTableViewController: PledgeContinueCellDelegate {
+  func pledgeContinueCellDidTapContinue(_ cell: PledgeContinueCell) {
+    self.viewModel.inputs.continueButtonTapped()
   }
 }
 
