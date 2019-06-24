@@ -16,23 +16,16 @@ final class PledgeViewModelTests: TestCase {
   private let isLoggedIn = TestObserver<Bool, Never>()
   private let total = TestObserver<Double, Never>()
 
-  private let reloadWithData = TestObserver<PledgeViewData, Never>()
-  private let updateWithData = TestObserver<PledgeViewData, Never>()
+  private let reload = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.reloadWithData.observe(self.reloadWithData.observer)
-    self.vm.outputs.reloadWithData.map { $0.0 }.observe(self.project.observer)
-    self.vm.outputs.reloadWithData.map { $0.1 }.observe(self.reward.observer)
-    self.vm.outputs.reloadWithData.map { $0.2 }.observe(self.isLoggedIn.observer)
-    self.vm.outputs.reloadWithData.map { $0.3 }.observe(self.total.observer)
-
-    self.vm.outputs.updateWithData.observe(self.updateWithData.observer)
-    self.vm.outputs.updateWithData.map { $0.0 }.observe(self.project.observer)
-    self.vm.outputs.updateWithData.map { $0.1 }.observe(self.reward.observer)
-    self.vm.outputs.updateWithData.map { $0.2 }.observe(self.isLoggedIn.observer)
-    self.vm.outputs.updateWithData.map { $0.3 }.observe(self.total.observer)
+    self.vm.outputs.pledgeViewDataAndReload.map(second).observe(self.reload.observer)
+    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.0 }.observe(self.project.observer)
+    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.1 }.observe(self.reward.observer)
+    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.2 }.observe(self.isLoggedIn.observer)
+    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.3 }.observe(self.total.observer)
   }
 
   func testReloadWithData_loggedOut() {
@@ -79,8 +72,7 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project])
       self.reward.assertValues([reward])
       self.total.assertValues([reward.minimum])
-      self.reloadWithData.assertValueCount(1)
-      self.updateWithData.assertValueCount(0)
+      self.reload.assertValues([true])
 
       let shippingRule = .template
         |> ShippingRule.lens.cost .~ 20.0
@@ -90,8 +82,7 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project, project])
       self.reward.assertValues([reward, reward])
       self.total.assertValues([reward.minimum, reward.minimum + shippingRule.cost])
-      self.reloadWithData.assertValueCount(1)
-      self.updateWithData.assertValueCount(1)
+      self.reload.assertValues([true, false])
     }
   }
 
@@ -108,8 +99,7 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project])
       self.reward.assertValues([reward])
       self.total.assertValues([reward.minimum])
-      self.reloadWithData.assertValueCount(1)
-      self.updateWithData.assertValueCount(0)
+      self.reload.assertValues([true])
 
       let shippingRule = .template
         |> ShippingRule.lens.cost .~ 20.0
@@ -119,8 +109,7 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project, project])
       self.reward.assertValues([reward, reward])
       self.total.assertValues([reward.minimum, reward.minimum + shippingRule.cost])
-      self.reloadWithData.assertValueCount(1)
-      self.updateWithData.assertValueCount(1)
+      self.reload.assertValues([true, false])
 
       let amountUpdate1 = 30.0
       self.vm.inputs.pledgeAmountDidUpdate(to: amountUpdate1)
@@ -132,8 +121,7 @@ final class PledgeViewModelTests: TestCase {
         reward.minimum + shippingRule.cost,
         amountUpdate1 + shippingRule.cost
       ])
-      self.reloadWithData.assertValueCount(1)
-      self.updateWithData.assertValueCount(2)
+      self.reload.assertValues([true, false, false])
 
       let amountUpdate2 = 25.0
       self.vm.inputs.pledgeAmountDidUpdate(to: amountUpdate2)
@@ -146,8 +134,7 @@ final class PledgeViewModelTests: TestCase {
         amountUpdate1 + shippingRule.cost,
         amountUpdate2 + shippingRule.cost
       ])
-      self.reloadWithData.assertValueCount(1)
-      self.updateWithData.assertValueCount(3)
+      self.reload.assertValues([true, false, false, false])
     }
   }
 }

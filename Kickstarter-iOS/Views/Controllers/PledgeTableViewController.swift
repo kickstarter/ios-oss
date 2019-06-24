@@ -51,18 +51,20 @@ class PledgeTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.reloadWithData
+    self.viewModel.outputs.pledgeViewDataAndReload
       .observeForUI()
-      .observeValues { [weak self] data in
+      .observeValues { [weak self] data, reload in
         self?.dataSource.load(data: data)
-        self?.tableView.reloadData()
+
+        if reload {
+          self?.tableView.reloadData()
+        }
       }
 
-    self.viewModel.outputs.updateWithData
+    self.viewModel.outputs.configureSummaryCellWithAmount
       .observeValues { [weak self] data in
-        self?.dataSource.load(data: data)
         self?.pledgeSummaryCell?.configureWith(value: (data.project, data.pledgeTotal))
-      }
+    }
   }
 
   // MARK: - UITableViewDelegate

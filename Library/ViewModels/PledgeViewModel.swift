@@ -18,8 +18,8 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
-  var reloadWithData: Signal<PledgeViewData, Never> { get }
-  var updateWithData: Signal<PledgeViewData, Never> { get }
+  var configureSummaryCellWithAmount: Signal<PledgeViewData, Never> { get }
+  var pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -56,11 +56,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let data = Signal.combineLatest(project, reward, isLoggedIn, total)
       .map { tuple -> PledgeViewData in tuple }
 
-    self.reloadWithData = data
-      .take(first: 1)
+    self.pledgeViewDataAndReload = Signal.merge(
+      data.take(first: 1).map { data in (data, true) },
+      data.skip(first: 1).map { data in (data, false) }
+    )
 
-    self.updateWithData = data
-      .skip(first: 1)
+    self.configureSummaryCellWithAmount = self.pledgeViewDataAndReload
+      .filter(second >>> isFalse)
+      .map(first)
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -83,8 +86,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let reloadWithData: Signal<PledgeViewData, Never>
-  public var updateWithData: Signal<PledgeViewData, Never>
+  public let configureSummaryCellWithAmount: Signal<PledgeViewData, Never>
+  public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
