@@ -30,6 +30,9 @@ public protocol DiscoveryNavigationHeaderViewModelOutputs {
   /// Emits when debug container view should be shown/hidden, depending if build is Beta/Debug or Release.
   var debugContainerViewIsHidden: Signal<Bool, Never> { get }
 
+  /// Emits when the debug image view should dim
+  var debugImageViewIsDimmed: Signal<Bool, Never> { get }
+
   /// Emits whether divider label is hidden.
   var dividerIsHidden: Signal<Bool, Never> { get }
 
@@ -134,6 +137,12 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
       .filter { params, _ in params.category != nil }
       .map { _, filtersAreHidden in !filtersAreHidden }
       .skipRepeats()
+
+    self.debugImageViewIsDimmed = self.debugContainerViewIsHidden
+      .takePairWhen(filtersAreHidden)
+      .filter { debugContainerIsHidden, _ in isFalse(debugContainerIsHidden) }
+      .map(second)
+      .negate()
 
     let dismissFiltersSignal = Signal.merge(
       self.filtersSelectedRowProperty.signal.ignoreValues(),
@@ -266,6 +275,7 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
   public let animateArrowToDown: Signal<Bool, Never>
   public let arrowOpacityAnimated: Signal<(CGFloat, Bool), Never>
   public let debugContainerViewIsHidden: Signal<Bool, Never>
+  public let debugImageViewIsDimmed: Signal<Bool, Never>
   public let dismissDiscoveryFilters: Signal<(), Never>
   public let dividerIsHidden: Signal<Bool, Never>
   public let exploreLabelIsHidden: Signal<Bool, Never>

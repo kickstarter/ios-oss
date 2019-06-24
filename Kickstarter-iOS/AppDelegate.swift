@@ -30,6 +30,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    // FBSDK initialization
+    ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+    Settings.shouldLimitEventAndDataUsage = true
+
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
 
@@ -42,10 +46,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         userDefaults: UserDefaults.standard
       )
     )
-
-    // NB: We have to push this shared instance directly because somehow we get two different shared
-    //     instances if we use the one from `Environment.init`.
-    AppEnvironment.replaceCurrentEnvironment(facebookAppDelegate: FBSDKApplicationDelegate.sharedInstance())
 
     #if DEBUG
       if KsApi.Secrets.isOSS {
@@ -234,30 +234,19 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(
-    _ app: UIApplication, open url: URL,
+    _ app: UIApplication,
+    open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
-    guard let sourceApplication = options[.sourceApplication] as? String else { return false }
+    // If this is not a Facebook login call, handle the potential deep-link
+    guard !ApplicationDelegate.shared.application(app, open: url, options: options) else {
+      return true
+    }
 
     return self.viewModel.inputs.applicationOpenUrl(
       application: app,
       url: url,
-      sourceApplication: sourceApplication,
-      annotation: options[.annotation] as Any
-    )
-  }
-
-  func application(
-    _ application: UIApplication,
-    open url: URL,
-    sourceApplication: String?,
-    annotation: Any
-  ) -> Bool {
-    return self.viewModel.inputs.applicationOpenUrl(
-      application: application,
-      url: url,
-      sourceApplication: sourceApplication,
-      annotation: annotation
+      options: options
     )
   }
 
@@ -362,9 +351,10 @@ extension AppDelegate: URLSessionTaskDelegate {
 extension AppDelegate: UNUserNotificationCenterDelegate {
   public func userNotificationCenter(
     _: UNUserNotificationCenter,
-    willPresent _: UNNotification,
+    willPresent notification: UNNotification,
     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
   ) {
+    self.rootTabBarController?.didReceiveBadgeValue(notification.request.content.badge as? Int)
     completionHandler(.alert)
   }
 
@@ -374,6 +364,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     withCompletionHandler completion: @escaping () -> Void
   ) {
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
+    self.rootTabBarController?.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
     completion()
   }
 }

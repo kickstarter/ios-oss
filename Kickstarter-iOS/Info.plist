@@ -61,8 +61,12 @@
 			</dict>
 		</array>
 	</dict>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<false/>
 	<key>FacebookAppID</key>
 	<string>69103156693</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<false/>
 	<key>FacebookDisplayName</key>
 	<string>Kickstarter</string>
 	<key>ITSAppUsesNonExemptEncryption</key>

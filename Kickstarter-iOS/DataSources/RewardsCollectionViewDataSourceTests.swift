@@ -1,5 +1,6 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
+import Prelude
 import XCTest
 
 final class RewardsCollectionViewDataSourceTests: XCTestCase {
@@ -10,11 +11,15 @@ final class RewardsCollectionViewDataSourceTests: XCTestCase {
   )
 
   func testLoadRewards() {
-    let rewards = [Reward.template, Reward.template]
+    let project = Project.cosmicSurgery
+    let rewardsData = project.rewards.map { (project, Either<Reward, Backing>.left($0)) }
 
-    self.dataSource.load(rewards: rewards)
+    self.dataSource.load(rewardsData)
 
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.collectionView))
-    XCTAssertEqual(2, self.dataSource.collectionView(self.collectionView, numberOfItemsInSection: 0))
+    XCTAssertEqual(project.rewards.count, self.dataSource.collectionView(
+      self.collectionView,
+      numberOfItemsInSection: 0
+    ))
   }
 }

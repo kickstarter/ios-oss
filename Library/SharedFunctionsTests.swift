@@ -238,4 +238,58 @@ final class SharedFunctionsTests: TestCase {
       XCTAssertEqual("CZ", shippingRule?.location.country)
     }
   }
+
+  func testUpdatedUserWithClearedActivityCountProducer_Success() {
+    let initialActivitiesCount = 100
+    let values = TestObserver<User, Never>()
+
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0))
+    )
+
+    let user = User.template
+      |> User.lens.unseenActivityCount .~ initialActivitiesCount
+
+    XCTAssertEqual(values.values.map { $0.id }, [])
+
+    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
+      _ = updatedUserWithClearedActivityCountProducer()
+        .start(on: AppEnvironment.current.scheduler)
+        .start(values.observer)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(values.values.map { $0.id }, [1])
+    }
+  }
+
+  func testUpdatedUserWithClearedActivityCountProducer_Failure() {
+    let initialActivitiesCount = 100
+    let values = TestObserver<User, Never>()
+
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result(failure: .invalidInput)
+    )
+
+    let user = User.template
+      |> User.lens.unseenActivityCount .~ initialActivitiesCount
+
+    XCTAssertEqual(values.values.map { $0.id }, [])
+
+    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
+      _ = updatedUserWithClearedActivityCountProducer()
+        .start(on: AppEnvironment.current.scheduler)
+        .start(values.observer)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(values.values.map { $0.id }, [])
+    }
+  }
 }

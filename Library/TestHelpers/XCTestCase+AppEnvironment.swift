@@ -4,6 +4,7 @@ import KsApi
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable line_length
 extension XCTestCase {
   // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   func withEnvironment(_ env: Environment, body: () -> Void) {
@@ -27,7 +28,6 @@ extension XCTestCase {
     dateType: DateProtocol.Type = AppEnvironment.current.dateType,
     debounceInterval: DispatchTimeInterval = AppEnvironment.current.debounceInterval,
     device: UIDeviceType = AppEnvironment.current.device,
-    facebookAppDelegate: FacebookAppDelegateProtocol = AppEnvironment.current.facebookAppDelegate,
     isOSVersionAvailable: @escaping (Double) -> Bool = AppEnvironment.current.isOSVersionAvailable,
     isVoiceOverRunning: @escaping () -> Bool = AppEnvironment.current.isVoiceOverRunning,
     koala: Koala = AppEnvironment.current.koala,
@@ -56,7 +56,6 @@ extension XCTestCase {
         dateType: dateType,
         debounceInterval: debounceInterval,
         device: device,
-        facebookAppDelegate: facebookAppDelegate,
         isOSVersionAvailable: isOSVersionAvailable,
         isVoiceOverRunning: isVoiceOverRunning,
         koala: koala,
