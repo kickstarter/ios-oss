@@ -115,8 +115,8 @@ extension PledgeTableViewController: PledgeSummaryCellDelegate {
 }
 
 extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
-  func pledgeShippingCell(_: PledgeShippingLocationCell, didUpdateShippingAmount amount: Double) {
-    self.viewModel.inputs.shippingAmountDidUpdate(to: amount)
+  func pledgeShippingCell(_: PledgeShippingLocationCell, didSelectShippingRule rule: ShippingRule) {
+    self.viewModel.inputs.shippingRuleDidUpdate(to: rule)
   }
 }
 

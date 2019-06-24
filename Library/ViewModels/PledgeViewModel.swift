@@ -13,7 +13,7 @@ public typealias PledgeViewData = (
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func pledgeAmountDidUpdate(to amount: Double)
-  func shippingAmountDidUpdate(to amount: Double)
+  func shippingRuleDidUpdate(to rule: ShippingRule)
   func viewDidLoad()
 }
 
@@ -42,7 +42,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(isNotNil)
 
     let shippingAmount = Signal.merge(
-      self.shippingAmountSignal,
+      self.shippingRuleSignal.map { $0.cost },
       projectAndReward.mapConst(0)
     )
 
@@ -73,9 +73,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.pledgeAmountObserver.send(value: amount)
   }
 
-  private let (shippingAmountSignal, shippingAmountObserver) = Signal<Double, Never>.pipe()
-  public func shippingAmountDidUpdate(to amount: Double) {
-    self.shippingAmountObserver.send(value: amount)
+  private let (shippingRuleSignal, shippingRuleObserver) = Signal<ShippingRule, Never>.pipe()
+  public func shippingRuleDidUpdate(to rule: ShippingRule) {
+    self.shippingRuleObserver.send(value: rule)
   }
 
   private let viewDidLoadProperty = MutableProperty(())

@@ -82,13 +82,14 @@ final class PledgeViewModelTests: TestCase {
       self.reloadWithData.assertValueCount(1)
       self.updateWithData.assertValueCount(0)
 
-      let shippingAmount = 20.0
+      let shippingRule = .template
+        |> ShippingRule.lens.cost .~ 20.0
 
-      self.vm.inputs.shippingAmountDidUpdate(to: shippingAmount)
+      self.vm.inputs.shippingRuleDidUpdate(to: shippingRule)
 
       self.project.assertValues([project, project])
       self.reward.assertValues([reward, reward])
-      self.total.assertValues([reward.minimum, reward.minimum + shippingAmount])
+      self.total.assertValues([reward.minimum, reward.minimum + shippingRule.cost])
       self.reloadWithData.assertValueCount(1)
       self.updateWithData.assertValueCount(1)
     }
@@ -110,13 +111,14 @@ final class PledgeViewModelTests: TestCase {
       self.reloadWithData.assertValueCount(1)
       self.updateWithData.assertValueCount(0)
 
-      let shippingAmount = 20.0
+      let shippingRule = .template
+        |> ShippingRule.lens.cost .~ 20.0
 
-      self.vm.inputs.shippingAmountDidUpdate(to: shippingAmount)
+      self.vm.inputs.shippingRuleDidUpdate(to: shippingRule)
 
       self.project.assertValues([project, project])
       self.reward.assertValues([reward, reward])
-      self.total.assertValues([reward.minimum, reward.minimum + shippingAmount])
+      self.total.assertValues([reward.minimum, reward.minimum + shippingRule.cost])
       self.reloadWithData.assertValueCount(1)
       self.updateWithData.assertValueCount(1)
 
@@ -127,8 +129,8 @@ final class PledgeViewModelTests: TestCase {
       self.reward.assertValues([reward, reward, reward])
       self.total.assertValues([
         reward.minimum,
-        reward.minimum + shippingAmount,
-        amountUpdate1 + shippingAmount
+        reward.minimum + shippingRule.cost,
+        amountUpdate1 + shippingRule.cost
       ])
       self.reloadWithData.assertValueCount(1)
       self.updateWithData.assertValueCount(2)
@@ -140,9 +142,9 @@ final class PledgeViewModelTests: TestCase {
       self.reward.assertValues([reward, reward, reward, reward])
       self.total.assertValues([
         reward.minimum,
-        reward.minimum + shippingAmount,
-        amountUpdate1 + shippingAmount,
-        amountUpdate2 + shippingAmount
+        reward.minimum + shippingRule.cost,
+        amountUpdate1 + shippingRule.cost,
+        amountUpdate2 + shippingRule.cost
       ])
       self.reloadWithData.assertValueCount(1)
       self.updateWithData.assertValueCount(3)

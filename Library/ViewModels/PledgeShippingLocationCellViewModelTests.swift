@@ -26,7 +26,7 @@ final class PledgeShippingLocationCellViewModelTests: TestCase {
   private let vm: PledgeShippingLocationCellViewModelType = PledgeShippingLocationCellViewModel()
 
   private let amount = TestObserver<NSAttributedString, Never>()
-  private let amountPrimitive = TestObserver<Double, Never>()
+  private let selectedShippingRule = TestObserver<ShippingRule, Never>()
   private let location = TestObserver<String, Never>()
   private let shippingIsLoading = TestObserver<Bool, Never>()
   private let shippingRulesError = TestObserver<String, Never>()
@@ -35,7 +35,7 @@ final class PledgeShippingLocationCellViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.amount.observe(self.amount.observer)
-    self.vm.outputs.amountPrimitive.observe(self.amountPrimitive.observer)
+    self.vm.outputs.selectedShippingRule.observe(self.selectedShippingRule.observer)
     self.vm.outputs.location.observe(self.location.observer)
     self.vm.outputs.shippingIsLoading.observe(self.shippingIsLoading.observer)
     self.vm.outputs.shippingRulesError.observe(self.shippingRulesError.observer)
@@ -59,12 +59,12 @@ final class PledgeShippingLocationCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, reward: reward)
 
       self.amount.assertValues([])
-      self.amountPrimitive.assertValues([])
+      self.selectedShippingRule.assertValues([])
 
       self.scheduler.run()
 
       self.amount.assertValues([expectedAttributedString])
-      self.amountPrimitive.assertValues([10])
+      XCTAssertEqual(self.selectedShippingRule.values.map { $0.cost }, [10])
     }
   }
 
