@@ -95,6 +95,7 @@ private let projectStateButtonStyle: ButtonStyle = { (button: UIButton) in
     |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
     |> UIButton.lens.layer.borderWidth .~ 0
     |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+    |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ .byWordWrapping
 }
 
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
