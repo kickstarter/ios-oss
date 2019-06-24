@@ -7,7 +7,7 @@ public typealias PledgeViewData = (
   project: Project,
   reward: Reward,
   isLoggedIn: Bool,
-  total: Double
+  pledgeTotal: Double
 )
 
 public protocol PledgeViewModelInputs {

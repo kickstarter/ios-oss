@@ -11,7 +11,7 @@ final class PledgeDataSourceTests: XCTestCase {
   let tableView = UITableView(frame: .zero, style: .plain)
 
   func testLoad_LoggedIn() {
-    let data: PledgeViewData = (project: .template, reward: .template, isLoggedIn: true, total: 0.0)
+    let data: PledgeViewData = (project: .template, reward: .template, isLoggedIn: true, pledgeTotal: 0.0)
     self.dataSource.load(data: data)
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
@@ -24,7 +24,7 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoad_Idempotent() {
-    let data: PledgeViewData = (project: .template, reward: .template, isLoggedIn: true, total: 0.0)
+    let data: PledgeViewData = (project: .template, reward: .template, isLoggedIn: true, pledgeTotal: 0.0)
     self.dataSource.load(data: data)
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
@@ -47,7 +47,7 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoad_LoggedOut() {
-    let data: PledgeViewData = (project: .template, reward: .template, isLoggedIn: false, total: 0.0)
+    let data: PledgeViewData = (project: .template, reward: .template, isLoggedIn: false, pledgeTotal: 0.0)
     self.dataSource.load(data: data)
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
@@ -61,7 +61,7 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoad_Shipping_Disabled() {
-    let data: PledgeViewData = (project: .template, reward: .template, isLoggedIn: false, total: 0.0)
+    let data: PledgeViewData = (project: .template, reward: .template, isLoggedIn: false, pledgeTotal: 0.0)
 
     self.dataSource.load(data: data)
 
@@ -78,7 +78,7 @@ final class PledgeDataSourceTests: XCTestCase {
   func testLoad_Shipping_Enabled() {
     let shipping = Reward.Shipping.template |> Reward.Shipping.lens.enabled .~ true
     let reward = Reward.template |> Reward.lens.shipping .~ shipping
-    let data: PledgeViewData = (project: .template, reward: reward, isLoggedIn: false, total: 0.0)
+    let data: PledgeViewData = (project: .template, reward: reward, isLoggedIn: false, pledgeTotal: 0.0)
 
     self.dataSource.load(data: data)
 

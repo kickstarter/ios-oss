@@ -61,7 +61,7 @@ class PledgeTableViewController: UITableViewController {
     self.viewModel.outputs.updateWithData
       .observeValues { [weak self] data in
         self?.dataSource.load(data: data)
-        self?.pledgeSummaryCell?.configureWith(value: (data.project, data.total))
+        self?.pledgeSummaryCell?.configureWith(value: (data.project, data.pledgeTotal))
       }
   }
 
