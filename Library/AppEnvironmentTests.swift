@@ -240,15 +240,23 @@ final class AppEnvironmentTests: XCTestCase {
 
     // Starts out as production environment
     XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment, .production)
-    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.apiBaseUrl,
-                   ServerConfig.production.apiBaseUrl)
-    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.webBaseUrl,
-                   ServerConfig.production.webBaseUrl)
-    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.apiClientAuth.clientId,
-                   ClientAuth.production.clientId)
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.apiBaseUrl,
+      ServerConfig.production.apiBaseUrl
+    )
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.webBaseUrl,
+      ServerConfig.production.webBaseUrl
+    )
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.apiClientAuth.clientId,
+      ClientAuth.production.clientId
+    )
     XCTAssertNil(AppEnvironment.current.apiService.serverConfig.basicHTTPAuth)
-    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.graphQLEndpointUrl,
-                   ServerConfig.production.graphQLEndpointUrl)
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.graphQLEndpointUrl,
+      ServerConfig.production.graphQLEndpointUrl
+    )
 
     let serverConfig = ServerConfig.staging
 
@@ -258,14 +266,22 @@ final class AppEnvironmentTests: XCTestCase {
     XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment, .staging)
     XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.apiBaseUrl, ServerConfig.staging.apiBaseUrl)
     XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.webBaseUrl, ServerConfig.staging.webBaseUrl)
-    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.apiClientAuth.clientId,
-                   ClientAuth.development.clientId)
-    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.basicHTTPAuth?.username,
-                   BasicHTTPAuth.development.username)
-    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.basicHTTPAuth?.password,
-                   BasicHTTPAuth.development.password)
-    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.graphQLEndpointUrl,
-                   ServerConfig.staging.graphQLEndpointUrl)
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.apiClientAuth.clientId,
+      ClientAuth.development.clientId
+    )
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.basicHTTPAuth?.username,
+      BasicHTTPAuth.development.username
+    )
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.basicHTTPAuth?.password,
+      BasicHTTPAuth.development.password
+    )
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.graphQLEndpointUrl,
+      ServerConfig.staging.graphQLEndpointUrl
+    )
 
     AppEnvironment.popEnvironment()
   }
