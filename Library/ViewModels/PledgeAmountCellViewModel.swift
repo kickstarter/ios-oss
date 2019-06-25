@@ -78,8 +78,8 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
 
     let textFieldValue = self.textFieldValueProperty.signal
       .skipNil()
-      .map { $0 as NSString }
-      .map { $0.doubleValue }
+      .map(Double.init)
+      .skipNil()
 
     self.doneButtonIsEnabled = Signal.combineLatest(
       self.stepperMinValue,
