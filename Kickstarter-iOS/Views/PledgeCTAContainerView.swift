@@ -36,7 +36,9 @@ final class PledgeCTAContainerView: UIView {
 
     NSLayoutConstraint.activate(
       [
-        self.pledgeCTAbutton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+        self.pledgeCTAbutton.heightAnchor.constraint(
+          greaterThanOrEqualToConstant: Styles.minTouchSize.height
+        ),
         self.pledgeCTAbutton.trailingAnchor.constraint(equalTo: self.rootStackView.trailingAnchor)
       ]
     )
