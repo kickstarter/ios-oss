@@ -27,9 +27,6 @@ PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
     let projectAndUser = self.projectAndUserProperty.signal.skipNil()
     let project = projectAndUser.map { $0.0 }
 
-    let pledgeState = project
-      .map { pledgeStateButton(project: $0) }
-
     let backingEvent = projectAndUser
       .switchMap { project, user in
         AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
@@ -38,6 +35,9 @@ PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
 
     let backing = backingEvent.values()
     let projectAndBacking = Signal.combineLatest(project, backing)
+
+    let pledgeState = projectAndBacking
+      .map(pledgeStateButton(project:backing:))
 
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     self.buttonTitleTextColor = pledgeState.map { $0.buttonTitleTextColor }
@@ -69,15 +69,26 @@ PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public let titleText: Signal<String, Never>
 }
 
-private func pledgeStateButton(project: Project) -> PledgeStateCTAType {
+private func pledgeStateButton(project: Project, backing: Backing) -> PledgeStateCTAType {
   guard let projectIsBacked = project.personalization.isBacking
   else { return PledgeStateCTAType.viewRewards }
 
-  switch project.state {
-  case .live:
+  let backingState = backing.status
+  let projectState = project.state
+
+  switch (projectState, backingState) {
+  case (.live, .errored):
     return projectIsBacked ? PledgeStateCTAType.fix : PledgeStateCTAType.pledge
-  case .canceled, .failed, .suspended, .successful:
-    return projectIsBacked ? PledgeStateCTAType.viewBacking : PledgeStateCTAType.viewRewards
+  case (.live, _):
+    return projectIsBacked ? PledgeStateCTAType.manage : PledgeStateCTAType.pledge
+//  case (.canceled, _):
+//    return projectIsBacked ? PledgeStateCTAType.viewBacking : PledgeStateCTAType.viewRewards
+//  case (.failed, _):
+//    return projectIsBacked ? PledgeStateCTAType.viewBacking : PledgeStateCTAType.viewRewards
+//  case (.suspended, _):
+//    return projectIsBacked ? PledgeStateCTAType.viewBacking : PledgeStateCTAType.viewRewards
+//  case (.successful, _):
+//    return projectIsBacked ? PledgeStateCTAType.viewBacking : PledgeStateCTAType.viewRewards
   default:
     return PledgeStateCTAType.viewRewards
   }
