@@ -147,6 +147,7 @@ private let termsTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITe
   _ = textView
     |> tappableLinksViewStyle
     |> \.attributedText .~ attributedTermsText()
+    |> \.accessibilityTraits .~ [.staticText]
 
   _ = textView
     |> checkoutBackgroundStyle
