@@ -1047,6 +1047,7 @@
 		D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */; };
 		D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */; };
 		D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2551F75921500981E64 /* CategoryTemplates.swift */; };
+		D6D4425D22C276DF0070C3AF /* PledgePaymentMethodsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsCell.swift */; };
 		D6DC652F21768502008CF69C /* Queryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC652E21768502008CF69C /* Queryable.swift */; };
 		D6DC653321768B6E008CF69C /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */; };
 		D6DC65522178CDDD008CF69C /* GraphUserEmailTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */; };
@@ -2251,6 +2252,7 @@
 		D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphSchemaTests.swift; sourceTree = "<group>"; };
 		D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryLenses.swift; sourceTree = "<group>"; };
 		D6C9A2551F75921500981E64 /* CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTemplates.swift; sourceTree = "<group>"; };
+		D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsCell.swift; sourceTree = "<group>"; };
 		D6DC652E21768502008CF69C /* Queryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queryable.swift; sourceTree = "<group>"; };
 		D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmailTemplate.swift; sourceTree = "<group>"; };
@@ -2677,6 +2679,7 @@
 				77FD60A022735AED0084B84C /* PledgeContinueCell.swift */,
 				370ACAFF225D337900C8745F /* PledgeAmountCell.swift */,
 				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionCell.swift */,
+				D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsCell.swift */,
 				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
 				37059842226F79A700BDA6E3 /* PledgeShippingLocationCell.swift */,
 				A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */,
@@ -4894,6 +4897,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6D4425D22C276DF0070C3AF /* PledgePaymentMethodsCell.swift in Sources */,
 				A73924041D272404004524C3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
