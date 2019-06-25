@@ -177,7 +177,7 @@ internal final class ActivitiesViewController: UITableViewController {
       }
 
     self.viewModel.outputs.updateUserInEnvironment
-      .observeValues { [weak self] user in
+      .observeValues { user in
         AppEnvironment.updateCurrentUser(user)
         NotificationCenter.default.post(.init(name: .ksr_userUpdated))
       }
