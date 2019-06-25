@@ -27,15 +27,19 @@ final class PledgeCTAContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    NSLayoutConstraint.activate(
-      [self.pledgeCTAbutton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)]
-    )
-
     _ = ([self.youreABackerLabel, self.amountOrRewardLabel], self.amountAndRewardTitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.amountAndRewardTitleStackView, self.pledgeCTAbutton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+
+    NSLayoutConstraint.activate(
+      [
+        self.pledgeCTAbutton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+        self.pledgeCTAbutton.trailingAnchor.constraint(equalTo: self.rootStackView.trailingAnchor)
+      ]
+    )
 
     self.bindViewModel()
   }
@@ -61,7 +65,13 @@ final class PledgeCTAContainerView: UIView {
       |> \.textColor .~ .ksr_dark_grey_500
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> checkoutAdaptableStackViewStyle(
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    )
+      |> \.distribution .~ UIStackView.Distribution.equalCentering
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
 
     _ = self.amountAndRewardTitleStackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
@@ -97,14 +107,4 @@ private let projectStateButtonStyle: ButtonStyle = { (button: UIButton) in
     |> UIButton.lens.layer.borderWidth .~ 0
     |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
     |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ .byWordWrapping
-}
-
-private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
-  stackView
-    |> \.alignment .~ UIStackView.Alignment.center
-    |> \.distribution .~ UIStackView.Distribution.equalCentering
-    |> \.axis .~ NSLayoutConstraint.Axis.horizontal
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
 }
