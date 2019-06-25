@@ -4,6 +4,9 @@ import Prelude
 import ReactiveSwift
 
 public protocol LoginToutViewModelInputs {
+  /// Call when a "Close" bar button item should be added
+  func configureCloseButton()
+
   /// Call when the environment has been logged into
   func environmentLoggedIn()
 
@@ -28,12 +31,8 @@ public protocol LoginToutViewModelInputs {
   /// Call when a user session starts.
   func userSessionStarted()
 
-  /// Call when the view appears with a boolean telling us whether or not this controller was presented,
-  /// i.e. it's presentingViewController is non-`nil`.
-  func view(isPresented: Bool)
-
-  /// Call when the view controller's viewWillAppear() method is called
-  func viewWillAppear()
+  /// Call when the view controller's viewDidLoad() method is called
+  func viewDidLoad()
 }
 
 public protocol LoginToutViewModelOutputs {
@@ -57,6 +56,8 @@ public protocol LoginToutViewModelOutputs {
 
   /// Emits when a login success notification should be posted.
   var postNotification: Signal<(Notification, Notification), Never> { get }
+
+  var shouldConfigureCloseButton: Signal<Void, Never> { get }
 
   /// Emits when should show Facebook error alert with AlertError
   var showFacebookErrorAlert: Signal<AlertError, Never> { get }
@@ -83,7 +84,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   LoginToutViewModelOutputs {
   public init() {
     let intent: Signal<LoginIntent, Never> = self.loginIntentProperty.signal.skipNil()
-      .takeWhen(self.viewWillAppearProperty.signal)
+      .takeWhen(self.viewDidLoadProperty.signal)
 
     self.logInContextText = intent.map { (intent: LoginIntent) -> String in statusString(intent) }
 
@@ -157,9 +158,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
         )
       ))
 
-    self.dismissViewController = self.viewIsPresentedProperty.signal
-      .filter(isTrue)
-      .takeWhen(self.userSessionStartedProperty.signal)
+    self.dismissViewController = self.userSessionStartedProperty.signal
       .ignoreValues()
 
     self.logIntoEnvironment
@@ -175,16 +174,26 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: .facebook) }
 
     self.loginIntentProperty.producer.skipNil()
-      .takeWhen(self.viewWillAppearProperty.signal.take(first: 1))
+      .takeWhen(self.viewDidLoadProperty.signal)
       .observeValues { AppEnvironment.current.koala.trackLoginTout(intent: $0) }
+
+    self.shouldConfigureCloseButton = Signal.combineLatest(
+      self.shouldConfigureCloseButtonProperty.signal,
+      self.viewDidLoadProperty.signal)
+      .ignoreValues()
   }
 
   public var inputs: LoginToutViewModelInputs { return self }
   public var outputs: LoginToutViewModelOutputs { return self }
 
-  fileprivate var viewWillAppearProperty = MutableProperty(())
-  public func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
+  fileprivate let shouldConfigureCloseButtonProperty = MutableProperty(())
+  public func configureCloseButton() {
+    self.shouldConfigureCloseButtonProperty.value = ()
+  }
+
+  fileprivate let viewDidLoadProperty = MutableProperty(())
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
   }
 
   fileprivate let loginIntentProperty = MutableProperty<LoginIntent?>(.loginTab)
@@ -227,11 +236,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.userSessionStartedProperty.value = ()
   }
 
-  fileprivate let viewIsPresentedProperty = MutableProperty<Bool>(false)
-  public func view(isPresented: Bool) {
-    self.viewIsPresentedProperty.value = isPresented
-  }
-
+  public let attemptFacebookLogin: Signal<(), Never>
   public let dismissViewController: Signal<(), Never>
   public let headlineLabelHidden: Signal<Bool, Never>
   public let startLogin: Signal<(), Never>
@@ -242,7 +247,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let postNotification: Signal<(Notification, Notification), Never>
   public let logInContextText: Signal<String, Never>
   public let isLoading: Signal<Bool, Never>
-  public let attemptFacebookLogin: Signal<(), Never>
+  public let shouldConfigureCloseButton: Signal<Void, Never>
   public let showFacebookErrorAlert: Signal<AlertError, Never>
 }
 

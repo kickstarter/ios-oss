@@ -7,20 +7,41 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
-  @IBOutlet fileprivate var contextLabel: UILabel!
-  @IBOutlet fileprivate var bringCreativeProjectsToLifeLabel: UILabel!
-  @IBOutlet fileprivate var fbLoginButton: UIButton!
-  @IBOutlet fileprivate var disclaimerButton: UIButton!
-  @IBOutlet fileprivate var loginButton: UIButton!
-  @IBOutlet fileprivate var signupButton: UIButton!
-  @IBOutlet fileprivate var loginContextStackView: UIStackView!
-  @IBOutlet fileprivate var rootStackView: UIStackView!
-  @IBOutlet fileprivate var facebookDisclaimerLabel: UILabel!
+protocol LoginToutViewControllerDelegate: class {
+  func loginToutViewControllerDidStartUserSession(_ viewController: LoginToutViewController)
+}
 
-  fileprivate let helpViewModel = HelpViewModel()
+public typealias ButtonAction = () -> ()
+
+internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
+
+  // MARK: - Properties
+
+  private lazy var bringCreativeProjectsToLifeLabel = { UILabel(frame: .zero) }()
+  private lazy var contextLabel = { UILabel(frame: .zero) }()
+  private lazy var disclaimerButton = { MultiLineButton(type: .custom)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+  weak var delegate: LoginToutViewControllerDelegate?
+  private lazy var emailLoginStackView = { UIStackView(frame: .zero) }()
+  private lazy var facebookDisclaimerLabel = { UILabel(frame: .zero) }()
+  private lazy var fbLoginButton = { MultiLineButton(type: .custom)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
+  private lazy var fbLoginStackView = { UIStackView(frame: .zero) }()
+  private let helpViewModel = HelpViewModel()
+  private lazy var loginButton = { MultiLineButton(type: .custom)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+  private lazy var loginContextStackView = { UIStackView() }()
+  private lazy var rootStackView = { UIStackView() }()
+  private lazy var scrollView = { UIScrollView(frame: .zero) }()
+  private lazy var signupButton = { MultiLineButton(type: .custom)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
   private var sessionStartedObserver: Any?
-  fileprivate let viewModel: LoginToutViewModelType = LoginToutViewModel()
+  private let viewModel: LoginToutViewModelType = LoginToutViewModel()
+
+  private var closeButtonAction: ButtonAction?
 
   fileprivate lazy var fbLoginManager: LoginManager = {
     let manager = LoginManager()
@@ -30,7 +51,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }()
 
   internal static func configuredWith(loginIntent intent: LoginIntent) -> LoginToutViewController {
-    let vc = Storyboard.Login.instantiate(LoginToutViewController.self)
+    let vc = LoginToutViewController.init(nibName: nil, bundle: nil)
     vc.viewModel.inputs.loginIntent(intent)
     vc.helpViewModel.inputs.configureWith(helpContext: .loginTout)
     vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
@@ -40,6 +61,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.setupViews()
+    self.setupConstraints()
+
     self.fbLoginManager.logOut()
 
     self.sessionStartedObserver = NotificationCenter.default
@@ -47,55 +71,73 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         self?.viewModel.inputs.userSessionStarted()
       }
 
-    if self.presentingViewController != nil {
-      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonPressed))
-    }
     self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(self.helpButtonPressed))
 
     self.disclaimerButton.addTarget(self, action: #selector(self.helpButtonPressed), for: .touchUpInside)
+    self.fbLoginButton.addTarget(self, action: #selector(self.facebookLoginButtonPressed(_:)), for: .touchUpInside)
+    self.loginButton.addTarget(self, action: #selector(self.loginButtonPressed(_:)), for: .touchUpInside)
+    self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   deinit {
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    self.viewModel.inputs.view(isPresented: self.presentingViewController != nil)
-    self.viewModel.inputs.viewWillAppear()
+  func configureCloseButton(withAction action: ButtonAction?) {
+    self.closeButtonAction = action
+
+    self.viewModel.inputs.configureCloseButton()
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> baseControllerStyle()
-    _ = self.fbLoginButton |> fbLoginButtonStyle
+    _ = self
+      |> baseControllerStyle()
+
+    _ = self.fbLoginButton
+      |> baseMultiLineButtonStyle
+      |> fbLoginButtonStyle
+      |> roundedButtonStyle
+
     _ = self.disclaimerButton
+      |> baseMultiLineButtonStyle
       |> disclaimerButtonStyle
-    _ = self.loginButton |> loginWithEmailButtonStyle
+
+    _ = self.loginButton
+      |> baseMultiLineButtonStyle
+      |> loginButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
+
     _ = self.rootStackView
+      |> baseStackViewStyle
       |> loginRootStackViewStyle
       |> UIStackView.lens.spacing .~ Styles.grid(5)
-    _ = self.signupButton |> signupWithEmailButtonStyle
 
-    _ = self.facebookDisclaimerLabel |> fbDisclaimerTextStyle
+    _ = [self.loginContextStackView, self.fbLoginStackView, self.emailLoginStackView]
+      ||> baseStackViewStyle
+
+    _ = self.signupButton
+      |> signupButtonStyle
+      |> roundedButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in
+        Strings.login_tout_default_intent_traditional_signup_button()
+    }
+
+    _ = self.facebookDisclaimerLabel
+      |> baseLabelStyle
+      |> fbDisclaimerTextStyle
 
     _ = self.bringCreativeProjectsToLifeLabel
-      |> UILabel.lens.font %~~ { _, l in
-        l.traitCollection.isRegularRegular
-          ? .ksr_headline(size: 20)
-          : .ksr_headline(size: 14)
-      }
-      |> UILabel.lens.backgroundColor .~ .white
+      |> baseLabelStyle
+      |> UILabel.lens.font .~ .ksr_title1()
       |> UILabel.lens.text %~ { _ in Strings.Bring_creative_projects_to_life() }
 
     _ = self.contextLabel
-      |> UILabel.lens.backgroundColor .~ .white
-      |> UILabel.lens.font %~~ { _, l in
-        l.traitCollection.isRegularRegular
-          ? .ksr_subhead(size: 20)
-          : .ksr_subhead(size: 14)
-      }
+      |> baseLabelStyle
+      |> UILabel.lens.font .~ .ksr_subhead()
 
     _ = self.loginContextStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -108,6 +150,12 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   override func bindViewModel() {
+    self.viewModel.outputs.shouldConfigureCloseButton
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.setupCloseButton()
+    }
+
     self.viewModel.outputs.startLogin
       .observeForControllerAction()
       .observeValues { [weak self] _ in
@@ -162,7 +210,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.viewModel.outputs.dismissViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.dismiss(animated: true, completion: nil)
+        guard let self = self else { return }
+
+        self.delegate?.loginToutViewControllerDidStartUserSession(self)
       }
 
     self.helpViewModel.outputs.showHelpSheet
@@ -194,6 +244,42 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     self.contextLabel.rac.text = self.viewModel.outputs.logInContextText
     self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
+  }
+
+  // MARK: - Private Helpers
+
+  private func setupViews() {
+    _ = (self.scrollView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.rootStackView, self.scrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = ([self.loginContextStackView, self.fbLoginStackView, self.emailLoginStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.bringCreativeProjectsToLifeLabel, self.contextLabel], self.loginContextStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.fbLoginButton, self.facebookDisclaimerLabel], self.fbLoginStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.signupButton, self.loginButton, self.disclaimerButton], self.emailLoginStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+      self.fbLoginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+      self.loginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+      self.signupButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      ])
+  }
+
+  private func setupCloseButton() {
+    self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonPressed))
   }
 
   @objc internal func mailComposeController(
@@ -277,23 +363,23 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     }
   }
 
-  @objc fileprivate func closeButtonPressed() {
-    self.dismiss(animated: true, completion: nil)
+  @objc private func closeButtonPressed() {
+    self.closeButtonAction?()
   }
 
-  @IBAction fileprivate func helpButtonPressed() {
+  @objc private func helpButtonPressed() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 
-  @IBAction fileprivate func loginButtonPressed(_: UIButton) {
+  @objc private func loginButtonPressed(_: UIButton) {
     self.viewModel.inputs.loginButtonPressed()
   }
 
-  @IBAction fileprivate func facebookLoginButtonPressed(_: UIButton) {
+  @objc private func facebookLoginButtonPressed(_: UIButton) {
     self.viewModel.inputs.facebookLoginButtonPressed()
   }
 
-  @IBAction fileprivate func signupButtonPressed() {
+  @objc private func signupButtonPressed() {
     self.viewModel.inputs.signupButtonPressed()
   }
 }
@@ -304,4 +390,39 @@ extension LoginToutViewController: TabBarControllerScrollable {
       scrollView.scrollToTop()
     }
   }
+}
+
+// MARK: - Styles
+
+private let baseStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.distribution .~ .fill
+    |> \.alignment .~ .fill
+    |> \.axis .~ .vertical
+    |> \.spacing .~ Styles.grid(2)
+}
+
+private let baseLabelStyle: LabelStyle = { label in
+  label
+    |> \.backgroundColor .~ .white
+    |> \.lineBreakMode .~ .byWordWrapping
+    |> \.numberOfLines .~ 0
+}
+
+private let baseMultiLineButtonStyle: ButtonStyle = { button in
+  _ = button.titleLabel
+    ?|> \.lineBreakMode .~ .byWordWrapping
+    ?|> \.numberOfLines .~ 0
+
+  return button
+}
+
+private let loginButtonStyle: ButtonStyle = { button in
+  button
+    |> neutralButtonStyle
+    |> roundedButtonStyle
+}
+
+private let roundedButtonStyle: ButtonStyle = { button in
+  button |> roundedStyle(cornerRadius: 12)
 }

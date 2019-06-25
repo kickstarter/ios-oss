@@ -47,6 +47,7 @@ public let greenBorderButtonStyle = baseButtonStyle
 
 public let facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.titleLabel.font %~ { _ in UIFont.ksr_headline() }
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_facebookBlue
   <> UIButton.lens.titleColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_soft_black
@@ -62,12 +63,13 @@ public let facebookThanksButtonStyle = facebookButtonStyle
   }
 
 public let neutralButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_dark_grey_400
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
+  <> UIButton.lens.titleLabel.font %~ { _ in UIFont.ksr_headline() }
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_grey_500
+  <> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.white.withAlphaComponent(0.5)
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_dark_grey_500
-  <> UIButton.lens.titleColor(for: .disabled) .~ .init(white: 1.0, alpha: 0.75)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_navy_400
+  <> UIButton.lens.titleColor(for: .disabled) .~ UIColor.ksr_soft_black.withAlphaComponent(0.75)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_grey_400
 
 public let greenButtonStyle =
   baseButtonStyle

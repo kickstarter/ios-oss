@@ -314,6 +314,10 @@ extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, Activi
 extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
   internal func discoveryOnboardingTappedSignUpLoginButton() {
     let loginTout = LoginToutViewController.configuredWith(loginIntent: .discoveryOnboarding)
+    loginTout.configureCloseButton {
+      self.dismiss(animated: true)
+    }
+
     let nav = UINavigationController(rootViewController: loginTout)
     nav.modalPresentationStyle = .formSheet
 

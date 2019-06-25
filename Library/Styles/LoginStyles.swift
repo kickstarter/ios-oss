@@ -136,16 +136,19 @@ public let loginRootStackViewStyle =
       : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
   }
 
-public let signupButtonStyle = greenButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.login_tout_default_intent_traditional_signup_button()
-  }
-
 public let signupControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in Strings.signup_button() }
 
-public let signupWithEmailButtonStyle = borderButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.signup_button_email() }
+public let signupWithEmailButtonStyle: ButtonStyle = { button in
+  _ = button
+    |> checkoutGreenButtonStyle
+    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.signup_button_email() }
+
+  _ = button.titleLabel
+  ?|> checkoutGreenButtonTitleLabelStyle
+
+  return button
+}
 
 public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
