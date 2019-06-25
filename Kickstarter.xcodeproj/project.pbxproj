@@ -122,7 +122,6 @@
 		37DEC2282257CC270051EF9B /* PledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC2272257CC270051EF9B /* PledgeViewControllerTests.swift */; };
 		37DEC22A2257CD9F0051EF9B /* PledgeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC2292257CD9F0051EF9B /* PledgeDataSource.swift */; };
 		37DEC22C2257CDBA0051EF9B /* PledgeDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC22B2257CDBA0051EF9B /* PledgeDataSourceTests.swift */; };
-		37DEC22E2257CDD50051EF9B /* PledgeRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */; };
 		37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E9E29F225EABB000D29DD7 /* AmountInputView.swift */; };
 		37EB3E4C228CF4A400076E4C /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB3E4B228CF4A400076E4C /* NumberFormatter.swift */; };
 		37EB3E4E228CF4FB00076E4C /* NumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */; };
@@ -1392,7 +1391,6 @@
 		37DEC2272257CC270051EF9B /* PledgeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerTests.swift; sourceTree = "<group>"; };
 		37DEC2292257CD9F0051EF9B /* PledgeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDataSource.swift; sourceTree = "<group>"; };
 		37DEC22B2257CDBA0051EF9B /* PledgeDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDataSourceTests.swift; sourceTree = "<group>"; };
-		37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeRowCell.swift; sourceTree = "<group>"; };
 		37E9E29F225EABB000D29DD7 /* AmountInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountInputView.swift; sourceTree = "<group>"; };
 		37EB3E4B228CF4A400076E4C /* NumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatter.swift; sourceTree = "<group>"; };
 		37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterTests.swift; sourceTree = "<group>"; };
@@ -2684,7 +2682,6 @@
 				370ACAFF225D337900C8745F /* PledgeAmountCell.swift */,
 				77FD60A022735AED0084B84C /* PledgeContinueCell.swift */,
 				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionCell.swift */,
-				37DEC22D2257CDD50051EF9B /* PledgeRowCell.swift */,
 				37059842226F79A700BDA6E3 /* PledgeShippingLocationCell.swift */,
 				D0237C1422BC2B640092C792 /* PledgeSummaryCell.swift */,
 				A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */,
@@ -4865,7 +4862,6 @@
 				77EFBAE52268E01400DA5C3C /* RewardCell.swift in Sources */,
 				77FD8B46216D6245000A95AC /* LoadingBarButtonItemView.swift in Sources */,
 				9D14FF8E1D133351005F4ABB /* ProjectActivityEmptyStateCell.swift in Sources */,
-				37DEC22E2257CDD50051EF9B /* PledgeRowCell.swift in Sources */,
 				37DEC22A2257CD9F0051EF9B /* PledgeDataSource.swift in Sources */,
 				017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */,
 				014D625B1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift in Sources */,
