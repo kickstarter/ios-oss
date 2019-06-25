@@ -5,20 +5,23 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeAmountCellViewModelInputs {
-  func amountUpdated(to amount: String)
   func configureWith(project: Project, reward: Reward)
+  func doneButtonTapped()
   func stepperValueChanged(_ value: Double)
+  func textFieldValueChanged(_ value: String?)
 }
 
 public protocol PledgeAmountCellViewModelOutputs {
   var amount: Signal<String, Never> { get }
   var amountPrimitive: Signal<Double, Never> { get }
   var currency: Signal<String, Never> { get }
+  var doneButtonIsEnabled: Signal<Bool, Never> { get }
   var generateSelectionFeedback: Signal<Void, Never> { get }
   var generateNotificationWarningFeedback: Signal<Void, Never> { get }
-  var stepperInitialValue: Signal<Double, Never> { get }
   var stepperMaxValue: Signal<Double, Never> { get }
   var stepperMinValue: Signal<Double, Never> { get }
+  var stepperValue: Signal<Double, Never> { get }
+  var textFieldIsFirstResponder: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeAmountCellViewModelType {
@@ -40,22 +43,13 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
     let initialValue = Signal.combineLatest(project, reward)
       .map { _ in 15.0 }
 
-    self.stepperInitialValue = initialValue
-
-    self.amount = Signal.merge(
+    let stepperValue = Signal.merge(
       initialValue,
       self.stepperValueProperty.signal
     )
-    .map { String(format: "%.0f", $0) }
 
-    let updatedAmount = self.amountSignal
-      .map(Double.init)
-      .skipNil()
-
-    self.amountPrimitive = Signal.merge(
-      reward.map { $0.minimum },
-      updatedAmount
-    )
+    self.amount = stepperValue
+      .map { String(format: "%.0f", $0) }
 
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
@@ -82,11 +76,42 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
     self.generateNotificationWarningFeedback = stepperValueChanged
       .filter { min, max, value in value <= min || max <= value }
       .ignoreValues()
-  }
 
-  private let (amountSignal, amountObserver) = Signal<String, Never>.pipe()
-  public func amountUpdated(to amount: String) {
-    self.amountObserver.send(value: amount)
+    let textFieldValue = self.textFieldValueProperty.signal
+      .map { $0.coalesceWith("") }
+      .map(Double.init)
+      .map { $0.coalesceWith(0) }
+
+    let updatedValue = Signal.combineLatest(
+      self.stepperMinValue,
+      self.stepperMaxValue,
+      Signal.merge(
+        stepperValue,
+        textFieldValue.signal
+      )
+    )
+
+    self.amountPrimitive = updatedValue
+      .map(third)
+      .skipRepeats()
+
+    self.doneButtonIsEnabled = updatedValue
+      .map { min, max, doubleValue in min <= doubleValue && doubleValue <= max }
+
+    let clampedStepperValue = Signal.combineLatest(
+      self.stepperMinValue,
+      self.stepperMaxValue,
+      textFieldValue.signal
+    )
+    .map { minValue, maxValue, value in min(max(minValue, value), maxValue) }
+
+    self.stepperValue = Signal.merge(
+      initialValue,
+      clampedStepperValue
+    )
+
+    self.textFieldIsFirstResponder = self.doneButtonTappedProperty.signal
+      .mapConst(false)
   }
 
   private let projectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -94,19 +119,31 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
     self.projectAndRewardProperty.value = (project, reward)
   }
 
+  private let doneButtonTappedProperty = MutableProperty(())
+  public func doneButtonTapped() {
+    self.doneButtonTappedProperty.value = ()
+  }
+
   private let stepperValueProperty = MutableProperty<Double>(0)
   public func stepperValueChanged(_ value: Double) {
     self.stepperValueProperty.value = value
   }
 
+  private let textFieldValueProperty = MutableProperty<String?>(nil)
+  public func textFieldValueChanged(_ value: String?) {
+    self.textFieldValueProperty.value = value
+  }
+
   public let amount: Signal<String, Never>
   public let amountPrimitive: Signal<Double, Never>
   public let currency: Signal<String, Never>
+  public let doneButtonIsEnabled: Signal<Bool, Never>
   public let generateSelectionFeedback: Signal<Void, Never>
   public let generateNotificationWarningFeedback: Signal<Void, Never>
-  public let stepperInitialValue: Signal<Double, Never>
   public let stepperMaxValue: Signal<Double, Never>
   public let stepperMinValue: Signal<Double, Never>
+  public let stepperValue: Signal<Double, Never>
+  public let textFieldIsFirstResponder: Signal<Bool, Never>
 
   public var inputs: PledgeAmountCellViewModelInputs { return self }
   public var outputs: PledgeAmountCellViewModelOutputs { return self }
