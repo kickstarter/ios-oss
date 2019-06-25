@@ -33,7 +33,6 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.amountAndRewardTitleStackView, self.pledgeCTAbutton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-
     NSLayoutConstraint.activate(
       [
         self.pledgeCTAbutton.heightAnchor.constraint(
@@ -69,7 +68,7 @@ final class PledgeCTAContainerView: UIView {
     _ = self.rootStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    )
+      )
       |> \.distribution .~ UIStackView.Distribution.equalCentering
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.isLayoutMarginsRelativeArrangement .~ true
