@@ -38,6 +38,8 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     _ = ([self.stepper, self.spacer, self.amountInputView], self.adaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    self.amountInputView.textField.delegate = self
+
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
     self.stepper.addTarget(
@@ -109,6 +111,25 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
   @objc func stepperValueChanged(_ stepper: UIStepper) {
     self.viewModel.inputs.stepperValueChanged(stepper.value)
+  }
+}
+
+extension PledgeAmountCell: UITextFieldDelegate {
+  func textField(
+    _ textField: UITextField, shouldChangeCharactersIn _: NSRange, replacementString string: String
+  ) -> Bool {
+    let decimalSeparatorCharacters = CharacterSet.ksr_decimalSeparators()
+    let existingCharacters = CharacterSet(charactersIn: textField.text ?? String.init())
+    let inputCharacters = CharacterSet(charactersIn: string)
+    let numericCharacters = CharacterSet.ksr_numericCharacters()
+
+    if numericCharacters.isSuperset(of: inputCharacters) {
+      return true
+    } else if decimalSeparatorCharacters.isSuperset(of: inputCharacters) {
+      return !decimalSeparatorCharacters.isSubset(of: existingCharacters)
+    } else {
+      return false
+    }
   }
 }
 
