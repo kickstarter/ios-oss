@@ -33,6 +33,11 @@ class PledgeTableViewController: UITableViewController {
     self.tableView.registerCellClass(PledgeShippingLocationCell.self)
     self.tableView.registerHeaderFooterClass(PledgeFooterView.self)
 
+    // Rebase Rebase Rebase
+    self.tableView.addGestureRecognizer(
+      UITapGestureRecognizer(target: self, action: #selector(PledgeTableViewController.dismissKeyboard))
+    )
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -56,6 +61,12 @@ class PledgeTableViewController: UITableViewController {
         self?.dataSource.load(project: project, reward: reward, isLoggedIn: isLoggedIn)
         self?.tableView.reloadData()
       }
+  }
+
+  // MARK: - Actions
+
+  @objc func dismissKeyboard() {
+    self.tableView.endEditing(true)
   }
 
   // MARK: - UITableViewDelegate
