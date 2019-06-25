@@ -122,6 +122,7 @@ private let amountLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.textAlignment .~ NSTextAlignment.right
     |> \.adjustsFontSizeToFitWidth .~ true
+    |> \.isAccessibilityElement .~ true
 
   _ = label
     |> checkoutBackgroundStyle
