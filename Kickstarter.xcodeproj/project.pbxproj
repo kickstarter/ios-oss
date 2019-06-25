@@ -1047,7 +1047,7 @@
 		D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */; };
 		D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */; };
 		D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2551F75921500981E64 /* CategoryTemplates.swift */; };
-		D6D4425D22C276DF0070C3AF /* PledgePaymentMethodsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsCell.swift */; };
+		D6D4425E22C2B4570070C3AF /* PledgePaymentMethodsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsCell.swift */; };
 		D6DC652F21768502008CF69C /* Queryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC652E21768502008CF69C /* Queryable.swift */; };
 		D6DC653321768B6E008CF69C /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */; };
 		D6DC65522178CDDD008CF69C /* GraphUserEmailTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */; };
@@ -4678,6 +4678,7 @@
 			files = (
 				A7D8B6B61DCCD4DE009BF854 /* ProjectNavigatorTransitionAnimator.swift in Sources */,
 				A7561A3B1D3144210028DEA1 /* ProjectDescriptionViewController.swift in Sources */,
+				D6D4425E22C2B4570070C3AF /* PledgePaymentMethodsCell.swift in Sources */,
 				019DDFED1CB6FF4500BDC113 /* ResetPasswordViewController.swift in Sources */,
 				018422C51D2C48AA00CA7566 /* DashboardProjectsDrawerDataSource.swift in Sources */,
 				015706BB1E68DE580087DD68 /* ProfileSortBarView.swift in Sources */,
@@ -4897,7 +4898,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6D4425D22C276DF0070C3AF /* PledgePaymentMethodsCell.swift in Sources */,
 				A73924041D272404004524C3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

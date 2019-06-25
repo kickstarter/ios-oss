@@ -8,6 +8,7 @@ final class PledgeDataSource: ValueCellDataSource {
     case project
     case inputs
     case summary
+    case paymentMethods
   }
 
   // MARK: - Load
@@ -45,6 +46,12 @@ final class PledgeDataSource: ValueCellDataSource {
         cellClass: PledgeContinueCell.self,
         toSection: Section.summary.rawValue
       )
+    } else {
+      self.appendRow(
+        value: [GraphUserCreditCard.template],
+        cellClass: PledgePaymentMethodsCell.self,
+        toSection: Section.paymentMethods.rawValue
+      )
     }
   }
 
@@ -61,6 +68,8 @@ final class PledgeDataSource: ValueCellDataSource {
     case let (cell as PledgeShippingLocationCell, value as (Project, Reward)):
       cell.configureWith(value: value)
     case let (cell as PledgeContinueCell, value as ()):
+      cell.configureWith(value: value)
+    case let (cell as PledgePaymentMethodsCell, value as [GraphUserCreditCard]):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
