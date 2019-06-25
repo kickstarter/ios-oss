@@ -189,7 +189,6 @@
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
-		775D922922BD7CFD00442301 /* DebugData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775D922822BD7CFD00442301 /* DebugData.swift */; };
 		776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */; };
 		77752F5E219B39EA00E7DA7D /* SettingsAccountWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */; };
 		77752F97219B3D7300E7DA7D /* SettingsAccountWarningCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */; };
@@ -222,6 +221,7 @@
 		77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */; };
 		77C5E252214182CA002E1670 /* SettingsPrivacySwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */; };
 		77C7B654226E0E54001101AC /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */; };
+		77C93C2522C27443005D3195 /* DebugData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775D922822BD7CFD00442301 /* DebugData.swift */; };
 		77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD894821791B05003066DA /* ProjectStatsTemplate.swift */; };
 		77CD8981217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */; };
 		77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */; };
@@ -2860,6 +2860,7 @@
 				3706408C22A9BE8100889CBD /* DateFormatter.swift */,
 				3706408F22A9BE9400889CBD /* DateFormatterTests.swift */,
 				A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */,
+				775D922822BD7CFD00442301 /* DebugData.swift */,
 				77F6E73421222E7C005A5C55 /* EmailFrequency.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
 				A7ED1F141E830FDC00BFFA01 /* EnvironmentTests.swift */,
@@ -3501,7 +3502,6 @@
 				D79440562203A63300D0A747 /* CreatePaymentSourceEnvelope.swift */,
 				D015878A1EEB2ED6006E7684 /* CreatePledgeEnvelope.swift */,
 				D015878B1EEB2ED6006E7684 /* CreatePledgeEnvelopeTests.swift */,
-				775D922822BD7CFD00442301 /* DebugData.swift */,
 				D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */,
 				D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */,
 				D015878C1EEB2ED6006E7684 /* DiscoveryEnvelope.swift */,
@@ -4279,6 +4279,7 @@
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
 				A7F441AD1D005A9400FE6FC5 /* ActivitiesViewModel.swift in Sources */,
 				A75A9DBF1D6F3A3000603D1D /* RewardShippingPickerViewModel.swift in Sources */,
+				77C93C2522C27443005D3195 /* DebugData.swift in Sources */,
 				D7A37D7A1E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift in Sources */,
 				A73379111D0E33A600C91445 /* ButtonStyles.swift in Sources */,
 				A73378FB1D0AE33B00C91445 /* BaseStyles.swift in Sources */,
@@ -5077,7 +5078,6 @@
 				D015891F1EEB2ED7006E7684 /* ShippingRulesEnvelope.swift in Sources */,
 				D01588831EEB2ED7006E7684 /* BackingLenses.swift in Sources */,
 				D01588C51EEB2ED7006E7684 /* Reward.ShippingLenses.swift in Sources */,
-				775D922922BD7CFD00442301 /* DebugData.swift in Sources */,
 				D01588D51EEB2ED7006E7684 /* UpdateDraftLenses.swift in Sources */,
 				D01589211EEB2ED7006E7684 /* StarEnvelope.swift in Sources */,
 				D01588EF1EEB2ED7006E7684 /* MessageThread.swift in Sources */,
