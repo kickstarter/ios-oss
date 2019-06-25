@@ -44,6 +44,9 @@ public struct Environment {
   /// The amount of time to debounce signals by. Default value is `0.3`.
   public let debounceInterval: DispatchTimeInterval
 
+  /// Stored data used for debugging tools
+  public let debugData: DebugData?
+
   /// The current device running the app.
   public let device: UIDeviceType
 
@@ -106,6 +109,7 @@ public struct Environment {
     currentUser: User? = nil,
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
+    debugData: DebugData? = nil,
     device: UIDeviceType = UIDevice.current,
     environmentVariables: EnvironmentVariables = EnvironmentVariables(),
     is1PasswordSupported: @escaping () -> Bool = { ksr_is1PasswordSupported() },
@@ -133,6 +137,7 @@ public struct Environment {
     self.currentUser = currentUser
     self.dateType = dateType
     self.debounceInterval = debounceInterval
+    self.debugData = debugData
     self.device = device
     self.environmentVariables = environmentVariables
     self.is1PasswordSupported = is1PasswordSupported
