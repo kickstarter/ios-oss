@@ -50,9 +50,12 @@ class AmountInputView: UIView {
     _ = ([self.label, self.textField], self.stackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.doneButton.heightAnchor.constraint(equalToConstant: Layout.Button.height).isActive = true
-    self.toolbar.heightAnchor.constraint(equalToConstant: Layout.Toolbar.height).isActive = true
     self.toolbar.sizeToFit()
+
+    NSLayoutConstraint.activate([
+      self.doneButton.heightAnchor.constraint(equalToConstant: Layout.Button.height),
+      self.toolbar.heightAnchor.constraint(equalToConstant: Layout.Toolbar.height)
+    ])
   }
 
   required init?(coder _: NSCoder) {
