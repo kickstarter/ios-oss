@@ -205,6 +205,7 @@ private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> 
   _ = textView
     |> tappableLinksViewStyle
     |> \.attributedText .~ attributedLearnMoreText()
+    |> \.accessibilityTraits .~ [.staticText]
 
   return textView
 }
