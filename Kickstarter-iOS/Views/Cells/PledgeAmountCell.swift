@@ -141,7 +141,7 @@ extension PledgeAmountCell: UITextFieldDelegate {
     _ textField: UITextField, shouldChangeCharactersIn _: NSRange, replacementString string: String
   ) -> Bool {
     let decimalSeparatorCharacters = CharacterSet.ksr_decimalSeparators()
-    let existingCharacters = CharacterSet(charactersIn: textField.text ?? String.init())
+    let existingCharacters = CharacterSet(charactersIn: textField.text ?? "")
     let inputCharacters = CharacterSet(charactersIn: string)
     let numericCharacters = CharacterSet.ksr_numericCharacters()
 
