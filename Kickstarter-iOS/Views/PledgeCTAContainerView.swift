@@ -14,7 +14,7 @@ final class PledgeCTAContainerView: UIView {
   }()
 
   private lazy var amountOrRewardLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var pledgeButton: UIButton = {
+  private lazy var pledgeCTAButton: UIButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -43,11 +43,11 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.youreABackerLabel, self.amountOrRewardLabel], self.amountAndRewardTitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.amountAndRewardTitleStackView, self.spacer, self.pledgeButton], self.rootStackView)
+    _ = ([self.amountAndRewardTitleStackView, self.spacer, self.pledgeCTAButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     NSLayoutConstraint.activate([
-      self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
     self.bindViewModel()
@@ -73,8 +73,8 @@ final class PledgeCTAContainerView: UIView {
       |> \.textColor .~ UIColor.ksr_dark_grey_500
       |> \.numberOfLines .~ 0
 
-    _ = self.pledgeButton
-      |> projectStateButtonStyle(
+    _ = self.pledgeCTAButton
+      |> pledgeCTAButtonStyle(
         isAccessibilityCategory,
         amountAndRewardTitleStackViewIsHidden: self.amountAndRewardTitleStackView.isHidden
       )
@@ -97,8 +97,8 @@ final class PledgeCTAContainerView: UIView {
 
     self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
     self.amountOrRewardLabel.rac.text = self.vm.outputs.rewardTitle
-    self.pledgeButton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
-    self.pledgeButton.rac.title = self.vm.outputs.buttonTitleText
+    self.pledgeCTAButton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
+    self.pledgeCTAButton.rac.title = self.vm.outputs.buttonTitleText
     self.spacer.rac.hidden = self.vm.outputs.spacerIsHidden
   }
 
@@ -122,7 +122,7 @@ private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackV
   }
 }
 
-private func projectStateButtonStyle(
+private func pledgeCTAButtonStyle(
   _ isAccessibilityCategory: Bool, amountAndRewardTitleStackViewIsHidden: Bool
 ) -> (ButtonStyle) {
   return { (button: UIButton) in
