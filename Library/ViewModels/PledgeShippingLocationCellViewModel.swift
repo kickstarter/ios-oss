@@ -11,6 +11,7 @@ public protocol PledgeShippingLocationCellViewModelInputs {
 public protocol PledgeShippingLocationCellViewModelOutputs {
   var amount: Signal<NSAttributedString, Never> { get }
   var location: Signal<String, Never> { get }
+  var selectedShippingRule: Signal<ShippingRule, Never> { get }
   var shippingIsLoading: Signal<Bool, Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
 }
@@ -43,7 +44,11 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
       .map(defaultShippingRule(fromShippingRules:))
       .skipNil()
 
-    self.amount = Signal.combineLatest(project, defaultSelectedShippingRule)
+    let amount = Signal.combineLatest(project, defaultSelectedShippingRule)
+
+    self.selectedShippingRule = amount.map { _, shippingRule in shippingRule }
+
+    self.amount = amount
       .map { project, shippingRule in shippingValue(of: project, with: shippingRule.cost) }
       .skipNil()
 
@@ -70,6 +75,7 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
 
   public let amount: Signal<NSAttributedString, Never>
   public let location: Signal<String, Never>
+  public let selectedShippingRule: Signal<ShippingRule, Never>
   public let shippingIsLoading: Signal<Bool, Never>
   public let shippingRulesError: Signal<String, Never>
 
