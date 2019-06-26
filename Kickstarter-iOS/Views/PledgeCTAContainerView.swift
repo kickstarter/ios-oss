@@ -8,14 +8,27 @@ final class PledgeCTAContainerView: UIView {
 
   private let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
-  private lazy var amountAndRewardTitleStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var amountAndRewardTitleStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var amountOrRewardLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var pledgeCTAbutton: UIButton = {
+  private lazy var pledgeButton: UIButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var spacer: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var youreABackerLabel: UILabel = { UILabel(frame: .zero) }()
 
   // MARK: - Lifecycle
@@ -30,17 +43,12 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.youreABackerLabel, self.amountOrRewardLabel], self.amountAndRewardTitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.amountAndRewardTitleStackView, self.pledgeCTAbutton], self.rootStackView)
+    _ = ([self.amountAndRewardTitleStackView, self.spacer, self.pledgeButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    NSLayoutConstraint.activate(
-      [
-        self.pledgeCTAbutton.heightAnchor.constraint(
-          greaterThanOrEqualToConstant: Styles.minTouchSize.height
-        ),
-        self.pledgeCTAbutton.trailingAnchor.constraint(equalTo: self.rootStackView.trailingAnchor)
-      ]
-    )
+    NSLayoutConstraint.activate([
+      self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    ])
 
     self.bindViewModel()
   }
@@ -54,30 +62,32 @@ final class PledgeCTAContainerView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.pledgeCTAbutton
-      |> projectStateButtonStyle
+    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+
+    _ = self.amountAndRewardTitleStackView
+      |> \.axis .~ NSLayoutConstraint.Axis.vertical
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+
+    _ = self.amountOrRewardLabel
+      |> \.font .~ .ksr_headline(size: 14)
+      |> \.textColor .~ .ksr_dark_grey_500
+      |> \.numberOfLines .~ 0
+
+    _ = self.pledgeButton
+      |> projectStateButtonStyle(
+        isAccessibilityCategory,
+        amountAndRewardTitleStackViewIsHidden: self.amountAndRewardTitleStackView.isHidden
+      )
+
+    _ = self.rootStackView
+      |> adaptableStackViewStyle(isAccessibilityCategory)
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
 
     _ = self.youreABackerLabel
       |> \.font .~ .ksr_headline(size: 14)
       |> \.text %~ { _ in Strings.Youre_a_backer() }
-
-    _ = self.amountOrRewardLabel
-      |> \.font .~ .ksr_caption1(size: 14)
-      |> \.textColor .~ .ksr_dark_grey_500
-
-    _ = self.rootStackView
-      |> checkoutAdaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
-      |> \.distribution .~ UIStackView.Distribution.equalCentering
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
-
-    _ = self.amountAndRewardTitleStackView
-      |> \.axis .~ NSLayoutConstraint.Axis.vertical
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.numberOfLines .~ 0
   }
 
   // MARK: - Binding
@@ -85,10 +95,11 @@ final class PledgeCTAContainerView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.pledgeCTAbutton.rac.title = self.vm.outputs.buttonTitleText
-    self.pledgeCTAbutton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
     self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
     self.amountOrRewardLabel.rac.text = self.vm.outputs.rewardTitle
+    self.pledgeButton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
+    self.pledgeButton.rac.title = self.vm.outputs.buttonTitleText
+    self.spacer.rac.hidden = self.vm.outputs.spacerIsHidden
   }
 
   // MARK: - Configuration
@@ -100,12 +111,31 @@ final class PledgeCTAContainerView: UIView {
 
 // MARK: - Styles
 
-private let projectStateButtonStyle: ButtonStyle = { (button: UIButton) in
-  button
-    |> roundedStyle(cornerRadius: 12)
-    |> UIButton.lens.titleColor(for: .normal) .~ .white
-    |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-    |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-    |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ .byWordWrapping
+private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
+  return { (stackView: UIStackView) in
+    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
+    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
+
+    return stackView
+      |> \.axis .~ axis
+      |> \.spacing .~ spacing
+  }
+}
+
+private func projectStateButtonStyle(
+  _ isAccessibilityCategory: Bool, amountAndRewardTitleStackViewIsHidden: Bool
+) -> (ButtonStyle) {
+  return { (button: UIButton) in
+    let lineBreakMode: NSLineBreakMode = isAccessibilityCategory || amountAndRewardTitleStackViewIsHidden
+      ? NSLineBreakMode.byWordWrapping : NSLineBreakMode.byTruncatingTail
+
+    return button
+      |> roundedStyle(cornerRadius: 12)
+      |> UIButton.lens.titleColor(for: .normal) .~ UIColor.white
+      |> UIButton.lens.titleLabel.font .~ UIFont.ksr_headline(size: 15)
+      |> UIButton.lens.layer.borderWidth .~ 0
+      |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+      |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
+      |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ lineBreakMode
+  }
 }
