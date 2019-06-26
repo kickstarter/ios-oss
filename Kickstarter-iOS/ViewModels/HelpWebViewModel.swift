@@ -24,7 +24,7 @@ internal final class HelpWebViewModel: HelpWebViewModelType, HelpWebViewModelInp
   internal init() {
     self.webViewLoadRequest = self.helpTypeProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
-      .map { urlForHelpType($0, baseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl) }
+      .map { $0.url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl) }
       .skipNil()
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
   }
@@ -42,24 +42,5 @@ internal final class HelpWebViewModel: HelpWebViewModelType, HelpWebViewModelInp
   fileprivate let viewDidLoadProperty = MutableProperty(())
   func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
-  }
-}
-
-public func urlForHelpType(_ helpType: HelpType, baseUrl: URL) -> URL? {
-  switch helpType {
-  case .cookie:
-    return baseUrl.appendingPathComponent("cookies")
-  case .contact:
-    return nil
-  case .helpCenter:
-    return baseUrl.appendingPathComponent("help")
-  case .howItWorks:
-    return baseUrl.appendingPathComponent("about")
-  case .privacy:
-    return baseUrl.appendingPathComponent("privacy")
-  case .terms:
-    return baseUrl.appendingPathComponent("terms-of-use")
-  case .trust:
-    return baseUrl.appendingPathComponent("trust")
   }
 }

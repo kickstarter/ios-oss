@@ -174,7 +174,7 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
     |> \.axis .~ NSLayoutConstraint.Axis.horizontal
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(4))
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(2))
     |> \.spacing .~ Styles.grid(3)
 }
 
@@ -203,18 +203,9 @@ private let dateLabelStyle: LabelStyle = { (label: UILabel) in
 
 private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
   _ = textView
+    |> tappableLinksViewStyle
     |> \.attributedText .~ attributedLearnMoreText()
-    |> \.isScrollEnabled .~ false
-    |> \.isEditable .~ false
-    |> \.isUserInteractionEnabled .~ true
-    |> \.adjustsFontForContentSizeCategory .~ true
-
-  _ = textView
-    |> \.textContainerInset .~ UIEdgeInsets.zero
-    |> \.textContainer.lineFragmentPadding .~ 0
-    |> \.linkTextAttributes .~ [
-      .foregroundColor: UIColor.ksr_green_500
-    ]
+    |> \.accessibilityTraits .~ [.staticText]
 
   return textView
 }
@@ -223,25 +214,13 @@ private func attributedLearnMoreText() -> NSAttributedString? {
   // swiftlint:disable line_length
   let string = localizedString(
     key: "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability",
-    defaultValue: "<p>Kickstarter is not a store. It's a way to bring creative projects to life.</br><a href=\"https://www.kickstarter.com/trust\">Learn more about accountability</a><p>"
+    defaultValue: "<p>Kickstarter is not a store. It's a way to bring creative projects to life.</br><a href=\"%{trust_link}\">Learn more about accountability</a><p>",
+    substitutions: [
+      "trust_link": HelpType.trust.url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString
+    ]
+    .compactMapValues { $0.coalesceWith("") }
   )
   // swiftlint:enable line_length
 
-  guard let attributedString = try? NSMutableAttributedString(
-    data: Data(bytes: string.utf8),
-    options: [.documentType: NSAttributedString.DocumentType.html],
-    documentAttributes: nil
-  ) else { return nil }
-
-  let attributes: String.Attributes = [
-    .font: UIFont.ksr_caption1(),
-    .foregroundColor: UIColor.ksr_text_dark_grey_500,
-    .underlineStyle: 0
-  ]
-
-  let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
-
-  attributedString.addAttributes(attributes, range: fullRange)
-
-  return attributedString
+  return checkoutAttributedLink(with: string)
 }
