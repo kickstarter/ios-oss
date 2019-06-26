@@ -50,7 +50,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
           basicPledge,
           country: project.country,
           omitCurrencyCode: project.stats.omitUSCurrencyCode
-        )
+        ).trimmed()
         guard let rewardTitle = backing.reward?.title else { return "\(amount)" }
         return "\(amount) • \(rewardTitle)"
       }
