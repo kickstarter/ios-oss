@@ -74,7 +74,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(self.helpButtonPressed))
 
     self.disclaimerButton.addTarget(self, action: #selector(self.helpButtonPressed), for: .touchUpInside)
-    self.fbLoginButton.addTarget(self, action: #selector(self.facebookLoginButtonPressed(_:)), for: .touchUpInside)
+    self.fbLoginButton.addTarget(self, action: #selector(self.facebookLoginButtonPressed(_:)),
+                                 for: .touchUpInside)
     self.loginButton.addTarget(self, action: #selector(self.loginButtonPressed(_:)), for: .touchUpInside)
     self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
 
@@ -100,7 +101,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     _ = self.fbLoginButton
       |> baseMultiLineButtonStyle
       |> fbLoginButtonStyle
-      |> roundedButtonStyle
 
     _ = self.disclaimerButton
       |> baseMultiLineButtonStyle
@@ -109,7 +109,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     _ = self.loginButton
       |> baseMultiLineButtonStyle
       |> loginButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
 
     _ = self.rootStackView
       |> baseStackViewStyle
@@ -121,10 +120,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     _ = self.signupButton
       |> signupButtonStyle
-      |> roundedButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        Strings.login_tout_default_intent_traditional_signup_button()
-    }
 
     _ = self.facebookDisclaimerLabel
       |> baseLabelStyle
@@ -404,25 +399,17 @@ private let baseStackViewStyle: StackViewStyle = { stackView in
 
 private let baseLabelStyle: LabelStyle = { label in
   label
-    |> \.backgroundColor .~ .white
-    |> \.lineBreakMode .~ .byWordWrapping
+    |> \.textAlignment .~ NSTextAlignment.center
+    |> \.backgroundColor .~ UIColor.white
+    |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
     |> \.numberOfLines .~ 0
 }
 
 private let baseMultiLineButtonStyle: ButtonStyle = { button in
   _ = button.titleLabel
-    ?|> \.lineBreakMode .~ .byWordWrapping
+    ?|> \.textAlignment .~ NSTextAlignment.center
+    ?|> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
     ?|> \.numberOfLines .~ 0
 
   return button
-}
-
-private let loginButtonStyle: ButtonStyle = { button in
-  button
-    |> neutralButtonStyle
-    |> roundedButtonStyle
-}
-
-private let roundedButtonStyle: ButtonStyle = { button in
-  button |> roundedStyle(cornerRadius: 12)
 }

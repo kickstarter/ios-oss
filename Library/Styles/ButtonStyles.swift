@@ -147,3 +147,7 @@ public let whiteBorderButtonStyle = baseButtonStyle
   <> UIButton.lens.layer.borderColor .~ UIColor.white.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3), leftRight: Styles.gridHalf(6))
+
+public let roundedButtonStyle: ButtonStyle = { button in
+  button |> roundedStyle(cornerRadius: 12)
+}

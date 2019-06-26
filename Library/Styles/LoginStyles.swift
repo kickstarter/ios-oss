@@ -56,6 +56,8 @@ public func emailFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
 }
 
 public let fbLoginButtonStyle = facebookButtonStyle
+  <> roundedButtonStyle
+  <> UIButton.lens.titleLabel.font %~ { _ in .ksr_headline() }
   <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_buttons_log_in_with_facebook()
   }
@@ -79,12 +81,15 @@ public let forgotPasswordButtonStyle =
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
-public let loginButtonStyle = greenButtonStyle
-  <> UIButton.lens.backgroundColor(for: .disabled)
-  .~ UIColor.ksr_green_500.withAlphaComponent(0.5)
-  <> UIButton.lens.title(for: .normal) %~ { _ in
+public let loginButtonStyle: ButtonStyle = { button in
+  button
+    |> neutralButtonStyle
+    |> roundedButtonStyle
+    |> UIButton.lens.titleLabel.font .~ .ksr_headline()
+    |> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_back_intent_traditional_login_button()
   }
+}
 
 public let loginControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in
@@ -136,19 +141,20 @@ public let loginRootStackViewStyle =
       : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
   }
 
+public let signupButtonStyle: ButtonStyle = { button in
+  button
+  |> greenButtonStyle
+  |> roundedButtonStyle
+  |> UIButton.lens.titleLabel.font .~ .ksr_headline()
+  |> UIButton.lens.layer.borderWidth .~ 0
+  |> UIButton.lens.title(for: .normal) %~ { _ in
+    Strings.login_tout_default_intent_traditional_signup_button()
+    }
+}
+
 public let signupControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in Strings.signup_button() }
 
-public let signupWithEmailButtonStyle: ButtonStyle = { button in
-  _ = button
-    |> checkoutGreenButtonStyle
-    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.signup_button_email() }
-
-  _ = button.titleLabel
-  ?|> checkoutGreenButtonTitleLabelStyle
-
-  return button
-}
 
 public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
