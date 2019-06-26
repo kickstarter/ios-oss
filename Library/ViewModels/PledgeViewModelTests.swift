@@ -14,6 +14,7 @@ final class PledgeViewModelTests: TestCase {
   private let project = TestObserver<Project, Never>()
   private let reward = TestObserver<Reward, Never>()
   private let isLoggedIn = TestObserver<Bool, Never>()
+  private let isShippingEnabled = TestObserver<Bool, Never>()
   private let total = TestObserver<Double, Never>()
 
   private let reload = TestObserver<Bool, Never>()
@@ -25,7 +26,8 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.0 }.observe(self.project.observer)
     self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.1 }.observe(self.reward.observer)
     self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.2 }.observe(self.isLoggedIn.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.3 }.observe(self.total.observer)
+    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.3 }.observe(self.isShippingEnabled.observer)
+    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.4 }.observe(self.total.observer)
   }
 
   func testReloadWithData_loggedOut() {
@@ -39,6 +41,7 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project])
       self.reward.assertValues([reward])
       self.isLoggedIn.assertValues([false])
+      self.isShippingEnabled.assertValues([false])
       self.total.assertValues([reward.minimum])
     }
   }
@@ -55,6 +58,7 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project])
       self.reward.assertValues([reward])
       self.isLoggedIn.assertValues([true])
+      self.isShippingEnabled.assertValues([false])
       self.total.assertValues([reward.minimum])
     }
   }
@@ -72,6 +76,7 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project])
       self.reward.assertValues([reward])
       self.total.assertValues([reward.minimum])
+      self.isShippingEnabled.assertValues([true])
       self.reload.assertValues([true])
 
       let shippingRule = .template
@@ -82,6 +87,7 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project, project])
       self.reward.assertValues([reward, reward])
       self.total.assertValues([reward.minimum, reward.minimum + shippingRule.cost])
+      self.isShippingEnabled.assertValues([true, true])
       self.reload.assertValues([true, false])
     }
   }
@@ -99,6 +105,7 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project])
       self.reward.assertValues([reward])
       self.total.assertValues([reward.minimum])
+      self.isShippingEnabled.assertValues([true])
       self.reload.assertValues([true])
 
       let shippingRule = .template
@@ -109,6 +116,7 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project, project])
       self.reward.assertValues([reward, reward])
       self.total.assertValues([reward.minimum, reward.minimum + shippingRule.cost])
+      self.isShippingEnabled.assertValues([true, true])
       self.reload.assertValues([true, false])
 
       let amountUpdate1 = 30.0
@@ -121,6 +129,7 @@ final class PledgeViewModelTests: TestCase {
         reward.minimum + shippingRule.cost,
         amountUpdate1 + shippingRule.cost
       ])
+      self.isShippingEnabled.assertValues([true, true, true])
       self.reload.assertValues([true, false, false])
 
       let amountUpdate2 = 25.0
@@ -134,6 +143,7 @@ final class PledgeViewModelTests: TestCase {
         amountUpdate1 + shippingRule.cost,
         amountUpdate2 + shippingRule.cost
       ])
+      self.isShippingEnabled.assertValues([true, true, true, true])
       self.reload.assertValues([true, false, false, false])
     }
   }

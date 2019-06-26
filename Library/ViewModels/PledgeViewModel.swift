@@ -7,6 +7,7 @@ public typealias PledgeViewData = (
   project: Project,
   reward: Reward,
   isLoggedIn: Bool,
+  isShippingEnabled: Bool,
   pledgeTotal: Double
 )
 
@@ -54,7 +55,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let total = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)
 
     let data = Signal.combineLatest(project, reward, isLoggedIn, total)
-      .map { tuple -> PledgeViewData in tuple }
+      .map { project, reward, isLoggedIn, total -> PledgeViewData in
+        (project, reward, isLoggedIn, reward.shipping.enabled, total)
+    }
 
     self.pledgeViewDataAndReload = Signal.merge(
       data.take(first: 1).map { data in (data, true) },

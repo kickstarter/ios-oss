@@ -27,7 +27,7 @@ final class PledgeDataSource: ValueCellDataSource {
       toSection: Section.inputs.rawValue
     )
 
-    if data.reward.shipping.enabled {
+    if data.isShippingEnabled {
       self.appendRow(
         value: (data.project, data.reward),
         cellClass: PledgeShippingLocationCell.self,
