@@ -30,7 +30,7 @@ public enum PledgeStateCTAType {
     }
   }
 
-  public var stackViewIsHidden: Bool {
+  public var stackViewAndSpacerAreHidden: Bool {
     switch self {
     case .pledge, .viewBacking, .viewRewards:
       return true

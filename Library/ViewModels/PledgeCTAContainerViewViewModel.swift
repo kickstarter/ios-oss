@@ -11,6 +11,7 @@ public protocol PledgeCTAContainerViewViewModelOutputs {
   var buttonBackgroundColor: Signal<UIColor, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
   var rewardTitle: Signal<String, Never> { get }
+  var spacerIsHidden: Signal<Bool, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
 }
 
@@ -35,10 +36,12 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       }
     let backing = backingEvent.values()
     let projectAndBacking = Signal.combineLatest(project, backing)
+    let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
 
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     self.buttonBackgroundColor = pledgeState.map { $0.buttonBackgroundColor }
-    self.stackViewIsHidden = pledgeState.map { $0.stackViewIsHidden }
+    self.spacerIsHidden = stackViewAndSpacerAreHidden
+    self.stackViewIsHidden = stackViewAndSpacerAreHidden
 
     self.rewardTitle = projectAndBacking
       .map { (project, backing) -> String in
@@ -64,6 +67,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public let buttonBackgroundColor: Signal<UIColor, Never>
   public let buttonTitleText: Signal<String, Never>
   public let rewardTitle: Signal<String, Never>
+  public let spacerIsHidden: Signal<Bool, Never>
   public let stackViewIsHidden: Signal<Bool, Never>
 }
 
