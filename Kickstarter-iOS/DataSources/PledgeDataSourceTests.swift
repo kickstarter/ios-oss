@@ -27,7 +27,7 @@ final class PledgeDataSourceTests: XCTestCase {
 
   func testLoad_Idempotent() {
     let data: PledgeViewData = (
-      project: .template, reward: .template, isLoggedIn: true,  isShippingEnabled: false, pledgeTotal: 0.0
+      project: .template, reward: .template, isLoggedIn: true, isShippingEnabled: false, pledgeTotal: 0.0
     )
     self.dataSource.load(data: data)
 

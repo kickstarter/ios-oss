@@ -57,7 +57,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let data = Signal.combineLatest(project, reward, isLoggedIn, total)
       .map { project, reward, isLoggedIn, total -> PledgeViewData in
         (project, reward, isLoggedIn, reward.shipping.enabled, total)
-    }
+      }
 
     self.pledgeViewDataAndReload = Signal.merge(
       data.take(first: 1).map { data in (data, true) },
