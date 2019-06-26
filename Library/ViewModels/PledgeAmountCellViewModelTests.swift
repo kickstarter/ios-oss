@@ -8,6 +8,7 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
   private let vm: PledgeAmountCellViewModelType = PledgeAmountCellViewModel()
 
   private let amount = TestObserver<String, Never>()
+  private let amountPrimitive = TestObserver<Double, Never>()
   private let currency = TestObserver<String, Never>()
   private let doneButtonIsEnabled = TestObserver<Bool, Never>()
   private let generateSelectionFeedback = TestObserver<Void, Never>()
@@ -21,6 +22,7 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.amount.observe(self.amount.observer)
+    self.vm.outputs.amountPrimitive.observe(self.amountPrimitive.observer)
     self.vm.outputs.currency.observe(self.currency.observer)
     self.vm.outputs.doneButtonIsEnabled.observe(self.doneButtonIsEnabled.observer)
     self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
@@ -37,7 +39,20 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
     self.amount.assertValues(["15"])
+    self.amountPrimitive.assertValues([15])
     self.currency.assertValues(["$"])
+
+    let project = Project.template
+      |> Project.lens.country .~ .jp
+
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 200
+
+    self.vm.inputs.configureWith(project: project, reward: reward)
+
+    self.amount.assertValues(["15", "15", "15"])
+    self.amountPrimitive.assertValues([15])
+    self.currency.assertValues(["$", "¥"])
   }
 
   func testDoneButtonIsEnabled_Stepper() {
@@ -186,5 +201,23 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.vm.inputs.doneButtonTapped()
 
     self.textFieldIsFirstResponder.assertValue(false)
+  }
+
+  func testNilInputReturnsZero() {
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+
+    self.amountPrimitive.assertValue(15)
+
+    self.vm.inputs.textFieldValueChanged("11")
+    self.amountPrimitive.assertValues([15, 11])
+
+    self.vm.inputs.textFieldValueChanged("")
+    self.amountPrimitive.assertValues([15, 11, 0])
+
+    self.vm.inputs.textFieldValueChanged("5")
+    self.amountPrimitive.assertValues([15, 11, 0, 5])
+
+    self.vm.inputs.textFieldValueChanged(nil)
+    self.amountPrimitive.assertValues([15, 11, 0, 5, 0])
   }
 }
