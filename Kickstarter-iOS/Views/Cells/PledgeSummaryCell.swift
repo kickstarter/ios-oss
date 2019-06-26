@@ -63,6 +63,8 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
 
     _ = self.amountLabel
       |> amountLabelStyle
+
+    self.termsTextViewHeightConstraint?.constant = self.termsTextView.ksr_sizeThatFitsCurrentWidth().height
   }
 
   private func configureSubviews() {
@@ -75,6 +77,9 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
 
     _ = ([self.termsTextView, self.amountLabel], self.adaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.termsTextViewHeightConstraint = self.termsTextView.heightAnchor.constraint(equalToConstant: 0)
+    self.termsTextViewHeightConstraint?.isActive = true
   }
 
   // MARK: - Binding
