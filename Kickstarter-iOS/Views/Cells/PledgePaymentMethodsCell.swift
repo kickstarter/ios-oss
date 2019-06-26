@@ -12,7 +12,6 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   private lazy var collectionView: UICollectionView = {
     UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
       |> \.dataSource .~ self
-      |> \.delegate .~ self
   }()
 
   private lazy var headerStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -45,8 +44,10 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
       |> checkoutStackViewStyle
 
     _ = self.titleLabel
+      |> checkoutTitleLabelStyle
       |> \.text %~ { _ in Strings.Other_payment_methods() }
       |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+      |> \.font .~ UIFont.ksr_caption1()
       |> \.textAlignment .~ .center
   }
 
@@ -55,6 +56,9 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   }
 
   private func configureSubviews() {
+    _ = self
+      |> \.accessibilityElements .~ self.subviews
+
     _ = (self.headerStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
@@ -69,7 +73,7 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
 extension PledgePaymentMethodsCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 5
+    return 1
   }
 
   func collectionView(_ collectionView: UICollectionView,
@@ -77,8 +81,4 @@ extension PledgePaymentMethodsCell: UICollectionViewDataSource {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath)
     return cell
   }
-}
-
-extension PledgePaymentMethodsCell: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {}
 }
