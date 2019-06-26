@@ -66,9 +66,9 @@ class PledgeTableViewController: UITableViewController {
         }
       }
 
-    self.viewModel.outputs.configureSummaryCellWithAmount
-      .observeValues { [weak self] data in
-        self?.pledgeSummaryCell?.configureWith(value: (data.project, data.pledgeTotal))
+    self.viewModel.outputs.configureSummaryCellWithProjectAndPledgeTotal
+      .observeValues { [weak self] project, pledgeTotal in
+        self?.pledgeSummaryCell?.configureWith(value: (project, pledgeTotal))
       }
   }
 

@@ -19,7 +19,7 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
-  var configureSummaryCellWithAmount: Signal<PledgeViewData, Never> { get }
+  var configureSummaryCellWithProjectAndPledgeTotal: Signal<(Project, Double), Never> { get }
   var pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never> { get }
 }
 
@@ -64,9 +64,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       data.skip(first: 1).map { data in (data, false) }
     )
 
-    self.configureSummaryCellWithAmount = self.pledgeViewDataAndReload
+    self.configureSummaryCellWithProjectAndPledgeTotal = self.pledgeViewDataAndReload
       .filter(second >>> isFalse)
       .map(first)
+      .map { ($0.project, $0.pledgeTotal) }
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -89,7 +90,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let configureSummaryCellWithAmount: Signal<PledgeViewData, Never>
+  public let configureSummaryCellWithProjectAndPledgeTotal: Signal<(Project, Double), Never>
   public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
 
   public var inputs: PledgeViewModelInputs { return self }
