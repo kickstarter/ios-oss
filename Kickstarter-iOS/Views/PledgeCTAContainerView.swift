@@ -69,8 +69,8 @@ final class PledgeCTAContainerView: UIView {
       |> \.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.amountOrRewardLabel
-      |> \.font .~ .ksr_headline(size: 14)
-      |> \.textColor .~ .ksr_dark_grey_500
+      |> \.font .~ UIFont.ksr_caption1(size: 14)
+      |> \.textColor .~ UIColor.ksr_dark_grey_500
       |> \.numberOfLines .~ 0
 
     _ = self.pledgeButton
@@ -85,7 +85,7 @@ final class PledgeCTAContainerView: UIView {
       |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
 
     _ = self.youreABackerLabel
-      |> \.font .~ .ksr_headline(size: 14)
+      |> \.font .~ UIFont.ksr_headline(size: 14)
       |> \.text %~ { _ in Strings.Youre_a_backer() }
       |> \.numberOfLines .~ 0
   }
