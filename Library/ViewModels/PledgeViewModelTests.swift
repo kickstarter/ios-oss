@@ -11,6 +11,7 @@ import ReactiveExtensions_TestHelpers
 final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
 
+  private let goToLoginSignup = TestObserver<LoginIntent, Never>()
   private let project = TestObserver<Project, Never>()
   private let reward = TestObserver<Reward, Never>()
   private let isLoggedIn = TestObserver<Bool, Never>()
@@ -18,6 +19,7 @@ final class PledgeViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
     self.vm.outputs.reloadWithData.map { $0.0 }.observe(self.project.observer)
     self.vm.outputs.reloadWithData.map { $0.1 }.observe(self.reward.observer)
     self.vm.outputs.reloadWithData.map { $0.2 }.observe(self.isLoggedIn.observer)
@@ -49,6 +51,31 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project])
       self.reward.assertValues([reward])
       self.isLoggedIn.assertValues([true])
+    }
+  }
+
+  func testLoginSignup() {
+    let project = Project.template
+    let reward = Reward.template
+    let user = User.template
+
+    self.vm.inputs.configureWith(project: project, reward: reward)
+    self.vm.inputs.viewDidLoad()
+
+    self.project.assertValues([project])
+    self.reward.assertValues([reward])
+    self.isLoggedIn.assertValues([false])
+
+    self.vm.inputs.continueButtonTapped()
+
+    self.goToLoginSignup.assertValue(LoginIntent.backProject)
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.userSessionStarted()
+
+      self.project.assertValues([project, project])
+      self.reward.assertValues([reward, reward])
+      self.isLoggedIn.assertValues([false, true])
     }
   }
 }

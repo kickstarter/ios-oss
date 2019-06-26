@@ -224,6 +224,7 @@
 		77C5E252214182CA002E1670 /* SettingsPrivacySwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */; };
 		77C7B654226E0E54001101AC /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */; };
 		77C93C1A22C13DED005D3195 /* PledgeContinueCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C93C1922C13DED005D3195 /* PledgeContinueCellViewModel.swift */; };
+		77CB227022C3B3CB00AEAAF1 /* PledgeContinueCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CB226F22C3B3CB00AEAAF1 /* PledgeContinueCellViewModelTests.swift */; };
 		77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD894821791B05003066DA /* ProjectStatsTemplate.swift */; };
 		77CD8981217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */; };
 		77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */; };
@@ -1490,6 +1491,7 @@
 		77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCell.swift; sourceTree = "<group>"; };
 		77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewModelTests.swift; sourceTree = "<group>"; };
 		77C93C1922C13DED005D3195 /* PledgeContinueCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeContinueCellViewModel.swift; sourceTree = "<group>"; };
+		77CB226F22C3B3CB00AEAAF1 /* PledgeContinueCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeContinueCellViewModelTests.swift; sourceTree = "<group>"; };
 		77CD894821791B05003066DA /* ProjectStatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsTemplate.swift; sourceTree = "<group>"; };
 		77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletContentViewControllerConversionTests.swift; sourceTree = "<group>"; };
 		77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCellType.swift; sourceTree = "<group>"; };
@@ -3310,6 +3312,7 @@
 				3706408122A8A66E00889CBD /* PledgeAmountCellViewModel.swift */,
 				3706408322A8A68600889CBD /* PledgeAmountCellViewModelTests.swift */,
 				77C93C1922C13DED005D3195 /* PledgeContinueCellViewModel.swift */,
+				77CB226F22C3B3CB00AEAAF1 /* PledgeContinueCellViewModelTests.swift */,
 				D77594DB226F9C9B005EE69B /* PledgeDescriptionCellViewModel.swift */,
 				D775953B22725289005EE69B /* PledgeDescriptionCellViewModelTests.swift */,
 				3706408522A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift */,
@@ -4644,6 +4647,7 @@
 				A7ED20001E831C5C00BFFA01 /* SearchViewModelTests.swift in Sources */,
 				D08CD201219216BA009F89F0 /* WatchProjectViewModelTests.swift in Sources */,
 				A7ED1F291E830FDC00BFFA01 /* EnvironmentTests.swift in Sources */,
+				77CB227022C3B3CB00AEAAF1 /* PledgeContinueCellViewModelTests.swift in Sources */,
 				A7ED1F2E1E830FDC00BFFA01 /* LaunchedCountriesTests.swift in Sources */,
 				A7ED1FAD1E831C5C00BFFA01 /* DeprecatedCheckoutViewModelTests.swift in Sources */,
 				3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */,
