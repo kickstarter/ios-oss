@@ -203,6 +203,24 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.textFieldIsFirstResponder.assertValue(false)
   }
 
+  func testNilInputReturnsZero() {
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+
+    self.amountPrimitive.assertValue(15)
+
+    self.vm.inputs.textFieldValueChanged("11")
+    self.amountPrimitive.assertValues([15, 11])
+
+    self.vm.inputs.textFieldValueChanged("")
+    self.amountPrimitive.assertValues([15, 11, 0])
+
+    self.vm.inputs.textFieldValueChanged("5")
+    self.amountPrimitive.assertValues([15, 11, 0, 5])
+
+    self.vm.inputs.textFieldValueChanged(nil)
+    self.amountPrimitive.assertValues([15, 11, 0, 5, 0])
+  }
+
   func testTextFieldDidEndEditing() {
     self.vm.inputs.configureWith(project: .template, reward: .template)
     self.amountPrimitive.assertValues([15])
@@ -231,6 +249,5 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.vm.inputs.textFieldDidEndEditing("")
     self.amountPrimitive.assertValues([15, 16, 20, 10, 17, 10])
     self.textFieldValue.assertValues(["15", "16", "20", "10", "17", "10"])
-
   }
 }
