@@ -13,6 +13,7 @@ public protocol PledgeAmountCellViewModelInputs {
 }
 
 public protocol PledgeAmountCellViewModelOutputs {
+  var amountPrimitive: Signal<Double, Never> { get }
   var currency: Signal<String, Never> { get }
   var doneButtonIsEnabled: Signal<Bool, Never> { get }
   var generateSelectionFeedback: Signal<Void, Never> { get }
@@ -87,11 +88,11 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
       .ignoreValues()
 
     let textFieldValue = self.textFieldValueProperty.signal
-      .skipNil()
+      .map { $0.coalesceWith("") }
       .map(Double.init)
-      .skipNil()
+      .map { $0.coalesceWith(0) }
 
-    self.doneButtonIsEnabled = Signal.combineLatest(
+    let updatedValue = Signal.combineLatest(
       self.stepperMinValue,
       self.stepperMaxValue,
       Signal.merge(
@@ -99,7 +100,13 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
         textFieldValue.signal
       )
     )
-    .map { min, max, doubleValue in min <= doubleValue && doubleValue <= max }
+
+    self.amountPrimitive = updatedValue
+      .map(third)
+      .skipRepeats()
+
+    self.doneButtonIsEnabled = updatedValue
+      .map { min, max, doubleValue in min <= doubleValue && doubleValue <= max }
 
     let clampedStepperValue = Signal.combineLatest(
       self.stepperMinValue,
@@ -142,6 +149,7 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
     self.textFieldValueProperty.value = value
   }
 
+  public let amountPrimitive: Signal<Double, Never>
   public let currency: Signal<String, Never>
   public let doneButtonIsEnabled: Signal<Bool, Never>
   public let generateSelectionFeedback: Signal<Void, Never>

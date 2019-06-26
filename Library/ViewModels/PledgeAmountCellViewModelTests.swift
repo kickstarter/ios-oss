@@ -7,6 +7,7 @@ import XCTest
 internal final class PledgeAmountCellViewModelTests: TestCase {
   private let vm: PledgeAmountCellViewModelType = PledgeAmountCellViewModel()
 
+  private let amountPrimitive = TestObserver<Double, Never>()
   private let currency = TestObserver<String, Never>()
   private let doneButtonIsEnabled = TestObserver<Bool, Never>()
   private let generateSelectionFeedback = TestObserver<Void, Never>()
@@ -20,6 +21,7 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.amountPrimitive.observe(self.amountPrimitive.observer)
     self.vm.outputs.currency.observe(self.currency.observer)
     self.vm.outputs.doneButtonIsEnabled.observe(self.doneButtonIsEnabled.observer)
     self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
@@ -36,8 +38,21 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
   func testTextFieldValueAndCurrency() {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
-    self.textFieldValue.assertValues(["15"])
+    self.amountPrimitive.assertValues([15])
     self.currency.assertValues(["$"])
+    self.textFieldValue.assertValues(["15"])
+
+    let project = Project.template
+      |> Project.lens.country .~ .jp
+
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 200
+
+    self.vm.inputs.configureWith(project: project, reward: reward)
+
+    self.amountPrimitive.assertValues([15])
+    self.currency.assertValues(["$", "¥"])
+    self.textFieldValue.assertValues(["15", "15", "15"])
   }
 
   func testDoneButtonIsEnabled_Stepper() {
@@ -190,21 +205,32 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
 
   func testTextFieldDidEndEditing() {
     self.vm.inputs.configureWith(project: .template, reward: .template)
+    self.amountPrimitive.assertValues([15])
     self.textFieldValue.assertValues(["15"])
 
     self.vm.inputs.textFieldDidEndEditing(nil)
+    self.amountPrimitive.assertValues([15])
     self.textFieldValue.assertValues(["15"])
 
     self.vm.inputs.textFieldDidEndEditing("16")
+    self.amountPrimitive.assertValues([15, 16])
     self.textFieldValue.assertValues(["15", "16"])
 
     self.vm.inputs.textFieldDidEndEditing("25")
+    self.amountPrimitive.assertValues([15, 16, 20])
     self.textFieldValue.assertValues(["15", "16", "20"])
 
     self.vm.inputs.textFieldDidEndEditing("8")
+    self.amountPrimitive.assertValues([15, 16, 20, 10])
     self.textFieldValue.assertValues(["15", "16", "20", "10"])
 
+    self.vm.inputs.textFieldDidEndEditing("17")
+    self.amountPrimitive.assertValues([15, 16, 20, 10, 17])
+    self.textFieldValue.assertValues(["15", "16", "20", "10", "17"])
+
     self.vm.inputs.textFieldDidEndEditing("")
-    self.textFieldValue.assertValues(["15", "16", "20", "10", "10"])
+    self.amountPrimitive.assertValues([15, 16, 20, 10, 17, 10])
+    self.textFieldValue.assertValues(["15", "16", "20", "10", "17", "10"])
+
   }
 }

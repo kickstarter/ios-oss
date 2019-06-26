@@ -1,6 +1,6 @@
 import UIKit
 
-public enum HelpType: SettingsCellTypeProtocol {
+public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
   case helpCenter
   case contact
   case howItWorks
@@ -66,6 +66,25 @@ public enum HelpType: SettingsCellTypeProtocol {
       return "Terms"
     case .trust:
       return "Trust & Safety"
+    }
+  }
+
+  public func url(withBaseUrl baseUrl: URL) -> URL? {
+    switch self {
+    case .cookie:
+      return baseUrl.appendingPathComponent("cookies")
+    case .contact:
+      return nil
+    case .helpCenter:
+      return baseUrl.appendingPathComponent("help")
+    case .howItWorks:
+      return baseUrl.appendingPathComponent("about")
+    case .privacy:
+      return baseUrl.appendingPathComponent("privacy")
+    case .terms:
+      return baseUrl.appendingPathComponent("terms-of-use")
+    case .trust:
+      return baseUrl.appendingPathComponent("trust")
     }
   }
 }
