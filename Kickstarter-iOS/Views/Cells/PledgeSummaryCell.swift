@@ -64,7 +64,7 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
     _ = self.amountLabel
       |> amountLabelStyle
 
-    self.termsTextViewHeightConstraint?.constant = self.termsTextView.sizeThatFitsCurrentWidth().height
+    self.termsTextViewHeightConstraint?.constant = self.termsTextView.ksr_sizeThatFitsCurrentWidth().height
   }
 
   private func configureSubviews() {

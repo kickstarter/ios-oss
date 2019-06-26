@@ -87,7 +87,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     _ = self.learnMoreTextView
       |> learnMoreTextViewStyle
 
-    self.learnMoreTextViewHeightConstraint?.constant = self.learnMoreTextView.sizeThatFitsCurrentWidth()
+    self.learnMoreTextViewHeightConstraint?.constant = self.learnMoreTextView.ksr_sizeThatFitsCurrentWidth()
       .height
   }
 
