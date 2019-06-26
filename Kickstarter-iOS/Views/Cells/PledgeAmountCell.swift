@@ -101,7 +101,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     self.amountInputView.doneButton.rac.enabled = self.viewModel.outputs.doneButtonIsEnabled
     self.amountInputView.label.rac.text = self.viewModel.outputs.currency
     self.amountInputView.textField.rac.isFirstResponder = self.viewModel.outputs.textFieldIsFirstResponder
-    self.amountInputView.textField.rac.text = self.viewModel.outputs.amount
+    self.amountInputView.textField.rac.text = self.viewModel.outputs.textFieldValue
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
     self.stepper.rac.value = self.viewModel.outputs.stepperValue
@@ -152,6 +152,10 @@ extension PledgeAmountCell: UITextFieldDelegate {
     } else {
       return false
     }
+  }
+
+  func textFieldDidEndEditing(_ textField: UITextField, reason _: UITextField.DidEndEditingReason) {
+    self.viewModel.inputs.textFieldDidEndEditing(textField.text)
   }
 }
 
