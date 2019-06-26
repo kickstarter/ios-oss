@@ -30,6 +30,18 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  private func configureSubviews() {
+    _ = self
+      |> \.accessibilityElements .~ self.subviews
+
+    _ = (self.headerStackView, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = ([self.titleLabel, self.collectionView], self.headerStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+  }
+
   // MARK: - Styles
 
   override func bindStyles() {
@@ -55,19 +67,7 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     super.bindViewModel()
   }
 
-  private func configureSubviews() {
-    _ = self
-      |> \.accessibilityElements .~ self.subviews
-
-    _ = (self.headerStackView, self.contentView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = ([self.titleLabel, self.collectionView], self.headerStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-  }
-
-  func configureWith(value: [GraphUserCreditCard]) {
+  internal func configureWith(value: [GraphUserCreditCard]) {
   }
 }
 
