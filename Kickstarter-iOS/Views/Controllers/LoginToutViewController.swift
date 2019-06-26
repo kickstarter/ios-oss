@@ -26,7 +26,14 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   private lazy var emailLoginStackView = { UIStackView(frame: .zero) }()
   private lazy var facebookDisclaimerLabel = { UILabel(frame: .zero) }()
   private lazy var fbLoginButton = { MultiLineButton(type: .custom)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+  private lazy var fbLoginManager: LoginManager = {
+    let manager = LoginManager()
+    manager.loginBehavior = .browser
+    manager.defaultAudience = .friends
+    return manager
+  }()
   private lazy var fbLoginStackView = { UIStackView(frame: .zero) }()
   private let helpViewModel = HelpViewModel()
   private lazy var loginButton = { MultiLineButton(type: .custom)
@@ -34,21 +41,16 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }()
   private lazy var loginContextStackView = { UIStackView() }()
   private lazy var rootStackView = { UIStackView() }()
-  private lazy var scrollView = { UIScrollView(frame: .zero) }()
+  private lazy var scrollView = {
+    UIScrollView(frame: .zero)
+    |> \.alwaysBounceVertical .~ true
+
+  }()
+  private var sessionStartedObserver: Any?
   private lazy var signupButton = { MultiLineButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-  private var sessionStartedObserver: Any?
   private let viewModel: LoginToutViewModelType = LoginToutViewModel()
-
-  private var closeButtonAction: ButtonAction?
-
-  fileprivate lazy var fbLoginManager: LoginManager = {
-    let manager = LoginManager()
-    manager.loginBehavior = .browser
-    manager.defaultAudience = .friends
-    return manager
-  }()
 
   internal static func configuredWith(loginIntent intent: LoginIntent) -> LoginToutViewController {
     let vc = LoginToutViewController.init(nibName: nil, bundle: nil)
@@ -63,6 +65,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     self.setupViews()
     self.setupConstraints()
+    self.configureTargets()
 
     self.fbLoginManager.logOut()
 
@@ -71,25 +74,21 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         self?.viewModel.inputs.userSessionStarted()
       }
 
+    if self.presentingViewController != nil {
+      self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonPressed))
+    }
+
     self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(self.helpButtonPressed))
+  }
 
-    self.disclaimerButton.addTarget(self, action: #selector(self.helpButtonPressed), for: .touchUpInside)
-    self.fbLoginButton.addTarget(self, action: #selector(self.facebookLoginButtonPressed(_:)),
-                                 for: .touchUpInside)
-    self.loginButton.addTarget(self, action: #selector(self.loginButtonPressed(_:)), for: .touchUpInside)
-    self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
-
-    self.viewModel.inputs.viewDidLoad()
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.viewModel.inputs.view(isPresented: self.presentingViewController != nil)
+    self.viewModel.inputs.viewWillAppear()
   }
 
   deinit {
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
-  }
-
-  func configureCloseButton(withAction action: ButtonAction?) {
-    self.closeButtonAction = action
-
-    self.viewModel.inputs.configureCloseButton()
   }
 
   override func bindStyles() {
@@ -145,12 +144,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   override func bindViewModel() {
-    self.viewModel.outputs.shouldConfigureCloseButton
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.setupCloseButton()
-    }
-
     self.viewModel.outputs.startLogin
       .observeForControllerAction()
       .observeValues { [weak self] _ in
@@ -205,9 +198,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.viewModel.outputs.dismissViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
-        guard let self = self else { return }
-
-        self.delegate?.loginToutViewControllerDidStartUserSession(self)
+        self?.dismiss(animated: true)
       }
 
     self.helpViewModel.outputs.showHelpSheet
@@ -273,8 +264,12 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       ])
   }
 
-  private func setupCloseButton() {
-    self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonPressed))
+  private func configureTargets() {
+    self.disclaimerButton.addTarget(self, action: #selector(self.helpButtonPressed), for: .touchUpInside)
+    self.fbLoginButton.addTarget(self, action: #selector(self.facebookLoginButtonPressed(_:)),
+                                 for: .touchUpInside)
+    self.loginButton.addTarget(self, action: #selector(self.loginButtonPressed(_:)), for: .touchUpInside)
+    self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
   }
 
   @objc internal func mailComposeController(
@@ -359,7 +354,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   @objc private func closeButtonPressed() {
-    self.closeButtonAction?()
+    self.dismiss(animated: true, completion: nil)
   }
 
   @objc private func helpButtonPressed() {
