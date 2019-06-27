@@ -43,6 +43,8 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     _ = ([self.stepper, self.spacer, self.amountInputView], self.adaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    self.amountInputView.textField.delegate = self
+
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
     self.amountInputView.doneButton.addTarget(
@@ -104,7 +106,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     self.amountInputView.doneButton.rac.enabled = self.viewModel.outputs.doneButtonIsEnabled
     self.amountInputView.label.rac.text = self.viewModel.outputs.currency
     self.amountInputView.textField.rac.isFirstResponder = self.viewModel.outputs.textFieldIsFirstResponder
-    self.amountInputView.textField.rac.text = self.viewModel.outputs.amount
+    self.amountInputView.textField.rac.text = self.viewModel.outputs.textFieldValue
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
     self.stepper.rac.value = self.viewModel.outputs.stepperValue
@@ -143,6 +145,29 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
   @objc func textFieldDidChange(_ textField: UITextField) {
     self.viewModel.inputs.textFieldValueChanged(textField.text)
+  }
+}
+
+extension PledgeAmountCell: UITextFieldDelegate {
+  func textField(
+    _ textField: UITextField, shouldChangeCharactersIn _: NSRange, replacementString string: String
+  ) -> Bool {
+    let decimalSeparatorCharacters = CharacterSet.ksr_decimalSeparators()
+    let existingCharacters = CharacterSet(charactersIn: textField.text.coalesceWith(""))
+    let inputCharacters = CharacterSet(charactersIn: string)
+    let numericCharacters = CharacterSet.ksr_numericCharacters()
+
+    if numericCharacters.isSuperset(of: inputCharacters) {
+      return true
+    } else if decimalSeparatorCharacters.isSuperset(of: inputCharacters) {
+      return !decimalSeparatorCharacters.isSubset(of: existingCharacters)
+    } else {
+      return false
+    }
+  }
+
+  func textFieldDidEndEditing(_ textField: UITextField, reason _: UITextField.DidEndEditingReason) {
+    self.viewModel.inputs.textFieldDidEndEditing(textField.text)
   }
 }
 
