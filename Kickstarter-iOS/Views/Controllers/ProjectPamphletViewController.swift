@@ -29,11 +29,6 @@ public final class ProjectPamphletViewController: UIViewController {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let pledgeCTAButton: UIButton = {
-    MultiLineButton(type: .custom)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   public static func configuredWith(
     projectOrParam: Either<Project, Param>,
     refTag: RefTag?
@@ -101,6 +96,10 @@ public final class ProjectPamphletViewController: UIViewController {
     // Configure subviews
     _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
+
+    self.pledgeCTAContainerView.pledgeCTAButton.addTarget(
+      self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
+    )
 
     // Configure constraints
     let pledgeCTAContainerViewConstraints = [
@@ -198,7 +197,9 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func updateContentInsets() {
-    let buttonSize = self.pledgeCTAButton.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    let buttonSize = self.pledgeCTAContainerView.pledgeCTAButton.systemLayoutSizeFitting(
+      UIView.layoutFittingCompressedSize
+    )
     let bottomInset = buttonSize.height + 2 * self.pledgeCTAContainerViewMargins
 
     self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)
