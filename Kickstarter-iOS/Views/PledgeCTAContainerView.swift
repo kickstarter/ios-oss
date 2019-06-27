@@ -49,8 +49,8 @@ final class PledgeCTAContainerView: UIView {
     self.titleLabel.rac.text = self.vm.outputs.titleText
   }
 
-  func configureWith(project: Project, user: User) {
-    self.vm.inputs.configureWith(project: project, user: user)
+  func configureWith(project: Project) {
+    self.vm.inputs.configureWith(project: project)
   }
 
   override func bindStyles() {

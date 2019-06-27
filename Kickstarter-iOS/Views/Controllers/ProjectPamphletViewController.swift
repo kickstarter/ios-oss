@@ -157,10 +157,10 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.navBarTopConstraint.constant = value
       }
 
-    self.viewModel.outputs.projectAndUser
+    self.viewModel.outputs.project
       .observeForUI()
-      .observeValues { [weak self] project, user in
-        self?.pledgeCTAContainerView.configureWith(project: project, user: user)
+      .observeValues { [weak self] project in
+        self?.pledgeCTAContainerView.configureWith(project: project)
       }
   }
 
