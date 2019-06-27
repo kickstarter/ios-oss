@@ -4,9 +4,14 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+protocol PledgeAmountCellDelegate: AnyObject {
+  func pledgeAmountCell(_ cell: PledgeAmountCell, didUpdateAmount amount: Double)
+}
+
 final class PledgeAmountCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  public weak var delegate: PledgeAmountCellDelegate?
   private let viewModel = PledgeAmountCellViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -39,6 +44,18 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
+
+    self.amountInputView.doneButton.addTarget(
+      self,
+      action: #selector(PledgeAmountCell.doneButtonTapped(_:)),
+      for: .touchUpInside
+    )
+
+    self.amountInputView.textField.addTarget(
+      self,
+      action: #selector(PledgeAmountCell.textFieldDidChange(_:)),
+      for: .editingChanged
+    )
 
     self.stepper.addTarget(
       self,
@@ -84,11 +101,13 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.amountInputView.doneButton.rac.enabled = self.viewModel.outputs.doneButtonIsEnabled
     self.amountInputView.label.rac.text = self.viewModel.outputs.currency
+    self.amountInputView.textField.rac.isFirstResponder = self.viewModel.outputs.textFieldIsFirstResponder
     self.amountInputView.textField.rac.text = self.viewModel.outputs.amount
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
-    self.stepper.rac.value = self.viewModel.outputs.stepperInitialValue
+    self.stepper.rac.value = self.viewModel.outputs.stepperValue
 
     self.viewModel.outputs.generateSelectionFeedback
       .observeForUI()
@@ -97,6 +116,13 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.generateNotificationWarningFeedback
       .observeForUI()
       .observeValues { generateNotificationWarningFeedback() }
+
+    self.viewModel.outputs.amountPrimitive
+      .observeForUI()
+      .observeValues { [weak self] amount in
+        guard let self = self else { return }
+        self.delegate?.pledgeAmountCell(self, didUpdateAmount: amount)
+      }
   }
 
   // MARK: - Configuration
@@ -107,8 +133,16 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
   // MARK: - Actions
 
+  @objc func doneButtonTapped(_: UIButton) {
+    self.viewModel.inputs.doneButtonTapped()
+  }
+
   @objc func stepperValueChanged(_ stepper: UIStepper) {
     self.viewModel.inputs.stepperValueChanged(stepper.value)
+  }
+
+  @objc func textFieldDidChange(_ textField: UITextField) {
+    self.viewModel.inputs.textFieldValueChanged(textField.text)
   }
 }
 

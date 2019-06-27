@@ -1,6 +1,7 @@
 import Foundation
 @testable import KsApi
 @testable import Library
+import Prelude
 import XCTest
 
 final class AppEnvironmentTests: XCTestCase {
@@ -204,6 +205,7 @@ final class AppEnvironmentTests: XCTestCase {
       ServerConfig.production.webBaseUrl.absoluteString,
       env.apiService.serverConfig.webBaseUrl.absoluteString
     )
+    XCTAssertEqual(EnvironmentType.production, env.apiService.serverConfig.environment)
     XCTAssertEqual(currentUser, env.currentUser)
     XCTAssertEqual(currentUser, env.koala.loggedInUser)
   }
@@ -229,6 +231,126 @@ final class AppEnvironmentTests: XCTestCase {
       .flatMap { $0["currentUser"] as? [String: AnyObject] }
       .flatMap { $0["id"] as? Int }
     XCTAssertEqual(nil, currentUserId, "Current user is cleared.")
+
+    AppEnvironment.popEnvironment()
+  }
+
+  func testUpdateServerConfig() {
+    AppEnvironment.pushEnvironment()
+
+    // Starts out as production environment
+    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment, .production)
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.apiBaseUrl,
+      ServerConfig.production.apiBaseUrl
+    )
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.webBaseUrl,
+      ServerConfig.production.webBaseUrl
+    )
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.apiClientAuth.clientId,
+      ClientAuth.production.clientId
+    )
+    XCTAssertNil(AppEnvironment.current.apiService.serverConfig.basicHTTPAuth)
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.graphQLEndpointUrl,
+      ServerConfig.production.graphQLEndpointUrl
+    )
+
+    let serverConfig = ServerConfig.staging
+
+    AppEnvironment.updateServerConfig(serverConfig)
+
+    // Updates all properties to staging environment
+    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.environment, .staging)
+    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.apiBaseUrl, ServerConfig.staging.apiBaseUrl)
+    XCTAssertEqual(AppEnvironment.current.apiService.serverConfig.webBaseUrl, ServerConfig.staging.webBaseUrl)
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.apiClientAuth.clientId,
+      ClientAuth.development.clientId
+    )
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.basicHTTPAuth?.username,
+      BasicHTTPAuth.development.username
+    )
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.basicHTTPAuth?.password,
+      BasicHTTPAuth.development.password
+    )
+    XCTAssertEqual(
+      AppEnvironment.current.apiService.serverConfig.graphQLEndpointUrl,
+      ServerConfig.staging.graphQLEndpointUrl
+    )
+
+    AppEnvironment.popEnvironment()
+  }
+
+  func testUpdateDebugData() {
+    AppEnvironment.pushEnvironment()
+
+    XCTAssertNil(AppEnvironment.current.debugData)
+
+    let debugConfig = Config.template
+      |> \.features .~ ["hello": true]
+
+    AppEnvironment.updateDebugData(DebugData(config: debugConfig))
+
+    XCTAssertEqual(AppEnvironment.current.debugData?.config, debugConfig)
+
+    AppEnvironment.popEnvironment()
+  }
+
+  func testUpdateConfig_nilDebugData() {
+    AppEnvironment.pushEnvironment()
+
+    XCTAssertNil(AppEnvironment.current.debugData)
+    XCTAssertNil(AppEnvironment.current.config)
+    XCTAssertEqual(AppEnvironment.current.countryCode, "US")
+
+    let config = Config.template
+      |> \.countryCode .~ "CA"
+      |> \.features .~ ["hello": true]
+
+    AppEnvironment.updateConfig(config)
+
+    XCTAssertEqual(AppEnvironment.current.config, config)
+    XCTAssertEqual(AppEnvironment.current.countryCode, "CA")
+
+    AppEnvironment.popEnvironment()
+  }
+
+  func testUpdateConfig_nonNilDebugData() {
+    AppEnvironment.pushEnvironment()
+
+    XCTAssertNil(AppEnvironment.current.debugData)
+    XCTAssertNil(AppEnvironment.current.config)
+    XCTAssertEqual(AppEnvironment.current.countryCode, "US")
+
+    let debugConfig = Config.template
+      |> \.countryCode .~ "CA"
+      |> \.features .~ ["hello": true]
+
+    AppEnvironment.pushEnvironment(debugData: DebugData(config: debugConfig))
+
+    XCTAssertNotNil(AppEnvironment.current.debugData)
+
+    AppEnvironment.updateConfig(Config.template)
+
+    XCTAssertEqual(AppEnvironment.current.config, debugConfig)
+    XCTAssertEqual(AppEnvironment.current.countryCode, "CA")
+
+    AppEnvironment.popEnvironment()
+  }
+
+  func testUpdateLanguage() {
+    AppEnvironment.pushEnvironment()
+
+    XCTAssertEqual(AppEnvironment.current.language, .en)
+
+    AppEnvironment.updateLanguage(.fr)
+
+    XCTAssertEqual(AppEnvironment.current.language, .fr)
 
     AppEnvironment.popEnvironment()
   }
