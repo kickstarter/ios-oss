@@ -93,6 +93,10 @@ public final class ProjectPamphletViewController: UIViewController {
     _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
 
+    self.pledgeCTAContainerView.pledgeCTAButton.addTarget(
+      self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
+    )
+
     // Configure constraints
     let pledgeCTAContainerViewConstraints = [
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
@@ -189,7 +193,9 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func updateContentInsets() {
-    let buttonSize = self.pledgeCTAButton.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    let buttonSize = self.pledgeCTAContainerView.pledgeCTAButton.systemLayoutSizeFitting(
+      UIView.layoutFittingCompressedSize
+    )
     let bottomInset = buttonSize.height + 2 * self.pledgeCTAContainerViewMargins
 
     self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)
