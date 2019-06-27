@@ -253,6 +253,7 @@
 "MMYY" = "MM/AA";
 "Make_a_pledge_without_a_reward" = "Contribuir sin recompensa";
 "Making_this_change" = "Hacer este cambio te permitirá ver la meta del proyecto y los montos de las contribuciones convertidos a la moneda elegida.";
+"Manage" = "Administrar";
 "Manage_your_pledge" = "Administra tu contribución";
 "Manage_your_pledge_below" = "Administra tu contribución:";
 "Manage_your_reward" = "Administra tu recompensa";
@@ -474,6 +475,7 @@
 "Video_disabled_until_the_internet_connection_improves" = "Video desactivado hasta se reestablezca la conexión de internet";
 "View" = "Ver";
 "View_project" = "Ver proyecto";
+"View_rewards" = "Ver recompensas";
 "View_your_pledge" = "Revisa tu contribución";
 "View_your_reward" = "Mostrar recompensa";
 "Watch_live" = "Ver en vivo";

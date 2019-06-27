@@ -253,6 +253,7 @@
 "MMYY" = "月月/年年";
 "Make_a_pledge_without_a_reward" = "リワードなしでプレッジ";
 "Making_this_change" = "この変更によって、プロジェクトゴールとプレッジ額が選択された通貨で表示されます。";
+"Manage" = "管理";
 "Manage_your_pledge" = "プレッジを変更";
 "Manage_your_pledge_below" = "以下のプレッジを変更";
 "Manage_your_reward" = "リワードの管理";
@@ -474,6 +475,7 @@
 "Video_disabled_until_the_internet_connection_improves" = "インターネット通信状態が向上するまでビデオはご利用いいただけません。";
 "View" = "みる";
 "View_project" = "プロジェクトを見る";
+"View_rewards" = "リワードを見る";
 "View_your_pledge" = "プレッジをみる";
 "View_your_reward" = "リワードをみる";
 "Watch_live" = "ライブをみる";

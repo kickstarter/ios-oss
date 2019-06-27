@@ -4148,6 +4148,23 @@ with friends."
     )
   }
   /**
+   "Manage"
+
+   - **en**: "Manage"
+   - **de**: "Verwalten"
+   - **es**: "Administrar"
+   - **fr**: "Gérer"
+   - **ja**: "管理"
+  */
+  public static func Manage() -> String {
+    return localizedString(
+      key: "Manage",
+      defaultValue: "Manage",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Manage your pledge"
 
    - **en**: "Manage your pledge"
@@ -7704,6 +7721,23 @@ catch your eye?"
     return localizedString(
       key: "View_project",
       defaultValue: "View project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "View rewards"
+
+   - **en**: "View rewards"
+   - **de**: "Belohnungen ansehen"
+   - **es**: "Ver recompensas"
+   - **fr**: "Afficher les récompenses"
+   - **ja**: "リワードを見る"
+  */
+  public static func View_rewards() -> String {
+    return localizedString(
+      key: "View_rewards",
+      defaultValue: "View rewards",
       count: nil,
       substitutions: [:]
     )
