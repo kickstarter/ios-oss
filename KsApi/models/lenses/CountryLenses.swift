@@ -11,7 +11,7 @@ extension Project.Country {
         maxPledge: $0,
         minPledge: $1.minPledge,
         trailingCode: $1.trailingCode
-        ) }
+      ) }
     )
 
     public static let minPledge = Lens<Project.Country, Int?>(
@@ -23,7 +23,7 @@ extension Project.Country {
         maxPledge: $1.maxPledge,
         minPledge: $0,
         trailingCode: $1.trailingCode
-        ) }
+      ) }
     )
   }
 }
