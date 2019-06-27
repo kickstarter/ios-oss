@@ -41,6 +41,10 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     _ = ([self.shippingLocationButton, self.spacer, self.amountLabel], self.adaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    self.shippingLocationButton.addTarget(
+      self, action: #selector(PledgeShippingLocationCell.shippingLocationButtonTapped(_:)), for: .touchUpInside
+    )
+
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -119,6 +123,12 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   // MARK: - Public Functions
 
   func animate(_: Bool) {}
+
+  // MARK: - Actions
+
+  @objc func shippingLocationButtonTapped(_ button: UIButton) {
+    
+  }
 }
 
 // MARK: - Styles
