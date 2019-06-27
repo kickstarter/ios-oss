@@ -91,3 +91,40 @@ public let checkoutLayerCardRoundedStyle: LayerStyle = { layer in
   layer
     |> \.cornerRadius .~ 16.0
 }
+
+public let tappableLinksViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
+  _ = textView
+    |> \.isScrollEnabled .~ false
+    |> \.isEditable .~ false
+    |> \.isUserInteractionEnabled .~ true
+    |> \.adjustsFontForContentSizeCategory .~ true
+
+  _ = textView
+    |> \.textContainerInset .~ UIEdgeInsets.zero
+    |> \.textContainer.lineFragmentPadding .~ 0
+    |> \.linkTextAttributes .~ [
+      .foregroundColor: UIColor.ksr_green_500
+    ]
+
+  return textView
+}
+
+public func checkoutAttributedLink(with string: String) -> NSAttributedString? {
+  guard let attributedString = try? NSMutableAttributedString(
+    data: Data(string.utf8),
+    options: [.documentType: NSAttributedString.DocumentType.html],
+    documentAttributes: nil
+  ) else { return nil }
+
+  let attributes: String.Attributes = [
+    .font: UIFont.ksr_caption1(),
+    .foregroundColor: UIColor.ksr_text_dark_grey_500,
+    .underlineStyle: 0
+  ]
+
+  let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
+
+  attributedString.addAttributes(attributes, range: fullRange)
+
+  return attributedString
+}
