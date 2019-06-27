@@ -13,7 +13,6 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
   public weak var delegate: PledgeAmountCellDelegate?
   private let viewModel = PledgeAmountCellViewModel()
-  private let dataSource = PledgeDataSource()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountInputView: AmountInputView = { AmountInputView(frame: .zero) }()
