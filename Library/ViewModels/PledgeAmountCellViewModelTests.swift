@@ -7,7 +7,6 @@ import XCTest
 internal final class PledgeAmountCellViewModelTests: TestCase {
   private let vm: PledgeAmountCellViewModelType = PledgeAmountCellViewModel()
 
-  private let amount = TestObserver<String, Never>()
   private let amountPrimitive = TestObserver<Double, Never>()
   private let currency = TestObserver<String, Never>()
   private let doneButtonIsEnabled = TestObserver<Bool, Never>()
@@ -17,11 +16,11 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
   private let stepperMaxValue = TestObserver<Double, Never>()
   private let stepperValue = TestObserver<Double, Never>()
   private let textFieldIsFirstResponder = TestObserver<Bool, Never>()
+  private let textFieldValue = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.amount.observe(self.amount.observer)
     self.vm.outputs.amountPrimitive.observe(self.amountPrimitive.observer)
     self.vm.outputs.currency.observe(self.currency.observer)
     self.vm.outputs.doneButtonIsEnabled.observe(self.doneButtonIsEnabled.observer)
@@ -33,14 +32,15 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.vm.outputs.stepperMinValue.observe(self.stepperMinValue.observer)
     self.vm.outputs.stepperMaxValue.observe(self.stepperMaxValue.observer)
     self.vm.outputs.textFieldIsFirstResponder.observe(self.textFieldIsFirstResponder.observer)
+    self.vm.outputs.textFieldValue.observe(self.textFieldValue.observer)
   }
 
-  func testAmountAndCurrency() {
+  func testTextFieldValueAndCurrency() {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
-    self.amount.assertValues(["15"])
     self.amountPrimitive.assertValues([15])
     self.currency.assertValues(["$"])
+    self.textFieldValue.assertValues(["15"])
 
     let project = Project.template
       |> Project.lens.country .~ .jp
@@ -50,9 +50,9 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project, reward: reward)
 
-    self.amount.assertValues(["15", "15", "15"])
     self.amountPrimitive.assertValues([15])
     self.currency.assertValues(["$", "¥"])
+    self.textFieldValue.assertValues(["15", "15", "15"])
   }
 
   func testDoneButtonIsEnabled_Stepper() {
@@ -219,5 +219,35 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged(nil)
     self.amountPrimitive.assertValues([15, 11, 0, 5, 0])
+  }
+
+  func testTextFieldDidEndEditing() {
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+    self.amountPrimitive.assertValues([15])
+    self.textFieldValue.assertValues(["15"])
+
+    self.vm.inputs.textFieldDidEndEditing(nil)
+    self.amountPrimitive.assertValues([15])
+    self.textFieldValue.assertValues(["15"])
+
+    self.vm.inputs.textFieldDidEndEditing("16")
+    self.amountPrimitive.assertValues([15, 16])
+    self.textFieldValue.assertValues(["15", "16"])
+
+    self.vm.inputs.textFieldDidEndEditing("25")
+    self.amountPrimitive.assertValues([15, 16, 20])
+    self.textFieldValue.assertValues(["15", "16", "20"])
+
+    self.vm.inputs.textFieldDidEndEditing("8")
+    self.amountPrimitive.assertValues([15, 16, 20, 10])
+    self.textFieldValue.assertValues(["15", "16", "20", "10"])
+
+    self.vm.inputs.textFieldDidEndEditing("17")
+    self.amountPrimitive.assertValues([15, 16, 20, 10, 17])
+    self.textFieldValue.assertValues(["15", "16", "20", "10", "17"])
+
+    self.vm.inputs.textFieldDidEndEditing("")
+    self.amountPrimitive.assertValues([15, 16, 20, 10, 17, 10])
+    self.textFieldValue.assertValues(["15", "16", "20", "10", "17", "10"])
   }
 }
