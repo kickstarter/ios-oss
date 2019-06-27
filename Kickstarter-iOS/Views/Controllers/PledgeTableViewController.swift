@@ -65,7 +65,7 @@ class PledgeTableViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] intent in
         self?.goToLoginSignup(with: intent)
-    }
+      }
 
     self.viewModel.outputs.pledgeViewDataAndReload
       .observeForUI()
@@ -77,7 +77,7 @@ class PledgeTableViewController: UITableViewController {
         }
       }
 
-   self.viewModel.outputs.configureSummaryCellWithProjectAndPledgeTotal
+    self.viewModel.outputs.configureSummaryCellWithProjectAndPledgeTotal
       .observeValues { [weak self] project, pledgeTotal in
         self?.pledgeSummaryCell?.configureWith(value: (project, pledgeTotal))
       }
@@ -85,7 +85,7 @@ class PledgeTableViewController: UITableViewController {
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
-    }
+      }
   }
 
   // MARK: - Private Helpers
@@ -163,7 +163,7 @@ extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
 }
 
 extension PledgeTableViewController: PledgeContinueCellDelegate {
-  func pledgeContinueCellDidTapContinue(_ cell: PledgeContinueCell) {
+  func pledgeContinueCellDidTapContinue(_: PledgeContinueCell) {
     self.viewModel.inputs.continueButtonTapped()
   }
 }

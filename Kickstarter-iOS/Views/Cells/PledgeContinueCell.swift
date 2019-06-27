@@ -2,12 +2,11 @@ import Foundation
 import Library
 import Prelude
 
-protocol PledgeContinueCellDelegate: class {
+protocol PledgeContinueCellDelegate: AnyObject {
   func pledgeContinueCellDidTapContinue(_ cell: PledgeContinueCell)
 }
 
 final class PledgeContinueCell: UITableViewCell, ValueCell {
-
   // MARK: - Properties
 
   private let continueButton = MultiLineButton(type: .custom)
@@ -35,7 +34,7 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
         guard let self = self else { return }
 
         self.delegate?.pledgeContinueCellDidTapContinue(self)
-    }
+      }
   }
 
   override func bindStyles() {
@@ -66,7 +65,7 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
 
     self.continueButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(8)).isActive = true
 
-    self.continueButton.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
+    self.continueButton.addTarget(self, action: #selector(self.continueButtonTapped), for: .touchUpInside)
   }
 
   @objc private func continueButtonTapped() {

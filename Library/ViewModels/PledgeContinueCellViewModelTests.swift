@@ -27,4 +27,3 @@ final class PledgeContinueCellViewModelTests: TestCase {
     self.goToLoginSignup.assertValueCount(2)
   }
 }
-
