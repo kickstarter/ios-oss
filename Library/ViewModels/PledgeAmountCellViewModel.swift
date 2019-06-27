@@ -8,11 +8,11 @@ public protocol PledgeAmountCellViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func doneButtonTapped()
   func stepperValueChanged(_ value: Double)
+  func textFieldDidEndEditing(_ value: String?)
   func textFieldValueChanged(_ value: String?)
 }
 
 public protocol PledgeAmountCellViewModelOutputs {
-  var amount: Signal<String, Never> { get }
   var amountPrimitive: Signal<Double, Never> { get }
   var currency: Signal<String, Never> { get }
   var doneButtonIsEnabled: Signal<Bool, Never> { get }
@@ -23,6 +23,7 @@ public protocol PledgeAmountCellViewModelOutputs {
   var stepperStepValue: Signal<Double, Never> { get }
   var stepperValue: Signal<Double, Never> { get }
   var textFieldIsFirstResponder: Signal<Bool, Never> { get }
+  var textFieldValue: Signal<String, Never> { get }
 }
 
 public protocol PledgeAmountCellViewModelType {
@@ -47,12 +48,21 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
     let initialValue = minAndMax.signal
       .map(first)
 
+    let clampedTextFieldValue = Signal.combineLatest(
+      minAndMax.signal,
+      self.textFieldDidEndEditingProperty.signal
+        .skipNil()
+    )
+    .map(unpack)
+    .map(clampedValue)
+
     let stepperValue = Signal.merge(
       initialValue,
+      clampedTextFieldValue,
       self.stepperValueProperty.signal
     )
 
-    self.amount = stepperValue
+    self.textFieldValue = stepperValue
       .map { String(format: "%.0f", $0) }
       .skipRepeats()
 
@@ -105,9 +115,9 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
     let clampedStepperValue = Signal.combineLatest(
       self.stepperMinValue,
       self.stepperMaxValue,
-      textFieldValue.signal
+      self.textFieldValueProperty.signal.skipNil()
     )
-    .map { minValue, maxValue, value in min(max(minValue, value), maxValue) }
+    .map(clampedValue)
 
     self.stepperValue = Signal.merge(
       initialValue,
@@ -133,12 +143,16 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
     self.stepperValueProperty.value = value
   }
 
+  private let textFieldDidEndEditingProperty = MutableProperty<String?>(nil)
+  public func textFieldDidEndEditing(_ value: String?) {
+    self.textFieldDidEndEditingProperty.value = value
+  }
+
   private let textFieldValueProperty = MutableProperty<String?>(nil)
   public func textFieldValueChanged(_ value: String?) {
     self.textFieldValueProperty.value = value
   }
 
-  public let amount: Signal<String, Never>
   public let amountPrimitive: Signal<Double, Never>
   public let currency: Signal<String, Never>
   public let doneButtonIsEnabled: Signal<Bool, Never>
@@ -149,7 +163,19 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
   public let stepperStepValue: Signal<Double, Never>
   public let stepperValue: Signal<Double, Never>
   public let textFieldIsFirstResponder: Signal<Bool, Never>
+  public let textFieldValue: Signal<String, Never>
 
   public var inputs: PledgeAmountCellViewModelInputs { return self }
   public var outputs: PledgeAmountCellViewModelOutputs { return self }
+}
+
+// MARK: - Functions
+
+private func clampedValue(_ min: Double, max: Double, value: String) -> Double {
+  switch (min, max, value) {
+  case let (min, _, v) where v.isEmpty: return min
+  case let (min, _, v as NSString) where v.doubleValue < min: return min
+  case let (_, max, v as NSString) where v.doubleValue > max: return max
+  case let (_, _, v as NSString): return v.doubleValue
+  }
 }

@@ -38,6 +38,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var spacerView = UIView(frame: .zero)
   private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
+  private var learnMoreTextViewHeightConstraint: NSLayoutConstraint?
 
   // MARK: - Lifecycle
 
@@ -85,6 +86,9 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     _ = self.learnMoreTextView
       |> learnMoreTextViewStyle
+
+    self.learnMoreTextViewHeightConstraint?.constant = self.learnMoreTextView.ksr_sizeThatFitsCurrentWidth()
+      .height
   }
 
   private func configureSubviews() {
@@ -101,10 +105,14 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     self.configureStackView()
 
+    let learnMoreTextViewHeightConstraint = self.learnMoreTextView.heightAnchor.constraint(equalToConstant: 0)
+    self.learnMoreTextViewHeightConstraint = learnMoreTextViewHeightConstraint
+
     NSLayoutConstraint.activate([
       self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
       self.containerImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
-      self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
+      self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor),
+      learnMoreTextViewHeightConstraint
     ])
   }
 
