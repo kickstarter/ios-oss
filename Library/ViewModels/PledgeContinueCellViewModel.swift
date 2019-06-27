@@ -15,7 +15,8 @@ public protocol PledgeContinueCellViewModelType {
 }
 
 
-public final class PledgeContinueCellViewModel: PledgeContinueCellViewModelType, PledgeContinueCellViewModelInputs, PledgeContinueCellViewModelOutputs {
+public final class PledgeContinueCellViewModel: PledgeContinueCellViewModelType,
+PledgeContinueCellViewModelInputs, PledgeContinueCellViewModelOutputs {
   public init() {
     self.goToLoginSignup = self.continueButtonTappedProperty.signal
   }

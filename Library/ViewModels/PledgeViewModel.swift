@@ -22,7 +22,6 @@ public protocol PledgeViewModelInputs {
 
 public protocol PledgeViewModelOutputs {
   var goToLoginSignup: Signal<LoginIntent, Never> { get }
-  var reloadWithData: Signal<(Project, Reward, Bool), Never> { get }
   var configureSummaryCellWithProjectAndPledgeTotal: Signal<(Project, Double), Never> { get }
   var pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never> { get }
 }
@@ -108,7 +107,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   }
 
   public let goToLoginSignup: Signal<LoginIntent, Never>
-  public let reloadWithData: Signal<(Project, Reward, Bool), Never>
   public let configureSummaryCellWithProjectAndPledgeTotal: Signal<(Project, Double), Never>
   public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
 

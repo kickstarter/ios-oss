@@ -66,8 +66,8 @@ class PledgeTableViewController: UITableViewController {
       .observeValues { [weak self] intent in
         self?.goToLoginSignup(with: intent)
     }
-    self.viewModel.outputs.pledgeViewDataAndReload
 
+    self.viewModel.outputs.pledgeViewDataAndReload
       .observeForUI()
       .observeValues { [weak self] data, reload in
         self?.dataSource.load(data: data)
@@ -127,8 +127,9 @@ class PledgeTableViewController: UITableViewController {
       let shippingLocationCell = (cell as? PledgeShippingLocationCell)
       shippingLocationCell?.delegate = self
       self.shippingLocationCell = shippingLocationCell
-    } else if let pledgeContinueCell = cell as? PledgeContinueCell {
-      pledgeContinueCell.delegate = self
+    case is PledgeContinueCell:
+      let pledgeContinueCell = cell as? PledgeContinueCell
+      pledgeContinueCell?.delegate = self
     default:
       break
     }
@@ -164,6 +165,7 @@ extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
 extension PledgeTableViewController: PledgeContinueCellDelegate {
   func pledgeContinueCellDidTapContinue(_ cell: PledgeContinueCell) {
     self.viewModel.inputs.continueButtonTapped()
+  }
 }
 
 extension PledgeTableViewController: PledgeAmountCellDelegate {

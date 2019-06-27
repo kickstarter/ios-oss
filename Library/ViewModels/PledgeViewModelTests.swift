@@ -26,9 +26,6 @@ final class PledgeViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
-    self.vm.outputs.reloadWithData.map { $0.0 }.observe(self.project.observer)
-    self.vm.outputs.reloadWithData.map { $0.1 }.observe(self.reward.observer)
-    self.vm.outputs.reloadWithData.map { $0.2 }.observe(self.isLoggedIn.observer)
     self.vm.outputs.configureSummaryCellWithProjectAndPledgeTotal.map(first)
       .observe(self.configureSummaryCellWithProject.observer)
     self.vm.outputs.configureSummaryCellWithProjectAndPledgeTotal.map(second)
