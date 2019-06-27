@@ -42,7 +42,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let project = projectAndReward.map(first)
     let reward = projectAndReward.map(second)
     let isLoggedIn = projectAndReward
-      .ignoreValues()
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
@@ -104,10 +103,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   }
 
   private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
-  private let needsReload = MutableProperty(false)
   public func userSessionStarted() {
     self.userSessionStartedObserver.send(value: ())
-    self.needsReload.value = true
   }
 
   private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
