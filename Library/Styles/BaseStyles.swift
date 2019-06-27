@@ -26,6 +26,7 @@ public typealias SwitchControlStyle = (UISwitch) -> UISwitch
 public typealias TableViewStyle = (UITableView) -> UITableView
 public typealias TextFieldStyle = (UITextField) -> UITextField
 public typealias TextViewStyle = (UITextView) -> UITextView
+public typealias ToolbarStyle = (UIToolbar) -> UIToolbar
 public typealias ViewStyle = (UIView) -> UIView
 
 public func baseControllerStyle<VC: UIViewControllerProtocol>() -> ((VC) -> VC) {
@@ -149,3 +150,19 @@ private let baseNavigationBarStyle =
   <> UINavigationBar.lens.isTranslucent .~ false
   <> UINavigationBar.lens.barTintColor .~ .white
   <> UINavigationBar.lens.tintColor .~ .ksr_green_700
+
+public let keyboardToolbarStyle: ToolbarStyle = { toolbar -> UIToolbar in
+  toolbar
+    |> roundedStyle(cornerRadius: 8)
+    |> \.layer.backgroundColor .~ UIColor.white.cgColor
+    |> \.layer.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+}
+
+public let keyboardDoneButtonStyle: ButtonStyle = { button -> UIButton in
+  button
+    |> greenButtonStyle
+    |> roundedStyle(cornerRadius: 6)
+    |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+    |> UIButton.lens.layer.borderWidth .~ 0
+    |> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 17) // Disables Dynamic Type support
+}

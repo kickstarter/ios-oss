@@ -3,9 +3,14 @@ import Library
 import Prelude
 import UIKit
 
+protocol PledgeShippingLocationCellDelegate: AnyObject {
+  func pledgeShippingCell(_ cell: PledgeShippingLocationCell, didSelectShippingRule rule: ShippingRule)
+}
+
 final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  public weak var delegate: PledgeShippingLocationCellDelegate?
   private let viewModel = PledgeShippingLocationCellViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -95,6 +100,13 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] isLoading in
         self?.animate(isLoading)
+      }
+
+    self.viewModel.outputs.selectedShippingRule
+      .observeForUI()
+      .observeValues { [weak self] rule in
+        guard let self = self else { return }
+        self.delegate?.pledgeShippingCell(self, didSelectShippingRule: rule)
       }
   }
 
