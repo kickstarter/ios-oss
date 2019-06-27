@@ -45,7 +45,7 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
     let minAndMax = Signal.combineLatest(project, reward)
       .map(minAndMaxPledgeAmount)
 
-    let initialValue = minAndMax.signal
+    let initialValue = minAndMax
       .map(first)
 
     let clampedTextFieldValue = Signal.combineLatest(
