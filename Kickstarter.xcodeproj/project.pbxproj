@@ -95,6 +95,8 @@
 		373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */; };
 		373AB25D222A0D8900769FC2 /* PasswordValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25C222A0D8900769FC2 /* PasswordValidation.swift */; };
 		373AB25F222A0DAC00769FC2 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */; };
+		374CB94F22C17D4E00B84219 /* CharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374CB94E22C17D4E00B84219 /* CharacterSet.swift */; };
+		374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374CB95022C17D6700B84219 /* CharacterSetTests.swift */; };
 		374F507922614A1000DE6746 /* PledgeFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374F507822614A1000DE6746 /* PledgeFooterView.swift */; };
 		3757D0CE228E51F800241AE6 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3757D0CD228E51F800241AE6 /* UIFont.swift */; };
 		3757D107228E521600241AE6 /* UIFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3757D106228E521600241AE6 /* UIFontTests.swift */; };
@@ -1368,6 +1370,8 @@
 		373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModelTests.swift; sourceTree = "<group>"; };
 		373AB25C222A0D8900769FC2 /* PasswordValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidation.swift; sourceTree = "<group>"; };
 		373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
+		374CB94E22C17D4E00B84219 /* CharacterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet.swift; sourceTree = "<group>"; };
+		374CB95022C17D6700B84219 /* CharacterSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSetTests.swift; sourceTree = "<group>"; };
 		374F507822614A1000DE6746 /* PledgeFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeFooterView.swift; sourceTree = "<group>"; };
 		3757D0CD228E51F800241AE6 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		3757D106228E521600241AE6 /* UIFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontTests.swift; sourceTree = "<group>"; };
@@ -2889,6 +2893,8 @@
 				A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */,
 				D764373F22414FA900DAFC9E /* AppEnvironmentType.swift */,
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
+				374CB94E22C17D4E00B84219 /* CharacterSet.swift */,
+				374CB95022C17D6700B84219 /* CharacterSetTests.swift */,
 				9DBF80DE1D666CAC007F2843 /* CheckoutModels.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				A7ED1F131E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift */,
@@ -4484,6 +4490,7 @@
 				598D96BA1D426FD8003F3F66 /* ActivitySampleBackingCellViewModel.swift in Sources */,
 				59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */,
 				D6B6F9C020F403F400A295F7 /* UserAttribute.swift in Sources */,
+				374CB94F22C17D4E00B84219 /* CharacterSet.swift in Sources */,
 				A755116C1C8642C3005355CF /* UIPress-Extensions.swift in Sources */,
 				D798A6AE21656D970053D097 /* Currency.swift in Sources */,
 				77F6E73521222E7C005A5C55 /* EmailFrequency.swift in Sources */,
@@ -4618,6 +4625,7 @@
 				D7237096211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift in Sources */,
 				A7ED1FCF1E831C5C00BFFA01 /* CheckoutRacingViewModelTests.swift in Sources */,
 				37D99C5B22247F58008EF839 /* NSBundleType+Tests.swift in Sources */,
+				374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */,
 				A7ED1FC51E831C5C00BFFA01 /* CommentsEmptyStateCellViewModelTests.swift in Sources */,
 				A7ED1F391E830FDC00BFFA01 /* UILabel+IBClearTests.swift in Sources */,
 				3706408422A8A68600889CBD /* PledgeAmountCellViewModelTests.swift in Sources */,
