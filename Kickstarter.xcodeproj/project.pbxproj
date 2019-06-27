@@ -104,6 +104,7 @@
 		37653F82220A07710016E7F9 /* SettingsGroupedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */; };
 		3772A4C6229C9E2000EDDC6F /* String+Attributed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3772A4C5229C9E2000EDDC6F /* String+Attributed.swift */; };
 		3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */; };
+		378CA24622C4449F004E3C86 /* CountryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378CA24522C4449F004E3C86 /* CountryLenses.swift */; };
 		379C00012242DAFF00F6F0C2 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFF12242DAC400F6F0C2 /* WebViewController.swift */; };
 		379CFFFA2242DAD500F6F0C2 /* DeprecatedWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFED2242DAC300F6F0C2 /* DeprecatedWebViewController.swift */; };
 		379CFFFB2242DADB00F6F0C2 /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */; };
@@ -1384,6 +1385,7 @@
 		37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGroupedHeaderView.swift; sourceTree = "<group>"; };
 		3772A4C5229C9E2000EDDC6F /* String+Attributed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Attributed.swift"; sourceTree = "<group>"; };
 		3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextInputCell.swift; sourceTree = "<group>"; };
+		378CA24522C4449F004E3C86 /* CountryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryLenses.swift; sourceTree = "<group>"; };
 		379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+URL.swift"; sourceTree = "<group>"; };
 		379CFFEB2242DAC200F6F0C2 /* NSBundle-Framework.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle-Framework.swift"; sourceTree = "<group>"; };
 		379CFFED2242DAC300F6F0C2 /* DeprecatedWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedWebViewController.swift; sourceTree = "<group>"; };
@@ -3650,13 +3652,14 @@
 				D015879D1EEB2ED6006E7684 /* CheckoutEnvelopeLenses.swift */,
 				D015879E1EEB2ED6006E7684 /* CommentLenses.swift */,
 				D015879F1EEB2ED6006E7684 /* ConfigLenses.swift */,
+				378CA24522C4449F004E3C86 /* CountryLenses.swift */,
 				D01587A01EEB2ED6006E7684 /* CreatePledgeEnvelopeLenses.swift */,
 				D01587A11EEB2ED6006E7684 /* DiscoveryEnvelopeLenses.swift */,
 				D01587A21EEB2ED6006E7684 /* DiscoveryParamsLenses.swift */,
+				D723708F2118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift */,
 				D01587A31EEB2ED6006E7684 /* FindFriendsEnvelopeLenses.swift */,
 				D01587A41EEB2ED6006E7684 /* FriendStatsEnvelope.StatsLenses.swift */,
 				D01587A51EEB2ED6006E7684 /* FriendStatsEnvelopeLenses.swift */,
-				D723708F2118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift */,
 				D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */,
 				D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */,
 				D01587A61EEB2ED6006E7684 /* ItemLenses.swift */,
@@ -3674,8 +3677,8 @@
 				D01587B31EEB2ED7006E7684 /* ProjectNotificationLenses.swift */,
 				D01587B41EEB2ED7006E7684 /* ProjectStatsEnvelope.CumulativeStatsLenses.swift */,
 				D01587B51EEB2ED7006E7684 /* ProjectStatsEnvelope.FundingDateStatsLenses.swift */,
-				D01587B61EEB2ED7006E7684 /* ProjectStatsEnvelope.ReferrerStatsLenses.swift */,
 				D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */,
+				D01587B61EEB2ED7006E7684 /* ProjectStatsEnvelope.ReferrerStatsLenses.swift */,
 				D01587B71EEB2ED7006E7684 /* ProjectStatsEnvelope.RewardDistributionLenses.swift */,
 				D01587B81EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift */,
 				D01587B91EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift */,
@@ -5113,6 +5116,7 @@
 				D01588AF1EEB2ED7006E7684 /* Project.VideoLenses.swift in Sources */,
 				D0158A091EEB30A2006E7684 /* ActivityTemplates.swift in Sources */,
 				D01589811EEB2ED7006E7684 /* Update.swift in Sources */,
+				378CA24622C4449F004E3C86 /* CountryLenses.swift in Sources */,
 				D0158A161EEB30A2006E7684 /* ItemTemplates.swift in Sources */,
 				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
 				D01588D71EEB2ED7006E7684 /* UpdateLenses.swift in Sources */,
