@@ -13,8 +13,9 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
   private let doneButtonIsEnabled = TestObserver<Bool, Never>()
   private let generateSelectionFeedback = TestObserver<Void, Never>()
   private let generateNotificationWarningFeedback = TestObserver<Void, Never>()
-  private let stepperMinValue = TestObserver<Double, Never>()
   private let stepperMaxValue = TestObserver<Double, Never>()
+  private let stepperMinValue = TestObserver<Double, Never>()
+  private let stepperStepValue = TestObserver<Double, Never>()
   private let stepperValue = TestObserver<Double, Never>()
   private let textFieldIsFirstResponder = TestObserver<Bool, Never>()
 
@@ -29,9 +30,10 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.vm.outputs.generateNotificationWarningFeedback.observe(
       self.generateNotificationWarningFeedback.observer
     )
-    self.vm.outputs.stepperValue.observe(self.stepperValue.observer)
-    self.vm.outputs.stepperMinValue.observe(self.stepperMinValue.observer)
     self.vm.outputs.stepperMaxValue.observe(self.stepperMaxValue.observer)
+    self.vm.outputs.stepperMinValue.observe(self.stepperMinValue.observer)
+    self.vm.outputs.stepperStepValue.observe(self.stepperStepValue.observer)
+    self.vm.outputs.stepperValue.observe(self.stepperValue.observer)
     self.vm.outputs.textFieldIsFirstResponder.observe(self.textFieldIsFirstResponder.observer)
   }
 
@@ -43,6 +45,7 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(1)
     self.stepperMaxValue.assertValue(10_000)
+    self.stepperStepValue.assertValue(1)
     self.stepperValue.assertValue(1)
   }
 
@@ -58,6 +61,7 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.stepperMinValue.assertValue(10)
     self.stepperMinValue.assertValue(10)
     self.stepperMaxValue.assertValue(200_000)
+    self.stepperStepValue.assertValue(10)
     self.stepperValue.assertValue(10)
   }
 
@@ -75,6 +79,7 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(1)
     self.stepperMaxValue.assertValue(10_000)
+    self.stepperStepValue.assertValue(1)
     self.stepperValue.assertValue(1)
   }
 
@@ -86,6 +91,7 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(10)
     self.stepperMaxValue.assertValue(10_000)
+    self.stepperStepValue.assertValue(10)
     self.stepperValue.assertValue(10)
   }
 
@@ -103,6 +109,7 @@ internal final class PledgeAmountCellViewModelTests: TestCase {
     self.currency.assertValues(["¥"])
     self.stepperMinValue.assertValue(200)
     self.stepperMaxValue.assertValue(1_200_000)
+    self.stepperStepValue.assertValue(200)
     self.stepperValue.assertValue(200)
   }
 

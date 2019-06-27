@@ -20,6 +20,7 @@ public protocol PledgeAmountCellViewModelOutputs {
   var generateNotificationWarningFeedback: Signal<Void, Never> { get }
   var stepperMaxValue: Signal<Double, Never> { get }
   var stepperMinValue: Signal<Double, Never> { get }
+  var stepperStepValue: Signal<Double, Never> { get }
   var stepperValue: Signal<Double, Never> { get }
   var textFieldIsFirstResponder: Signal<Bool, Never> { get }
 }
@@ -99,6 +100,8 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
     self.doneButtonIsEnabled = updatedValue
       .map { min, max, doubleValue in min <= doubleValue && doubleValue <= max }
 
+    self.stepperStepValue = self.stepperMinValue
+
     let clampedStepperValue = Signal.combineLatest(
       self.stepperMinValue,
       self.stepperMaxValue,
@@ -143,6 +146,7 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
   public let generateNotificationWarningFeedback: Signal<Void, Never>
   public let stepperMaxValue: Signal<Double, Never>
   public let stepperMinValue: Signal<Double, Never>
+  public let stepperStepValue: Signal<Double, Never>
   public let stepperValue: Signal<Double, Never>
   public let textFieldIsFirstResponder: Signal<Bool, Never>
 
