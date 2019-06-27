@@ -86,6 +86,9 @@ final class PledgeViewModelTests: TestCase {
     self.project.assertValues([project])
     self.reward.assertValues([reward])
     self.isLoggedIn.assertValues([false])
+    self.isShippingEnabled.assertValues([false])
+    self.total.assertValues([reward.minimum])
+    self.reload.assertValues([true])
 
     self.vm.inputs.continueButtonTapped()
 
@@ -97,6 +100,9 @@ final class PledgeViewModelTests: TestCase {
       self.project.assertValues([project, project])
       self.reward.assertValues([reward, reward])
       self.isLoggedIn.assertValues([false, true])
+      self.isShippingEnabled.assertValues([false, false])
+      self.total.assertValues([reward.minimum, reward.minimum])
+      self.reload.assertValues([true, true])
     }
   }
 

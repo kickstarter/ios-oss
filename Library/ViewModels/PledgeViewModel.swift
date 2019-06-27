@@ -35,13 +35,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public init() {
     let projectAndReward = Signal.combineLatest(
       self.configureProjectAndRewardProperty.signal, self.viewDidLoadProperty.signal
-    )
-    .map(first)
-    .skipNil()
+      )
+      .map(first)
+      .skipNil()
 
     let project = projectAndReward.map(first)
     let reward = projectAndReward.map(second)
-    let isLoggedIn = Signal.merge(projectAndReward.ignoreValues(), userSessionStartedSignal)
+    let isLoggedIn = projectAndReward
+      .ignoreValues()
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
@@ -62,13 +63,29 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         (project, reward, isLoggedIn, reward.shipping.enabled, total)
       }
 
-    self.goToLoginSignup = continueButtonTappedSignal
-      .map { _ in LoginIntent.backProject }
+    let userUpdatedReload = data.takeWhen(userSessionStartedSignal)
+      .map { data -> (PledgeViewData, Bool) in
+        let loggedIn = AppEnvironment.current.currentUser != nil
+        return ((
+          project: data.project,
+          reward: data.reward,
+          isLoggedIn: loggedIn,
+          isShippingEnabled: data.isShippingEnabled,
+          pledgeTotal: data.pledgeTotal
+        ), true)
+    }
+
+    let initialLoad = data.take(first: 1).map { data in (data, true) }
+    let silentReload = data.skip(first: 1).map { data in (data, false) }
 
     self.pledgeViewDataAndReload = Signal.merge(
-      data.take(first: 1).map { data in (data, true) },
-      data.skip(first: 1).map { data in (data, false) }
+      initialLoad,
+      silentReload,
+      userUpdatedReload
     )
+
+    self.goToLoginSignup = continueButtonTappedSignal
+      .map { _ in LoginIntent.backProject }
 
     self.configureSummaryCellWithProjectAndPledgeTotal = self.pledgeViewDataAndReload
       .filter(second >>> isFalse)
@@ -87,8 +104,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   }
 
   private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
+  private let needsReload = MutableProperty(false)
   public func userSessionStarted() {
     self.userSessionStartedObserver.send(value: ())
+    self.needsReload.value = true
 }
 
   private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
