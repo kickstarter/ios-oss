@@ -21,7 +21,6 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var termsTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
-  private var termsTextViewHeightConstraint: NSLayoutConstraint?
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
   // MARK: - Lifecycle
@@ -63,8 +62,6 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
 
     _ = self.amountLabel
       |> amountLabelStyle
-
-    self.termsTextViewHeightConstraint?.constant = self.termsTextView.ksr_sizeThatFitsCurrentWidth().height
   }
 
   private func configureSubviews() {
@@ -77,9 +74,6 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
 
     _ = ([self.termsTextView, self.amountLabel], self.adaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
-
-    self.termsTextViewHeightConstraint = self.termsTextView.heightAnchor.constraint(equalToConstant: 0)
-    self.termsTextViewHeightConstraint?.isActive = true
   }
 
   // MARK: - Binding
@@ -179,7 +173,7 @@ private func attributedTermsText() -> NSAttributedString? {
   // swiftlint:disable line_length
   let string = localizedString(
     key: "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy",
-    defaultValue: "<p>By pledging you agree to Kickstarter's <a href=\"%{terms_of_use_link}\">Terms of Use</a>, <a href=\"%{privacy_policy_link}\">Privacy Policy</a> and <a href=\"%{cookie_policy_link}\">Cookie Policy</a>.<p>",
+    defaultValue: "By pledging you agree to Kickstarter's <a href=\"%{terms_of_use_link}\">Terms of Use</a>, <a href=\"%{privacy_policy_link}\">Privacy Policy</a> and <a href=\"%{cookie_policy_link}\">Cookie Policy</a>.",
     substitutions: [
       "terms_of_use_link": HelpType.terms.url(withBaseUrl: baseUrl)?.absoluteString,
       "privacy_policy_link": HelpType.privacy.url(withBaseUrl: baseUrl)?.absoluteString,
