@@ -253,6 +253,7 @@
 "MMYY" = "MM/YY";
 "Make_a_pledge_without_a_reward" = "Make a pledge without a reward";
 "Making_this_change" = "Making this change will allow you to see project goal and pledge amounts converted to your chosen currency.";
+"Manage" = "Manage";
 "Manage_your_pledge" = "Manage your pledge";
 "Manage_your_pledge_below" = "Manage your pledge below";
 "Manage_your_reward" = "Manage your reward";
@@ -474,6 +475,7 @@
 "Video_disabled_until_the_internet_connection_improves" = "Video disabled until the internet connection improves";
 "View" = "View";
 "View_project" = "View project";
+"View_rewards" = "View rewards";
 "View_your_pledge" = "View your pledge";
 "View_your_reward" = "View your reward";
 "Watch_live" = "Watch live";

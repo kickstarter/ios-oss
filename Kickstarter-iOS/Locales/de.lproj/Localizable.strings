@@ -253,6 +253,7 @@
 "MMYY" = "MM/JJ";
 "Make_a_pledge_without_a_reward" = "Ohne Belohnung unterstützen";
 "Making_this_change" = "Wenn du die Währung wechselst, werden das Finanzierungsziel und die Finanzierungsbeiträge in der von dir gewählten Währung angezeigt.";
+"Manage" = "Verwalten";
 "Manage_your_pledge" = "Meinen Beitrag verwalten";
 "Manage_your_pledge_below" = "Folgenden Beitrag verwalten";
 "Manage_your_reward" = "Belohnung verwalten";
@@ -474,6 +475,7 @@
 "Video_disabled_until_the_internet_connection_improves" = "Video bis zur Wiederherstellung der Internetverbindung deaktiviert";
 "View" = "Anzeigen";
 "View_project" = "Projekt ansehen";
+"View_rewards" = "Belohnungen ansehen";
 "View_your_pledge" = "Deinen Finanzierungsbeitrag ansehen";
 "View_your_reward" = "Belohnung ansehen";
 "Watch_live" = "Live ansehen";

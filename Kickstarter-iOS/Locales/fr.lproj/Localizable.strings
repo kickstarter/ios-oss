@@ -253,6 +253,7 @@
 "MMYY" = "MM/AA";
 "Make_a_pledge_without_a_reward" = "S'engager sans recevoir de récompense";
 "Making_this_change" = "Cette fonction vous permettra de voir votre objectif de financement et le montant de chaque engagement dans la devise de votre choix.";
+"Manage" = "Gérer";
 "Manage_your_pledge" = "Gérer mon engagement";
 "Manage_your_pledge_below" = "Gérer mon engagement";
 "Manage_your_reward" = "Gérer votre récompense";
@@ -474,6 +475,7 @@
 "Video_disabled_until_the_internet_connection_improves" = "Vidéo désactivée en attente d'une meilleure connexion Internet";
 "View" = "Afficher";
 "View_project" = "Afficher le projet";
+"View_rewards" = "Afficher les récompenses";
 "View_your_pledge" = "Afficher mon engagement";
 "View_your_reward" = "Afficher ma récompense";
 "Watch_live" = "Regarder en direct";

@@ -24,12 +24,12 @@ public final class ProjectPamphletViewController: UIViewController {
 
   @IBOutlet private var navBarTopConstraint: NSLayoutConstraint!
 
-  private let backThisProjectContainerViewMargins = Styles.grid(3)
-  private let backThisProjectContainerView: UIView = {
-    UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private let pledgeCTAContainerViewMargins = Styles.grid(3)
+  private let pledgeCTAContainerView: PledgeCTAContainerView = {
+    PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let backThisProjectButton: UIButton = {
+  private let pledgeCTAButton: UIButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -97,13 +97,28 @@ public final class ProjectPamphletViewController: UIViewController {
     }
   }
 
+  private func configureViews() {
+    // Configure subviews
+    _ = (self.pledgeCTAContainerView, self.view)
+      |> ksr_addSubviewToParent()
+
+    // Configure constraints
+    let pledgeCTAContainerViewConstraints = [
+      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    ]
+
+    NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
+  }
+
   public override func bindStyles() {
     super.bindStyles()
 
-    _ = self.backThisProjectContainerView
-      |> \.layoutMargins .~ .init(all: self.backThisProjectContainerViewMargins)
+    _ = self.pledgeCTAContainerView
+      |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
 
-    _ = self.backThisProjectContainerView.layer
+    _ = self.pledgeCTAContainerView.layer
       |> checkoutLayerCardRoundedStyle
       |> \.backgroundColor .~ UIColor.white.cgColor
       |> \.shadowColor .~ UIColor.black.cgColor
@@ -111,15 +126,6 @@ public final class ProjectPamphletViewController: UIViewController {
       |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
       |> \.shadowRadius .~ 1.0
       |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-
-    _ = self.backThisProjectButton
-      |> checkoutGreenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        Strings.project_back_button()
-      }
-
-    _ = self.backThisProjectButton.titleLabel
-      ?|> checkoutGreenButtonTitleLabelStyle
   }
 
   public override func bindViewModel() {
@@ -155,6 +161,12 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeValues { [weak self] value in
         self?.navBarTopConstraint.constant = value
       }
+
+    self.viewModel.outputs.projectAndUser
+      .observeForUI()
+      .observeValues { [weak self] project, user in
+        self?.pledgeCTAContainerView.configureWith(project: project, user: user)
+      }
   }
 
   public override func willTransition(
@@ -162,40 +174,6 @@ public final class ProjectPamphletViewController: UIViewController {
     with _: UIViewControllerTransitionCoordinator
   ) {
     self.viewModel.inputs.willTransition(toNewCollection: newCollection)
-  }
-
-  // MARK: - Private View Setup Functions
-
-  private func configureViews() {
-    _ = (self.backThisProjectButton, self.backThisProjectContainerView)
-      |> ksr_addSubviewToParent()
-
-    _ = (self.backThisProjectContainerView, self.view)
-      |> ksr_addSubviewToParent()
-
-    self.backThisProjectButton.addTarget(
-      self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
-    )
-
-    // Configure constraints
-    let backThisProjectContainerViewConstraints = [
-      self.backThisProjectContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.backThisProjectContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.backThisProjectContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-    ]
-
-    let containerMargins = self.backThisProjectContainerView.layoutMarginsGuide
-    let minHeight = Styles.minTouchSize.height
-
-    let backThisProjectButtonConstraints = [
-      self.backThisProjectButton.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-      self.backThisProjectButton.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      self.backThisProjectButton.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
-      self.backThisProjectButton.topAnchor.constraint(equalTo: containerMargins.topAnchor),
-      self.backThisProjectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight)
-    ]
-
-    NSLayoutConstraint.activate(backThisProjectContainerViewConstraints + backThisProjectButtonConstraints)
   }
 
   // MARK: - Private Helpers
@@ -220,8 +198,8 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func updateContentInsets() {
-    let buttonSize = self.backThisProjectButton.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-    let bottomInset = buttonSize.height + 2 * self.backThisProjectContainerViewMargins
+    let buttonSize = self.pledgeCTAButton.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    let bottomInset = buttonSize.height + 2 * self.pledgeCTAContainerViewMargins
 
     self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)
   }

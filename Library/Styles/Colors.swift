@@ -14,6 +14,10 @@ extension UIColor {
         600: .ksr_apricot_600
       ],
 
+      "Blue": [
+        500: .ksr_blue_500
+      ],
+
       "Cobalt": [
         500: .ksr_cobalt_500
       ],
@@ -82,6 +86,11 @@ extension UIColor {
   /// 0xFFCBA9
   public static var ksr_apricot_600: UIColor {
     return .hex(0xFFCBA9)
+  }
+
+  /// 0x2B60FF
+  public static var ksr_blue_500: UIColor {
+    return .hex(0x2B60FF)
   }
 
   /// 0x4C6CF8
