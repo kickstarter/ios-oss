@@ -40,8 +40,11 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
       .skipNil()
       .map(second)
 
-    let initialValue = Signal.combineLatest(project, reward)
-      .map { _ in 15.0 }
+    let minAndMax = Signal.combineLatest(project, reward)
+      .map(minAndMaxPledgeAmount)
+
+    let initialValue = minAndMax.signal
+      .map(first)
 
     let stepperValue = Signal.merge(
       initialValue,
@@ -50,12 +53,10 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
 
     self.amount = stepperValue
       .map { String(format: "%.0f", $0) }
+      .skipRepeats()
 
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
-
-    let minAndMax = Signal.combineLatest(project, reward)
-      .map { _ in (10.0, 20.0) }
 
     self.stepperMinValue = minAndMax.signal
       .map(first)
