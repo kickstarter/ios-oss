@@ -30,6 +30,7 @@ class PledgeTableViewController: UITableViewController {
     self.tableView.registerCellClass(PledgeAmountCell.self)
     self.tableView.registerCellClass(PledgeContinueCell.self)
     self.tableView.registerCellClass(PledgeDescriptionCell.self)
+    self.tableView.registerCellClass(PledgePaymentMethodsCell.self)
     self.tableView.registerCellClass(PledgeSummaryCell.self)
     self.tableView.registerCellClass(PledgeShippingLocationCell.self)
     self.tableView.registerHeaderFooterClass(PledgeFooterView.self)
