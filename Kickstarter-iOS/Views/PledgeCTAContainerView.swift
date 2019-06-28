@@ -14,7 +14,7 @@ final class PledgeCTAContainerView: UIView {
   }()
 
   private lazy var amountOrRewardLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var pledgeCTAButton: UIButton = {
+  private(set) lazy var pledgeCTAButton: UIButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()

@@ -20,6 +20,7 @@ public protocol PledgeAmountCellViewModelOutputs {
   var generateNotificationWarningFeedback: Signal<Void, Never> { get }
   var stepperMaxValue: Signal<Double, Never> { get }
   var stepperMinValue: Signal<Double, Never> { get }
+  var stepperStepValue: Signal<Double, Never> { get }
   var stepperValue: Signal<Double, Never> { get }
   var textFieldIsFirstResponder: Signal<Bool, Never> { get }
   var textFieldValue: Signal<String, Never> { get }
@@ -42,10 +43,10 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
       .map(second)
 
     let minAndMax = Signal.combineLatest(project, reward)
-      .map { _ in (10.0, 20.0) }
+      .map(minAndMaxPledgeAmount)
 
-    let initialValue = Signal.combineLatest(project, reward)
-      .map { _ in 15.0 }
+    let initialValue = minAndMax
+      .map(first)
 
     let clampedTextFieldValue = Signal.combineLatest(
       minAndMax.signal,
@@ -63,6 +64,7 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
 
     self.textFieldValue = stepperValue
       .map { String(format: "%.0f", $0) }
+      .skipRepeats()
 
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
@@ -107,6 +109,8 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
 
     self.doneButtonIsEnabled = updatedValue
       .map { min, max, doubleValue in min <= doubleValue && doubleValue <= max }
+
+    self.stepperStepValue = self.stepperMinValue
 
     let clampedStepperValue = Signal.combineLatest(
       self.stepperMinValue,
@@ -156,6 +160,7 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
   public let generateNotificationWarningFeedback: Signal<Void, Never>
   public let stepperMaxValue: Signal<Double, Never>
   public let stepperMinValue: Signal<Double, Never>
+  public let stepperStepValue: Signal<Double, Never>
   public let stepperValue: Signal<Double, Never>
   public let textFieldIsFirstResponder: Signal<Bool, Never>
   public let textFieldValue: Signal<String, Never>
