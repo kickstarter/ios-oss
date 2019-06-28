@@ -210,7 +210,7 @@ final class ProjectActivitiesViewModelTests: TestCase {
       self.vm.inputs.configureWith(project)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
-      self.groupedDates.assertValues([true], "Group dates when voice over is not running")
+      self.groupedDates.assertValues([true], "Group dates when VoiceOver is not running")
     }
   }
 
@@ -226,7 +226,7 @@ final class ProjectActivitiesViewModelTests: TestCase {
       self.vm.inputs.configureWith(project)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
-      self.groupedDates.assertValues([false], "Don't group dates when voice over is running")
+      self.groupedDates.assertValues([false], "Don't group dates when VoiceOver is running")
     }
   }
 }

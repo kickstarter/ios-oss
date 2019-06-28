@@ -58,7 +58,7 @@ public struct Environment {
   /// A function that returns whether a specific OS version is available
   public let isOSVersionAvailable: (Double) -> Bool
 
-  /// A function that returns whether voice over mode is running.
+  /// A function that returns whether VoiceOver mode is running.
   public let isVoiceOverRunning: () -> Bool
 
   /// A type that exposes endpoints for tracking various Kickstarter events.
