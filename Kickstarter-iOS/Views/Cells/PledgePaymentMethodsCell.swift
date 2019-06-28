@@ -6,8 +6,13 @@ import UIKit
 final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  private let layout: UICollectionViewLayout = {
+    UICollectionViewFlowLayout()
+      |> \.scrollDirection .~ .horizontal
+  }()
+
   private lazy var collectionView: UICollectionView = {
-    UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    UICollectionView(frame: .zero, collectionViewLayout: self.layout)
       |> \.dataSource .~ self
   }()
 
