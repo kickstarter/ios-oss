@@ -4,7 +4,6 @@ import Prelude
 import UIKit
 
 final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
-
   // MARK: - Properties
 
   private lazy var collectionView: UICollectionView = {
@@ -24,7 +23,7 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     self.bindViewModel()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -65,19 +64,22 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     super.bindViewModel()
   }
 
-  internal func configureWith(value: [GraphUserCreditCard]) {
-  }
+  internal func configureWith(value _: [GraphUserCreditCard]) {}
 }
 
 extension PledgePaymentMethodsCell: UICollectionViewDataSource {
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
     return 1
   }
 
-  func collectionView(_ collectionView: UICollectionView,
-                      cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UICollectionViewCell.defaultReusableId,
-                                                  for: indexPath)
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(
+      withReuseIdentifier: UICollectionViewCell.defaultReusableId,
+      for: indexPath
+    )
     return cell
   }
 }

@@ -17,6 +17,7 @@ private enum Layout {
 internal protocol PledgeDescriptionCellDelegate: AnyObject {
   func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell)
 }
+
 final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   fileprivate let viewModel = PledgeDescriptionCellViewModel()
   internal weak var delegate: PledgeDescriptionCellDelegate?
