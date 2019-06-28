@@ -4,6 +4,112 @@ import XCTest
 class LocalizedStringTests: XCTestCase {
   fileprivate let mockBundle = MockBundle()
 
+  func testLocalizedPostalCode_USA() {
+    withEnvironment(locale: Locale(identifier: "de_US")) {
+      XCTAssertEqual("Zip code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "en_US")) {
+      XCTAssertEqual("Zip code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "es_US")) {
+      XCTAssertEqual("Zip code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "fr_US")) {
+      XCTAssertEqual("Zip code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "ja_US")) {
+      XCTAssertEqual("Zip code", localizedPostalCode())
+    }
+  }
+
+  func testLocalizedPostalCode_Canada() {
+    withEnvironment(locale: Locale(identifier: "de_CA")) {
+      XCTAssertEqual("Postal code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "en_CA")) {
+      XCTAssertEqual("Postal code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "es_CA")) {
+      XCTAssertEqual("Postal code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "fr_CA")) {
+      XCTAssertEqual("Postal code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "ja_CA")) {
+      XCTAssertEqual("Postal code", localizedPostalCode())
+    }
+  }
+
+  func testLocalizedPostalCode_Other() {
+    withEnvironment(locale: Locale(identifier: "de_AU")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "en_GB")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "es_FR")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "fr_AT")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "ja_CH")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+  }
+
+  func testLocalizedPostalCode_No_Region() {
+    withEnvironment(locale: Locale(identifier: "de")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "en")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "es")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "fr")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "ja")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+  }
+
+  func testLocalizedPostalCode_WithoutRegion() {
+    withEnvironment(locale: Locale(identifier: "en")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "ca")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "de")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+
+    withEnvironment(locale: Locale(identifier: "jp")) {
+      XCTAssertEqual("Post code", localizedPostalCode())
+    }
+  }
+
   func testLocalizingInGerman() {
     withEnvironment(language: .de) {
       XCTAssertEqual("de_world", localizedString(key: "hello", bundle: mockBundle))

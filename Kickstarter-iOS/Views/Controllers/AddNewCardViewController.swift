@@ -130,7 +130,7 @@ internal final class AddNewCardViewController: UIViewController,
 
     _ = self.zipcodeView.titleLabel
       |> \.text %~ { _ in
-        Strings.Zip_postal_code()
+        localizedPostalCode()
       }
 
     _ = self.zipcodeView
