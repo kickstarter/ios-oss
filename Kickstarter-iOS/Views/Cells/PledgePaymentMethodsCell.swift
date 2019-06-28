@@ -5,8 +5,6 @@ import UIKit
 
 final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
-  private let cellIdentifier = "Cell"
-
   // MARK: - Properties
 
   private lazy var collectionView: UICollectionView = {
@@ -78,7 +76,8 @@ extension PledgePaymentMethodsCell: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView,
                       cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath)
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UICollectionViewCell.defaultReusableId,
+                                                  for: indexPath)
     return cell
   }
 }
