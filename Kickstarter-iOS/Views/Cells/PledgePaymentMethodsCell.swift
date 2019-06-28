@@ -16,7 +16,7 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
       |> \.dataSource .~ self
   }()
 
-  private lazy var headerStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -36,11 +36,11 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     _ = self
       |> \.accessibilityElements .~ self.subviews
 
-    _ = (self.headerStackView, self.contentView)
+    _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleLabel, self.collectionView], self.headerStackView)
+    _ = ([self.titleLabel, self.collectionView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -54,7 +54,7 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     _ = self.collectionView
       |> \.backgroundColor .~ .white
 
-    _ = self.headerStackView
+    _ = self.rootStackView
       |> checkoutStackViewStyle
 
     _ = self.titleLabel
