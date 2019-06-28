@@ -92,24 +92,6 @@ class LocalizedStringTests: XCTestCase {
     }
   }
 
-  func testLocalizedPostalCode_WithoutRegion() {
-    withEnvironment(locale: Locale(identifier: "en")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
-    }
-
-    withEnvironment(locale: Locale(identifier: "ca")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
-    }
-
-    withEnvironment(locale: Locale(identifier: "de")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
-    }
-
-    withEnvironment(locale: Locale(identifier: "jp")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
-    }
-  }
-
   func testLocalizingInGerman() {
     withEnvironment(language: .de) {
       XCTAssertEqual("de_world", localizedString(key: "hello", bundle: mockBundle))
