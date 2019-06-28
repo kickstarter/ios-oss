@@ -55,8 +55,8 @@ public struct Environment {
   /// The environment variables
   public let environmentVariables: EnvironmentVariables
 
-  /// A function that returns whether a specific OS version is available
-  public let isOSVersionAvailable: (Double) -> Bool
+  /// A function that returns whether 1Password extension is supported.
+  public let is1PasswordSupported: () -> Bool
 
   /// A function that returns whether VoiceOver mode is running.
   public let isVoiceOverRunning: () -> Bool
@@ -108,7 +108,7 @@ public struct Environment {
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
     device: UIDeviceType = UIDevice.current,
     environmentVariables: EnvironmentVariables = EnvironmentVariables(),
-    isOSVersionAvailable: @escaping (Double) -> Bool = ksr_isOSVersionAvailable,
+    is1PasswordSupported: @escaping () -> Bool = { ksr_is1PasswordSupported() },
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
@@ -135,7 +135,7 @@ public struct Environment {
     self.debounceInterval = debounceInterval
     self.device = device
     self.environmentVariables = environmentVariables
-    self.isOSVersionAvailable = isOSVersionAvailable
+    self.is1PasswordSupported = is1PasswordSupported
     self.isVoiceOverRunning = isVoiceOverRunning
     self.koala = koala
     self.language = language

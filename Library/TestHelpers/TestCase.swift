@@ -33,8 +33,6 @@ internal class TestCase: FBSnapshotTestCase {
     // swiftlint:disable:next force_unwrapping
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
-    let isVoiceOverRunning = { false }
-    let isOSVersionAvailable: (Double) -> Bool = { _ in true }
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
@@ -49,8 +47,8 @@ internal class TestCase: FBSnapshotTestCase {
       dateType: self.dateType,
       debounceInterval: .seconds(0),
       device: MockDevice(),
-      isOSVersionAvailable: isOSVersionAvailable,
-      isVoiceOverRunning: isVoiceOverRunning,
+      is1PasswordSupported: { true },
+      isVoiceOverRunning: { false },
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,
       launchedCountries: .init(),
@@ -71,11 +69,16 @@ internal class TestCase: FBSnapshotTestCase {
 }
 
 internal func preferredSimulatorCheck() {
-  guard
-    let identifier = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"],
-    ["iPhone10,1", "iPhone10,4"].contains(identifier),
-    AppEnvironment.current.isOSVersionAvailable(12)
-  else {
-    fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 12")
+  let message = "Please only test and record screenshots on an iPhone 8 simulator running iOS 12"
+
+  if #available(iOS 12.0, *) {
+    let supportedModels = ["iPhone10,1", "iPhone10,4"]
+    let modelKey = "SIMULATOR_MODEL_IDENTIFIER"
+
+    guard supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
+      fatalError(message)
+    }
+  } else {
+    fatalError(message)
   }
 }

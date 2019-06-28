@@ -246,8 +246,7 @@ internal final class DashboardViewModelTests: TestCase {
     let projects = [Project.template]
 
     let mockApiService = MockService(fetchProjectsResponse: projects)
-    let isVoiceOverRunning = { true }
-    withEnvironment(apiService: mockApiService, isVoiceOverRunning: isVoiceOverRunning) {
+    withEnvironment(apiService: mockApiService, isVoiceOverRunning: { true }) {
       self.focusScreenReaderOnTitleView.assertValueCount(0)
 
       self.vm.inputs.viewWillAppear(animated: false)

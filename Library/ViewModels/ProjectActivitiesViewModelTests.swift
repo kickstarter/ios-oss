@@ -202,10 +202,9 @@ final class ProjectActivitiesViewModelTests: TestCase {
     let project = Project.template
     let activities = [.template |> Activity.lens.project .~ project]
 
-    let isVoiceOverRunning = { false }
     withEnvironment(
       apiService: MockService(fetchProjectActivitiesResponse: activities),
-      isVoiceOverRunning: isVoiceOverRunning
+      isVoiceOverRunning: { false }
     ) {
       self.vm.inputs.configureWith(project)
       self.vm.inputs.viewDidLoad()
@@ -218,10 +217,9 @@ final class ProjectActivitiesViewModelTests: TestCase {
     let project = Project.template
     let activities = [.template |> Activity.lens.project .~ project]
 
-    let isVoiceOverRunning = { true }
     withEnvironment(
       apiService: MockService(fetchProjectActivitiesResponse: activities),
-      isVoiceOverRunning: isVoiceOverRunning
+      isVoiceOverRunning: { true }
     ) {
       self.vm.inputs.configureWith(project)
       self.vm.inputs.viewDidLoad()
