@@ -23,13 +23,17 @@ final class ConfigTests: XCTestCase {
         "trailing_code": false,
         "currency_symbol": "€",
         "currency_code": "EUR",
-        "name": "ES"
+        "name": "ES",
+        "min_pledge": 1,
+        "max_pledge": 8_500
       ],
       [
         "trailing_code": false,
         "currency_symbol": "€",
         "currency_code": "EUR",
-        "name": "FR"
+        "name": "FR",
+        "min_pledge": 1,
+        "max_pledge": 8_500
       ]
     ],
     "locale": "en",
