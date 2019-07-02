@@ -42,7 +42,9 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
 
     self.shippingLocationButton.addTarget(
-      self, action: #selector(PledgeShippingLocationCell.shippingLocationButtonTapped(_:)), for: .touchUpInside
+      self,
+      action: #selector(PledgeShippingLocationCell.shippingLocationButtonTapped(_:)),
+      for: .touchUpInside
     )
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
@@ -126,9 +128,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Actions
 
-  @objc func shippingLocationButtonTapped(_ button: UIButton) {
-    
-  }
+  @objc func shippingLocationButtonTapped(_: UIButton) {}
 }
 
 // MARK: - Styles
