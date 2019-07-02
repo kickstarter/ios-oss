@@ -18,7 +18,9 @@ final class ProjectCountryTests: XCTestCase {
       "country": "US",
       "currency": "USD",
       "currency_symbol": "$",
-      "currency_trailing_code": true
+      "currency_trailing_code": true,
+      "max_pledge": 10_000,
+      "min_pledge": 1
     ])
 
     XCTAssertEqual(.us, decodedCountry.value)
@@ -33,7 +35,9 @@ final class ProjectCountryTests: XCTestCase {
       "name": "US",
       "currency_code": "USD",
       "currency_symbol": "$",
-      "trailing_code": true
+      "trailing_code": true,
+      "max_pledge": 10_000,
+      "min_pledge": 1
     ])
 
     XCTAssertEqual(.us, decodedCountry.value)
@@ -48,7 +52,9 @@ final class ProjectCountryTests: XCTestCase {
      { "name": "US",
        "currency_code": "USD",
        "currency_symbol": "$",
-       "trailing_code": true
+       "trailing_code": true,
+       "max_pledge": 10000,
+       "min_pledge": 1
      }
     """
 

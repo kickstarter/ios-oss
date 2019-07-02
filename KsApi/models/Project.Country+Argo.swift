@@ -22,6 +22,8 @@ extension Project.Country: EncodableType {
     result["currency"] = self.currencyCode
     result["currency_symbol"] = self.currencySymbol
     result["currency_trailing_code"] = self.trailingCode
+    result["max_pledge"] = self.maxPledge
+    result["min_pledge"] = self.minPledge
     return result
   }
 }
