@@ -2190,10 +2190,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
   func testShowAlert_WithReward() {
     withEnvironment(currentUser: .template) {
-      let dkCountry = Project.Country(
-        countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr",
-        maxPledge: nil, minPledge: nil, trailingCode: true
-      )
+      let dkCountry = Project.Country.dk
       let project = .template
         |> Project.lens.country .~ dkCountry
       let reward = .template
@@ -2293,10 +2290,7 @@ internal final class RewardPledgeViewModelTests: TestCase {
 
   func testShowAlert_WithNoReward() {
     withEnvironment(currentUser: .template) {
-      let dkCountry = Project.Country(
-        countryCode: "DK", currencyCode: "DKK", currencySymbol: "kr",
-        maxPledge: nil, minPledge: nil, trailingCode: true
-      )
+      let dkCountry = Project.Country.dk
       let project = .template
         |> Project.lens.country .~ dkCountry
       let reward = Reward.noReward
