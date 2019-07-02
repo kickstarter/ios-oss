@@ -1,0 +1,26 @@
+import UIKit
+
+final class CheckoutNavigationController: UINavigationController {
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.delegate = self
+  }
+}
+
+extension CheckoutNavigationController: UINavigationControllerDelegate {
+  func navigationController(
+    _: UINavigationController,
+    animationControllerFor operation: UINavigationController.Operation,
+    from fromVC: UIViewController,
+    to toVC: UIViewController
+  ) -> UIViewControllerAnimatedTransitioning? {
+    switch (operation, fromVC, toVC) {
+    case (.push, is RewardPledgeTransitionAnimatorDelegate, is PledgeViewController):
+      return RewardPledgePushTransitionAnimator()
+    case (.pop, is PledgeViewController, is RewardPledgeTransitionAnimatorDelegate):
+      return RewardPledgePopTransitionAnimator()
+    default:
+      return nil
+    }
+  }
+}
