@@ -1,6 +1,8 @@
 import UIKit
 
 final class CheckoutNavigationController: UINavigationController {
+  // MARK: - Lifecycle
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     self.delegate = self
