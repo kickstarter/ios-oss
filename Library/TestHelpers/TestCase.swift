@@ -77,7 +77,7 @@ internal class TestCase: FBSnapshotTestCase {
 }
 
 internal func preferredSimulatorCheck() {
-  let supportedModels = ["iPhone10,1", "iPhone10,4"]  // iPhone 8
+  let supportedModels = ["iPhone10,1", "iPhone10,4"] // iPhone 8
   let modelKey = "SIMULATOR_MODEL_IDENTIFIER"
 
   guard #available(iOS 12.0, *), supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
