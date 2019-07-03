@@ -69,16 +69,10 @@ internal class TestCase: FBSnapshotTestCase {
 }
 
 internal func preferredSimulatorCheck() {
-  let message = "Please only test and record screenshots on an iPhone 8 simulator running iOS 12"
+  let supportedModels = ["iPhone10,1", "iPhone10,4"]  // iPhone 8
+  let modelKey = "SIMULATOR_MODEL_IDENTIFIER"
 
-  if #available(iOS 12.0, *) {
-    let supportedModels = ["iPhone10,1", "iPhone10,4"]
-    let modelKey = "SIMULATOR_MODEL_IDENTIFIER"
-
-    guard supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
-      fatalError(message)
-    }
-  } else {
-    fatalError(message)
+  guard #available(iOS 12.0, *), supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
+    fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 12")
   }
 }
