@@ -32,8 +32,6 @@ internal class TestCase: FBSnapshotTestCase {
   override func setUp() {
     super.setUp()
 
-    preferredSimulatorCheck()
-
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
 
