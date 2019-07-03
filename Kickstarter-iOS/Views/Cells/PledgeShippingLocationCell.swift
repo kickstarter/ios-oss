@@ -11,7 +11,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   public weak var delegate: PledgeShippingLocationCellDelegate?
-  private let viewModel = PledgeShippingLocationCellViewModel()
+  private let viewModel: PledgeShippingLocationCellViewModelType = PledgeShippingLocationCellViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
@@ -99,32 +99,19 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.shippingLocationButton.rac.title = self.viewModel.location
-    self.amountLabel.rac.attributedText = self.viewModel.amount
-
-    self.viewModel.shippingIsLoading
-      .observeForUI()
-      .observeValues { [weak self] isLoading in
-        self?.animate(isLoading)
-      }
-
-    self.viewModel.outputs.selectedShippingRule
-      .observeForUI()
-      .observeValues { [weak self] rule in
-        guard let self = self else { return }
-        self.delegate?.pledgeShippingCell(self, didSelectShippingRule: rule)
-      }
+    self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
+    self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocation
   }
 
   // MARK: - Configuration
 
-  func configureWith(value: (project: Project, reward: Reward)) {
-    self.viewModel.inputs.configureWith(project: value.project, reward: value.reward)
+  func configureWith(value: (isLoading: Bool, project: Project, selectedShippingRule: ShippingRule?)) {
+    self.viewModel.inputs.configureWith(
+      isLoading: value.isLoading,
+      project: value.project,
+      selectedShippingRule: value.selectedShippingRule
+    )
   }
-
-  // MARK: - Public Functions
-
-  func animate(_: Bool) {}
 
   // MARK: - Actions
 
