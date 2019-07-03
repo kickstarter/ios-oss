@@ -21,6 +21,14 @@ internal class TestCase: FBSnapshotTestCase {
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
 
+  override var recordMode: Bool {
+    willSet(newValue) {
+      if newValue {
+        preferredSimulatorCheck()
+      }
+    }
+  }
+
   override func setUp() {
     super.setUp()
 
