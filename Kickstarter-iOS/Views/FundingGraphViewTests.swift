@@ -128,8 +128,8 @@ private let project = .template
 
 private func fundingStats(forProject project: Project, pledgeValues: [Int])
   -> [ProjectStatsEnvelope.FundingDateStats] {
-  return pledgeValues.enumerated().map { idx, pledged in
-    .template
+  return pledgeValues.enumerated().map { (idx: Int, pledged: Int) in
+    ProjectStatsEnvelope.FundingDateStats.template
       |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ pledged
       |> ProjectStatsEnvelope.FundingDateStats.lens.date
       .~ (project.dates.launchedAt + TimeInterval(idx * 60 * 60 * 24))
