@@ -133,7 +133,7 @@ internal protocol RootViewModelInputs {
   /// Call from the controller's `viewDidLoad` method.
   func viewDidLoad()
 
-  /// Call when voice over is enabled or disabled
+  /// Call when VoiceOver is enabled or disabled
   func voiceOverStatusDidChange()
 }
 
