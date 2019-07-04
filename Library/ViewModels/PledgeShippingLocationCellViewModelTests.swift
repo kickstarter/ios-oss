@@ -9,12 +9,14 @@ final class PledgeShippingLocationCellViewModelTests: TestCase {
 
   private let amountAttributedText = TestObserver<NSAttributedString, Never>()
   private let shippingLocation = TestObserver<String, Never>()
+  private let shippingLocationSelected = TestObserver<ShippingRule, Never>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.amountAttributedText.observe(self.amountAttributedText.observer)
     self.vm.outputs.shippingLocation.observe(self.shippingLocation.observer)
+    self.vm.outputs.shippingLocationSelected.observe(self.shippingLocationSelected.observer)
   }
 
   func testAmountAttributedText() {
@@ -41,5 +43,16 @@ final class PledgeShippingLocationCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(isLoading: false, project: .template, selectedShippingRule: .template)
     self.shippingLocation.assertValues(["Brooklyn, NY"])
+  }
+
+  func testShippingLocationSelected() {
+    self.vm.inputs.shippingLocationButtonTapped()
+    self.shippingLocationSelected.assertDidNotEmitValue()
+
+    let shippingRule = ShippingRule.template
+
+    self.vm.inputs.configureWith(isLoading: false, project: .template, selectedShippingRule: shippingRule)
+    self.vm.inputs.shippingLocationButtonTapped()
+    self.shippingLocationSelected.assertValues([shippingRule])
   }
 }

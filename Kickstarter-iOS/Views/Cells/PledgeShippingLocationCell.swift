@@ -101,6 +101,13 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocation
+
+    self.viewModel.outputs.shippingLocationSelected
+      .observeForUI()
+      .observeValues { [weak self] shippingRule in
+        guard let self = self else { return }
+        self.delegate?.pledgeShippingCell(self, didSelectShippingRule: shippingRule)
+      }
   }
 
   // MARK: - Configuration
@@ -115,7 +122,9 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Actions
 
-  @objc func shippingLocationButtonTapped(_: UIButton) {}
+  @objc func shippingLocationButtonTapped(_: UIButton) {
+    self.viewModel.inputs.shippingLocationButtonTapped()
+  }
 }
 
 // MARK: - Styles

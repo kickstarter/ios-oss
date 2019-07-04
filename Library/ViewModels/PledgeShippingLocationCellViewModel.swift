@@ -6,11 +6,13 @@ import ReactiveSwift
 
 public protocol PledgeShippingLocationCellViewModelInputs {
   func configureWith(isLoading: Bool, project: Project, selectedShippingRule: ShippingRule?)
+  func shippingLocationButtonTapped()
 }
 
 public protocol PledgeShippingLocationCellViewModelOutputs {
   var amountAttributedText: Signal<NSAttributedString, Never> { get }
   var shippingLocation: Signal<String, Never> { get }
+  var shippingLocationSelected: Signal<ShippingRule, Never> { get }
 }
 
 public protocol PledgeShippingLocationCellViewModelType {
@@ -32,6 +34,10 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
 
     self.shippingLocation = projectAndSelectedShippingRule
       .map { _, selectedShippingRule in selectedShippingRule.location.localizedName }
+
+    self.shippingLocationSelected = projectAndSelectedShippingRule
+      .map(second)
+      .takeWhen(self.shippingLocationButtonTappedProperty.signal)
   }
 
   private let configureWithDataProperty = MutableProperty<(Bool, Project, ShippingRule?)?>(nil)
@@ -39,8 +45,14 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
     self.configureWithDataProperty.value = (isLoading, project, selectedShippingRule)
   }
 
+  private let shippingLocationButtonTappedProperty = MutableProperty(())
+  public func shippingLocationButtonTapped() {
+    self.shippingLocationButtonTappedProperty.value = ()
+  }
+
   public let amountAttributedText: Signal<NSAttributedString, Never>
   public let shippingLocation: Signal<String, Never>
+  public let shippingLocationSelected: Signal<ShippingRule, Never>
 
   public var inputs: PledgeShippingLocationCellViewModelInputs { return self }
   public var outputs: PledgeShippingLocationCellViewModelOutputs { return self }
