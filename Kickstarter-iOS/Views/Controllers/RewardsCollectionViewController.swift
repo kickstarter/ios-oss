@@ -225,7 +225,7 @@ extension RewardsCollectionViewController {
     forItemAt _: IndexPath
   ) {
     if let rewardCell = cell as? RewardCell {
-      rewardCell.rewardCardView.delegate = self
+      rewardCell.delegate = self
     }
   }
 }
@@ -262,8 +262,8 @@ extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - RewardCellDelegate
 
-extension RewardsCollectionViewController: RewardCardViewDelegate {
-  func rewardCardView(_: RewardCardView, didTapWithRewardId rewardId: Int) {
+extension RewardsCollectionViewController: RewardCellDelegate {
+  func rewardCellDidTapPledgeButton(_ rewardCell: RewardCell, rewardId: Int) {
     self.viewModel.inputs.rewardSelected(with: rewardId)
   }
 }

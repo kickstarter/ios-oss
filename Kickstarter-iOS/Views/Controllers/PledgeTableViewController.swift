@@ -120,6 +120,10 @@ extension PledgeTableViewController: PledgeDescriptionCellDelegate {
   internal func pledgeDescriptionCellDidPresentTrustAndSafety(_: PledgeDescriptionCell) {
     self.presentHelpWebViewController(with: .trust)
   }
+
+  internal func pledgeDescriptionCellDidTapRewardThumbnail(_ cell: PledgeDescriptionCell) {
+    self.navigationController?.popViewController(animated: true)
+  }
 }
 
 extension PledgeTableViewController: PledgeSummaryCellDelegate {

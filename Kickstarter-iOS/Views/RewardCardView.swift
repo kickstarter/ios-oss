@@ -19,7 +19,6 @@ public final class RewardCardView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let containerView = UIView(frame: .zero)
   private let descriptionLabel = UILabel(frame: .zero)
   private let descriptionStackView = UIStackView(frame: .zero)
   private let descriptionTitleLabel = UILabel(frame: .zero)
@@ -27,12 +26,6 @@ public final class RewardCardView: UIView {
   private let includedItemsTitleLabel = UILabel(frame: .zero)
   private let minimumPriceConversionLabel = UILabel(frame: .zero)
   private let minimumPriceLabel = UILabel(frame: .zero)
-  private let pledgeButton: MultiLineButton = {
-    MultiLineButton(type: .custom)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private let pledgeButtonLayoutGuide = UILayoutGuide()
   private let priceStackView = UIStackView(frame: .zero)
   private let rewardTitleLabel = UILabel(frame: .zero)
 
@@ -51,12 +44,6 @@ public final class RewardCardView: UIView {
 
   public override func bindStyles() {
     super.bindStyles()
-
-    _ = self.pledgeButton
-      |> checkoutGreenButtonStyle
-
-    _ = self.pledgeButton.titleLabel
-      ?|> checkoutGreenButtonTitleLabelStyle
 
     _ = [
       self.baseStackView,
@@ -121,8 +108,6 @@ public final class RewardCardView: UIView {
     self.minimumPriceLabel.rac.text = self.viewModel.outputs.rewardMinimumLabelText
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.rewardTitleLabelHidden
     self.rewardTitleLabel.rac.text = self.viewModel.outputs.rewardTitleLabelText
-    self.pledgeButton.rac.title = self.viewModel.outputs.pledgeButtonTitleText
-    self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
 
     self.viewModel.outputs.items
       .observeForUI()
@@ -139,7 +124,7 @@ public final class RewardCardView: UIView {
     self.viewModel.outputs.cardUserInteractionIsEnabled
       .observeForUI()
       .observeValues { [weak self] isUserInteractionEnabled in
-        _ = self?.containerView
+        _ = self
           ?|> \.isUserInteractionEnabled .~ isUserInteractionEnabled
       }
   }
@@ -147,20 +132,9 @@ public final class RewardCardView: UIView {
   // MARK: - Private Helpers
 
   private func configureViews() {
-    _ = (self.containerView, self)
+    _ = (self.baseStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
-
-    _ = self.containerView
-      |> checkoutWhiteBackgroundStyle
-      |> roundedStyle(cornerRadius: Styles.grid(3))
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
-
-    _ = (self.baseStackView, self.containerView)
-      |> ksr_addSubviewToParent()
-
-    _ = (self.pledgeButtonLayoutGuide, self.containerView)
-      |> ksr_addLayoutGuideToView()
 
     _ = ([
       self.priceStackView, self.rewardTitleLabel, self.includedItemsStackView,
@@ -177,60 +151,8 @@ public final class RewardCardView: UIView {
     _ = ([self.descriptionTitleLabel, self.descriptionLabel], self.descriptionStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.pledgeButton, self)
-      |> ksr_addSubviewToParent()
-
-    self.setupConstraints()
-
-    self.pledgeButton.addTarget(self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside)
-
     let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.rewardCardTapped))
-    self.containerView.addGestureRecognizer(tapGestureRecognizer)
-  }
-
-  private func setupConstraints() {
-    let containerConstraints = [
-      self.containerView.widthAnchor.constraint(equalTo: self.widthAnchor)
-    ]
-
-    let containerMargins = self.containerView.layoutMarginsGuide
-
-    let baseStackViewConstraints = [
-      self.baseStackView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-      self.baseStackView.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      self.baseStackView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
-    ]
-
-    let topConstraint = self.pledgeButton.topAnchor
-      .constraint(equalTo: self.pledgeButtonLayoutGuide.topAnchor)
-      |> \.priority .~ .defaultLow
-
-    let contentMargins = self.layoutMarginsGuide
-
-    let pledgeButtonConstraints = [
-      topConstraint,
-      self.pledgeButton.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
-      self.pledgeButton.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
-      self.pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: contentMargins.bottomAnchor),
-      self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-    ]
-
-    let pledgeButtonLayoutGuideConstraints = [
-      self.pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
-      self.pledgeButtonLayoutGuide.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-      self.pledgeButtonLayoutGuide.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      // swiftlint:disable:next line_length
-      self.pledgeButtonLayoutGuide.topAnchor.constraint(equalTo: self.baseStackView.bottomAnchor, constant: Styles.grid(3)),
-      self.pledgeButtonLayoutGuide.heightAnchor.constraint(equalTo: pledgeButton.heightAnchor)
-    ]
-
-    NSLayoutConstraint.activate([
-      containerConstraints,
-      baseStackViewConstraints,
-      pledgeButtonConstraints,
-      pledgeButtonLayoutGuideConstraints
-    ]
-    .flatMap { $0 })
+    self.addGestureRecognizer(tapGestureRecognizer)
   }
 
   fileprivate func load(items: [String]) {
@@ -268,10 +190,6 @@ public final class RewardCardView: UIView {
   }
 
   // MARK: - Selectors
-
-  @objc func pledgeButtonTapped() {
-    self.viewModel.inputs.pledgeButtonTapped()
-  }
 
   @objc func rewardCardTapped() {
     self.viewModel.inputs.rewardCardTapped()

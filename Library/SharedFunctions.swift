@@ -194,3 +194,28 @@ public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User
     .skipNil()
     .demoteErrors()
 }
+
+public func formattedAmountForRewardOrBacking(
+  project: Project,
+  rewardOrBacking: Either<Reward, Backing>
+  ) -> String {
+  switch rewardOrBacking {
+  case let .left(reward):
+    let min = minPledgeAmount(forProject: project, reward: reward)
+    return Format.currency(
+      min,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode
+    )
+  case let .right(backing):
+    let amount = backing.amount
+    let backingAmount = floor(amount) == backing.amount
+      ? String(Int(amount))
+      : String(format: "%.2f", backing.amount)
+    return Format.formattedCurrency(
+      backingAmount,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode
+    )
+  }
+}
