@@ -84,9 +84,7 @@ internal final class MessageBannerViewModelTests: TestCase {
   }
 
   func testHideBannerAutomatically_VoiceOverOff() {
-    let isVoiceOverRunning = { false }
-
-    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+    withEnvironment(isVoiceOverRunning: { false }) {
       self.vm.inputs.update(with: (.success, "Success"))
       self.vm.inputs.bannerViewWillShow(true)
 
@@ -101,9 +99,7 @@ internal final class MessageBannerViewModelTests: TestCase {
   }
 
   func testHideBannerAutomatically_VoiceOverOn() {
-    let isVoiceOverRunning = { true }
-
-    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+    withEnvironment(isVoiceOverRunning: { true }) {
       self.vm.inputs.update(with: (.success, "Success"))
       self.vm.inputs.bannerViewWillShow(true)
 

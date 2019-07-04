@@ -88,8 +88,7 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
   }
 
   func testAnimateIn_FocusOnFirstProject() {
-    let isVoiceOverRunning = { true }
-    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+    withEnvironment(isVoiceOverRunning: { true }) {
       self.vm.inputs.configureWith(data: data1)
       self.vm.inputs.viewDidLoad()
 

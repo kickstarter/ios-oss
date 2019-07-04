@@ -152,22 +152,18 @@ public func countdownProducer(to date: Date)
 }
 
 internal func is1PasswordButtonHidden(_ isHidden: Bool) -> Bool {
-  if AppEnvironment.current.isOSVersionAvailable(12.0) {
+  if AppEnvironment.current.is1PasswordSupported() {
     return true
   } else {
     return isHidden
   }
 }
 
-public func ksr_isOSVersionAvailable(_ version: Double) -> Bool {
-  switch version {
-  case 12.0...:
-    if #available(iOS 12.0, *) { return true }
-  default:
-    assertionFailure("OS version-check not supported")
+public func ksr_is1PasswordSupported() -> Bool {
+  if #available(iOS 12.0, *) {
+    return false
   }
-
-  return false
+  return true
 }
 
 public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]) -> ShippingRule? {
