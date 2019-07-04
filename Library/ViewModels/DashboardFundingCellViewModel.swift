@@ -29,7 +29,7 @@ public protocol DashboardFundingCellViewModelOutputs {
   /// Emits the backers count text to be displayed.
   var backersText: Signal<String, Never> { get }
 
-  /// Emits the relevant cell information to be spoken on voiceover.
+  /// Emits the relevant cell information to be spoken on VoiceOver.
   var cellAccessibilityValue: Signal<String, Never> { get }
 
   /// Emits the deadline date text (e.g. Jul 26) to be displayed.
