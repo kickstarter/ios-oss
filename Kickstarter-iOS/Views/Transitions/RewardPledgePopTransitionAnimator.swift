@@ -1,9 +1,7 @@
 import UIKit
 
 public class RewardPledgePopTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-  public func transitionDuration(
-    using _: UIViewControllerContextTransitioning?
-  ) -> TimeInterval {
+  public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
     return 0.3
   }
 

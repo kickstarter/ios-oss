@@ -3,9 +3,7 @@ import UIKit
 public protocol RewardPledgeTransitionAnimatorDelegate: AnyObject {}
 
 public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-  public func transitionDuration(
-    using _: UIViewControllerContextTransitioning?
-  ) -> TimeInterval {
+  public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
     return 0.3
   }
 
