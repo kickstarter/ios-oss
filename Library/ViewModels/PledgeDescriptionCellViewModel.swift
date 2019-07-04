@@ -5,11 +5,12 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeDescriptionCellViewModelInputs {
-  func configureWith(reward: Reward)
+  func configure(with data: (Project, Reward))
   func learnMoreTapped()
 }
 
 public protocol PledgeDescriptionCellViewModelOutputs {
+  var configureRewardCardViewWithData: Signal<(Project, Either<Reward, Backing>), Never> { get }
   var estimatedDeliveryText: Signal<String, Never> { get }
   var presentTrustAndSafety: Signal<Void, Never> { get }
 }
@@ -22,18 +23,22 @@ public protocol PledgeDescriptionCellViewModelType {
 public final class PledgeDescriptionCellViewModel: PledgeDescriptionCellViewModelType,
   PledgeDescriptionCellViewModelInputs, PledgeDescriptionCellViewModelOutputs {
   public init() {
-    self.estimatedDeliveryText = self.rewardProperty.signal
+    self.estimatedDeliveryText = self.configDataProperty.signal
       .skipNil()
+      .map(second)
       .map { $0.estimatedDeliveryOn }
       .skipNil()
       .map { Format.date(secondsInUTC: $0, template: DateFormatter.monthYear, timeZone: UTCTimeZone) }
 
     self.presentTrustAndSafety = self.learnMoreTappedProperty.signal
+    self.configureRewardCardViewWithData = self.configDataProperty.signal
+      .skipNil()
+      .map { project, reward in (project, .init(left: reward)) }
   }
 
-  private let rewardProperty = MutableProperty<Reward?>(nil)
-  public func configureWith(reward: Reward) {
-    self.rewardProperty.value = reward
+  private let configDataProperty = MutableProperty<(Project, Reward)?>(nil)
+  public func configure(with data: (Project, Reward)) {
+    self.configDataProperty.value = data
   }
 
   private let learnMoreTappedProperty = MutableProperty(())
@@ -41,6 +46,7 @@ public final class PledgeDescriptionCellViewModel: PledgeDescriptionCellViewMode
     self.learnMoreTappedProperty.value = ()
   }
 
+  public let configureRewardCardViewWithData: Signal<(Project, Either<Reward, Backing>), Never>
   public let estimatedDeliveryText: Signal<String, Never>
   public let presentTrustAndSafety: Signal<Void, Never>
 

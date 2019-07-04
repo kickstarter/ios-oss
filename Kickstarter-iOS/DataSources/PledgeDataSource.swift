@@ -17,7 +17,7 @@ final class PledgeDataSource: ValueCellDataSource {
     self.clearValues()
 
     self.appendRow(
-      value: data.reward,
+      value: (data.project, data.reward),
       cellClass: PledgeDescriptionCell.self,
       toSection: Section.project.rawValue
     )
@@ -63,7 +63,7 @@ final class PledgeDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as PledgeContinueCell, value as ()):
       cell.configureWith(value: value)
-    case let (cell as PledgeDescriptionCell, value as Reward):
+    case let (cell as PledgeDescriptionCell, value as (Project, Reward)):
       cell.configureWith(value: value)
     case let (cell as PledgeSummaryCell, value as PledgeSummaryCellData):
       cell.configureWith(value: value)

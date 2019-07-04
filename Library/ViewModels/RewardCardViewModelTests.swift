@@ -6,8 +6,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-final class RewardCellViewModelTests: TestCase {
-  fileprivate let vm: RewardCellViewModelType = RewardCellViewModel()
+final class RewardCardViewModelTests: TestCase {
+  fileprivate let vm: RewardCardViewModelType = RewardCardViewModel()
 
   private let cardUserInteractionIsEnabled = TestObserver<Bool, Never>()
   private let conversionLabelHidden = TestObserver<Bool, Never>()

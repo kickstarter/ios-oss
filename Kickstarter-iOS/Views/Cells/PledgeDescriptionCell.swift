@@ -4,13 +4,8 @@ import Prelude
 import UIKit
 
 private enum Layout {
-  enum ImageView {
-    static let width: CGFloat = 90
-    static let height: CGFloat = 120
-  }
-
-  enum SpacerView {
-    static let height: CGFloat = 10
+  enum Description {
+    static let spacing: CGFloat = 10
   }
 }
 
@@ -24,20 +19,19 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
   // MARK: - Properties
 
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var containerImageView: UIView = {
-    UIView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var pledgeImageView: UIImageView = {
-    UIImageView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
+  private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var descriptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var spacerView = UIView(frame: .zero)
   private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
+  private lazy var rewardCardView: RewardCardView = {
+    RewardCardView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var rewardCardContainerView: UIView = { UIView(frame: .zero) }()
+  private var rewardCardContainerViewHeightConstraint: NSLayoutConstraint?
+  private var rewardCardContainerViewWidthConstraint: NSLayoutConstraint?
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var spacerView = UIView(frame: .zero)
 
   // MARK: - Lifecycle
 
@@ -64,9 +58,6 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     _ = self.rootStackView
       |> rootStackViewStyle
 
-    _ = self.pledgeImageView
-      |> \.backgroundColor .~ UIColor.orange
-
     _ = self.descriptionStackView
       |> descriptionStackViewStyle
 
@@ -85,6 +76,15 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     _ = self.learnMoreTextView
       |> learnMoreTextViewStyle
+
+    _ = self.rewardCardContainerView
+      |> rewardCardContainerViewStyle
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    self.sizeAndTransformRewardCardView()
   }
 
   private func configureSubviews() {
@@ -92,29 +92,36 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.containerImageView], self.rootStackView)
+    _ = ([self.rewardCardContainerView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.pledgeImageView, self.containerImageView)
+    _ = (self.rewardCardView, self.rewardCardContainerView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
 
-    self.configureStackView()
+    self.rewardCardContainerViewWidthConstraint = self.rewardCardContainerView.widthAnchor
+      .constraint(equalToConstant: 0)
+    self.rewardCardContainerViewHeightConstraint = self.rewardCardContainerView.heightAnchor
+      .constraint(equalToConstant: 0)
+
+    self.rewardCardContainerViewHeightConstraint?.priority = .defaultLow
+
+    let rewardConstainerConstraints = [
+      self.rewardCardContainerViewWidthConstraint,
+      self.rewardCardContainerViewHeightConstraint
+    ]
+    .compact()
 
     NSLayoutConstraint.activate([
-      self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
-      self.containerImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
-      self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
-    ])
+      self.rewardCardView.widthAnchor.constraint(equalToConstant: RewardCardView.cardWidth),
+      self.rewardCardView.leftAnchor.constraint(equalTo: self.rewardCardContainerView.leftAnchor),
+      self.rewardCardView.topAnchor.constraint(equalTo: self.rewardCardContainerView.topAnchor)
+    ] + rewardConstainerConstraints)
+
+    self.configureStackView()
   }
 
   private func configureStackView() {
-    NSLayoutConstraint.activate([
-      self.spacerView.heightAnchor.constraint(equalToConstant: Layout.SpacerView.height)
-    ])
-
     let views = [
-      self.spacerView,
       self.estimatedDeliveryLabel,
       self.dateLabel,
       self.learnMoreTextView
@@ -123,10 +130,27 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     _ = (views, self.descriptionStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.descriptionStackView.setCustomSpacing(10.0, after: self.dateLabel)
-
     _ = ([self.descriptionStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  private func sizeAndTransformRewardCardView() {
+    self.rewardCardView.layoutIfNeeded()
+
+    let (actualSize, thumbnailSize) = rewardCardViewSizes(with: self.rewardCardView)
+
+    guard thumbnailSize.width > 0, thumbnailSize.height > 0 else { return }
+
+    self.rewardCardContainerViewWidthConstraint?.constant = thumbnailSize.width
+    self.rewardCardContainerViewHeightConstraint?.constant = thumbnailSize.height
+
+    self.rewardCardView.transform = transformFromRect(
+      from: CGRect(origin: .zero, size: actualSize),
+      toRect: CGRect(origin: .zero, size: thumbnailSize)
+    )
+
+    _ = self.rewardCardContainerView
+      |> roundedStyle(cornerRadius: Styles.grid(1))
   }
 
   // MARK: - Binding
@@ -139,15 +163,22 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.presentTrustAndSafety
       .observeForUI()
       .observeValues { [weak self] in
-        guard let _self = self else { return }
-        self?.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(_self)
+        guard let self = self else { return }
+        self.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(self)
+      }
+
+    self.viewModel.outputs.configureRewardCardViewWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        guard let self = self else { return }
+        self.rewardCardView.configure(with: data)
       }
   }
 
   // MARK: - Configuration
 
-  internal func configureWith(value: Reward) {
-    self.viewModel.inputs.configureWith(reward: value)
+  internal func configureWith(value: (project: Project, reward: Reward)) {
+    self.viewModel.inputs.configure(with: value)
   }
 }
 
@@ -182,6 +213,9 @@ private let descriptionStackViewStyle: StackViewStyle = { (stackView: UIStackVie
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.distribution .~ UIStackView.Distribution.fill
+    |> \.spacing .~ Layout.Description.spacing
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Layout.Description.spacing)
 }
 
 private let estimatedDeliveryLabelStyle: LabelStyle = { (label: UILabel) in
@@ -210,6 +244,11 @@ private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> 
   return textView
 }
 
+private let rewardCardContainerViewStyle: ViewStyle = { (view: UIView) -> UIView in
+  view
+    |> \.clipsToBounds .~ true
+}
+
 private func attributedLearnMoreText() -> NSAttributedString? {
   // swiftlint:disable line_length
   let string = localizedString(
@@ -223,4 +262,28 @@ private func attributedLearnMoreText() -> NSAttributedString? {
   // swiftlint:enable line_length
 
   return checkoutAttributedLink(with: string)
+}
+
+public func rewardCardViewSizes(with cardView: RewardCardView) -> (CGSize, CGSize) {
+  let cardViewSize = cardView.bounds.size
+  let width = cardViewSize.width
+  let height = cardViewSize.height
+
+  let minWidth = CGFloat(100)
+
+  // Max allowed width for the minified tile is 1/3 of the device width, minus padding
+  // Max allowed height for the minified tile is 120 points
+  let maxWidth = UIScreen.main.bounds.width / 3 - 2 * 20
+  let aspectRatio = height / width
+
+  let newWidth = min(maxWidth, max(width / 3, minWidth))
+  let newHeight = newWidth * aspectRatio
+
+  return (cardViewSize, .init(width: newWidth, height: newHeight))
+}
+
+func transformFromRect(from source: CGRect, toRect destination: CGRect) -> CGAffineTransform {
+  return CGAffineTransform.identity
+    .translatedBy(x: destination.midX - source.midX, y: destination.midY - source.midY)
+    .scaledBy(x: destination.width / source.width, y: destination.height / source.height)
 }

@@ -3,12 +3,6 @@ import KsApi
 import Library
 import Prelude
 
-private enum Layout {
-  enum Card {
-    static let width: CGFloat = 249
-  }
-}
-
 final class RewardsCollectionViewController: UICollectionViewController {
   // MARK: - Properties
 
@@ -194,7 +188,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     from layout: UICollectionViewFlowLayout,
     using collectionView: UICollectionView
   ) -> CGSize {
-    let cardWidth = Layout.Card.width
+    let cardWidth = RewardCardView.cardWidth
 
     let sectionInsets = layout.sectionInset
     let adjustedContentInset = collectionView.adjustedContentInset
@@ -231,7 +225,7 @@ extension RewardsCollectionViewController {
     forItemAt _: IndexPath
   ) {
     if let rewardCell = cell as? RewardCell {
-      rewardCell.delegate = self
+      rewardCell.rewardCardView.delegate = self
     }
   }
 }
@@ -268,8 +262,8 @@ extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - RewardCellDelegate
 
-extension RewardsCollectionViewController: RewardCellDelegate {
-  func rewardCellDidTapPledgeButton(_: RewardCell, rewardId: Int) {
+extension RewardsCollectionViewController: RewardCardViewDelegate {
+  func rewardCardView(_: RewardCardView, didTapWithRewardId rewardId: Int) {
     self.viewModel.inputs.rewardSelected(with: rewardId)
   }
 }
