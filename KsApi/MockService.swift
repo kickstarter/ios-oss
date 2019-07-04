@@ -97,7 +97,6 @@
     fileprivate let fetchProjectStatsError: ErrorEnvelope?
 
     fileprivate let fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>?
-    fileprivate let fetchShippingRulesError: ErrorEnvelope?
 
     fileprivate let fetchSurveyResponseResponse: SurveyResponse?
     fileprivate let fetchSurveyResponseError: ErrorEnvelope?
@@ -247,7 +246,6 @@
       fetchProjectStatsResponse: ProjectStatsEnvelope? = nil,
       fetchProjectStatsError: ErrorEnvelope? = nil,
       fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>? = nil,
-      fetchShippingRulesError: ErrorEnvelope? = nil,
       fetchUserProjectsBackedResponse: [Project]? = nil,
       fetchUserProjectsBackedError: ErrorEnvelope? = nil,
       fetchUserResponse: User? = nil,
@@ -412,7 +410,6 @@
       self.fetchProjectStatsError = fetchProjectStatsError
 
       self.fetchShippingRulesResult = fetchShippingRulesResult
-      self.fetchShippingRulesError = fetchShippingRulesError
 
       self.fetchSurveyResponseResponse = fetchSurveyResponseResponse
       self.fetchSurveyResponseError = fetchSurveyResponseError
@@ -995,7 +992,7 @@
 
     internal func fetchRewardShippingRules(projectId _: Int, rewardId _: Int)
       -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope> {
-      if let error = self.fetchShippingRulesError {
+      if let error = self.fetchShippingRulesResult?.error {
         return SignalProducer(error: error)
       }
 
@@ -1436,7 +1433,6 @@
             fetchProjectStatsResponse: $1.fetchProjectStatsResponse,
             fetchProjectStatsError: $1.fetchProjectStatsError,
             fetchShippingRulesResult: $1.fetchShippingRulesResult,
-            fetchShippingRulesError: $1.fetchShippingRulesError,
             fetchUserProjectsBackedResponse: $1.fetchUserProjectsBackedResponse,
             fetchUserProjectsBackedError: $1.fetchUserProjectsBackedError,
             fetchUserResponse: $1.fetchUserResponse,

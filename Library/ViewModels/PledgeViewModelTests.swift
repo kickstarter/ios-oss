@@ -427,7 +427,7 @@ final class PledgeViewModelTests: TestCase {
   func testShippingRulesError() {
     let error = ErrorEnvelope(errorMessages: [], ksrCode: nil, httpCode: 404, exception: nil)
 
-    withEnvironment(apiService: MockService(fetchShippingRulesError: error)) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(failure: error))) {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
