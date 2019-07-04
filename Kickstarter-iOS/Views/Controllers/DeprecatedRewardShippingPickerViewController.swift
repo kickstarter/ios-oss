@@ -3,21 +3,22 @@ import Library
 import Prelude
 import UIKit
 
-internal protocol RewardShippingPickerViewControllerDelegate: AnyObject {
+internal protocol DeprecatedRewardShippingPickerViewControllerDelegate: AnyObject {
   /// Called when the user has chosen a shipping rule, and the picker should be dismissed.
   func rewardShippingPickerViewController(
-    _ controller: RewardShippingPickerViewController,
+    _ controller: DeprecatedRewardShippingPickerViewController,
     choseShippingRule: ShippingRule
   )
 
   /// Called when the user wants to cancel the picker.
-  func rewardShippingPickerViewControllerCancelled(_ controller: RewardShippingPickerViewController)
+  func rewardShippingPickerViewControllerCancelled(_ controller: DeprecatedRewardShippingPickerViewController)
 }
 
-internal final class RewardShippingPickerViewController: UIViewController {
+internal final class DeprecatedRewardShippingPickerViewController: UIViewController {
   fileprivate var dataSource: [String] = []
-  internal weak var delegate: RewardShippingPickerViewControllerDelegate!
-  fileprivate let viewModel: RewardShippingPickerViewModelType = RewardShippingPickerViewModel()
+  internal weak var delegate: DeprecatedRewardShippingPickerViewControllerDelegate!
+  fileprivate let viewModel: DeprecatedRewardShippingPickerViewModelType
+    = DeprecatedRewardShippingPickerViewModel()
 
   @IBOutlet fileprivate var cancelButton: UIButton!
   @IBOutlet fileprivate var countryPickerView: UIPickerView!
@@ -30,10 +31,10 @@ internal final class RewardShippingPickerViewController: UIViewController {
     project: Project,
     shippingRules: [ShippingRule],
     selectedShippingRule: ShippingRule,
-    delegate: RewardShippingPickerViewControllerDelegate
+    delegate: DeprecatedRewardShippingPickerViewControllerDelegate
   )
-    -> RewardShippingPickerViewController {
-    let vc = Storyboard.RewardPledge.instantiate(RewardShippingPickerViewController.self)
+    -> DeprecatedRewardShippingPickerViewController {
+    let vc = Storyboard.RewardPledge.instantiate(DeprecatedRewardShippingPickerViewController.self)
     vc.viewModel.inputs.configureWith(
       project: project,
       shippingRules: shippingRules,
@@ -129,7 +130,7 @@ internal final class RewardShippingPickerViewController: UIViewController {
   }
 }
 
-extension RewardShippingPickerViewController: UIPickerViewDataSource {
+extension DeprecatedRewardShippingPickerViewController: UIPickerViewDataSource {
   internal func numberOfComponents(in _: UIPickerView) -> Int {
     return 1
   }
@@ -139,7 +140,7 @@ extension RewardShippingPickerViewController: UIPickerViewDataSource {
   }
 }
 
-extension RewardShippingPickerViewController: UIPickerViewDelegate {
+extension DeprecatedRewardShippingPickerViewController: UIPickerViewDelegate {
   internal func pickerView(
     _: UIPickerView,
     titleForRow row: Int,
