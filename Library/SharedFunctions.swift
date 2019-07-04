@@ -198,7 +198,7 @@ public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User
 public func formattedAmountForRewardOrBacking(
   project: Project,
   rewardOrBacking: Either<Reward, Backing>
-  ) -> String {
+) -> String {
   switch rewardOrBacking {
   case let .left(reward):
     let min = minPledgeAmount(forProject: project, reward: reward)

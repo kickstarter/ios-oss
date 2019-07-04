@@ -25,6 +25,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     RewardCardView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let scrollView = UIScrollView(frame: .zero)
 
   override init(frame: CGRect) {
@@ -72,17 +73,17 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     let containerMargins = self.containerView.layoutMarginsGuide
 
-      let rewardCardViewConstraints = [
-        self.rewardCardView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
-        self.rewardCardView.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-        self.rewardCardView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
-      ]
+    let rewardCardViewConstraints = [
+      self.rewardCardView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+      self.rewardCardView.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+      self.rewardCardView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
+    ]
 
     let topConstraint = self.pledgeButton.topAnchor
       .constraint(equalTo: self.pledgeButtonLayoutGuide.topAnchor)
       |> \.priority .~ .defaultLow
 
-    let contentMargins = self.layoutMarginsGuide
+    let contentMargins = self.contentView.layoutMarginsGuide
 
     let pledgeButtonConstraints = [
       topConstraint,
@@ -143,7 +144,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
         guard let self = self else { return }
 
         self.delegate?.rewardCellDidTapPledgeButton(self, rewardId: rewardId)
-    }
+      }
   }
 
   internal func configureWith(value: (project: Project, reward: Either<Reward, Backing>)) {
@@ -159,7 +160,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 }
 
 extension RewardCell: RewardCardViewDelegate {
-  func rewardCardView(_ rewardCardView: RewardCardView, didTapWithRewardId rewardId: Int) {
+  func rewardCardView(_: RewardCardView, didTapWithRewardId rewardId: Int) {
     self.delegate?.rewardCellDidTapPledgeButton(self, rewardId: rewardId)
   }
 }

@@ -190,7 +190,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   }
 }
 
-// MARK : - UITextViewDelegate
+// MARK: - UITextViewDelegate
 
 extension PledgeDescriptionCell: UITextViewDelegate {
   func textView(
@@ -212,7 +212,7 @@ extension PledgeDescriptionCell: UITextViewDelegate {
 // MARK: - RewardCardViewDelegate
 
 extension PledgeDescriptionCell: RewardCardViewDelegate {
-  func rewardCardView(_ rewardCardView: RewardCardView, didTapWithRewardId rewardId: Int) {
+  func rewardCardView(_: RewardCardView, didTapWithRewardId _: Int) {
     self.delegate?.pledgeDescriptionCellDidTapRewardThumbnail(self)
   }
 }

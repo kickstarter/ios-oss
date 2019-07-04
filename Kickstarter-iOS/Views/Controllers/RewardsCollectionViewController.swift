@@ -263,7 +263,7 @@ extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - RewardCellDelegate
 
 extension RewardsCollectionViewController: RewardCellDelegate {
-  func rewardCellDidTapPledgeButton(_ rewardCell: RewardCell, rewardId: Int) {
+  func rewardCellDidTapPledgeButton(_: RewardCell, rewardId: Int) {
     self.viewModel.inputs.rewardSelected(with: rewardId)
   }
 }

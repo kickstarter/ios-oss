@@ -19,7 +19,7 @@ public protocol RewardCellViewModelType {
 }
 
 public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewModelInputs,
-RewardCellViewModelOutputs {
+  RewardCellViewModelOutputs {
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
       self.projectAndRewardOrBackingProperty.signal.skipNil()
@@ -30,7 +30,7 @@ RewardCellViewModelOutputs {
           ?? rewardOrBacking.right?.reward
           ?? backingReward(fromProject: project)
           ?? Reward.noReward
-    }
+      }
 
     let rewardAvailable = reward
       .map { $0.remaining == 0 }.negate()
