@@ -186,7 +186,7 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
   ) {
     let rewardsViewController = RewardsCollectionViewController.instantiate(with: project, refTag: refTag)
 
-    let navigationController = UINavigationController(rootViewController: rewardsViewController)
+    let navigationController = CheckoutNavigationController(rootViewController: rewardsViewController)
       |> \.modalPresentationStyle .~ .formSheet
 
     self.present(navigationController, animated: true)

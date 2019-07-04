@@ -35,3 +35,7 @@ final class PledgeViewController: UIViewController {
     }
   }
 }
+
+// MARK: - RewardPledgeTransitionAnimatorDelegate
+
+extension PledgeViewController: RewardPledgeTransitionAnimatorDelegate {}
