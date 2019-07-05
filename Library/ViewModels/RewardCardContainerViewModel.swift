@@ -18,8 +18,8 @@ public protocol RewardCardContainerViewModelType {
   var outputs: RewardCardContainerViewModelOutputs { get }
 }
 
-public final class RewardCardContainerViewModel: RewardCardContainerViewModelType, RewardCardContainerViewModelInputs,
-  RewardCardContainerViewModelOutputs {
+public final class RewardCardContainerViewModel: RewardCardContainerViewModelType,
+  RewardCardContainerViewModelInputs, RewardCardContainerViewModelOutputs {
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
       self.projectAndRewardOrBackingProperty.signal.skipNil()
