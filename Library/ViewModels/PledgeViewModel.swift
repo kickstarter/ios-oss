@@ -99,12 +99,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)
 
-    // swiftlint:disable line_length
-    let data = Signal.combineLatest(project, reward, isLoggedIn, isShippingLoading, selectedShippingRule, pledgeTotal)
-      .map { project, reward, isLoggedIn, isShippingLoading, selectedShippingRule, pledgeTotal -> PledgeViewData in
-        (project, reward, isLoggedIn, (reward.shipping.enabled, isShippingLoading, selectedShippingRule), pledgeTotal)
-      }
-    // swiftlint:enable line_length
+    let data = Signal
+      .combineLatest(project, reward, isLoggedIn, isShippingLoading, selectedShippingRule, pledgeTotal)
+      .map(pledgeViewData(with:reward:isLoggedIn:isShippingLoading:selectedShippingRule:pledgeTotal:))
 
     self.pledgeViewDataAndReload = Signal.merge(
       data.take(first: 1).map { data in (data, true) },
@@ -160,4 +157,35 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
+}
+
+// MARK: - Functions
+
+private func pledgeViewData(
+  with project: Project,
+  reward: Reward,
+  isLoggedIn: Bool,
+  isShippingLoading: Bool,
+  selectedShippingRule: ShippingRule?,
+  pledgeTotal: Double
+) -> PledgeViewData {
+  return (
+    project,
+    reward,
+    isLoggedIn,
+    pledgeViewShippingRulesData(
+      with: reward.shipping.enabled,
+      isShippingLoading: isShippingLoading,
+      selectedShippingRule: selectedShippingRule
+    ),
+    pledgeTotal
+  )
+}
+
+private func pledgeViewShippingRulesData(
+  with isShippingEnabled: Bool,
+  isShippingLoading: Bool,
+  selectedShippingRule: ShippingRule?
+) -> PledgeViewShippingRulesData {
+  return (isShippingEnabled, isShippingLoading, selectedShippingRule)
 }
