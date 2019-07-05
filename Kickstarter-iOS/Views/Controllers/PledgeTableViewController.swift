@@ -3,6 +3,12 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum Sheet {
+    static let offset: CGFloat = 200
+  }
+}
+
 class PledgeTableViewController: UITableViewController {
   // MARK: - Properties
 
@@ -136,7 +142,7 @@ class PledgeTableViewController: UITableViewController {
     let vc = UIViewController()
     vc.view.backgroundColor = UIColor.cyan
     let nc = UINavigationController(rootViewController: vc)
-    let sheetVC = SheetOverlayViewController(child: nc, offset: self.view.frame.height / 4)
+    let sheetVC = SheetOverlayViewController(child: nc, offset: Layout.Sheet.offset)
     self.present(sheetVC, animated: true)
   }
 }
