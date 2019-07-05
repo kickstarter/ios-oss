@@ -2,7 +2,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol RewardShippingPickerViewModelInputs {
+public protocol DeprecatedRewardShippingPickerViewModelInputs {
   /// Call when the cancel button is tapped.
   func cancelButtonTapped()
 
@@ -26,7 +26,7 @@ public protocol RewardShippingPickerViewModelInputs {
   func viewWillAppear()
 }
 
-public protocol RewardShippingPickerViewModelOutputs {
+public protocol DeprecatedRewardShippingPickerViewModelOutputs {
   /// Emits an array of strings to be used as the picker's data source.
   var dataSource: Signal<[String], Never> { get }
 
@@ -43,13 +43,13 @@ public protocol RewardShippingPickerViewModelOutputs {
   var selectRow: Signal<Int, Never> { get }
 }
 
-public protocol RewardShippingPickerViewModelType {
-  var inputs: RewardShippingPickerViewModelInputs { get }
-  var outputs: RewardShippingPickerViewModelOutputs { get }
+public protocol DeprecatedRewardShippingPickerViewModelType {
+  var inputs: DeprecatedRewardShippingPickerViewModelInputs { get }
+  var outputs: DeprecatedRewardShippingPickerViewModelOutputs { get }
 }
 
-public final class RewardShippingPickerViewModel: RewardShippingPickerViewModelType,
-  RewardShippingPickerViewModelInputs, RewardShippingPickerViewModelOutputs {
+public final class DeprecatedRewardShippingPickerViewModel: DeprecatedRewardShippingPickerViewModelType,
+  DeprecatedRewardShippingPickerViewModelInputs, DeprecatedRewardShippingPickerViewModelOutputs {
   public init() {
     let projectAndShippingRulesAndSelectedShippingRule = Signal.combineLatest(
       self.projectAndShippingRulesAndSelectedShippingRuleProperty.signal.skipNil(),
@@ -138,8 +138,8 @@ public final class RewardShippingPickerViewModel: RewardShippingPickerViewModelT
   public let notifyDelegateToCancel: Signal<(), Never>
   public let selectRow: Signal<Int, Never>
 
-  public var inputs: RewardShippingPickerViewModelInputs { return self }
-  public var outputs: RewardShippingPickerViewModelOutputs { return self }
+  public var inputs: DeprecatedRewardShippingPickerViewModelInputs { return self }
+  public var outputs: DeprecatedRewardShippingPickerViewModelOutputs { return self }
 }
 
 private func shippingRuleTitles(forProject project: Project, shippingRules: [ShippingRule]) -> [String] {

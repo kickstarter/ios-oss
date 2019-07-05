@@ -25,8 +25,8 @@ private let shippingRules = locations
 private let sortedShippingRules = shippingRules
   .sorted { lhs, rhs in lhs.location.displayableName < rhs.location.displayableName }
 
-internal final class RewardShippingPickerViewModelTests: TestCase {
-  fileprivate let vm: RewardShippingPickerViewModelType = RewardShippingPickerViewModel()
+internal final class DeprecatedRewardShippingPickerViewModelTests: TestCase {
+  fileprivate let vm: DeprecatedRewardShippingPickerViewModelType = DeprecatedRewardShippingPickerViewModel()
 
   fileprivate let dataSource = TestObserver<[String], Never>()
   fileprivate let doneButtonAccessibilityHint = TestObserver<String, Never>()
