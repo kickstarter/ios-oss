@@ -11,7 +11,7 @@ public protocol PledgeShippingLocationCellViewModelInputs {
 
 public protocol PledgeShippingLocationCellViewModelOutputs {
   var amountAttributedText: Signal<NSAttributedString, Never> { get }
-  var shippingLocation: Signal<String, Never> { get }
+  var shippingLocationButtonTitle: Signal<String, Never> { get }
   var shippingLocationSelected: Signal<ShippingRule, Never> { get }
 }
 
@@ -24,15 +24,15 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
   PledgeShippingLocationCellViewModelInputs, PledgeShippingLocationCellViewModelOutputs {
   public init() {
     let projectAndSelectedShippingRule = Signal.combineLatest(
-      self.configureWithDataProperty.signal.skipNil().map(second),
-      self.configureWithDataProperty.signal.skipNil().map(third).skipNil()
+      self.configDataProperty.signal.skipNil().map(second),
+      self.configDataProperty.signal.skipNil().map(third).skipNil()
     )
 
     self.amountAttributedText = projectAndSelectedShippingRule
       .map { project, selectedShippingRule in shippingValue(of: project, with: selectedShippingRule.cost) }
       .skipNil()
 
-    self.shippingLocation = projectAndSelectedShippingRule
+    self.shippingLocationButtonTitle = projectAndSelectedShippingRule
       .map { _, selectedShippingRule in selectedShippingRule.location.localizedName }
 
     self.shippingLocationSelected = projectAndSelectedShippingRule
@@ -40,9 +40,9 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
       .takeWhen(self.shippingLocationButtonTappedProperty.signal)
   }
 
-  private let configureWithDataProperty = MutableProperty<(Bool, Project, ShippingRule?)?>(nil)
+  private let configDataProperty = MutableProperty<(Bool, Project, ShippingRule?)?>(nil)
   public func configureWith(isLoading: Bool, project: Project, selectedShippingRule: ShippingRule?) {
-    self.configureWithDataProperty.value = (isLoading, project, selectedShippingRule)
+    self.configDataProperty.value = (isLoading, project, selectedShippingRule)
   }
 
   private let shippingLocationButtonTappedProperty = MutableProperty(())
@@ -51,7 +51,7 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
   }
 
   public let amountAttributedText: Signal<NSAttributedString, Never>
-  public let shippingLocation: Signal<String, Never>
+  public let shippingLocationButtonTitle: Signal<String, Never>
   public let shippingLocationSelected: Signal<ShippingRule, Never>
 
   public var inputs: PledgeShippingLocationCellViewModelInputs { return self }

@@ -100,7 +100,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
-    self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocation
+    self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
 
     self.viewModel.outputs.shippingLocationSelected
       .observeForUI()

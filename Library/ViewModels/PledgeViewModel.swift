@@ -27,6 +27,12 @@ public protocol PledgeViewModelInputs {
 public protocol PledgeViewModelOutputs {
   var configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never> { get }
   var configureSummaryCellWithData: Signal<(Project, Double), Never> { get }
+
+  /// Emits the initial data for this view model along with a `Bool` indicating whether the table view should
+  /// be reloaded (currently only the first time but probably during login as well). Every time any of the
+  /// combined data of `PledgeViewData` changes, this signal will emit all of its data in order to ensure that
+  /// the data source has the current state of the data that the cells have. This ensures that if a cell is
+  /// recycled it will be reloaded with its most recent data.
   var pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never> { get }
   var presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
@@ -98,12 +104,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)
 
-    // swiftlint:disable line_length
-    let data = Signal.combineLatest(project, reward, isLoggedIn, isShippingLoading, defaultShippingRule, pledgeTotal)
-      .map { project, reward, isLoggedIn, isShippingLoading, selectedShippingRule, pledgeTotal -> PledgeViewData in
-        (project, reward, isLoggedIn, (reward.shipping.enabled, isShippingLoading, selectedShippingRule), pledgeTotal)
-      }
-    // swiftlint:enable line_length
+    let data = Signal
+      .combineLatest(project, reward, isLoggedIn, isShippingLoading, defaultShippingRule, pledgeTotal)
+      .map(pledgeViewData(with:reward:isLoggedIn:isShippingLoading:selectedShippingRule:pledgeTotal:))
 
     self.pledgeViewDataAndReload = Signal.merge(
       data.take(first: 1).map { data in (data, true) },
@@ -159,4 +162,35 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
+}
+
+// MARK: - Functions
+
+private func pledgeViewData(
+  with project: Project,
+  reward: Reward,
+  isLoggedIn: Bool,
+  isShippingLoading: Bool,
+  selectedShippingRule: ShippingRule?,
+  pledgeTotal: Double
+) -> PledgeViewData {
+  return (
+    project,
+    reward,
+    isLoggedIn,
+    pledgeViewShippingRulesData(
+      with: reward.shipping.enabled,
+      isShippingLoading: isShippingLoading,
+      selectedShippingRule: selectedShippingRule
+    ),
+    pledgeTotal
+  )
+}
+
+private func pledgeViewShippingRulesData(
+  with isShippingEnabled: Bool,
+  isShippingLoading: Bool,
+  selectedShippingRule: ShippingRule?
+) -> PledgeViewShippingRulesData {
+  return (isShippingEnabled, isShippingLoading, selectedShippingRule)
 }
