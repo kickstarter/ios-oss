@@ -28,11 +28,13 @@ public protocol PledgeViewModelOutputs {
   var configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never> { get }
   var configureSummaryCellWithData: Signal<(Project, Double), Never> { get }
 
-  /// Emits the initial data for this view model along with a `Bool` indicating whether the table view should
-  /// be reloaded (currently only the first time but probably during login as well). Every time any of the
-  /// combined data of `PledgeViewData` changes, this signal will emit all of its data in order to ensure that
-  /// the data source has the current state of the data that the cells have. This ensures that if a cell is
-  /// recycled it will be reloaded with its most recent data.
+  /**
+   Emits the initial data for this view model along with a `Bool` indicating whether the table view should
+   be reloaded (currently only the first time but probably during login as well). Every time any of the
+   combined data of `PledgeViewData` changes, this signal will emit all of its data in order to ensure that
+   the data source has the current state of the data that the cells have. This ensures that if a cell is
+   recycled it will be reloaded with its most recent data.
+   */
   var pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never> { get }
   var presentShippingRules: Signal<[ShippingRule], Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
