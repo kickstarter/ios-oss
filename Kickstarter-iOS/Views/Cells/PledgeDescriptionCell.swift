@@ -156,9 +156,6 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       from: CGRect(origin: .zero, size: actualSize),
       toRect: CGRect(origin: .zero, size: thumbnailSize)
     )
-
-    _ = self.rewardCardContainerMaskView
-      |> roundedStyle(cornerRadius: Styles.grid(1))
   }
 
   // MARK: - Binding
@@ -269,7 +266,7 @@ private let rewardCardViewStyle: ViewStyle = { (view: UIView) -> UIView in
 
 private let rewardCardContainerMaskViewStyle: ViewStyle = { (view: UIView) -> UIView in
   view
-    |> \.clipsToBounds .~ true
+    |> roundedStyle(cornerRadius: Styles.grid(1))
 }
 
 private let rewardCardContainerViewStyle: ViewStyle = { (view: UIView) -> UIView in
