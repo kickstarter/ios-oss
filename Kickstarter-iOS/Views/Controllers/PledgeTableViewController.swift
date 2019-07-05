@@ -67,7 +67,16 @@ class PledgeTableViewController: UITableViewController {
         }
       }
 
-    self.viewModel.outputs.configureSummaryCellWithProjectAndPledgeTotal
+    self.viewModel.outputs.configureShippingLocationCellWithData
+      .observeForUI()
+      .observeValues { [weak self] isLoading, project, selectedShippingRule in
+        self?.shippingLocationCell?.configureWith(
+          value: (isLoading: isLoading, project: project, selectedShippingRule: selectedShippingRule)
+        )
+      }
+
+    self.viewModel.outputs.configureSummaryCellWithData
+      .observeForUI()
       .observeValues { [weak self] project, pledgeTotal in
         self?.pledgeSummaryCell?.configureWith(value: (project, pledgeTotal))
       }

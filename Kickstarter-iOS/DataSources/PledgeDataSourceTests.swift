@@ -12,7 +12,11 @@ final class PledgeDataSourceTests: XCTestCase {
 
   func testLoad_LoggedIn() {
     let data: PledgeViewData = (
-      project: .template, reward: .template, isLoggedIn: true, isShippingEnabled: false, pledgeTotal: 0.0
+      project: .template,
+      reward: .template,
+      isLoggedIn: true,
+      shipping: PledgeViewShippingRulesData(isEnabled: false, isLoading: false, selectedRule: .template),
+      pledgeTotal: 0.0
     )
     self.dataSource.load(data: data)
 
@@ -28,7 +32,11 @@ final class PledgeDataSourceTests: XCTestCase {
 
   func testLoad_Idempotent() {
     let data: PledgeViewData = (
-      project: .template, reward: .template, isLoggedIn: true, isShippingEnabled: false, pledgeTotal: 0.0
+      project: .template,
+      reward: .template,
+      isLoggedIn: true,
+      shipping: PledgeViewShippingRulesData(isEnabled: false, isLoading: false, selectedRule: .template),
+      pledgeTotal: 0.0
     )
     self.dataSource.load(data: data)
 
@@ -55,7 +63,11 @@ final class PledgeDataSourceTests: XCTestCase {
 
   func testLoad_LoggedOut() {
     let data: PledgeViewData = (
-      project: .template, reward: .template, isLoggedIn: false, isShippingEnabled: false, pledgeTotal: 0.0
+      project: .template,
+      reward: .template,
+      isLoggedIn: false,
+      shipping: PledgeViewShippingRulesData(isEnabled: false, isLoading: false, selectedRule: .template),
+      pledgeTotal: 0.0
     )
     self.dataSource.load(data: data)
 
@@ -70,13 +82,11 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoad_Shipping_Disabled() {
-    let reward = Reward.template
-
     let data: PledgeViewData = (
       project: .template,
-      reward: reward,
+      reward: .template,
       isLoggedIn: false,
-      isShippingEnabled: reward.shipping.enabled,
+      shipping: PledgeViewShippingRulesData(isEnabled: false, isLoading: false, selectedRule: nil),
       pledgeTotal: 0.0
     )
 
@@ -93,13 +103,11 @@ final class PledgeDataSourceTests: XCTestCase {
   }
 
   func testLoad_Shipping_Enabled() {
-    let shipping = Reward.Shipping.template |> Reward.Shipping.lens.enabled .~ true
-    let reward = Reward.template |> Reward.lens.shipping .~ shipping
     let data: PledgeViewData = (
       project: .template,
-      reward: reward,
+      reward: .template,
       isLoggedIn: false,
-      isShippingEnabled: reward.shipping.enabled,
+      shipping: PledgeViewShippingRulesData(isEnabled: true, isLoading: false, selectedRule: .template),
       pledgeTotal: 0.0
     )
 
