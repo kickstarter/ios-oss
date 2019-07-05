@@ -14,13 +14,13 @@ public protocol ActivityUpdateViewModelOutputs {
   /// Emits the update's body to be displayed.
   var body: Signal<String, Never> { get }
 
-  /// Emits the cell's accessibility label to be read by voiceover.
+  /// Emits the cell's accessibility label to be read by VoiceOver.
   var cellAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits when we should notify the delegate that the project image button was tapped.
   var notifyDelegateTappedProjectImage: Signal<Activity, Never> { get }
 
-  /// Emits the project button's accessibility label to be read by voiceover.
+  /// Emits the project button's accessibility label to be read by VoiceOver.
   var projectButtonAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits the project image URL to be displayed.
