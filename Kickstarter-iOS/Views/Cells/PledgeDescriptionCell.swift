@@ -273,7 +273,6 @@ private let rewardCardContainerViewStyle: ViewStyle = { (view: UIView) -> UIView
   view
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> checkoutWhiteBackgroundStyle
-    |> roundedStyle(cornerRadius: Styles.grid(3))
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
 }
 
