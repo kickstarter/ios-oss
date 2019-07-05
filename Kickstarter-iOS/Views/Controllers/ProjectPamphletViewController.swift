@@ -120,7 +120,7 @@ public final class ProjectPamphletViewController: UIViewController {
       |> \.shadowOpacity .~ 0.12
       |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
       |> \.shadowRadius .~ 1.0
-      |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+      |> \.maskedCorners .~ [CACornerMask.layerMaxXMinYCorner, CACornerMask.layerMinXMinYCorner]
   }
 
   public override func bindViewModel() {
