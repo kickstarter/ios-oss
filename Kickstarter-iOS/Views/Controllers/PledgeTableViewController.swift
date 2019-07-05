@@ -136,8 +136,8 @@ class PledgeTableViewController: UITableViewController {
     let vc = UIViewController()
     vc.view.backgroundColor = UIColor.cyan
     let nc = UINavigationController(rootViewController: vc)
-    let shieetVC = SheetOverlayViewController(child: nc, offset: self.view.frame.height / 4)
-    self.present(shieetVC, animated: true)
+    let sheetVC = SheetOverlayViewController(child: nc, offset: self.view.frame.height / 4)
+    self.present(sheetVC, animated: true)
   }
 }
 
