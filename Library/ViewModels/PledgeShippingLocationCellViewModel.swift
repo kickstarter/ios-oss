@@ -10,7 +10,7 @@ public protocol PledgeShippingLocationCellViewModelInputs {
 
 public protocol PledgeShippingLocationCellViewModelOutputs {
   var amountAttributedText: Signal<NSAttributedString, Never> { get }
-  var shippingLocation: Signal<String, Never> { get }
+  var shippingLocationButtonTitle: Signal<String, Never> { get }
 }
 
 public protocol PledgeShippingLocationCellViewModelType {
@@ -30,7 +30,7 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
       .map { project, selectedShippingRule in shippingValue(of: project, with: selectedShippingRule.cost) }
       .skipNil()
 
-    self.shippingLocation = projectAndSelectedShippingRule
+    self.shippingLocationButtonTitle = projectAndSelectedShippingRule
       .map { _, selectedShippingRule in selectedShippingRule.location.localizedName }
   }
 
@@ -40,7 +40,7 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
   }
 
   public let amountAttributedText: Signal<NSAttributedString, Never>
-  public let shippingLocation: Signal<String, Never>
+  public let shippingLocationButtonTitle: Signal<String, Never>
 
   public var inputs: PledgeShippingLocationCellViewModelInputs { return self }
   public var outputs: PledgeShippingLocationCellViewModelOutputs { return self }

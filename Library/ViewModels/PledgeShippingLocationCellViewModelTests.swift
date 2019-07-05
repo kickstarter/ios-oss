@@ -14,7 +14,7 @@ final class PledgeShippingLocationCellViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.amountAttributedText.observe(self.amountAttributedText.observer)
-    self.vm.outputs.shippingLocation.observe(self.shippingLocation.observer)
+    self.vm.outputs.shippingLocationButtonTitle.observe(self.shippingLocation.observer)
   }
 
   func testAmountAttributedText() {
