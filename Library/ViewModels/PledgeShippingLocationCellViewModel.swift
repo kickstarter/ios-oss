@@ -22,8 +22,8 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
   PledgeShippingLocationCellViewModelInputs, PledgeShippingLocationCellViewModelOutputs {
   public init() {
     let projectAndSelectedShippingRule = Signal.combineLatest(
-      self.configureWithDataProperty.signal.skipNil().map(second),
-      self.configureWithDataProperty.signal.skipNil().map(third).skipNil()
+      self.configDataProperty.signal.skipNil().map(second),
+      self.configDataProperty.signal.skipNil().map(third).skipNil()
     )
 
     self.amountAttributedText = projectAndSelectedShippingRule
@@ -34,9 +34,9 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
       .map { _, selectedShippingRule in selectedShippingRule.location.localizedName }
   }
 
-  private let configureWithDataProperty = MutableProperty<(Bool, Project, ShippingRule?)?>(nil)
+  private let configDataProperty = MutableProperty<(Bool, Project, ShippingRule?)?>(nil)
   public func configureWith(isLoading: Bool, project: Project, selectedShippingRule: ShippingRule?) {
-    self.configureWithDataProperty.value = (isLoading, project, selectedShippingRule)
+    self.configDataProperty.value = (isLoading, project, selectedShippingRule)
   }
 
   public let amountAttributedText: Signal<NSAttributedString, Never>
