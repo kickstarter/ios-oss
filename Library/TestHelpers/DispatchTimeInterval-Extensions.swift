@@ -14,6 +14,8 @@ extension DispatchTimeInterval {
         return .nanoseconds(Int(Float(interval) * scale))
       case .never:
         return .never
+      @unknown default:
+        fatalError()
       }
     #else
       switch self {
@@ -46,6 +48,8 @@ extension DispatchTimeInterval {
         return Int64(ns)
       case .never:
         return Int64(0)
+      @unknown default:
+        fatalError()
       }
     #else
       switch self {

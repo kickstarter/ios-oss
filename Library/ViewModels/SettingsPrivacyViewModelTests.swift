@@ -25,8 +25,7 @@ internal final class SettingsPrivacyViewModelTests: TestCase {
   }
 
   func testFocusScreenReaderOnFollowingCel() {
-    let isVoiceOverRunning = { true }
-    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+    withEnvironment(isVoiceOverRunning: { true }) {
       self.vm.inputs.didCancelSocialOptOut()
 
       self.scheduler.advance()

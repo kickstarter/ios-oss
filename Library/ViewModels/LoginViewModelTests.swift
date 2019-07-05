@@ -214,8 +214,7 @@ final class LoginViewModelTests: TestCase {
   }
 
   func testOnePasswordButtonHidesProperly_OnIOS11AndEarlier() {
-    let iOS12: (Double) -> Bool = { _ in false }
-    withEnvironment(isOSVersionAvailable: iOS12) {
+    withEnvironment(is1PasswordSupported: { false }) {
       self.vm.inputs.onePassword(isAvailable: true)
 
       self.onePasswordButtonIsHidden.assertValues([false])
@@ -227,8 +226,7 @@ final class LoginViewModelTests: TestCase {
   }
 
   func testOnePasswordButtonHidesProperly_OnIOS12AndLater() {
-    let iOS12: (Double) -> Bool = { _ in true }
-    withEnvironment(isOSVersionAvailable: iOS12) {
+    withEnvironment(is1PasswordSupported: { true }) {
       self.vm.inputs.onePassword(isAvailable: true)
 
       self.onePasswordButtonIsHidden.assertValues([true])
@@ -240,8 +238,7 @@ final class LoginViewModelTests: TestCase {
   }
 
   func testOnePasswordFlow() {
-    let iOS12: (Double) -> Bool = { _ in false }
-    withEnvironment(isOSVersionAvailable: iOS12) {
+    withEnvironment(is1PasswordSupported: { false }) {
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.onePassword(isAvailable: true)
 
