@@ -28,9 +28,9 @@ final class PledgeDataSource: ValueCellDataSource {
       toSection: Section.inputs.rawValue
     )
 
-    if data.isShippingEnabled {
+    if data.shipping.isEnabled {
       self.appendRow(
-        value: (data.project, data.reward),
+        value: (data.shipping.isLoading, data.project, data.shipping.selectedRule),
         cellClass: PledgeShippingLocationCell.self,
         toSection: Section.inputs.rawValue
       )
@@ -67,7 +67,7 @@ final class PledgeDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as PledgeSummaryCell, value as PledgeSummaryCellData):
       cell.configureWith(value: value)
-    case let (cell as PledgeShippingLocationCell, value as (Project, Reward)):
+    case let (cell as PledgeShippingLocationCell, value as (Bool, Project, ShippingRule?)):
       cell.configureWith(value: value)
     case let (cell as PledgeContinueCell, value as ()):
       cell.configureWith(value: value)
