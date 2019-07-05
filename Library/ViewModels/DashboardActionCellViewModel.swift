@@ -114,7 +114,7 @@ public final class DashboardActionCellViewModel: DashboardActionCellViewModelInp
     self.lastUpdatePublishedLabelHidden = project.map { !$0.memberData.permissions.contains(.post) }
     self.postUpdateButtonHidden = self.lastUpdatePublishedLabelHidden
 
-    self.messagesRowHidden = project.map { $0.creator != AppEnvironment.current.currentUser }
+    self.messagesRowHidden = project.map { $0.creator.id != AppEnvironment.current.currentUser?.id }
 
     self.activityRowHidden = project.map { !$0.memberData.permissions.contains(.viewPledges) }
   }
