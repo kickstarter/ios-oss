@@ -6,8 +6,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-final class RewardCellViewModelTests: TestCase {
-  fileprivate let vm: RewardCellViewModelType = RewardCellViewModel()
+final class RewardCardContainerViewModelTests: TestCase {
+  fileprivate let vm: RewardCardContainerViewModelType = RewardCardContainerViewModel()
 
   private let pledgeButtonEnabled = TestObserver<Bool, Never>()
   private let pledgeButtonTitleText = TestObserver<String, Never>()

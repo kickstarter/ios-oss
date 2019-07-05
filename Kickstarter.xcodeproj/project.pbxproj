@@ -833,8 +833,9 @@
 		D0198F3521793FCF0090A9EC /* GraphMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DFA9C215E758400620CED /* GraphMutation.swift */; };
 		D0198F3621793FCF0090A9EC /* Service+RequestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DFAD4215EB2AB00620CED /* Service+RequestHelpers.swift */; };
 		D01B438C22CD4F6B001CD7B0 /* RewardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01B438B22CD4F6B001CD7B0 /* RewardCardView.swift */; };
-		D01B439022CEAECE001CD7B0 /* RewardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01B438F22CEAECE001CD7B0 /* RewardCellViewModel.swift */; };
-		D01B439322CEAEF2001CD7B0 /* RewardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01B439122CEAEE6001CD7B0 /* RewardCellViewModelTests.swift */; };
+		D01B439022CEAECE001CD7B0 /* RewardCardContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01B438F22CEAECE001CD7B0 /* RewardCardContainerViewModel.swift */; };
+		D01B439322CEAEF2001CD7B0 /* RewardCardContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01B439122CEAEE6001CD7B0 /* RewardCardContainerViewModelTests.swift */; };
+		D01B439522CFF6ED001CD7B0 /* RewardCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01B439422CFF6ED001CD7B0 /* RewardCardContainerView.swift */; };
 		D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */; };
 		D0200A5721935F2D00F5CC27 /* GraphError+LocalizedDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0200A5221935EDF00F5CC27 /* GraphError+LocalizedDescription.swift */; };
 		D0237C1522BC2B640092C792 /* PledgeSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0237C1422BC2B640092C792 /* PledgeSummaryCell.swift */; };
@@ -2139,8 +2140,9 @@
 		D015882A1EEB2ED7006E7684 /* ServiceTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTypeTests.swift; sourceTree = "<group>"; };
 		D0158A511EEB3730006E7684 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = "Frameworks/native-secrets/ios/Secrets.swift"; sourceTree = "<group>"; };
 		D01B438B22CD4F6B001CD7B0 /* RewardCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCardView.swift; sourceTree = "<group>"; };
-		D01B438F22CEAECE001CD7B0 /* RewardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellViewModel.swift; sourceTree = "<group>"; };
-		D01B439122CEAEE6001CD7B0 /* RewardCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellViewModelTests.swift; sourceTree = "<group>"; };
+		D01B438F22CEAECE001CD7B0 /* RewardCardContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCardContainerViewModel.swift; sourceTree = "<group>"; };
+		D01B439122CEAEE6001CD7B0 /* RewardCardContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCardContainerViewModelTests.swift; sourceTree = "<group>"; };
+		D01B439422CFF6ED001CD7B0 /* RewardCardContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCardContainerView.swift; sourceTree = "<group>"; };
 		D0200A5221935EDF00F5CC27 /* GraphError+LocalizedDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GraphError+LocalizedDescription.swift"; sourceTree = "<group>"; };
 		D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBannerType.swift; sourceTree = "<group>"; };
 		D0237C1422BC2B640092C792 /* PledgeSummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeSummaryCell.swift; sourceTree = "<group>"; };
@@ -2647,6 +2649,7 @@
 				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
+				D01B439422CFF6ED001CD7B0 /* RewardCardContainerView.swift */,
 				D01B438B22CD4F6B001CD7B0 /* RewardCardView.swift */,
 				D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */,
 				37D671F6221E61B600B6D415 /* SettingsFooterView.swift */,
@@ -3406,8 +3409,8 @@
 				A7ED1F9B1E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift */,
 				77190060229836A9003DE830 /* RewardCardViewModel.swift */,
 				77D8DBCC22A82C5C00454120 /* RewardCardViewModelTests.swift */,
-				D01B438F22CEAECE001CD7B0 /* RewardCellViewModel.swift */,
-				D01B439122CEAEE6001CD7B0 /* RewardCellViewModelTests.swift */,
+				D01B438F22CEAECE001CD7B0 /* RewardCardContainerViewModel.swift */,
+				D01B439122CEAEE6001CD7B0 /* RewardCardContainerViewModelTests.swift */,
 				77EFBAE12268D44D00DA5C3C /* RewardsCollectionViewModel.swift */,
 				77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */,
 				D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */,
@@ -4457,7 +4460,7 @@
 				9D14FFC61D135C12005F4ABB /* ProjectActivityUpdateCellViewModel.swift in Sources */,
 				A7F441AF1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift in Sources */,
 				D04AAC34218BB70D00CF713E /* SettingsAccountPickerCellViewModel.swift in Sources */,
-				D01B439022CEAECE001CD7B0 /* RewardCellViewModel.swift in Sources */,
+				D01B439022CEAECE001CD7B0 /* RewardCardContainerViewModel.swift in Sources */,
 				80EAEF001D243A7A008C2353 /* BackingViewModel.swift in Sources */,
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
 				A7F441E51D005A9400FE6FC5 /* SearchViewModel.swift in Sources */,
@@ -4680,7 +4683,7 @@
 				A78355B91E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift in Sources */,
 				A7ED1FF01E831C5C00BFFA01 /* MessagesViewModelTests.swift in Sources */,
 				77B63DEA22A8712C00EDBBFC /* RewardCardViewModelTests.swift in Sources */,
-				D01B439322CEAEF2001CD7B0 /* RewardCellViewModelTests.swift in Sources */,
+				D01B439322CEAEF2001CD7B0 /* RewardCardContainerViewModelTests.swift in Sources */,
 				A7ED1FC21E831C5C00BFFA01 /* CommentCellViewModelTests.swift in Sources */,
 				A7ED1FC91E831C5C00BFFA01 /* ActivitiesViewModelTests.swift in Sources */,
 				A7ED1FD21E831C5C00BFFA01 /* LoginToutViewModelTests.swift in Sources */,
@@ -4874,6 +4877,7 @@
 				A749001F1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
 				59B0DFFE1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */,
 				D770DE75217E598C00B5319A /* AddNewCardViewController.swift in Sources */,
+				D01B439522CFF6ED001CD7B0 /* RewardCardContainerView.swift in Sources */,
 				778CCC5222822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift in Sources */,
 				D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */,
 				A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */,

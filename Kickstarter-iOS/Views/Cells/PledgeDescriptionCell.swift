@@ -27,8 +27,10 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var rewardCardContainerMaskView: UIView = { UIView(frame: .zero) }()
   private var rewardCardContainerMaskViewHeightConstraint: NSLayoutConstraint?
   private var rewardCardContainerMaskViewWidthConstraint: NSLayoutConstraint?
-  private lazy var rewardCardContainerView: UIView = { UIView(frame: .zero) }()
-  private lazy var rewardCardView: RewardCardView = { RewardCardView(frame: .zero) |> \.delegate .~ self }()
+  private lazy var rewardCardContainerView: RewardCardContainerView = {
+    RewardCardContainerView(frame: .zero)
+  }()
+
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var spacerView = UIView(frame: .zero)
 
@@ -97,10 +99,6 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     _ = ([self.rewardCardContainerMaskView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.rewardCardView, self.rewardCardContainerView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
-
     _ = (self.rewardCardContainerView, self.rewardCardContainerMaskView)
       |> ksr_addSubviewToParent()
 
@@ -118,7 +116,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     .compact()
 
     NSLayoutConstraint.activate([
-      self.rewardCardView.widthAnchor.constraint(equalToConstant: RewardCardView.cardWidth),
+      self.rewardCardContainerView.widthAnchor.constraint(equalToConstant: RewardCardView.cardWidth),
       self.rewardCardContainerView.leftAnchor.constraint(
         equalTo: self.rewardCardContainerMaskView.leftAnchor
       ),
@@ -176,7 +174,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] data in
         guard let self = self else { return }
-        self.rewardCardView.configure(with: data)
+        self.rewardCardContainerView.configure(with: data)
       }
   }
 
@@ -291,7 +289,7 @@ private func attributedLearnMoreText() -> NSAttributedString? {
   return checkoutAttributedLink(with: string)
 }
 
-public func rewardCardViewSizes(with cardContainerView: UIView) -> (CGSize, CGSize) {
+public func rewardCardViewSizes(with cardContainerView: RewardCardContainerView) -> (CGSize, CGSize) {
   let cardViewSize = cardContainerView.bounds.size
   let width = cardViewSize.width
   let height = cardViewSize.height

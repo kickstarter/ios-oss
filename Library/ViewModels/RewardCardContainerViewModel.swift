@@ -2,24 +2,24 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol RewardCellViewModelInputs {
+public protocol RewardCardContainerViewModelInputs {
   func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
   func pledgeButtonTapped()
 }
 
-public protocol RewardCellViewModelOutputs {
+public protocol RewardCardContainerViewModelOutputs {
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var pledgeButtonTitleText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
 }
 
-public protocol RewardCellViewModelType {
-  var inputs: RewardCellViewModelInputs { get }
-  var outputs: RewardCellViewModelOutputs { get }
+public protocol RewardCardContainerViewModelType {
+  var inputs: RewardCardContainerViewModelInputs { get }
+  var outputs: RewardCardContainerViewModelOutputs { get }
 }
 
-public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewModelInputs,
-  RewardCellViewModelOutputs {
+public final class RewardCardContainerViewModel: RewardCardContainerViewModelType, RewardCardContainerViewModelInputs,
+  RewardCardContainerViewModelOutputs {
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
       self.projectAndRewardOrBackingProperty.signal.skipNil()
@@ -59,8 +59,8 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
   public let pledgeButtonTitleText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
 
-  public var inputs: RewardCellViewModelInputs { return self }
-  public var outputs: RewardCellViewModelOutputs { return self }
+  public var inputs: RewardCardContainerViewModelInputs { return self }
+  public var outputs: RewardCardContainerViewModelOutputs { return self }
 }
 
 // MARK: - Private Helpers
