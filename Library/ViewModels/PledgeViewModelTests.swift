@@ -18,6 +18,8 @@ final class PledgeViewModelTests: TestCase {
   private let configureSummaryCellWithDataPledgeTotal = TestObserver<Double, Never>()
   private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
 
+  /// Given the noise of `pledgeViewDataAndReload` signal and its frequent emissions and also the fact that
+  /// what we really care about is the final emission from this signal, we mostly test its last value.
   private let pledgeViewDataAndReloadIsLoggedIn = TestObserver<Bool, Never>()
   private let pledgeViewDataAndReloadIsShippingEnabled = TestObserver<Bool, Never>()
   private let pledgeViewDataAndReloadIsShippingRulesLoading = TestObserver<Bool, Never>()
