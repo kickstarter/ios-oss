@@ -46,7 +46,7 @@ public final class RewardCardView: UIView {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ .white
+      |> checkoutWhiteBackgroundStyle
 
     _ = [
       self.baseStackView,
