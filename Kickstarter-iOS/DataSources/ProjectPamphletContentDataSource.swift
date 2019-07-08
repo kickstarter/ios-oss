@@ -27,7 +27,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       inSection: Section.subpages.rawValue
     )
 
-    if !self.featureNativeCheckoutEnabled() {
+    if !featureNativeCheckoutEnabled() {
       self.setRewardTitleArea(project: project)
     }
   }
@@ -48,14 +48,10 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       inSection: Section.subpages.rawValue
     )
 
-    if !self.featureNativeCheckoutEnabled() {
+    if !featureNativeCheckoutEnabled() {
       self.setRewardTitleArea(project: project)
       self.setRewards(project: project, visible)
     }
-  }
-
-  private func featureNativeCheckoutEnabled() -> Bool {
-    return AppEnvironment.current.config?.features[Feature.checkout.rawValue] == .some(true)
   }
 
   private func availableRewards(for project: Project) -> [(Project, Either<Reward, Backing>)] {

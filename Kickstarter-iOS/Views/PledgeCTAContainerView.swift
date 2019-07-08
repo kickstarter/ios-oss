@@ -104,8 +104,8 @@ final class PledgeCTAContainerView: UIView {
 
   // MARK: - Configuration
 
-  func configureWith(project: Project, user: User) {
-    self.vm.inputs.configureWith(project: project, user: user)
+  func configureWith(project: Project) {
+    self.vm.inputs.configureWith(project: project)
   }
 }
 

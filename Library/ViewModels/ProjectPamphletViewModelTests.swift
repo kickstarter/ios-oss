@@ -8,14 +8,15 @@ import XCTest
 final class ProjectPamphletViewModelTests: TestCase {
   fileprivate var vm: ProjectPamphletViewModelType!
 
-  fileprivate let configureChildViewControllersWithProject = TestObserver<Project, Never>()
-  fileprivate let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
-  fileprivate let goToRewardsProject = TestObserver<Project, Never>()
-  fileprivate let goToRewardsRefTag = TestObserver<RefTag?, Never>()
-  fileprivate let setNavigationBarHidden = TestObserver<Bool, Never>()
-  fileprivate let setNavigationBarAnimated = TestObserver<Bool, Never>()
-  fileprivate let setNeedsStatusBarAppearanceUpdate = TestObserver<(), Never>()
-  fileprivate let topLayoutConstraintConstant = TestObserver<CGFloat, Never>()
+  private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
+  private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
+  private let configurePledgeCTAView = TestObserver<Project, Never>()
+  private let goToRewardsProject = TestObserver<Project, Never>()
+  private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
+  private let setNavigationBarHidden = TestObserver<Bool, Never>()
+  private let setNavigationBarAnimated = TestObserver<Bool, Never>()
+  private let setNeedsStatusBarAppearanceUpdate = TestObserver<(), Never>()
+  private let topLayoutConstraintConstant = TestObserver<CGFloat, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -25,6 +26,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       .observe(self.configureChildViewControllersWithProject.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(second)
       .observe(self.configureChildViewControllersWithRefTag.observer)
+    self.vm.outputs.configurePledgeCTAView.observe(self.configurePledgeCTAView.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(first)
@@ -372,5 +374,33 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
     self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+  }
+
+  func testConfigurePledgeCTAView_featureEnabled() {
+    let config = Config.template |> \.features .~ [Feature.checkout.rawValue: true]
+    let project = Project.template
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.configurePledgeCTAView.assertValues([project])
+    }
+  }
+
+  func testConfigurePledgeCTAView_featureDisabled() {
+    let config = Config.template |> \.features .~ [Feature.checkout.rawValue: false]
+    let project = Project.template
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.configurePledgeCTAView.assertDidNotEmitValue()
+    }
   }
 }
