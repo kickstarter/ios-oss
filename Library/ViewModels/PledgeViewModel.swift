@@ -20,6 +20,7 @@ public typealias PledgeViewData = (
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func pledgeAmountDidUpdate(to amount: Double)
+  func presentShippingRules(with rule: ShippingRule)
   func shippingRuleDidUpdate(to rule: ShippingRule)
   func viewDidLoad()
 }
@@ -84,11 +85,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       shippingRulesEvent.values(),
       defaultShippingRule.skipNil()
     )
-    .takeWhen(self.shippingRuleSignal.signal)
+    .takeWhen(self.presentShippingRulesProperty.signal)
 
     let shippingAmount = Signal.merge(
       defaultShippingRule.skipNil().map { $0.cost },
-      self.shippingRuleSignal.map { $0.cost },
+      self.selectedShippingRuleSignal.map { $0.cost },
       projectAndReward.mapConst(0)
     )
 
@@ -146,7 +147,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.pledgeAmountObserver.send(value: amount)
   }
 
-  private let (shippingRuleSignal, shippingRuleObserver) = Signal<ShippingRule, Never>.pipe()
+  private let presentShippingRulesProperty = MutableProperty<(ShippingRule)?>(nil)
+  public func presentShippingRules(with rule: ShippingRule) {
+    self.presentShippingRulesProperty.value = rule
+  }
+
+  private let (selectedShippingRuleSignal, shippingRuleObserver) = Signal<ShippingRule, Never>.pipe()
   public func shippingRuleDidUpdate(to rule: ShippingRule) {
     self.shippingRuleObserver.send(value: rule)
   }

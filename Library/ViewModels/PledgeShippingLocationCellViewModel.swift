@@ -11,8 +11,8 @@ public protocol PledgeShippingLocationCellViewModelInputs {
 
 public protocol PledgeShippingLocationCellViewModelOutputs {
   var amountAttributedText: Signal<NSAttributedString, Never> { get }
+  var selectedShippingLocation: Signal<ShippingRule, Never> { get }
   var shippingLocationButtonTitle: Signal<String, Never> { get }
-  var shippingLocationSelected: Signal<ShippingRule, Never> { get }
 }
 
 public protocol PledgeShippingLocationCellViewModelType {
@@ -32,12 +32,12 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
       .map { project, selectedShippingRule in shippingValue(of: project, with: selectedShippingRule.cost) }
       .skipNil()
 
-    self.shippingLocationButtonTitle = projectAndSelectedShippingRule
-      .map { _, selectedShippingRule in selectedShippingRule.location.localizedName }
-
-    self.shippingLocationSelected = projectAndSelectedShippingRule
+    self.selectedShippingLocation = projectAndSelectedShippingRule
       .map(second)
       .takeWhen(self.shippingLocationButtonTappedProperty.signal)
+
+    self.shippingLocationButtonTitle = projectAndSelectedShippingRule
+      .map { _, selectedShippingRule in selectedShippingRule.location.localizedName }
   }
 
   private let configDataProperty = MutableProperty<(Bool, Project, ShippingRule?)?>(nil)
@@ -51,8 +51,8 @@ public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCe
   }
 
   public let amountAttributedText: Signal<NSAttributedString, Never>
+  public let selectedShippingLocation: Signal<ShippingRule, Never>
   public let shippingLocationButtonTitle: Signal<String, Never>
-  public let shippingLocationSelected: Signal<ShippingRule, Never>
 
   public var inputs: PledgeShippingLocationCellViewModelInputs { return self }
   public var outputs: PledgeShippingLocationCellViewModelOutputs { return self }

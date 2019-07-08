@@ -8,15 +8,15 @@ final class PledgeShippingLocationCellViewModelTests: TestCase {
   private let vm: PledgeShippingLocationCellViewModelType = PledgeShippingLocationCellViewModel()
 
   private let amountAttributedText = TestObserver<NSAttributedString, Never>()
+  private let selectedShippingLocation = TestObserver<ShippingRule, Never>()
   private let shippingLocationButtonTitle = TestObserver<String, Never>()
-  private let shippingLocationSelected = TestObserver<ShippingRule, Never>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.amountAttributedText.observe(self.amountAttributedText.observer)
+    self.vm.outputs.selectedShippingLocation.observe(self.selectedShippingLocation.observer)
     self.vm.outputs.shippingLocationButtonTitle.observe(self.shippingLocationButtonTitle.observer)
-    self.vm.outputs.shippingLocationSelected.observe(self.shippingLocationSelected.observer)
   }
 
   func testAmountAttributedText() {
@@ -37,22 +37,22 @@ final class PledgeShippingLocationCellViewModelTests: TestCase {
     self.amountAttributedText.assertValues([expectedAttributedString])
   }
 
+  func testSelectedShippingLocation() {
+    self.vm.inputs.shippingLocationButtonTapped()
+    self.selectedShippingLocation.assertDidNotEmitValue()
+
+    let shippingRule = ShippingRule.template
+
+    self.vm.inputs.configureWith(isLoading: false, project: .template, selectedShippingRule: shippingRule)
+    self.vm.inputs.shippingLocationButtonTapped()
+    self.selectedShippingLocation.assertValues([shippingRule])
+  }
+
   func testShippingLocationButtonTitle() {
     self.vm.inputs.configureWith(isLoading: false, project: .template, selectedShippingRule: nil)
     self.shippingLocationButtonTitle.assertDidNotEmitValue()
 
     self.vm.inputs.configureWith(isLoading: false, project: .template, selectedShippingRule: .template)
     self.shippingLocationButtonTitle.assertValues(["Brooklyn, NY"])
-  }
-
-  func testShippingLocationSelected() {
-    self.vm.inputs.shippingLocationButtonTapped()
-    self.shippingLocationSelected.assertDidNotEmitValue()
-
-    let shippingRule = ShippingRule.template
-
-    self.vm.inputs.configureWith(isLoading: false, project: .template, selectedShippingRule: shippingRule)
-    self.vm.inputs.shippingLocationButtonTapped()
-    self.shippingLocationSelected.assertValues([shippingRule])
   }
 }
