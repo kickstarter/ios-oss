@@ -128,9 +128,7 @@ final class CreatePasswordViewModelTests: TestCase {
   }
 
   func testValidationErrorsWithVoiceOverOn() {
-    let isVoiceOverRunning = { true }
-
-    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+    withEnvironment(isVoiceOverRunning: { true }) {
       self.vm.inputs.viewDidAppear()
       self.validationLabelIsHidden.assertValues([true])
       self.validationLabelText.assertValues([nil])
@@ -237,9 +235,7 @@ final class CreatePasswordViewModelTests: TestCase {
   }
 
   func testValidationErrorsWithVoiceOverOff() {
-    let isVoiceOverRunning = { false }
-
-    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+    withEnvironment(isVoiceOverRunning: { false }) {
       self.vm.inputs.viewDidAppear()
       self.validationLabelIsHidden.assertValues([true])
       self.validationLabelText.assertValues([nil])

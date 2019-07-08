@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -545,10 +545,10 @@
             </objects>
             <point key="canvasLocation" x="504" y="771"/>
         </scene>
-        <!--Reward Shipping Picker View Controller-->
+        <!--Deprecated Reward Shipping Picker View Controller-->
         <scene sceneID="QAh-DS-PXD">
             <objects>
-                <viewController storyboardIdentifier="RewardShippingPickerViewController" id="kRh-kG-SxG" customClass="RewardShippingPickerViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DeprecatedRewardShippingPickerViewController" id="kRh-kG-SxG" customClass="DeprecatedRewardShippingPickerViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pFj-YJ-iTM"/>
                         <viewControllerLayoutGuide type="bottom" id="2Al-EC-Bdb"/>

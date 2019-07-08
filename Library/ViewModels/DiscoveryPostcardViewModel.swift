@@ -45,10 +45,10 @@ public protocol DiscoveryPostcardViewModelOutputs {
   /// Emits a string to use for the backers subtitle label.
   var backersSubtitleLabelText: Signal<String, Never> { get }
 
-  /// Emits the cell label to be read aloud by voiceover.
+  /// Emits the cell label to be read aloud by VoiceOver.
   var cellAccessibilityLabel: Signal<String, Never> { get }
 
-  /// Emits the cell value to be read aloud by voiceover.
+  /// Emits the cell value to be read aloud by VoiceOver.
   var cellAccessibilityValue: Signal<String, Never> { get }
 
   /// Emits the text for the deadine subtitle label.
