@@ -160,7 +160,10 @@ extension PledgeTableViewController: PledgeAmountCellDelegate {
 }
 
 extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
-  func pledgeShippingCell(_: PledgeShippingLocationCell, didSelectShippingRule rule: ShippingRule) {
+  func pledgeShippingCellWillPresentShippingRules(
+    _: PledgeShippingLocationCell,
+    selectedShippingRule rule: ShippingRule
+  ) {
     self.viewModel.inputs.shippingRuleDidUpdate(to: rule)
   }
 }
