@@ -9,7 +9,7 @@ import XCTest
 
 // swiftlint:disable line_length
 final class PledgeViewModelTests: TestCase {
-  private var vm: PledgeViewModelType!
+  private let vm: PledgeViewModelType = PledgeViewModel()
 
   private let configureShippingLocationCellWithDataIsShippingRulesLoading = TestObserver<Bool, Never>()
   private let configureShippingLocationCellWithDataProject = TestObserver<Project, Never>()
@@ -19,13 +19,7 @@ final class PledgeViewModelTests: TestCase {
   private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
 
   private let goToLoginSignup = TestObserver<LoginIntent, Never>()
-  private let configureSummaryCellWithProject = TestObserver<Project, Never>()
-  private let configureSummaryCellWithPledgeTotal = TestObserver<Double, Never>()
-  private let project = TestObserver<Project, Never>()
-  private let reward = TestObserver<Reward, Never>()
-  private let isLoggedIn = TestObserver<Bool, Never>()
-  private let isShippingEnabled = TestObserver<Bool, Never>()
-  private let total = TestObserver<Double, Never>()
+
   /**
    Given the noise of `pledgeViewDataAndReload` signal and its frequent emissions and also the fact that
    what we really care about is the final emission from this signal, we mostly test its last value.
@@ -46,17 +40,6 @@ final class PledgeViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
-    self.vm.outputs.configureSummaryCellWithProjectAndPledgeTotal.map(first)
-      .observe(self.configureSummaryCellWithProject.observer)
-    self.vm.outputs.configureSummaryCellWithProjectAndPledgeTotal.map(second)
-      .observe(self.configureSummaryCellWithPledgeTotal.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(second).observe(self.reload.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.0 }.observe(self.project.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.1 }.observe(self.reward.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.2 }.observe(self.isLoggedIn.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.3 }.observe(self.isShippingEnabled.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.4 }.observe(self.total.observer)
-    self.vm = PledgeViewModel()
 
     self.vm.outputs.configureShippingLocationCellWithData.map { $0.0 }.observe(self.configureShippingLocationCellWithDataIsShippingRulesLoading.observer)
     self.vm.outputs.configureShippingLocationCellWithData.map { $0.1 }.observe(self.configureShippingLocationCellWithDataProject.observer)
@@ -136,12 +119,13 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward)
     self.vm.inputs.viewDidLoad()
 
-    self.project.assertValues([project])
-    self.reward.assertValues([reward])
-    self.isLoggedIn.assertValues([false])
-    self.isShippingEnabled.assertValues([false])
-    self.total.assertValues([reward.minimum])
-    self.reload.assertValues([true])
+    self.pledgeViewDataAndReloadProject.assertValues([project])
+    self.pledgeViewDataAndReloadReward.assertValues([reward])
+    self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false])
+    self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([false])
+    self.pledgeViewDataAndReloadSelectedShippingRule.assertValue(nil)
+    self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum])
+    self.pledgeViewDataAndReloadReload.assertValues([true])
 
     self.vm.inputs.continueButtonTapped()
 
@@ -150,17 +134,17 @@ final class PledgeViewModelTests: TestCase {
     withEnvironment(currentUser: user) {
       self.vm.inputs.userSessionStarted()
 
-      self.project.assertValues([project, project])
-      self.reward.assertValues([reward, reward])
-      self.isLoggedIn.assertValues([false, true])
-      self.isShippingEnabled.assertValues([false, false])
-      self.total.assertValues([reward.minimum, reward.minimum])
-      self.reload.assertValues([true, true])
+      self.pledgeViewDataAndReloadProject.assertValues([project, project])
+      self.pledgeViewDataAndReloadReward.assertValues([reward, reward])
+      self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false, true])
+      self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([false, false])
+      self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum, reward.minimum])
+      self.pledgeViewDataAndReloadReload.assertValues([true, true])
     }
   }
 
   func testSelectedShippingRule() {	
-	let project = Project.template
+    let project = Project.template
     let reward = Reward.template
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 

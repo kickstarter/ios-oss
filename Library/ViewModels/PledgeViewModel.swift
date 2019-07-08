@@ -28,7 +28,6 @@ public protocol PledgeViewModelInputs {
 
 public protocol PledgeViewModelOutputs {
   var goToLoginSignup: Signal<LoginIntent, Never> { get }
-  var configureSummaryCellWithProjectAndPledgeTotal: Signal<(Project, Double), Never> { get }
   var configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never> { get }
   var configureSummaryCellWithData: Signal<(Project, Double), Never> { get }
 
@@ -104,6 +103,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)
+    let data = Signal
+      .combineLatest(project, reward, isLoggedIn, isShippingLoading, selectedShippingRule, pledgeTotal)
+      .map(pledgeViewData(with:reward:isLoggedIn:isShippingLoading:selectedShippingRule:pledgeTotal:))
 
     let userUpdatedReload = data.takeWhen(self.userSessionStartedSignal)
       .map { data -> (PledgeViewData, Bool) in
@@ -112,13 +114,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           project: data.project,
           reward: data.reward,
           isLoggedIn: loggedIn,
-          isShippingEnabled: data.isShippingEnabled,
+          shipping: data.shipping,
           pledgeTotal: data.pledgeTotal
-        ), true)
-      }
-    let data = Signal
-      .combineLatest(project, reward, isLoggedIn, isShippingLoading, selectedShippingRule, pledgeTotal)
-      .map(pledgeViewData(with:reward:isLoggedIn:isShippingLoading:selectedShippingRule:pledgeTotal:))
+          ), true)
+    }
 
     let initialLoad = data.take(first: 1).map { data in (data, true) }
     let silentReload = data.skip(first: 1).map { data in (data, false) }
@@ -132,7 +131,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.goToLoginSignup = self.continueButtonTappedSignal
       .map { _ in LoginIntent.backProject }
 
-    self.configureSummaryCellWithProjectAndPledgeTotal = self.pledgeViewDataAndReload
     let updatedData = self.pledgeViewDataAndReload
       .filter(second >>> isFalse)
       .map(first)
@@ -185,7 +183,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   }
 
   public let goToLoginSignup: Signal<LoginIntent, Never>
-  public let configureSummaryCellWithProjectAndPledgeTotal: Signal<(Project, Double), Never>
   public let configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never>
   public let configureSummaryCellWithData: Signal<(Project, Double), Never>
   public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
