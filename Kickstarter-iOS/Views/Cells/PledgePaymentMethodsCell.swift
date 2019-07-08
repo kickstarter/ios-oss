@@ -67,7 +67,8 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: Styles.grid(2))
-      |> UIButton.lens.accessibilityLabel .~ "Apple Pay"
+      |> \.accessibilityLabel .~ "Apple Pay"
+      |> \.accessibilityTraits .~ .button
 
     _ = self.collectionView
       |> \.backgroundColor .~ .white
