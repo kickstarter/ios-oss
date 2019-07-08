@@ -5,15 +5,12 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeShippingLocationCellViewModelInputs {
-  func configureWith(project: Project, reward: Reward)
+  func configureWith(isLoading: Bool, project: Project, selectedShippingRule: ShippingRule?)
 }
 
 public protocol PledgeShippingLocationCellViewModelOutputs {
-  var amount: Signal<NSAttributedString, Never> { get }
-  var location: Signal<String, Never> { get }
-  var selectedShippingRule: Signal<ShippingRule, Never> { get }
-  var shippingIsLoading: Signal<Bool, Never> { get }
-  var shippingRulesError: Signal<String, Never> { get }
+  var amountAttributedText: Signal<NSAttributedString, Never> { get }
+  var shippingLocationButtonTitle: Signal<String, Never> { get }
 }
 
 public protocol PledgeShippingLocationCellViewModelType {
@@ -24,60 +21,26 @@ public protocol PledgeShippingLocationCellViewModelType {
 public final class PledgeShippingLocationCellViewModel: PledgeShippingLocationCellViewModelType,
   PledgeShippingLocationCellViewModelInputs, PledgeShippingLocationCellViewModelOutputs {
   public init() {
-    let project = self.projectAndRewardProperty.signal.skipNil().map(first)
-    let reward = self.projectAndRewardProperty.signal.skipNil().map(second)
-
-    let shouldLoadShippingRules = reward.map { $0.shipping.enabled }
-
-    let shippingRulesEvent = self.projectAndRewardProperty.signal
-      .skipNil()
-      .filter { _, reward in reward.shipping.enabled }
-      .switchMap { (project, reward) -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
-        AppEnvironment.current.apiService.fetchRewardShippingRules(projectId: project.id, rewardId: reward.id)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map(ShippingRulesEnvelope.lens.shippingRules.view)
-          .retry(upTo: 3)
-          .materialize()
-      }
-
-    let defaultSelectedShippingRule = shippingRulesEvent.values()
-      .map(defaultShippingRule(fromShippingRules:))
-      .skipNil()
-
-    let amount = Signal.combineLatest(project, defaultSelectedShippingRule)
-
-    self.selectedShippingRule = amount.map { _, shippingRule in shippingRule }
-
-    self.amount = amount
-      .map { project, shippingRule in shippingValue(of: project, with: shippingRule.cost) }
-      .skipNil()
-
-    self.location = defaultSelectedShippingRule
-      .map { $0.location.localizedName }
-
-    let shippingShouldBeginLoading = shouldLoadShippingRules
-      .filter(isTrue)
-
-    self.shippingIsLoading = Signal.merge(
-      shippingShouldBeginLoading,
-      shippingRulesEvent.filter { $0.isTerminating }.mapConst(false)
+    let projectAndSelectedShippingRule = Signal.combineLatest(
+      self.configDataProperty.signal.skipNil().map(second),
+      self.configDataProperty.signal.skipNil().map(third).skipNil()
     )
 
-    self.shippingRulesError = shippingRulesEvent.errors().map { _ in
-      Strings.We_were_unable_to_load_the_shipping_destinations()
-    }
+    self.amountAttributedText = projectAndSelectedShippingRule
+      .map { project, selectedShippingRule in shippingValue(of: project, with: selectedShippingRule.cost) }
+      .skipNil()
+
+    self.shippingLocationButtonTitle = projectAndSelectedShippingRule
+      .map { _, selectedShippingRule in selectedShippingRule.location.localizedName }
   }
 
-  private let projectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
-  public func configureWith(project: Project, reward: Reward) {
-    self.projectAndRewardProperty.value = (project, reward)
+  private let configDataProperty = MutableProperty<(Bool, Project, ShippingRule?)?>(nil)
+  public func configureWith(isLoading: Bool, project: Project, selectedShippingRule: ShippingRule?) {
+    self.configDataProperty.value = (isLoading, project, selectedShippingRule)
   }
 
-  public let amount: Signal<NSAttributedString, Never>
-  public let location: Signal<String, Never>
-  public let selectedShippingRule: Signal<ShippingRule, Never>
-  public let shippingIsLoading: Signal<Bool, Never>
-  public let shippingRulesError: Signal<String, Never>
+  public let amountAttributedText: Signal<NSAttributedString, Never>
+  public let shippingLocationButtonTitle: Signal<String, Never>
 
   public var inputs: PledgeShippingLocationCellViewModelInputs { return self }
   public var outputs: PledgeShippingLocationCellViewModelOutputs { return self }

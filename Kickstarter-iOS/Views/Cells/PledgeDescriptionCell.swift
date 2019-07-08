@@ -38,7 +38,6 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var spacerView = UIView(frame: .zero)
   private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
-  private var learnMoreTextViewHeightConstraint: NSLayoutConstraint?
 
   // MARK: - Lifecycle
 
@@ -86,9 +85,6 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     _ = self.learnMoreTextView
       |> learnMoreTextViewStyle
-
-    self.learnMoreTextViewHeightConstraint?.constant = self.learnMoreTextView.ksr_sizeThatFitsCurrentWidth()
-      .height
   }
 
   private func configureSubviews() {
@@ -105,14 +101,10 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     self.configureStackView()
 
-    let learnMoreTextViewHeightConstraint = self.learnMoreTextView.heightAnchor.constraint(equalToConstant: 0)
-    self.learnMoreTextViewHeightConstraint = learnMoreTextViewHeightConstraint
-
     NSLayoutConstraint.activate([
       self.containerImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
       self.containerImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.height),
-      self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor),
-      learnMoreTextViewHeightConstraint
+      self.pledgeImageView.centerXAnchor.constraint(equalTo: self.containerImageView.centerXAnchor)
     ])
   }
 
@@ -222,7 +214,7 @@ private func attributedLearnMoreText() -> NSAttributedString? {
   // swiftlint:disable line_length
   let string = localizedString(
     key: "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability",
-    defaultValue: "<p>Kickstarter is not a store. It's a way to bring creative projects to life.</br><a href=\"%{trust_link}\">Learn more about accountability</a><p>",
+    defaultValue: "Kickstarter is not a store. It's a way to bring creative projects to life.</br><a href=\"%{trust_link}\">Learn more about accountability</a>",
     substitutions: [
       "trust_link": HelpType.trust.url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString
     ]

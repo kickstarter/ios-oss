@@ -114,8 +114,7 @@ final class ChangeEmailViewModelTests: TestCase {
   func testOnePasswordButtonHidesProperly_OnIOS11AndEarlier() {
     self.vm.inputs.viewDidLoad()
 
-    let iOS12: (Double) -> Bool = { _ in false }
-    withEnvironment(isOSVersionAvailable: iOS12) {
+    withEnvironment(is1PasswordSupported: { false }) {
       self.vm.inputs.onePassword(isAvailable: true)
 
       self.onePasswordButtonIsHidden.assertValues([false])
@@ -129,8 +128,7 @@ final class ChangeEmailViewModelTests: TestCase {
   func testOnePasswordButtonHidesProperly_OnIOS12AndLater() {
     self.vm.inputs.viewDidLoad()
 
-    let iOS12: (Double) -> Bool = { _ in true }
-    withEnvironment(isOSVersionAvailable: iOS12) {
+    withEnvironment(is1PasswordSupported: { true }) {
       self.vm.inputs.onePassword(isAvailable: true)
 
       self.onePasswordButtonIsHidden.assertValues([true])

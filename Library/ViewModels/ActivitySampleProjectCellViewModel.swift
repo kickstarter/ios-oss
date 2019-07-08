@@ -12,7 +12,7 @@ public protocol ActivitySampleProjectCellViewModelInputs {
 }
 
 public protocol ActivitySampleProjectCellViewModelOutputs {
-  /// Emits the cell accessibility hint for voiceover.
+  /// Emits the cell accessibility hint for VoiceOver.
   var cellAccessibilityHint: Signal<String, Never> { get }
 
   /// Emits when should go to activities screen.
