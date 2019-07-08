@@ -17,7 +17,7 @@ public protocol DashboardActionCellViewModelInputs {
 }
 
 public protocol DashboardActionCellViewModelOutputs {
-  /// Emits the activity button label and unseen activities count to be read by voiceover.
+  /// Emits the activity button label and unseen activities count to be read by VoiceOver.
   var activityButtonAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the activity row is hidden.
@@ -38,7 +38,7 @@ public protocol DashboardActionCellViewModelOutputs {
   /// Emits a boolean that determines if the last update published label should be hidden.
   var lastUpdatePublishedLabelHidden: Signal<Bool, Never> { get }
 
-  /// Emits the messages button label and unread messages count to be read by voiceover.
+  /// Emits the messages button label and unread messages count to be read by VoiceOver.
   var messagesButtonAccessibilityLabel: Signal<String, Never> { get }
 
   /// Emits a boolean that determines if the messages row should be hidden.
@@ -47,7 +47,7 @@ public protocol DashboardActionCellViewModelOutputs {
   /// Emits a boolean that determines if the post update button should be hidden
   var postUpdateButtonHidden: Signal<Bool, Never> { get }
 
-  /// Emits the last update published at value to be read by voiceover.
+  /// Emits the last update published at value to be read by VoiceOver.
   var postUpdateButtonAccessibilityValue: Signal<String, Never> { get }
 
   /// Emits the count of unread messages to be displayed.
