@@ -1,19 +1,23 @@
 import KsApi
 import Library
 import Prelude
+import Stripe
 import UIKit
 
 final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
+
   // MARK: - Properties
 
-  private let layout: UICollectionViewLayout = {
-    UICollectionViewFlowLayout()
-      |> \.scrollDirection .~ .horizontal
-  }()
+  private let applePayButton = PKPaymentButton()
 
   private lazy var collectionView: UICollectionView = {
     UICollectionView(frame: .zero, collectionViewLayout: self.layout)
       |> \.dataSource .~ self
+  }()
+
+  private let layout: UICollectionViewLayout = {
+    UICollectionViewFlowLayout()
+      |> \.scrollDirection .~ .horizontal
   }()
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -40,8 +44,18 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleLabel, self.collectionView], self.rootStackView)
+    _ = ([self.applePayButton, self.titleLabel, self.collectionView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    NSLayoutConstraint.activate([
+      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    ])
+
+    self.applePayButton.addTarget(
+      self,
+      action: #selector(PledgePaymentMethodsCell.applePayButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   // MARK: - Styles
@@ -50,6 +64,10 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     super.bindStyles()
     _ = self
       |> checkoutBackgroundStyle
+
+    _ = self.applePayButton
+      |> roundedStyle(cornerRadius: Styles.grid(2))
+      |> UIButton.lens.accessibilityLabel .~ "Apple Pay"
 
     _ = self.collectionView
       |> \.backgroundColor .~ .white
@@ -70,6 +88,10 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   }
 
   internal func configureWith(value _: [GraphUserCreditCard]) {}
+
+  @objc private func applePayButtonTapped() {
+    print("Apple Pay tapped")
+  }
 }
 
 extension PledgePaymentMethodsCell: UICollectionViewDataSource {
