@@ -52,7 +52,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     super.bindStyles()
 
     _ = self.pledgeButton
-      |> checkoutGreenButtonStyle
+      |> roundedGreenButtonStyle
 
     _ = self.pledgeButton.titleLabel
       ?|> checkoutGreenButtonTitleLabelStyle

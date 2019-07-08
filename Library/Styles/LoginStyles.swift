@@ -143,10 +143,7 @@ public let loginRootStackViewStyle =
 
 public let signupButtonStyle: ButtonStyle = { button in
   button
-  |> greenButtonStyle
-  |> roundedButtonStyle
-  |> UIButton.lens.titleLabel.font .~ .ksr_headline()
-  |> UIButton.lens.layer.borderWidth .~ 0
+  |> roundedGreenButtonStyle
   |> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_default_intent_traditional_signup_button()
     }

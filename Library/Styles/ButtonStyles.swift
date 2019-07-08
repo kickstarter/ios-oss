@@ -83,6 +83,20 @@ public let greenButtonStyle =
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
 
+public let roundedGreenButtonStyle: ButtonStyle = { button in
+  button
+    |> greenButtonStyle
+    |> roundedButtonStyle
+    |> UIButton.lens.titleLabel.font %~~ { _, button in
+      button.traitCollection.verticalSizeClass == .compact
+        ? .ksr_subhead()
+        : .ksr_headline()
+    }
+    |> UIButton.lens.layer.borderWidth .~ 0
+    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+    |> (UIButton.lens.titleLabel..UILabel.lens.textAlignment) .~ NSTextAlignment.center
+}
+
 public let lightNavyButtonStyle =
   baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500

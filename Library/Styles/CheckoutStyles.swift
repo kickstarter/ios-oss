@@ -44,12 +44,8 @@ public let checkoutGreenButtonStyle: ButtonStyle = { button -> UIButton in
 
 public let checkoutGreenButtonTitleLabelStyle = { (titleLabel: UILabel?) -> UILabel? in
   _ = titleLabel
-    ?|> \.font .~ UIFont.ksr_headline()
-    ?|> \.numberOfLines .~ 0
-
-  _ = titleLabel
-    ?|> \.textAlignment .~ NSTextAlignment.center
     ?|> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
+    ?|> \.numberOfLines .~ 0
 
   return titleLabel
 }

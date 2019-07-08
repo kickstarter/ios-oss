@@ -130,12 +130,7 @@ private func pledgeCTAButtonStyle(
       ? NSLineBreakMode.byWordWrapping : NSLineBreakMode.byTruncatingTail
 
     return button
-      |> roundedStyle(cornerRadius: 12)
-      |> UIButton.lens.titleColor(for: .normal) .~ UIColor.white
-      |> UIButton.lens.titleLabel.font .~ UIFont.ksr_headline(size: 15)
-      |> UIButton.lens.layer.borderWidth .~ 0
-      |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-      |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
+      |> roundedGreenButtonStyle
       |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ lineBreakMode
   }
 }
