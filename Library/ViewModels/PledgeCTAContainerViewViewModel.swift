@@ -33,7 +33,6 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
         return (project, backing)
       }.skipNil()
 
-
     let pledgeState = project
       .map(pledgeStateButton(project:))
 
