@@ -95,7 +95,6 @@ private func pledgeStateButton(project: Project) -> PledgeStateCTAType {
   }
 }
 
-
 private func subtitle(project: Project, backing: Backing, pledgeState: PledgeStateCTAType) -> String {
   if pledgeState == .fix { return pledgeState.subtitleLabel ?? "" }
 
