@@ -2,14 +2,20 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "fb-logo-white.pdf"
+      "filename" : "fb-logo-white.pdf",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {
     "version" : 1,
     "author" : "xcode"
-  },
-  "properties" : {
-    "template-rendering-intent" : "template"
   }
 }
