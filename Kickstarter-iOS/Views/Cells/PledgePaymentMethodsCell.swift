@@ -1,19 +1,22 @@
 import KsApi
 import Library
+import PassKit
 import Prelude
 import UIKit
 
 final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private let layout: UICollectionViewLayout = {
-    UICollectionViewFlowLayout()
-      |> \.scrollDirection .~ .horizontal
-  }()
+  private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
 
   private lazy var collectionView: UICollectionView = {
     UICollectionView(frame: .zero, collectionViewLayout: self.layout)
       |> \.dataSource .~ self
+  }()
+
+  private let layout: UICollectionViewLayout = {
+    UICollectionViewFlowLayout()
+      |> \.scrollDirection .~ .horizontal
   }()
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -33,15 +36,22 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   }
 
   private func configureSubviews() {
-    _ = self
-      |> \.accessibilityElements .~ self.subviews
-
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleLabel, self.collectionView], self.rootStackView)
+    _ = ([self.applePayButton, self.titleLabel, self.collectionView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    NSLayoutConstraint.activate([
+      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    ])
+
+    self.applePayButton.addTarget(
+      self,
+      action: #selector(PledgePaymentMethodsCell.applePayButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   // MARK: - Styles
@@ -50,6 +60,10 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     super.bindStyles()
     _ = self
       |> checkoutBackgroundStyle
+
+    _ = self.applePayButton
+      |> roundedStyle(cornerRadius: Styles.grid(2))
+      |> \.isAccessibilityElement .~ true
 
     _ = self.collectionView
       |> \.backgroundColor .~ .white
@@ -65,11 +79,21 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
       |> \.textAlignment .~ .center
   }
 
+  // MARK: - View model
+
   override func bindViewModel() {
     super.bindViewModel()
   }
 
+  // MARK: - Configuration
+
   internal func configureWith(value _: [GraphUserCreditCard]) {}
+
+  // MARK: - Actions
+
+  @objc private func applePayButtonTapped() {
+    print("Apple Pay tapped")
+  }
 }
 
 extension PledgePaymentMethodsCell: UICollectionViewDataSource {
