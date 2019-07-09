@@ -109,7 +109,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
     self.rewardCardContainerMaskViewHeightConstraint?.priority = .defaultLow
 
-    let rewardConstainerConstraints = [
+    let rewardContainerConstraints = [
       self.rewardCardContainerMaskViewWidthConstraint,
       self.rewardCardContainerMaskViewHeightConstraint
     ]
@@ -123,7 +123,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
         equalTo: self.rewardCardContainerMaskView.leftAnchor
       ),
       self.rewardCardContainerView.topAnchor.constraint(equalTo: self.rewardCardContainerMaskView.topAnchor)
-    ] + rewardConstainerConstraints)
+    ] + rewardContainerConstraints)
 
     self.configureStackView()
   }
