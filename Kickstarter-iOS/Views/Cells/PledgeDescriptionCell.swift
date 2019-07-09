@@ -295,7 +295,8 @@ private func attributedLearnMoreText() -> NSAttributedString? {
 
 public func rewardCardViewSizes(
   with cardContainerView: RewardCardContainerView,
-  parentWidth: CGFloat) -> (CGSize, CGSize) {
+  parentWidth: CGFloat
+) -> (CGSize, CGSize) {
   let cardViewSize = cardContainerView.bounds.size
   let width = cardViewSize.width
   let height = cardViewSize.height
