@@ -164,7 +164,7 @@ extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
     _: PledgeShippingLocationCell,
     selectedShippingRule rule: ShippingRule
   ) {
-    self.viewModel.inputs.presentShippingRules(with: rule)
+    self.viewModel.inputs.pledgeShippingCellWillPresentShippingRules(with: rule)
   }
 }
 
