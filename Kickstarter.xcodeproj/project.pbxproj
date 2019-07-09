@@ -1068,6 +1068,9 @@
 		D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */; };
 		D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2551F75921500981E64 /* CategoryTemplates.swift */; };
 		D6D4425E22C2B4570070C3AF /* PledgePaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsViewController.swift */; };
+		D6D4425E22C2B4570070C3AF /* PledgePaymentMethodsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsCell.swift */; };
+		D6D4426022D3B6D20070C3AF /* PledgeCreditCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D4425F22D3B6D20070C3AF /* PledgeCreditCardCell.swift */; };
+		D6D4426222D3DA620070C3AF /* PledgePaymentMethodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D4426122D3DA620070C3AF /* PledgePaymentMethodsDataSource.swift */; };
 		D6DC652F21768502008CF69C /* Queryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC652E21768502008CF69C /* Queryable.swift */; };
 		D6DC653321768B6E008CF69C /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */; };
 		D6DC65522178CDDD008CF69C /* GraphUserEmailTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */; };
@@ -2296,6 +2299,9 @@
 		D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryLenses.swift; sourceTree = "<group>"; };
 		D6C9A2551F75921500981E64 /* CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTemplates.swift; sourceTree = "<group>"; };
 		D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewController.swift; sourceTree = "<group>"; };
+		D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsCell.swift; sourceTree = "<group>"; };
+		D6D4425F22D3B6D20070C3AF /* PledgeCreditCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCreditCardCell.swift; sourceTree = "<group>"; };
+		D6D4426122D3DA620070C3AF /* PledgePaymentMethodsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSource.swift; sourceTree = "<group>"; };
 		D6DC652E21768502008CF69C /* Queryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queryable.swift; sourceTree = "<group>"; };
 		D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
 		D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserEmailTemplate.swift; sourceTree = "<group>"; };
@@ -2778,6 +2784,7 @@
 				3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */,
 				3767EDAA22CFFED40088E8E4 /* ShippingRuleCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
+				D6D4425F22D3B6D20070C3AF /* PledgeCreditCardCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3220,6 +3227,7 @@
 				3767EDA822CFFE770088E8E4 /* ShippingRulesDataSourceTests.swift */,
 				014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */,
 				77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */,
+				D6D4426122D3DA620070C3AF /* PledgePaymentMethodsDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -4841,6 +4849,7 @@
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				D6B6766B20FF8F890082717D /* SettingsNewslettersCell.swift in Sources */,
+				D6D4426222D3DA620070C3AF /* PledgePaymentMethodsDataSource.swift in Sources */,
 				015A06F41D219156007AE210 /* DashboardRewardRowStackView.swift in Sources */,
 				A78838A91D8A32060081E94D /* ProjectNavBarViewController.swift in Sources */,
 				379CFFFE2242DAF400F6F0C2 /* Storyboard.swift in Sources */,
@@ -4999,6 +5008,7 @@
 				379CFFFB2242DADB00F6F0C2 /* MFMailComposeViewController.swift in Sources */,
 				D63BBCF9217F666B007E01F0 /* PaymentMethodsDataSource.swift in Sources */,
 				0160E5101EFAD7B2004F61D6 /* MessagesEmptyStateCell.swift in Sources */,
+				D6D4426022D3B6D20070C3AF /* PledgeCreditCardCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
