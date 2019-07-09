@@ -116,7 +116,9 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     .compact()
 
     NSLayoutConstraint.activate([
-      self.rewardCardContainerView.widthAnchor.constraint(equalToConstant: RewardCardView.cardWidth),
+      self.rewardCardContainerView.widthAnchor.constraint(
+        equalToConstant: CheckoutConstants.RewardCard.Layout.width
+      ),
       self.rewardCardContainerView.leftAnchor.constraint(
         equalTo: self.rewardCardContainerMaskView.leftAnchor
       ),

@@ -29,8 +29,6 @@ public final class RewardCardView: UIView {
   private let priceStackView = UIStackView(frame: .zero)
   private let rewardTitleLabel = UILabel(frame: .zero)
 
-  public static var cardWidth: CGFloat = 249
-
   override init(frame: CGRect) {
     super.init(frame: frame)
 

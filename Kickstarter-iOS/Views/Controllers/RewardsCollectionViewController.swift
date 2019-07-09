@@ -188,7 +188,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     from layout: UICollectionViewFlowLayout,
     using collectionView: UICollectionView
   ) -> CGSize {
-    let cardWidth = RewardCardView.cardWidth
+    let cardWidth = CheckoutConstants.RewardCard.Layout.width
 
     let sectionInsets = layout.sectionInset
     let adjustedContentInset = collectionView.adjustedContentInset
