@@ -5,7 +5,7 @@ import UIKit
 
 private enum Layout {
   enum Sheet {
-    static let offset: CGFloat = 200
+    static let offset: CGFloat = 222
   }
 }
 
@@ -176,8 +176,11 @@ extension PledgeTableViewController: PledgeAmountCellDelegate {
 }
 
 extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
-  func pledgeShippingCell(_: PledgeShippingLocationCell, didSelectShippingRule rule: ShippingRule) {
-    self.viewModel.inputs.shippingRuleDidUpdate(to: rule)
+  func pledgeShippingCellWillPresentShippingRules(
+    _: PledgeShippingLocationCell,
+    selectedShippingRule rule: ShippingRule
+  ) {
+    self.viewModel.inputs.pledgeShippingCellWillPresentShippingRules(with: rule)
   }
 }
 

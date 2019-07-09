@@ -429,7 +429,7 @@ final class PledgeViewModelTests: TestCase {
 
       let shippingRule = shippingRules[0]
 
-      self.vm.inputs.shippingRuleDidUpdate(to: shippingRule)
+      self.vm.inputs.pledgeShippingCellWillPresentShippingRules(with: shippingRule)
 
       self.presentShippingRulesProject.assertValues([project])
       self.presentShippingRulesShippingRules.assertValues([shippingRules])

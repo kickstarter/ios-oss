@@ -4,7 +4,9 @@ import Prelude
 import UIKit
 
 protocol PledgeShippingLocationCellDelegate: AnyObject {
-  func pledgeShippingCell(_ cell: PledgeShippingLocationCell, didSelectShippingRule rule: ShippingRule)
+  func pledgeShippingCellWillPresentShippingRules(
+    _ cell: PledgeShippingLocationCell, selectedShippingRule rule: ShippingRule
+  )
 }
 
 final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
@@ -102,11 +104,11 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
 
-    self.viewModel.outputs.shippingLocationSelected
+    self.viewModel.outputs.selectedShippingLocation
       .observeForUI()
       .observeValues { [weak self] shippingRule in
         guard let self = self else { return }
-        self.delegate?.pledgeShippingCell(self, didSelectShippingRule: shippingRule)
+        self.delegate?.pledgeShippingCellWillPresentShippingRules(self, selectedShippingRule: shippingRule)
       }
   }
 
