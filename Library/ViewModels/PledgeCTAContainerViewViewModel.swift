@@ -78,7 +78,7 @@ private func pledgeCTA(project: Project, backing: Backing) -> PledgeStateCTAType
   case (.live, .errored):
     return .fix
   case (.live, _):
-    return .fix
+    return .manage
   case (_, _):
     return .viewBacking
   }
