@@ -32,7 +32,10 @@ final class PledgeViewModelTests: TestCase {
   private let pledgeViewDataAndReloadSelectedShippingRule = TestObserver<ShippingRule?, Never>()
   private let pledgeViewDataAndReloadTotal = TestObserver<Double, Never>()
 
-  private let presentShippingRules = TestObserver<[ShippingRule], Never>()
+  private let presentShippingRulesProject = TestObserver<Project, Never>()
+  private let presentShippingRulesShippingRules = TestObserver<[ShippingRule], Never>()
+  private let presentShippingRulesSelectedShippingRule = TestObserver<ShippingRule, Never>()
+
   private let shippingRulesError = TestObserver<String, Never>()
 
   override func setUp() {
@@ -56,7 +59,10 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.3 }.map { $0.2 }.observe(self.pledgeViewDataAndReloadSelectedShippingRule.observer)
     self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.4 }.observe(self.pledgeViewDataAndReloadTotal.observer)
 
-    self.vm.outputs.presentShippingRules.observe(self.presentShippingRules.observer)
+    self.vm.outputs.presentShippingRules.map(first).observe(self.presentShippingRulesProject.observer)
+    self.vm.outputs.presentShippingRules.map(second).observe(self.presentShippingRulesShippingRules.observer)
+    self.vm.outputs.presentShippingRules.map(third).observe(self.presentShippingRulesSelectedShippingRule.observer)
+
     self.vm.outputs.shippingRulesError.observe(self.shippingRulesError.observer)
   }
 
@@ -406,26 +412,29 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testPresentShippingRules() {
-    let shippingRules = [.usa, .canada, .greatBritain, .australia]
-      .enumerated()
-      .map { idx, location in
-        .template
-          |> ShippingRule.lens.location .~ location
-          |> ShippingRule.lens.cost .~ Double(idx + 1 * 10)
-      }
+    let shippingRules: [ShippingRule] = [.template, .template, .template]
 
     withEnvironment(apiService: MockService(fetchShippingRulesResult: .success(shippingRules))) {
+      let project = Project.template
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configureWith(project: .template, reward: reward)
-
-      self.presentShippingRules.assertValues([[]])
+      self.vm.inputs.configureWith(project: project, reward: reward)
 
       self.scheduler.advance()
 
-      self.presentShippingRules.assertValues([[], shippingRules])
+      self.presentShippingRulesProject.assertDidNotEmitValue()
+      self.presentShippingRulesShippingRules.assertDidNotEmitValue()
+      self.presentShippingRulesSelectedShippingRule.assertDidNotEmitValue()
+
+      let shippingRule = shippingRules[0]
+
+      self.vm.inputs.pledgeShippingCellWillPresentShippingRules(with: shippingRule)
+
+      self.presentShippingRulesProject.assertValues([project])
+      self.presentShippingRulesShippingRules.assertValues([shippingRules])
+      self.presentShippingRulesSelectedShippingRule.assertValues([shippingRule])
     }
   }
 
