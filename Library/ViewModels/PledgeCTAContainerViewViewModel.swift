@@ -23,11 +23,11 @@ public protocol PledgeCTAContainerViewViewModelType {
 }
 
 public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
-PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
+  PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
-    let backing = project.map{ $0.personalization.backing }.skipNil()
+    let backing = project.map { $0.personalization.backing }.skipNil()
 
     let projectAndBacking = Signal.combineLatest(project, backing)
 
@@ -56,7 +56,6 @@ PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
     self.projectProperty.value = project
-
   }
 
   public var inputs: PledgeCTAContainerViewViewModelInputs { return self }

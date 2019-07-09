@@ -88,12 +88,12 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .live
 
-      self.vm.inputs.configureWith(project: project)
-      self.scheduler.advance()
-      self.buttonBackgroundColor.assertValues([pledgeCTAColor])
-      self.buttonTitleText.assertValues([Strings.Back_this_project()])
-      self.spacerIsHidden.assertValues([true])
-      self.stackViewIsHidden.assertValues([true])
+    self.vm.inputs.configureWith(project: project)
+    self.scheduler.advance()
+    self.buttonBackgroundColor.assertValues([pledgeCTAColor])
+    self.buttonTitleText.assertValues([Strings.Back_this_project()])
+    self.spacerIsHidden.assertValues([true])
+    self.stackViewIsHidden.assertValues([true])
   }
 
   func testPledgeCTA_NonBacker_NonLiveProject() {

@@ -40,7 +40,7 @@ public enum PledgeStateCTAType {
     case .pledge, .manage, .viewBacking, .viewRewards:
       return .white
     case .fix:
-     return .ksr_soft_black
+      return .ksr_soft_black
     }
   }
 

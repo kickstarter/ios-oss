@@ -21,7 +21,7 @@ final class PledgeCTAContainerView: UIView {
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var spacer: UIView = {
@@ -62,7 +62,7 @@ final class PledgeCTAContainerView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
     _ = self.amountAndRewardTitleStackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
@@ -77,7 +77,7 @@ final class PledgeCTAContainerView: UIView {
       |> pledgeCTAButtonStyle(
         isAccessibilityCategory,
         amountAndRewardTitleStackViewIsHidden: self.amountAndRewardTitleStackView.isHidden
-    )
+      )
 
     _ = self.rootStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
@@ -98,7 +98,7 @@ final class PledgeCTAContainerView: UIView {
       .observeForUI()
       .observeValues { [weak self] textColor in
         self?.pledgeCTAButton.setTitleColor(textColor, for: .normal)
-    }
+      }
 
     self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
     self.titleLabel.rac.text = self.vm.outputs.titleText
