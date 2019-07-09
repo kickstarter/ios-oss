@@ -10,7 +10,7 @@ public enum PledgeStateCTAType {
   public var buttonTitle: String {
     switch self {
     case .fix:
-      return "Fix"
+      return Strings.Fix()
     case .pledge:
       return Strings.Back_this_project()
     case .manage:
@@ -53,10 +53,10 @@ public enum PledgeStateCTAType {
     }
   }
 
-  public var titleLabel: String? { // rename to title
+  public var titleLabel: String? {
     switch self {
     case .fix:
-      return "Check your payment details"
+      return Strings.Check_your_payment_details()
     case .manage:
       return Strings.Youre_a_backer()
     default:
@@ -67,7 +67,7 @@ public enum PledgeStateCTAType {
   public var subtitleLabel: String? {
     switch self {
     case .fix:
-      return "We couldn't process your pledge."
+      return Strings.We_couldnt_process_your_pledge()
     default:
       return nil
     }
