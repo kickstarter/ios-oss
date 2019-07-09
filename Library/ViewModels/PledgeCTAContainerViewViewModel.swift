@@ -12,8 +12,8 @@ public protocol PledgeCTAContainerViewViewModelOutputs {
   var buttonTitleText: Signal<String, Never> { get }
   var buttonTitleTextColor: Signal<UIColor, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
-  var subtitleText: Signal<String, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
+  var subtitleText: Signal<String, Never> { get }
   var titleText: Signal<String, Never> { get }
 }
 
@@ -65,9 +65,9 @@ PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public let buttonBackgroundColor: Signal<UIColor, Never>
   public let buttonTitleText: Signal<String, Never>
   public let buttonTitleTextColor: Signal<UIColor, Never>
-  public let subtitleText: Signal<String, Never>
   public let spacerIsHidden: Signal<Bool, Never>
   public let stackViewIsHidden: Signal<Bool, Never>
+  public let subtitleText: Signal<String, Never>
   public let titleText: Signal<String, Never>
 }
 

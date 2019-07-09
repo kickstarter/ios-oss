@@ -12,10 +12,10 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   let buttonBackgroundColor = TestObserver<UIColor, Never>()
   let buttonTitleText = TestObserver<String, Never>()
   let buttonTitleTextColor = TestObserver<UIColor, Never>()
-  let subtitleText = TestObserver<String, Never>()
-  let stackViewIsHidden = TestObserver<Bool, Never>()
-  let titleText = TestObserver<String, Never>()
   let spacerIsHidden = TestObserver<Bool, Never>()
+  let stackViewIsHidden = TestObserver<Bool, Never>()
+  let subtitleText = TestObserver<String, Never>()
+  let titleText = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -23,8 +23,8 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.vm.outputs.buttonTitleText.observe(self.buttonTitleText.observer)
     self.vm.outputs.buttonTitleTextColor.observe(self.buttonTitleTextColor.observer)
     self.vm.outputs.spacerIsHidden.observe(self.spacerIsHidden.observer)
-    self.vm.outputs.subtitleText.observe(self.subtitleText.observer)
     self.vm.outputs.stackViewIsHidden.observe(self.stackViewIsHidden.observer)
+    self.vm.outputs.subtitleText.observe(self.subtitleText.observer)
     self.vm.outputs.titleText.observe(self.titleText.observer)
   }
 
@@ -41,7 +41,8 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.buttonBackgroundColor.assertValues([manageCTAColor])
-    self.buttonTitleText.assertValues(["Manage"])
+    self.buttonTitleText.assertValues([Strings.Manage()])
+    self.titleText.assertValues([Strings.Youre_a_backer()])
     self.subtitleText.assertValues(["$8 • Magic Lamp"])
     self.spacerIsHidden.assertValues([false])
     self.stackViewIsHidden.assertValues([false])
@@ -73,7 +74,9 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
     self.buttonBackgroundColor.assertValues([viewPledgeCTAColor])
-    self.buttonTitleText.assertValues(["Fix"])
+    self.buttonTitleText.assertValues([Strings.Fix()])
+    self.titleText.assertValues([Strings.Check_your_payment_details()])
+    self.subtitleText.assertValues([Strings.We_couldnt_process_your_pledge()])
     self.spacerIsHidden.assertValues([false])
     self.stackViewIsHidden.assertValues([false])
   }
