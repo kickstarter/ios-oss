@@ -11,9 +11,9 @@ public final class RewardCardContainerView: UIView {
     }
   }
 
-  private let viewModel: RewardCardContainerViewModelType = RewardCardContainerViewModel()
-
   // MARK: - Properties
+
+  private let viewModel: RewardCardContainerViewModelType = RewardCardContainerViewModel()
 
   private let pledgeButton: MultiLineButton = {
     MultiLineButton(type: .custom)
