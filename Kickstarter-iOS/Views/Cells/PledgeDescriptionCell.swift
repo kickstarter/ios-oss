@@ -143,7 +143,9 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   private func sizeAndTransformRewardCardView() {
     self.rewardCardContainerView.layoutIfNeeded()
 
-    let (actualSize, thumbnailSize) = rewardCardViewSizes(with: self.rewardCardContainerView)
+    let (actualSize, thumbnailSize) = rewardCardViewSizes(
+      with: self.rewardCardContainerView, parentWidth: self.bounds.width
+    )
 
     guard thumbnailSize.width > 0, thumbnailSize.height > 0 else { return }
 
@@ -289,7 +291,9 @@ private func attributedLearnMoreText() -> NSAttributedString? {
   return checkoutAttributedLink(with: string)
 }
 
-public func rewardCardViewSizes(with cardContainerView: RewardCardContainerView) -> (CGSize, CGSize) {
+public func rewardCardViewSizes(
+  with cardContainerView: RewardCardContainerView,
+  parentWidth: CGFloat) -> (CGSize, CGSize) {
   let cardViewSize = cardContainerView.bounds.size
   let width = cardViewSize.width
   let height = cardViewSize.height
@@ -298,7 +302,7 @@ public func rewardCardViewSizes(with cardContainerView: RewardCardContainerView)
 
   // Max allowed width for the minified tile is 1/3 of the device width, minus padding
   // Max allowed height for the minified tile is 120 points
-  let maxWidth = UIScreen.main.bounds.width / 3 - 2 * 20
+  let maxWidth = parentWidth / 3 - 2 * Styles.grid(4)
   let aspectRatio = height / width
 
   let newWidth = min(maxWidth, max(width / 3, minWidth))
