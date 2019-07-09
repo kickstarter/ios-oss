@@ -50,7 +50,7 @@ final class PledgeDataSource: ValueCellDataSource {
       )
     } else {
       self.appendRow(
-        value: [GraphUserCreditCard.template],
+        value: GraphUserCreditCard.template.storedCards.nodes,
         cellClass: PledgePaymentMethodsCell.self,
         toSection: Section.paymentMethods.rawValue
       )
@@ -71,7 +71,7 @@ final class PledgeDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as PledgeContinueCell, value as ()):
       cell.configureWith(value: value)
-    case let (cell as PledgePaymentMethodsCell, value as [GraphUserCreditCard]):
+    case let (cell as PledgePaymentMethodsCell, value as [GraphUserCreditCard.CreditCard]):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")

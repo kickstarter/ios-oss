@@ -3,6 +3,13 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum Card {
+    static let height: CGFloat = 136
+    static let width: CGFloat = 240
+  }
+}
+
 final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
@@ -13,8 +20,9 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
   private lazy var collectionView: UICollectionView = {
     UICollectionView(frame: .zero, collectionViewLayout: self.layout)
-      |> \.dataSource .~ self
   }()
+
+  private let dataSource = PledgePaymentMethodsDataSource()
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
@@ -42,6 +50,14 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
     _ = ([self.titleLabel, self.collectionView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    _ = self.collectionView
+      |> \.dataSource .~ self.dataSource
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+
+    self.collectionView.register(PledgeCreditCardCell.self)
+
+    self.collectionView.heightAnchor.constraint(equalToConstant: 140)
   }
 
   // MARK: - Styles
@@ -69,22 +85,17 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     super.bindViewModel()
   }
 
-  internal func configureWith(value _: [GraphUserCreditCard]) {}
+  internal func configureWith(value: [GraphUserCreditCard.CreditCard]) {
+    self.dataSource.load(creditCards: value)
+    self.collectionView.reloadData()
+  }
 }
 
-extension PledgePaymentMethodsCell: UICollectionViewDataSource {
-  func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-    return 1
-  }
-
+extension PledgePaymentMethodsCell: UICollectionViewDelegateFlowLayout {
   func collectionView(
-    _ collectionView: UICollectionView,
-    cellForItemAt indexPath: IndexPath
-  ) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: UICollectionViewCell.defaultReusableId,
-      for: indexPath
-    )
-    return cell
+    _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+    return CGSize(width: Layout.Card.width, height: Layout.Card.height)
   }
 }
