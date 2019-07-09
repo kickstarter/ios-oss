@@ -15,19 +15,21 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   let subtitleText = TestObserver<String, Never>()
   let stackViewIsHidden = TestObserver<Bool, Never>()
   let titleText = TestObserver<String, Never>()
+  let spacerIsHidden = TestObserver<Bool, Never>()
 
   internal override func setUp() {
     super.setUp()
     self.vm.outputs.buttonBackgroundColor.observe(self.buttonBackgroundColor.observer)
     self.vm.outputs.buttonTitleText.observe(self.buttonTitleText.observer)
     self.vm.outputs.buttonTitleTextColor.observe(self.buttonTitleTextColor.observer)
+    self.vm.outputs.spacerIsHidden.observe(self.spacerIsHidden.observer)
     self.vm.outputs.subtitleText.observe(self.subtitleText.observer)
     self.vm.outputs.stackViewIsHidden.observe(self.stackViewIsHidden.observer)
     self.vm.outputs.titleText.observe(self.titleText.observer)
   }
 
   func testPledgeCTA_Backer_LiveProject() {
-    let manageCTAColor: UIColor = .ksr_blue
+    let manageCTAColor: UIColor = .ksr_blue_500
     let reward = .template
       |> Reward.lens.title .~ "Magic Lamp"
     let backing = .template
@@ -37,11 +39,12 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrency .~ "USD"
       |> Project.lens.personalization.backing .~ backing
 
-      self.vm.inputs.configureWith(project: project)
-      self.buttonBackgroundColor.assertValues([manageCTAColor])
-      self.buttonTitleText.assertValues(["Manage"])
-      self.subtitleText.assertValues(["$8 • Magic Lamp"])
-      self.stackViewIsHidden.assertValues([false])
+    self.vm.inputs.configureWith(project: project)
+    self.buttonBackgroundColor.assertValues([manageCTAColor])
+    self.buttonTitleText.assertValues(["Manage"])
+    self.subtitleText.assertValues(["$8 • Magic Lamp"])
+    self.spacerIsHidden.assertValues([false])
+    self.stackViewIsHidden.assertValues([false])
   }
 
   func testPledgeCTA_Backer_NonLiveProject() {
@@ -55,6 +58,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.buttonBackgroundColor.assertValues([viewPledgeCTAColor])
     self.buttonTitleText.assertValues([Strings.View_your_pledge()])
+    self.spacerIsHidden.assertValues([true])
     self.stackViewIsHidden.assertValues([true])
   }
 
@@ -70,6 +74,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project)
     self.buttonBackgroundColor.assertValues([viewPledgeCTAColor])
     self.buttonTitleText.assertValues(["Fix"])
+    self.spacerIsHidden.assertValues([false])
     self.stackViewIsHidden.assertValues([false])
   }
 
@@ -84,6 +89,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       self.scheduler.advance()
       self.buttonBackgroundColor.assertValues([pledgeCTAColor])
       self.buttonTitleText.assertValues([Strings.Back_this_project()])
+      self.spacerIsHidden.assertValues([true])
       self.stackViewIsHidden.assertValues([true])
   }
 
@@ -98,6 +104,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.scheduler.advance()
     self.buttonBackgroundColor.assertValues([viewRewardsCTAColor])
     self.buttonTitleText.assertValues([Strings.View_rewards()])
+    self.spacerIsHidden.assertValues([true])
     self.stackViewIsHidden.assertValues([true])
   }
 }

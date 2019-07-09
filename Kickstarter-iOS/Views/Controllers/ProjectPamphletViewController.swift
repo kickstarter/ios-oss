@@ -95,7 +95,12 @@ public final class ProjectPamphletViewController: UIViewController {
 
   private func configureViews() {
     // Configure subviews
-    self.view.addSubview(self.pledgeCTAContainerView)
+    _ = (self.pledgeCTAContainerView, self.view)
+      |> ksr_addSubviewToParent()
+
+    self.pledgeCTAContainerView.pledgeCTAButton.addTarget(
+      self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
+    )
 
     // Configure constraints
     let pledgeCTAContainerViewConstraints = [
@@ -120,7 +125,7 @@ public final class ProjectPamphletViewController: UIViewController {
       |> \.shadowOpacity .~ 0.12
       |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
       |> \.shadowRadius .~ 1.0
-      |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+      |> \.maskedCorners .~ [CACornerMask.layerMaxXMinYCorner, CACornerMask.layerMinXMinYCorner]
   }
 
   public override func bindViewModel() {
@@ -193,7 +198,9 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func updateContentInsets() {
-    let buttonSize = self.pledgeCTAButton.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    let buttonSize = self.pledgeCTAContainerView.pledgeCTAButton.systemLayoutSizeFitting(
+      UIView.layoutFittingCompressedSize
+    )
     let bottomInset = buttonSize.height + 2 * self.pledgeCTAContainerViewMargins
 
     self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)

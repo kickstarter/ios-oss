@@ -7,6 +7,7 @@ class PledgeTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let dataSource: PledgeDataSource = PledgeDataSource()
+  private weak var pledgeSummaryCell: PledgeSummaryCell?
   private weak var shippingLocationCell: PledgeShippingLocationCell?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
@@ -29,9 +30,15 @@ class PledgeTableViewController: UITableViewController {
     self.tableView.registerCellClass(PledgeAmountCell.self)
     self.tableView.registerCellClass(PledgeContinueCell.self)
     self.tableView.registerCellClass(PledgeDescriptionCell.self)
-    self.tableView.registerCellClass(PledgeRowCell.self)
+    self.tableView.registerCellClass(PledgePaymentMethodsCell.self)
+    self.tableView.registerCellClass(PledgeSummaryCell.self)
     self.tableView.registerCellClass(PledgeShippingLocationCell.self)
     self.tableView.registerHeaderFooterClass(PledgeFooterView.self)
+
+    // Rebase Rebase Rebase
+    self.tableView.addGestureRecognizer(
+      UITapGestureRecognizer(target: self, action: #selector(PledgeTableViewController.dismissKeyboard))
+    )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -50,12 +57,35 @@ class PledgeTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.reloadWithData
+    self.viewModel.outputs.pledgeViewDataAndReload
       .observeForUI()
-      .observeValues { [weak self] project, reward, isLoggedIn in
-        self?.dataSource.load(project: project, reward: reward, isLoggedIn: isLoggedIn)
-        self?.tableView.reloadData()
+      .observeValues { [weak self] data, reload in
+        self?.dataSource.load(data: data)
+
+        if reload {
+          self?.tableView.reloadData()
+        }
       }
+
+    self.viewModel.outputs.configureShippingLocationCellWithData
+      .observeForUI()
+      .observeValues { [weak self] isLoading, project, selectedShippingRule in
+        self?.shippingLocationCell?.configureWith(
+          value: (isLoading: isLoading, project: project, selectedShippingRule: selectedShippingRule)
+        )
+      }
+
+    self.viewModel.outputs.configureSummaryCellWithData
+      .observeForUI()
+      .observeValues { [weak self] project, pledgeTotal in
+        self?.pledgeSummaryCell?.configureWith(value: (project, pledgeTotal))
+      }
+  }
+
+  // MARK: - Actions
+
+  @objc func dismissKeyboard() {
+    self.tableView.endEditing(true)
   }
 
   // MARK: - UITableViewDelegate
@@ -68,19 +98,54 @@ class PledgeTableViewController: UITableViewController {
   }
 
   internal override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
-    if let descriptionCell = cell as? PledgeDescriptionCell {
-      descriptionCell.delegate = self
-    } else if let shippingLocationCell = cell as? PledgeShippingLocationCell {
+    switch cell {
+    case is PledgeAmountCell:
+      (cell as? PledgeAmountCell)?.delegate = self
+    case is PledgeDescriptionCell:
+      (cell as? PledgeDescriptionCell)?.delegate = self
+    case is PledgeSummaryCell:
+      let pledgeSummaryCell = (cell as? PledgeSummaryCell)
+      pledgeSummaryCell?.delegate = self
+      self.pledgeSummaryCell = pledgeSummaryCell
+    case is PledgeShippingLocationCell:
+      let shippingLocationCell = (cell as? PledgeShippingLocationCell)
+      shippingLocationCell?.delegate = self
       self.shippingLocationCell = shippingLocationCell
+    default:
+      break
     }
+  }
+
+  // MARK: - Actions
+
+  private func presentHelpWebViewController(with helpType: HelpType) {
+    let vc = HelpWebViewController.configuredWith(helpType: helpType)
+    let nav = UINavigationController(rootViewController: vc)
+    self.present(nav, animated: true, completion: nil)
   }
 }
 
 extension PledgeTableViewController: PledgeDescriptionCellDelegate {
   internal func pledgeDescriptionCellDidPresentTrustAndSafety(_: PledgeDescriptionCell) {
-    let vc = HelpWebViewController.configuredWith(helpType: .trust)
-    let nav = UINavigationController(rootViewController: vc)
-    self.present(nav, animated: true, completion: nil)
+    self.presentHelpWebViewController(with: .trust)
+  }
+}
+
+extension PledgeTableViewController: PledgeSummaryCellDelegate {
+  internal func pledgeSummaryCell(_: PledgeSummaryCell, didOpen helpType: HelpType) {
+    self.presentHelpWebViewController(with: helpType)
+  }
+}
+
+extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
+  func pledgeShippingCell(_: PledgeShippingLocationCell, didSelectShippingRule rule: ShippingRule) {
+    self.viewModel.inputs.shippingRuleDidUpdate(to: rule)
+  }
+}
+
+extension PledgeTableViewController: PledgeAmountCellDelegate {
+  func pledgeAmountCell(_: PledgeAmountCell, didUpdateAmount amount: Double) {
+    self.viewModel.inputs.pledgeAmountDidUpdate(to: amount)
   }
 }
 

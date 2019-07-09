@@ -29,7 +29,7 @@ public enum PledgeStateCTAType {
     case .pledge:
       return .ksr_green_500
     case .manage:
-      return .ksr_blue
+      return .ksr_blue_500
     case .viewBacking, .viewRewards:
       return .ksr_soft_black
     }
@@ -70,6 +70,15 @@ public enum PledgeStateCTAType {
       return "We couldn't process your pledge."
     default:
       return nil
+    }
+  }
+
+  public var stackViewAndSpacerAreHidden: Bool {
+    switch self {
+    case .pledge, .viewBacking, .viewRewards:
+      return true
+    case .fix, .manage:
+      return false
     }
   }
 }

@@ -164,24 +164,15 @@ final class SharedFunctionsTests: TestCase {
   }
 
   func testOnePasswordButtonIsHidden() {
-    var iOS12: (Double) -> Bool = { _ in true }
-    withEnvironment(isOSVersionAvailable: iOS12) {
+    withEnvironment(is1PasswordSupported: { true }) {
       XCTAssertTrue(is1PasswordButtonHidden(true))
       XCTAssertTrue(is1PasswordButtonHidden(false))
     }
 
-    iOS12 = { _ in false }
-    withEnvironment(isOSVersionAvailable: iOS12) {
+    withEnvironment(is1PasswordSupported: { false }) {
       XCTAssertTrue(is1PasswordButtonHidden(true))
       XCTAssertFalse(is1PasswordButtonHidden(false))
     }
-  }
-
-  func testIsOSVersionAvailable_Supports_iOS12() {
-    XCTAssertTrue(ksr_isOSVersionAvailable(12.0))
-    XCTAssertTrue(ksr_isOSVersionAvailable(12.1))
-    XCTAssertTrue(ksr_isOSVersionAvailable(12.123))
-    XCTAssertTrue(ksr_isOSVersionAvailable(12.9))
   }
 
   func testDefaultShippingRule_Empty() {
@@ -236,6 +227,60 @@ final class SharedFunctionsTests: TestCase {
         fromShippingRules: locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0 }
       )
       XCTAssertEqual("CZ", shippingRule?.location.country)
+    }
+  }
+
+  func testUpdatedUserWithClearedActivityCountProducer_Success() {
+    let initialActivitiesCount = 100
+    let values = TestObserver<User, Never>()
+
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0))
+    )
+
+    let user = User.template
+      |> User.lens.unseenActivityCount .~ initialActivitiesCount
+
+    XCTAssertEqual(values.values.map { $0.id }, [])
+
+    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
+      _ = updatedUserWithClearedActivityCountProducer()
+        .start(on: AppEnvironment.current.scheduler)
+        .start(values.observer)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(values.values.map { $0.id }, [1])
+    }
+  }
+
+  func testUpdatedUserWithClearedActivityCountProducer_Failure() {
+    let initialActivitiesCount = 100
+    let values = TestObserver<User, Never>()
+
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result(failure: .invalidInput)
+    )
+
+    let user = User.template
+      |> User.lens.unseenActivityCount .~ initialActivitiesCount
+
+    XCTAssertEqual(values.values.map { $0.id }, [])
+
+    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
+      _ = updatedUserWithClearedActivityCountProducer()
+        .start(on: AppEnvironment.current.scheduler)
+        .start(values.observer)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(values.values.map { $0.id }, [])
     }
   }
 }

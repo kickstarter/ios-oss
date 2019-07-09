@@ -4,17 +4,31 @@ import Prelude
 import UIKit
 
 final class PledgeCTAContainerView: UIView {
-  fileprivate let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
-
   // MARK: - Properties
 
-  private lazy var amountAndRewardTitleStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
+
+  private lazy var amountAndRewardTitleStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var pledgeCTAbutton: UIButton = {
+  private(set) lazy var pledgeCTAButton: UIButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+
+  private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var spacer: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
   // MARK: - Lifecycle
@@ -26,74 +40,108 @@ final class PledgeCTAContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    NSLayoutConstraint.activate(
-      [self.pledgeCTAbutton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)]
-    )
-
     _ = ([self.titleLabel, self.subtitleLabel], self.amountAndRewardTitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.amountAndRewardTitleStackView, self.pledgeCTAbutton], self.rootStackView)
+    _ = ([self.amountAndRewardTitleStackView, self.spacer, self.pledgeCTAButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.vm.outputs.buttonTitleTextColor
-      .observeForUI()
-      .observeValues { [weak self] textColor in
-        self?.pledgeCTAbutton.setTitleColor(textColor, for: .normal)
-    }
+    NSLayoutConstraint.activate([
+      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    ])
 
-    self.pledgeCTAbutton.rac.title = self.vm.outputs.buttonTitleText
-    self.pledgeCTAbutton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
-    self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
-    self.subtitleLabel.rac.text = self.vm.outputs.subtitleText
-    self.titleLabel.rac.text = self.vm.outputs.titleText
-  }
-
-  func configureWith(project: Project) {
-    self.vm.inputs.configureWith(project: project)
-  }
-
-  override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.pledgeCTAbutton
-      |> projectStateButtonStyle
-
-    _ = self.titleLabel
-      |> \.font .~ .ksr_headline(size: 14)
-
-    _ = self.subtitleLabel
-      |> \.font .~ .ksr_caption1(size: 14)
-      |> \.textColor .~ .ksr_dark_grey_500
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.amountAndRewardTitleStackView
-      |> \.axis .~ NSLayoutConstraint.Axis.vertical
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.isLayoutMarginsRelativeArrangement .~ true
+     self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+   // MARK: - Styles
+
+  override func bindStyles() {
+    super.bindStyles()
+
+     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+
+    _ = self.amountAndRewardTitleStackView
+      |> \.axis .~ NSLayoutConstraint.Axis.vertical
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+
+    _ = self.subtitleLabel
+      |> \.font .~ UIFont.ksr_caption1(size: 14)
+      |> \.textColor .~ UIColor.ksr_dark_grey_500
+      |> \.numberOfLines .~ 0
+
+    _ = self.pledgeCTAButton
+      |> pledgeCTAButtonStyle(
+        isAccessibilityCategory,
+        amountAndRewardTitleStackViewIsHidden: self.amountAndRewardTitleStackView.isHidden
+    )
+
+    _ = self.rootStackView
+      |> adaptableStackViewStyle(isAccessibilityCategory)
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
+
+    _ = self.titleLabel
+      |> \.font .~ UIFont.ksr_headline(size: 14)
+      |> \.text %~ { _ in Strings.Youre_a_backer() }
+      |> \.numberOfLines .~ 0
+  }
+
+  // MARK: - Binding
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.vm.outputs.buttonTitleTextColor
+      .observeForUI()
+      .observeValues { [weak self] textColor in
+        self?.pledgeCTAButton.setTitleColor(textColor, for: .normal)
+    }
+
+    self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
+    self.subtitleLabel.rac.text = self.vm.outputs.subtitleText
+    self.pledgeCTAButton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
+    self.pledgeCTAButton.rac.title = self.vm.outputs.buttonTitleText
+    self.spacer.rac.hidden = self.vm.outputs.spacerIsHidden
+  }
+
+  // MARK: - Configuration
+
+  func configureWith(project: Project) {
+    self.vm.inputs.configureWith(project: project)
+  }
 }
 
-private let projectStateButtonStyle: ButtonStyle = { (button: UIButton) in
-  button
-    |> roundedStyle(cornerRadius: 12)
-    |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-    |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(6))
+// MARK: - Styles
+
+private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
+  return { (stackView: UIStackView) in
+    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
+    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
+
+    return stackView
+      |> \.axis .~ axis
+      |> \.spacing .~ spacing
+  }
 }
 
-private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
-  stackView
-    |> \.alignment .~ UIStackView.Alignment.center
-    |> \.distribution .~ UIStackView.Distribution.equalCentering
-    |> \.axis .~ NSLayoutConstraint.Axis.horizontal
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
+private func pledgeCTAButtonStyle(
+  _ isAccessibilityCategory: Bool, amountAndRewardTitleStackViewIsHidden: Bool
+  ) -> (ButtonStyle) {
+  return { (button: UIButton) in
+    let lineBreakMode: NSLineBreakMode = isAccessibilityCategory || amountAndRewardTitleStackViewIsHidden
+      ? NSLineBreakMode.byWordWrapping : NSLineBreakMode.byTruncatingTail
+
+    return button
+      |> roundedStyle(cornerRadius: 12)
+      |> UIButton.lens.titleColor(for: .normal) .~ UIColor.white
+      |> UIButton.lens.titleLabel.font .~ UIFont.ksr_headline(size: 15)
+      |> UIButton.lens.layer.borderWidth .~ 0
+      |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+      |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
+      |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ lineBreakMode
+  }
 }

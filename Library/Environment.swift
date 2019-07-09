@@ -44,6 +44,9 @@ public struct Environment {
   /// The amount of time to debounce signals by. Default value is `0.3`.
   public let debounceInterval: DispatchTimeInterval
 
+  /// Stored data used for debugging tools
+  public let debugData: DebugData?
+
   /// The current device running the app.
   public let device: UIDeviceType
 
@@ -55,13 +58,10 @@ public struct Environment {
   /// The environment variables
   public let environmentVariables: EnvironmentVariables
 
-  /// A delegate to handle Facebook initialization and incoming url requests
-  public let facebookAppDelegate: FacebookAppDelegateProtocol
+  /// A function that returns whether 1Password extension is supported.
+  public let is1PasswordSupported: () -> Bool
 
-  /// A function that returns whether a specific OS version is available
-  public let isOSVersionAvailable: (Double) -> Bool
-
-  /// A function that returns whether voice over mode is running.
+  /// A function that returns whether VoiceOver mode is running.
   public let isVoiceOverRunning: () -> Bool
 
   /// A type that exposes endpoints for tracking various Kickstarter events.
@@ -109,10 +109,10 @@ public struct Environment {
     currentUser: User? = nil,
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
+    debugData: DebugData? = nil,
     device: UIDeviceType = UIDevice.current,
     environmentVariables: EnvironmentVariables = EnvironmentVariables(),
-    facebookAppDelegate: FacebookAppDelegateProtocol = FBSDKApplicationDelegate.sharedInstance(),
-    isOSVersionAvailable: @escaping (Double) -> Bool = ksr_isOSVersionAvailable,
+    is1PasswordSupported: @escaping () -> Bool = { ksr_is1PasswordSupported() },
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
     koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
@@ -137,10 +137,10 @@ public struct Environment {
     self.currentUser = currentUser
     self.dateType = dateType
     self.debounceInterval = debounceInterval
+    self.debugData = debugData
     self.device = device
     self.environmentVariables = environmentVariables
-    self.facebookAppDelegate = facebookAppDelegate
-    self.isOSVersionAvailable = isOSVersionAvailable
+    self.is1PasswordSupported = is1PasswordSupported
     self.isVoiceOverRunning = isVoiceOverRunning
     self.koala = koala
     self.language = language

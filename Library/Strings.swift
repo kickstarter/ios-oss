@@ -1935,6 +1935,23 @@ contributeurs"
     )
   }
   /**
+   "Description"
+
+   - **en**: "Description"
+   - **de**: "Beschreibung"
+   - **es**: "Descripción"
+   - **fr**: "Description"
+   - **ja**: "説明"
+  */
+  public static func Description() -> String {
+    return localizedString(
+      key: "Description",
+      defaultValue: "Description",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Developer"
 
    - **en**: "Developer"
@@ -3747,7 +3764,7 @@ with friends."
    - **es**: "Kickstarter no es una tienda."
    - **fr**: "Kickstarter n'est pas un magasin."
    - **ja**: "Kickstarterはオンラインストアではありません。"
-   */
+  */
   public static func Kickstarter_is_not_a_store() -> String {
     return localizedString(
       key: "Kickstarter_is_not_a_store",
@@ -8749,6 +8766,23 @@ Veuillez réessayer ultérieurement."
       defaultValue: "Reminds you 48 hours before this project ends.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "%{activities_badge_value}+"
+
+   - **en**: "%{activities_badge_value}+"
+   - **de**: "%{activities_badge_value}+"
+   - **es**: "%{activities_badge_value}+"
+   - **fr**: "%{activities_badge_value}+"
+   - **ja**: "%{activities_badge_value}+"
+  */
+  public static func activities_badge_value_plus(activities_badge_value: String) -> String {
+    return localizedString(
+      key: "activities_badge_value_plus",
+      defaultValue: "%{activities_badge_value}+",
+      count: nil,
+      substitutions: ["activities_badge_value": activities_badge_value]
     )
   }
   /**

@@ -17,7 +17,7 @@ extension User {
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
         social: $1.social,
-        stats: $1.stats
+        stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -35,7 +35,7 @@ extension User {
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
         social: $1.social,
-        stats: $1.stats
+        stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -53,7 +53,7 @@ extension User {
         notifications: $1.notifications,
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
-        social: $1.social, stats: $1.stats
+        social: $1.social, stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -70,7 +70,7 @@ extension User {
         notifications: $1.notifications,
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
-        social: $1.social, stats: $1.stats
+        social: $1.social, stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -88,7 +88,7 @@ extension User {
         notifications: $1.notifications,
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
-        social: $1.social, stats: $1.stats
+        social: $1.social, stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -107,7 +107,7 @@ extension User {
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
         social: $1.social,
-        stats: $1.stats
+        stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -126,7 +126,7 @@ extension User {
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
         social: $1.social,
-        stats: $1.stats
+        stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -145,7 +145,7 @@ extension User {
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
         social: $1.social,
-        stats: $1.stats
+        stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -164,7 +164,7 @@ extension User {
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
         social: $1.social,
-        stats: $1.stats
+        stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -183,7 +183,7 @@ extension User {
         optedOutOfRecommendations: $0,
         showPublicProfile: $1.showPublicProfile,
         social: $1.social,
-        stats: $1.stats
+        stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -202,7 +202,7 @@ extension User {
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $0,
         social: $1.social,
-        stats: $1.stats
+        stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -221,7 +221,7 @@ extension User {
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
         social: $0,
-        stats: $1.stats
+        stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
       ) }
     )
 
@@ -240,7 +240,26 @@ extension User {
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
         social: $1.social,
-        stats: $0
+        stats: $0, unseenActivityCount: $1.unseenActivityCount
+      ) }
+    )
+
+    public static let unseenActivityCount = Lens<User, Int?>(
+      view: { $0.unseenActivityCount },
+      set: { User(
+        avatar: $1.avatar,
+        facebookConnected: $1.facebookConnected,
+        id: $1.id,
+        isFriend: $1.isFriend,
+        location: $1.location,
+        name: $1.name,
+        needsFreshFacebookToken: $1.needsFreshFacebookToken,
+        newsletters: $1.newsletters,
+        notifications: $1.notifications,
+        optedOutOfRecommendations: $1.optedOutOfRecommendations,
+        showPublicProfile: $1.showPublicProfile,
+        social: $1.social,
+        stats: $1.stats, unseenActivityCount: $0
       ) }
     )
   }

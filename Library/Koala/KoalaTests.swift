@@ -50,9 +50,7 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
 
-    var isVoiceOverRunning = { true }
-
-    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+    withEnvironment(isVoiceOverRunning: { true }) {
       koala.trackAppOpen()
 
       let properties = client.properties.last
@@ -60,9 +58,7 @@ final class KoalaTests: TestCase {
       XCTAssertEqual(true, properties?["is_voiceover_running"] as? Bool)
     }
 
-    isVoiceOverRunning = { false }
-
-    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+    withEnvironment(isVoiceOverRunning: { false }) {
       koala.trackAppOpen()
 
       let properties = client.properties.last

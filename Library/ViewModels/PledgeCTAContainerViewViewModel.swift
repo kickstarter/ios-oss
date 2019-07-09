@@ -11,6 +11,7 @@ public protocol PledgeCTAContainerViewViewModelOutputs {
   var buttonBackgroundColor: Signal<UIColor, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
   var buttonTitleTextColor: Signal<UIColor, Never> { get }
+  var spacerIsHidden: Signal<Bool, Never> { get }
   var subtitleText: Signal<String, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
   var titleText: Signal<String, Never> { get }
@@ -43,7 +44,9 @@ PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     self.buttonTitleTextColor = pledgeState.map { $0.buttonTitleTextColor }
     self.buttonBackgroundColor = pledgeState.map { $0.buttonBackgroundColor }
-    self.stackViewIsHidden = pledgeState.map { $0.stackViewIsHidden }
+    let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
+    self.spacerIsHidden = stackViewAndSpacerAreHidden
+    self.stackViewIsHidden = stackViewAndSpacerAreHidden
     self.titleText = pledgeState.map { $0.titleLabel }.skipNil()
 
     let text = Signal.combineLatest(project, backing, pledgeState)
@@ -53,6 +56,7 @@ PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
     self.projectProperty.value = project
+
   }
 
   public var inputs: PledgeCTAContainerViewViewModelInputs { return self }
@@ -62,9 +66,12 @@ PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public let buttonTitleText: Signal<String, Never>
   public let buttonTitleTextColor: Signal<UIColor, Never>
   public let subtitleText: Signal<String, Never>
+  public let spacerIsHidden: Signal<Bool, Never>
   public let stackViewIsHidden: Signal<Bool, Never>
   public let titleText: Signal<String, Never>
 }
+
+// MARK: - Functions
 
 private func pledgeCTA(project: Project, backing: Backing) -> PledgeStateCTAType {
   switch (project.state, backing.status) {
@@ -87,6 +94,7 @@ private func pledgeStateButton(project: Project) -> PledgeStateCTAType {
     return .viewRewards
   }
 }
+
 
 private func subtitle(project: Project, backing: Backing, pledgeState: PledgeStateCTAType) -> String {
   if pledgeState == .fix { return pledgeState.subtitleLabel ?? "" }

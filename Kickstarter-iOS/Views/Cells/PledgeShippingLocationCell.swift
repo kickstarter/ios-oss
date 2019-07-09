@@ -3,14 +3,19 @@ import Library
 import Prelude
 import UIKit
 
+protocol PledgeShippingLocationCellDelegate: AnyObject {
+  func pledgeShippingCell(_ cell: PledgeShippingLocationCell, didSelectShippingRule rule: ShippingRule)
+}
+
 final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private let viewModel = PledgeShippingLocationCellViewModel()
+  public weak var delegate: PledgeShippingLocationCellDelegate?
+  private let viewModel: PledgeShippingLocationCellViewModelType = PledgeShippingLocationCellViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var countryButton: UIButton = { UIButton(frame: .zero) }()
+  private lazy var shippingLocationButton: UIButton = { UIButton(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var spacer: UIView = {
@@ -24,7 +29,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     _ = self
-      |> \.accessibilityElements .~ [self.titleLabel, self.countryButton, self.amountLabel]
+      |> \.accessibilityElements .~ [self.titleLabel, self.shippingLocationButton, self.amountLabel]
 
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
@@ -33,8 +38,14 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     _ = ([self.titleLabel, self.adaptableStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.countryButton, self.spacer, self.amountLabel], self.adaptableStackView)
+    _ = ([self.shippingLocationButton, self.spacer, self.amountLabel], self.adaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.shippingLocationButton.addTarget(
+      self,
+      action: #selector(PledgeShippingLocationCell.shippingLocationButtonTapped(_:)),
+      for: .touchUpInside
+    )
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
@@ -65,12 +76,12 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     _ = self.amountLabel
       |> amountLabelStyle
 
-    _ = self.countryButton
+    _ = self.shippingLocationButton
       |> countryButtonStyle
       |> checkoutWhiteBackgroundStyle
       |> checkoutRoundedCornersStyle
 
-    _ = self.countryButton.titleLabel
+    _ = self.shippingLocationButton.titleLabel
       ?|> countryButtonTitleLabelStyle
 
     _ = self.titleLabel
@@ -88,25 +99,23 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.countryButton.rac.title = self.viewModel.location
-    self.amountLabel.rac.attributedText = self.viewModel.amount
-
-    self.viewModel.shippingIsLoading
-      .observeForUI()
-      .observeValues { [weak self] isLoading in
-        self?.animate(isLoading)
-      }
+    self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
+    self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
   }
 
   // MARK: - Configuration
 
-  func configureWith(value: (project: Project, reward: Reward)) {
-    self.viewModel.inputs.configureWith(project: value.project, reward: value.reward)
+  func configureWith(value: (isLoading: Bool, project: Project, selectedShippingRule: ShippingRule?)) {
+    self.viewModel.inputs.configureWith(
+      isLoading: value.isLoading,
+      project: value.project,
+      selectedShippingRule: value.selectedShippingRule
+    )
   }
 
-  // MARK: - Public Functions
+  // MARK: - Actions
 
-  func animate(_: Bool) {}
+  @objc func shippingLocationButtonTapped(_: UIButton) {}
 }
 
 // MARK: - Styles

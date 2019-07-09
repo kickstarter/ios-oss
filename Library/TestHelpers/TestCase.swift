@@ -14,7 +14,6 @@ internal class TestCase: FBSnapshotTestCase {
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
   internal let dateType = MockDate.self
-  internal let facebookAppDelegate = MockFacebookAppDelegate()
   internal let mainBundle = MockBundle()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
@@ -22,10 +21,16 @@ internal class TestCase: FBSnapshotTestCase {
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
 
+  override var recordMode: Bool {
+    willSet(newValue) {
+      if newValue {
+        preferredSimulatorCheck()
+      }
+    }
+  }
+
   override func setUp() {
     super.setUp()
-
-    preferredSimulatorCheck()
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -34,8 +39,6 @@ internal class TestCase: FBSnapshotTestCase {
     // swiftlint:disable:next force_unwrapping
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
-    let isVoiceOverRunning = { false }
-    let isOSVersionAvailable: (Double) -> Bool = { _ in true }
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
@@ -50,9 +53,8 @@ internal class TestCase: FBSnapshotTestCase {
       dateType: self.dateType,
       debounceInterval: .seconds(0),
       device: MockDevice(),
-      facebookAppDelegate: self.facebookAppDelegate,
-      isOSVersionAvailable: isOSVersionAvailable,
-      isVoiceOverRunning: isVoiceOverRunning,
+      is1PasswordSupported: { true },
+      isVoiceOverRunning: { false },
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,
       launchedCountries: .init(),
@@ -73,11 +75,10 @@ internal class TestCase: FBSnapshotTestCase {
 }
 
 internal func preferredSimulatorCheck() {
-  guard
-    let identifier = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"],
-    ["iPhone10,1", "iPhone10,4"].contains(identifier),
-    AppEnvironment.current.isOSVersionAvailable(12)
-  else {
+  let supportedModels = ["iPhone10,1", "iPhone10,4"] // iPhone 8
+  let modelKey = "SIMULATOR_MODEL_IDENTIFIER"
+
+  guard #available(iOS 12.0, *), supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
     fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 12")
   }
 }

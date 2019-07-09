@@ -539,7 +539,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
       .observeValues { [weak self] project in
-        UIFeedbackGenerator.ksr_success()
+        generateNotificationSuccessFeedback()
+
         self?.goToThanks(project: project)
       }
 
@@ -611,7 +612,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     shippingRules: [ShippingRule],
     selectedShippingRule: ShippingRule
   ) {
-    let vc = RewardShippingPickerViewController.configuredWith(
+    let vc = DeprecatedRewardShippingPickerViewController.configuredWith(
       project: project,
       shippingRules: shippingRules,
       selectedShippingRule: selectedShippingRule,
@@ -745,15 +746,15 @@ extension DeprecatedRewardPledgeViewController: PKPaymentAuthorizationViewContro
   }
 }
 
-extension DeprecatedRewardPledgeViewController: RewardShippingPickerViewControllerDelegate {
+extension DeprecatedRewardPledgeViewController: DeprecatedRewardShippingPickerViewControllerDelegate {
   internal func rewardShippingPickerViewControllerCancelled(
-    _ controller: RewardShippingPickerViewController
+    _ controller: DeprecatedRewardShippingPickerViewController
   ) {
     controller.dismiss(animated: true, completion: nil)
   }
 
   internal func rewardShippingPickerViewController(
-    _ controller: RewardShippingPickerViewController,
+    _ controller: DeprecatedRewardShippingPickerViewController,
     choseShippingRule: ShippingRule
   ) {
     controller.dismiss(animated: true) {

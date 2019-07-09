@@ -5,6 +5,7 @@ import ReactiveSwift
 import UIKit
 
 typealias RootViewControllerIndex = Int
+typealias RootTabBarItemBadgeValueData = (String?, RootViewControllerIndex)
 
 internal enum RootViewControllerData: Equatable {
   case discovery
@@ -87,14 +88,20 @@ internal enum TabBarItem {
 }
 
 internal protocol RootViewModelInputs {
+  /// Call when the application will enter foreground.
+  func applicationWillEnterForeground()
+
   /// Call when the controller has received a user updated notification.
   func currentUserUpdated()
 
-  /// Call before selected tab bar index changes.
-  func shouldSelect(index: RootViewControllerIndex?)
+  /// Call when a badge value was received via push notification.
+  func didReceiveBadgeValue(_ value: Int?)
 
   /// Call when selected tab bar index changes.
   func didSelect(index: RootViewControllerIndex)
+
+  /// Call before selected tab bar index changes.
+  func shouldSelect(index: RootViewControllerIndex?)
 
   /// Call when we should switch to the activities tab.
   func switchToActivities()
@@ -125,6 +132,9 @@ internal protocol RootViewModelInputs {
 
   /// Call from the controller's `viewDidLoad` method.
   func viewDidLoad()
+
+  /// Call when VoiceOver is enabled or disabled
+  func voiceOverStatusDidChange()
 }
 
 internal protocol RootViewModelOutputs {
@@ -138,6 +148,9 @@ internal protocol RootViewModelOutputs {
   /// Emits an index that the tab bar should be switched to.
   var selectedIndex: Signal<RootViewControllerIndex, Never> { get }
 
+  /// Emits the badge value to be set at a particular tab index
+  var setBadgeValueAtIndex: Signal<RootTabBarItemBadgeValueData, Never> { get }
+
   /// Emits the array of view controllers that should be set on the tab bar.
   var setViewControllers: Signal<[RootViewControllerData], Never> { get }
 
@@ -146,6 +159,9 @@ internal protocol RootViewModelOutputs {
 
   /// Emits data for setting tab bar item styles.
   var tabBarItemsData: Signal<TabBarItemsData, Never> { get }
+
+  /// Emits a User that can be used to replace the current user in the environment.
+  var updateUserInEnvironment: Signal<User, Never> { get }
 }
 
 internal protocol RootViewModelType {
@@ -235,6 +251,76 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     )
     .map { idx, vcs, _ in clamp(0, vcs.count - 1)(idx) }
 
+    let activityViewControllerIndex = self.setViewControllers
+      .map { $0.firstIndex(where: { $0 == .activities }) }
+      .skipNil()
+      .map { $0 as RootViewControllerIndex }
+
+    let lifecycleEvents = Signal.merge(
+      self.viewDidLoadProperty.signal,
+      self.applicationWillEnterForegroundSignal
+    )
+
+    let updateBadgeValueOnLifecycleEvents = activityViewControllerIndex
+      .takeWhen(lifecycleEvents)
+      .map { index -> (Int?, RootViewControllerIndex) in
+        (AppEnvironment.current.application.applicationIconBadgeNumber, index)
+      }
+
+    let selectedIndexAndActivityViewControllerIndex = Signal.combineLatest(
+      self.selectedIndex,
+      activityViewControllerIndex
+    )
+
+    let badgeValueOnUserUpdated = self.currentUserUpdatedProperty.signal
+      .map { _ in AppEnvironment.current.currentUser?.unseenActivityCount }
+
+    let updateBadgeValueFromNotification = selectedIndexAndActivityViewControllerIndex
+      .takePairWhen(self.didReceiveBadgeValueSignal)
+
+    let updateBadgeValueOnUserUpdated = selectedIndexAndActivityViewControllerIndex
+      .takePairWhen(badgeValueOnUserUpdated)
+
+    let updateBadgeValueOnUserUpdatedOrFromNotification = Signal.merge(
+      updateBadgeValueOnUserUpdated,
+      updateBadgeValueFromNotification
+    )
+    .map(unpack)
+    .map { _, index, value in (value, index) }
+
+    let clearBadgeValueOnUserSessionEnded = activityViewControllerIndex
+      .takePairWhen(self.userSessionEndedProperty.signal)
+      .map { index, _ -> (Int?, RootViewControllerIndex) in (nil, index) }
+
+    let currentBadgeValue = MutableProperty<String?>(nil)
+
+    let clearBadgeValueOnActivitiesTabSelected = selectedIndexAndActivityViewControllerIndex.filter(==)
+      .flatMap { _, index in currentBadgeValue.producer.map { ($0, index) }.take(first: 1) }
+      .filter { value, _ in value != nil }
+      .map { _, index -> (Int?, RootViewControllerIndex) in (nil, index) }
+
+    let integerBadgeValueAndIndex = Signal.merge(
+      updateBadgeValueOnLifecycleEvents,
+      updateBadgeValueOnUserUpdatedOrFromNotification,
+      clearBadgeValueOnUserSessionEnded,
+      clearBadgeValueOnActivitiesTabSelected
+    )
+
+    self.setBadgeValueAtIndex = Signal.merge(
+      integerBadgeValueAndIndex,
+      integerBadgeValueAndIndex.takeWhen(self.voiceOverStatusDidChangeProperty.signal)
+    )
+    .map { value, index in (activitiesBadgeValue(with: value), index) }
+
+    currentBadgeValue <~ self.setBadgeValueAtIndex.map { $0.0 }
+
+    self.updateUserInEnvironment = clearBadgeValueOnActivitiesTabSelected
+      .filter { _ in AppEnvironment.current.currentUser != nil }
+      .switchMap { _ in
+        updatedUserWithClearedActivityCountProducer()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+      }
+
     let shouldSelectIndex = self.shouldSelectIndexProperty.signal
       .skipNil()
 
@@ -253,19 +339,30 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     .map(tabData(forUser:))
   }
 
+  private let (applicationWillEnterForegroundSignal, applicationWillEnterForegroundObserver)
+    = Signal<(), Never>.pipe()
+  func applicationWillEnterForeground() {
+    self.applicationWillEnterForegroundObserver.send(value: ())
+  }
+
   fileprivate let currentUserUpdatedProperty = MutableProperty(())
   internal func currentUserUpdated() {
     self.currentUserUpdatedProperty.value = ()
   }
 
-  fileprivate let shouldSelectIndexProperty = MutableProperty<Int?>(nil)
-  internal func shouldSelect(index: Int?) {
-    self.shouldSelectIndexProperty.value = index
+  private let (didReceiveBadgeValueSignal, didReceiveBadgeValueObserver) = Signal<Int?, Never>.pipe()
+  func didReceiveBadgeValue(_ value: Int?) {
+    self.didReceiveBadgeValueObserver.send(value: value)
   }
 
   fileprivate let didSelectIndexProperty = MutableProperty(0)
   internal func didSelect(index: Int) {
     self.didSelectIndexProperty.value = index
+  }
+
+  fileprivate let shouldSelectIndexProperty = MutableProperty<Int?>(nil)
+  internal func shouldSelect(index: Int?) {
+    self.shouldSelectIndexProperty.value = index
   }
 
   fileprivate let switchToActivitiesProperty = MutableProperty(())
@@ -318,12 +415,19 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     self.viewDidLoadProperty.value = ()
   }
 
+  fileprivate let voiceOverStatusDidChangeProperty = MutableProperty(())
+  internal func voiceOverStatusDidChange() {
+    self.voiceOverStatusDidChangeProperty.value = ()
+  }
+
   internal let filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), Never>
   internal let scrollToTop: Signal<RootViewControllerIndex, Never>
   internal let selectedIndex: Signal<RootViewControllerIndex, Never>
+  internal let setBadgeValueAtIndex: Signal<RootTabBarItemBadgeValueData, Never>
   internal let setViewControllers: Signal<[RootViewControllerData], Never>
   internal let switchDashboardProject: Signal<(Int, Param), Never>
   internal let tabBarItemsData: Signal<TabBarItemsData, Never>
+  internal let updateUserInEnvironment: Signal<User, Never>
 
   internal var inputs: RootViewModelInputs { return self }
   internal var outputs: RootViewModelOutputs { return self }
@@ -382,4 +486,17 @@ extension TabBarItem: Equatable {
     default: return false
     }
   }
+}
+
+private func activitiesBadgeValue(with value: Int?) -> String? {
+  let isVoiceOverRunning = AppEnvironment.current.isVoiceOverRunning()
+  let badgeValue = value ?? 0
+  let maxBadgeValue = !isVoiceOverRunning ? 99 : badgeValue
+  let clampedBadgeValue = min(badgeValue, maxBadgeValue)
+
+  guard clampedBadgeValue > 0 else { return nil }
+
+  return (badgeValue > maxBadgeValue) && !isVoiceOverRunning
+    ? Strings.activities_badge_value_plus(activities_badge_value: "\(clampedBadgeValue)")
+    : "\(clampedBadgeValue)"
 }

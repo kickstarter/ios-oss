@@ -115,6 +115,7 @@
 "Data_will_appear_here_once" = "Data will appear here once somebody backs your project.";
 "Delete_my_Kickstarter_Account" = "Delete my Kickstarter account";
 "Delivered" = "Delivered";
+"Description" = "Description";
 "Developer" = "Developer";
 "Discover_arts_news" = "Discover innovative projects and ideas, handpicked twice a month by Kickstarter's Design & Tech team.";
 "Discover_more_projects" = "Discover more projects.";
@@ -535,6 +536,7 @@
 "accessibility.projects.buttons.star" = "Star";
 "accessibility.projects.buttons.star_hint_favorites_this_project" = "Favorites this project.";
 "accessibility.projects.buttons.star_hint_reminds_you" = "Reminds you 48 hours before this project ends.";
+"activities_badge_value_plus" = "%{activities_badge_value}+";
 "activity.by_creator" = "by %{creator_name}";
 "activity.creator.actions.user_name_adjusted_their_pledge" = "%{user_name} adjusted their pledge:";
 "activity.creator.actions.user_name_canceled_their_pledge" = "%{user_name} canceled their pledge:";
