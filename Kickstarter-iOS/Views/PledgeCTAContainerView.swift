@@ -50,14 +50,14 @@ final class PledgeCTAContainerView: UIView {
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
-     self.bindViewModel()
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-   // MARK: - Styles
+  // MARK: - Styles
 
   override func bindStyles() {
     super.bindStyles()
@@ -86,7 +86,6 @@ final class PledgeCTAContainerView: UIView {
 
     _ = self.titleLabel
       |> \.font .~ UIFont.ksr_headline(size: 14)
-      |> \.text %~ { _ in Strings.Youre_a_backer() }
       |> \.numberOfLines .~ 0
   }
 
@@ -102,6 +101,7 @@ final class PledgeCTAContainerView: UIView {
     }
 
     self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
+    self.titleLabel.rac.text = self.vm.outputs.titleText
     self.subtitleLabel.rac.text = self.vm.outputs.subtitleText
     self.pledgeCTAButton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
     self.pledgeCTAButton.rac.title = self.vm.outputs.buttonTitleText
@@ -130,7 +130,7 @@ private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackV
 
 private func pledgeCTAButtonStyle(
   _ isAccessibilityCategory: Bool, amountAndRewardTitleStackViewIsHidden: Bool
-  ) -> (ButtonStyle) {
+) -> (ButtonStyle) {
   return { (button: UIButton) in
     let lineBreakMode: NSLineBreakMode = isAccessibilityCategory || amountAndRewardTitleStackViewIsHidden
       ? NSLineBreakMode.byWordWrapping : NSLineBreakMode.byTruncatingTail

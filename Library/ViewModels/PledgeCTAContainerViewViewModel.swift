@@ -37,7 +37,7 @@ PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
 
     let nonbackedProject = project
       .filter { isFalse($0.personalization.isBacking ?? true) }
-      .map(pledgeStateButton(project:))
+      .map(pledgeCTA(project:))
 
     let pledgeState = Signal.merge(backedProject, nonbackedProject).map { $0 }
 
@@ -78,13 +78,13 @@ private func pledgeCTA(project: Project, backing: Backing) -> PledgeStateCTAType
   case (.live, .errored):
     return .fix
   case (.live, _):
-    return .manage
+    return .fix
   case (_, _):
     return .viewBacking
   }
 }
 
-private func pledgeStateButton(project: Project) -> PledgeStateCTAType {
+private func pledgeCTA(project: Project) -> PledgeStateCTAType {
   switch project.state {
   case .live:
     return .pledge
