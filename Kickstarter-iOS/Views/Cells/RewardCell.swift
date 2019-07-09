@@ -54,9 +54,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.pledgeButton
       |> roundedGreenButtonStyle
 
-    _ = self.pledgeButton.titleLabel
-      ?|> checkoutGreenButtonTitleLabelStyle
-
     _ = self.scrollView
       |> scrollViewStyle
 

@@ -34,22 +34,6 @@ public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> 
   }
 }
 
-public let checkoutGreenButtonStyle: ButtonStyle = { button -> UIButton in
-  button
-    |> greenButtonStyle
-    |> roundedStyle(cornerRadius: 12)
-    |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-}
-
-public let checkoutGreenButtonTitleLabelStyle = { (titleLabel: UILabel?) -> UILabel? in
-  _ = titleLabel
-    ?|> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
-    ?|> \.numberOfLines .~ 0
-
-  return titleLabel
-}
-
 public let checkoutBackgroundStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.ksr_grey_300

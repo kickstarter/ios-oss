@@ -25,13 +25,10 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = self.continueButton
-      |> checkoutGreenButtonStyle
+      |> roundedGreenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.Continue()
       }
-
-    _ = self.continueButton.titleLabel
-      ?|> checkoutGreenButtonTitleLabelStyle
   }
 
   func configureWith(value _: ()) {}

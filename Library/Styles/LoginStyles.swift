@@ -56,8 +56,7 @@ public func emailFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
 }
 
 public let fbLoginButtonStyle = facebookButtonStyle
-  <> roundedButtonStyle
-  <> UIButton.lens.titleLabel.font %~ { _ in .ksr_headline() }
+  <> baseNewButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_buttons_log_in_with_facebook()
   }
@@ -84,8 +83,7 @@ public let forgotPasswordButtonStyle =
 public let loginButtonStyle: ButtonStyle = { button in
   button
     |> neutralButtonStyle
-    |> roundedButtonStyle
-    |> UIButton.lens.titleLabel.font .~ .ksr_headline()
+    |> baseNewButtonStyle
     |> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_back_intent_traditional_login_button()
   }
@@ -138,7 +136,7 @@ public let loginRootStackViewStyle =
   <> UIStackView.lens.layoutMargins %~~ { _, stack in
     stack.traitCollection.isRegularRegular
       ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
-      : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
+      : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(4))
   }
 
 public let signupButtonStyle: ButtonStyle = { button in

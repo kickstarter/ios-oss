@@ -131,7 +131,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     _ = self.contextLabel
       |> baseLabelStyle
-      |> UILabel.lens.font .~ .ksr_subhead()
 
     _ = self.loginContextStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -230,6 +229,13 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     self.contextLabel.rac.text = self.viewModel.outputs.logInContextText
     self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
+
+    self.viewModel.outputs.headlineLabelHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        _ = self?.contextLabel
+          ?|> UILabel.lens.font .~ (isHidden ? UIFont.ksr_title2() : UIFont.ksr_subhead())
+    }
   }
 
   // MARK: - Private Helpers

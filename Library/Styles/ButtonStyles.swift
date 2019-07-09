@@ -19,6 +19,14 @@ public let baseButtonStyle =
   <> UIButton.lens.adjustsImageWhenDisabled .~ false
   <> UIButton.lens.adjustsImageWhenHighlighted .~ false
 
+// This is a temporary style meant to replace baseButtonStyle in the very near future
+public let baseNewButtonStyle: ButtonStyle = { button in
+  button
+    |> roundedButtonStyle
+    |> UIButton.lens.titleLabel.font %~ { _ in UIFont.ksr_callout().bolded }
+    |> UIButton.lens.titleEdgeInsets .~ .init(all: Styles.grid(2))
+}
+
 public let blackButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_soft_black
@@ -86,15 +94,10 @@ public let greenButtonStyle =
 public let roundedGreenButtonStyle: ButtonStyle = { button in
   button
     |> greenButtonStyle
-    |> roundedButtonStyle
-    |> UIButton.lens.titleLabel.font %~~ { _, button in
-      button.traitCollection.verticalSizeClass == .compact
-        ? .ksr_subhead()
-        : .ksr_headline()
-    }
+    |> baseNewButtonStyle
     |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-    |> (UIButton.lens.titleLabel..UILabel.lens.textAlignment) .~ NSTextAlignment.center
+    |> UIButton.lens.titleLabel..UILabel.lens.lineBreakMode .~ NSLineBreakMode.byWordWrapping
+    |> UIButton.lens.titleLabel..UILabel.lens.numberOfLines .~ 0
 }
 
 public let lightNavyButtonStyle =
