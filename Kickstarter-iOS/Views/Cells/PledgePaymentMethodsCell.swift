@@ -1,14 +1,13 @@
 import KsApi
 import Library
+import PassKit
 import Prelude
-import Stripe
 import UIKit
 
 final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
-
   // MARK: - Properties
 
-  private let applePayButton = PKPaymentButton()
+  private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
 
   private lazy var collectionView: UICollectionView = {
     UICollectionView(frame: .zero, collectionViewLayout: self.layout)
@@ -37,9 +36,6 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   }
 
   private func configureSubviews() {
-    _ = self
-      |> \.accessibilityElements .~ self.subviews
-
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
@@ -67,8 +63,7 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: Styles.grid(2))
-      |> \.accessibilityLabel .~ "Apple Pay"
-      |> \.accessibilityTraits .~ .button
+      |> \.isAccessibilityElement .~ true
 
     _ = self.collectionView
       |> \.backgroundColor .~ .white
@@ -84,11 +79,17 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
       |> \.textAlignment .~ .center
   }
 
+  // MARK: - View model
+
   override func bindViewModel() {
     super.bindViewModel()
   }
 
+  // MARK: - Configuration
+
   internal func configureWith(value _: [GraphUserCreditCard]) {}
+
+  // MARK: - Actions
 
   @objc private func applePayButtonTapped() {
     print("Apple Pay tapped")
