@@ -94,6 +94,18 @@ class PledgeTableViewController: UITableViewController {
       .observeValues { [weak self] project, pledgeTotal in
         self?.pledgeSummaryCell?.configureWith(value: (project, pledgeTotal))
       }
+
+    self.viewModel.outputs.dismissShippingRules
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard
+          let presentedViewController = self?.presentedViewController,
+          let navigationController = presentedViewController.children.first as? UINavigationController,
+          let viewController = navigationController.viewControllers.first as? ShippingRulesTableViewController
+          else { return }
+
+        viewController.dismiss(animated: true)
+    }
   }
 
   // MARK: - UITableViewDelegate
@@ -131,13 +143,7 @@ class PledgeTableViewController: UITableViewController {
   }
 
   @objc func dismissShippingRules() {
-    guard
-      let presentedViewController = self.presentedViewController,
-      let navigationController = presentedViewController.children.first as? UINavigationController,
-      let viewController = navigationController.viewControllers.first as? ShippingRulesTableViewController
-    else { return }
-
-    viewController.dismiss(animated: true)
+    self.viewModel.inputs.dismissShippingRulesButtonTapped()
   }
 
   private func presentHelpWebViewController(with helpType: HelpType) {
