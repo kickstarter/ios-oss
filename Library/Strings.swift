@@ -5324,7 +5324,7 @@ n'ont rien soutenu."
     )
   }
   /**
-   "Post code"
+   "Postcode"
 
    - **en**: "Postcode"
    - **de**: "Postleitzahl"
