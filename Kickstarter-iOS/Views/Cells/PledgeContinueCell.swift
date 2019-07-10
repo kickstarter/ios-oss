@@ -65,7 +65,9 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
 
     self.continueButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(8)).isActive = true
 
-    self.continueButton.addTarget(self, action: #selector(self.continueButtonTapped), for: .touchUpInside)
+    self.continueButton.addTarget(self,
+                                  action: #selector(PledgeContinueCell.continueButtonTapped),
+                                  for: .touchUpInside)
   }
 
   @objc private func continueButtonTapped() {

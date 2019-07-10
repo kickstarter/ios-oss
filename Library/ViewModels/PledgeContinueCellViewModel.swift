@@ -27,11 +27,6 @@ public final class PledgeContinueCellViewModel: PledgeContinueCellViewModelType,
 
   public let goToLoginSignup: Signal<Void, Never>
 
-  public var inputs: PledgeContinueCellViewModelInputs {
-    return self
-  }
-
-  public var outputs: PledgeContinueCellViewModelOutputs {
-    return self
-  }
+  public var inputs: PledgeContinueCellViewModelInputs { return self }
+  public var outputs: PledgeContinueCellViewModelOutputs { return self }
 }

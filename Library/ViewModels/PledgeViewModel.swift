@@ -109,11 +109,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let userUpdatedReload = data.takeWhen(self.userSessionStartedSignal)
       .map { data -> (PledgeViewData, Bool) in
-        let loggedIn = AppEnvironment.current.currentUser != nil
         return ((
           project: data.project,
           reward: data.reward,
-          isLoggedIn: loggedIn,
+          isLoggedIn: AppEnvironment.current.currentUser != nil,
           shipping: data.shipping,
           pledgeTotal: data.pledgeTotal
           ), true)
