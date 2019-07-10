@@ -102,10 +102,10 @@ class PledgeTableViewController: UITableViewController {
           let presentedViewController = self?.presentedViewController,
           let navigationController = presentedViewController.children.first as? UINavigationController,
           let viewController = navigationController.viewControllers.first as? ShippingRulesTableViewController
-          else { return }
+        else { return }
 
         viewController.dismiss(animated: true)
-    }
+      }
   }
 
   // MARK: - UITableViewDelegate

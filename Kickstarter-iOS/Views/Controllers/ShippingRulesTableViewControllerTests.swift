@@ -29,7 +29,7 @@ final class ShippingRulesTableViewControllerTests: TestCase {
         |> (ShippingRule.lens.location .. Location.lens.localizedName) .~ "Czech Republic",
       .template
         |> ShippingRule.lens.cost .~ 5
-        |> (ShippingRule.lens.location .. Location.lens.localizedName) .~ "United States of America",
+        |> (ShippingRule.lens.location .. Location.lens.localizedName) .~ "United States of America"
     ]
 
     Device.allCases.forEach { device in
