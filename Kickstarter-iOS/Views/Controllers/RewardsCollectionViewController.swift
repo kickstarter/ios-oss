@@ -3,12 +3,6 @@ import KsApi
 import Library
 import Prelude
 
-private enum Layout {
-  enum Card {
-    static let width: CGFloat = 249
-  }
-}
-
 final class RewardsCollectionViewController: UICollectionViewController {
   // MARK: - Properties
 
@@ -194,7 +188,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     from layout: UICollectionViewFlowLayout,
     using collectionView: UICollectionView
   ) -> CGSize {
-    let cardWidth = Layout.Card.width
+    let cardWidth = CheckoutConstants.RewardCard.Layout.width
 
     let sectionInsets = layout.sectionInset
     let adjustedContentInset = collectionView.adjustedContentInset

@@ -1,6 +1,16 @@
 import Prelude
 import UIKit
 
+// MARK: - Constants
+
+public enum CheckoutConstants {
+  public enum RewardCard {
+    public enum Layout {
+      public static let width: CGFloat = 249
+    }
+  }
+}
+
 // MARK: - Attributes
 
 public func checkoutCurrencyDefaultAttributes() -> String.Attributes {

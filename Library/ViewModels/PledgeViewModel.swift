@@ -20,6 +20,7 @@ public typealias PledgeViewData = (
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func pledgeAmountDidUpdate(to amount: Double)
+  func pledgeDescriptionCellDidTapRewardThumbnail()
   func shippingRuleDidUpdate(to rule: ShippingRule)
   func viewDidLoad()
 }
@@ -36,6 +37,7 @@ public protocol PledgeViewModelOutputs {
    recycled it will be reloaded with its most recent data.
    */
   var pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never> { get }
+  var popViewController: Signal<(), Never> { get }
   var presentShippingRules: Signal<[ShippingRule], Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
 }
@@ -129,6 +131,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { data, isShippingLoading, selectedShippingRule in
         (isShippingLoading, data.project, selectedShippingRule)
       }
+
+    self.popViewController = self.pledgeDescriptionCellDidTapRewardThumbnailSignal
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -139,6 +143,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
   public func pledgeAmountDidUpdate(to amount: Double) {
     self.pledgeAmountObserver.send(value: amount)
+  }
+
+  private let (
+    pledgeDescriptionCellDidTapRewardThumbnailSignal,
+    pledgeDescriptionCellDidTapRewardThumbnailObserver
+  ) = Signal<(), Never>.pipe()
+  public func pledgeDescriptionCellDidTapRewardThumbnail() {
+    self.pledgeDescriptionCellDidTapRewardThumbnailObserver.send(value: ())
   }
 
   private let (shippingRuleSignal, shippingRuleObserver) = Signal<ShippingRule, Never>.pipe()
@@ -154,6 +166,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never>
   public let configureSummaryCellWithData: Signal<(Project, Double), Never>
   public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
+  public let popViewController: Signal<(), Never>
   public let presentShippingRules: Signal<[ShippingRule], Never>
   public let shippingRulesError: Signal<String, Never>
 

@@ -35,7 +35,6 @@ class PledgeTableViewController: UITableViewController {
     self.tableView.registerCellClass(PledgeShippingLocationCell.self)
     self.tableView.registerHeaderFooterClass(PledgeFooterView.self)
 
-    // Rebase Rebase Rebase
     self.tableView.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(PledgeTableViewController.dismissKeyboard))
     )
@@ -79,6 +78,12 @@ class PledgeTableViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] project, pledgeTotal in
         self?.pledgeSummaryCell?.configureWith(value: (project, pledgeTotal))
+      }
+
+    self.viewModel.outputs.popViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.navigationController?.popViewController(animated: true)
       }
   }
 
@@ -125,11 +130,19 @@ class PledgeTableViewController: UITableViewController {
   }
 }
 
+// MARK: - PledgeDescriptionCellDelegate
+
 extension PledgeTableViewController: PledgeDescriptionCellDelegate {
   internal func pledgeDescriptionCellDidPresentTrustAndSafety(_: PledgeDescriptionCell) {
     self.presentHelpWebViewController(with: .trust)
   }
+
+  internal func pledgeDescriptionCellDidTapRewardThumbnail(_: PledgeDescriptionCell) {
+    self.viewModel.inputs.pledgeDescriptionCellDidTapRewardThumbnail()
+  }
 }
+
+// MARK: - PledgeSummaryCellDelegate
 
 extension PledgeTableViewController: PledgeSummaryCellDelegate {
   internal func pledgeSummaryCell(_: PledgeSummaryCell, didOpen helpType: HelpType) {
@@ -137,11 +150,15 @@ extension PledgeTableViewController: PledgeSummaryCellDelegate {
   }
 }
 
+// MARK: - PledgeShippingLocationCellDelegate
+
 extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
   func pledgeShippingCell(_: PledgeShippingLocationCell, didSelectShippingRule rule: ShippingRule) {
     self.viewModel.inputs.shippingRuleDidUpdate(to: rule)
   }
 }
+
+// MARK: - PledgeAmountCellDelegate
 
 extension PledgeTableViewController: PledgeAmountCellDelegate {
   func pledgeAmountCell(_: PledgeAmountCell, didUpdateAmount amount: Double) {
