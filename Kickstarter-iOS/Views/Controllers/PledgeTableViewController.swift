@@ -84,7 +84,7 @@ class PledgeTableViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.navigationController?.popViewController(animated: true)
-    }
+      }
   }
 
   // MARK: - Actions
