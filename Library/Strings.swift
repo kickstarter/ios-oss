@@ -5326,16 +5326,16 @@ n'ont rien soutenu."
   /**
    "Post code"
 
-   - **en**: "Post code"
+   - **en**: "Postcode"
    - **de**: "Postleitzahl"
    - **es**: "Código postal"
    - **fr**: "Code postal"
    - **ja**: "郵便番号"
    */
-  public static func Post_code() -> String {
+  public static func Postcode() -> String {
     return localizedString(
-      key: "Post_code",
-      defaultValue: "Post code",
+      key: "Postcode",
+      defaultValue: "Postcode",
       count: nil,
       substitutions: [:]
     )

@@ -322,8 +322,8 @@
 "Pledged_on_date" = "<b>Contribuido</b> el %{pledge_date}";
 "Popular" = "Popular";
 "Popular_Projects" = "Proyectos populares";
-"Post_code" = "Código postal";
 "Postal_code" = "Código postal";
+"Postcode" = "Código postal";
 "Preparing_your_personal_data" = "Preparando tus datos personales...";
 "Privacy" = "Privacidad";
 "Private_profile" = "Perfil privado";

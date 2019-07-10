@@ -50,45 +50,45 @@ class LocalizedStringTests: XCTestCase {
 
   func testLocalizedPostalCode_Other() {
     withEnvironment(locale: Locale(identifier: "de_AU")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
+      XCTAssertEqual("Postcode", localizedPostalCode())
     }
 
     withEnvironment(locale: Locale(identifier: "en_GB")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
+      XCTAssertEqual("Postcode", localizedPostalCode())
     }
 
     withEnvironment(locale: Locale(identifier: "es_FR")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
+      XCTAssertEqual("Postcode", localizedPostalCode())
     }
 
     withEnvironment(locale: Locale(identifier: "fr_AT")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
+      XCTAssertEqual("Postcode", localizedPostalCode())
     }
 
     withEnvironment(locale: Locale(identifier: "ja_CH")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
+      XCTAssertEqual("Postcode", localizedPostalCode())
     }
   }
 
   func testLocalizedPostalCode_No_Region() {
     withEnvironment(locale: Locale(identifier: "de")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
+      XCTAssertEqual("Postcode", localizedPostalCode())
     }
 
     withEnvironment(locale: Locale(identifier: "en")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
+      XCTAssertEqual("Postcode", localizedPostalCode())
     }
 
     withEnvironment(locale: Locale(identifier: "es")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
+      XCTAssertEqual("Postcode", localizedPostalCode())
     }
 
     withEnvironment(locale: Locale(identifier: "fr")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
+      XCTAssertEqual("Postcode", localizedPostalCode())
     }
 
     withEnvironment(locale: Locale(identifier: "ja")) {
-      XCTAssertEqual("Post code", localizedPostalCode())
+      XCTAssertEqual("Postcode", localizedPostalCode())
     }
   }
 

@@ -322,8 +322,8 @@
 "Pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "Popular" = "人気";
 "Popular_Projects" = "人気のプロジェクト";
-"Post_code" = "郵便番号";
 "Postal_code" = "郵便番号";
+"Postcode" = "郵便番号";
 "Preparing_your_personal_data" = "あなたの個人データを準備中…";
 "Privacy" = "プライバシー";
 "Private_profile" = "プライベート設定のプロフィール";

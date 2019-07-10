@@ -5,11 +5,11 @@ public func localizedPostalCode() -> String {
   // https://speakerdeck.com/krstnfx/internationalizing-your-app?slide=37
   switch AppEnvironment.current.locale.regionCode {
   // 🇺🇸
-  case .some("US"): return localizedString(key: "Zip_code", defaultValue: "Zip code")
+  case .some("US"): return Strings.Zip_code()
   // 🇨🇦
-  case .some("CA"): return localizedString(key: "Postal_code", defaultValue: "Postal code")
+  case .some("CA"): return Strings.Postal_code()
   // 🌍
-  default: return localizedString(key: "Post_code", defaultValue: "Post code")
+  default: return Strings.Postcode()
   }
 }
 
