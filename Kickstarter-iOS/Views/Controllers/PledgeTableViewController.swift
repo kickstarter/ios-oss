@@ -3,6 +3,12 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum Sheet {
+    static let offset: CGFloat = 222
+  }
+}
+
 class PledgeTableViewController: UITableViewController {
   // MARK: - Properties
 
@@ -78,6 +84,14 @@ class PledgeTableViewController: UITableViewController {
         }
       }
 
+    self.viewModel.outputs.presentShippingRules
+      .observeForUI()
+      .observeValues { [weak self] project, shippingRules, selectedShippingRule in
+        self?.presentShippingRules(
+          project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
+        )
+      }
+
     self.viewModel.outputs.configureShippingLocationCellWithData
       .observeForUI()
       .observeValues { [weak self] isLoading, project, selectedShippingRule in
@@ -106,12 +120,6 @@ class PledgeTableViewController: UITableViewController {
     let sheetOverlayViewController = SheetOverlayViewController(child: navigationController)
 
     self.present(sheetOverlayViewController, animated: true)
-  }
-
-  // MARK: - Actions
-
-  @objc func dismissKeyboard() {
-    self.tableView.endEditing(true)
   }
 
   // MARK: - UITableViewDelegate
@@ -147,10 +155,24 @@ class PledgeTableViewController: UITableViewController {
 
   // MARK: - Actions
 
+  @objc func dismissKeyboard() {
+    self.tableView.endEditing(true)
+  }
+
   private func presentHelpWebViewController(with helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
-    let nav = UINavigationController(rootViewController: vc)
-    self.present(nav, animated: true, completion: nil)
+    let nc = UINavigationController(rootViewController: vc)
+    self.present(nc, animated: true)
+  }
+
+  private func presentShippingRules(
+    _: Project, shippingRules _: [ShippingRule], selectedShippingRule _: ShippingRule
+  ) {
+    let vc = UIViewController()
+    vc.view.backgroundColor = UIColor.cyan
+    let nc = UINavigationController(rootViewController: vc)
+    let sheetVC = SheetOverlayViewController(child: nc, offset: Layout.Sheet.offset)
+    self.present(sheetVC, animated: true)
   }
 }
 
@@ -160,15 +182,18 @@ extension PledgeTableViewController: PledgeDescriptionCellDelegate {
   }
 }
 
-extension PledgeTableViewController: PledgeSummaryCellDelegate {
-  internal func pledgeSummaryCell(_: PledgeSummaryCell, didOpen helpType: HelpType) {
-    self.presentHelpWebViewController(with: helpType)
+extension PledgeTableViewController: PledgeAmountCellDelegate {
+  func pledgeAmountCell(_: PledgeAmountCell, didUpdateAmount amount: Double) {
+    self.viewModel.inputs.pledgeAmountDidUpdate(to: amount)
   }
 }
 
 extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
-  func pledgeShippingCell(_: PledgeShippingLocationCell, didSelectShippingRule rule: ShippingRule) {
-    self.viewModel.inputs.shippingRuleDidUpdate(to: rule)
+  func pledgeShippingCellWillPresentShippingRules(
+    _: PledgeShippingLocationCell,
+    selectedShippingRule rule: ShippingRule
+  ) {
+    self.viewModel.inputs.pledgeShippingCellWillPresentShippingRules(with: rule)
   }
 }
 
@@ -178,9 +203,9 @@ extension PledgeTableViewController: PledgeContinueCellDelegate {
   }
 }
 
-extension PledgeTableViewController: PledgeAmountCellDelegate {
-  func pledgeAmountCell(_: PledgeAmountCell, didUpdateAmount amount: Double) {
-    self.viewModel.inputs.pledgeAmountDidUpdate(to: amount)
+extension PledgeTableViewController: PledgeSummaryCellDelegate {
+  internal func pledgeSummaryCell(_: PledgeSummaryCell, didOpen helpType: HelpType) {
+    self.presentHelpWebViewController(with: helpType)
   }
 }
 
