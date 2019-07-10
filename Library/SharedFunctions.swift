@@ -152,11 +152,8 @@ public func countdownProducer(to date: Date)
 }
 
 internal func is1PasswordButtonHidden(_ isHidden: Bool) -> Bool {
-  if AppEnvironment.current.is1PasswordSupported() {
-    return true
-  } else {
-    return isHidden
-  }
+  guard AppEnvironment.current.is1PasswordSupported() else { return true }
+  return isHidden
 }
 
 public func ksr_is1PasswordSupported() -> Bool {
