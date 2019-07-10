@@ -46,8 +46,11 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.amountAndRewardTitleStackView, self.spacer, self.pledgeCTAButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    let buttonWidth: CGFloat = 98.0
+
     NSLayoutConstraint.activate([
-      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+      self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: buttonWidth)
     ])
 
     self.bindViewModel()
@@ -139,7 +142,6 @@ private func pledgeCTAButtonStyle(
       |> roundedStyle(cornerRadius: 12)
       |> UIButton.lens.titleLabel.font .~ UIFont.ksr_headline(size: 15)
       |> UIButton.lens.layer.borderWidth .~ 0
-      |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
       |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ lineBreakMode
   }
