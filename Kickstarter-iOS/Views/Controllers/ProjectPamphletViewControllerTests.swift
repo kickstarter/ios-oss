@@ -176,7 +176,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
     withEnvironment(config: config, currentUser: nil, language: language) {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-      let (_, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+      _ = traitControllers(device: device, orientation: .portrait, child: vc)
 
       FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
     }
