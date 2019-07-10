@@ -31,6 +31,7 @@ final class PledgeViewModelTests: TestCase {
   private let pledgeViewDataAndReloadSelectedShippingRule = TestObserver<ShippingRule?, Never>()
   private let pledgeViewDataAndReloadTotal = TestObserver<Double, Never>()
 
+  private let popViewController = TestObserver<(), Never>()
   private let presentShippingRules = TestObserver<[ShippingRule], Never>()
   private let shippingRulesError = TestObserver<String, Never>()
 
@@ -55,6 +56,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.3 }.map { $0.2 }.observe(self.pledgeViewDataAndReloadSelectedShippingRule.observer)
     self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.4 }.observe(self.pledgeViewDataAndReloadTotal.observer)
 
+    self.vm.outputs.popViewController.observe(self.popViewController.observer)
     self.vm.outputs.presentShippingRules.observe(self.presentShippingRules.observer)
     self.vm.outputs.shippingRulesError.observe(self.shippingRulesError.observer)
   }
@@ -444,5 +446,13 @@ final class PledgeViewModelTests: TestCase {
 
       self.shippingRulesError.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
     }
+  }
+
+  func testPopViewControllerOnCellDidTapRewardThumbnail() {
+    self.popViewController.assertValueCount(0)
+
+    self.vm.inputs.pledgeDescriptionCellDidTapRewardThumbnail()
+
+    self.popViewController.assertValueCount(1)
   }
 }
