@@ -115,14 +115,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let userUpdatedReload = data.takeWhen(self.userSessionStartedSignal)
       .map { data -> (PledgeViewData, Bool) in
-        return ((
+        ((
           project: data.project,
           reward: data.reward,
           isLoggedIn: AppEnvironment.current.currentUser != nil,
           shipping: data.shipping,
           pledgeTotal: data.pledgeTotal
-          ), true)
-    }
+        ), true)
+      }
 
     let initialLoad = data.take(first: 1).map { data in (data, true) }
     let silentReload = data.skip(first: 1).map { data in (data, false) }

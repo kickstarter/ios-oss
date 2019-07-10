@@ -149,7 +149,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testSelectedShippingRule() {	
+  func testSelectedShippingRule() {
     let project = Project.template
     let reward = Reward.template
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
