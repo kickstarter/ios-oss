@@ -44,6 +44,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.checkout.rawValue: true]
     let backedProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ .template
       |> Project.lens.state .~ .live
@@ -67,6 +68,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.checkout.rawValue: true]
     let backedProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ .template
       |> Project.lens.state .~ .successful
@@ -106,6 +108,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.checkout.rawValue: true]
     let backedProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .successful
 
@@ -146,6 +149,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.checkout.rawValue: true]
     let backedProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .successful
 
