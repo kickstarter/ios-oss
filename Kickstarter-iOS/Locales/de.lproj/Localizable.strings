@@ -62,7 +62,6 @@
 "Change_payment_method" = "Zahlungsmethode ändern";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Der Fortschritt des Exports wird in Kürze verfügbar sein- schau später noch einmal vorbei.";
-"Check_your_payment_details" = "Überprüfe die Daten deiner Zahlungsweise";
 "Chooses_location_for_shipping" = "Legt %{location} als Versandort fest.";
 "Close_live_stream" = "Live-Stream schließen";
 "Close_project" = "Projekt schließen";
@@ -167,7 +166,6 @@
 "Find_projects_youll_love_and_help_bring" = "Finde Projekte, die zu dir passen und hilf mit bei der Umsetzung neuer, kreativer Ideen.";
 "Find_projects_youll_love_in_art_design_film" = "Finde Projekte nach deinem Geschmack - in Kunst, Design, Film, Spiele, Musik und vielen anderen Kategorien. Wenn du ein Projekt unterstützt hast, wird deren Aktivität hier angezeigt.";
 "First_created" = "Erstes Projekt";
-"Fix" = "Korrigieren";
 "Follow_friend_name" = "%{friend_name} folgen.";
 "Follow_friends" = "Freunden folgen";
 "Follow_more_friends" = "Folge noch mehr Freunden";
@@ -482,8 +480,6 @@
 "View_your_reward" = "Belohnung ansehen";
 "Watch_live" = "Live ansehen";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
-"We_couldnt_process_your_pledge" = "Dein Finanzierungsbeitrag konnte nicht bearbeitet werden.";
-"We_think_youll_like_these_too" = "We think you’ll like these, too";
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "Deine Aktivitäten werden intern genutzt, um dir Empfehlungen zu unterbreiten. Um dies zu deaktivieren, wähle \"Empfehlungen\" einfach ab.";
 "We_ve_been_unable_to_send_email" = "Wir konnten keine E-Mails an diese Adresse senden. Bitte prüfe, ob sie richtig eingegeben wurde.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Es konnte leider keine Verbindung zum Chat des Live-Streams hergestellt werden.";

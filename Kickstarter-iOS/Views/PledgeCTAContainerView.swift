@@ -3,24 +3,17 @@ import Library
 import Prelude
 import UIKit
 
-private enum Layout {
-  enum Button {
-    static let height: CGFloat = 48.0
-    static let width: CGFloat = 98.0
-  }
-}
-
 final class PledgeCTAContainerView: UIView {
   // MARK: - Properties
 
   private let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
-  private lazy var titleAndSubtitleStackView: UIStackView = {
+  private lazy var amountAndRewardTitleStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var amountOrRewardLabel: UILabel = { UILabel(frame: .zero) }()
   private(set) lazy var pledgeCTAButton: UIButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -36,7 +29,7 @@ final class PledgeCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var youreABackerLabel: UILabel = { UILabel(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -47,16 +40,14 @@ final class PledgeCTAContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleLabel, self.subtitleLabel], self.titleAndSubtitleStackView)
+    _ = ([self.youreABackerLabel, self.amountOrRewardLabel], self.amountAndRewardTitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.titleAndSubtitleStackView, self.spacer, self.pledgeCTAButton], self.rootStackView)
+    _ = ([self.amountAndRewardTitleStackView, self.spacer, self.pledgeCTAButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     NSLayoutConstraint.activate([
-      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.height),
-      self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.width),
-      self.rootStackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor)
+      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
     self.bindViewModel()
@@ -73,30 +64,29 @@ final class PledgeCTAContainerView: UIView {
 
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
-    _ = self.titleAndSubtitleStackView
+    _ = self.amountAndRewardTitleStackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
       |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.spacing .~ 0
+
+    _ = self.amountOrRewardLabel
+      |> \.font .~ UIFont.ksr_caption1(size: 14)
+      |> \.textColor .~ UIColor.ksr_dark_grey_500
+      |> \.numberOfLines .~ 0
 
     _ = self.pledgeCTAButton
       |> pledgeCTAButtonStyle(
         isAccessibilityCategory,
-        amountAndRewardTitleStackViewIsHidden: self.titleAndSubtitleStackView.isHidden
+        amountAndRewardTitleStackViewIsHidden: self.amountAndRewardTitleStackView.isHidden
       )
 
     _ = self.rootStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
-      |> \.alignment .~ .center
 
-    _ = self.titleLabel
-      |> \.font .~ UIFont.ksr_callout().bolded
-      |> \.numberOfLines .~ 0
-
-    _ = self.subtitleLabel
-      |> \.font .~ UIFont.ksr_caption1().bolded
-      |> \.textColor .~ UIColor.ksr_dark_grey_500
+    _ = self.youreABackerLabel
+      |> \.font .~ UIFont.ksr_headline(size: 14)
+      |> \.text %~ { _ in Strings.Youre_a_backer() }
       |> \.numberOfLines .~ 0
   }
 
@@ -105,15 +95,8 @@ final class PledgeCTAContainerView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.vm.outputs.buttonTitleTextColor
-      .observeForUI()
-      .observeValues { [weak self] textColor in
-        self?.pledgeCTAButton.setTitleColor(textColor, for: .normal)
-      }
-
-    self.titleAndSubtitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
-    self.titleLabel.rac.text = self.vm.outputs.titleText
-    self.subtitleLabel.rac.text = self.vm.outputs.subtitleText
+    self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
+    self.amountOrRewardLabel.rac.text = self.vm.outputs.rewardTitle
     self.pledgeCTAButton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
     self.pledgeCTAButton.rac.title = self.vm.outputs.buttonTitleText
     self.spacer.rac.hidden = self.vm.outputs.spacerIsHidden
@@ -121,8 +104,8 @@ final class PledgeCTAContainerView: UIView {
 
   // MARK: - Configuration
 
-  func configureWith(project: Project) {
-    self.vm.inputs.configureWith(project: project)
+  func configureWith(project: Project, user: User) {
+    self.vm.inputs.configureWith(project: project, user: user)
   }
 }
 
@@ -148,8 +131,10 @@ private func pledgeCTAButtonStyle(
 
     return button
       |> roundedStyle(cornerRadius: 12)
+      |> UIButton.lens.titleColor(for: .normal) .~ UIColor.white
       |> UIButton.lens.titleLabel.font .~ UIFont.ksr_headline(size: 15)
       |> UIButton.lens.layer.borderWidth .~ 0
+      |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
       |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ lineBreakMode
   }

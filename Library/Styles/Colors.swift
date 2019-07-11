@@ -188,11 +188,6 @@ extension UIColor {
     return .hex(0x1A8CFF)
   }
 
-  // 0x2b60ff
-  public static var ksr_blue: UIColor {
-    return .hex(0x2b60ff)
-  }
-
   /// 0xF7AA1A
   public static var ksr_orange_400: UIColor {
     return .hex(0xF7AA1A)

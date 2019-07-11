@@ -62,7 +62,6 @@
 "Change_payment_method" = "支払方法の変更";
 "Chat" = "チャット";
 "Check_back_later_for_an_update_on_your_export" = "しばらくしてからエクスポートの進捗状況を確認してください。";
-"Check_your_payment_details" = "お支払い情報をご確認ください";
 "Chooses_location_for_shipping" = "配送先%{location} を選択";
 "Close_live_stream" = "ライブ配信を閉じる";
 "Close_project" = "プロジェクトを閉じる";
@@ -167,7 +166,6 @@
 "Find_projects_youll_love_and_help_bring" = "お気に入りを見つけて、クリエイティブなプロジェクトに生命を吹き込もう。";
 "Find_projects_youll_love_in_art_design_film" = "お気に入りを見つけて、クリエイティブなプロジェクトに生命を吹き込もう。";
 "First_created" = "1つめのプロジェクト";
-"Fix" = "修正する";
 "Follow_friend_name" = "%{friend_name} をフォロー";
 "Follow_friends" = "友達をフォロー";
 "Follow_more_friends" = "もっと友達をフォローする";
@@ -482,8 +480,6 @@
 "View_your_reward" = "リワードをみる";
 "Watch_live" = "ライブをみる";
 "We_couldnt_find_anything_for_search_term" = "「%{search_term}」に一致するものがありませんでした。";
-"We_couldnt_process_your_pledge" = "プレッジを処理できませんでした。";
-"We_think_youll_like_these_too" = "その他おすすめプロジェクト";
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "あなたのアクティビティをもとにおすすめの提供を行っています。オプトアウトするにはおすすめ機能をオフにしてください。";
 "We_ve_been_unable_to_send_email" = "このアドレスにメールを送信できませんでした。メールアドレスが正確に入力されていることをご確認ください。";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "ライブ配信への接続に失敗。";
