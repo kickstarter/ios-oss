@@ -39,7 +39,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedIn_Backer_LiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
-    let backedProject = project
+    let backedProject = self.project
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ .template
       |> Project.lens.state .~ .live
@@ -61,7 +61,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedIn_Backer_NonLiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
-    let backedProject = project
+    let backedProject = self.project
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ .template
       |> Project.lens.state .~ .successful
@@ -83,7 +83,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedIn_NonBacker_LiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
-    let backedProject = project
+    let backedProject = self.project
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .live
 
@@ -102,7 +102,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedIn_NonBacker_NonLiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
-    let backedProject = project
+    let backedProject = self.project
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .successful
 
@@ -125,7 +125,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.checkout.rawValue: true]
     let backing = Backing.template
       |> Backing.lens.status .~ .errored
-    let backedProject = project
+    let backedProject = self.project
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.state .~ .live
@@ -149,7 +149,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedOut_NonBacker_LiveProject_NativeCheckout_Feature_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
-    let backedProject = project
+    let backedProject = self.project
       |> Project.lens.personalization.isBacking .~ nil
       |> Project.lens.state .~ .live
 
@@ -168,7 +168,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedOut_NonBacker_NonLiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
-    let backedProject = project
+    let backedProject = self.project
       |> Project.lens.personalization.isBacking .~ nil
       |> Project.lens.state .~ .successful
 
@@ -191,7 +191,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedOut_LiveProject_NativeCheckout_Disabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: false]
-    let backedProject = project
+    let backedProject = self.project
       |> Project.lens.personalization.isBacking .~ nil
       |> Project.lens.state .~ .live
     let language = Language.en
@@ -210,7 +210,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedOut_LiveProject_NativeCheckout_Undefined() {
     let config = Config.template
       |> \.features .~ [:]
-    let backedProject = project
+    let backedProject = self.project
       |> Project.lens.personalization.isBacking .~ nil
       |> Project.lens.state .~ .live
     let language = Language.en
