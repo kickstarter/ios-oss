@@ -33,8 +33,8 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Return this value from the view's `prefersStatusBarHidden` method.
   var prefersStatusBarHidden: Bool { get }
 
-  /// Emits a project
-  var project: Signal<Project, Never> { get }
+  /// Emits a project and user.
+  var projectAndUser: Signal<(Project, User), Never> { get }
 
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
   var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
@@ -67,6 +67,10 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
           }
       }
 
+    let user = self.viewDidLoadProperty.signal
+      .map { AppEnvironment.current.currentUser }
+      .skipNil()
+
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, refTag in
@@ -74,9 +78,9 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
 
     let project = freshProjectAndRefTag
-      .map { project, _ in project }
+      .map(first)
 
-    self.project = project.map { $0 }
+    self.projectAndUser = Signal.combineLatest(project, user)
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -168,7 +172,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let goToRewards: Signal<(Project, RefTag?), Never>
-  public let project: Signal<Project, Never>
+  public let projectAndUser: Signal<(Project, User), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
   public let topLayoutConstraintConstant: Signal<CGFloat, Never>
