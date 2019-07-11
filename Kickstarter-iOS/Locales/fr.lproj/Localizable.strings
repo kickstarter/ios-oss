@@ -62,6 +62,7 @@
 "Change_payment_method" = "Changer de moyen de paiement";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Repassez plus tard pour suivre la préparation de votre exportation.";
+"Check_your_payment_details" = "Check your payment details";
 "Chooses_location_for_shipping" = "Sélectionne %{location} pour la livraison.";
 "Close_live_stream" = "Fermer la diffusion en direct";
 "Close_project" = "Fermer le projet";
@@ -166,6 +167,7 @@
 "Find_projects_youll_love_and_help_bring" = "Découvrez de beaux projets et participez à la concrétisation d'idées créatives.";
 "Find_projects_youll_love_in_art_design_film" = "Découvrez des projets que vous allez adorer : art, design, cinéma, jeux, musique et plus encore. L'activité des projets que vous soutenez s'affichera ici.";
 "First_created" = "Premier projet créé";
+"Fix" = "Corriger";
 "Follow_friend_name" = "Suivre %{friend_name}";
 "Follow_friends" = "Suivez vos amis";
 "Follow_more_friends" = "Suivre plus d'amis";
@@ -480,6 +482,8 @@
 "View_your_reward" = "Afficher ma récompense";
 "Watch_live" = "Regarder en direct";
 "We_couldnt_find_anything_for_search_term" = "Pas de résultats pour « %{search_term} ».";
+"We_couldnt_process_your_pledge" = "Impossible de traiter votre engagement.";
+"We_think_youll_like_these_too" = "D'autres projets qui pourraient vous plaire";
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "À l'interne, nous nous servons de vos activités pour vous faire des recommandations. Si vous ne souhaitez pas participer, nous vous invitons à désactiver vos recommandations.";
 "We_ve_been_unable_to_send_email" = "Échec de l'envoi. Veuillez vérifier l'orthographe de votre adresse e-mail.";
 "We_were_unable_to_connect_to_the_live_stream_chat" = "Connexion au chat en direct impossible.";
