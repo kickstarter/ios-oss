@@ -98,13 +98,7 @@ class PledgeTableViewController: UITableViewController {
     self.viewModel.outputs.dismissShippingRules
       .observeForUI()
       .observeValues { [weak self] in
-        guard
-          let presentedViewController = self?.presentedViewController,
-          let navigationController = presentedViewController.children.first as? UINavigationController,
-          let viewController = navigationController.viewControllers.first as? ShippingRulesTableViewController
-        else { return }
-
-        viewController.dismiss(animated: true)
+        self?.dismiss(animated: true)
       }
   }
 
