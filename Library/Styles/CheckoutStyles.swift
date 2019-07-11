@@ -42,6 +42,14 @@ public let checkoutGreenButtonStyle: ButtonStyle = { button -> UIButton in
     |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
 }
 
+public let checkoutSmallBlackButtonStyle: ButtonStyle = { button -> UIButton in
+  button
+    |> blackButtonStyle
+    |> roundedStyle(cornerRadius: Styles.grid(1))
+    |> UIButton.lens.layer.borderWidth .~ 0
+    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+}
+
 public let checkoutGreenButtonTitleLabelStyle = { (titleLabel: UILabel?) -> UILabel? in
   _ = titleLabel
     ?|> \.font .~ UIFont.ksr_headline()

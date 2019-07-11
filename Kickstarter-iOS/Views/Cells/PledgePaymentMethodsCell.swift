@@ -13,7 +13,7 @@ private enum Layout {
 final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private let layout: UICollectionViewLayout = {
+  private lazy var layout: UICollectionViewLayout = {
     UICollectionViewFlowLayout()
       |> \.scrollDirection .~ .horizontal
   }()
@@ -53,11 +53,14 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.delegate .~ self
 
     self.collectionView.register(PledgeCreditCardCell.self)
 
-    self.collectionView.heightAnchor.constraint(equalToConstant: 140)
+    let heightConstraint = self.collectionView.heightAnchor
+      .constraint(greaterThanOrEqualToConstant: Layout.Card.height + Styles.grid(2))
+
+    NSLayoutConstraint.activate([heightConstraint])
   }
 
   // MARK: - Styles
@@ -68,7 +71,8 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
       |> checkoutBackgroundStyle
 
     _ = self.collectionView
-      |> \.backgroundColor .~ .white
+      |> checkoutBackgroundStyle
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     _ = self.rootStackView
       |> checkoutStackViewStyle
@@ -91,11 +95,22 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   }
 }
 
+extension PledgePaymentMethodsCell: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    print(collectionView)
+  }
+}
+
 extension PledgePaymentMethodsCell: UICollectionViewDelegateFlowLayout {
+
   func collectionView(
-    _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-    sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-    return CGSize(width: Layout.Card.width, height: Layout.Card.height)
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let size = CGSize(width: Layout.Card.width, height: UIView.layoutFittingCompressedSize.height)
+
+    return self.contentView.systemLayoutSizeFitting(size,
+                                                    withHorizontalFittingPriority: .defaultHigh,
+                                                    verticalFittingPriority: .defaultLow)
   }
 }

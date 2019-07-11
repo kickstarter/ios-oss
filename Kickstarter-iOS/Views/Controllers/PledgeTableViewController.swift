@@ -26,7 +26,7 @@ class PledgeTableViewController: UITableViewController {
 
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
-
+    self.tableView.rowHeight = UITableView.automaticDimension
     self.tableView.registerCellClass(PledgeAmountCell.self)
     self.tableView.registerCellClass(PledgeContinueCell.self)
     self.tableView.registerCellClass(PledgeDescriptionCell.self)
@@ -154,6 +154,7 @@ extension PledgeTableViewController: PledgeAmountCellDelegate {
 private func tableViewStyle(_ tableView: UITableView) -> UITableView {
   let style = tableView
     |> \.allowsSelection .~ false
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.separatorStyle .~ UITableViewCell.SeparatorStyle.none
     |> \.contentInset .~ UIEdgeInsets(top: -35)
     |> \.sectionFooterHeight .~ PledgeFooterView.defaultHeight
