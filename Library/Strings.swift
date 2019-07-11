@@ -1034,23 +1034,6 @@ contributeurs"
     )
   }
   /**
-   "Check your payment details"
-
-   - **en**: "Check your payment details"
-   - **de**: "Überprüfe die Daten deiner Zahlungsweise"
-   - **es**: "Revisa tu información de pago"
-   - **fr**: "Check your payment details"
-   - **ja**: "お支払い情報をご確認ください"
-  */
-  public static func Check_your_payment_details() -> String {
-    return localizedString(
-      key: "Check_your_payment_details",
-      defaultValue: "Check your payment details",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Chooses %{location} for shipping."
 
    - **en**: "Chooses %{location} for shipping."
@@ -2746,23 +2729,6 @@ contributeurs"
     return localizedString(
       key: "First_created",
       defaultValue: "First created",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Fix"
-
-   - **en**: "Fix"
-   - **de**: "Korrigieren"
-   - **es**: "Corregir"
-   - **fr**: "Corriger"
-   - **ja**: "修正する"
-  */
-  public static func Fix() -> String {
-    return localizedString(
-      key: "Fix",
-      defaultValue: "Fix",
       count: nil,
       substitutions: [:]
     )
@@ -7842,40 +7808,6 @@ catch your eye?"
       defaultValue: "We couldn't find anything for “%{search_term}”.",
       count: nil,
       substitutions: ["search_term": search_term]
-    )
-  }
-  /**
-   "We couldn't process your pledge."
-
-   - **en**: "We couldn't process your pledge."
-   - **de**: "Dein Finanzierungsbeitrag konnte nicht bearbeitet werden."
-   - **es**: "No pudimos procesar tu contribución."
-   - **fr**: "Impossible de traiter votre engagement."
-   - **ja**: "プレッジを処理できませんでした。"
-  */
-  public static func We_couldnt_process_your_pledge() -> String {
-    return localizedString(
-      key: "We_couldnt_process_your_pledge",
-      defaultValue: "We couldn't process your pledge.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "We think you’ll like these, too"
-
-   - **en**: "We think you’ll like these, too"
-   - **de**: "We think you’ll like these, too"
-   - **es**: "We think you’ll like these, too"
-   - **fr**: "D'autres projets qui pourraient vous plaire"
-   - **ja**: "その他おすすめプロジェクト"
-  */
-  public static func We_think_youll_like_these_too() -> String {
-    return localizedString(
-      key: "We_think_youll_like_these_too",
-      defaultValue: "We think you’ll like these, too",
-      count: nil,
-      substitutions: [:]
     )
   }
   /**
@@ -16752,23 +16684,6 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
       defaultValue: "%{category_count} categories backed",
       count: category_count,
       substitutions: ["category_count": Format.wholeNumber(category_count)]
-    )
-  }
-  /**
-   "%{category_count} categories backed"
-
-   - **en**: "%{category_count} categories backed"
-   - **de**: "In %{category_count} Kategorien"
-   - **es**: "en %{category_count} categorías"
-   - **fr**: "%{category_count} catégories soutenues"
-   - **ja**: "%{category_count} カテゴリーへバック"
-  */
-  public static func profile_category_count_categories_backed_other(category_count: String) -> String {
-    return localizedString(
-      key: "profile.category_count_categories_backed.other",
-      defaultValue: "%{category_count} categories backed",
-      count: nil,
-      substitutions: ["category_count": category_count]
     )
   }
   /**
