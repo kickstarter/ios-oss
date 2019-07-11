@@ -31,7 +31,7 @@ final class ShippingRulesTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.values
+    self.viewModel.outputs.loadValues
       .observeForUI()
       .observeValues { [weak self] values in
         self?.dataSource.load(values)

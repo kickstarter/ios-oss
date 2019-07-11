@@ -8,12 +8,12 @@ import ReactiveExtensions_TestHelpers
 final class ShippingRulesViewModelTests: TestCase {
   private let vm: ShippingRulesViewModelType = ShippingRulesViewModel()
 
-  private let values = TestObserver<[String], Never>()
+  private let loadValues = TestObserver<[String], Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.values.observe(self.values.observer)
+    self.vm.outputs.loadValues.observe(self.loadValues.observer)
   }
 
   func testValues() {
@@ -27,6 +27,6 @@ final class ShippingRulesViewModelTests: TestCase {
     self.vm.inputs.configureWith(project, shippingRules: [shippingRule], selectedShippingRule: .template)
     self.vm.inputs.viewDidLoad()
 
-    self.values.assertValues([["Canada (+CA$ 25)"]])
+    self.loadValues.assertValues([["Canada (+CA$ 25)"]])
   }
 }

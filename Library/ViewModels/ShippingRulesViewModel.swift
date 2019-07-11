@@ -10,7 +10,7 @@ public protocol ShippingRulesViewModelInputs {
 }
 
 public protocol ShippingRulesViewModelOutputs {
-  var values: Signal<[String], Never> { get }
+  var loadValues: Signal<[String], Never> { get }
 }
 
 public protocol ShippingRulesViewModelType {
@@ -21,7 +21,7 @@ public protocol ShippingRulesViewModelType {
 public final class ShippingRulesViewModel: ShippingRulesViewModelType,
   ShippingRulesViewModelInputs, ShippingRulesViewModelOutputs {
   public init() {
-    self.values = Signal.combineLatest(
+    self.loadValues = Signal.combineLatest(
       self.viewDidLoadProperty.signal,
       self.configDataProperty.signal
     )
@@ -46,7 +46,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let values: Signal<[String], Never>
+  public let loadValues: Signal<[String], Never>
 
   public var inputs: ShippingRulesViewModelInputs { return self }
   public var outputs: ShippingRulesViewModelOutputs { return self }
