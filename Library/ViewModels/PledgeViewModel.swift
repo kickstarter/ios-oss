@@ -113,19 +113,20 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .combineLatest(project, reward, isLoggedIn, isShippingLoading, defaultShippingRule, pledgeTotal)
       .map(pledgeViewData(with:reward:isLoggedIn:isShippingLoading:selectedShippingRule:pledgeTotal:))
 
-    let userUpdatedReload = data.takeWhen(self.userSessionStartedSignal)
-      .map { data -> (PledgeViewData, Bool) in
-        ((
+    let userUpdatedData = data.takeWhen(self.userSessionStartedSignal)
+      .map { data -> PledgeViewData in
+        (
           project: data.project,
           reward: data.reward,
           isLoggedIn: AppEnvironment.current.currentUser != nil,
           shipping: data.shipping,
           pledgeTotal: data.pledgeTotal
-        ), true)
+        )
       }
 
     let initialLoad = data.take(first: 1).map { data in (data, true) }
     let silentReload = data.skip(first: 1).map { data in (data, false) }
+    let userUpdatedReload = userUpdatedData.map { data in (data, true) }
 
     self.pledgeViewDataAndReload = Signal.merge(
       initialLoad,
