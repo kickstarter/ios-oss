@@ -3,6 +3,17 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum ImageView {
+    static let width: CGFloat = 64
+    static let height: CGFloat = 40
+  }
+
+  enum Button {
+    static let width: CGFloat = 217
+  }
+}
+
 final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
@@ -45,6 +56,12 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
+
+    NSLayoutConstraint.activate([
+      self.imageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
+      self.selectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.ImageView.height),
+      self.selectButton.widthAnchor.constraint(equalToConstant: Layout.Button.width)
+    ])
   }
 
   // MARK: - Styles
@@ -54,6 +71,27 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
 
     _ = self
       |> \.backgroundColor .~ .white
+      |> roundedStyle(cornerRadius: Styles.grid(1))
+
+    _ = self.selectButton
+      |> checkoutSmallBlackButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
+
+    _ = self.selectButton.titleLabel
+      ?|> \.font .~ UIFont.ksr_headline()
+
+    _ = self.imageView
+      |> \.contentMode .~ .scaleAspectFit
+
+    _ = self.lastFourLabel
+      |> checkoutTitleLabelStyle
+      |> \.font .~ UIFont.ksr_headline(size: 14)
+      |> \.textColor .~ .ksr_soft_black
+
+    _ = self.expirationDateLabel
+      |> checkoutTitleLabelStyle
+      |> \.font .~ UIFont.ksr_caption1(size: 11)
+      |> \.textColor .~ .ksr_text_dark_grey_500
 
     _ = self.labelsStackView
       |> \.axis .~ .vertical
@@ -62,13 +100,16 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
     )
+      |> \.spacing .~ Styles.grid(1)
+
     _ = self.rootStackView
       |> checkoutStackViewStyle
+      |> \.layoutMargins .~ UIEdgeInsets(all: Styles.grid(2))
   }
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {
     self.imageView.image = UIImage(named: value.imageName)
     self.lastFourLabel.text = value.lastFour
-    self.expirationDateLabel.text = value.expirationDate
+    self.expirationDateLabel.text = Strings.Credit_card_expiration(expiration_date: value.expirationDate())
   }
 }

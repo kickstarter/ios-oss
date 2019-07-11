@@ -18,7 +18,14 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 >>>>>>> 1972b6037... Created PledgePaymentMethodsDataSource:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
   // MARK: - Properties
 
+<<<<<<< HEAD:Kickstarter-iOS/Views/Controllers/PledgePaymentMethodsViewController.swift
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
+=======
+  private lazy var layout: UICollectionViewLayout = {
+    UICollectionViewFlowLayout()
+      |> \.scrollDirection .~ .horizontal
+  }()
+>>>>>>> b92d0b042... Fixed layout on credit card cell:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
 
   private lazy var collectionView: UICollectionView = {
     UICollectionView(frame: .zero, collectionViewLayout: self.layout)
@@ -66,12 +73,19 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 =======
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.delegate .~ self
 
     self.collectionView.register(PledgeCreditCardCell.self)
 
+<<<<<<< HEAD:Kickstarter-iOS/Views/Controllers/PledgePaymentMethodsViewController.swift
     self.collectionView.heightAnchor.constraint(equalToConstant: 140)
 >>>>>>> 1972b6037... Created PledgePaymentMethodsDataSource:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
+=======
+    let heightConstraint = self.collectionView.heightAnchor
+      .constraint(greaterThanOrEqualToConstant: Layout.Card.height + Styles.grid(2))
+
+    NSLayoutConstraint.activate([heightConstraint])
+>>>>>>> b92d0b042... Fixed layout on credit card cell:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
   }
 
   // MARK: - Styles
@@ -86,7 +100,8 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
       |> \.isAccessibilityElement .~ true
 
     _ = self.collectionView
-      |> \.backgroundColor .~ .white
+      |> checkoutBackgroundStyle
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     _ = self.rootStackView
       |> checkoutStackViewStyle
@@ -128,11 +143,22 @@ extension PledgePaymentMethodsViewController: UICollectionViewDataSource {
   }
 }
 
+extension PledgePaymentMethodsCell: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    print(collectionView)
+  }
+}
+
 extension PledgePaymentMethodsCell: UICollectionViewDelegateFlowLayout {
+
   func collectionView(
-    _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-    sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-    return CGSize(width: Layout.Card.width, height: Layout.Card.height)
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let size = CGSize(width: Layout.Card.width, height: UIView.layoutFittingCompressedSize.height)
+
+    return self.contentView.systemLayoutSizeFitting(size,
+                                                    withHorizontalFittingPriority: .defaultHigh,
+                                                    verticalFittingPriority: .defaultLow)
   }
 }
