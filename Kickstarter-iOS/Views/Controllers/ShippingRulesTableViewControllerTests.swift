@@ -37,8 +37,6 @@ final class ShippingRulesTableViewControllerTests: TestCase {
       vc.configureWith(.template, shippingRules: shippingRules, selectedShippingRule: .template)
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
-      self.scheduler.run()
-
       FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
     }
   }
