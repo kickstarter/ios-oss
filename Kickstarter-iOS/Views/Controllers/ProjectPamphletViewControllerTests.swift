@@ -126,7 +126,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
- func testLoggedIn_Backer_LiveProject_Error_NativeCheckout_Enabled() {
+  func testLoggedIn_Backer_LiveProject_Error_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
     let backing = Backing.template
