@@ -5,7 +5,6 @@ import Prelude
 import XCTest
 
 internal final class ProjectPamphletViewControllerTests: TestCase {
-  private let user = User.brando
   private var project: Project = .cosmicSurgery
 
   override func setUp() {
@@ -22,8 +21,6 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
             |> Reward.lens.startsAt .~ 0
         ]
       }
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.stats.pledged .~ (Project.template.stats.goal * 3 / 4)
 
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
@@ -42,9 +39,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedIn_Backer_LiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+    let backedProject = project
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ .template
       |> Project.lens.state .~ .live
@@ -66,9 +61,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedIn_Backer_NonLiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+    let backedProject = project
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ .template
       |> Project.lens.state .~ .successful
@@ -90,10 +83,13 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedIn_NonBacker_LiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
+    let backedProject = project
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .live
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(config: config, currentUser: .template, language: language) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(backedProject), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
@@ -106,9 +102,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedIn_NonBacker_NonLiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+    let backedProject = project
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .successful
 
@@ -131,9 +125,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.checkout.rawValue: true]
     let backing = Backing.template
       |> Backing.lens.status .~ .errored
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+    let backedProject = project
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.state .~ .live
@@ -157,10 +149,13 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedOut_NonBacker_LiveProject_NativeCheckout_Feature_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
+    let backedProject = project
+      |> Project.lens.personalization.isBacking .~ nil
+      |> Project.lens.state .~ .live
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(config: config, currentUser: nil, language: language) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(backedProject), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
@@ -173,10 +168,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedOut_NonBacker_NonLiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.personalization.isBacking .~ false
+    let backedProject = project
+      |> Project.lens.personalization.isBacking .~ nil
       |> Project.lens.state .~ .successful
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -198,14 +191,16 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedOut_LiveProject_NativeCheckout_Disabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: false]
-
+    let backedProject = project
+      |> Project.lens.personalization.isBacking .~ nil
+      |> Project.lens.state .~ .live
     let language = Language.en
     let device = Device.phone4_7inch
 
     // All we want to see here is that the pledge CTA button is hidden
 
     withEnvironment(config: config, currentUser: nil, language: language) {
-      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(backedProject), refTag: nil)
       _ = traitControllers(device: device, orientation: .portrait, child: vc)
 
       FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
@@ -215,13 +210,15 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedOut_LiveProject_NativeCheckout_Undefined() {
     let config = Config.template
       |> \.features .~ [:]
-
+    let backedProject = project
+      |> Project.lens.personalization.isBacking .~ nil
+      |> Project.lens.state .~ .live
     let language = Language.en
     let device = Device.phone4_7inch
 
     // All we want to see here is that the pledge CTA button is hidden
     withEnvironment(config: config, language: language) {
-      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(backedProject), refTag: nil)
 
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
       parent.view.frame.size.height = device == .pad ? 2_300 : 1_800
