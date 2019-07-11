@@ -414,8 +414,12 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testDismissShippingRules() {
-    self.vm.inputs.dismissShippingRulesButtonTapped()
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.pledgeShippingCellWillPresentShippingRules(with: .template)
 
+    self.dismissShippingRules.assertDidNotEmitValue()
+    self.vm.inputs.dismissShippingRulesButtonTapped()
     self.dismissShippingRules.assertValueCount(1)
   }
 
