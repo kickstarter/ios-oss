@@ -29,11 +29,6 @@ public final class ProjectPamphletViewController: UIViewController {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let pledgeCTAButton: UIButton = {
-    MultiLineButton(type: .custom)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   public static func configuredWith(
     projectOrParam: Either<Project, Param>,
     refTag: RefTag?
