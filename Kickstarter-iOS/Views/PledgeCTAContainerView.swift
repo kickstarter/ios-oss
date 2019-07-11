@@ -76,6 +76,7 @@ final class PledgeCTAContainerView: UIView {
     _ = self.amountAndRewardTitleStackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
       |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.spacing .~ 0
 
     _ = self.pledgeCTAButton
       |> pledgeCTAButtonStyle(
