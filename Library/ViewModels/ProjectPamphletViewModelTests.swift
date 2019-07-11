@@ -381,6 +381,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     let project = Project.template
 
     withEnvironment(config: config) {
+      self.configurePledgeCTAView.assertDidNotEmitValue()
+
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
