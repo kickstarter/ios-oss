@@ -21,6 +21,7 @@ public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func pledgeAmountDidUpdate(to amount: Double)
   func pledgeDescriptionCellDidTapRewardThumbnail()
+  func pledgeShippingCellWillPresentShippingRules(with rule: ShippingRule)
   func shippingRuleDidUpdate(to rule: ShippingRule)
   func viewDidLoad()
 }
@@ -38,7 +39,7 @@ public protocol PledgeViewModelOutputs {
    */
   var pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never> { get }
   var popViewController: Signal<(), Never> { get }
-  var presentShippingRules: Signal<[ShippingRule], Never> { get }
+  var presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
 }
 
@@ -76,16 +77,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           .materialize()
       }
 
-    self.presentShippingRules = shippingRulesEvent.values()
-
-    let selectedShippingRule = Signal.merge(
+    let defaultShippingRule = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(nil),
-      self.presentShippingRules.map(defaultShippingRule(fromShippingRules:))
+      shippingRulesEvent.values().map(defaultShippingRule(fromShippingRules:))
     )
 
+    self.presentShippingRules = Signal.combineLatest(
+      project,
+      shippingRulesEvent.values(),
+      defaultShippingRule.skipNil()
+    )
+    .takeWhen(self.pledgeShippingCellWillPresentShippingRulesProperty.signal)
+
     let shippingAmount = Signal.merge(
-      selectedShippingRule.skipNil().map { $0.cost },
-      self.shippingRuleSignal.map { $0.cost },
+      defaultShippingRule.skipNil().map { $0.cost },
+      self.selectedShippingRuleSignal.map { $0.cost },
       projectAndReward.mapConst(0)
     )
 
@@ -104,7 +110,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)
 
     let data = Signal
-      .combineLatest(project, reward, isLoggedIn, isShippingLoading, selectedShippingRule, pledgeTotal)
+      .combineLatest(project, reward, isLoggedIn, isShippingLoading, defaultShippingRule, pledgeTotal)
       .map(pledgeViewData(with:reward:isLoggedIn:isShippingLoading:selectedShippingRule:pledgeTotal:))
 
     self.pledgeViewDataAndReload = Signal.merge(
@@ -122,7 +128,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let isShippingLoadingAndSelectedShippingRule = Signal.combineLatest(
       isShippingLoading,
-      selectedShippingRule
+      defaultShippingRule
     )
 
     self.configureShippingLocationCellWithData = updatedData
@@ -153,7 +159,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.pledgeDescriptionCellDidTapRewardThumbnailObserver.send(value: ())
   }
 
-  private let (shippingRuleSignal, shippingRuleObserver) = Signal<ShippingRule, Never>.pipe()
+  private let pledgeShippingCellWillPresentShippingRulesProperty = MutableProperty<(ShippingRule)?>(nil)
+  public func pledgeShippingCellWillPresentShippingRules(with rule: ShippingRule) {
+    self.pledgeShippingCellWillPresentShippingRulesProperty.value = rule
+  }
+
+  private let (selectedShippingRuleSignal, shippingRuleObserver) = Signal<ShippingRule, Never>.pipe()
   public func shippingRuleDidUpdate(to rule: ShippingRule) {
     self.shippingRuleObserver.send(value: rule)
   }
@@ -167,7 +178,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configureSummaryCellWithData: Signal<(Project, Double), Never>
   public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
   public let popViewController: Signal<(), Never>
-  public let presentShippingRules: Signal<[ShippingRule], Never>
+  public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
   public let shippingRulesError: Signal<String, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
