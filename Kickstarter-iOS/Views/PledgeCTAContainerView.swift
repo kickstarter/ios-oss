@@ -89,7 +89,6 @@ final class PledgeCTAContainerView: UIView {
       |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
       |> \.alignment .~ .center
 
-
     _ = self.titleLabel
       |> \.font .~ UIFont.ksr_callout().bolded
       |> \.numberOfLines .~ 0
