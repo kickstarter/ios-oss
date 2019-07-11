@@ -155,7 +155,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(config: config, currentUser: nil, language: language) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(backedProject), refTag: nil)
+        let vc = ProjectPamphletViewController
+          .configuredWith(projectOrParam: .left(backedProject), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
