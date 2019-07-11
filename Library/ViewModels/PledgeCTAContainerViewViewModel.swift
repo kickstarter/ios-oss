@@ -39,7 +39,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .filter { isFalse($0.personalization.isBacking ?? true) }
       .map(pledgeCTA(project:))
 
-    let pledgeState = Signal.merge(backedProject, nonbackedProject).map { $0 }
+    let pledgeState = Signal.merge(backedProject, nonBackedProject).map { $0 }
 
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     self.buttonTitleTextColor = pledgeState.map { $0.buttonTitleTextColor }
