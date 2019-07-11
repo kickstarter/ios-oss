@@ -29,6 +29,11 @@ public final class ProjectPamphletViewController: UIViewController {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private let pledgeCTAButton: UIButton = {
+    MultiLineButton(type: .custom)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   public static func configuredWith(
     projectOrParam: Either<Project, Param>,
     refTag: RefTag?
@@ -157,10 +162,10 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.navBarTopConstraint.constant = value
       }
 
-    self.viewModel.outputs.projectAndUser
+    self.viewModel.outputs.project
       .observeForUI()
-      .observeValues { [weak self] project, user in
-        self?.pledgeCTAContainerView.configureWith(project: project, user: user)
+      .observeValues { [weak self] project in
+        self?.pledgeCTAContainerView.configureWith(project: project)
       }
   }
 
