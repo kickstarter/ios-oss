@@ -3,6 +3,13 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum Button {
+    static let height: CGFloat = 48.0
+    static let width: CGFloat = 98.0
+  }
+}
+
 final class PledgeCTAContainerView: UIView {
   // MARK: - Properties
 
@@ -46,11 +53,10 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.amountAndRewardTitleStackView, self.spacer, self.pledgeCTAButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    let buttonWidth: CGFloat = 98.0
-
     NSLayoutConstraint.activate([
-      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
-      self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: buttonWidth)
+      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.height),
+      self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.width),
+      self.rootStackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor)
     ])
 
     self.bindViewModel()
@@ -71,11 +77,6 @@ final class PledgeCTAContainerView: UIView {
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
       |> \.isLayoutMarginsRelativeArrangement .~ true
 
-    _ = self.subtitleLabel
-      |> \.font .~ UIFont.ksr_caption1(size: 14)
-      |> \.textColor .~ UIColor.ksr_dark_grey_500
-      |> \.numberOfLines .~ 0
-
     _ = self.pledgeCTAButton
       |> pledgeCTAButtonStyle(
         isAccessibilityCategory,
@@ -86,9 +87,16 @@ final class PledgeCTAContainerView: UIView {
       |> adaptableStackViewStyle(isAccessibilityCategory)
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
+      |> \.alignment .~ .center
+
 
     _ = self.titleLabel
-      |> \.font .~ UIFont.ksr_headline(size: 14)
+      |> \.font .~ UIFont.ksr_callout().bolded
+      |> \.numberOfLines .~ 0
+
+    _ = self.subtitleLabel
+      |> \.font .~ UIFont.ksr_caption1().bolded
+      |> \.textColor .~ UIColor.ksr_dark_grey_500
       |> \.numberOfLines .~ 0
   }
 
