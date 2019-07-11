@@ -19,6 +19,8 @@ final class PledgeViewModelTests: TestCase {
   private let configureSummaryCellWithDataPledgeTotal = TestObserver<Double, Never>()
   private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
 
+  private let dismissShippingRules = TestObserver<Void, Never>()
+
   /**
    Given the noise of `pledgeViewDataAndReload` signal and its frequent emissions and also the fact that
    what we really care about is the final emission from this signal, we mostly test its last value.
@@ -47,6 +49,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configureShippingLocationCellWithData.map { $0.1 }.observe(self.configureShippingLocationCellWithDataProject.observer)
     self.vm.outputs.configureShippingLocationCellWithData.map { $0.2 }.observe(self.configureShippingLocationCellWithDataSelectedShippingRule.observer)
 
+    self.vm.outputs.dismissShippingRules.observe(self.dismissShippingRules.observer)
     self.vm.outputs.configureSummaryCellWithData.map(second).observe(self.configureSummaryCellWithDataPledgeTotal.observer)
     self.vm.outputs.configureSummaryCellWithData.map(first).observe(self.configureSummaryCellWithDataProject.observer)
 
@@ -409,6 +412,16 @@ final class PledgeViewModelTests: TestCase {
       )
       self.configureSummaryCellWithDataProject.assertValues([project, project, project, project])
     }
+  }
+
+  func testDismissShippingRules() {
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.pledgeShippingCellWillPresentShippingRules(with: .template)
+
+    self.dismissShippingRules.assertDidNotEmitValue()
+    self.vm.inputs.dismissShippingRulesButtonTapped()
+    self.dismissShippingRules.assertValueCount(1)
   }
 
   func testPresentShippingRules() {

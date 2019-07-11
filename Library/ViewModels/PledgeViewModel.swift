@@ -20,6 +20,7 @@ public typealias PledgeViewData = (
 
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
+  func dismissShippingRulesButtonTapped()
   func pledgeAmountDidUpdate(to amount: Double)
   func pledgeShippingCellWillPresentShippingRules(with rule: ShippingRule)
   func shippingRuleDidUpdate(to rule: ShippingRule)
@@ -29,6 +30,7 @@ public protocol PledgeViewModelInputs {
 public protocol PledgeViewModelOutputs {
   var configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never> { get }
   var configureSummaryCellWithData: Signal<(Project, Double), Never> { get }
+  var dismissShippingRules: Signal<Void, Never> { get }
 
   /**
    Emits the initial data for this view model along with a `Bool` indicating whether the table view should
@@ -136,11 +138,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { data, isShippingLoading, selectedShippingRule in
         (isShippingLoading, data.project, selectedShippingRule)
       }
+
+    self.dismissShippingRules = self.dismissShippingRulesButtonTappedProperty.signal
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
   public func configureWith(project: Project, reward: Reward) {
     self.configureProjectAndRewardProperty.value = (project, reward)
+  }
+
+  private let dismissShippingRulesButtonTappedProperty = MutableProperty(())
+  public func dismissShippingRulesButtonTapped() {
+    self.dismissShippingRulesButtonTappedProperty.value = ()
   }
 
   private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
@@ -165,6 +174,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
   public let configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never>
   public let configureSummaryCellWithData: Signal<(Project, Double), Never>
+  public let dismissShippingRules: Signal<Void, Never>
   public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
   public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
   public let shippingRulesError: Signal<String, Never>
