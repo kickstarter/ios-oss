@@ -158,12 +158,6 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
 
-    let project = Project.cosmicSurgery
-      |> Project.lens.personalization.isBacking .~ false
-      |> Project.lens.photo.full .~ ""
-      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.state .~ .live
-
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(config: config, currentUser: nil, language: language) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
