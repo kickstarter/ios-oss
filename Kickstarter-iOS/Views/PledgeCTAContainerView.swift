@@ -15,7 +15,7 @@ final class PledgeCTAContainerView: UIView {
 
   private let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
-  private lazy var amountAndRewardTitleStackView: UIStackView = {
+  private lazy var titleAndSubtitleStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -47,10 +47,10 @@ final class PledgeCTAContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleLabel, self.subtitleLabel], self.amountAndRewardTitleStackView)
+    _ = ([self.titleLabel, self.subtitleLabel], self.titleAndSubtitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.amountAndRewardTitleStackView, self.spacer, self.pledgeCTAButton], self.rootStackView)
+    _ = ([self.titleAndSubtitleStackView, self.spacer, self.pledgeCTAButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     NSLayoutConstraint.activate([
@@ -73,7 +73,7 @@ final class PledgeCTAContainerView: UIView {
 
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
-    _ = self.amountAndRewardTitleStackView
+    _ = self.titleAndSubtitleStackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.spacing .~ 0
@@ -81,7 +81,7 @@ final class PledgeCTAContainerView: UIView {
     _ = self.pledgeCTAButton
       |> pledgeCTAButtonStyle(
         isAccessibilityCategory,
-        amountAndRewardTitleStackViewIsHidden: self.amountAndRewardTitleStackView.isHidden
+        amountAndRewardTitleStackViewIsHidden: self.titleAndSubtitleStackView.isHidden
       )
 
     _ = self.rootStackView
@@ -111,7 +111,7 @@ final class PledgeCTAContainerView: UIView {
         self?.pledgeCTAButton.setTitleColor(textColor, for: .normal)
       }
 
-    self.amountAndRewardTitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
+    self.titleAndSubtitleStackView.rac.hidden = self.vm.outputs.stackViewIsHidden
     self.titleLabel.rac.text = self.vm.outputs.titleText
     self.subtitleLabel.rac.text = self.vm.outputs.subtitleText
     self.pledgeCTAButton.rac.backgroundColor = self.vm.outputs.buttonBackgroundColor
