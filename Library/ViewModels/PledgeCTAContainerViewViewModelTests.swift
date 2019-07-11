@@ -65,6 +65,8 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   func testPledgeCTA_NonBacker_LiveProject_loggedOut() {
     let pledgeCTAColor: UIColor = .ksr_green_500
     let project = Project.template
+      |> Project.lens.personalization.isBacking .~ nil
+      |> Project.lens.state .~ .live
 
     self.vm.inputs.configureWith(project: project)
     self.buttonBackgroundColor.assertValues([pledgeCTAColor])
@@ -76,6 +78,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   func testPledgeCTA_NonBacker_NonLiveProject_loggedOut() {
     let viewRewardsCTAColor: UIColor = .ksr_soft_black
     let project = Project.template
+      |> Project.lens.personalization.isBacking .~ nil
       |> Project.lens.state .~ .successful
 
     self.vm.inputs.configureWith(project: project)

@@ -126,26 +126,25 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
- func testLoggedIn_Backer_LiveProject_Error_NativeCheckout_Enabled_Landscape() {
+ func testLoggedIn_Backer_LiveProject_Error_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
-    let currentUser = User.template
     let backing = Backing.template
       |> Backing.lens.status .~ .errored
     let backedProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.state .~ .live
 
-    [Device.phone4inch, Device.phone5_5inch, Device.phone5_8inch].forEach { device in
-      let language = Language.en
-      withEnvironment(config: config, currentUser: currentUser, language: language) {
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(config: config, currentUser: .template, language: language) {
         let vc = ProjectPamphletViewController.configuredWith(
           projectOrParam: .left(backedProject), refTag: nil
         )
 
-        let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
@@ -158,6 +157,11 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testLoggedOut_NonBacker_LiveProject_NativeCheckout_Feature_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.state .~ .live
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in

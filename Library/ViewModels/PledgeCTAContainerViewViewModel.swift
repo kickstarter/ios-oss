@@ -26,27 +26,9 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
     let project = self.projectProperty.signal.skipNil()
-    let projectAndBacking = project
-      .map { project -> (Project, Backing)? in
-        guard let backing = project.personalization.backing else {
-          return nil
-        }
-
-        return (project, backing)
-      }.skipNil()
-
-    let backing = project.map { $0.personalization.backing }.skipNil()
-
-
-    let backedProject = projectAndBacking
-      .filter { isTrue($0.0.personalization.isBacking ?? false) }
+    let backing = project.map { $0.personalization.backing }
+    let pledgeState = Signal.combineLatest(project, backing)
       .map(pledgeCTA(project:backing:))
-
-    let nonBackedProject = project
-      .filter { isFalse($0.personalization.isBacking ?? true) }
-      .map(pledgeCTA(project:))
-
-    let pledgeState = Signal.merge(backedProject, nonBackedProject).map { $0 }
 
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     self.buttonTitleTextColor = pledgeState.map { $0.buttonTitleTextColor }
@@ -55,9 +37,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     self.spacerIsHidden = stackViewAndSpacerAreHidden
     self.stackViewIsHidden = stackViewAndSpacerAreHidden
     self.titleText = pledgeState.map { $0.titleLabel }.skipNil()
-
-    let text = Signal.combineLatest(project, backing, pledgeState)
-    self.subtitleText = text.map(subtitle(project:backing:pledgeState:))
+    self.subtitleText = Signal.combineLatest(project, backing.skipNil(), pledgeState)
+      .map(subtitle(project:backing:pledgeState:))
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -79,25 +60,18 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
 // MARK: - Functions
 
-private func pledgeCTA(project: Project, backing: Backing) -> PledgeStateCTAType {
-  switch (project.state, backing.status) {
+private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
+  guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
+    return project.state == .live ? PledgeStateCTAType.pledge : PledgeStateCTAType.viewRewards
+  }
+
+  switch (project.state, projectBacking.status) {
   case (.live, .errored):
     return .fix
   case (.live, _):
     return .manage
   case (_, _):
     return .viewBacking
-  }
-}
-
-private func pledgeCTA(project: Project) -> PledgeStateCTAType {
-  switch project.state {
-  case .live:
-    return .pledge
-  case .canceled, .failed, .suspended, .successful:
-    return .viewRewards
-  default:
-    return .viewRewards
   }
 }
 
