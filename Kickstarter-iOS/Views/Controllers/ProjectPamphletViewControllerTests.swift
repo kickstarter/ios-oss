@@ -89,7 +89,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(config: config, currentUser: .template, language: language) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(backedProject), refTag: nil)
+        let vc = ProjectPamphletViewController
+          .configuredWith(projectOrParam: .left(backedProject), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
@@ -201,7 +202,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     // All we want to see here is that the pledge CTA button is hidden
 
     withEnvironment(config: config, currentUser: nil, language: language) {
-      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(backedProject), refTag: nil)
+      let vc = ProjectPamphletViewController
+        .configuredWith(projectOrParam: .left(backedProject), refTag: nil)
       _ = traitControllers(device: device, orientation: .portrait, child: vc)
 
       FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
@@ -219,7 +221,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
     // All we want to see here is that the pledge CTA button is hidden
     withEnvironment(config: config, language: language) {
-      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(backedProject), refTag: nil)
+      let vc = ProjectPamphletViewController
+        .configuredWith(projectOrParam: .left(backedProject), refTag: nil)
 
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
       parent.view.frame.size.height = device == .pad ? 2_300 : 1_800
