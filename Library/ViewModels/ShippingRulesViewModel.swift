@@ -21,12 +21,15 @@ public protocol ShippingRulesViewModelType {
 public final class ShippingRulesViewModel: ShippingRulesViewModelType,
   ShippingRulesViewModelInputs, ShippingRulesViewModelOutputs {
   public init() {
-    self.values = self.configDataProperty.signal
-      .takeWhen(self.viewDidLoadProperty.signal)
-      .skipNil()
-      .map { project, shippingRules, _ in
-        shippingRules.compactMap { shippingRule in formattedValue(project, shippingRule: shippingRule) }
-      }
+    self.values = Signal.combineLatest(
+      self.viewDidLoadProperty.signal,
+      self.configDataProperty.signal
+    )
+    .map(second)
+    .skipNil()
+    .map { project, shippingRules, _ in
+      shippingRules.compactMap { shippingRule in formattedValue(project, shippingRule: shippingRule) }
+    }
   }
 
   private let configDataProperty = MutableProperty<(Project, [ShippingRule], ShippingRule)?>(nil)
