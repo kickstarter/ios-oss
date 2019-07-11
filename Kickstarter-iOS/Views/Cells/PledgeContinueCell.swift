@@ -28,7 +28,7 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.goToLoginSignup
+    self.viewModel.outputs.notifyDelegateContinueButtonTapped
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let self = self else { return }

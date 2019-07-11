@@ -12,7 +12,7 @@ final class PledgeContinueCellViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
+    self.vm.outputs.notifyDelegateContinueButtonTapped.observe(self.goToLoginSignup.observer)
   }
 
   func testGoToLoginSignup() {

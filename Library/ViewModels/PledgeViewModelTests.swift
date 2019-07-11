@@ -133,7 +133,7 @@ final class PledgeViewModelTests: TestCase {
     self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum])
     self.pledgeViewDataAndReloadReload.assertValues([true])
 
-    self.vm.inputs.continueButtonTapped()
+    self.vm.inputs.pledgeContinueCellContinueButtonTapped()
 
     self.goToLoginSignup.assertValue(LoginIntent.backProject)
 

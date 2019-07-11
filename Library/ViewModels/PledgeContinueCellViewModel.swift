@@ -2,7 +2,7 @@ import Foundation
 import ReactiveSwift
 
 public protocol PledgeContinueCellViewModelOutputs {
-  var goToLoginSignup: Signal<Void, Never> { get }
+  var notifyDelegateContinueButtonTapped: Signal<Void, Never> { get }
 }
 
 public protocol PledgeContinueCellViewModelInputs {
@@ -17,7 +17,7 @@ public protocol PledgeContinueCellViewModelType {
 public final class PledgeContinueCellViewModel: PledgeContinueCellViewModelType,
   PledgeContinueCellViewModelInputs, PledgeContinueCellViewModelOutputs {
   public init() {
-    self.goToLoginSignup = self.continueButtonTappedProperty.signal
+    self.notifyDelegateContinueButtonTapped = self.continueButtonTappedProperty.signal
   }
 
   private let continueButtonTappedProperty = MutableProperty(())
@@ -25,7 +25,7 @@ public final class PledgeContinueCellViewModel: PledgeContinueCellViewModelType,
     self.continueButtonTappedProperty.value = ()
   }
 
-  public let goToLoginSignup: Signal<Void, Never>
+  public let notifyDelegateContinueButtonTapped: Signal<Void, Never>
 
   public var inputs: PledgeContinueCellViewModelInputs { return self }
   public var outputs: PledgeContinueCellViewModelOutputs { return self }

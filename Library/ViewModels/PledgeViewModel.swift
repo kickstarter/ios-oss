@@ -19,7 +19,7 @@ public typealias PledgeViewData = (
 
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
-  func continueButtonTapped()
+  func pledgeContinueCellContinueButtonTapped()
   func userSessionStarted()
   func pledgeAmountDidUpdate(to amount: Double)
   func pledgeShippingCellWillPresentShippingRules(with rule: ShippingRule)
@@ -134,7 +134,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       userUpdatedReload
     )
 
-    self.goToLoginSignup = self.continueButtonTappedSignal
+    self.goToLoginSignup = self.pledgeContinueCellContinueButtonTappedSignal
       .map { _ in LoginIntent.backProject }
 
     let updatedData = self.pledgeViewDataAndReload
@@ -158,9 +158,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
   }
 
-  private let (continueButtonTappedSignal, continueButtonTappedObserver) = Signal<Void, Never>.pipe()
-  public func continueButtonTapped() {
-    self.continueButtonTappedObserver.send(value: ())
+  private let (pledgeContinueCellContinueButtonTappedSignal, pledgeContinueCellContinueButtonTappedObserver)
+    = Signal<Void, Never>.pipe()
+  public func pledgeContinueCellContinueButtonTapped() {
+    self.pledgeContinueCellContinueButtonTappedObserver.send(value: ())
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)

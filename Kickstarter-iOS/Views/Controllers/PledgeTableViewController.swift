@@ -199,7 +199,7 @@ extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
 
 extension PledgeTableViewController: PledgeContinueCellDelegate {
   func pledgeContinueCellDidTapContinue(_: PledgeContinueCell) {
-    self.viewModel.inputs.continueButtonTapped()
+    self.viewModel.inputs.pledgeContinueCellContinueButtonTapped()
   }
 }
 
