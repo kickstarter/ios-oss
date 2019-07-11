@@ -33,9 +33,9 @@ final class ShippingRulesTableViewController: UITableViewController {
 
     self.viewModel.outputs.values
       .observeForUI()
-      .observeValues { values in
-        self.dataSource.load(values)
-        self.tableView.reloadData()
+      .observeValues { [weak self] values in
+        self?.dataSource.load(values)
+        self?.tableView.reloadData()
       }
   }
 
