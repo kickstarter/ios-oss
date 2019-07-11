@@ -26,10 +26,17 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
     let project = self.projectProperty.signal.skipNil()
+    let projectAndBacking = project
+      .map { project -> (Project, Backing)? in
+        guard let backing = project.personalization.backing else {
+          return nil
+        }
+
+        return (project, backing)
+      }.skipNil()
 
     let backing = project.map { $0.personalization.backing }.skipNil()
 
-    let projectAndBacking = Signal.combineLatest(project, backing)
 
     let backedProject = projectAndBacking
       .filter { isTrue($0.0.personalization.isBacking ?? false) }
