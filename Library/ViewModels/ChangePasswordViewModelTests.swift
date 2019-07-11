@@ -94,7 +94,7 @@ final class ChangePasswordViewModelTests: TestCase {
   }
 
   func testOnePasswordButtonHidesProperly_OnIOS11AndEarlier() {
-    withEnvironment(is1PasswordSupported: { false }) {
+    withEnvironment(is1PasswordSupported: { true }) {
       self.vm.inputs.onePassword(isAvailable: true)
 
       self.onePasswordButtonIsHidden.assertValues([false])
@@ -106,7 +106,7 @@ final class ChangePasswordViewModelTests: TestCase {
   }
 
   func testOnePasswordButtonHidesProperly_OnIOS12AndLater() {
-    withEnvironment(is1PasswordSupported: { true }) {
+    withEnvironment(is1PasswordSupported: { false }) {
       self.vm.inputs.onePassword(isAvailable: true)
 
       self.onePasswordButtonIsHidden.assertValues([true])
@@ -120,7 +120,7 @@ final class ChangePasswordViewModelTests: TestCase {
   func testOnePasswordAutofill() {
     let mockService = MockService(serverConfig: ServerConfig.local)
 
-    withEnvironment(apiService: mockService, is1PasswordSupported: { false }) {
+    withEnvironment(apiService: mockService, is1PasswordSupported: { true }) {
       self.vm.inputs.onePassword(isAvailable: true)
       self.vm.inputs.viewDidAppear()
 
