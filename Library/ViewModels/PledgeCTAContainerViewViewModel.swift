@@ -35,7 +35,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .filter { isTrue($0.0.personalization.isBacking ?? false) }
       .map(pledgeCTA(project:backing:))
 
-    let nonbackedProject = project
+    let nonBackedProject = project
       .filter { isFalse($0.personalization.isBacking ?? true) }
       .map(pledgeCTA(project:))
 
