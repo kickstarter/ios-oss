@@ -181,12 +181,12 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       }
   }
 
-  // MARK: ThanksViewModelType
+  // MARK: - ThanksViewModelType
 
   public var inputs: ThanksViewModelInputs { return self }
   public var outputs: ThanksViewModelOutputs { return self }
 
-  // MARK: ThanksViewModelInputs
+  // MARK: - ThanksViewModelInputs
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
@@ -223,7 +223,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.userUpdatedProperty.value = ()
   }
 
-  // MARK: ThanksViewModelOutputs
+  // MARK: - ThanksViewModelOutputs
 
   public let dismissToRootViewController: Signal<(), Never>
   public let goToDiscovery: Signal<DiscoveryParams, Never>
