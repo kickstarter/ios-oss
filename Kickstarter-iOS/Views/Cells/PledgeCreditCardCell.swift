@@ -14,6 +14,10 @@ private enum Layout {
   }
 }
 
+internal protocol PledgeCreditCardCellDelegate: class {
+   func didUpdateContentSize(_ cell: PledgeCreditCardCell, size: CGSize)
+}
+
 final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
@@ -27,6 +31,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+  public var delegate: PledgeCreditCardCellDelegate?
 
   // MARK: - Lifecycle
 
@@ -59,7 +64,6 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
 
     NSLayoutConstraint.activate([
       self.imageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
-      self.selectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.ImageView.height),
       self.selectButton.widthAnchor.constraint(equalToConstant: Layout.Button.width)
     ])
   }
@@ -108,8 +112,15 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   }
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {
+    self.prepareForReuse()
     self.imageView.image = UIImage(named: value.imageName)
     self.lastFourLabel.text = value.lastFour
     self.expirationDateLabel.text = Strings.Credit_card_expiration(expiration_date: value.expirationDate())
+
+    self.layoutIfNeeded()
+    let size = self.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize,
+                                                              withHorizontalFittingPriority: .defaultHigh,
+                                                              verticalFittingPriority: .defaultLow)
+    self.delegate?.didUpdateContentSize(self, size: size)
   }
 }

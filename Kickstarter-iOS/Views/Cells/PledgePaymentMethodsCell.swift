@@ -12,10 +12,12 @@ private enum Layout {
 
 final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   // MARK: - Properties
+  private var collectionViewHeightAnchor: NSLayoutConstraint!
 
-  private lazy var layout: UICollectionViewLayout = {
+  private lazy var layout: UICollectionViewFlowLayout = {
     UICollectionViewFlowLayout()
       |> \.scrollDirection .~ .horizontal
+      |> \.estimatedItemSize .~ CGSize(width: Layout.Card.width, height: Layout.Card.height)
   }()
 
   private lazy var collectionView: UICollectionView = {
@@ -44,12 +46,12 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     _ = self
       |> \.accessibilityElements .~ self.subviews
 
+    _ = ([self.titleLabel, self.collectionView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
-
-    _ = ([self.titleLabel, self.collectionView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
 
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
@@ -57,10 +59,11 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
     self.collectionView.register(PledgeCreditCardCell.self)
 
-    let heightConstraint = self.collectionView.heightAnchor
-      .constraint(greaterThanOrEqualToConstant: Layout.Card.height + Styles.grid(2))
+    self.collectionViewHeightAnchor = self.collectionView.heightAnchor.constraint(
+      greaterThanOrEqualToConstant: Layout.Card.height + Styles.grid(2)
+    )
 
-    NSLayoutConstraint.activate([heightConstraint])
+    NSLayoutConstraint.activate([self.collectionViewHeightAnchor])
   }
 
   // MARK: - Styles
@@ -93,6 +96,15 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     self.dataSource.load(creditCards: value)
     self.collectionView.reloadData()
   }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt indexPath: IndexPath) {
+    if let cell = cell as? PledgeCreditCardCell, cell.delegate == nil {
+      cell.delegate = self
+    }
+  }
 }
 
 extension PledgePaymentMethodsCell: UICollectionViewDelegate {
@@ -101,16 +113,23 @@ extension PledgePaymentMethodsCell: UICollectionViewDelegate {
   }
 }
 
-extension PledgePaymentMethodsCell: UICollectionViewDelegateFlowLayout {
+extension PledgePaymentMethodsCell: PledgeCreditCardCellDelegate {
 
-  func collectionView(
-    _ collectionView: UICollectionView,
-    layout collectionViewLayout: UICollectionViewLayout,
-    sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let size = CGSize(width: Layout.Card.width, height: UIView.layoutFittingCompressedSize.height)
+  func didUpdateContentSize(_ cell: PledgeCreditCardCell, size: CGSize) {
+    self.updateConstraints(size)
 
-    return self.contentView.systemLayoutSizeFitting(size,
-                                                    withHorizontalFittingPriority: .defaultHigh,
-                                                    verticalFittingPriority: .defaultLow)
+  }
+
+  private func updateConstraints(_ size: CGSize) {
+
+    NSLayoutConstraint.deactivate([self.collectionViewHeightAnchor])
+
+    self.collectionViewHeightAnchor =
+      self.collectionView.heightAnchor.constraint(equalToConstant: size.height + Styles.grid(2))
+
+    NSLayoutConstraint.activate([self.collectionViewHeightAnchor])
+
+    self.setNeedsLayout()
+    self.layoutIfNeeded()
   }
 }
