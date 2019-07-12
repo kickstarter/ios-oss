@@ -9,7 +9,7 @@ import XCTest
 
 // swiftlint:disable line_length
 final class PledgeViewModelTests: TestCase {
-  private var vm: PledgeViewModelType!
+  private let vm: PledgeViewModelType = PledgeViewModel()
 
   private let configureShippingLocationCellWithDataIsShippingRulesLoading = TestObserver<Bool, Never>()
   private let configureShippingLocationCellWithDataProject = TestObserver<Project, Never>()
@@ -19,6 +19,7 @@ final class PledgeViewModelTests: TestCase {
   private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
 
   private let dismissShippingRules = TestObserver<Void, Never>()
+  private let goToLoginSignup = TestObserver<LoginIntent, Never>()
 
   /**
    Given the noise of `pledgeViewDataAndReload` signal and its frequent emissions and also the fact that
@@ -42,7 +43,7 @@ final class PledgeViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm = PledgeViewModel()
+    self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
 
     self.vm.outputs.configureShippingLocationCellWithData.map { $0.0 }.observe(self.configureShippingLocationCellWithDataIsShippingRulesLoading.observer)
     self.vm.outputs.configureShippingLocationCellWithData.map { $0.1 }.observe(self.configureShippingLocationCellWithDataProject.observer)
@@ -115,6 +116,38 @@ final class PledgeViewModelTests: TestCase {
 
       self.configureSummaryCellWithDataPledgeTotal.assertDidNotEmitValue()
       self.configureSummaryCellWithDataProject.assertDidNotEmitValue()
+    }
+  }
+
+  func testLoginSignup() {
+    let project = Project.template
+    let reward = Reward.template
+    let user = User.template
+
+    self.vm.inputs.configureWith(project: project, reward: reward)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeViewDataAndReloadProject.assertValues([project])
+    self.pledgeViewDataAndReloadReward.assertValues([reward])
+    self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false])
+    self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([false])
+    self.pledgeViewDataAndReloadSelectedShippingRule.assertValue(nil)
+    self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum])
+    self.pledgeViewDataAndReloadReload.assertValues([true])
+
+    self.vm.inputs.pledgeContinueCellContinueButtonTapped()
+
+    self.goToLoginSignup.assertValue(LoginIntent.backProject)
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.userSessionStarted()
+
+      self.pledgeViewDataAndReloadProject.assertValues([project, project])
+      self.pledgeViewDataAndReloadReward.assertValues([reward, reward])
+      self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false, true])
+      self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([false, false])
+      self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum, reward.minimum])
+      self.pledgeViewDataAndReloadReload.assertValues([true, true])
     }
   }
 
