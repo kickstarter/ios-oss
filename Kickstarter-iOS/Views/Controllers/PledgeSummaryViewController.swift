@@ -24,15 +24,18 @@ final class PledgeSummaryViewController: UIViewController {
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
   // MARK: - Lifecycle
-
-  init() {
-    super.init(nibName: nil, bundle: nil)
-
-    self.configureSubviews()
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    self.configureSubviews()
   }
 
   // MARK: - Styles
@@ -138,7 +141,7 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(4))
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5))
     |> \.spacing .~ Styles.gridHalf(3)
 }
 

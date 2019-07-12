@@ -41,6 +41,10 @@ final class PledgeDescriptionViewController: UIViewController {
 
   // MARK: - Lifecycle
 
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  }
+
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -172,7 +176,7 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
     |> \.axis .~ NSLayoutConstraint.Axis.horizontal
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(2))
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5))
     |> \.spacing .~ Styles.grid(3)
 }
 

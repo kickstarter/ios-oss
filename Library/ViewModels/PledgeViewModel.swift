@@ -12,7 +12,6 @@ public typealias PledgeViewShippingRulesData = (
 public typealias PledgeViewData = (
   project: Project,
   reward: Reward,
-  isLoggedIn: Bool,
   shipping: PledgeViewShippingRulesData,
   pledgeTotal: Double
 )
@@ -29,6 +28,7 @@ public protocol PledgeViewModelInputs {
 public protocol PledgeViewModelOutputs {
   var configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never> { get }
   var configureSummaryCellWithData: Signal<(Project, Double), Never> { get }
+  var continueViewHidden: Signal<Bool, Never> { get }
   var dismissShippingRules: Signal<Void, Never> { get }
 
   /**
@@ -39,8 +39,10 @@ public protocol PledgeViewModelOutputs {
    recycled it will be reloaded with its most recent data.
    */
   var configureWithPledgeViewData: Signal<PledgeViewData, Never> { get }
+  var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
+  var shippingLocationViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -110,8 +112,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)
 
     let data = Signal
-      .combineLatest(project, reward, isLoggedIn, isShippingLoading, defaultShippingRule, pledgeTotal)
-      .map(pledgeViewData(with:reward:isLoggedIn:isShippingLoading:selectedShippingRule:pledgeTotal:))
+      .combineLatest(project, reward, isShippingLoading, defaultShippingRule, pledgeTotal)
+      .map(pledgeViewData(with:reward:isShippingLoading:selectedShippingRule:pledgeTotal:))
 
     self.configureWithPledgeViewData = data
 
@@ -135,6 +137,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     self.dismissShippingRules = self.dismissShippingRulesButtonTappedProperty.signal
+    self.continueViewHidden = isLoggedIn
+    self.paymentMethodsViewHidden = isLoggedIn.negate()
+    self.shippingLocationViewHidden = reward
+      .map { $0.shipping.enabled }
+      .negate()
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -169,10 +176,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
   public let configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never>
   public let configureSummaryCellWithData: Signal<(Project, Double), Never>
+  public let continueViewHidden: Signal<Bool, Never>
   public let dismissShippingRules: Signal<Void, Never>
   public let configureWithPledgeViewData: Signal<PledgeViewData, Never>
+  public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
   public let shippingRulesError: Signal<String, Never>
+  public let shippingLocationViewHidden: Signal<Bool, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
@@ -183,7 +193,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 private func pledgeViewData(
   with project: Project,
   reward: Reward,
-  isLoggedIn: Bool,
   isShippingLoading: Bool,
   selectedShippingRule: ShippingRule?,
   pledgeTotal: Double
@@ -191,7 +200,6 @@ private func pledgeViewData(
   return (
     project,
     reward,
-    isLoggedIn,
     pledgeViewShippingRulesData(
       with: reward.shipping.enabled,
       isShippingLoading: isShippingLoading,

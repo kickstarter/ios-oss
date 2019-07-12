@@ -68,9 +68,7 @@ public let checkoutStackViewStyle: StackViewStyle = { (stackView: UIStackView) i
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(
-      top: Styles.grid(2), left: Styles.grid(4), bottom: Styles.grid(3), right: Styles.grid(4)
-    )
+    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3))
     |> \.spacing .~ (Styles.grid(1) + Styles.gridHalf(1))
 }
 

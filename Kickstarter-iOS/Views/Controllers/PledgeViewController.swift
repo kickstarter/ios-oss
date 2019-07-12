@@ -36,6 +36,12 @@ final class PledgeViewController: UIViewController {
     PledgePaymentMethodsViewController.instantiate()
   }()
 
+  private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
+  private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
 
@@ -51,11 +57,55 @@ final class PledgeViewController: UIViewController {
     _ = self
       |> \.title %~ { _ in Strings.Back_this_project() }
 
+    _ = self.view
+      |> \.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(3))
+
+    _ = (self.rootScrollView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    self.configureChildViewControllers()
+
     self.view.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(PledgeViewController.dismissKeyboard))
     )
 
+    self.setupConstraints()
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  private func configureChildViewControllers() {
+    self.addChild(self.pledgeDescriptionViewController)
+    self.addChild(self.pledgeAmountViewController)
+    self.addChild(self.pledgeShippingLocationViewController)
+    self.addChild(self.pledgeSummaryViewController)
+    self.addChild(self.pledgeContinueViewController)
+    self.addChild(self.pledgePaymentMethodsViewController)
+
+    _ = ([self.pledgeDescriptionViewController.view,
+          self.pledgeAmountViewController.view,
+          self.pledgeShippingLocationViewController.view,
+          self.pledgeSummaryViewController.view,
+          self.pledgeContinueViewController.view,
+          self.pledgePaymentMethodsViewController.view], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    self.pledgeDescriptionViewController.didMove(toParent: self)
+    self.pledgeAmountViewController.didMove(toParent: self)
+    self.pledgeShippingLocationViewController.didMove(toParent: self)
+    self.pledgeSummaryViewController.didMove(toParent: self)
+    self.pledgeContinueViewController.didMove(toParent: self)
+    self.pledgePaymentMethodsViewController.didMove(toParent: self)
+  }
+
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      self.rootStackView.widthAnchor.constraint(equalTo: self.view.layoutMarginsGuide.widthAnchor)
+    ])
   }
 
   // MARK: - Styles
@@ -65,6 +115,12 @@ final class PledgeViewController: UIViewController {
 
     _ = self.view
       |> checkoutBackgroundStyle
+
+    _ = self.rootScrollView
+      |> rootScrollViewStyle
+
+    _ = self.rootStackView
+      |> rootStackViewStyle
   }
 
   // MARK: - View model
@@ -77,7 +133,8 @@ final class PledgeViewController: UIViewController {
       .observeValues { [weak self] data in
         self?.pledgeDescriptionViewController.configureWith(value: data.reward)
         self?.pledgeAmountViewController.configureWith(value: (data.project, data.reward))
-        self?.pledgeShippingLocationViewController.configureWith(value: (data.shipping.isLoading, data.project, data.shipping.selectedRule))
+        self?.pledgeShippingLocationViewController.configureWith(value: (data.project,
+                                                                         data.reward)
         self?.pledgeSummaryViewController.configureWith(value: (data.project, data.pledgeTotal))
         self?.pledgePaymentMethodsViewController.configureWith(value: [GraphUserCreditCard.template])
     }
@@ -109,6 +166,11 @@ final class PledgeViewController: UIViewController {
       .observeValues { [weak self] in
         self?.dismiss(animated: true)
       }
+
+    self.pledgeShippingLocationViewController.view.rac.hidden
+      = self.viewModel.outputs.shippingLocationViewHidden
+    self.pledgeContinueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
+    self.pledgePaymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
   }
 
   // MARK: - Actions
@@ -169,4 +231,18 @@ extension PledgeViewController: PledgeSummaryCellDelegate {
   internal func pledgeSummaryCell(_: PledgeSummaryViewController, didOpen helpType: HelpType) {
     self.presentHelpWebViewController(with: helpType)
   }
+}
+
+// MARK: - Styles
+private let rootScrollViewStyle: ScrollStyle = { scrollView in
+  scrollView
+    |> UIScrollView.lens.showsVerticalScrollIndicator .~ false
+    |> \.alwaysBounceVertical .~ true
+}
+
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .vertical
+    |> \.distribution .~ .fill
+    |> \.alignment .~ .fill
 }

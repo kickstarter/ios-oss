@@ -7,6 +7,10 @@ final class PledgeContinueViewController: UIViewController {
 
   // MARK: - Lifecycle
 
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  }
+
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -24,7 +28,7 @@ final class PledgeContinueViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.view
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(3))
 
     _ = self.continueButton
       |> checkoutGreenButtonStyle
@@ -35,8 +39,6 @@ final class PledgeContinueViewController: UIViewController {
     _ = self.continueButton.titleLabel
       ?|> checkoutGreenButtonTitleLabelStyle
   }
-
-  func configureWith(value _: ()) {}
 
   private func setupSubviews() {
     _ = (self.continueButton, self.view)

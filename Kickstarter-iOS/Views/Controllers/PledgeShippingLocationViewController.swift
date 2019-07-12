@@ -27,8 +27,8 @@ final class PledgeShippingLocationViewController: UIViewController {
 
   // MARK: - Lifecycle
 
-  init() {
-    super.init(nibName: nil, bundle: nil)
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
   }
 
   required init?(coder _: NSCoder) {
@@ -115,7 +115,7 @@ final class PledgeShippingLocationViewController: UIViewController {
 
   // MARK: - Configuration
 
-  func configureWith(value: (isLoading: Bool, project: Project, selectedShippingRule: ShippingRule?)) {
+  func configureWith(value: (Project, Reward)) {
     self.viewModel.inputs.configureWith(
       isLoading: value.isLoading,
       project: value.project,
