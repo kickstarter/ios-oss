@@ -3,12 +3,6 @@ import Library
 import Prelude
 import UIKit
 
-private enum Layout {
-  enum Sheet {
-    static let offset: CGFloat = 222
-  }
-}
-
 final class PledgeViewController: UIViewController {
   // MARK: - Properties
 
@@ -30,6 +24,7 @@ final class PledgeViewController: UIViewController {
 
   private lazy var pledgeShippingLocationViewController = {
     PledgeShippingLocationViewController.instantiate()
+      |> \.delegate .~ self
   }()
 
   private lazy var pledgePaymentMethodsViewController = {
@@ -133,38 +128,14 @@ final class PledgeViewController: UIViewController {
       .observeValues { [weak self] data in
         self?.pledgeDescriptionViewController.configureWith(value: data.reward)
         self?.pledgeAmountViewController.configureWith(value: (data.project, data.reward))
-        self?.pledgeShippingLocationViewController.configureWith(value: (data.project,
-                                                                         data.reward)
-        self?.pledgeSummaryViewController.configureWith(value: (data.project, data.pledgeTotal))
+        self?.pledgeShippingLocationViewController.configureWith(value: (data.project, data.reward))
         self?.pledgePaymentMethodsViewController.configureWith(value: [GraphUserCreditCard.template])
     }
-
-    self.viewModel.outputs.presentShippingRules
-      .observeForUI()
-      .observeValues { [weak self] project, shippingRules, selectedShippingRule in
-        self?.presentShippingRules(
-          project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
-        )
-      }
-
-    self.viewModel.outputs.configureShippingLocationCellWithData
-      .observeForUI()
-      .observeValues { [weak self] isLoading, project, selectedShippingRule in
-        self?.pledgeShippingLocationViewController.configureWith(
-          value: (isLoading: isLoading, project: project, selectedShippingRule: selectedShippingRule)
-        )
-      }
 
     self.viewModel.outputs.configureSummaryCellWithData
       .observeForUI()
       .observeValues { [weak self] project, pledgeTotal in
         self?.pledgeSummaryViewController.configureWith(value: (project, pledgeTotal))
-      }
-
-    self.viewModel.outputs.dismissShippingRules
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.dismiss(animated: true)
       }
 
     self.pledgeShippingLocationViewController.view.rac.hidden
@@ -179,30 +150,10 @@ final class PledgeViewController: UIViewController {
     self.view.endEditing(true)
   }
 
-  @objc func dismissShippingRules() {
-    self.viewModel.inputs.dismissShippingRulesButtonTapped()
-  }
-
   private func presentHelpWebViewController(with helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     let nc = UINavigationController(rootViewController: vc)
     self.present(nc, animated: true)
-  }
-
-  private func presentShippingRules(
-    _ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
-  ) {
-    let vc = ShippingRulesTableViewController.instantiate()
-      |> \.navigationItem.leftBarButtonItem .~ UIBarButtonItem(
-        barButtonSystemItem: .cancel,
-        target: self,
-        action: #selector(PledgeViewController.dismissShippingRules)
-      )
-    vc.configureWith(project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule)
-
-    let nc = UINavigationController(rootViewController: vc)
-    let sheetVC = SheetOverlayViewController(child: nc, offset: Layout.Sheet.offset)
-    self.present(sheetVC, animated: true)
   }
 }
 
@@ -218,12 +169,10 @@ extension PledgeViewController: PledgeAmountCellDelegate {
   }
 }
 
-extension PledgeViewController: PledgeShippingLocationCellDelegate {
-  func pledgeShippingCellWillPresentShippingRules(
-    _: PledgeShippingLocationViewController,
-    selectedShippingRule rule: ShippingRule
-  ) {
-    self.viewModel.inputs.pledgeShippingCellWillPresentShippingRules(with: rule)
+extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
+  func pledgeShippingLocationViewController(_ viewController: PledgeShippingLocationViewController,
+                                            didSelectShippingRule shippingRule: ShippingRule?) {
+    self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
 }
 

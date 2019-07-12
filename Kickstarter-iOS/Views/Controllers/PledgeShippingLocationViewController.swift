@@ -3,17 +3,22 @@ import Library
 import Prelude
 import UIKit
 
-protocol PledgeShippingLocationCellDelegate: AnyObject {
-  func pledgeShippingCellWillPresentShippingRules(
-    _ cell: PledgeShippingLocationViewController, selectedShippingRule rule: ShippingRule
-  )
+private enum Layout {
+  enum Sheet {
+    static let offset: CGFloat = 222
+  }
+}
+
+protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
+  func pledgeShippingLocationViewController(_ viewController: PledgeShippingLocationViewController,
+                                            didSelectShippingRule shippingRule: ShippingRule?)
 }
 
 final class PledgeShippingLocationViewController: UIViewController {
   // MARK: - Properties
 
-  public weak var delegate: PledgeShippingLocationCellDelegate?
-  private let viewModel: PledgeShippingLocationCellViewModelType = PledgeShippingLocationCellViewModel()
+  public weak var delegate: PledgeShippingLocationViewControllerDelegate?
+  private let viewModel: PledgeShippingLocationViewModelType = PledgeShippingLocationViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
@@ -60,6 +65,8 @@ final class PledgeShippingLocationViewController: UIViewController {
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+    self.viewModel.inputs.viewDidLoad()
   }
   // MARK: - Styles
 
@@ -105,28 +112,61 @@ final class PledgeShippingLocationViewController: UIViewController {
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
 
-    self.viewModel.outputs.selectedShippingLocation
+    self.viewModel.outputs.selectedShippingRule
       .observeForUI()
       .observeValues { [weak self] shippingRule in
         guard let self = self else { return }
-        self.delegate?.pledgeShippingCellWillPresentShippingRules(self, selectedShippingRule: shippingRule)
+
+        self.delegate?.pledgeShippingLocationViewController(self, didSelectShippingRule: shippingRule)
       }
+
+    self.viewModel.outputs.presentShippingRules
+      .observeForUI()
+      .observeValues { [weak self] project, shippingRules, selectedShippingRule in
+        self?.presentShippingRules(
+          project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
+        )
+    }
+
+    self.viewModel.outputs.dismissShippingRules
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true)
+    }
   }
 
   // MARK: - Configuration
 
   func configureWith(value: (Project, Reward)) {
-    self.viewModel.inputs.configureWith(
-      isLoading: value.isLoading,
-      project: value.project,
-      selectedShippingRule: value.selectedShippingRule
-    )
+    self.viewModel.inputs.configureWith(project: value.0, reward: value.1)
   }
 
   // MARK: - Actions
 
   @objc func shippingLocationButtonTapped(_: UIButton) {
     self.viewModel.inputs.shippingLocationButtonTapped()
+  }
+
+
+  @objc func dismissShippingRules() {
+    self.viewModel.inputs.dismissShippingRulesButtonTapped()
+  }
+
+  // MARK: - Private Functions
+  private func presentShippingRules(
+    _ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
+    ) {
+    let vc = ShippingRulesTableViewController.instantiate()
+      |> \.navigationItem.leftBarButtonItem .~ UIBarButtonItem(
+        barButtonSystemItem: .cancel,
+        target: self,
+        action: #selector(PledgeShippingLocationViewController.dismissShippingRules)
+    )
+    vc.configureWith(project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule)
+
+    let nc = UINavigationController(rootViewController: vc)
+    let sheetVC = SheetOverlayViewController(child: nc, offset: Layout.Sheet.offset)
+    self.present(sheetVC, animated: true)
   }
 }
 

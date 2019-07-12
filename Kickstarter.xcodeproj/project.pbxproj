@@ -73,7 +73,7 @@
 		3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */; };
 		3706408222A8A66E00889CBD /* PledgeAmountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408122A8A66E00889CBD /* PledgeAmountCellViewModel.swift */; };
 		3706408422A8A68600889CBD /* PledgeAmountCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408322A8A68600889CBD /* PledgeAmountCellViewModelTests.swift */; };
-		3706408622A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408522A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift */; };
+		3706408622A8A6D700889CBD /* PledgeShippingLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408522A8A6D700889CBD /* PledgeShippingLocationViewModel.swift */; };
 		3706408822A8A6F200889CBD /* PledgeShippingLocationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408722A8A6F200889CBD /* PledgeShippingLocationCellViewModelTests.swift */; };
 		3706408A22A8B2B700889CBD /* ShippingTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408922A8B2B700889CBD /* ShippingTemplates.swift */; };
 		3706408D22A9BE8100889CBD /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3706408C22A9BE8100889CBD /* DateFormatter.swift */; };
@@ -1358,7 +1358,7 @@
 		3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariablesTests.swift; sourceTree = "<group>"; };
 		3706408122A8A66E00889CBD /* PledgeAmountCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountCellViewModel.swift; sourceTree = "<group>"; };
 		3706408322A8A68600889CBD /* PledgeAmountCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountCellViewModelTests.swift; sourceTree = "<group>"; };
-		3706408522A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationCellViewModel.swift; sourceTree = "<group>"; };
+		3706408522A8A6D700889CBD /* PledgeShippingLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationViewModel.swift; sourceTree = "<group>"; };
 		3706408722A8A6F200889CBD /* PledgeShippingLocationCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationCellViewModelTests.swift; sourceTree = "<group>"; };
 		3706408922A8B2B700889CBD /* ShippingTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingTemplates.swift; sourceTree = "<group>"; };
 		3706408C22A9BE8100889CBD /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
@@ -3372,7 +3372,7 @@
 				D78E038F22930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift */,
 				D77594DB226F9C9B005EE69B /* PledgeDescriptionCellViewModel.swift */,
 				D775953B22725289005EE69B /* PledgeDescriptionCellViewModelTests.swift */,
-				3706408522A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift */,
+				3706408522A8A6D700889CBD /* PledgeShippingLocationViewModel.swift */,
 				3706408722A8A6F200889CBD /* PledgeShippingLocationCellViewModelTests.swift */,
 				D0237C2522BD7B540092C792 /* PledgeSummaryCellViewModel.swift */,
 				D0D19BC922BD886F0043A4E5 /* PledgeSummaryCellViewModelTests.swift */,
@@ -4412,7 +4412,7 @@
 				A7F441CF1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift in Sources */,
 				A7F441CB1D005A9400FE6FC5 /* MessagesSearchViewModel.swift in Sources */,
 				A7CC14651D00E81B00035C52 /* FriendsSource.swift in Sources */,
-				3706408622A8A6D700889CBD /* PledgeShippingLocationCellViewModel.swift in Sources */,
+				3706408622A8A6D700889CBD /* PledgeShippingLocationViewModel.swift in Sources */,
 				3757D0CE228E51F800241AE6 /* UIFont.swift in Sources */,
 				778F891C22D3E37300D095C5 /* Feature+Helpers.swift in Sources */,
 				9D9F581B1D1324E200CE81DE /* DashboardViewModel.swift in Sources */,
