@@ -26,7 +26,6 @@ class PledgeTableViewController: UITableViewController {
 
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
-    self.tableView.rowHeight = UITableView.automaticDimension
     self.tableView.registerCellClass(PledgeAmountCell.self)
     self.tableView.registerCellClass(PledgeContinueCell.self)
     self.tableView.registerCellClass(PledgeDescriptionCell.self)

@@ -1041,6 +1041,7 @@
 		D6AE52251FD1B3F600BEC788 /* RootCategoriesEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE52241FD1B3F600BEC788 /* RootCategoriesEnvelope.swift */; };
 		D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */; };
 		D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */; };
+		D6AF790922D8D5650005464A /* PledgeCreditCardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF790822D8D5650005464A /* PledgeCreditCardCellViewModel.swift */; };
 		D6B4D9BF209B88F3002C7B68 /* PushNotificationdialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */; };
 		D6B4EFC6210686270079159D /* SettingsNewslettersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */; };
 		D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4EFFD21079C870079159D /* SettingsNewslettersViewModelTests.swift */; };
@@ -2271,6 +2272,7 @@
 		D6AE52261FD1B41200BEC788 /* RootCategoriesEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootCategoriesEnvelope.swift; path = lenses/RootCategoriesEnvelope.swift; sourceTree = "<group>"; };
 		D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEnvelope.swift; sourceTree = "<group>"; };
 		D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64Tests.swift"; sourceTree = "<group>"; };
+		D6AF790822D8D5650005464A /* PledgeCreditCardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCreditCardCellViewModel.swift; sourceTree = "<group>"; };
 		D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationdialogTests.swift; sourceTree = "<group>"; };
 		D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewModel.swift; sourceTree = "<group>"; };
 		D6B4EFFD21079C870079159D /* SettingsNewslettersViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewModelTests.swift; sourceTree = "<group>"; };
@@ -3405,6 +3407,9 @@
 				3706408322A8A68600889CBD /* PledgeAmountViewModelTests.swift */,
 				77C93C1922C13DED005D3195 /* PledgeContinueViewModel.swift */,
 				77CB226F22C3B3CB00AEAAF1 /* PledgeContinueViewModelTests.swift */,
+				3706408122A8A66E00889CBD /* PledgeAmountCellViewModel.swift */,
+				3706408322A8A68600889CBD /* PledgeAmountCellViewModelTests.swift */,
+				D6AF790822D8D5650005464A /* PledgeCreditCardCellViewModel.swift */,
 				D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */,
 				D78E038F22930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift */,
 				D77594DB226F9C9B005EE69B /* PledgeDescriptionViewModel.swift */,
@@ -4441,6 +4446,7 @@
 				59B0E0061D1207070081D2DC /* DashboardActionCellViewModel.swift in Sources */,
 				D04AABFA218BB32000CF713E /* SettingsAccountViewModel.swift in Sources */,
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
+				D6AF790922D8D5650005464A /* PledgeCreditCardCellViewModel.swift in Sources */,
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
 				A734A2671D21A1790080BBD5 /* WKNavigationActionData.swift in Sources */,
 				A7C93FB61D44142900C2DF9B /* ProjectDescriptionViewModel.swift in Sources */,
