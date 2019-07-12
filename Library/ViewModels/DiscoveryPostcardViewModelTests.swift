@@ -362,7 +362,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.fundingProgressContainerViewHidden.assertValues([false, true, false, false, true])
   }
 
-  // MARK: Project Category View
+  // MARK: - Project Category View
 
   func testShowsCategoryLabels_ParentCategorySelected() {
     let staffPickProject = Project.template
