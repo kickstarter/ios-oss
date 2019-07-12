@@ -55,7 +55,6 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
-      |> \.delegate .~ self
 
     self.collectionView.register(PledgeCreditCardCell.self)
 
@@ -107,26 +106,17 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   }
 }
 
-extension PledgePaymentMethodsCell: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    print(collectionView)
-  }
-}
-
 extension PledgePaymentMethodsCell: PledgeCreditCardCellDelegate {
 
   func didUpdateContentSize(_ cell: PledgeCreditCardCell, size: CGSize) {
     self.updateConstraints(size)
-
   }
 
   private func updateConstraints(_ size: CGSize) {
-
     NSLayoutConstraint.deactivate([self.collectionViewHeightAnchor])
 
     self.collectionViewHeightAnchor =
       self.collectionView.heightAnchor.constraint(equalToConstant: size.height + Styles.grid(2))
-
     NSLayoutConstraint.activate([self.collectionViewHeightAnchor])
 
     self.setNeedsLayout()

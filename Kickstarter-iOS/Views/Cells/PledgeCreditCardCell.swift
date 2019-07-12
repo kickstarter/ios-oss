@@ -21,6 +21,8 @@ internal protocol PledgeCreditCardCellDelegate: class {
 final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
+  private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
+
   private let adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let labelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
@@ -64,6 +66,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
 
     NSLayoutConstraint.activate([
       self.imageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
+      self.selectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
       self.selectButton.widthAnchor.constraint(equalToConstant: Layout.Button.width)
     ])
   }
@@ -111,12 +114,22 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
       |> \.layoutMargins .~ UIEdgeInsets(all: Styles.grid(2))
   }
 
-  func configureWith(value: GraphUserCreditCard.CreditCard) {
-    self.prepareForReuse()
-    self.imageView.image = UIImage(named: value.imageName)
-    self.lastFourLabel.text = value.lastFour
-    self.expirationDateLabel.text = Strings.Credit_card_expiration(expiration_date: value.expirationDate())
+  override func bindViewModel() {
+    super.bindViewModel()
+    self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
+    self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberText
+    self.viewModel.outputs.cardImage
+      .observeForUI()
+      .observeValues { [weak self] image in
+        _ = self?.imageView
+          ?|> \.image .~ image
+    }
+  }
 
+  func configureWith(value: GraphUserCreditCard.CreditCard) {
+    self.viewModel.inputs.configureWith(creditCard: value)
+
+    self.prepareForReuse()
     self.layoutIfNeeded()
     let size = self.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize,
                                                               withHorizontalFittingPriority: .defaultHigh,
