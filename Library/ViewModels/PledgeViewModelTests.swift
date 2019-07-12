@@ -19,7 +19,7 @@ final class PledgeViewModelTests: TestCase {
   private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
 
   private let dismissShippingRules = TestObserver<Void, Never>()
-private let goToLoginSignup = TestObserver<LoginIntent, Never>()
+  private let goToLoginSignup = TestObserver<LoginIntent, Never>()
 
   /**
    Given the noise of `pledgeViewDataAndReload` signal and its frequent emissions and also the fact that

@@ -109,7 +109,7 @@ class PledgeTableViewController: UITableViewController {
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
-	}
+      }
 
     self.viewModel.outputs.dismissShippingRules
       .observeForUI()

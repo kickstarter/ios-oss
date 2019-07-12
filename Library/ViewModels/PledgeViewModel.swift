@@ -24,7 +24,7 @@ public protocol PledgeViewModelInputs {
   func pledgeAmountDidUpdate(to amount: Double)
   func pledgeShippingCellWillPresentShippingRules(with rule: ShippingRule)
   func shippingRuleDidUpdate(to rule: ShippingRule)
-	func userSessionStarted()
+  func userSessionStarted()
   func viewDidLoad()
 }
 
@@ -176,7 +176,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
   public func userSessionStarted() {
     self.userSessionStartedObserver.send(value: ())
-}
+  }
 
   private let dismissShippingRulesButtonTappedProperty = MutableProperty(())
   public func dismissShippingRulesButtonTapped() {
