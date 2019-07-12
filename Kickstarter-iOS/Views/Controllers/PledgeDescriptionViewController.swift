@@ -41,14 +41,14 @@ final class PledgeDescriptionViewController: UIViewController {
 
   // MARK: - Lifecycle
 
-  init() {
-    super.init(nibName: nil, bundle: nil)
-
-    self.configureSubviews()
-  }
-
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    self.configureSubviews()
   }
 
   // MARK: - Styles

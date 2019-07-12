@@ -5,10 +5,10 @@ import Prelude_UIKit
 import UIKit
 
 protocol PledgeAmountCellDelegate: AnyObject {
-  func pledgeAmountCell(_ cell: PledgeAmountCell, didUpdateAmount amount: Double)
+  func pledgeAmountCell(_ cell: PledgeAmountViewController, didUpdateAmount amount: Double)
 }
 
-final class PledgeAmountCell: UIView {
+final class PledgeAmountViewController: UIViewController {
   // MARK: - Properties
 
   public weak var delegate: PledgeAmountCellDelegate?
@@ -27,13 +27,17 @@ final class PledgeAmountCell: UIView {
 
   // MARK: - Lifecycle
 
-  init() {
-    super.init(frame: .zero)
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
     _ = self
       |> \.accessibilityElements .~ [self.titleLabel, self.stepper, self.amountInputView]
 
-    _ = (self.rootStackView, self)
+    _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
@@ -49,27 +53,21 @@ final class PledgeAmountCell: UIView {
 
     self.amountInputView.doneButton.addTarget(
       self,
-      action: #selector(PledgeAmountCell.doneButtonTapped(_:)),
+      action: #selector(PledgeAmountViewController.doneButtonTapped(_:)),
       for: .touchUpInside
     )
 
     self.amountInputView.textField.addTarget(
       self,
-      action: #selector(PledgeAmountCell.textFieldDidChange(_:)),
+      action: #selector(PledgeAmountViewController.textFieldDidChange(_:)),
       for: .editingChanged
     )
 
     self.stepper.addTarget(
       self,
-      action: #selector(PledgeAmountCell.stepperValueChanged(_:)),
+      action: #selector(PledgeAmountViewController.stepperValueChanged(_:)),
       for: .valueChanged
     )
-
-    self.bindViewModel()
-  }
-
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Styles
@@ -77,7 +75,7 @@ final class PledgeAmountCell: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
+    _ = self.view
       |> checkoutBackgroundStyle
 
     _ = self.adaptableStackView
@@ -149,7 +147,7 @@ final class PledgeAmountCell: UIView {
   }
 }
 
-extension PledgeAmountCell: UITextFieldDelegate {
+extension PledgeAmountViewController: UITextFieldDelegate {
   func textField(
     _ textField: UITextField, shouldChangeCharactersIn _: NSRange, replacementString string: String
   ) -> Bool {

@@ -5,11 +5,11 @@ import UIKit
 
 protocol PledgeShippingLocationCellDelegate: AnyObject {
   func pledgeShippingCellWillPresentShippingRules(
-    _ cell: PledgeShippingLocationCell, selectedShippingRule rule: ShippingRule
+    _ cell: PledgeShippingLocationViewController, selectedShippingRule rule: ShippingRule
   )
 }
 
-final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
+final class PledgeShippingLocationViewController: UIViewController {
   // MARK: - Properties
 
   public weak var delegate: PledgeShippingLocationCellDelegate?
@@ -27,13 +27,21 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Lifecycle
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  init() {
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
     _ = self
       |> \.accessibilityElements .~ [self.titleLabel, self.shippingLocationButton, self.amountLabel]
 
-    _ = (self.rootStackView, self.contentView)
+    _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
@@ -45,27 +53,20 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
     self.shippingLocationButton.addTarget(
       self,
-      action: #selector(PledgeShippingLocationCell.shippingLocationButtonTapped(_:)),
+      action: #selector(PledgeShippingLocationViewController.shippingLocationButtonTapped(_:)),
       for: .touchUpInside
     )
 
     self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-
-    self.bindViewModel()
   }
-
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
   // MARK: - Styles
 
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
+    _ = self.view
       |> checkoutBackgroundStyle
 
     _ = self.adaptableStackView

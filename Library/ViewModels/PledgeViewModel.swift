@@ -38,7 +38,7 @@ public protocol PledgeViewModelOutputs {
    the data source has the current state of the data that the cells have. This ensures that if a cell is
    recycled it will be reloaded with its most recent data.
    */
-  var pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never> { get }
+  var configureWithPledgeViewData: Signal<PledgeViewData, Never> { get }
   var presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
 }
@@ -113,14 +113,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .combineLatest(project, reward, isLoggedIn, isShippingLoading, defaultShippingRule, pledgeTotal)
       .map(pledgeViewData(with:reward:isLoggedIn:isShippingLoading:selectedShippingRule:pledgeTotal:))
 
-    self.pledgeViewDataAndReload = Signal.merge(
-      data.take(first: 1).map { data in (data, true) },
-      data.skip(first: 1).map { data in (data, false) }
-    )
+    self.configureWithPledgeViewData = data
 
-    let updatedData = self.pledgeViewDataAndReload
-      .filter(second >>> isFalse)
-      .map(first)
+    let updatedData = self.configureWithPledgeViewData
+      .skip(first: 1)
 
     self.configureSummaryCellWithData = updatedData
       .takePairWhen(pledgeTotal)
@@ -174,7 +170,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never>
   public let configureSummaryCellWithData: Signal<(Project, Double), Never>
   public let dismissShippingRules: Signal<Void, Never>
-  public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
+  public let configureWithPledgeViewData: Signal<PledgeViewData, Never>
   public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
   public let shippingRulesError: Signal<String, Never>
 
