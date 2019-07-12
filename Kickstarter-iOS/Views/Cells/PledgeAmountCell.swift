@@ -8,7 +8,7 @@ protocol PledgeAmountCellDelegate: AnyObject {
   func pledgeAmountCell(_ cell: PledgeAmountCell, didUpdateAmount amount: Double)
 }
 
-final class PledgeAmountCell: UITableViewCell, ValueCell {
+final class PledgeAmountCell: UIView {
   // MARK: - Properties
 
   public weak var delegate: PledgeAmountCellDelegate?
@@ -27,13 +27,13 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
   // MARK: - Lifecycle
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  init() {
+    super.init(frame: .zero)
 
     _ = self
       |> \.accessibilityElements .~ [self.titleLabel, self.stepper, self.amountInputView]
 
-    _ = (self.rootStackView, self.contentView)
+    _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 

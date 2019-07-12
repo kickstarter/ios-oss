@@ -17,6 +17,8 @@ class PledgeTableViewController: UITableViewController {
   private weak var shippingLocationCell: PledgeShippingLocationCell?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
+  
+
   // MARK: - Lifecycle
 
   static func instantiate() -> PledgeTableViewController {
@@ -34,7 +36,7 @@ class PledgeTableViewController: UITableViewController {
       |> \.dataSource .~ self.dataSource
 
     self.tableView.registerCellClass(PledgeAmountCell.self)
-    self.tableView.registerCellClass(PledgeContinueCell.self)
+    self.tableView.registerCellClass(PledgeContinueViewController.self)
     self.tableView.registerCellClass(PledgeDescriptionCell.self)
     self.tableView.registerCellClass(PledgePaymentMethodsCell.self)
     self.tableView.registerCellClass(PledgeSummaryCell.self)

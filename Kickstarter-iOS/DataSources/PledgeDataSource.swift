@@ -45,7 +45,7 @@ final class PledgeDataSource: ValueCellDataSource {
     if !data.isLoggedIn {
       self.appendRow(
         value: (),
-        cellClass: PledgeContinueCell.self,
+        cellClass: PledgeContinueViewController.self,
         toSection: Section.summary.rawValue
       )
     } else {
@@ -61,7 +61,7 @@ final class PledgeDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as PledgeAmountCell, value as (Project, Reward)):
       cell.configureWith(value: value)
-    case let (cell as PledgeContinueCell, value as ()):
+    case let (cell as PledgeContinueViewController, value as ()):
       cell.configureWith(value: value)
     case let (cell as PledgeDescriptionCell, value as Reward):
       cell.configureWith(value: value)
@@ -69,7 +69,7 @@ final class PledgeDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as PledgeShippingLocationCell, value as (Bool, Project, ShippingRule?)):
       cell.configureWith(value: value)
-    case let (cell as PledgeContinueCell, value as ()):
+    case let (cell as PledgeContinueViewController, value as ()):
       cell.configureWith(value: value)
     case let (cell as PledgePaymentMethodsCell, value as [GraphUserCreditCard]):
       cell.configureWith(value: value)

@@ -78,7 +78,7 @@ final class PledgeDataSourceTests: XCTestCase {
     XCTAssertEqual(PledgeDescriptionCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 0))
     XCTAssertEqual(PledgeAmountCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 1))
     XCTAssertEqual(PledgeSummaryCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: 2))
-    XCTAssertEqual(PledgeContinueCell.defaultReusableId, self.dataSource.reusableId(item: 1, section: 2))
+    XCTAssertEqual(PledgeContinueViewController.defaultReusableId, self.dataSource.reusableId(item: 1, section: 2))
   }
 
   func testLoad_Shipping_Disabled() {
@@ -99,7 +99,7 @@ final class PledgeDataSourceTests: XCTestCase {
     XCTAssertEqual(PledgeDescriptionCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: PledgeDataSource.Section.project.rawValue))
     XCTAssertEqual(PledgeAmountCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: PledgeDataSource.Section.inputs.rawValue))
     XCTAssertEqual(PledgeSummaryCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: PledgeDataSource.Section.summary.rawValue))
-    XCTAssertEqual(PledgeContinueCell.defaultReusableId, self.dataSource.reusableId(item: 1, section: PledgeDataSource.Section.summary.rawValue))
+    XCTAssertEqual(PledgeContinueViewController.defaultReusableId, self.dataSource.reusableId(item: 1, section: PledgeDataSource.Section.summary.rawValue))
   }
 
   func testLoad_Shipping_Enabled() {
@@ -121,6 +121,6 @@ final class PledgeDataSourceTests: XCTestCase {
     XCTAssertEqual(PledgeAmountCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: PledgeDataSource.Section.inputs.rawValue))
     XCTAssertEqual(PledgeShippingLocationCell.defaultReusableId, self.dataSource.reusableId(item: 1, section: PledgeDataSource.Section.inputs.rawValue))
     XCTAssertEqual(PledgeSummaryCell.defaultReusableId, self.dataSource.reusableId(item: 0, section: PledgeDataSource.Section.summary.rawValue))
-    XCTAssertEqual(PledgeContinueCell.defaultReusableId, self.dataSource.reusableId(item: 1, section: PledgeDataSource.Section.summary.rawValue))
+    XCTAssertEqual(PledgeContinueViewController.defaultReusableId, self.dataSource.reusableId(item: 1, section: PledgeDataSource.Section.summary.rawValue))
   }
 }

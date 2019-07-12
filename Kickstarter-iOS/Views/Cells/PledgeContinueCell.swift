@@ -2,11 +2,11 @@ import Foundation
 import Library
 import Prelude
 
-final class PledgeContinueCell: UITableViewCell, ValueCell {
+final class PledgeContinueViewController: UIViewController {
   private let continueButton = MultiLineButton(type: .custom)
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  init() {
+    super.init(nibName: nil)
 
     self.setupSubviews()
   }
@@ -21,7 +21,7 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
     _ = self
       |> \.backgroundColor .~ .ksr_grey_300
 
-    _ = self.contentView
+    _ = self
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = self.continueButton
@@ -37,7 +37,7 @@ final class PledgeContinueCell: UITableViewCell, ValueCell {
   func configureWith(value _: ()) {}
 
   private func setupSubviews() {
-    _ = (self.continueButton, self.contentView)
+    _ = (self.continueButton, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 

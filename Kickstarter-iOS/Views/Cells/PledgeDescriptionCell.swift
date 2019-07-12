@@ -15,10 +15,10 @@ private enum Layout {
 }
 
 internal protocol PledgeDescriptionCellDelegate: AnyObject {
-  func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell)
+  func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionViewController)
 }
 
-final class PledgeDescriptionCell: UITableViewCell, ValueCell {
+final class PledgeDescriptionViewController: UIViewController {
   fileprivate let viewModel = PledgeDescriptionCellViewModel()
   internal weak var delegate: PledgeDescriptionCellDelegate?
 
@@ -41,12 +41,10 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
   // MARK: - Lifecycle
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  init() {
+    super.init(nibName: nil, bundle: nil)
 
     self.configureSubviews()
-
-    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -58,7 +56,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
+    _ = self.view
       |> checkoutBackgroundStyle
 
     _ = self.rootStackView
@@ -88,7 +86,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   }
 
   private func configureSubviews() {
-    _ = (self.rootStackView, self.contentView)
+    _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
@@ -151,7 +149,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   }
 }
 
-extension PledgeDescriptionCell: UITextViewDelegate {
+extension PledgeDescriptionViewController: UITextViewDelegate {
   func textView(
     _: UITextView, shouldInteractWith _: NSTextAttachment,
     in _: NSRange, interaction _: UITextItemInteraction
