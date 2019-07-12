@@ -14,13 +14,8 @@ private enum Layout {
   }
 }
 
-internal protocol PledgeDescriptionCellDelegate: AnyObject {
-  func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionViewController)
-}
-
 final class PledgeDescriptionViewController: UIViewController {
-  fileprivate let viewModel = PledgeDescriptionCellViewModel()
-  internal weak var delegate: PledgeDescriptionCellDelegate?
+  fileprivate let viewModel = PledgeDescriptionViewModel()
 
   // MARK: - Properties
 
@@ -141,8 +136,7 @@ final class PledgeDescriptionViewController: UIViewController {
     self.viewModel.outputs.presentTrustAndSafety
       .observeForUI()
       .observeValues { [weak self] in
-        guard let _self = self else { return }
-        self?.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(_self)
+        self?.presentHelpWebViewController(with: .trust)
       }
   }
 
@@ -150,6 +144,14 @@ final class PledgeDescriptionViewController: UIViewController {
 
   internal func configureWith(value: Reward) {
     self.viewModel.inputs.configureWith(reward: value)
+  }
+
+  // MARK: - Private Helpers
+  
+  private func presentHelpWebViewController(with helpType: HelpType) {
+    let vc = HelpWebViewController.configuredWith(helpType: helpType)
+    let nc = UINavigationController(rootViewController: vc)
+    self.present(nc, animated: true)
   }
 }
 

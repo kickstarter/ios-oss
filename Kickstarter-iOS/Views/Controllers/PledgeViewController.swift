@@ -4,6 +4,7 @@ import Prelude
 import UIKit
 
 final class PledgeViewController: UIViewController {
+
   // MARK: - Properties
 
   private lazy var pledgeAmountViewController = {
@@ -150,18 +151,6 @@ final class PledgeViewController: UIViewController {
   @objc func dismissKeyboard() {
     self.view.endEditing(true)
   }
-
-  private func presentHelpWebViewController(with helpType: HelpType) {
-    let vc = HelpWebViewController.configuredWith(helpType: helpType)
-    let nc = UINavigationController(rootViewController: vc)
-    self.present(nc, animated: true)
-  }
-}
-
-extension PledgeViewController: PledgeDescriptionCellDelegate {
-  internal func pledgeDescriptionCellDidPresentTrustAndSafety(_: PledgeDescriptionViewController) {
-    self.presentHelpWebViewController(with: .trust)
-  }
 }
 
 extension PledgeViewController: PledgeAmountViewControllerDelegate {
@@ -178,11 +167,6 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
   }
 }
 
-extension PledgeViewController: PledgeSummaryCellDelegate {
-  internal func pledgeSummaryCell(_: PledgeSummaryViewController, didOpen helpType: HelpType) {
-    self.presentHelpWebViewController(with: helpType)
-  }
-}
 
 // MARK: - Styles
 private let rootScrollViewStyle: ScrollStyle = { scrollView in

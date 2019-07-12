@@ -1095,7 +1095,7 @@
 		D770DDE8217D729300B5319A /* UserCurrencyTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DDE7217D729300B5319A /* UserCurrencyTemplates.swift */; };
 		D770DE75217E598C00B5319A /* AddNewCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DE3D217E339500B5319A /* AddNewCardViewController.swift */; };
 		D770DE78217E876000B5319A /* AddNewCardViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DE76217E874F00B5319A /* AddNewCardViewControllerTests.swift */; };
-		D77594DC226F9C9C005EE69B /* PledgeDescriptionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77594DB226F9C9B005EE69B /* PledgeDescriptionCellViewModel.swift */; };
+		D77594DC226F9C9C005EE69B /* PledgeDescriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77594DB226F9C9B005EE69B /* PledgeDescriptionViewModel.swift */; };
 		D775953C22725289005EE69B /* PledgeDescriptionCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775953B22725289005EE69B /* PledgeDescriptionCellViewModelTests.swift */; };
 		D775EBEA207C09FD00885634 /* CrossDissolveTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */; };
 		D775EC3020812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */; };
@@ -2320,7 +2320,7 @@
 		D770DDE7217D729300B5319A /* UserCurrencyTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCurrencyTemplates.swift; sourceTree = "<group>"; };
 		D770DE3D217E339500B5319A /* AddNewCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewController.swift; sourceTree = "<group>"; };
 		D770DE76217E874F00B5319A /* AddNewCardViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewControllerTests.swift; sourceTree = "<group>"; };
-		D77594DB226F9C9B005EE69B /* PledgeDescriptionCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeDescriptionCellViewModel.swift; sourceTree = "<group>"; };
+		D77594DB226F9C9B005EE69B /* PledgeDescriptionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeDescriptionViewModel.swift; sourceTree = "<group>"; };
 		D775953B22725289005EE69B /* PledgeDescriptionCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDescriptionCellViewModelTests.swift; sourceTree = "<group>"; };
 		D775EC2F20812C6500885634 /* ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsTemplate.swift; sourceTree = "<group>"; };
 		D775EC672084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift; sourceTree = "<group>"; };
@@ -3370,7 +3370,7 @@
 				3706408322A8A68600889CBD /* PledgeAmountCellViewModelTests.swift */,
 				D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */,
 				D78E038F22930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift */,
-				D77594DB226F9C9B005EE69B /* PledgeDescriptionCellViewModel.swift */,
+				D77594DB226F9C9B005EE69B /* PledgeDescriptionViewModel.swift */,
 				D775953B22725289005EE69B /* PledgeDescriptionCellViewModelTests.swift */,
 				3706408522A8A6D700889CBD /* PledgeShippingLocationViewModel.swift */,
 				3706408722A8A6F200889CBD /* PledgeShippingLocationCellViewModelTests.swift */,
@@ -4446,7 +4446,7 @@
 				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
 				A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
-				D77594DC226F9C9C005EE69B /* PledgeDescriptionCellViewModel.swift in Sources */,
+				D77594DC226F9C9C005EE69B /* PledgeDescriptionViewModel.swift in Sources */,
 				77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */,
 				59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */,
 				D703FC6B20F7E3F8004A272D /* SettingsPrivacyViewModel.swift in Sources */,

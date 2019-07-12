@@ -5,7 +5,7 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 internal final class PledgeDescriptionCellViewModelTests: TestCase {
-  private let vm: PledgeDescriptionCellViewModelType = PledgeDescriptionCellViewModel()
+  private let vm: PledgeDescriptionCellViewModelType = PledgeDescriptionViewModel()
 
   private let estimatedDeliveryText = TestObserver<String, Never>()
   private let presentTrustAndSafety = TestObserver<Void, Never>()

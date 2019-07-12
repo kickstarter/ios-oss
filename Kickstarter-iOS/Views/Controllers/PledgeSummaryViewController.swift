@@ -5,23 +5,15 @@ import UIKit
 
 public typealias PledgeSummaryCellData = (project: Project, total: Double)
 
-internal protocol PledgeSummaryCellDelegate: AnyObject {
-  func pledgeSummaryCell(_ cell: PledgeSummaryViewController, didOpen helpType: HelpType)
-}
-
 final class PledgeSummaryViewController: UIViewController {
   // MARK: - Properties
-
-  internal weak var delegate: PledgeSummaryCellDelegate?
-  private var viewModel = PledgeSummaryCellViewModel()
-
-  // MARK: - Subview Properties
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var termsTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private let viewModel = PledgeSummaryCellViewModel()
 
   // MARK: - Lifecycle
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -85,8 +77,7 @@ final class PledgeSummaryViewController: UIViewController {
     self.viewModel.outputs.notifyDelegateOpenHelpType
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
-        guard let self = self else { return }
-        self.delegate?.pledgeSummaryCell(self, didOpen: helpType)
+        self?.presentHelpWebViewController(with: helpType)
       }
   }
 
@@ -95,6 +86,14 @@ final class PledgeSummaryViewController: UIViewController {
   internal func configureWith(value: PledgeSummaryCellData) {
     _ = self.amountLabel
       |> \.attributedText .~ attributedCurrency(with: value)
+  }
+
+  // MARK: - Private Helpers
+
+  private func presentHelpWebViewController(with helpType: HelpType) {
+    let vc = HelpWebViewController.configuredWith(helpType: helpType)
+    let nc = UINavigationController(rootViewController: vc)
+    self.present(nc, animated: true)
   }
 }
 
