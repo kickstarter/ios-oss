@@ -8,6 +8,7 @@ final class PledgeViewController: UIViewController {
 
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
+      |> \.delegate .~ self
   }()
 
   private lazy var pledgeContinueViewController = {
@@ -163,8 +164,9 @@ extension PledgeViewController: PledgeDescriptionCellDelegate {
   }
 }
 
-extension PledgeViewController: PledgeAmountCellDelegate {
-  func pledgeAmountCell(_: PledgeAmountViewController, didUpdateAmount amount: Double) {
+extension PledgeViewController: PledgeAmountViewControllerDelegate {
+  func pledgeAmountViewController(_ viewController: PledgeAmountViewController,
+                                  didUpdateAmount amount: Double) {
     self.viewModel.inputs.pledgeAmountDidUpdate(to: amount)
   }
 }

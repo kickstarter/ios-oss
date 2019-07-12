@@ -4,14 +4,15 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-protocol PledgeAmountCellDelegate: AnyObject {
-  func pledgeAmountCell(_ cell: PledgeAmountViewController, didUpdateAmount amount: Double)
+protocol PledgeAmountViewControllerDelegate: class {
+  func pledgeAmountViewController(_ viewController: PledgeAmountViewController,
+                                  didUpdateAmount amount: Double)
 }
 
 final class PledgeAmountViewController: UIViewController {
   // MARK: - Properties
 
-  public weak var delegate: PledgeAmountCellDelegate?
+  public weak var delegate: PledgeAmountViewControllerDelegate?
   private let viewModel = PledgeAmountCellViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -126,7 +127,8 @@ final class PledgeAmountViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] amount in
         guard let self = self else { return }
-        self.delegate?.pledgeAmountCell(self, didUpdateAmount: amount)
+
+        self.delegate?.pledgeAmountViewController(self, didUpdateAmount: amount)
       }
   }
 
