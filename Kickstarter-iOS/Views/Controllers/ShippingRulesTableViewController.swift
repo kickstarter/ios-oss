@@ -26,7 +26,7 @@ final class ShippingRulesTableViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
