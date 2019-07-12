@@ -13,7 +13,7 @@ final class PledgeSummaryViewController: UIViewController {
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var termsTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
-  private let viewModel = PledgeSummaryCellViewModel()
+  private let viewModel = PledgeSummaryViewModel()
 
   // MARK: - Lifecycle
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {

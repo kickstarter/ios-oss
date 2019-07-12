@@ -4,7 +4,7 @@ import Foundation
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 
-final class PledgeShippingLocationCellViewModelTests: TestCase {
+final class PledgeShippingLocationViewModelTests: TestCase {
   private let vm: PledgeShippingLocationCellViewModelType = PledgeShippingLocationViewModel()
 
   private let amountAttributedText = TestObserver<NSAttributedString, Never>()
