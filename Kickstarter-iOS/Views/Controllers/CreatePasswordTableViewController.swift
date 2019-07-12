@@ -84,7 +84,7 @@ final class CreatePasswordTableViewController: UITableViewController {
       |> \.allowsSelection .~ true
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
