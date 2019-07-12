@@ -109,6 +109,12 @@ class PledgeTableViewController: UITableViewController {
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
+	}
+
+    self.viewModel.outputs.dismissShippingRules
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true)
       }
   }
 
@@ -159,6 +165,10 @@ class PledgeTableViewController: UITableViewController {
     self.tableView.endEditing(true)
   }
 
+  @objc func dismissShippingRules() {
+    self.viewModel.inputs.dismissShippingRulesButtonTapped()
+  }
+
   private func presentHelpWebViewController(with helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     let nc = UINavigationController(rootViewController: vc)
@@ -166,10 +176,16 @@ class PledgeTableViewController: UITableViewController {
   }
 
   private func presentShippingRules(
-    _: Project, shippingRules _: [ShippingRule], selectedShippingRule _: ShippingRule
+    _ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
   ) {
-    let vc = UIViewController()
-    vc.view.backgroundColor = UIColor.cyan
+    let vc = ShippingRulesTableViewController.instantiate()
+      |> \.navigationItem.leftBarButtonItem .~ UIBarButtonItem(
+        barButtonSystemItem: .cancel,
+        target: self,
+        action: #selector(PledgeTableViewController.dismissShippingRules)
+      )
+    vc.configureWith(project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule)
+
     let nc = UINavigationController(rootViewController: vc)
     let sheetVC = SheetOverlayViewController(child: nc, offset: Layout.Sheet.offset)
     self.present(sheetVC, animated: true)

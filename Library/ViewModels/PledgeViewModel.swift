@@ -20,10 +20,11 @@ public typealias PledgeViewData = (
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func pledgeContinueCellContinueButtonTapped()
-  func userSessionStarted()
+  func dismissShippingRulesButtonTapped()
   func pledgeAmountDidUpdate(to amount: Double)
   func pledgeShippingCellWillPresentShippingRules(with rule: ShippingRule)
   func shippingRuleDidUpdate(to rule: ShippingRule)
+	func userSessionStarted()
   func viewDidLoad()
 }
 
@@ -31,6 +32,7 @@ public protocol PledgeViewModelOutputs {
   var goToLoginSignup: Signal<LoginIntent, Never> { get }
   var configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never> { get }
   var configureSummaryCellWithData: Signal<(Project, Double), Never> { get }
+  var dismissShippingRules: Signal<Void, Never> { get }
 
   /**
    Emits the initial data for this view model along with a `Bool` indicating whether the table view should
@@ -156,6 +158,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { data, isShippingLoading, selectedShippingRule in
         (isShippingLoading, data.project, selectedShippingRule)
       }
+
+    self.dismissShippingRules = self.dismissShippingRulesButtonTappedProperty.signal
   }
 
   private let (pledgeContinueCellContinueButtonTappedSignal, pledgeContinueCellContinueButtonTappedObserver)
@@ -172,6 +176,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
   public func userSessionStarted() {
     self.userSessionStartedObserver.send(value: ())
+}
+
+  private let dismissShippingRulesButtonTappedProperty = MutableProperty(())
+  public func dismissShippingRulesButtonTapped() {
+    self.dismissShippingRulesButtonTappedProperty.value = ()
   }
 
   private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
@@ -197,6 +206,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let goToLoginSignup: Signal<LoginIntent, Never>
   public let configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never>
   public let configureSummaryCellWithData: Signal<(Project, Double), Never>
+  public let dismissShippingRules: Signal<Void, Never>
   public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
   public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
   public let shippingRulesError: Signal<String, Never>
