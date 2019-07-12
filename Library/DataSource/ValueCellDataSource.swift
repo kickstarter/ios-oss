@@ -276,7 +276,7 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
       .reduce(indexPath.item) { accum, section in accum + section.count }
   }
 
-  // MARK: UICollectionViewDataSource methods
+  // MARK: - UICollectionViewDataSource methods
 
   public final func numberOfSections(in _: UICollectionView) -> Int {
     return self.values.count
@@ -302,7 +302,7 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
     return cell
   }
 
-  // MARK: UITableViewDataSource methods
+  // MARK: - UITableViewDataSource methods
 
   public final func numberOfSections(in _: UITableView) -> Int {
     return self.values.count
