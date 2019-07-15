@@ -33,9 +33,6 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
 
-  /// Return this value from the view's `prefersStatusBarHidden` method.
-  var prefersStatusBarHidden: Bool { get }
-
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
   var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
 
@@ -81,8 +78,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
-
-    self.prefersStatusBarHiddenProperty <~ self.viewWillAppearAnimated.signal.mapConst(true)
 
     self.setNeedsStatusBarAppearanceUpdate = Signal.merge(
       self.viewWillAppearAnimated.signal.ignoreValues(),
@@ -164,12 +159,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<Project, Never>
-
-  fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
-  public var prefersStatusBarHidden: Bool {
-    return self.prefersStatusBarHiddenProperty.value
-  }
-
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
