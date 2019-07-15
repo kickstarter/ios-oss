@@ -140,6 +140,12 @@ final class PledgeViewController: UIViewController {
         self?.pledgeSummaryViewController.configureWith(value: (project, pledgeTotal))
       }
 
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
+    }
+
     self.pledgeShippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
     self.pledgeContinueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
