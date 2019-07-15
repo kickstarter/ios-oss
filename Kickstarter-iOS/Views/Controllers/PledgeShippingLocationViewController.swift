@@ -112,7 +112,7 @@ final class PledgeShippingLocationViewController: UIViewController {
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
 
-    self.viewModel.outputs.selectedShippingRule
+    self.viewModel.outputs.notifyDelegateOfSelectedShippingRule
       .observeForUI()
       .observeValues { [weak self] shippingRule in
         guard let self = self else { return }

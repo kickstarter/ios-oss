@@ -17,7 +17,7 @@ public protocol PledgeShippingLocationViewModelOutputs {
   var dismissShippingRules: Signal<Void, Never> { get }
   var isLoading: Signal<Bool, Never> { get }
   var presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
-  var selectedShippingRule: Signal<ShippingRule?, Never> { get }
+  var notifyDelegateOfSelectedShippingRule: Signal<ShippingRule?, Never> { get }
   var shippingLocationButtonTitle: Signal<String, Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
 }
@@ -66,20 +66,20 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
       Strings.We_were_unable_to_load_the_shipping_destinations()
     }
 
-    self.selectedShippingRule = Signal.merge(
+    self.notifyDelegateOfSelectedShippingRule = Signal.merge(
       defaultShippingRule,
       shippingRuleUpdatedSignal.wrapInOptional()
       )
 
     let shippingAmount = Signal.merge(
-      self.selectedShippingRule.map { $0?.cost ?? 0 },
+      self.notifyDelegateOfSelectedShippingRule.map { $0?.cost ?? 0 },
       projectAndReward.mapConst(0)
     )
 
     self.presentShippingRules = Signal.combineLatest(
       project,
       shippingRulesEvent.values(),
-      self.selectedShippingRule.skipNil()
+      self.notifyDelegateOfSelectedShippingRule.skipNil()
       )
       .takeWhen(self.shippingLocationButtonTappedSignal)
 
@@ -87,7 +87,7 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
       .map { project, shippingAmount in shippingValue(of: project, with: shippingAmount) }
       .skipNil()
 
-    self.shippingLocationButtonTitle = self.selectedShippingRule
+    self.shippingLocationButtonTitle = self.notifyDelegateOfSelectedShippingRule
       .skipNil()
       .map { $0.location.localizedName }
 
@@ -124,7 +124,7 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
   public let dismissShippingRules: Signal<Void, Never>
   public let isLoading: Signal<Bool, Never>
   public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
-  public let selectedShippingRule: Signal<ShippingRule?, Never>
+  public let notifyDelegateOfSelectedShippingRule: Signal<ShippingRule?, Never>
   public let shippingLocationButtonTitle: Signal<String, Never>
   public let shippingRulesError: Signal<String, Never>
 
