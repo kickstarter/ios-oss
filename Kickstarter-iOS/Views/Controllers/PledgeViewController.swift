@@ -4,7 +4,6 @@ import Prelude
 import UIKit
 
 final class PledgeViewController: UIViewController {
-
   // MARK: - Properties
 
   private lazy var pledgeAmountViewController = {
@@ -41,7 +40,6 @@ final class PledgeViewController: UIViewController {
 
   private var sessionStartedObserver: Any?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
-
 
   // MARK: - Lifecycle
 
@@ -90,12 +88,14 @@ final class PledgeViewController: UIViewController {
     self.addChild(self.pledgeContinueViewController)
     self.addChild(self.pledgePaymentMethodsViewController)
 
-    _ = ([self.pledgeDescriptionViewController.view,
-          self.pledgeAmountViewController.view,
-          self.pledgeShippingLocationViewController.view,
-          self.pledgeSummaryViewController.view,
-          self.pledgeContinueViewController.view,
-          self.pledgePaymentMethodsViewController.view], self.rootStackView)
+    _ = ([
+      self.pledgeDescriptionViewController.view,
+      self.pledgeAmountViewController.view,
+      self.pledgeShippingLocationViewController.view,
+      self.pledgeSummaryViewController.view,
+      self.pledgeContinueViewController.view,
+      self.pledgePaymentMethodsViewController.view
+    ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.pledgeDescriptionViewController.didMove(toParent: self)
@@ -139,7 +139,7 @@ final class PledgeViewController: UIViewController {
         self?.pledgeAmountViewController.configureWith(value: (data.project, data.reward))
         self?.pledgeShippingLocationViewController.configureWith(value: (data.project, data.reward))
         self?.pledgePaymentMethodsViewController.configureWith(value: [GraphUserCreditCard.template])
-    }
+      }
 
     self.viewModel.outputs.configureSummaryCellWithData
       .observeForUI()
@@ -150,13 +150,13 @@ final class PledgeViewController: UIViewController {
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
-    }
+      }
 
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
-    }
+      }
 
     self.pledgeShippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
@@ -172,21 +172,25 @@ final class PledgeViewController: UIViewController {
 }
 
 extension PledgeViewController: PledgeAmountViewControllerDelegate {
-  func pledgeAmountViewController(_ viewController: PledgeAmountViewController,
-                                  didUpdateAmount amount: Double) {
+  func pledgeAmountViewController(
+    _: PledgeAmountViewController,
+    didUpdateAmount amount: Double
+  ) {
     self.viewModel.inputs.pledgeAmountDidUpdate(to: amount)
   }
 }
 
 extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
-  func pledgeShippingLocationViewController(_ viewController: PledgeShippingLocationViewController,
-                                            didSelectShippingRule shippingRule: ShippingRule?) {
+  func pledgeShippingLocationViewController(
+    _: PledgeShippingLocationViewController,
+    didSelectShippingRule shippingRule: ShippingRule?
+  ) {
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
 }
 
-
 // MARK: - Styles
+
 private let rootScrollViewStyle: ScrollStyle = { scrollView in
   scrollView
     |> UIScrollView.lens.showsVerticalScrollIndicator .~ false

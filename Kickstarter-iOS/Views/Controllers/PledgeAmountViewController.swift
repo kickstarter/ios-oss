@@ -4,9 +4,11 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-protocol PledgeAmountViewControllerDelegate: class {
-  func pledgeAmountViewController(_ viewController: PledgeAmountViewController,
-                                  didUpdateAmount amount: Double)
+protocol PledgeAmountViewControllerDelegate: AnyObject {
+  func pledgeAmountViewController(
+    _ viewController: PledgeAmountViewController,
+    didUpdateAmount amount: Double
+  )
 }
 
 final class PledgeAmountViewController: UIViewController {

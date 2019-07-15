@@ -147,7 +147,7 @@ final class PledgeDescriptionViewController: UIViewController {
   }
 
   // MARK: - Private Helpers
-  
+
   private func presentHelpWebViewController(with helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     let nc = UINavigationController(rootViewController: vc)

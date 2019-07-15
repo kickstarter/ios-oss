@@ -16,6 +16,7 @@ final class PledgeSummaryViewController: UIViewController {
   private let viewModel = PledgeSummaryViewModel()
 
   // MARK: - Lifecycle
+
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
   }

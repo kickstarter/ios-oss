@@ -3,7 +3,6 @@ import Library
 import Prelude
 
 final class PledgeContinueViewController: UIViewController {
-
   // MARK: - Properties
 
   private let continueButton = MultiLineButton(type: .custom)
@@ -51,7 +50,7 @@ final class PledgeContinueViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] intent in
         self?.goToLoginSignup(with: intent)
-    }
+      }
   }
 
   private func setupSubviews() {

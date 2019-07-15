@@ -1,10 +1,10 @@
 import Foundation
 @testable import KsApi
 @testable import Library
-import XCTest
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 private let shippingRules = [
   ShippingRule.template

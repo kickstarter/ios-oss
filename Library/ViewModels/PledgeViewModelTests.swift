@@ -21,7 +21,6 @@ final class PledgeViewModelTests: TestCase {
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
 
-
   override func setUp() {
     super.setUp()
 
@@ -304,8 +303,10 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum,
-                                                                 reward.minimum + shippingRule1.cost])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([
+        reward.minimum,
+        reward.minimum + shippingRule1.cost
+      ])
       self.configureSummaryCellWithDataProject.assertValues([project, project])
 
       let amount1 = 200.0
@@ -329,10 +330,12 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.configureSummaryCellWithDataPledgeTotal.assertValues(
-        [reward.minimum,
-         reward.minimum + shippingRule1.cost,
-         shippingRule1.cost + amount1,
-         shippingRule2.cost + amount1]
+        [
+          reward.minimum,
+          reward.minimum + shippingRule1.cost,
+          shippingRule1.cost + amount1,
+          shippingRule2.cost + amount1
+        ]
       )
       self.configureSummaryCellWithDataProject.assertValues([project, project, project, project])
 
@@ -345,11 +348,12 @@ final class PledgeViewModelTests: TestCase {
 
       self.configureSummaryCellWithDataPledgeTotal.assertValues(
         [
-      reward.minimum,
-      reward.minimum + shippingRule1.cost,
-      shippingRule1.cost + amount1,
-      shippingRule2.cost + amount1,
-      shippingRule2.cost + amount2]
+          reward.minimum,
+          reward.minimum + shippingRule1.cost,
+          shippingRule1.cost + amount1,
+          shippingRule2.cost + amount1,
+          shippingRule2.cost + amount2
+        ]
       )
       self.configureSummaryCellWithDataProject.assertValues([project, project, project, project, project])
     }

@@ -10,8 +10,10 @@ private enum Layout {
 }
 
 protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
-  func pledgeShippingLocationViewController(_ viewController: PledgeShippingLocationViewController,
-                                            didSelectShippingRule shippingRule: ShippingRule?)
+  func pledgeShippingLocationViewController(
+    _ viewController: PledgeShippingLocationViewController,
+    didSelectShippingRule shippingRule: ShippingRule?
+  )
 }
 
 final class PledgeShippingLocationViewController: UIViewController {
@@ -68,6 +70,7 @@ final class PledgeShippingLocationViewController: UIViewController {
 
     self.viewModel.inputs.viewDidLoad()
   }
+
   // MARK: - Styles
 
   override func bindStyles() {
@@ -126,13 +129,13 @@ final class PledgeShippingLocationViewController: UIViewController {
         self?.presentShippingRules(
           project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
         )
-    }
+      }
 
     self.viewModel.outputs.dismissShippingRules
       .observeForUI()
       .observeValues { [weak self] in
         self?.dismiss(animated: true)
-    }
+      }
   }
 
   // MARK: - Configuration
@@ -147,21 +150,21 @@ final class PledgeShippingLocationViewController: UIViewController {
     self.viewModel.inputs.shippingLocationButtonTapped()
   }
 
-
   @objc func dismissShippingRules() {
     self.viewModel.inputs.dismissShippingRulesButtonTapped()
   }
 
   // MARK: - Private Functions
+
   private func presentShippingRules(
     _ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
-    ) {
+  ) {
     let vc = ShippingRulesTableViewController.instantiate()
       |> \.navigationItem.leftBarButtonItem .~ UIBarButtonItem(
         barButtonSystemItem: .cancel,
         target: self,
         action: #selector(PledgeShippingLocationViewController.dismissShippingRules)
-    )
+      )
     vc.configureWith(project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule)
 
     let nc = UINavigationController(rootViewController: vc)

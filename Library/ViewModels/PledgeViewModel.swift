@@ -37,7 +37,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let project = projectAndReward.map(first)
     let reward = projectAndReward.map(second)
-    let isLoggedIn = Signal.merge(projectAndReward.ignoreValues(), userSessionStartedSignal)
+    let isLoggedIn = Signal.merge(projectAndReward.ignoreValues(), self.userSessionStartedSignal)
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
@@ -46,7 +46,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       projectAndReward.map { $1.minimum }
     )
 
-    let shippingAmount = shippingRuleSelectedSignal
+    let shippingAmount = self.shippingRuleSelectedSignal
       .map { $0?.cost ?? 0 }
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)

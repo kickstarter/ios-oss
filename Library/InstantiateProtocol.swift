@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-public protocol InstantiateProtocol: class {
+public protocol InstantiateProtocol: AnyObject {
   static func instantiate() -> Self
 }
 

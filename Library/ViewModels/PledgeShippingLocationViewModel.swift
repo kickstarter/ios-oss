@@ -30,9 +30,11 @@ public protocol PledgeShippingLocationViewModelType {
 public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewModelType,
   PledgeShippingLocationViewModelInputs, PledgeShippingLocationViewModelOutputs {
   public init() {
-    let projectAndReward = Signal.combineLatest(configDataProperty.signal.skipNil(),
-                                                self.viewDidLoadProperty.signal)
-      .map(first)
+    let projectAndReward = Signal.combineLatest(
+      self.configDataProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
 
     let project = projectAndReward
       .map(first)
@@ -47,7 +49,7 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
           .map(ShippingRulesEnvelope.lens.shippingRules.view)
           .retry(upTo: 3)
           .materialize()
-    }
+      }
 
     let defaultShippingRule = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(nil),
@@ -68,8 +70,8 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
 
     self.notifyDelegateOfSelectedShippingRule = Signal.merge(
       defaultShippingRule,
-      shippingRuleUpdatedSignal.wrapInOptional()
-      )
+      self.shippingRuleUpdatedSignal.wrapInOptional()
+    )
 
     let shippingAmount = Signal.merge(
       self.notifyDelegateOfSelectedShippingRule.map { $0?.cost ?? 0 },
@@ -80,8 +82,8 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
       project,
       shippingRulesEvent.values(),
       self.notifyDelegateOfSelectedShippingRule.skipNil()
-      )
-      .takeWhen(self.shippingLocationButtonTappedSignal)
+    )
+    .takeWhen(self.shippingLocationButtonTappedSignal)
 
     self.amountAttributedText = Signal.combineLatest(project, shippingAmount)
       .map { project, shippingAmount in shippingValue(of: project, with: shippingAmount) }
