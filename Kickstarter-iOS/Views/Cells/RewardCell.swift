@@ -245,7 +245,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.imageView.centerXAnchor.constraint(equalTo: self.imageViewContainer.centerXAnchor),
       self.imageView.centerYAnchor.constraint(equalTo: self.imageViewContainer.centerYAnchor),
       self.imageViewContainer.widthAnchor.constraint(equalToConstant: Styles.grid(5)),
-      self.imageViewContainer.heightAnchor.constraint(equalTo: self.imageViewContainer.widthAnchor),
+      self.imageViewContainer.heightAnchor.constraint(equalTo: self.imageViewContainer.widthAnchor)
     ]
 
     let topConstraint = self.pledgeButton.topAnchor
