@@ -36,7 +36,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let project = projectAndReward.map(first)
     let reward = projectAndReward.map(second)
-    let isLoggedIn = projectAndReward.map { _ in AppEnvironment.current.currentUser }.map(isNotNil)
+    let isLoggedIn = projectAndReward
+      .map { _ in AppEnvironment.current.currentUser }
+      .map(isNotNil)
 
     let pledgeAmount = Signal.merge(
       self.pledgeAmountSignal,

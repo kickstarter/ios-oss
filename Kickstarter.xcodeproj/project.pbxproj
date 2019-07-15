@@ -128,8 +128,6 @@
 		37DEC2202257CA0A0051EF9B /* PledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC21F2257CA0A0051EF9B /* PledgeViewModelTests.swift */; };
 		37DEC2222257CB470051EF9B /* PledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC2212257CB470051EF9B /* PledgeViewController.swift */; };
 		37DEC2242257CB650051EF9B /* PledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC2232257CB650051EF9B /* PledgeViewControllerTests.swift */; };
-		37DEC22A2257CD9F0051EF9B /* PledgeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC2292257CD9F0051EF9B /* PledgeDataSource.swift */; };
-		37DEC22C2257CDBA0051EF9B /* PledgeDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DEC22B2257CDBA0051EF9B /* PledgeDataSourceTests.swift */; };
 		37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E9E29F225EABB000D29DD7 /* AmountInputView.swift */; };
 		37EB3E4C228CF4A400076E4C /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB3E4B228CF4A400076E4C /* NumberFormatter.swift */; };
 		37EB3E4E228CF4FB00076E4C /* NumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */; };
@@ -1414,8 +1412,6 @@
 		37DEC21F2257CA0A0051EF9B /* PledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewModelTests.swift; sourceTree = "<group>"; };
 		37DEC2212257CB470051EF9B /* PledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewController.swift; sourceTree = "<group>"; };
 		37DEC2232257CB650051EF9B /* PledgeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewControllerTests.swift; sourceTree = "<group>"; };
-		37DEC2292257CD9F0051EF9B /* PledgeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDataSource.swift; sourceTree = "<group>"; };
-		37DEC22B2257CDBA0051EF9B /* PledgeDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDataSourceTests.swift; sourceTree = "<group>"; };
 		37E9E29F225EABB000D29DD7 /* AmountInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountInputView.swift; sourceTree = "<group>"; };
 		37EB3E4B228CF4A400076E4C /* NumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatter.swift; sourceTree = "<group>"; };
 		37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterTests.swift; sourceTree = "<group>"; };
@@ -3169,8 +3165,6 @@
 				015102741F1943D60006C0FC /* MessageThreadsDataSourceTests.swift */,
 				D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */,
 				D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */,
-				37DEC2292257CD9F0051EF9B /* PledgeDataSource.swift */,
-				37DEC22B2257CDBA0051EF9B /* PledgeDataSourceTests.swift */,
 				9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */,
 				A7ED200F1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift */,
 				A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */,
@@ -4934,7 +4928,6 @@
 				77EFBAE52268E01400DA5C3C /* RewardCell.swift in Sources */,
 				77FD8B46216D6245000A95AC /* LoadingBarButtonItemView.swift in Sources */,
 				9D14FF8E1D133351005F4ABB /* ProjectActivityEmptyStateCell.swift in Sources */,
-				37DEC22A2257CD9F0051EF9B /* PledgeDataSource.swift in Sources */,
 				017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */,
 				014D625B1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift in Sources */,
 				A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */,
@@ -4996,7 +4989,6 @@
 				77EFBAE92268E3D200DA5C3C /* RewardsCollectionViewDataSourceTests.swift in Sources */,
 				A7ED201D1E8322EC00BFFA01 /* TestCase.swift in Sources */,
 				A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */,
-				37DEC22C2257CDBA0051EF9B /* PledgeDataSourceTests.swift in Sources */,
 				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
 				A7ED20491E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift in Sources */,
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,

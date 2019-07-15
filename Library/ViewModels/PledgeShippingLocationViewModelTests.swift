@@ -1,6 +1,7 @@
 import Foundation
 @testable import KsApi
 @testable import Library
+import XCTest
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
@@ -42,106 +43,94 @@ final class PledgeShippingLocationViewModelTests: TestCase {
   }
 
   func testDefaultShippingLocation() {
-    let initialAttributedString = NSMutableAttributedString(
-      string: "+$0.00", attributes: checkoutCurrencyDefaultAttributes()
-    )
-
-    let expectedAttributedString = NSMutableAttributedString(
-      string: "+$5.00", attributes: checkoutCurrencyDefaultAttributes()
-    )
-
-    initialAttributedString.addAttributes(
-      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 0, length: 2)
-    )
-    initialAttributedString.addAttributes(
-      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 3, length: 3)
-    )
-
-    expectedAttributedString.addAttributes(
-      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 0, length: 2)
-    )
-    expectedAttributedString.addAttributes(
-      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 3, length: 3)
-    )
+//    let initialAttributedString = NSMutableAttributedString(
+//      string: "+$0.00", attributes: checkoutCurrencyDefaultAttributes()
+//    )
+//
+//    let expectedAttributedString = NSMutableAttributedString(
+//      string: "+$5.00", attributes: checkoutCurrencyDefaultAttributes()
+//    )
+//
+//    initialAttributedString.addAttributes(
+//      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 0, length: 2)
+//    )
+//    initialAttributedString.addAttributes(
+//      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 3, length: 3)
+//    )
+//
+//    expectedAttributedString.addAttributes(
+//      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 0, length: 2)
+//    )
+//    expectedAttributedString.addAttributes(
+//      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 3, length: 3)
+//    )
 
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
 
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+
     withEnvironment(apiService: mockService, countryCode: "US") {
-      self.vm.inputs.configureWith(project: .template, reward: .template)
+      self.vm.inputs.configureWith(project: .template, reward: reward)
       self.vm.inputs.viewDidLoad()
 
       self.isLoading.assertValues([true])
-      self.amountAttributedText.assertValues([initialAttributedString])
-      self.shippingLocationButtonTitle.assertValues([""])
+      XCTAssertEqual(self.amountAttributedText.values.last?.string, "+$0.00")
+      self.shippingLocationButtonTitle.assertValues([])
       self.selectedShippingRule.assertValues([nil])
 
       self.scheduler.run()
 
-      let defaultShippingLocation = shippingRules.first(where: { $0.location == .brooklyn })
+      let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn })
 
-      self.amountAttributedText.assertValues([initialAttributedString, expectedAttributedString])
+      XCTAssertEqual(self.amountAttributedText.values.last?.string, "+$5.00")
       self.isLoading.assertValues([true, false])
-      self.selectedShippingRule.assertValues([nil, defaultShippingLocation!])
-      self.shippingLocationButtonTitle.assertValues(["", "Brooklyn, NY"])
+      self.selectedShippingRule.assertValues([nil, defaultShippingRule!])
+      self.shippingLocationButtonTitle.assertValues(["Brooklyn, NY"])
       self.shippingRulesError.assertDidNotEmitValue()
     }
   }
 
   func testSelectShippingLocation() {
-    self.vm.inputs.shippingLocationButtonTapped()
-    self.selectedShippingLocation.assertDidNotEmitValue()
+    let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
 
-    let shippingRule = ShippingRule.template
-
-    self.vm.inputs.configureWith(isLoading: false, project: .template, selectedShippingRule: shippingRule)
-    self.vm.inputs.shippingLocationButtonTapped()
-    self.selectedShippingLocation.assertValues([shippingRule])
-  }
-
-  func testDismissShippingRules() {
-    self.vm.inputs.configureWith(project: .template, reward: .template)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.pledgeShippingCellWillPresentShippingRules(with: .template)
-
-    self.dismissShippingRules.assertDidNotEmitValue()
-    self.vm.inputs.dismissShippingRulesButtonTapped()
-    self.dismissShippingRules.assertValueCount(1)
-  }
-
-  func testPresentShippingRules() {
-    let shippingRules: [ShippingRule] = [.template, .template, .template]
-
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: .success(shippingRules))) {
-      let project = Project.template
-      let reward = Reward.template
-        |> Reward.lens.shipping.enabled .~ true
-
+    withEnvironment(apiService: mockService, countryCode: "US") {
+      self.vm.inputs.configureWith(project: .template, reward: reward)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configureWith(project: project, reward: reward)
+
+      self.selectedShippingRule.assertValues([nil])
+
+      let selectedShippingRule = shippingRules.first(where: { $0.location == .australia })
+      let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn })
 
       self.scheduler.advance()
 
-      self.presentShippingRulesProject.assertDidNotEmitValue()
-      self.presentShippingRulesShippingRules.assertDidNotEmitValue()
-      self.presentShippingRulesSelectedShippingRule.assertDidNotEmitValue()
+      self.selectedShippingRule.assertValues([nil, defaultShippingRule!])
 
-      let shippingRule = shippingRules[0]
+      self.vm.inputs.shippingLocationButtonTapped()
 
-      self.vm.inputs.pledgeShippingCellWillPresentShippingRules(with: shippingRule)
+      self.presentShippingRulesProject.assertValues([.template])
+      self.presentShippingRulesAllRules.assertValues([shippingRules])
+      self.presentShippingRulesSelectedRule.assertValues([defaultShippingRule!])
 
-      self.presentShippingRulesProject.assertValues([project])
-      self.presentShippingRulesShippingRules.assertValues([shippingRules])
-      self.presentShippingRulesSelectedShippingRule.assertValues([shippingRule])
+      self.vm.inputs.shippingRuleUpdated(to: selectedShippingRule!)
+
+      self.selectedShippingRule.assertValues([nil, defaultShippingRule, selectedShippingRule])
+
+      self.dismissShippingRules.assertValueCount(0)
+      self.vm.inputs.dismissShippingRulesButtonTapped()
+      self.dismissShippingRules.assertValueCount(1)
     }
   }
 
   func testShippingRulesError() {
     let error = ErrorEnvelope(errorMessages: [], ksrCode: nil, httpCode: 404, exception: nil)
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(failure: error))) {
-      let reward = Reward.template
-        |> Reward.lens.shipping.enabled .~ true
-
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configureWith(project: .template, reward: reward)
 
