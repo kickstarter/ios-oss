@@ -76,7 +76,7 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   internal override func bindViewModel() {
     super.bindViewModel()

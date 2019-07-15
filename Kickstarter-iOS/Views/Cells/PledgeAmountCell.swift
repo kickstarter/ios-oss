@@ -98,7 +98,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       |> stepperStyle
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
