@@ -246,6 +246,35 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  func testLoginSignup() {
+    let project = Project.template
+    let reward = Reward.template
+    let user = User.template
+
+    withEnvironment(currentUser: nil) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([true])
+
+      withEnvironment(currentUser: user) {
+        self.vm.inputs.userSessionStarted()
+
+        self.configureWithPledgeViewDataProject.assertValues([project])
+        self.configureWithPledgeViewDataReward.assertValues([reward])
+
+        self.continueViewHidden.assertValues([false, true])
+        self.paymentMethodsViewHidden.assertValues([true, false])
+        self.shippingLocationViewHidden.assertValues([true])
+      }
+    }
+  }
+
   func testSelectedShippingRuleAndPledgeAmountUpdates() {
     let project = Project.template
     let reward = Reward.template

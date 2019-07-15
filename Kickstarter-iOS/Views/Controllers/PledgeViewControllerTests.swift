@@ -2,7 +2,7 @@
 @testable import Library
 import UIKit
 
-final class PledgeTableViewControllerTests: TestCase {
+final class PledgeViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
 

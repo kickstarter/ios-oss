@@ -39,6 +39,7 @@ final class PledgeViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private var sessionStartedObserver: Any?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
 
@@ -74,6 +75,12 @@ final class PledgeViewController: UIViewController {
     self.setupConstraints()
     self.viewModel.inputs.viewDidLoad()
   }
+
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
+  }
+
+  // MARK: - Configuration
 
   private func configureChildViewControllers() {
     self.addChild(self.pledgeDescriptionViewController)
@@ -139,6 +146,11 @@ final class PledgeViewController: UIViewController {
       .observeValues { [weak self] project, pledgeTotal in
         self?.pledgeSummaryViewController.configureWith(value: (project, pledgeTotal))
       }
+
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+    }
 
     Keyboard.change
       .observeForUI()
