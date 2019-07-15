@@ -27,14 +27,14 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
+  /// Emits a project used to configure the pledge CTA view
+  var configurePledgeCTAView: Signal<Project, Never> { get }
+
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
 
   /// Return this value from the view's `prefersStatusBarHidden` method.
   var prefersStatusBarHidden: Bool { get }
-
-  /// Emits a project
-  var project: Signal<Project, Never> { get }
 
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
   var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
@@ -76,7 +76,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let project = freshProjectAndRefTag
       .map { project, _ in project }
 
-    self.project = project.map { $0 }
+    self.configurePledgeCTAView = project
+      .filter { _ in featureNativeCheckoutEnabled() }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -162,13 +163,14 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
+  public let configurePledgeCTAView: Signal<Project, Never>
+
   fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
   public var prefersStatusBarHidden: Bool {
     return self.prefersStatusBarHiddenProperty.value
   }
 
   public let goToRewards: Signal<(Project, RefTag?), Never>
-  public let project: Signal<Project, Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
   public let topLayoutConstraintConstant: Signal<CGFloat, Never>
