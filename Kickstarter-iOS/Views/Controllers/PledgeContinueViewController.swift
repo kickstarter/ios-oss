@@ -21,7 +21,7 @@ final class PledgeContinueViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.setupSubviews()
+    self.configureSubviews()
   }
 
   override func bindStyles() {
@@ -53,7 +53,7 @@ final class PledgeContinueViewController: UIViewController {
       }
   }
 
-  private func setupSubviews() {
+  private func configureSubviews() {
     _ = (self.continueButton, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
