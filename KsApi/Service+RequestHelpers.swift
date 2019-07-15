@@ -84,7 +84,7 @@ extension Service {
     }
   }
 
-  // MARK: Public Request Functions
+  // MARK: - Public Request Functions
 
   func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
     let queryString: String = Query.build(query)

@@ -266,7 +266,7 @@ final class RewardCardViewModelTests: TestCase {
     self.descriptionLabelText.assertValues(["Pledge any amount to help bring this project to life."])
   }
 
-  // MARK: Conversion Label
+  // MARK: - Conversion Label
 
   func testConversionLabel_US_UserCurrency_US_Location_US_Project_ConfiguredWithReward() {
     let project = .template

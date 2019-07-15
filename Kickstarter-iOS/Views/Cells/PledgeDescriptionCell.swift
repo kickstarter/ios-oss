@@ -160,7 +160,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     )
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   internal override func bindViewModel() {
     super.bindViewModel()

@@ -96,7 +96,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       |> checkoutStackViewStyle
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()

@@ -19,16 +19,21 @@ public typealias PledgeViewData = (
 
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
+  func pledgeContinueCellContinueButtonTapped()
+  func dismissShippingRulesButtonTapped()
   func pledgeAmountDidUpdate(to amount: Double)
   func pledgeDescriptionCellDidTapRewardThumbnail()
   func pledgeShippingCellWillPresentShippingRules(with rule: ShippingRule)
   func shippingRuleDidUpdate(to rule: ShippingRule)
+  func userSessionStarted()
   func viewDidLoad()
 }
 
 public protocol PledgeViewModelOutputs {
+  var goToLoginSignup: Signal<LoginIntent, Never> { get }
   var configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never> { get }
   var configureSummaryCellWithData: Signal<(Project, Double), Never> { get }
+  var dismissShippingRules: Signal<Void, Never> { get }
 
   /**
    Emits the initial data for this view model along with a `Bool` indicating whether the table view should
@@ -108,15 +113,33 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)
-
     let data = Signal
       .combineLatest(project, reward, isLoggedIn, isShippingLoading, defaultShippingRule, pledgeTotal)
       .map(pledgeViewData(with:reward:isLoggedIn:isShippingLoading:selectedShippingRule:pledgeTotal:))
 
+    let userUpdatedData = data.takeWhen(self.userSessionStartedSignal)
+      .map { data -> PledgeViewData in
+        (
+          project: data.project,
+          reward: data.reward,
+          isLoggedIn: AppEnvironment.current.currentUser != nil,
+          shipping: data.shipping,
+          pledgeTotal: data.pledgeTotal
+        )
+      }
+
+    let initialLoad = data.take(first: 1).map { data in (data, true) }
+    let silentReload = data.skip(first: 1).map { data in (data, false) }
+    let userUpdatedReload = userUpdatedData.map { data in (data, true) }
+
     self.pledgeViewDataAndReload = Signal.merge(
-      data.take(first: 1).map { data in (data, true) },
-      data.skip(first: 1).map { data in (data, false) }
+      initialLoad,
+      silentReload,
+      userUpdatedReload
     )
+
+    self.goToLoginSignup = self.pledgeContinueCellContinueButtonTappedSignal
+      .map { _ in LoginIntent.backProject }
 
     let updatedData = self.pledgeViewDataAndReload
       .filter(second >>> isFalse)
@@ -139,11 +162,29 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     self.popViewController = self.pledgeDescriptionCellDidTapRewardThumbnailSignal
+
+    self.dismissShippingRules = self.dismissShippingRulesButtonTappedProperty.signal
+  }
+
+  private let (pledgeContinueCellContinueButtonTappedSignal, pledgeContinueCellContinueButtonTappedObserver)
+    = Signal<Void, Never>.pipe()
+  public func pledgeContinueCellContinueButtonTapped() {
+    self.pledgeContinueCellContinueButtonTappedObserver.send(value: ())
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
   public func configureWith(project: Project, reward: Reward) {
     self.configureProjectAndRewardProperty.value = (project, reward)
+  }
+
+  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
+  public func userSessionStarted() {
+    self.userSessionStartedObserver.send(value: ())
+  }
+
+  private let dismissShippingRulesButtonTappedProperty = MutableProperty(())
+  public func dismissShippingRulesButtonTapped() {
+    self.dismissShippingRulesButtonTappedProperty.value = ()
   }
 
   private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
@@ -174,8 +215,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
+  public let goToLoginSignup: Signal<LoginIntent, Never>
   public let configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never>
   public let configureSummaryCellWithData: Signal<(Project, Double), Never>
+  public let dismissShippingRules: Signal<Void, Never>
   public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
   public let popViewController: Signal<(), Never>
   public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
