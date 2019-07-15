@@ -69,7 +69,7 @@ final class PledgeSummaryViewController: UIViewController {
       |> ksr_addArrangedSubviewsToStackView()
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   internal override func bindViewModel() {
     super.bindViewModel()

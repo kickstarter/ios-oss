@@ -101,7 +101,7 @@ final class PledgeAmountViewController: UIViewController {
       |> stepperStyle
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()

@@ -104,7 +104,7 @@ final class PledgeShippingLocationViewController: UIViewController {
       |> checkoutStackViewStyle
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()

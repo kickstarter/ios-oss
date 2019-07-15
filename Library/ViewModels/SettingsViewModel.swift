@@ -133,7 +133,7 @@ public final class SettingsViewModel: SettingsViewModelInputs,
   public var outputs: SettingsViewModelOutputs { return self }
 }
 
-// MARK: Helpers
+// MARK: - Helpers
 
 extension SettingsViewModel {
   public func shouldSelectRow(for cellType: SettingsCellType) -> Bool {

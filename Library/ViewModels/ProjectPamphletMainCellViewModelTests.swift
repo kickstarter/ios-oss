@@ -204,7 +204,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.backersTitleLabelText.assertValues([Format.wholeNumber(project.stats.backersCount)])
   }
 
-  // MARK: Conversion Label
+  // MARK: - Conversion Label
 
   func testConversionLabel_WhenConversionNotNeeded_US_Project_US_User() {
     let project = Project.template
@@ -295,7 +295,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
   }
 
-  // MARK: Pledged Label
+  // MARK: - Pledged Label
 
   func testPledgedLabels_WhenConversionNotNeeded() {
     let project = .template
