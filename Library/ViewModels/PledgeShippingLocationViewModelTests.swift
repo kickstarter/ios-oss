@@ -37,7 +37,8 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     self.vm.outputs.presentShippingRules.map { $0.0 }.observe(self.presentShippingRulesProject.observer)
     self.vm.outputs.presentShippingRules.map { $0.1 }.observe(self.presentShippingRulesAllRules.observer)
     self.vm.outputs.presentShippingRules.map { $0.2 }.observe(self.presentShippingRulesSelectedRule.observer)
-    self.vm.outputs.notifyDelegateOfSelectedShippingRule.observe(self.notifyDelegateOfSelectedShippingRule.observer)
+    self.vm.outputs.notifyDelegateOfSelectedShippingRule
+      .observe(self.notifyDelegateOfSelectedShippingRule.observer)
     self.vm.outputs.shippingLocationButtonTitle.observe(self.shippingLocationButtonTitle.observer)
     self.vm.outputs.shippingRulesError.observe(self.shippingRulesError.observer)
   }
