@@ -67,8 +67,6 @@ public let checkoutRoundedCornersStyle: ViewStyle = { (view: UIView) in
 public let checkoutStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3))
     |> \.spacing .~ (Styles.grid(1) + Styles.gridHalf(1))
 }
 

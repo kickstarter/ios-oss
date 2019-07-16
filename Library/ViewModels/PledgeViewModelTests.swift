@@ -24,9 +24,9 @@ final class PledgeViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.configureSummaryCellWithData.map(second)
+    self.vm.outputs.configureSummaryViewControllerWithData.map(second)
       .observe(self.configureSummaryCellWithDataPledgeTotal.observer)
-    self.vm.outputs.configureSummaryCellWithData.map(first)
+    self.vm.outputs.configureSummaryViewControllerWithData.map(first)
       .observe(self.configureSummaryCellWithDataProject.observer)
 
     self.vm.outputs.configureWithPledgeViewData.map { $0.project }

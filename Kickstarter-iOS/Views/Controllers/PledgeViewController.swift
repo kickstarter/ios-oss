@@ -53,10 +53,6 @@ final class PledgeViewController: UIViewController {
     _ = self
       |> \.title %~ { _ in Strings.Back_this_project() }
 
-    _ = self.view
-      |> UIView.lens.layer.borderColor .~ UIColor.red.cgColor
-      |> UIView.lens.layer.borderWidth .~ 3
-
     _ = (self.rootScrollView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
@@ -142,7 +138,7 @@ final class PledgeViewController: UIViewController {
         self?.pledgePaymentMethodsViewController.configureWith(value: [GraphUserCreditCard.template])
       }
 
-    self.viewModel.outputs.configureSummaryCellWithData
+    self.viewModel.outputs.configureSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] project, pledgeTotal in
         self?.pledgeSummaryViewController.configureWith(value: (project, pledgeTotal))
@@ -200,9 +196,10 @@ private let rootScrollViewStyle: ScrollStyle = { scrollView in
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(3))
+    |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.axis .~ .vertical
     |> \.distribution .~ .fill
     |> \.alignment .~ .fill
+    |> \.spacing .~ Styles.grid(4)
 }

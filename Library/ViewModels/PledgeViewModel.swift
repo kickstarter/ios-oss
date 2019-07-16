@@ -14,7 +14,7 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
-  var configureSummaryCellWithData: Signal<(Project, Double), Never> { get }
+  var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
   var configureWithPledgeViewData: Signal<PledgeViewData, Never> { get }
   var continueViewHidden: Signal<Bool, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
@@ -56,7 +56,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.configureWithPledgeViewData = projectAndReward
       .map { PledgeViewData(project: $0.0, reward: $0.1) }
 
-    self.configureSummaryCellWithData = project
+    self.configureSummaryViewControllerWithData = project
       .takePairWhen(pledgeTotal)
       .map { project, total in (project, total) }
 
@@ -92,7 +92,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let configureSummaryCellWithData: Signal<(Project, Double), Never>
+  public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
   public let continueViewHidden: Signal<Bool, Never>
   public let configureWithPledgeViewData: Signal<PledgeViewData, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
