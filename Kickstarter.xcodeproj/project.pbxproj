@@ -1043,6 +1043,7 @@
 		D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */; };
 		D6AF790B22DE1E380005464A /* PledgePaymentMethodsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF790A22DE1E380005464A /* PledgePaymentMethodsCellViewModel.swift */; };
 		D6AF790D22DE2A1E0005464A /* PledgePaymentMethodsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF790C22DE2A1E0005464A /* PledgePaymentMethodsCellViewModelTests.swift */; };
+		D6AF790F22DE33C70005464A /* PledgePaymentMethodsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF790E22DE33C70005464A /* PledgePaymentMethodsDataSourceTests.swift */; };
 		D6B4D9BF209B88F3002C7B68 /* PushNotificationdialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */; };
 		D6B4EFC6210686270079159D /* SettingsNewslettersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */; };
 		D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4EFFD21079C870079159D /* SettingsNewslettersViewModelTests.swift */; };
@@ -2275,6 +2276,7 @@
 		D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64Tests.swift"; sourceTree = "<group>"; };
 		D6AF790A22DE1E380005464A /* PledgePaymentMethodsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsCellViewModel.swift; sourceTree = "<group>"; };
 		D6AF790C22DE2A1E0005464A /* PledgePaymentMethodsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsCellViewModelTests.swift; sourceTree = "<group>"; };
+		D6AF790E22DE33C70005464A /* PledgePaymentMethodsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSourceTests.swift; sourceTree = "<group>"; };
 		D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationdialogTests.swift; sourceTree = "<group>"; };
 		D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewModel.swift; sourceTree = "<group>"; };
 		D6B4EFFD21079C870079159D /* SettingsNewslettersViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewModelTests.swift; sourceTree = "<group>"; };
@@ -3209,6 +3211,10 @@
 				D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */,
 				3742037222DEB67A007AA86E /* PillCollectionViewDataSource.swift */,
 				3742037422DEB691007AA86E /* PillCollectionViewDataSourceTests.swift */,
+				37DEC2292257CD9F0051EF9B /* PledgeDataSource.swift */,
+				37DEC22B2257CDBA0051EF9B /* PledgeDataSourceTests.swift */,
+				D6D4426122D3DA620070C3AF /* PledgePaymentMethodsDataSource.swift */,
+				D6AF790E22DE33C70005464A /* PledgePaymentMethodsDataSourceTests.swift */,
 				9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */,
 				A7ED200F1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift */,
 				A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */,
@@ -3234,7 +3240,6 @@
 				3767EDA822CFFE770088E8E4 /* ShippingRulesDataSourceTests.swift */,
 				014A8DE91CE3C350003BF51C /* ThanksProjectsDataSource.swift */,
 				77891BA720CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift */,
-				D6D4426122D3DA620070C3AF /* PledgePaymentMethodsDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -4674,6 +4679,7 @@
 				A7ED1FC61E831C5C00BFFA01 /* SurveyResponseViewModelTests.swift in Sources */,
 				A7ED1F281E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift in Sources */,
 				A7ED1FF61E831C5C00BFFA01 /* ProjectNavigatorViewModelTests.swift in Sources */,
+				D6AF790F22DE33C70005464A /* PledgePaymentMethodsDataSourceTests.swift in Sources */,
 				A7ED1FB81E831C5C00BFFA01 /* BackingCellViewModelTests.swift in Sources */,
 				A7ED1FFD1E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift in Sources */,
 				A7ED1F341E830FDC00BFFA01 /* SharedFunctionsTests.swift in Sources */,

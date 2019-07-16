@@ -12,7 +12,6 @@ final class PledgePaymentMethodsCellViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
     self.vm.outputs.reloadData.observe(self.reloadData.observer)
     self.vm.outputs.updateConstraints.observe(self.updateConstraints.observer)
   }
