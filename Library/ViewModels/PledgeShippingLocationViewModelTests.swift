@@ -43,28 +43,6 @@ final class PledgeShippingLocationViewModelTests: TestCase {
   }
 
   func testDefaultShippingLocation() {
-    //    let initialAttributedString = NSMutableAttributedString(
-    //      string: "+$0.00", attributes: checkoutCurrencyDefaultAttributes()
-    //    )
-    //
-    //    let expectedAttributedString = NSMutableAttributedString(
-    //      string: "+$5.00", attributes: checkoutCurrencyDefaultAttributes()
-    //    )
-    //
-    //    initialAttributedString.addAttributes(
-    //      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 0, length: 2)
-    //    )
-    //    initialAttributedString.addAttributes(
-    //      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 3, length: 3)
-    //    )
-    //
-    //    expectedAttributedString.addAttributes(
-    //      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 0, length: 2)
-    //    )
-    //    expectedAttributedString.addAttributes(
-    //      checkoutCurrencySuperscriptAttributes(), range: NSRange(location: 3, length: 3)
-    //    )
-
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
 
     let reward = Reward.template
