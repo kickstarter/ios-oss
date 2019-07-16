@@ -4,7 +4,7 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeCTAContainerViewViewModelInputs {
-  func configureWith(project: Project, user: User)
+  func configureWith(project: Project)
 }
 
 public protocol PledgeCTAContainerViewViewModelOutputs {
@@ -23,19 +23,19 @@ public protocol PledgeCTAContainerViewViewModelType {
 public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
-    let projectAndUser = self.projectAndUserProperty.signal.skipNil()
-    let project = projectAndUser.map(first)
+    let project = self.projectProperty.signal.skipNil()
+    let projectAndBacking = project
+      .map { project -> (Project, Backing)? in
+        guard let backing = project.personalization.backing else {
+          return nil
+        }
+
+        return (project, backing)
+      }.skipNil()
 
     let pledgeState = project
       .map(pledgeStateButton(project:))
 
-    let backingEvent = projectAndUser
-      .switchMap { project, user in
-        AppEnvironment.current.apiService.fetchBacking(forProject: project, forUser: user)
-          .materialize()
-      }
-    let backing = backingEvent.values()
-    let projectAndBacking = Signal.combineLatest(project, backing)
     let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
 
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
@@ -56,9 +56,9 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       }
   }
 
-  fileprivate let projectAndUserProperty = MutableProperty<(Project, User)?>(nil)
-  public func configureWith(project: Project, user: User) {
-    self.projectAndUserProperty.value = (project, user)
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
+    self.projectProperty.value = project
   }
 
   public var inputs: PledgeCTAContainerViewViewModelInputs { return self }
@@ -74,7 +74,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 // MARK: - Functions
 
 private func pledgeStateButton(project: Project) -> PledgeStateCTAType {
-  guard let projectIsBacked = project.personalization.isBacking else { return .viewRewards }
+  let projectIsBacked = project.personalization.isBacking ?? false
+
   switch project.state {
   case .live:
     return projectIsBacked ? .manage : .pledge

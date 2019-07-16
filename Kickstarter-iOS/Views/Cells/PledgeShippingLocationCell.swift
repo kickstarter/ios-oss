@@ -4,7 +4,9 @@ import Prelude
 import UIKit
 
 protocol PledgeShippingLocationCellDelegate: AnyObject {
-  func pledgeShippingCell(_ cell: PledgeShippingLocationCell, didSelectShippingRule rule: ShippingRule)
+  func pledgeShippingCellWillPresentShippingRules(
+    _ cell: PledgeShippingLocationCell, selectedShippingRule rule: ShippingRule
+  )
 }
 
 final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
@@ -94,13 +96,20 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
       |> checkoutStackViewStyle
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
 
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
+
+    self.viewModel.outputs.selectedShippingLocation
+      .observeForUI()
+      .observeValues { [weak self] shippingRule in
+        guard let self = self else { return }
+        self.delegate?.pledgeShippingCellWillPresentShippingRules(self, selectedShippingRule: shippingRule)
+      }
   }
 
   // MARK: - Configuration
@@ -115,7 +124,9 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Actions
 
-  @objc func shippingLocationButtonTapped(_: UIButton) {}
+  @objc func shippingLocationButtonTapped(_: UIButton) {
+    self.viewModel.inputs.shippingLocationButtonTapped()
+  }
 }
 
 // MARK: - Styles

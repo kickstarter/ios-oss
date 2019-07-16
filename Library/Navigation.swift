@@ -314,7 +314,7 @@ extension Navigation.Project {
   // swiftlint:enable conditional_binding_cascade
 }
 
-// MARK: Router
+// MARK: - Router
 
 // Argo calls their nebulous data blob `JSON`, but we will interpret it as route params.
 public typealias RouteParams = JSON
@@ -554,7 +554,7 @@ private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {
     <*> (Navigation.User.survey <^> (params <| "survey_response_id" >>- stringToInt))
 }
 
-// MARK: Helpers
+// MARK: - Helpers
 
 private func parsedParams(url: URL, fromTemplate template: String) -> RouteParams? {
   let recognizedEmailHosts = [

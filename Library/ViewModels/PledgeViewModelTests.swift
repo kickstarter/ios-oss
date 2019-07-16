@@ -9,7 +9,7 @@ import XCTest
 
 // swiftlint:disable line_length
 final class PledgeViewModelTests: TestCase {
-  private var vm: PledgeViewModelType!
+  private let vm: PledgeViewModelType = PledgeViewModel()
 
   private let configureShippingLocationCellWithDataIsShippingRulesLoading = TestObserver<Bool, Never>()
   private let configureShippingLocationCellWithDataProject = TestObserver<Project, Never>()
@@ -17,6 +17,9 @@ final class PledgeViewModelTests: TestCase {
 
   private let configureSummaryCellWithDataPledgeTotal = TestObserver<Double, Never>()
   private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
+
+  private let dismissShippingRules = TestObserver<Void, Never>()
+  private let goToLoginSignup = TestObserver<LoginIntent, Never>()
 
   /**
    Given the noise of `pledgeViewDataAndReload` signal and its frequent emissions and also the fact that
@@ -31,18 +34,22 @@ final class PledgeViewModelTests: TestCase {
   private let pledgeViewDataAndReloadSelectedShippingRule = TestObserver<ShippingRule?, Never>()
   private let pledgeViewDataAndReloadTotal = TestObserver<Double, Never>()
 
-  private let presentShippingRules = TestObserver<[ShippingRule], Never>()
+  private let presentShippingRulesProject = TestObserver<Project, Never>()
+  private let presentShippingRulesShippingRules = TestObserver<[ShippingRule], Never>()
+  private let presentShippingRulesSelectedShippingRule = TestObserver<ShippingRule, Never>()
+
   private let shippingRulesError = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm = PledgeViewModel()
+    self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
 
     self.vm.outputs.configureShippingLocationCellWithData.map { $0.0 }.observe(self.configureShippingLocationCellWithDataIsShippingRulesLoading.observer)
     self.vm.outputs.configureShippingLocationCellWithData.map { $0.1 }.observe(self.configureShippingLocationCellWithDataProject.observer)
     self.vm.outputs.configureShippingLocationCellWithData.map { $0.2 }.observe(self.configureShippingLocationCellWithDataSelectedShippingRule.observer)
 
+    self.vm.outputs.dismissShippingRules.observe(self.dismissShippingRules.observer)
     self.vm.outputs.configureSummaryCellWithData.map(second).observe(self.configureSummaryCellWithDataPledgeTotal.observer)
     self.vm.outputs.configureSummaryCellWithData.map(first).observe(self.configureSummaryCellWithDataProject.observer)
 
@@ -55,7 +62,10 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.3 }.map { $0.2 }.observe(self.pledgeViewDataAndReloadSelectedShippingRule.observer)
     self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.4 }.observe(self.pledgeViewDataAndReloadTotal.observer)
 
-    self.vm.outputs.presentShippingRules.observe(self.presentShippingRules.observer)
+    self.vm.outputs.presentShippingRules.map(first).observe(self.presentShippingRulesProject.observer)
+    self.vm.outputs.presentShippingRules.map(second).observe(self.presentShippingRulesShippingRules.observer)
+    self.vm.outputs.presentShippingRules.map(third).observe(self.presentShippingRulesSelectedShippingRule.observer)
+
     self.vm.outputs.shippingRulesError.observe(self.shippingRulesError.observer)
   }
 
@@ -106,6 +116,38 @@ final class PledgeViewModelTests: TestCase {
 
       self.configureSummaryCellWithDataPledgeTotal.assertDidNotEmitValue()
       self.configureSummaryCellWithDataProject.assertDidNotEmitValue()
+    }
+  }
+
+  func testLoginSignup() {
+    let project = Project.template
+    let reward = Reward.template
+    let user = User.template
+
+    self.vm.inputs.configureWith(project: project, reward: reward)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeViewDataAndReloadProject.assertValues([project])
+    self.pledgeViewDataAndReloadReward.assertValues([reward])
+    self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false])
+    self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([false])
+    self.pledgeViewDataAndReloadSelectedShippingRule.assertValue(nil)
+    self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum])
+    self.pledgeViewDataAndReloadReload.assertValues([true])
+
+    self.vm.inputs.pledgeContinueCellContinueButtonTapped()
+
+    self.goToLoginSignup.assertValue(LoginIntent.backProject)
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.userSessionStarted()
+
+      self.pledgeViewDataAndReloadProject.assertValues([project, project])
+      self.pledgeViewDataAndReloadReward.assertValues([reward, reward])
+      self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false, true])
+      self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([false, false])
+      self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum, reward.minimum])
+      self.pledgeViewDataAndReloadReload.assertValues([true, true])
     }
   }
 
@@ -404,27 +446,40 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  func testDismissShippingRules() {
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.pledgeShippingCellWillPresentShippingRules(with: .template)
+
+    self.dismissShippingRules.assertDidNotEmitValue()
+    self.vm.inputs.dismissShippingRulesButtonTapped()
+    self.dismissShippingRules.assertValueCount(1)
+  }
+
   func testPresentShippingRules() {
-    let shippingRules = [.usa, .canada, .greatBritain, .australia]
-      .enumerated()
-      .map { idx, location in
-        .template
-          |> ShippingRule.lens.location .~ location
-          |> ShippingRule.lens.cost .~ Double(idx + 1 * 10)
-      }
+    let shippingRules: [ShippingRule] = [.template, .template, .template]
 
     withEnvironment(apiService: MockService(fetchShippingRulesResult: .success(shippingRules))) {
+      let project = Project.template
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configureWith(project: .template, reward: reward)
-
-      self.presentShippingRules.assertValues([[]])
+      self.vm.inputs.configureWith(project: project, reward: reward)
 
       self.scheduler.advance()
 
-      self.presentShippingRules.assertValues([[], shippingRules])
+      self.presentShippingRulesProject.assertDidNotEmitValue()
+      self.presentShippingRulesShippingRules.assertDidNotEmitValue()
+      self.presentShippingRulesSelectedShippingRule.assertDidNotEmitValue()
+
+      let shippingRule = shippingRules[0]
+
+      self.vm.inputs.pledgeShippingCellWillPresentShippingRules(with: shippingRule)
+
+      self.presentShippingRulesProject.assertValues([project])
+      self.presentShippingRulesShippingRules.assertValues([shippingRules])
+      self.presentShippingRulesSelectedShippingRule.assertValues([shippingRule])
     }
   }
 

@@ -193,7 +193,7 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
   }
 }
 
-// MARK: SettingsNotificationCellDelegate
+// MARK: - SettingsNotificationCellDelegate
 
 extension SettingsNotificationsViewController: SettingsNotificationCellDelegate {
   func settingsNotificationCell(_: SettingsNotificationCell, didFailToUpdateUser errorMessage: String) {
@@ -205,7 +205,7 @@ extension SettingsNotificationsViewController: SettingsNotificationCellDelegate 
   }
 }
 
-// MARK: UIPickerViewDataSource & UIPickerViewDelegate
+// MARK: - UIPickerViewDataSource & UIPickerViewDelegate
 
 extension SettingsNotificationsViewController: UIPickerViewDataSource {
   func numberOfComponents(in _: UIPickerView) -> Int {
