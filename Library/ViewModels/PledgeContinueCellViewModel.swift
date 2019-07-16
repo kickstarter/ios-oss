@@ -15,7 +15,7 @@ public protocol PledgeContinueViewModelType {
 }
 
 public final class PledgeContinueViewModel: PledgeContinueViewModelType,
-  PledgeContinueViewModelInputs, PledgeContinueViewModelOutputs {
+PledgeContinueViewModelInputs, PledgeContinueViewModelOutputs {
   public init() {
     self.goToLoginSignup = self.continueButtonTappedProperty.signal
       .map { _ in LoginIntent.backProject }
@@ -31,3 +31,4 @@ public final class PledgeContinueViewModel: PledgeContinueViewModelType,
   public var inputs: PledgeContinueViewModelInputs { return self }
   public var outputs: PledgeContinueViewModelOutputs { return self }
 }
+
