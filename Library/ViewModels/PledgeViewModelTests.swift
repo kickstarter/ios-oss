@@ -54,9 +54,6 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
-
-      self.vm.inputs.shippingRuleSelected(nil)
-
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
     }
@@ -78,8 +75,6 @@ final class PledgeViewModelTests: TestCase {
       self.paymentMethodsViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
 
-      self.vm.inputs.shippingRuleSelected(nil)
-
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
     }
@@ -100,9 +95,6 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([true])
-
-      self.vm.inputs.shippingRuleSelected(nil)
-
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
     }
@@ -123,9 +115,6 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
-
-      self.vm.inputs.shippingRuleSelected(nil)
-
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
     }
@@ -146,9 +135,6 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
-
-      self.vm.inputs.shippingRuleSelected(nil)
-
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
 
@@ -177,9 +163,6 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
-
-      self.vm.inputs.shippingRuleSelected(nil)
-
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
 
@@ -217,8 +200,6 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
-
-      self.vm.inputs.shippingRuleSelected(nil)
 
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
@@ -289,8 +270,6 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
-
-      self.vm.inputs.shippingRuleSelected(nil)
 
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])

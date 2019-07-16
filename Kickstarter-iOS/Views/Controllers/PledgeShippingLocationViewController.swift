@@ -12,7 +12,7 @@ private enum Layout {
 protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
   func pledgeShippingLocationViewController(
     _ viewController: PledgeShippingLocationViewController,
-    didSelectShippingRule shippingRule: ShippingRule?
+    didSelectShippingRule shippingRule: ShippingRule
   )
 }
 

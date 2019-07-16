@@ -54,11 +54,12 @@ final class PledgeViewController: UIViewController {
       |> \.title %~ { _ in Strings.Back_this_project() }
 
     _ = self.view
-      |> \.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(3))
+      |> UIView.lens.layer.borderColor .~ UIColor.red.cgColor
+      |> UIView.lens.layer.borderWidth .~ 3
 
     _ = (self.rootScrollView, self.view)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = (self.rootStackView, self.rootScrollView)
       |> ksr_addSubviewToParent()
@@ -108,7 +109,7 @@ final class PledgeViewController: UIViewController {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootStackView.widthAnchor.constraint(equalTo: self.view.layoutMarginsGuide.widthAnchor)
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
   }
 
@@ -183,7 +184,7 @@ extension PledgeViewController: PledgeAmountViewControllerDelegate {
 extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
   func pledgeShippingLocationViewController(
     _: PledgeShippingLocationViewController,
-    didSelectShippingRule shippingRule: ShippingRule?
+    didSelectShippingRule shippingRule: ShippingRule
   ) {
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
@@ -199,6 +200,8 @@ private let rootScrollViewStyle: ScrollStyle = { scrollView in
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
+    |> \.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(3))
+    |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.axis .~ .vertical
     |> \.distribution .~ .fill
     |> \.alignment .~ .fill

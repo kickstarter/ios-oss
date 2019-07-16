@@ -24,7 +24,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
   private let presentShippingRulesProject = TestObserver<Project, Never>()
   private let presentShippingRulesAllRules = TestObserver<[ShippingRule], Never>()
   private let presentShippingRulesSelectedRule = TestObserver<ShippingRule, Never>()
-  private let selectedShippingRule = TestObserver<ShippingRule?, Never>()
+  private let notifyDelegateOfSelectedShippingRule = TestObserver<ShippingRule, Never>()
   private let shippingLocationButtonTitle = TestObserver<String, Never>()
   private let shippingRulesError = TestObserver<String, Never>()
 
@@ -37,7 +37,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     self.vm.outputs.presentShippingRules.map { $0.0 }.observe(self.presentShippingRulesProject.observer)
     self.vm.outputs.presentShippingRules.map { $0.1 }.observe(self.presentShippingRulesAllRules.observer)
     self.vm.outputs.presentShippingRules.map { $0.2 }.observe(self.presentShippingRulesSelectedRule.observer)
-    self.vm.outputs.notifyDelegateOfSelectedShippingRule.observe(self.selectedShippingRule.observer)
+    self.vm.outputs.notifyDelegateOfSelectedShippingRule.observe(self.notifyDelegateOfSelectedShippingRule.observer)
     self.vm.outputs.shippingLocationButtonTitle.observe(self.shippingLocationButtonTitle.observer)
     self.vm.outputs.shippingRulesError.observe(self.shippingRulesError.observer)
   }
@@ -55,7 +55,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.isLoading.assertValues([true])
       XCTAssertEqual(self.amountAttributedText.values.last?.string, "+$0.00")
       self.shippingLocationButtonTitle.assertValues([])
-      self.selectedShippingRule.assertValues([nil])
+      self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -63,7 +63,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
       XCTAssertEqual(self.amountAttributedText.values.last?.string, "+$5.00")
       self.isLoading.assertValues([true, false])
-      self.selectedShippingRule.assertValues([nil, defaultShippingRule!])
+      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule!])
       self.shippingLocationButtonTitle.assertValues(["Brooklyn, NY"])
       self.shippingRulesError.assertDidNotEmitValue()
     }
@@ -78,14 +78,14 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, reward: reward)
       self.vm.inputs.viewDidLoad()
 
-      self.selectedShippingRule.assertValues([nil])
+      self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
 
       let selectedShippingRule = shippingRules.first(where: { $0.location == .australia })
       let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn })
 
       self.scheduler.advance()
 
-      self.selectedShippingRule.assertValues([nil, defaultShippingRule!])
+      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule!])
 
       self.vm.inputs.shippingLocationButtonTapped()
 
@@ -95,7 +95,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleUpdated(to: selectedShippingRule!)
 
-      self.selectedShippingRule.assertValues([nil, defaultShippingRule, selectedShippingRule])
+      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule!, selectedShippingRule!])
 
       self.dismissShippingRules.assertValueCount(0)
       self.vm.inputs.dismissShippingRulesButtonTapped()
@@ -109,13 +109,19 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(failure: error))) {
-      self.vm.inputs.viewDidLoad()
       self.vm.inputs.configureWith(project: .template, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
 
       self.shippingRulesError.assertValues([])
 
       self.scheduler.advance()
 
+      XCTAssertEqual(self.amountAttributedText.values.last?.string, "+$0.00")
+      self.isLoading.assertValues([true, false])
+      self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
+      self.shippingLocationButtonTitle.assertValues([])
       self.shippingRulesError.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
     }
   }

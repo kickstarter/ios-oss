@@ -17,7 +17,7 @@ public protocol PledgeShippingLocationViewModelOutputs {
   var dismissShippingRules: Signal<Void, Never> { get }
   var isLoading: Signal<Bool, Never> { get }
   var presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
-  var notifyDelegateOfSelectedShippingRule: Signal<ShippingRule?, Never> { get }
+  var notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never> { get }
   var shippingLocationButtonTitle: Signal<String, Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
 }
@@ -41,6 +41,9 @@ PledgeShippingLocationViewModelInputs, PledgeShippingLocationViewModelOutputs {
     let reward = projectAndReward
       .map(second)
 
+    let shippingShouldBeginLoading = reward
+      .map { $0.shipping.enabled }
+
     let shippingRulesEvent = projectAndReward
       .filter { _, reward in reward.shipping.enabled }
       .switchMap { (project, reward) -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
@@ -51,37 +54,31 @@ PledgeShippingLocationViewModelInputs, PledgeShippingLocationViewModelOutputs {
           .materialize()
     }
 
-    let defaultShippingRule = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(nil),
-      shippingRulesEvent.values().map(defaultShippingRule(fromShippingRules:))
-    )
-
-    let shippingShouldBeginLoading = reward
-      .map { $0.shipping.enabled }
-
     self.isLoading = Signal.merge(
       shippingShouldBeginLoading,
       shippingRulesEvent.filter { $0.isTerminating }.mapConst(false)
     )
+
+    let defaultShippingRule = shippingRulesEvent.values().map(defaultShippingRule(fromShippingRules:))
 
     self.shippingRulesError = shippingRulesEvent.errors().map { _ in
       Strings.We_were_unable_to_load_the_shipping_destinations()
     }
 
     self.notifyDelegateOfSelectedShippingRule = Signal.merge(
-      defaultShippingRule,
-      self.shippingRuleUpdatedSignal.wrapInOptional()
+      defaultShippingRule.skipNil(),
+      self.shippingRuleUpdatedSignal
     )
 
     let shippingAmount = Signal.merge(
-      self.notifyDelegateOfSelectedShippingRule.map { $0?.cost ?? 0 },
+      self.notifyDelegateOfSelectedShippingRule.map { $0.cost },
       projectAndReward.mapConst(0)
     )
 
     self.presentShippingRules = Signal.combineLatest(
       project,
       shippingRulesEvent.values(),
-      self.notifyDelegateOfSelectedShippingRule.skipNil()
+      self.notifyDelegateOfSelectedShippingRule
       )
       .takeWhen(self.shippingLocationButtonTappedSignal)
 
@@ -90,7 +87,6 @@ PledgeShippingLocationViewModelInputs, PledgeShippingLocationViewModelOutputs {
       .skipNil()
 
     self.shippingLocationButtonTitle = self.notifyDelegateOfSelectedShippingRule
-      .skipNil()
       .map { $0.location.localizedName }
 
     self.dismissShippingRules = self.dismissShippingRulesButtonTappedProperty.signal
@@ -126,7 +122,7 @@ PledgeShippingLocationViewModelInputs, PledgeShippingLocationViewModelOutputs {
   public let dismissShippingRules: Signal<Void, Never>
   public let isLoading: Signal<Bool, Never>
   public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
-  public let notifyDelegateOfSelectedShippingRule: Signal<ShippingRule?, Never>
+  public let notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never>
   public let shippingLocationButtonTitle: Signal<String, Never>
   public let shippingRulesError: Signal<String, Never>
 

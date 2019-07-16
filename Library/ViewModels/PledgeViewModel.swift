@@ -8,7 +8,7 @@ public typealias PledgeViewData = (project: Project, reward: Reward)
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func pledgeAmountDidUpdate(to amount: Double)
-  func shippingRuleSelected(_ shippingRule: ShippingRule?)
+  func shippingRuleSelected(_ shippingRule: ShippingRule)
   func userSessionStarted()
   func viewDidLoad()
 }
@@ -46,10 +46,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       projectAndReward.map { $1.minimum }
     )
 
+    let initialShippingAmount = projectAndReward.mapConst(0.0)
     let shippingAmount = self.shippingRuleSelectedSignal
-      .map { $0?.cost ?? 0 }
+      .map { $0.cost }
+    let shippingCost = Signal.merge(shippingAmount, initialShippingAmount)
 
-    let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)
+    let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost).map(+)
 
     self.configureWithPledgeViewData = projectAndReward
       .map { PledgeViewData(project: $0.0, reward: $0.1) }
@@ -75,8 +77,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.pledgeAmountObserver.send(value: amount)
   }
 
-  private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule?, Never>.pipe()
-  public func shippingRuleSelected(_ shippingRule: ShippingRule?) {
+  private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule, Never>.pipe()
+  public func shippingRuleSelected(_ shippingRule: ShippingRule) {
     self.shippingRuleSelectedObserver.send(value: shippingRule)
   }
 
