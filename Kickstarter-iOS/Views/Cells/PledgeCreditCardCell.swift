@@ -128,12 +128,9 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: value)
-
-    self.prepareForReuse()
-    self.layoutIfNeeded()
     let size = self.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize,
-                                                              withHorizontalFittingPriority: .defaultHigh,
-                                                              verticalFittingPriority: .defaultLow)
+                                                         withHorizontalFittingPriority: .defaultHigh,
+                                                         verticalFittingPriority: .defaultLow)
     self.delegate?.didUpdateContentSize(self, size: size)
   }
 }
