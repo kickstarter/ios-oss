@@ -135,16 +135,6 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     print("Apple Pay tapped")
   }
 
-  func collectionView(
-    _: UICollectionView,
-    willDisplay cell: UICollectionViewCell,
-    forItemAt _: IndexPath
-  ) {
-    if let cell = cell as? PledgeCreditCardCell, cell.delegate == nil {
-      cell.delegate = self
-    }
-  }
-
   // MARK: - Private Functions
 
   private func updateConstraints(_ size: CGSize) {
@@ -156,9 +146,23 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   }
 }
 
+// MARK: - UICollectionViewDelegate
+
 extension PledgePaymentMethodsCell: UICollectionViewDelegate {
   func collectionView(_: UICollectionView, didSelectItemAt _: IndexPath) {}
+
+  func collectionView(
+    _: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt _: IndexPath
+    ) {
+    if let cell = cell as? PledgeCreditCardCell, cell.delegate == nil {
+      cell.delegate = self
+    }
+  }
 }
+
+// MARK: - PledgeCreditCardCellDelegate
 
 extension PledgePaymentMethodsCell: PledgeCreditCardCellDelegate {
   func didUpdateContentSize(_: PledgeCreditCardCell, size: CGSize) {
