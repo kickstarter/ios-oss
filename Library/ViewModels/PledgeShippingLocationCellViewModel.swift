@@ -153,3 +153,4 @@ private func shippingValue(of project: Project, with shippingRuleCost: Double) -
   return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }
 
+
