@@ -129,8 +129,8 @@ internal final class AddNewCardViewController: UIViewController,
       |> \.layoutMargins .~ .init(leftRight: Styles.grid(2))
 
     _ = self.zipcodeView.titleLabel
-      |> \.text %~ { _ in
-        Strings.Zip_postal_code()
+      |> \UILabel.text %~ { _ in
+        Strings.Zip_code()
       }
 
     _ = self.zipcodeView

@@ -117,7 +117,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
-    self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberText
+    self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
     self.viewModel.outputs.cardImage
       .observeForUI()
       .observeValues { [weak self] image in

@@ -7,10 +7,6 @@ extension GraphUserCreditCard.CreditCard {
     return formatted(dateString: self.formattedExpirationDate)
   }
 
-  public func lastFourShortStyle() -> String {
-    return Strings.Card_ending_in_last_four(last_four: self.lastFour)
-  }
-
   private func formatted(dateString: String) -> String {
     let date = toDate(dateString: dateString)
     return Format.date(
