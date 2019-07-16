@@ -12,6 +12,8 @@ private enum Layout {
 
 final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   // MARK: - Properties
+  private let viewModel = PledgePaymentMethodsCellViewModel()
+
   private var collectionViewHeightAnchor: NSLayoutConstraint!
 
   private lazy var layout: UICollectionViewFlowLayout = {
@@ -55,13 +57,13 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
+      |> \.delegate .~ self
 
     self.collectionView.register(PledgeCreditCardCell.self)
 
     self.collectionViewHeightAnchor = self.collectionView.heightAnchor.constraint(
       greaterThanOrEqualToConstant: Layout.Card.height + Styles.grid(2)
     )
-
     NSLayoutConstraint.activate([self.collectionViewHeightAnchor])
   }
 
@@ -89,11 +91,23 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
   override func bindViewModel() {
     super.bindViewModel()
+    self.viewModel.outputs.reloadData
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dataSource.load(creditCards: $0)
+        self?.collectionView.reloadData()
+        self?.collectionView.layoutIfNeeded()
+    }
+
+    self.viewModel.outputs.updateConstraints
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.updateConstraints($0)
+    }
   }
 
   internal func configureWith(value: [GraphUserCreditCard.CreditCard]) {
-    self.dataSource.load(creditCards: value)
-    self.collectionView.reloadData()
+    self.viewModel.inputs.configureWith(value)
   }
 
   func collectionView(
@@ -104,22 +118,22 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
       cell.delegate = self
     }
   }
-}
-
-extension PledgePaymentMethodsCell: PledgeCreditCardCellDelegate {
-
-  func didUpdateContentSize(_ cell: PledgeCreditCardCell, size: CGSize) {
-    self.updateConstraints(size)
-  }
 
   private func updateConstraints(_ size: CGSize) {
     NSLayoutConstraint.deactivate([self.collectionViewHeightAnchor])
-
     self.collectionViewHeightAnchor =
       self.collectionView.heightAnchor.constraint(equalToConstant: size.height + Styles.grid(2))
     NSLayoutConstraint.activate([self.collectionViewHeightAnchor])
-
-    self.setNeedsLayout()
     self.layoutIfNeeded()
+  }
+}
+
+extension PledgePaymentMethodsCell: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {}
+}
+
+extension PledgePaymentMethodsCell: PledgeCreditCardCellDelegate {
+  func didUpdateContentSize(_ cell: PledgeCreditCardCell, size: CGSize) {
+    self.viewModel.inputs.didUpdateContentSize(size)
   }
 }
