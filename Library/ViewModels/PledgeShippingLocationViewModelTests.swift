@@ -126,5 +126,3 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     }
   }
 }
-
-

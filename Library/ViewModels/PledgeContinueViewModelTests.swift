@@ -27,4 +27,3 @@ final class PledgeContinueViewModelTests: TestCase {
     self.goToLoginSignup.assertValues([LoginIntent.backProject, LoginIntent.backProject])
   }
 }
-

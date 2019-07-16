@@ -9,6 +9,7 @@ final class PledgeContinueViewController: UIViewController {
   private let viewModel = PledgeContinueViewModel()
 
   // MARK: - Lifecycle
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -28,7 +29,7 @@ final class PledgeContinueViewController: UIViewController {
       |> checkoutGreenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.Continue()
-    }
+      }
 
     _ = self.continueButton.titleLabel
       ?|> checkoutGreenButtonTitleLabelStyle
@@ -41,7 +42,7 @@ final class PledgeContinueViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] intent in
         self?.goToLoginSignup(with: intent)
-    }
+      }
   }
 
   private func configureSubviews() {
@@ -72,5 +73,3 @@ final class PledgeContinueViewController: UIViewController {
     self.present(sheetOverlayViewController, animated: true)
   }
 }
-
-

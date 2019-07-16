@@ -28,13 +28,13 @@ public protocol PledgeShippingLocationViewModelType {
 }
 
 public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewModelType,
-PledgeShippingLocationViewModelInputs, PledgeShippingLocationViewModelOutputs {
+  PledgeShippingLocationViewModelInputs, PledgeShippingLocationViewModelOutputs {
   public init() {
     let projectAndReward = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-      )
-      .map(first)
+    )
+    .map(first)
 
     let project = projectAndReward
       .map(first)
@@ -52,7 +52,7 @@ PledgeShippingLocationViewModelInputs, PledgeShippingLocationViewModelOutputs {
           .map(ShippingRulesEnvelope.lens.shippingRules.view)
           .retry(upTo: 3)
           .materialize()
-    }
+      }
 
     self.isLoading = Signal.merge(
       shippingShouldBeginLoading,
@@ -79,8 +79,8 @@ PledgeShippingLocationViewModelInputs, PledgeShippingLocationViewModelOutputs {
       project,
       shippingRulesEvent.values(),
       self.notifyDelegateOfSelectedShippingRule
-      )
-      .takeWhen(self.shippingLocationButtonTappedSignal)
+    )
+    .takeWhen(self.shippingLocationButtonTappedSignal)
 
     self.amountAttributedText = Signal.combineLatest(project, shippingAmount)
       .map { project, shippingAmount in shippingValue(of: project, with: shippingAmount) }
@@ -148,5 +148,3 @@ private func shippingValue(of project: Project, with shippingRuleCost: Double) -
 
   return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }
-
-
