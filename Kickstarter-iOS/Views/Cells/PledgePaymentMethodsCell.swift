@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import PassKit
 import Prelude
 import UIKit
 
@@ -21,6 +22,8 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
       |> \.scrollDirection .~ .horizontal
       |> \.estimatedItemSize .~ CGSize(width: Layout.Card.width, height: Layout.Card.height)
   }()
+
+  private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
 
   private lazy var collectionView: UICollectionView = {
     UICollectionView(frame: .zero, collectionViewLayout: self.layout)
@@ -45,10 +48,8 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   }
 
   private func configureSubviews() {
-    _ = self
-      |> \.accessibilityElements .~ self.subviews
 
-    _ = ([self.titleLabel, self.collectionView], self.rootStackView)
+    _ = ([self.applePayButton, self.titleLabel, self.collectionView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.contentView)
@@ -64,7 +65,17 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     self.collectionViewHeightAnchor = self.collectionView.heightAnchor.constraint(
       greaterThanOrEqualToConstant: Layout.Card.height + Styles.grid(2)
     )
-    NSLayoutConstraint.activate([self.collectionViewHeightAnchor])
+
+    NSLayoutConstraint.activate([
+      self.collectionViewHeightAnchor,
+      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    ])
+
+    self.applePayButton.addTarget(
+      self,
+      action: #selector(PledgePaymentMethodsCell.applePayButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   // MARK: - Styles
@@ -73,6 +84,10 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     super.bindStyles()
     _ = self
       |> checkoutBackgroundStyle
+
+    _ = self.applePayButton
+      |> roundedStyle(cornerRadius: Styles.grid(2))
+      |> \.isAccessibilityElement .~ true
 
     _ = self.collectionView
       |> checkoutBackgroundStyle
@@ -88,6 +103,8 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
       |> \.font .~ UIFont.ksr_caption1()
       |> \.textAlignment .~ .center
   }
+
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
@@ -106,8 +123,16 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     }
   }
 
+  // MARK: - Configuration
+
   internal func configureWith(value: [GraphUserCreditCard.CreditCard]) {
     self.viewModel.inputs.configureWith(value)
+  }
+
+  // MARK: - Actions
+
+  @objc private func applePayButtonTapped() {
+    print("Apple Pay tapped")
   }
 
   func collectionView(
@@ -118,6 +143,8 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
       cell.delegate = self
     }
   }
+
+  // MARK: - Private Functions
 
   private func updateConstraints(_ size: CGSize) {
     NSLayoutConstraint.deactivate([self.collectionViewHeightAnchor])

@@ -3,12 +3,19 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum Sheet {
+    static let offset: CGFloat = 222
+  }
+}
+
 class PledgeTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let dataSource: PledgeDataSource = PledgeDataSource()
   private weak var pledgeSummaryCell: PledgeSummaryCell?
   private weak var shippingLocationCell: PledgeShippingLocationCell?
+  private var sessionStartedObserver: Any?
   private let viewModel: PledgeViewModelType = PledgeViewModel()
 
   // MARK: - Lifecycle
@@ -42,6 +49,10 @@ class PledgeTableViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  deinit {
+    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
+  }
+
   // MARK: - Styles
 
   override func bindStyles() {
@@ -56,6 +67,12 @@ class PledgeTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.goToLoginSignup
+      .observeForControllerAction()
+      .observeValues { [weak self] intent in
+        self?.goToLoginSignup(with: intent)
+      }
+
     self.viewModel.outputs.pledgeViewDataAndReload
       .observeForUI()
       .observeValues { [weak self] data, reload in
@@ -64,6 +81,14 @@ class PledgeTableViewController: UITableViewController {
         if reload {
           self?.tableView.reloadData()
         }
+      }
+
+    self.viewModel.outputs.presentShippingRules
+      .observeForUI()
+      .observeValues { [weak self] project, shippingRules, selectedShippingRule in
+        self?.presentShippingRules(
+          project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
+        )
       }
 
     self.viewModel.outputs.configureShippingLocationCellWithData
@@ -79,12 +104,27 @@ class PledgeTableViewController: UITableViewController {
       .observeValues { [weak self] project, pledgeTotal in
         self?.pledgeSummaryCell?.configureWith(value: (project, pledgeTotal))
       }
+
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.userSessionStarted()
+      }
+
+    self.viewModel.outputs.dismissShippingRules
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true)
+      }
   }
 
-  // MARK: - Actions
+  // MARK: - Private Helpers
 
-  @objc func dismissKeyboard() {
-    self.tableView.endEditing(true)
+  private func goToLoginSignup(with intent: LoginIntent) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
+    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
+    let sheetOverlayViewController = SheetOverlayViewController(child: navigationController)
+
+    self.present(sheetOverlayViewController, animated: true)
   }
 
   // MARK: - UITableViewDelegate
@@ -110,6 +150,9 @@ class PledgeTableViewController: UITableViewController {
       let shippingLocationCell = (cell as? PledgeShippingLocationCell)
       shippingLocationCell?.delegate = self
       self.shippingLocationCell = shippingLocationCell
+    case is PledgeContinueCell:
+      let pledgeContinueCell = cell as? PledgeContinueCell
+      pledgeContinueCell?.delegate = self
     default:
       break
     }
@@ -117,10 +160,34 @@ class PledgeTableViewController: UITableViewController {
 
   // MARK: - Actions
 
+  @objc func dismissKeyboard() {
+    self.tableView.endEditing(true)
+  }
+
+  @objc func dismissShippingRules() {
+    self.viewModel.inputs.dismissShippingRulesButtonTapped()
+  }
+
   private func presentHelpWebViewController(with helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
-    let nav = UINavigationController(rootViewController: vc)
-    self.present(nav, animated: true, completion: nil)
+    let nc = UINavigationController(rootViewController: vc)
+    self.present(nc, animated: true)
+  }
+
+  private func presentShippingRules(
+    _ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
+  ) {
+    let vc = ShippingRulesTableViewController.instantiate()
+      |> \.navigationItem.leftBarButtonItem .~ UIBarButtonItem(
+        barButtonSystemItem: .cancel,
+        target: self,
+        action: #selector(PledgeTableViewController.dismissShippingRules)
+      )
+    vc.configureWith(project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule)
+
+    let nc = UINavigationController(rootViewController: vc)
+    let sheetVC = SheetOverlayViewController(child: nc, offset: Layout.Sheet.offset)
+    self.present(sheetVC, animated: true)
   }
 }
 
@@ -130,21 +197,30 @@ extension PledgeTableViewController: PledgeDescriptionCellDelegate {
   }
 }
 
-extension PledgeTableViewController: PledgeSummaryCellDelegate {
-  internal func pledgeSummaryCell(_: PledgeSummaryCell, didOpen helpType: HelpType) {
-    self.presentHelpWebViewController(with: helpType)
+extension PledgeTableViewController: PledgeAmountCellDelegate {
+  func pledgeAmountCell(_: PledgeAmountCell, didUpdateAmount amount: Double) {
+    self.viewModel.inputs.pledgeAmountDidUpdate(to: amount)
   }
 }
 
 extension PledgeTableViewController: PledgeShippingLocationCellDelegate {
-  func pledgeShippingCell(_: PledgeShippingLocationCell, didSelectShippingRule rule: ShippingRule) {
-    self.viewModel.inputs.shippingRuleDidUpdate(to: rule)
+  func pledgeShippingCellWillPresentShippingRules(
+    _: PledgeShippingLocationCell,
+    selectedShippingRule rule: ShippingRule
+  ) {
+    self.viewModel.inputs.pledgeShippingCellWillPresentShippingRules(with: rule)
   }
 }
 
-extension PledgeTableViewController: PledgeAmountCellDelegate {
-  func pledgeAmountCell(_: PledgeAmountCell, didUpdateAmount amount: Double) {
-    self.viewModel.inputs.pledgeAmountDidUpdate(to: amount)
+extension PledgeTableViewController: PledgeContinueCellDelegate {
+  func pledgeContinueCellDidTapContinue(_: PledgeContinueCell) {
+    self.viewModel.inputs.pledgeContinueCellContinueButtonTapped()
+  }
+}
+
+extension PledgeTableViewController: PledgeSummaryCellDelegate {
+  internal func pledgeSummaryCell(_: PledgeSummaryCell, didOpen helpType: HelpType) {
+    self.presentHelpWebViewController(with: helpType)
   }
 }
 
