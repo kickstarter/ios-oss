@@ -110,6 +110,7 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(value)
   }
 
+<<<<<<< HEAD
   func collectionView(
     _ collectionView: UICollectionView,
     willDisplay cell: UICollectionViewCell,
@@ -119,6 +120,16 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
     }
   }
 
+=======
+  // MARK: - Actions
+
+  @objc private func applePayButtonTapped() {
+    print("Apple Pay tapped")
+  }
+
+  // MARK: - Private Functions
+
+>>>>>>> bfd1ee482... Added pragma marks
   private func updateConstraints(_ size: CGSize) {
     NSLayoutConstraint.deactivate([self.collectionViewHeightAnchor])
     self.collectionViewHeightAnchor =
@@ -128,9 +139,27 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   }
 }
 
+// MARK: - UICollectionViewDelegate
+
 extension PledgePaymentMethodsCell: UICollectionViewDelegate {
+<<<<<<< HEAD
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {}
+=======
+  func collectionView(_: UICollectionView, didSelectItemAt _: IndexPath) {}
+
+  func collectionView(
+    _: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt _: IndexPath
+    ) {
+    if let cell = cell as? PledgeCreditCardCell, cell.delegate == nil {
+      cell.delegate = self
+    }
+  }
+>>>>>>> bfd1ee482... Added pragma marks
 }
+
+// MARK: - PledgeCreditCardCellDelegate
 
 extension PledgePaymentMethodsCell: PledgeCreditCardCellDelegate {
   func didUpdateContentSize(_ cell: PledgeCreditCardCell, size: CGSize) {
