@@ -13,6 +13,7 @@ private enum Layout {
 
 final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   // MARK: - Properties
+
   private let viewModel = PledgePaymentMethodsCellViewModel()
 
   private var collectionViewHeightAnchor: NSLayoutConstraint!
@@ -48,7 +49,6 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   }
 
   private func configureSubviews() {
-
     _ = ([self.applePayButton, self.titleLabel, self.collectionView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -114,13 +114,13 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
         self?.dataSource.load(creditCards: $0)
         self?.collectionView.reloadData()
         self?.collectionView.layoutIfNeeded()
-    }
+      }
 
     self.viewModel.outputs.updateConstraints
       .observeForUI()
       .observeValues { [weak self] in
         self?.updateConstraints($0)
-    }
+      }
   }
 
   // MARK: - Configuration
@@ -136,9 +136,10 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
   }
 
   func collectionView(
-    _ collectionView: UICollectionView,
+    _: UICollectionView,
     willDisplay cell: UICollectionViewCell,
-    forItemAt indexPath: IndexPath) {
+    forItemAt _: IndexPath
+  ) {
     if let cell = cell as? PledgeCreditCardCell, cell.delegate == nil {
       cell.delegate = self
     }
@@ -156,11 +157,11 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 }
 
 extension PledgePaymentMethodsCell: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {}
+  func collectionView(_: UICollectionView, didSelectItemAt _: IndexPath) {}
 }
 
 extension PledgePaymentMethodsCell: PledgeCreditCardCellDelegate {
-  func didUpdateContentSize(_ cell: PledgeCreditCardCell, size: CGSize) {
+  func didUpdateContentSize(_: PledgeCreditCardCell, size: CGSize) {
     self.viewModel.inputs.didUpdateContentSize(size)
   }
 }

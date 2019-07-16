@@ -18,9 +18,9 @@ public protocol PledgePaymentMethodsCellViewModelType {
 }
 
 public final class PledgePaymentMethodsCellViewModel: PledgePaymentMethodsCellViewModelType,
-PledgePaymentMethodsCellViewModelInputs, PledgePaymentMethodsCellViewModelOutputs {
+  PledgePaymentMethodsCellViewModelInputs, PledgePaymentMethodsCellViewModelOutputs {
   public init() {
-    self.reloadData = configureWithSignal
+    self.reloadData = self.configureWithSignal
       .map { $0 }
 
     self.updateConstraints = self.contentSizeSignal

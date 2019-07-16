@@ -15,7 +15,7 @@ private enum Layout {
 }
 
 internal protocol PledgeCreditCardCellDelegate: class {
-   func didUpdateContentSize(_ cell: PledgeCreditCardCell, size: CGSize)
+  func didUpdateContentSize(_ cell: PledgeCreditCardCell, size: CGSize)
 }
 
 final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
@@ -33,6 +33,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   public var delegate: PledgeCreditCardCellDelegate?
 
   // MARK: - Lifecycle
@@ -43,7 +44,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
     self.bindViewModel()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -106,7 +107,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
     _ = self.adaptableStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    )
+      )
       |> \.spacing .~ Styles.grid(1)
 
     _ = self.rootStackView
@@ -123,14 +124,16 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
       .observeValues { [weak self] image in
         _ = self?.imageView
           ?|> \.image .~ image
-    }
+      }
   }
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: value)
-    let size = self.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize,
-                                                         withHorizontalFittingPriority: .defaultHigh,
-                                                         verticalFittingPriority: .defaultLow)
+    let size = self.contentView.systemLayoutSizeFitting(
+      UIView.layoutFittingCompressedSize,
+      withHorizontalFittingPriority: .defaultHigh,
+      verticalFittingPriority: .defaultLow
+    )
     self.delegate?.didUpdateContentSize(self, size: size)
   }
 }

@@ -2,13 +2,12 @@ import Foundation
 import KsApi
 
 extension GraphUserCreditCard.CreditCard {
-
   public func expirationDate() -> String {
-    return formatted(dateString: self.formattedExpirationDate)
+    return self.formatted(dateString: self.formattedExpirationDate)
   }
 
   private func formatted(dateString: String) -> String {
-    let date = toDate(dateString: dateString)
+    let date = self.toDate(dateString: dateString)
     return Format.date(
       secondsInUTC: date.timeIntervalSince1970,
       template: "MM-yyyy",
@@ -22,8 +21,8 @@ extension GraphUserCreditCard.CreditCard {
       from: dateString,
       dateFormat: "yyyy-MM",
       timeZone: UTCTimeZone
-      ) else {
-        fatalError("Unable to parse date format")
+    ) else {
+      fatalError("Unable to parse date format")
     }
 
     return date
