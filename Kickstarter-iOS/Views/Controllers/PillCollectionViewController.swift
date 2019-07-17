@@ -48,8 +48,8 @@ class PillCollectionViewController: UICollectionViewController {
   override func collectionView(
     _ collectionView: UICollectionView,
     willDisplay cell: UICollectionViewCell,
-    forItemAt indexPath: IndexPath
-    ) {
+    forItemAt _: IndexPath
+  ) {
     guard let pillCell = cell as? PillCell else { return }
 
     _ = pillCell.label

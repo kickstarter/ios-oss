@@ -40,6 +40,7 @@ final class PillCell: UICollectionViewCell, ValueCell {
   }
 
   // MARK: - Configuration
+
   func configureWith(value: String) {
     _ = self.label
       |> \.text .~ value
