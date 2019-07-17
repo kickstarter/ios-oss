@@ -232,6 +232,16 @@ extension RewardsCollectionViewController {
   ) {
     if let rewardCell = cell as? RewardCell {
       rewardCell.delegate = self
+      rewardCell.addCollectionViewController(to: self)
+    }
+  }
+
+  override func collectionView(
+    _: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt _: IndexPath
+  ) {
+    if let rewardCell = cell as? RewardCell {
+      rewardCell.delegate = nil
+      rewardCell.removeCollectionViewController()
     }
   }
 }

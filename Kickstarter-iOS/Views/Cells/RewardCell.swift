@@ -37,6 +37,16 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   private let rewardTitleLabel = UILabel(frame: .zero)
   private let scrollView = UIScrollView(frame: .zero)
 
+  private(set) lazy var collectionViewController: PillCollectionViewController = {
+    PillCollectionViewController.instantiate()
+  }()
+
+  private lazy var collectionViewControllerHeightConstraint: NSLayoutConstraint = {
+    self.collectionViewController.view.heightAnchor.constraint(equalToConstant: 0)
+  }()
+
+  // MARK: - Lifecycle
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -47,6 +57,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  // MARK: - Styles
 
   override func bindStyles() {
     super.bindStyles()
@@ -113,6 +125,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> minimumPriceConversionLabelStyle
   }
 
+  // MARK: - View model
+
   override func bindViewModel() {
     super.bindViewModel()
 
@@ -144,6 +158,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
         _ = self?.containerView
           ?|> \.isUserInteractionEnabled .~ isUserInteractionEnabled
       }
+
+    self.collectionViewController.configure(with: ["Ends in 3 days", "16 left"])
   }
 
   // MARK: - Private Helpers
@@ -172,10 +188,14 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = (self.pledgeButtonLayoutGuide, self.containerView)
       |> ksr_addLayoutGuideToView()
 
-    _ = ([
-      self.priceStackView, self.rewardTitleLabel, self.includedItemsStackView,
+    let baseSubviews: [UIView] = [
+      self.priceStackView,
+      self.rewardTitleLabel,
+      self.includedItemsStackView,
       self.descriptionStackView
-    ], self.baseStackView)
+    ]
+
+    _ = (baseSubviews, self.baseStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([minimumPriceLabel, minimumPriceConversionLabel], self.priceStackView)
@@ -242,6 +262,13 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     ].flatMap { $0 })
   }
 
+  private func updateCollectionViewConstraints() {
+    self.collectionViewController.view.layoutIfNeeded()
+
+    self.collectionViewControllerHeightConstraint.constant =
+      self.collectionViewController.collectionView.contentSize.height
+  }
+
   fileprivate func load(items: [String]) {
     _ = self.includedItemsStackView.subviews
       ||> { $0.removeFromSuperview() }
@@ -271,6 +298,47 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = (allItemViews, self.includedItemsStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
+
+  // MARK: - View controller containment
+
+  func addCollectionViewController(to parent: UIViewController) {
+    _ = self.collectionViewController
+      |> UIViewController.lens.view .. UIView.lens.isHidden .~ true
+
+    parent.addChild(self.collectionViewController)
+    self.baseStackView.addArrangedSubview(self.collectionViewController.view)
+    self.collectionViewController.didMove(toParent: parent)
+
+    let contentMargins = self.contentView.layoutMarginsGuide
+
+    NSLayoutConstraint.activate([
+      self.collectionViewController.view.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
+      self.collectionViewController.view.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
+      self.collectionViewControllerHeightConstraint
+    ])
+  }
+
+  func removeCollectionViewController() {
+    self.collectionViewController.willMove(toParent: nil)
+    self.collectionViewController.view.removeFromSuperview()
+    self.collectionViewController.removeFromParent()
+  }
+
+  // MARK: - Layout
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    self.updateCollectionViewConstraints()
+  }
+
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    self.updateCollectionViewConstraints()
+  }
+
+  // MARK: - Configuration
 
   internal func configureWith(value: (Project, Either<Reward, Backing>)) {
     self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
