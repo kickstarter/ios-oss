@@ -31,14 +31,4 @@ public extension UITableView {
     let className = self.classNameWithoutModule(cellClass)
     return self.dequeueReusableCell(withIdentifier: className, for: indexPath)
   }
-
-  // MARK: - Functions
-
-  private func classNameWithoutModule(_ klass: AnyClass) -> String {
-    return klass
-      .description()
-      .components(separatedBy: ".")
-      .dropFirst()
-      .joined(separator: ".")
-  }
 }
