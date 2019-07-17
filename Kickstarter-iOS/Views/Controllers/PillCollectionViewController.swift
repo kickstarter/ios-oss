@@ -14,7 +14,7 @@ class PillCollectionViewController: UICollectionViewController {
       collectionViewLayout: PillLayout(
         minimumInteritemSpacing: Styles.grid(1),
         minimumLineSpacing: Styles.grid(1),
-        sectionInset: UIEdgeInsets(all: Styles.grid(1))
+        sectionInset: UIEdgeInsets(topBottom: Styles.grid(1))
       )
     )
   }

@@ -15,15 +15,12 @@ final class PillCell: UICollectionViewCell, ValueCell {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
+    _ = self.contentView
+      |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
+
     _ = (self.label, self.contentView)
       |> ksr_addSubviewToParent()
-
-    NSLayoutConstraint.activate([
-      self.label.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-      self.label.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
-      self.label.topAnchor.constraint(equalTo: self.contentView.topAnchor),
-      self.label.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
-    ])
+      |> ksr_constrainViewToMarginsInParent()
   }
 
   required init?(coder _: NSCoder) {
@@ -35,8 +32,11 @@ final class PillCell: UICollectionViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.contentView
+      |> contentViewStyle
+
     _ = self.label
-      |> pinLabelStyle
+      |> labelStyle
   }
 
   // MARK: - Configuration
@@ -48,10 +48,15 @@ final class PillCell: UICollectionViewCell, ValueCell {
 
 // MARK: - Styles
 
-private let pinLabelStyle: LabelStyle = { label in
-  label
+private let contentViewStyle: ViewStyle = { view in
+  view
+    |> checkoutRoundedCornersStyle
     |> \.backgroundColor .~ UIColor.ksr_green_500.withAlphaComponent(0.06)
-    |> \.font .~ UIFont.ksr_body(size: 13)
+}
+
+private let labelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_body(size: 13).bolded
     |> \.numberOfLines .~ 0
     |> \.textColor .~ UIColor.ksr_green_500
 }
