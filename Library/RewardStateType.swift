@@ -35,6 +35,14 @@ public enum RewardStateType {
   // TODO:
   // -Which States do not contain a checkmark?? --- ONLY SELECTED REWARDS CONTAIN CHECKMARK/EXCLAMATION
 
+  var showIconImage: Bool? {
+    switch self {
+    case .fix, .manage, .viewBacking:
+      return true
+    case .pledge:
+      return false
+    }
+  }
 
   var iconImageName: String? {
     switch self {
