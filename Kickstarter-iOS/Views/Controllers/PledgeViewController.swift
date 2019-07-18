@@ -187,10 +187,12 @@ private let rootScrollViewStyle: ScrollStyle = { scrollView in
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.layoutMargins .~ .init(top: Styles.grid(3),
-                                left: Styles.grid(4),
-                                bottom: Styles.grid(3),
-                                right: Styles.grid(4))
+    |> \.layoutMargins .~ .init(
+      top: Styles.grid(3),
+      left: Styles.grid(4),
+      bottom: Styles.grid(3),
+      right: Styles.grid(4)
+    )
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.distribution .~ UIStackView.Distribution.fill
