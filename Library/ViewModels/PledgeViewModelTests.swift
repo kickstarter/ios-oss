@@ -12,111 +12,218 @@ import XCTest
 final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
 
-  private let configureShippingLocationCellWithDataIsShippingRulesLoading = TestObserver<Bool, Never>()
-  private let configureShippingLocationCellWithDataProject = TestObserver<Project, Never>()
-  private let configureShippingLocationCellWithDataSelectedShippingRule = TestObserver<ShippingRule?, Never>()
-
   private let configureSummaryCellWithDataPledgeTotal = TestObserver<Double, Never>()
   private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
 
-  private let dismissShippingRules = TestObserver<Void, Never>()
-  private let goToLoginSignup = TestObserver<LoginIntent, Never>()
+  private let configureWithPledgeViewDataProject = TestObserver<Project, Never>()
+  private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
 
-  /**
-   Given the noise of `pledgeViewDataAndReload` signal and its frequent emissions and also the fact that
-   what we really care about is the final emission from this signal, we mostly test its last value.
-   */
-  private let pledgeViewDataAndReloadIsLoggedIn = TestObserver<Bool, Never>()
-  private let pledgeViewDataAndReloadIsShippingEnabled = TestObserver<Bool, Never>()
-  private let pledgeViewDataAndReloadIsShippingRulesLoading = TestObserver<Bool, Never>()
-  private let pledgeViewDataAndReloadProject = TestObserver<Project, Never>()
-  private let pledgeViewDataAndReloadReload = TestObserver<Bool, Never>()
-  private let pledgeViewDataAndReloadReward = TestObserver<Reward, Never>()
-  private let pledgeViewDataAndReloadSelectedShippingRule = TestObserver<ShippingRule?, Never>()
-  private let pledgeViewDataAndReloadTotal = TestObserver<Double, Never>()
-
-  private let presentShippingRulesProject = TestObserver<Project, Never>()
-  private let presentShippingRulesShippingRules = TestObserver<[ShippingRule], Never>()
-  private let presentShippingRulesSelectedShippingRule = TestObserver<ShippingRule, Never>()
-
-  private let shippingRulesError = TestObserver<String, Never>()
+  private let continueViewHidden = TestObserver<Bool, Never>()
+  private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
+  private let shippingLocationViewHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
+    self.vm.outputs.configureSummaryViewControllerWithData.map(second)
+      .observe(self.configureSummaryCellWithDataPledgeTotal.observer)
+    self.vm.outputs.configureSummaryViewControllerWithData.map(first)
+      .observe(self.configureSummaryCellWithDataProject.observer)
 
-    self.vm.outputs.configureShippingLocationCellWithData.map { $0.0 }.observe(self.configureShippingLocationCellWithDataIsShippingRulesLoading.observer)
-    self.vm.outputs.configureShippingLocationCellWithData.map { $0.1 }.observe(self.configureShippingLocationCellWithDataProject.observer)
-    self.vm.outputs.configureShippingLocationCellWithData.map { $0.2 }.observe(self.configureShippingLocationCellWithDataSelectedShippingRule.observer)
+    self.vm.outputs.configureWithData.map { $0.project }
+      .observe(self.configureWithPledgeViewDataProject.observer)
+    self.vm.outputs.configureWithData.map { $0.reward }
+      .observe(self.configureWithPledgeViewDataReward.observer)
 
-    self.vm.outputs.dismissShippingRules.observe(self.dismissShippingRules.observer)
-    self.vm.outputs.configureSummaryCellWithData.map(second).observe(self.configureSummaryCellWithDataPledgeTotal.observer)
-    self.vm.outputs.configureSummaryCellWithData.map(first).observe(self.configureSummaryCellWithDataProject.observer)
-
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.2 }.observe(self.pledgeViewDataAndReloadIsLoggedIn.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.3 }.map { $0.0 }.observe(self.pledgeViewDataAndReloadIsShippingEnabled.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.3 }.map { $0.1 }.observe(self.pledgeViewDataAndReloadIsShippingRulesLoading.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.0 }.observe(self.pledgeViewDataAndReloadProject.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(second).observe(self.pledgeViewDataAndReloadReload.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.1 }.observe(self.pledgeViewDataAndReloadReward.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.3 }.map { $0.2 }.observe(self.pledgeViewDataAndReloadSelectedShippingRule.observer)
-    self.vm.outputs.pledgeViewDataAndReload.map(first).map { $0.4 }.observe(self.pledgeViewDataAndReloadTotal.observer)
-
-    self.vm.outputs.presentShippingRules.map(first).observe(self.presentShippingRulesProject.observer)
-    self.vm.outputs.presentShippingRules.map(second).observe(self.presentShippingRulesShippingRules.observer)
-    self.vm.outputs.presentShippingRules.map(third).observe(self.presentShippingRulesSelectedShippingRule.observer)
-
-    self.vm.outputs.shippingRulesError.observe(self.shippingRulesError.observer)
+    self.vm.outputs.continueViewHidden.observe(self.continueViewHidden.observer)
+    self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
+    self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
   }
 
-  func testReload_Logged_Out() {
+  func testPledgeView_Logged_Out_Shipping_Disabled() {
     withEnvironment(currentUser: nil) {
       let project = Project.template
       let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ false
 
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
 
-      self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false])
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([false])
-      self.pledgeViewDataAndReloadProject.assertValues([project])
-      self.pledgeViewDataAndReloadReload.assertValue(true)
-      self.pledgeViewDataAndReloadReward.assertValues([reward])
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertValue(nil)
-      self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum])
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertDidNotEmitValue()
-      self.configureShippingLocationCellWithDataProject.assertDidNotEmitValue()
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertDidNotEmitValue()
-
-      self.configureSummaryCellWithDataPledgeTotal.assertDidNotEmitValue()
-      self.configureSummaryCellWithDataProject.assertDidNotEmitValue()
+      self.continueViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([true])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
     }
   }
 
-  func testReload_Logged_In() {
+  func testPledgeView_Logged_Out_Shipping_Enabled() {
+    withEnvironment(currentUser: nil) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([false])
+
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+    }
+  }
+
+  func testPledgeView_Logged_In_Shipping_Disabled() {
     let project = Project.template
     let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ false
 
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
 
-      self.pledgeViewDataAndReloadIsLoggedIn.assertValues([true])
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([false])
-      self.pledgeViewDataAndReloadProject.assertValues([project])
-      self.pledgeViewDataAndReloadReload.assertValue(true)
-      self.pledgeViewDataAndReloadReward.assertValues([reward])
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertValue(nil)
-      self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum])
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertDidNotEmitValue()
-      self.configureShippingLocationCellWithDataProject.assertDidNotEmitValue()
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertDidNotEmitValue()
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([true])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+    }
+  }
 
-      self.configureSummaryCellWithDataPledgeTotal.assertDidNotEmitValue()
-      self.configureSummaryCellWithDataProject.assertDidNotEmitValue()
+  func testPledgeView_Logged_In_Shipping_Enabled() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+    }
+  }
+
+  func testShippingRuleSelectedDefaultShippingRule() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+
+      let defaultShippingRule = ShippingRule.template
+        |> ShippingRule.lens.cost .~ 5
+
+      self.vm.inputs.shippingRuleSelected(defaultShippingRule)
+
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
+      self.configureSummaryCellWithDataProject.assertValues([project, project])
+    }
+  }
+
+  func testShippingRuleSelectedUpdatedShippingRule() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+
+      let defaultShippingRule = ShippingRule.template
+        |> ShippingRule.lens.cost .~ 5
+
+      self.vm.inputs.shippingRuleSelected(defaultShippingRule)
+
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
+      self.configureSummaryCellWithDataProject.assertValues([project, project])
+
+      let selectedShippingRule = ShippingRule.template
+        |> ShippingRule.lens.cost .~ 5
+        |> ShippingRule.lens.location .~ .australia
+
+      self.vm.inputs.shippingRuleSelected(selectedShippingRule)
+
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost, reward.minimum + selectedShippingRule.cost])
+      self.configureSummaryCellWithDataProject.assertValues([project, project, project])
+    }
+  }
+
+  func testPledgeAmountUpdates() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([false])
+
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+
+      let amount1 = 66.0
+
+      self.vm.inputs.pledgeAmountDidUpdate(to: amount1)
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, amount1])
+      self.configureSummaryCellWithDataProject.assertValues([project, project])
+
+      let amount2 = 99.0
+
+      self.vm.inputs.pledgeAmountDidUpdate(to: amount2)
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, amount1, amount2])
+      self.configureSummaryCellWithDataProject.assertValues([project, project, project])
     }
   }
 
@@ -125,212 +232,28 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.template
     let user = User.template
 
-    self.vm.inputs.configureWith(project: project, reward: reward)
-    self.vm.inputs.viewDidLoad()
-
-    self.pledgeViewDataAndReloadProject.assertValues([project])
-    self.pledgeViewDataAndReloadReward.assertValues([reward])
-    self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false])
-    self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([false])
-    self.pledgeViewDataAndReloadSelectedShippingRule.assertValue(nil)
-    self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum])
-    self.pledgeViewDataAndReloadReload.assertValues([true])
-
-    self.vm.inputs.pledgeContinueCellContinueButtonTapped()
-
-    self.goToLoginSignup.assertValue(LoginIntent.backProject)
-
-    withEnvironment(currentUser: user) {
-      self.vm.inputs.userSessionStarted()
-
-      self.pledgeViewDataAndReloadProject.assertValues([project, project])
-      self.pledgeViewDataAndReloadReward.assertValues([reward, reward])
-      self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false, true])
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([false, false])
-      self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum, reward.minimum])
-      self.pledgeViewDataAndReloadReload.assertValues([true, true])
-    }
-  }
-
-  func testSelectedShippingRule() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
-
-    withEnvironment {
+    withEnvironment(currentUser: nil) {
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
 
-      self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false, false])
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([true, true])
-      self.pledgeViewDataAndReloadProject.assertValues([project, project])
-      self.pledgeViewDataAndReloadReload.assertValues([true, false])
-      self.pledgeViewDataAndReloadReward.assertValues([reward, reward])
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertValues([nil, nil])
-      self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum, reward.minimum])
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertValues([true])
-      self.configureShippingLocationCellWithDataProject.assertValues([project])
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertValues([nil])
+      self.continueViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([true])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertDidNotEmitValue()
-      self.configureSummaryCellWithDataProject.assertDidNotEmitValue()
+      withEnvironment(currentUser: user) {
+        self.vm.inputs.userSessionStarted()
 
-      self.scheduler.advance()
+        self.configureWithPledgeViewDataProject.assertValues([project])
+        self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      let defaultShippingRule = ShippingRule.template
-
-      self.pledgeViewDataAndReloadIsLoggedIn.assertLastValue(false)
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertLastValue(true)
-      self.pledgeViewDataAndReloadProject.assertLastValue(project)
-      self.pledgeViewDataAndReloadReload.assertValueCount(5)
-      self.pledgeViewDataAndReloadReload.assertLastValue(false)
-      self.pledgeViewDataAndReloadReward.assertLastValue(reward)
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertLastValue(defaultShippingRule)
-      self.pledgeViewDataAndReloadTotal.assertLastValue(reward.minimum + defaultShippingRule.cost)
-
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertValues([true, true, false])
-      self.configureShippingLocationCellWithDataProject.assertValues([project, project, project])
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertValues(
-        [nil, defaultShippingRule, defaultShippingRule]
-      )
-
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum + defaultShippingRule.cost])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+        self.continueViewHidden.assertValues([false, true])
+        self.paymentMethodsViewHidden.assertValues([true, false])
+        self.shippingLocationViewHidden.assertValues([true])
+      }
     }
-  }
-
-  func testSelectedShippingRuleUpdates() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
-
-    withEnvironment {
-      self.vm.inputs.configureWith(project: project, reward: reward)
-      self.vm.inputs.viewDidLoad()
-
-      self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false, false])
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([true, true])
-      self.pledgeViewDataAndReloadProject.assertValues([project, project])
-      self.pledgeViewDataAndReloadReload.assertValues([true, false])
-      self.pledgeViewDataAndReloadReward.assertValues([reward, reward])
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertValues([nil, nil])
-      self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum, reward.minimum])
-
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertValues([true])
-      self.configureShippingLocationCellWithDataProject.assertValues([project])
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertValues([nil])
-
-      self.configureSummaryCellWithDataPledgeTotal.assertDidNotEmitValue()
-      self.configureSummaryCellWithDataProject.assertDidNotEmitValue()
-
-      let shippingRule1 = ShippingRule.template
-        |> ShippingRule.lens.cost .~ 20.0
-
-      self.vm.inputs.shippingRuleDidUpdate(to: shippingRule1)
-
-      self.pledgeViewDataAndReloadIsLoggedIn.assertLastValue(false)
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertLastValue(true)
-      self.pledgeViewDataAndReloadProject.assertLastValue(project)
-      self.pledgeViewDataAndReloadReload.assertValueCount(3)
-      self.pledgeViewDataAndReloadReload.assertLastValue(false)
-      self.pledgeViewDataAndReloadReward.assertLastValue(reward)
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertLastValue(nil)
-      self.pledgeViewDataAndReloadTotal.assertLastValue(reward.minimum + shippingRule1.cost)
-
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertValues([true])
-      self.configureShippingLocationCellWithDataProject.assertValues([project])
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertValues([nil])
-
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum + shippingRule1.cost])
-      self.configureSummaryCellWithDataProject.assertValues([project])
-
-      let shippingRule2 = ShippingRule.template
-        |> ShippingRule.lens.cost .~ 123.0
-
-      self.vm.inputs.shippingRuleDidUpdate(to: shippingRule2)
-
-      self.pledgeViewDataAndReloadIsLoggedIn.assertLastValue(false)
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertLastValue(true)
-      self.pledgeViewDataAndReloadProject.assertLastValue(project)
-      self.pledgeViewDataAndReloadReload.assertValueCount(4)
-      self.pledgeViewDataAndReloadReload.assertLastValue(false)
-      self.pledgeViewDataAndReloadReward.assertLastValue(reward)
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertLastValue(nil)
-      self.pledgeViewDataAndReloadTotal.assertLastValue(reward.minimum + shippingRule2.cost)
-
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertValues([true])
-      self.configureShippingLocationCellWithDataProject.assertValues([project])
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertValues([nil])
-
-      self.configureSummaryCellWithDataPledgeTotal.assertValues(
-        [reward.minimum + shippingRule1.cost, reward.minimum + shippingRule2.cost]
-      )
-      self.configureSummaryCellWithDataProject.assertValues([project, project])
-    }
-  }
-
-  func testPledgeAmountUpdates() {
-    let project = Project.template
-    let reward = Reward.template
-
-    self.vm.inputs.configureWith(project: project, reward: reward)
-    self.vm.inputs.viewDidLoad()
-
-    self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false])
-    self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([false])
-    self.pledgeViewDataAndReloadProject.assertValues([project])
-    self.pledgeViewDataAndReloadReload.assertValues([true])
-    self.pledgeViewDataAndReloadReward.assertValues([reward])
-    self.pledgeViewDataAndReloadSelectedShippingRule.assertValues([nil])
-    self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum])
-
-    self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertDidNotEmitValue()
-    self.configureShippingLocationCellWithDataProject.assertDidNotEmitValue()
-    self.configureShippingLocationCellWithDataSelectedShippingRule.assertDidNotEmitValue()
-
-    self.configureSummaryCellWithDataPledgeTotal.assertDidNotEmitValue()
-    self.configureSummaryCellWithDataProject.assertDidNotEmitValue()
-
-    let amount1 = 66.0
-
-    self.vm.inputs.pledgeAmountDidUpdate(to: amount1)
-
-    self.pledgeViewDataAndReloadIsLoggedIn.assertLastValue(false)
-    self.pledgeViewDataAndReloadIsShippingEnabled.assertLastValue(false)
-    self.pledgeViewDataAndReloadProject.assertLastValue(project)
-    self.pledgeViewDataAndReloadReload.assertValueCount(2)
-    self.pledgeViewDataAndReloadReload.assertLastValue(false)
-    self.pledgeViewDataAndReloadReward.assertLastValue(reward)
-    self.pledgeViewDataAndReloadSelectedShippingRule.assertLastValue(nil)
-    self.pledgeViewDataAndReloadTotal.assertLastValue(amount1)
-
-    self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertDidNotEmitValue()
-    self.configureShippingLocationCellWithDataProject.assertDidNotEmitValue()
-    self.configureShippingLocationCellWithDataSelectedShippingRule.assertDidNotEmitValue()
-
-    self.configureSummaryCellWithDataPledgeTotal.assertValues([amount1])
-    self.configureSummaryCellWithDataProject.assertValues([project])
-
-    let amount2 = 99.0
-
-    self.vm.inputs.pledgeAmountDidUpdate(to: amount2)
-
-    self.pledgeViewDataAndReloadIsLoggedIn.assertLastValue(false)
-    self.pledgeViewDataAndReloadIsShippingEnabled.assertLastValue(false)
-    self.pledgeViewDataAndReloadProject.assertLastValue(project)
-    self.pledgeViewDataAndReloadReload.assertValueCount(3)
-    self.pledgeViewDataAndReloadReload.assertLastValue(false)
-    self.pledgeViewDataAndReloadReward.assertLastValue(reward)
-    self.pledgeViewDataAndReloadSelectedShippingRule.assertLastValue(nil)
-    self.pledgeViewDataAndReloadTotal.assertLastValue(amount2)
-
-    self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertDidNotEmitValue()
-    self.configureShippingLocationCellWithDataProject.assertDidNotEmitValue()
-    self.configureShippingLocationCellWithDataSelectedShippingRule.assertDidNotEmitValue()
-
-    self.configureSummaryCellWithDataPledgeTotal.assertValues([amount1, amount2])
-    self.configureSummaryCellWithDataProject.assertValues([project, project])
   }
 
   func testSelectedShippingRuleAndPledgeAmountUpdates() {
@@ -338,167 +261,81 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
-    withEnvironment {
+    withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
 
-      self.pledgeViewDataAndReloadIsLoggedIn.assertValues([false, false])
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertValues([true, true])
-      self.pledgeViewDataAndReloadProject.assertValues([project, project])
-      self.pledgeViewDataAndReloadReload.assertValues([true, false])
-      self.pledgeViewDataAndReloadReward.assertValues([reward, reward])
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertValues([nil, nil])
-      self.pledgeViewDataAndReloadTotal.assertValues([reward.minimum, reward.minimum])
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertValues([true])
-      self.configureShippingLocationCellWithDataProject.assertValues([project])
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertValues([nil])
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([false])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertDidNotEmitValue()
-      self.configureSummaryCellWithDataProject.assertDidNotEmitValue()
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
 
       let shippingRule1 = ShippingRule.template
         |> ShippingRule.lens.cost .~ 20.0
 
-      self.vm.inputs.shippingRuleDidUpdate(to: shippingRule1)
+      self.vm.inputs.shippingRuleSelected(shippingRule1)
 
-      self.pledgeViewDataAndReloadIsLoggedIn.assertLastValue(false)
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertLastValue(true)
-      self.pledgeViewDataAndReloadProject.assertLastValue(project)
-      self.pledgeViewDataAndReloadReload.assertValueCount(3)
-      self.pledgeViewDataAndReloadReload.assertLastValue(false)
-      self.pledgeViewDataAndReloadReward.assertLastValue(reward)
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertLastValue(nil)
-      self.pledgeViewDataAndReloadTotal.assertLastValue(reward.minimum + shippingRule1.cost)
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertValues([true])
-      self.configureShippingLocationCellWithDataProject.assertValues([project])
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertValues([nil])
-
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum + shippingRule1.cost])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([
+        reward.minimum,
+        reward.minimum + shippingRule1.cost
+      ])
+      self.configureSummaryCellWithDataProject.assertValues([project, project])
 
       let amount1 = 200.0
 
       self.vm.inputs.pledgeAmountDidUpdate(to: amount1)
 
-      self.pledgeViewDataAndReloadIsLoggedIn.assertLastValue(false)
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertLastValue(true)
-      self.pledgeViewDataAndReloadProject.assertLastValue(project)
-      self.pledgeViewDataAndReloadReload.assertValueCount(4)
-      self.pledgeViewDataAndReloadReload.assertLastValue(false)
-      self.pledgeViewDataAndReloadReward.assertLastValue(reward)
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertLastValue(nil)
-      self.pledgeViewDataAndReloadTotal.assertLastValue(shippingRule1.cost + amount1)
-
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertValues([true])
-      self.configureShippingLocationCellWithDataProject.assertValues([project])
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertValues([nil])
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.configureSummaryCellWithDataPledgeTotal.assertValues(
-        [reward.minimum + shippingRule1.cost, shippingRule1.cost + amount1]
+        [reward.minimum, reward.minimum + shippingRule1.cost, shippingRule1.cost + amount1]
       )
-      self.configureSummaryCellWithDataProject.assertValues([project, project])
+      self.configureSummaryCellWithDataProject.assertValues([project, project, project])
 
       let shippingRule2 = ShippingRule.template
         |> ShippingRule.lens.cost .~ 123.0
 
-      self.vm.inputs.shippingRuleDidUpdate(to: shippingRule2)
+      self.vm.inputs.shippingRuleSelected(shippingRule2)
 
-      self.pledgeViewDataAndReloadIsLoggedIn.assertLastValue(false)
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertLastValue(true)
-      self.pledgeViewDataAndReloadProject.assertLastValue(project)
-      self.pledgeViewDataAndReloadReload.assertValueCount(5)
-      self.pledgeViewDataAndReloadReload.assertLastValue(false)
-      self.pledgeViewDataAndReloadReward.assertLastValue(reward)
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertLastValue(nil)
-      self.pledgeViewDataAndReloadTotal.assertLastValue(amount1 + shippingRule2.cost)
-
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertValues([true])
-      self.configureShippingLocationCellWithDataProject.assertValues([project])
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertValues([nil])
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.configureSummaryCellWithDataPledgeTotal.assertValues(
-        [reward.minimum + shippingRule1.cost, shippingRule1.cost + amount1, shippingRule2.cost + amount1]
+        [
+          reward.minimum,
+          reward.minimum + shippingRule1.cost,
+          shippingRule1.cost + amount1,
+          shippingRule2.cost + amount1
+        ]
       )
-      self.configureSummaryCellWithDataProject.assertValues([project, project, project])
+      self.configureSummaryCellWithDataProject.assertValues([project, project, project, project])
 
       let amount2 = 1_999.0
 
       self.vm.inputs.pledgeAmountDidUpdate(to: amount2)
 
-      self.pledgeViewDataAndReloadIsLoggedIn.assertLastValue(false)
-      self.pledgeViewDataAndReloadIsShippingEnabled.assertLastValue(true)
-      self.pledgeViewDataAndReloadProject.assertLastValue(project)
-      self.pledgeViewDataAndReloadReload.assertValueCount(6)
-      self.pledgeViewDataAndReloadReload.assertLastValue(false)
-      self.pledgeViewDataAndReloadReward.assertLastValue(reward)
-      self.pledgeViewDataAndReloadSelectedShippingRule.assertLastValue(nil)
-      self.pledgeViewDataAndReloadTotal.assertLastValue(shippingRule2.cost + amount2)
-
-      self.configureShippingLocationCellWithDataIsShippingRulesLoading.assertValues([true])
-      self.configureShippingLocationCellWithDataProject.assertValues([project])
-      self.configureShippingLocationCellWithDataSelectedShippingRule.assertValues([nil])
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.configureSummaryCellWithDataPledgeTotal.assertValues(
-        [reward.minimum + shippingRule1.cost, shippingRule1.cost + amount1, shippingRule2.cost + amount1, shippingRule2.cost + amount2]
+        [
+          reward.minimum,
+          reward.minimum + shippingRule1.cost,
+          shippingRule1.cost + amount1,
+          shippingRule2.cost + amount1,
+          shippingRule2.cost + amount2
+        ]
       )
-      self.configureSummaryCellWithDataProject.assertValues([project, project, project, project])
-    }
-  }
-
-  func testDismissShippingRules() {
-    self.vm.inputs.configureWith(project: .template, reward: .template)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.pledgeShippingCellWillPresentShippingRules(with: .template)
-
-    self.dismissShippingRules.assertDidNotEmitValue()
-    self.vm.inputs.dismissShippingRulesButtonTapped()
-    self.dismissShippingRules.assertValueCount(1)
-  }
-
-  func testPresentShippingRules() {
-    let shippingRules: [ShippingRule] = [.template, .template, .template]
-
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: .success(shippingRules))) {
-      let project = Project.template
-      let reward = Reward.template
-        |> Reward.lens.shipping.enabled .~ true
-
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configureWith(project: project, reward: reward)
-
-      self.scheduler.advance()
-
-      self.presentShippingRulesProject.assertDidNotEmitValue()
-      self.presentShippingRulesShippingRules.assertDidNotEmitValue()
-      self.presentShippingRulesSelectedShippingRule.assertDidNotEmitValue()
-
-      let shippingRule = shippingRules[0]
-
-      self.vm.inputs.pledgeShippingCellWillPresentShippingRules(with: shippingRule)
-
-      self.presentShippingRulesProject.assertValues([project])
-      self.presentShippingRulesShippingRules.assertValues([shippingRules])
-      self.presentShippingRulesSelectedShippingRule.assertValues([shippingRule])
-    }
-  }
-
-  func testShippingRulesError() {
-    let error = ErrorEnvelope(errorMessages: [], ksrCode: nil, httpCode: 404, exception: nil)
-
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(failure: error))) {
-      let reward = Reward.template
-        |> Reward.lens.shipping.enabled .~ true
-
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configureWith(project: .template, reward: reward)
-
-      self.shippingRulesError.assertValues([])
-
-      self.scheduler.advance()
-
-      self.shippingRulesError.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
+      self.configureSummaryCellWithDataProject.assertValues([project, project, project, project, project])
     }
   }
 }

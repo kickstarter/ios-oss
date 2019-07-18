@@ -5,36 +5,22 @@ import UIKit
 
 public typealias PledgeSummaryCellData = (project: Project, total: Double)
 
-internal protocol PledgeSummaryCellDelegate: AnyObject {
-  func pledgeSummaryCell(_ cell: PledgeSummaryCell, didOpen helpType: HelpType)
-}
-
-final class PledgeSummaryCell: UITableViewCell, ValueCell {
+final class PledgeSummaryViewController: UIViewController {
   // MARK: - Properties
-
-  internal weak var delegate: PledgeSummaryCellDelegate?
-  private var viewModel = PledgeSummaryCellViewModel()
-
-  // MARK: - Subview Properties
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var termsTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private let viewModel = PledgeSummaryViewModel()
 
   // MARK: - Lifecycle
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
     self.configureSubviews()
-
-    self.bindViewModel()
-  }
-
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Styles
@@ -42,7 +28,7 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
+    _ = self.view
       |> checkoutBackgroundStyle
 
     _ = self.rootStackView
@@ -65,7 +51,7 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
   }
 
   private func configureSubviews() {
-    _ = (self.rootStackView, self.contentView)
+    _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
@@ -84,8 +70,7 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.notifyDelegateOpenHelpType
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
-        guard let self = self else { return }
-        self.delegate?.pledgeSummaryCell(self, didOpen: helpType)
+        self?.presentHelpWebViewController(with: helpType)
       }
   }
 
@@ -97,7 +82,7 @@ final class PledgeSummaryCell: UITableViewCell, ValueCell {
   }
 }
 
-extension PledgeSummaryCell: UITextViewDelegate {
+extension PledgeSummaryViewController: UITextViewDelegate {
   func textView(
     _: UITextView, shouldInteractWith _: NSTextAttachment,
     in _: NSRange, interaction _: UITextItemInteraction
@@ -139,8 +124,6 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(4))
     |> \.spacing .~ Styles.gridHalf(3)
 }
 
