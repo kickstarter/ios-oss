@@ -4,8 +4,8 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-internal final class PledgeAmountCellViewModelTests: TestCase {
-  private let vm: PledgeAmountCellViewModelType = PledgeAmountCellViewModel()
+internal final class PledgeAmountViewModelTests: TestCase {
+  private let vm: PledgeAmountViewModelType = PledgeAmountViewModel()
 
   private let amountPrimitive = TestObserver<Double, Never>()
   private let currency = TestObserver<String, Never>()

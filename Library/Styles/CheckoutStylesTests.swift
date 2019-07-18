@@ -36,8 +36,6 @@ final class CheckoutStylesTests: XCTestCase {
     _ = stackView |> checkoutStackViewStyle
 
     XCTAssertEqual(NSLayoutConstraint.Axis.vertical, stackView.axis)
-    XCTAssertEqual(true, stackView.isLayoutMarginsRelativeArrangement)
-    XCTAssertEqual(UIEdgeInsets(top: 12, left: 24, bottom: 18, right: 24), stackView.layoutMargins)
     XCTAssertEqual(9, stackView.spacing)
   }
 

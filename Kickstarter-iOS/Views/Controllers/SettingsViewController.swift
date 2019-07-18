@@ -87,7 +87,7 @@ final class SettingsViewController: UIViewController {
       .observeValues { [weak self] link in self?.goToAppStore(link: link) }
   }
 
-  // MARK: - Private Functions
+  // MARK: - Functions
 
   private func shouldHideFooter(for section: Int) -> Bool {
     guard let section = SettingsSectionType(rawValue: section), section.hasSectionFooter else { return true }

@@ -3,47 +3,20 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias PledgeViewShippingRulesData = (
-  isEnabled: Bool,
-  isLoading: Bool,
-  selectedRule: ShippingRule?
-)
-
-public typealias PledgeViewData = (
-  project: Project,
-  reward: Reward,
-  isLoggedIn: Bool,
-  shipping: PledgeViewShippingRulesData,
-  pledgeTotal: Double
-)
-
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
-  func pledgeContinueCellContinueButtonTapped()
-  func dismissShippingRulesButtonTapped()
   func pledgeAmountDidUpdate(to amount: Double)
-  func pledgeShippingCellWillPresentShippingRules(with rule: ShippingRule)
-  func shippingRuleDidUpdate(to rule: ShippingRule)
+  func shippingRuleSelected(_ shippingRule: ShippingRule)
   func userSessionStarted()
   func viewDidLoad()
 }
 
 public protocol PledgeViewModelOutputs {
-  var goToLoginSignup: Signal<LoginIntent, Never> { get }
-  var configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never> { get }
-  var configureSummaryCellWithData: Signal<(Project, Double), Never> { get }
-  var dismissShippingRules: Signal<Void, Never> { get }
-
-  /**
-   Emits the initial data for this view model along with a `Bool` indicating whether the table view should
-   be reloaded (currently only the first time but probably during login as well). Every time any of the
-   combined data of `PledgeViewData` changes, this signal will emit all of its data in order to ensure that
-   the data source has the current state of the data that the cells have. This ensures that if a cell is
-   recycled it will be reloaded with its most recent data.
-   */
-  var pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never> { get }
-  var presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
-  var shippingRulesError: Signal<String, Never> { get }
+  var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
+  var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
+  var continueViewHidden: Signal<Bool, Never> { get }
+  var paymentMethodsViewHidden: Signal<Bool, Never> { get }
+  var shippingLocationViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -62,110 +35,33 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let project = projectAndReward.map(first)
     let reward = projectAndReward.map(second)
-    let isLoggedIn = projectAndReward.map { _ in AppEnvironment.current.currentUser }.map(isNotNil)
+    let isLoggedIn = Signal.merge(projectAndReward.ignoreValues(), self.userSessionStartedSignal)
+      .map { _ in AppEnvironment.current.currentUser }
+      .map(isNotNil)
 
     let pledgeAmount = Signal.merge(
       self.pledgeAmountSignal,
       projectAndReward.map { $1.minimum }
     )
 
-    let shippingRulesEvent = projectAndReward
-      .filter { _, reward in reward.shipping.enabled }
-      .switchMap { (project, reward) -> SignalProducer<Signal<[ShippingRule], ErrorEnvelope>.Event, Never> in
-        AppEnvironment.current.apiService.fetchRewardShippingRules(projectId: project.id, rewardId: reward.id)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map(ShippingRulesEnvelope.lens.shippingRules.view)
-          .retry(upTo: 3)
-          .prefix(value: [])
-          .materialize()
-      }
+    let initialShippingAmount = projectAndReward.mapConst(0.0)
+    let shippingAmount = self.shippingRuleSelectedSignal
+      .map { $0.cost }
+    let shippingCost = Signal.merge(shippingAmount, initialShippingAmount)
 
-    let defaultShippingRule = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(nil),
-      shippingRulesEvent.values().map(defaultShippingRule(fromShippingRules:))
-    )
+    let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost).map(+)
 
-    self.presentShippingRules = Signal.combineLatest(
-      project,
-      shippingRulesEvent.values(),
-      defaultShippingRule.skipNil()
-    )
-    .takeWhen(self.pledgeShippingCellWillPresentShippingRulesProperty.signal)
+    self.configureWithData = projectAndReward.map { (project: $0.0, reward: $0.1) }
 
-    let shippingAmount = Signal.merge(
-      defaultShippingRule.skipNil().map { $0.cost },
-      self.selectedShippingRuleSignal.map { $0.cost },
-      projectAndReward.mapConst(0)
-    )
-
-    let shippingShouldBeginLoading = reward
-      .map { $0.shipping.enabled }
-
-    let isShippingLoading = Signal.merge(
-      shippingShouldBeginLoading,
-      shippingRulesEvent.filter { $0.isTerminating }.mapConst(false)
-    )
-
-    self.shippingRulesError = shippingRulesEvent.errors().map { _ in
-      Strings.We_were_unable_to_load_the_shipping_destinations()
-    }
-
-    let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)
-    let data = Signal
-      .combineLatest(project, reward, isLoggedIn, isShippingLoading, defaultShippingRule, pledgeTotal)
-      .map(pledgeViewData(with:reward:isLoggedIn:isShippingLoading:selectedShippingRule:pledgeTotal:))
-
-    let userUpdatedData = data.takeWhen(self.userSessionStartedSignal)
-      .map { data -> PledgeViewData in
-        (
-          project: data.project,
-          reward: data.reward,
-          isLoggedIn: AppEnvironment.current.currentUser != nil,
-          shipping: data.shipping,
-          pledgeTotal: data.pledgeTotal
-        )
-      }
-
-    let initialLoad = data.take(first: 1).map { data in (data, true) }
-    let silentReload = data.skip(first: 1).map { data in (data, false) }
-    let userUpdatedReload = userUpdatedData.map { data in (data, true) }
-
-    self.pledgeViewDataAndReload = Signal.merge(
-      initialLoad,
-      silentReload,
-      userUpdatedReload
-    )
-
-    self.goToLoginSignup = self.pledgeContinueCellContinueButtonTappedSignal
-      .map { _ in LoginIntent.backProject }
-
-    let updatedData = self.pledgeViewDataAndReload
-      .filter(second >>> isFalse)
-      .map(first)
-
-    self.configureSummaryCellWithData = updatedData
+    self.configureSummaryViewControllerWithData = project
       .takePairWhen(pledgeTotal)
-      .map { data, total in (data.project, total) }
+      .map { project, total in (project, total) }
 
-    let isShippingLoadingAndSelectedShippingRule = Signal.combineLatest(
-      isShippingLoading,
-      defaultShippingRule
-    )
-
-    self.configureShippingLocationCellWithData = updatedData
-      .takePairWhen(isShippingLoadingAndSelectedShippingRule)
-      .map(unpack)
-      .map { data, isShippingLoading, selectedShippingRule in
-        (isShippingLoading, data.project, selectedShippingRule)
-      }
-
-    self.dismissShippingRules = self.dismissShippingRulesButtonTappedProperty.signal
-  }
-
-  private let (pledgeContinueCellContinueButtonTappedSignal, pledgeContinueCellContinueButtonTappedObserver)
-    = Signal<Void, Never>.pipe()
-  public func pledgeContinueCellContinueButtonTapped() {
-    self.pledgeContinueCellContinueButtonTappedObserver.send(value: ())
+    self.continueViewHidden = isLoggedIn
+    self.paymentMethodsViewHidden = isLoggedIn.negate()
+    self.shippingLocationViewHidden = reward
+      .map { $0.shipping.enabled }
+      .negate()
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -173,29 +69,19 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.configureProjectAndRewardProperty.value = (project, reward)
   }
 
-  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
-  public func userSessionStarted() {
-    self.userSessionStartedObserver.send(value: ())
-  }
-
-  private let dismissShippingRulesButtonTappedProperty = MutableProperty(())
-  public func dismissShippingRulesButtonTapped() {
-    self.dismissShippingRulesButtonTappedProperty.value = ()
-  }
-
   private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
   public func pledgeAmountDidUpdate(to amount: Double) {
     self.pledgeAmountObserver.send(value: amount)
   }
 
-  private let pledgeShippingCellWillPresentShippingRulesProperty = MutableProperty<(ShippingRule)?>(nil)
-  public func pledgeShippingCellWillPresentShippingRules(with rule: ShippingRule) {
-    self.pledgeShippingCellWillPresentShippingRulesProperty.value = rule
+  private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule, Never>.pipe()
+  public func shippingRuleSelected(_ shippingRule: ShippingRule) {
+    self.shippingRuleSelectedObserver.send(value: shippingRule)
   }
 
-  private let (selectedShippingRuleSignal, shippingRuleObserver) = Signal<ShippingRule, Never>.pipe()
-  public func shippingRuleDidUpdate(to rule: ShippingRule) {
-    self.shippingRuleObserver.send(value: rule)
+  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
+  public func userSessionStarted() {
+    self.userSessionStartedObserver.send(value: ())
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -203,45 +89,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let goToLoginSignup: Signal<LoginIntent, Never>
-  public let configureShippingLocationCellWithData: Signal<(Bool, Project, ShippingRule?), Never>
-  public let configureSummaryCellWithData: Signal<(Project, Double), Never>
-  public let dismissShippingRules: Signal<Void, Never>
-  public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
-  public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
-  public let shippingRulesError: Signal<String, Never>
+  public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
+  public let continueViewHidden: Signal<Bool, Never>
+  public let configureWithData: Signal<(project: Project, reward: Reward), Never>
+  public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public let shippingLocationViewHidden: Signal<Bool, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
-}
-
-// MARK: - Functions
-
-private func pledgeViewData(
-  with project: Project,
-  reward: Reward,
-  isLoggedIn: Bool,
-  isShippingLoading: Bool,
-  selectedShippingRule: ShippingRule?,
-  pledgeTotal: Double
-) -> PledgeViewData {
-  return (
-    project,
-    reward,
-    isLoggedIn,
-    pledgeViewShippingRulesData(
-      with: reward.shipping.enabled,
-      isShippingLoading: isShippingLoading,
-      selectedShippingRule: selectedShippingRule
-    ),
-    pledgeTotal
-  )
-}
-
-private func pledgeViewShippingRulesData(
-  with isShippingEnabled: Bool,
-  isShippingLoading: Bool,
-  selectedShippingRule: ShippingRule?
-) -> PledgeViewShippingRulesData {
-  return (isShippingEnabled, isShippingLoading, selectedShippingRule)
 }
