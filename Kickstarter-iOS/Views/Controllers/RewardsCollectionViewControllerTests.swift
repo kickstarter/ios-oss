@@ -31,7 +31,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
         parent.view.frame.size.height = device == .pad ? 1_800 : 1_000
         parent.view.frame.size.width = device == .pad ? 2_300 : 1_800
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
