@@ -23,16 +23,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   private let descriptionLabel = UILabel(frame: .zero)
   private let descriptionStackView = UIStackView(frame: .zero)
   private let descriptionTitleLabel = UILabel(frame: .zero)
-  private let imageView: UIImageView = {
-    UIImageView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private let imageViewContainer: UIView = {
-    UIView(frame: .zero)
-      |> \.isHidden .~ true
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
 
   private let includedItemsStackView = UIStackView(frame: .zero)
   private let includedItemsTitleLabel = UILabel(frame: .zero)
@@ -47,6 +37,17 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   private let priceStackView = UIStackView(frame: .zero)
   private let rewardTitleLabel = UILabel(frame: .zero)
   private let scrollView = UIScrollView(frame: .zero)
+  private let stateImageView: UIImageView = {
+    UIImageView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let stateImageViewContainer: UIView = {
+    UIView(frame: .zero)
+      |> \.isHidden .~ true
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let titleStackView = UIStackView(frame: .zero)
 
   override init(frame: CGRect) {
@@ -108,12 +109,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.descriptionTitleLabel
       |> \.text %~ { _ in Strings.Description() }
 
-    _ = self.imageView
-      |> imageViewStyle
-
-    _ = self.imageViewContainer
-      |> imageViewContainerStyle
-
     _ = self.descriptionLabel
       |> baseRewardLabelStyle
       |> sectionBodyLabelStyle
@@ -129,6 +124,12 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.minimumPriceConversionLabel
       |> baseRewardLabelStyle
       |> minimumPriceConversionLabelStyle
+
+    _ = self.stateImageView
+      |> stateImageViewStyle
+
+    _ = self.stateImageViewContainer
+      |> stateImageViewContainerStyle
 
     _ = self.titleStackView
       |> titleStackViewStyle
@@ -203,12 +204,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = ([self.minimumPriceLabel, self.minimumPriceConversionLabel], self.priceStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.imageView, self.imageViewContainer)
-      |> ksr_addSubviewToParent()
-
-    _ = ([self.priceStackView, self.imageViewContainer], self.titleStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
     _ = ([self.includedItemsTitleLabel], self.includedItemsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -217,6 +212,12 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     _ = (self.pledgeButton, self.contentView)
       |> ksr_addSubviewToParent()
+
+    _ = (self.stateImageView, self.stateImageViewContainer)
+      |> ksr_addSubviewToParent()
+
+    _ = ([self.priceStackView, self.stateImageViewContainer], self.titleStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     self.setupConstraints()
 
@@ -240,12 +241,12 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     ]
 
     let imageViewContraints = [
-      self.imageView.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
-      self.imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor),
-      self.imageView.centerXAnchor.constraint(equalTo: self.imageViewContainer.centerXAnchor),
-      self.imageView.centerYAnchor.constraint(equalTo: self.imageViewContainer.centerYAnchor),
-      self.imageViewContainer.widthAnchor.constraint(equalToConstant: Styles.grid(5)),
-      self.imageViewContainer.heightAnchor.constraint(equalTo: self.imageViewContainer.widthAnchor)
+      self.stateImageView.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
+      self.stateImageView.heightAnchor.constraint(equalTo: self.stateImageView.widthAnchor),
+      self.stateImageView.centerXAnchor.constraint(equalTo: self.stateImageViewContainer.centerXAnchor),
+      self.stateImageView.centerYAnchor.constraint(equalTo: self.stateImageViewContainer.centerYAnchor),
+      self.stateImageViewContainer.widthAnchor.constraint(equalToConstant: Styles.grid(5)),
+      self.stateImageViewContainer.heightAnchor.constraint(equalTo: self.stateImageViewContainer.widthAnchor)
     ]
 
     let topConstraint = self.pledgeButton.topAnchor
@@ -341,18 +342,6 @@ private let baseStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(3)
 }
 
-private let imageViewStyle: ImageViewStyle = { imageView in
-  imageView
-    |> \.image .~ UIImage(named: "checkmark-reward")
-    |> \.tintColor .~ UIColor.ksr_blue_500
-}
-
-private let imageViewContainerStyle: ViewStyle = { view in
-  view
-    |> \.backgroundColor .~ UIColor.ksr_blue_500.withAlphaComponent(0.06)
-    |> \.layer.cornerRadius .~ 15
-}
-
 private let minimumPriceLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_green_500
@@ -401,6 +390,18 @@ private let sectionBodyLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ .ksr_callout()
+}
+
+private let stateImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.image .~ UIImage(named: "checkmark-reward")
+    |> \.tintColor .~ UIColor.ksr_blue_500
+}
+
+private let stateImageViewContainerStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_blue_500.withAlphaComponent(0.06)
+    |> \.layer.cornerRadius .~ 15
 }
 
 private let titleStackViewStyle: StackViewStyle = { stackView in
