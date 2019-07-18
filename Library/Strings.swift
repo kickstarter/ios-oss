@@ -5348,11 +5348,28 @@ n'ont rien soutenu."
    - **es**: "Código postal"
    - **fr**: "Code postal"
    - **ja**: "郵便番号"
-   */
+  */
   public static func Postal_code() -> String {
     return localizedString(
       key: "Postal_code",
       defaultValue: "Postal code",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Postcode"
+
+   - **en**: "Postcode"
+   - **de**: "Postleitzahl"
+   - **es**: "Código postal"
+   - **fr**: "Code postal"
+   - **ja**: "郵便番号"
+  */
+  public static func Postcode() -> String {
+    return localizedString(
+      key: "Postcode",
+      defaultValue: "Postcode",
       count: nil,
       substitutions: [:]
     )
@@ -8385,7 +8402,7 @@ Veuillez réessayer ultérieurement."
    - **es**: "Código postal"
    - **fr**: "Code postal"
    - **ja**: "郵便番号"
-   */
+  */
   public static func Zip_code() -> String {
     return localizedString(
       key: "Zip_code",
