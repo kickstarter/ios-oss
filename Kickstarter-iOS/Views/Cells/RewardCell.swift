@@ -23,6 +23,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   private let descriptionLabel = UILabel(frame: .zero)
   private let descriptionStackView = UIStackView(frame: .zero)
   private let descriptionTitleLabel = UILabel(frame: .zero)
+
   private let includedItemsStackView = UIStackView(frame: .zero)
   private let includedItemsTitleLabel = UILabel(frame: .zero)
   private let minimumPriceConversionLabel = UILabel(frame: .zero)
@@ -36,6 +37,18 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   private let priceStackView = UIStackView(frame: .zero)
   private let rewardTitleLabel = UILabel(frame: .zero)
   private let scrollView = UIScrollView(frame: .zero)
+  private let stateImageView: UIImageView = {
+    UIImageView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let stateImageViewContainer: UIView = {
+    UIView(frame: .zero)
+      |> \.isHidden .~ true
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let titleStackView = UIStackView(frame: .zero)
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -111,6 +124,15 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.minimumPriceConversionLabel
       |> baseRewardLabelStyle
       |> minimumPriceConversionLabelStyle
+
+    _ = self.stateImageView
+      |> stateImageViewStyle
+
+    _ = self.stateImageViewContainer
+      |> stateImageViewContainerStyle
+
+    _ = self.titleStackView
+      |> titleStackViewStyle
   }
 
   override func bindViewModel() {
@@ -172,13 +194,14 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = (self.pledgeButtonLayoutGuide, self.containerView)
       |> ksr_addLayoutGuideToView()
 
-    _ = ([
-      self.priceStackView, self.rewardTitleLabel, self.includedItemsStackView,
-      self.descriptionStackView
-    ], self.baseStackView)
+    let baseSubviews = [
+      self.titleStackView, self.rewardTitleLabel, self.includedItemsStackView, self.descriptionStackView
+    ]
+
+    _ = (baseSubviews, self.baseStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([minimumPriceLabel, minimumPriceConversionLabel], self.priceStackView)
+    _ = ([self.minimumPriceLabel, self.minimumPriceConversionLabel], self.priceStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.includedItemsTitleLabel], self.includedItemsStackView)
@@ -189,6 +212,12 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     _ = (self.pledgeButton, self.contentView)
       |> ksr_addSubviewToParent()
+
+    _ = (self.stateImageView, self.stateImageViewContainer)
+      |> ksr_addSubviewToParent()
+
+    _ = ([self.priceStackView, self.stateImageViewContainer], self.titleStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     self.setupConstraints()
 
@@ -209,6 +238,15 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.baseStackView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
       self.baseStackView.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
       self.baseStackView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
+    ]
+
+    let imageViewContraints = [
+      self.stateImageView.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
+      self.stateImageView.heightAnchor.constraint(equalTo: self.stateImageView.widthAnchor),
+      self.stateImageView.centerXAnchor.constraint(equalTo: self.stateImageViewContainer.centerXAnchor),
+      self.stateImageView.centerYAnchor.constraint(equalTo: self.stateImageViewContainer.centerYAnchor),
+      self.stateImageViewContainer.widthAnchor.constraint(equalToConstant: Styles.grid(5)),
+      self.stateImageViewContainer.heightAnchor.constraint(equalTo: self.stateImageViewContainer.widthAnchor)
     ]
 
     let topConstraint = self.pledgeButton.topAnchor
@@ -237,6 +275,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     NSLayoutConstraint.activate([
       containerConstraints,
       baseStackViewConstraints,
+      imageViewContraints,
       pledgeButtonConstraints,
       pledgeButtonLayoutGuideConstraints
     ].flatMap { $0 })
@@ -351,4 +390,21 @@ private let sectionBodyLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ .ksr_callout()
+}
+
+private let stateImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.image .~ UIImage(named: "checkmark-reward")
+    |> \.tintColor .~ UIColor.ksr_blue_500
+}
+
+private let stateImageViewContainerStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_blue_500.withAlphaComponent(0.06)
+    |> \.layer.cornerRadius .~ 15
+}
+
+private let titleStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.alignment .~ UIStackView.Alignment.center
 }
