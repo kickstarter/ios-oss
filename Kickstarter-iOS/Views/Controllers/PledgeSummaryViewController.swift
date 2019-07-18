@@ -124,8 +124,6 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5))
     |> \.spacing .~ Styles.gridHalf(3)
 }
 

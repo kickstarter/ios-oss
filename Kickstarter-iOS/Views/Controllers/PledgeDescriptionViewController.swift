@@ -161,8 +161,6 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
     |> \.alignment .~ UIStackView.Alignment.top
     |> \.axis .~ NSLayoutConstraint.Axis.horizontal
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5))
     |> \.spacing .~ Styles.grid(3)
 }
 

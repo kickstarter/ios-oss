@@ -24,9 +24,6 @@ final class PledgeContinueViewController: UIViewController {
     _ = self.view
       |> checkoutBackgroundStyle
 
-    _ = self.view
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(3))
-
     _ = self.continueButton
       |> checkoutGreenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
