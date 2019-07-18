@@ -4,15 +4,18 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-protocol PledgeAmountCellDelegate: AnyObject {
-  func pledgeAmountCell(_ cell: PledgeAmountCell, didUpdateAmount amount: Double)
+protocol PledgeAmountViewControllerDelegate: AnyObject {
+  func pledgeAmountViewController(
+    _ viewController: PledgeAmountViewController,
+    didUpdateAmount amount: Double
+  )
 }
 
-final class PledgeAmountCell: UITableViewCell, ValueCell {
+final class PledgeAmountViewController: UIViewController {
   // MARK: - Properties
 
-  public weak var delegate: PledgeAmountCellDelegate?
-  private let viewModel = PledgeAmountCellViewModel()
+  public weak var delegate: PledgeAmountViewControllerDelegate?
+  private let viewModel = PledgeAmountViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountInputView: AmountInputView = { AmountInputView(frame: .zero) }()
@@ -27,13 +30,13 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
   // MARK: - Lifecycle
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
     _ = self
       |> \.accessibilityElements .~ [self.titleLabel, self.stepper, self.amountInputView]
 
-    _ = (self.rootStackView, self.contentView)
+    _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
@@ -49,27 +52,21 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
 
     self.amountInputView.doneButton.addTarget(
       self,
-      action: #selector(PledgeAmountCell.doneButtonTapped(_:)),
+      action: #selector(PledgeAmountViewController.doneButtonTapped(_:)),
       for: .touchUpInside
     )
 
     self.amountInputView.textField.addTarget(
       self,
-      action: #selector(PledgeAmountCell.textFieldDidChange(_:)),
+      action: #selector(PledgeAmountViewController.textFieldDidChange(_:)),
       for: .editingChanged
     )
 
     self.stepper.addTarget(
       self,
-      action: #selector(PledgeAmountCell.stepperValueChanged(_:)),
+      action: #selector(PledgeAmountViewController.stepperValueChanged(_:)),
       for: .valueChanged
     )
-
-    self.bindViewModel()
-  }
-
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Styles
@@ -77,7 +74,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
+    _ = self.view
       |> checkoutBackgroundStyle
 
     _ = self.adaptableStackView
@@ -124,7 +121,8 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] amount in
         guard let self = self else { return }
-        self.delegate?.pledgeAmountCell(self, didUpdateAmount: amount)
+
+        self.delegate?.pledgeAmountViewController(self, didUpdateAmount: amount)
       }
   }
 
@@ -149,7 +147,7 @@ final class PledgeAmountCell: UITableViewCell, ValueCell {
   }
 }
 
-extension PledgeAmountCell: UITextFieldDelegate {
+extension PledgeAmountViewController: UITextFieldDelegate {
   func textField(
     _ textField: UITextField, shouldChangeCharactersIn _: NSRange, replacementString string: String
   ) -> Bool {

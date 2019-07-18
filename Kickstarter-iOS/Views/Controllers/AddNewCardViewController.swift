@@ -237,7 +237,7 @@ internal final class AddNewCardViewController: UIViewController,
     self.viewModel.inputs.cardholderNameTextFieldReturn()
   }
 
-  // MARK: - Private Functions
+  // MARK: - Functions
 
   private func createStripeToken(with paymentDetails: PaymentDetails) {
     let cardParams = STPCardParams()
