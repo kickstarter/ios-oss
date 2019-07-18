@@ -15,7 +15,7 @@ private class TestViewController: UIViewController {
   }
 }
 
-final class InstantiateProtocolTests: TestCase {
+final class InstantiableTests: TestCase {
   func testInstantiateCallsInitWithNibName() {
     let testVC = TestViewController.instantiate()
 

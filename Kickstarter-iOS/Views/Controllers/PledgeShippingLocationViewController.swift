@@ -132,15 +132,15 @@ final class PledgeShippingLocationViewController: UIViewController {
 
   // MARK: - Actions
 
-  @objc func shippingLocationButtonTapped(_: UIButton) {
+  @objc private func shippingLocationButtonTapped(_: UIButton) {
     self.viewModel.inputs.shippingLocationButtonTapped()
   }
 
-  @objc func dismissShippingRules() {
+  @objc private func dismissShippingRules() {
     self.viewModel.inputs.dismissShippingRulesButtonTapped()
   }
 
-  // MARK: - Private Functions
+  // MARK: - Functions
 
   private func presentShippingRules(
     _ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule

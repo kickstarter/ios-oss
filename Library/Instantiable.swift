@@ -1,14 +1,14 @@
 import Foundation
 import UIKit
 
-public protocol InstantiateProtocol: AnyObject {
+public protocol Instantiable: AnyObject {
   static func instantiate() -> Self
 }
 
-extension InstantiateProtocol where Self: UIViewController {
+extension Instantiable where Self: UIViewController {
   public static func instantiate() -> Self {
     return Self(nibName: nil, bundle: nil)
   }
 }
 
-extension UIViewController: InstantiateProtocol {}
+extension UIViewController: Instantiable {}
