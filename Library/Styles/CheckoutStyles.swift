@@ -19,6 +19,12 @@ public func checkoutCurrencySuperscriptAttributes() -> String.Attributes {
 
 // MARK: - Styles
 
+public enum Layout {
+  public enum Sheet {
+    public static let offset: CGFloat = 222
+  }
+}
+
 public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
   return { (stackView: UIStackView) in
     let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)

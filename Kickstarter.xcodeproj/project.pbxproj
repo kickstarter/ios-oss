@@ -181,7 +181,8 @@
 		771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */; };
 		77190061229836A9003DE830 /* RewardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77190060229836A9003DE830 /* RewardCellViewModel.swift */; };
 		771E3C632289DBA8003E7CF1 /* SheetOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */; };
-		7720BA6E22DE79BF0071FDA1 /* UIViewController+HelpWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7720BA6C22DE79260071FDA1 /* UIViewController+HelpWebViewController.swift */; };
+		7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7720BA6C22DE79260071FDA1 /* UIViewController+Presentation.swift */; };
+		7720BA7022E0DBD10071FDA1 /* InstantiateProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7720BA6F22E0DBD00071FDA1 /* InstantiateProtocolTests.swift */; };
 		77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */; };
 		77216D6020F3D27C0061BE82 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77216D5F20F3D27C0061BE82 /* Settings.storyboard */; };
 		77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77216D9720F3D2E40061BE82 /* SettingsViewController.swift */; };
@@ -1469,7 +1470,8 @@
 		771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsDataSourceTests.swift; sourceTree = "<group>"; };
 		77190060229836A9003DE830 /* RewardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellViewModel.swift; sourceTree = "<group>"; };
 		771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetOverlayViewController.swift; sourceTree = "<group>"; };
-		7720BA6C22DE79260071FDA1 /* UIViewController+HelpWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+HelpWebViewController.swift"; sourceTree = "<group>"; };
+		7720BA6C22DE79260071FDA1 /* UIViewController+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Presentation.swift"; sourceTree = "<group>"; };
+		7720BA6F22E0DBD00071FDA1 /* InstantiateProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantiateProtocolTests.swift; sourceTree = "<group>"; };
 		77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConnectionType.swift; sourceTree = "<group>"; };
 		77216D5F20F3D27C0061BE82 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		77216D9720F3D2E40061BE82 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -2475,7 +2477,6 @@
 		0127FC511C98BFD000E335C6 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				7720BA6C22DE79260071FDA1 /* UIViewController+HelpWebViewController.swift */,
 				379CFFED2242DAC300F6F0C2 /* DeprecatedWebViewController.swift */,
 				379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */,
 				379CFFF02242DAC400F6F0C2 /* Nib.swift */,
@@ -2485,6 +2486,7 @@
 				379CFFEE2242DAC300F6F0C2 /* Storyboard.swift */,
 				37096C3322BC24DD003D1F40 /* UIFeedbackGeneratorType.swift */,
 				379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */,
+				7720BA6C22DE79260071FDA1 /* UIViewController+Presentation.swift */,
 				379CFFF12242DAC400F6F0C2 /* WebViewController.swift */,
 			);
 			path = Library;
@@ -2825,14 +2827,14 @@
 				A7ED203E1E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift */,
 				D63BBCCF217E5460007E01F0 /* PaymentMethodsViewController.swift */,
 				D6F7416F21836C3D00C2DDA2 /* PaymentMethodsViewControllerTests.swift */,
-				37DEC2212257CB470051EF9B /* PledgeViewController.swift */,
-				37DEC2232257CB650051EF9B /* PledgeViewControllerTests.swift */,
 				370ACAFF225D337900C8745F /* PledgeAmountViewController.swift */,
 				7748438322D8DE8200508C9B /* PledgeContinueViewController.swift */,
 				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionViewController.swift */,
 				D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsViewController.swift */,
 				37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */,
 				D0237C1422BC2B640092C792 /* PledgeSummaryViewController.swift */,
+				37DEC2212257CB470051EF9B /* PledgeViewController.swift */,
+				37DEC2232257CB650051EF9B /* PledgeViewControllerTests.swift */,
 				9D9F580C1D131B1200CE81DE /* ProjectActivitiesViewController.swift */,
 				A7ED20331E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift */,
 				A7808BBD1D6240B9001CF96A /* ProjectCreatorViewController.swift */,
@@ -2933,6 +2935,8 @@
 				A707BAD31CFFAB9400653B2F /* HelpType.swift */,
 				37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */,
 				80E8EAC71D3EC65A007BDA4B /* Image.swift */,
+				7748437F22D8DA3800508C9B /* InstantiateProtocol.swift */,
+				7720BA6F22E0DBD00071FDA1 /* InstantiateProtocolTests.swift */,
 				A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */,
 				A7ED1F161E830FDC00BFFA01 /* IsValidEmailTests.swift */,
 				A72AFFD91CD7ED6B008F052B /* Keyboard.swift */,
@@ -3037,7 +3041,6 @@
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
-				7748437F22D8DA3800508C9B /* InstantiateProtocol.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -4668,6 +4671,7 @@
 				A7ED1FC01E831C5C00BFFA01 /* BackingViewModelTests.swift in Sources */,
 				A7ED1FE01E831C5C00BFFA01 /* DiscoveryNavigationHeaderViewModelTests.swift in Sources */,
 				A7ED1F481E831BA200BFFA01 /* AlertError+Equatable.swift in Sources */,
+				7720BA7022E0DBD10071FDA1 /* InstantiateProtocolTests.swift in Sources */,
 				A7ED1FF91E831C5C00BFFA01 /* ProjectNotificationsViewModelTest.swift in Sources */,
 				A7ED1F361E830FDC00BFFA01 /* String+TruncateTests.swift in Sources */,
 				D723708E2118CD9C001EA4CA /* SettingsRequestDataCellViewModelTests.swift in Sources */,
@@ -4785,7 +4789,7 @@
 				0170E7701D25C55200E2CCE4 /* ProjectActivityCommentCell.swift in Sources */,
 				9D14FF901D133351005F4ABB /* ProjectActivityNegativeStateChangeCell.swift in Sources */,
 				015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */,
-				7720BA6E22DE79BF0071FDA1 /* UIViewController+HelpWebViewController.swift in Sources */,
+				7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */,
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
 				A70F1F321D8A3E85007DA8E9 /* ProjectPamphletViewController.swift in Sources */,
 				77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */,

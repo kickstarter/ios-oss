@@ -78,29 +78,20 @@ final class PledgeViewController: UIViewController {
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
-    self.addChild(self.pledgeDescriptionViewController)
-    self.addChild(self.pledgeAmountViewController)
-    self.addChild(self.pledgeShippingLocationViewController)
-    self.addChild(self.pledgeSummaryViewController)
-    self.addChild(self.pledgeContinueViewController)
-    self.addChild(self.pledgePaymentMethodsViewController)
+    let childViewControllers = [
+      self.pledgeDescriptionViewController,
+      self.pledgeAmountViewController,
+      self.pledgeShippingLocationViewController,
+      self.pledgeSummaryViewController,
+      self.pledgeContinueViewController,
+      self.pledgePaymentMethodsViewController
+    ]
 
-    _ = ([
-      self.pledgeDescriptionViewController.view,
-      self.pledgeAmountViewController.view,
-      self.pledgeShippingLocationViewController.view,
-      self.pledgeSummaryViewController.view,
-      self.pledgeContinueViewController.view,
-      self.pledgePaymentMethodsViewController.view
-    ], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    self.pledgeDescriptionViewController.didMove(toParent: self)
-    self.pledgeAmountViewController.didMove(toParent: self)
-    self.pledgeShippingLocationViewController.didMove(toParent: self)
-    self.pledgeSummaryViewController.didMove(toParent: self)
-    self.pledgeContinueViewController.didMove(toParent: self)
-    self.pledgePaymentMethodsViewController.didMove(toParent: self)
+    childViewControllers.forEach { viewController in
+      self.addChild(viewController)
+      self.rootStackView.addArrangedSubview(viewController.view)
+      viewController.didMove(toParent: self)
+    }
   }
 
   private func setupConstraints() {
@@ -129,12 +120,12 @@ final class PledgeViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.configureWithPledgeViewData
+    self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
         self?.pledgeDescriptionViewController.configureWith(value: data.reward)
-        self?.pledgeAmountViewController.configureWith(value: (data.project, data.reward))
-        self?.pledgeShippingLocationViewController.configureWith(value: (data.project, data.reward))
+        self?.pledgeAmountViewController.configureWith(value: data)
+        self?.pledgeShippingLocationViewController.configureWith(value: data)
         self?.pledgePaymentMethodsViewController.configureWith(value: [GraphUserCreditCard.template])
       }
 
@@ -163,7 +154,7 @@ final class PledgeViewController: UIViewController {
 
   // MARK: - Actions
 
-  @objc func dismissKeyboard() {
+  @objc private func dismissKeyboard() {
     self.view.endEditing(true)
   }
 }
@@ -180,7 +171,7 @@ extension PledgeViewController: PledgeAmountViewControllerDelegate {
 extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
   func pledgeShippingLocationViewController(
     _: PledgeShippingLocationViewController,
-    didSelectShippingRule shippingRule: ShippingRule
+    didSelect shippingRule: ShippingRule
   ) {
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
@@ -198,8 +189,8 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.axis .~ .vertical
-    |> \.distribution .~ .fill
-    |> \.alignment .~ .fill
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.distribution .~ UIStackView.Distribution.fill
+    |> \.alignment .~ UIStackView.Alignment.fill
     |> \.spacing .~ Styles.grid(4)
 }

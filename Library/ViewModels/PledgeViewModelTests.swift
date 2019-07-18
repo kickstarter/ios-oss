@@ -29,9 +29,9 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configureSummaryViewControllerWithData.map(first)
       .observe(self.configureSummaryCellWithDataProject.observer)
 
-    self.vm.outputs.configureWithPledgeViewData.map { $0.project }
+    self.vm.outputs.configureWithData.map { $0.project }
       .observe(self.configureWithPledgeViewDataProject.observer)
-    self.vm.outputs.configureWithPledgeViewData.map { $0.reward }
+    self.vm.outputs.configureWithData.map { $0.reward }
       .observe(self.configureWithPledgeViewDataReward.observer)
 
     self.vm.outputs.continueViewHidden.observe(self.continueViewHidden.observer)

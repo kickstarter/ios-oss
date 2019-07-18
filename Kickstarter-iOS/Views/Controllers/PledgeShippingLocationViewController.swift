@@ -3,16 +3,10 @@ import Library
 import Prelude
 import UIKit
 
-private enum Layout {
-  enum Sheet {
-    static let offset: CGFloat = 222
-  }
-}
-
 protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
   func pledgeShippingLocationViewController(
     _ viewController: PledgeShippingLocationViewController,
-    didSelectShippingRule shippingRule: ShippingRule
+    didSelect shippingRule: ShippingRule
   )
 }
 
@@ -112,7 +106,7 @@ final class PledgeShippingLocationViewController: UIViewController {
       .observeValues { [weak self] shippingRule in
         guard let self = self else { return }
 
-        self.delegate?.pledgeShippingLocationViewController(self, didSelectShippingRule: shippingRule)
+        self.delegate?.pledgeShippingLocationViewController(self, didSelect: shippingRule)
       }
 
     self.viewModel.outputs.presentShippingRules
@@ -132,8 +126,8 @@ final class PledgeShippingLocationViewController: UIViewController {
 
   // MARK: - Configuration
 
-  func configureWith(value: (Project, Reward)) {
-    self.viewModel.inputs.configureWith(project: value.0, reward: value.1)
+  func configureWith(value: (project: Project, reward: Reward)) {
+    self.viewModel.inputs.configureWith(project: value.project, reward: value.reward)
   }
 
   // MARK: - Actions

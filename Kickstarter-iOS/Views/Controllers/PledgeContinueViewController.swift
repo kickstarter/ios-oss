@@ -59,16 +59,19 @@ final class PledgeContinueViewController: UIViewController {
     )
   }
 
+  // MARK: - Actions
+
   @objc private func continueButtonTapped() {
     self.viewModel.inputs.continueButtonTapped()
   }
 
-  // MARK: - Private Helpers
+  // MARK: - Functions
 
   private func goToLoginSignup(with intent: LoginIntent) {
     let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
-    let sheetOverlayViewController = SheetOverlayViewController(child: navigationController)
+    let sheetOverlayViewController = SheetOverlayViewController(child: navigationController,
+                                                                offset: Layout.Sheet.offset)
 
     self.present(sheetOverlayViewController, animated: true)
   }

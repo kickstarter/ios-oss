@@ -3,8 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias PledgeViewData = (project: Project, reward: Reward)
-
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func pledgeAmountDidUpdate(to amount: Double)
@@ -15,7 +13,7 @@ public protocol PledgeViewModelInputs {
 
 public protocol PledgeViewModelOutputs {
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
-  var configureWithPledgeViewData: Signal<PledgeViewData, Never> { get }
+  var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
   var continueViewHidden: Signal<Bool, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
@@ -53,8 +51,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost).map(+)
 
-    self.configureWithPledgeViewData = projectAndReward
-      .map { PledgeViewData(project: $0.0, reward: $0.1) }
+    self.configureWithData = projectAndReward.map { (project: $0.0, reward: $0.1) }
 
     self.configureSummaryViewControllerWithData = project
       .takePairWhen(pledgeTotal)
@@ -94,7 +91,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
   public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
   public let continueViewHidden: Signal<Bool, Never>
-  public let configureWithPledgeViewData: Signal<PledgeViewData, Never>
+  public let configureWithData: Signal<(project: Project, reward: Reward), Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
 
