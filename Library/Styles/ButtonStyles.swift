@@ -59,6 +59,7 @@ public let facebookButtonStyle = baseButtonStyle
       ? .init(topBottom: 10.0, leftRight: 12.0)
       : .init(topBottom: 12.0, leftRight: 16.0)
   }
+
   <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
 
 public let facebookThanksButtonStyle = facebookButtonStyle
