@@ -16,6 +16,8 @@ final class PledgeContinueViewController: UIViewController {
     self.configureSubviews()
   }
 
+  // MARK: - Styles
+
   override func bindStyles() {
     super.bindStyles()
 
@@ -34,6 +36,8 @@ final class PledgeContinueViewController: UIViewController {
     _ = self.continueButton.titleLabel
       ?|> checkoutGreenButtonTitleLabelStyle
   }
+
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
