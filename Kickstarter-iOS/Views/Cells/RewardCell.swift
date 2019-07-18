@@ -211,6 +211,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> ksr_addLayoutGuideToView()
 
     let baseSubviews: [UIView] = [
+      self.titleStackView,
       self.priceStackView,
       self.rewardTitleLabel,
       self.includedItemsStackView,
@@ -259,7 +260,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.baseStackView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
     ]
 
-    let imageViewContraints = [
+    let stateImageViewContraints = [
       self.stateImageView.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
       self.stateImageView.heightAnchor.constraint(equalTo: self.stateImageView.widthAnchor),
       self.stateImageView.centerXAnchor.constraint(equalTo: self.stateImageViewContainer.centerXAnchor),
@@ -294,9 +295,9 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     NSLayoutConstraint.activate([
       containerConstraints,
       baseStackViewConstraints,
-      imageViewContraints,
       pledgeButtonConstraints,
-      pledgeButtonLayoutGuideConstraints
+      pledgeButtonLayoutGuideConstraints,
+      stateImageViewContraints
     ].flatMap { $0 })
   }
 
