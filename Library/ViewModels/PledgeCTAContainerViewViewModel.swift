@@ -85,7 +85,11 @@ private func subtitle(project: Project, backing: Backing, pledgeState: PledgeSta
     omitCurrencyCode: project.stats.omitUSCurrencyCode
   )
 
-  guard let rewardTitle = backing.reward?.title else { return "\(amount)" }
+  let reward = backing.reward
+    ?? project.rewards.filter { $0.id == backing.rewardId }.first
+    ?? Reward.noReward
+
+  guard let rewardTitle = reward.title else { return "\(amount)" }
   return "\(amount) • \(rewardTitle)"
 }
 
