@@ -4,23 +4,23 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public protocol PledgeDescriptionCellViewModelInputs {
+public protocol PledgeDescriptionViewModelInputs {
   func configureWith(reward: Reward)
   func learnMoreTapped()
 }
 
-public protocol PledgeDescriptionCellViewModelOutputs {
+public protocol PledgeDescriptionViewModelOutputs {
   var estimatedDeliveryText: Signal<String, Never> { get }
   var presentTrustAndSafety: Signal<Void, Never> { get }
 }
 
-public protocol PledgeDescriptionCellViewModelType {
-  var inputs: PledgeDescriptionCellViewModelInputs { get }
-  var outputs: PledgeDescriptionCellViewModelOutputs { get }
+public protocol PledgeDescriptionViewModelType {
+  var inputs: PledgeDescriptionViewModelInputs { get }
+  var outputs: PledgeDescriptionViewModelOutputs { get }
 }
 
-public final class PledgeDescriptionCellViewModel: PledgeDescriptionCellViewModelType,
-  PledgeDescriptionCellViewModelInputs, PledgeDescriptionCellViewModelOutputs {
+public final class PledgeDescriptionViewModel: PledgeDescriptionViewModelType,
+  PledgeDescriptionViewModelInputs, PledgeDescriptionViewModelOutputs {
   public init() {
     self.estimatedDeliveryText = self.rewardProperty.signal
       .skipNil()
@@ -44,6 +44,6 @@ public final class PledgeDescriptionCellViewModel: PledgeDescriptionCellViewMode
   public let estimatedDeliveryText: Signal<String, Never>
   public let presentTrustAndSafety: Signal<Void, Never>
 
-  public var inputs: PledgeDescriptionCellViewModelInputs { return self }
-  public var outputs: PledgeDescriptionCellViewModelOutputs { return self }
+  public var inputs: PledgeDescriptionViewModelInputs { return self }
+  public var outputs: PledgeDescriptionViewModelOutputs { return self }
 }

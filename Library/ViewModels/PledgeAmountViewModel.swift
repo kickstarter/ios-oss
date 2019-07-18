@@ -4,7 +4,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public protocol PledgeAmountCellViewModelInputs {
+public protocol PledgeAmountViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func doneButtonTapped()
   func stepperValueChanged(_ value: Double)
@@ -12,7 +12,7 @@ public protocol PledgeAmountCellViewModelInputs {
   func textFieldValueChanged(_ value: String?)
 }
 
-public protocol PledgeAmountCellViewModelOutputs {
+public protocol PledgeAmountViewModelOutputs {
   var amountPrimitive: Signal<Double, Never> { get }
   var currency: Signal<String, Never> { get }
   var doneButtonIsEnabled: Signal<Bool, Never> { get }
@@ -26,13 +26,13 @@ public protocol PledgeAmountCellViewModelOutputs {
   var textFieldValue: Signal<String, Never> { get }
 }
 
-public protocol PledgeAmountCellViewModelType {
-  var inputs: PledgeAmountCellViewModelInputs { get }
-  var outputs: PledgeAmountCellViewModelOutputs { get }
+public protocol PledgeAmountViewModelType {
+  var inputs: PledgeAmountViewModelInputs { get }
+  var outputs: PledgeAmountViewModelOutputs { get }
 }
 
-public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
-  PledgeAmountCellViewModelInputs, PledgeAmountCellViewModelOutputs {
+public final class PledgeAmountViewModel: PledgeAmountViewModelType,
+  PledgeAmountViewModelInputs, PledgeAmountViewModelOutputs {
   public init() {
     let project = self.projectAndRewardProperty.signal
       .skipNil()
@@ -165,8 +165,8 @@ public final class PledgeAmountCellViewModel: PledgeAmountCellViewModelType,
   public let textFieldIsFirstResponder: Signal<Bool, Never>
   public let textFieldValue: Signal<String, Never>
 
-  public var inputs: PledgeAmountCellViewModelInputs { return self }
-  public var outputs: PledgeAmountCellViewModelOutputs { return self }
+  public var inputs: PledgeAmountViewModelInputs { return self }
+  public var outputs: PledgeAmountViewModelOutputs { return self }
 }
 
 // MARK: - Functions

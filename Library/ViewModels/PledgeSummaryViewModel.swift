@@ -2,21 +2,21 @@ import Foundation
 import Prelude
 import ReactiveSwift
 
-public protocol PledgeSummaryCellViewModelInputs {
+public protocol PledgeSummaryViewModelInputs {
   func tapped(_ url: URL)
 }
 
-public protocol PledgeSummaryCellViewModelOutputs {
+public protocol PledgeSummaryViewModelOutputs {
   var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
 }
 
-public protocol PledgeSummaryCellViewModelType {
-  var inputs: PledgeSummaryCellViewModelInputs { get }
-  var outputs: PledgeSummaryCellViewModelOutputs { get }
+public protocol PledgeSummaryViewModelType {
+  var inputs: PledgeSummaryViewModelInputs { get }
+  var outputs: PledgeSummaryViewModelOutputs { get }
 }
 
-public class PledgeSummaryCellViewModel: PledgeSummaryCellViewModelType,
-  PledgeSummaryCellViewModelInputs, PledgeSummaryCellViewModelOutputs {
+public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
+  PledgeSummaryViewModelInputs, PledgeSummaryViewModelOutputs {
   public init() {
     self.notifyDelegateOpenHelpType = self.tappedUrlSignal.map { url -> HelpType? in
       let helpType = HelpType.allCases.filter { helpType in
@@ -38,6 +38,6 @@ public class PledgeSummaryCellViewModel: PledgeSummaryCellViewModelType,
 
   public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
 
-  public var inputs: PledgeSummaryCellViewModelInputs { return self }
-  public var outputs: PledgeSummaryCellViewModelOutputs { return self }
+  public var inputs: PledgeSummaryViewModelInputs { return self }
+  public var outputs: PledgeSummaryViewModelOutputs { return self }
 }
