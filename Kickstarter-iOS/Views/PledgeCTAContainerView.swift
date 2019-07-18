@@ -76,7 +76,7 @@ final class PledgeCTAContainerView: UIView {
     _ = self.titleAndSubtitleStackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
       |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.spacing .~ 1
+      |> \.spacing .~ Styles.gridHalf(1)
 
     _ = self.pledgeCTAButton
       |> pledgeCTAButtonStyle(
@@ -91,7 +91,7 @@ final class PledgeCTAContainerView: UIView {
       |> \.alignment .~ .center
 
     _ = self.titleLabel
-      |> \.font .~ UIFont.ksr_callout().bolded
+      |> \.font .~ UIFont.ksr_footnote().bolded
       |> \.numberOfLines .~ 0
 
     _ = self.subtitleLabel
