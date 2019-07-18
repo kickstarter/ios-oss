@@ -133,7 +133,7 @@ final class RewardCellViewModelTests: TestCase {
     self.titleLabelText.assertValues(["The goods"])
   }
 
-  // MARK: Conversion Label
+  // MARK: - Conversion Label
 
   func testConversionLabel_US_User_US_Project_ConfiguredWithReward() {
     let project = .template |> Project.lens.country .~ .us

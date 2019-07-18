@@ -47,13 +47,13 @@ public protocol FacebookConfirmationViewModelType {
 public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelType,
   FacebookConfirmationViewModelInputs, FacebookConfirmationViewModelOutputs,
   FacebookConfirmationViewModelErrors {
-  // MARK: FacebookConfirmationViewModelType
+  // MARK: - FacebookConfirmationViewModelType
 
   public var inputs: FacebookConfirmationViewModelInputs { return self }
   public var outputs: FacebookConfirmationViewModelOutputs { return self }
   public var errors: FacebookConfirmationViewModelErrors { return self }
 
-  // MARK: FacebookConfirmationViewModelInputs
+  // MARK: - FacebookConfirmationViewModelInputs
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
@@ -90,7 +90,7 @@ public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelT
     self.environmentLoggedInProperty.value = ()
   }
 
-  // MARK: FacebookConfirmationViewModelOutputs
+  // MARK: - FacebookConfirmationViewModelOutputs
 
   public let displayEmail: Signal<String, Never>
   public let sendNewsletters: Signal<Bool, Never>
@@ -99,7 +99,7 @@ public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelT
   public let showLogin: Signal<(), Never>
   public let isLoading: Signal<Bool, Never>
 
-  // MARK: FacebookConfirmationViewModelErrors
+  // MARK: - FacebookConfirmationViewModelErrors
 
   public let showSignupError: Signal<String, Never>
 

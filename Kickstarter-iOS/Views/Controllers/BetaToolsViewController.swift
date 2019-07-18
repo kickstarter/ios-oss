@@ -111,7 +111,7 @@ internal final class BetaToolsViewController: UIViewController {
     self.navigationController?.popViewController(animated: true)
   }
 
-  // MARK: Private Helper Functions
+  // MARK: - Private Helper Functions
 
   private func showLanguageActionSheet() {
     let alert = UIAlertController.alert(
