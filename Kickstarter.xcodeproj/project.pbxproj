@@ -236,8 +236,8 @@
 		77C5E252214182CA002E1670 /* SettingsPrivacySwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */; };
 		77C7B654226E0E54001101AC /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */; };
 		77C93C1A22C13DED005D3195 /* PledgeContinueCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C93C1922C13DED005D3195 /* PledgeContinueCellViewModel.swift */; };
-		77CB227022C3B3CB00AEAAF1 /* PledgeContinueCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CB226F22C3B3CB00AEAAF1 /* PledgeContinueCellViewModelTests.swift */; };
 		77C93C2522C27443005D3195 /* DebugData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775D922822BD7CFD00442301 /* DebugData.swift */; };
+		77CB227022C3B3CB00AEAAF1 /* PledgeContinueCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CB226F22C3B3CB00AEAAF1 /* PledgeContinueCellViewModelTests.swift */; };
 		77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD894821791B05003066DA /* ProjectStatsTemplate.swift */; };
 		77CD8981217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */; };
 		77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */; };
@@ -1133,6 +1133,7 @@
 		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
 		D7A37D7A1E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */; };
 		D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */; };
+		D7ADDFE722E0DAFA00157D83 /* RewardStateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ADDFE522E0DAEB00157D83 /* RewardStateType.swift */; };
 		D7B9C7581E453FBF00EA3A22 /* UILabel+IsTruncated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */; };
 		D7E20E6D2284A3BD00BA61A0 /* PledgeCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */; };
 		D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */; };
@@ -2359,6 +2360,7 @@
 		D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModel.swift; sourceTree = "<group>"; };
 		D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModelTests.swift; sourceTree = "<group>"; };
+		D7ADDFE522E0DAEB00157D83 /* RewardStateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardStateType.swift; sourceTree = "<group>"; };
 		D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+IsTruncated.swift"; sourceTree = "<group>"; };
 		D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCTAContainerViewViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2953,6 +2955,7 @@
 				A707BAD41CFFAB9400653B2F /* LoginIntent.swift */,
 				D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */,
 				D78E0355229305E20043E92F /* PledgeStateCTAType.swift */,
+				D7ADDFE522E0DAEB00157D83 /* RewardStateType.swift */,
 				D093B4B721A8B0E000910962 /* MockPushRegistration.swift */,
 				80E26A121D500C6A007B3022 /* Navigation.swift */,
 				A7ED1F1B1E830FDC00BFFA01 /* NavigationTests.swift */,
@@ -4381,6 +4384,7 @@
 				01C7CDB31D13462A00D9E0D1 /* DashboardRewardsCellViewModel.swift in Sources */,
 				A7D121091D15B08200F364FD /* CountBadgeView.swift in Sources */,
 				77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */,
+				D7ADDFE722E0DAFA00157D83 /* RewardStateType.swift in Sources */,
 				D79D61151FD0979D000F958B /* String+Base64.swift in Sources */,
 				77EFBAE32268D48A00DA5C3C /* RewardsCollectionViewModel.swift in Sources */,
 				3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */,
