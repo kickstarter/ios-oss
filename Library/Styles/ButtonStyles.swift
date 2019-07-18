@@ -53,7 +53,12 @@ public let facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .disabled) .~ .init(white: 1.0, alpha: 0.5)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_soft_black
   <> UIButton.lens.tintColor .~ .white
-  <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 24.0)
+  <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 18.0)
+  <> UIButton.lens.contentEdgeInsets %~~ { _, button in
+    button.traitCollection.verticalSizeClass == .compact
+      ? .init(topBottom: 10.0, leftRight: 12.0)
+      : .init(topBottom: 12.0, leftRight: 16.0)
+  }
   <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
 
 public let facebookThanksButtonStyle = facebookButtonStyle
