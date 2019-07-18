@@ -57,7 +57,7 @@ private let contentViewStyle: ViewStyle = { view in
 
 private let labelStyle: LabelStyle = { label in
   label
-    |> \.font .~ UIFont.ksr_body(size: 13).bolded
+    |> \.font .~ UIFont.ksr_footnote().bolded
     |> \.numberOfLines .~ 0
     |> \.textColor .~ UIColor.ksr_green_500
 }
