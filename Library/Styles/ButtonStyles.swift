@@ -97,8 +97,8 @@ public let roundedGreenButtonStyle: ButtonStyle = { button in
     |> greenButtonStyle
     |> baseNewButtonStyle
     |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleLabel..UILabel.lens.lineBreakMode .~ NSLineBreakMode.byWordWrapping
-    |> UIButton.lens.titleLabel..UILabel.lens.numberOfLines .~ 0
+    |> UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode .~ NSLineBreakMode.byWordWrapping
+    |> UIButton.lens.titleLabel .. UILabel.lens.numberOfLines .~ 0
 }
 
 public let lightNavyButtonStyle =

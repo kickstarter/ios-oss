@@ -7,14 +7,11 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-protocol LoginToutViewControllerDelegate: class {
+protocol LoginToutViewControllerDelegate: AnyObject {
   func loginToutViewControllerDidStartUserSession(_ viewController: LoginToutViewController)
 }
 
-public typealias ButtonAction = () -> ()
-
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
-
   // MARK: - Properties
 
   private lazy var bringCreativeProjectsToLifeLabel = { UILabel(frame: .zero) }()
@@ -22,34 +19,40 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   private lazy var disclaimerButton = { MultiLineButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   weak var delegate: LoginToutViewControllerDelegate?
   private lazy var emailLoginStackView = { UIStackView(frame: .zero) }()
   private lazy var facebookDisclaimerLabel = { UILabel(frame: .zero) }()
   private lazy var fbLoginButton = { MultiLineButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var fbLoginManager: LoginManager = {
     let manager = LoginManager()
     manager.loginBehavior = .browser
     manager.defaultAudience = .friends
     return manager
   }()
+
   private lazy var fbLoginStackView = { UIStackView(frame: .zero) }()
   private let helpViewModel = HelpViewModel()
   private lazy var loginButton = { MultiLineButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var loginContextStackView = { UIStackView() }()
   private lazy var rootStackView = { UIStackView() }()
   private lazy var scrollView = {
     UIScrollView(frame: .zero)
-    |> \.alwaysBounceVertical .~ true
+      |> \.alwaysBounceVertical .~ true
 
   }()
+
   private var sessionStartedObserver: Any?
   private lazy var signupButton = { MultiLineButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let viewModel: LoginToutViewModelType = LoginToutViewModel()
 
   internal static func configuredWith(loginIntent intent: LoginIntent) -> LoginToutViewController {
@@ -110,7 +113,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> loginButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.login_tout_back_intent_traditional_login_button()
-    }
+      }
 
     _ = self.rootStackView
       |> baseStackViewStyle
@@ -238,7 +241,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       .observeValues { [weak self] isHidden in
         _ = self?.contextLabel
           ?|> UILabel.lens.font .~ (isHidden ? UIFont.ksr_title2() : UIFont.ksr_subhead())
-    }
+      }
   }
 
   // MARK: - Private Helpers
@@ -266,17 +269,20 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   private func setupConstraints() {
-    NSLayoutConstraint.activate([self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+    NSLayoutConstraint.activate([
+      self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
       self.fbLoginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
       self.loginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
       self.signupButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-      ])
+    ])
   }
 
   private func configureTargets() {
     self.disclaimerButton.addTarget(self, action: #selector(self.helpButtonPressed), for: .touchUpInside)
-    self.fbLoginButton.addTarget(self, action: #selector(self.facebookLoginButtonPressed(_:)),
-                                 for: .touchUpInside)
+    self.fbLoginButton.addTarget(
+      self, action: #selector(self.facebookLoginButtonPressed(_:)),
+      for: .touchUpInside
+    )
     self.loginButton.addTarget(self, action: #selector(self.loginButtonPressed(_:)), for: .touchUpInside)
     self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
   }
