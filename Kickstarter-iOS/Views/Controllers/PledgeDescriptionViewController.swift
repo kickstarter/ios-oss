@@ -399,7 +399,7 @@ extension PledgeDescriptionViewController: RewardPledgeTransitionAnimatorDelegat
   func destinationFrameData(withContainerView view: UIView) -> RewardPledgeTransitionDestinationFrameData? {
     self.view.setNeedsLayout()
     self.view.layoutIfNeeded()
-    
+
     guard
       let containerFrame = self.rewardCardContainerView.superview?
       .convert(self.rewardCardContainerView.frame, to: view)
