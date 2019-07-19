@@ -6,6 +6,20 @@ import UIKit
 final class PledgeViewController: UIViewController {
   // MARK: - Properties
 
+  private lazy var descriptionSectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var sectionSeparators = {
+    [self.descriptionSectionSeparator, self.summarySectionSeparator]
+  }()
+
+  private lazy var summarySectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
       |> \.delegate .~ self
@@ -15,12 +29,28 @@ final class PledgeViewController: UIViewController {
     PledgeContinueViewController.instantiate()
   }()
 
+  private lazy var pledgeDescriptionSectionViews = {
+    [self.pledgeDescriptionViewController.view, self.descriptionSectionSeparator]
+  }()
+
   private lazy var pledgeDescriptionViewController = {
     PledgeDescriptionViewController.instantiate()
   }()
 
-  private lazy var pledgeSummaryViewController = {
-    PledgeSummaryViewController.instantiate()
+  private lazy var pledgeInputsSectionViews = {
+    [self.pledgeAmountViewController.view, self.pledgeShippingLocationViewController.view]
+  }()
+
+  private lazy var pledgeLoginSectionViews = {
+    [self.pledgeContinueViewController.view]
+  }()
+
+  private lazy var pledgePaymentMethodsSectionViews = {
+    [self.pledgePaymentMethodsViewController.view]
+  }()
+
+  private lazy var pledgePaymentMethodsViewController = {
+    PledgePaymentMethodsViewController.instantiate()
   }()
 
   private lazy var pledgeShippingLocationViewController = {
@@ -28,8 +58,12 @@ final class PledgeViewController: UIViewController {
       |> \.delegate .~ self
   }()
 
-  private lazy var pledgePaymentMethodsViewController = {
-    PledgePaymentMethodsViewController.instantiate()
+  private lazy var pledgeSummarySectionViews = {
+    [self.summarySectionSeparator, self.pledgeSummaryViewController.view]
+  }()
+
+  private lazy var pledgeSummaryViewController = {
+    PledgeSummaryViewController.instantiate()
   }()
 
   private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
@@ -61,13 +95,13 @@ final class PledgeViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.configureChildViewControllers()
-
     self.view.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(PledgeViewController.dismissKeyboard))
     )
 
+    self.configureChildViewControllers()
     self.setupConstraints()
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -87,9 +121,22 @@ final class PledgeViewController: UIViewController {
       self.pledgePaymentMethodsViewController
     ]
 
+    let arrangedSubviews = [
+      self.pledgeDescriptionSectionViews,
+      self.pledgeInputsSectionViews,
+      self.pledgeSummarySectionViews,
+      self.pledgeLoginSectionViews,
+      self.pledgePaymentMethodsSectionViews,
+      ]
+    .flatMap { $0 }
+    .compact()
+
+    arrangedSubviews.forEach { (view) in
+      self.rootStackView.addArrangedSubview(view)
+    }
+
     childViewControllers.forEach { viewController in
       self.addChild(viewController)
-      self.rootStackView.addArrangedSubview(viewController.view)
       viewController.didMove(toParent: self)
     }
   }
@@ -98,6 +145,13 @@ final class PledgeViewController: UIViewController {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
+
+    self.sectionSeparators.forEach { (view) in
+      _ = view.heightAnchor.constraint(equalToConstant: 1)
+        |> \.isActive .~ true
+
+      view.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
   }
 
   // MARK: - Styles
@@ -113,6 +167,9 @@ final class PledgeViewController: UIViewController {
 
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.sectionSeparators
+      ||> separatorStyleDark
   }
 
   // MARK: - View model
