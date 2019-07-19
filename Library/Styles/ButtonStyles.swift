@@ -23,9 +23,11 @@ public let baseButtonStyle =
 public let baseNewButtonStyle: ButtonStyle = { button in
   button
     |> roundedButtonStyle
-    |> UIButton.lens.titleLabel.font %~ { _ in UIFont.ksr_callout().bolded }
+    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_callout().bolded
     |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
     |> UIButton.lens.titleEdgeInsets .~ .init(all: Styles.grid(2))
+    |> UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode .~ NSLineBreakMode.byTruncatingMiddle
+    |> UIButton.lens.titleLabel .. UILabel.lens.numberOfLines .~ 1
 }
 
 public let blackButtonStyle = baseButtonStyle
@@ -56,7 +58,6 @@ public let greenBorderButtonStyle = baseButtonStyle
 
 public let facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.titleLabel.font %~ { _ in UIFont.ksr_headline() }
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_facebookBlue
   <> UIButton.lens.titleColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_soft_black
@@ -73,7 +74,6 @@ public let facebookThanksButtonStyle = facebookButtonStyle
 
 public let neutralButtonStyle = baseNewButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
-  <> UIButton.lens.titleLabel.font %~ { _ in UIFont.ksr_headline() }
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_grey_500
   <> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.white.withAlphaComponent(0.5)
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_dark_grey_500
@@ -97,8 +97,6 @@ public let roundedGreenButtonStyle: ButtonStyle = { button in
     |> greenButtonStyle
     |> baseNewButtonStyle
     |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode .~ NSLineBreakMode.byWordWrapping
-    |> UIButton.lens.titleLabel .. UILabel.lens.numberOfLines .~ 0
 }
 
 public let lightNavyButtonStyle =

@@ -23,7 +23,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   weak var delegate: LoginToutViewControllerDelegate?
   private lazy var emailLoginStackView = { UIStackView(frame: .zero) }()
   private lazy var facebookDisclaimerLabel = { UILabel(frame: .zero) }()
-  private lazy var fbLoginButton = { MultiLineButton(type: .custom)
+  private lazy var fbLoginButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -36,7 +36,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   private lazy var fbLoginStackView = { UIStackView(frame: .zero) }()
   private let helpViewModel = HelpViewModel()
-  private lazy var loginButton = { MultiLineButton(type: .custom)
+  private lazy var loginButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -49,19 +49,23 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }()
 
   private var sessionStartedObserver: Any?
-  private lazy var signupButton = { MultiLineButton(type: .custom)
+  private lazy var signupButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private let viewModel: LoginToutViewModelType = LoginToutViewModel()
 
+  // MARK: - Configuration
+
   internal static func configuredWith(loginIntent intent: LoginIntent) -> LoginToutViewController {
-    let vc = LoginToutViewController.init(nibName: nil, bundle: nil)
+    let vc = LoginToutViewController.instantiate()
     vc.viewModel.inputs.loginIntent(intent)
     vc.helpViewModel.inputs.configureWith(helpContext: .loginTout)
     vc.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
     return vc
   }
+
+  // MARK: - Lifecycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -94,6 +98,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
+  // MARK: - Styles
+
   override func bindStyles() {
     super.bindStyles()
 
@@ -101,7 +107,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> baseControllerStyle()
 
     _ = self.fbLoginButton
-      |> baseMultiLineButtonStyle
       |> fbLoginButtonStyle
 
     _ = self.disclaimerButton
@@ -109,11 +114,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> disclaimerButtonStyle
 
     _ = self.loginButton
-      |> baseMultiLineButtonStyle
       |> loginButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        Strings.login_tout_back_intent_traditional_login_button()
-      }
 
     _ = self.rootStackView
       |> baseStackViewStyle
@@ -124,7 +125,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       ||> baseStackViewStyle
 
     _ = self.signupButton
-      |> signupButtonStyle
+      |> signupWithEmailButtonStyle
 
     _ = self.facebookDisclaimerLabel
       |> baseLabelStyle
@@ -137,6 +138,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     _ = self.contextLabel
       |> baseLabelStyle
+      |> UILabel.lens.font %~ { _ in
+        self.bringCreativeProjectsToLifeLabel.isHidden ? UIFont.ksr_title2() : UIFont.ksr_subhead()
+    }
 
     _ = self.loginContextStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -147,6 +151,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       }
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
   }
+
+  // MARK: - View Model
 
   override func bindViewModel() {
     self.viewModel.outputs.startLogin
@@ -244,7 +250,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       }
   }
 
-  // MARK: - Private Helpers
+  // MARK: - Functions
 
   private func configureViews() {
     _ = (self.scrollView, self.view)

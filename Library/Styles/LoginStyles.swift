@@ -83,12 +83,18 @@ public let forgotPasswordButtonStyle =
 public let loginButtonStyle: ButtonStyle = { button in
   button
     |> neutralButtonStyle
+    |> UIButton.lens.title(for: .normal) %~ { _ in
+    Strings.login_tout_back_intent_traditional_login_button()
+  }
 }
 
 public let loginControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in
     Strings.login_navbar_title()
   }
+
+public let loginWithEmailButtonStyle = neutralButtonStyle
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
 
 public let onePasswordButtonStyle = UIButton.lens.accessibilityLabel %~ { _
   in Strings.login_buttons_one_password()
@@ -160,6 +166,9 @@ public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
   }
 
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
+
+public let signupWithEmailButtonStyle = roundedGreenButtonStyle
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.signup_button_email() }
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
