@@ -130,7 +130,8 @@ private func pledgeCTAButtonStyle(
       ? NSLineBreakMode.byWordWrapping : NSLineBreakMode.byTruncatingTail
 
     return button
-      |> roundedGreenButtonStyle
+      |> baseNewButtonStyle
+      |> UIButton.lens.titleColor(for: .normal) .~ UIColor.white
       |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ lineBreakMode
   }
 }

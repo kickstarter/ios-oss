@@ -24,6 +24,7 @@ public let baseNewButtonStyle: ButtonStyle = { button in
   button
     |> roundedButtonStyle
     |> UIButton.lens.titleLabel.font %~ { _ in UIFont.ksr_callout().bolded }
+    |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
     |> UIButton.lens.titleEdgeInsets .~ .init(all: Styles.grid(2))
 }
 
