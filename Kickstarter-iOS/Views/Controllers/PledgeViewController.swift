@@ -126,12 +126,12 @@ final class PledgeViewController: UIViewController {
       self.pledgeInputsSectionViews,
       self.pledgeSummarySectionViews,
       self.pledgeLoginSectionViews,
-      self.pledgePaymentMethodsSectionViews,
-      ]
+      self.pledgePaymentMethodsSectionViews
+    ]
     .flatMap { $0 }
     .compact()
 
-    arrangedSubviews.forEach { (view) in
+    arrangedSubviews.forEach { view in
       self.rootStackView.addArrangedSubview(view)
     }
 
@@ -146,7 +146,7 @@ final class PledgeViewController: UIViewController {
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
 
-    self.sectionSeparators.forEach { (view) in
+    self.sectionSeparators.forEach { view in
       _ = view.heightAnchor.constraint(equalToConstant: 1)
         |> \.isActive .~ true
 
