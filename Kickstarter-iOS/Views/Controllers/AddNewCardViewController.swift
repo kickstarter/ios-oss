@@ -130,7 +130,7 @@ internal final class AddNewCardViewController: UIViewController,
 
     _ = self.zipcodeView.titleLabel
       |> \.text %~ { _ in
-        Strings.Zip_postal_code()
+        localizedPostalCode()
       }
 
     _ = self.zipcodeView
@@ -237,7 +237,7 @@ internal final class AddNewCardViewController: UIViewController,
     self.viewModel.inputs.cardholderNameTextFieldReturn()
   }
 
-  // MARK: - Private Functions
+  // MARK: - Functions
 
   private func createStripeToken(with paymentDetails: PaymentDetails) {
     let cardParams = STPCardParams()

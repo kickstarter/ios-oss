@@ -133,7 +133,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
       }
   }
 
-  // MARK: - Private Functions
+  // MARK: - Functions
 
   private func handleDidUpdateCurrency() {
     self.messageBannerViewController?.showBanner(

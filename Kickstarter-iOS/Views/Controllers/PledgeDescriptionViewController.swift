@@ -14,13 +14,8 @@ private enum Layout {
   }
 }
 
-internal protocol PledgeDescriptionCellDelegate: AnyObject {
-  func pledgeDescriptionCellDidPresentTrustAndSafety(_ cell: PledgeDescriptionCell)
-}
-
-final class PledgeDescriptionCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel = PledgeDescriptionCellViewModel()
-  internal weak var delegate: PledgeDescriptionCellDelegate?
+final class PledgeDescriptionViewController: UIViewController {
+  fileprivate let viewModel = PledgeDescriptionViewModel()
 
   // MARK: - Properties
 
@@ -41,16 +36,10 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
 
   // MARK: - Lifecycle
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
     self.configureSubviews()
-
-    self.bindViewModel()
-  }
-
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Styles
@@ -58,7 +47,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
+    _ = self.view
       |> checkoutBackgroundStyle
 
     _ = self.rootStackView
@@ -88,7 +77,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   }
 
   private func configureSubviews() {
-    _ = (self.rootStackView, self.contentView)
+    _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
@@ -139,8 +128,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.presentTrustAndSafety
       .observeForUI()
       .observeValues { [weak self] in
-        guard let _self = self else { return }
-        self?.delegate?.pledgeDescriptionCellDidPresentTrustAndSafety(_self)
+        self?.presentHelpWebViewController(with: .trust)
       }
   }
 
@@ -151,7 +139,7 @@ final class PledgeDescriptionCell: UITableViewCell, ValueCell {
   }
 }
 
-extension PledgeDescriptionCell: UITextViewDelegate {
+extension PledgeDescriptionViewController: UITextViewDelegate {
   func textView(
     _: UITextView, shouldInteractWith _: NSTextAttachment,
     in _: NSRange, interaction _: UITextItemInteraction
@@ -173,8 +161,6 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
     |> \.alignment .~ UIStackView.Alignment.top
     |> \.axis .~ NSLayoutConstraint.Axis.horizontal
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(5), leftRight: Styles.grid(2))
     |> \.spacing .~ Styles.grid(3)
 }
 
