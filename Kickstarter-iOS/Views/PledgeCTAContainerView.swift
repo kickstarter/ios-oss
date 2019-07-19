@@ -14,7 +14,7 @@ final class PledgeCTAContainerView: UIView {
   }()
 
   private lazy var amountOrRewardLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var pledgeCTAButton: UIButton = {
+  private(set) lazy var pledgeCTAButton: UIButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -90,7 +90,7 @@ final class PledgeCTAContainerView: UIView {
       |> \.numberOfLines .~ 0
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
@@ -104,8 +104,8 @@ final class PledgeCTAContainerView: UIView {
 
   // MARK: - Configuration
 
-  func configureWith(project: Project, user: User) {
-    self.vm.inputs.configureWith(project: project, user: user)
+  func configureWith(project: Project) {
+    self.vm.inputs.configureWith(project: project)
   }
 }
 

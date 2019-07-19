@@ -29,11 +29,6 @@ public final class ProjectPamphletViewController: UIViewController {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let pledgeCTAButton: UIButton = {
-    MultiLineButton(type: .custom)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   public static func configuredWith(
     projectOrParam: Either<Project, Param>,
     refTag: RefTag?
@@ -43,15 +38,11 @@ public final class ProjectPamphletViewController: UIViewController {
     return vc
   }
 
-  public override var prefersStatusBarHidden: Bool {
-    return UIApplication.shared.statusBarOrientation.isLandscape
-  }
-
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    if self.shouldShowNativeCheckout() {
-      self.configureViews()
+    if featureNativeCheckoutEnabled() {
+      self.configurePledgeCTAContainerView()
     }
 
     self.navBarController = self.children
@@ -79,7 +70,7 @@ public final class ProjectPamphletViewController: UIViewController {
       constant: self.initialTopConstraint
     )
 
-    if self.shouldShowNativeCheckout() {
+    if featureNativeCheckoutEnabled() {
       self.updateContentInsets()
     }
   }
@@ -93,10 +84,14 @@ public final class ProjectPamphletViewController: UIViewController {
     return self.parent?.view.safeAreaInsets.top ?? 0.0
   }
 
-  private func configureViews() {
+  private func configurePledgeCTAContainerView() {
     // Configure subviews
     _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
+
+    self.pledgeCTAContainerView.pledgeCTAButton.addTarget(
+      self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
+    )
 
     // Configure constraints
     let pledgeCTAContainerViewConstraints = [
@@ -111,17 +106,19 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func bindStyles() {
     super.bindStyles()
 
-    _ = self.pledgeCTAContainerView
-      |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
+    if featureNativeCheckoutEnabled() {
+      _ = self.pledgeCTAContainerView
+        |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
 
-    _ = self.pledgeCTAContainerView.layer
-      |> checkoutLayerCardRoundedStyle
-      |> \.backgroundColor .~ UIColor.white.cgColor
-      |> \.shadowColor .~ UIColor.black.cgColor
-      |> \.shadowOpacity .~ 0.12
-      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
-      |> \.shadowRadius .~ 1.0
-      |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+      _ = self.pledgeCTAContainerView.layer
+        |> checkoutLayerCardRoundedStyle
+        |> \.backgroundColor .~ UIColor.white.cgColor
+        |> \.shadowColor .~ UIColor.black.cgColor
+        |> \.shadowOpacity .~ 0.12
+        |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
+        |> \.shadowRadius .~ 1.0
+        |> \.maskedCorners .~ [CACornerMask.layerMaxXMinYCorner, CACornerMask.layerMinXMinYCorner]
+    }
   }
 
   public override func bindViewModel() {
@@ -158,10 +155,10 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.navBarTopConstraint.constant = value
       }
 
-    self.viewModel.outputs.projectAndUser
+    self.viewModel.outputs.configurePledgeCTAView
       .observeForUI()
-      .observeValues { [weak self] project, user in
-        self?.pledgeCTAContainerView.configureWith(project: project, user: user)
+      .observeValues { [weak self] project in
+        self?.pledgeCTAContainerView.configureWith(project: project)
       }
   }
 
@@ -188,13 +185,10 @@ public final class ProjectPamphletViewController: UIViewController {
     )
   }
 
-  private func shouldShowNativeCheckout() -> Bool {
-    // Show native checkout only if the `ios_native_checkout` flag is enabled
-    return AppEnvironment.current.config?.features[Feature.checkout.rawValue] == .some(true)
-  }
-
   private func updateContentInsets() {
-    let buttonSize = self.pledgeCTAButton.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    let buttonSize = self.pledgeCTAContainerView.pledgeCTAButton.systemLayoutSizeFitting(
+      UIView.layoutFittingCompressedSize
+    )
     let bottomInset = buttonSize.height + 2 * self.pledgeCTAContainerViewMargins
 
     self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)

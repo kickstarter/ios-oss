@@ -345,7 +345,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.present(helpSheet, animated: true, completion: nil)
   }
 
-  // MARK: Facebook Login
+  // MARK: - Facebook Login
 
   fileprivate func attemptFacebookLogin() {
     self.fbLoginManager.logIn(

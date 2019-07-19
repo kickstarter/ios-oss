@@ -94,8 +94,7 @@ final class ChangePasswordViewModelTests: TestCase {
   }
 
   func testOnePasswordButtonHidesProperly_OnIOS11AndEarlier() {
-    let iOS12: (Double) -> Bool = { _ in false }
-    withEnvironment(isOSVersionAvailable: iOS12) {
+    withEnvironment(is1PasswordSupported: { true }) {
       self.vm.inputs.onePassword(isAvailable: true)
 
       self.onePasswordButtonIsHidden.assertValues([false])
@@ -107,8 +106,7 @@ final class ChangePasswordViewModelTests: TestCase {
   }
 
   func testOnePasswordButtonHidesProperly_OnIOS12AndLater() {
-    let iOS12: (Double) -> Bool = { _ in true }
-    withEnvironment(isOSVersionAvailable: iOS12) {
+    withEnvironment(is1PasswordSupported: { false }) {
       self.vm.inputs.onePassword(isAvailable: true)
 
       self.onePasswordButtonIsHidden.assertValues([true])
@@ -121,9 +119,8 @@ final class ChangePasswordViewModelTests: TestCase {
 
   func testOnePasswordAutofill() {
     let mockService = MockService(serverConfig: ServerConfig.local)
-    let iOS12: (Double) -> Bool = { _ in false }
 
-    withEnvironment(apiService: mockService, isOSVersionAvailable: iOS12) {
+    withEnvironment(apiService: mockService, is1PasswordSupported: { true }) {
       self.vm.inputs.onePassword(isAvailable: true)
       self.vm.inputs.viewDidAppear()
 
@@ -141,9 +138,7 @@ final class ChangePasswordViewModelTests: TestCase {
   }
 
   func testValidationErrors_VoiceOverON() {
-    let isVoiceOverRunning = { true }
-
-    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+    withEnvironment(isVoiceOverRunning: { true }) {
       self.vm.inputs.viewDidAppear()
       self.validationErrorLabelIsHidden.assertValues([true])
       self.validationErrorLabelMessage.assertValues([""])
@@ -251,9 +246,7 @@ final class ChangePasswordViewModelTests: TestCase {
   }
 
   func testValidationErrors_VoiceOverOFF() {
-    let isVoiceOverRunning = { false }
-
-    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
+    withEnvironment(isVoiceOverRunning: { false }) {
       self.vm.inputs.viewDidAppear()
       self.validationErrorLabelIsHidden.assertValues([true])
       self.validationErrorLabelMessage.assertValues([""])

@@ -3,24 +3,20 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias PledgeViewData = (
-  project: Project,
-  reward: Reward,
-  isLoggedIn: Bool,
-  isShippingEnabled: Bool,
-  pledgeTotal: Double
-)
-
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func pledgeAmountDidUpdate(to amount: Double)
-  func shippingRuleDidUpdate(to rule: ShippingRule)
+  func shippingRuleSelected(_ shippingRule: ShippingRule)
+  func userSessionStarted()
   func viewDidLoad()
 }
 
 public protocol PledgeViewModelOutputs {
-  var configureSummaryCellWithProjectAndPledgeTotal: Signal<(Project, Double), Never> { get }
-  var pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never> { get }
+  var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
+  var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
+  var continueViewHidden: Signal<Bool, Never> { get }
+  var paymentMethodsViewHidden: Signal<Bool, Never> { get }
+  var shippingLocationViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -31,43 +27,41 @@ public protocol PledgeViewModelType {
 public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, PledgeViewModelOutputs {
   public init() {
     let projectAndReward = Signal.combineLatest(
-      self.configureProjectAndRewardProperty.signal, self.viewDidLoadProperty.signal
+      self.configureProjectAndRewardProperty.signal,
+      self.viewDidLoadProperty.signal
     )
     .map(first)
     .skipNil()
 
     let project = projectAndReward.map(first)
     let reward = projectAndReward.map(second)
-    let isLoggedIn = projectAndReward
+    let isLoggedIn = Signal.merge(projectAndReward.ignoreValues(), self.userSessionStartedSignal)
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
-
-    let shippingAmount = Signal.merge(
-      self.shippingRuleSignal.map { $0.cost },
-      projectAndReward.mapConst(0)
-    )
 
     let pledgeAmount = Signal.merge(
       self.pledgeAmountSignal,
       projectAndReward.map { $1.minimum }
     )
 
-    let total = Signal.combineLatest(pledgeAmount, shippingAmount).map(+)
+    let initialShippingAmount = projectAndReward.mapConst(0.0)
+    let shippingAmount = self.shippingRuleSelectedSignal
+      .map { $0.cost }
+    let shippingCost = Signal.merge(shippingAmount, initialShippingAmount)
 
-    let data = Signal.combineLatest(project, reward, isLoggedIn, total)
-      .map { project, reward, isLoggedIn, total -> PledgeViewData in
-        (project, reward, isLoggedIn, reward.shipping.enabled, total)
-      }
+    let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost).map(+)
 
-    self.pledgeViewDataAndReload = Signal.merge(
-      data.take(first: 1).map { data in (data, true) },
-      data.skip(first: 1).map { data in (data, false) }
-    )
+    self.configureWithData = projectAndReward.map { (project: $0.0, reward: $0.1) }
 
-    self.configureSummaryCellWithProjectAndPledgeTotal = self.pledgeViewDataAndReload
-      .filter(second >>> isFalse)
-      .map(first)
-      .map { ($0.project, $0.pledgeTotal) }
+    self.configureSummaryViewControllerWithData = project
+      .takePairWhen(pledgeTotal)
+      .map { project, total in (project, total) }
+
+    self.continueViewHidden = isLoggedIn
+    self.paymentMethodsViewHidden = isLoggedIn.negate()
+    self.shippingLocationViewHidden = reward
+      .map { $0.shipping.enabled }
+      .negate()
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -80,9 +74,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.pledgeAmountObserver.send(value: amount)
   }
 
-  private let (shippingRuleSignal, shippingRuleObserver) = Signal<ShippingRule, Never>.pipe()
-  public func shippingRuleDidUpdate(to rule: ShippingRule) {
-    self.shippingRuleObserver.send(value: rule)
+  private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule, Never>.pipe()
+  public func shippingRuleSelected(_ shippingRule: ShippingRule) {
+    self.shippingRuleSelectedObserver.send(value: shippingRule)
+  }
+
+  private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
+  public func userSessionStarted() {
+    self.userSessionStartedObserver.send(value: ())
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -90,8 +89,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let configureSummaryCellWithProjectAndPledgeTotal: Signal<(Project, Double), Never>
-  public let pledgeViewDataAndReload: Signal<(PledgeViewData, Bool), Never>
+  public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
+  public let continueViewHidden: Signal<Bool, Never>
+  public let configureWithData: Signal<(project: Project, reward: Reward), Never>
+  public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public let shippingLocationViewHidden: Signal<Bool, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }

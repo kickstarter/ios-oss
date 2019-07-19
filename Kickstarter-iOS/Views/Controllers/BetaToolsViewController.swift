@@ -132,7 +132,7 @@ internal final class BetaToolsViewController: UITableViewController {
     self.navigationController?.dismiss(animated: true)
   }
 
-  // MARK: Private Helper Functions
+  // MARK: - Private Helper Functions
 
   private func configureFooterView() {
     let containerView = UIView(frame: .zero)

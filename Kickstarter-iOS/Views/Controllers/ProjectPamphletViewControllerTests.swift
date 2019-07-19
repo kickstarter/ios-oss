@@ -37,116 +37,170 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testNonBacker_LiveProject_NativeCheckout_Disabled() {
-    let config = Config.template
-      |> \.features .~ [Feature.checkout.rawValue: false]
+  // MARK: - Logged In, Native Checkout Enabled
 
-    combos([Language.en], Device.allCases).forEach { language, device in
-      withEnvironment(config: config, language: language) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+  func testLoggedIn_Backer_LiveProject_NativeCheckout_Enabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.checkout.rawValue: true]
+    let backedProject = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ .template
+      |> Project.lens.state .~ .live
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(config: config, currentUser: .template, language: language) {
+        let vc = ProjectPamphletViewController.configuredWith(
+          projectOrParam: .left(backedProject), refTag: nil
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 2_300 : 1_800
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
 
-  func testNonBacker_LiveProject_NativeCheckout_Enabled() {
+  func testLoggedIn_Backer_NonLiveProject_NativeCheckout_Enabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.checkout.rawValue: true]
+    let backedProject = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ .template
+      |> Project.lens.state .~ .successful
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(config: config, currentUser: .template, language: language) {
+        let vc = ProjectPamphletViewController.configuredWith(
+          projectOrParam: .left(backedProject), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testLoggedIn_NonBacker_LiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.checkout.rawValue: true]
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(config: config, currentUser: user, language: language) {
+      withEnvironment(config: config, currentUser: .template, language: language) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_200 : 800
-
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
-      }
-    }
-  }
-
-  func testNonBacker_LiveProject_NativeCheckout_Enabled_Landscape() {
-    let config = Config.template
-      |> \.features .~ [Feature.checkout.rawValue: true]
-
-    [Device.phone4inch, Device.phone5_5inch, Device.phone5_8inch].forEach { device in
-      let language = Language.en
-      withEnvironment(config: config, currentUser: user, language: language) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-
-        let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
-
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
-      }
-    }
-  }
-
-  func testNonBacker_NonLiveProject_NativeCheckout_Enabled_Landscape() {
-    let config = Config.template
-      |> \.features .~ [Feature.checkout.rawValue: true]
-    let currentUser = User.template
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.photo.full .~ ""
-      |> Project.lens.personalization.isBacking .~ false
-      |> Project.lens.state .~ .successful
-
-    [Device.phone4inch, Device.phone5_5inch, Device.phone5_8inch].forEach { device in
-      let language = Language.en
-      withEnvironment(config: config, currentUser: currentUser, language: language) {
-        let vc = ProjectPamphletViewController.configuredWith(
-          projectOrParam: .left(backedProject), refTag: nil
-        )
-
-        let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
-
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
-      }
-    }
-  }
-
-  func testBacker_NonLiveProject_NativeCheckout_Enabled_Landscape() {
-    let config = Config.template
-      |> \.features .~ [Feature.checkout.rawValue: true]
-    let currentUser = User.template
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.photo.full .~ ""
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.state .~ .successful
-
-    [Device.phone4inch, Device.phone5_5inch, Device.phone5_8inch].forEach { device in
-      let language = Language.en
-      withEnvironment(config: config, currentUser: currentUser, language: language) {
-        let vc = ProjectPamphletViewController.configuredWith(
-          projectOrParam: .left(backedProject), refTag: nil
-        )
-
-        let (parent, _) = traitControllers(device: device, orientation: .landscape, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
-
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
-      }
-    }
-  }
-
-  func testNonBacker_LiveProject_NativeCheckout_Feature_Undefined() {
-    let config = Config.template
-      |> \.features .~ [:]
-
-    combos([Language.en], Device.allCases).forEach { language, device in
-      withEnvironment(config: config, language: language) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 2_300 : 1_800
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
+    }
+  }
+
+  func testLoggedIn_NonBacker_NonLiveProject_NativeCheckout_Enabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.checkout.rawValue: true]
+    let backedProject = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .successful
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(config: config, currentUser: .template, language: language) {
+        let vc = ProjectPamphletViewController.configuredWith(
+          projectOrParam: .left(backedProject), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  // MARK: - Logged Out, Native Checkout Enabled
+
+  func testLoggedOut_NonBacker_LiveProject_NativeCheckout_Feature_Enabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.checkout.rawValue: true]
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(config: config, currentUser: nil, language: language) {
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testLoggedOut_NonBacker_NonLiveProject_NativeCheckout_Enabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.checkout.rawValue: true]
+    let backedProject = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .successful
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(config: config, currentUser: nil, language: language) {
+        let vc = ProjectPamphletViewController.configuredWith(
+          projectOrParam: .left(backedProject), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  // MARK: - Native Checkout Disabled or Undefined
+
+  func testLoggedOut_LiveProject_NativeCheckout_Disabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.checkout.rawValue: false]
+
+    let language = Language.en
+    let device = Device.phone4_7inch
+
+    // All we want to see here is that the pledge CTA button is hidden
+
+    withEnvironment(config: config, currentUser: nil, language: language) {
+      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+      _ = traitControllers(device: device, orientation: .portrait, child: vc)
+
+      FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+    }
+  }
+
+  func testLoggedOut_LiveProject_NativeCheckout_Undefined() {
+    let config = Config.template
+      |> \.features .~ [:]
+
+    let language = Language.en
+    let device = Device.phone4_7inch
+
+    // All we want to see here is that the pledge CTA button is hidden
+    withEnvironment(config: config, language: language) {
+      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+      parent.view.frame.size.height = device == .pad ? 2_300 : 1_800
+
+      FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
     }
   }
 }
