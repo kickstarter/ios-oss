@@ -2,7 +2,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public let createNewAccountButtonStyle = greenButtonStyle
+public let createNewAccountButtonStyle = roundedGreenButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.facebook_confirmation_button() }
 
 public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_400
@@ -83,19 +83,12 @@ public let forgotPasswordButtonStyle =
 public let loginButtonStyle: ButtonStyle = { button in
   button
     |> neutralButtonStyle
-    |> baseNewButtonStyle
-    |> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.login_tout_back_intent_traditional_login_button()
-  }
 }
 
 public let loginControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in
     Strings.login_navbar_title()
   }
-
-public let loginWithEmailButtonStyle = borderButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
 
 public let onePasswordButtonStyle = UIButton.lens.accessibilityLabel %~ { _
   in Strings.login_buttons_one_password()
@@ -125,7 +118,7 @@ public func newPasswordFieldAutoFillStyle(_ textField: UITextField) -> UITextFie
   return style
 }
 
-public let resetPasswordButtonStyle = greenButtonStyle
+public let resetPasswordButtonStyle = roundedGreenButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.forgot_password_buttons_reset_my_password() }
 
 public let resetPasswordControllerStyle = baseControllerStyle()

@@ -63,7 +63,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.setupViews()
+    self.configureViews()
     self.setupConstraints()
     self.configureTargets()
 
@@ -108,6 +108,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     _ = self.loginButton
       |> baseMultiLineButtonStyle
       |> loginButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in
+        Strings.login_tout_back_intent_traditional_login_button()
+    }
 
     _ = self.rootStackView
       |> baseStackViewStyle
@@ -240,7 +243,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   // MARK: - Private Helpers
 
-  private func setupViews() {
+  private func configureViews() {
     _ = (self.scrollView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()

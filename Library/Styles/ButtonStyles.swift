@@ -71,7 +71,7 @@ public let facebookThanksButtonStyle = facebookButtonStyle
     Strings.project_checkout_share_buttons_share()
   }
 
-public let neutralButtonStyle = baseButtonStyle
+public let neutralButtonStyle = baseNewButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
   <> UIButton.lens.titleLabel.font %~ { _ in UIFont.ksr_headline() }
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_grey_500

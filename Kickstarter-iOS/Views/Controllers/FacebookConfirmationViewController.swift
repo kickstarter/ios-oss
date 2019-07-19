@@ -63,7 +63,10 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self.confirmationLabel |> fbConfirmationMessageLabelStyle
     _ = self.createAccountButton |> createNewAccountButtonStyle
     _ = self.emailLabel |> fbConfirmEmailLabelStyle
-    _ = self.loginButton |> loginWithEmailButtonStyle
+    _ = self.loginButton
+      |> loginButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email()
+    }
     _ = self.loginLabel |> fbWrongAccountLabelStyle
     _ = self.navigationItem.title = Strings.signup_navbar_title()
     _ = self.newsletterLabel
