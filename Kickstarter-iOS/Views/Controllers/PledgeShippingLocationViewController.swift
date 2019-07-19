@@ -3,17 +3,18 @@ import Library
 import Prelude
 import UIKit
 
-protocol PledgeShippingLocationCellDelegate: AnyObject {
-  func pledgeShippingCellWillPresentShippingRules(
-    _ cell: PledgeShippingLocationCell, selectedShippingRule rule: ShippingRule
+protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
+  func pledgeShippingLocationViewController(
+    _ viewController: PledgeShippingLocationViewController,
+    didSelect shippingRule: ShippingRule
   )
 }
 
-final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
+final class PledgeShippingLocationViewController: UIViewController {
   // MARK: - Properties
 
-  public weak var delegate: PledgeShippingLocationCellDelegate?
-  private let viewModel: PledgeShippingLocationCellViewModelType = PledgeShippingLocationCellViewModel()
+  public weak var delegate: PledgeShippingLocationViewControllerDelegate?
+  private let viewModel: PledgeShippingLocationViewModelType = PledgeShippingLocationViewModel()
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
@@ -27,13 +28,13 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
   // MARK: - Lifecycle
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
     _ = self
       |> \.accessibilityElements .~ [self.titleLabel, self.shippingLocationButton, self.amountLabel]
 
-    _ = (self.rootStackView, self.contentView)
+    _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
@@ -45,7 +46,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
     self.shippingLocationButton.addTarget(
       self,
-      action: #selector(PledgeShippingLocationCell.shippingLocationButtonTapped(_:)),
+      action: #selector(PledgeShippingLocationViewController.shippingLocationButtonTapped(_:)),
       for: .touchUpInside
     )
 
@@ -53,11 +54,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
 
     self.amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-    self.bindViewModel()
-  }
-
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    self.viewModel.inputs.viewDidLoad()
   }
 
   // MARK: - Styles
@@ -65,7 +62,7 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
+    _ = self.view
       |> checkoutBackgroundStyle
 
     _ = self.adaptableStackView
@@ -104,28 +101,61 @@ final class PledgeShippingLocationCell: UITableViewCell, ValueCell {
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
 
-    self.viewModel.outputs.selectedShippingLocation
+    self.viewModel.outputs.notifyDelegateOfSelectedShippingRule
       .observeForUI()
       .observeValues { [weak self] shippingRule in
         guard let self = self else { return }
-        self.delegate?.pledgeShippingCellWillPresentShippingRules(self, selectedShippingRule: shippingRule)
+
+        self.delegate?.pledgeShippingLocationViewController(self, didSelect: shippingRule)
+      }
+
+    self.viewModel.outputs.presentShippingRules
+      .observeForUI()
+      .observeValues { [weak self] project, shippingRules, selectedShippingRule in
+        self?.presentShippingRules(
+          project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
+        )
+      }
+
+    self.viewModel.outputs.dismissShippingRules
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true)
       }
   }
 
   // MARK: - Configuration
 
-  func configureWith(value: (isLoading: Bool, project: Project, selectedShippingRule: ShippingRule?)) {
-    self.viewModel.inputs.configureWith(
-      isLoading: value.isLoading,
-      project: value.project,
-      selectedShippingRule: value.selectedShippingRule
-    )
+  func configureWith(value: (project: Project, reward: Reward)) {
+    self.viewModel.inputs.configureWith(project: value.project, reward: value.reward)
   }
 
   // MARK: - Actions
 
-  @objc func shippingLocationButtonTapped(_: UIButton) {
+  @objc private func shippingLocationButtonTapped(_: UIButton) {
     self.viewModel.inputs.shippingLocationButtonTapped()
+  }
+
+  @objc private func dismissShippingRules() {
+    self.viewModel.inputs.dismissShippingRulesButtonTapped()
+  }
+
+  // MARK: - Functions
+
+  private func presentShippingRules(
+    _ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
+  ) {
+    let vc = ShippingRulesTableViewController.instantiate()
+      |> \.navigationItem.leftBarButtonItem .~ UIBarButtonItem(
+        barButtonSystemItem: .cancel,
+        target: self,
+        action: #selector(PledgeShippingLocationViewController.dismissShippingRules)
+      )
+    vc.configureWith(project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule)
+
+    let nc = UINavigationController(rootViewController: vc)
+    let sheetVC = SheetOverlayViewController(child: nc, offset: Layout.Sheet.offset)
+    self.present(sheetVC, animated: true)
   }
 }
 

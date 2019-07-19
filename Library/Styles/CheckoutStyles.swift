@@ -19,6 +19,12 @@ public func checkoutCurrencySuperscriptAttributes() -> String.Attributes {
 
 // MARK: - Styles
 
+public enum Layout {
+  public enum Sheet {
+    public static let offset: CGFloat = 222
+  }
+}
+
 public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
   return { (stackView: UIStackView) in
     let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
@@ -67,10 +73,6 @@ public let checkoutRoundedCornersStyle: ViewStyle = { (view: UIView) in
 public let checkoutStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(
-      top: Styles.grid(2), left: Styles.grid(4), bottom: Styles.grid(3), right: Styles.grid(4)
-    )
     |> \.spacing .~ (Styles.grid(1) + Styles.gridHalf(1))
 }
 

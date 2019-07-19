@@ -1,5 +1,18 @@
 import Prelude
 
+public func localizedPostalCode() -> String {
+  // 🙏 Inspired by Kristina Fox
+  // https://speakerdeck.com/krstnfx/internationalizing-your-app?slide=37
+  switch AppEnvironment.current.locale.regionCode {
+  // 🇺🇸
+  case .some("US"): return Strings.Zip_code()
+  // 🇨🇦
+  case .some("CA"): return Strings.Postal_code()
+  // 🌍
+  default: return Strings.Postcode()
+  }
+}
+
 /**
  Finds a localized string for a provided key and interpolates it with substitutions.
 
