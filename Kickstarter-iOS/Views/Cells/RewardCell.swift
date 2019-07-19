@@ -71,6 +71,12 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    self.removeCollectionViewController()
+  }
+
   // MARK: - Styles
 
   override func bindStyles() {
@@ -341,6 +347,10 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   // MARK: - View controller containment
 
   func addCollectionViewController(to parent: UIViewController) {
+    guard
+      self.collectionViewController.parent == nil,
+      self.collectionViewController.view.superview == nil else { return }
+
     _ = self.collectionViewController
       |> UIViewController.lens.view .. UIView.lens.isHidden .~ true
 
@@ -358,6 +368,10 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   }
 
   func removeCollectionViewController() {
+    guard
+      self.collectionViewController.parent != nil,
+      self.collectionViewController.view.superview != nil else { return }
+
     self.collectionViewController.willMove(toParent: nil)
     self.collectionViewController.view.removeFromSuperview()
     self.collectionViewController.removeFromParent()
