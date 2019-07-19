@@ -232,7 +232,6 @@ extension RewardsCollectionViewController {
   ) {
     if let rewardCell = cell as? RewardCell {
       rewardCell.delegate = self
-      rewardCell.addCollectionViewController(to: self)
     }
   }
 
@@ -241,7 +240,6 @@ extension RewardsCollectionViewController {
   ) {
     if let rewardCell = cell as? RewardCell {
       rewardCell.delegate = nil
-      rewardCell.removeCollectionViewController()
     }
   }
 }

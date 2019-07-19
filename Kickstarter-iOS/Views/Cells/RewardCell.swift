@@ -12,6 +12,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
   weak var delegate: RewardCellDelegate?
+  private let pillDataSource = PillCollectionViewDataSource()
   private let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
   private let baseStackView: UIStackView = {
@@ -23,7 +24,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   private let descriptionLabel = UILabel(frame: .zero)
   private let descriptionStackView = UIStackView(frame: .zero)
   private let descriptionTitleLabel = UILabel(frame: .zero)
-
   private let includedItemsStackView = UIStackView(frame: .zero)
   private let includedItemsTitleLabel = UILabel(frame: .zero)
   private let minimumPriceConversionLabel = UILabel(frame: .zero)
@@ -31,6 +31,28 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   private let pledgeButton: MultiLineButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var pillCollectionView: UICollectionView = {
+    UICollectionView(
+      frame: .zero,
+      collectionViewLayout: PillLayout(
+        minimumInteritemSpacing: Styles.grid(1),
+        minimumLineSpacing: Styles.grid(1),
+        sectionInset: UIEdgeInsets(topBottom: Styles.grid(1))
+      )
+    )
+      |> \.backgroundColor .~ UIColor.white
+      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
+      |> \.dataSource .~ self.pillDataSource
+      |> \.delegate .~ self
+      |> \.isHidden .~ true
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var pillCollectionViewHeightConstraint: NSLayoutConstraint = {
+    self.pillCollectionView.heightAnchor.constraint(equalToConstant: 0)
+      |> \.priority .~ .defaultHigh
   }()
 
   private let pledgeButtonLayoutGuide = UILayoutGuide()
@@ -50,31 +72,36 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
   private let titleStackView = UIStackView(frame: .zero)
 
-  private(set) lazy var collectionViewController: PillCollectionViewController = {
-    PillCollectionViewController.instantiate()
-  }()
-
-  private lazy var collectionViewControllerHeightConstraint: NSLayoutConstraint = {
-    self.collectionViewController.view.heightAnchor.constraint(equalToConstant: 0)
-  }()
-
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
     self.configureViews()
+    self.setupConstraints()
     self.bindViewModel()
+
+    self.pledgeButton.addTarget(self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside)
+    self.containerView.addGestureRecognizer(
+      UITapGestureRecognizer(target: self, action: #selector(self.rewardCardTapped))
+    )
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func prepareForReuse() {
-    super.prepareForReuse()
+  override func layoutSubviews() {
+    super.layoutSubviews()
 
-    self.removeCollectionViewController()
+    self.updateCollectionViewConstraints()
+  }
+
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    self.updateCollectionViewConstraints()
+    self.pillCollectionView.reloadData()
   }
 
   // MARK: - Styles
@@ -187,7 +214,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
           ?|> \.isUserInteractionEnabled .~ isUserInteractionEnabled
       }
 
-    self.collectionViewController.configure(with: ["Ends in 3 days", "16 left"])
+    self.pillDataSource.load(["Ends in 3 days", "16 left"])
+    self.pillCollectionView.reloadData()
   }
 
   // MARK: - Private Helpers
@@ -221,7 +249,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.priceStackView,
       self.rewardTitleLabel,
       self.includedItemsStackView,
-      self.descriptionStackView
+      self.descriptionStackView,
+      self.pillCollectionView
     ]
 
     _ = (baseSubviews, self.baseStackView)
@@ -245,20 +274,18 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = ([self.priceStackView, self.stateImageViewContainer], self.titleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.setupConstraints()
-
-    self.pledgeButton.addTarget(self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside)
-
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.rewardCardTapped))
-    self.containerView.addGestureRecognizer(tapGestureRecognizer)
+    self.pillCollectionView.registerCellClass(PillCell.self)
   }
 
   private func setupConstraints() {
+    // Margins
+    let containerMargins = self.containerView.layoutMarginsGuide
+    let contentMargins = self.contentView.layoutMarginsGuide
+
+    // Constraints
     let containerConstraints = [
       self.containerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)
     ]
-
-    let containerMargins = self.containerView.layoutMarginsGuide
 
     let baseStackViewConstraints = [
       self.baseStackView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
@@ -275,14 +302,15 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.stateImageViewContainer.heightAnchor.constraint(equalTo: self.stateImageViewContainer.widthAnchor)
     ]
 
-    let topConstraint = self.pledgeButton.topAnchor
-      .constraint(equalTo: self.pledgeButtonLayoutGuide.topAnchor)
-      |> \.priority .~ .defaultLow
-
-    let contentMargins = self.contentView.layoutMarginsGuide
+    let pillCollectionViewConstraints = [
+      self.pillCollectionView.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
+      self.pillCollectionView.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
+      self.pillCollectionViewHeightConstraint
+    ]
 
     let pledgeButtonConstraints = [
-      topConstraint,
+      self.pledgeButton.topAnchor.constraint(equalTo: self.pledgeButtonLayoutGuide.topAnchor)
+        |> \.priority .~ .defaultLow,
       self.pledgeButton.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
       self.pledgeButton.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
       self.pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: contentMargins.bottomAnchor),
@@ -293,14 +321,16 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
       self.pledgeButtonLayoutGuide.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
       self.pledgeButtonLayoutGuide.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      // swiftlint:disable:next line_length
-      self.pledgeButtonLayoutGuide.topAnchor.constraint(equalTo: self.baseStackView.bottomAnchor, constant: Styles.grid(3)),
+      self.pledgeButtonLayoutGuide.topAnchor.constraint(
+        equalTo: self.baseStackView.bottomAnchor, constant: Styles.grid(3)
+      ),
       self.pledgeButtonLayoutGuide.heightAnchor.constraint(equalTo: pledgeButton.heightAnchor)
     ]
 
     NSLayoutConstraint.activate([
       containerConstraints,
       baseStackViewConstraints,
+      pillCollectionViewConstraints,
       pledgeButtonConstraints,
       pledgeButtonLayoutGuideConstraints,
       stateImageViewContraints
@@ -308,10 +338,9 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   }
 
   private func updateCollectionViewConstraints() {
-    self.collectionViewController.view.layoutIfNeeded()
+    self.pillCollectionView.layoutIfNeeded()
 
-    self.collectionViewControllerHeightConstraint.constant =
-      self.collectionViewController.collectionView.contentSize.height
+    self.pillCollectionViewHeightConstraint.constant = self.pillCollectionView.contentSize.height
   }
 
   fileprivate func load(items: [String]) {
@@ -344,53 +373,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
   }
 
-  // MARK: - View controller containment
-
-  func addCollectionViewController(to parent: UIViewController) {
-    guard
-      self.collectionViewController.parent == nil,
-      self.collectionViewController.view.superview == nil else { return }
-
-    _ = self.collectionViewController
-      |> UIViewController.lens.view .. UIView.lens.isHidden .~ true
-
-    parent.addChild(self.collectionViewController)
-    self.baseStackView.addArrangedSubview(self.collectionViewController.view)
-    self.collectionViewController.didMove(toParent: parent)
-
-    let contentMargins = self.contentView.layoutMarginsGuide
-
-    NSLayoutConstraint.activate([
-      self.collectionViewController.view.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
-      self.collectionViewController.view.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
-      self.collectionViewControllerHeightConstraint
-    ])
-  }
-
-  func removeCollectionViewController() {
-    guard
-      self.collectionViewController.parent != nil,
-      self.collectionViewController.view.superview != nil else { return }
-
-    self.collectionViewController.willMove(toParent: nil)
-    self.collectionViewController.view.removeFromSuperview()
-    self.collectionViewController.removeFromParent()
-  }
-
-  // MARK: - Layout
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-
-    self.updateCollectionViewConstraints()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    self.updateCollectionViewConstraints()
-  }
-
   // MARK: - Configuration
 
   internal func configureWith(value: (Project, Either<Reward, Backing>)) {
@@ -405,6 +387,21 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
   @objc func rewardCardTapped() {
     self.viewModel.inputs.rewardCardTapped()
+  }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension RewardCell: UICollectionViewDelegate {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt _: IndexPath
+  ) {
+    guard let pillCell = cell as? PillCell else { return }
+
+    _ = pillCell.label
+      |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
   }
 }
 
