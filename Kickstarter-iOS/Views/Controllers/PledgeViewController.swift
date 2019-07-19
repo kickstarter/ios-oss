@@ -123,7 +123,7 @@ final class PledgeViewController: UIViewController {
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.pledgeDescriptionViewController.configureWith(value: data.reward)
+        self?.pledgeDescriptionViewController.configureWith(value: data)
         self?.pledgeAmountViewController.configureWith(value: data)
         self?.pledgeShippingLocationViewController.configureWith(value: data)
         self?.pledgePaymentMethodsViewController.configureWith(value: [GraphUserCreditCard.template])
@@ -159,6 +159,8 @@ final class PledgeViewController: UIViewController {
   }
 }
 
+// MARK: - PledgeAmountViewControllerDelegate
+
 extension PledgeViewController: PledgeAmountViewControllerDelegate {
   func pledgeAmountViewController(
     _: PledgeAmountViewController,
@@ -168,12 +170,34 @@ extension PledgeViewController: PledgeAmountViewControllerDelegate {
   }
 }
 
+// MARK: - PledgeShippingLocationViewControllerDelegate
+
 extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
   func pledgeShippingLocationViewController(
     _: PledgeShippingLocationViewController,
     didSelect shippingRule: ShippingRule
   ) {
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
+  }
+}
+
+// MARK: - RewardPledgeTransitionAnimatorDelegate
+
+extension PledgeViewController: RewardPledgeTransitionAnimatorDelegate {
+  func beginTransition(_ operation: UINavigationController.Operation) {
+    self.pledgeDescriptionViewController.beginTransition(operation)
+  }
+
+  func snapshotData(withContainerView view: UIView) -> RewardPledgeTransitionSnapshotData? {
+    return self.pledgeDescriptionViewController.snapshotData(withContainerView: view)
+  }
+
+  func destinationFrameData(withContainerView view: UIView) -> RewardPledgeTransitionDestinationFrameData? {
+    return self.pledgeDescriptionViewController.destinationFrameData(withContainerView: view)
+  }
+
+  func endTransition(_ operation: UINavigationController.Operation) {
+    self.pledgeDescriptionViewController.endTransition(operation)
   }
 }
 
