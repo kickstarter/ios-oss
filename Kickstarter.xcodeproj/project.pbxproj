@@ -95,6 +95,10 @@
 		373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */; };
 		373AB25D222A0D8900769FC2 /* PasswordValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25C222A0D8900769FC2 /* PasswordValidation.swift */; };
 		373AB25F222A0DAC00769FC2 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */; };
+		3742036D22DD41BA007AA86E /* PillLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3742036C22DD41BA007AA86E /* PillLayout.swift */; };
+		3742036F22DD45A2007AA86E /* PillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3742036E22DD45A2007AA86E /* PillCell.swift */; };
+		3742037322DEB67A007AA86E /* PillCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3742037222DEB67A007AA86E /* PillCollectionViewDataSource.swift */; };
+		3742037522DEB691007AA86E /* PillCollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3742037422DEB691007AA86E /* PillCollectionViewDataSourceTests.swift */; };
 		374CB94F22C17D4E00B84219 /* CharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374CB94E22C17D4E00B84219 /* CharacterSet.swift */; };
 		374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374CB95022C17D6700B84219 /* CharacterSetTests.swift */; };
 		374F507922614A1000DE6746 /* PledgeFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374F507822614A1000DE6746 /* PledgeFooterView.swift */; };
@@ -1385,6 +1389,10 @@
 		373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModelTests.swift; sourceTree = "<group>"; };
 		373AB25C222A0D8900769FC2 /* PasswordValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidation.swift; sourceTree = "<group>"; };
 		373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
+		3742036C22DD41BA007AA86E /* PillLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillLayout.swift; sourceTree = "<group>"; };
+		3742036E22DD45A2007AA86E /* PillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillCell.swift; sourceTree = "<group>"; };
+		3742037222DEB67A007AA86E /* PillCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillCollectionViewDataSource.swift; sourceTree = "<group>"; };
+		3742037422DEB691007AA86E /* PillCollectionViewDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillCollectionViewDataSourceTests.swift; sourceTree = "<group>"; };
 		374CB94E22C17D4E00B84219 /* CharacterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet.swift; sourceTree = "<group>"; };
 		374CB95022C17D6700B84219 /* CharacterSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSetTests.swift; sourceTree = "<group>"; };
 		374F507822614A1000DE6746 /* PledgeFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeFooterView.swift; sourceTree = "<group>"; };
@@ -2521,6 +2529,14 @@
 			path = Library;
 			sourceTree = "<group>";
 		};
+		3742036B22DD41A0007AA86E /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				3742036C22DD41BA007AA86E /* PillLayout.swift */,
+			);
+			path = Layouts;
+			sourceTree = "<group>";
+		};
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
@@ -2704,6 +2720,7 @@
 				D0D2AB1A1E96444B008D298A /* VideoGridView.swift */,
 				A751A51C1C85EAD8009C5DEA /* Cells */,
 				A751A51D1C85EAD8009C5DEA /* Controllers */,
+				3742036B22DD41A0007AA86E /* Layouts */,
 				A73923AA1D272242004524C3 /* Storyboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
 			);
@@ -2756,6 +2773,7 @@
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A7B1EBB21D90496A00BEE8B3 /* NoRewardCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
+				3742036E22DD45A2007AA86E /* PillCell.swift */,
 				A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */,
 				9D9F57CB1D131AF200CE81DE /* ProjectActivityBackingCell.swift */,
 				9D2546F71D23101E0053844D /* ProjectActivityCommentCell.swift */,
@@ -3205,6 +3223,8 @@
 				015102741F1943D60006C0FC /* MessageThreadsDataSourceTests.swift */,
 				D63BBCF8217F666B007E01F0 /* PaymentMethodsDataSource.swift */,
 				D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */,
+				3742037222DEB67A007AA86E /* PillCollectionViewDataSource.swift */,
+				3742037422DEB691007AA86E /* PillCollectionViewDataSourceTests.swift */,
 				9D9F58141D131D4A00CE81DE /* ProjectActivitiesDataSource.swift */,
 				A7ED200F1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift */,
 				A73EF7091DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift */,
@@ -4823,6 +4843,7 @@
 				776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */,
 				0170E7701D25C55200E2CCE4 /* ProjectActivityCommentCell.swift in Sources */,
 				9D14FF901D133351005F4ABB /* ProjectActivityNegativeStateChangeCell.swift in Sources */,
+				3742036D22DD41BA007AA86E /* PillLayout.swift in Sources */,
 				015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */,
 				7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */,
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
@@ -4845,6 +4866,7 @@
 				59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */,
 				015102AD1F1947C50006C0FC /* MessageThreadsDataSource.swift in Sources */,
 				379CFFFF2242DAF900F6F0C2 /* UIImageView+URL.swift in Sources */,
+				3742036F22DD45A2007AA86E /* PillCell.swift in Sources */,
 				59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */,
 				A7FA38A41D9068940041FC9C /* PledgeTitleCell.swift in Sources */,
 				37096C3422BC24DD003D1F40 /* UIFeedbackGeneratorType.swift in Sources */,
@@ -4979,6 +5001,7 @@
 				77EFBAE52268E01400DA5C3C /* RewardCell.swift in Sources */,
 				77FD8B46216D6245000A95AC /* LoadingBarButtonItemView.swift in Sources */,
 				9D14FF8E1D133351005F4ABB /* ProjectActivityEmptyStateCell.swift in Sources */,
+				3742037322DEB67A007AA86E /* PillCollectionViewDataSource.swift in Sources */,
 				017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */,
 				014D625B1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift in Sources */,
 				A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */,
@@ -5037,6 +5060,7 @@
 				3767EDAF22CFFF010088E8E4 /* ShippingRulesTableViewControllerTests.swift in Sources */,
 				37DEC2242257CB650051EF9B /* PledgeViewControllerTests.swift in Sources */,
 				A7ED20161E83229E00BFFA01 /* DiscoveryPagesDataSourceTests.swift in Sources */,
+				3742037522DEB691007AA86E /* PillCollectionViewDataSourceTests.swift in Sources */,
 				77EFBAE92268E3D200DA5C3C /* RewardsCollectionViewDataSourceTests.swift in Sources */,
 				A7ED201D1E8322EC00BFFA01 /* TestCase.swift in Sources */,
 				A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */,

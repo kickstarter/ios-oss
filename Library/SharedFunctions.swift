@@ -187,3 +187,11 @@ public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule])
 
   return shippingRuleInUSA ?? shippingRules.first
 }
+
+internal func classNameWithoutModule(_ klass: AnyClass) -> String {
+  return klass
+    .description()
+    .components(separatedBy: ".")
+    .dropFirst()
+    .joined(separator: ".")
+}
