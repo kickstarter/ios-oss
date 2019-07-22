@@ -132,7 +132,7 @@ public protocol UpdateDraftViewModelType {
 public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftViewModelInputs,
   UpdateDraftViewModelOutputs {
   public init() {
-    // MARK: Loading
+    // MARK: - Loading
 
     let project: Signal<Project, Never> = self.projectProperty.signal.skipNil()
 
@@ -158,7 +158,7 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
       .map { $0.update.sequence }
       .map { Strings.dashboard_post_update_compose_update_number(update_number: Format.wholeNumber($0)) }
 
-    // MARK: Form Fields
+    // MARK: - Form Fields
 
     self.title = draft.map { $0.update.title }
     self.body = draft.map { $0.update.body ?? "" }
@@ -174,7 +174,7 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
     let bodyChanged: Signal<Bool, Never> = hasChanged(self.body, currentBody)
     let isBackersOnlyChanged: Signal<Bool, Never> = hasChanged(wasBackersOnly, self.isBackersOnly)
 
-    // MARK: Attachments
+    // MARK: - Attachments
 
     self.attachments = draft
       .map {
@@ -252,7 +252,7 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
       )
       .skipRepeats()
 
-    // MARK: Validation
+    // MARK: - Validation
 
     let hasContent: Signal<Bool, Never> = Signal.combineLatest(currentTitle, currentBody, self.attachments)
       .map { title, body, attachments in
@@ -266,7 +266,7 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
       )
       .skipRepeats()
 
-    // MARK: Focus
+    // MARK: - Focus
 
     let draftHasTitle: Signal<Bool, Never> = draft
       .map { !$0.update.title.isEmpty }
@@ -291,7 +291,7 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
       .ignoreValues()
     )
 
-    // MARK: Saving
+    // MARK: - Saving
 
     let saveAction: Signal<SaveAction, Never> = Signal.merge(
       self.closeButtonTappedProperty.signal.mapConst(SaveAction.dismiss),
@@ -344,7 +344,7 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
 
     self.resignFirstResponder = self.viewWillDisappearProperty.signal
 
-    // MARK: Koala
+    // MARK: - Koala
 
     project
       .observeValues { AppEnvironment.current.koala.trackViewedUpdateDraft(forProject: $0) }
