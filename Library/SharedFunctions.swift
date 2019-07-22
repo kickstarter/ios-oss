@@ -212,3 +212,11 @@ public func formattedAmountForRewardOrBacking(
     )
   }
 }
+
+internal func classNameWithoutModule(_ `class`: AnyClass) -> String {
+  return `class`
+    .description()
+    .components(separatedBy: ".")
+    .dropFirst()
+    .joined(separator: ".")
+}

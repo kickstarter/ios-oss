@@ -12,6 +12,7 @@ public final class RewardCardView: UIView {
   // MARK: - Properties
 
   weak var delegate: RewardCardViewDelegate?
+  private let pillDataSource = PillCollectionViewDataSource()
   private let viewModel: RewardCardViewModelType = RewardCardViewModel()
 
   private let baseStackView: UIStackView = {
@@ -27,17 +28,59 @@ public final class RewardCardView: UIView {
   private let minimumPriceConversionLabel = UILabel(frame: .zero)
   private let minimumPriceLabel = UILabel(frame: .zero)
   private let priceStackView = UIStackView(frame: .zero)
+
+  private lazy var pillCollectionView: UICollectionView = {
+    UICollectionView(
+      frame: .zero,
+      collectionViewLayout: PillLayout(
+        minimumInteritemSpacing: Styles.grid(1),
+        minimumLineSpacing: Styles.grid(1),
+        sectionInset: UIEdgeInsets(topBottom: Styles.grid(1))
+      )
+    )
+      |> \.backgroundColor .~ UIColor.white
+      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
+      |> \.dataSource .~ self.pillDataSource
+      |> \.delegate .~ self
+      |> \.isHidden .~ true
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var pillCollectionViewHeightConstraint: NSLayoutConstraint = {
+    self.pillCollectionView.heightAnchor.constraint(equalToConstant: 0)
+      |> \.priority .~ .defaultHigh
+  }()
+
   private let rewardTitleLabel = UILabel(frame: .zero)
+  private let stateImageView: UIImageView = {
+    UIImageView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let stateImageViewContainer: UIView = {
+    UIView(frame: .zero)
+      |> \.isHidden .~ true
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let titleStackView = UIStackView(frame: .zero)
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
     self.configureViews()
+    self.setupConstraints()
     self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  public override func layoutSubviews() {
+    super.layoutSubviews()
+
+    self.updateCollectionViewConstraints()
   }
 
   public override func bindStyles() {
@@ -97,6 +140,15 @@ public final class RewardCardView: UIView {
     _ = self.minimumPriceConversionLabel
       |> baseRewardLabelStyle
       |> minimumPriceConversionLabelStyle
+
+    _ = self.stateImageView
+      |> stateImageViewStyle
+
+    _ = self.stateImageViewContainer
+      |> stateImageViewContainerStyle
+
+    _ = self.titleStackView
+      |> titleStackViewStyle
   }
 
   public override func bindViewModel() {
@@ -128,6 +180,9 @@ public final class RewardCardView: UIView {
         _ = self
           ?|> \.isUserInteractionEnabled .~ isUserInteractionEnabled
       }
+
+    self.pillDataSource.load(["Ends in 3 days", "16 left", "16 left"])
+    self.pillCollectionView.reloadData()
   }
 
   // MARK: - Private Helpers
@@ -137,13 +192,18 @@ public final class RewardCardView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([
-      self.priceStackView, self.rewardTitleLabel, self.includedItemsStackView,
-      self.descriptionStackView
-    ], self.baseStackView)
+    let baseSubviews = [
+      self.titleStackView,
+      self.rewardTitleLabel,
+      self.includedItemsStackView,
+      self.descriptionStackView,
+      self.pillCollectionView
+    ]
+
+    _ = (baseSubviews, self.baseStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([minimumPriceLabel, minimumPriceConversionLabel], self.priceStackView)
+    _ = ([self.minimumPriceLabel, self.minimumPriceConversionLabel], self.priceStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.includedItemsTitleLabel], self.includedItemsStackView)
@@ -152,8 +212,43 @@ public final class RewardCardView: UIView {
     _ = ([self.descriptionTitleLabel, self.descriptionLabel], self.descriptionStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    _ = (self.stateImageView, self.stateImageViewContainer)
+      |> ksr_addSubviewToParent()
+
+    _ = ([self.priceStackView, self.stateImageViewContainer], self.titleStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    self.pillCollectionView.register(PillCell.self)
+
     let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.rewardCardTapped))
     self.addGestureRecognizer(tapGestureRecognizer)
+  }
+
+  private func setupConstraints() {
+    let imageViewContraints = [
+      self.stateImageView.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
+      self.stateImageView.heightAnchor.constraint(equalTo: self.stateImageView.widthAnchor),
+      self.stateImageView.centerXAnchor.constraint(equalTo: self.stateImageViewContainer.centerXAnchor),
+      self.stateImageView.centerYAnchor.constraint(equalTo: self.stateImageViewContainer.centerYAnchor),
+      self.stateImageViewContainer.widthAnchor.constraint(equalToConstant: Styles.grid(5)),
+      self.stateImageViewContainer.heightAnchor.constraint(equalTo: self.stateImageViewContainer.widthAnchor)
+    ]
+
+    let pillCollectionViewConstraints = [
+      self.pillCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor),
+      self.pillCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor),
+      self.pillCollectionViewHeightConstraint
+    ]
+
+    NSLayoutConstraint.activate(imageViewContraints + pillCollectionViewConstraints)
+  }
+
+  private func updateCollectionViewConstraints() {
+    self.pillCollectionView.layoutIfNeeded()
+
+    self.pillCollectionViewHeightConstraint.constant = self.pillCollectionView.contentSize.height
+
+    self.setNeedsLayout()
   }
 
   fileprivate func load(items: [String]) {
@@ -185,6 +280,8 @@ public final class RewardCardView: UIView {
     _ = (allItemViews, self.includedItemsStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
+
+  // MARK: - Configuration
 
   internal func configure(with value: (Project, Either<Reward, Backing>)) {
     self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
@@ -254,4 +351,36 @@ private let sectionBodyLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ .ksr_callout()
+}
+
+private let stateImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.image .~ UIImage(named: "checkmark-reward")
+    |> \.tintColor .~ UIColor.ksr_blue_500
+}
+
+private let stateImageViewContainerStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_blue_500.withAlphaComponent(0.06)
+    |> \.layer.cornerRadius .~ 15
+}
+
+private let titleStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.alignment .~ UIStackView.Alignment.center
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension RewardCardView: UICollectionViewDelegate {
+  public func collectionView(
+    _ collectionView: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt _: IndexPath
+  ) {
+    guard let pillCell = cell as? PillCell else { return }
+
+    _ = pillCell.label
+      |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
+  }
 }
