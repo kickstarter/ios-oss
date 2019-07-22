@@ -274,7 +274,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = ([self.priceStackView, self.stateImageViewContainer], self.titleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.pillCollectionView.registerCellClass(PillCell.self)
+    self.pillCollectionView.register(PillCell.self)
   }
 
   private func setupConstraints() {
