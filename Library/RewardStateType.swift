@@ -50,7 +50,7 @@ public enum RewardStateType {
     }
   }
 
-  var showIconImage: Bool? {
+  var showStateIconImage: Bool? {
     switch self {
     case .fix, .manage, .viewBacking:
       return true
@@ -59,7 +59,7 @@ public enum RewardStateType {
     }
   }
 
-  var iconImageName: String? {
+  var stateIconImageName: String? {
     switch self {
     case .fix:
       return "fix--reward"
@@ -68,7 +68,7 @@ public enum RewardStateType {
     }
   }
 
-  var iconImageTintColor: UIColor {
+  var stateIconImageTintColor: UIColor {
     switch self {
     case .fix:
       return .ksr_apricot_600
