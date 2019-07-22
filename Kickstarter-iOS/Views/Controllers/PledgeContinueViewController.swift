@@ -71,11 +71,24 @@ final class PledgeContinueViewController: UIViewController {
   private func goToLoginSignup(with intent: LoginIntent) {
     let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
-    let sheetOverlayViewController = SheetOverlayViewController(
-      child: navigationController,
-      offset: Layout.Sheet.offset
-    )
+    
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = navigationController
+        |> \.modalPresentationStyle .~ .formSheet
+        |> \.modalTransitionStyle .~ .crossDissolve
+      
+      self.present(navigationController, animated: true)
+    } else {
+      let sheetOverlayViewController = SheetOverlayViewController(
+        child: navigationController,
+        offset: Layout.Sheet.offset
+      )
+      
+      self.present(sheetOverlayViewController, animated: true)
+    }
+//
+//    sheetOverlayViewController.preferredContentSize = self.parent!.view.bound.size
+//    self.parent?.navigationController?.definesPresentationContext = true
 
-    self.present(sheetOverlayViewController, animated: true)
   }
 }

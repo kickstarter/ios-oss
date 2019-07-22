@@ -19,10 +19,20 @@ final class SheetOverlayViewController: UIViewController {
     self.offset = offset
 
     super.init(nibName: nil, bundle: nil)
-
-    _ = self
-      |> \.modalPresentationStyle .~ .custom
-      |> \.transitioningDelegate .~ self
+    
+//    _ = self
+//      |> \.modalPresentationStyle .~ .custom
+//      |> \.transitioningDelegate .~ self
+    
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = self
+        |> \.modalPresentationStyle .~ .formSheet
+        |> \.modalTransitionStyle .~ .crossDissolve
+    } else {
+      _ = self
+        |> \.modalPresentationStyle .~ .custom
+        |> \.transitioningDelegate .~ self
+    }
   }
 
   required init?(coder _: NSCoder) {
@@ -36,6 +46,9 @@ final class SheetOverlayViewController: UIViewController {
     self.configure(childView: self.childViewController.view, offset: self.offset)
 
     self.childViewController.didMove(toParent: self)
+    
+    _ = self.view
+      |> \.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
   }
 
   private func configure(childView: UIView, offset: CGFloat) {
@@ -51,7 +64,14 @@ final class SheetOverlayViewController: UIViewController {
       |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
 
     let isRegular = UIScreen.main.traitCollection.isRegularRegular
-    let portraitWidth = min(UIScreen.main.bounds.height, UIScreen.main.bounds.width)
+    let portraitWidth: CGFloat = min(self.view.bounds.height, self.view.bounds.width)
+
+//
+//    if self.preferredContentSize != .zero {
+//      portraitWidth = min(self.preferredContentSize.height, self.preferredContentSize.width)
+//    } else {
+//      portraitWidth = min(UIScreen.main.bounds.height, UIScreen.main.bounds.width)
+//    }
 
     NSLayoutConstraint.activate([
       childView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),

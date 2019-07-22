@@ -187,7 +187,11 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
     let rewardsViewController = RewardsCollectionViewController.instantiate(with: project, refTag: refTag)
 
     let navigationController = UINavigationController(rootViewController: rewardsViewController)
-      |> \.modalPresentationStyle .~ .formSheet
+    
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = navigationController
+        |> \.modalPresentationStyle .~ .pageSheet
+    }
 
     self.present(navigationController, animated: true)
   }
