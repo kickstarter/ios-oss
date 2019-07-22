@@ -71,7 +71,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
 
     let project = freshProjectAndRefTag
-      .map { project, _ in project }
+      .map(first)
 
     self.configurePledgeCTAView = project
       .skip(first: 1)
