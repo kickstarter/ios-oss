@@ -22,15 +22,15 @@ public protocol RewardPledgeTransitionAnimatorDelegate: AnyObject {
 
 private enum Constant {
   enum Animation {
-    static let timeInterval: TimeInterval = 0.38
-    static let damping: CGFloat = 0.8
+    static let dampingRatio: CGFloat = 0.836
+    static let frequencyResponse: CGFloat = 0.233
     static let shadowOpacity: CGFloat = 0.17
   }
 }
 
 public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
   public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
-    return Constant.Animation.timeInterval
+    return 0 // Unused due to UISpringTimingParameters
   }
 
   public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -119,7 +119,7 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
 
 public class RewardPledgePopTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
   public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
-    return Constant.Animation.timeInterval
+    return 0 // Unused due to UISpringTimingParameters
   }
 
   public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -291,5 +291,8 @@ private func addMaskToRewardCardContainerView(_ view: UIView, maskFrame: CGRect)
 }
 
 private func springTimingParams() -> UISpringTimingParameters {
-  return UISpringTimingParameters(dampingRatio: 0.836, frequencyResponse: 0.233)
+  return UISpringTimingParameters(
+    dampingRatio: Constant.Animation.dampingRatio,
+    frequencyResponse: Constant.Animation.frequencyResponse
+  )
 }
