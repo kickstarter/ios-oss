@@ -1,8 +1,10 @@
 import UIKit
 
 public extension UICollectionView {
+  // MARK: - Registration
+
   func registerCellClass<CellClass: UICollectionViewCell>(_ cellClass: CellClass.Type) {
-    self.register(cellClass, forCellWithReuseIdentifier: cellClass.description())
+    self.register(cellClass, forCellWithReuseIdentifier: classNameWithoutModule(cellClass))
   }
 
   func register<T: ValueCell>(_ cellClass: T.Type) {
@@ -10,15 +12,16 @@ public extension UICollectionView {
   }
 
   func registerCellNibForClass(_ cellClass: AnyClass) {
-    let classNameWithoutModule = cellClass
-      .description()
-      .components(separatedBy: ".")
-      .dropFirst()
-      .joined(separator: ".")
+    let className = classNameWithoutModule(cellClass)
 
-    self.register(
-      UINib(nibName: classNameWithoutModule, bundle: nil),
-      forCellWithReuseIdentifier: classNameWithoutModule
-    )
+    self.register(UINib(nibName: className, bundle: nil), forCellWithReuseIdentifier: className)
+  }
+
+  // MARK: - Reuse
+
+  func dequeueReusableCell(withClass cellClass: UICollectionViewCell.Type, for indexPath: IndexPath)
+    -> UICollectionViewCell {
+    let className = classNameWithoutModule(cellClass)
+    return self.dequeueReusableCell(withReuseIdentifier: className, for: indexPath)
   }
 }
