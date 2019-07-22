@@ -20,19 +20,9 @@ final class SheetOverlayViewController: UIViewController {
 
     super.init(nibName: nil, bundle: nil)
     
-//    _ = self
-//      |> \.modalPresentationStyle .~ .custom
-//      |> \.transitioningDelegate .~ self
-    
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = self
-        |> \.modalPresentationStyle .~ .formSheet
-        |> \.modalTransitionStyle .~ .crossDissolve
-    } else {
-      _ = self
-        |> \.modalPresentationStyle .~ .custom
-        |> \.transitioningDelegate .~ self
-    }
+    _ = self
+      |> \.modalPresentationStyle .~ .custom
+      |> \.transitioningDelegate .~ self
   }
 
   required init?(coder _: NSCoder) {
@@ -82,11 +72,7 @@ final class SheetOverlayViewController: UIViewController {
       )
     ])
 
-    if isRegular {
-      childView.widthAnchor.constraint(equalToConstant: portraitWidth).isActive = true
-    } else {
-      childView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-    }
+    childView.widthAnchor.constraint(equalToConstant: portraitWidth).isActive = true
   }
 }
 

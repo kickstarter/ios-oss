@@ -72,6 +72,7 @@ final class PledgeContinueViewController: UIViewController {
     let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
     
+    // TODO: helper for centralizing this iPad logic?
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       _ = navigationController
         |> \.modalPresentationStyle .~ .formSheet
@@ -81,14 +82,10 @@ final class PledgeContinueViewController: UIViewController {
     } else {
       let sheetOverlayViewController = SheetOverlayViewController(
         child: navigationController,
-        offset: Layout.Sheet.offset
+        offset: 50 // TODO: decide with danny how best to calculate this offset based on what's being presented
       )
       
       self.present(sheetOverlayViewController, animated: true)
     }
-//
-//    sheetOverlayViewController.preferredContentSize = self.parent!.view.bound.size
-//    self.parent?.navigationController?.definesPresentationContext = true
-
   }
 }
