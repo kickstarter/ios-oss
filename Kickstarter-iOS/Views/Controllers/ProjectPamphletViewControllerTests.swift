@@ -54,8 +54,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: MockService(fetchProjectResponse: backedProject),
-                      config: config, currentUser: .template, language: language) {
+      withEnvironment(
+        apiService: MockService(fetchProjectResponse: backedProject),
+        config: config, currentUser: .template, language: language
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(
           projectOrParam: .left(backedProject), refTag: nil
         )
@@ -81,8 +83,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: MockService(fetchProjectResponse: backedProject),
-                      config: config, currentUser: .template, language: language) {
+      withEnvironment(
+        apiService: MockService(fetchProjectResponse: backedProject),
+        config: config, currentUser: .template, language: language
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(
           projectOrParam: .left(backedProject), refTag: nil
         )
@@ -102,8 +106,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.checkout.rawValue: true]
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: MockService(fetchProjectResponse: project),
-                      config: config, currentUser: .template, language: language) {
+      withEnvironment(
+        apiService: MockService(fetchProjectResponse: project),
+        config: config, currentUser: .template, language: language
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -126,8 +132,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: MockService(fetchProjectResponse: backedProject),
-                      config: config, currentUser: .template, language: language) {
+      withEnvironment(
+        apiService: MockService(fetchProjectResponse: backedProject),
+        config: config, currentUser: .template, language: language
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(
           projectOrParam: .left(backedProject), refTag: nil
         )
@@ -149,8 +157,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.checkout.rawValue: true]
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: MockService(fetchProjectResponse: project),
-                      config: config, currentUser: nil, language: language) {
+      withEnvironment(
+        apiService: MockService(fetchProjectResponse: project),
+        config: config, currentUser: nil, language: language
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
@@ -173,8 +183,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(apiService: MockService(fetchProjectResponse: backedProject),
-                      config: config, currentUser: nil, language: language) {
+      withEnvironment(
+        apiService: MockService(fetchProjectResponse: backedProject),
+        config: config, currentUser: nil, language: language
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(
           projectOrParam: .left(backedProject), refTag: nil
         )
@@ -200,8 +212,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
     // All we want to see here is that the pledge CTA button is hidden
 
-    withEnvironment(apiService: MockService(fetchProjectResponse: self.project),
-                    config: config, currentUser: nil, language: language) {
+    withEnvironment(
+      apiService: MockService(fetchProjectResponse: self.project),
+      config: config, currentUser: nil, language: language
+    ) {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
       _ = traitControllers(device: device, orientation: .portrait, child: vc)
 
@@ -217,8 +231,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let device = Device.phone4_7inch
 
     // All we want to see here is that the pledge CTA button is hidden
-    withEnvironment(apiService: MockService(fetchProjectResponse: self.project),
-                    config: config, language: language) {
+    withEnvironment(
+      apiService: MockService(fetchProjectResponse: self.project),
+      config: config, language: language
+    ) {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
 
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
