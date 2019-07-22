@@ -76,7 +76,6 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
 }
 
 private func subtitle(project: Project, pledgeState: PledgeStateCTAType) -> String {
-
   guard let backing = project.personalization.backing else { return "" }
 
   if pledgeState == .fix { return pledgeState.subtitleLabel ?? "" }
