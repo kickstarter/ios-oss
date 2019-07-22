@@ -192,6 +192,8 @@ final class PledgeDescriptionViewController: UIViewController {
       from: actualRect,
       toRect: thumbnailRect
     )
+
+    self.view.setNeedsLayout()
   }
 
   // MARK: - Actions
@@ -378,15 +380,12 @@ private func attributedLearnMoreText() -> NSAttributedString? {
 
 extension PledgeDescriptionViewController: RewardPledgeTransitionAnimatorDelegate {
   func beginTransition(_: UINavigationController.Operation) {
-    // Hide thumbnail with slight delay to prevent a flicker when taking the snapshot on pop
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-      self.setThumbnailHidden(true)
-    }
+    self.setThumbnailHidden(true)
   }
 
   func snapshotData(withContainerView view: UIView) -> RewardPledgeTransitionSnapshotData? {
     guard
-      let snapshotView = self.rewardCardContainerView.snapshotView(afterScreenUpdates: true),
+      let snapshotView = self.rewardCardContainerView.snapshotView(afterScreenUpdates: false),
       let sourceFrame = self.rewardCardContainerView.superview?
       .convert(self.rewardCardContainerView.frame, to: view)
     else { return nil }
@@ -397,9 +396,6 @@ extension PledgeDescriptionViewController: RewardPledgeTransitionAnimatorDelegat
   }
 
   func destinationFrameData(withContainerView view: UIView) -> RewardPledgeTransitionDestinationFrameData? {
-    self.view.setNeedsLayout()
-    self.view.layoutIfNeeded()
-
     guard
       let containerFrame = self.rewardCardContainerView.superview?
       .convert(self.rewardCardContainerView.frame, to: view)

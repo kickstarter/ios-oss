@@ -54,16 +54,14 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
     _ = containerView
       |> \.backgroundColor .~ fromView.backgroundColor
 
-    toView.setNeedsLayout()
-    toView.layoutIfNeeded()
+    containerView.addSubview(toView)
+    containerView.addSubview(fromView)
+    containerView.layoutIfNeeded()
 
     let (snapshotView, snapshotSourceFrame, maskFrame) = snapshotData
     snapshotView.frame = snapshotSourceFrame
 
     addMaskToRewardCardContainerView(snapshotView, maskFrame: maskFrame)
-
-    containerView.addSubview(toView)
-    containerView.addSubview(fromView)
 
     let (snapshotShadowContainerView, expandIconImageView) = shadowContainerViewAndExpandIconImageView(
       with: snapshotData,

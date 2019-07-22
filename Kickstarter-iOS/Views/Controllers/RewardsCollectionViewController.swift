@@ -282,10 +282,7 @@ extension RewardsCollectionViewController: RewardPledgeTransitionAnimatorDelegat
   func snapshotData(withContainerView view: UIView) -> RewardPledgeTransitionSnapshotData? {
     guard
       let cell = self.selectedRewardCell(),
-      let snapshotView = cell.rewardCardContainerView
-      .resizableSnapshotView(
-        from: cell.rewardCardContainerView.frame, afterScreenUpdates: true, withCapInsets: .zero
-      ),
+      let snapshotView = cell.rewardCardContainerView.snapshotView(afterScreenUpdates: false),
       let sourceFrame = cell.rewardCardContainerView.superview?
       .convert(cell.rewardCardContainerView.frame, to: view)
     else { return nil }
