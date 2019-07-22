@@ -234,14 +234,6 @@ extension RewardsCollectionViewController {
       rewardCell.delegate = self
     }
   }
-
-  override func collectionView(
-    _: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt _: IndexPath
-  ) {
-    if let rewardCell = cell as? RewardCell {
-      rewardCell.delegate = nil
-    }
-  }
 }
 
 // MARK: - UIScrollViewDelegate
