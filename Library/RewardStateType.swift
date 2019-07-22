@@ -32,8 +32,23 @@ public enum RewardStateType {
     }
   }
 
-  // TODO:
-  // -Which States do not contain a checkmark?? --- ONLY SELECTED REWARDS CONTAIN CHECKMARK/EXCLAMATION
+  public var showTimeLeftPill: Bool? {
+    switch self {
+    case .fix, .pledge, .manage:
+      return true
+    case .viewBacking:
+      return false
+    }
+  }
+
+  public var showLimitedRewardPill: Bool? {
+    switch self {
+    case .fix, .pledge, .manage:
+      return true
+    case .viewBacking:
+      return false
+    }
+  }
 
   var showIconImage: Bool? {
     switch self {
