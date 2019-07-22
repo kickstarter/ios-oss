@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GbK-FV-Iaj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GbK-FV-Iaj">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -37,11 +37,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Bfz-Sg-Kdb" firstAttribute="trailing" secondItem="bdk-Xa-fm9" secondAttribute="trailing" id="3Dg-lk-oRa"/>
+                            <constraint firstAttribute="trailing" secondItem="bdk-Xa-fm9" secondAttribute="trailing" id="3Dg-lk-oRa"/>
                             <constraint firstAttribute="bottom" secondItem="tIm-aj-d8Q" secondAttribute="bottom" id="8FY-Rt-Ar2"/>
                             <constraint firstItem="tIm-aj-d8Q" firstAttribute="leading" secondItem="Bfz-Sg-Kdb" secondAttribute="leading" id="HU6-02-QPk"/>
                             <constraint firstItem="tIm-aj-d8Q" firstAttribute="top" secondItem="bdk-Xa-fm9" secondAttribute="top" constant="52" id="Hk5-fJ-068"/>
-                            <constraint firstItem="bdk-Xa-fm9" firstAttribute="leading" secondItem="Bfz-Sg-Kdb" secondAttribute="leading" id="eEt-q9-Snv"/>
+                            <constraint firstItem="bdk-Xa-fm9" firstAttribute="leading" secondItem="Y4L-8W-arN" secondAttribute="leading" id="eEt-q9-Snv"/>
                             <constraint firstItem="Bfz-Sg-Kdb" firstAttribute="trailing" secondItem="tIm-aj-d8Q" secondAttribute="trailing" id="qTt-pv-zBK"/>
                             <constraint firstItem="bdk-Xa-fm9" firstAttribute="top" secondItem="Y4L-8W-arN" secondAttribute="top" id="qnD-sd-f2N"/>
                         </constraints>
@@ -130,8 +130,8 @@
                             <constraint firstItem="826-Wi-ToO" firstAttribute="bottom" secondItem="9W6-oq-vUw" secondAttribute="bottom" id="0um-l2-woZ"/>
                             <constraint firstItem="9W6-oq-vUw" firstAttribute="top" secondItem="826-Wi-ToO" secondAttribute="top" id="6w6-Ed-Vk7"/>
                             <constraint firstItem="826-Wi-ToO" firstAttribute="trailing" secondItem="jxM-Ay-art" secondAttribute="trailing" id="KQT-o1-UDj"/>
-                            <constraint firstItem="9W6-oq-vUw" firstAttribute="leading" secondItem="826-Wi-ToO" secondAttribute="leading" id="N1c-Da-BYS"/>
-                            <constraint firstItem="826-Wi-ToO" firstAttribute="trailing" secondItem="9W6-oq-vUw" secondAttribute="trailing" id="OVE-At-q1s"/>
+                            <constraint firstItem="9W6-oq-vUw" firstAttribute="leading" secondItem="ed4-VA-c6v" secondAttribute="leading" id="N1c-Da-BYS"/>
+                            <constraint firstAttribute="trailing" secondItem="9W6-oq-vUw" secondAttribute="trailing" id="OVE-At-q1s"/>
                             <constraint firstItem="jxM-Ay-art" firstAttribute="leading" secondItem="826-Wi-ToO" secondAttribute="leading" id="PFE-sj-SVP"/>
                             <constraint firstItem="jxM-Ay-art" firstAttribute="top" secondItem="ed4-VA-c6v" secondAttribute="top" constant="3" id="p5j-Im-MUi"/>
                         </constraints>

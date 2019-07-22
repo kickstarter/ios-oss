@@ -4,8 +4,8 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-internal final class PledgeDescriptionCellViewModelTests: TestCase {
-  private let vm: PledgeDescriptionCellViewModelType = PledgeDescriptionCellViewModel()
+internal final class PledgeDescriptionViewModelTests: TestCase {
+  private let vm: PledgeDescriptionViewModelType = PledgeDescriptionViewModel()
 
   private let estimatedDeliveryText = TestObserver<String, Never>()
   private let presentTrustAndSafety = TestObserver<Void, Never>()

@@ -70,7 +70,7 @@ final class LoadingBarButtonItemView: UIView, NibLoading {
     self.titleButton.addTarget(target, action: action, for: .touchUpInside)
   }
 
-  // MARK: - Private Functions
+  // MARK: - Functions
 
   private func animateActivityIndicator(_ isAnimating: Bool) {
     if isAnimating {

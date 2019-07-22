@@ -100,7 +100,7 @@ final class PledgeCTAContainerView: UIView {
       |> \.numberOfLines .~ 0
   }
 
-  // MARK: - Binding
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()

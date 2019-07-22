@@ -327,6 +327,8 @@
 "Pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "Popular" = "人気";
 "Popular_Projects" = "人気のプロジェクト";
+"Postal_code" = "郵便番号";
+"Postcode" = "郵便番号";
 "Preparing_your_personal_data" = "あなたの個人データを準備中…";
 "Privacy" = "プライバシー";
 "Private_profile" = "プライベート設定のプロフィール";
@@ -519,7 +521,7 @@
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Facebook (%{email}) を通して接続されています。Kickstarter の認識情報を編集するには、このアカウント用にパスワードを作成してください。";
 "Youre_offline" = "現在オフライン中です。デバイスが再接続し次第、アプリをリフレッシュしてください。";
 "Youve_pledged_to_support_this_project" = "このプレッジ済のプロジェクトは、現在もファンド中";
-"Zip_postal_code" = "郵便番号";
+"Zip_code" = "郵便番号";
 "accessibility.dashboard.buttons.activity" = "アクティビティ";
 "accessibility.dashboard.buttons.activity_hint" = "アクティビティをみる";
 "accessibility.dashboard.buttons.messages" = "メッセージ";

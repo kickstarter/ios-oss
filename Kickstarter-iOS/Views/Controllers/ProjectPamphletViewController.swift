@@ -38,10 +38,6 @@ public final class ProjectPamphletViewController: UIViewController {
     return vc
   }
 
-  public override var prefersStatusBarHidden: Bool {
-    return UIApplication.shared.statusBarOrientation.isLandscape
-  }
-
   public override func viewDidLoad() {
     super.viewDidLoad()
 

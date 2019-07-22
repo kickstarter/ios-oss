@@ -87,20 +87,6 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.configureChildViewControllersWithRefTag.assertValues([nil, nil])
   }
 
-  func testStatusBar() {
-    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
-    self.vm.inputs.viewDidLoad()
-
-    self.setNeedsStatusBarAppearanceUpdate.assertValueCount(0)
-    XCTAssertFalse(self.vm.outputs.prefersStatusBarHidden)
-
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.viewDidAppear(animated: true)
-
-    self.setNeedsStatusBarAppearanceUpdate.assertValueCount(1)
-    XCTAssertTrue(self.vm.outputs.prefersStatusBarHidden)
-  }
-
   func testNavigationBar() {
     self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
     self.vm.inputs.viewDidLoad()

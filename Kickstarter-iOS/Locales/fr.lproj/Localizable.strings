@@ -327,6 +327,8 @@
 "Pledged_on_date" = "<b>Engagement</b> du %{pledge_date}";
 "Popular" = "Tendances";
 "Popular_Projects" = "Les tendances";
+"Postal_code" = "Code postal";
+"Postcode" = "Code postal";
 "Preparing_your_personal_data" = "La préparation de vos données personnelles est en cours...";
 "Privacy" = "Vie privée";
 "Private_profile" = "Profil privé";
@@ -519,7 +521,7 @@
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Vous êtes connecté par Facebook (%{email}). Si vous souhaitez modifier vos identifiants Kickstarter, veuillez définir le mot de passe de ce compte.";
 "Youre_offline" = "Vous êtes hors ligne. Dès que votre appareil se sera reconnecté, naviguez dans l'application pour la rafraîchir.";
 "Youve_pledged_to_support_this_project" = "Vous vous êtes engagé à soutenir ce projet et sa campagne de financement n'est pas terminée.";
-"Zip_postal_code" = "Code postal";
+"Zip_code" = "Code postal";
 "accessibility.dashboard.buttons.activity" = "Activité";
 "accessibility.dashboard.buttons.activity_hint" = "Ouvre l'activité.";
 "accessibility.dashboard.buttons.messages" = "Messages";
