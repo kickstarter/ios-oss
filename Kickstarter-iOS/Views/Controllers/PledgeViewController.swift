@@ -6,13 +6,13 @@ import UIKit
 final class PledgeViewController: UIViewController {
   // MARK: - Properties
 
-  private lazy var descriptionSectionSeparator: UIView = {
+  private lazy var descriptionSectionSeparatorView: UIView = {
     UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var sectionSeparators = {
-    [self.descriptionSectionSeparator, self.summarySectionSeparator]
+  private lazy var sectionSeparatorViews = {
+    [self.descriptionSectionSeparatorView, self.summarySectionSeparator]
   }()
 
   private lazy var summarySectionSeparator: UIView = {
@@ -30,7 +30,7 @@ final class PledgeViewController: UIViewController {
   }()
 
   private lazy var pledgeDescriptionSectionViews = {
-    [self.pledgeDescriptionViewController.view, self.descriptionSectionSeparator]
+    [self.pledgeDescriptionViewController.view, self.descriptionSectionSeparatorView]
   }()
 
   private lazy var pledgeDescriptionViewController = {
@@ -146,7 +146,7 @@ final class PledgeViewController: UIViewController {
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
 
-    self.sectionSeparators.forEach { view in
+    self.sectionSeparatorViews.forEach { view in
       _ = view.heightAnchor.constraint(equalToConstant: 1)
         |> \.isActive .~ true
 
@@ -168,7 +168,7 @@ final class PledgeViewController: UIViewController {
     _ = self.rootStackView
       |> rootStackViewStyle
 
-    _ = self.sectionSeparators
+    _ = self.sectionSeparatorViews
       ||> separatorStyleDark
   }
 
