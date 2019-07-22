@@ -37,8 +37,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     self.spacerIsHidden = stackViewAndSpacerAreHidden
     self.stackViewIsHidden = stackViewAndSpacerAreHidden
     self.titleText = pledgeState.map { $0.titleLabel }.skipNil()
-    self.subtitleText = Signal.combineLatest(project, backing.skipNil(), pledgeState)
-      .map(subtitle(project:backing:pledgeState:))
+    self.subtitleText = Signal.combineLatest(project, pledgeState)
+      .map(subtitle(project:pledgeState:))
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -75,7 +75,10 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
   }
 }
 
-private func subtitle(project: Project, backing: Backing, pledgeState: PledgeStateCTAType) -> String {
+private func subtitle(project: Project, pledgeState: PledgeStateCTAType) -> String {
+
+  guard let backing = project.personalization.backing else { return "" }
+
   if pledgeState == .fix { return pledgeState.subtitleLabel ?? "" }
 
   let basicPledge = formattedAmount(for: backing)

@@ -77,8 +77,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map { project, _ in project }
 
     self.configurePledgeCTAView = project
-      .filter { _ in featureNativeCheckoutEnabled() }
       .skip(first: 1)
+      .filter { _ in featureNativeCheckoutEnabled() }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
