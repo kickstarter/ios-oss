@@ -11,7 +11,7 @@ final class PledgeViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var sectionSeparators = {
+  private lazy var sectionSeparatorViews = {
     [self.descriptionSectionSeparator, self.summarySectionSeparator]
   }()
 
@@ -146,7 +146,7 @@ final class PledgeViewController: UIViewController {
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
 
-    self.sectionSeparators.forEach { view in
+    self.sectionSeparatorViews.forEach { view in
       _ = view.heightAnchor.constraint(equalToConstant: 1)
         |> \.isActive .~ true
 
@@ -168,7 +168,7 @@ final class PledgeViewController: UIViewController {
     _ = self.rootStackView
       |> rootStackViewStyle
 
-    _ = self.sectionSeparators
+    _ = self.sectionSeparatorViews
       ||> separatorStyleDark
   }
 
