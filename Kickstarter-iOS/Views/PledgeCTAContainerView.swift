@@ -54,8 +54,8 @@ final class PledgeCTAContainerView: UIView {
       |> ksr_addArrangedSubviewsToStackView()
 
     NSLayoutConstraint.activate([
-      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.height),
-      self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.width),
+      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
+      self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
       self.rootStackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor)
     ])
 
