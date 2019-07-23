@@ -130,13 +130,13 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Backing.lens.status .~ .errored
     let backedProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.state .~ .live
 
-    [Device.phone4inch, Device.phone5_5inch, Device.phone5_8inch].forEach { device in
-      let language = Language.en
-      withEnvironment(
+ combos(Language.allLanguages, Device.allCases).forEach { language, device in
+  withEnvironment(
         apiService: MockService(fetchProjectResponse: backedProject),
         config: config, currentUser: currentUser, language: language
       ) {
