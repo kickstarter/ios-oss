@@ -42,10 +42,9 @@ final class PledgeDescriptionViewController: UIViewController {
       |> \.delegate .~ self
       |> \.isUserInteractionEnabled .~ false
   }()
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   private let viewModel = PledgeDescriptionViewModel()
-
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   // MARK: - Lifecycle
 
