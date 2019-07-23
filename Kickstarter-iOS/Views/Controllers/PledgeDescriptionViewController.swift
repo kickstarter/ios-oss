@@ -5,10 +5,6 @@ import Prelude
 import UIKit
 
 private enum Layout {
-  enum Description {
-    static let spacing: CGFloat = 10
-  }
-
   enum RewardThumbnail {
     static let maxHeight: CGFloat = 130
     static let minWidth: CGFloat = 100
@@ -310,9 +306,9 @@ private let descriptionStackViewStyle: StackViewStyle = { (stackView: UIStackVie
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.distribution .~ UIStackView.Distribution.fill
-    |> \.spacing .~ Layout.Description.spacing
+    |> \.spacing .~ Styles.grid(1)
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Layout.Description.spacing)
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(1))
 }
 
 private let expandIconImageViewStyle: ImageViewStyle = { (imageView: UIImageView) in
