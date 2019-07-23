@@ -4,9 +4,7 @@ import PassKit
 import Prelude
 import UIKit
 
-<<<<<<< HEAD:Kickstarter-iOS/Views/Controllers/PledgePaymentMethodsViewController.swift
-final class PledgePaymentMethodsViewController: UIViewController {
-=======
+
 private enum Layout {
   enum Card {
     static let height: CGFloat = 136
@@ -14,37 +12,31 @@ private enum Layout {
   }
 }
 
-final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
->>>>>>> 1972b6037... Created PledgePaymentMethodsDataSource:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
+final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
-  private var collectionViewHeightAnchor: NSLayoutConstraint!
 
-<<<<<<< HEAD:Kickstarter-iOS/Views/Controllers/PledgePaymentMethodsViewController.swift
-<<<<<<< HEAD:Kickstarter-iOS/Views/Controllers/PledgePaymentMethodsViewController.swift
+  private let viewModel = PledgePaymentMethodsCellViewModel()
+
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
-=======
-  private lazy var layout: UICollectionViewLayout = {
-=======
+
+  private lazy var collectionView: UICollectionView = {
+    UICollectionView(frame: .zero, collectionViewLayout: self.layout)
+      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var collectionViewHeightAnchor: NSLayoutConstraint = {
+    self.collectionView.heightAnchor.constraint(equalToConstant: 0)
+      |> \.priority .~ .defaultHigh
+  }()
+
+  private let dataSource = PledgePaymentMethodsDataSource()
+
   private lazy var layout: UICollectionViewFlowLayout = {
->>>>>>> 2e7382862... CreditCard cell now supports dynamic type:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
     UICollectionViewFlowLayout()
       |> \.scrollDirection .~ .horizontal
       |> \.estimatedItemSize .~ CGSize(width: Layout.Card.width, height: Layout.Card.height)
   }()
->>>>>>> b92d0b042... Fixed layout on credit card cell:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
-
-  private lazy var collectionView: UICollectionView = {
-    UICollectionView(frame: .zero, collectionViewLayout: self.layout)
-  }()
-
-<<<<<<< HEAD:Kickstarter-iOS/Views/Controllers/PledgePaymentMethodsViewController.swift
-  private let layout: UICollectionViewLayout = {
-    UICollectionViewFlowLayout()
-      |> \.scrollDirection .~ .horizontal
-  }()
-=======
-  private let dataSource = PledgePaymentMethodsDataSource()
->>>>>>> 1972b6037... Created PledgePaymentMethodsDataSource:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
@@ -54,65 +46,45 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
     self.configureSubviews()
   }
 
   private func configureSubviews() {
-<<<<<<< HEAD:Kickstarter-iOS/Views/Controllers/PledgePaymentMethodsViewController.swift
+    _ = ([self.applePayButton, self.titleLabel, self.collectionView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.applePayButton, self.titleLabel, self.collectionView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
+    _ = self.collectionView
+      |> \.dataSource .~ self.dataSource
 
-<<<<<<< HEAD:Kickstarter-iOS/Views/Controllers/PledgePaymentMethodsViewController.swift
+    self.collectionView.register(PledgeCreditCardCell.self)
+
     NSLayoutConstraint.activate([
+      self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.collectionViewHeightAnchor,        self.collectionViewHeightAnchor,
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-    ])
+      ])
 
     self.applePayButton.addTarget(
       self,
       action: #selector(PledgePaymentMethodsViewController.applePayButtonTapped),
       for: .touchUpInside
     )
-=======
-=======
-    _ = self
-      |> \.accessibilityElements .~ self.subviews
+  }
 
-    _ = ([self.titleLabel, self.collectionView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.updateConstraints()
+  }
 
-    _ = (self.rootStackView, self.contentView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
->>>>>>> 2e7382862... CreditCard cell now supports dynamic type:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
-    _ = self.collectionView
-      |> \.dataSource .~ self.dataSource
-      |> \.delegate .~ self
-
-    self.collectionView.register(PledgeCreditCardCell.self)
-
-<<<<<<< HEAD:Kickstarter-iOS/Views/Controllers/PledgePaymentMethodsViewController.swift
-<<<<<<< HEAD:Kickstarter-iOS/Views/Controllers/PledgePaymentMethodsViewController.swift
-    self.collectionView.heightAnchor.constraint(equalToConstant: 140)
->>>>>>> 1972b6037... Created PledgePaymentMethodsDataSource:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
-=======
-    let heightConstraint = self.collectionView.heightAnchor
-      .constraint(greaterThanOrEqualToConstant: Layout.Card.height + Styles.grid(2))
-
-    NSLayoutConstraint.activate([heightConstraint])
->>>>>>> b92d0b042... Fixed layout on credit card cell:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
-=======
-    self.collectionViewHeightAnchor = self.collectionView.heightAnchor.constraint(
-      greaterThanOrEqualToConstant: Layout.Card.height + Styles.grid(2)
-    )
-
-    NSLayoutConstraint.activate([self.collectionViewHeightAnchor])
->>>>>>> 2e7382862... CreditCard cell now supports dynamic type:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.updateConstraints()
+    self.collectionView.reloadData()
   }
 
   // MARK: - Styles
@@ -145,63 +117,36 @@ final class PledgePaymentMethodsCell: UITableViewCell, ValueCell {
 
   override func bindViewModel() {
     super.bindViewModel()
+    self.viewModel.outputs.reloadData
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dataSource.load(creditCards: $0)
+        self?.collectionView.reloadData()
+        self?.collectionView.layoutIfNeeded()
+      }
   }
 
-<<<<<<< HEAD:Kickstarter-iOS/Views/Controllers/PledgePaymentMethodsViewController.swift
   // MARK: - Configuration
 
-  internal func configureWith(value _: [GraphUserCreditCard]) {}
+  internal func configureWith(value: [GraphUserCreditCard.CreditCard]) {
+    self.viewModel.inputs.configureWith(value)
+  }
 
   // MARK: - Actions
 
   @objc private func applePayButtonTapped() {
     print("Apple Pay tapped")
   }
-}
 
-extension PledgePaymentMethodsViewController: UICollectionViewDataSource {
-  func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-    return 1
-=======
-  internal func configureWith(value: [GraphUserCreditCard.CreditCard]) {
-    self.dataSource.load(creditCards: value)
-    self.collectionView.reloadData()
->>>>>>> 1972b6037... Created PledgePaymentMethodsDataSource:Kickstarter-iOS/Views/Cells/PledgePaymentMethodsCell.swift
-  }
+  // MARK: - Private Functions
 
-  func collectionView(
-    _ collectionView: UICollectionView,
-    willDisplay cell: UICollectionViewCell,
-    forItemAt indexPath: IndexPath) {
-    if let cell = cell as? PledgeCreditCardCell, cell.delegate == nil {
-      cell.delegate = self
+  private func updateConstraints() {
+    self.collectionView.layoutIfNeeded()
+    let firstIndexPath = IndexPath(item: 0, section: 0)
+    if let cellAttributes = self.collectionView.layoutAttributesForItem(at: firstIndexPath) {
+      let itemHeight = cellAttributes.frame.height
+      let contentInset = self.collectionView.contentInset
+      self.collectionViewHeightAnchor.constant = itemHeight + contentInset.top + contentInset.bottom
     }
-  }
-}
-
-extension PledgePaymentMethodsCell: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    print(collectionView)
-  }
-}
-
-extension PledgePaymentMethodsCell: PledgeCreditCardCellDelegate {
-
-  func didUpdateContentSize(_ cell: PledgeCreditCardCell, size: CGSize) {
-    self.updateConstraints(size)
-
-  }
-
-  private func updateConstraints(_ size: CGSize) {
-
-    NSLayoutConstraint.deactivate([self.collectionViewHeightAnchor])
-
-    self.collectionViewHeightAnchor =
-      self.collectionView.heightAnchor.constraint(equalToConstant: size.height + Styles.grid(2))
-
-    NSLayoutConstraint.activate([self.collectionViewHeightAnchor])
-
-    self.setNeedsLayout()
-    self.layoutIfNeeded()
   }
 }

@@ -126,7 +126,9 @@ final class PledgeViewController: UIViewController {
         self?.pledgeDescriptionViewController.configureWith(value: data.reward)
         self?.pledgeAmountViewController.configureWith(value: data)
         self?.pledgeShippingLocationViewController.configureWith(value: data)
-        self?.pledgePaymentMethodsViewController.configureWith(value: [GraphUserCreditCard.template])
+        self?.pledgePaymentMethodsViewController.configureWith(
+          value: GraphUserCreditCard.template.storedCards.nodes
+        )
       }
 
     self.viewModel.outputs.configureSummaryViewControllerWithData

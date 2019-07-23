@@ -14,10 +14,6 @@ private enum Layout {
   }
 }
 
-internal protocol PledgeCreditCardCellDelegate: class {
-   func didUpdateContentSize(_ cell: PledgeCreditCardCell, size: CGSize)
-}
-
 final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
@@ -33,7 +29,6 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-  public var delegate: PledgeCreditCardCellDelegate?
 
   // MARK: - Lifecycle
 
@@ -62,13 +57,20 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
 
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+      |> ksr_constrainViewToMarginsInParent()
 
     NSLayoutConstraint.activate([
       self.imageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
       self.selectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
       self.selectButton.widthAnchor.constraint(equalToConstant: Layout.Button.width)
     ])
+  }
+
+  override func preferredLayoutAttributesFitting(
+    _ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+    super.preferredLayoutAttributesFitting(layoutAttributes)
+    layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+    return layoutAttributes
   }
 
   // MARK: - Styles
@@ -128,9 +130,5 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: value)
-    let size = self.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize,
-                                                         withHorizontalFittingPriority: .defaultHigh,
-                                                         verticalFittingPriority: .defaultLow)
-    self.delegate?.didUpdateContentSize(self, size: size)
   }
 }
