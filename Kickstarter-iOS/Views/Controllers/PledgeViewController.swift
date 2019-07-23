@@ -242,19 +242,19 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
 
 extension PledgeViewController: RewardPledgeTransitionAnimatorDelegate {
   func beginTransition(_ operation: UINavigationController.Operation) {
-    self.pledgeDescriptionViewController.beginTransition(operation)
+    self.descriptionViewController.beginTransition(operation)
   }
 
   func snapshotData(withContainerView view: UIView) -> RewardPledgeTransitionSnapshotData? {
-    return self.pledgeDescriptionViewController.snapshotData(withContainerView: view)
+    return self.descriptionViewController.snapshotData(withContainerView: view)
   }
 
   func destinationFrameData(withContainerView view: UIView) -> RewardPledgeTransitionDestinationFrameData? {
-    return self.pledgeDescriptionViewController.destinationFrameData(withContainerView: view)
+    return self.descriptionViewController.destinationFrameData(withContainerView: view)
   }
 
   func endTransition(_ operation: UINavigationController.Operation) {
-    self.pledgeDescriptionViewController.endTransition(operation)
+    self.descriptionViewController.endTransition(operation)
   }
 }
 

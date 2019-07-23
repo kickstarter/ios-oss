@@ -183,7 +183,6 @@
 		770E441521137F3700396D46 /* SettingsNotificationPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */; };
 		770E46252114E15D00396D46 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 770E45ED2114E15D00396D46 /* Crashlytics.framework */; };
 		771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */; };
-		77190061229836A9003DE830 /* RewardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77190060229836A9003DE830 /* RewardCellViewModel.swift */; };
 		771E3C632289DBA8003E7CF1 /* SheetOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */; };
 		7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7720BA6C22DE79260071FDA1 /* UIViewController+Presentation.swift */; };
 		7720BA7022E0DBD10071FDA1 /* InstantiableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7720BA6F22E0DBD00071FDA1 /* InstantiableTests.swift */; };
@@ -233,7 +232,6 @@
 		77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A3C53C219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift */; };
 		77A7B64321026CAE008D12C1 /* SettingsNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */; };
 		77A7B67B21026F4F008D12C1 /* SettingsNotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */; };
-		77B63DEA22A8712C00EDBBFC /* RewardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D8DBCC22A82C5C00454120 /* RewardCellViewModelTests.swift */; };
 		77BF99B722652C9500513CE3 /* MultiLineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BF99B622652C9500513CE3 /* MultiLineButton.swift */; };
 		77BFA0402295764F0000A550 /* DeprecatedCheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDE1F731D5926D80092D9A5 /* DeprecatedCheckoutViewModel.swift */; };
 		77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */; };
@@ -1120,8 +1118,6 @@
 		D7774466217A345D008D679F /* UpdateUserProfileMutation .swift in Sources */ = {isa = PBXBuildFile; fileRef = D77743E2217A2D67008D679F /* UpdateUserProfileMutation .swift */; };
 		D78E038E229305E90043E92F /* PledgeStateCTAType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78E0355229305E20043E92F /* PledgeStateCTAType.swift */; };
 		D78E039022930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78E038F22930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift */; };
-		D78E4E482188CB4300E99295 /* UIButton+HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78E4E472188CB4300E99295 /* UIButton+HapticFeedback.swift */; };
-		D78E4EE3218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78E4EE2218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift */; };
 		D79440572203A63300D0A747 /* CreatePaymentSourceEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79440562203A63300D0A747 /* CreatePaymentSourceEnvelope.swift */; };
 		D79440902208970E00D0A747 /* CreatePaymentSourceTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D794408F2208970E00D0A747 /* CreatePaymentSourceTemplate.swift */; };
 		D796867C20FE655300E54C61 /* SettingsFollowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */; };
@@ -1488,7 +1484,6 @@
 		770E441421137F3700396D46 /* SettingsNotificationPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNotificationPickerCell.xib; sourceTree = "<group>"; };
 		770E45ED2114E15D00396D46 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Frameworks/Fabric/Crashlytics.framework; sourceTree = "<group>"; };
 		771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsDataSourceTests.swift; sourceTree = "<group>"; };
-		77190060229836A9003DE830 /* RewardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellViewModel.swift; sourceTree = "<group>"; };
 		771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetOverlayViewController.swift; sourceTree = "<group>"; };
 		7720BA6C22DE79260071FDA1 /* UIViewController+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Presentation.swift"; sourceTree = "<group>"; };
 		7720BA6F22E0DBD00071FDA1 /* InstantiableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantiableTests.swift; sourceTree = "<group>"; };
@@ -1546,7 +1541,6 @@
 		77CD894821791B05003066DA /* ProjectStatsTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatsTemplate.swift; sourceTree = "<group>"; };
 		77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletContentViewControllerConversionTests.swift; sourceTree = "<group>"; };
 		77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCellType.swift; sourceTree = "<group>"; };
-		77D8DBCC22A82C5C00454120 /* RewardCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellViewModelTests.swift; sourceTree = "<group>"; };
 		77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserCreditCardTests.swift; sourceTree = "<group>"; };
 		77E44B7321823A56006446B8 /* ChangePasswordInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordInput.swift; sourceTree = "<group>"; };
 		77E6440020F64F0B005F6B38 /* HelpDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSource.swift; sourceTree = "<group>"; };
@@ -2362,8 +2356,6 @@
 		D777442E217A3382008D679F /* ChangeCurrencyInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCurrencyInput.swift; sourceTree = "<group>"; };
 		D78E0355229305E20043E92F /* PledgeStateCTAType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStateCTAType.swift; sourceTree = "<group>"; };
 		D78E038F22930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCTAContainerViewViewModelTests.swift; sourceTree = "<group>"; };
-		D78E4E472188CB4300E99295 /* UIButton+HapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+HapticFeedback.swift"; sourceTree = "<group>"; };
-		D78E4EE2218909DC00E99295 /* UIFeedbackGenerator+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFeedbackGenerator+Extensions.swift"; sourceTree = "<group>"; };
 		D79076F8207BC161008014EC /* CrossDissolveTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrossDissolveTransitionAnimator.swift; sourceTree = "<group>"; };
 		D79440562203A63300D0A747 /* CreatePaymentSourceEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceEnvelope.swift; sourceTree = "<group>"; };
 		D794408F2208970E00D0A747 /* CreatePaymentSourceTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePaymentSourceTemplate.swift; sourceTree = "<group>"; };
@@ -3358,8 +3350,6 @@
 				A7ED1FA21E831C5C00BFFA01 /* DeprecatedRewardCellViewModelTests.swift */,
 				A774684A1D6E400D007DCDFC /* DeprecatedRewardPledgeViewModel.swift */,
 				A7ED1F7E1E831C5C00BFFA01 /* DeprecatedRewardPledgeViewModelTests.swift */,
-				A75A9DBE1D6F3A3000603D1D /* DeprecatedRewardShippingPickerViewModel.swift */,
-				A7ED1FA31E831C5C00BFFA01 /* DeprecatedRewardShippingPickerViewModelTests.swift */,
 				A78851901D6C900000617930 /* DeprecatedWebViewModel.swift */,
 				A7ED1F8D1E831C5C00BFFA01 /* DeprecatedWebViewModelTests.swift */,
 				D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */,
@@ -3420,10 +3410,6 @@
 				D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */,
 				D63BBD34217FAB85007E01F0 /* PaymentMethodsViewModel.swift */,
 				D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */,
-				D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */,
-				D78E038F22930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift */,
-				3706408122A8A66E00889CBD /* PledgeAmountCellViewModel.swift */,
-				3706408322A8A68600889CBD /* PledgeAmountCellViewModelTests.swift */,
 				3706408122A8A66E00889CBD /* PledgeAmountViewModel.swift */,
 				3706408322A8A68600889CBD /* PledgeAmountViewModelTests.swift */,
 				77C93C1922C13DED005D3195 /* PledgeContinueViewModel.swift */,
@@ -3482,12 +3468,10 @@
 				8A8099EE22E2142C00373E66 /* RewardCardContainerViewModelTests.swift */,
 				8A8099ED22E2142C00373E66 /* RewardCardViewModel.swift */,
 				8A8099EF22E2142C00373E66 /* RewardCardViewModelTests.swift */,
-				77190060229836A9003DE830 /* RewardCellViewModel.swift */,
-				77D8DBCC22A82C5C00454120 /* RewardCellViewModelTests.swift */,
 				77EFBAE12268D44D00DA5C3C /* RewardsCollectionViewModel.swift */,
 				77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */,
-				A75A9DBE1D6F3A3000603D1D /* RewardShippingPickerViewModel.swift */,
-				A7ED1FA31E831C5C00BFFA01 /* RewardShippingPickerViewModelTests.swift */,
+				A75A9DBE1D6F3A3000603D1D /* DeprecatedRewardShippingPickerViewModel.swift */,
+				A7ED1FA31E831C5C00BFFA01 /* DeprecatedRewardShippingPickerViewModelTests.swift */,
 				D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */,
 				A7ED1F7B1E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift */,
 				A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */,
@@ -4385,7 +4369,6 @@
 				37280272226F880100E0ACBB /* CheckoutStyles.swift in Sources */,
 				013744F81D99A39B00E50C78 /* EmptyStatesViewModel.swift in Sources */,
 				D04AAC2E218BB70D00CF713E /* SettingsViewModel.swift in Sources */,
-				77190061229836A9003DE830 /* RewardCellViewModel.swift in Sources */,
 				D0247A961DF9F29100D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift in Sources */,
 				0156B3751D0F7524000C4252 /* ActivityFriendFollowCellViewModel.swift in Sources */,
 				013F2FDC1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift in Sources */,
@@ -4769,7 +4752,6 @@
 				D04AACA9218BB72100CF713E /* LoadingBarButtonItemViewModelTests.swift in Sources */,
 				A78355B91E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift in Sources */,
 				A7ED1FF01E831C5C00BFFA01 /* MessagesViewModelTests.swift in Sources */,
-				77B63DEA22A8712C00EDBBFC /* RewardCellViewModelTests.swift in Sources */,
 				A7ED1FC21E831C5C00BFFA01 /* CommentCellViewModelTests.swift in Sources */,
 				A7ED1FC91E831C5C00BFFA01 /* ActivitiesViewModelTests.swift in Sources */,
 				A7ED1FD21E831C5C00BFFA01 /* LoginToutViewModelTests.swift in Sources */,
