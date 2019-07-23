@@ -19,10 +19,16 @@ final class SheetOverlayViewController: UIViewController {
     self.offset = offset
 
     super.init(nibName: nil, bundle: nil)
-    
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = self
+        |> \.modalPresentationStyle .~ .overCurrentContext
+        |> \.modalTransitionStyle .~ .crossDissolve
+    } else {
     _ = self
       |> \.modalPresentationStyle .~ .custom
       |> \.transitioningDelegate .~ self
+    }
   }
 
   required init?(coder _: NSCoder) {
@@ -53,26 +59,17 @@ final class SheetOverlayViewController: UIViewController {
       |> \.masksToBounds .~ true
       |> \.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
 
-    let isRegular = UIScreen.main.traitCollection.isRegularRegular
     let portraitWidth: CGFloat = min(self.view.bounds.height, self.view.bounds.width)
-
-//
-//    if self.preferredContentSize != .zero {
-//      portraitWidth = min(self.preferredContentSize.height, self.preferredContentSize.width)
-//    } else {
-//      portraitWidth = min(UIScreen.main.bounds.height, UIScreen.main.bounds.width)
-//    }
 
     NSLayoutConstraint.activate([
       childView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
       childView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      childView.widthAnchor.constraint(equalToConstant: portraitWidth),
       childView.topAnchor.constraint(
         equalTo: self.view.topAnchor,
         constant: offset
       )
     ])
-
-    childView.widthAnchor.constraint(equalToConstant: portraitWidth).isActive = true
   }
 }
 
