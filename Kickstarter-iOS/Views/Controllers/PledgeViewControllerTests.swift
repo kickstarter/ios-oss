@@ -1,11 +1,19 @@
 @testable import Kickstarter_Framework
-import XCTest
+@testable import Library
+import UIKit
 
-final class PledgeViewControllerTests: XCTestCase {
-  func testViewDidLoadAddsChildTableViewController() {
-    let vc = PledgeViewController.instantiate()
-    _ = vc.view
+final class PledgeViewControllerTests: TestCase {
+  override func setUp() {
+    super.setUp()
 
-    XCTAssertTrue(vc.children.first is PledgeTableViewController)
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
+    UIView.setAnimationsEnabled(false)
+  }
+
+  override func tearDown() {
+    AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+
+    super.tearDown()
   }
 }

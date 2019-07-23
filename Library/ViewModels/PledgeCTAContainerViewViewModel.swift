@@ -10,9 +10,11 @@ public protocol PledgeCTAContainerViewViewModelInputs {
 public protocol PledgeCTAContainerViewViewModelOutputs {
   var buttonBackgroundColor: Signal<UIColor, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
-  var rewardTitle: Signal<String, Never> { get }
+  var buttonTitleTextColor: Signal<UIColor, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
+  var subtitleText: Signal<String, Never> { get }
+  var titleText: Signal<String, Never> { get }
 }
 
 public protocol PledgeCTAContainerViewViewModelType {
@@ -24,36 +26,19 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
     let project = self.projectProperty.signal.skipNil()
-    let projectAndBacking = project
-      .map { project -> (Project, Backing)? in
-        guard let backing = project.personalization.backing else {
-          return nil
-        }
-
-        return (project, backing)
-      }.skipNil()
-
-    let pledgeState = project
-      .map(pledgeStateButton(project:))
-
-    let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
+    let backing = project.map { $0.personalization.backing }
+    let pledgeState = Signal.combineLatest(project, backing)
+      .map(pledgeCTA(project:backing:))
 
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
+    self.buttonTitleTextColor = pledgeState.map { $0.buttonTitleTextColor }
     self.buttonBackgroundColor = pledgeState.map { $0.buttonBackgroundColor }
+    let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
     self.spacerIsHidden = stackViewAndSpacerAreHidden
     self.stackViewIsHidden = stackViewAndSpacerAreHidden
-
-    self.rewardTitle = projectAndBacking
-      .map { (project, backing) -> String in
-        let basicPledge = formattedAmount(for: backing)
-        let amount = Format.formattedCurrency(
-          basicPledge,
-          country: project.country,
-          omitCurrencyCode: project.stats.omitUSCurrencyCode
-        ).trimmed()
-        guard let rewardTitle = backing.reward?.title else { return "\(amount)" }
-        return "\(amount) • \(rewardTitle)"
-      }
+    self.titleText = pledgeState.map { $0.titleLabel }.skipNil()
+    self.subtitleText = Signal.combineLatest(project, pledgeState)
+      .map(subtitle(project:pledgeState:))
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -66,24 +51,48 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
   public let buttonBackgroundColor: Signal<UIColor, Never>
   public let buttonTitleText: Signal<String, Never>
-  public let rewardTitle: Signal<String, Never>
+  public let buttonTitleTextColor: Signal<UIColor, Never>
   public let spacerIsHidden: Signal<Bool, Never>
   public let stackViewIsHidden: Signal<Bool, Never>
+  public let subtitleText: Signal<String, Never>
+  public let titleText: Signal<String, Never>
 }
 
 // MARK: - Functions
 
-private func pledgeStateButton(project: Project) -> PledgeStateCTAType {
-  let projectIsBacked = project.personalization.isBacking ?? false
-
-  switch project.state {
-  case .live:
-    return projectIsBacked ? .manage : .pledge
-  case .canceled, .failed, .suspended, .successful:
-    return projectIsBacked ? .viewBacking : .viewRewards
-  default:
-    return .viewRewards
+private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
+  guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
+    return project.state == .live ? PledgeStateCTAType.pledge : PledgeStateCTAType.viewRewards
   }
+
+  switch (project.state, projectBacking.status) {
+  case (.live, .errored):
+    return .fix
+  case (.live, _):
+    return .manage
+  case (_, _):
+    return .viewBacking
+  }
+}
+
+private func subtitle(project: Project, pledgeState: PledgeStateCTAType) -> String {
+  guard let backing = project.personalization.backing else { return "" }
+
+  if pledgeState == .fix { return pledgeState.subtitleLabel ?? "" }
+
+  let basicPledge = formattedAmount(for: backing)
+  let amount = Format.formattedCurrency(
+    basicPledge,
+    country: project.country,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode
+  )
+
+  let reward = backing.reward
+    ?? project.rewards.filter { $0.id == backing.rewardId }.first
+    ?? Reward.noReward
+
+  guard let rewardTitle = reward.title else { return "\(amount)" }
+  return "\(amount) • \(rewardTitle)"
 }
 
 private func formattedAmount(for backing: Backing) -> String {

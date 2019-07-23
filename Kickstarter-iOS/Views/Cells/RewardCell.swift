@@ -12,6 +12,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
   weak var delegate: RewardCellDelegate?
+  private let pillDataSource = PillCollectionViewDataSource()
   private let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
   private let baseStackView: UIStackView = {
@@ -32,21 +33,78 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var pillCollectionView: UICollectionView = {
+    UICollectionView(
+      frame: .zero,
+      collectionViewLayout: PillLayout(
+        minimumInteritemSpacing: Styles.grid(1),
+        minimumLineSpacing: Styles.grid(1),
+        sectionInset: UIEdgeInsets(topBottom: Styles.grid(1))
+      )
+    )
+      |> \.backgroundColor .~ UIColor.white
+      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
+      |> \.dataSource .~ self.pillDataSource
+      |> \.delegate .~ self
+      |> \.isHidden .~ true
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var pillCollectionViewHeightConstraint: NSLayoutConstraint = {
+    self.pillCollectionView.heightAnchor.constraint(equalToConstant: 0)
+      |> \.priority .~ .defaultHigh
+  }()
+
   private let pledgeButtonLayoutGuide = UILayoutGuide()
   private let priceStackView = UIStackView(frame: .zero)
   private let rewardTitleLabel = UILabel(frame: .zero)
   private let scrollView = UIScrollView(frame: .zero)
+  private let stateImageView: UIImageView = {
+    UIImageView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let stateImageViewContainer: UIView = {
+    UIView(frame: .zero)
+      |> \.isHidden .~ true
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let titleStackView = UIStackView(frame: .zero)
+
+  // MARK: - Lifecycle
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
     self.configureViews()
+    self.setupConstraints()
     self.bindViewModel()
+
+    self.pledgeButton.addTarget(self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside)
+    self.containerView.addGestureRecognizer(
+      UITapGestureRecognizer(target: self, action: #selector(self.rewardCardTapped))
+    )
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    self.updateCollectionViewConstraints()
+  }
+
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    self.updateCollectionViewConstraints()
+    self.pillCollectionView.reloadData()
+  }
+
+  // MARK: - Styles
 
   override func bindStyles() {
     super.bindStyles()
@@ -111,7 +169,18 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.minimumPriceConversionLabel
       |> baseRewardLabelStyle
       |> minimumPriceConversionLabelStyle
+
+    _ = self.stateImageView
+      |> stateImageViewStyle
+
+    _ = self.stateImageViewContainer
+      |> stateImageViewContainerStyle
+
+    _ = self.titleStackView
+      |> titleStackViewStyle
   }
+
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
@@ -144,6 +213,9 @@ final class RewardCell: UICollectionViewCell, ValueCell {
         _ = self?.containerView
           ?|> \.isUserInteractionEnabled .~ isUserInteractionEnabled
       }
+
+    self.pillDataSource.load(["Ends in 3 days", "16 left"])
+    self.pillCollectionView.reloadData()
   }
 
   // MARK: - Private Helpers
@@ -172,13 +244,19 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = (self.pledgeButtonLayoutGuide, self.containerView)
       |> ksr_addLayoutGuideToView()
 
-    _ = ([
-      self.priceStackView, self.rewardTitleLabel, self.includedItemsStackView,
-      self.descriptionStackView
-    ], self.baseStackView)
+    let baseSubviews: [UIView] = [
+      self.titleStackView,
+      self.priceStackView,
+      self.rewardTitleLabel,
+      self.includedItemsStackView,
+      self.descriptionStackView,
+      self.pillCollectionView
+    ]
+
+    _ = (baseSubviews, self.baseStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([minimumPriceLabel, minimumPriceConversionLabel], self.priceStackView)
+    _ = ([self.minimumPriceLabel, self.minimumPriceConversionLabel], self.priceStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.includedItemsTitleLabel], self.includedItemsStackView)
@@ -190,20 +268,24 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = (self.pledgeButton, self.contentView)
       |> ksr_addSubviewToParent()
 
-    self.setupConstraints()
+    _ = (self.stateImageView, self.stateImageViewContainer)
+      |> ksr_addSubviewToParent()
 
-    self.pledgeButton.addTarget(self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside)
+    _ = ([self.priceStackView, self.stateImageViewContainer], self.titleStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.rewardCardTapped))
-    self.containerView.addGestureRecognizer(tapGestureRecognizer)
+    self.pillCollectionView.register(PillCell.self)
   }
 
   private func setupConstraints() {
+    // Margins
+    let containerMargins = self.containerView.layoutMarginsGuide
+    let contentMargins = self.contentView.layoutMarginsGuide
+
+    // Constraints
     let containerConstraints = [
       self.containerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)
     ]
-
-    let containerMargins = self.containerView.layoutMarginsGuide
 
     let baseStackViewConstraints = [
       self.baseStackView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
@@ -211,14 +293,24 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.baseStackView.topAnchor.constraint(equalTo: containerMargins.topAnchor)
     ]
 
-    let topConstraint = self.pledgeButton.topAnchor
-      .constraint(equalTo: self.pledgeButtonLayoutGuide.topAnchor)
-      |> \.priority .~ .defaultLow
+    let stateImageViewContraints = [
+      self.stateImageView.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
+      self.stateImageView.heightAnchor.constraint(equalTo: self.stateImageView.widthAnchor),
+      self.stateImageView.centerXAnchor.constraint(equalTo: self.stateImageViewContainer.centerXAnchor),
+      self.stateImageView.centerYAnchor.constraint(equalTo: self.stateImageViewContainer.centerYAnchor),
+      self.stateImageViewContainer.widthAnchor.constraint(equalToConstant: Styles.grid(5)),
+      self.stateImageViewContainer.heightAnchor.constraint(equalTo: self.stateImageViewContainer.widthAnchor)
+    ]
 
-    let contentMargins = self.contentView.layoutMarginsGuide
+    let pillCollectionViewConstraints = [
+      self.pillCollectionView.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
+      self.pillCollectionView.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
+      self.pillCollectionViewHeightConstraint
+    ]
 
     let pledgeButtonConstraints = [
-      topConstraint,
+      self.pledgeButton.topAnchor.constraint(equalTo: self.pledgeButtonLayoutGuide.topAnchor)
+        |> \.priority .~ .defaultLow,
       self.pledgeButton.leftAnchor.constraint(equalTo: contentMargins.leftAnchor),
       self.pledgeButton.rightAnchor.constraint(equalTo: contentMargins.rightAnchor),
       self.pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: contentMargins.bottomAnchor),
@@ -229,17 +321,26 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
       self.pledgeButtonLayoutGuide.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
       self.pledgeButtonLayoutGuide.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      // swiftlint:disable:next line_length
-      self.pledgeButtonLayoutGuide.topAnchor.constraint(equalTo: self.baseStackView.bottomAnchor, constant: Styles.grid(3)),
+      self.pledgeButtonLayoutGuide.topAnchor.constraint(
+        equalTo: self.baseStackView.bottomAnchor, constant: Styles.grid(3)
+      ),
       self.pledgeButtonLayoutGuide.heightAnchor.constraint(equalTo: pledgeButton.heightAnchor)
     ]
 
     NSLayoutConstraint.activate([
       containerConstraints,
       baseStackViewConstraints,
+      pillCollectionViewConstraints,
       pledgeButtonConstraints,
-      pledgeButtonLayoutGuideConstraints
+      pledgeButtonLayoutGuideConstraints,
+      stateImageViewContraints
     ].flatMap { $0 })
+  }
+
+  private func updateCollectionViewConstraints() {
+    self.pillCollectionView.layoutIfNeeded()
+
+    self.pillCollectionViewHeightConstraint.constant = self.pillCollectionView.contentSize.height
   }
 
   fileprivate func load(items: [String]) {
@@ -272,6 +373,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
   }
 
+  // MARK: - Configuration
+
   internal func configureWith(value: (Project, Either<Reward, Backing>)) {
     self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
   }
@@ -284,6 +387,21 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
   @objc func rewardCardTapped() {
     self.viewModel.inputs.rewardCardTapped()
+  }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension RewardCell: UICollectionViewDelegate {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt _: IndexPath
+  ) {
+    guard let pillCell = cell as? PillCell else { return }
+
+    _ = pillCell.label
+      |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
   }
 }
 
@@ -351,4 +469,21 @@ private let sectionBodyLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ .ksr_callout()
+}
+
+private let stateImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.image .~ UIImage(named: "checkmark-reward")
+    |> \.tintColor .~ UIColor.ksr_blue_500
+}
+
+private let stateImageViewContainerStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_blue_500.withAlphaComponent(0.06)
+    |> \.layer.cornerRadius .~ 15
+}
+
+private let titleStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.alignment .~ UIStackView.Alignment.center
 }
