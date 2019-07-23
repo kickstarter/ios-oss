@@ -31,8 +31,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     super.init(frame: frame)
 
     self.configureViews()
-
-    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
