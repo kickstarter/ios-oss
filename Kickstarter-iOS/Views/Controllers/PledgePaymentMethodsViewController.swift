@@ -65,7 +65,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
     NSLayoutConstraint.activate([
       self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.collectionViewHeightAnchor,        self.collectionViewHeightAnchor,
+      self.collectionViewHeightAnchor,
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
       ])
 
