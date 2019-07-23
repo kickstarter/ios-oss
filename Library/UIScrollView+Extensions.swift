@@ -24,7 +24,14 @@ extension UIScrollView {
       delay: 0.0,
       options: change.options,
       animations: { [weak self] in
-        self?.contentInset.bottom = change.frame.height
+        switch change.notificationName {
+        case UIResponder.keyboardWillShowNotification:
+          self?.contentInset.bottom = change.frame.height
+        case UIResponder.keyboardWillHideNotification:
+          self?.contentInset.bottom = .zero
+        default:
+          return
+        }
       }, completion: nil
     )
   }

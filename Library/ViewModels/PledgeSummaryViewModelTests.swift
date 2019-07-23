@@ -4,8 +4,8 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-internal final class PledgeSummaryCellViewModelTests: TestCase {
-  private let vm: PledgeSummaryCellViewModelType = PledgeSummaryCellViewModel()
+internal final class PledgeSummaryViewModelTests: TestCase {
+  private let vm: PledgeSummaryViewModelType = PledgeSummaryViewModel()
 
   private let notifyDelegateOpenHelpType = TestObserver<HelpType, Never>()
 

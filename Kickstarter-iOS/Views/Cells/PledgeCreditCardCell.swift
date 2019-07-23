@@ -20,7 +20,7 @@ internal protocol PledgeCreditCardCellDelegate: class {
 
 final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
-
+  private var contentSize: CGSize = .zero
   private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
 
   private let adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -63,7 +63,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
 
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+      |> ksr_constrainViewToMarginsInParent()
 
     NSLayoutConstraint.activate([
       self.imageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
@@ -72,6 +72,16 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
     ])
   }
 
+  override func preferredLayoutAttributesFitting(
+    _ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+    super.preferredLayoutAttributesFitting(layoutAttributes)
+    layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+    return layoutAttributes
+  }
+
+  override func willTransition(from oldLayout: UICollectionViewLayout, to newLayout: UICollectionViewLayout) {
+    print(oldLayout)
+  }
   // MARK: - Styles
 
   override func bindStyles() {
@@ -124,16 +134,13 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
       .observeValues { [weak self] image in
         _ = self?.imageView
           ?|> \.image .~ image
+
+        self!.delegate?.didUpdateContentSize(self!, size: self!.contentSize)
+
       }
   }
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: value)
-    let size = self.contentView.systemLayoutSizeFitting(
-      UIView.layoutFittingCompressedSize,
-      withHorizontalFittingPriority: .defaultHigh,
-      verticalFittingPriority: .defaultLow
-    )
-    self.delegate?.didUpdateContentSize(self, size: size)
   }
 }
