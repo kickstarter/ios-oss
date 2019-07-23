@@ -20,7 +20,10 @@ final class PledgeDescriptionViewController: UIViewController {
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var descriptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var expandIconImageView: UIImageView = { UIImageView(frame: .zero) }()
+  private lazy var expandIconImageView: UIImageView = {
+    UIImageView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
   private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
   private lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
     let longPressGestureRecognizer = UILongPressGestureRecognizer(
@@ -41,9 +44,13 @@ final class PledgeDescriptionViewController: UIViewController {
     RewardCardContainerView(frame: .zero)
       |> \.delegate .~ self
       |> \.isUserInteractionEnabled .~ false
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private let viewModel = PledgeDescriptionViewModel()
 
@@ -94,9 +101,6 @@ final class PledgeDescriptionViewController: UIViewController {
 
     _ = self.rewardCardContainerMaskView
       |> rewardCardContainerMaskViewStyle
-
-    _ = self.rewardCardContainerView
-      |> rewardCardContainerViewStyle
   }
 
   override func viewDidLayoutSubviews() {
@@ -297,7 +301,6 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> \.alignment .~ UIStackView.Alignment.top
     |> \.axis .~ NSLayoutConstraint.Axis.horizontal
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.spacing .~ Styles.grid(3)
 }
 
@@ -312,7 +315,6 @@ private let descriptionStackViewStyle: StackViewStyle = { (stackView: UIStackVie
 
 private let expandIconImageViewStyle: ImageViewStyle = { (imageView: UIImageView) in
   imageView
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.image .~ image(named: "icon-expansion")
 }
 
@@ -342,11 +344,6 @@ private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> 
   return textView
 }
 
-private let rewardCardViewStyle: ViewStyle = { (view: UIView) -> UIView in
-  view
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-}
-
 private let rewardCardContainerMaskViewStyle: ViewStyle = { (view: UIView) -> UIView in
   view
     |> roundedStyle(cornerRadius: Styles.grid(1))
@@ -355,11 +352,6 @@ private let rewardCardContainerMaskViewStyle: ViewStyle = { (view: UIView) -> UI
 private let rewardCardContainerShadowViewStyle: ViewStyle = { (view: UIView) -> UIView in
   view
     |> rewardCardShadowStyle
-}
-
-private let rewardCardContainerViewStyle: ViewStyle = { (view: UIView) -> UIView in
-  view
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 
 private func attributedLearnMoreText() -> NSAttributedString? {
@@ -426,6 +418,8 @@ extension PledgeDescriptionViewController: UIGestureRecognizerDelegate {
     return false
   }
 }
+
+// MARK: - Reward card thumbnail size calculations
 
 private func rewardCardThumbnailViewSize(
   with cardContainerViewSize: CGSize,
