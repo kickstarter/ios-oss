@@ -213,7 +213,7 @@ public func formattedAmountForRewardOrBacking(
   }
 }
 
-internal func classNameWithoutModule(_ `class`: AnyClass) -> String {
+internal func classNameWithoutModule(_ class: AnyClass) -> String {
   return `class`
     .description()
     .components(separatedBy: ".")
