@@ -4,19 +4,37 @@ import PassKit
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum Card {
+    static let height: CGFloat = 136
+    static let width: CGFloat = 240
+  }
+}
+
 final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
+
+  private let viewModel = PledgePaymentMethodsViewModel()
 
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
 
   private lazy var collectionView: UICollectionView = {
     UICollectionView(frame: .zero, collectionViewLayout: self.layout)
-      |> \.dataSource .~ self
+      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let layout: UICollectionViewLayout = {
+  private lazy var collectionViewHeightAnchor: NSLayoutConstraint = {
+    self.collectionView.heightAnchor.constraint(equalToConstant: 0)
+      |> \.priority .~ .defaultHigh
+  }()
+
+  private let dataSource = PledgePaymentMethodsDataSource()
+
+  private lazy var layout: UICollectionViewFlowLayout = {
     UICollectionViewFlowLayout()
       |> \.scrollDirection .~ .horizontal
+      |> \.estimatedItemSize .~ CGSize(width: Layout.Card.width, height: Layout.Card.height)
   }()
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -27,19 +45,24 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
     self.configureSubviews()
   }
 
   private func configureSubviews() {
+    _ = ([self.applePayButton, self.titleLabel, self.collectionView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.applePayButton, self.titleLabel, self.collectionView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
+    _ = self.collectionView
+      |> \.dataSource .~ self.dataSource
 
     NSLayoutConstraint.activate([
+      self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.collectionViewHeightAnchor,
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
@@ -48,6 +71,17 @@ final class PledgePaymentMethodsViewController: UIViewController {
       action: #selector(PledgePaymentMethodsViewController.applePayButtonTapped),
       for: .touchUpInside
     )
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.updateConstraints()
+  }
+
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.updateConstraints()
+    self.collectionView.reloadData()
   }
 
   // MARK: - Styles
@@ -63,6 +97,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     _ = self.collectionView
       |> \.backgroundColor .~ .white
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     _ = self.rootStackView
       |> checkoutStackViewStyle
@@ -79,32 +114,35 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+    self.viewModel.outputs.reloadData
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dataSource.load(creditCards: $0)
+        self?.collectionView.reloadData()
+        self?.collectionView.layoutIfNeeded()
+    }
   }
 
   // MARK: - Configuration
 
-  internal func configureWith(value _: [GraphUserCreditCard]) {}
+  internal func configureWith(value: [GraphUserCreditCard.CreditCard]) {
+    self.viewModel.inputs.configureWith(value)
+  }
 
   // MARK: - Actions
 
   @objc private func applePayButtonTapped() {
     print("Apple Pay tapped")
   }
-}
 
-extension PledgePaymentMethodsViewController: UICollectionViewDataSource {
-  func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-    return 1
-  }
-
-  func collectionView(
-    _ collectionView: UICollectionView,
-    cellForItemAt indexPath: IndexPath
-  ) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: UICollectionViewCell.defaultReusableId,
-      for: indexPath
-    )
-    return cell
+  // MARK: - Private Functions
+  private func updateConstraints() {
+    self.collectionView.layoutIfNeeded()
+    let firstIndexPath = IndexPath(item: 0, section: 0)
+    if let cellAttributes = self.collectionView.layoutAttributesForItem(at: firstIndexPath) {
+      let itemHeight = cellAttributes.frame.height
+      let contentInset = self.collectionView.contentInset
+      self.collectionViewHeightAnchor.constant = itemHeight + contentInset.top + contentInset.bottom
+    }
   }
 }
