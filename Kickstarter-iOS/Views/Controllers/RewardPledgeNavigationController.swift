@@ -1,6 +1,6 @@
 import UIKit
 
-final class CheckoutNavigationController: UINavigationController {
+final class RewardPledgeNavigationController: UINavigationController {
   // MARK: - Lifecycle
 
   override func viewDidLoad() {
@@ -10,7 +10,7 @@ final class CheckoutNavigationController: UINavigationController {
   }
 }
 
-extension CheckoutNavigationController: UINavigationControllerDelegate {
+extension RewardPledgeNavigationController: UINavigationControllerDelegate {
   func navigationController(
     _: UINavigationController,
     animationControllerFor operation: UINavigationController.Operation,
