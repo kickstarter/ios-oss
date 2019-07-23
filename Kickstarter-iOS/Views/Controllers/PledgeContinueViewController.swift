@@ -70,22 +70,10 @@ final class PledgeContinueViewController: UIViewController {
 
   private func goToLoginSignup(with intent: LoginIntent) {
     let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
+
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
-    
-    // TODO: helper for centralizing this iPad logic?
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = navigationController
-        |> \.modalPresentationStyle .~ .formSheet
-        |> \.modalTransitionStyle .~ .crossDissolve
-      
-      self.present(navigationController, animated: true)
-    } else {
-      let sheetOverlayViewController = SheetOverlayViewController(
-        child: navigationController,
-        offset: 50 // TODO: decide with danny how best to calculate this offset based on what's being presented
-      )
-      
-      self.present(sheetOverlayViewController, animated: true)
-    }
+    let navigationBarHeight = navigationController.navigationBar.bounds.height
+
+    self.presentViewControllerWithSheetOverlay(navigationController, offset: navigationBarHeight)
   }
 }

@@ -128,7 +128,7 @@ final class PledgeDescriptionViewController: UIViewController {
     self.viewModel.outputs.presentTrustAndSafety
       .observeForUI()
       .observeValues { [weak self] in
-        self?.presentHelpWebViewController(with: .trust)
+        self?.presentHelpWebViewController(with: .trust, presentationStyle: .pageSheet)
       }
   }
 
