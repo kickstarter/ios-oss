@@ -374,6 +374,8 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(animated: false)
       self.vm.inputs.viewDidAppear(animated: false)
 
+      self.scheduler.advance()
+
       self.configurePledgeCTAView.assertValues([project])
     }
   }
