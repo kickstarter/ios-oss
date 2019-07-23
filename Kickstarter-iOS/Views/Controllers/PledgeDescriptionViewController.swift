@@ -52,8 +52,6 @@ final class PledgeDescriptionViewController: UIViewController {
     super.viewDidLoad()
 
     self.configureSubviews()
-
-    self.bindViewModel()
   }
 
   // MARK: - Styles
