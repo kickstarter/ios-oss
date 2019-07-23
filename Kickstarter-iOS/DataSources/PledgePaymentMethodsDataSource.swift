@@ -5,7 +5,6 @@ import Prelude
 import UIKit
 
 final class PledgePaymentMethodsDataSource: ValueCellDataSource {
-
   func load(creditCards: [GraphUserCreditCard.CreditCard]) {
     self.set(
       values: creditCards,

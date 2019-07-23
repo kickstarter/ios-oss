@@ -38,7 +38,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
     self.bindViewModel()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -67,7 +67,8 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   }
 
   override func preferredLayoutAttributesFitting(
-    _ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+    _ layoutAttributes: UICollectionViewLayoutAttributes
+  ) -> UICollectionViewLayoutAttributes {
     super.preferredLayoutAttributesFitting(layoutAttributes)
     layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
     return layoutAttributes
@@ -108,7 +109,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
     _ = self.adaptableStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    )
+      )
       |> \.spacing .~ Styles.grid(1)
 
     _ = self.rootStackView
@@ -125,7 +126,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
       .observeValues { [weak self] image in
         _ = self?.imageView
           ?|> \.image .~ image
-    }
+      }
   }
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {

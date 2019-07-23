@@ -16,9 +16,9 @@ public protocol PledgePaymentMethodsViewModelType {
 }
 
 public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelType,
-PledgePaymentMethodsViewModelInputs, PledgePaymentMethodsViewModelOutputs {
+  PledgePaymentMethodsViewModelInputs, PledgePaymentMethodsViewModelOutputs {
   public init() {
-    self.reloadData = configureWithSignal
+    self.reloadData = self.configureWithSignal
       .map { $0 }
   }
 

@@ -4,7 +4,6 @@ import PassKit
 import Prelude
 import UIKit
 
-
 private enum Layout {
   enum Card {
     static let height: CGFloat = 136
@@ -67,7 +66,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.collectionViewHeightAnchor,
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-      ])
+    ])
 
     self.applePayButton.addTarget(
       self,
