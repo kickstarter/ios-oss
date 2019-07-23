@@ -71,7 +71,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
   public var outputs: RewardCardContainerViewModelOutputs { return self }
 }
 
-// MARK: - Private Helpers
+// MARK: - Functions
 
 private func backingReward(fromProject project: Project) -> Reward? {
   guard let backing = project.personalization.backing else {

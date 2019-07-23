@@ -56,8 +56,11 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
     _ = containerView
       |> \.backgroundColor .~ fromView.backgroundColor
 
-    containerView.addSubview(toView)
-    containerView.addSubview(fromView)
+    _ = (toView, containerView)
+      |> ksr_addSubviewToParent()
+    _ = (fromView, containerView)
+      |> ksr_addSubviewToParent()
+
     containerView.layoutIfNeeded()
 
     let (snapshotView, snapshotSourceFrame, maskFrame) = snapshotData
@@ -149,8 +152,10 @@ public class RewardPledgePopTransitionAnimator: NSObject, UIViewControllerAnimat
     snapshotView.frame = snapshotSourceFrame
     addMaskToRewardCardContainerView(snapshotView, maskFrame: maskFrame)
 
-    containerView.addSubview(toView)
-    containerView.addSubview(fromView)
+    _ = (toView, containerView)
+      |> ksr_addSubviewToParent()
+    _ = (fromView, containerView)
+      |> ksr_addSubviewToParent()
 
     let (snapshotShadowContainerView, expandIconImageView) = shadowContainerViewAndExpandIconImageView(
       with: snapshotData,
@@ -214,13 +219,18 @@ private func shadowContainerViewAndExpandIconImageView(
     |> rewardCardShadowStyle
     |> \.layer.shadowOpacity .~ Float(operation == .push ? 0 : Constant.Animation.shadowOpacity)
 
-  containerView.addSubview(snapshotShadowContainerView)
-  snapshotShadowContainerView.addSubview(snapshotView)
+  _ = (snapshotShadowContainerView, containerView)
+    |> ksr_addSubviewToParent()
+  _ = (snapshotView, snapshotShadowContainerView)
+    |> ksr_addSubviewToParent()
+
   snapshotView.frame = snapshotShadowContainerView.bounds
 
   let expandIconImageView = UIImageView(image: image(named: "icon-expansion"))
   expandIconImageView.alpha = operation == .push ? 0 : 1
-  snapshotShadowContainerView.addSubview(expandIconImageView)
+
+  _ = (expandIconImageView, snapshotShadowContainerView)
+    |> ksr_addSubviewToParent()
 
   updateExpandIconImageViewFrame(
     expandIconImageView,
@@ -270,8 +280,10 @@ private func forceTransition(
 
   let containerView = transitionContext.containerView
 
-  containerView.addSubview(fromView)
-  containerView.addSubview(toView)
+  _ = (toView, containerView)
+    |> ksr_addSubviewToParent()
+  _ = (fromView, containerView)
+    |> ksr_addSubviewToParent()
 
   fromView.alpha = 0
   toView.alpha = 1
