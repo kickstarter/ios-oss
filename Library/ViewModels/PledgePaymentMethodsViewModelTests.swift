@@ -4,16 +4,14 @@ import Foundation
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 
-final class PledgePaymentMethodsCellViewModelTests: TestCase {
-  private let vm: PledgePaymentMethodsCellViewModelType = PledgePaymentMethodsCellViewModel()
+final class PledgePaymentMethodsViewModelTests: TestCase {
+  private let vm: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
 
   private let reloadData = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
-  private let updateConstraints = TestObserver<CGSize, Never>()
 
   override func setUp() {
     super.setUp()
     self.vm.outputs.reloadData.observe(self.reloadData.observer)
-    self.vm.outputs.updateConstraints.observe(self.updateConstraints.observer)
   }
 
   func testReloadData() {
@@ -21,11 +19,5 @@ final class PledgePaymentMethodsCellViewModelTests: TestCase {
     let cards = GraphUserCreditCard.template.storedCards.nodes
     self.vm.inputs.configureWith(cards)
     self.reloadData.assertValue(cards)
-  }
-
-  func testUpdateConstraintsEmitsAfter_ChangingContentSize() {
-    self.updateConstraints.assertDidNotEmitValue()
-    self.vm.inputs.didUpdateContentSize(.zero)
-    self.updateConstraints.assertValue(.zero)
   }
 }

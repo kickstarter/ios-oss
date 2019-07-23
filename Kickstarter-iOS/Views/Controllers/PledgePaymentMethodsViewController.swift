@@ -15,7 +15,7 @@ private enum Layout {
 final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
 
-  private let viewModel = PledgePaymentMethodsCellViewModel()
+  private let viewModel = PledgePaymentMethodsViewModel()
 
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
 

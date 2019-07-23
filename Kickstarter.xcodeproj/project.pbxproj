@@ -1041,8 +1041,8 @@
 		D6AE52251FD1B3F600BEC788 /* RootCategoriesEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE52241FD1B3F600BEC788 /* RootCategoriesEnvelope.swift */; };
 		D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */; };
 		D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */; };
-		D6AF790B22DE1E380005464A /* PledgePaymentMethodsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF790A22DE1E380005464A /* PledgePaymentMethodsCellViewModel.swift */; };
-		D6AF790D22DE2A1E0005464A /* PledgePaymentMethodsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF790C22DE2A1E0005464A /* PledgePaymentMethodsCellViewModelTests.swift */; };
+		D6AF790B22DE1E380005464A /* PledgePaymentMethodsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF790A22DE1E380005464A /* PledgePaymentMethodsViewModel.swift */; };
+		D6AF790D22DE2A1E0005464A /* PledgePaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF790C22DE2A1E0005464A /* PledgePaymentMethodsViewModelTests.swift */; };
 		D6AF790F22DE33C70005464A /* PledgePaymentMethodsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AF790E22DE33C70005464A /* PledgePaymentMethodsDataSourceTests.swift */; };
 		D6B4D9BF209B88F3002C7B68 /* PushNotificationdialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */; };
 		D6B4EFC6210686270079159D /* SettingsNewslettersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */; };
@@ -2273,8 +2273,8 @@
 		D6AE52261FD1B41200BEC788 /* RootCategoriesEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootCategoriesEnvelope.swift; path = lenses/RootCategoriesEnvelope.swift; sourceTree = "<group>"; };
 		D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEnvelope.swift; sourceTree = "<group>"; };
 		D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64Tests.swift"; sourceTree = "<group>"; };
-		D6AF790A22DE1E380005464A /* PledgePaymentMethodsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsCellViewModel.swift; sourceTree = "<group>"; };
-		D6AF790C22DE2A1E0005464A /* PledgePaymentMethodsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsCellViewModelTests.swift; sourceTree = "<group>"; };
+		D6AF790A22DE1E380005464A /* PledgePaymentMethodsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewModel.swift; sourceTree = "<group>"; };
+		D6AF790C22DE2A1E0005464A /* PledgePaymentMethodsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewModelTests.swift; sourceTree = "<group>"; };
 		D6AF790E22DE33C70005464A /* PledgePaymentMethodsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSourceTests.swift; sourceTree = "<group>"; };
 		D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationdialogTests.swift; sourceTree = "<group>"; };
 		D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewModel.swift; sourceTree = "<group>"; };
@@ -3414,8 +3414,8 @@
 				D78E038F22930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift */,
 				D77594DB226F9C9B005EE69B /* PledgeDescriptionViewModel.swift */,
 				D775953B22725289005EE69B /* PledgeDescriptionViewModelTests.swift */,
-				D6AF790A22DE1E380005464A /* PledgePaymentMethodsCellViewModel.swift */,
-				D6AF790C22DE2A1E0005464A /* PledgePaymentMethodsCellViewModelTests.swift */,
+				D6AF790A22DE1E380005464A /* PledgePaymentMethodsViewModel.swift */,
+				D6AF790C22DE2A1E0005464A /* PledgePaymentMethodsViewModelTests.swift */,
 				3706408522A8A6D700889CBD /* PledgeShippingLocationViewModel.swift */,
 				3706408722A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift */,
 				D0237C2522BD7B540092C792 /* PledgeSummaryViewModel.swift */,
@@ -4359,7 +4359,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				77BFA0402295764F0000A550 /* DeprecatedCheckoutViewModel.swift in Sources */,
-				D6AF790B22DE1E380005464A /* PledgePaymentMethodsCellViewModel.swift in Sources */,
+				D6AF790B22DE1E380005464A /* PledgePaymentMethodsViewModel.swift in Sources */,
 				D79F0F7521068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift in Sources */,
 				37280272226F880100E0ACBB /* CheckoutStyles.swift in Sources */,
 				013744F81D99A39B00E50C78 /* EmptyStatesViewModel.swift in Sources */,
@@ -4773,7 +4773,7 @@
 				3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */,
 				D6B4D9BF209B88F3002C7B68 /* PushNotificationdialogTests.swift in Sources */,
 				D04AACAD218BB72100CF713E /* SettingsNotificationPickerViewModelTests.swift in Sources */,
-				D6AF790D22DE2A1E0005464A /* PledgePaymentMethodsCellViewModelTests.swift in Sources */,
+				D6AF790D22DE2A1E0005464A /* PledgePaymentMethodsViewModelTests.swift in Sources */,
 				A7ED1FBF1E831C5C00BFFA01 /* SortPagerViewModelTests.swift in Sources */,
 				D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */,
 				A7ED1FCB1E831C5C00BFFA01 /* ActivityFriendBackingViewModelTests.swift in Sources */,
