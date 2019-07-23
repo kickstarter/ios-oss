@@ -51,7 +51,6 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
       .map { Strings.Ending_in_last_four(last_four: $0.lastFour) }
 
     self.expirationDateText = self.cardProperty.signal.skipNil()
-      .map { $0.formattedExpirationDate }
       .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
   }
 
@@ -68,8 +67,8 @@ CreditCardCellViewModelOutputs, CreditCardCellViewModelType {
 
   public var inputs: CreditCardCellViewModelInputs { return self }
   public var outputs: CreditCardCellViewModelOutputs { return self }
+}
 
-  private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage? {
-    return image(named: card.imageName)
-  }
+private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage? {
+  return image(named: card.imageName)
 }
