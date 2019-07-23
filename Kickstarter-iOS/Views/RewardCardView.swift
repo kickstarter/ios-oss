@@ -367,7 +367,7 @@ private let stateImageViewContainerStyle: ViewStyle = { view in
 
 private let titleStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.alignment .~ UIStackView.Alignment.center
+    |> \.alignment .~ UIStackView.Alignment.top
 }
 
 // MARK: - UICollectionViewDelegate

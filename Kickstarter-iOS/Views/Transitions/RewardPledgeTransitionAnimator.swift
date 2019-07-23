@@ -29,8 +29,10 @@ private enum Constant {
 }
 
 public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+  private let animator = UIViewPropertyAnimator(duration: 0, timingParameters: springTimingParams())
+
   public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
-    return 0 // Unused due to UISpringTimingParameters
+    return self.animator.duration
   }
 
   public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -83,8 +85,6 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
     toView.frame = containerView.bounds
       .offsetBy(dx: 0, dy: Styles.grid(10))
 
-    let animator = UIViewPropertyAnimator(duration: 0, timingParameters: springTimingParams())
-
     let shadowAnimation = newShadowAnimation(for: operation)
 
     animator.addAnimations {
@@ -105,7 +105,7 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
       toView.alpha = 1
     }
 
-    animator.addCompletion { _ in
+    self.animator.addCompletion { _ in
       snapshotShadowContainerView.removeFromSuperview()
 
       toVC.endTransition(operation)
@@ -113,13 +113,15 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
       transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
     }
 
-    animator.startAnimation()
+    self.animator.startAnimation()
   }
 }
 
 public class RewardPledgePopTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+  private let animator = UIViewPropertyAnimator(duration: 0, timingParameters: springTimingParams())
+
   public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
-    return 0 // Unused due to UISpringTimingParameters
+    return self.animator.duration
   }
 
   public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -166,8 +168,6 @@ public class RewardPledgePopTransitionAnimator: NSObject, UIViewControllerAnimat
 
     let (destinationFrame, destinationMask) = destinationFrameData
 
-    let animator = UIViewPropertyAnimator(duration: 0, timingParameters: springTimingParams())
-
     let shadowAnimation = newShadowAnimation(for: operation)
 
     animator.addAnimations {
@@ -189,7 +189,7 @@ public class RewardPledgePopTransitionAnimator: NSObject, UIViewControllerAnimat
       toView.alpha = 1
     }
 
-    animator.addCompletion { _ in
+    self.animator.addCompletion { _ in
       snapshotShadowContainerView.removeFromSuperview()
 
       fromVC.endTransition(operation)
@@ -197,7 +197,7 @@ public class RewardPledgePopTransitionAnimator: NSObject, UIViewControllerAnimat
       transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
     }
 
-    animator.startAnimation()
+    self.animator.startAnimation()
   }
 }
 
