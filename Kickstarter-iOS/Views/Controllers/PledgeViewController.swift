@@ -25,44 +25,44 @@ final class PledgeViewController: UIViewController {
       |> \.delegate .~ self
   }()
 
-  private lazy var pledgeContinueViewController = {
+  private lazy var continueViewController = {
     PledgeContinueViewController.instantiate()
   }()
 
-  private lazy var pledgeDescriptionSectionViews = {
-    [self.pledgeDescriptionViewController.view, self.descriptionSectionSeparator]
+  private lazy var descriptionSectionViews = {
+    [self.descriptionViewController.view, self.descriptionSectionSeparator]
   }()
 
-  private lazy var pledgeDescriptionViewController = {
+  private lazy var descriptionViewController = {
     PledgeDescriptionViewController.instantiate()
   }()
 
-  private lazy var pledgeInputsSectionViews = {
-    [self.pledgeAmountViewController.view, self.pledgeShippingLocationViewController.view]
+  private lazy var inputsSectionViews = {
+    [self.pledgeAmountViewController.view, self.shippingLocationViewController.view]
   }()
 
-  private lazy var pledgeLoginSectionViews = {
-    [self.pledgeContinueViewController.view]
+  private lazy var loginSectionViews = {
+    [self.continueViewController.view]
   }()
 
-  private lazy var pledgePaymentMethodsSectionViews = {
-    [self.pledgePaymentMethodsViewController.view]
+  private lazy var paymentMethodsSectionViews = {
+    [self.paymentMethodsViewController.view]
   }()
 
-  private lazy var pledgePaymentMethodsViewController = {
+  private lazy var paymentMethodsViewController = {
     PledgePaymentMethodsViewController.instantiate()
   }()
 
-  private lazy var pledgeShippingLocationViewController = {
+  private lazy var shippingLocationViewController = {
     PledgeShippingLocationViewController.instantiate()
       |> \.delegate .~ self
   }()
 
-  private lazy var pledgeSummarySectionViews = {
-    [self.summarySectionSeparator, self.pledgeSummaryViewController.view]
+  private lazy var summarySectionViews = {
+    [self.summarySectionSeparator, self.summaryViewController.view]
   }()
 
-  private lazy var pledgeSummaryViewController = {
+  private lazy var summaryViewController = {
     PledgeSummaryViewController.instantiate()
   }()
 
@@ -113,20 +113,20 @@ final class PledgeViewController: UIViewController {
 
   private func configureChildViewControllers() {
     let childViewControllers = [
-      self.pledgeDescriptionViewController,
+      self.descriptionViewController,
       self.pledgeAmountViewController,
-      self.pledgeShippingLocationViewController,
-      self.pledgeSummaryViewController,
-      self.pledgeContinueViewController,
-      self.pledgePaymentMethodsViewController
+      self.shippingLocationViewController,
+      self.summaryViewController,
+      self.continueViewController,
+      self.paymentMethodsViewController
     ]
 
     let arrangedSubviews = [
-      self.pledgeDescriptionSectionViews,
-      self.pledgeInputsSectionViews,
-      self.pledgeSummarySectionViews,
-      self.pledgeLoginSectionViews,
-      self.pledgePaymentMethodsSectionViews
+      self.descriptionSectionViews,
+      self.inputsSectionViews,
+      self.summarySectionViews,
+      self.loginSectionViews,
+      self.paymentMethodsSectionViews
     ]
     .flatMap { $0 }
     .compact()
@@ -180,16 +180,16 @@ final class PledgeViewController: UIViewController {
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.pledgeDescriptionViewController.configureWith(value: data.reward)
+        self?.descriptionViewController.configureWith(value: data.reward)
         self?.pledgeAmountViewController.configureWith(value: data)
-        self?.pledgeShippingLocationViewController.configureWith(value: data)
-        self?.pledgePaymentMethodsViewController.configureWith(value: [GraphUserCreditCard.template])
+        self?.shippingLocationViewController.configureWith(value: data)
+        self?.paymentMethodsViewController.configureWith(value: [GraphUserCreditCard.template])
       }
 
     self.viewModel.outputs.configureSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] project, pledgeTotal in
-        self?.pledgeSummaryViewController.configureWith(value: (project, pledgeTotal))
+        self?.summaryViewController.configureWith(value: (project, pledgeTotal))
       }
 
     self.sessionStartedObserver = NotificationCenter.default
@@ -203,10 +203,10 @@ final class PledgeViewController: UIViewController {
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
       }
 
-    self.pledgeShippingLocationViewController.view.rac.hidden
+    self.shippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
-    self.pledgeContinueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
-    self.pledgePaymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
+    self.continueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
+    self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
   }
 
   // MARK: - Actions
