@@ -11,6 +11,7 @@ private enum Layout {
 
   enum RewardThumbnail {
     static let maxHeight: CGFloat = 130
+    static let minWidth: CGFloat = 100
   }
 }
 
@@ -24,6 +25,7 @@ final class PledgeDescriptionViewController: UIViewController {
     UIImageView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
   private lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
     let longPressGestureRecognizer = UILongPressGestureRecognizer(
@@ -428,12 +430,10 @@ private func rewardCardThumbnailViewSize(
   let width = cardContainerViewSize.width
   let height = cardContainerViewSize.height
 
-  let minWidth = CGFloat(100)
-
   let maxWidth = parentWidth / 4.5
   let aspectRatio = height / width
 
-  let newWidth = min(maxWidth, max(width / 3, minWidth))
+  let newWidth = min(maxWidth, max(width / 3, Layout.RewardThumbnail.minWidth))
   let newHeight = newWidth * aspectRatio
 
   return .init(width: newWidth, height: newHeight)
