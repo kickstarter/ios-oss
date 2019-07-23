@@ -87,7 +87,7 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
 
     let shadowAnimation = newShadowAnimation(for: operation)
 
-    animator.addAnimations {
+    self.animator.addAnimations {
       snapshotShadowContainerView.layer.add(shadowAnimation, forKey: shadowAnimation.keyPath.coalesceWith(""))
       snapshotShadowContainerView.frame = destinationFrame
       snapshotView.frame = snapshotShadowContainerView.bounds
@@ -170,7 +170,7 @@ public class RewardPledgePopTransitionAnimator: NSObject, UIViewControllerAnimat
 
     let shadowAnimation = newShadowAnimation(for: operation)
 
-    animator.addAnimations {
+    self.animator.addAnimations {
       snapshotShadowContainerView.layer.add(shadowAnimation, forKey: shadowAnimation.keyPath.coalesceWith(""))
       snapshotShadowContainerView.frame = destinationFrame
       snapshotView.frame = snapshotShadowContainerView.bounds
