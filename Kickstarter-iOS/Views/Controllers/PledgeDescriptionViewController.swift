@@ -42,6 +42,7 @@ final class PledgeDescriptionViewController: UIViewController {
       |> \.delegate .~ self
       |> \.isUserInteractionEnabled .~ false
   }()
+
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   private let viewModel = PledgeDescriptionViewModel()
@@ -52,6 +53,7 @@ final class PledgeDescriptionViewController: UIViewController {
     super.viewDidLoad()
 
     self.configureSubviews()
+    self.setupConstraints()
   }
 
   // MARK: - Styles
@@ -121,6 +123,15 @@ final class PledgeDescriptionViewController: UIViewController {
     _ = (self.rewardCardContainerView, self.rewardCardContainerMaskView)
       |> ksr_addSubviewToParent()
 
+    self.rewardCardContainerShadowView.addGestureRecognizer(self.longPressGestureRecognizer)
+
+    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.rewardCardTapped))
+    self.rewardCardContainerShadowView.addGestureRecognizer(tapGestureRecognizer)
+
+    self.configureStackView()
+  }
+
+  private func setupConstraints() {
     self.rewardCardContainerShadowViewWidthConstraint = self.rewardCardContainerShadowView.widthAnchor
       .constraint(equalToConstant: 0)
     self.rewardCardContainerShadowViewHeightConstraint = self.rewardCardContainerShadowView.heightAnchor
@@ -145,13 +156,6 @@ final class PledgeDescriptionViewController: UIViewController {
       ),
       self.rewardCardContainerView.topAnchor.constraint(equalTo: self.rewardCardContainerShadowView.topAnchor)
     ] + rewardCardContainerShadowViewConstraints)
-
-    self.rewardCardContainerShadowView.addGestureRecognizer(self.longPressGestureRecognizer)
-
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.rewardCardTapped))
-    self.rewardCardContainerShadowView.addGestureRecognizer(tapGestureRecognizer)
-
-    self.configureStackView()
   }
 
   private func configureStackView() {
@@ -195,7 +199,7 @@ final class PledgeDescriptionViewController: UIViewController {
 
   // MARK: - Actions
 
-  @objc func rewardCardTapped() {
+  @objc private func rewardCardTapped() {
     self.viewModel.inputs.rewardCardTapped()
   }
 
@@ -241,7 +245,7 @@ final class PledgeDescriptionViewController: UIViewController {
 
   // MARK: - Depress Transform
 
-  @objc func depress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+  @objc private func depress(_ gestureRecognizer: UILongPressGestureRecognizer) {
     let animator = UIViewPropertyAnimator(
       duration: CheckoutConstants.RewardCard.Transition.DepressAnimation.duration,
       curve: .linear
