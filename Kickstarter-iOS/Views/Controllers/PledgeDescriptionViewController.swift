@@ -98,9 +98,11 @@ final class PledgeDescriptionViewController: UIViewController {
   }
 
   private func configureStackView() {
-    NSLayoutConstraint.activate([
-      self.spacerView.heightAnchor.constraint(equalToConstant: Layout.SpacerView.height)
-    ])
+    let spacerViewHeightConstraint = self.spacerView.heightAnchor
+      .constraint(equalToConstant: Layout.SpacerView.height)
+    _ = spacerViewHeightConstraint
+      |> \.priority .~ .defaultLow
+      |> \.isActive .~ true
 
     let views = [
       self.spacerView,

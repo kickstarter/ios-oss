@@ -4,6 +4,10 @@ import Prelude
 import UIKit
 
 private enum Layout {
+  enum Card {
+    static let width: CGFloat = 240
+  }
+
   enum ImageView {
     static let width: CGFloat = 64
     static let height: CGFloat = 40
@@ -24,8 +28,8 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   private let expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let imageView: UIImageView = { UIImageView(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private let selectButton: MultiLineButton = {
-    MultiLineButton(type: .custom)
+  private let selectButton: UIButton = {
+    UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -57,19 +61,28 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    NSLayoutConstraint.activate([
-      self.imageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width),
-      self.selectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
-      self.selectButton.widthAnchor.constraint(equalToConstant: Layout.Button.width)
-      ])
-  }
+    let minTouchSizeConstraint = self.selectButton.heightAnchor
+      .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    _ = minTouchSizeConstraint
+      |> \.priority .~ .defaultHigh
 
-  override func preferredLayoutAttributesFitting(
-    _ layoutAttributes: UICollectionViewLayoutAttributes
-    ) -> UICollectionViewLayoutAttributes {
-    super.preferredLayoutAttributesFitting(layoutAttributes)
-    layoutAttributes.bounds.size.height = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-    return layoutAttributes
+    let imageViewWidthConstraint = self.imageView.widthAnchor
+      .constraint(equalToConstant: Layout.ImageView.width)
+    _ = imageViewWidthConstraint
+      |> \.priority .~ .defaultHigh
+
+    let rootStackViewWidthConstraint = self.rootStackView.widthAnchor
+      .constraint(equalToConstant: Layout.Card.width)
+    _ = rootStackViewWidthConstraint
+      |> \.priority .~ .defaultHigh
+
+    NSLayoutConstraint.activate([
+      rootStackViewWidthConstraint,
+      imageViewWidthConstraint,
+      minTouchSizeConstraint,
+    ])
+
+    self.setNeedsLayout()
   }
 
   // MARK: - Styles

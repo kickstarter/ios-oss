@@ -4,13 +4,6 @@ import PassKit
 import Prelude
 import UIKit
 
-private enum Layout {
-  enum Card {
-    static let height: CGFloat = 136
-    static let width: CGFloat = 240
-  }
-}
-
 final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
 
@@ -24,7 +17,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var collectionViewHeightAnchor: NSLayoutConstraint = {
+  private lazy var collectionViewHeightConstraint: NSLayoutConstraint = {
     self.collectionView.heightAnchor.constraint(equalToConstant: 0)
       |> \.priority .~ .defaultHigh
   }()
@@ -33,8 +26,9 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   private lazy var layout: UICollectionViewFlowLayout = {
     UICollectionViewFlowLayout()
+      |> \.sectionInset .~ UIEdgeInsets.zero
       |> \.scrollDirection .~ .horizontal
-      |> \.estimatedItemSize .~ CGSize(width: Layout.Card.width, height: Layout.Card.height)
+      |> \.estimatedItemSize .~ UICollectionViewFlowLayout.automaticSize
   }()
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -62,9 +56,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.collectionView.register(PledgeCreditCardCell.self)
 
     NSLayoutConstraint.activate([
-      self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.collectionViewHeightAnchor,
+      self.collectionViewHeightConstraint,
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
@@ -77,13 +69,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.updateConstraints()
-  }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    self.updateConstraints()
-    self.collectionView.reloadData()
+    self.updateCollectionViewConstraints()
   }
 
   // MARK: - Styles
@@ -138,13 +125,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   // MARK: - Private Functions
-  private func updateConstraints() {
+  private func updateCollectionViewConstraints() {
     self.collectionView.layoutIfNeeded()
-    let firstIndexPath = IndexPath(item: 0, section: 0)
-    if let cellAttributes = self.collectionView.layoutAttributesForItem(at: firstIndexPath) {
-      let itemHeight = cellAttributes.frame.height
-      let contentInset = self.collectionView.contentInset
-      self.collectionViewHeightAnchor.constant = itemHeight + contentInset.top + contentInset.bottom
-    }
+
+    self.collectionViewHeightConstraint.constant = self.collectionView.contentSize.height
+
+    self.view.setNeedsLayout()
   }
 }
