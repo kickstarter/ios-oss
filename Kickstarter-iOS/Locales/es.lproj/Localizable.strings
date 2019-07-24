@@ -133,6 +133,7 @@
 "Email_must_be_a_valid_email_address" = "El correo electrónico debe tener una dirección de correo electrónico válida.";
 "Email_notifications" = "Notificaciones por correo electrónico";
 "Email_unverified" = "Esta dirección de correo electrónico no está verificada.";
+"Ending_in_last_four" = "Número que termina en %{last_four}";
 "Ending_soon" = "Finaliza pronto";
 "Estimated_delivery" = "Entrega estimada:";
 "Estimated_delivery_of" = "Entrega estimada de";
