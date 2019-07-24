@@ -84,8 +84,8 @@ public let loginButtonStyle: ButtonStyle = { button in
   button
     |> neutralButtonStyle
     |> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.login_tout_back_intent_traditional_login_button()
-  }
+      Strings.login_tout_back_intent_traditional_login_button()
+    }
 }
 
 public let loginControllerStyle = baseControllerStyle()

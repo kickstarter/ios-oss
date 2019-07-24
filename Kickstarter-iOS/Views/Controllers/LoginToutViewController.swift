@@ -140,7 +140,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> baseLabelStyle
       |> UILabel.lens.font %~ { _ in
         self.bringCreativeProjectsToLifeLabel.isHidden ? UIFont.ksr_title2() : UIFont.ksr_subhead()
-    }
+      }
 
     _ = self.loginContextStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
