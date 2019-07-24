@@ -16,15 +16,13 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   internal let rewardCardContainerView = RewardCardContainerView(frame: .zero)
   private let scrollView = UIScrollView(frame: .zero)
   private lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
-    let longPressGestureRecognizer = UILongPressGestureRecognizer(
+    UILongPressGestureRecognizer(
       target: self, action: #selector(RewardCell.depress(_:))
     )
-    longPressGestureRecognizer.minimumPressDuration = CheckoutConstants.RewardCard.Transition
+      |> \.minimumPressDuration .~ CheckoutConstants.RewardCard.Transition
       .DepressAnimation.longPressMinimumDuration
-    longPressGestureRecognizer.delegate = self
-    longPressGestureRecognizer.cancelsTouchesInView = false
-
-    return longPressGestureRecognizer
+      |> \.delegate .~ self
+      |> \.cancelsTouchesInView .~ false
   }()
 
   override init(frame: CGRect) {
@@ -56,8 +54,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   }
 
   private func setupConstraints() {
-    self.rewardCardContainerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)
-      .isActive = true
+    _ = self.rewardCardContainerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)
+      |> \.isActive .~ true
 
     self.rewardCardContainerView.pinPledgeButton(to: self.contentView.layoutMarginsGuide)
   }
@@ -83,8 +81,10 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   }
 
   func cancelDepress() {
-    self.longPressGestureRecognizer.isEnabled = false
-    self.longPressGestureRecognizer.isEnabled = true
+    _ = self.longPressGestureRecognizer
+      |> \.isEnabled .~ false
+    _ = self.longPressGestureRecognizer
+      |> \.isEnabled .~ true
   }
 
   // MARK: - Depress Transform
@@ -105,7 +105,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
         transform = .identity
       }
 
-      self.transform = transform
+      _ = self
+        |> \.transform .~ transform
     }
 
     animator.startAnimation()

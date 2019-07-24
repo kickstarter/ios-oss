@@ -64,7 +64,8 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
     containerView.layoutIfNeeded()
 
     let (snapshotView, snapshotSourceFrame, maskFrame) = snapshotData
-    snapshotView.frame = snapshotSourceFrame
+    _ = snapshotView
+      |> \.frame .~ snapshotSourceFrame
 
     addMaskToRewardCardContainerView(snapshotView, maskFrame: maskFrame)
 
@@ -74,7 +75,8 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
       operation: operation
     )
 
-    toView.alpha = 0
+    _ = toView
+      |> \.alpha .~ 0
 
     toVC.beginTransition(operation)
     fromDelegate.beginTransition(operation)
@@ -85,27 +87,36 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
     }
     let (destinationFrame, destinationMask) = destinationFrameData
 
-    toView.frame = containerView.bounds
-      .offsetBy(dx: 0, dy: Styles.grid(10))
+    _ = toView
+      |> \.frame .~ containerView.bounds.offsetBy(dx: 0, dy: Styles.grid(10))
 
     let shadowAnimation = newShadowAnimation(for: operation)
 
     self.animator.addAnimations {
       snapshotShadowContainerView.layer.add(shadowAnimation, forKey: shadowAnimation.keyPath.coalesceWith(""))
-      snapshotShadowContainerView.frame = destinationFrame
-      snapshotView.frame = snapshotShadowContainerView.bounds
+
+      _ = snapshotShadowContainerView
+        |> \.frame .~ destinationFrame
+      _ = snapshotView
+        |> \.frame .~ snapshotShadowContainerView.bounds
+
       snapshotView.mask?.frame = destinationMask
 
-      expandIconImageView.alpha = 1
+      _ = expandIconImageView
+        |> \.alpha .~ 1
+
       updateExpandIconImageViewFrame(
         expandIconImageView,
         inSnapshotShadowContainerView: snapshotShadowContainerView
       )
 
-      fromView.alpha = 0
+      _ = fromView
+        |> \.alpha .~ 0
 
-      toView.frame = containerView.bounds
-      toView.alpha = 1
+      _ = toView
+        |> \.frame .~ containerView.bounds
+      _ = toView
+        |> \.alpha .~ 1
     }
 
     self.animator.addCompletion { _ in
@@ -149,7 +160,8 @@ public class RewardPledgePopTransitionAnimator: NSObject, UIViewControllerAnimat
       |> \.backgroundColor .~ toView.backgroundColor
 
     let (snapshotView, snapshotSourceFrame, maskFrame) = snapshotData
-    snapshotView.frame = snapshotSourceFrame
+    _ = snapshotView
+      |> \.frame .~ snapshotSourceFrame
     addMaskToRewardCardContainerView(snapshotView, maskFrame: maskFrame)
 
     _ = (toView, containerView)
@@ -177,21 +189,29 @@ public class RewardPledgePopTransitionAnimator: NSObject, UIViewControllerAnimat
 
     self.animator.addAnimations {
       snapshotShadowContainerView.layer.add(shadowAnimation, forKey: shadowAnimation.keyPath.coalesceWith(""))
-      snapshotShadowContainerView.frame = destinationFrame
-      snapshotView.frame = snapshotShadowContainerView.bounds
+
+      _ = snapshotShadowContainerView
+        |> \.frame .~ destinationFrame
+      _ = snapshotView
+        |> \.frame .~ snapshotShadowContainerView.bounds
+
       snapshotView.mask?.frame = destinationMask
 
-      expandIconImageView.alpha = 0
+      _ = expandIconImageView
+        |> \.alpha .~ 0
+
       updateExpandIconImageViewFrame(
         expandIconImageView,
         inSnapshotShadowContainerView: snapshotShadowContainerView
       )
 
-      fromView.alpha = 0
-      fromView.frame = containerView.bounds
-        .offsetBy(dx: 0, dy: Styles.grid(10))
+      _ = fromView
+        |> \.alpha .~ 0
+      _ = fromView
+        |> \.frame .~ containerView.bounds.offsetBy(dx: 0, dy: Styles.grid(10))
 
-      toView.alpha = 1
+      _ = toView
+        |> \.alpha .~ 1
     }
 
     self.animator.addCompletion { _ in
@@ -224,10 +244,11 @@ private func shadowContainerViewAndExpandIconImageView(
   _ = (snapshotView, snapshotShadowContainerView)
     |> ksr_addSubviewToParent()
 
-  snapshotView.frame = snapshotShadowContainerView.bounds
+  _ = snapshotView
+    |> \.frame .~ snapshotShadowContainerView.bounds
 
   let expandIconImageView = UIImageView(image: image(named: "icon-expansion"))
-  expandIconImageView.alpha = operation == .push ? 0 : 1
+    |> \.alpha .~ (operation == .push ? 0 : 1)
 
   _ = (expandIconImageView, snapshotShadowContainerView)
     |> ksr_addSubviewToParent()
@@ -241,13 +262,11 @@ private func shadowContainerViewAndExpandIconImageView(
 }
 
 private func newShadowAnimation(for operation: UINavigationController.Operation) -> CABasicAnimation {
-  let shadowAnimation = CABasicAnimation(keyPath: "shadowOpacity")
-  shadowAnimation.fillMode = .forwards
-  shadowAnimation.isRemovedOnCompletion = false
-  shadowAnimation.fromValue = operation == .push ? 0 : Constant.Animation.shadowOpacity
-  shadowAnimation.toValue = operation == .push ? Constant.Animation.shadowOpacity : 0
-
-  return shadowAnimation
+  return CABasicAnimation(keyPath: "shadowOpacity")
+    |> \.fillMode .~ .forwards
+    |> \.isRemovedOnCompletion .~ false
+    |> \.fromValue .~ (operation == .push ? 0 : Constant.Animation.shadowOpacity)
+    |> \.toValue .~ (operation == .push ? Constant.Animation.shadowOpacity : 0)
 }
 
 private func updateExpandIconImageViewFrame(
@@ -285,8 +304,10 @@ private func forceTransition(
   _ = (fromView, containerView)
     |> ksr_addSubviewToParent()
 
-  fromView.alpha = 0
-  toView.alpha = 1
+  _ = fromView
+    |> \.alpha .~ 0
+  _ = toView
+    |> \.alpha .~ 1
 
   toDelegate.endTransition(operation)
   fromDelegate.endTransition(operation)
@@ -299,7 +320,8 @@ private func addMaskToRewardCardContainerView(_ view: UIView, maskFrame: CGRect)
     |> roundedStyle(cornerRadius: Styles.grid(1))
     |> \.backgroundColor .~ .black
 
-  view.mask = mask
+  _ = view
+    |> \.mask .~ mask
 }
 
 private func springTimingParams() -> UISpringTimingParameters {

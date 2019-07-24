@@ -1,3 +1,4 @@
+import Prelude
 import UIKit
 
 final class RewardPledgeNavigationController: UINavigationController {
@@ -6,7 +7,8 @@ final class RewardPledgeNavigationController: UINavigationController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.delegate = self
+    _ = self
+      |> \.delegate .~ self
   }
 }
 

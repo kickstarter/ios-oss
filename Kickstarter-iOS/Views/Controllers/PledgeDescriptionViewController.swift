@@ -24,14 +24,13 @@ final class PledgeDescriptionViewController: UIViewController {
 
   private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
   private lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
-    let longPressGestureRecognizer = UILongPressGestureRecognizer(
+    UILongPressGestureRecognizer(
       target: self, action: #selector(PledgeDescriptionViewController.depress(_:))
     )
-    longPressGestureRecognizer.minimumPressDuration = CheckoutConstants.RewardCard.Transition
+      |> \.minimumPressDuration .~ CheckoutConstants.RewardCard.Transition
       .DepressAnimation.longPressMinimumDuration
-    longPressGestureRecognizer.delegate = self
-
-    return longPressGestureRecognizer
+      |> \.delegate .~ self
+      |> \.cancelsTouchesInView .~ false
   }()
 
   internal lazy var rewardCardContainerShadowView: UIView = { UIView(frame: .zero) }()
@@ -208,7 +207,8 @@ final class PledgeDescriptionViewController: UIViewController {
   // MARK: - Accessors
 
   public func setThumbnailHidden(_ hidden: Bool) {
-    self.rewardCardContainerShadowView.alpha = hidden ? 0 : 1
+    _ = self.rewardCardContainerShadowView
+      |> \.alpha .~ (hidden ? 0 : 1)
   }
 
   // MARK: - View model
@@ -263,7 +263,8 @@ final class PledgeDescriptionViewController: UIViewController {
         transform = .identity
       }
 
-      self.rewardCardContainerShadowView.transform = transform
+      _ = self.rewardCardContainerShadowView
+        |> \.transform .~ transform
     }
 
     animator.startAnimation()
