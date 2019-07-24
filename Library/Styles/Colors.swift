@@ -28,6 +28,7 @@ extension UIColor {
       ],
 
       "Green": [
+        200: .ksr_green_200,
         400: .ksr_green_400,
         500: .ksr_green_500,
         700: .ksr_green_700,
@@ -111,6 +112,11 @@ extension UIColor {
   /// 0x3B5998
   public static var ksr_facebookBlue: UIColor {
     return .hex(0x3B5998)
+  }
+
+  /// 0x57BFA4
+  public static var ksr_green_200: UIColor {
+    return .hex(0x57BFA4)
   }
 
   /// 0x2BDE73
