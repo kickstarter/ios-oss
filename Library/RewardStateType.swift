@@ -26,27 +26,9 @@ public enum RewardStateType {
     case .pledge:
       return Strings.Back_this_project()
     case .manage:
-      return Strings.Manage()
+      return Strings.Manage_your_pledge()
     case .viewBacking:
       return Strings.View_your_pledge()
-    }
-  }
-
-  public var showTimeLeftPill: Bool? {
-    switch self {
-    case .fix, .pledge, .manage:
-      return true
-    case .viewBacking:
-      return false
-    }
-  }
-
-  public var showLimitedRewardPill: Bool? {
-    switch self {
-    case .fix, .pledge, .manage:
-      return true
-    case .viewBacking:
-      return false
     }
   }
 
@@ -78,6 +60,63 @@ public enum RewardStateType {
       return .ksr_blue_500
     case .viewBacking:
       return .ksr_soft_black
+    }
+  }
+}
+
+
+public enum ActiveStateType {
+  case limitedReward
+  case timebasedReward
+  case both
+  case inactive
+
+  public var buttonDisabled: Bool? {
+    switch self {
+    case .inactive:
+      return true // maybe just return the button here?
+    case .both, .limitedReward, .timebasedReward:
+      return false
+    }
+  }
+
+  public var inactiveButtonTitle: String? {
+    switch self {
+    case .inactive:
+      return Strings.No_longer_available()
+    default:
+      return nil
+    }
+  }
+
+  public var inactiveButtonColor: UIColor? {
+    switch self {
+    case .inactive:
+      return .ksr_green_500
+    default:
+      return nil
+    }
+  }
+
+  public var showTimeLeftPill: Bool? {
+    switch self {
+    case .timebasedReward, .both:
+      return true
+    case .inactive:
+      return false
+    default:
+      return nil
+    }
+  }
+
+  public var showLimitedRewardPill: Bool? {
+    switch self {
+    case .limitedReward, .both:
+      return true
+    case .inactive:
+      return false
+    default:
+      return nil
     }
   }
 }
