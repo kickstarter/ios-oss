@@ -81,7 +81,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     }
 
     _ = self.navigationItem
-    |> \.rightBarButtonItem  .~ .help(self, selector: #selector(self.helpButtonPressed))
+      |> \.rightBarButtonItem .~ .help(self, selector: #selector(self.helpButtonPressed))
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -367,7 +367,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     _: MFMailComposeViewController,
     didFinishWith result: MFMailComposeResult,
     error _: Error?
-    ) {
+  ) {
     self.helpViewModel.inputs.mailComposeCompletion(result: result)
     self.dismiss(animated: true, completion: nil)
   }
