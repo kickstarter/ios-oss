@@ -20,6 +20,7 @@ private enum Layout {
 
 final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
+
   private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
 
   private let adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -34,6 +35,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   }()
 
   // MARK: - Lifecycle
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     self.configureSubviews()
@@ -79,13 +81,14 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
     NSLayoutConstraint.activate([
       rootStackViewWidthConstraint,
       imageViewWidthConstraint,
-      minTouchSizeConstraint,
+      minTouchSizeConstraint
     ])
 
     self.setNeedsLayout()
   }
 
   // MARK: - Styles
+
   override func bindStyles() {
     super.bindStyles()
 
@@ -136,7 +139,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
       .observeValues { [weak self] image in
         _ = self?.imageView
           ?|> \.image .~ image
-    }
+      }
   }
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {

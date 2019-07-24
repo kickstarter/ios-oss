@@ -21,8 +21,8 @@ extension GraphUserCreditCard.CreditCard {
       from: dateString,
       dateFormat: "yyyy-MM",
       timeZone: UTCTimeZone
-      ) else {
-        fatalError("Unable to parse date format")
+    ) else {
+      fatalError("Unable to parse date format")
     }
 
     return date

@@ -109,7 +109,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
         self?.dataSource.load(creditCards: $0)
         self?.collectionView.reloadData()
         self?.collectionView.layoutIfNeeded()
-    }
+      }
   }
 
   // MARK: - Configuration
@@ -125,6 +125,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   // MARK: - Private Functions
+
   private func updateCollectionViewConstraints() {
     self.collectionView.layoutIfNeeded()
 
