@@ -59,6 +59,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
 
+    self.collectionView.register(PledgeCreditCardCell.self)
+
     NSLayoutConstraint.activate([
       self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
@@ -96,7 +98,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.isAccessibilityElement .~ true
 
     _ = self.collectionView
-      |> \.backgroundColor .~ .white
+      |> checkoutBackgroundStyle
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     _ = self.rootStackView

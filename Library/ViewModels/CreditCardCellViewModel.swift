@@ -48,7 +48,14 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
       .map { Strings.Card_ending_in_last_four(last_four: $0.lastFour) }
 
     self.cardNumberTextShortStyle = self.cardProperty.signal.skipNil()
-      .map { Strings.Ending_in_last_four(last_four: $0.lastFour) }
+      .map {
+         localizedString(
+          key: "Ending_in_last_four",
+          defaultValue: "Ending in %{last_four}",
+          count: nil,
+          substitutions: ["last_four": $0.lastFour]
+        )
+      }
 
     self.expirationDateText = self.cardProperty.signal.skipNil()
       .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
