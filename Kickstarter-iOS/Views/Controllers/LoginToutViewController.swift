@@ -7,10 +7,6 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-protocol LoginToutViewControllerDelegate: AnyObject {
-  func loginToutViewControllerDidStartUserSession(_ viewController: LoginToutViewController)
-}
-
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
   // MARK: - Properties
 
@@ -20,7 +16,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  weak var delegate: LoginToutViewControllerDelegate?
   private lazy var emailLoginStackView = { UIStackView(frame: .zero) }()
   private lazy var facebookDisclaimerLabel = { UILabel(frame: .zero) }()
   private lazy var fbLoginButton = { UIButton(type: .custom)
@@ -85,7 +80,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonPressed))
     }
 
-    self.navigationItem.rightBarButtonItem = .help(self, selector: #selector(self.helpButtonPressed))
+    _ = self.navigationItem
+    |> \.rightBarButtonItem  .~ .help(self, selector: #selector(self.helpButtonPressed))
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -293,15 +289,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
   }
 
-  @objc internal func mailComposeController(
-    _: MFMailComposeViewController,
-    didFinishWith result: MFMailComposeResult,
-    error _: Error?
-  ) {
-    self.helpViewModel.inputs.mailComposeCompletion(result: result)
-    self.dismiss(animated: true, completion: nil)
-  }
-
   fileprivate func goToHelpType(_ helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     self.navigationController?.pushViewController(vc, animated: true)
@@ -372,6 +359,17 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         self.viewModel.inputs.facebookLoginSuccess(result: result)
       }
     }
+  }
+
+  // MARK: - Accessors
+
+  @objc internal func mailComposeController(
+    _: MFMailComposeViewController,
+    didFinishWith result: MFMailComposeResult,
+    error _: Error?
+    ) {
+    self.helpViewModel.inputs.mailComposeCompletion(result: result)
+    self.dismiss(animated: true, completion: nil)
   }
 
   @objc private func closeButtonPressed() {
