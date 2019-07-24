@@ -111,6 +111,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     _ = self.pledgeButton
       |> checkoutGreenButtonStyle
+      |> UIButton.lens.title(for: .disabled) %~ { _ in Strings.No_longer_available() }
 
     _ = self.pledgeButton.titleLabel
       ?|> checkoutGreenButtonTitleLabelStyle

@@ -1,10 +1,10 @@
 import UIKit
 
 public enum RewardStateType {
-  case fix
-  case pledge
-  case manage
-  case viewBacking
+  case fix // Backed, Live, Backing.error
+  case pledge // Not Backed, Live
+  case manage // Backed, Live
+  case viewBacking // Backed, NonLive
 
   public var buttonBackgroundColor: UIColor {
     switch self {
@@ -22,7 +22,7 @@ public enum RewardStateType {
   public var buttonTitle: String {
     switch self {
     case .fix:
-      return "Fix your payment method"
+      return Strings.Fix_your_payment_method()
     case .pledge:
       return Strings.Back_this_project()
     case .manage:
@@ -64,8 +64,7 @@ public enum RewardStateType {
   }
 }
 
-
-public enum ActiveStateType {
+public enum ActiveStateType { // We would check for Rewards.remaining and Rewards.endsAt to determine this
   case limitedReward
   case timebasedReward
   case both
@@ -74,27 +73,9 @@ public enum ActiveStateType {
   public var buttonDisabled: Bool? {
     switch self {
     case .inactive:
-      return true // maybe just return the button here?
+      return true
     case .both, .limitedReward, .timebasedReward:
       return false
-    }
-  }
-
-  public var inactiveButtonTitle: String? {
-    switch self {
-    case .inactive:
-      return Strings.No_longer_available()
-    default:
-      return nil
-    }
-  }
-
-  public var inactiveButtonColor: UIColor? {
-    switch self {
-    case .inactive:
-      return .ksr_green_500
-    default:
-      return nil
     }
   }
 
