@@ -10,28 +10,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private let viewModel = PledgePaymentMethodsViewModel()
 
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
-
-  private lazy var collectionView: UICollectionView = {
-    UICollectionView(frame: .zero, collectionViewLayout: self.layout)
-      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var collectionViewHeightConstraint: NSLayoutConstraint = {
-    self.collectionView.heightAnchor.constraint(equalToConstant: 0)
-      |> \.priority .~ .defaultHigh
-  }()
-
-  private let dataSource = PledgePaymentMethodsDataSource()
-
-  private lazy var layout: UICollectionViewFlowLayout = {
-    UICollectionViewFlowLayout()
-      |> \.sectionInset .~ UIEdgeInsets.zero
-      |> \.scrollDirection .~ .horizontal
-      |> \.estimatedItemSize .~ UICollectionViewFlowLayout.automaticSize
-  }()
-
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
+  private lazy var scrollViewHeightConstraint: NSLayoutConstraint = {
+    self.scrollView.heightAnchor.constraint(equalToConstant: 0)
+  }()
 
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -39,24 +22,20 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
     self.configureSubviews()
   }
 
   private func configureSubviews() {
-    _ = ([self.applePayButton, self.titleLabel, self.collectionView], self.rootStackView)
+    _ = ([self.applePayButton, self.titleLabel, self.scrollView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = self.collectionView
-      |> \.dataSource .~ self.dataSource
-
-    self.collectionView.register(PledgeCreditCardCell.self)
-
     NSLayoutConstraint.activate([
-      self.collectionViewHeightConstraint,
+      self.scrollViewHeightConstraint,
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
@@ -70,7 +49,13 @@ final class PledgePaymentMethodsViewController: UIViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    self.updateCollectionViewConstraints()
+    self.updateScrollViewHeightConstraint()
+  }
+
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    self.updateScrollViewHeightConstraint()
   }
 
   // MARK: - Styles
@@ -84,9 +69,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> roundedStyle(cornerRadius: Styles.grid(2))
       |> \.isAccessibilityElement .~ true
 
-    _ = self.collectionView
+    _ = self.scrollView
       |> checkoutBackgroundStyle
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     _ = self.rootStackView
       |> checkoutStackViewStyle
@@ -105,10 +89,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
     super.bindViewModel()
     self.viewModel.outputs.reloadData
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.dataSource.load(creditCards: $0)
-        self?.collectionView.reloadData()
-        self?.collectionView.layoutIfNeeded()
+      .observeValues { [weak self] cards in
+        self?.populateScrollView(with: cards)
       }
   }
 
@@ -124,13 +106,39 @@ final class PledgePaymentMethodsViewController: UIViewController {
     print("Apple Pay tapped")
   }
 
-  // MARK: - Private Functions
+  // MARK: - Functions
 
-  private func updateCollectionViewConstraints() {
-    self.collectionView.layoutIfNeeded()
+  private func populateScrollView(with cards: [GraphUserCreditCard.CreditCard]) {
+    self.scrollView.subviews.forEach { $0.removeFromSuperview() }
 
-    self.collectionViewHeightConstraint.constant = self.collectionView.contentSize.height
+    var previousAnchor = self.scrollView.leadingAnchor
+    var spacing: CGFloat = 0
 
-    self.view.setNeedsLayout()
+    for card in cards {
+      let cardView = PledgeCreditCardView(frame: .zero)
+        |> \.translatesAutoresizingMaskIntoConstraints .~ false
+
+      cardView.configureWith(value: card)
+      self.scrollView.addSubview(cardView)
+
+      NSLayoutConstraint.activate([
+        cardView.leadingAnchor.constraint(equalTo: previousAnchor, constant: spacing),
+        cardView.topAnchor.constraint(equalTo: self.scrollView.topAnchor),
+        cardView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor)
+      ])
+
+      if card == cards.last {
+        cardView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor).isActive = true
+      }
+
+      spacing = Styles.grid(2)
+      previousAnchor = cardView.trailingAnchor
+    }
+  }
+
+  private func updateScrollViewHeightConstraint() {
+    self.scrollViewHeightConstraint.constant = self.scrollView.contentSize.height
+
+    self.view.layoutIfNeeded()
   }
 }
