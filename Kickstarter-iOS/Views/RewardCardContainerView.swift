@@ -48,10 +48,8 @@ public final class RewardCardContainerView: UIView {
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = self.pledgeButton
-      |> checkoutGreenButtonStyle
-
-    _ = self.pledgeButton.titleLabel
-      ?|> checkoutGreenButtonTitleLabelStyle
+      |> roundedGreenButtonStyle
+      |> UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode .~ .byTruncatingTail
   }
 
   public override func bindViewModel() {
