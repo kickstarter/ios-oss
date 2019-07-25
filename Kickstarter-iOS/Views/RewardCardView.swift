@@ -106,6 +106,9 @@ public final class RewardCardView: UIView {
     _ = self.priceStackView
       |> priceStackViewStyle
 
+    _ = self.includedItemsStackView
+      |> includedItemsStackViewStyle
+
     _ = [self.includedItemsTitleLabel, self.descriptionTitleLabel]
       ||> { label in
         label
@@ -310,27 +313,31 @@ private let baseStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(3)
 }
 
+private let includedItemsStackViewStyle: StackViewStyle = { stackView in
+  stackView |> \.spacing .~ Styles.grid(2)
+}
+
 private let minimumPriceLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_green_500
-    |> \.font .~ UIFont.ksr_headline(size: 24).bolded
+    |> \.font .~ UIFont.ksr_title3().bolded
 }
 
 private let minimumPriceConversionLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_green_500
-    |> \.font .~ UIFont.ksr_headline(size: 13)
+    |> \.font .~ UIFont.ksr_caption1().bolded
 }
 
 private let priceStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.spacing .~ Styles.grid(1)
+    |> \.spacing .~ Styles.gridHalf(1)
 }
 
 private let rewardTitleLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
-    |> \.font .~ UIFont.ksr_headline(size: 24).bolded
+    |> \.font .~ UIFont.ksr_title2().bolded
 }
 
 private let sectionStackViewStyle: StackViewStyle = { stackView in
@@ -338,7 +345,7 @@ private let sectionStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ .vertical
     |> \.alignment .~ .fill
     |> \.distribution .~ .fill
-    |> \.spacing .~ Styles.grid(2)
+    |> \.spacing .~ Styles.grid(1)
 }
 
 private let sectionTitleLabelStyle: LabelStyle = { label in
@@ -350,7 +357,7 @@ private let sectionTitleLabelStyle: LabelStyle = { label in
 private let sectionBodyLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
-    |> \.font .~ .ksr_callout()
+    |> \.font .~ UIFont.ksr_body()
 }
 
 private let stateImageViewStyle: ImageViewStyle = { imageView in
