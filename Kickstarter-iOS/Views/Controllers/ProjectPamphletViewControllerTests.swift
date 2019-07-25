@@ -135,8 +135,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.state .~ .live
 
- combos(Language.allLanguages, Device.allCases).forEach { language, device in
-  withEnvironment(
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(
         apiService: MockService(fetchProjectResponse: backedProject),
         config: config, currentUser: currentUser, language: language
       ) {
