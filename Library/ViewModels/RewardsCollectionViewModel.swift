@@ -2,17 +2,19 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-public typealias PledgeData = (project: Project, reward: Reward, refTag: RefTag?)
 
-public protocol RewardsCollectionViewModelOutputs {
-  var goToPledge: Signal<PledgeData, Never> { get }
-  var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
-}
+public typealias PledgeData = (project: Project, reward: Reward, refTag: RefTag?)
 
 public protocol RewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?)
   func rewardSelected(with rewardId: Int)
   func viewDidLoad()
+}
+
+public protocol RewardsCollectionViewModelOutputs {
+  var goToPledge: Signal<PledgeData, Never> { get }
+  var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
+  func selectedReward() -> Reward?
 }
 
 protocol RewardsCollectionViewModelType {
@@ -44,7 +46,10 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .takePairWhen(self.rewardSelectedWithRewardIdProperty.signal.skipNil())
       .map { rewards, rewardId in
         rewards.first(where: { $0.id == rewardId })
-      }.skipNil()
+      }
+      .skipNil()
+
+    self.selectedRewardProperty <~ selectedRewardFromId
 
     self.goToPledge = Signal.combineLatest(
       self.configureWithProjectProperty.signal.skipNil(),
@@ -77,6 +82,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
   public let goToPledge: Signal<PledgeData, Never>
   public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>
+
+  private let selectedRewardProperty = MutableProperty<Reward?>(nil)
+  public func selectedReward() -> Reward? {
+    return self.selectedRewardProperty.value
+  }
 
   public var inputs: RewardsCollectionViewModelInputs { return self }
   public var outputs: RewardsCollectionViewModelOutputs { return self }
