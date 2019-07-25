@@ -2,34 +2,31 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol RewardCellViewModelInputs {
+public protocol RewardCardViewModelInputs {
   func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
-  func pledgeButtonTapped()
   func rewardCardTapped()
 }
 
-public protocol RewardCellViewModelOutputs {
+public protocol RewardCardViewModelOutputs {
   var cardUserInteractionIsEnabled: Signal<Bool, Never> { get }
   var conversionLabelHidden: Signal<Bool, Never> { get }
   var conversionLabelText: Signal<String, Never> { get }
   var descriptionLabelText: Signal<String, Never> { get }
   var items: Signal<[String], Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
-  var pledgeButtonEnabled: Signal<Bool, Never> { get }
-  var pledgeButtonTitleText: Signal<String, Never> { get }
   var rewardMinimumLabelText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
   var rewardTitleLabelText: Signal<String, Never> { get }
 }
 
-public protocol RewardCellViewModelType {
-  var inputs: RewardCellViewModelInputs { get }
-  var outputs: RewardCellViewModelOutputs { get }
+public protocol RewardCardViewModelType {
+  var inputs: RewardCardViewModelInputs { get }
+  var outputs: RewardCardViewModelOutputs { get }
 }
 
-public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewModelInputs,
-  RewardCellViewModelOutputs {
+public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewModelInputs,
+  RewardCardViewModelOutputs {
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
       self.projectAndRewardOrBackingProperty.signal.skipNil()
@@ -104,28 +101,16 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
         }
       }
 
-    self.pledgeButtonTitleText = projectAndRewardOrBacking
-      .map(pledgeButtonTitle(project:rewardOrBacking:))
-
     self.rewardSelected = reward
-      .takeWhen(Signal.merge(
-        self.pledgeButtonTappedProperty.signal,
-        self.rewardCardTappedProperty.signal
-      ))
+      .takeWhen(self.rewardCardTappedProperty.signal)
       .map { $0.id }
 
-    self.pledgeButtonEnabled = rewardAvailable
     self.cardUserInteractionIsEnabled = rewardAvailable
   }
 
   private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
   public func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>) {
     self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking)
-  }
-
-  private let pledgeButtonTappedProperty = MutableProperty(())
-  public func pledgeButtonTapped() {
-    self.pledgeButtonTappedProperty.value = ()
   }
 
   private let rewardCardTappedProperty = MutableProperty(())
@@ -139,15 +124,13 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
   public let descriptionLabelText: Signal<String, Never>
   public let items: Signal<[String], Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
-  public let pledgeButtonEnabled: Signal<Bool, Never>
-  public let pledgeButtonTitleText: Signal<String, Never>
   public let rewardMinimumLabelText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>
   public let rewardTitleLabelText: Signal<String, Never>
 
-  public var inputs: RewardCellViewModelInputs { return self }
-  public var outputs: RewardCellViewModelOutputs { return self }
+  public var inputs: RewardCardViewModelInputs { return self }
+  public var outputs: RewardCardViewModelOutputs { return self }
 }
 
 // MARK: - Private Helpers
@@ -175,39 +158,4 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
   }
 
   return reward.title ?? Strings.Thank_you_for_supporting_this_project()
-}
-
-private func pledgeButtonTitle(project: Project, rewardOrBacking: Either<Reward, Backing>) -> String {
-  let minimumFormattedAmount = formattedAmountForRewardOrBacking(
-    project: project,
-    rewardOrBacking: rewardOrBacking
-  )
-  return project.personalization.isBacking == true
-    ? Strings.Select_this_reward_instead()
-    : Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
-}
-
-private func formattedAmountForRewardOrBacking(
-  project: Project,
-  rewardOrBacking: Either<Reward, Backing>
-) -> String {
-  switch rewardOrBacking {
-  case let .left(reward):
-    let min = minPledgeAmount(forProject: project, reward: reward)
-    return Format.currency(
-      min,
-      country: project.country,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode
-    )
-  case let .right(backing):
-    let amount = backing.amount
-    let backingAmount = floor(amount) == backing.amount
-      ? String(Int(amount))
-      : String(format: "%.2f", backing.amount)
-    return Format.formattedCurrency(
-      backingAmount,
-      country: project.country,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode
-    )
-  }
 }
