@@ -151,8 +151,10 @@ final class PledgeShippingLocationViewController: UIViewController {
         target: self,
         action: #selector(PledgeShippingLocationViewController.dismissShippingRules)
       )
-    viewController.configureWith(project, shippingRules: shippingRules,
-                                 selectedShippingRule: selectedShippingRule)
+    viewController.configureWith(
+      project, shippingRules: shippingRules,
+      selectedShippingRule: selectedShippingRule
+    )
 
     let navigationController = UINavigationController(rootViewController: viewController)
 

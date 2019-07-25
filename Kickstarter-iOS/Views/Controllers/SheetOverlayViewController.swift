@@ -25,9 +25,9 @@ final class SheetOverlayViewController: UIViewController {
         |> \.modalPresentationStyle .~ .overCurrentContext
         |> \.modalTransitionStyle .~ .crossDissolve
     } else {
-    _ = self
-      |> \.modalPresentationStyle .~ .custom
-      |> \.transitioningDelegate .~ self
+      _ = self
+        |> \.modalPresentationStyle .~ .custom
+        |> \.transitioningDelegate .~ self
     }
   }
 
@@ -42,7 +42,7 @@ final class SheetOverlayViewController: UIViewController {
     self.configure(childView: self.childViewController.view, offset: self.offset)
 
     self.childViewController.didMove(toParent: self)
-    
+
     _ = self.view
       |> \.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
   }
