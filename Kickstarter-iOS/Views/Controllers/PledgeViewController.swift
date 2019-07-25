@@ -6,30 +6,64 @@ import UIKit
 final class PledgeViewController: UIViewController {
   // MARK: - Properties
 
+  private lazy var descriptionSectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var sectionSeparatorViews = {
+    [self.descriptionSectionSeparator, self.summarySectionSeparator]
+  }()
+
+  private lazy var summarySectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
       |> \.delegate .~ self
   }()
 
-  private lazy var pledgeContinueViewController = {
+  private lazy var continueViewController = {
     PledgeContinueViewController.instantiate()
   }()
 
-  private lazy var pledgeDescriptionViewController = {
+  private lazy var descriptionSectionViews = {
+    [self.descriptionViewController.view, self.descriptionSectionSeparator]
+  }()
+
+  private lazy var descriptionViewController = {
     PledgeDescriptionViewController.instantiate()
   }()
 
-  private lazy var pledgeSummaryViewController = {
-    PledgeSummaryViewController.instantiate()
+  private lazy var inputsSectionViews = {
+    [self.pledgeAmountViewController.view, self.shippingLocationViewController.view]
   }()
 
-  private lazy var pledgeShippingLocationViewController = {
+  private lazy var loginSectionViews = {
+    [self.continueViewController.view]
+  }()
+
+  private lazy var paymentMethodsSectionViews = {
+    [self.paymentMethodsViewController.view]
+  }()
+
+  private lazy var paymentMethodsViewController = {
+    PledgePaymentMethodsViewController.instantiate()
+  }()
+
+  private lazy var shippingLocationViewController = {
     PledgeShippingLocationViewController.instantiate()
       |> \.delegate .~ self
   }()
 
-  private lazy var pledgePaymentMethodsViewController = {
-    PledgePaymentMethodsViewController.instantiate()
+  private lazy var summarySectionViews = {
+    [self.summarySectionSeparator, self.summaryViewController.view]
+  }()
+
+  private lazy var summaryViewController = {
+    PledgeSummaryViewController.instantiate()
   }()
 
   private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
@@ -61,13 +95,13 @@ final class PledgeViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.configureChildViewControllers()
-
     self.view.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(PledgeViewController.dismissKeyboard))
     )
 
+    self.configureChildViewControllers()
     self.setupConstraints()
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -79,17 +113,30 @@ final class PledgeViewController: UIViewController {
 
   private func configureChildViewControllers() {
     let childViewControllers = [
-      self.pledgeDescriptionViewController,
+      self.descriptionViewController,
       self.pledgeAmountViewController,
-      self.pledgeShippingLocationViewController,
-      self.pledgeSummaryViewController,
-      self.pledgeContinueViewController,
-      self.pledgePaymentMethodsViewController
+      self.shippingLocationViewController,
+      self.summaryViewController,
+      self.continueViewController,
+      self.paymentMethodsViewController
     ]
+
+    let arrangedSubviews = [
+      self.descriptionSectionViews,
+      self.inputsSectionViews,
+      self.summarySectionViews,
+      self.loginSectionViews,
+      self.paymentMethodsSectionViews
+    ]
+    .flatMap { $0 }
+    .compact()
+
+    arrangedSubviews.forEach { view in
+      self.rootStackView.addArrangedSubview(view)
+    }
 
     childViewControllers.forEach { viewController in
       self.addChild(viewController)
-      self.rootStackView.addArrangedSubview(viewController.view)
       viewController.didMove(toParent: self)
     }
   }
@@ -98,6 +145,13 @@ final class PledgeViewController: UIViewController {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
+
+    self.sectionSeparatorViews.forEach { view in
+      _ = view.heightAnchor.constraint(equalToConstant: 1)
+        |> \.isActive .~ true
+
+      view.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
   }
 
   // MARK: - Styles
@@ -113,6 +167,9 @@ final class PledgeViewController: UIViewController {
 
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.sectionSeparatorViews
+      ||> separatorStyleDark
   }
 
   // MARK: - View model
@@ -123,16 +180,16 @@ final class PledgeViewController: UIViewController {
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.pledgeDescriptionViewController.configureWith(value: data.reward)
+        self?.descriptionViewController.configureWith(value: data.reward)
         self?.pledgeAmountViewController.configureWith(value: data)
-        self?.pledgeShippingLocationViewController.configureWith(value: data)
-        self?.pledgePaymentMethodsViewController.configureWith(value: [GraphUserCreditCard.template])
+        self?.shippingLocationViewController.configureWith(value: data)
+        self?.paymentMethodsViewController.configureWith(value: [GraphUserCreditCard.template])
       }
 
     self.viewModel.outputs.configureSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] project, pledgeTotal in
-        self?.pledgeSummaryViewController.configureWith(value: (project, pledgeTotal))
+        self?.summaryViewController.configureWith(value: (project, pledgeTotal))
       }
 
     self.sessionStartedObserver = NotificationCenter.default
@@ -146,10 +203,10 @@ final class PledgeViewController: UIViewController {
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
       }
 
-    self.pledgeShippingLocationViewController.view.rac.hidden
+    self.shippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
-    self.pledgeContinueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
-    self.pledgePaymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
+    self.continueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
+    self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
   }
 
   // MARK: - Actions
