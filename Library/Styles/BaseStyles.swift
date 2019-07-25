@@ -118,6 +118,12 @@ public let separatorStyle: ViewStyle = { (view: UIView) in
     |> \.accessibilityElementsHidden .~ true
 }
 
+public let separatorStyleDark: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_grey_500
+    |> \.accessibilityElementsHidden .~ true
+}
+
 /**
  - parameter r: The corner radius. This parameter is optional, and will use a default value if omitted.
 
