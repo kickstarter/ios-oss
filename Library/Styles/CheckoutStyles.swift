@@ -1,6 +1,24 @@
 import Prelude
 import UIKit
 
+// MARK: - Constants
+
+public enum CheckoutConstants {
+  public enum RewardCard {
+    public enum Layout {
+      public static let width: CGFloat = 249
+    }
+
+    public enum Transition {
+      public enum DepressAnimation {
+        public static let scaleFactor: CGFloat = 0.975
+        public static let duration: TimeInterval = 0.0967
+        public static let longPressMinimumDuration: TimeInterval = 0.001
+      }
+    }
+  }
+}
+
 // MARK: - Attributes
 
 public func checkoutCurrencyDefaultAttributes() -> String.Attributes {
@@ -129,4 +147,10 @@ public func checkoutAttributedLink(with string: String) -> NSAttributedString? {
   attributedString.addAttributes(attributes, range: fullRange)
 
   return attributedString
+}
+
+public let rewardCardShadowStyle: ViewStyle = { (view: UIView) in
+  view
+    |> dropShadowStyleMedium()
+    |> \.layer.shouldRasterize .~ false
 }

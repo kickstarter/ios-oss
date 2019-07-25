@@ -139,5 +139,7 @@ private func constrainAscenders(between label: UILabel, textField: UITextField) 
   let minCapHeight = min(labelFont.capHeight, textFieldFont.capHeight)
   let constant = (maxCapHeight - minCapHeight) / 2
 
-  label.centerYAnchor.constraint(equalTo: textField.centerYAnchor, constant: -constant).isActive = true
+  _ = label.centerYAnchor.constraint(equalTo: textField.centerYAnchor, constant: -constant)
+    |> \.priority .~ .defaultHigh
+    |> \.isActive .~ true
 }

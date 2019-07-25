@@ -186,7 +186,7 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
   ) {
     let rewardsViewController = RewardsCollectionViewController.instantiate(with: project, refTag: refTag)
 
-    let navigationController = UINavigationController(rootViewController: rewardsViewController)
+    let navigationController = RewardPledgeNavigationController(rootViewController: rewardsViewController)
     
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       _ = navigationController
