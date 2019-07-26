@@ -108,9 +108,9 @@ extension UIColor {
     return .hex(0x656868)
   }
 
-  /// 0x3B5998
+  /// 0x1877F2
   public static var ksr_facebookBlue: UIColor {
-    return .hex(0x3B5998)
+    return .hex(0x1877F2)
   }
 
   /// 0x2BDE73
