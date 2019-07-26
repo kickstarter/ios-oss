@@ -10,7 +10,10 @@ extension UIViewController {
   ) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     let nc = UINavigationController(rootViewController: vc)
-    nc.modalPresentationStyle = presentationStyle
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      nc.modalPresentationStyle = presentationStyle
+    }
 
     self.present(nc, animated: true)
   }
@@ -27,8 +30,6 @@ extension UIViewController {
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       vc = viewController
         |> \.modalPresentationStyle .~ .formSheet
-        |> \.modalTransitionStyle .~ .crossDissolve
-
     } else {
       vc = SheetOverlayViewController(
         child: viewController,

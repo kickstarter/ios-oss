@@ -70,7 +70,7 @@ final class PledgeSummaryViewController: UIViewController {
     self.viewModel.outputs.notifyDelegateOpenHelpType
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
-        self?.presentHelpWebViewController(with: helpType, presentationStyle: .pageSheet)
+        self?.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
   }
 
