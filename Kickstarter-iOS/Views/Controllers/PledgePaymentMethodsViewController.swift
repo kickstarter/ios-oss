@@ -95,7 +95,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
-    self.viewModel.outputs.reloadData
+    self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
       .observeValues { [weak self] cards in
         self?.addCardsToStackView(cards)
