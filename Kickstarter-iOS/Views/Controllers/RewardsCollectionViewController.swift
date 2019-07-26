@@ -88,7 +88,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ .ksr_grey_200
+      |> \.backgroundColor .~ .ksr_grey_400
 
     _ = self.collectionView
       |> collectionViewStyle
