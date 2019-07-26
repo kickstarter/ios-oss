@@ -20,4 +20,21 @@ final class AddNewCardViewControllerTests: TestCase {
       }
     }
   }
+
+  func testAddNewCard_EnglishRegions() {
+    let locales: [Locale] = [
+      Locale(identifier: "en_US"),
+      Locale(identifier: "en_CA"),
+      Locale(identifier: "en_GB")
+    ]
+
+    combos(locales, Device.allCases).forEach { locale, device in
+      withEnvironment(locale: locale) {
+        let controller = AddNewCardViewController.instantiate()
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        FBSnapshotVerifyView(parent.view, identifier: "locale_\(locale)_device_\(device)")
+      }
+    }
+  }
 }
