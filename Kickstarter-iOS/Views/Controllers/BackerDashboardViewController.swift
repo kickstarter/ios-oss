@@ -39,7 +39,7 @@ internal final class BackerDashboardViewController: UIViewController {
 
     self.pageViewController = self.children
       .compactMap { $0 as? UIPageViewController }.first
-    self.pageViewController?.setViewControllers(
+    self.pageViewController?.ksr_setViewControllers(
       [.init()],
       direction: .forward,
       animated: false,
@@ -125,7 +125,7 @@ internal final class BackerDashboardViewController: UIViewController {
         guard let _self = self, let controller = self?.pagesDataSource.controllerFor(tab: tab) else {
           fatalError("Controller not found for tab \(tab)")
         }
-        _self.pageViewController?.setViewControllers(
+        _self.pageViewController?.ksr_setViewControllers(
           [controller],
           direction: .forward,
           animated: false,
@@ -195,7 +195,7 @@ internal final class BackerDashboardViewController: UIViewController {
     self.pagesDataSource = BackerDashboardPagesDataSource(delegate: self, sort: sort)
 
     self.pageViewController?.dataSource = self.pagesDataSource
-    self.pageViewController?.setViewControllers(
+    self.pageViewController?.ksr_setViewControllers(
       [self.pagesDataSource.controllerFor(tab: tab)].compact(),
       direction: .forward,
       animated: false,
