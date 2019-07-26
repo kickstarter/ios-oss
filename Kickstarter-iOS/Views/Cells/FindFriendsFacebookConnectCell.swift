@@ -110,7 +110,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
       |> UIButton.lens.titleEdgeInsets .~ .init(left: Styles.grid(1))
   }
 
-  // MARK: Facebook Login
+  // MARK: - Facebook Login
 
   fileprivate func attemptFacebookLogin() {
     self.fbLoginManager.logIn(

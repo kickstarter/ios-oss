@@ -5324,6 +5324,40 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Postal code"
+
+   - **en**: "Postal code"
+   - **de**: "Postleitzahl"
+   - **es**: "Código postal"
+   - **fr**: "Code postal"
+   - **ja**: "郵便番号"
+  */
+  public static func Postal_code() -> String {
+    return localizedString(
+      key: "Postal_code",
+      defaultValue: "Postal code",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Postcode"
+
+   - **en**: "Postcode"
+   - **de**: "Postleitzahl"
+   - **es**: "Código postal"
+   - **fr**: "Code postal"
+   - **ja**: "郵便番号"
+  */
+  public static func Postcode() -> String {
+    return localizedString(
+      key: "Postcode",
+      defaultValue: "Postcode",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Preparing your personal data..."
 
    - **en**: "Preparing your personal data..."
@@ -8344,18 +8378,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "Zip/Postal code"
+   "Zip code"
 
-   - **en**: "Zip/Postal code"
+   - **en**: "Zip code"
    - **de**: "Postleitzahl"
    - **es**: "Código postal"
    - **fr**: "Code postal"
    - **ja**: "郵便番号"
   */
-  public static func Zip_postal_code() -> String {
+  public static func Zip_code() -> String {
     return localizedString(
-      key: "Zip_postal_code",
-      defaultValue: "Zip/Postal code",
+      key: "Zip_code",
+      defaultValue: "Zip code",
       count: nil,
       substitutions: [:]
     )

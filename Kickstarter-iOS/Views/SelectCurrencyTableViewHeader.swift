@@ -29,7 +29,7 @@ final class SelectCurrencyTableViewHeader: UIView {
       |> headerLabelStyle
   }
 
-  // MARK: Accessors
+  // MARK: - Accessors
 
   public var text: String? {
     didSet {
@@ -37,7 +37,7 @@ final class SelectCurrencyTableViewHeader: UIView {
     }
   }
 
-  // MARK: Subviews
+  // MARK: - Subviews
 
   private lazy var headerStackView: UIStackView = {
     UIStackView(arrangedSubviews: [

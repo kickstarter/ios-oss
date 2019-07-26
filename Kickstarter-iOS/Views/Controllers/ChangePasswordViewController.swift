@@ -192,7 +192,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
       }
   }
 
-  // MARK: Private Functions
+  // MARK: - Private Functions
 
   private func logoutAndDismiss() {
     AppEnvironment.logout()
@@ -230,7 +230,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
       .forEach { $0?.resignFirstResponder() }
   }
 
-  // MARK: Actions
+  // MARK: - Actions
 
   @IBAction func currentPasswordTextDidChange(_ sender: UITextField) {
     guard let text = sender.text else {
