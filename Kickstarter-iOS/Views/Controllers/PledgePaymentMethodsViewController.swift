@@ -10,6 +10,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private let viewModel = PledgePaymentMethodsViewModel()
 
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
+  private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var scrollViewHeightConstraint: NSLayoutConstraint = {
@@ -27,6 +28,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   private func configureSubviews() {
+    _ = (self.cardsStackView, self.scrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
     _ = ([self.applePayButton, self.titleLabel, self.scrollView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -65,6 +70,9 @@ final class PledgePaymentMethodsViewController: UIViewController {
     _ = self.view
       |> checkoutBackgroundStyle
 
+    _ = self.cardsStackView
+      |> \.spacing .~ Styles.grid(2)
+
     _ = self.applePayButton
       |> roundedStyle(cornerRadius: Styles.grid(2))
       |> \.isAccessibilityElement .~ true
@@ -90,7 +98,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.viewModel.outputs.reloadData
       .observeForUI()
       .observeValues { [weak self] cards in
-        self?.populateScrollView(with: cards)
+        self?.addCardsToStackView(cards)
       }
   }
 
@@ -108,32 +116,18 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   // MARK: - Functions
 
-  private func populateScrollView(with cards: [GraphUserCreditCard.CreditCard]) {
-    self.scrollView.subviews.forEach { $0.removeFromSuperview() }
+  private func addCardsToStackView(_ cards: [GraphUserCreditCard.CreditCard]) {
+    self.cardsStackView.arrangedSubviews.forEach(self.cardsStackView.removeArrangedSubview)
 
-    var previousAnchor = self.scrollView.leadingAnchor
-    var spacing: CGFloat = 0
-
-    for card in cards {
-      let cardView = PledgeCreditCardView(frame: .zero)
-        |> \.translatesAutoresizingMaskIntoConstraints .~ false
-
-      cardView.configureWith(value: card)
-      self.scrollView.addSubview(cardView)
-
-      NSLayoutConstraint.activate([
-        cardView.leadingAnchor.constraint(equalTo: previousAnchor, constant: spacing),
-        cardView.topAnchor.constraint(equalTo: self.scrollView.topAnchor),
-        cardView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor)
-      ])
-
-      if card == cards.last {
-        cardView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor).isActive = true
+    let cardViews = cards
+      .map { card -> PledgeCreditCardView in
+        let cardView = PledgeCreditCardView(frame: .zero)
+        cardView.configureWith(value: card)
+        return cardView
       }
 
-      spacing = Styles.grid(2)
-      previousAnchor = cardView.trailingAnchor
-    }
+    _ = (cardViews, self.cardsStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func updateScrollViewHeightConstraint() {
