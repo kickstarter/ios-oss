@@ -6,7 +6,7 @@ import UIKit
 public enum CheckoutConstants {
   public enum RewardCard {
     public enum Layout {
-      public static let width: CGFloat = 249
+      public static let width: CGFloat = 294
     }
 
     public enum Transition {
