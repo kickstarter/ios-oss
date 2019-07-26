@@ -6,7 +6,8 @@ public extension UIPageViewController {
     _ viewControllers: [UIViewController]?,
     direction: UIPageViewController.NavigationDirection,
     animated: Bool,
-    completion: ((Bool) -> Void)? = nil) {
+    completion: ((Bool) -> Void)? = nil
+  ) {
     func commit() {
       self.setViewControllers(
         viewControllers,
