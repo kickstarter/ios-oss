@@ -11,13 +11,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.vm.outputs.reloadPaymentMethods.observe(self.reloadData.observer)
+    self.vm.outputs.reloadPaymentMethods.observe(self.reloadPaymentMethods.observer)
   }
 
   func testReloadPaymentMethods() {
-    self.reloadData.assertDidNotEmitValue()
+    self.reloadPaymentMethods.assertDidNotEmitValue()
     let cards = GraphUserCreditCard.template.storedCards.nodes
     self.vm.inputs.configureWith(cards)
-    self.reloadData.assertValue(cards)
+    self.reloadPaymentMethods.assertValue(cards)
   }
 }
