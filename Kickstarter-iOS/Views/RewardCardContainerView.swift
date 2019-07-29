@@ -47,9 +47,6 @@ public final class RewardCardContainerView: UIView {
       |> roundedStyle(cornerRadius: Styles.grid(3))
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
-    _ = self.pledgeButton
-      |> checkoutGreenButtonStyle
-
     _ = self.pledgeButton.titleLabel
       ?|> checkoutGreenButtonTitleLabelStyle
   }
@@ -68,6 +65,13 @@ public final class RewardCardContainerView: UIView {
 
     self.pledgeButton.rac.title = self.viewModel.outputs.pledgeButtonTitleText
     self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
+
+    self.viewModel.outputs.pledgeButtonStyle
+      .observeForUI()
+      .observeValues { [weak self] style in
+        guard let self = self else { return }
+        _ = self.pledgeButton |> style
+    }
   }
 
   internal func configure(with value: (project: Project, reward: Either<Reward, Backing>)) {

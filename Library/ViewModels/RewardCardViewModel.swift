@@ -12,12 +12,18 @@ public protocol RewardCardViewModelOutputs {
   var conversionLabelHidden: Signal<Bool, Never> { get }
   var conversionLabelText: Signal<String, Never> { get }
   var descriptionLabelText: Signal<String, Never> { get }
-  var items: Signal<[String], Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
+  var items: Signal<[String], Never> { get }
+  var pillCollectionViewHidden: Signal<Bool, Never> { get }
+  var reloadPills: Signal<[String], Never> { get }
   var rewardMinimumLabelText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
   var rewardTitleLabelText: Signal<String, Never> { get }
+  var stateIconImageName: Signal<String, Never> { get }
+  var stateIconImageTintColor: Signal<UIColor, Never> { get }
+  var stateIconImageViewContainerBackgroundColor: Signal<UIColor, Never> { get }
+  var stateIconImageViewContainerHidden: Signal<Bool, Never> { get }
 }
 
 public protocol RewardCardViewModelType {
@@ -101,6 +107,15 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
         }
       }
 
+    self.reloadPills = reward.mapConst(["Ends in 3 days", "16 left"])
+    self.pillCollectionViewHidden = reward.mapConst(true)
+
+    self.stateIconImageName = reward.mapConst("checkmark-reward")
+    self.stateIconImageTintColor = reward.mapConst(.ksr_blue_500)
+    self.stateIconImageViewContainerBackgroundColor = reward
+      .mapConst(UIColor.ksr_blue_500.withAlphaComponent(0.06))
+    self.stateIconImageViewContainerHidden = reward.mapConst(true)
+
     self.rewardSelected = reward
       .takeWhen(self.rewardCardTappedProperty.signal)
       .map { $0.id }
@@ -124,10 +139,16 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let descriptionLabelText: Signal<String, Never>
   public let items: Signal<[String], Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
+  public let pillCollectionViewHidden: Signal<Bool, Never>
+  public let reloadPills: Signal<[String], Never>
   public let rewardMinimumLabelText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>
   public let rewardTitleLabelText: Signal<String, Never>
+  public let stateIconImageName: Signal<String, Never>
+  public let stateIconImageTintColor: Signal<UIColor, Never>
+  public let stateIconImageViewContainerBackgroundColor: Signal<UIColor, Never>
+  public let stateIconImageViewContainerHidden: Signal<Bool, Never>
 
   public var inputs: RewardCardViewModelInputs { return self }
   public var outputs: RewardCardViewModelOutputs { return self }

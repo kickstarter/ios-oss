@@ -8,6 +8,7 @@ public protocol RewardCardContainerViewModelInputs {
 }
 
 public protocol RewardCardContainerViewModelOutputs {
+  var pledgeButtonStyle: Signal<ButtonStyle, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var pledgeButtonTitleText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
@@ -41,6 +42,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.pledgeButtonTitleText = projectAndRewardOrBacking
       .map(pledgeButtonTitle(project:rewardOrBacking:))
 
+    self.pledgeButtonStyle = reward.mapConst(checkoutGreenButtonStyle)
     self.pledgeButtonEnabled = rewardAvailable
 
     self.rewardSelected = reward
@@ -58,6 +60,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.pledgeButtonTappedProperty.value = ()
   }
 
+  public let pledgeButtonStyle: Signal<ButtonStyle, Never>
   public let pledgeButtonEnabled: Signal<Bool, Never>
   public let pledgeButtonTitleText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
