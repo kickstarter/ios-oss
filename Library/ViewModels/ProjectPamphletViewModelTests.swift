@@ -472,6 +472,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.vm.inputs.viewDidAppear(animated: false)
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
     }
   }
 }

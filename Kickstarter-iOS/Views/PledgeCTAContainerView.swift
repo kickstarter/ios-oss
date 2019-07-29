@@ -51,8 +51,6 @@ final class PledgeCTAContainerView: UIView {
     self.configureSubviews()
     self.setupConstraints()
     self.bindViewModel()
-
-    self.activityIndicator.startAnimating()
   }
 
   required init?(coder _: NSCoder) {
@@ -117,6 +115,13 @@ final class PledgeCTAContainerView: UIView {
             ?|> \.alpha .~ alpha
         })
       }
+
+    self.viewModel.outputs.activityIndicatorIsAnimating
+      .observeValues { isAnimating in
+        let announcementMessage = isAnimating ? "Loading project state" : "Loading project state complete"
+
+        UIAccessibility.post(notification: .announcement, argument: announcementMessage)
+    }
 
     self.activityIndicator.rac.animating = self.viewModel.outputs.activityIndicatorIsAnimating
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
