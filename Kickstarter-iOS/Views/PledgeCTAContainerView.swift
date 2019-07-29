@@ -110,7 +110,7 @@ final class PledgeCTAContainerView: UIView {
 
     self.viewModel.outputs.rootStackViewAnimateIsHidden
       .observeValues { [weak self] isHidden in
-        let duration = isHidden ? 0.0 : 0.3
+        let duration = isHidden ? 0.0 : 0.18
         let alpha: CGFloat = isHidden ? 0.0 : 1.0
         UIView.animate(withDuration: duration, animations: {
           _ = self?.rootStackView

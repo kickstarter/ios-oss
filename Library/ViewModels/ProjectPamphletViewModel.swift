@@ -53,13 +53,13 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public init() {
     let isLoading = MutableProperty(false)
 
-    let beginFetchProject = self.configDataProperty.signal.skipNil()
+    let beginFetchProjectShouldPrefix = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
         self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
       ))
 
-    let freshProjectAndRefTag = beginFetchProject
+    let freshProjectAndRefTag = beginFetchProjectShouldPrefix
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
         fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
