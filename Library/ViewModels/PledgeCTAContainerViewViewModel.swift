@@ -4,7 +4,7 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeCTAContainerViewViewModelInputs {
-  func configureWith(value: (project: Project?, isLoading: Bool))
+  func configureWith(value: (project: Project, isLoading: Bool))
 }
 
 public protocol PledgeCTAContainerViewViewModelOutputs {
@@ -12,6 +12,7 @@ public protocol PledgeCTAContainerViewViewModelOutputs {
   var buttonBackgroundColor: Signal<UIColor, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
   var buttonTitleTextColor: Signal<UIColor, Never> { get }
+  var rootStackViewAnimateIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
   var subtitleText: Signal<String, Never> { get }
@@ -35,10 +36,11 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .skipNil()
       .map(second)
 
+    self.rootStackViewAnimateIsHidden = self.activityIndicatorIsAnimating
+
     let backing = project.map { $0.personalization.backing }
     let pledgeState = Signal.combineLatest(project, backing)
       .map(pledgeCTA(project:backing:))
-
 
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     self.buttonTitleTextColor = pledgeState.map { $0.buttonTitleTextColor }
@@ -63,6 +65,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public let buttonBackgroundColor: Signal<UIColor, Never>
   public let buttonTitleText: Signal<String, Never>
   public let buttonTitleTextColor: Signal<UIColor, Never>
+  public let rootStackViewAnimateIsHidden: Signal<Bool, Never>
   public let spacerIsHidden: Signal<Bool, Never>
   public let stackViewIsHidden: Signal<Bool, Never>
   public let subtitleText: Signal<String, Never>

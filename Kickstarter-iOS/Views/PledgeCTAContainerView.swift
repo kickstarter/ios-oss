@@ -108,6 +108,16 @@ final class PledgeCTAContainerView: UIView {
         self?.pledgeCTAButton.setTitleColor(textColor, for: .normal)
       }
 
+    self.viewModel.outputs.rootStackViewAnimateIsHidden
+      .observeValues { [weak self] isHidden in
+        let duration = isHidden ? 0.0 : 0.3
+        let alpha: CGFloat = isHidden ? 0.0 : 1.0
+        UIView.animate(withDuration: duration, animations: {
+          _ = self?.rootStackView
+            ?|> \.alpha .~ alpha
+        })
+    }
+
     self.activityIndicator.rac.animating = self.viewModel.outputs.activityIndicatorIsAnimating
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleText

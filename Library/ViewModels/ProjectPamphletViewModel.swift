@@ -81,7 +81,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let project = freshProjectAndRefTag
       .map(first)
 
-    self.configurePledgeCTAView = Signal.combineLatest(project.wrapInOptional(),
+    self.configurePledgeCTAView = Signal.combineLatest(project,
                                                        isLoading.signal)
     .filter { _ in featureNativeCheckoutEnabled() }
 
