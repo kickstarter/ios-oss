@@ -19,6 +19,17 @@ public let baseButtonStyle =
   <> UIButton.lens.adjustsImageWhenDisabled .~ false
   <> UIButton.lens.adjustsImageWhenHighlighted .~ false
 
+// This is a temporary style meant to replace baseButtonStyle in the very near future
+public let baseNewButtonStyle: ButtonStyle = { button in
+  button
+    |> roundedButtonStyle
+    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_callout().bolded
+    |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
+    |> UIButton.lens.titleEdgeInsets .~ .init(all: Styles.grid(2))
+    |> UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode .~ NSLineBreakMode.byTruncatingMiddle
+    |> UIButton.lens.titleLabel .. UILabel.lens.numberOfLines .~ 1
+}
+
 public let blackButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_soft_black
@@ -67,13 +78,13 @@ public let facebookThanksButtonStyle = facebookButtonStyle
     Strings.project_checkout_share_buttons_share()
   }
 
-public let neutralButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_dark_grey_400
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
+public let neutralButtonStyle = baseNewButtonStyle
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_grey_500
+  <> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.white.withAlphaComponent(0.5)
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_dark_grey_500
-  <> UIButton.lens.titleColor(for: .disabled) .~ .init(white: 1.0, alpha: 0.75)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_navy_400
+  <> UIButton.lens.titleColor(for: .disabled) .~ UIColor.ksr_soft_black.withAlphaComponent(0.75)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_grey_400
 
 public let greenButtonStyle =
   baseButtonStyle
@@ -86,6 +97,13 @@ public let greenButtonStyle =
   .~ UIColor.ksr_green_500.withAlphaComponent(0.5)
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
+
+public let roundedGreenButtonStyle: ButtonStyle = { button in
+  button
+    |> greenButtonStyle
+    |> baseNewButtonStyle
+    |> UIButton.lens.layer.borderWidth .~ 0
+}
 
 public let lightNavyButtonStyle =
   baseButtonStyle
@@ -151,3 +169,7 @@ public let whiteBorderButtonStyle = baseButtonStyle
   <> UIButton.lens.layer.borderColor .~ UIColor.white.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3), leftRight: Styles.gridHalf(6))
+
+public let roundedButtonStyle: ButtonStyle = { button in
+  button |> roundedStyle(cornerRadius: 12)
+}
