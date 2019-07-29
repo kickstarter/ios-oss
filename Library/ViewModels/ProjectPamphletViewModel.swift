@@ -63,13 +63,13 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
         fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
-        .on(
-          starting: { isLoading.value = true },
-          terminated: { isLoading.value = false }
-        )
-        .map { project in
-          (project, refTag.map(cleanUp(refTag:)))
-        }
+          .on(
+            starting: { isLoading.value = true },
+            terminated: { isLoading.value = false }
+          )
+          .map { project in
+            (project, refTag.map(cleanUp(refTag:)))
+          }
       }
 
     self.goToRewards = freshProjectAndRefTag
@@ -81,8 +81,10 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let project = freshProjectAndRefTag
       .map(first)
 
-    self.configurePledgeCTAView = Signal.combineLatest(project,
-                                                       isLoading.signal)
+    self.configurePledgeCTAView = Signal.combineLatest(
+      project,
+      isLoading.signal
+    )
     .filter { _ in featureNativeCheckoutEnabled() }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag

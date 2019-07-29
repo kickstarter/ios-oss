@@ -116,7 +116,7 @@ final class PledgeCTAContainerView: UIView {
           _ = self?.rootStackView
             ?|> \.alpha .~ alpha
         })
-    }
+      }
 
     self.activityIndicator.rac.animating = self.viewModel.outputs.activityIndicatorIsAnimating
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
@@ -134,6 +134,7 @@ final class PledgeCTAContainerView: UIView {
   }
 
   // MARK: Functions
+
   private func configureSubviews() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
@@ -148,7 +149,6 @@ final class PledgeCTAContainerView: UIView {
 
     _ = ([self.titleAndSubtitleStackView, self.spacer, self.pledgeCTAButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
-
   }
 
   private func setupConstraints() {
@@ -158,7 +158,7 @@ final class PledgeCTAContainerView: UIView {
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
       self.rootStackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor)
-      ])
+    ])
   }
 }
 

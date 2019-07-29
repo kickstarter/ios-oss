@@ -443,8 +443,10 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
     }
 
-    withEnvironment(apiService: MockService(fetchProjectResponse: projectFull2),
-                    config: config) {
+    withEnvironment(
+      apiService: MockService(fetchProjectResponse: projectFull2),
+      config: config
+    ) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.vm.inputs.viewDidAppear(animated: true)
 
