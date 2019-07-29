@@ -28,7 +28,7 @@ public protocol ProjectPamphletViewModelOutputs {
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
   /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
-  var configurePledgeCTAView: Signal<(Project?, Bool), Never> { get }
+  var configurePledgeCTAView: Signal<(Project, Bool), Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
@@ -51,6 +51,8 @@ public protocol ProjectPamphletViewModelType {
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
   ProjectPamphletViewModelOutputs {
   public init() {
+    let isLoading = MutableProperty(false)
+
     let beginFetchProject = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
@@ -61,6 +63,10 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
         fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
+        .on(
+          starting: { isLoading.value = true },
+          terminated: { isLoading.value = false }
+        )
         .map { project in
           (project, refTag.map(cleanUp(refTag:)))
         }
@@ -75,9 +81,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let project = freshProjectAndRefTag
       .map(first)
 
-    self.configurePledgeCTAView = Signal.merge(
-      beginFetchProject.mapConst((nil, true)),
-      project.skip(first: 1).map { ($0, false) })
+    self.configurePledgeCTAView = Signal.combineLatest(project.wrapInOptional(),
+                                                       isLoading.signal)
     .filter { _ in featureNativeCheckoutEnabled() }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
@@ -162,7 +167,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
-  public let configurePledgeCTAView: Signal<(Project?, Bool), Never>
+  public let configurePledgeCTAView: Signal<(Project, Bool), Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>

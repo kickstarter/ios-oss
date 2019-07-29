@@ -28,8 +28,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public init() {
     let project = self.configureWithValueProperty.signal
       .skipNil()
+      .filter(second >>> isFalse)
       .map(first)
-      .skipNil()
 
     self.activityIndicatorIsAnimating = self.configureWithValueProperty.signal
       .skipNil()
@@ -51,8 +51,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .map(subtitle(project:pledgeState:))
   }
 
-  fileprivate let configureWithValueProperty = MutableProperty<(project: Project?, isLoading: Bool)?>(nil)
-  public func configureWith(value: (project: Project?, isLoading: Bool)) {
+  fileprivate let configureWithValueProperty = MutableProperty<(project: Project, isLoading: Bool)?>(nil)
+  public func configureWith(value: (project: Project, isLoading: Bool)) {
     self.configureWithValueProperty.value = value
   }
 

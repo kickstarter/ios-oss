@@ -93,7 +93,8 @@ final class PledgeCTAContainerView: UIView {
       |> \.numberOfLines .~ 0
 
     _ = self.activityIndicator
-      |> \.color .~ UIColor.ksr_grey_500
+      |> \.color .~ UIColor.ksr_dark_grey_500
+      |> \.hidesWhenStopped .~ true
   }
 
   // MARK: - View model
@@ -118,7 +119,7 @@ final class PledgeCTAContainerView: UIView {
 
   // MARK: - Configuration
 
-  func configureWith(value: (project: Project?, isLoading: Bool)) {
+  func configureWith(value: (project: Project, isLoading: Bool)) {
     self.viewModel.inputs.configureWith(value: value)
   }
 
