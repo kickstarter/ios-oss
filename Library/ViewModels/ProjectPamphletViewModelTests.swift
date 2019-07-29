@@ -11,6 +11,8 @@ final class ProjectPamphletViewModelTests: TestCase {
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
   private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
   private let configurePledgeCTAView = TestObserver<Project, Never>()
+  private let goToDeprecatedRewardsProject = TestObserver<Project, Never>()
+  private let goToDeprecatedRewardsRefTag = TestObserver<RefTag?, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let setNavigationBarHidden = TestObserver<Bool, Never>()
@@ -27,6 +29,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.outputs.configureChildViewControllersWithProject.map(second)
       .observe(self.configureChildViewControllersWithRefTag.observer)
     self.vm.outputs.configurePledgeCTAView.observe(self.configurePledgeCTAView.observer)
+    self.vm.outputs.goToDeprecatedRewards.map(first).observe(self.goToDeprecatedRewardsProject.observer)
+    self.vm.outputs.goToDeprecatedRewards.map(second).observe(self.goToDeprecatedRewardsRefTag.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(first)
@@ -346,6 +350,32 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testGoToRewards() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
+
+    withEnvironment(config: config) {
+      let project = Project.template
+
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.goToDeprecatedRewardsProject.assertDidNotEmitValue()
+      self.goToDeprecatedRewardsRefTag.assertDidNotEmitValue()
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
+
+      self.vm.inputs.backThisProjectTapped()
+
+      self.goToDeprecatedRewardsProject.assertDidNotEmitValue()
+      self.goToDeprecatedRewardsRefTag.assertDidNotEmitValue()
+      self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
+      self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+    }
+  }
+
+  func testGoToDeprecatedRewards() {
     let project = Project.template
 
     self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
@@ -353,17 +383,21 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear(animated: false)
     self.vm.inputs.viewDidAppear(animated: false)
 
+    self.goToDeprecatedRewardsProject.assertDidNotEmitValue()
+    self.goToDeprecatedRewardsRefTag.assertDidNotEmitValue()
     self.goToRewardsProject.assertDidNotEmitValue()
     self.goToRewardsRefTag.assertDidNotEmitValue()
 
     self.vm.inputs.backThisProjectTapped()
 
-    self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
-    self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+    self.goToDeprecatedRewardsProject
+      .assertValues([project], "Tapping 'Back this project' emits the project")
+    self.goToDeprecatedRewardsRefTag
+      .assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
   }
 
   func testConfigurePledgeCTAView_featureEnabled() {
-    let config = Config.template |> \.features .~ [Feature.checkout.rawValue: true]
+    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
     let project = Project.template
 
     withEnvironment(config: config) {
@@ -381,7 +415,7 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testConfigurePledgeCTAView_featureDisabled() {
-    let config = Config.template |> \.features .~ [Feature.checkout.rawValue: false]
+    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: false]
     let project = Project.template
 
     withEnvironment(config: config) {

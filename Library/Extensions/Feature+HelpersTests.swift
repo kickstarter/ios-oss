@@ -7,7 +7,7 @@ import XCTest
 final class FeatureHelpersTests: TestCase {
   func testFeatureNativeCheckoutEnabled_isTrue() {
     let config = Config.template
-      |> \.features .~ [Feature.checkout.rawValue: true]
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
 
     withEnvironment(config: config) {
       XCTAssertTrue(featureNativeCheckoutEnabled())
@@ -16,7 +16,7 @@ final class FeatureHelpersTests: TestCase {
 
   func testFeatureNativeCheckoutEnabled_isFalse() {
     let config = Config.template
-      |> \.features .~ [Feature.checkout.rawValue: false]
+      |> \.features .~ [Feature.nativeCheckout.rawValue: false]
 
     withEnvironment(config: config) {
       XCTAssertFalse(featureNativeCheckoutEnabled())
