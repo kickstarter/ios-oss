@@ -165,7 +165,7 @@ public final class RewardCardView: UIView {
       .observeForUI()
       .observeValues { [weak self] imageName in
         self?.stateImageView.image = image(named: imageName)
-    }
+      }
 
     self.stateImageView.rac.tintColor = self.viewModel.outputs.stateIconImageTintColor
     self.stateImageViewContainer.rac.backgroundColor = self.viewModel.outputs
@@ -177,7 +177,7 @@ public final class RewardCardView: UIView {
       .observeForUI()
       .observeValues { [weak self] imageName in
         self?.stateImageView.image = image(named: imageName)
-    }
+      }
 
     self.viewModel.outputs.items
       .observeForUI()
@@ -203,7 +203,7 @@ public final class RewardCardView: UIView {
       .observeValues { [weak self] values in
         self?.pillDataSource.load(values)
         self?.pillCollectionView.reloadData()
-    }
+      }
   }
 
   // MARK: - Private Helpers

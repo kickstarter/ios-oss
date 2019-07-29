@@ -46,7 +46,6 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.outputs.stateIconImageViewContainerBackgroundColor
       .observe(self.stateIconImageViewContainerBackgroundColor.observer)
     self.vm.outputs.stateIconImageViewContainerHidden.observe(self.stateIconImageViewContainerHidden.observer)
-
   }
 
   // MARK: - Reward Title

@@ -71,7 +71,7 @@ public final class RewardCardContainerView: UIView {
       .observeValues { [weak self] style in
         guard let self = self else { return }
         _ = self.pledgeButton |> style
-    }
+      }
   }
 
   internal func configure(with value: (project: Project, reward: Either<Reward, Backing>)) {
