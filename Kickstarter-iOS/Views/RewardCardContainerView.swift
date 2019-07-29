@@ -49,7 +49,9 @@ public final class RewardCardContainerView: UIView {
 
     _ = self.pledgeButton
       |> roundedGreenButtonStyle
-      |> UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode .~ .byTruncatingTail
+
+    _ = self.pledgeButton.titleLabel
+      ?|> \.lineBreakMode .~ .byTruncatingTail
   }
 
   public override func bindViewModel() {
