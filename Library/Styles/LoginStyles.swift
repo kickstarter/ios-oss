@@ -2,7 +2,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public let createNewAccountButtonStyle = greenButtonStyle
+public let createNewAccountButtonStyle = roundedGreenButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.facebook_confirmation_button() }
 
 public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_400
@@ -56,6 +56,7 @@ public func emailFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
 }
 
 public let fbLoginButtonStyle = facebookButtonStyle
+  <> baseNewButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_buttons_log_in_with_facebook()
   }
@@ -79,19 +80,20 @@ public let forgotPasswordButtonStyle =
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
-public let loginButtonStyle = greenButtonStyle
-  <> UIButton.lens.backgroundColor(for: .disabled)
-  .~ UIColor.ksr_green_500.withAlphaComponent(0.5)
-  <> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.login_tout_back_intent_traditional_login_button()
-  }
+public let loginButtonStyle: ButtonStyle = { button in
+  button
+    |> neutralButtonStyle
+    |> UIButton.lens.title(for: .normal) %~ { _ in
+      Strings.login_tout_back_intent_traditional_login_button()
+    }
+}
 
 public let loginControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in
     Strings.login_navbar_title()
   }
 
-public let loginWithEmailButtonStyle = borderButtonStyle
+public let loginWithEmailButtonStyle = neutralButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
 
 public let onePasswordButtonStyle = UIButton.lens.accessibilityLabel %~ { _
@@ -122,7 +124,7 @@ public func newPasswordFieldAutoFillStyle(_ textField: UITextField) -> UITextFie
   return style
 }
 
-public let resetPasswordButtonStyle = greenButtonStyle
+public let resetPasswordButtonStyle = roundedGreenButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.forgot_password_buttons_reset_my_password() }
 
 public let resetPasswordControllerStyle = baseControllerStyle()
@@ -133,19 +135,19 @@ public let loginRootStackViewStyle =
   <> UIStackView.lens.layoutMargins %~~ { _, stack in
     stack.traitCollection.isRegularRegular
       ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
-      : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
+      : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(4))
   }
 
-public let signupButtonStyle = greenButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.login_tout_default_intent_traditional_signup_button()
-  }
+public let signupButtonStyle: ButtonStyle = { button in
+  button
+    |> roundedGreenButtonStyle
+    |> UIButton.lens.title(for: .normal) %~ { _ in
+      Strings.login_tout_default_intent_traditional_signup_button()
+    }
+}
 
 public let signupControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in Strings.signup_button() }
-
-public let signupWithEmailButtonStyle = borderButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.signup_button_email() }
 
 public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
@@ -164,6 +166,9 @@ public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
   }
 
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
+
+public let signupWithEmailButtonStyle = roundedGreenButtonStyle
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.signup_button_email() }
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
