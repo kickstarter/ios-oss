@@ -121,7 +121,7 @@ final class PledgeCTAContainerView: UIView {
         let announcementMessage = isAnimating ? "Loading project state" : "Loading project state complete"
 
         UIAccessibility.post(notification: .announcement, argument: announcementMessage)
-    }
+      }
 
     self.activityIndicator.rac.animating = self.viewModel.outputs.activityIndicatorIsAnimating
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
