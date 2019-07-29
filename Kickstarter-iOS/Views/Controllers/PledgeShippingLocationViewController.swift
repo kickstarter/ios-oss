@@ -145,17 +145,20 @@ final class PledgeShippingLocationViewController: UIViewController {
   private func presentShippingRules(
     _ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
   ) {
-    let vc = ShippingRulesTableViewController.instantiate()
+    let viewController = ShippingRulesTableViewController.instantiate()
       |> \.navigationItem.leftBarButtonItem .~ UIBarButtonItem(
         barButtonSystemItem: .cancel,
         target: self,
         action: #selector(PledgeShippingLocationViewController.dismissShippingRules)
       )
-    vc.configureWith(project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule)
+    viewController.configureWith(
+      project, shippingRules: shippingRules,
+      selectedShippingRule: selectedShippingRule
+    )
 
-    let nc = UINavigationController(rootViewController: vc)
-    let sheetVC = SheetOverlayViewController(child: nc, offset: Layout.Sheet.offset)
-    self.present(sheetVC, animated: true)
+    let navigationController = UINavigationController(rootViewController: viewController)
+
+    self.presentViewControllerWithSheetOverlay(navigationController, offset: Layout.Sheet.offset)
   }
 }
 
