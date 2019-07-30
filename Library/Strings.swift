@@ -2771,9 +2771,9 @@ contributeurs"
    "Fix your payment method"
 
    - **en**: "Fix your payment method"
-   - **de**: "Zahlungsmethode ändern"
-   - **es**: "Corrige tu método de pago"
-   - **fr**: "Corriger votre moyen de paiement"
+   - **de**: "Fix your payment method"
+   - **es**: "Fix your payment method"
+   - **fr**: "Fix your payment method"
    - **ja**: "Fix your payment method"
   */
   public static func Fix_your_payment_method() -> String {
@@ -4517,40 +4517,6 @@ with friends."
     return localizedString(
       key: "No_comments_yet",
       defaultValue: "No comments yet.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "No, go back"
-
-   - **en**: "No, go back"
-   - **de**: "Nein, zurückgehen"
-   - **es**: "No, regresar"
-   - **fr**: "Non, revenir en arrière"
-   - **ja**: "いいえ、戻ります"
-  */
-  public static func No_go_back() -> String {
-    return localizedString(
-      key: "No_go_back",
-      defaultValue: "No, go back",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "No longer available"
-
-   - **en**: "No longer available"
-   - **de**: "Nicht mehr verfügbar"
-   - **es**: "Ya no está disponible"
-   - **fr**: "Indisponible"
-   - **ja**: "利用できなくなりました"
-  */
-  public static func No_longer_available() -> String {
-    return localizedString(
-      key: "No_longer_available",
-      defaultValue: "No longer available",
       count: nil,
       substitutions: [:]
     )
