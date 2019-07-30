@@ -2771,9 +2771,9 @@ contributeurs"
    "Fix your payment method"
 
    - **en**: "Fix your payment method"
-   - **de**: "Fix your payment method"
-   - **es**: "Fix your payment method"
-   - **fr**: "Fix your payment method"
+   - **de**: "Zahlungsmethode ändern"
+   - **es**: "Corrige tu método de pago"
+   - **fr**: "Corriger votre moyen de paiement"
    - **ja**: "Fix your payment method"
   */
   public static func Fix_your_payment_method() -> String {
