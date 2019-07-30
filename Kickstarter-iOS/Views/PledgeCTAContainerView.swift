@@ -8,6 +8,10 @@ private enum Layout {
     static let minHeight: CGFloat = 48.0
     static let minWidth: CGFloat = 98.0
   }
+
+  enum ActivityIndicator {
+    static let height: CGFloat = 30
+  }
 }
 
 final class PledgeCTAContainerView: UIView {
@@ -116,13 +120,6 @@ final class PledgeCTAContainerView: UIView {
         })
       }
 
-    self.viewModel.outputs.activityIndicatorIsAnimating
-      .observeValues { isAnimating in
-        let announcementMessage = isAnimating ? "Loading project state" : "Loading project state complete"
-
-        UIAccessibility.post(notification: .announcement, argument: announcementMessage)
-      }
-
     self.activityIndicator.rac.animating = self.viewModel.outputs.activityIndicatorIsAnimating
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleText
@@ -147,7 +144,6 @@ final class PledgeCTAContainerView: UIView {
 
     _ = (self.activityIndicator, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToCenterInParent()
 
     _ = ([self.titleLabel, self.subtitleLabel], self.titleAndSubtitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -158,8 +154,10 @@ final class PledgeCTAContainerView: UIView {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.activityIndicator.heightAnchor.constraint(equalToConstant: 30),
-      self.activityIndicator.widthAnchor.constraint(equalToConstant: 30),
+      self.activityIndicator.heightAnchor.constraint(equalToConstant: Layout.ActivityIndicator.height),
+      self.activityIndicator.widthAnchor.constraint(equalTo: self.activityIndicator.heightAnchor),
+      self.activityIndicator.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
+      self.activityIndicator.centerYAnchor.constraint(equalTo: self.layoutMarginsGuide.centerYAnchor),
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
       self.rootStackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor)
