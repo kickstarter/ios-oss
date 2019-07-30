@@ -28,8 +28,8 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
-  /// Emits a project used to configure the pledge CTA view
-  var configurePledgeCTAView: Signal<Project, Never> { get }
+  /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
+  var configurePledgeCTAView: Signal<(Project, Bool), Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
@@ -55,6 +55,8 @@ public protocol ProjectPamphletViewModelType {
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
   ProjectPamphletViewModelOutputs {
   public init() {
+    let isLoading = MutableProperty(false)
+
     let freshProjectAndRefTag = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
@@ -63,6 +65,10 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
         fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
+          .on(
+            starting: { isLoading.value = true },
+            terminated: { isLoading.value = false }
+          )
           .map { project in
             (project, refTag.map(cleanUp(refTag:)))
           }
@@ -77,9 +83,11 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let project = freshProjectAndRefTag
       .map(first)
 
-    self.configurePledgeCTAView = project
-      .skip(first: 1)
-      .filter { _ in featureNativeCheckoutEnabled() }
+    self.configurePledgeCTAView = Signal.combineLatest(
+      project,
+      isLoading.signal
+    )
+    .filter { _ in featureNativeCheckoutEnabled() }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -165,13 +173,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
-  public let configurePledgeCTAView: Signal<Project, Never>
-
-  fileprivate let prefersStatusBarHiddenProperty = MutableProperty(false)
-  public var prefersStatusBarHidden: Bool {
-    return self.prefersStatusBarHiddenProperty.value
-  }
-
+  public let configurePledgeCTAView: Signal<(Project, Bool), Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
