@@ -501,9 +501,9 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in self?.load(items: $0) }
 
-    self.viewModel.outputs.dismissViewController
+    self.viewModel.outputs.popToRootViewController
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.dismiss(animated: true, completion: nil) }
+      .observeValues { [weak self] in self?.navigationController?.popToRootViewController(animated: true) }
 
     self.viewModel.outputs.expandRewardDescription
       .observeForUI()
@@ -651,6 +651,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.viewModel.inputs.descriptionLabelIsTruncated(self.descriptionLabel.isTruncated())
   }
 
+  override func willMove(toParent parent: UIViewController?) {
+    super.willMove(toParent: parent)
+
+    self.viewModel.inputs.willMove(toParent: parent)
+  }
+
   @objc fileprivate func shippingButtonTapped() {
     self.viewModel.inputs.shippingButtonTapped()
   }
@@ -673,10 +679,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   @objc fileprivate func expandRewardDescriptionTapped() {
     self.viewModel.inputs.expandDescriptionTapped()
-  }
-
-  @IBAction fileprivate func closeButtonTapped() {
-    self.viewModel.inputs.closeButtonTapped()
   }
 
   @objc fileprivate func pledgedTextFieldChanged() {
