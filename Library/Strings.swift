@@ -4522,6 +4522,40 @@ with friends."
     )
   }
   /**
+   "No, go back"
+
+   - **en**: "No, go back"
+   - **de**: "Nein, zurückgehen"
+   - **es**: "No, regresar"
+   - **fr**: "Non, revenir en arrière"
+   - **ja**: "いいえ、戻ります"
+  */
+  public static func No_go_back() -> String {
+    return localizedString(
+      key: "No_go_back",
+      defaultValue: "No, go back",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "No longer available"
+
+   - **en**: "No longer available"
+   - **de**: "Nicht mehr verfügbar"
+   - **es**: "Ya no está disponible"
+   - **fr**: "Indisponible"
+   - **ja**: "利用できなくなりました"
+  */
+  public static func No_longer_available() -> String {
+    return localizedString(
+      key: "No_longer_available",
+      defaultValue: "No longer available",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "No messages"
 
    - **en**: "No messages"
