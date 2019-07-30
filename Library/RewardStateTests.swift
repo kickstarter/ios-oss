@@ -16,7 +16,10 @@ class RewardStateTests: TestCase {
 
     let project = Project.template
 
-    XCTAssertEqual(.limited, RewardCellProjectBackingState.RewardState.state(with: reward, project: project))
+    XCTAssertEqual(
+      .limited,
+      RewardCellProjectBackingState.RewardState.state(with: reward, project: project)
+    )
   }
 
   func test_Both_RewardState() {
@@ -40,7 +43,10 @@ class RewardStateTests: TestCase {
 
     let project = Project.template
 
-    XCTAssertEqual(.unknown, RewardCellProjectBackingState.RewardState.state(with: reward, project: project))
+    XCTAssertEqual(
+      .unknown,
+      RewardCellProjectBackingState.RewardState.state(with: reward, project: project)
+    )
   }
 
   func test_Inactive_RewardState() {
@@ -52,7 +58,10 @@ class RewardStateTests: TestCase {
 
     let project = Project.template
 
-    XCTAssertEqual(.inactive, RewardCellProjectBackingState.RewardState.state(with: reward, project: project))
+    XCTAssertEqual(
+      .inactive,
+      RewardCellProjectBackingState.RewardState.state(with: reward, project: project)
+    )
   }
 
   func test_Timebased_RewardState() {
@@ -64,7 +73,10 @@ class RewardStateTests: TestCase {
 
     let project = Project.template
 
-    XCTAssertEqual(.timebased, RewardCellProjectBackingState.RewardState.state(with: reward, project: project))
+    XCTAssertEqual(
+      .timebased,
+      RewardCellProjectBackingState.RewardState.state(with: reward, project: project)
+    )
   }
 
   func test_Nonbacked_Live_RewardCellProjectBackingState() {
