@@ -25,13 +25,10 @@ final class PledgeContinueViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.continueButton
-      |> checkoutGreenButtonStyle
+      |> roundedGreenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.Continue()
       }
-
-    _ = self.continueButton.titleLabel
-      ?|> checkoutGreenButtonTitleLabelStyle
   }
 
   // MARK: - View model
@@ -70,12 +67,10 @@ final class PledgeContinueViewController: UIViewController {
 
   private func goToLoginSignup(with intent: LoginIntent) {
     let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
-    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
-    let sheetOverlayViewController = SheetOverlayViewController(
-      child: navigationController,
-      offset: Layout.Sheet.offset
-    )
 
-    self.present(sheetOverlayViewController, animated: true)
+    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
+    let navigationBarHeight = navigationController.navigationBar.bounds.height
+
+    self.presentViewControllerWithSheetOverlay(navigationController, offset: navigationBarHeight)
   }
 }

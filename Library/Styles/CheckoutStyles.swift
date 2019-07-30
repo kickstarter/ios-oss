@@ -6,7 +6,7 @@ import UIKit
 public enum CheckoutConstants {
   public enum RewardCard {
     public enum Layout {
-      public static let width: CGFloat = 249
+      public static let width: CGFloat = 294
     }
 
     public enum Transition {
@@ -56,26 +56,6 @@ public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> 
       |> \.distribution .~ distribution
       |> \.spacing .~ spacing
   }
-}
-
-public let checkoutGreenButtonStyle: ButtonStyle = { button -> UIButton in
-  button
-    |> greenButtonStyle
-    |> roundedStyle(cornerRadius: 12)
-    |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-}
-
-public let checkoutGreenButtonTitleLabelStyle = { (titleLabel: UILabel?) -> UILabel? in
-  _ = titleLabel
-    ?|> \.font .~ UIFont.ksr_headline()
-    ?|> \.numberOfLines .~ 0
-
-  _ = titleLabel
-    ?|> \.textAlignment .~ NSTextAlignment.center
-    ?|> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
-
-  return titleLabel
 }
 
 public let checkoutBackgroundStyle: ViewStyle = { (view: UIView) in
