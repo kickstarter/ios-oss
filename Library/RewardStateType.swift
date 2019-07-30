@@ -1,5 +1,5 @@
-import UIKit
 import KsApi
+import UIKit
 
 public enum ProjectState {
   case nonlive
@@ -22,7 +22,7 @@ public enum RewardCellProjectBackingState: Equatable {
         : nonBacked(live: .nonlive, activeState: RewardState.state(with: reward, project: project))
     }
 
-    switch(project.state, projectBacking.status) {
+    switch (project.state, projectBacking.status) {
     case(.live, .errored):
       return .backedError(activeState: RewardState.state(with: reward, project: project))
     case(.live, _):
@@ -48,15 +48,14 @@ public enum RewardCellProjectBackingState: Equatable {
 
       if remaining && limit != 0 && startsAt <= now && now <= endsAt {
         return .both
-      } else if remaining == false && limit == nil && endsAt <= now || project.state != .live { 
+      } else if remaining == false && limit == nil && endsAt <= now || project.state != .live {
         return .inactive
-      } else if remaining && limit != nil {
+      } else if remaining, limit != nil {
         return .limited
-      } else if startsAt <= now && now <= endsAt {
+      } else if startsAt <= now, now <= endsAt {
         return .timebased
       }
       return .unknown // we should never get to this state
     }
   }
 }
-
