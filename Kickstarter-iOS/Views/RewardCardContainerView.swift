@@ -15,6 +15,10 @@ public final class RewardCardContainerView: UIView {
 
   private let viewModel: RewardCardContainerViewModelType = RewardCardContainerViewModel()
 
+  private let gradientView: GradientView = {
+    GradientView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
   private let pledgeButton: MultiLineButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -50,6 +54,17 @@ public final class RewardCardContainerView: UIView {
     _ = self.pledgeButton
       |> roundedGreenButtonStyle
 
+    _ = self.gradientView.backgroundColor = .clear
+    _ = self.gradientView.startPoint = .zero
+    _ = self.gradientView.endPoint = CGPoint(x: 0, y: 1)
+
+    let gradient: [(UIColor?, Float)] = [
+      (UIColor.red.withAlphaComponent(0.1), 0),
+      (UIColor.blue.withAlphaComponent(1.0), 1)
+    ]
+    _ = self.gradientView.setGradient(gradient)
+
+
     _ = self.pledgeButton.titleLabel
       ?|> \.lineBreakMode .~ .byTruncatingTail
   }
@@ -81,6 +96,9 @@ public final class RewardCardContainerView: UIView {
     _ = (self.rewardCardView, self)
       |> ksr_addSubviewToParent()
 
+    _ = (self.gradientView, self)
+      |> ksr_addSubviewToParent()
+
     _ = (self.pledgeButtonLayoutGuide, self)
       |> ksr_addLayoutGuideToView()
 
@@ -106,7 +124,7 @@ public final class RewardCardContainerView: UIView {
       |> \.priority .~ .defaultLow
 
     // sometimes this is provided by the parent cell for pinning of the button
-    self.addPledgeButtonMarginConstraints(with: self.layoutMarginsGuide)
+    self.addBottomViewsMarginConstraints(with: self.layoutMarginsGuide)
 
     let pledgeButtonLayoutGuideConstraints = [
       self.pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
@@ -125,21 +143,35 @@ public final class RewardCardContainerView: UIView {
     .flatMap { $0 })
   }
 
-  private func addPledgeButtonMarginConstraints(with layoutMarginsGuide: UILayoutGuide) {
+  private func addBottomViewsMarginConstraints(with layoutMarginsGuide: UILayoutGuide,
+                                               parent: UIView? = nil) {
     NSLayoutConstraint.deactivate(self.pledgeButtonMarginConstraints ?? [])
-
+    // swiftlint:disable:next line_length
+    let pledgeButtonHeightConstraint = self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     NSLayoutConstraint.activate([
       self.pledgeButton.leftAnchor.constraint(equalTo: layoutMarginsGuide.leftAnchor),
       self.pledgeButton.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor),
       self.pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
-      self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      pledgeButtonHeightConstraint
     ])
+
+    NSLayoutConstraint.activate([
+      self.gradientView.leftAnchor.constraint(equalTo: layoutMarginsGuide.leftAnchor),
+      self.gradientView.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor),
+      self.gradientView.centerYAnchor.constraint(equalTo: self.pledgeButton.centerYAnchor),
+      self.gradientView.heightAnchor.constraint(equalToConstant: pledgeButtonHeightConstraint.constant * 2)
+    ])
+//    if let parentView = parent {
+//      NSLayoutConstraint.activate([
+//        self.gradientView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor)
+//        ])
+//    }
   }
 
   // MARK: - Accessors
 
-  public func pinPledgeButton(to layoutMarginsGuide: UILayoutGuide) {
-    self.addPledgeButtonMarginConstraints(with: layoutMarginsGuide)
+  public func pinBottomViews(to parent: UIView) {
+    self.addBottomViewsMarginConstraints(with: parent.layoutMarginsGuide, parent: parent)
   }
 
   public func currentReward(is reward: Reward) -> Bool {
