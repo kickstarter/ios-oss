@@ -11,7 +11,8 @@ class RewardStateTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.remaining .~ 1
       |> Reward.lens.limit .~ 5
-      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt
+      .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
 
     let project = Project.template
 
@@ -22,7 +23,8 @@ class RewardStateTests: TestCase {
     let reward = .template
       |> Reward.lens.limit .~ 100
       |> Reward.lens.remaining .~ 20
-      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt
+      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     let project = Project.template
 
@@ -33,7 +35,8 @@ class RewardStateTests: TestCase {
     let reward = .template
       |> Reward.lens.remaining .~ 0
       |> Reward.lens.limit .~ 0
-      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt
+      .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
 
     let project = Project.template
 
@@ -44,7 +47,8 @@ class RewardStateTests: TestCase {
     let reward = .template
       |> Reward.lens.remaining .~ 0
       |> Reward.lens.limit .~ nil
-      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt
+      .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
 
     let project = Project.template
 
@@ -55,7 +59,8 @@ class RewardStateTests: TestCase {
     let reward = .template
       |> Reward.lens.remaining .~ 0
       |> Reward.lens.limit .~ 0
-      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt
+      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     let project = Project.template
 
@@ -66,7 +71,8 @@ class RewardStateTests: TestCase {
     let reward = .template
       |> Reward.lens.remaining .~ 0
       |> Reward.lens.limit .~ 0
-      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt
+      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     let project = .template
       |> Project.lens.personalization.isBacking .~ false
@@ -117,7 +123,8 @@ class RewardStateTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.remaining .~ 1
       |> Reward.lens.limit .~ 5
-      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt
+      .~ self.dateType.init().addingTimeInterval(-60 * 60 * 24 * 3).timeIntervalSince1970
 
     let backing = Backing.template
 
@@ -136,7 +143,8 @@ class RewardStateTests: TestCase {
     let reward = .template
       |> Reward.lens.limit .~ 100
       |> Reward.lens.remaining .~ 20
-      |> Reward.lens.endsAt .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+      |> Reward.lens.endsAt
+      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
 
     let backing = Backing.template
       |> Backing.lens.status .~ .errored
