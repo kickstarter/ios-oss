@@ -25,6 +25,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
     super.viewDidLoad()
 
     self.configureSubviews()
+    self.setupConstraints()
   }
 
   private func configureSubviews() {
@@ -49,6 +50,13 @@ final class PledgePaymentMethodsViewController: UIViewController {
       action: #selector(PledgePaymentMethodsViewController.applePayButtonTapped),
       for: .touchUpInside
     )
+  }
+
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      self.scrollViewHeightConstraint,
+      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      ])
   }
 
   override func viewDidLayoutSubviews() {

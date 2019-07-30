@@ -24,10 +24,10 @@ final class PledgeCreditCardView: UIView {
   private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
 
   private let adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private let labelsStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
   private let expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let imageView: UIImageView = { UIImageView(frame: .zero) }()
+  private let labelsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let selectButton: UIButton = { UIButton(type: .custom) }()
 
@@ -36,9 +36,9 @@ final class PledgeCreditCardView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.bindViewModel()
     self.configureSubviews()
     self.setupConstraints()
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -77,41 +77,34 @@ final class PledgeCreditCardView: UIView {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ .white
-      |> roundedStyle(cornerRadius: Styles.grid(1))
+      |> viewStyle
 
     _ = self.selectButton
-      |> checkoutSmallBlackButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
+      |> selectButtonStyle
 
     _ = self.selectButton.titleLabel
-      ?|> \.font .~ UIFont.ksr_headline()
+      ?|> selectButtonTitleLabelStyle
 
     _ = self.imageView
-      |> \.contentMode .~ .scaleAspectFit
+      |> imageViewStyle
 
     _ = self.lastFourLabel
-      |> checkoutTitleLabelStyle
-      |> \.font .~ UIFont.ksr_headline(size: 14)
-      |> \.textColor .~ .ksr_soft_black
+      |> lastFourLabelStyle
 
     _ = self.expirationDateLabel
-      |> checkoutTitleLabelStyle
-      |> \.font .~ UIFont.ksr_caption1(size: 11)
-      |> \.textColor .~ .ksr_text_dark_grey_500
+      |> expirationDateLabelStyle
 
     _ = self.labelsStackView
-      |> \.axis .~ .vertical
+      |> labelsStackViewStyle
 
     _ = self.adaptableStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
-      |> \.spacing .~ Styles.grid(1)
+      |> adaptableStackViewStyle
 
     _ = self.rootStackView
-      |> checkoutStackViewStyle
-      |> \.layoutMargins .~ UIEdgeInsets(all: Styles.grid(2))
+      |> rootStackViewStyle
   }
 
   override func bindViewModel() {
@@ -129,5 +122,59 @@ final class PledgeCreditCardView: UIView {
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: value)
+  }
+
+  // MARK: - Styles
+
+  private let adaptableStackViewStyle: StackViewStyle = { stackView in
+    stackView
+      |> \.spacing .~ Styles.grid(1)
+  }
+
+  private let expirationDateLabelStyle: LabelStyle = { label in
+    label
+      |> checkoutTitleLabelStyle
+      |> \.font .~ UIFont.ksr_caption2().bolded
+      |> \.textColor .~ .ksr_text_dark_grey_500
+  }
+
+  private let imageViewStyle: ImageViewStyle = { imageView in
+    imageView
+      |> \.contentMode .~ .scaleAspectFit
+  }
+
+  private let lastFourLabelStyle: LabelStyle = { label in
+    label
+      |> checkoutTitleLabelStyle
+      |> \.font .~ UIFont.ksr_callout().bolded
+      |> \.textColor .~ .ksr_soft_black
+  }
+
+  private let labelsStackViewStyle: StackViewStyle = { stackView in
+    stackView
+      |> \.axis .~ .vertical
+  }
+
+  private let rootStackViewStyle: StackViewStyle = { stackView in
+    stackView
+      |> checkoutStackViewStyle
+      |> \.layoutMargins .~ UIEdgeInsets(all: Styles.grid(2))
+  }
+
+  private let selectButtonStyle: ButtonStyle = { button in
+    button
+      |> checkoutSmallBlackButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
+  }
+
+  private let selectButtonTitleLabelStyle: LabelStyle = { label in
+    label
+      |> \.font .~ UIFont.ksr_headline()
+  }
+
+  private let viewStyle: ViewStyle = { view in
+    view
+      |> \.backgroundColor .~ .white
+      |> roundedStyle(cornerRadius: Styles.grid(1))
   }
 }
