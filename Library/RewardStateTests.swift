@@ -89,7 +89,7 @@ class RewardStateTests: TestCase {
       |> Project.lens.state .~ .live
 
     XCTAssertEqual(
-      .nonBacked(live: .live, activeState: .timebased),
+      .nonBacked(live: .live, rewardState: .timebased),
       RewardCellProjectBackingState.state(with: project, reward: reward)
     )
   }
@@ -105,7 +105,7 @@ class RewardStateTests: TestCase {
       |> Project.lens.state .~ .successful
 
     XCTAssertEqual(
-      .nonBacked(live: .nonlive, activeState: .inactive),
+      .nonBacked(live: .nonlive, rewardState: .inactive),
       RewardCellProjectBackingState.state(with: project, reward: reward)
     )
   }
@@ -123,7 +123,7 @@ class RewardStateTests: TestCase {
       |> Project.lens.state .~ .successful
 
     XCTAssertEqual(
-      .backed(live: .nonlive, activeState: .inactive),
+      .backed(live: .nonlive, rewardState: .inactive),
       RewardCellProjectBackingState.state(with: project, reward: reward)
     )
   }
@@ -143,7 +143,7 @@ class RewardStateTests: TestCase {
       |> Project.lens.state .~ .live
 
     XCTAssertEqual(
-      .backed(live: .live, activeState: .limited),
+      .backed(live: .live, rewardState: .limited),
       RewardCellProjectBackingState.state(with: project, reward: reward)
     )
   }
@@ -164,7 +164,7 @@ class RewardStateTests: TestCase {
       |> Project.lens.state .~ .live
 
     XCTAssertEqual(
-      .backedError(activeState: .both),
+      .backedError(rewardState: .both),
       RewardCellProjectBackingState.state(with: project, reward: reward)
     )
   }

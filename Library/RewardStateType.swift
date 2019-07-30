@@ -7,9 +7,9 @@ public enum ProjectState {
 }
 
 public enum RewardCellProjectBackingState: Equatable {
-  case backedError(activeState: RewardState)
-  case nonBacked(live: ProjectState, activeState: RewardState)
-  case backed(live: ProjectState, activeState: RewardState)
+  case backedError(rewardState: RewardState)
+  case nonBacked(live: ProjectState, rewardState: RewardState)
+  case backed(live: ProjectState, rewardState: RewardState)
 
   static func state(with project: Project, reward: Reward) -> RewardCellProjectBackingState {
     let backing = project.personalization.backing
@@ -18,17 +18,17 @@ public enum RewardCellProjectBackingState: Equatable {
 
     guard let projectBacking = backing, isBacking else {
       return project.state == .live
-        ? nonBacked(live: .live, activeState: RewardState.state(with: reward, project: project))
-        : nonBacked(live: .nonlive, activeState: RewardState.state(with: reward, project: project))
+        ? nonBacked(live: .live, rewardState: RewardState.state(with: reward, project: project))
+        : nonBacked(live: .nonlive, rewardState: RewardState.state(with: reward, project: project))
     }
 
     switch (project.state, projectBacking.status) {
     case(.live, .errored):
-      return .backedError(activeState: RewardState.state(with: reward, project: project))
+      return .backedError(rewardState: RewardState.state(with: reward, project: project))
     case(.live, _):
-      return .backed(live: .live, activeState: RewardState.state(with: reward, project: project))
+      return .backed(live: .live, rewardState: RewardState.state(with: reward, project: project))
     case (_, _):
-      return .backed(live: .nonlive, activeState: RewardState.state(with: reward, project: project))
+      return .backed(live: .nonlive, rewardState: RewardState.state(with: reward, project: project))
     }
   }
 
