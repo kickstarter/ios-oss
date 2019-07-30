@@ -349,4 +349,19 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
       }
     }
   }
+
+  func testCloseButtonWhenPresentedModally() {
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(project: .template, reward: .template)
+    vc.isModal = true
+    vc.loadViewIfNeeded()
+
+    XCTAssertNotNil(vc.navigationItem.leftBarButtonItem)
+  }
+
+  func testCloseButtonWhenNotPresentedModally() {
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(project: .template, reward: .template)
+    vc.loadViewIfNeeded()
+
+    XCTAssertNil(vc.navigationItem.leftBarButtonItem)
+  }
 }

@@ -5,6 +5,7 @@ import Stripe
 import UIKit
 
 internal final class DeprecatedRewardPledgeViewController: UIViewController {
+  internal var isModal: Bool = false
   internal let viewModel: DeprecatedRewardPledgeViewModelType = DeprecatedRewardPledgeViewModel()
 
   fileprivate var applePayButton = PKPaymentButton()
@@ -100,6 +101,15 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     self.applePayButtonContainerView.addArrangedSubview(self.applePayButton)
 
+    if self.isModal {
+      self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+        image: image(named: "icon--cross", tintColor: .ksr_navy_600),
+        style: .plain,
+        target: self,
+        action: #selector(DeprecatedRewardPledgeViewController.closeButtonTapped)
+      )
+    }
+
     self.applePayButton.addTarget(
       self,
       action: #selector(DeprecatedRewardPledgeViewController.applePayButtonTapped),
@@ -173,6 +183,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       }
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func willMove(toParent parent: UIViewController?) {
+    super.willMove(toParent: parent)
+
+    self.viewModel.inputs.willMove(toParent: parent)
   }
 
   internal override func bindStyles() {

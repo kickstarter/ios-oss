@@ -120,6 +120,9 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       reward: reward,
       applePayCapable: applePayCapable
     )
+
+    vc.isModal = true
+
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
     self.present(nav, animated: true, completion: nil)
