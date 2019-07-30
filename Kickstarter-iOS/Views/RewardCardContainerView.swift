@@ -49,8 +49,6 @@ public final class RewardCardContainerView: UIView {
 
     _ = self.pledgeButton
       |> roundedGreenButtonStyle
-      |> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_green_200
-      |> UIButton.lens.title(for: .disabled) %~ { _ in Strings.No_longer_available() }
 
     _ = self.pledgeButton.titleLabel
       ?|> \.lineBreakMode .~ .byTruncatingTail
