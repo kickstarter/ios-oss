@@ -25,13 +25,10 @@ final class PledgeContinueViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.continueButton
-      |> checkoutGreenButtonStyle
+      |> roundedGreenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.Continue()
       }
-
-    _ = self.continueButton.titleLabel
-      ?|> checkoutGreenButtonTitleLabelStyle
   }
 
   // MARK: - View model
