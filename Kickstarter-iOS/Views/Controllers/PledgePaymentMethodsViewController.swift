@@ -108,3 +108,14 @@ extension PledgePaymentMethodsViewController: UICollectionViewDataSource {
     return cell
   }
 }
+
+
+extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
+  func pledgeAddNewCardViewDidTapAddNewCard() {
+    let addNewCardViewController = AddNewCardViewController.instantiate()
+    let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
+    let offset = navigationController.navigationBar.bounds.height
+
+    self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
+  }
+}
