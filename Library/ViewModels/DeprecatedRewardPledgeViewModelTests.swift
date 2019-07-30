@@ -38,7 +38,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   fileprivate let countryLabelText = TestObserver<String, Never>()
   fileprivate let descriptionLabelText = TestObserver<String, Never>()
   fileprivate let differentPaymentMethodButtonHidden = TestObserver<Bool, Never>()
-  fileprivate let popToRootViewController = TestObserver<(), Never>()
+  fileprivate let dismissViewController = TestObserver<(), Never>()
   fileprivate let estimatedDeliveryDateLabelText = TestObserver<String, Never>()
   private let estimatedFulfillmentStackViewHidden = TestObserver<Bool, Never>()
   fileprivate let expandRewardDescription = TestObserver<(), Never>()
@@ -90,7 +90,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.outputs.descriptionLabelText.observe(self.descriptionLabelText.observer)
     self.vm.outputs.differentPaymentMethodButtonHidden
       .observe(self.differentPaymentMethodButtonHidden.observer)
-    self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
+    self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.estimatedDeliveryDateLabelText.observe(self.estimatedDeliveryDateLabelText.observer)
     self.vm.outputs.estimatedFulfillmentStackViewHidden
       .observe(self.estimatedFulfillmentStackViewHidden.observer)
@@ -369,18 +369,16 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.differentPaymentMethodButtonHidden.assertValues([true])
   }
 
-  func testTrackClosedRewardOnBack() {
+  func testDismissViewController() {
     self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
+    self.dismissViewController.assertValueCount(0)
     XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
 
-    // moving a non-nil VC does not track
-    self.vm.inputs.willMove(toParent: UIViewController())
+    self.vm.inputs.closeButtonTapped()
 
-    XCTAssertEqual(["Reward Checkout", "Selected Reward"], self.trackingClient.events)
-
-    self.vm.inputs.willMove(toParent: nil)
+    self.dismissViewController.assertValueCount(1)
 
     XCTAssertEqual(["Reward Checkout", "Selected Reward", "Closed Reward"], self.trackingClient.events)
   }
@@ -1351,7 +1349,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
 
-      self.popToRootViewController.assertValueCount(0)
+      self.dismissViewController.assertValueCount(0)
 
       self.pledgeIsLoading.assertValues([true, false])
       self.loadingOverlayIsHidden.assertValues([true, false, true])
@@ -2238,7 +2236,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
 
-      self.popToRootViewController.assertValueCount(0)
+      self.dismissViewController.assertValueCount(0)
 
       self.vm.inputs.pledgeTextFieldChanged("100000")
 
@@ -2272,7 +2270,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
 
-      self.popToRootViewController.assertValueCount(0)
+      self.dismissViewController.assertValueCount(0)
 
       XCTAssertEqual(
         [
@@ -2317,7 +2315,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
 
-      self.popToRootViewController.assertValueCount(0)
+      self.dismissViewController.assertValueCount(0)
 
       self.vm.inputs.pledgeTextFieldChanged("100000")
       self.vm.inputs.continueToPaymentsButtonTapped()
@@ -2332,7 +2330,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: false)
 
-      self.popToRootViewController.assertValueCount(0)
+      self.dismissViewController.assertValueCount(0)
     }
   }
 
@@ -2459,11 +2457,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.shippingIsLoading.assertValues([true, false])
       self.showAlertMessage.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
       self.showAlertShouldDismiss.assertValues([true])
-      self.popToRootViewController.assertValueCount(0)
+      self.dismissViewController.assertValueCount(0)
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-      self.popToRootViewController.assertValueCount(1)
+      self.dismissViewController.assertValueCount(1)
     }
   }
 
@@ -2501,11 +2499,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.showAlertMessage.assertValues(["Something went wrong yo."])
       self.showAlertShouldDismiss.assertValues([true])
-      self.popToRootViewController.assertValueCount(0)
+      self.dismissViewController.assertValueCount(0)
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-      self.popToRootViewController.assertValueCount(1)
+      self.dismissViewController.assertValueCount(1)
 
       withEnvironment(
         apiService: MockService(createPledgeResult: Result(failure: errorEmptyMessage)),
@@ -2526,11 +2524,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           ["Something went wrong yo.", Strings.general_error_something_wrong()]
         )
         self.showAlertShouldDismiss.assertValues([true, true])
-        self.popToRootViewController.assertValueCount(1)
+        self.dismissViewController.assertValueCount(1)
 
         self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-        self.popToRootViewController.assertValueCount(2)
+        self.dismissViewController.assertValueCount(2)
       }
     }
   }
@@ -2569,11 +2567,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.showAlertMessage.assertValues(["Something went wrong yo."])
       self.showAlertShouldDismiss.assertValues([true])
-      self.popToRootViewController.assertValueCount(0)
+      self.dismissViewController.assertValueCount(0)
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-      self.popToRootViewController.assertValueCount(1)
+      self.dismissViewController.assertValueCount(1)
 
       withEnvironment(
         apiService: MockService(changePaymentMethodResult: Result(failure: errorEmptyMessage)),
@@ -2594,11 +2592,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           ["Something went wrong yo.", Strings.general_error_something_wrong()]
         )
         self.showAlertShouldDismiss.assertValues([true, true])
-        self.popToRootViewController.assertValueCount(1)
+        self.dismissViewController.assertValueCount(1)
 
         self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-        self.popToRootViewController.assertValueCount(2)
+        self.dismissViewController.assertValueCount(2)
       }
     }
   }
@@ -2637,11 +2635,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.showAlertMessage.assertValues(["Something went wrong yo."])
       self.showAlertShouldDismiss.assertValues([true])
-      self.popToRootViewController.assertValueCount(0)
+      self.dismissViewController.assertValueCount(0)
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-      self.popToRootViewController.assertValueCount(1)
+      self.dismissViewController.assertValueCount(1)
 
       withEnvironment(
         apiService: MockService(updatePledgeResult: Result(failure: errorEmptyMessage)),
@@ -2662,11 +2660,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           ["Something went wrong yo.", Strings.general_error_something_wrong()]
         )
         self.showAlertShouldDismiss.assertValues([true, true])
-        self.popToRootViewController.assertValueCount(1)
+        self.dismissViewController.assertValueCount(1)
 
         self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-        self.popToRootViewController.assertValueCount(2)
+        self.dismissViewController.assertValueCount(2)
       }
     }
   }
@@ -2715,11 +2713,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.showAlertMessage.assertValues(["Something went wrong yo."])
       self.showAlertShouldDismiss.assertValues([true])
-      self.popToRootViewController.assertValueCount(0)
+      self.dismissViewController.assertValueCount(0)
 
       self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-      self.popToRootViewController.assertValueCount(1)
+      self.dismissViewController.assertValueCount(1)
 
       withEnvironment(
         apiService: MockService(createPledgeResult: Result(failure: errorEmptyMessage)),
@@ -2750,11 +2748,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
           ["Something went wrong yo.", Strings.general_error_something_wrong()]
         )
         self.showAlertShouldDismiss.assertValues([true, true])
-        self.popToRootViewController.assertValueCount(1)
+        self.dismissViewController.assertValueCount(1)
 
         self.vm.inputs.errorAlertTappedOK(shouldDismiss: true)
 
-        self.popToRootViewController.assertValueCount(2)
+        self.dismissViewController.assertValueCount(2)
       }
     }
   }

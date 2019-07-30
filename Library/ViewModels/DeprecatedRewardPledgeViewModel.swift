@@ -15,6 +15,9 @@ public protocol DeprecatedRewardPledgeViewModelInputs {
   /// Call when the shipping picker has notified us that shipping has changed.
   func change(shippingRule: ShippingRule)
 
+  /// Call when the close button is tapped.
+  func closeButtonTapped()
+
   /// Call with the project and reward provided to the view.
   func configureWith(project: Project, reward: Reward, applePayCapable: Bool)
 
@@ -65,9 +68,6 @@ public protocol DeprecatedRewardPledgeViewModelInputs {
 
   /// Call when the view loads.
   func viewDidLoad()
-
-  /// Call when the vc will move to parent.
-  func willMove(toParent parent: UIViewController?)
 }
 
 public protocol DeprecatedRewardPledgeViewModelOutputs {
@@ -98,8 +98,8 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
   /// Emits a boolean that determines if the "different payment method" button is hidden.
   var differentPaymentMethodButtonHidden: Signal<Bool, Never> { get }
 
-  /// Emits when the stack should be popped.
-  var popToRootViewController: Signal<(), Never> { get }
+  /// Emits when the controller should be dismissed.
+  var dismissViewController: Signal<(), Never> { get }
 
   /// Emits a string to be put into the estimated delivery date label.
   var estimatedDeliveryDateLabelText: Signal<String, Never> { get }
@@ -618,9 +618,10 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
           : ($0.title ?? "")
       }
 
-    self.popToRootViewController = self.errorAlertTappedShouldDismissProperty.signal
-      .filter(isTrue)
-      .ignoreValues()
+    self.dismissViewController = Signal.merge(
+      self.closeButtonTappedProperty.signal,
+      self.errorAlertTappedShouldDismissProperty.signal.filter(isTrue).ignoreValues()
+    )
 
     let projectAndRewardAndPledgeContext = projectAndReward
       .map { project, reward -> (Project, Reward, Koala.PledgeContext) in
@@ -696,7 +697,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
       }
 
     projectAndRewardAndPledgeContext
-      .takeWhen(self.willMoveToParentProperty.signal.filter(isNil))
+      .takeWhen(self.closeButtonTappedProperty.signal)
       .observeValues {
         AppEnvironment.current.koala.trackClosedReward(project: $0, reward: $1, pledgeContext: $2)
       }
@@ -790,6 +791,11 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     self.changedShippingRuleProperty.value = shippingRule
   }
 
+  fileprivate let closeButtonTappedProperty = MutableProperty(())
+  public func closeButtonTapped() {
+    self.closeButtonTappedProperty.value = ()
+  }
+
   fileprivate let continueToPaymentsButtonTappedProperty = MutableProperty(())
   public func continueToPaymentsButtonTapped() {
     self.continueToPaymentsButtonTappedProperty.value = ()
@@ -878,11 +884,6 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let willMoveToParentProperty = MutableProperty<UIViewController?>(nil)
-  public func willMove(toParent parent: UIViewController?) {
-    self.willMoveToParentProperty.value = parent
-  }
-
   public let applePayButtonHidden: Signal<Bool, Never>
   public let continueToPaymentsButtonHidden: Signal<Bool, Never>
   public var conversionLabelHidden: Signal<Bool, Never> {
@@ -899,7 +900,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
   }
 
   public let differentPaymentMethodButtonHidden: Signal<Bool, Never>
-  public let popToRootViewController: Signal<(), Never>
+  public let dismissViewController: Signal<(), Never>
   public let estimatedDeliveryDateLabelText: Signal<String, Never>
   public let estimatedFulfillmentStackViewHidden: Signal<Bool, Never>
   public let expandRewardDescription: Signal<(), Never>
