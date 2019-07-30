@@ -18,7 +18,7 @@ private enum Layout {
   }
 }
 
-final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
+final class PledgeCreditCardView: UIView {
   // MARK: - Properties
 
   private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
@@ -29,17 +29,16 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
   private let expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let imageView: UIImageView = { UIImageView(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private let selectButton: UIButton = {
-    UIButton(type: .custom)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
+  private let selectButton: UIButton = { UIButton(type: .custom) }()
 
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    self.configureSubviews()
+
     self.bindViewModel()
+    self.configureSubviews()
+    self.setupConstraints()
   }
 
   required init?(coder _: NSCoder) {
@@ -59,32 +58,17 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
     _ = ([self.adaptableStackView, self.selectButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.rootStackView, self.contentView)
+    _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+  }
 
-    let minTouchSizeConstraint = self.selectButton.heightAnchor
-      .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-    _ = minTouchSizeConstraint
-      |> \.priority .~ .defaultHigh
-
-    let imageViewWidthConstraint = self.imageView.widthAnchor
-      .constraint(equalToConstant: Layout.ImageView.width)
-    _ = imageViewWidthConstraint
-      |> \.priority .~ .defaultHigh
-
-    let rootStackViewWidthConstraint = self.rootStackView.widthAnchor
-      .constraint(equalToConstant: Layout.Card.width)
-    _ = rootStackViewWidthConstraint
-      |> \.priority .~ .defaultHigh
-
+  private func setupConstraints() {
     NSLayoutConstraint.activate([
-      rootStackViewWidthConstraint,
-      imageViewWidthConstraint,
-      minTouchSizeConstraint
+      self.rootStackView.widthAnchor.constraint(equalToConstant: Layout.Card.width),
+      self.selectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+      self.imageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width)
     ])
-
-    self.setNeedsLayout()
   }
 
   // MARK: - Styles
@@ -132,6 +116,7 @@ final class PledgeCreditCardCell: UICollectionViewCell, ValueCell {
 
   override func bindViewModel() {
     super.bindViewModel()
+
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
     self.viewModel.outputs.cardImage

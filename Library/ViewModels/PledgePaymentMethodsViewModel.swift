@@ -7,7 +7,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
-  var reloadData: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
+  var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
 }
 
 public protocol PledgePaymentMethodsViewModelType {
@@ -18,7 +18,7 @@ public protocol PledgePaymentMethodsViewModelType {
 public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelType,
   PledgePaymentMethodsViewModelInputs, PledgePaymentMethodsViewModelOutputs {
   public init() {
-    self.reloadData = self.configureWithSignal
+    self.reloadPaymentMethods = self.configureWithSignal
       .map { $0 }
   }
 
@@ -31,5 +31,5 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }
   public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
 
-  public let reloadData: Signal<[GraphUserCreditCard.CreditCard], Never>
+  public let reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
 }
