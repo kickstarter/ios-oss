@@ -4,13 +4,15 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeCTAContainerViewViewModelInputs {
-  func configureWith(project: Project)
+  func configureWith(value: (project: Project, isLoading: Bool))
 }
 
 public protocol PledgeCTAContainerViewViewModelOutputs {
+  var activityIndicatorIsAnimating: Signal<Bool, Never> { get }
   var buttonBackgroundColor: Signal<UIColor, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
   var buttonTitleTextColor: Signal<UIColor, Never> { get }
+  var rootStackViewAnimateIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
   var subtitleText: Signal<String, Never> { get }
@@ -25,7 +27,17 @@ public protocol PledgeCTAContainerViewViewModelType {
 public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
-    let project = self.projectProperty.signal.skipNil()
+    let project = self.configureWithValueProperty.signal
+      .skipNil()
+      .filter(second >>> isFalse)
+      .map(first)
+
+    self.activityIndicatorIsAnimating = self.configureWithValueProperty.signal
+      .skipNil()
+      .map(second)
+
+    self.rootStackViewAnimateIsHidden = self.activityIndicatorIsAnimating
+
     let backing = project.map { $0.personalization.backing }
     let pledgeState = Signal.combineLatest(project, backing)
       .map(pledgeCTA(project:backing:))
@@ -41,17 +53,19 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .map(subtitle(project:pledgeState:))
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
-    self.projectProperty.value = project
+  fileprivate let configureWithValueProperty = MutableProperty<(project: Project, isLoading: Bool)?>(nil)
+  public func configureWith(value: (project: Project, isLoading: Bool)) {
+    self.configureWithValueProperty.value = value
   }
 
   public var inputs: PledgeCTAContainerViewViewModelInputs { return self }
   public var outputs: PledgeCTAContainerViewViewModelOutputs { return self }
 
+  public let activityIndicatorIsAnimating: Signal<Bool, Never>
   public let buttonBackgroundColor: Signal<UIColor, Never>
   public let buttonTitleText: Signal<String, Never>
   public let buttonTitleTextColor: Signal<UIColor, Never>
+  public let rootStackViewAnimateIsHidden: Signal<Bool, Never>
   public let spacerIsHidden: Signal<Bool, Never>
   public let stackViewIsHidden: Signal<Bool, Never>
   public let subtitleText: Signal<String, Never>
