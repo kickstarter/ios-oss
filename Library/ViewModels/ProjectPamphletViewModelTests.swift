@@ -10,7 +10,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
   private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
-  private let configurePledgeCTAView = TestObserver<Project, Never>()
+  private let configurePledgeCTAViewProject = TestObserver<Project, Never>()
+  private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let setNavigationBarHidden = TestObserver<Bool, Never>()
@@ -26,7 +27,8 @@ final class ProjectPamphletViewModelTests: TestCase {
       .observe(self.configureChildViewControllersWithProject.observer)
     self.vm.outputs.configureChildViewControllersWithProject.map(second)
       .observe(self.configureChildViewControllersWithRefTag.observer)
-    self.vm.outputs.configurePledgeCTAView.observe(self.configurePledgeCTAView.observer)
+    self.vm.outputs.configurePledgeCTAView.map(first).observe(self.configurePledgeCTAViewProject.observer)
+    self.vm.outputs.configurePledgeCTAView.map(second).observe(self.configurePledgeCTAViewIsLoading.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(first)
@@ -362,21 +364,100 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
   }
 
-  func testConfigurePledgeCTAView_featureEnabled() {
+  func testConfigurePledgeCTAView_fetchProjectSuccess_featureEnabled() {
     let config = Config.template |> \.features .~ [Feature.checkout.rawValue: true]
     let project = Project.template
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
 
-    withEnvironment(config: config) {
-      self.configurePledgeCTAView.assertDidNotEmitValue()
+    let mockService = MockService(fetchProjectResponse: projectFull)
+
+    withEnvironment(apiService: mockService, apiDelayInterval: .seconds(1), config: config) {
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
       self.vm.inputs.viewDidAppear(animated: false)
 
+      self.configurePledgeCTAViewProject.assertValues([project])
+      self.configurePledgeCTAViewIsLoading.assertValues([true])
+
+      self.scheduler.run()
+
+      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
+      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+    }
+  }
+
+  func testConfigurePledgeCTAView_fetchProjectFailure_featureEnabled() {
+    let config = Config.template |> \.features .~ [Feature.checkout.rawValue: true]
+    let project = Project.template
+    let mockService = MockService(fetchProjectError: .couldNotParseJSON)
+
+    withEnvironment(apiService: mockService, apiDelayInterval: .seconds(1), config: config) {
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.configurePledgeCTAViewProject.assertValues([project])
+      self.configurePledgeCTAViewIsLoading.assertValues([true])
+
+      self.scheduler.run()
+
+      self.configurePledgeCTAViewProject.assertValues([project, project])
+      self.configurePledgeCTAViewIsLoading.assertValues([true, false])
+    }
+  }
+
+  func testConfigurePledgeCTAView_reloadsUponReturnToView_featureEnabled() {
+    let config = Config.template |> \.features .~ [Feature.checkout.rawValue: true]
+    let project = Project.template
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+    let projectFull2 = Project.template
+      |> \.id .~ 3
+
+    let mockService = MockService(fetchProjectResponse: projectFull)
+
+    withEnvironment(apiService: mockService, config: config) {
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePledgeCTAViewProject.assertValues([project])
+      self.configurePledgeCTAViewIsLoading.assertValues([true])
+
       self.scheduler.advance()
 
-      self.configurePledgeCTAView.assertValues([project])
+      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
+      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+    }
+
+    withEnvironment(
+      apiService: MockService(fetchProjectResponse: projectFull2),
+      config: config
+    ) {
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.vm.inputs.viewDidAppear(animated: true)
+
+      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull, projectFull])
+      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
+
+      self.scheduler.advance()
+
+      self.configurePledgeCTAViewProject.assertValues(
+        [project, projectFull, projectFull, projectFull, projectFull2, projectFull2])
+      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
     }
   }
 
@@ -390,7 +471,8 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(animated: false)
       self.vm.inputs.viewDidAppear(animated: false)
 
-      self.configurePledgeCTAView.assertDidNotEmitValue()
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
     }
   }
 }

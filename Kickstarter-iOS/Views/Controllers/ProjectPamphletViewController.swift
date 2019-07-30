@@ -157,8 +157,8 @@ public final class ProjectPamphletViewController: UIViewController {
 
     self.viewModel.outputs.configurePledgeCTAView
       .observeForUI()
-      .observeValues { [weak self] project in
-        self?.pledgeCTAContainerView.configureWith(project: project)
+      .observeValues { [weak self] value in
+        self?.pledgeCTAContainerView.configureWith(value: value)
       }
   }
 
