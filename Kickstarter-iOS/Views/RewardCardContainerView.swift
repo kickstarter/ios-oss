@@ -19,6 +19,7 @@ public final class RewardCardContainerView: UIView {
     GradientView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let pledgeButton: MultiLineButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -159,7 +160,7 @@ public final class RewardCardContainerView: UIView {
       self.gradientView.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor),
       self.gradientView.topAnchor.constraint(equalTo: self.pledgeButton.topAnchor, constant: -minTouchSize),
       // swiftlint:disable:next line_length
-      self.gradientView.bottomAnchor.constraint(equalTo: self.pledgeButton.bottomAnchor, constant: minTouchSize/2)
+      self.gradientView.bottomAnchor.constraint(equalTo: self.pledgeButton.bottomAnchor, constant: minTouchSize / 2)
     ])
   }
 
