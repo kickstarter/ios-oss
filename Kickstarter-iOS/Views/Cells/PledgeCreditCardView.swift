@@ -77,34 +77,34 @@ final class PledgeCreditCardView: UIView {
     super.bindStyles()
 
     _ = self
-      |> self.viewStyle
+      |> viewStyle
 
     _ = self.selectButton
-      |> self.selectButtonStyle
+      |> selectButtonStyle
 
     _ = self.selectButton.titleLabel
-      ?|> self.selectButtonTitleLabelStyle
+      ?|> selectButtonTitleLabelStyle
 
     _ = self.imageView
-      |> self.imageViewStyle
+      |> imageViewStyle
 
     _ = self.lastFourLabel
-      |> self.lastFourLabelStyle
+      |> lastFourLabelStyle
 
     _ = self.expirationDateLabel
-      |> self.expirationDateLabelStyle
+      |> expirationDateLabelStyle
 
     _ = self.labelsStackView
-      |> self.labelsStackViewStyle
+      |> labelsStackViewStyle
 
     _ = self.adaptableStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
-      |> self.adaptableStackViewStyle
+      |> adaptableStackViewStyle
 
     _ = self.rootStackView
-      |> self.rootStackViewStyle
+      |> rootStackViewStyle
   }
 
   override func bindViewModel() {
@@ -123,60 +123,60 @@ final class PledgeCreditCardView: UIView {
   func configureWith(value: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: value)
   }
+}
 
-  // MARK: - Styles
+// MARK: - Styles
 
-  private let adaptableStackViewStyle: StackViewStyle = { stackView in
-    stackView
-      |> \.spacing .~ Styles.grid(2)
-  }
+private let adaptableStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.spacing .~ Styles.grid(2)
+}
 
-  private let expirationDateLabelStyle: LabelStyle = { label in
-    label
-      |> checkoutTitleLabelStyle
-      |> \.font .~ UIFont.ksr_caption2().bolded
-      |> \.textColor .~ .ksr_text_dark_grey_500
-  }
+private let expirationDateLabelStyle: LabelStyle = { label in
+  label
+    |> checkoutTitleLabelStyle
+    |> \.font .~ UIFont.ksr_caption2().bolded
+    |> \.textColor .~ .ksr_text_dark_grey_500
+}
 
-  private let imageViewStyle: ImageViewStyle = { imageView in
-    imageView
-      |> \.contentMode .~ .scaleAspectFit
-  }
+private let imageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.contentMode .~ .scaleAspectFit
+}
 
-  private let lastFourLabelStyle: LabelStyle = { label in
-    label
-      |> checkoutTitleLabelStyle
-      |> \.font .~ UIFont.ksr_callout().bolded
-      |> \.textColor .~ .ksr_soft_black
-  }
+private let lastFourLabelStyle: LabelStyle = { label in
+  label
+    |> checkoutTitleLabelStyle
+    |> \.font .~ UIFont.ksr_callout().bolded
+    |> \.textColor .~ .ksr_soft_black
+}
 
-  private let labelsStackViewStyle: StackViewStyle = { stackView in
-    stackView
-      |> \.axis .~ .vertical
-      |> \.spacing .~ Styles.gridHalf(1)
-  }
+private let labelsStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .vertical
+    |> \.spacing .~ Styles.gridHalf(1)
+}
 
-  private let rootStackViewStyle: StackViewStyle = { stackView in
-    stackView
-      |> checkoutStackViewStyle
-      |> \.spacing .~ Styles.grid(3)
-  }
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> checkoutStackViewStyle
+    |> \.spacing .~ Styles.grid(3)
+}
 
-  private let selectButtonStyle: ButtonStyle = { button in
-    button
-      |> checkoutSmallBlackButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
-  }
+private let selectButtonStyle: ButtonStyle = { button in
+  button
+    |> checkoutSmallBlackButtonStyle
+    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
+}
 
-  private let selectButtonTitleLabelStyle: LabelStyle = { label in
-    label
-      |> \.font .~ UIFont.ksr_headline()
-  }
+private let selectButtonTitleLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_headline()
+}
 
-  private let viewStyle: ViewStyle = { view in
-    view
-      |> \.backgroundColor .~ .white
-      |> roundedStyle(cornerRadius: Styles.grid(1))
-      |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
-  }
+private let viewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .white
+    |> roundedStyle(cornerRadius: Styles.grid(1))
+    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 }
