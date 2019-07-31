@@ -228,12 +228,16 @@ public final class RewardCardView: UIView {
   }
 
   private func setupConstraints() {
+    let stateImageViewContainerWidthConstraint = self.stateImageViewContainer.widthAnchor
+      .constraint(equalToConstant: Styles.grid(5))
+      |> \.priority .~ .defaultHigh
+
     let imageViewContraints = [
       self.stateImageView.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
       self.stateImageView.heightAnchor.constraint(equalTo: self.stateImageView.widthAnchor),
       self.stateImageView.centerXAnchor.constraint(equalTo: self.stateImageViewContainer.centerXAnchor),
       self.stateImageView.centerYAnchor.constraint(equalTo: self.stateImageViewContainer.centerYAnchor),
-      self.stateImageViewContainer.widthAnchor.constraint(equalToConstant: Styles.grid(5)),
+      stateImageViewContainerWidthConstraint,
       self.stateImageViewContainer.heightAnchor.constraint(equalTo: self.stateImageViewContainer.widthAnchor)
     ]
 
