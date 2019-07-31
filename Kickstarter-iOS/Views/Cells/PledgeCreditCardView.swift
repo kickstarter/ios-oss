@@ -77,34 +77,34 @@ final class PledgeCreditCardView: UIView {
     super.bindStyles()
 
     _ = self
-      |> viewStyle
+      |> self.viewStyle
 
     _ = self.selectButton
-      |> selectButtonStyle
+      |> self.selectButtonStyle
 
     _ = self.selectButton.titleLabel
-      ?|> selectButtonTitleLabelStyle
+      ?|> self.selectButtonTitleLabelStyle
 
     _ = self.imageView
-      |> imageViewStyle
+      |> self.imageViewStyle
 
     _ = self.lastFourLabel
-      |> lastFourLabelStyle
+      |> self.lastFourLabelStyle
 
     _ = self.expirationDateLabel
-      |> expirationDateLabelStyle
+      |> self.expirationDateLabelStyle
 
     _ = self.labelsStackView
-      |> labelsStackViewStyle
+      |> self.labelsStackViewStyle
 
     _ = self.adaptableStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
-      |> adaptableStackViewStyle
+      |> self.adaptableStackViewStyle
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> self.rootStackViewStyle
   }
 
   override func bindViewModel() {

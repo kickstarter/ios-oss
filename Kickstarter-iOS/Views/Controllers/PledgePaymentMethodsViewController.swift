@@ -16,6 +16,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var scrollViewHeightConstraint: NSLayoutConstraint = {
     self.scrollView.heightAnchor.constraint(equalToConstant: 0)
   }()
+
   private lazy var spacer: UIView = { UIView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -50,8 +51,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.scrollViewHeightConstraint,
-       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-      ])
+      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    ])
   }
 
   override func viewDidLayoutSubviews() {
@@ -74,19 +75,19 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.cardsStackView
-      |> cardsStackViewStyle
+      |> self.cardsStackViewStyle
 
     _ = self.applePayButton
-      |> applePayButtonStyle
+      |> self.applePayButtonStyle
 
     _ = self.scrollView
       |> checkoutBackgroundStyle
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> self.rootStackViewStyle
 
     _ = self.titleLabel
-      |> titleLabelStyle
+      |> self.titleLabelStyle
   }
 
   // MARK: - View model
