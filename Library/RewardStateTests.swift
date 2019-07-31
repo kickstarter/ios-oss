@@ -169,7 +169,7 @@ class RewardStateTests: TestCase {
     )
   }
 
-  func test_noRewardType() {
+  func test_noRewardType_BackedNonLive() {
     let reward = Reward.noReward
       |> Reward.lens.remaining .~ 0
       |> Reward.lens.limit .~ 0
@@ -184,6 +184,42 @@ class RewardStateTests: TestCase {
 
     XCTAssertEqual(
       .backed(live: .nonlive, rewardState: .inactive),
+      RewardCellProjectBackingState.state(with: project, reward: reward)
+    )
+  }
+
+  func test_noRewardType_BackedLive() {
+    let reward = Reward.noReward
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.limit .~ 0
+
+    let backing = Backing.template
+      |> Backing.lens.reward .~ reward
+
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.state .~ .successful
+
+    XCTAssertEqual(
+      .backed(live: .nonlive, rewardState: .inactive),
+      RewardCellProjectBackingState.state(with: project, reward: reward)
+    )
+  }
+
+  func test_noRewardType_NonBacked() {
+    let reward = Reward.noReward
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.limit .~ 0
+      |> Reward.lens.endsAt
+      .~ self.dateType.init().addingTimeInterval(60 * 60 * 24 * 3).timeIntervalSince1970
+
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.state .~ .live
+
+    XCTAssertEqual(
+      .nonBacked(live: .live, rewardState: .timebased),
       RewardCellProjectBackingState.state(with: project, reward: reward)
     )
   }
