@@ -54,16 +54,16 @@ public final class RewardCardContainerView: UIView {
     _ = self.pledgeButton
       |> roundedGreenButtonStyle
 
-    _ = self.gradientView.backgroundColor = .clear
-    _ = self.gradientView.startPoint = .zero
-    _ = self.gradientView.endPoint = CGPoint(x: 0, y: 1)
+    _ = self.gradientView
+      |> \.backgroundColor .~ .clear
+      |> \.startPoint .~ .zero
+      |> \.endPoint .~ CGPoint(x: 0, y: 1)
 
     let gradient: [(UIColor?, Float)] = [
-      (UIColor.red.withAlphaComponent(0.1), 0),
-      (UIColor.blue.withAlphaComponent(1.0), 1)
+      (UIColor.white.withAlphaComponent(0.1), 0.0),
+      (UIColor.white.withAlphaComponent(1.0), 1)
     ]
-    _ = self.gradientView.setGradient(gradient)
-
+    self.gradientView.setGradient(gradient)
 
     _ = self.pledgeButton.titleLabel
       ?|> \.lineBreakMode .~ .byTruncatingTail
@@ -143,35 +143,30 @@ public final class RewardCardContainerView: UIView {
     .flatMap { $0 })
   }
 
-  private func addBottomViewsMarginConstraints(with layoutMarginsGuide: UILayoutGuide,
-                                               parent: UIView? = nil) {
+  private func addBottomViewsMarginConstraints(with layoutMarginsGuide: UILayoutGuide) {
     NSLayoutConstraint.deactivate(self.pledgeButtonMarginConstraints ?? [])
-    // swiftlint:disable:next line_length
-    let pledgeButtonHeightConstraint = self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    let minTouchSize = Styles.minTouchSize.height
+
     NSLayoutConstraint.activate([
       self.pledgeButton.leftAnchor.constraint(equalTo: layoutMarginsGuide.leftAnchor),
       self.pledgeButton.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor),
       self.pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
-      pledgeButtonHeightConstraint
+      self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: minTouchSize)
     ])
 
     NSLayoutConstraint.activate([
       self.gradientView.leftAnchor.constraint(equalTo: layoutMarginsGuide.leftAnchor),
       self.gradientView.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor),
-      self.gradientView.centerYAnchor.constraint(equalTo: self.pledgeButton.centerYAnchor),
-      self.gradientView.heightAnchor.constraint(equalToConstant: pledgeButtonHeightConstraint.constant * 2)
+      self.gradientView.topAnchor.constraint(equalTo: self.pledgeButton.topAnchor, constant: -minTouchSize),
+      // swiftlint:disable:next line_length
+      self.gradientView.bottomAnchor.constraint(equalTo: self.pledgeButton.bottomAnchor, constant: minTouchSize/2)
     ])
-//    if let parentView = parent {
-//      NSLayoutConstraint.activate([
-//        self.gradientView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor)
-//        ])
-//    }
   }
 
   // MARK: - Accessors
 
-  public func pinBottomViews(to parent: UIView) {
-    self.addBottomViewsMarginConstraints(with: parent.layoutMarginsGuide, parent: parent)
+  public func pinBottomViews(to layoutMarginsGuide: UILayoutGuide) {
+    self.addBottomViewsMarginConstraints(with: layoutMarginsGuide)
   }
 
   public func currentReward(is reward: Reward) -> Bool {

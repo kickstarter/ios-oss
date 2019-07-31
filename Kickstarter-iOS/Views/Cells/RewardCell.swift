@@ -57,7 +57,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.rewardCardContainerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)
       |> \.isActive .~ true
 
-    self.rewardCardContainerView.pinBottomViews(to: self.contentView)
+    self.rewardCardContainerView.pinBottomViews(to: self.contentView.layoutMarginsGuide)
   }
 
   override func bindStyles() {
