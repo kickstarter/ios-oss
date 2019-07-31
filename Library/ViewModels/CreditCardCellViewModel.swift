@@ -16,8 +16,11 @@ public protocol CreditCardCellViewModelOutputs {
   /// Emits a formatted accessibility string containing the card type, number and last four digits
   var cardNumberAccessibilityLabel: Signal<String, Never> { get }
 
-  /// Emits a formatted string containing the card's last four digits.
-  var cardNumberText: Signal<String, Never> { get }
+  /// Emits a formatted string containing the card's last four digits with the format: Card ending in 8844.
+  var cardNumberTextLongStyle: Signal<String, Never> { get }
+
+  /// Emits a formatted string containing the card's last four digits with the format: Ending in 8844.
+  var cardNumberTextShortStyle: Signal<String, Never> { get }
 
   /// Emits the formatted card's expirationdate.
   var expirationDateText: Signal<String, Never> { get }
@@ -41,12 +44,14 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
           .joined(separator: ", ")
       }
 
-    self.cardNumberText = self.cardProperty.signal.skipNil()
+    self.cardNumberTextLongStyle = self.cardProperty.signal.skipNil()
       .map { Strings.Card_ending_in_last_four(last_four: $0.lastFour) }
 
+    self.cardNumberTextShortStyle = self.cardProperty.signal.skipNil()
+      .map { Strings.Ending_in_last_four(last_four: $0.lastFour) }
+
     self.expirationDateText = self.cardProperty.signal.skipNil()
-      .map { $0.formattedExpirationDate }
-      .map { Strings.Credit_card_expiration(expiration_date: formatted(dateString: $0)) }
+      .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
   }
 
   fileprivate let cardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
@@ -54,10 +59,11 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
     self.cardProperty.value = creditCard
   }
 
-  public let cardNumberAccessibilityLabel: Signal<String, Never>
   public let cardImage: Signal<UIImage?, Never>
+  public let cardNumberAccessibilityLabel: Signal<String, Never>
+  public let cardNumberTextLongStyle: Signal<String, Never>
+  public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
-  public let cardNumberText: Signal<String, Never>
 
   public var inputs: CreditCardCellViewModelInputs { return self }
   public var outputs: CreditCardCellViewModelOutputs { return self }
@@ -65,26 +71,4 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
 
 private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage? {
   return image(named: card.imageName)
-}
-
-private func formatted(dateString: String) -> String {
-  let date = toDate(dateString: dateString)
-  return Format.date(
-    secondsInUTC: date.timeIntervalSince1970,
-    template: "MM-yyyy",
-    timeZone: UTCTimeZone
-  )
-}
-
-private func toDate(dateString: String) -> Date {
-  // Always use UTC timezone here this date should be timezone agnostic
-  guard let date = Format.date(
-    from: dateString,
-    dateFormat: "yyyy-MM",
-    timeZone: UTCTimeZone
-  ) else {
-    fatalError("Unable to parse date format")
-  }
-
-  return date
 }

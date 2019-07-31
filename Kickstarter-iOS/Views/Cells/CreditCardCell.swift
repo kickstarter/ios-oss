@@ -38,7 +38,7 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.cardNumberLabel.rac.accessibilityLabel = self.viewModel.outputs.cardNumberAccessibilityLabel
-    self.cardNumberLabel.rac.text = self.viewModel.outputs.cardNumberText
+    self.cardNumberLabel.rac.text = self.viewModel.outputs.cardNumberTextLongStyle
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
 
     self.viewModel.outputs.cardImage
