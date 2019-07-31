@@ -61,7 +61,7 @@ public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> 
 public let checkoutSmallBlackButtonStyle: ButtonStyle = { button -> UIButton in
   button
     |> blackButtonStyle
-    |> roundedStyle(cornerRadius: Styles.grid(1))
+    |> roundedStyle(cornerRadius: Styles.gridHalf(3))
     |> UIButton.lens.layer.borderWidth .~ 0
     |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
 }

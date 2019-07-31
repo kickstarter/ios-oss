@@ -128,7 +128,7 @@ final class PledgeCreditCardView: UIView {
 
   private let adaptableStackViewStyle: StackViewStyle = { stackView in
     stackView
-      |> \.spacing .~ Styles.grid(1)
+      |> \.spacing .~ Styles.grid(2)
   }
 
   private let expirationDateLabelStyle: LabelStyle = { label in
@@ -153,12 +153,13 @@ final class PledgeCreditCardView: UIView {
   private let labelsStackViewStyle: StackViewStyle = { stackView in
     stackView
       |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.gridHalf(1)
   }
 
   private let rootStackViewStyle: StackViewStyle = { stackView in
     stackView
       |> checkoutStackViewStyle
-      |> \.layoutMargins .~ UIEdgeInsets(all: Styles.grid(2))
+      |> \.spacing .~ Styles.grid(3)
   }
 
   private let selectButtonStyle: ButtonStyle = { button in
@@ -176,5 +177,6 @@ final class PledgeCreditCardView: UIView {
     view
       |> \.backgroundColor .~ .white
       |> roundedStyle(cornerRadius: Styles.grid(1))
+      |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
   }
 }

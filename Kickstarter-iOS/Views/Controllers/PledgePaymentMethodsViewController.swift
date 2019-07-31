@@ -16,7 +16,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var scrollViewHeightConstraint: NSLayoutConstraint = {
     self.scrollView.heightAnchor.constraint(equalToConstant: 0)
   }()
-
+  private lazy var spacer: UIView = { UIView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
   // MARK: - Lifecycle
@@ -33,17 +33,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.applePayButton, self.titleLabel, self.scrollView], self.rootStackView)
+    _ = ([self.applePayButton, self.spacer, self.titleLabel, self.scrollView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
-
-    NSLayoutConstraint.activate([
-      self.scrollViewHeightConstraint,
-      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-    ])
 
     self.applePayButton.addTarget(
       self,
@@ -55,7 +50,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.scrollViewHeightConstraint,
-      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
       ])
   }
 
@@ -71,7 +66,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.updateScrollViewHeightConstraint()
   }
 
-  // MARK: - Styles
+  // MARK: - Bind Styles
 
   override func bindStyles() {
     super.bindStyles()
@@ -79,24 +74,19 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.cardsStackView
-      |> \.spacing .~ Styles.grid(2)
+      |> cardsStackViewStyle
 
     _ = self.applePayButton
-      |> roundedStyle(cornerRadius: Styles.grid(2))
-      |> \.isAccessibilityElement .~ true
+      |> applePayButtonStyle
 
     _ = self.scrollView
       |> checkoutBackgroundStyle
 
     _ = self.rootStackView
-      |> checkoutStackViewStyle
+      |> rootStackViewStyle
 
     _ = self.titleLabel
-      |> checkoutTitleLabelStyle
-      |> \.text %~ { _ in Strings.Other_payment_methods() }
-      |> \.textColor .~ UIColor.ksr_text_dark_grey_500
-      |> \.font .~ UIFont.ksr_caption1()
-      |> \.textAlignment .~ .center
+      |> titleLabelStyle
   }
 
   // MARK: - View model
@@ -142,5 +132,33 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.scrollViewHeightConstraint.constant = self.scrollView.contentSize.height
 
     self.view.layoutIfNeeded()
+  }
+
+  // MARK: - Styles
+
+  private let applePayButtonStyle: ButtonStyle = { button in
+    button
+      |> roundedStyle(cornerRadius: Styles.grid(2))
+      |> \.isAccessibilityElement .~ true
+  }
+
+  private let cardsStackViewStyle: StackViewStyle = { stackView in
+    stackView
+      |> \.spacing .~ Styles.grid(2)
+  }
+
+  private let rootStackViewStyle: StackViewStyle = { stackView in
+    stackView
+      |> checkoutStackViewStyle
+      |> \.spacing .~ Styles.grid(2)
+  }
+
+  private let titleLabelStyle: LabelStyle = { label in
+    label
+      |> checkoutTitleLabelStyle
+      |> \.text %~ { _ in Strings.Other_payment_methods() }
+      |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+      |> \.font .~ UIFont.ksr_caption1()
+      |> \.textAlignment .~ .center
   }
 }
