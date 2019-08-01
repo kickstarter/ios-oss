@@ -21,11 +21,11 @@ final class PledgeAddNewCardView: UIView {
 
   weak var delegate: PledgeAddNewCardViewDelegate?
 
-  private let viewModel: PledgeAddNewCardViewModelType = PledgeAddNewCardViewModel()
-
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
   }()
+
+  private let viewModel: PledgeAddNewCardViewModelType = PledgeAddNewCardViewModel()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
