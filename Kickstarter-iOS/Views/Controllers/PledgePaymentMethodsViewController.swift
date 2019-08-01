@@ -129,6 +129,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addArrangedSubviewsToStackView()
 
     let addNewCardView = PledgeAddNewCardView(frame: .zero)
+      |> \.delegate .~ self
 
     self.cardsStackView.addArrangedSubview(addNewCardView)
   }
@@ -172,9 +173,20 @@ final class PledgePaymentMethodsViewController: UIViewController {
 extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
   func pledgeAddNewCardViewDidTapAddNewCard() {
     let addNewCardViewController = AddNewCardViewController.instantiate()
+      |> \.delegate .~ self
     let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
     let offset = navigationController.navigationBar.bounds.height
 
     self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
+  }
+}
+
+extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
+  func addNewCardViewControllerDismissed(_ viewController: AddNewCardViewController) {
+    self.dismiss(animated: true)
+  }
+
+  func addNewCardViewController(_ viewController: AddNewCardViewController, didSucceedWithMessage message: String) {
+    // TODO
   }
 }
