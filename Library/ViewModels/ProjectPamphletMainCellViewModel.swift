@@ -347,12 +347,12 @@ private func fundingStatus(forProject project: Project) -> String {
   }
 }
 
-typealias ConvertedCurrrencyProjectData = (pledgedAmount: Int, goalAmount: Int, country: Project.Country)
+typealias ConvertedCurrencyProjectData = (pledgedAmount: Int, goalAmount: Int, country: Project.Country)
 
 private func pledgeAmountAndGoalAndCountry(
   forProject project: Project,
   needsConversion: Bool
-) -> ConvertedCurrrencyProjectData {
+) -> ConvertedCurrencyProjectData {
   guard needsConversion else {
     return (project.stats.pledged, project.stats.goal, project.country)
   }

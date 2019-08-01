@@ -3,21 +3,6 @@ import Prelude
 import XCTest
 
 final class ProjectTests: XCTestCase {
-  func testFundingProgress() {
-    let halfFunded = Project.template
-      |> Project.lens.stats.fundingProgress .~ 0.5
-
-    XCTAssertEqual(0.5, halfFunded.stats.fundingProgress)
-    XCTAssertEqual(50, halfFunded.stats.percentFunded)
-
-    let badGoalData = Project.template
-      |> Project.lens.stats.pledged .~ 0
-      <> Project.lens.stats.goal .~ 0
-
-    XCTAssertEqual(0.0, badGoalData.stats.fundingProgress)
-    XCTAssertEqual(0, badGoalData.stats.percentFunded)
-  }
-
   func testEndsIn48Hours_WithJustLaunchedProject() {
     let justLaunched = Project.template
       |> Project.lens.dates.launchedAt .~ Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970
@@ -198,13 +183,5 @@ final class ProjectTests: XCTestCase {
     XCTAssertNil(project.error)
     XCTAssertEqual("US", project.value?.country.countryCode)
     XCTAssertEqual(true, project.value?.personalization.isBacking)
-  }
-
-  func testPledgedUsd() {
-    let project = .template
-      |> Project.lens.stats.staticUsdRate .~ 2.0
-      |> Project.lens.stats.pledged .~ 1_000
-
-    XCTAssertEqual(2_000, project.stats.pledgedUsd)
   }
 }
