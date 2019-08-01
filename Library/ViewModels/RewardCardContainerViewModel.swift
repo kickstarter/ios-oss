@@ -115,11 +115,7 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
   case (.backed(.live), true, _):
     return Strings.Manage_your_pledge()
   case (.nonBacked(.live), _, true):
-    let minimumFormattedAmount = formattedAmountForRewardOrBacking(
-      project: project,
-      rewardOrBacking: .init(left: reward)
-    )
-    return Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
+    return nonBackedPledgeButtonTitle(project: project, reward: reward)
   case (.backed(.nonLive), _, _):
     return Strings.View_your_pledge()
   case (.nonBacked(.nonLive), _, _):
@@ -153,6 +149,15 @@ private func buttonStyle(project: Project, reward: Reward) -> ButtonStyle? {
   return roundedGreenButtonStyle
 }
 
+private func nonBackedPledgeButtonTitle(project: Project, reward: Reward) -> String {
+  let minimumFormattedAmount = formattedAmountForRewardOrBacking(
+    project: project,
+    rewardOrBacking: .init(left: reward)
+  )
+
+  return Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
+}
+
 private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {
   let isAvailable = rewardIsAvailable(project: project, reward: reward)
   let isBacking = userIsBacking(reward: reward, inProject: project)
@@ -161,9 +166,9 @@ private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {
 }
 
 private func rewardIsAvailable(project _: Project, reward: Reward) -> Bool {
-  let nonLimited = reward.remaining == nil && reward.endsAt == nil
+  let limited = !(reward.remaining == nil && reward.endsAt == nil)
 
-  guard !nonLimited else { return true }
+  guard limited else { return true }
 
   let remaining = reward.remaining.coalesceWith(0) > 0
   let endsAt = reward.endsAt.coalesceWith(0)
