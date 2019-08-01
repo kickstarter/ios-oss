@@ -17,6 +17,21 @@ public enum CheckoutConstants {
       }
     }
   }
+
+  public enum PaymentSource {
+    public enum Card {
+      public static let width: CGFloat = 240
+    }
+
+    public enum ImageView {
+      public static let width: CGFloat = 64
+      public static let height: CGFloat = 40
+    }
+
+    public enum Button {
+      public static let width: CGFloat = 217
+    }
+  }
 }
 
 // MARK: - Attributes
@@ -141,4 +156,36 @@ public let rewardCardShadowStyle: ViewStyle = { (view: UIView) in
   view
     |> dropShadowStyleMedium()
     |> \.layer.shouldRasterize .~ false
+}
+
+public let paymentSourceExpirationDateLabelStyle: LabelStyle = { label in
+  label
+    |> checkoutTitleLabelStyle
+    |> \.font .~ UIFont.ksr_caption2().bolded
+    |> \.textColor .~ .ksr_text_dark_grey_500
+}
+
+public let paymentSourceImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.contentMode .~ .scaleAspectFit
+}
+
+public let paymentSourceLastFourLabelStyle: LabelStyle = { label in
+  label
+    |> checkoutTitleLabelStyle
+    |> \.font .~ UIFont.ksr_callout().bolded
+    |> \.textColor .~ .ksr_soft_black
+}
+
+public let paymentSourceSelectButtonStyle: ButtonStyle = { button in
+  button
+    |> checkoutSmallBlackButtonStyle
+    |> UIButton.lens.titleLabel .. UILabel.lens.font .~ UIFont.ksr_headline()
+}
+
+public let paymentSourceViewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .white
+    |> roundedStyle(cornerRadius: Styles.grid(1))
+    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 }

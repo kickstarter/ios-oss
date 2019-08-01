@@ -127,6 +127,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     _ = (cardViews, self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    let addNewCardView = PledgeAddNewCardView(frame: .zero)
+
+    self.cardsStackView.addArrangedSubview(addNewCardView)
   }
 
   private func updateScrollViewHeightConstraint() {

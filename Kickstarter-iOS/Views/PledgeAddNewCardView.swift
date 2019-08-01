@@ -10,20 +10,26 @@ protocol PledgeAddNewCardViewDelegate: class {
 
 final class PledgeAddNewCardView: UIView {
   private lazy var addNewCardImageView: UIImageView = {
-    UIImageView(image: UIImage.init(named: "icon--add"))
+    UIImageView(image: UIImage.init(named: "icon--add")?.withRenderingMode(.alwaysOriginal))
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+  private lazy var addNewCardImageViewContainer = { UIView(frame: .zero) }()
   private lazy var addNewCardButton: UIButton = {
     UIButton(type: .custom)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   weak var delegate: PledgeAddNewCardViewDelegate?
 
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+  }()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
     self.configureViews()
+    self.setupConstraints()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -33,17 +39,55 @@ final class PledgeAddNewCardView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> paymentSourceViewStyle
+
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.addNewCardImageView
+      |> paymentSourceImageViewStyle
+
+    _ = self.addNewCardButton
+      |> paymentSourceSelectButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Add_new_card() }
   }
 
   // MARK: Functions
 
   private func configureViews() {
-    _ = ([self.addNewCardImageView, self.addNewCardButton], self.rootStackView)
+    _ = (self.rootStackView, self)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = (self.addNewCardImageView, self.addNewCardImageViewContainer)
+      |> ksr_addSubviewToParent()
+
+    _ = ([self.addNewCardImageViewContainer, self.addNewCardButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.addNewCardButton.addTarget(self, action: #selector(PledgeAddNewCardView.addNewCardButtonTapped), for: .touchUpInside)
+    self.addNewCardButton.addTarget(self,
+                                    action: #selector(PledgeAddNewCardView.addNewCardButtonTapped),
+                                    for: .touchUpInside)
+  }
+
+  private func setupConstraints() {
+
+
+    NSLayoutConstraint.activate([
+      self.rootStackView.widthAnchor
+        .constraint(equalToConstant: CheckoutConstants.PaymentSource.Card.width),
+      self.addNewCardImageView.topAnchor
+        .constraint(equalTo: self.addNewCardImageViewContainer.topAnchor),
+      self.addNewCardImageView.leadingAnchor
+        .constraint(equalTo: self.addNewCardImageViewContainer.leadingAnchor),
+      self.addNewCardImageView.bottomAnchor
+        .constraint(equalTo: self.addNewCardImageViewContainer.bottomAnchor),
+      self.addNewCardButton.heightAnchor
+        .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+      self.addNewCardImageView.widthAnchor
+        .constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width)
+      ])
   }
 
   //MARK: - Accessors
@@ -53,9 +97,10 @@ final class PledgeAddNewCardView: UIView {
   }
 }
 
+// MARK: - Styles
+
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.axis .~ .vertical
-    |> \.alignment .~ .leading
-    |> \.distribution .~ .fill
+    |> checkoutStackViewStyle
+    |> \.spacing .~ Styles.grid(3)
 }
