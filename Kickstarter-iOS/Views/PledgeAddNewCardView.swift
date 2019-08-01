@@ -44,6 +44,7 @@ final class PledgeAddNewCardView: UIView {
 
     _ = self
       |> paymentSourceViewStyle
+      |> \.accessibilityElements .~ [self.addNewCardButton]
 
     _ = self.rootStackView
       |> rootStackViewStyle

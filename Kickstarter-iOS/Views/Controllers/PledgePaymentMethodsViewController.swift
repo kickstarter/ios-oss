@@ -118,20 +118,18 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private func addCardsToStackView(_ cards: [GraphUserCreditCard.CreditCard]) {
     self.cardsStackView.arrangedSubviews.forEach(self.cardsStackView.removeArrangedSubview)
 
-    let cardViews = cards
+    let cardViews: [UIView] = cards
       .map { card -> PledgeCreditCardView in
         let cardView = PledgeCreditCardView(frame: .zero)
         cardView.configureWith(value: card)
         return cardView
       }
 
-    _ = (cardViews, self.cardsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    let addNewCardView = PledgeAddNewCardView(frame: .zero)
+    let addNewCardView: UIView = PledgeAddNewCardView(frame: .zero)
       |> \.delegate .~ self
 
-    self.cardsStackView.addArrangedSubview(addNewCardView)
+    _ = (cardViews + [addNewCardView], self.cardsStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func updateScrollViewHeightConstraint() {
