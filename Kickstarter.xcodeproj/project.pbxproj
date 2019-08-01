@@ -278,6 +278,7 @@
 		80EAEF001D243A7A008C2353 /* BackingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEEFF1D243A7A008C2353 /* BackingViewModel.swift */; };
 		80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80EAEF031D243C4E008C2353 /* Backing.storyboard */; };
 		80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEF011D243B69008C2353 /* BackingViewController.swift */; };
+		8A23EF0822F11470001262E1 /* RewardCardContainerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */; };
 		8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099E922E213F100373E66 /* RewardCardView.swift */; };
 		8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */; };
 		8A8099F122E2142C00373E66 /* RewardCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099ED22E2142C00373E66 /* RewardCardViewModel.swift */; };
@@ -1580,6 +1581,7 @@
 		80EAEEFF1D243A7A008C2353 /* BackingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewModel.swift; sourceTree = "<group>"; };
 		80EAEF011D243B69008C2353 /* BackingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewController.swift; sourceTree = "<group>"; };
 		80EAEF031D243C4E008C2353 /* Backing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Backing.storyboard; sourceTree = "<group>"; };
+		8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCardContainerViewTests.swift; sourceTree = "<group>"; };
 		8A8099E922E213F100373E66 /* RewardCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardView.swift; sourceTree = "<group>"; };
 		8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardContainerView.swift; sourceTree = "<group>"; };
 		8A8099ED22E2142C00373E66 /* RewardCardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardViewModel.swift; sourceTree = "<group>"; };
@@ -2700,6 +2702,7 @@
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */,
+				8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */,
 				8A8099E922E213F100373E66 /* RewardCardView.swift */,
 				D0A787BC2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift */,
 				37D671F6221E61B600B6D415 /* SettingsFooterView.swift */,
@@ -5106,6 +5109,7 @@
 				A7ED201F1E83232A00BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
 				A7ED20171E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift in Sources */,
 				774ACC19225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift in Sources */,
+				8A23EF0822F11470001262E1 /* RewardCardContainerViewTests.swift in Sources */,
 				A7ED20451E8323E900BFFA01 /* DashboardViewControllerTests.swift in Sources */,
 				D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */,
 				A7ED20141E83229E00BFFA01 /* DashboardProjectsDrawerDataSourceTests.swift in Sources */,

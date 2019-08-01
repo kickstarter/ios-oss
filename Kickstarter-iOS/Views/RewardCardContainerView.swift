@@ -22,6 +22,8 @@ public final class RewardCardContainerView: UIView {
 
   private let pledgeButtonLayoutGuide = UILayoutGuide()
   private var pledgeButtonMarginConstraints: [NSLayoutConstraint]?
+  private var pledgeButtonShownConstraints: [NSLayoutConstraint] = []
+  private var pledgeButtonHiddenConstraints: [NSLayoutConstraint] = []
   private let rewardCardView: RewardCardView = {
     RewardCardView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -47,9 +49,6 @@ public final class RewardCardContainerView: UIView {
       |> roundedStyle(cornerRadius: Styles.grid(3))
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
-    _ = self.pledgeButton
-      |> roundedGreenButtonStyle
-
     _ = self.pledgeButton.titleLabel
       ?|> \.lineBreakMode .~ .byTruncatingTail
   }
@@ -68,6 +67,18 @@ public final class RewardCardContainerView: UIView {
 
     self.pledgeButton.rac.title = self.viewModel.outputs.pledgeButtonTitleText
     self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
+
+    self.viewModel.outputs.pledgeButtonHidden.observeValues { [weak self] hidden in
+      guard let self = self else { return }
+
+      if hidden {
+        NSLayoutConstraint.activate(self.pledgeButtonHiddenConstraints)
+        NSLayoutConstraint.deactivate(self.pledgeButtonShownConstraints)
+      } else {
+        NSLayoutConstraint.activate(self.pledgeButtonShownConstraints)
+        NSLayoutConstraint.deactivate(self.pledgeButtonHiddenConstraints)
+      }
+    }
 
     self.viewModel.outputs.pledgeButtonStyle
       .observeForUI()
@@ -100,6 +111,25 @@ public final class RewardCardContainerView: UIView {
   }
 
   public func setupConstraints() {
+    self.pledgeButtonHiddenConstraints = self.hiddenPledgeHiddenConstraints()
+    self.pledgeButtonShownConstraints = self.shownPledgeButtonConstraints()
+    NSLayoutConstraint.activate(self.pledgeButtonShownConstraints)
+  }
+
+  private func hiddenPledgeHiddenConstraints() -> [NSLayoutConstraint] {
+    let containerMargins = self.layoutMarginsGuide
+
+    let rewardCardViewConstraints = [
+      self.rewardCardView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
+      self.rewardCardView.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
+      self.rewardCardView.topAnchor.constraint(equalTo: containerMargins.topAnchor),
+      self.rewardCardView.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor)
+    ]
+
+    return rewardCardViewConstraints
+  }
+
+  private func shownPledgeButtonConstraints() -> [NSLayoutConstraint] {
     let containerMargins = self.layoutMarginsGuide
 
     let rewardCardViewConstraints = [
@@ -124,23 +154,29 @@ public final class RewardCardContainerView: UIView {
       self.pledgeButtonLayoutGuide.heightAnchor.constraint(equalTo: self.pledgeButton.heightAnchor)
     ]
 
-    NSLayoutConstraint.activate([
+    let constraints = [
       [pledgeButtonTopConstraint],
       rewardCardViewConstraints,
       pledgeButtonLayoutGuideConstraints
     ]
-    .flatMap { $0 })
+    .flatMap { $0 }
+
+    return constraints
   }
 
   private func addPledgeButtonMarginConstraints(with layoutMarginsGuide: UILayoutGuide) {
     NSLayoutConstraint.deactivate(self.pledgeButtonMarginConstraints ?? [])
 
-    NSLayoutConstraint.activate([
+    let pledgeButtonMarginConstraints = [
       self.pledgeButton.leftAnchor.constraint(equalTo: layoutMarginsGuide.leftAnchor),
       self.pledgeButton.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor),
       self.pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
       self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-    ])
+    ]
+
+    NSLayoutConstraint.activate(pledgeButtonMarginConstraints)
+
+    self.pledgeButtonMarginConstraints = pledgeButtonMarginConstraints
   }
 
   // MARK: - Accessors

@@ -38,4 +38,22 @@ extension Reward {
     startsAt: nil,
     title: nil
   )
+
+  public static let postcards = Reward.template
+    |> Reward.lens.id .~ 20
+    |> Reward.lens.minimum .~ 6
+    |> Reward.lens.limit .~ 100
+    |> Reward.lens.remaining .~ 50
+    |> Reward.lens.backersCount .~ 23
+    |> Reward.lens.title .~ "Postcards"
+    |> Reward.lens.description .~ "Pack of 5 postcards - images from the Cosmic Surgery series."
+    |> Reward.lens.rewardsItems .~ Array(1...5)
+    .map { number in
+      RewardsItem.template
+        |> RewardsItem.lens.quantity .~ 1
+        |> RewardsItem.lens.item .~ (
+          .template
+            |> Item.lens.name .~ "Post card \(number)"
+        )
+    }
 }

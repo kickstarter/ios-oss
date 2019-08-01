@@ -168,6 +168,7 @@
 "Find_projects_youll_love_in_art_design_film" = "Finde Projekte nach deinem Geschmack - in Kunst, Design, Film, Spiele, Musik und vielen anderen Kategorien. Wenn du ein Projekt unterstützt hast, wird deren Aktivität hier angezeigt.";
 "First_created" = "Erstes Projekt";
 "Fix" = "Korrigieren";
+"Fix_your_payment_method" = "Zahlungsmethode ändern";
 "Follow_friend_name" = "%{friend_name} folgen.";
 "Follow_friends" = "Freunden folgen";
 "Follow_more_friends" = "Folge noch mehr Freunden";
@@ -274,6 +275,7 @@
 "Newsletters" = "Newsletter";
 "No_Results" = "Keine Ergebnisse";
 "No_comments_yet" = "Bisher noch keine Kommentare.";
+"No_longer_available" = "Nicht mehr verfügbar";
 "No_messages" = "Keine Nachrichten";
 "No_nevermind" = "Nein, ich habe es mir anders überlegt";
 "No_one_has_posted_an_update_yet" = "Es wurden noch keine Updates gepostet.";

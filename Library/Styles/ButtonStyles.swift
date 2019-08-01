@@ -30,6 +30,22 @@ public let baseNewButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.titleLabel .. UILabel.lens.numberOfLines .~ 1
 }
 
+public let apricotButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_apricot_600
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
+  //  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_dark_grey_400 ////tbd
+  <> UIButton.lens.titleColor(for: .disabled) .~ .init(white: 1.0, alpha: 0.75)
+//  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_dark_grey_400 ////tbd
+
+public let blueButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_blue_500
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  //  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_dark_grey_400 ///tbd
+  <> UIButton.lens.titleColor(for: .disabled) .~ .init(white: 1.0, alpha: 0.75)
+//  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_dark_grey_400 ///tbd
+
 public let blackButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_soft_black
@@ -97,6 +113,27 @@ public let greenButtonStyle =
   .~ UIColor.ksr_green_500.withAlphaComponent(0.5)
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
+
+public let roundedApricotButtonStyle: ButtonStyle = { button in
+  button
+    |> apricotButtonStyle
+    |> baseNewButtonStyle
+    |> UIButton.lens.layer.borderWidth .~ 0
+}
+
+public let roundedBlackButtonStyle: ButtonStyle = { button in
+  button
+    |> blackButtonStyle
+    |> baseNewButtonStyle
+    |> UIButton.lens.layer.borderWidth .~ 0
+}
+
+public let roundedBlueButtonStyle: ButtonStyle = { button in
+  button
+    |> blueButtonStyle
+    |> baseNewButtonStyle
+    |> UIButton.lens.layer.borderWidth .~ 0
+}
 
 public let roundedGreenButtonStyle: ButtonStyle = { button in
   button

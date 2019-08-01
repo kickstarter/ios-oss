@@ -107,14 +107,18 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
         }
       }
 
-    self.reloadPills = reward.mapConst(["Ends in 3 days", "16 left"])
-    self.pillCollectionViewHidden = reward.mapConst(true)
+    self.reloadPills = projectAndReward.map(pillStrings(project:reward:))
+    self.pillCollectionViewHidden = self.reloadPills.map { $0.isEmpty }
 
-    self.stateIconImageName = reward.mapConst("checkmark-reward")
-    self.stateIconImageTintColor = reward.mapConst(.ksr_blue_500)
-    self.stateIconImageViewContainerBackgroundColor = reward
-      .mapConst(UIColor.ksr_blue_500.withAlphaComponent(0.06))
-    self.stateIconImageViewContainerHidden = reward.mapConst(true)
+    let stateIconImageName = projectAndReward.map(stateIconImageName(project:reward:))
+    let stateIconImageColor = projectAndReward.map(stateIconImageColor(project:reward:))
+
+    self.stateIconImageName = stateIconImageName.skipNil()
+    self.stateIconImageTintColor = stateIconImageColor.skipNil()
+    self.stateIconImageViewContainerBackgroundColor = stateIconImageColor
+      .skipNil()
+      .map { $0.withAlphaComponent(0.06) }
+    self.stateIconImageViewContainerHidden = stateIconImageName.map(isNil)
 
     self.rewardSelected = reward
       .takeWhen(self.rewardCardTappedProperty.signal)
@@ -179,4 +183,53 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
   }
 
   return reward.title ?? Strings.Thank_you_for_supporting_this_project()
+}
+
+private func pillStrings(project: Project, reward: Reward) -> [String] {
+  var pillStrings: [String] = []
+
+  if let endsAt = reward.endsAt, project.state == .live, endsAt > 0,
+    endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
+    let (time, unit) = Format.duration(
+      secondsInUTC: min(endsAt, project.dates.deadline),
+      abbreviate: true,
+      useToGo: false
+    )
+
+    pillStrings.append(Strings.Time_left_left(time_left: time + " " + unit))
+  }
+
+  if let remaining = reward.remaining, reward.limit != nil, project.state == .live {
+    pillStrings.append(Strings.Left_count_left(left_count: remaining))
+  }
+
+  return pillStrings
+}
+
+private func stateIconImageColor(project: Project, reward: Reward) -> UIColor? {
+  if userIsBacking(reward: reward, inProject: project) {
+    if project.state == .live {
+      if project.personalization.backing?.status == .errored {
+        return .ksr_apricot_600
+      }
+
+      return .ksr_blue_500
+    } else {
+      return .ksr_soft_black
+    }
+  }
+
+  return nil
+}
+
+private func stateIconImageName(project: Project, reward: Reward) -> String? {
+  if userIsBacking(reward: reward, inProject: project) {
+    if project.personalization.backing?.status == .errored {
+      return "icon--alert"
+    } else {
+      return "checkmark-reward"
+    }
+  }
+
+  return nil
 }

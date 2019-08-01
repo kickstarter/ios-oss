@@ -10,6 +10,7 @@ public protocol RewardCardContainerViewModelInputs {
 public protocol RewardCardContainerViewModelOutputs {
   var pledgeButtonStyle: Signal<ButtonStyle, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
+  var pledgeButtonHidden: Signal<Bool, Never> { get }
   var pledgeButtonTitleText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   func currentReward(is reward: Reward) -> Bool
@@ -26,6 +27,8 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
       self.projectAndRewardOrBackingProperty.signal.skipNil()
 
+    let project: Signal<Project, Never> = projectAndRewardOrBacking.map(first)
+
     let reward: Signal<Reward, Never> = projectAndRewardOrBacking
       .map { project, rewardOrBacking -> Reward in
         rewardOrBacking.left
@@ -34,16 +37,25 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
           ?? Reward.noReward
       }
 
+    let projectAndReward = Signal.zip(project, reward)
+
     self.currentRewardProperty <~ reward
 
-    let rewardAvailable = reward
-      .map { $0.remaining == 0 }.negate()
+    let pledgeButtonTitleText = projectAndReward
+      .map(pledgeButtonTitle(project:reward:))
 
-    self.pledgeButtonTitleText = projectAndRewardOrBacking
-      .map(pledgeButtonTitle(project:rewardOrBacking:))
+    self.pledgeButtonTitleText = pledgeButtonTitleText
+      .skipNil()
 
-    self.pledgeButtonStyle = reward.mapConst(checkoutGreenButtonStyle)
-    self.pledgeButtonEnabled = rewardAvailable
+    self.pledgeButtonStyle = projectAndReward
+      .map(buttonStyle(project:reward:))
+      .skipNil()
+
+    self.pledgeButtonEnabled = projectAndReward
+      .filter { project, _ in project.state == .live }
+      .map(pledgeButtonIsEnabled(project:reward:))
+
+    self.pledgeButtonHidden = pledgeButtonTitleText.map(isNil)
 
     self.rewardSelected = reward
       .takeWhen(self.pledgeButtonTappedProperty.signal)
@@ -62,6 +74,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
 
   public let pledgeButtonStyle: Signal<ButtonStyle, Never>
   public let pledgeButtonEnabled: Signal<Bool, Never>
+  public let pledgeButtonHidden: Signal<Bool, Never>
   public let pledgeButtonTitleText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
 
@@ -87,12 +100,102 @@ private func backingReward(fromProject project: Project) -> Reward? {
     .coalesceWith(.noReward)
 }
 
-private func pledgeButtonTitle(project: Project, rewardOrBacking: Either<Reward, Backing>) -> String {
-  let minimumFormattedAmount = formattedAmountForRewardOrBacking(
-    project: project,
-    rewardOrBacking: rewardOrBacking
-  )
-  return project.personalization.isBacking == true
-    ? Strings.Select_this_reward_instead()
-    : Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
+private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
+  let projectBackingState = RewardCellProjectBackingState.state(with: project, reward: reward)
+  let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
+  let isRewardAvailable = rewardIsAvailable(project: project, reward: reward)
+
+  switch (projectBackingState, isBackingThisReward, isRewardAvailable) {
+  case (.backedError, false, true):
+    return Strings.Select_this_reward_instead()
+  case (.backedError, true, _):
+    return Strings.Fix_your_payment_method()
+  case (.backed(.live), false, true):
+    return Strings.Select_this_reward_instead()
+  case (.backed(.live), true, _):
+    return Strings.Manage_your_pledge()
+  case (.nonBacked(.live), _, true):
+    let minimumFormattedAmount = formattedAmountForRewardOrBacking(
+      project: project,
+      rewardOrBacking: .init(left: reward)
+    )
+    return Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
+  case (.backed(.nonLive), _, _):
+    return Strings.View_your_pledge()
+  case (.nonBacked(.nonLive), _, _):
+    return nil
+  case (_, _, false):
+    return Strings.No_longer_available()
+  }
+}
+
+private func buttonStyle(project: Project, reward: Reward) -> ButtonStyle? {
+  let projectBackingState = RewardCellProjectBackingState.state(with: project, reward: reward)
+  let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
+
+  switch projectBackingState {
+  case .backedError:
+    if isBackingThisReward {
+      return roundedApricotButtonStyle
+    }
+  case .backed(.live):
+    if isBackingThisReward {
+      return roundedBlueButtonStyle
+    }
+  case .nonBacked(.live):
+    return roundedGreenButtonStyle
+  case .backed(.nonLive):
+    return roundedBlackButtonStyle
+  case .nonBacked(.nonLive):
+    return nil
+  }
+
+  return roundedGreenButtonStyle
+}
+
+private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {
+  let isAvailable = rewardIsAvailable(project: project, reward: reward)
+  let isBacking = userIsBacking(reward: reward, inProject: project)
+
+  return isAvailable || isBacking
+}
+
+private func rewardIsAvailable(project _: Project, reward: Reward) -> Bool {
+  let nonLimited = reward.remaining == nil && reward.endsAt == nil
+
+  guard !nonLimited else { return true }
+
+  let remaining = reward.remaining.coalesceWith(0) > 0
+  let endsAt = reward.endsAt.coalesceWith(0)
+  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
+  let timeLimitNotReached = endsAt > now
+
+  return remaining || timeLimitNotReached
+}
+
+// NB: to be replaced when related PR merges
+public enum RewardCellProjectBackingState: Equatable {
+  public enum ProjectState {
+    case nonLive
+    case live
+  }
+
+  case backedError
+  case nonBacked(live: ProjectState)
+  case backed(live: ProjectState)
+
+  static func state(with project: Project, reward _: Reward) -> RewardCellProjectBackingState {
+    guard let backing = project.personalization.backing else {
+      return .nonBacked(live: project.state == .live ? .live : .nonLive)
+    }
+
+    switch (project.state, backing.status) {
+    case(.live, .errored):
+      return .backedError
+    case(.live, _):
+      return .backed(live: .live)
+    case (_, _):
+      return .backed(live: .nonLive)
+    }
+  }
 }

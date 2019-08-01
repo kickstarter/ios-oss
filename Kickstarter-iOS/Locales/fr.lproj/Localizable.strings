@@ -168,6 +168,7 @@
 "Find_projects_youll_love_in_art_design_film" = "Découvrez des projets que vous allez adorer : art, design, cinéma, jeux, musique et plus encore. L'activité des projets que vous soutenez s'affichera ici.";
 "First_created" = "Premier projet créé";
 "Fix" = "Corriger";
+"Fix_your_payment_method" = "Corriger votre moyen de paiement";
 "Follow_friend_name" = "Suivre %{friend_name}";
 "Follow_friends" = "Suivez vos amis";
 "Follow_more_friends" = "Suivre plus d'amis";
@@ -274,6 +275,7 @@
 "Newsletters" = "Lettres d'information";
 "No_Results" = "Pas de résultats";
 "No_comments_yet" = "Pas de commentaires.";
+"No_longer_available" = "Indisponible";
 "No_messages" = "Pas de messages";
 "No_nevermind" = "Non, j'ai changé d'avis";
 "No_one_has_posted_an_update_yet" = "Pas d'actus publiées pour le moment.";
