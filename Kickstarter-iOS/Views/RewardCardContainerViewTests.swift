@@ -35,7 +35,7 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)_\(rewardDescription)")
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
       }
     }
   }
@@ -63,7 +63,7 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)_\(rewardDescription)")
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
       }
     }
   }
@@ -84,7 +84,7 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)_\(rewardDescription)")
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
       }
     }
   }
@@ -105,7 +105,7 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)_\(rewardDescription)")
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
       }
     }
   }
@@ -140,7 +140,7 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)_\(rewardDescription)")
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
       }
     }
   }
@@ -169,7 +169,7 @@ final class RewardCardContainerViewTests: TestCase {
           reward: reward
         )
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)_\(rewardDescription)")
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
       }
     }
   }
