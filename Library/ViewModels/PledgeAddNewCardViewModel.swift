@@ -14,9 +14,8 @@ public protocol PledgeAddNewCardViewModelType {
   var outputs: PledgeAddNewCardViewModelOutputs { get }
 }
 
-
 public final class PledgeAddNewCardViewModel: PledgeAddNewCardViewModelType, PledgeAddNewCardViewModelInputs,
-PledgeAddNewCardViewModelOutputs {
+  PledgeAddNewCardViewModelOutputs {
   public init() {
     self.notifyDelegateAddNewCardTapped = self.addNewCardButtonTappedProperty.signal
   }

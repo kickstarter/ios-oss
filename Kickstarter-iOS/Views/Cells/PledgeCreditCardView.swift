@@ -3,8 +3,6 @@ import Library
 import Prelude
 import UIKit
 
-
-
 final class PledgeCreditCardView: UIView {
   // MARK: - Properties
 

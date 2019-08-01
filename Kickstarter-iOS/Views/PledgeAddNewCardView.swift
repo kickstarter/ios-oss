@@ -1,9 +1,9 @@
 import Foundation
-import UIKit
 import Library
 import Prelude
+import UIKit
 
-protocol PledgeAddNewCardViewDelegate: class {
+protocol PledgeAddNewCardViewDelegate: AnyObject {
   func pledgeAddNewCardViewDidTapAddNewCard(_ view: PledgeAddNewCardView)
 }
 
@@ -12,6 +12,7 @@ final class PledgeAddNewCardView: UIView {
     UIImageView(image: UIImage.init(named: "icon--add")?.withRenderingMode(.alwaysOriginal))
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var addNewCardImageViewContainer = { UIView(frame: .zero) }()
   private lazy var addNewCardButton: UIButton = {
     UIButton(type: .custom)
@@ -34,7 +35,7 @@ final class PledgeAddNewCardView: UIView {
     self.bindViewModel()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -64,7 +65,7 @@ final class PledgeAddNewCardView: UIView {
         guard let self = self else { return }
 
         self.delegate?.pledgeAddNewCardViewDidTapAddNewCard(self)
-    }
+      }
   }
 
   // MARK: Functions
@@ -80,9 +81,11 @@ final class PledgeAddNewCardView: UIView {
     _ = ([self.addNewCardImageViewContainer, self.addNewCardButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.addNewCardButton.addTarget(self,
-                                    action: #selector(PledgeAddNewCardView.addNewCardButtonTapped),
-                                    for: .touchUpInside)
+    self.addNewCardButton.addTarget(
+      self,
+      action: #selector(PledgeAddNewCardView.addNewCardButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   private func setupConstraints() {
@@ -99,10 +102,10 @@ final class PledgeAddNewCardView: UIView {
         .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
       self.addNewCardImageView.widthAnchor
         .constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width)
-      ])
+    ])
   }
 
-  //MARK: - Accessors
+  // MARK: - Accessors
 
   @objc private func addNewCardButtonTapped() {
     self.viewModel.inputs.addNewCardButtonTapped()
