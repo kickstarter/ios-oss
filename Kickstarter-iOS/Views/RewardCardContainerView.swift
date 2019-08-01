@@ -15,6 +15,11 @@ public final class RewardCardContainerView: UIView {
 
   private let viewModel: RewardCardContainerViewModelType = RewardCardContainerViewModel()
 
+  private let gradientView: GradientView = {
+    GradientView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let pledgeButton: MultiLineButton = {
     MultiLineButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -48,6 +53,17 @@ public final class RewardCardContainerView: UIView {
       |> checkoutWhiteBackgroundStyle
       |> roundedStyle(cornerRadius: Styles.grid(3))
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
+
+    _ = self.gradientView
+      |> \.backgroundColor .~ .clear
+      |> \.startPoint .~ .zero
+      |> \.endPoint .~ CGPoint(x: 0, y: 1)
+
+    let gradient: [(UIColor?, Float)] = [
+      (UIColor.white.withAlphaComponent(0.1), 0.0),
+      (UIColor.white.withAlphaComponent(1.0), 1)
+    ]
+    self.gradientView.setGradient(gradient)
 
     _ = self.pledgeButton.titleLabel
       ?|> \.lineBreakMode .~ .byTruncatingTail
@@ -99,6 +115,9 @@ public final class RewardCardContainerView: UIView {
     _ = (self.rewardCardView, self)
       |> ksr_addSubviewToParent()
 
+    _ = (self.gradientView, self)
+      |> ksr_addSubviewToParent()
+
     _ = (self.pledgeButtonLayoutGuide, self)
       |> ksr_addLayoutGuideToView()
 
@@ -143,14 +162,15 @@ public final class RewardCardContainerView: UIView {
       |> \.priority .~ .defaultLow
 
     // sometimes this is provided by the parent cell for pinning of the button
-    self.addPledgeButtonMarginConstraints(with: self.layoutMarginsGuide)
+    self.addBottomViewsMarginConstraints(with: self.layoutMarginsGuide)
 
     let pledgeButtonLayoutGuideConstraints = [
       self.pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
       self.pledgeButtonLayoutGuide.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
       self.pledgeButtonLayoutGuide.rightAnchor.constraint(equalTo: containerMargins.rightAnchor),
-      // swiftlint:disable:next line_length
-      self.pledgeButtonLayoutGuide.topAnchor.constraint(equalTo: self.rewardCardView.bottomAnchor, constant: Styles.grid(3)),
+      self.pledgeButtonLayoutGuide.topAnchor.constraint(
+        equalTo: self.rewardCardView.bottomAnchor, constant: Styles.grid(3)
+      ),
       self.pledgeButtonLayoutGuide.heightAnchor.constraint(equalTo: self.pledgeButton.heightAnchor)
     ]
 
@@ -164,25 +184,37 @@ public final class RewardCardContainerView: UIView {
     return constraints
   }
 
-  private func addPledgeButtonMarginConstraints(with layoutMarginsGuide: UILayoutGuide) {
+  private func addBottomViewsMarginConstraints(with layoutMarginsGuide: UILayoutGuide) {
     NSLayoutConstraint.deactivate(self.pledgeButtonMarginConstraints ?? [])
+    let minTouchSize = Styles.minTouchSize.height
 
     let pledgeButtonMarginConstraints = [
       self.pledgeButton.leftAnchor.constraint(equalTo: layoutMarginsGuide.leftAnchor),
       self.pledgeButton.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor),
       self.pledgeButton.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
-      self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      self.pledgeButton.heightAnchor.constraint(
+        greaterThanOrEqualToConstant: minTouchSize
+      )
     ]
 
     NSLayoutConstraint.activate(pledgeButtonMarginConstraints)
 
     self.pledgeButtonMarginConstraints = pledgeButtonMarginConstraints
+
+    NSLayoutConstraint.activate([
+      self.gradientView.leftAnchor.constraint(equalTo: layoutMarginsGuide.leftAnchor),
+      self.gradientView.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor),
+      self.gradientView.topAnchor.constraint(equalTo: self.pledgeButton.topAnchor, constant: -minTouchSize),
+      self.gradientView.bottomAnchor.constraint(
+        equalTo: self.pledgeButton.bottomAnchor, constant: minTouchSize / 2
+      )
+    ])
   }
 
   // MARK: - Accessors
 
-  public func pinPledgeButton(to layoutMarginsGuide: UILayoutGuide) {
-    self.addPledgeButtonMarginConstraints(with: layoutMarginsGuide)
+  public func pinBottomViews(to layoutMarginsGuide: UILayoutGuide) {
+    self.addBottomViewsMarginConstraints(with: layoutMarginsGuide)
   }
 
   public func currentReward(is reward: Reward) -> Bool {
