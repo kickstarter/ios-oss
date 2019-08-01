@@ -8,6 +8,7 @@ import UIKit
 final class RewardCardContainerViewTests: TestCase {
   override func setUp() {
     super.setUp()
+
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
   }
 
@@ -49,8 +50,8 @@ final class RewardCardContainerViewTests: TestCase {
           |> Project.lens.personalization.isBacking .~ true
           |> Project.lens.personalization.backing .~ (
             .template
-              |> Backing.lens.reward .~ Reward.noReward
-              |> Backing.lens.rewardId .~ Reward.noReward.id
+              |> Backing.lens.reward .~ Reward.otherReward
+              |> Backing.lens.rewardId .~ Reward.otherReward.id
               |> Backing.lens.shippingAmount .~ 10
               |> Backing.lens.amount .~ 700
           )
@@ -154,8 +155,8 @@ final class RewardCardContainerViewTests: TestCase {
           |> Project.lens.personalization.isBacking .~ true
           |> Project.lens.personalization.backing .~ (
             .template
-              |> Backing.lens.reward .~ Reward.noReward
-              |> Backing.lens.rewardId .~ Reward.noReward.id
+              |> Backing.lens.reward .~ Reward.otherReward
+              |> Backing.lens.rewardId .~ Reward.otherReward.id
               |> Backing.lens.shippingAmount .~ 10
               |> Backing.lens.amount .~ 700
               |> Backing.lens.status .~ .errored
@@ -214,7 +215,8 @@ final class RewardCardContainerViewTests: TestCase {
       ("AvailableNonLimitedReward", availableNonLimitedReward),
       ("UnavailableLimitedReward", unavailableLimitedReward),
       ("UnavailableTimebasedReward", unavailableTimebasedReward),
-      ("UnavailableLimitedTimebasedReward", unavailableLimitedTimebasedReward)
+      ("UnavailableLimitedTimebasedReward", unavailableLimitedTimebasedReward),
+      ("NoReward", Reward.noReward)
     ]
   }
 }

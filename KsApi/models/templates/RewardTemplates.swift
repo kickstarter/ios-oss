@@ -39,6 +39,23 @@ extension Reward {
     title: nil
   )
 
+  public static let otherReward = Reward(
+    backersCount: nil,
+    description: "",
+    endsAt: nil,
+    estimatedDeliveryOn: nil,
+    id: 9_999,
+    limit: nil,
+    minimum: 0,
+    remaining: nil,
+    rewardsItems: [],
+    shipping: Reward.Shipping(
+      enabled: false, preference: nil, summary: nil
+    ),
+    startsAt: nil,
+    title: nil
+  )
+
   public static let postcards = Reward.template
     |> Reward.lens.id .~ 20
     |> Reward.lens.minimum .~ 6

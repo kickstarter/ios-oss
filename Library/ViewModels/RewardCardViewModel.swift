@@ -177,12 +177,18 @@ private func backingReward(fromProject project: Project) -> Reward? {
 
 private func rewardTitle(project: Project, reward: Reward) -> String {
   guard project.personalization.isBacking == true else {
-    return reward.isNoReward
-      ? Strings.Make_a_pledge_without_a_reward()
-      : (reward.title ?? "")
+    return reward.isNoReward ? Strings.Make_a_pledge_without_a_reward() : reward.title.coalesceWith("")
   }
 
-  return reward.title ?? Strings.Thank_you_for_supporting_this_project()
+  if reward.isNoReward {
+    if userIsBacking(reward: reward, inProject: project) {
+      return Strings.Thank_you_for_supporting_this_project()
+    }
+
+    return Strings.Make_a_pledge_without_a_reward()
+  }
+
+  return reward.title.coalesceWith("")
 }
 
 private func pillStrings(project: Project, reward: Reward) -> [String] {
