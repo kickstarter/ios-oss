@@ -86,7 +86,7 @@ final class PledgeCTAContainerView: UIView {
       |> \.alignment .~ .center
 
     _ = self.titleLabel
-      |> \.font .~ UIFont.ksr_footnote().bolded
+      |> \.font .~ UIFont.ksr_callout().bolded
       |> \.numberOfLines .~ 0
 
     _ = self.subtitleLabel

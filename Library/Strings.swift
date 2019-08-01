@@ -2241,6 +2241,23 @@ contributeurs"
     )
   }
   /**
+   "Ending in %{last_four}"
+
+   - **en**: "Ending in %{last_four}"
+   - **de**: "Endet auf %{last_four}"
+   - **es**: "Número que termina en %{last_four}"
+   - **fr**: "Finissant par %{last_four}"
+   - **ja**: "下の桁が%{last_four} の番号"
+  */
+  public static func Ending_in_last_four(last_four: String) -> String {
+    return localizedString(
+      key: "Ending_in_last_four",
+      defaultValue: "Ending in %{last_four}",
+      count: nil,
+      substitutions: ["last_four": last_four]
+    )
+  }
+  /**
    "Ending Soon"
 
    - **en**: "Ending Soon"

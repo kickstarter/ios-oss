@@ -133,6 +133,7 @@
 "Email_must_be_a_valid_email_address" = "E-Mail-Adresse muss gültig sein.";
 "Email_notifications" = "Benachrichtigung per E-Mail";
 "Email_unverified" = "Diese E-Mail-Adresse wurde noch nicht verifiziert.";
+"Ending_in_last_four" = "Endet auf %{last_four}";
 "Ending_soon" = "Endet bald";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Estimated_delivery_of" = "Voraussichtliches Lieferdatum";
