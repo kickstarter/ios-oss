@@ -21,7 +21,7 @@ internal final class DiscoveryViewController: UIViewController {
 
     self.pageViewController = self.children
       .compactMap { $0 as? UIPageViewController }.first
-    self.pageViewController.setViewControllers(
+    self.pageViewController.ksr_setViewControllers(
       [.init()],
       direction: .forward,
       animated: false,
@@ -86,7 +86,7 @@ internal final class DiscoveryViewController: UIViewController {
           fatalError("Controller not found for sort \(sort)")
         }
 
-        self?.pageViewController.setViewControllers(
+        self?.pageViewController.ksr_setViewControllers(
           [controller], direction: direction, animated: true, completion: nil
         )
       }
@@ -120,14 +120,12 @@ internal final class DiscoveryViewController: UIViewController {
 
     self.pageViewController.dataSource = self.dataSource
 
-    DispatchQueue.main.async {
-      self.pageViewController.setViewControllers(
-        [self.dataSource.controllerFor(index: 0)].compact(),
-        direction: .forward,
-        animated: false,
-        completion: nil
-      )
-    }
+    self.pageViewController.ksr_setViewControllers(
+      [self.dataSource.controllerFor(index: 0)].compact(),
+      direction: .forward,
+      animated: false,
+      completion: nil
+    )
   }
 
   private func setPageViewControllerScrollEnabled(_ enabled: Bool) {
