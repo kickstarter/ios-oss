@@ -183,11 +183,11 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> DeprecatedRewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_600
 
     _ = self.applePayButton
-      |> roundedStyle(cornerRadius: 0)
+      |> applePayButtonStyle
       |> UIButton.lens.accessibilityLabel .~ "Apple Pay"
 
     _ = self.cancelPledgeButton
-      |> borderButtonStyle
+      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
     _ = self.cardInnerView
@@ -203,7 +203,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIView.lens.backgroundColor .~ .clear
 
     _ = self.changePaymentMethodButton
-      |> borderButtonStyle
+      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Change_payment_method() }
 
     _ = self.checkmarkBadgeView
@@ -244,11 +244,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UILabel.lens.isUserInteractionEnabled .~ true
 
     _ = self.differentPaymentMethodButton
-      |> baseButtonStyle
-      |> roundedStyle(cornerRadius: 0)
-      |> UIButton.lens.layer.borderWidth .~ 1
-      |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_700
+      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Other_payment_methods() }
 
     _ = self.disclaimerButton

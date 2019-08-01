@@ -48,7 +48,7 @@ public final class RewardCardContainerView: UIView {
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = self.pledgeButton
-      |> roundedGreenButtonStyle
+      |> greenButtonStyle
 
     _ = self.pledgeButton.titleLabel
       ?|> \.lineBreakMode .~ .byTruncatingTail

@@ -78,7 +78,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> self.cardsStackViewStyle
 
     _ = self.applePayButton
-      |> self.applePayButtonStyle
+      |> applePayButtonStyle
 
     _ = self.scrollView
       |> checkoutBackgroundStyle
@@ -136,12 +136,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   // MARK: - Styles
-
-  private let applePayButtonStyle: ButtonStyle = { button in
-    button
-      |> roundedStyle(cornerRadius: Styles.grid(2))
-      |> \.isAccessibilityElement .~ true
-  }
 
   private let cardsStackViewStyle: StackViewStyle = { stackView in
     stackView

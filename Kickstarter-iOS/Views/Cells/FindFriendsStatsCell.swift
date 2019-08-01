@@ -64,7 +64,7 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_title2()
 
     _ = self.followAllButton
-      |> borderButtonStyle
+      |> greyButtonStyle
       |> UIButton.lens.targets .~ [(self, action: #selector(followAllButtonTapped), .touchUpInside)]
 
     _ = self.bulletSeparatorView

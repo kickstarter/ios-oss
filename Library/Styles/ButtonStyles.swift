@@ -2,67 +2,98 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public let baseButtonStyle =
-  roundedStyle(cornerRadius: 0)
-  <> UIButton.lens.titleLabel.font %~~ { _, button in
-    button.traitCollection.verticalSizeClass == .compact
-      ? .ksr_callout(size: 12)
-      : .ksr_callout(size: 14)
-  }
+//public let baseButtonStyle =
+//  roundedStyle(cornerRadius: 0)
+//  <> UIButton.lens.titleLabel.font %~~ { _, button in
+//    button.traitCollection.verticalSizeClass == .compact
+//      ? .ksr_callout(size: 12)
+//      : .ksr_callout(size: 14)
+//  }
+//
+//  <> UIButton.lens.contentEdgeInsets %~~ { _, button in
+//    button.traitCollection.verticalSizeClass == .compact
+//      ? .init(topBottom: 10.0, leftRight: 12.0)
+//      : .init(topBottom: 13.0, leftRight: 16.0)
+//  }
+//
+//  <> UIButton.lens.adjustsImageWhenDisabled .~ false
+//  <> UIButton.lens.adjustsImageWhenHighlighted .~ false
 
-  <> UIButton.lens.contentEdgeInsets %~~ { _, button in
-    button.traitCollection.verticalSizeClass == .compact
-      ? .init(topBottom: 10.0, leftRight: 12.0)
-      : .init(topBottom: 13.0, leftRight: 16.0)
-  }
+// MARK: - Base
 
-  <> UIButton.lens.adjustsImageWhenDisabled .~ false
-  <> UIButton.lens.adjustsImageWhenHighlighted .~ false
-
-// This is a temporary style meant to replace baseButtonStyle in the very near future
-public let baseNewButtonStyle: ButtonStyle = { button in
+public let applePayButtonStyle: ButtonStyle = { button in
   button
-    |> roundedButtonStyle
+    |> roundedStyle(cornerRadius: Styles.grid(2))
+    |> \.isAccessibilityElement .~ true
+}
+
+public let baseButtonStyle: ButtonStyle = { button in
+  button
+    |> roundedStyle(cornerRadius: Styles.grid(2))
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_callout().bolded
     |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
-    |> UIButton.lens.titleEdgeInsets .~ .init(all: Styles.grid(2))
+    |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
     |> UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode .~ NSLineBreakMode.byTruncatingMiddle
     |> UIButton.lens.titleLabel .. UILabel.lens.numberOfLines .~ 1
+    |> UIButton.lens.adjustsImageWhenDisabled .~ false
+    |> UIButton.lens.adjustsImageWhenHighlighted .~ false
 }
+
+// MARK: - Apricot
+
+public let apricotButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_black
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_apricot_500
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_black
+  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_dark_grey_400
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_apricot_500.mixDarker(12.0)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_apricot_500.mixLighter(36.0)
+
+// MARK: - Black
 
 public let blackButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_soft_black
   <> UIButton.lens.titleColor(for: .highlighted) .~ .white
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_dark_grey_400
-  <> UIButton.lens.titleColor(for: .disabled) .~ .init(white: 1.0, alpha: 0.75)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_dark_grey_400
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_soft_black.mixDarker(66.0)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_soft_black.mixLighter(36.0)
 
-public let borderButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .clear
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_grey_400
-  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_grey_400
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_soft_black.cgColor
-  <> UIButton.lens.layer.borderWidth .~ 1.0
+// MARK: - Blue
 
-public let greenBorderButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_700
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .white
+public let blueButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_blue_500
   <> UIButton.lens.titleColor(for: .highlighted) .~ .white
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_green_400
-  <> UIButton.lens.titleColor(for: .disabled) .~ UIColor.ksr_green_700.withAlphaComponent(0.5)
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
-  <> UIButton.lens.layer.borderWidth .~ 1.0
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_blue_500.mixDarker(36.0)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_blue_500.mixLighter(36.0)
+
+// MARK: - Green
+
+public let greenButtonStyle = baseButtonStyle
+    <> UIButton.lens.titleColor(for: .normal) .~ .white
+    <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_green_500
+    <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+    <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_green_500.mixDarker(36.0)
+    <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_green_500.mixLighter(36.0)
+
+// MARK: - Grey
+
+public let greyButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_black
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_grey_500
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_black
+  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_dark_grey_400
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_soft_black.mixDarker(36.0)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_soft_black.mixLighter(12.0)
+
+// MARK: - Facebook
 
 public let facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_facebookBlue
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_soft_black
-  <> UIButton.lens.titleColor(for: .disabled) .~ .init(white: 1.0, alpha: 0.5)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_soft_black
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_facebookBlue.mixDarker(36.0)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_facebookBlue.mixLighter(36.0)
   <> UIButton.lens.tintColor .~ .white
   <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 18.0)
   <> UIButton.lens.contentEdgeInsets %~~ { _, button in
@@ -70,106 +101,88 @@ public let facebookButtonStyle = baseButtonStyle
       ? .init(topBottom: 10.0, leftRight: 12.0)
       : .init(topBottom: 12.0, leftRight: 16.0)
   }
-
   <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
 
-public let facebookThanksButtonStyle = facebookButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.project_checkout_share_buttons_share()
-  }
+// MARK: - Red
 
-public let neutralButtonStyle = baseNewButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_grey_500
-  <> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.white.withAlphaComponent(0.5)
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_dark_grey_500
-  <> UIButton.lens.titleColor(for: .disabled) .~ UIColor.ksr_soft_black.withAlphaComponent(0.75)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_grey_400
-
-public let greenButtonStyle =
-  baseButtonStyle
+public let redButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_green_500
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_green_700
-  <> UIButton.lens.titleColor(for: .disabled) .~ .white
-  <> UIButton.lens.backgroundColor(for: .disabled)
-  .~ UIColor.ksr_green_500.withAlphaComponent(0.5)
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
-  <> UIButton.lens.layer.borderWidth .~ 1.0
-
-public let roundedGreenButtonStyle: ButtonStyle = { button in
-  button
-    |> greenButtonStyle
-    |> baseNewButtonStyle
-    |> UIButton.lens.layer.borderWidth .~ 0
-}
-
-public let lightNavyButtonStyle =
-  baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_navy_200
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_navy_400
-  <> UIButton.lens.titleColor(for: .disabled) .~ .init(white: 0.0, alpha: 0.4)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_navy_600
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.cgColor
-  <> UIButton.lens.layer.borderWidth .~ 1.0
-
-public let navyButtonStyle =
-  baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_soft_black
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_dark_grey_500
-  <> UIButton.lens.titleColor(for: .disabled) .~ .init(white: 0.0, alpha: 0.4)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_dark_grey_400
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_soft_black.cgColor
-  <> UIButton.lens.layer.borderWidth .~ 1.0
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_red_400
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_red_400.mixDarker(36.0)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_red_400.mixLighter(36.0)
 
 public let saveButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
-  <> UIButton.lens.tintColor .~ .ksr_soft_black
-  <> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline")
-  <> UIButton.lens.image(for: .selected) .~ image(named: "icon--heart")
-  <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
+    <> UIButton.lens.tintColor .~ .ksr_soft_black
+    <> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline")
+    <> UIButton.lens.image(for: .selected) .~ image(named: "icon--heart")
+    <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
 
 public let shareButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
-  <> UIButton.lens.image(for: .normal) .~ image(named: "icon--share")
-  <> UIButton.lens.tintColor .~ .ksr_soft_black
-  <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
+    <> UIButton.lens.image(for: .normal) .~ image(named: "icon--share")
+    <> UIButton.lens.tintColor .~ .ksr_soft_black
+    <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
-public let textOnlyButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .clear
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_green_400
-  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_dark_grey_400
+// MARK: - Deprecated
 
-public let twitterButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_twitterBlue
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_soft_black
-  <> UIButton.lens.titleColor(for: .disabled) .~ .init(white: 1.0, alpha: 0.5)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_soft_black
-  <> UIButton.lens.tintColor .~ .white
-  <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 24.0)
-  <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "twitter-logo-blue") }
-  <> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.project_checkout_share_buttons_tweet()
+//public let greyButtonStyle = baseButtonStyle
+//  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
+//  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_grey_500
+//  <> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.white.withAlphaComponent(0.5)
+//  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_dark_grey_500
+//  <> UIButton.lens.titleColor(for: .disabled) .~ UIColor.ksr_soft_black.withAlphaComponent(0.75)
+//  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_grey_400
+
+// Remove when DeprecatedRewardShippingPickerViewController is removed.
+public let textOnlyButtonStyle =
+  roundedStyle(cornerRadius: 0)
+    <> UIButton.lens.titleLabel.font %~~ { _, button in
+      button.traitCollection.verticalSizeClass == .compact
+        ? .ksr_callout(size: 12)
+        : .ksr_callout(size: 14)
+    }
+    <> UIButton.lens.contentEdgeInsets %~~ { _, button in
+      button.traitCollection.verticalSizeClass == .compact
+        ? .init(topBottom: 10.0, leftRight: 12.0)
+        : .init(topBottom: 13.0, leftRight: 16.0)
+    }
+    <> UIButton.lens.adjustsImageWhenDisabled .~ false
+    <> UIButton.lens.adjustsImageWhenHighlighted .~ false
+    <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
+    <> UIButton.lens.backgroundColor(for: .normal) .~ .clear
+    <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_green_400
+    <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_dark_grey_400
+
+
+// UIColor+Mix.swift
+import UIKit
+extension UIColor {
+
+  func mixLighter (_ amount: CGFloat = 0.25) -> UIColor {
+    return mixWithColor(UIColor.white, amount:amount)
   }
 
-public let whiteBorderButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .clear
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.white.withAlphaComponent(0.5)
-  <> UIButton.lens.titleColor(for: .disabled) .~ UIColor.white.withAlphaComponent(0.5)
-  <> UIButton.lens.layer.borderColor .~ UIColor.white.cgColor
-  <> UIButton.lens.layer.borderWidth .~ 1.0
-  <> UIButton.lens.contentEdgeInsets .~ .init(topBottom: Styles.gridHalf(3), leftRight: Styles.gridHalf(6))
+  func mixDarker (_ amount: CGFloat = 0.25) -> UIColor {
+    return mixWithColor(UIColor.black, amount:amount)
+  }
 
-public let roundedButtonStyle: ButtonStyle = { button in
-  button |> roundedStyle(cornerRadius: 12)
+  private func mixWithColor(_ color: UIColor, amount: CGFloat = 0.25) -> UIColor {
+    var r1     : CGFloat = 0
+    var g1     : CGFloat = 0
+    var b1     : CGFloat = 0
+    var alpha1 : CGFloat = 0
+    var r2     : CGFloat = 0
+    var g2     : CGFloat = 0
+    var b2     : CGFloat = 0
+    var alpha2 : CGFloat = 0
+
+    self.getRed (&r1, green: &g1, blue: &b1, alpha: &alpha1)
+    color.getRed(&r2, green: &g2, blue: &b2, alpha: &alpha2)
+    return UIColor( red:r1*(1.0-amount)+r2*amount,
+                    green:g1*(1.0-amount)+g2*amount,
+                    blue:b1*(1.0-amount)+b2*amount,
+                    alpha: alpha1 )
+  }
 }
