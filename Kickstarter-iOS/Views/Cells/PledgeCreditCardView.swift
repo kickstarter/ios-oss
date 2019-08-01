@@ -112,11 +112,13 @@ final class PledgeCreditCardView: UIView {
 
 private let adaptableStackViewStyle: StackViewStyle = { stackView in
   stackView
+    |> \.backgroundColor .~ UIColor.white
     |> \.spacing .~ Styles.grid(2)
 }
 
 private let labelsStackViewStyle: StackViewStyle = { stackView in
   stackView
+    |> \.backgroundColor .~ UIColor.white
     |> \.axis .~ .vertical
     |> \.spacing .~ Styles.gridHalf(1)
 }
@@ -124,5 +126,6 @@ private let labelsStackViewStyle: StackViewStyle = { stackView in
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> checkoutStackViewStyle
+    |> \.backgroundColor .~ UIColor.white
     |> \.spacing .~ Styles.grid(3)
 }

@@ -118,5 +118,6 @@ final class PledgeAddNewCardView: UIView {
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> checkoutStackViewStyle
+    |> \.backgroundColor .~ UIColor.white
     |> \.spacing .~ Styles.grid(3)
 }
