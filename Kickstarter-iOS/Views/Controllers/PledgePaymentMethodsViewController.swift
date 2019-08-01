@@ -171,7 +171,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
 
 extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
-  func pledgeAddNewCardViewDidTapAddNewCard() {
+  func pledgeAddNewCardViewDidTapAddNewCard(_ view: PledgeAddNewCardView) {
     let addNewCardViewController = AddNewCardViewController.instantiate()
       |> \.delegate .~ self
     let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
@@ -186,7 +186,8 @@ extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
     self.dismiss(animated: true)
   }
 
-  func addNewCardViewController(_ viewController: AddNewCardViewController, didSucceedWithMessage message: String) {
+  func addNewCardViewController(_ viewController: AddNewCardViewController,
+                                didSucceedWithMessage message: String) {
     // TODO
   }
 }

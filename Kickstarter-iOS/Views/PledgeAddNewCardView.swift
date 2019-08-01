@@ -4,9 +4,8 @@ import Library
 import Prelude
 
 protocol PledgeAddNewCardViewDelegate: class {
-  func pledgeAddNewCardViewDidTapAddNewCard()
+  func pledgeAddNewCardViewDidTapAddNewCard(_ view: PledgeAddNewCardView)
 }
-
 
 final class PledgeAddNewCardView: UIView {
   private lazy var addNewCardImageView: UIImageView = {
@@ -21,6 +20,8 @@ final class PledgeAddNewCardView: UIView {
 
   weak var delegate: PledgeAddNewCardViewDelegate?
 
+  private let viewModel: PledgeAddNewCardViewModelType = PledgeAddNewCardViewModel()
+
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
   }()
@@ -30,6 +31,7 @@ final class PledgeAddNewCardView: UIView {
 
     self.configureViews()
     self.setupConstraints()
+    self.bindViewModel()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -53,6 +55,18 @@ final class PledgeAddNewCardView: UIView {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Add_new_card() }
   }
 
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.notifyDelegateAddNewCardTapped
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+
+        self.delegate?.pledgeAddNewCardViewDidTapAddNewCard(self)
+    }
+  }
+
   // MARK: Functions
 
   private func configureViews() {
@@ -72,8 +86,6 @@ final class PledgeAddNewCardView: UIView {
   }
 
   private func setupConstraints() {
-
-
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor
         .constraint(equalToConstant: CheckoutConstants.PaymentSource.Card.width),
@@ -93,7 +105,7 @@ final class PledgeAddNewCardView: UIView {
   //MARK: - Accessors
 
   @objc private func addNewCardButtonTapped() {
-    self.delegate?.pledgeAddNewCardViewDidTapAddNewCard()
+    self.viewModel.inputs.addNewCardButtonTapped()
   }
 }
 
