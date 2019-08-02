@@ -12,6 +12,7 @@ public protocol RewardsCollectionViewModelInputs {
 }
 
 public protocol RewardsCollectionViewModelOutputs {
+  var goToDeprecatedPledge: Signal<PledgeData, Never> { get }
   var goToPledge: Signal<PledgeData, Never> { get }
   var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
   func selectedReward() -> Reward?
@@ -25,17 +26,17 @@ protocol RewardsCollectionViewModelType {
 public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
   public init() {
-    let project = Signal.combineLatest(
-      self.configureWithProjectProperty.signal.skipNil(),
+    let configData = Signal.combineLatest(
+      self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
 
-    let rewards = Signal.combineLatest(
-      self.configureWithRewardsProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal
-    )
-    .map(first)
+    let project = configData
+      .map(first)
+
+    let rewards = project
+      .map { $0.rewards }
 
     self.reloadDataWithValues = Signal.combineLatest(project, rewards)
       .map { project, rewards in
@@ -51,23 +52,28 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     self.selectedRewardProperty <~ selectedRewardFromId
 
-    self.goToPledge = Signal.combineLatest(
-      self.configureWithProjectProperty.signal.skipNil(),
+    let refTag = configData
+      .map(second)
+
+    let goToPledge = Signal.combineLatest(
+      project,
       selectedRewardFromId,
-      self.configureWithRefTagProperty.signal
+      refTag
     )
     .map { project, reward, refTag in
       PledgeData(project: project, reward: reward, refTag: refTag)
     }
+
+    self.goToPledge = goToPledge
+      .filter { _ in featureNativeCheckoutPledgeViewEnabled() }
+
+    self.goToDeprecatedPledge = goToPledge
+      .filter { _ in !featureNativeCheckoutPledgeViewEnabled() }
   }
 
-  private let configureWithProjectProperty = MutableProperty<Project?>(nil)
-  private let configureWithRewardsProperty = MutableProperty<[Reward]?>(nil)
-  private let configureWithRefTagProperty = MutableProperty<RefTag?>(nil)
+  private let configDataProperty = MutableProperty<(Project, RefTag?)?>(nil)
   public func configure(with project: Project, refTag: RefTag?) {
-    self.configureWithProjectProperty.value = project
-    self.configureWithRewardsProperty.value = project.rewards
-    self.configureWithRefTagProperty.value = refTag
+    self.configDataProperty.value = (project, refTag)
   }
 
   private let rewardSelectedWithRewardIdProperty = MutableProperty<Int?>(nil)
@@ -80,6 +86,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
+  public let goToDeprecatedPledge: Signal<PledgeData, Never>
   public let goToPledge: Signal<PledgeData, Never>
   public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>
 

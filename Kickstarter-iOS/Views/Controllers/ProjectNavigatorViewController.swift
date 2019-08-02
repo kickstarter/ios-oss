@@ -184,16 +184,45 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
     didTapBackThisProject project: Project,
     refTag: RefTag?
   ) {
-    let rewardsViewController = RewardsCollectionViewController.instantiate(with: project, refTag: refTag)
+    let vc = self.rewardsCollectionViewController(project: project, refTag: refTag)
 
-    let navigationController = RewardPledgeNavigationController(rootViewController: rewardsViewController)
+    self.present(vc, animated: true)
+  }
+
+  func deprecatedProjectPamphletViewController(
+    _: ProjectPamphletViewController,
+    didTapBackThisProject project: Project,
+    refTag: RefTag?
+  ) {
+    let vc = self.rewardsCollectionViewController(project: project, refTag: refTag, deprecated: true)
+
+    self.present(vc, animated: true)
+  }
+
+  private func rewardsCollectionViewController(
+    project: Project,
+    refTag: RefTag?,
+    deprecated: Bool = false
+  ) -> UINavigationController {
+    let rewardsCollectionViewController = RewardsCollectionViewController
+      .instantiate(with: project, refTag: refTag)
+
+    let navigationController: UINavigationController
+
+    if deprecated {
+      navigationController = UINavigationController(rootViewController: rewardsCollectionViewController)
+    } else {
+      navigationController = RewardPledgeNavigationController(
+        rootViewController: rewardsCollectionViewController
+      )
+    }
 
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       _ = navigationController
         |> \.modalPresentationStyle .~ .pageSheet
     }
 
-    self.present(navigationController, animated: true)
+    return navigationController
   }
 }
 

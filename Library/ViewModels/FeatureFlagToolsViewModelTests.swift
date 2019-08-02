@@ -23,12 +23,12 @@ final class FeatureFlagToolsViewModelTests: TestCase {
 
   func testFeatureFlagTools_LoadsWithFeatureFlags() {
     let mockConfig = Config.template
-      |> \.features .~ [Feature.checkout.rawValue: true]
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
 
     withEnvironment(config: mockConfig) {
       self.vm.viewDidLoad()
 
-      self.reloadWithDataFeatures.assertValues([[Feature.checkout]])
+      self.reloadWithDataFeatures.assertValues([[Feature.nativeCheckout]])
       self.reloadWithDataEnabledValues.assertValues([[true]])
     }
   }
@@ -48,16 +48,16 @@ final class FeatureFlagToolsViewModelTests: TestCase {
   func testUpdateFeatureFlagEnabledValue() {
     let mockConfig = Config.template
       |> \.features .~ [
-        Feature.checkout.rawValue: true,
+        Feature.nativeCheckout.rawValue: true,
         "some_unknown_feature": false
       ]
 
-    let updatedFeatures = [Feature.checkout.rawValue: false, "some_unknown_feature": false]
+    let updatedFeatures = [Feature.nativeCheckout.rawValue: false, "some_unknown_feature": false]
 
     withEnvironment(config: mockConfig) {
       self.vm.viewDidLoad()
 
-      self.reloadWithDataFeatures.assertValues([[Feature.checkout]])
+      self.reloadWithDataFeatures.assertValues([[Feature.nativeCheckout]])
       self.reloadWithDataEnabledValues.assertValues([[true]])
 
       self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: true)
@@ -81,7 +81,7 @@ final class FeatureFlagToolsViewModelTests: TestCase {
 
       scheduler.run()
 
-      self.reloadWithDataFeatures.assertValues([[Feature.checkout], [Feature.checkout]])
+      self.reloadWithDataFeatures.assertValues([[Feature.nativeCheckout], [Feature.nativeCheckout]])
       self.reloadWithDataEnabledValues.assertValues([[true], [false]])
     }
   }
