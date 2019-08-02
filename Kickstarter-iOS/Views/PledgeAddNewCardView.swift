@@ -9,7 +9,7 @@ protocol PledgeAddNewCardViewDelegate: AnyObject {
 
 final class PledgeAddNewCardView: UIView {
   private lazy var addNewCardImageView: UIImageView = {
-    UIImageView(image: UIImage.init(named: "icon--add")?.withRenderingMode(.alwaysOriginal))
+    UIImageView(image: UIImage.init(named: "icon--add"))
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
