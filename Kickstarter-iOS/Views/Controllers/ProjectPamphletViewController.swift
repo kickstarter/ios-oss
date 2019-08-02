@@ -13,6 +13,11 @@ public protocol ProjectPamphletViewControllerDelegate: AnyObject {
     didTapBackThisProject project: Project,
     refTag: RefTag?
   )
+  func deprecatedProjectPamphletViewController(
+    _ projectPamphletViewController: ProjectPamphletViewController,
+    didTapBackThisProject project: Project,
+    refTag: RefTag?
+  )
 }
 
 public final class ProjectPamphletViewController: UIViewController {
@@ -140,7 +145,15 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.goToRewards(project: project, refTag: refTag)
       }
 
-    self.viewModel.outputs.configureChildViewControllersWithProjectAndLiveStreams
+    self.viewModel.outputs.goToDeprecatedRewards
+      .observeForControllerAction()
+      .observeValues { [weak self] params in
+        let (project, refTag) = params
+
+        self?.goToDeprecatedRewards(project: project, refTag: refTag)
+      }
+
+    self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, liveStreamEvents, refTag in
         self?.contentController.configureWith(project: project, liveStreamEvents: liveStreamEvents)
@@ -183,6 +196,14 @@ public final class ProjectPamphletViewController: UIViewController {
     constraints.forEach {
       $0?.constant = constant
     }
+  }
+
+  private func goToDeprecatedRewards(project: Project, refTag: RefTag?) {
+    self.delegate?.deprecatedProjectPamphletViewController(
+      self,
+      didTapBackThisProject: project,
+      refTag: refTag
+    )
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
