@@ -80,14 +80,6 @@ public let forgotPasswordButtonStyle =
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
-public let loginButtonStyle: ButtonStyle = { button in
-  button
-    |> greyButtonStyle
-    |> UIButton.lens.title(for: .normal) %~ { _ in
-      Strings.login_tout_back_intent_traditional_login_button()
-    }
-}
-
 public let loginControllerStyle = baseControllerStyle()
   <> UIViewController.lens.title %~ { _ in
     Strings.login_navbar_title()

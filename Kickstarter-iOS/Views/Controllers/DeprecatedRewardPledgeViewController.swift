@@ -219,9 +219,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self.continueToPaymentButton
       |> greenButtonStyle
-      |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_green_700
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue_to_payment() }
-      |> UIButton.lens.layer.borderColor .~ UIColor.clear.cgColor
 
     _ = self.updatePledgeButton
       |> greenButtonStyle
@@ -244,7 +242,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UILabel.lens.isUserInteractionEnabled .~ true
 
     _ = self.differentPaymentMethodButton
-      |> greyButtonStyle
+      |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Other_payment_methods() }
 
     _ = self.disclaimerButton

@@ -115,15 +115,10 @@ internal final class EmptyStatesViewController: UIViewController {
       )
 
     _ = self.mainButton
-      |> baseButtonStyle
-      |> UIButton.lens.layer.borderWidth .~ 1.0
-      |> UIButton.lens.backgroundColor(for: .normal) .~ UIColor.ksr_green_500.withAlphaComponent(0.1)
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
-      |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_green_700
-      |> UIButton.lens.layer.borderColor .~ UIColor.ksr_green_700.withAlphaComponent(0.2).cgColor
+      |> greenButtonStyle
 
     _ = self.backgroundStripView
-      |> UIView.lens.backgroundColor .~ .ksr_grey_100
+      |> UIView.lens.backgroundColor .~ .white
   }
 
   internal func setEmptyState(_ emptyState: EmptyState) {
