@@ -56,14 +56,15 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public init() {
     let isLoading = MutableProperty(false)
 
-    let freshProjectAndRefTag = self.configDataProperty.signal.skipNil()
+    let freshProjectAndRefTagEvent = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
         self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
       ))
       .map(unpack)
-      .switchMap { projectOrParam, refTag, shouldPrefix in
-        fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
+      .switchMap { (projectOrParam, refTag, shouldPrefix) in
+
+        return fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
           .on(
             starting: { isLoading.value = true },
             terminated: { isLoading.value = false }
@@ -71,15 +72,16 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
           .map { project in
             (project, refTag.map(cleanUp(refTag:)))
           }
+          .materialize()
       }
 
-    let goToRewards = freshProjectAndRefTag
+    let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
+
+    self.goToRewards = freshProjectAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, refTag in
         (project, refTag)
       }
-
-    self.goToRewards = goToRewards
       .filter { _ in featureNativeCheckoutPledgeViewEnabled() }
 
     self.goToDeprecatedRewards = goToRewards
@@ -259,12 +261,11 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
 }
 
 private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
-  -> SignalProducer<Project, Never> {
+  -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
 
   let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    .demoteErrors()
 
   if let project = projectOrParam.left, shouldPrefix {
     return projectProducer.prefix(value: project)
