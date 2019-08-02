@@ -158,32 +158,18 @@ public let rewardCardShadowStyle: ViewStyle = { (view: UIView) in
     |> \.layer.shouldRasterize .~ false
 }
 
-public let paymentSourceExpirationDateLabelStyle: LabelStyle = { label in
-  label
-    |> checkoutTitleLabelStyle
-    |> \.font .~ UIFont.ksr_caption2().bolded
-    |> \.textColor .~ .ksr_text_dark_grey_500
-}
-
-public let paymentSourceImageViewStyle: ImageViewStyle = { imageView in
+public let cardImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.contentMode .~ .scaleAspectFit
 }
 
-public let paymentSourceLastFourLabelStyle: LabelStyle = { label in
-  label
-    |> checkoutTitleLabelStyle
-    |> \.font .~ UIFont.ksr_callout().bolded
-    |> \.textColor .~ .ksr_soft_black
-}
-
-public let paymentSourceSelectButtonStyle: ButtonStyle = { button in
+public let cardSelectButtonStyle: ButtonStyle = { button in
   button
     |> checkoutSmallBlackButtonStyle
     |> UIButton.lens.titleLabel .. UILabel.lens.font .~ UIFont.ksr_headline()
 }
 
-public let paymentSourceViewStyle: ViewStyle = { view in
+public let pledgeCardViewStyle: ViewStyle = { view in
   view
     |> \.backgroundColor .~ .white
     |> roundedStyle(cornerRadius: Styles.grid(1))

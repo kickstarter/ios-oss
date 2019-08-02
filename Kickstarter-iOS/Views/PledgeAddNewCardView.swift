@@ -43,17 +43,17 @@ final class PledgeAddNewCardView: UIView {
     super.bindStyles()
 
     _ = self
-      |> paymentSourceViewStyle
+      |> pledgeCardViewStyle
       |> \.accessibilityElements .~ [self.addNewCardButton]
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
     _ = self.addNewCardImageView
-      |> paymentSourceImageViewStyle
+      |> cardImageViewStyle
 
     _ = self.addNewCardButton
-      |> paymentSourceSelectButtonStyle
+      |> cardSelectButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Add_new_card() }
   }
 

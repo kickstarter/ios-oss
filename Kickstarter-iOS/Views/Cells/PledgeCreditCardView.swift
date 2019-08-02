@@ -62,20 +62,20 @@ final class PledgeCreditCardView: UIView {
     super.bindStyles()
 
     _ = self
-      |> paymentSourceViewStyle
+      |> pledgeCardViewStyle
 
     _ = self.selectButton
-      |> paymentSourceSelectButtonStyle
+      |> cardSelectButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
 
     _ = self.imageView
-      |> paymentSourceImageViewStyle
+      |> cardImageViewStyle
 
     _ = self.lastFourLabel
-      |> paymentSourceLastFourLabelStyle
+      |> cardLastFourLabelStyle
 
     _ = self.expirationDateLabel
-      |> paymentSourceExpirationDateLabelStyle
+      |> cardExpirationDateLabelStyle
 
     _ = self.labelsStackView
       |> labelsStackViewStyle
@@ -114,6 +114,21 @@ private let adaptableStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.backgroundColor .~ UIColor.white
     |> \.spacing .~ Styles.grid(2)
+}
+
+
+private let cardExpirationDateLabelStyle: LabelStyle = { label in
+  label
+    |> checkoutTitleLabelStyle
+    |> \.font .~ UIFont.ksr_caption2().bolded
+    |> \.textColor .~ .ksr_text_dark_grey_500
+}
+
+private let cardLastFourLabelStyle: LabelStyle = { label in
+  label
+    |> checkoutTitleLabelStyle
+    |> \.font .~ UIFont.ksr_callout().bolded
+    |> \.textColor .~ .ksr_soft_black
 }
 
 private let labelsStackViewStyle: StackViewStyle = { stackView in
