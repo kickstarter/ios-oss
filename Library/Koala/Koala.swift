@@ -265,7 +265,7 @@ public final class Koala {
    Describes the types of payment methods that can be used.
    */
   public enum PaymentMethod {
-    case applePay
+    case applePay //USE FOR PAYMENT METHOD?
 
     fileprivate var trackingString: String {
       switch self {
@@ -278,7 +278,7 @@ public final class Koala {
    Describes the pages where checkout events can occur.
    */
   public enum CheckoutPageContext {
-    case paymentsPage
+    case paymentsPage //USE FOR SCREEN?
     case projectPage
     case rewardSelection
 
@@ -565,6 +565,24 @@ public final class Koala {
   }
 
   // MARK: - Checkout Events
+
+  public func trackBackThisButtonClicked(project: Project) {
+    let props = properties(project: project)
+    self.track(event: "Back this Project Button Clicked", properties: props)
+  }
+
+  public func trackSelectRewardButtonClicked(
+    project: Project,
+    reward: Reward?,
+    backing: Backing?,
+    paymentMethod: PaymentMethod? = nil
+    ) {
+
+    let props = properties(project: project, reward: reward, backing: backing)
+      .withAllValuesFrom(["payment_method": paymentMethod?.trackingString ?? ""] )
+
+    self.track(event: "Select Reward Button Clicked", properties: props)
+  }
 
   public func trackCheckoutCancel(
     project: Project,
@@ -1255,9 +1273,17 @@ public final class Koala {
     props["current_variants"] = AppEnvironment.current.config?.abExperimentsArray
 
     // Deprecated event
-    self.track(event: "Project Page", properties: props.withAllValuesFrom(deprecatedProps))
+    self.track(
+      event: "Project Page",
+      properties: props.withAllValuesFrom(deprecatedProps)
+    )
 
-    self.track(event: "Viewed Project Page", properties: props)
+    self.track(
+      event: "Viewed Project Page",
+      properties: props.withAllValuesFrom(deprecatedProps)
+    )
+
+    self.track(event: "Project Page Viewed", properties: props)
   }
 
   public func trackSwipedProject(_ project: Project, refTag: RefTag?, type: SwipeType) {
@@ -2046,6 +2072,39 @@ private func properties(
   return props.prefixedKeys(prefix)
     .withAllValuesFrom(properties(user: project.creator, prefix: "creator_"))
     .withAllValuesFrom(loggedInUserProperties)
+}
+
+private func properties(
+  project: Project,
+  reward: Reward? = nil,
+  backing: Backing? = nil,
+  prefix: String = "project_"
+  ) -> [String: Any]  {
+  var props: [String: Any] = [:]
+
+  props["name"] = project.name
+  props["pid"] = project.id
+  props["category"] = project.category.name
+  props["has_video"] = project.video != nil
+  props["location"] = project.location.name
+  props["country"] = project.country.countryCode
+
+  let now = MockDate().timeIntervalSince1970
+  props["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
+
+  props["percent_raised"] = project.stats.fundingProgress
+
+  var rewardProperties: [String: Any] = [:]
+  rewardProperties["backer_reward_minimum"] = reward?.minimum
+
+  var backingProperties: [String: Any] = [:]
+  backingProperties["pledge_total"] = backing?.amount
+
+  props["currency"] = project.country.currencyCode
+
+  return props.prefixedKeys(prefix)
+    .withAllValuesFrom(rewardProperties)
+    .withAllValuesFrom(backingProperties)
 }
 
 private func properties(update: Update, prefix: String = "update_") -> [String: Any] {

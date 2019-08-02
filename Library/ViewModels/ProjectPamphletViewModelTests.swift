@@ -475,4 +475,32 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
     }
   }
+
+  func testbackThisButton_eventTracking() {
+    let config = Config.template |> \.features .~ [Feature.checkout.rawValue: true]
+    let client = MockTrackingClient()
+    let project = Project.template
+
+    withEnvironment(
+      apiService: MockService(),
+      config: config,
+      koala: Koala(client: client)
+    ) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
+
+      self.vm.inputs.backThisProjectTapped()
+      XCTAssertEqual(
+        ["Project Page", "Viewed Project Page", "Project Page Viewed","Back this Project Button Clicked"],
+        client.events
+      )
+    }
+  }
 }
