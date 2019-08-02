@@ -56,7 +56,8 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
         AppEnvironment.current.koala.trackSelectRewardButtonClicked(
           project: project,
           reward: rewardOrBacking.left,
-          backing: rewardOrBacking.right
+          backing: rewardOrBacking.right,
+          screen: .backThisPage
       )
     }
   }
