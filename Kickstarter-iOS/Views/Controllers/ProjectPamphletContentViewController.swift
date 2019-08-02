@@ -120,6 +120,14 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       reward: reward,
       applePayCapable: applePayCapable
     )
+
+    vc.navigationItem.leftBarButtonItem = UIBarButtonItem(
+      image: image(named: "icon--cross", tintColor: .ksr_navy_600),
+      style: .plain,
+      target: vc,
+      action: #selector(DeprecatedRewardPledgeViewController.closeButtonTapped)
+    )
+
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
     self.present(nav, animated: true, completion: nil)

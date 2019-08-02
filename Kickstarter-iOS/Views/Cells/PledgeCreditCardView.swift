@@ -3,21 +3,6 @@ import Library
 import Prelude
 import UIKit
 
-private enum Layout {
-  enum Card {
-    static let width: CGFloat = 240
-  }
-
-  enum ImageView {
-    static let width: CGFloat = 64
-    static let height: CGFloat = 40
-  }
-
-  enum Button {
-    static let width: CGFloat = 217
-  }
-}
-
 final class PledgeCreditCardView: UIView {
   // MARK: - Properties
 
@@ -65,9 +50,9 @@ final class PledgeCreditCardView: UIView {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootStackView.widthAnchor.constraint(equalToConstant: Layout.Card.width),
+      self.rootStackView.widthAnchor.constraint(equalToConstant: CheckoutConstants.PaymentSource.Card.width),
       self.selectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
-      self.imageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width)
+      self.imageView.widthAnchor.constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width)
     ])
   }
 
@@ -77,22 +62,20 @@ final class PledgeCreditCardView: UIView {
     super.bindStyles()
 
     _ = self
-      |> viewStyle
+      |> pledgeCardViewStyle
 
     _ = self.selectButton
-      |> selectButtonStyle
-
-    _ = self.selectButton.titleLabel
-      ?|> selectButtonTitleLabelStyle
+      |> cardSelectButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
 
     _ = self.imageView
-      |> imageViewStyle
+      |> cardImageViewStyle
 
     _ = self.lastFourLabel
-      |> lastFourLabelStyle
+      |> cardLastFourLabelStyle
 
     _ = self.expirationDateLabel
-      |> expirationDateLabelStyle
+      |> cardExpirationDateLabelStyle
 
     _ = self.labelsStackView
       |> labelsStackViewStyle
@@ -129,22 +112,18 @@ final class PledgeCreditCardView: UIView {
 
 private let adaptableStackViewStyle: StackViewStyle = { stackView in
   stackView
+    |> \.backgroundColor .~ UIColor.white
     |> \.spacing .~ Styles.grid(2)
 }
 
-private let expirationDateLabelStyle: LabelStyle = { label in
+private let cardExpirationDateLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
     |> \.font .~ UIFont.ksr_caption2().bolded
     |> \.textColor .~ .ksr_text_dark_grey_500
 }
 
-private let imageViewStyle: ImageViewStyle = { imageView in
-  imageView
-    |> \.contentMode .~ .scaleAspectFit
-}
-
-private let lastFourLabelStyle: LabelStyle = { label in
+private let cardLastFourLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
     |> \.font .~ UIFont.ksr_callout().bolded
@@ -153,6 +132,7 @@ private let lastFourLabelStyle: LabelStyle = { label in
 
 private let labelsStackViewStyle: StackViewStyle = { stackView in
   stackView
+    |> \.backgroundColor .~ UIColor.white
     |> \.axis .~ .vertical
     |> \.spacing .~ Styles.gridHalf(1)
 }
@@ -160,23 +140,6 @@ private let labelsStackViewStyle: StackViewStyle = { stackView in
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> checkoutStackViewStyle
+    |> \.backgroundColor .~ UIColor.white
     |> \.spacing .~ Styles.grid(3)
-}
-
-private let selectButtonStyle: ButtonStyle = { button in
-  button
-    |> checkoutSmallBlackButtonStyle
-    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
-}
-
-private let selectButtonTitleLabelStyle: LabelStyle = { label in
-  label
-    |> \.font .~ UIFont.ksr_headline()
-}
-
-private let viewStyle: ViewStyle = { view in
-  view
-    |> \.backgroundColor .~ .white
-    |> roundedStyle(cornerRadius: Styles.grid(1))
-    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 }

@@ -175,6 +175,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func willMove(toParent parent: UIViewController?) {
+    super.willMove(toParent: parent)
+
+    self.viewModel.inputs.willMove(toParent: parent)
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -445,9 +451,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
-
-    self.navigationItem.leftBarButtonItem?.image = image(named: "icon--cross", tintColor: .ksr_navy_600)
-    self.navigationItem.leftBarButtonItem?.accessibilityLabel = Strings.general_navigation_buttons_close()
   }
 
   internal override func bindViewModel() {
@@ -678,7 +681,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.viewModel.inputs.expandDescriptionTapped()
   }
 
-  @IBAction fileprivate func closeButtonTapped() {
+  @IBAction internal func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
