@@ -472,13 +472,7 @@
                             <constraint firstAttribute="trailing" secondItem="a0d-eK-Yei" secondAttribute="trailing" id="dOb-vF-MGO"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="huU-Yh-pg1">
-                        <barButtonItem key="leftBarButtonItem" image="close-icon" id="LJ3-iZ-7wB">
-                            <connections>
-                                <action selector="closeButtonTapped" destination="hRf-bi-Adk" id="xWD-4b-Fn7"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="huU-Yh-pg1"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="900"/>
@@ -656,7 +650,6 @@
     </scenes>
     <resources>
         <image name="checkmark-icon" width="11" height="9"/>
-        <image name="close-icon" width="12" height="12"/>
         <image name="drop-down-disclosure-icon" width="8" height="4"/>
     </resources>
 </document>
