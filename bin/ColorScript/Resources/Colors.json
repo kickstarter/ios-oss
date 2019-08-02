@@ -1,5 +1,5 @@
 {
-  "apricot_600": "FFCBA9",
+  "apricot_500": "FFCBA9",
   "blue_500": "2B60FF",
   "cobalt_500": "4C6CF8",
   "dark_grey_400": "9B9E9E",
@@ -24,6 +24,7 @@
   "orange_600": "E58111",
   "red_400": "FF5340",
   "soft_black": "282828",
+  "text_black": "1C1C1C",
   "text_dark_grey_400": "9B9E9E",
   "text_dark_grey_500": "656969",
   "text_green_700": "037362",

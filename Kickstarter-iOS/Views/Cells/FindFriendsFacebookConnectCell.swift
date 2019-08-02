@@ -104,10 +104,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
 
     _ = self.facebookConnectButton
       |> facebookButtonStyle
-      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> UIButton.lens.targets .~ [(self, action: #selector(facebookConnectButtonTapped), .touchUpInside)]
-      |> UIButton.lens.contentEdgeInsets .~ .init(topBottom: 8)
-      |> UIButton.lens.titleEdgeInsets .~ .init(left: Styles.grid(1))
   }
 
   // MARK: - Facebook Login

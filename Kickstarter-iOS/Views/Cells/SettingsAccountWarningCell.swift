@@ -32,7 +32,7 @@ final class SettingsAccountWarningCell: UITableViewCell, ValueCell, NibLoading {
       }
 
     _ = self.warningIconImage
-      |> \.tintColor .~ .ksr_apricot_600
+      |> \.tintColor .~ .ksr_apricot_500
 
     _ = self.arrowIconImage
       |> settingsArrowViewStyle

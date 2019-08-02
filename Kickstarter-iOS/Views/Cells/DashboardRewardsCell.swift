@@ -76,7 +76,7 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_graphs_rewards_pledged() }
 
     _ = self.seeAllTiersButton
-      |> dashboardGreenTextBorderButtonStyle
+      |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.dashboard_graphs_rewards_view_more_reward_stats()
       }
