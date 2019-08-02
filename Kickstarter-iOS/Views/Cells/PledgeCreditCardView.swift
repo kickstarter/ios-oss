@@ -116,7 +116,6 @@ private let adaptableStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(2)
 }
 
-
 private let cardExpirationDateLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
