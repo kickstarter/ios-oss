@@ -29,17 +29,6 @@ public let discoverySaveButtonStyle = saveButtonStyle
   <> UIButton.lens.image(for: .selected) .~ image(named: "icon--heart-circle")
   <> UIButton.lens.tintColor .~ .white
 
-public let discoveryOnboardingSignUpButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .white
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_400
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_navy_200
-  <> UIButton.lens.layer.borderColor .~ UIColor.ksr_soft_black.cgColor
-  <> UIButton.lens.layer.borderWidth .~ 1.0
-  <> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.discovery_onboarding_buttons_signup_or_login()
-  }
-
 public func discoveryFilterLabelFontStyle<L: UILabelProtocol>(isSelected: Bool) -> ((L) -> L) {
   return L.lens.font %~~ { _, label in
     label.traitCollection.isRegularRegular

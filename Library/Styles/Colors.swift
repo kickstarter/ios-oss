@@ -11,7 +11,11 @@ extension UIColor {
   public static var ksr_allColors: [String: [Int: UIColor]] {
     return [
       "Apricot": [
-        600: .ksr_apricot_600
+        500: .ksr_apricot_500
+      ],
+
+      "Blue": [
+        500: .ksr_blue_500
       ],
 
       "Cobalt": [
@@ -35,7 +39,8 @@ extension UIColor {
         200: .ksr_grey_200,
         300: .ksr_grey_300,
         400: .ksr_grey_400,
-        500: .ksr_grey_500
+        500: .ksr_grey_500,
+        600: .ksr_grey_600
       ],
 
       "Navy": [
@@ -56,6 +61,10 @@ extension UIColor {
 
       "Soft Black": [
         0: .ksr_soft_black
+      ],
+
+      "Text Black": [
+        0: .ksr_text_black
       ],
 
       "Text Dark Grey": [
@@ -79,8 +88,13 @@ extension UIColor {
   }
 
   /// 0xFFCBA9
-  public static var ksr_apricot_600: UIColor {
+  public static var ksr_apricot_500: UIColor {
     return .hex(0xFFCBA9)
+  }
+
+  /// 0x2B60FF
+  public static var ksr_blue_500: UIColor {
+    return .hex(0x2B60FF)
   }
 
   /// 0x4C6CF8
@@ -133,9 +147,9 @@ extension UIColor {
     return .hex(0xF7F7F6)
   }
 
-  /// 0xF2F2F2
+  /// 0xF0F0F0
   public static var ksr_grey_300: UIColor {
-    return .hex(0xF2F2F2)
+    return .hex(0xF0F0F0)
   }
 
   /// 0xE8E8E8
@@ -146,6 +160,11 @@ extension UIColor {
   /// 0xDCDEDD
   public static var ksr_grey_500: UIColor {
     return .hex(0xDCDEDD)
+  }
+
+  /// 0xF2F2F2
+  public static var ksr_grey_600: UIColor {
+    return .hex(0xF2F2F2)
   }
 
   /// 0xF7F7F9
@@ -191,6 +210,11 @@ extension UIColor {
   /// 0x282828
   public static var ksr_soft_black: UIColor {
     return .hex(0x282828)
+  }
+
+  /// 0x1C1C1C
+  public static var ksr_text_black: UIColor {
+    return .hex(0x1C1C1C)
   }
 
   /// 0x9B9E9E

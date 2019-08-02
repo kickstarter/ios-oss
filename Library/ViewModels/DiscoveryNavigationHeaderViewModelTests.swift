@@ -9,29 +9,30 @@ import XCTest
 internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
   fileprivate let vm: DiscoveryNavigationHeaderViewModelType = DiscoveryNavigationHeaderViewModel()
 
-  fileprivate let animateArrowToDown = TestObserver<Bool, Never>()
-  fileprivate let arrowOpacity = TestObserver<CGFloat, Never>()
-  fileprivate let arrowOpacityAnimated = TestObserver<Bool, Never>()
-  fileprivate let debugContainerViewIsHidden = TestObserver<Bool, Never>()
-  fileprivate let dividerIsHidden = TestObserver<Bool, Never>()
-  fileprivate let exploreLabelIsHidden = TestObserver<Bool, Never>()
-  fileprivate let logoutWithParams = TestObserver<DiscoveryParams, Never>()
-  fileprivate let primaryLabelOpacity = TestObserver<CGFloat, Never>()
-  fileprivate let primaryLabelOpacityAnimated = TestObserver<Bool, Never>()
-  fileprivate let primaryLabelText = TestObserver<String, Never>()
-  fileprivate let dismissDiscoveryFilters = TestObserver<(), Never>()
-  fileprivate let notifyDelegateFilterSelectedParams = TestObserver<DiscoveryParams, Never>()
-  fileprivate let secondaryLabelText = TestObserver<String, Never>()
-  fileprivate let secondaryLabelIsHidden = TestObserver<Bool, Never>()
-  fileprivate let titleAccessibilityHint = TestObserver<String, Never>()
-  fileprivate let titleAccessibilityLabel = TestObserver<String, Never>()
-  fileprivate let showDiscoveryFiltersRow = TestObserver<SelectableRow, Never>()
-  fileprivate let favoriteButtonAccessibilityLabel = TestObserver<String, Never>()
-  fileprivate let favoriteViewIsDimmed = TestObserver<Bool, Never>()
-  fileprivate let favoriteViewIsHidden = TestObserver<Bool, Never>()
-  fileprivate let showFavoriteOnboardingAlert = TestObserver<String, Never>()
-  fileprivate let updateFavoriteButtonSelected = TestObserver<Bool, Never>()
-  fileprivate let updateFavoriteButtonAnimated = TestObserver<Bool, Never>()
+  private let animateArrowToDown = TestObserver<Bool, Never>()
+  private let arrowOpacity = TestObserver<CGFloat, Never>()
+  private let arrowOpacityAnimated = TestObserver<Bool, Never>()
+  private let debugContainerViewIsHidden = TestObserver<Bool, Never>()
+  private let debugImageViewIsDimmed = TestObserver<Bool, Never>()
+  private let dividerIsHidden = TestObserver<Bool, Never>()
+  private let exploreLabelIsHidden = TestObserver<Bool, Never>()
+  private let logoutWithParams = TestObserver<DiscoveryParams, Never>()
+  private let primaryLabelOpacity = TestObserver<CGFloat, Never>()
+  private let primaryLabelOpacityAnimated = TestObserver<Bool, Never>()
+  private let primaryLabelText = TestObserver<String, Never>()
+  private let dismissDiscoveryFilters = TestObserver<(), Never>()
+  private let notifyDelegateFilterSelectedParams = TestObserver<DiscoveryParams, Never>()
+  private let secondaryLabelText = TestObserver<String, Never>()
+  private let secondaryLabelIsHidden = TestObserver<Bool, Never>()
+  private let titleAccessibilityHint = TestObserver<String, Never>()
+  private let titleAccessibilityLabel = TestObserver<String, Never>()
+  private let showDiscoveryFiltersRow = TestObserver<SelectableRow, Never>()
+  private let favoriteButtonAccessibilityLabel = TestObserver<String, Never>()
+  private let favoriteViewIsDimmed = TestObserver<Bool, Never>()
+  private let favoriteViewIsHidden = TestObserver<Bool, Never>()
+  private let showFavoriteOnboardingAlert = TestObserver<String, Never>()
+  private let updateFavoriteButtonSelected = TestObserver<Bool, Never>()
+  private let updateFavoriteButtonAnimated = TestObserver<Bool, Never>()
 
   let initialParams = .defaults
     |> DiscoveryParams.lens.includePOTD .~ true
@@ -49,6 +50,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
     self.vm.outputs.arrowOpacityAnimated.map(first).observe(self.arrowOpacity.observer)
     self.vm.outputs.arrowOpacityAnimated.map(second).observe(self.arrowOpacityAnimated.observer)
     self.vm.outputs.debugContainerViewIsHidden.observe(self.debugContainerViewIsHidden.observer)
+    self.vm.outputs.debugImageViewIsDimmed.observe(self.debugImageViewIsDimmed.observer)
     self.vm.outputs.dismissDiscoveryFilters.observe(self.dismissDiscoveryFilters.observer)
     self.vm.outputs.dividerIsHidden.observe(self.dividerIsHidden.observer)
     self.vm.outputs.exploreLabelIsHidden.observe(self.exploreLabelIsHidden.observer)
@@ -564,6 +566,42 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.debugContainerViewIsHidden.assertValue(true)
+    }
+  }
+
+  func testDebugImageViewIsDimmed_whenDebugContainerViewIsNotHidden() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue)) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configureWith(params: self.initialParams)
+
+      self.debugContainerViewIsHidden.assertValue(false)
+      self.debugImageViewIsDimmed.assertValues([false])
+
+      self.vm.inputs.titleButtonTapped()
+
+      self.debugImageViewIsDimmed.assertValues([false, true])
+
+      self.vm.inputs.titleButtonTapped()
+
+      self.debugImageViewIsDimmed.assertValues([false, true, false])
+    }
+  }
+
+  func testDebugImageViewIsDimmed_whenDebugcountainerViewIsHidden() {
+    withEnvironment(mainBundle: MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue)) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configureWith(params: self.initialParams)
+
+      self.debugContainerViewIsHidden.assertValue(true)
+      self.debugImageViewIsDimmed.assertDidNotEmitValue()
+
+      self.vm.inputs.titleButtonTapped()
+
+      self.debugImageViewIsDimmed.assertDidNotEmitValue()
+
+      self.vm.inputs.titleButtonTapped()
+
+      self.debugImageViewIsDimmed.assertDidNotEmitValue()
     }
   }
 }

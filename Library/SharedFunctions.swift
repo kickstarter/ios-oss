@@ -163,6 +163,22 @@ public func ksr_is1PasswordSupported() -> Bool {
   return true
 }
 
+public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]) -> ShippingRule? {
+  let shippingRuleFromCurrentLocation = shippingRules
+    .filter { shippingRule in shippingRule.location.country == AppEnvironment.current.config?.countryCode }
+    .first
+
+  if let shippingRuleFromCurrentLocation = shippingRuleFromCurrentLocation {
+    return shippingRuleFromCurrentLocation
+  }
+
+  let shippingRuleInUSA = shippingRules
+    .filter { shippingRule in shippingRule.location.country == "US" }
+    .first
+
+  return shippingRuleInUSA ?? shippingRules.first
+}
+
 public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User, Never> {
   return AppEnvironment.current.apiService.clearUserUnseenActivity(input: .init())
     .filter { _ in AppEnvironment.current.currentUser != nil }
@@ -170,4 +186,37 @@ public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User
     .map { count in AppEnvironment.current.currentUser ?|> User.lens.unseenActivityCount .~ count }
     .skipNil()
     .demoteErrors()
+}
+
+public func formattedAmountForRewardOrBacking(
+  project: Project,
+  rewardOrBacking: Either<Reward, Backing>
+) -> String {
+  switch rewardOrBacking {
+  case let .left(reward):
+    let min = minPledgeAmount(forProject: project, reward: reward)
+    return Format.currency(
+      min,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode
+    )
+  case let .right(backing):
+    let amount = backing.amount
+    let backingAmount = floor(amount) == backing.amount
+      ? String(Int(amount))
+      : String(format: "%.2f", backing.amount)
+    return Format.formattedCurrency(
+      backingAmount,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode
+    )
+  }
+}
+
+internal func classNameWithoutModule(_ class: AnyClass) -> String {
+  return `class`
+    .description()
+    .components(separatedBy: ".")
+    .dropFirst()
+    .joined(separator: ".")
 }

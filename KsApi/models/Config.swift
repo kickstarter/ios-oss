@@ -9,12 +9,14 @@ public enum Experiment {
   }
 }
 
+public typealias Features = [String: Bool]
+
 public struct Config {
   public var abExperiments: [String: String]
   public var appId: Int
   public var applePayCountries: [String]
   public var countryCode: String
-  public var features: [String: Bool]
+  public var features: Features
   public var iTunesLink: String
   public var launchedCountries: [Project.Country]
   public var locale: String

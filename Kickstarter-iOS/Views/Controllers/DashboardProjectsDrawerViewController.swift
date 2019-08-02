@@ -116,7 +116,9 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
       self.tableView.backgroundView?.alpha = 0.4
     }, completion: { _ in
       self.tableView.backgroundView?.addGestureRecognizer(
-        UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped))
+        UITapGestureRecognizer(
+          target: self, action: #selector(DashboardProjectsDrawerViewController.backgroundTapped)
+        )
       )
     })
 

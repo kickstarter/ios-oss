@@ -1,8 +1,10 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-
 public protocol ProjectPamphletViewModelInputs {
+  /// Call when "Back this project" is tapped
+  func backThisProjectTapped()
+
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
 
@@ -25,6 +27,15 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
+  /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
+  var configurePledgeCTAView: Signal<(Project, Bool), Never> { get }
+
+  /// Emits a project and refTag to be used to navigate to the reward selection screen.
+  var goToRewards: Signal<(Project, RefTag?), Never> { get }
+
+  /// Emits a project and refTag to be used to navigate to the deprecated reward selection screen.
+  var goToDeprecatedRewards: Signal<(Project, RefTag?), Never> { get }
+
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
   var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
 
@@ -43,6 +54,8 @@ public protocol ProjectPamphletViewModelType {
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
   ProjectPamphletViewModelOutputs {
   public init() {
+    let isLoading = MutableProperty(false)
+
     let freshProjectAndRefTag = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
@@ -51,10 +64,35 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
         fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
+          .on(
+            starting: { isLoading.value = true },
+            terminated: { isLoading.value = false }
+          )
           .map { project in
             (project, refTag.map(cleanUp(refTag:)))
           }
       }
+
+    let goToRewards = freshProjectAndRefTag
+      .takeWhen(self.backThisProjectTappedProperty.signal)
+      .map { project, refTag in
+        (project, refTag)
+      }
+
+    self.goToRewards = goToRewards
+      .filter { _ in featureNativeCheckoutPledgeViewEnabled() }
+
+    self.goToDeprecatedRewards = goToRewards
+      .filter { _ in !featureNativeCheckoutPledgeViewEnabled() }
+
+    let project = freshProjectAndRefTag
+      .map(first)
+
+    self.configurePledgeCTAView = Signal.combineLatest(
+      project,
+      isLoading.signal
+    )
+    .filter { _ in featureNativeCheckoutEnabled() }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -71,7 +109,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     self.topLayoutConstraintConstant = self.initialTopConstraintProperty.signal.skipNil()
       .takePairWhen(self.willTransitionToCollectionProperty.signal.skipNil())
-      .map(topLayoutConstraintConstantWithInitialTopConstraint(_:traitCollection:))
+      .map(layoutConstraintConstant(initialTopConstraint:traitCollection:))
 
     let cookieRefTag = freshProjectAndRefTag
       .map { project, refTag in
@@ -99,6 +137,11 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
+  }
+
+  private let backThisProjectTappedProperty = MutableProperty(())
+  public func backThisProjectTapped() {
+    self.backThisProjectTappedProperty.value = ()
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -133,7 +176,9 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
-
+  public let configurePledgeCTAView: Signal<(Project, Bool), Never>
+  public let goToDeprecatedRewards: Signal<(Project, RefTag?), Never>
+  public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
   public let topLayoutConstraintConstant: Signal<CGFloat, Never>
@@ -145,8 +190,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 private let cookieSeparator = "?"
 private let escapedCookieSeparator = "%3F"
 
-private func topLayoutConstraintConstantWithInitialTopConstraint(
-  _ initialTopConstraint: CGFloat,
+private func layoutConstraintConstant(
+  initialTopConstraint: CGFloat,
   traitCollection: UITraitCollection
 ) -> CGFloat {
   guard !traitCollection.isRegularRegular else {

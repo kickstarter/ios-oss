@@ -153,11 +153,11 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       header.configure(with: Strings.Any_payment_methods_you_saved_to_Kickstarter())
 
       let headerContainer = UIView(frame: .zero)
-      headerContainer.addSubview(header)
+      _ = (header, headerContainer) |> ksr_addSubviewToParent()
 
       self.tableView.tableHeaderView = headerContainer
 
-      header.constrainEdges(to: headerContainer)
+      _ = (header, headerContainer) |> ksr_constrainViewToEdgesInParent()
 
       _ = header.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
         |> \.priority .~ .defaultHigh
@@ -168,11 +168,11 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
       footer.delegate = self
 
       let footerContainer = UIView(frame: .zero)
-      footerContainer.addSubview(footer)
+      _ = (footer, footerContainer) |> ksr_addSubviewToParent()
 
       self.tableView.tableFooterView = footerContainer
 
-      footer.constrainEdges(to: footerContainer)
+      _ = (footer, footerContainer) |> ksr_constrainViewToEdgesInParent()
 
       _ = footer.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
         |> \.priority .~ .defaultHigh

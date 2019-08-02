@@ -1034,6 +1034,23 @@ contributeurs"
     )
   }
   /**
+   "Check your payment details"
+
+   - **en**: "Check your payment details"
+   - **de**: "Überprüfe die Daten deiner Zahlungsweise"
+   - **es**: "Revisa tu información de pago"
+   - **fr**: "Check your payment details"
+   - **ja**: "お支払い情報をご確認ください"
+  */
+  public static func Check_your_payment_details() -> String {
+    return localizedString(
+      key: "Check_your_payment_details",
+      defaultValue: "Check your payment details",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Chooses %{location} for shipping."
 
    - **en**: "Chooses %{location} for shipping."
@@ -1935,6 +1952,23 @@ contributeurs"
     )
   }
   /**
+   "Description"
+
+   - **en**: "Description"
+   - **de**: "Beschreibung"
+   - **es**: "Descripción"
+   - **fr**: "Description"
+   - **ja**: "説明"
+  */
+  public static func Description() -> String {
+    return localizedString(
+      key: "Description",
+      defaultValue: "Description",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Developer"
 
    - **en**: "Developer"
@@ -2204,6 +2238,23 @@ contributeurs"
       defaultValue: "This email address is unverified.",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Ending in %{last_four}"
+
+   - **en**: "Ending in %{last_four}"
+   - **de**: "Endet auf %{last_four}"
+   - **es**: "Número que termina en %{last_four}"
+   - **fr**: "Finissant par %{last_four}"
+   - **ja**: "下の桁が%{last_four} の番号"
+  */
+  public static func Ending_in_last_four(last_four: String) -> String {
+    return localizedString(
+      key: "Ending_in_last_four",
+      defaultValue: "Ending in %{last_four}",
+      count: nil,
+      substitutions: ["last_four": last_four]
     )
   }
   /**
@@ -2712,6 +2763,23 @@ contributeurs"
     return localizedString(
       key: "First_created",
       defaultValue: "First created",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Fix"
+
+   - **en**: "Fix"
+   - **de**: "Korrigieren"
+   - **es**: "Corregir"
+   - **fr**: "Corriger"
+   - **ja**: "修正する"
+  */
+  public static func Fix() -> String {
+    return localizedString(
+      key: "Fix",
+      defaultValue: "Fix",
       count: nil,
       substitutions: [:]
     )
@@ -3746,12 +3814,29 @@ with friends."
    - **de**: "Kickstarter ist kein Geschäft."
    - **es**: "Kickstarter no es una tienda."
    - **fr**: "Kickstarter n'est pas un magasin."
-   - **ja**: "Kickstarter は商品を購入する場ではありません。"
+   - **ja**: "Kickstarterはオンラインストアではありません。"
   */
   public static func Kickstarter_is_not_a_store() -> String {
     return localizedString(
       key: "Kickstarter_is_not_a_store",
       defaultValue: "Kickstarter is not a store.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Kickstarter is not a store. It's a way to bring creative projects to life."
+
+   - **en**: "Kickstarter is not a store. It's a way to bring creative projects to life."
+   - **de**: "Kickstarter ist kein Geschäft, sondern eine Plattform, um kreative Projekte zu verwirklichen."
+   - **es**: "Kickstarter no es una tienda. Es una forma de dar vida a proyectos creativos."
+   - **fr**: "Kickstarter n'est pas un magasin, mais un moyen de faire vivre des projets créatifs."
+   - **ja**: "Kickstarter は普通のお店とは全く違います。クリエイティブなプロジェクトに生命を吹き込む場です。"
+  */
+  public static func Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life() -> String {
+    return localizedString(
+      key: "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life",
+      defaultValue: "Kickstarter is not a store. It's a way to bring creative projects to life.",
       count: nil,
       substitutions: [:]
     )
@@ -4109,6 +4194,23 @@ with friends."
     return localizedString(
       key: "Making_this_change",
       defaultValue: "Making this change will allow you to see project goal and pledge amounts converted to your chosen currency.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Manage"
+
+   - **en**: "Manage"
+   - **de**: "Verwalten"
+   - **es**: "Administrar"
+   - **fr**: "Gérer"
+   - **ja**: "管理"
+  */
+  public static func Manage() -> String {
+    return localizedString(
+      key: "Manage",
+      defaultValue: "Manage",
       count: nil,
       substitutions: [:]
     )
@@ -7675,6 +7777,23 @@ catch your eye?"
     )
   }
   /**
+   "View rewards"
+
+   - **en**: "View rewards"
+   - **de**: "Belohnungen ansehen"
+   - **es**: "Ver recompensas"
+   - **fr**: "Afficher les récompenses"
+   - **ja**: "リワードを見る"
+  */
+  public static func View_rewards() -> String {
+    return localizedString(
+      key: "View_rewards",
+      defaultValue: "View rewards",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "View your pledge"
 
    - **en**: "View your pledge"
@@ -7740,6 +7859,40 @@ catch your eye?"
       defaultValue: "We couldn't find anything for “%{search_term}”.",
       count: nil,
       substitutions: ["search_term": search_term]
+    )
+  }
+  /**
+   "We couldn't process your pledge."
+
+   - **en**: "We couldn't process your pledge."
+   - **de**: "Dein Finanzierungsbeitrag konnte nicht bearbeitet werden."
+   - **es**: "No pudimos procesar tu contribución."
+   - **fr**: "Impossible de traiter votre engagement."
+   - **ja**: "プレッジを処理できませんでした。"
+  */
+  public static func We_couldnt_process_your_pledge() -> String {
+    return localizedString(
+      key: "We_couldnt_process_your_pledge",
+      defaultValue: "We couldn't process your pledge.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "We think you’ll like these, too"
+
+   - **en**: "We think you’ll like these, too"
+   - **de**: "We think you’ll like these, too"
+   - **es**: "We think you’ll like these, too"
+   - **fr**: "D'autres projets qui pourraient vous plaire"
+   - **ja**: "その他おすすめプロジェクト"
+  */
+  public static func We_think_youll_like_these_too() -> String {
+    return localizedString(
+      key: "We_think_youll_like_these_too",
+      defaultValue: "We think you’ll like these, too",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -16616,6 +16769,23 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
       defaultValue: "%{category_count} categories backed",
       count: category_count,
       substitutions: ["category_count": Format.wholeNumber(category_count)]
+    )
+  }
+  /**
+   "%{category_count} categories backed"
+
+   - **en**: "%{category_count} categories backed"
+   - **de**: "In %{category_count} Kategorien"
+   - **es**: "en %{category_count} categorías"
+   - **fr**: "%{category_count} catégories soutenues"
+   - **ja**: "%{category_count} カテゴリーへバック"
+  */
+  public static func profile_category_count_categories_backed_other(category_count: String) -> String {
+    return localizedString(
+      key: "profile.category_count_categories_backed.other",
+      defaultValue: "%{category_count} categories backed",
+      count: nil,
+      substitutions: ["category_count": category_count]
     )
   }
   /**

@@ -49,16 +49,21 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
     self.betaToolsButton.addTarget(
       self,
-      action: #selector(self.betaToolsButtonTapped),
+      action: #selector(DiscoveryNavigationHeaderViewController.betaToolsButtonTapped),
       for: .touchUpInside
     )
 
     self.favoriteButton.addTarget(
-      self, action: #selector(self.favoriteButtonTapped),
+      self,
+      action: #selector(DiscoveryNavigationHeaderViewController.favoriteButtonTapped),
       for: .touchUpInside
     )
 
-    self.titleButton.addTarget(self, action: #selector(self.titleButtonTapped), for: .touchUpInside)
+    self.titleButton.addTarget(
+      self,
+      action: #selector(DiscoveryNavigationHeaderViewController.titleButtonTapped),
+      for: .touchUpInside
+    )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -158,6 +163,13 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
           completion: nil
         )
       }
+
+    self.viewModel.outputs.debugImageViewIsDimmed
+      .observeForUI()
+      .observeValues { [weak self] isDimmed in
+        _ = self?.debugImageView
+          ?|> \.tintAdjustmentMode .~ (isDimmed ? .dimmed : .normal)
+      }
   }
 
   internal override func bindStyles() {
@@ -196,7 +208,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> UIImageView.lens.image .~ image(named: "icon--debug")
 
     _ = self.primaryLabel
-      |> UILabel.lens.backgroundColor .~ .ksr_grey_300
+      |> UILabel.lens.backgroundColor .~ .ksr_grey_600
       |> UILabel.lens.isAccessibilityElement .~ false
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()
       |> UILabel.lens.font %~~ { _, label in
@@ -322,8 +334,10 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
 
   @objc fileprivate func betaToolsButtonTapped() {
     let betaToolsViewController = BetaToolsViewController.instantiate()
+    let navigationController = UINavigationController(rootViewController: betaToolsViewController)
+    navigationController.modalPresentationStyle = .formSheet
 
-    self.navigationController?.pushViewController(betaToolsViewController, animated: true)
+    self.present(navigationController, animated: true)
   }
 
   @objc fileprivate func titleButtonTapped() {

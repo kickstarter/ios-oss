@@ -47,7 +47,7 @@ internal final class TwoFactorViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(5)
 
     _ = self.resendButton
-      |> borderButtonStyle
+      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.two_factor_buttons_resend() }
 
     _ = self.submitButton

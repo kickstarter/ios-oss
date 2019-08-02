@@ -188,11 +188,7 @@ internal final class DashboardViewController: UITableViewController {
       }
   }
 
-  internal override func tableView(
-    _: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt _: IndexPath
-  ) {
+  internal override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     if let actionCell = cell as? DashboardActionCell {
       actionCell.delegate = self
     } else if let referrersCell = cell as? DashboardReferrersCell {

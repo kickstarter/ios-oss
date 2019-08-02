@@ -33,9 +33,7 @@ public let activitySampleProjectTitleLabelStyle =
   <> UILabel.lens.lineBreakMode .~ .byTruncatingTail
   <> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
 
-public let activitySampleSeeAllActivityButtonStyle =
-  borderButtonStyle
-  <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 13)
+public let activitySampleSeeAllActivityButtonStyle = greyButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.discovery_activity_sample_button_see_all_activity()
   }

@@ -144,13 +144,11 @@ internal final class BackingViewController: UIViewController {
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.messageCreatorButton
-      |> navyButtonStyle
-      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 14)
-      |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
+      |> blackButtonStyle
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_message_composer() }
 
     _ = self.viewMessagesButton
-      |> borderButtonStyle
+      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.backer_modal_view_messages() }
       |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.accessibility_dashboard_buttons_messages_hint() }

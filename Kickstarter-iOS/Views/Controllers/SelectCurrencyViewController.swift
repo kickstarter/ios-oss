@@ -28,12 +28,15 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
       SelectCurrencyCell.self, forCellReuseIdentifier: SelectCurrencyCell.defaultReusableId
     )
 
-    self.view.addSubview(self.tableView)
-    self.tableView.constrainEdges(to: self.view)
+    _ = (self.tableView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     let headerContainerView = UIView(frame: .zero)
-    headerContainerView.addSubview(self.headerView)
-    self.headerView.constrainEdges(to: headerContainerView, priority: .defaultHigh)
+
+    _ = (self.headerView, headerContainerView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent(priority: .defaultHigh)
 
     self.tableView.tableHeaderView = headerContainerView
     self.headerView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
@@ -42,7 +45,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
     self.saveButtonView.setTitle(title: Strings.Save())
-    self.saveButtonView.addTarget(self, action: #selector(self.saveButtonTapped(_:)))
+    self.saveButtonView.addTarget(self, action: #selector(SelectCurrencyViewController.saveButtonTapped(_:)))
 
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
@@ -130,7 +133,7 @@ final class SelectCurrencyViewController: UIViewController, MessageBannerViewCon
       }
   }
 
-  // MARK: - Private Functions
+  // MARK: - Functions
 
   private func handleDidUpdateCurrency() {
     self.messageBannerViewController?.showBanner(

@@ -260,6 +260,41 @@ final class FormatTests: TestCase {
     }
   }
 
+  func testPlusSign() {
+    withEnvironment(language: .de) {
+      XCTAssertEqual(Format.attributedPlusSign().string, "+")
+    }
+
+    withEnvironment(language: .en) {
+      XCTAssertEqual(Format.attributedPlusSign().string, "+")
+    }
+
+    withEnvironment(language: .es) {
+      XCTAssertEqual(Format.attributedPlusSign().string, "+")
+    }
+
+    withEnvironment(language: .fr) {
+      XCTAssertEqual(Format.attributedPlusSign().string, "+ ")
+    }
+
+    withEnvironment(language: .ja) {
+      XCTAssertEqual(Format.attributedPlusSign().string, "+")
+    }
+  }
+
+  func testPlusSignAttributes() {
+    let expectedAttributes: String.Attributes = [
+      .font: UIFont.ksr_body(),
+      .foregroundColor: UIColor.red
+    ]
+
+    let attributedString = Format.attributedPlusSign(expectedAttributes)
+    let attributes = attributedString.attributes(at: 0, effectiveRange: nil)
+
+    XCTAssertEqual("+", attributedString.string)
+    XCTAssertTrue(expectedAttributes == attributes)
+  }
+
   func testDate() {
     let date = 434_592_000.0 // Oct 10 1983 in UTC
     // swiftlint:disable force_unwrapping

@@ -116,11 +116,7 @@ internal final class DiscoveryFiltersViewController: UIViewController, UITableVi
     }
   }
 
-  internal func tableView(
-    _: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt indexPath: IndexPath
-  ) {
+  internal func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     if let cell = cell as? DiscoverySelectableRowCell {
       cell.willDisplay()
     } else if let cell = cell as? DiscoveryExpandableRowCell {
