@@ -49,9 +49,13 @@ internal final class EmptyStatesViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.bottomLayoutConstraintConstant.observeValues { [weak self] constant in
+      self?.mainButtonBottomLayoutConstraint
+        .constant = constant + (self?.view.layoutMargins.bottom ?? 0)
+    }
+
     self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleLabelText
-    self.mainButtonBottomLayoutConstraint.rac.constant = self.viewModel.outputs.bottomLayoutConstraintConstant
     self.mainButton.rac.title = self.viewModel.outputs.mainButtonText
 
     self.viewModel.outputs.notifyDelegateToGoToDiscovery
