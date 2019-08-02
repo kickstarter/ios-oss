@@ -4,7 +4,7 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeCTAContainerViewViewModelInputs {
-  func configureWith(value: (project: Project, isLoading: Bool))
+  func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool))
 }
 
 public protocol PledgeCTAContainerViewViewModelOutputs {
@@ -30,7 +30,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     let project = self.configureWithValueProperty.signal
       .skipNil()
       .filter(second >>> isFalse)
-      .map(first)
+      .map { $0.0.left }
+      .skipNil()
 
     self.activityIndicatorIsAnimating = self.configureWithValueProperty.signal
       .skipNil()
@@ -53,8 +54,9 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .map(subtitle(project:pledgeState:))
   }
 
-  fileprivate let configureWithValueProperty = MutableProperty<(project: Project, isLoading: Bool)?>(nil)
-  public func configureWith(value: (project: Project, isLoading: Bool)) {
+  fileprivate let configureWithValueProperty =
+    MutableProperty<(Either<Project, ErrorEnvelope>, isLoading: Bool)?>(nil)
+  public func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool)) {
     self.configureWithValueProperty.value = value
   }
 

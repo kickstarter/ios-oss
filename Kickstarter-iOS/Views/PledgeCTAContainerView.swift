@@ -133,7 +133,7 @@ final class PledgeCTAContainerView: UIView {
 
   // MARK: - Configuration
 
-  func configureWith(value: (project: Project, isLoading: Bool)) {
+  func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool)) {
     self.viewModel.inputs.configureWith(value: value)
   }
 

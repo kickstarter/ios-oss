@@ -28,7 +28,7 @@ public protocol ProjectPamphletViewModelOutputs {
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
   /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
-  var configurePledgeCTAView: Signal<(Project, Bool), Never> { get }
+  var configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
@@ -77,6 +77,11 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
 
+    let error = freshProjectAndRefTagEvent.errors()
+    error.observeValues { v in
+      print(v)
+    }
+
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, refTag in
@@ -95,6 +100,9 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       isLoading.signal
     )
     .filter { _ in featureNativeCheckoutEnabled() }
+    .map { project, isLoading in
+      (.left(project), isLoading)
+    }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -178,8 +186,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
-  public let configurePledgeCTAView: Signal<(Project, Bool), Never>
   public let goToDeprecatedRewards: Signal<(Project, RefTag?), Never>
+  public let configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
