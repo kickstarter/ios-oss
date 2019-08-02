@@ -1,3 +1,4 @@
+import Foundation
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -88,6 +89,31 @@ final class RewardCardViewModelTests: TestCase {
 
     self.rewardTitleLabelHidden.assertValues([false])
     self.rewardTitleLabelText.assertValues(["Make a pledge without a reward"])
+  }
+
+  func testTitleLabel_BackedNoReward() {
+    let reward = Reward.noReward
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.vm.inputs.configureWith(
+      project: project,
+      rewardOrBacking: .left(reward)
+    )
+
+    self.rewardTitleLabelHidden.assertValues([false])
+    self.rewardTitleLabelText.assertValues([
+      "Thank you for supporting this project."
+    ])
   }
 
   // MARK: - Reward Minimum
@@ -617,5 +643,247 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
     self.cardUserInteractionIsEnabled.assertValues([false])
+  }
+
+  // MARK: - Pills
+
+  func testPillsLimitedReward() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 25
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["25 left"]
+    ])
+  }
+
+  func testPillsTimebasedReward_24hrs() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["24 hrs left"]
+    ])
+  }
+
+  func testPillsTimebasedReward_4days() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["4 days left"]
+    ])
+  }
+
+  func testPillsTimebasedAndLimitedReward() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 75
+      |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["4 days left", "75 left"]
+    ])
+  }
+
+  func testPillsTimebasedAndLimitedReward_NonLiveProject() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
+
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 75
+      |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([true])
+    self.reloadPills.assertValues([[]])
+  }
+
+  func testPillsTimebasedAndLimitedReward_Unavailable() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([["0 left"]])
+  }
+
+  func testPillsNonLimitedReward() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.endsAt .~ nil
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([true])
+    self.reloadPills.assertValues([[]])
+  }
+
+  // State Icon Image
+
+  func testStateIconImage_BackedReward() {
+    self.stateIconImageName.assertValueCount(0)
+    self.stateIconImageTintColor.assertValueCount(0)
+    self.stateIconImageViewContainerBackgroundColor.assertValueCount(0)
+    self.stateIconImageViewContainerHidden.assertValueCount(0)
+
+    let reward = Reward.postcards
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.vm.inputs.configureWith(
+      project: project,
+      rewardOrBacking: .left(reward)
+    )
+
+    self.stateIconImageName.assertValues(["checkmark-reward"])
+    self.stateIconImageTintColor.assertValues([.ksr_blue_500])
+    self.stateIconImageViewContainerBackgroundColor.assertValues(
+      [UIColor.ksr_blue_500.withAlphaComponent(0.06)]
+    )
+    self.stateIconImageViewContainerHidden.assertValues([false])
+  }
+
+  func testStateIconImage_BackedOtherReward() {
+    self.stateIconImageName.assertValueCount(0)
+    self.stateIconImageTintColor.assertValueCount(0)
+    self.stateIconImageViewContainerBackgroundColor.assertValueCount(0)
+    self.stateIconImageViewContainerHidden.assertValueCount(0)
+
+    let reward = Reward.postcards
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.otherReward
+          |> Backing.lens.rewardId .~ Reward.otherReward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.vm.inputs.configureWith(
+      project: project,
+      rewardOrBacking: .left(reward)
+    )
+
+    self.stateIconImageName.assertValues([])
+    self.stateIconImageTintColor.assertValues([])
+    self.stateIconImageViewContainerBackgroundColor.assertValues([])
+    self.stateIconImageViewContainerHidden.assertValues([true])
+  }
+
+  func testStateIconImage_BackedRewardErrored() {
+    self.stateIconImageName.assertValueCount(0)
+    self.stateIconImageTintColor.assertValueCount(0)
+    self.stateIconImageViewContainerBackgroundColor.assertValueCount(0)
+    self.stateIconImageViewContainerHidden.assertValueCount(0)
+
+    let reward = Reward.postcards
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.status .~ .errored
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.vm.inputs.configureWith(
+      project: project,
+      rewardOrBacking: .left(reward)
+    )
+
+    self.stateIconImageName.assertValues(["icon--alert"])
+    self.stateIconImageTintColor.assertValues([.ksr_apricot_600])
+    self.stateIconImageViewContainerBackgroundColor.assertValues(
+      [UIColor.ksr_apricot_600.withAlphaComponent(0.06)]
+    )
+    self.stateIconImageViewContainerHidden.assertValues([false])
+  }
+
+  func testStateIconImage_NonBacked() {
+    self.stateIconImageName.assertValueCount(0)
+    self.stateIconImageTintColor.assertValueCount(0)
+    self.stateIconImageViewContainerBackgroundColor.assertValueCount(0)
+    self.stateIconImageViewContainerHidden.assertValueCount(0)
+
+    let reward = Reward.postcards
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ false
+
+    self.vm.inputs.configureWith(
+      project: project,
+      rewardOrBacking: .left(reward)
+    )
+
+    self.stateIconImageName.assertValues([])
+    self.stateIconImageTintColor.assertValues([])
+    self.stateIconImageViewContainerBackgroundColor.assertValues([])
+    self.stateIconImageViewContainerHidden.assertValues([true])
   }
 }
