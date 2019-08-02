@@ -467,4 +467,29 @@ final class KoalaTests: TestCase {
     koala.trackDiscoveryPullToRefresh()
     XCTAssertEqual(["Triggered Refresh"], client.events)
   }
+
+  func testTrackBackThisButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    let project = Project.template
+
+    koala.trackBackThisButtonClicked(project: project)
+    XCTAssertEqual(["Back this Project Button Clicked"], client.events)
+  }
+
+  func testTrackSelectRewardButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    let reward = Reward.template
+    let backing = .template
+      |> Backing.lens.reward .~ reward
+    let project = .template
+      |> Project.lens.personalization.backing .~ backing
+
+    koala.trackSelectRewardButtonClicked(project: project, reward: reward, backing: backing)
+    XCTAssertEqual(["Select Reward Button Clicked"], client.events)
+
+  }
 }
