@@ -167,8 +167,4 @@ public let keyboardToolbarStyle: ToolbarStyle = { toolbar -> UIToolbar in
 public let keyboardDoneButtonStyle: ButtonStyle = { button -> UIButton in
   button
     |> greenButtonStyle
-    |> roundedStyle(cornerRadius: 6)
-    |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-    |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 17) // Disables Dynamic Type support
 }

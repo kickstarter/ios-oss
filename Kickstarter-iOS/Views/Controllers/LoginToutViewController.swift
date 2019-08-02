@@ -110,7 +110,10 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> disclaimerButtonStyle
 
     _ = self.loginButton
-      |> loginButtonStyle
+      |> greyButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in
+        Strings.login_tout_back_intent_traditional_login_button()
+      }
 
     _ = self.rootStackView
       |> baseStackViewStyle

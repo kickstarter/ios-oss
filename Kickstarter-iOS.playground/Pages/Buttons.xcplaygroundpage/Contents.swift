@@ -22,14 +22,12 @@ func disabled<C: UIControlProtocol>() -> ((C) -> C) {
 }
 
 let baseButtonsStyles: [(UIButton) -> UIButton] = [
-  greenButtonStyle <> UIButton.lens.title(for: .normal) .~ "Green button",
-  navyButtonStyle <> UIButton.lens.title(for: .normal) .~ "Navy button",
-  lightNavyButtonStyle <> UIButton.lens.title(for: .normal) .~ "Light navy button",
-  neutralButtonStyle <> UIButton.lens.title(for: .normal) .~ "Neutral button",
-  borderButtonStyle <> UIButton.lens.title(for: .normal) .~ "Border button",
+  apricotButtonStyle <> UIButton.lens.title(for: .normal) .~ "Apricot button",
   blackButtonStyle <> UIButton.lens.title(for: .normal) .~ "Black button",
-  textOnlyButtonStyle <> UIButton.lens.title(for: .normal) .~ "Text only button",
-  greenBorderButtonStyle <> UIButton.lens.title(for: .normal) .~ "Green border button"
+  blueButtonStyle <> UIButton.lens.title(for: .normal) .~ "Blue button",
+  greenButtonStyle <> UIButton.lens.title(for: .normal) .~ "Green button",
+  greyButtonStyle <> UIButton.lens.title(for: .normal) .~ "Grey button",
+  textOnlyButtonStyle <> UIButton.lens.title(for: .normal) .~ "Text only button"
 ]
 
 let buttonsStyles: [[(UIButton) -> UIButton]] = baseButtonsStyles.map { [$0, $0 <> disabled()] }

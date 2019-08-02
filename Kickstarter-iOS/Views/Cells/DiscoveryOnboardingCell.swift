@@ -31,7 +31,12 @@ internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(6), leftRight: layoutMargins.left)
       }
 
-    _ = self.loginButton |> discoveryOnboardingSignUpButtonStyle
+    _ = self.loginButton
+      |> greenButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in
+        Strings.discovery_onboarding_buttons_signup_or_login()
+      }
+
     _ = self.logoImageView |> discoveryOnboardingLogoStyle
     _ = self.onboardingTitleLabel |> discoveryOnboardingTitleStyle
     _ = self.stackView |> discoveryOnboardingStackViewStyle

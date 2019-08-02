@@ -78,7 +78,7 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
       .ignoreValues()
 
     self.bottomLayoutConstraintConstant = emptyState
-      .map { $0 == .activity ? 50.0 + Styles.grid(3) : Styles.grid(3) }
+      .map { Styles.grid(5) + ($0 == .activity ? 50.0 : 0) }
 
     emptyState
       .observeValues { AppEnvironment.current.koala.trackEmptyStateViewed(type: $0) }
