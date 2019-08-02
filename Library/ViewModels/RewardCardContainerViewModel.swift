@@ -8,10 +8,10 @@ public protocol RewardCardContainerViewModelInputs {
 }
 
 public protocol RewardCardContainerViewModelOutputs {
-  var pledgeButtonStyle: Signal<ButtonStyle, Never> { get }
+  var pledgeButtonStyleType: Signal<ButtonStyleType, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var pledgeButtonHidden: Signal<Bool, Never> { get }
-  var pledgeButtonTitleText: Signal<String, Never> { get }
+  var pledgeButtonTitleText: Signal<String?, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   func currentReward(is reward: Reward) -> Bool
 }
@@ -45,14 +45,11 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
       .map(pledgeButtonTitle(project:reward:))
 
     self.pledgeButtonTitleText = pledgeButtonTitleText
-      .skipNil()
 
-    self.pledgeButtonStyle = projectAndReward
-      .map(buttonStyle(project:reward:))
-      .skipNil()
+    self.pledgeButtonStyleType = projectAndReward
+      .map(buttonStyleType(project:reward:))
 
     self.pledgeButtonEnabled = projectAndReward
-      .filter { project, _ in project.state == .live }
       .map(pledgeButtonIsEnabled(project:reward:))
 
     self.pledgeButtonHidden = pledgeButtonTitleText.map(isNil)
@@ -72,10 +69,10 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.pledgeButtonTappedProperty.value = ()
   }
 
-  public let pledgeButtonStyle: Signal<ButtonStyle, Never>
+  public let pledgeButtonStyleType: Signal<ButtonStyleType, Never>
   public let pledgeButtonEnabled: Signal<Bool, Never>
   public let pledgeButtonHidden: Signal<Bool, Never>
-  public let pledgeButtonTitleText: Signal<String, Never>
+  public let pledgeButtonTitleText: Signal<String?, Never>
   public let rewardSelected: Signal<Int, Never>
 
   private let currentRewardProperty = MutableProperty<Reward?>(nil)
@@ -103,7 +100,7 @@ private func backingReward(fromProject project: Project) -> Reward? {
 private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
   let projectBackingState = RewardCellProjectBackingState.state(with: project, reward: reward)
   let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
-  let isRewardAvailable = rewardIsAvailable(project: project, reward: reward)
+  let isRewardAvailable = rewardIsAvailable(reward: reward)
 
   switch (projectBackingState, isBackingThisReward, isRewardAvailable) {
   case (.backedError, false, true):
@@ -125,28 +122,28 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
   }
 }
 
-private func buttonStyle(project: Project, reward: Reward) -> ButtonStyle? {
+private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleType {
   let projectBackingState = RewardCellProjectBackingState.state(with: project, reward: reward)
   let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
 
   switch projectBackingState {
   case .backedError:
     if isBackingThisReward {
-      return roundedApricotButtonStyle
+      return .apricot
     }
   case .backed(.live):
     if isBackingThisReward {
-      return roundedBlueButtonStyle
+      return .blue
     }
   case .nonBacked(.live):
-    return roundedGreenButtonStyle
+    return .green
   case .backed(.nonLive):
-    return roundedBlackButtonStyle
+    return .black
   case .nonBacked(.nonLive):
-    return nil
+    return .none
   }
 
-  return roundedGreenButtonStyle
+  return .green
 }
 
 private func nonBackedPledgeButtonTitle(project: Project, reward: Reward) -> String {
@@ -159,13 +156,13 @@ private func nonBackedPledgeButtonTitle(project: Project, reward: Reward) -> Str
 }
 
 private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {
-  let isAvailable = rewardIsAvailable(project: project, reward: reward)
+  let isAvailable = rewardIsAvailable(reward: reward)
   let isBacking = userIsBacking(reward: reward, inProject: project)
 
-  return isAvailable || isBacking
+  return (project.state == .live && isAvailable) || isBacking
 }
 
-private func rewardIsAvailable(project _: Project, reward: Reward) -> Bool {
+private func rewardIsAvailable(reward: Reward) -> Bool {
   let limited = !(reward.remaining == nil && reward.endsAt == nil)
 
   guard limited else { return true }
