@@ -165,6 +165,55 @@ final class RewardCellViewModelTests: TestCase {
     }
   }
 
+  func testConversionLabel_roundsUpToMin1() {
+    let project = .template
+      |> Project.lens.country .~ .ca
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 0.44
+    let reward = .template
+      |> Reward.lens.minimum .~ 1
+
+    withEnvironment(
+      apiService: MockService(currency: Project.Country.us.currencyCode),
+      config: .template |> Config.lens.countryCode .~ Project.Country.us.countryCode
+    ) {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+      self.conversionLabelHidden.assertValues(
+        [false],
+        "US user viewing non-US project sees conversion."
+      )
+      self.conversionLabelText.assertValues(["About $1"], "Conversion label rounds up to 1.")
+    }
+  }
+
+  func testConversionLabel_roundsUpToMin1_ConfiguredWithBacking() {
+    let project = .template
+      |> Project.lens.country .~ .ca
+      |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 0.44
+    let reward = .template
+      |> Reward.lens.minimum .~ 1
+    let backing = .template
+      |> Backing.lens.amount .~ 1
+      |> Backing.lens.reward .~ reward
+
+    withEnvironment(
+      apiService: MockService(currency: Project.Country.us.currencyCode),
+      config: .template |> Config.lens.countryCode .~ Project.Country.us.countryCode
+    ) {
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+
+      self.conversionLabelHidden.assertValues(
+        [false],
+        "US backer viewing non-US project sees conversion."
+      )
+      self.conversionLabelText.assertValues(["About $1"], "Conversion label rounds up to 1.")
+    }
+  }
+
   func testConversionLabel_US_User_NonUS_Project_ConfiguredWithReward() {
     let project = .template
       |> Project.lens.country .~ .ca
@@ -183,7 +232,7 @@ final class RewardCellViewModelTests: TestCase {
         [false],
         "Mexican user viewing non-Mexican project sees conversion."
       )
-      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds half-up.")
     }
   }
 
@@ -193,13 +242,13 @@ final class RewardCellViewModelTests: TestCase {
       |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
       |> Project.lens.stats.staticUsdRate .~ 0.76
       |> Project.lens.stats.currentCurrencyRate .~ nil
-    let reward = .template |> Reward.lens.minimum .~ 1
+    let reward = .template |> Reward.lens.minimum .~ 2
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
       self.conversionLabelHidden.assertValues([false], "US user viewing non-US project sees conversion.")
-      self.conversionLabelText.assertValues(["About $1"], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About $2"], "Conversion label rounds half-up.")
     }
   }
 
@@ -222,9 +271,9 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues(
         [false],
-        "Mexican user viewing non-Mexican project sees conversion."
+        "Mexican backer viewing non-Mexican project sees conversion."
       )
-      self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds half-up.")
     }
   }
 
@@ -244,9 +293,9 @@ final class RewardCellViewModelTests: TestCase {
 
       self.conversionLabelHidden.assertValues(
         [false],
-        "US user viewing non-US project sees conversion."
+        "US backer viewing non-US project sees conversion."
       )
-      self.conversionLabelText.assertValues(["About $2"], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About $2"], "Conversion label rounds half-up.")
     }
   }
 
@@ -537,7 +586,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-    self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+    self.minimumLabelText.assertValues(["$1,000"])
     self.minimumAndConversionLabelsColor.assertValues([.ksr_green_700])
   }
 
@@ -549,7 +598,7 @@ final class RewardCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-    self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+    self.minimumLabelText.assertValues(["$1,000"])
     self.minimumAndConversionLabelsColor.assertValues([.ksr_text_dark_grey_400])
   }
 
@@ -722,7 +771,7 @@ final class RewardCellViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-      self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+      self.minimumLabelText.assertValues(["$1,000"])
 
       self.minimumAndConversionLabelsColor.assertValues([.ksr_text_dark_grey_400])
     }
@@ -738,7 +787,7 @@ final class RewardCellViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-      self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+      self.minimumLabelText.assertValues(["$1,000"])
 
       self.minimumAndConversionLabelsColor.assertValues([.ksr_text_dark_grey_400])
     }
@@ -759,7 +808,7 @@ final class RewardCellViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-      self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+      self.minimumLabelText.assertValues(["$1,000"])
 
       self.minimumAndConversionLabelsColor.assertValues([.ksr_green_700])
     }
@@ -780,7 +829,7 @@ final class RewardCellViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-      self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+      self.minimumLabelText.assertValues(["$1,000"])
 
       self.minimumAndConversionLabelsColor.assertValues([.ksr_text_dark_grey_500])
     }
@@ -790,10 +839,11 @@ final class RewardCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.state .~ .live
     let reward = Reward.template
+      |> Reward.lens.minimum .~ 10
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-    self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+    self.minimumLabelText.assertValues(["$10"])
 
     self.minimumAndConversionLabelsColor.assertValues([.ksr_green_700])
   }
@@ -802,11 +852,22 @@ final class RewardCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.state .~ .successful
     let reward = Reward.template
+      |> Reward.lens.minimum .~ 10
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-    self.minimumLabelText.assertValues([Format.currency(reward.minimum, country: project.country)])
+    self.minimumLabelText.assertValues(["$10"])
 
     self.minimumAndConversionLabelsColor.assertValues([.ksr_soft_black])
+  }
+
+  func testMinimumLabel_RoundsHalfUp() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 100.50
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.minimumLabelText.assertValues(["$101"])
   }
 }

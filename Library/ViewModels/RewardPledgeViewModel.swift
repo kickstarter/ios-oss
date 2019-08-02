@@ -1035,7 +1035,8 @@ private func backingError(forProject project: Project, amount: Double, reward: R
 
   guard amount >= min else {
     let message = Strings.Please_enter_an_amount_of_amount_or_more(
-      amount: Format.currency(min, country: project.country)
+      amount: Format.currency(min, country: project.country,
+                              omitCurrencyCode: project.stats.omitUSCurrencyCode)
     )
 
     return .minimumAmount(.init(errorMessages: [message], ksrCode: nil, httpCode: 400, exception: nil))
@@ -1043,7 +1044,7 @@ private func backingError(forProject project: Project, amount: Double, reward: R
 
   guard amount <= max else {
     let message = Strings.Please_enter_an_amount_of_amount_or_less(
-      amount: Format.currency(max, country: project.country)
+      amount: Format.currency(max, country: project.country, omitCurrencyCode: project.stats.omitUSCurrencyCode)
     )
 
     return .maximumAmount(.init(errorMessages: [message], ksrCode: nil, httpCode: 400, exception: nil))
@@ -1180,7 +1181,7 @@ private func navigationTitleForProject(_ project: Project, reward: Reward) -> St
   }
 
   return Strings.rewards_title_pledge_reward_currency_or_more(
-    reward_currency: Format.currency(reward.minimum, country: project.country)
+    reward_currency: Format.currency(reward.minimum, country: project.country, roundingMode: .halfUp)
   )
 }
 

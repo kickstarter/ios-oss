@@ -176,6 +176,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
         return Format.currency(
           basicPledge,
           country: project.country,
+          roundingMode: .halfUp,
           omitCurrencyCode: project.stats.omitUSCurrencyCode
         )
       }
@@ -195,6 +196,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
         Format.currency(
           backing.amount,
           country: project.country,
+          roundingMode: .halfUp,
           omitCurrencyCode: project.stats.omitUSCurrencyCode
         )
       }

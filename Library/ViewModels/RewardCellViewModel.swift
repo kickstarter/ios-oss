@@ -71,14 +71,16 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
         case let .left(reward):
           let min = minPledgeAmount(forProject: project, reward: reward)
           return Format.currency(
-            max(1, Int(Float(min) * rate)),
+            (min * Double(rate)),
             country: country,
+            roundingMode: .halfUp,
             omitCurrencyCode: project.stats.omitUSCurrencyCode
           )
         case let .right(backing):
           return Format.currency(
-            Int(ceil(Float(backing.amount) * rate)),
+            (backing.amount * Double(rate)),
             country: country,
+            roundingMode: .halfUp,
             omitCurrencyCode: project.stats.omitUSCurrencyCode
           )
         }
@@ -93,6 +95,7 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
           let currency = Format.currency(
             min,
             country: project.country,
+            roundingMode: .halfUp,
             omitCurrencyCode: project.stats.omitUSCurrencyCode
           )
           return reward == Reward.noReward
@@ -100,6 +103,8 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
             : currency
 
         case let .right(backing):
+          // TODO: find out why we use precision points for these amounts only here and not anywhere else
+          // Can one pledge with decimal amounts?
           let backingAmount = formattedAmount(for: backing)
           return Format.formattedCurrency(
             backingAmount,

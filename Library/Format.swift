@@ -79,12 +79,14 @@ public enum Format {
   public static func currency(
     _ amount: Double,
     country: Project.Country,
+    roundingMode: NumberFormatter.RoundingMode = .down,
     omitCurrencyCode: Bool = true,
     env: Environment = AppEnvironment.current
   ) -> String {
     return Format.formattedCurrency(
       amount,
       country: country,
+      roundingMode: roundingMode,
       omitCurrencyCode: omitCurrencyCode,
       env: env
     )
@@ -93,6 +95,7 @@ public enum Format {
   public static func formattedCurrency(
     _ amount: Any,
     country: Project.Country,
+    roundingMode: NumberFormatter.RoundingMode = .down,
     omitCurrencyCode: Bool = true,
     env: Environment = AppEnvironment.current
   ) -> String {
@@ -104,6 +107,7 @@ public enum Format {
 
     let formatter = NumberFormatterConfig.cachedFormatter(
       forConfig: .defaultCurrencyConfig
+        |> NumberFormatterConfig.lens.roundingMode .~ roundingMode
         |> NumberFormatterConfig.lens.locale .~ env.locale
         |> NumberFormatterConfig.lens.currencySymbol .~ symbol
     )

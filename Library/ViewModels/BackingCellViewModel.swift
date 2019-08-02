@@ -32,7 +32,9 @@ public final class BackingCellViewModel: BackingCellViewModelType, BackingCellVi
 
     self.pledged = backingAndProjectAndIsFromBacking.map { backing, project, _ in
       Strings.backing_info_pledged_backing_amount(
-        backing_amount: Format.currency(backing.amount, country: project.country)
+        backing_amount: Format.currency(backing.amount,
+                                        country: project.country,
+                                        roundingMode: .halfUp)
       )
     }
 
