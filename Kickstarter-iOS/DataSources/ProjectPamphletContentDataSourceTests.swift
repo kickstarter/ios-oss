@@ -48,7 +48,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
 
   func testRewardsSection_nativeCheckoutFeature_hidesWhenTurnedOn() {
     let config = .template
-      |> Config.lens.features .~ [Feature.checkout.rawValue: true]
+      |> Config.lens.features .~ [Feature.nativeCheckout.rawValue: true]
 
     withEnvironment(config: config) {
       let availableReward = Reward.template
@@ -66,7 +66,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
 
   func testRewardsSection_nativeCheckoutFeature_showsWithTurnedOff() {
     let config = .template
-      |> Config.lens.features .~ [Feature.checkout.rawValue: false]
+      |> Config.lens.features .~ [Feature.nativeCheckout.rawValue: false]
 
     withEnvironment(config: config) {
       let availableSection = ProjectPamphletContentDataSource.Section.availableRewards.rawValue
