@@ -291,6 +291,7 @@
 		8A8099FA22E2159300373E66 /* RewardPledgeTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099F922E2159300373E66 /* RewardPledgeTransitionAnimator.swift */; };
 		8A8099FD22E2172D00373E66 /* UISpringTimingParameters+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */; };
 		8A8099FF22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */; };
+		8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */; };
 		8AF91CDD22EF5AF8005F9C90 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF91CDC22EF5AF7005F9C90 /* Feature.swift */; };
 		9D0FB7751D7600B5005774F2 /* CheckoutRacingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0FB7741D7600B5005774F2 /* CheckoutRacingViewModel.swift */; };
 		9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D10B91A1D35407C008B8045 /* String+Truncate.swift */; };
@@ -1604,6 +1605,7 @@
 		8A8099F922E2159300373E66 /* RewardPledgeTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardPledgeTransitionAnimator.swift; sourceTree = "<group>"; };
 		8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISpringTimingParameters+Convenience.swift"; sourceTree = "<group>"; };
 		8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDescriptionViewControllerTests.swift; sourceTree = "<group>"; };
+		8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Mixing.swift"; sourceTree = "<group>"; };
 		8AF91CDC22EF5AF7005F9C90 /* Feature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		9D0FB7741D7600B5005774F2 /* CheckoutRacingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutRacingViewModel.swift; sourceTree = "<group>"; };
 		9D10B91A1D35407C008B8045 /* String+Truncate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Truncate.swift"; sourceTree = "<group>"; };
@@ -3102,6 +3104,7 @@
 				0176E13A1C9742FD009CA092 /* UIBarButtonItem.swift */,
 				A7C725941C85D36D005A016B /* UIButton+LocalizedKey.swift */,
 				0151AE871C8F60370067F1BE /* UIColor.swift */,
+				8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */,
 				A7ED1F231E830FDC00BFFA01 /* UIColorTests.swift */,
 				A78537BB1CB5416700385B73 /* UIDeviceType.swift */,
 				3757D0CD228E51F800241AE6 /* UIFont.swift */,
@@ -4593,6 +4596,7 @@
 				597582E31D5D12AE008765DE /* SettingsStyles.swift in Sources */,
 				9D14FFC61D135C12005F4ABB /* ProjectActivityUpdateCellViewModel.swift in Sources */,
 				A7F441AF1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift in Sources */,
+				8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */,
 				D04AAC34218BB70D00CF713E /* SettingsAccountPickerCellViewModel.swift in Sources */,
 				80EAEF001D243A7A008C2353 /* BackingViewModel.swift in Sources */,
 				A75511691C8642C3005355CF /* UILabel+IBClear.swift in Sources */,
