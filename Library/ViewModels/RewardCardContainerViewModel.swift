@@ -98,7 +98,7 @@ private func backingReward(fromProject project: Project) -> Reward? {
 }
 
 private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
-  let projectBackingState = RewardCellProjectBackingState.state(with: project, reward: reward)
+  let projectBackingState = RewardCellProjectBackingStateType.state(with: project)
   let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
   let isRewardAvailable = rewardIsAvailable(reward: reward)
 
@@ -123,7 +123,7 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
 }
 
 private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleType {
-  let projectBackingState = RewardCellProjectBackingState.state(with: project, reward: reward)
+  let projectBackingState = RewardCellProjectBackingStateType.state(with: project)
   let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
 
   switch projectBackingState {
@@ -173,31 +173,4 @@ private func rewardIsAvailable(reward: Reward) -> Bool {
   let timeLimitNotReached = endsAt > now
 
   return remaining || timeLimitNotReached
-}
-
-// NB: to be replaced when related PR merges
-public enum RewardCellProjectBackingState: Equatable {
-  public enum ProjectState {
-    case nonLive
-    case live
-  }
-
-  case backedError
-  case nonBacked(live: ProjectState)
-  case backed(live: ProjectState)
-
-  static func state(with project: Project, reward _: Reward) -> RewardCellProjectBackingState {
-    guard let backing = project.personalization.backing else {
-      return .nonBacked(live: project.state == .live ? .live : .nonLive)
-    }
-
-    switch (project.state, backing.status) {
-    case(.live, .errored):
-      return .backedError
-    case(.live, _):
-      return .backed(live: .live)
-    case (_, _):
-      return .backed(live: .nonLive)
-    }
-  }
 }
