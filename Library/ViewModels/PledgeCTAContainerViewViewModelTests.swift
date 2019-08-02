@@ -93,7 +93,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   }
 
   func testPledgeCTA_Backer_LiveProject_Error() {
-    let viewPledgeCTAColor: UIColor = .ksr_apricot_600
+    let viewPledgeCTAColor: UIColor = .ksr_apricot_500
     let backing = Backing.template
       |> Backing.lens.status .~ .errored
     let project = Project.template
