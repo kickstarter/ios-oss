@@ -124,6 +124,8 @@ final class PledgeCTAContainerView: UIView {
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleText
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
+
+    // NB: vm needs to return button style
     self.pledgeCTAButton.rac.backgroundColor = self.viewModel.outputs.buttonBackgroundColor
     self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText
     self.spacer.rac.hidden = self.viewModel.outputs.spacerIsHidden

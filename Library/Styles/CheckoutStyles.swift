@@ -12,10 +12,10 @@ public enum ButtonStyleType: Equatable {
 
   public var style: ButtonStyle {
     switch self {
-    case .apricot: return roundedApricotButtonStyle
-    case .black: return roundedBlackButtonStyle
-    case .blue: return roundedBlueButtonStyle
-    case .green: return roundedGreenButtonStyle
+    case .apricot: return apricotButtonStyle
+    case .black: return blackButtonStyle
+    case .blue: return blueButtonStyle
+    case .green: return greenButtonStyle
     case .none: return { $0 }
     }
   }
@@ -96,9 +96,6 @@ public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> 
 public let checkoutSmallBlackButtonStyle: ButtonStyle = { button -> UIButton in
   button
     |> blackButtonStyle
-    |> roundedStyle(cornerRadius: Styles.gridHalf(3))
-    |> UIButton.lens.layer.borderWidth .~ 0
-    |> UIButton.lens.titleEdgeInsets .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
 }
 
 public let checkoutBackgroundStyle: ViewStyle = { (view: UIView) in

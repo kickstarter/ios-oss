@@ -90,9 +90,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       |> UILabel.lens.text %~ { _ in Strings.Other_projects_you_might_like() }
 
     _ = self.shareMoreButton
-      |> borderButtonStyle
-      |> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
-      |> UIButton.lens.layer.cornerRadius .~ 0
+      |> greyButtonStyle
       |> UIButton.lens.targets .~ [(self, #selector(shareMoreButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.project_accessibility_button_share_label()

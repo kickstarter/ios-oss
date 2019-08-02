@@ -11,7 +11,7 @@ extension UIColor {
   public static var ksr_allColors: [String: [Int: UIColor]] {
     return [
       "Apricot": [
-        600: .ksr_apricot_600
+        500: .ksr_apricot_500
       ],
 
       "Blue": [
@@ -63,6 +63,10 @@ extension UIColor {
         0: .ksr_soft_black
       ],
 
+      "Text Black": [
+        0: .ksr_text_black
+      ],
+
       "Text Dark Grey": [
         400: .ksr_text_dark_grey_400,
         500: .ksr_text_dark_grey_500
@@ -84,7 +88,7 @@ extension UIColor {
   }
 
   /// 0xFFCBA9
-  public static var ksr_apricot_600: UIColor {
+  public static var ksr_apricot_500: UIColor {
     return .hex(0xFFCBA9)
   }
 
@@ -206,6 +210,11 @@ extension UIColor {
   /// 0x282828
   public static var ksr_soft_black: UIColor {
     return .hex(0x282828)
+  }
+
+  /// 0x1C1C1C
+  public static var ksr_text_black: UIColor {
+    return .hex(0x1C1C1C)
   }
 
   /// 0x9B9E9E

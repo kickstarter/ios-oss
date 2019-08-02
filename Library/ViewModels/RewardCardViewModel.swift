@@ -216,7 +216,7 @@ private func stateIconImageColor(project: Project, reward: Reward) -> UIColor? {
   if userIsBacking(reward: reward, inProject: project) {
     if project.state == .live {
       if project.personalization.backing?.status == .errored {
-        return .ksr_apricot_600
+        return .ksr_apricot_500
       }
 
       return .ksr_blue_500

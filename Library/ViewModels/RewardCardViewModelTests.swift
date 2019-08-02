@@ -857,9 +857,9 @@ final class RewardCardViewModelTests: TestCase {
     )
 
     self.stateIconImageName.assertValues(["icon--alert"])
-    self.stateIconImageTintColor.assertValues([.ksr_apricot_600])
+    self.stateIconImageTintColor.assertValues([.ksr_apricot_500])
     self.stateIconImageViewContainerBackgroundColor.assertValues(
-      [UIColor.ksr_apricot_600.withAlphaComponent(0.06)]
+      [UIColor.ksr_apricot_500.withAlphaComponent(0.06)]
     )
     self.stateIconImageViewContainerHidden.assertValues([false])
   }

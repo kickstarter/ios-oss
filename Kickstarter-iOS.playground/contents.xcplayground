@@ -13,7 +13,6 @@
         <page name='Discovery'/>
         <page name='FacebookConfirmation'/>
         <page name='FindFriends'/>
-        <page name='Format'/>
         <page name='GraphQL'/>
         <page name='LoginTout'/>
         <page name='ProjectActivities'/>
