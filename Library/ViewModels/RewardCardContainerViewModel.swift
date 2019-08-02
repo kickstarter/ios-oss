@@ -132,21 +132,21 @@ private func buttonStyle(project: Project, reward: Reward) -> ButtonStyle? {
   switch projectBackingState {
   case .backedError:
     if isBackingThisReward {
-      return roundedApricotButtonStyle
+      return apricotButtonStyle
     }
   case .backed(.live):
     if isBackingThisReward {
-      return roundedBlueButtonStyle
+      return blueButtonStyle
     }
   case .nonBacked(.live):
-    return roundedGreenButtonStyle
+    return greenButtonStyle
   case .backed(.nonLive):
-    return roundedBlackButtonStyle
+    return blackButtonStyle
   case .nonBacked(.nonLive):
     return nil
   }
 
-  return roundedGreenButtonStyle
+  return greenButtonStyle
 }
 
 private func nonBackedPledgeButtonTitle(project: Project, reward: Reward) -> String {

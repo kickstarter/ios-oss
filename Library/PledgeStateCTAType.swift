@@ -25,7 +25,7 @@ public enum PledgeStateCTAType {
   public var buttonBackgroundColor: UIColor {
     switch self {
     case .fix:
-      return .ksr_apricot_600
+      return .ksr_apricot_500
     case .pledge:
       return .ksr_green_500
     case .manage:
