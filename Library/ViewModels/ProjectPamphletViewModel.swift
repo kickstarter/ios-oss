@@ -141,7 +141,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     // Tracking
     project
       .takeWhen(self.backThisProjectTappedProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackBackThisButtonClicked(project: $0) }
+      .observeValues { AppEnvironment.current.koala.trackBackThisButtonClicked(project: $0, screen: .projectPage) }
   }
 
   private let backThisProjectTappedProperty = MutableProperty(())

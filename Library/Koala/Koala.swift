@@ -265,7 +265,7 @@ public final class Koala {
    Describes the types of payment methods that can be used.
    */
   public enum PaymentMethod {
-    case applePay //USE FOR PAYMENT METHOD?
+    case applePay
 
     fileprivate var trackingString: String {
       switch self {
@@ -278,7 +278,7 @@ public final class Koala {
    Describes the pages where checkout events can occur.
    */
   public enum CheckoutPageContext {
-    case paymentsPage //USE FOR SCREEN?
+    case paymentsPage
     case projectPage
     case rewardSelection
 
@@ -287,6 +287,18 @@ public final class Koala {
       case .paymentsPage: return "Payments Page"
       case .projectPage: return "Project Page"
       case .rewardSelection: return "Reward Selection"
+      }
+    }
+  }
+
+  public enum CheckoutContext {
+    case backThisPage
+    case projectPage
+
+    var trackingString: String {
+      switch self {
+      case .backThisPage: return "Back this page"
+      case .projectPage: return "Project page"
       }
     }
   }
@@ -566,8 +578,10 @@ public final class Koala {
 
   // MARK: - Checkout Events
 
-  public func trackBackThisButtonClicked(project: Project) {
+  public func trackBackThisButtonClicked(project: Project, screen: CheckoutContext) {
     let props = properties(project: project)
+      .withAllValuesFrom(["screen": screen.trackingString])
+
     self.track(event: "Back this Project Button Clicked", properties: props)
   }
 
@@ -575,10 +589,12 @@ public final class Koala {
     project: Project,
     reward: Reward?,
     backing: Backing?,
+    screen: CheckoutContext,
     paymentMethod: PaymentMethod? = nil
     ) {
 
     let props = properties(project: project, reward: reward, backing: backing)
+      .withAllValuesFrom(["screen": screen.trackingString])
       .withAllValuesFrom(["payment_method": paymentMethod?.trackingString ?? ""] )
 
     self.track(event: "Select Reward Button Clicked", properties: props)
