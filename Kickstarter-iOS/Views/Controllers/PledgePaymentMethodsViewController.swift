@@ -118,14 +118,17 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private func addCardsToStackView(_ cards: [GraphUserCreditCard.CreditCard]) {
     self.cardsStackView.arrangedSubviews.forEach(self.cardsStackView.removeArrangedSubview)
 
-    let cardViews = cards
+    let cardViews: [UIView] = cards
       .map { card -> PledgeCreditCardView in
         let cardView = PledgeCreditCardView(frame: .zero)
         cardView.configureWith(value: card)
         return cardView
       }
 
-    _ = (cardViews, self.cardsStackView)
+    let addNewCardView: UIView = PledgeAddNewCardView(frame: .zero)
+      |> \.delegate .~ self
+
+    _ = (cardViews + [addNewCardView], self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -161,5 +164,29 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.textColor .~ UIColor.ksr_text_dark_grey_500
       |> \.font .~ UIFont.ksr_caption1()
       |> \.textAlignment .~ .center
+  }
+}
+
+extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
+  func pledgeAddNewCardViewDidTapAddNewCard(_: PledgeAddNewCardView) {
+    let addNewCardViewController = AddNewCardViewController.instantiate()
+      |> \.delegate .~ self
+    let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
+    let offset = navigationController.navigationBar.bounds.height
+
+    self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
+  }
+}
+
+extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
+  func addNewCardViewControllerDismissed(_: AddNewCardViewController) {
+    self.dismiss(animated: true)
+  }
+
+  func addNewCardViewController(
+    _: AddNewCardViewController,
+    didSucceedWithMessage _: String
+  ) {
+    // TODO:
   }
 }
