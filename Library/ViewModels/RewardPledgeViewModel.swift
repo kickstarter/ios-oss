@@ -1044,7 +1044,8 @@ private func backingError(forProject project: Project, amount: Double, reward: R
 
   guard amount <= max else {
     let message = Strings.Please_enter_an_amount_of_amount_or_less(
-      amount: Format.currency(max, country: project.country, omitCurrencyCode: project.stats.omitUSCurrencyCode)
+      amount: Format.currency(max, country: project.country,
+                              omitCurrencyCode: project.stats.omitUSCurrencyCode)
     )
 
     return .maximumAmount(.init(errorMessages: [message], ksrCode: nil, httpCode: 400, exception: nil))

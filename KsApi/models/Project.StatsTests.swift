@@ -57,7 +57,8 @@ final class ProjectStatsTests: XCTestCase {
       |> Project.lens.stats.pledged .~ 1_000
 
     // 1000 * 0.2999 = 299.9
-    XCTAssertEqual(299, projectProjectUserCurrencyRate.stats.pledgedCurrentCurrency, "Converted pledged amount rounds down")
+    XCTAssertEqual(299, projectProjectUserCurrencyRate.stats.pledgedCurrentCurrency,
+                   "Converted pledged amount rounds down")
   }
 
   func testGoalCurrentCurrency() {
