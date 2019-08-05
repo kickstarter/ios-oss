@@ -36,7 +36,7 @@ public struct Service: ServiceType {
     self.buildVersion = buildVersion
 
     // Global override required for injecting custom User-Agent header in ajax requests
-    UserDefaults.standard.register(defaults: ["UserAgent" : "\(Service.userAgent)"])
+    UserDefaults.standard.register(defaults: ["UserAgent" : Service.userAgent])
   }
 
   public func login(_ oauthToken: OauthTokenAuthType) -> Service {
