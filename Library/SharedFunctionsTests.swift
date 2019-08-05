@@ -162,27 +162,6 @@ final class SharedFunctionsTests: TestCase {
     secondTest.assertValues(["02", "01", "00"])
   }
 
-  func testOnePasswordButtonIsHidden() {
-    var iOS12: (Double) -> Bool = { _ in true }
-    withEnvironment(isOSVersionAvailable: iOS12) {
-      XCTAssertTrue(is1PasswordButtonHidden(true))
-      XCTAssertTrue(is1PasswordButtonHidden(false))
-    }
-
-    iOS12 = { _ in false }
-    withEnvironment(isOSVersionAvailable: iOS12) {
-      XCTAssertTrue(is1PasswordButtonHidden(true))
-      XCTAssertFalse(is1PasswordButtonHidden(false))
-    }
-  }
-
-  func testIsOSVersionAvailable_Supports_iOS12() {
-    XCTAssertTrue(ksr_isOSVersionAvailable(12.0))
-    XCTAssertTrue(ksr_isOSVersionAvailable(12.1))
-    XCTAssertTrue(ksr_isOSVersionAvailable(12.123))
-    XCTAssertTrue(ksr_isOSVersionAvailable(12.9))
-  }
-
   func testUpdatedUserWithClearedActivityCountProducer_Success() {
     let initialActivitiesCount = 100
     let values = TestObserver<User, Never>()
@@ -236,6 +215,19 @@ final class SharedFunctionsTests: TestCase {
       XCTAssertEqual(values.values.map { $0.id }, [])
     }
   }
+
+  func testOnePasswordButtonIsHidden() {
+    withEnvironment(is1PasswordSupported: { true }) {
+      XCTAssertTrue(is1PasswordButtonHidden(true))
+      XCTAssertFalse(is1PasswordButtonHidden(false))
+    }
+
+    withEnvironment(is1PasswordSupported: { false }) {
+      XCTAssertTrue(is1PasswordButtonHidden(true))
+      XCTAssertTrue(is1PasswordButtonHidden(false))
+    }
+  }
+
   func testDefaultShippingRule_Empty() {
     XCTAssertEqual(nil, defaultShippingRule(fromShippingRules: []))
   }

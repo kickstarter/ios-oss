@@ -3,6 +3,7 @@
 import PassKit
 import Prelude
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 private let questionMark = CharacterSet(charactersIn: "?")
 
