@@ -155,8 +155,8 @@ public final class ProjectPamphletViewController: UIViewController {
 
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
-      .observeValues { [weak self] project, liveStreamEvents, refTag in
-        self?.contentController.configureWith(project: project, liveStreamEvents: liveStreamEvents)
+      .observeValues { [weak self] project, refTag in
+        self?.contentController.configureWith(project: project)
         self?.navBarController.configureWith(project: project, refTag: refTag)
       }
 
