@@ -498,7 +498,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.vm.inputs.backThisProjectTapped()
       XCTAssertEqual(
-        ["Project Page", "Viewed Project Page", "Project Page Viewed","Back this Project Button Clicked"],
+        ["Project Page", "Viewed Project Page", "Project Page Viewed", "Back this Project Button Clicked"],
         client.events
       )
     }

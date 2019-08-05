@@ -494,7 +494,12 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackSelectRewardButtonClicked(project: project, reward: reward, backing: backing, screen: .backThisPage)
+    koala.trackSelectRewardButtonClicked(
+      project: project,
+      reward: reward,
+      backing: backing,
+      screen: .backThisPage
+    )
 
     let properties = client.properties.last
 
