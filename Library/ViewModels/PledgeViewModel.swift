@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Result
 
 public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
