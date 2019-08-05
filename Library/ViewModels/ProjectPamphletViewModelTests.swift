@@ -131,12 +131,12 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag ],
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
       self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
       "The ref tag is tracked in the koala event."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,],
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
       self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
       "The referral credit is tracked in the koala event."
     )
@@ -164,7 +164,10 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page", "Project Page Viewed", "Project Page", "Viewed Project Page", "Project Page Viewed"],
+      [
+        "Project Page", "Viewed Project Page", "Project Page Viewed", "Project Page",
+        "Viewed Project Page", "Project Page Viewed"
+      ],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
@@ -309,8 +312,10 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page", "Project Page Viewed", "Project Page",
-       "Viewed Project Page", "Project Page Viewed"],
+      [
+        "Project Page", "Viewed Project Page", "Project Page Viewed", "Project Page",
+        "Viewed Project Page", "Project Page Viewed"
+      ],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
