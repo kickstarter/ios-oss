@@ -53,7 +53,7 @@ public protocol ProjectPamphletViewModelType {
 }
 
 public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, ProjectPamphletViewModelInputs,
-ProjectPamphletViewModelOutputs {
+  ProjectPamphletViewModelOutputs {
   public init() {
     let isLoading = MutableProperty(false)
 
