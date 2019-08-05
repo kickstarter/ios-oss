@@ -118,7 +118,7 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
       self.tableView.backgroundView?.addGestureRecognizer(
         UITapGestureRecognizer(
           target: self, action: #selector(DashboardProjectsDrawerViewController.backgroundTapped)
-      ))
+        ))
     })
 
     UIView.animate(
