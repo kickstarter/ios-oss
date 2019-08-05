@@ -108,6 +108,15 @@ final class FormatTests: TestCase {
         XCTAssertEqual(Format.currency(1_000, country: .ca, omitCurrencyCode: false), "CA$ 1,000")
         XCTAssertEqual(Format.currency(1_000, country: .us, omitCurrencyCode: true), "$1,000")
         XCTAssertEqual(Format.currency(1_000, country: .us, omitCurrencyCode: false), "US$ 1,000")
+
+        XCTAssertEqual(Format.currency(109.65, country: .us),
+                       "$109", "Rounds down by default")
+        XCTAssertEqual(Format.currency(109.65, country: .us, roundingMode: .halfUp),
+                       "$110", "Rounds half-up")
+        XCTAssertEqual(Format.currency(109.20, country: .us, roundingMode: .up),
+                       "$110", "Rounds up")
+        XCTAssertEqual(Format.currency(109.80, country: .us, roundingMode: .down),
+                       "$109", "Rounds down")
       }
 
       withEnvironment(countryCode: "CA") {

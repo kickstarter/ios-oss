@@ -184,7 +184,7 @@ final class RewardCellViewModelTests: TestCase {
         [false],
         "US user viewing non-US project sees conversion."
       )
-      self.conversionLabelText.assertValues(["About $1"], "Conversion label rounds up to 1.")
+      self.conversionLabelText.assertValues(["About $1"], "Conversion label rounds up.")
     }
   }
 
@@ -210,7 +210,7 @@ final class RewardCellViewModelTests: TestCase {
         [false],
         "US backer viewing non-US project sees conversion."
       )
-      self.conversionLabelText.assertValues(["About $1"], "Conversion label rounds up to 1.")
+      self.conversionLabelText.assertValues(["About $1"], "Conversion label rounds up.")
     }
   }
 
@@ -232,7 +232,7 @@ final class RewardCellViewModelTests: TestCase {
         [false],
         "Mexican user viewing non-Mexican project sees conversion."
       )
-      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds half-up.")
+      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
     }
   }
 
@@ -248,7 +248,7 @@ final class RewardCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
       self.conversionLabelHidden.assertValues([false], "US user viewing non-US project sees conversion.")
-      self.conversionLabelText.assertValues(["About $2"], "Conversion label rounds half-up.")
+      self.conversionLabelText.assertValues(["About $2"], "Conversion label rounds up.")
     }
   }
 
@@ -273,7 +273,7 @@ final class RewardCellViewModelTests: TestCase {
         [false],
         "Mexican backer viewing non-Mexican project sees conversion."
       )
-      self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds half-up.")
+      self.conversionLabelText.assertValues(["About MX$ 4"], "Conversion label rounds up.")
     }
   }
 
@@ -295,7 +295,7 @@ final class RewardCellViewModelTests: TestCase {
         [false],
         "US backer viewing non-US project sees conversion."
       )
-      self.conversionLabelText.assertValues(["About $2"], "Conversion label rounds half-up.")
+      self.conversionLabelText.assertValues(["About $2"], "Conversion label rounds up.")
     }
   }
 

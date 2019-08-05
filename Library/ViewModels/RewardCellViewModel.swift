@@ -71,16 +71,16 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
         case let .left(reward):
           let min = minPledgeAmount(forProject: project, reward: reward)
           return Format.currency(
-            (min * Double(rate)),
+            (Float(min) * rate),
             country: country,
-            roundingMode: .halfUp,
+            roundingMode: .up,
             omitCurrencyCode: project.stats.omitUSCurrencyCode
           )
         case let .right(backing):
           return Format.currency(
-            (backing.amount * Double(rate)),
+            (Float(backing.amount) * rate),
             country: country,
-            roundingMode: .halfUp,
+            roundingMode: .up,
             omitCurrencyCode: project.stats.omitUSCurrencyCode
           )
         }
