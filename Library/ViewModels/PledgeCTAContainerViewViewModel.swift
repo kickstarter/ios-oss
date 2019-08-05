@@ -38,6 +38,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .map(second)
 
     self.rootStackViewAnimateIsHidden = self.activityIndicatorIsAnimating
+      .takeWhen(project.ignoreValues())
 
     let backing = project.map { $0.personalization.backing }
     let pledgeState = Signal.combineLatest(project, backing)
