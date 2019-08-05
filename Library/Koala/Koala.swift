@@ -590,8 +590,7 @@ public final class Koala {
     reward: Reward?,
     backing: Backing?,
     screen: CheckoutContext
-    ) {
-
+  ) {
     let props = properties(project: project, reward: reward, backing: backing)
       .withAllValuesFrom(["screen": screen.trackingString])
 
@@ -2093,7 +2092,7 @@ private func properties(
   reward: Reward? = nil,
   backing: Backing? = nil,
   prefix: String = "project_"
-  ) -> [String: Any]  {
+) -> [String: Any] {
   var props: [String: Any] = [:]
 
   props["name"] = project.name

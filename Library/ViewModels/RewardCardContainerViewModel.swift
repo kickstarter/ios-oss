@@ -58,7 +58,6 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
       .takeWhen(self.pledgeButtonTappedProperty.signal)
       .map { $0.id }
 
-
     // Tracking
     projectAndRewardOrBacking
       .takeWhen(self.pledgeButtonTappedProperty.signal)
@@ -69,8 +68,8 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
           reward: rewardOrBacking.left,
           backing: rewardOrBacking.right,
           screen: .backThisPage
-      )
-    }
+        )
+      }
   }
 
   private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
