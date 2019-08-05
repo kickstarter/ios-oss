@@ -589,13 +589,11 @@ public final class Koala {
     project: Project,
     reward: Reward?,
     backing: Backing?,
-    screen: CheckoutContext,
-    paymentMethod: PaymentMethod? = nil
+    screen: CheckoutContext
     ) {
 
     let props = properties(project: project, reward: reward, backing: backing)
       .withAllValuesFrom(["screen": screen.trackingString])
-      .withAllValuesFrom(["payment_method": paymentMethod?.trackingString ?? ""] )
 
     self.track(event: "Select Reward Button Clicked", properties: props)
   }
