@@ -166,9 +166,9 @@ private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {
 }
 
 private func rewardIsAvailable(project _: Project, reward: Reward) -> Bool {
-  let limited = !(reward.remaining == nil && reward.endsAt == nil)
+  let isLimited = reward.remaining != nil || reward.endsAt != nil
 
-  guard limited else { return true }
+  guard isLimited else { return true }
 
   let remaining = reward.remaining.coalesceWith(0) > 0
   let endsAt = reward.endsAt.coalesceWith(0)
