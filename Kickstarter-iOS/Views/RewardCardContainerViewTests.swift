@@ -13,7 +13,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testLive_BackedProject_BackedReward() {
-    combos([Language.en], [Device.phone4_7inch], self.allRewards()).forEach { language, device, rewardTuple in
+    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
       withEnvironment(language: language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -41,7 +41,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testLive_BackedProject_NonBackedReward() {
-    combos([Language.en], [Device.phone4_7inch], self.allRewards()).forEach { language, device, rewardTuple in
+    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
       withEnvironment(language: language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -68,14 +68,37 @@ final class RewardCardContainerViewTests: TestCase {
     }
   }
 
-  func testLive_NonBackedProject() {
-    combos([Language.en], [Device.phone4_7inch], self.allRewards()).forEach { language, device, rewardTuple in
+  func testLive_NonBackedProject_LoggedIn() {
+    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
       withEnvironment(language: language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
           |> Project.lens.state .~ .live
           |> Project.lens.personalization.isBacking .~ false
+          |> Project.lens.personalization.backing .~ nil
+
+        let vc = rewardCardInViewController(
+          language: language,
+          device: device,
+          project: project,
+          reward: reward
+        )
+
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testLive_NonBackedProject_LoggedOut() {
+    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
+      withEnvironment(language: language) {
+        let (rewardDescription, reward) = rewardTuple
+
+        let project = Project.cosmicSurgery
+          |> Project.lens.state .~ .live
+          |> Project.lens.personalization.isBacking .~ nil
+          |> Project.lens.personalization.backing .~ nil
 
         let vc = rewardCardInViewController(
           language: language,
@@ -90,7 +113,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testNonLive_NonBackedProject() {
-    combos([Language.en], [Device.phone4_7inch], self.allRewards()).forEach { language, device, rewardTuple in
+    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
       withEnvironment(language: language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -112,12 +135,12 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testLive_BackedProject_BackedReward_Errored() {
     // Filter these out because they aren't states we can get to
-    let allRewards = self.allRewards()
+    let filteredRewards = allRewards
       .filter { (name, _) -> Bool in
         !name.lowercased().contains("unavailable")
       }
 
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
+    combos([Language.en], [Device.phone4_7inch], filteredRewards).forEach { language, device, rewardTuple in
       withEnvironment(language: language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -146,7 +169,7 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testLive_BackedProject_NonBackedReward_Errored() {
-    combos([Language.en], [Device.phone4_7inch], self.allRewards()).forEach { language, device, rewardTuple in
+    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
       withEnvironment(language: language) {
         let (rewardDescription, reward) = rewardTuple
 
@@ -178,47 +201,6 @@ final class RewardCardContainerViewTests: TestCase {
     AppEnvironment.popEnvironment()
     super.tearDown()
   }
-
-  private func allRewards() -> [(String, Reward)] {
-    let availableLimitedReward = Reward.postcards
-      |> Reward.lens.limit .~ 100
-      |> Reward.lens.remaining .~ 25
-    let availableTimebasedReward = Reward.postcards
-      |> Reward.lens.limit .~ nil
-      |> Reward.lens.remaining .~ nil
-      |> Reward.lens.endsAt .~ (self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
-    let availableLimitedTimebasedReward = Reward.postcards
-      |> Reward.lens.limit .~ 100
-      |> Reward.lens.remaining .~ 25
-      |> Reward.lens.endsAt .~ (self.dateType.init().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
-    let availableNonLimitedReward = Reward.postcards
-      |> Reward.lens.limit .~ nil
-      |> Reward.lens.remaining .~ nil
-      |> Reward.lens.endsAt .~ nil
-
-    let unavailableLimitedReward = Reward.postcards
-      |> Reward.lens.limit .~ 100
-      |> Reward.lens.remaining .~ 0
-    let unavailableTimebasedReward = Reward.postcards
-      |> Reward.lens.limit .~ nil
-      |> Reward.lens.remaining .~ nil
-      |> Reward.lens.endsAt .~ (self.dateType.init().date.timeIntervalSince1970 - 1)
-    let unavailableLimitedTimebasedReward = Reward.postcards
-      |> Reward.lens.limit .~ 100
-      |> Reward.lens.remaining .~ 0
-      |> Reward.lens.endsAt .~ (self.dateType.init().date.timeIntervalSince1970 - 1)
-
-    return [
-      ("AvailableLimitedReward", availableLimitedReward),
-      ("AvailableTimebasedReward", availableTimebasedReward),
-      ("AvailableLimitedTimebasedReward", availableLimitedTimebasedReward),
-      ("AvailableNonLimitedReward", availableNonLimitedReward),
-      ("UnavailableLimitedReward", unavailableLimitedReward),
-      ("UnavailableTimebasedReward", unavailableTimebasedReward),
-      ("UnavailableLimitedTimebasedReward", unavailableLimitedTimebasedReward),
-      ("NoReward", Reward.noReward)
-    ]
-  }
 }
 
 private func rewardCardInViewController(
@@ -246,3 +228,44 @@ private func rewardCardInViewController(
 
   return parent
 }
+
+let allRewards: [(String, Reward)] = {
+  let availableLimitedReward = Reward.postcards
+    |> Reward.lens.limit .~ 100
+    |> Reward.lens.remaining .~ 25
+  let availableTimebasedReward = Reward.postcards
+    |> Reward.lens.limit .~ nil
+    |> Reward.lens.remaining .~ nil
+    |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+  let availableLimitedTimebasedReward = Reward.postcards
+    |> Reward.lens.limit .~ 100
+    |> Reward.lens.remaining .~ 25
+    |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+  let availableNonLimitedReward = Reward.postcards
+    |> Reward.lens.limit .~ nil
+    |> Reward.lens.remaining .~ nil
+    |> Reward.lens.endsAt .~ nil
+
+  let unavailableLimitedReward = Reward.postcards
+    |> Reward.lens.limit .~ 100
+    |> Reward.lens.remaining .~ 0
+  let unavailableTimebasedReward = Reward.postcards
+    |> Reward.lens.limit .~ nil
+    |> Reward.lens.remaining .~ nil
+    |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+  let unavailableLimitedTimebasedReward = Reward.postcards
+    |> Reward.lens.limit .~ 100
+    |> Reward.lens.remaining .~ 0
+    |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+
+  return [
+    ("AvailableLimitedReward", availableLimitedReward),
+    ("AvailableTimebasedReward", availableTimebasedReward),
+    ("AvailableLimitedTimebasedReward", availableLimitedTimebasedReward),
+    ("AvailableNonLimitedReward", availableNonLimitedReward),
+    ("UnavailableLimitedReward", unavailableLimitedReward),
+    ("UnavailableTimebasedReward", unavailableTimebasedReward),
+    ("UnavailableLimitedTimebasedReward", unavailableLimitedTimebasedReward),
+    ("NoReward", Reward.noReward)
+  ]
+}()

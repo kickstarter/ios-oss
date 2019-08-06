@@ -213,29 +213,17 @@ private func pillStrings(project: Project, reward: Reward) -> [String] {
 }
 
 private func stateIconImageColor(project: Project, reward: Reward) -> UIColor? {
-  if userIsBacking(reward: reward, inProject: project) {
-    if project.state == .live {
-      if project.personalization.backing?.status == .errored {
-        return .ksr_apricot_500
-      }
+  guard userIsBacking(reward: reward, inProject: project) else { return nil }
 
-      return .ksr_blue_500
-    } else {
-      return .ksr_soft_black
-    }
+  if project.state == .live {
+    return project.personalization.backing?.status == .errored ? .ksr_apricot_500 : .ksr_blue_500
   }
 
-  return nil
+  return .ksr_soft_black
 }
 
 private func stateIconImageName(project: Project, reward: Reward) -> String? {
-  if userIsBacking(reward: reward, inProject: project) {
-    if project.personalization.backing?.status == .errored {
-      return "icon--alert"
-    } else {
-      return "checkmark-reward"
-    }
-  }
+  guard userIsBacking(reward: reward, inProject: project) else { return nil }
 
-  return nil
+  return project.personalization.backing?.status == .errored ? "icon--alert" : "checkmark-reward"
 }
