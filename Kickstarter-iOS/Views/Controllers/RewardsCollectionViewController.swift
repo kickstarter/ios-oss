@@ -7,7 +7,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
   // MARK: - Properties
 
   private let dataSource = RewardsCollectionViewDataSource()
-  fileprivate let viewModel = RewardsCollectionViewModel()
 
   private let hiddenPagingScrollView: UIScrollView = {
     UIScrollView()
@@ -25,6 +24,16 @@ final class RewardsCollectionViewController: UICollectionViewController {
   private var flowLayout: UICollectionViewFlowLayout? {
     return self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout
   }
+
+  private lazy var footerView: RewardsCollectionViewFooter = {
+    RewardsCollectionViewFooter(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private var collectionViewBottomConstraintSuperview: NSLayoutConstraint?
+  private var collectionViewBottomConstraintFooterView: NSLayoutConstraint?
+
+  private let viewModel = RewardsCollectionViewModel()
 
   static func instantiate(with project: Project, refTag: RefTag?) -> RewardsCollectionViewController {
     let rewardsCollectionVC = RewardsCollectionViewController()
@@ -66,8 +75,16 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.collectionView.register(RewardCell.self)
 
     self.configureHiddenScrollView()
+    self.configureFooterView()
+    self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    self.collectionView.flashScrollIndicators()
   }
 
   override func viewDidLayoutSubviews() {
@@ -84,11 +101,17 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.flowLayout?.invalidateLayout()
   }
 
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    self.updateFooterVisibility()
+  }
+
   override func bindStyles() {
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ .ksr_grey_400
+      |> \.backgroundColor .~ .ksr_grey_200
 
     _ = self.collectionView
       |> collectionViewStyle
@@ -105,6 +128,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeValues { [weak self] values in
         self?.dataSource.load(values)
         self?.collectionView.reloadData()
+        self?.updateFooterView(with: values.count)
       }
 
     self.viewModel.outputs.goToPledge
@@ -120,7 +144,50 @@ final class RewardsCollectionViewController: UICollectionViewController {
       }
   }
 
-  // MARK: - Private Helpers
+  // MARK: - Functions
+
+  private func setupConstraints() {
+    self.collectionView.translatesAutoresizingMaskIntoConstraints = false
+
+    let margins = self.view.safeAreaLayoutGuide
+
+    NSLayoutConstraint.activate([
+      self.footerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.footerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.footerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      self.collectionView.leftAnchor.constraint(equalTo: margins.leftAnchor),
+      self.collectionView.rightAnchor.constraint(equalTo: margins.rightAnchor),
+      self.collectionView.topAnchor.constraint(equalTo: margins.topAnchor)
+      ])
+
+    self.collectionViewBottomConstraintFooterView = self.collectionView.bottomAnchor
+      .constraint(equalTo: self.footerView.topAnchor)
+    self.collectionViewBottomConstraintSuperview = self.collectionView.bottomAnchor
+      .constraint(equalTo: margins.bottomAnchor)
+
+    self.collectionViewBottomConstraintFooterView?.isActive = true
+  }
+
+  private func configureFooterView() {
+    _ = (self.footerView, self.view)
+      |> ksr_addSubviewToParent()
+
+    self.updateFooterVisibility()
+  }
+
+  private func updateFooterView(with count: Int) {
+    self.footerView.configure(with: count)
+  }
+
+  private func updateFooterVisibility() {
+    let hasRegularVerticalSizeClass = self.traitCollection.verticalSizeClass == .regular
+
+    self.footerView.isHidden = !hasRegularVerticalSizeClass
+    self.collectionViewBottomConstraintSuperview?.isActive = self.footerView.isHidden
+    self.collectionViewBottomConstraintFooterView?.isActive = !self.footerView.isHidden
+
+    self.view.setNeedsLayout()
+  }
 
   private func configureHiddenScrollView() {
     _ = self.hiddenPagingScrollView
@@ -343,4 +410,5 @@ private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICol
     |> \.backgroundColor .~ .ksr_grey_200
     |> \.clipsToBounds .~ false
     |> \.allowsSelection .~ true
+    |> \.showsHorizontalScrollIndicator .~ true
 }
