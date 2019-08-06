@@ -162,7 +162,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     ])
   }
 
-  func testLive_NonBackedProject() {
+  func testLive_NonBackedProject_LoggedIn() {
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)
     self.pledgeButtonHidden.assertValueCount(0)
@@ -172,6 +172,48 @@ final class RewardCardContainerViewModelTests: TestCase {
       let project = Project.cosmicSurgery
         |> Project.lens.state .~ .live
         |> Project.lens.personalization.isBacking .~ false
+
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
+
+      let emissionCount = index + 1
+
+      self.pledgeButtonStyleType.assertValueCount(emissionCount)
+      self.pledgeButtonEnabled.assertValueCount(emissionCount)
+      self.pledgeButtonHidden.assertValueCount(emissionCount)
+      self.pledgeButtonTitleText.assertValueCount(emissionCount)
+    }
+
+    self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
+    self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
+    self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
+    self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
+
+    self.pledgeButtonStyleType.assertValues([.green, .green, .green, .green, .green, .green, .green, .green])
+    self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
+    self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
+    self.pledgeButtonTitleText.assertValues([
+      "Pledge £6 or more",
+      "Pledge £6 or more",
+      "Pledge £6 or more",
+      "Pledge £6 or more",
+      "No longer available",
+      "No longer available",
+      "No longer available",
+      "Pledge £1 or more"
+    ])
+  }
+
+  func testLive_NonBackedProject_LoggedOut() {
+    self.pledgeButtonStyleType.assertValueCount(0)
+    self.pledgeButtonEnabled.assertValueCount(0)
+    self.pledgeButtonHidden.assertValueCount(0)
+    self.pledgeButtonTitleText.assertValueCount(0)
+
+    for (index, reward) in self.allRewards.enumerated() {
+      let project = Project.cosmicSurgery
+        |> Project.lens.state .~ .live
+        |> Project.lens.personalization.isBacking .~ nil
+        |> Project.lens.personalization.backing .~ nil
 
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
