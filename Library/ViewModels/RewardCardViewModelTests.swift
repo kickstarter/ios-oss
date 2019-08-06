@@ -15,12 +15,16 @@ final class RewardCardViewModelTests: TestCase {
   private let descriptionLabelText = TestObserver<String, Never>()
   private let includedItemsStackViewHidden = TestObserver<Bool, Never>()
   private let items = TestObserver<[String], Never>()
-  private let pledgeButtonEnabled = TestObserver<Bool, Never>()
-  private let pledgeButtonTitleText = TestObserver<String, Never>()
+  private let pillCollectionViewHidden = TestObserver<Bool, Never>()
+  private let reloadPills = TestObserver<[String], Never>()
   private let rewardMinimumLabelText = TestObserver<String, Never>()
   private let rewardSelected = TestObserver<Int, Never>()
   private let rewardTitleLabelHidden = TestObserver<Bool, Never>()
   private let rewardTitleLabelText = TestObserver<String, Never>()
+  private let stateIconImageName = TestObserver<String, Never>()
+  private let stateIconImageTintColor = TestObserver<UIColor, Never>()
+  private let stateIconImageViewContainerBackgroundColor = TestObserver<UIColor, Never>()
+  private let stateIconImageViewContainerHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -29,12 +33,19 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.descriptionLabelText.observe(self.descriptionLabelText.observer)
-    self.vm.outputs.items.observe(self.items.observer)
     self.vm.outputs.includedItemsStackViewHidden.observe(self.includedItemsStackViewHidden.observer)
+    self.vm.outputs.items.observe(self.items.observer)
+    self.vm.outputs.pillCollectionViewHidden.observe(self.pillCollectionViewHidden.observer)
+    self.vm.outputs.reloadPills.observe(self.reloadPills.observer)
     self.vm.outputs.rewardMinimumLabelText.observe(self.rewardMinimumLabelText.observer)
     self.vm.outputs.rewardSelected.observe(self.rewardSelected.observer)
     self.vm.outputs.rewardTitleLabelHidden.observe(self.rewardTitleLabelHidden.observer)
     self.vm.outputs.rewardTitleLabelText.observe(self.rewardTitleLabelText.observer)
+    self.vm.outputs.stateIconImageName.observe(self.stateIconImageName.observer)
+    self.vm.outputs.stateIconImageTintColor.observe(self.stateIconImageTintColor.observer)
+    self.vm.outputs.stateIconImageViewContainerBackgroundColor
+      .observe(self.stateIconImageViewContainerBackgroundColor.observer)
+    self.vm.outputs.stateIconImageViewContainerHidden.observe(self.stateIconImageViewContainerHidden.observer)
   }
 
   // MARK: - Reward Title
@@ -246,7 +257,7 @@ final class RewardCardViewModelTests: TestCase {
     self.includedItemsStackViewHidden.assertValues([true])
   }
 
-  // MARK: - Description Label
+  // MARK: Description Label
 
   func testDescriptionLabel() {
     let project = Project.template

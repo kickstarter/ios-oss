@@ -1,5 +1,3 @@
-import Prelude
-
 public enum Experiment {
   public enum Name: String {
     case creatorsNameDiscovery = "show_created_by_discovery"

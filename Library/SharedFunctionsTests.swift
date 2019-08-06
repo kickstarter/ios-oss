@@ -6,6 +6,7 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+// swiftlint:disable line_length
 final class SharedFunctionsTests: TestCase {
   func testCountdownProducer() {
     // swiftlint:disable:next line_length
@@ -162,60 +163,6 @@ final class SharedFunctionsTests: TestCase {
     secondTest.assertValues(["02", "01", "00"])
   }
 
-  func testUpdatedUserWithClearedActivityCountProducer_Success() {
-    let initialActivitiesCount = 100
-    let values = TestObserver<User, Never>()
-
-    let mockApplication = MockApplication()
-    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
-
-    let mockService = MockService(
-      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0))
-    )
-
-    let user = User.template
-      |> User.lens.unseenActivityCount .~ initialActivitiesCount
-
-    XCTAssertEqual(values.values.map { $0.id }, [])
-
-    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
-      _ = updatedUserWithClearedActivityCountProducer()
-        .start(on: AppEnvironment.current.scheduler)
-        .start(values.observer)
-
-      self.scheduler.advance()
-
-      XCTAssertEqual(values.values.map { $0.id }, [1])
-    }
-  }
-
-  func testUpdatedUserWithClearedActivityCountProducer_Failure() {
-    let initialActivitiesCount = 100
-    let values = TestObserver<User, Never>()
-
-    let mockApplication = MockApplication()
-    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
-
-    let mockService = MockService(
-      clearUserUnseenActivityResult: Result(failure: .invalidInput)
-    )
-
-    let user = User.template
-      |> User.lens.unseenActivityCount .~ initialActivitiesCount
-
-    XCTAssertEqual(values.values.map { $0.id }, [])
-
-    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
-      _ = updatedUserWithClearedActivityCountProducer()
-        .start(on: AppEnvironment.current.scheduler)
-        .start(values.observer)
-
-      self.scheduler.advance()
-
-      XCTAssertEqual(values.values.map { $0.id }, [])
-    }
-  }
-
   func testOnePasswordButtonIsHidden() {
     withEnvironment(is1PasswordSupported: { true }) {
       XCTAssertTrue(is1PasswordButtonHidden(true))
@@ -280,6 +227,60 @@ final class SharedFunctionsTests: TestCase {
         fromShippingRules: locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0 }
       )
       XCTAssertEqual("CZ", shippingRule?.location.country)
+    }
+  }
+
+  func testUpdatedUserWithClearedActivityCountProducer_Success() {
+    let initialActivitiesCount = 100
+    let values = TestObserver<User, Never>()
+
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0))
+    )
+
+    let user = User.template
+      |> User.lens.unseenActivityCount .~ initialActivitiesCount
+
+    XCTAssertEqual(values.values.map { $0.id }, [])
+
+    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
+      _ = updatedUserWithClearedActivityCountProducer()
+        .start(on: AppEnvironment.current.scheduler)
+        .start(values.observer)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(values.values.map { $0.id }, [1])
+    }
+  }
+
+  func testUpdatedUserWithClearedActivityCountProducer_Failure() {
+    let initialActivitiesCount = 100
+    let values = TestObserver<User, Never>()
+
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result(failure: .invalidInput)
+    )
+
+    let user = User.template
+      |> User.lens.unseenActivityCount .~ initialActivitiesCount
+
+    XCTAssertEqual(values.values.map { $0.id }, [])
+
+    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
+      _ = updatedUserWithClearedActivityCountProducer()
+        .start(on: AppEnvironment.current.scheduler)
+        .start(values.observer)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(values.values.map { $0.id }, [])
     }
   }
 }

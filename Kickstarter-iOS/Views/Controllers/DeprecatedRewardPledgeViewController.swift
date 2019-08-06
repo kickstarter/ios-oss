@@ -70,8 +70,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     project: Project,
     reward: Reward,
     applePayCapable: Bool = PKPaymentAuthorizationViewController.applePayCapable()
-  )
-    -> DeprecatedRewardPledgeViewController {
+  ) -> DeprecatedRewardPledgeViewController {
     let vc = Storyboard.RewardPledge.instantiate(DeprecatedRewardPledgeViewController.self)
     vc.viewModel.inputs.configureWith(project: project, reward: reward, applePayCapable: applePayCapable)
     return vc
