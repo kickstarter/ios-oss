@@ -86,7 +86,44 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private var initialTopConstraint: CGFloat {
-    return self.parent?.view.safeAreaInsets.top ?? 0.0
+    return parent?.view.safeAreaInsets.top ?? 0.0
+  }
+
+  private func configurePledgeCTAContainerView() {
+    // Configure subviews
+    _ = (self.pledgeCTAContainerView, self.view)
+      |> ksr_addSubviewToParent()
+
+    self.pledgeCTAContainerView.pledgeCTAButton.addTarget(
+      self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
+    )
+
+    // Configure constraints
+    let pledgeCTAContainerViewConstraints = [
+      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    ]
+
+    NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
+  }
+
+  public override func bindStyles() {
+    super.bindStyles()
+
+    if featureNativeCheckoutEnabled() {
+      _ = self.pledgeCTAContainerView
+        |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
+
+      _ = self.pledgeCTAContainerView.layer
+        |> checkoutLayerCardRoundedStyle
+        |> \.backgroundColor .~ UIColor.white.cgColor
+        |> \.shadowColor .~ UIColor.black.cgColor
+        |> \.shadowOpacity .~ 0.12
+        |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
+        |> \.shadowRadius .~ 1.0
+        |> \.maskedCorners .~ [CACornerMask.layerMaxXMinYCorner, CACornerMask.layerMinXMinYCorner]
+    }
   }
 
   private func configurePledgeCTAContainerView() {

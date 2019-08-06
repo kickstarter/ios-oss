@@ -9,7 +9,6 @@ import XCTest
 final class RewardCardContainerViewModelTests: TestCase {
   fileprivate let vm: RewardCardContainerViewModelType = RewardCardContainerViewModel()
 
-  private let pledgeButtonStyle = TestObserver<ButtonStyle, Never>()
   private let pledgeButtonEnabled = TestObserver<Bool, Never>()
   private let pledgeButtonTitleText = TestObserver<String, Never>()
   private let rewardSelected = TestObserver<Int, Never>()
@@ -17,7 +16,6 @@ final class RewardCardContainerViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.pledgeButtonStyle.observe(self.pledgeButtonStyle.observer)
     self.vm.outputs.pledgeButtonEnabled.observe(self.pledgeButtonEnabled.observer)
     self.vm.outputs.pledgeButtonTitleText.observe(self.pledgeButtonTitleText.observer)
     self.vm.outputs.rewardSelected.observe(self.rewardSelected.observer)

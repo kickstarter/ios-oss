@@ -12,18 +12,12 @@ public protocol RewardCardViewModelOutputs {
   var conversionLabelHidden: Signal<Bool, Never> { get }
   var conversionLabelText: Signal<String, Never> { get }
   var descriptionLabelText: Signal<String, Never> { get }
-  var includedItemsStackViewHidden: Signal<Bool, Never> { get }
   var items: Signal<[String], Never> { get }
-  var pillCollectionViewHidden: Signal<Bool, Never> { get }
-  var reloadPills: Signal<[String], Never> { get }
+  var includedItemsStackViewHidden: Signal<Bool, Never> { get }
   var rewardMinimumLabelText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
   var rewardTitleLabelText: Signal<String, Never> { get }
-  var stateIconImageName: Signal<String, Never> { get }
-  var stateIconImageTintColor: Signal<UIColor, Never> { get }
-  var stateIconImageViewContainerBackgroundColor: Signal<UIColor, Never> { get }
-  var stateIconImageViewContainerHidden: Signal<Bool, Never> { get }
 }
 
 public protocol RewardCardViewModelType {
@@ -107,19 +101,6 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
         }
       }
 
-    self.reloadPills = projectAndReward.map(pillStrings(project:reward:))
-    self.pillCollectionViewHidden = self.reloadPills.map { $0.isEmpty }
-
-    let stateIconImageName = projectAndReward.map(stateIconImageName(project:reward:))
-    let stateIconImageColor = projectAndReward.map(stateIconImageColor(project:reward:))
-
-    self.stateIconImageName = stateIconImageName.skipNil()
-    self.stateIconImageTintColor = stateIconImageColor.skipNil()
-    self.stateIconImageViewContainerBackgroundColor = stateIconImageColor
-      .skipNil()
-      .map { $0.withAlphaComponent(0.06) }
-    self.stateIconImageViewContainerHidden = stateIconImageName.map(isNil)
-
     self.rewardSelected = reward
       .takeWhen(self.rewardCardTappedProperty.signal)
       .map { $0.id }
@@ -143,16 +124,10 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let descriptionLabelText: Signal<String, Never>
   public let items: Signal<[String], Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
-  public let pillCollectionViewHidden: Signal<Bool, Never>
-  public let reloadPills: Signal<[String], Never>
   public let rewardMinimumLabelText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>
   public let rewardTitleLabelText: Signal<String, Never>
-  public let stateIconImageName: Signal<String, Never>
-  public let stateIconImageTintColor: Signal<UIColor, Never>
-  public let stateIconImageViewContainerBackgroundColor: Signal<UIColor, Never>
-  public let stateIconImageViewContainerHidden: Signal<Bool, Never>
 
   public var inputs: RewardCardViewModelInputs { return self }
   public var outputs: RewardCardViewModelOutputs { return self }
@@ -177,65 +152,10 @@ private func backingReward(fromProject project: Project) -> Reward? {
 
 private func rewardTitle(project: Project, reward: Reward) -> String {
   guard project.personalization.isBacking == true else {
-    return reward.isNoReward ? Strings.Make_a_pledge_without_a_reward() : reward.title.coalesceWith("")
+    return reward.isNoReward
+      ? Strings.Make_a_pledge_without_a_reward()
+      : (reward.title ?? "")
   }
 
-  if reward.isNoReward {
-    if userIsBacking(reward: reward, inProject: project) {
-      return Strings.Thank_you_for_supporting_this_project()
-    }
-
-    return Strings.Make_a_pledge_without_a_reward()
-  }
-
-  return reward.title.coalesceWith("")
-}
-
-private func pillStrings(project: Project, reward: Reward) -> [String] {
-  var pillStrings: [String] = []
-
-  if let endsAt = reward.endsAt, project.state == .live, endsAt > 0,
-    endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
-    let (time, unit) = Format.duration(
-      secondsInUTC: min(endsAt, project.dates.deadline),
-      abbreviate: true,
-      useToGo: false
-    )
-
-    pillStrings.append(Strings.Time_left_left(time_left: time + " " + unit))
-  }
-
-  if let remaining = reward.remaining, reward.limit != nil, project.state == .live {
-    pillStrings.append(Strings.Left_count_left(left_count: remaining))
-  }
-
-  return pillStrings
-}
-
-private func stateIconImageColor(project: Project, reward: Reward) -> UIColor? {
-  if userIsBacking(reward: reward, inProject: project) {
-    if project.state == .live {
-      if project.personalization.backing?.status == .errored {
-        return .ksr_apricot_500
-      }
-
-      return .ksr_blue_500
-    } else {
-      return .ksr_soft_black
-    }
-  }
-
-  return nil
-}
-
-private func stateIconImageName(project: Project, reward: Reward) -> String? {
-  if userIsBacking(reward: reward, inProject: project) {
-    if project.personalization.backing?.status == .errored {
-      return "icon--alert"
-    } else {
-      return "checkmark-reward"
-    }
-  }
-
-  return nil
+  return reward.title ?? Strings.Thank_you_for_supporting_this_project()
 }

@@ -2785,23 +2785,6 @@ contributeurs"
     )
   }
   /**
-   "Fix your payment method"
-
-   - **en**: "Fix your payment method"
-   - **de**: "Zahlungsmethode ändern"
-   - **es**: "Corrige tu método de pago"
-   - **fr**: "Corriger votre moyen de paiement"
-   - **ja**: "お支払い方法を修正"
-  */
-  public static func Fix_your_payment_method() -> String {
-    return localizedString(
-      key: "Fix_your_payment_method",
-      defaultValue: "Fix your payment method",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Follow %{friend_name}"
 
    - **en**: "Follow %{friend_name}"

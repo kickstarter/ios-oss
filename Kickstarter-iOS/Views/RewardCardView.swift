@@ -42,6 +42,7 @@ public final class RewardCardView: UIView {
       |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
       |> \.dataSource .~ self.pillDataSource
       |> \.delegate .~ self
+      |> \.isHidden .~ true
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -58,6 +59,7 @@ public final class RewardCardView: UIView {
 
   private let stateImageViewContainer: UIView = {
     UIView(frame: .zero)
+      |> \.isHidden .~ true
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -142,6 +144,9 @@ public final class RewardCardView: UIView {
       |> baseRewardLabelStyle
       |> minimumPriceConversionLabelStyle
 
+    _ = self.stateImageView
+      |> stateImageViewStyle
+
     _ = self.stateImageViewContainer
       |> stateImageViewContainerStyle
 
@@ -157,27 +162,8 @@ public final class RewardCardView: UIView {
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
     self.includedItemsStackView.rac.hidden = self.viewModel.outputs.includedItemsStackViewHidden
     self.minimumPriceLabel.rac.text = self.viewModel.outputs.rewardMinimumLabelText
-    self.pillCollectionView.rac.hidden = self.viewModel.outputs.pillCollectionViewHidden
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.rewardTitleLabelHidden
     self.rewardTitleLabel.rac.text = self.viewModel.outputs.rewardTitleLabelText
-
-    self.viewModel.outputs.stateIconImageName
-      .observeForUI()
-      .observeValues { [weak self] imageName in
-        self?.stateImageView.image = image(named: imageName)
-      }
-
-    self.stateImageView.rac.tintColor = self.viewModel.outputs.stateIconImageTintColor
-    self.stateImageViewContainer.rac.backgroundColor = self.viewModel.outputs
-      .stateIconImageViewContainerBackgroundColor
-    self.stateImageViewContainer.rac.hidden = self.viewModel.outputs
-      .stateIconImageViewContainerHidden
-
-    self.viewModel.outputs.stateIconImageName
-      .observeForUI()
-      .observeValues { [weak self] imageName in
-        self?.stateImageView.image = image(named: imageName)
-      }
 
     self.viewModel.outputs.items
       .observeForUI()
@@ -198,12 +184,8 @@ public final class RewardCardView: UIView {
           ?|> \.isUserInteractionEnabled .~ isUserInteractionEnabled
       }
 
-    self.viewModel.outputs.reloadPills
-      .observeForUI()
-      .observeValues { [weak self] values in
-        self?.pillDataSource.load(values)
-        self?.pillCollectionView.reloadData()
-      }
+    self.pillDataSource.load(["Ends in 3 days", "16 left", "16 left"])
+    self.pillCollectionView.reloadData()
   }
 
   // MARK: - Private Helpers
@@ -382,8 +364,15 @@ private let sectionBodyLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_body()
 }
 
+private let stateImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.image .~ UIImage(named: "checkmark-reward")
+    |> \.tintColor .~ UIColor.ksr_blue_500
+}
+
 private let stateImageViewContainerStyle: ViewStyle = { view in
   view
+    |> \.backgroundColor .~ UIColor.ksr_blue_500.withAlphaComponent(0.06)
     |> \.layer.cornerRadius .~ 15
 }
 
