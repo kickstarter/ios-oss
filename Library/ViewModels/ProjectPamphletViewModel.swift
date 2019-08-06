@@ -77,11 +77,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
 
-    let error = freshProjectAndRefTagEvent.errors()
-    error.observeValues { v in
-      print(v)
-    }
-
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, refTag in
@@ -95,13 +90,19 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let project = freshProjectAndRefTag
       .map(first)
 
+    let projectCTA: Signal<Either<Project, ErrorEnvelope>, Never> = project
+      .map { .left($0) }
+
+    let projectError: Signal<Either<Project, ErrorEnvelope>, Never> = freshProjectAndRefTagEvent.errors()
+      .map { .right($0) }
+
     self.configurePledgeCTAView = Signal.combineLatest(
-      project,
+      Signal.merge(projectCTA, projectError),
       isLoading.signal
     )
     .filter { _ in featureNativeCheckoutEnabled() }
-    .map { project, isLoading in
-      (.left(project), isLoading)
+    .map { projectOrError, isLoading in
+      (projectOrError, isLoading)
     }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
@@ -275,7 +276,7 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
-  if let project = projectOrParam.left, shouldPrefix {
+  if let project = projectOrParam.left, shouldPrefix  {
     return projectProducer.prefix(value: project)
   }
 

@@ -22,13 +22,12 @@ final class PledgeCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var titleAndSubtitleStackView: UIStackView = {
-    UIStackView(frame: .zero)
+  private(set) lazy var pledgeCTAButton: UIButton = {
+    UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
-  private(set) lazy var pledgeCTAButton: UIButton = {
+  private(set) lazy var pledgeRetryButton: UIButton = {
     UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -43,8 +42,15 @@ final class PledgeCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private lazy var titleAndSubtitleStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  
   private let viewModel: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
   // MARK: - Lifecycle
@@ -67,6 +73,10 @@ final class PledgeCTAContainerView: UIView {
     super.bindStyles()
 
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+
+    _ = self.pledgeRetryButton
+      |> pledgeRetryButtonStyle
+      |> \.isHidden .~ true
 
     _ = self.titleAndSubtitleStackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
@@ -121,14 +131,14 @@ final class PledgeCTAContainerView: UIView {
       }
 
     self.activityIndicator.rac.animating = self.viewModel.outputs.activityIndicatorIsAnimating
-    self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
-    self.titleLabel.rac.text = self.viewModel.outputs.titleText
-    self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
-
-    // NB: vm needs to return button style
+    self.pledgeCTAButton.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
     self.pledgeCTAButton.rac.backgroundColor = self.viewModel.outputs.buttonBackgroundColor
     self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText
+    self.pledgeRetryButton.rac.hidden = self.viewModel.outputs.pledgeRetryButtonIsHidden
     self.spacer.rac.hidden = self.viewModel.outputs.spacerIsHidden
+    self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
+    self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
+    self.titleLabel.rac.text = self.viewModel.outputs.titleText
   }
 
   // MARK: - Configuration
@@ -150,7 +160,8 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.titleLabel, self.subtitleLabel], self.titleAndSubtitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.titleAndSubtitleStackView, self.spacer, self.pledgeCTAButton], self.rootStackView)
+    _ = ([self.titleAndSubtitleStackView, self.spacer, self.pledgeCTAButton, self.pledgeRetryButton],
+         self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -162,6 +173,8 @@ final class PledgeCTAContainerView: UIView {
       self.activityIndicator.centerYAnchor.constraint(equalTo: self.layoutMarginsGuide.centerYAnchor),
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
+      self.pledgeRetryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
+      self.pledgeRetryButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
       self.rootStackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor)
     ])
   }
@@ -193,5 +206,32 @@ private func pledgeCTAButtonStyle(
       |> UIButton.lens.layer.borderWidth .~ 0
       |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
       |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ lineBreakMode
+  }
+}
+
+private let pledgeRetryButtonStyle: ButtonStyle = { button in
+  button
+    |> baseButtonStyle
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
+    |> UIButton.lens.titleLabel.font .~ .ksr_caption1()
+    |> UIButton.lens.backgroundColor(for: .normal) .~ .clear
+    |> UIButton.lens.titleColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
+    |> UIButton.lens.backgroundColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
+    |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 18.0)
+    |> UIButton.lens.contentEdgeInsets %~~ { _, button in
+      button.traitCollection.verticalSizeClass == .compact
+        ? .init(topBottom: 10.0, leftRight: 12.0)
+        : .init(topBottom: 12.0, leftRight: 16.0)
+    }
+    |> UIButton.lens.image(for: .normal) %~ { _ in image(named: "icon--refresh-small") }
+    |> UIButton.lens.title(for: .normal) %~ { _ in
+      return localizedString(
+        key: "Content_isnt_loading_right_now",
+        defaultValue: """
+          Content isn't loading right now.
+        """,
+        count: nil,
+        substitutions: [:]
+      )
   }
 }
