@@ -252,8 +252,16 @@ final class RewardCardContainerViewModelTests: TestCase {
 
     for (index, reward) in rewards.enumerated() {
       let project = Project.cosmicSurgery
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.isBacking .~ false
+        |> Project.lens.state .~ .live
+        |> Project.lens.personalization.isBacking .~ true
+        |> Project.lens.personalization.backing .~ (
+          .template
+            |> Backing.lens.reward .~ reward
+            |> Backing.lens.rewardId .~ reward.id
+            |> Backing.lens.shippingAmount .~ 10
+            |> Backing.lens.amount .~ 700
+            |> Backing.lens.status .~ .errored
+        )
 
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
@@ -270,10 +278,16 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonHidden.assertValueCount(rewards.count)
     self.pledgeButtonTitleText.assertValueCount(rewards.count)
 
-    self.pledgeButtonStyleType.assertValues([.none, .none, .none, .none, .none])
-    self.pledgeButtonEnabled.assertValues([false, false, false, false, false])
-    self.pledgeButtonHidden.assertValues([true, true, true, true, true])
-    self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil])
+    self.pledgeButtonStyleType.assertValues([.apricot, .apricot, .apricot, .apricot, .apricot])
+    self.pledgeButtonEnabled.assertValues([true, true, true, true, true])
+    self.pledgeButtonHidden.assertValues([false, false, false, false, false])
+    self.pledgeButtonTitleText.assertValues([
+      "Fix your payment method",
+      "Fix your payment method",
+      "Fix your payment method",
+      "Fix your payment method",
+      "Fix your payment method"
+    ])
   }
 
   func testLive_BackedProject_NonBackedReward_Errored() {
