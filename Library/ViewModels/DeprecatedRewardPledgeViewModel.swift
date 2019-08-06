@@ -2,6 +2,7 @@ import KsApi
 import PassKit
 import Prelude
 import ReactiveSwift
+
 public protocol DeprecatedRewardPledgeViewModelInputs {
   /// Call when the apple pay button is tapped.
   func applePayButtonTapped()

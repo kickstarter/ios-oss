@@ -197,6 +197,7 @@ private func layoutConstraintConstant(
   guard !traitCollection.isRegularRegular else {
     return 0.0
   }
+
   return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
 }
 

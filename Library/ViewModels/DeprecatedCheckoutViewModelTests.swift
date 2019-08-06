@@ -5,9 +5,6 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-// swiftlint:disable force_unwrapping
-// swiftlint:disable force_cast
-
 private let questionMark = CharacterSet(charactersIn: "?")
 
 final class DeprecatedCheckoutViewModelTests: TestCase {
