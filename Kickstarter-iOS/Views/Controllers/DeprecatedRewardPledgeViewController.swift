@@ -197,10 +197,10 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
-    _ = self.cardInnerView
-      |> cardStyle()
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
-      |> UIView.lens.backgroundColor .~ .ksr_grey_100
+//    _ = self.cardInnerView
+//      |> cardStyle()
+//      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
+//      |> UIView.lens.backgroundColor .~ .ksr_grey_100
 
     _ = self.cardPanelView
       |> UIView.lens.backgroundColor .~ .ksr_navy_200
@@ -208,6 +208,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     _ = self.cardView
       |> UIView.lens.layer.shouldRasterize .~ true
       |> UIView.lens.backgroundColor .~ .clear
+      |> roundedStyle(cornerRadius: 18)
 
     _ = self.changePaymentMethodButton
       |> greyButtonStyle
