@@ -52,7 +52,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var readMoreLabel: UILabel!
   @IBOutlet fileprivate var rootStackView: UIStackView!
   @IBOutlet fileprivate var scrollView: UIScrollView!
-  @IBOutlet fileprivate var separatorViews: [UIView]!
+//  @IBOutlet fileprivate var separatorViews: [UIView]!
   @IBOutlet fileprivate var shippingActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet fileprivate var shippingAmountLabel: UILabel!
   @IBOutlet fileprivate var shippingContainerView: UIView!
@@ -198,14 +198,14 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
 //    _ = self.cardInnerView
-//      |> cardStyle()
-//      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
+    //      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
 //      |> UIView.lens.backgroundColor .~ .ksr_grey_100
 
     _ = self.cardPanelView
-      |> UIView.lens.backgroundColor .~ .ksr_navy_200
+      |> UIView.lens.backgroundColor .~ .white
 
     _ = self.cardView
+      |> dropShadowStyleMedium()
       |> UIView.lens.layer.shouldRasterize .~ true
       |> UIView.lens.backgroundColor .~ .clear
       |> roundedStyle(cornerRadius: 18)
@@ -243,8 +243,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self.descriptionLabel
       |> UILabel.lens.contentMode .~ .topLeft
-      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
+      |> UILabel.lens.font .~ UIFont.ksr_body()
+      |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
       |> UILabel.lens.numberOfLines .~ 3
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
       |> UILabel.lens.isUserInteractionEnabled .~ true
@@ -290,16 +290,16 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       }
 
     _ = self.estimatedToFulfillLabel
+      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 16).bolded
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
-      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.estimatedDeliveryDateLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.font .~ UIFont.ksr_body(size: 16)
       |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.estimatedFulfillmentStackView
-      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.fulfillmentAndShippingFooterStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -373,8 +373,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.pledgeInputTitleLabel
-      |> UILabel.lens.font .~ .ksr_caption1()
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_600
+      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 15)
+      |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
       |> UILabel.lens.text %~ { _ in Strings.Your_pledge_amount() }
 
     _ = self.pledgeStackView
@@ -400,8 +400,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIScrollView.lens.delaysContentTouches .~ false
       |> UIScrollView.lens.keyboardDismissMode .~ .interactive
 
-    _ = self.separatorViews
-      ||> separatorStyle
+//    _ = self.separatorViews
+//      ||> separatorStyle
 
     _ = self.shippingActivityIndicatorView
       |> baseActivityIndicatorStyle
@@ -415,8 +415,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.shippingInputTitleLabel
-      |> UILabel.lens.font .~ .ksr_caption1()
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_500
+      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 15)
+      |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
       |> UILabel.lens.text %~ { _ in Strings.Your_shipping_destination() }
 
     _ = self.shippingMenuStackView
@@ -438,7 +438,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_shipping_options() }
 
     _ = self.titleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
+      |> UILabel.lens.font .~ UIFont.ksr_title2().bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.isUserInteractionEnabled .~ true
