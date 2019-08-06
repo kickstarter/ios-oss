@@ -43,10 +43,6 @@ public final class ProjectPamphletViewController: UIViewController {
     return vc
   }
 
-  public override var prefersStatusBarHidden: Bool {
-    return UIApplication.shared.statusBarOrientation.isLandscape
-  }
-
   public override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -90,11 +86,7 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private var initialTopConstraint: CGFloat {
-    if #available(iOS 11.0, *) {
-      return parent?.view.safeAreaInsets.top ?? 0.0
-    } else {
-      return UIApplication.shared.statusBarFrame.size.height
-    }
+    return parent?.view.safeAreaInsets.top ?? 0.0
   }
 
   private func configurePledgeCTAContainerView() {
