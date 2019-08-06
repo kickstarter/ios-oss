@@ -101,7 +101,6 @@ final class RewardCardViewModelTests: TestCase {
         .template
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
-          |> Backing.lens.shippingAmount .~ 10
           |> Backing.lens.amount .~ 700
       )
 
