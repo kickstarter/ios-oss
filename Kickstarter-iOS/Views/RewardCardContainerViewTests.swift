@@ -112,6 +112,62 @@ final class RewardCardContainerViewTests: TestCase {
     }
   }
 
+  func testNonLive_BackedProject_BackedReward() {
+    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
+      withEnvironment(language: language) {
+        let (rewardDescription, reward) = rewardTuple
+
+        let project = Project.cosmicSurgery
+          |> Project.lens.state .~ .successful
+          |> Project.lens.personalization.isBacking .~ true
+          |> Project.lens.personalization.backing .~ (
+            .template
+              |> Backing.lens.reward .~ reward
+              |> Backing.lens.rewardId .~ reward.id
+              |> Backing.lens.shippingAmount .~ 10
+              |> Backing.lens.amount .~ 700
+          )
+
+        let vc = rewardCardInViewController(
+          language: language,
+          device: device,
+          project: project,
+          reward: reward
+        )
+
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testNonLive_BackedProject_NonBackedReward() {
+    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
+      withEnvironment(language: language) {
+        let (rewardDescription, reward) = rewardTuple
+
+        let project = Project.cosmicSurgery
+          |> Project.lens.state .~ .successful
+          |> Project.lens.personalization.isBacking .~ true
+          |> Project.lens.personalization.backing .~ (
+            .template
+              |> Backing.lens.reward .~ Reward.otherReward
+              |> Backing.lens.rewardId .~ Reward.otherReward.id
+              |> Backing.lens.shippingAmount .~ 10
+              |> Backing.lens.amount .~ 700
+          )
+
+        let vc = rewardCardInViewController(
+          language: language,
+          device: device,
+          project: project,
+          reward: reward
+        )
+
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   func testNonLive_NonBackedProject() {
     combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
       withEnvironment(language: language) {

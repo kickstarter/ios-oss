@@ -245,6 +245,93 @@ final class RewardCardContainerViewModelTests: TestCase {
     ])
   }
 
+  func testNonLive_BackedProject_BackedReward() {
+    self.pledgeButtonStyleType.assertValueCount(0)
+    self.pledgeButtonEnabled.assertValueCount(0)
+    self.pledgeButtonHidden.assertValueCount(0)
+    self.pledgeButtonTitleText.assertValueCount(0)
+
+    for (index, reward) in self.allRewards.enumerated() {
+      let project = Project.cosmicSurgery
+        |> Project.lens.state .~ .successful
+        |> Project.lens.personalization.isBacking .~ true
+        |> Project.lens.personalization.backing .~ (
+          .template
+            |> Backing.lens.reward .~ reward
+            |> Backing.lens.rewardId .~ reward.id
+            |> Backing.lens.shippingAmount .~ 10
+            |> Backing.lens.amount .~ 700
+        )
+
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
+
+      let emissionCount = index + 1
+
+      self.pledgeButtonStyleType.assertValueCount(emissionCount)
+      self.pledgeButtonEnabled.assertValueCount(emissionCount)
+      self.pledgeButtonHidden.assertValueCount(emissionCount)
+      self.pledgeButtonTitleText.assertValueCount(emissionCount)
+    }
+
+    self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
+    self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
+    self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
+    self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
+
+    self.pledgeButtonStyleType.assertValues([.black, .black, .black, .black, .black, .black, .black, .black])
+    self.pledgeButtonEnabled.assertValues([true, true, true, true, true, true, true, true])
+    self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
+    self.pledgeButtonTitleText.assertValues([
+      "View your pledge",
+      "View your pledge",
+      "View your pledge",
+      "View your pledge",
+      "View your pledge",
+      "View your pledge",
+      "View your pledge",
+      "View your pledge"
+    ])
+  }
+
+  func testNonLive_BackedProject_NonBackedReward() {
+    self.pledgeButtonStyleType.assertValueCount(0)
+    self.pledgeButtonEnabled.assertValueCount(0)
+    self.pledgeButtonHidden.assertValueCount(0)
+    self.pledgeButtonTitleText.assertValueCount(0)
+
+    for (index, reward) in self.allRewards.enumerated() {
+      let project = Project.cosmicSurgery
+        |> Project.lens.state .~ .successful
+        |> Project.lens.personalization.isBacking .~ true
+        |> Project.lens.personalization.backing .~ (
+          .template
+            |> Backing.lens.reward .~ Reward.otherReward
+            |> Backing.lens.rewardId .~ Reward.otherReward.id
+            |> Backing.lens.shippingAmount .~ 10
+            |> Backing.lens.amount .~ 700
+        )
+
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
+
+      let emissionCount = index + 1
+
+      self.pledgeButtonStyleType.assertValueCount(emissionCount)
+      self.pledgeButtonEnabled.assertValueCount(emissionCount)
+      self.pledgeButtonHidden.assertValueCount(emissionCount)
+      self.pledgeButtonTitleText.assertValueCount(emissionCount)
+    }
+
+    self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
+    self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
+    self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
+    self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
+
+    self.pledgeButtonStyleType.assertValues([.none, .none, .none, .none, .none, .none, .none, .none])
+    self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
+    self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
+    self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil])
+  }
+
   func testNonLive_NonBackedProject() {
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)

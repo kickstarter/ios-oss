@@ -113,9 +113,10 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
     return Strings.Manage_your_pledge()
   case (.nonBacked(.live), _, true):
     return nonBackedPledgeButtonTitle(project: project, reward: reward)
-  case (.backed(.nonLive), _, _):
+  case (.backed(.nonLive), true, _):
     return Strings.View_your_pledge()
-  case (.nonBacked(.nonLive), _, _):
+  case (.backed(.nonLive), false, _),
+       (.nonBacked(.nonLive), _, _):
     return nil
   case (_, _, false):
     return Strings.No_longer_available()
@@ -138,7 +139,10 @@ private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleTyp
   case .nonBacked(.live):
     return .green
   case .backed(.nonLive):
-    return .black
+    if isBackingThisReward {
+      return .black
+    }
+    return .none
   case .nonBacked(.nonLive):
     return .none
   }
