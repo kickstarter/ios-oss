@@ -27,6 +27,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var disclaimerSecondaryLabel: UILabel!
   @IBOutlet fileprivate var disclaimerStackView: UIStackView!
   @IBOutlet fileprivate var disclaimerTertiaryLabel: UILabel!
+  @IBOutlet fileprivate var disclaimerTextView: UITextView!
   @IBOutlet fileprivate var differentPaymentMethodButton: UIButton!
   @IBOutlet fileprivate var estimatedDeliveryDateLabel: UILabel!
   @IBOutlet fileprivate var estimatedFulfillmentStackView: UIStackView!
@@ -98,6 +99,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+//    self.disclaimerTextView.delegate = self
 
     self.applePayButtonContainerView.addArrangedSubview(self.applePayButton)
 
@@ -239,7 +241,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self.countryLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
     _ = self.descriptionLabel
       |> UILabel.lens.contentMode .~ .topLeft
@@ -383,7 +385,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self.pledgeTextField
       |> UITextField.lens.borderStyle .~ .none
-      |> UITextField.lens.textColor .~ UIColor.ksr_green_700
+      |> UITextField.lens.textColor .~ UIColor.ksr_green_500
       |> UITextField.lens.font .~ UIFont.ksr_headline(size: 14)
       |> UITextField.lens.keyboardType .~ .decimalPad
 
@@ -710,6 +712,48 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       self.scrollView.contentOffset.y += self.bottomConstraint.constant
     }, completion: nil)
   }
+}
+
+extension DeprecatedRewardPledgeViewController: UITextViewDelegate {
+  func textView(
+    _: UITextView, shouldInteractWith _: NSTextAttachment,
+    in _: NSRange, interaction _: UITextItemInteraction
+    ) -> Bool {
+    return false
+  }
+
+  func textView(
+    _: UITextView, shouldInteractWith url: URL, in _: NSRange,
+    interaction _: UITextItemInteraction
+    ) -> Bool {
+    self.viewModel.inputs.tapped(url)
+    return false
+  }
+}
+
+
+private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
+  _ = textView
+    |> tappableLinksViewStyle
+    |> \.attributedText .~ attributedLearnMoreText()
+    |> \.accessibilityTraits .~ [.staticText]
+
+  return textView
+}
+
+private func attributedLearnMoreText() -> NSAttributedString? {
+  // swiftlint:disable line_length
+  let string = localizedString(
+    key: "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability",
+    defaultValue: "Kickstarter is not a store. It's a way to bring creative projects to life.</br><a href=\"%{trust_link}\">Learn more about accountability</a>",
+    substitutions: [
+      "trust_link": HelpType.trust.url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString
+      ]
+      .compactMapValues { $0.coalesceWith("") }
+  )
+  // swiftlint:enable line_length
+
+  return checkoutAttributedLink(with: string)
 }
 
 extension DeprecatedRewardPledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
