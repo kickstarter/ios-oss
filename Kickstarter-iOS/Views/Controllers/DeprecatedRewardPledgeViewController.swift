@@ -21,12 +21,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var conversionLabel: UILabel!
   @IBOutlet fileprivate var countryLabel: UILabel!
   @IBOutlet fileprivate var descriptionLabel: UILabel!
-  @IBOutlet fileprivate var disclaimerButton: UIButton!
-  @IBOutlet fileprivate var disclaimerContainerView: UIView!
-  @IBOutlet fileprivate var disclaimerPrimaryLabel: UILabel!
-  @IBOutlet fileprivate var disclaimerSecondaryLabel: UILabel!
-  @IBOutlet fileprivate var disclaimerStackView: UIStackView!
-  @IBOutlet fileprivate var disclaimerTertiaryLabel: UILabel!
   @IBOutlet fileprivate var disclaimerTextView: UITextView!
   @IBOutlet fileprivate var differentPaymentMethodButton: UIButton!
   @IBOutlet fileprivate var estimatedDeliveryDateLabel: UILabel!
@@ -53,7 +47,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var readMoreLabel: UILabel!
   @IBOutlet fileprivate var rootStackView: UIStackView!
   @IBOutlet fileprivate var scrollView: UIScrollView!
-//  @IBOutlet fileprivate var separatorViews: [UIView]!
   @IBOutlet fileprivate var shippingActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet fileprivate var shippingAmountLabel: UILabel!
   @IBOutlet fileprivate var shippingContainerView: UIView!
@@ -99,7 +92,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-//    self.disclaimerTextView.delegate = self
+    self.disclaimerTextView.delegate = self
 
     self.applePayButtonContainerView.addArrangedSubview(self.applePayButton)
 
@@ -131,11 +124,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.differentPaymentMethodButton.addTarget(
       self,
       action: #selector(DeprecatedRewardPledgeViewController.differentPaymentMethodTapped),
-      for: .touchUpInside
-    )
-    self.disclaimerButton.addTarget(
-      self,
-      action: #selector(DeprecatedRewardPledgeViewController.disclaimerButtonTapped),
       for: .touchUpInside
     )
     self.pledgeTextField.addTarget(
@@ -231,6 +219,11 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue_to_payment() }
 
+    _ = self.disclaimerTextView
+      |> disclaimerTextViewStyle
+      |> UITextView.lens.textAlignment .~ .center
+//      |> UITextView.lens.textContainerInset .~ .init(top: 8, left: 30, bottom: 8, right: 30)
+
     _ = self.updatePledgeButton
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Update_pledge() }
@@ -254,42 +247,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     _ = self.differentPaymentMethodButton
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Other_payment_methods() }
-
-    _ = self.disclaimerButton
-      |> UIButton.lens.accessibilityLabel %~ { _ in
-        Strings.Kickstarter_is_not_a_store()
-          + " " + Strings.Its_a_way_to_bring_creative_projects_to_life()
-          + " " + Strings.Learn_more_about_accountability()
-      }
-
-    _ = self.disclaimerContainerView
-      |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
-
-    _ = self.disclaimerPrimaryLabel
-      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12).bolded
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
-      |> UILabel.lens.textAlignment .~ .center
-      |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.text %~ { _ in Strings.Kickstarter_is_not_a_store() }
-
-    _ = self.disclaimerSecondaryLabel
-      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
-      |> UILabel.lens.textAlignment .~ .center
-      |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.text %~ { _ in Strings.Its_a_way_to_bring_creative_projects_to_life() }
-
-    _ = self.disclaimerTertiaryLabel
-      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_500
-      |> UILabel.lens.textAlignment .~ .center
-      |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.attributedText %~ { _ in
-        NSAttributedString(
-          string: Strings.Learn_more_about_accountability(),
-          attributes: [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue]
-        )
-      }
 
     _ = self.estimatedToFulfillLabel
       |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 16).bolded
@@ -401,9 +358,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIScrollView.lens.layoutMargins .~ .init(all: Styles.grid(2))
       |> UIScrollView.lens.delaysContentTouches .~ false
       |> UIScrollView.lens.keyboardDismissMode .~ .interactive
-
-//    _ = self.separatorViews
-//      ||> separatorStyle
 
     _ = self.shippingActivityIndicatorView
       |> baseActivityIndicatorStyle
@@ -659,10 +613,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.viewModel.inputs.shippingButtonTapped()
   }
 
-  @objc fileprivate func disclaimerButtonTapped() {
-    self.viewModel.inputs.disclaimerButtonTapped()
-  }
-
   @objc fileprivate func continueWithPaymentButtonTapped() {
     self.viewModel.inputs.continueToPaymentsButtonTapped()
   }
@@ -723,25 +673,25 @@ extension DeprecatedRewardPledgeViewController: UITextViewDelegate {
   }
 
   func textView(
-    _: UITextView, shouldInteractWith url: URL, in _: NSRange,
+    _: UITextView, shouldInteractWith _: URL, in _: NSRange,
     interaction _: UITextItemInteraction
     ) -> Bool {
-    self.viewModel.inputs.tapped(url)
+    self.viewModel.inputs.disclaimerButtonTapped() // RENAME
     return false
   }
 }
 
 
-private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
+private let disclaimerTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
   _ = textView
     |> tappableLinksViewStyle
-    |> \.attributedText .~ attributedLearnMoreText()
+    |> \.attributedText .~ attributedDisclaimerText()
     |> \.accessibilityTraits .~ [.staticText]
 
   return textView
 }
 
-private func attributedLearnMoreText() -> NSAttributedString? {
+private func attributedDisclaimerText() -> NSAttributedString? {
   // swiftlint:disable line_length
   let string = localizedString(
     key: "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability",
