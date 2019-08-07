@@ -5,23 +5,19 @@ import Prelude
 
 final class RewardsCollectionViewFooter: UICollectionReusableView {
   private lazy var countLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var separatorView: UIView = { UIView(frame: .zero)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
     self.configureSubviews()
+    self.setupConstraints()
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  private func configureSubviews() {
-    _ = self
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
-
-    _ = (self.countLabel, self)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
   }
 
   override func bindStyles() {
@@ -32,6 +28,32 @@ final class RewardsCollectionViewFooter: UICollectionReusableView {
 
     _ = self.countLabel
       |> countLabelStyle
+
+    _ = self.separatorView
+      |> separatorStyle
+  }
+
+  // MARK: - Functions
+
+  private func configureSubviews() {
+    _ = self
+      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+
+    _ = (self.separatorView, self)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.countLabel, self)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+  }
+
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      self.separatorView.leftAnchor.constraint(equalTo: self.leftAnchor),
+      self.separatorView.rightAnchor.constraint(equalTo: self.rightAnchor),
+      self.separatorView.topAnchor.constraint(equalTo: self.topAnchor),
+      self.separatorView.heightAnchor.constraint(equalToConstant: 1)
+      ])
   }
 
   // MARK: - Accessors
@@ -44,7 +66,7 @@ final class RewardsCollectionViewFooter: UICollectionReusableView {
 
 private let countLabelStyle: LabelStyle = { label in
   label
-    |> \.font .~ UIFont.ksr_callout()
+    |> \.font .~ UIFont.ksr_footnote()
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.textAlignment .~ .center
 }
