@@ -25,7 +25,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     return self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout
   }
 
-  private lazy var footerView: RewardsCollectionViewFooter = {
+  private lazy var rewardsCollectionFooterView: RewardsCollectionViewFooter = {
     RewardsCollectionViewFooter(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -72,7 +72,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
 
-    _ = (self.footerView, self.view)
+    _ = (self.rewardsCollectionFooterView, self.view)
       |> ksr_addSubviewToParent()
 
     self.collectionView.register(RewardCell.self)
@@ -130,7 +130,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeValues { [weak self] values in
         self?.dataSource.load(values)
         self?.collectionView.reloadData()
-        self?.updateFooterView(with: values.count)
+        self?.updateRewardsCollectionFooterView(with: values.count)
       }
 
     self.viewModel.outputs.goToPledge
@@ -146,7 +146,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       }
 
 
-    self.footerView.rac.hidden = self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
+    self.rewardsCollectionFooterView.rac.hidden = self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
 
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
       .observeForUI()
@@ -163,24 +163,24 @@ final class RewardsCollectionViewController: UICollectionViewController {
     let margins = self.view.safeAreaLayoutGuide
 
     NSLayoutConstraint.activate([
-      self.footerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.footerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.footerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      self.rewardsCollectionFooterView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.rewardsCollectionFooterView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.rewardsCollectionFooterView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.collectionView.leftAnchor.constraint(equalTo: margins.leftAnchor),
       self.collectionView.rightAnchor.constraint(equalTo: margins.rightAnchor),
       self.collectionView.topAnchor.constraint(equalTo: margins.topAnchor)
       ])
 
     self.collectionViewBottomConstraintFooterView = self.collectionView.bottomAnchor
-      .constraint(equalTo: self.footerView.topAnchor)
+      .constraint(equalTo: self.rewardsCollectionFooterView.topAnchor)
     self.collectionViewBottomConstraintSuperview = self.collectionView.bottomAnchor
       .constraint(equalTo: margins.bottomAnchor)
 
     self.collectionViewBottomConstraintFooterView?.isActive = true
   }
 
-  private func updateFooterView(with count: Int) {
-    self.footerView.configure(with: count)
+  private func updateRewardsCollectionFooterView(with count: Int) {
+    self.rewardsCollectionFooterView.configure(with: count)
   }
 
   private func updateRewardCollectionViewFooterConstraints(_ isHidden: Bool) {
