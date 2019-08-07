@@ -209,6 +209,10 @@ private func pillStrings(project: Project, reward: Reward) -> [String] {
     pillStrings.append(Strings.Left_count_left(left_count: remaining))
   }
 
+  if reward.shipping.enabled, let shippingSummary = reward.shipping.summary {
+    pillStrings.append(shippingSummary)
+  }
+
   return pillStrings
 }
 

@@ -717,6 +717,31 @@ final class RewardCardViewModelTests: TestCase {
     ])
   }
 
+  func testPillsTimebasedAndLimitedReward_ShippingEnabled() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 75
+      |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
+      |> Reward.lens.shipping .~ (
+        .template
+          |> Reward.Shipping.lens.enabled .~ true
+          |> Reward.Shipping.lens.preference .~ .restricted
+          |> Reward.Shipping.lens.summary .~ "Anywhere in the world"
+      )
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["4 days left", "75 left", "Anywhere in the world"]
+    ])
+  }
+
   func testPillsTimebasedAndLimitedReward_NonLiveProject() {
     self.pillCollectionViewHidden.assertValueCount(0)
     self.reloadPills.assertValueCount(0)
