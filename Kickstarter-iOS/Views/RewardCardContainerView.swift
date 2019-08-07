@@ -81,7 +81,9 @@ public final class RewardCardContainerView: UIView {
           .rewardCardView(self.rewardCardView, didTapWithRewardId: rewardId)
       }
 
-    self.pledgeButton.rac.title = self.viewModel.outputs.pledgeButtonTitleText
+    self.viewModel.outputs.pledgeButtonTitleText.observeValues { [weak self] text in
+      self?.pledgeButton.setTitle(text, for: .normal)
+    }
     self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
 
     self.viewModel.outputs.pledgeButtonHidden.observeValues { [weak self] hidden in
@@ -96,11 +98,11 @@ public final class RewardCardContainerView: UIView {
       }
     }
 
-    self.viewModel.outputs.pledgeButtonStyle
+    self.viewModel.outputs.pledgeButtonStyleType
       .observeForUI()
-      .observeValues { [weak self] style in
+      .observeValues { [weak self] styleType in
         guard let self = self else { return }
-        _ = self.pledgeButton |> style
+        _ = self.pledgeButton |> styleType.style
       }
   }
 
