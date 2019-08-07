@@ -27,7 +27,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
       language, device in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = RewardsCollectionViewController.instantiate(with: project, refTag: nil)
-        let (_, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        _ = traitControllers(device: device, orientation: .portrait, child: vc)
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -42,7 +42,7 @@ final class RewardsCollectionViewControllerTests: TestCase {
       language, device in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = RewardsCollectionViewController.instantiate(with: project, refTag: nil)
-        let (_, _) = traitControllers(device: device, orientation: .landscape, child: vc)
+        _ = traitControllers(device: device, orientation: .landscape, child: vc)
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }

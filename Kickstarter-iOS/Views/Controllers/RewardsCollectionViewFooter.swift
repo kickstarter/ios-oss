@@ -1,7 +1,7 @@
 import Foundation
-import UIKit
 import Library
 import Prelude
+import UIKit
 
 final class RewardsCollectionViewFooter: UICollectionReusableView {
   private lazy var countLabel: UILabel = { UILabel(frame: .zero) }()
@@ -16,7 +16,7 @@ final class RewardsCollectionViewFooter: UICollectionReusableView {
     self.setupConstraints()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -53,7 +53,7 @@ final class RewardsCollectionViewFooter: UICollectionReusableView {
       self.separatorView.rightAnchor.constraint(equalTo: self.rightAnchor),
       self.separatorView.topAnchor.constraint(equalTo: self.topAnchor),
       self.separatorView.heightAnchor.constraint(equalToConstant: 1)
-      ])
+    ])
   }
 
   // MARK: - Accessors

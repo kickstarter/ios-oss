@@ -145,14 +145,13 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self?.goToDeprecatedPledge(project: project, reward: reward, refTag: refTag)
       }
 
-
     self.rewardsCollectionFooterView.rac.hidden = self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
 
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
         self?.updateRewardCollectionViewFooterConstraints(isHidden)
-    }
+      }
   }
 
   // MARK: - Functions
@@ -168,7 +167,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor)
-      ])
+    ])
 
     self.collectionViewBottomConstraintFooterView = self.collectionView.bottomAnchor
       .constraint(equalTo: self.rewardsCollectionFooterView.topAnchor)
