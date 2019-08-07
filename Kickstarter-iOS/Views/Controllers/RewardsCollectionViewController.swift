@@ -72,10 +72,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
 
+    _ = (self.footerView, self.view)
+      |> ksr_addSubviewToParent()
+
     self.collectionView.register(RewardCell.self)
 
     self.configureHiddenScrollView()
-    self.configureFooterView()
     self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
@@ -104,7 +106,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
 
-    self.updateFooterVisibility()
+    self.viewModel.inputs.traitCollectionDidChange(self.traitCollection)
   }
 
   override func bindStyles() {
@@ -142,6 +144,15 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeValues { [weak self] project, reward, refTag in
         self?.goToDeprecatedPledge(project: project, reward: reward, refTag: refTag)
       }
+
+
+    self.footerView.rac.hidden = self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
+
+    self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        self?.updateRewardCollectionViewFooterConstraints(isHidden)
+    }
   }
 
   // MARK: - Functions
@@ -168,23 +179,13 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.collectionViewBottomConstraintFooterView?.isActive = true
   }
 
-  private func configureFooterView() {
-    _ = (self.footerView, self.view)
-      |> ksr_addSubviewToParent()
-
-    self.updateFooterVisibility()
-  }
-
   private func updateFooterView(with count: Int) {
     self.footerView.configure(with: count)
   }
 
-  private func updateFooterVisibility() {
-    let hasRegularVerticalSizeClass = self.traitCollection.verticalSizeClass == .regular
-
-    self.footerView.isHidden = !hasRegularVerticalSizeClass
-    self.collectionViewBottomConstraintSuperview?.isActive = self.footerView.isHidden
-    self.collectionViewBottomConstraintFooterView?.isActive = !self.footerView.isHidden
+  private func updateRewardCollectionViewFooterConstraints(_ isHidden: Bool) {
+    self.collectionViewBottomConstraintSuperview?.isActive = isHidden
+    self.collectionViewBottomConstraintFooterView?.isActive = !isHidden
 
     self.view.setNeedsLayout()
   }
