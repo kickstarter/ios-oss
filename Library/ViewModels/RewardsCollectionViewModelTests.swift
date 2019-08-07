@@ -18,6 +18,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let reloadDataWithValues = TestObserver<[(Project, Either<Reward, Backing>)], Never>()
   private let reloadDataWithValuesProject = TestObserver<[Project], Never>()
   private let reloadDataWithValuesRewardOrBacking = TestObserver<[Either<Reward, Backing>], Never>()
+  private let rewardsCollectionViewFooterIsHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -33,6 +34,8 @@ final class RewardsCollectionViewModelTests: TestCase {
       .observe(self.reloadDataWithValuesProject.observer)
     self.vm.outputs.reloadDataWithValues.map { $0.map { $0.1 } }
       .observe(self.reloadDataWithValuesRewardOrBacking.observer)
+    self.vm.outputs.rewardsCollectionViewFooterIsHidden
+      .observe(self.rewardsCollectionViewFooterIsHidden.observer)
   }
 
   func testConfigureWithProject() {
@@ -133,5 +136,27 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.goToPledgeReward.assertDidNotEmitValue()
     self.goToPledgeRefTag.assertDidNotEmitValue()
     XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[endIndex - 1])
+  }
+
+  func testRewardsCollectionViewFooterViewIsHidden() {
+    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardsCollectionViewFooterIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.traitCollectionDidChange(UITraitCollection.init(verticalSizeClass: .regular))
+
+    self.rewardsCollectionViewFooterIsHidden
+      .assertValues([false], "The footer is shown when the vertical size class is .regular")
+
+    self.vm.inputs.traitCollectionDidChange(UITraitCollection.init(verticalSizeClass: .regular))
+
+    self.rewardsCollectionViewFooterIsHidden
+      .assertValues([false, false], "The footer is shown when the vertical size class is .regular")
+
+    self.vm.inputs.traitCollectionDidChange(UITraitCollection.init(verticalSizeClass: .compact))
+
+    self.rewardsCollectionViewFooterIsHidden
+      .assertValues([false, false, true], "The footer is hidden when the vertical size class is .compact")
   }
 }
