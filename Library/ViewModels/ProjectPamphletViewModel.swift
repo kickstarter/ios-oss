@@ -1,7 +1,6 @@
 import KsApi
 import Prelude
 import ReactiveSwift
-
 public protocol ProjectPamphletViewModelInputs {
   /// Call when "Back this project" is tapped
   func backThisProjectTapped()
