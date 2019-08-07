@@ -44,7 +44,7 @@ final class RewardsCollectionViewFooter: UICollectionReusableView {
 
     _ = (self.countLabel, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+      |> ksr_constrainViewToMarginsInParent(priority: .defaultHigh)
   }
 
   private func setupConstraints() {

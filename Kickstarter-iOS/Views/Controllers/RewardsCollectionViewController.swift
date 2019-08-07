@@ -158,25 +158,22 @@ final class RewardsCollectionViewController: UICollectionViewController {
   // MARK: - Functions
 
   private func setupConstraints() {
-    self.collectionView.translatesAutoresizingMaskIntoConstraints = false
-
-    let margins = self.view.safeAreaLayoutGuide
+    _ = self.collectionView
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     NSLayoutConstraint.activate([
       self.rewardsCollectionFooterView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.rewardsCollectionFooterView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.rewardsCollectionFooterView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      self.collectionView.leftAnchor.constraint(equalTo: margins.leftAnchor),
-      self.collectionView.rightAnchor.constraint(equalTo: margins.rightAnchor),
-      self.collectionView.topAnchor.constraint(equalTo: margins.topAnchor)
+      self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor)
       ])
 
     self.collectionViewBottomConstraintFooterView = self.collectionView.bottomAnchor
       .constraint(equalTo: self.rewardsCollectionFooterView.topAnchor)
     self.collectionViewBottomConstraintSuperview = self.collectionView.bottomAnchor
-      .constraint(equalTo: margins.bottomAnchor)
-
-    self.collectionViewBottomConstraintFooterView?.isActive = true
+      .constraint(equalTo: self.view.bottomAnchor)
   }
 
   private func updateRewardsCollectionFooterView(with count: Int) {
