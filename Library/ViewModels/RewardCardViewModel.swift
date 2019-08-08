@@ -207,7 +207,7 @@ private func pillStrings(project: Project, reward: Reward) -> [String] {
     pillStrings.append(Strings.Time_left_left(time_left: time + " " + unit))
   }
 
-  if let remaining = reward.remaining, reward.limit != nil, project.state == .live {
+  if let remaining = reward.remaining, reward.limit != nil {
     pillStrings.append(Strings.Left_count_left(left_count: remaining))
   }
 
