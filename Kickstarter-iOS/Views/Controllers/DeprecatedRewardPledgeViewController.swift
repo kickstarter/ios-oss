@@ -414,6 +414,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.countryLabel.rac.text = self.viewModel.outputs.countryLabelText
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
+    self.descriptionTitleLabel.rac.hidden = self.viewModel.outputs.descriptionTitleLabelHidden
     self.differentPaymentMethodButton.rac.hidden = self.viewModel.outputs.differentPaymentMethodButtonHidden
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.estimatedFulfillmentStackView.rac.hidden
