@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class RewardsCollectionViewFooter: UICollectionReusableView {
+final class RewardsCollectionViewFooter: UIView {
   private lazy var countLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var separatorView: UIView = { UIView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false

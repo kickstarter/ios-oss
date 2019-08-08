@@ -157,7 +157,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.viewModel.outputs.configureRewardsCollectionViewFooterWithCount
       .observeForUI()
       .observeValues { [weak self] count in
-        self?.updateRewardsCollectionFooterView(with: count)
+        self?.configureRewardsCollectionViewFooter(with: count)
       }
 
     self.viewModel.outputs.flashScrollIndicators
@@ -190,7 +190,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .constraint(equalTo: self.view.bottomAnchor)
   }
 
-  private func updateRewardsCollectionFooterView(with count: Int) {
+  private func configureRewardsCollectionViewFooter(with count: Int) {
     self.rewardsCollectionFooterView.configure(with: count)
   }
 
