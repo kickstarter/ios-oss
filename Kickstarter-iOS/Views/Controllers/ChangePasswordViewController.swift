@@ -192,7 +192,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
       }
   }
 
-  // MARK: - Private Functions
+  // MARK: - Functions
 
   private func logoutAndDismiss() {
     AppEnvironment.logout()

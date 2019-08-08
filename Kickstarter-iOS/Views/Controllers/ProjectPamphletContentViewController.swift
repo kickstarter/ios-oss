@@ -28,10 +28,11 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     self.tableView.dataSource = self.dataSource
     self.tableView.panGestureRecognizer.addTarget(
-      self, action: #selector(self.scrollViewPanGestureRecognizerDidChange(_:))
+      self,
+      action: #selector(ProjectPamphletContentViewController.scrollViewPanGestureRecognizerDidChange(_:))
     )
 
-    self.tableView.register(nib: .RewardCell)
+    self.tableView.register(nib: .DeprecatedRewardCell)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -103,14 +104,10 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     }
   }
 
-  public override func tableView(
-    _: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt _: IndexPath
-  ) {
+  public override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     if let cell = cell as? ProjectPamphletMainCell {
       cell.delegate = self
-    } else if let cell = cell as? RewardCell {
+    } else if let cell = cell as? DeprecatedRewardCell {
       cell.delegate = self
     }
   }
@@ -118,11 +115,19 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   fileprivate func goToRewardPledge(project: Project, reward: Reward) {
     let applePayCapable = PKPaymentAuthorizationViewController.applePayCapable(for: project)
 
-    let vc = RewardPledgeViewController.configuredWith(
+    let vc = DeprecatedRewardPledgeViewController.configuredWith(
       project: project,
       reward: reward,
       applePayCapable: applePayCapable
     )
+
+    vc.navigationItem.leftBarButtonItem = UIBarButtonItem(
+      image: image(named: "icon--cross", tintColor: .ksr_navy_600),
+      style: .plain,
+      target: vc,
+      action: #selector(DeprecatedRewardPledgeViewController.closeButtonTapped)
+    )
+
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
     self.present(nav, animated: true, completion: nil)
@@ -235,8 +240,8 @@ extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
   }
 }
 
-extension ProjectPamphletContentViewController: RewardCellDelegate {
-  internal func rewardCellWantsExpansion(_ cell: RewardCell) {
+extension ProjectPamphletContentViewController: DeprecatedRewardCellDelegate {
+  internal func rewardCellWantsExpansion(_ cell: DeprecatedRewardCell) {
     cell.contentView.setNeedsUpdateConstraints()
     self.tableView.beginUpdates()
     self.tableView.endUpdates()

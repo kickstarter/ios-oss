@@ -54,7 +54,7 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
       .init(topBottom: Styles.grid(9), leftRight: Styles.grid(3))
 
     _ = self.leaveACommentButton
-      |> borderButtonStyle
+      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.project_comments_empty_state_backer_button()
       }
@@ -64,11 +64,11 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
       }
 
     _ = self.backProjectButton
-      |> borderButtonStyle
+      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.project_back_button() }
 
     _ = self.loginButton
-      |> borderButtonStyle
+      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in() }
 
     _ = self.rootStackView

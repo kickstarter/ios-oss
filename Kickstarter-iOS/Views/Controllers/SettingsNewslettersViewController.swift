@@ -51,11 +51,7 @@ internal final class SettingsNewslettersViewController: UIViewController {
 }
 
 extension SettingsNewslettersViewController: UITableViewDelegate {
-  internal func tableView(
-    _: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt _: IndexPath
-  ) {
+  internal func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     if let cell = cell as? SettingsNewslettersTopCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? SettingsNewslettersCell, cell.delegate == nil {

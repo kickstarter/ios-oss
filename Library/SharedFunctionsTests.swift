@@ -6,9 +6,9 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-// swiftlint:disable line_length
 final class SharedFunctionsTests: TestCase {
   func testCountdownProducer() {
+    // swiftlint:disable:next line_length
     let future: TimeInterval = TimeInterval(1 * 60 * 60 * 24) + TimeInterval(16 * 60 * 60) + TimeInterval(34 * 60) + 2
     let futureDate = MockDate().addingTimeInterval(future).date
     let countdown = countdownProducer(to: futureDate)
@@ -54,6 +54,7 @@ final class SharedFunctionsTests: TestCase {
     let fractionalSecondScheduler = TestScheduler(startDate: MockDate().addingTimeInterval(-0.5).date)
 
     withEnvironment(scheduler: fractionalSecondScheduler) {
+      // swiftlint:disable:next line_length
       let future: TimeInterval = TimeInterval(1 * 60 * 60 * 24) + TimeInterval(16 * 60 * 60) + TimeInterval(34 * 60) + 2
       let futureDate = MockDate().addingTimeInterval(future).date
       let countdown = countdownProducer(to: futureDate)
@@ -161,18 +162,6 @@ final class SharedFunctionsTests: TestCase {
     secondTest.assertValues(["02", "01", "00"])
   }
 
-  func testOnePasswordButtonIsHidden() {
-    withEnvironment(is1PasswordSupported: { true }) {
-      XCTAssertTrue(is1PasswordButtonHidden(true))
-      XCTAssertFalse(is1PasswordButtonHidden(false))
-    }
-
-    withEnvironment(is1PasswordSupported: { false }) {
-      XCTAssertTrue(is1PasswordButtonHidden(true))
-      XCTAssertTrue(is1PasswordButtonHidden(false))
-    }
-  }
-
   func testUpdatedUserWithClearedActivityCountProducer_Success() {
     let initialActivitiesCount = 100
     let values = TestObserver<User, Never>()
@@ -224,6 +213,73 @@ final class SharedFunctionsTests: TestCase {
       self.scheduler.advance()
 
       XCTAssertEqual(values.values.map { $0.id }, [])
+    }
+  }
+
+  func testOnePasswordButtonIsHidden() {
+    withEnvironment(is1PasswordSupported: { true }) {
+      XCTAssertTrue(is1PasswordButtonHidden(true))
+      XCTAssertFalse(is1PasswordButtonHidden(false))
+    }
+
+    withEnvironment(is1PasswordSupported: { false }) {
+      XCTAssertTrue(is1PasswordButtonHidden(true))
+      XCTAssertTrue(is1PasswordButtonHidden(false))
+    }
+  }
+
+  func testDefaultShippingRule_Empty() {
+    XCTAssertEqual(nil, defaultShippingRule(fromShippingRules: []))
+  }
+
+  func testDefaultShippingRule_DoesNotMatchCountryCode_DoesNotMatchUSA() {
+    let config = Config.template
+      |> Config.lens.countryCode .~ "JP"
+
+    withEnvironment(config: config) {
+      let locations = [
+        Location.template |> Location.lens.country .~ "DE",
+        Location.template |> Location.lens.country .~ "CZ",
+        Location.template |> Location.lens.country .~ "CA"
+      ]
+      let shippingRule = defaultShippingRule(
+        fromShippingRules: locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0 }
+      )
+      XCTAssertEqual("DE", shippingRule?.location.country)
+    }
+  }
+
+  func testDefaultShippingRule_DoesNotMatchCountryCode_MatchesUSA() {
+    let config = Config.template
+      |> Config.lens.countryCode .~ "JP"
+
+    withEnvironment(config: config) {
+      let locations = [
+        Location.template |> Location.lens.country .~ "US",
+        Location.template |> Location.lens.country .~ "CZ",
+        Location.template |> Location.lens.country .~ "CA"
+      ]
+      let shippingRule = defaultShippingRule(
+        fromShippingRules: locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0 }
+      )
+      XCTAssertEqual("US", shippingRule?.location.country)
+    }
+  }
+
+  func testDefaultShippingRule_MatchesCountryCode() {
+    let config = Config.template
+      |> Config.lens.countryCode .~ "CZ"
+
+    withEnvironment(config: config) {
+      let locations = [
+        Location.template |> Location.lens.country .~ "US",
+        Location.template |> Location.lens.country .~ "CZ",
+        Location.template |> Location.lens.country .~ "CA"
+      ]
+      let shippingRule = defaultShippingRule(
+        fromShippingRules: locations.map { ShippingRule.template |> ShippingRule.lens.location .~ $0 }
+      )
+      XCTAssertEqual("CZ", shippingRule?.location.country)
     }
   }
 }

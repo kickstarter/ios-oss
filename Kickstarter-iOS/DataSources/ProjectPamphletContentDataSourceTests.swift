@@ -45,4 +45,45 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: availableSection))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: unavailableSection))
   }
+
+  func testRewardsSection_nativeCheckoutFeature_hidesWhenTurnedOn() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckout.rawValue: true]
+
+    withEnvironment(config: config) {
+      let availableReward = Reward.template
+        |> Reward.lens.remaining .~ 1
+      let unavailableReward = Reward.template
+        |> Reward.lens.remaining .~ 0
+      let project = Project.template
+        |> Project.lens.rewards .~ [availableReward, unavailableReward]
+
+      dataSource.load(project: project)
+
+      XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    }
+  }
+
+  func testRewardsSection_nativeCheckoutFeature_showsWithTurnedOff() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckout.rawValue: false]
+
+    withEnvironment(config: config) {
+      let availableSection = ProjectPamphletContentDataSource.Section.availableRewards.rawValue
+      let unavailableSection = ProjectPamphletContentDataSource.Section.unavailableRewards.rawValue
+
+      let availableReward = Reward.template
+        |> Reward.lens.remaining .~ 1
+      let unavailableReward = Reward.template
+        |> Reward.lens.remaining .~ 0
+      let project = Project.template
+        |> Project.lens.rewards .~ [availableReward, unavailableReward]
+
+      dataSource.load(project: project)
+
+      XCTAssertEqual(7, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: availableSection))
+      XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: unavailableSection))
+    }
+  }
 }

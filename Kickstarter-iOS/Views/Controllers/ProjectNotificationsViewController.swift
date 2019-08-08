@@ -46,11 +46,7 @@ internal final class ProjectNotificationsViewController: UITableViewController {
       }
   }
 
-  internal override func tableView(
-    _: UITableView,
-    willDisplay cell: UITableViewCell,
-    forRowAt _: IndexPath
-  ) {
+  internal override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     if let cell = cell as? ProjectNotificationCell {
       cell.delegate = self
     }

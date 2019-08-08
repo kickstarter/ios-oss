@@ -10,7 +10,7 @@ public enum MessageBannerType {
     case .success:
       return .ksr_cobalt_500
     case .error:
-      return .ksr_apricot_600
+      return .ksr_apricot_500
     case .info:
       return .ksr_cobalt_500
     }

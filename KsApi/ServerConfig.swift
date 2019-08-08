@@ -67,7 +67,7 @@ public struct ServerConfig: ServerConfigType {
     webBaseUrl: URL(string: "http://ksr.test")!,
     apiClientAuth: ClientAuth.development,
     basicHTTPAuth: BasicHTTPAuth.development,
-    graphQLEndpointUrl: URL(string: "http://ksr.dev")!.appendingPathComponent(gqlPath),
+    graphQLEndpointUrl: URL(string: "http://ksr.test")!.appendingPathComponent(gqlPath),
     environment: EnvironmentType.local
   )
 

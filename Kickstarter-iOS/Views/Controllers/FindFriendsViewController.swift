@@ -97,10 +97,7 @@ internal final class FindFriendsViewController: UITableViewController {
       |> baseActivityIndicatorStyle
   }
 
-  override func tableView(
-    _: UITableView, willDisplay cell: UITableViewCell,
-    forRowAt indexPath: IndexPath
-  ) {
+  override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     if let statsCell = cell as? FindFriendsStatsCell, statsCell.delegate == nil {
       statsCell.delegate = self
     } else if let fbConnectCell = cell as? FindFriendsFacebookConnectCell, fbConnectCell.delegate == nil {
