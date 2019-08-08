@@ -108,7 +108,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     self.viewModel.inputs.traitCollectionDidChange(self.traitCollection)
 
-
     guard let layout = self.flowLayout else { return }
 
     self.updateHiddenScrollViewBoundsIfNeeded(for: layout)
@@ -159,13 +158,13 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeForUI()
       .observeValues { [weak self] count in
         self?.updateRewardsCollectionFooterView(with: count)
-    }
+      }
 
     self.viewModel.outputs.flashScrollIndicators
       .observeForUI()
       .observeValues { [weak self] in
         self?.collectionView.flashScrollIndicators()
-    }
+      }
 
     self.rewardsCollectionFooterView.rac.hidden = self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
   }
