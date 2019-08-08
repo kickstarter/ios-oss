@@ -35,7 +35,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  // MARK: - Private Helpers
+  // MARK: - Functions
 
   private func configureViews() {
     _ = (self.scrollView, self.contentView)
