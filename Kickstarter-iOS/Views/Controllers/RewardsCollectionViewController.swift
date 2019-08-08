@@ -86,7 +86,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    self.collectionView.flashScrollIndicators()
+    self.viewModel.inputs.viewDidAppear()
   }
 
   override func viewDidLayoutSubviews() {
@@ -107,6 +107,11 @@ final class RewardsCollectionViewController: UICollectionViewController {
     super.traitCollectionDidChange(previousTraitCollection)
 
     self.viewModel.inputs.traitCollectionDidChange(self.traitCollection)
+
+
+    guard let layout = self.flowLayout else { return }
+
+    self.updateHiddenScrollViewBoundsIfNeeded(for: layout)
   }
 
   override func bindStyles() {
@@ -130,7 +135,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeValues { [weak self] values in
         self?.dataSource.load(values)
         self?.collectionView.reloadData()
-        self?.updateRewardsCollectionFooterView(with: values.count)
       }
 
     self.viewModel.outputs.goToPledge
@@ -145,13 +149,25 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self?.goToDeprecatedPledge(project: project, reward: reward, refTag: refTag)
       }
 
-    self.rewardsCollectionFooterView.rac.hidden = self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
-
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
         self?.updateRewardCollectionViewFooterConstraints(isHidden)
       }
+
+    self.viewModel.outputs.configureRewardsCollectionViewFooterWithCount
+      .observeForUI()
+      .observeValues { [weak self] count in
+        self?.updateRewardsCollectionFooterView(with: count)
+    }
+
+    self.viewModel.outputs.flashScrollIndicators
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.collectionView.flashScrollIndicators()
+    }
+
+    self.rewardsCollectionFooterView.rac.hidden = self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
   }
 
   // MARK: - Functions
@@ -180,8 +196,11 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }
 
   private func updateRewardCollectionViewFooterConstraints(_ isHidden: Bool) {
-    self.collectionViewBottomConstraintSuperview?.isActive = isHidden
-    self.collectionViewBottomConstraintFooterView?.isActive = !isHidden
+    _ = self.collectionViewBottomConstraintSuperview
+      ?|> \.isActive .~ isHidden
+
+    _ = self.collectionViewBottomConstraintFooterView
+      ?|> \.isActive .~ !isHidden
 
     self.view.setNeedsLayout()
   }

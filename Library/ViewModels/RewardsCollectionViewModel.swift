@@ -9,10 +9,13 @@ public protocol RewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?)
   func rewardSelected(with rewardId: Int)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
+  func viewDidAppear()
   func viewDidLoad()
 }
 
 public protocol RewardsCollectionViewModelOutputs {
+  var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
+  var flashScrollIndicators: Signal<Void, Never> { get }
   var goToDeprecatedPledge: Signal<PledgeData, Never> { get }
   var goToPledge: Signal<PledgeData, Never> { get }
   var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
@@ -44,6 +47,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .map { project, rewards in
         rewards.map { (project, Either<Reward, Backing>.left($0)) }
       }
+
+    self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
+      .map { $0.count }
+
+    self.flashScrollIndicators = self.viewDidAppearProperty.signal
 
     let selectedRewardFromId = rewards
       .takePairWhen(self.rewardSelectedWithRewardIdProperty.signal.skipNil())
@@ -92,11 +100,18 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.traitCollectionChangedProperty.value = traitCollection
   }
 
+  private let viewDidAppearProperty = MutableProperty(())
+  public func viewDidAppear() {
+    self.viewDidAppearProperty.value = ()
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
+  public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
+  public let flashScrollIndicators: Signal<Void, Never>
   public let goToDeprecatedPledge: Signal<PledgeData, Never>
   public let goToPledge: Signal<PledgeData, Never>
   public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>

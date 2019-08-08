@@ -69,4 +69,5 @@ private let countLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_footnote()
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.textAlignment .~ .center
+    |> \.backgroundColor .~ UIColor.ksr_grey_200
 }
