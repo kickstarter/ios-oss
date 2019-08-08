@@ -318,11 +318,6 @@
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     </textView>
                                                 </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="UNa-7R-hSQ" firstAttribute="top" secondItem="TO4-sj-xuO" secondAttribute="bottom" constant="20" id="Sti-Bj-0Fc"/>
-                                                    <constraint firstItem="UNa-7R-hSQ" firstAttribute="leading" secondItem="uii-rB-YFM" secondAttribute="leading" constant="40" id="nhR-qO-o6g"/>
-                                                    <constraint firstAttribute="trailing" secondItem="UNa-7R-hSQ" secondAttribute="trailing" constant="40" id="xAL-IV-WVs"/>
-                                                </constraints>
                                             </stackView>
                                         </subviews>
                                     </stackView>

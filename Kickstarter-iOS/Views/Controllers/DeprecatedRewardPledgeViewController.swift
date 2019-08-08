@@ -222,7 +222,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     _ = self.disclaimerTextView
       |> disclaimerTextViewStyle
       |> UITextView.lens.textAlignment .~ .center
-//      |> UITextView.lens.textContainerInset .~ .init(top: 8, left: 30, bottom: 8, right: 30)
+      |> UITextView.lens.textContainerInset .~ .init(
+          top: Styles.gridHalf(1),
+          left: Styles.grid(6),
+          bottom: Styles.gridHalf(1),
+          right: Styles.grid(6)
+    )
 
     _ = self.updatePledgeButton
       |> greenButtonStyle
