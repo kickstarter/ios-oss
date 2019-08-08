@@ -89,6 +89,8 @@ public final class RewardCardContainerView: UIView {
     self.viewModel.outputs.pledgeButtonHidden.observeValues { [weak self] hidden in
       guard let self = self else { return }
 
+      self.pledgeButton.isHidden = hidden
+
       if hidden {
         NSLayoutConstraint.activate(self.pledgeButtonHiddenConstraints)
         NSLayoutConstraint.deactivate(self.pledgeButtonShownConstraints)
