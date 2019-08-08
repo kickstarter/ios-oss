@@ -14,6 +14,10 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call after the view loads and passes the initial TopConstraint constant.
   func initial(topConstraint: CGFloat)
 
+  /// Call when "Content isn't loading right now." is tapped.
+  func pledgeRetryButtonTapped()
+
+  /// Call when the view did appear, and pass the animated parameter.
   func viewDidAppear(animated: Bool)
 
   /// Call when the view will appear, and pass the animated parameter.
@@ -59,7 +63,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let freshProjectAndRefTagEvent = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
-        self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
+        self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false),
+        self.pledgeRetryButtonTappedProperty.signal.mapConst(false)
       ))
       .map(unpack)
       .switchMap { (projectOrParam, refTag, shouldPrefix) in
@@ -78,6 +83,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
 
     self.goToRewards = freshProjectAndRefTag
+      .skip(first: 1)
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, refTag in
         (project, refTag)
@@ -158,6 +164,11 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
   public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
     self.configDataProperty.value = (projectOrParam, refTag)
+  }
+
+  private let pledgeRetryButtonTappedProperty = MutableProperty(())
+  public func pledgeRetryButtonTapped() {
+    self.pledgeRetryButtonTappedProperty.value = ()
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

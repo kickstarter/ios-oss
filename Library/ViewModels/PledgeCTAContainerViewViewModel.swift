@@ -47,7 +47,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .skipNil()
       .map(second)
 
-    self.rootStackViewAnimateIsHidden = project
+    self.rootStackViewAnimateIsHidden = projectOrError
       .ignoreValues()
       .map { false }
 
@@ -55,14 +55,18 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     let pledgeState = Signal.combineLatest(project, backing)
       .map(pledgeCTA(project:backing:))
 
-    self.pledgeRetryButtonIsHidden = projectError
-      .ignoreValues()
-      .map { false }
+    self.pledgeRetryButtonIsHidden = Signal
+      .merge(
+        projectError.ignoreValues().mapConst(false),
+        project.ignoreValues().mapConst(true),
+        self.activityIndicatorIsAnimating.filter(isTrue).mapConst(true)
+    )
 
     self.pledgeCTAButtonIsHidden = Signal
       .merge(
-        project.skip(first: 1).ignoreValues().map { false },
-        self.pledgeRetryButtonIsHidden.negate()
+        project.ignoreValues().mapConst(false),
+        projectError.ignoreValues().mapConst(true),
+        self.activityIndicatorIsAnimating.filter(isTrue).mapConst(true)
     )
 
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }

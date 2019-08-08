@@ -22,6 +22,11 @@ final class PledgeCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var activityIndicatorContainerView: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private(set) lazy var pledgeCTAButton: UIButton = {
     UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -106,7 +111,7 @@ final class PledgeCTAContainerView: UIView {
 
     _ = self.activityIndicator
       |> \.color .~ UIColor.ksr_dark_grey_500
-      |> \.hidesWhenStopped .~ true
+      //|> \.hidesWhenStopped .~ true
   }
 
   // MARK: - View model
@@ -120,15 +125,33 @@ final class PledgeCTAContainerView: UIView {
         self?.pledgeCTAButton.setTitleColor(textColor, for: .normal)
       }
 
-    self.viewModel.outputs.rootStackViewAnimateIsHidden
+//    self.viewModel.outputs.rootStackViewAnimateIsHidden
+//      .observeValues { [weak self] isHidden in
+//        let duration = !isHidden ? 0.0 : 0.18
+//        let alpha: CGFloat = !isHidden ? 0.0 : 1.0
+//        UIView.animate(withDuration: duration, animations: {
+//          _ = self?.activityIndicatorContainerView
+//            ?|> \.alpha .~ alpha
+//        })
+//      }
+
+    self.viewModel.outputs.pledgeCTAButtonIsHidden
+      .observeForUI()
       .observeValues { [weak self] isHidden in
         let duration = isHidden ? 0.0 : 0.18
         let alpha: CGFloat = isHidden ? 0.0 : 1.0
         UIView.animate(withDuration: duration, animations: {
-          _ = self?.rootStackView
+          _ = self?.pledgeCTAButton
             ?|> \.alpha .~ alpha
+
         })
-      }
+    }
+
+    self.viewModel.outputs.activityIndicatorIsAnimating
+      .observeForUI()
+      .observeValues { [weak self] isAnimating in
+        self?.activityIndicatorContainerView.isHidden = !isAnimating
+    }
 
     self.activityIndicator.rac.animating = self.viewModel.outputs.activityIndicatorIsAnimating
     self.pledgeCTAButton.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
@@ -154,28 +177,33 @@ final class PledgeCTAContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = (self.activityIndicator, self)
+    _ = (self.activityIndicator, self.activityIndicatorContainerView)
       |> ksr_addSubviewToParent()
 
     _ = ([self.titleLabel, self.subtitleLabel], self.titleAndSubtitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.titleAndSubtitleStackView, self.spacer, self.pledgeCTAButton, self.pledgeRetryButton],
+    _ = ([self.titleAndSubtitleStackView,
+          self.spacer,
+          self.pledgeCTAButton,
+          self.pledgeRetryButton,
+          self.activityIndicatorContainerView],
          self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.activityIndicator.heightAnchor.constraint(equalToConstant: Layout.ActivityIndicator.height),
-      self.activityIndicator.widthAnchor.constraint(equalTo: self.activityIndicator.heightAnchor),
-      self.activityIndicator.centerXAnchor.constraint(equalTo: self.layoutMarginsGuide.centerXAnchor),
-      self.activityIndicator.centerYAnchor.constraint(equalTo: self.layoutMarginsGuide.centerYAnchor),
+      // swiftlint:disable line_length
+      self.activityIndicator.centerXAnchor.constraint(equalTo: self.activityIndicatorContainerView.centerXAnchor),
+      self.activityIndicator.centerYAnchor.constraint(equalTo: self.activityIndicatorContainerView.centerYAnchor),
+      self.activityIndicatorContainerView.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
+      self.activityIndicatorContainerView.widthAnchor.constraint(equalTo: self.layoutMarginsGuide.widthAnchor),
+      // swiftlint:enable line_length
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
       self.pledgeRetryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
-      self.pledgeRetryButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
-      self.rootStackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor)
+      self.pledgeRetryButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth)
     ])
   }
 }
@@ -217,12 +245,8 @@ private let pledgeRetryButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.backgroundColor(for: .normal) .~ .clear
     |> UIButton.lens.titleColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
     |> UIButton.lens.backgroundColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
-    |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 18.0)
-    |> UIButton.lens.contentEdgeInsets %~~ { _, button in
-      button.traitCollection.verticalSizeClass == .compact
-        ? .init(topBottom: 10.0, leftRight: 12.0)
-        : .init(topBottom: 12.0, leftRight: 16.0)
-    }
+    |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: Styles.grid(3))
+    |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(topBottom: Styles.gridHalf(1))
     |> UIButton.lens.image(for: .normal) %~ { _ in image(named: "icon--refresh-small") }
     |> UIButton.lens.title(for: .normal) %~ { _ in
       return localizedString(
