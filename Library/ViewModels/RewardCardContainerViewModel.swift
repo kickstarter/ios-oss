@@ -150,13 +150,10 @@ private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleTyp
   return .green
 }
 
-private func nonBackedPledgeButtonTitle(project: Project, reward: Reward) -> String {
-  let minimumFormattedAmount = formattedAmountForRewardOrBacking(
-    project: project,
-    rewardOrBacking: .init(left: reward)
-  )
-
-  return Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
+private func nonBackedPledgeButtonTitle(project _: Project, reward: Reward) -> String {
+  return reward == Reward.noReward
+    ? Strings.Make_a_pledge_without_a_reward()
+    : Strings.Select()
 }
 
 private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {

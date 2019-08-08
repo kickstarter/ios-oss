@@ -192,14 +192,14 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "Pledge £6 or more",
-      "Pledge £6 or more",
-      "Pledge £6 or more",
-      "Pledge £6 or more",
+      "Select",
+      "Select",
+      "Select",
+      "Select",
       "No longer available",
       "No longer available",
       "No longer available",
-      "Pledge £1 or more"
+      "Make a pledge without a reward",
     ])
   }
 
@@ -234,14 +234,14 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "Pledge £6 or more",
-      "Pledge £6 or more",
-      "Pledge £6 or more",
-      "Pledge £6 or more",
+      "Select",
+      "Select",
+      "Select",
+      "Select",
       "No longer available",
       "No longer available",
       "No longer available",
-      "Pledge £1 or more"
+      "Make a pledge without a reward",
     ])
   }
 
