@@ -199,7 +199,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       "No longer available",
       "No longer available",
       "No longer available",
-      "Make a pledge without a reward",
+      "Make a pledge without a reward"
     ])
   }
 
@@ -241,7 +241,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       "No longer available",
       "No longer available",
       "No longer available",
-      "Make a pledge without a reward",
+      "Make a pledge without a reward"
     ])
   }
 
