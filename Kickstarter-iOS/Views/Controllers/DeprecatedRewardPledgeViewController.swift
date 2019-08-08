@@ -15,8 +15,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var cardPanelView: UIView!
   @IBOutlet fileprivate var cardView: UIView!
   @IBOutlet fileprivate var changePaymentMethodButton: UIButton!
-  @IBOutlet fileprivate var checkmarkBadgeView: UIView!
-  @IBOutlet fileprivate var checkmarkImageView: UIImageView!
   @IBOutlet fileprivate var continueToPaymentButton: UIButton!
   @IBOutlet fileprivate var conversionLabel: UILabel!
   @IBOutlet fileprivate var countryLabel: UILabel!
@@ -57,6 +55,9 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var titleLabel: UILabel!
   @IBOutlet fileprivate var topStackView: UIStackView!
   @IBOutlet fileprivate var updatePledgeButton: UIButton!
+
+  @IBOutlet fileprivate var dropDownIconImageView: UIImageView!
+  @IBOutlet fileprivate var descriptionTitleLabel: UILabel!
 
   private var sessionStartedObserver: Any?
 
@@ -187,15 +188,10 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
-//    _ = self.cardInnerView
-    //      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
-//      |> UIView.lens.backgroundColor .~ .ksr_grey_100
-
     _ = self.cardPanelView
       |> UIView.lens.backgroundColor .~ .white
 
     _ = self.cardView
-      |> dropShadowStyleMedium()
       |> UIView.lens.layer.shouldRasterize .~ true
       |> UIView.lens.backgroundColor .~ .clear
       |> roundedStyle(cornerRadius: 18)
@@ -204,16 +200,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Change_payment_method() }
 
-    _ = self.checkmarkBadgeView
-      |> UIView.lens.layer.cornerRadius %~~ { _, badge in badge.frame.width / 2 }
-      |> UIView.lens.layer.masksToBounds .~ true
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
-      |> UIView.lens.layer.borderWidth .~ 1
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_green_700
-
-    _ = self.checkmarkImageView
-      |> UIImageView.lens.contentMode .~ .center
-      |> UIImageView.lens.image .~ image(named: "checkmark-icon", tintColor: .white)
+    _ = self.dropDownIconImageView
+      |> UIImageView.lens.tintColor .~ UIColor.ksr_dark_grey_400
 
     _ = self.continueToPaymentButton
       |> greenButtonStyle
@@ -234,12 +222,17 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Update_pledge() }
 
     _ = self.conversionLabel
-      |> UILabel.lens.font .~ UIFont.ksr_caption1().italicized
-      |> UILabel.lens.textColor .~ UIColor.ksr_green_700
+      |> UILabel.lens.font .~ UIFont.ksr_caption1()
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
     _ = self.countryLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ UIColor.ksr_green_500
+
+    _ = self.descriptionTitleLabel
+      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 16).bolded
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
+      |> UILabel.lens.text %~ { _ in Strings.Description() }
 
     _ = self.descriptionLabel
       |> UILabel.lens.contentMode .~ .topLeft
@@ -284,11 +277,11 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.minimumAndConversionStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(1)
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     _ = self.minimumPledgeLabel
       |> UILabel.lens.font .~ .ksr_title2()
-      |> UILabel.lens.textColor .~ UIColor.ksr_green_700
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
     _ = self.orLabel
       |> UILabel.lens.font .~ .ksr_footnote()
@@ -311,7 +304,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self.readMoreLabel
       |> UILabel.lens.backgroundColor .~ .ksr_grey_100
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_green_500
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.text %~ { _ in Strings.ellipsis_more() }
 
@@ -325,13 +318,13 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
         bottom: Styles.grid(2),
         right: Styles.grid(4)
       )
-      |> roundedStyle(cornerRadius: 0)
+      |> roundedStyle(cornerRadius: 6)
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
-      |> UIView.lens.layer.borderWidth .~ 1
+      |> UIView.lens.layer.borderWidth .~ 2
 
     _ = self.pledgeCurrencyLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ UIColor.ksr_green_700
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
     _ = self.pledgeInputStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -368,8 +361,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> baseActivityIndicatorStyle
 
     _ = self.shippingAmountLabel
-      |> UILabel.lens.font .~ .ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.font .~ .ksr_caption1(size: 15)
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriority.required
 
     _ = self.shippingInputStackView
@@ -389,9 +382,9 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIView.lens.layoutMargins .~ .init(
         top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(4)
       )
-      |> roundedStyle(cornerRadius: 0)
+      |> roundedStyle(cornerRadius: 6)
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
-      |> UIView.lens.layer.borderWidth .~ 1
+      |> UIView.lens.layer.borderWidth .~ 2
 
     _ = self.shippingDestinationButton
       |> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_navy_200
