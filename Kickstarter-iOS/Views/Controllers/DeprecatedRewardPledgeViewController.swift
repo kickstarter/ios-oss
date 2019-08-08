@@ -587,8 +587,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     for (idx, item) in allItems.enumerated() {
       let label = UILabel()
-        |> UILabel.lens.font .~ (idx == 0 ? .ksr_headline(size: 13) : .ksr_body(size: 14))
-        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_soft_black : .ksr_text_dark_grey_500)
+        |> UILabel.lens.font .~ (idx == 0 ? UIFont.ksr_caption1(size: 16).bolded : .ksr_body(size: 14))
+        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_text_dark_grey_400 : .ksr_text_dark_grey_500)
         |> UILabel.lens.text .~ item
         |> UILabel.lens.numberOfLines .~ 0
 

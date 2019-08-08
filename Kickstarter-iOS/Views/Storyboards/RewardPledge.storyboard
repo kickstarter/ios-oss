@@ -164,6 +164,9 @@
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="bgU-kl-VIB" firstAttribute="top" secondItem="zD7-zl-5rs" secondAttribute="bottom" constant="4" id="6xm-ik-Pjs"/>
+                                                </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uii-rB-YFM">
                                                 <rect key="frame" x="0.0" y="208" width="400" height="986.5"/>

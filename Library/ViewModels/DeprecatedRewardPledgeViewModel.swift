@@ -99,6 +99,8 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
   /// Emits a string to be put into the description label.
   var descriptionLabelText: Signal<String, Never> { get }
 
+  var descriptionTitleLabelHidden: Signal<Bool, Never> { get }
+
   /// Emits a boolean that determines if the "different payment method" button is hidden.
   var differentPaymentMethodButtonHidden: Signal<Bool, Never> { get }
 
@@ -282,6 +284,9 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
       .map(applePayButtonHiddenFor(applePayCapable:project:))
 
     self.differentPaymentMethodButtonHidden = self.applePayButtonHidden
+
+    self.descriptionTitleLabelHidden = reward
+      .map { $0.description == "" || $0 == Reward.noReward }
 
     self.continueToPaymentsButtonHidden = Signal.combineLatest(applePayCapable, project)
       .map { applePayCapable, project in
@@ -919,6 +924,9 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
   public var descriptionLabelText: Signal<String, Never> {
     return self.rewardViewModel.outputs.descriptionLabelText
   }
+
+  public let descriptionTitleLabelHidden: Signal<Bool, Never>
+
 
   public let differentPaymentMethodButtonHidden: Signal<Bool, Never>
   public let dismissViewController: Signal<(), Never>
