@@ -58,9 +58,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .takePairWhen(pledgeTotal)
       .map { project, total in (project, total) }
 
-    self.configurePaymentMethodsViewControllerWithUser = Signal.merge(projectAndReward.ignoreValues(), self.userSessionStartedSignal)
-      .map { _ in AppEnvironment.current.currentUser }
-      .skipNil()
+    self.configurePaymentMethodsViewControllerWithUser = Signal.merge(
+      projectAndReward.ignoreValues(),
+      self.userSessionStartedSignal
+    )
+    .map { _ in AppEnvironment.current.currentUser }
+    .skipNil()
 
     self.continueViewHidden = isLoggedIn
     self.paymentMethodsViewHidden = isLoggedIn.negate()
