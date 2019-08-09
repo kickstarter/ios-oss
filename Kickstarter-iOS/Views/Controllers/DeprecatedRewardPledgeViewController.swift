@@ -192,26 +192,17 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIView.lens.backgroundColor .~ .white
 
     _ = self.cardInnerView
-    |> roundedStyle(cornerRadius: 18.0)
-
-
+      |> roundedStyle(cornerRadius: 18.0)
 
     _ = self.cardView.layer
-//      |> \.masksToBounds .~ true
-      |> \.shouldRasterize .~ true
       |> \.shadowColor .~ UIColor.ksr_green_500.cgColor
-      |> \.shadowOpacity .~ 0.3
+      |> \.shadowOpacity .~ 0.15
       |> \.shadowOffset .~ CGSize(width: 0.0, height: 0.0)
-      |> \.shadowRadius .~ 4.0
-//      |> \.cornerRadius .~ 18.0
-//      |> \.masksToBounds .~ true
-
+      |> \.shadowRadius .~ 6.0
+      |> \.cornerRadius .~ 18.0
 
     _ = self.cardView
       |> UIView.lens.backgroundColor .~ .clear
-
-
-//      |> \.maskedCorners .~ [CACornerMask.layerMaxXMinYCorner, CACornerMask.layerMinXMinYCorner]
 
     _ = self.changePaymentMethodButton
       |> greyButtonStyle
