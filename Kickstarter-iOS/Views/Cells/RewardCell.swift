@@ -145,4 +145,5 @@ private let scrollViewStyle: ScrollStyle = { scrollView in
     |> \.backgroundColor .~ .clear
     |> \.contentInset .~ .init(topBottom: Styles.grid(6))
     |> \.showsVerticalScrollIndicator .~ false
+    |> \.contentInsetAdjustmentBehavior .~ .never
 }
