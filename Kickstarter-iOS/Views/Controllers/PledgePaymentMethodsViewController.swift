@@ -4,11 +4,6 @@ import PassKit
 import Prelude
 import UIKit
 
-protocol PledgeViewControllerMessageDisplaying: class {
-  func pledgeViewController(_ pledgeViewController: UIViewController, didErrorWith message: String)
-  func pledgeViewController(_ pledgeViewController: UIViewController, didSucceedWith message: String)
-}
-
 final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
 
@@ -103,7 +98,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
         guard let self = self else { return }
 
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
-    }
+      }
   }
 
   // MARK: - Actions

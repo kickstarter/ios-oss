@@ -53,6 +53,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   private lazy var paymentMethodsViewController = {
     PledgePaymentMethodsViewController.instantiate()
+      |> \.messageDisplayingDelegate .~ self
   }()
 
   private lazy var shippingLocationViewController = {
@@ -262,11 +263,11 @@ extension PledgeViewController: RewardPledgeTransitionAnimatorDelegate {
 }
 
 extension PledgeViewController: PledgeViewControllerMessageDisplaying {
-  func pledgeViewController(_ pledgeViewController: UIViewController, didErrorWith message: String) {
+  func pledgeViewController(_: UIViewController, didErrorWith message: String) {
     self.messageBannerViewController?.showBanner(with: .error, message: message)
   }
 
-  func pledgeViewController(_ pledgeViewController: UIViewController, didSucceedWith message: String) {
+  func pledgeViewController(_: UIViewController, didSucceedWith message: String) {
     self.messageBannerViewController?.showBanner(with: .success, message: message)
   }
 }
