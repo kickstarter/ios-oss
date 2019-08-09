@@ -22,9 +22,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public init() {
     let storedCardsEvent = Signal.combineLatest(
       self.viewDidLoadProperty.signal,
-      self.configureWithUserProperty.signal
+      self.configureWithUserProperty.signal.skipNil()
     )
-    .filter { isNotNil($0.1) }
     .switchMap { _ in
       AppEnvironment.current.apiService
         .fetchGraphCreditCards(query: UserQueries.storedCards.query)
@@ -33,7 +32,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     }
 
     self.reloadPaymentMethods = storedCardsEvent
-      .values().map { $0.me.storedCards.nodes }
+      .values()
+      .map { $0.me.storedCards.nodes }
 
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
