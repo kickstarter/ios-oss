@@ -194,7 +194,9 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
 private func pillStrings(project: Project, reward: Reward) -> [String] {
   var pillStrings: [String] = []
 
-  if let endsAt = reward.endsAt, project.state == .live, endsAt > 0,
+  guard project.state == .live else { return pillStrings }
+
+  if let endsAt = reward.endsAt, endsAt > 0,
     endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
     let (time, unit) = Format.duration(
       secondsInUTC: min(endsAt, project.dates.deadline),
@@ -205,8 +207,12 @@ private func pillStrings(project: Project, reward: Reward) -> [String] {
     pillStrings.append(Strings.Time_left_left(time_left: time + " " + unit))
   }
 
-  if let remaining = reward.remaining, reward.limit != nil, project.state == .live {
+  if let remaining = reward.remaining, reward.limit != nil {
     pillStrings.append(Strings.Left_count_left(left_count: remaining))
+  }
+
+  if reward.shipping.enabled, let shippingSummary = reward.shipping.summary {
+    pillStrings.append(shippingSummary)
   }
 
   return pillStrings
