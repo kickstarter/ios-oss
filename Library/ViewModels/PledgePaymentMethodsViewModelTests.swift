@@ -18,14 +18,15 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.reloadPaymentMethods.observe(self.reloadPaymentMethods.observer)
   }
 
-  func testReloadPaymentMethods() {
+  func testReloadPaymentMethods_LoggedIn() {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
 
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.viewDidLoad()
-
+    withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethods.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(User.template)
+      self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
 
@@ -33,12 +34,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testReloadPaymentMethods_Error() {
+  func testReloadPaymentMethods_Error_LoggedIn() {
     let error = GraphResponseError(message: "Something went wrong")
     let apiService = MockService(fetchGraphCreditCardsError: GraphError.decodeError(error))
 
-    withEnvironment(apiService: apiService) {
+    withEnvironment(apiService: apiService, currentUser: User.template) {
+      self.reloadPaymentMethods.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(User.template)
       self.vm.inputs.viewDidLoad()
+
       self.reloadPaymentMethods.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
 
@@ -46,6 +51,22 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.reloadPaymentMethods.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertValue("Something went wrong")
+    }
+  }
+
+  func testReloadPaymentMethods_LoggedOut() {
+    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+
+    withEnvironment(apiService: mockService, currentUser: nil) {
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadPaymentMethods.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
     }
   }
 }

@@ -12,6 +12,7 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
+  var configurePaymentMethodsViewControllerWithUser: Signal<User, Never> { get }
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
   var continueViewHidden: Signal<Bool, Never> { get }
@@ -57,6 +58,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .takePairWhen(pledgeTotal)
       .map { project, total in (project, total) }
 
+    self.configurePaymentMethodsViewControllerWithUser = Signal.merge(projectAndReward.ignoreValues(), self.userSessionStartedSignal)
+      .map { _ in AppEnvironment.current.currentUser }
+      .skipNil()
+
     self.continueViewHidden = isLoggedIn
     self.paymentMethodsViewHidden = isLoggedIn.negate()
     self.shippingLocationViewHidden = reward
@@ -89,6 +94,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
+  public let configurePaymentMethodsViewControllerWithUser: Signal<User, Never>
   public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
   public let continueViewHidden: Signal<Bool, Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>

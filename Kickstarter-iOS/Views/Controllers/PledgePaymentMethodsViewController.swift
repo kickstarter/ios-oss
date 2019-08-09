@@ -101,6 +101,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
       }
   }
 
+  // MARK: - Configuration
+
+  func configureWith(_ user: User) {
+    self.viewModel.inputs.configureWith(user)
+  }
+
   // MARK: - Actions
 
   @objc private func applePayButtonTapped() {
@@ -124,8 +130,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     _ = (cardViews + [addNewCardView], self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
-
-    self.view.setNeedsLayout()
   }
 
   // MARK: - Styles

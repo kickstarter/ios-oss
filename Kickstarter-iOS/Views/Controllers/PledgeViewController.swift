@@ -196,6 +196,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.summaryViewController.configureWith(value: (project, pledgeTotal))
       }
 
+    self.viewModel.outputs.configurePaymentMethodsViewControllerWithUser
+      .observeForUI()
+      .observeValues { [weak self] user in
+        self?.paymentMethodsViewController.configureWith(user)
+    }
+
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()

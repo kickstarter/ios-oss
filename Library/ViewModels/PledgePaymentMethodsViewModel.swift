@@ -3,6 +3,7 @@ import Prelude
 import ReactiveSwift
 
 public protocol PledgePaymentMethodsViewModelInputs {
+  func configureWith(_ user: User)
   func viewDidLoad()
 }
 
@@ -19,8 +20,11 @@ public protocol PledgePaymentMethodsViewModelType {
 public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelType,
   PledgePaymentMethodsViewModelInputs, PledgePaymentMethodsViewModelOutputs {
   public init() {
-    let storedCardsEvent = self.viewDidLoadProperty.signal
-      .switchMap {
+    let storedCardsEvent = Signal.combineLatest(
+      self.viewDidLoadProperty.signal,
+      self.configureWithUserProperty.signal)
+      .filter { isNotNil($0.1) }
+      .switchMap { _ in
         AppEnvironment.current.apiService
           .fetchGraphCreditCards(query: UserQueries.storedCards.query)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -33,6 +37,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
       .map { $0.localizedDescription }
+  }
+
+  private let configureWithUserProperty = MutableProperty<User?>(nil)
+  public func configureWith(_ user: User) {
+    self.configureWithUserProperty.value = user
   }
 
   private let viewDidLoadProperty = MutableProperty(())
