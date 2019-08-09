@@ -92,11 +92,11 @@ public final class RewardCardContainerView: UIView {
       self.pledgeButton.isHidden = hidden
 
       if hidden {
-        NSLayoutConstraint.activate(self.pledgeButtonHiddenConstraints)
         NSLayoutConstraint.deactivate(self.pledgeButtonShownConstraints)
+        NSLayoutConstraint.activate(self.pledgeButtonHiddenConstraints)
       } else {
-        NSLayoutConstraint.activate(self.pledgeButtonShownConstraints)
         NSLayoutConstraint.deactivate(self.pledgeButtonHiddenConstraints)
+        NSLayoutConstraint.activate(self.pledgeButtonShownConstraints)
       }
     }
 
