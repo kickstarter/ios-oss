@@ -391,7 +391,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self.rootStackView
       |> UIStackView.lens.layoutMargins .~ .init(
-        topBottom: Styles.grid(4) + Styles.grid(2),
+        topBottom: Styles.grid(2) + Styles.grid(2),
         leftRight: Styles.grid(2) + 1
       )
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
