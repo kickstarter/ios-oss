@@ -30,6 +30,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var navigationBarShadowImage: UIImage? = { newShadowImage(with: .ksr_dark_grey_400) }()
+
   private var collectionViewBottomConstraintSuperview: NSLayoutConstraint?
   private var collectionViewBottomConstraintFooterView: NSLayoutConstraint?
 
@@ -95,6 +97,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
     guard let layout = self.flowLayout else { return }
 
     self.updateHiddenScrollViewBoundsIfNeeded(for: layout)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
   }
 
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -167,6 +175,15 @@ final class RewardsCollectionViewController: UICollectionViewController {
       }
 
     self.rewardsCollectionFooterView.rac.hidden = self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
+
+    self.viewModel.outputs.navigationBarShadowImageHidden
+      .observeForUI()
+      .observeValues { [weak self] hidden in
+        guard let self = self else { return }
+        self.navigationController?.navigationBar.shadowImage = hidden
+          ? UIImage()
+          : self.navigationBarShadowImage
+      }
   }
 
   // MARK: - Functions
@@ -307,11 +324,29 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
   }
 
-  // MARK: - Public Functions
+  // MARK: - Actions
 
   @objc func closeButtonTapped() {
     self.navigationController?.dismiss(animated: true)
   }
+}
+
+// MARK: - Functions
+
+private func newShadowImage(with color: UIColor) -> UIImage? {
+  let rect = CGRect(x: 0, y: 0, width: 1, height: 0.5)
+
+  UIGraphicsBeginImageContext(rect.size)
+
+  guard let context = UIGraphicsGetCurrentContext() else { return nil }
+
+  context.setFillColor(color.cgColor)
+  context.fill(rect)
+
+  let image = UIGraphicsGetImageFromCurrentImageContext()
+  UIGraphicsEndImageContext()
+
+  return image
 }
 
 // MARK: - UICollectionViewDelegate
@@ -366,6 +401,10 @@ extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
 extension RewardsCollectionViewController: RewardCellDelegate {
   func rewardCellDidTapPledgeButton(_: RewardCell, rewardId: Int) {
     self.viewModel.inputs.rewardSelected(with: rewardId)
+  }
+
+  func rewardCell(_: RewardCell, shouldShowDividerLine show: Bool) {
+    self.viewModel.inputs.rewardCellShouldShowDividerLine(show)
   }
 }
 

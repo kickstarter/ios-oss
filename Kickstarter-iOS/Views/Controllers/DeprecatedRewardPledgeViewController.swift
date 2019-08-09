@@ -184,8 +184,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    if !featureNativeCheckoutEnabled() {
+      _ = self
+        |> baseControllerStyle()
+    }
+
     _ = self
-      |> baseControllerStyle()
       |> DeprecatedRewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_600
 
     _ = self.applePayButton
@@ -394,9 +398,10 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     _ = self.scrollView
-      |> UIScrollView.lens.layoutMargins .~ .init(all: Styles.grid(2))
+      |> UIScrollView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
       |> UIScrollView.lens.delaysContentTouches .~ false
       |> UIScrollView.lens.keyboardDismissMode .~ .interactive
+      |> \.contentInset .~ .init(topBottom: Styles.grid(2))
 
     _ = self.separatorViews
       ||> separatorStyle
