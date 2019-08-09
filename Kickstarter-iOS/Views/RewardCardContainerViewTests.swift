@@ -301,6 +301,16 @@ let allRewards: [(String, Reward)] = {
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.endsAt .~ nil
+  let availableShippingEnabledReward = Reward.postcards
+    |> Reward.lens.limit .~ 100
+    |> Reward.lens.remaining .~ 25
+    |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+    |> Reward.lens.shipping .~ (
+      .template
+        |> Reward.Shipping.lens.enabled .~ true
+        |> Reward.Shipping.lens.preference .~ .restricted
+        |> Reward.Shipping.lens.summary .~ "Anywhere in the world"
+    )
 
   let unavailableLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
@@ -313,15 +323,27 @@ let allRewards: [(String, Reward)] = {
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 0
     |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+  let unavailableShippingEnabledReward = Reward.postcards
+    |> Reward.lens.limit .~ 100
+    |> Reward.lens.remaining .~ 0
+    |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+    |> Reward.lens.shipping .~ (
+      .template
+        |> Reward.Shipping.lens.enabled .~ true
+        |> Reward.Shipping.lens.preference .~ .restricted
+        |> Reward.Shipping.lens.summary .~ "Anywhere in the world"
+    )
 
   return [
     ("AvailableLimitedReward", availableLimitedReward),
     ("AvailableTimebasedReward", availableTimebasedReward),
     ("AvailableLimitedTimebasedReward", availableLimitedTimebasedReward),
     ("AvailableNonLimitedReward", availableNonLimitedReward),
+    ("AvailableShippingEnabledReward", availableShippingEnabledReward),
     ("UnavailableLimitedReward", unavailableLimitedReward),
     ("UnavailableTimebasedReward", unavailableTimebasedReward),
     ("UnavailableLimitedTimebasedReward", unavailableLimitedTimebasedReward),
+    ("UnavailableShippingEnabledReward", unavailableShippingEnabledReward),
     ("NoReward", Reward.noReward)
   ]
 }()
