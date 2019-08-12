@@ -30,7 +30,9 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var navigationBarShadowImage: UIImage? = { newShadowImage(with: .ksr_dark_grey_400) }()
+  private lazy var navigationBarShadowImage: UIImage? = {
+    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
+  }()
 
   private var collectionViewBottomConstraintSuperview: NSLayoutConstraint?
   private var collectionViewBottomConstraintFooterView: NSLayoutConstraint?
@@ -332,22 +334,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
 }
 
 // MARK: - Functions
-
-private func newShadowImage(with color: UIColor) -> UIImage? {
-  let rect = CGRect(x: 0, y: 0, width: 1, height: 0.5)
-
-  UIGraphicsBeginImageContext(rect.size)
-
-  guard let context = UIGraphicsGetCurrentContext() else { return nil }
-
-  context.setFillColor(color.cgColor)
-  context.fill(rect)
-
-  let image = UIGraphicsGetImageFromCurrentImageContext()
-  UIGraphicsEndImageContext()
-
-  return image
-}
 
 // MARK: - UICollectionViewDelegate
 
