@@ -36,6 +36,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   fileprivate let conversionLabelHidden = TestObserver<Bool, Never>()
   fileprivate let conversionLabelText = TestObserver<String, Never>()
   fileprivate let countryLabelText = TestObserver<String, Never>()
+  fileprivate let descriptionTitleLabelHidden = TestObserver<Bool, Never>()
   fileprivate let descriptionLabelText = TestObserver<String, Never>()
   fileprivate let differentPaymentMethodButtonHidden = TestObserver<Bool, Never>()
   fileprivate let dismissViewController = TestObserver<(), Never>()
@@ -88,6 +89,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.countryLabelText.observe(self.countryLabelText.observer)
+    self.vm.outputs.descriptionTitleLabelHidden.observe(self.descriptionTitleLabelHidden.observer)
     self.vm.outputs.descriptionLabelText.observe(self.descriptionLabelText.observer)
     self.vm.outputs.differentPaymentMethodButtonHidden
       .observe(self.differentPaymentMethodButtonHidden.observer)
@@ -2782,5 +2784,16 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.inputs.willMove(toParent: nil)
 
     XCTAssertEqual(["Reward Checkout", "Selected Reward", "Closed Reward"], self.trackingClient.events)
+  }
+
+  func testDescriptionTitleLabelHidden() {
+    let reward = .template
+      |> Reward.lens.description .~ ""
+
+    self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.descriptionLabelText.assertValues([reward.description])
+    self.descriptionTitleLabelHidden.assertValues([true])
   }
 }

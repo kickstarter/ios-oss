@@ -926,8 +926,6 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
   }
 
   public let descriptionTitleLabelHidden: Signal<Bool, Never>
-
-
   public let differentPaymentMethodButtonHidden: Signal<Bool, Never>
   public let dismissViewController: Signal<(), Never>
   public let estimatedDeliveryDateLabelText: Signal<String, Never>
