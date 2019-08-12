@@ -80,21 +80,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
-  fileprivate var statusBarHidden = true
-  override var prefersStatusBarHidden: Bool {
-    return self.statusBarHidden
-  }
-
-  override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-    return .slide
-  }
-
-  internal override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    self.statusBarHidden = false
-    UIView.animate(withDuration: 0.3, animations: { self.setNeedsStatusBarAppearanceUpdate() })
-  }
-
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
