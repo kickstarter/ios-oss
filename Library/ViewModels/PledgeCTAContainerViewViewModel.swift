@@ -8,13 +8,12 @@ public protocol PledgeCTAContainerViewViewModelInputs {
 }
 
 public protocol PledgeCTAContainerViewViewModelOutputs {
-  var activityIndicatorIsAnimating: Signal<Bool, Never> { get }
+  var activityIndicatorIsHidden: Signal<Bool, Never> { get }
   var buttonBackgroundColor: Signal<UIColor, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
   var buttonTitleTextColor: Signal<UIColor, Never> { get }
   var pledgeCTAButtonIsHidden: Signal<Bool, Never> { get }
   var pledgeRetryButtonIsHidden: Signal<Bool, Never> { get }
-  var rootStackViewAnimateIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
   var subtitleText: Signal<String, Never> { get }
@@ -43,13 +42,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .map(Either.right)
       .skipNil()
 
-    self.activityIndicatorIsAnimating = self.configureWithValueProperty.signal
+    self.activityIndicatorIsHidden = self.configureWithValueProperty.signal
       .skipNil()
       .map(second)
-
-    self.rootStackViewAnimateIsHidden = projectOrError
-      .ignoreValues()
-      .map { false }
+      .negate()
 
     let backing = project.map { $0.personalization.backing }
     let pledgeState = Signal.combineLatest(project, backing)
@@ -59,14 +55,14 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .merge(
         projectError.ignoreValues().mapConst(false),
         project.ignoreValues().mapConst(true),
-        self.activityIndicatorIsAnimating.filter(isTrue).mapConst(true)
+        self.activityIndicatorIsHidden.filter(isFalse).mapConst(true)
     )
 
     self.pledgeCTAButtonIsHidden = Signal
       .merge(
         project.ignoreValues().mapConst(false),
         projectError.ignoreValues().mapConst(true),
-        self.activityIndicatorIsAnimating.filter(isTrue).mapConst(true)
+        self.activityIndicatorIsHidden.filter(isFalse).mapConst(true)
     )
 
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
@@ -89,13 +85,12 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public var inputs: PledgeCTAContainerViewViewModelInputs { return self }
   public var outputs: PledgeCTAContainerViewViewModelOutputs { return self }
 
-  public let activityIndicatorIsAnimating: Signal<Bool, Never>
+  public let activityIndicatorIsHidden: Signal<Bool, Never>
   public let buttonBackgroundColor: Signal<UIColor, Never>
   public let buttonTitleText: Signal<String, Never>
   public let buttonTitleTextColor: Signal<UIColor, Never>
   public let pledgeCTAButtonIsHidden: Signal<Bool, Never>
   public let pledgeRetryButtonIsHidden: Signal<Bool, Never>
-  public let rootStackViewAnimateIsHidden: Signal<Bool, Never>
   public let spacerIsHidden: Signal<Bool, Never>
   public let stackViewIsHidden: Signal<Bool, Never>
   public let subtitleText: Signal<String, Never>

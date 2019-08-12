@@ -9,7 +9,7 @@ import XCTest
 internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
-  let activityIndicatorIsAnimating = TestObserver<Bool, Never>()
+  let activityIndicatorIsHidden = TestObserver<Bool, Never>()
   let buttonBackgroundColor = TestObserver<UIColor, Never>()
   let buttonTitleText = TestObserver<String, Never>()
   let buttonTitleTextColor = TestObserver<UIColor, Never>()
@@ -21,7 +21,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.activityIndicatorIsAnimating.observe(self.activityIndicatorIsAnimating.observer)
+    self.vm.outputs.activityIndicatorIsHidden.observe(self.activityIndicatorIsHidden.observer)
     self.vm.outputs.buttonBackgroundColor.observe(self.buttonBackgroundColor.observer)
     self.vm.outputs.buttonTitleText.observe(self.buttonTitleText.observer)
     self.vm.outputs.buttonTitleTextColor.observe(self.buttonTitleTextColor.observer)

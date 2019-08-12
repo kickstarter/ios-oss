@@ -111,7 +111,8 @@ final class PledgeCTAContainerView: UIView {
 
     _ = self.activityIndicator
       |> \.color .~ UIColor.ksr_dark_grey_500
-      //|> \.hidesWhenStopped .~ true
+
+    self.activityIndicator.startAnimating()
   }
 
   // MARK: - View model
@@ -125,35 +126,18 @@ final class PledgeCTAContainerView: UIView {
         self?.pledgeCTAButton.setTitleColor(textColor, for: .normal)
       }
 
-//    self.viewModel.outputs.rootStackViewAnimateIsHidden
-//      .observeValues { [weak self] isHidden in
-//        let duration = !isHidden ? 0.0 : 0.18
-//        let alpha: CGFloat = !isHidden ? 0.0 : 1.0
-//        UIView.animate(withDuration: duration, animations: {
-//          _ = self?.activityIndicatorContainerView
-//            ?|> \.alpha .~ alpha
-//        })
-//      }
-
     self.viewModel.outputs.pledgeCTAButtonIsHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
-        let duration = isHidden ? 0.0 : 0.18
-        let alpha: CGFloat = isHidden ? 0.0 : 1.0
-        UIView.animate(withDuration: duration, animations: {
-          _ = self?.pledgeCTAButton
-            ?|> \.alpha .~ alpha
-
-        })
+        self?.animateView(self?.pledgeCTAButton, isHidden: isHidden)
     }
 
-    self.viewModel.outputs.activityIndicatorIsAnimating
+    self.viewModel.outputs.activityIndicatorIsHidden
       .observeForUI()
-      .observeValues { [weak self] isAnimating in
-        self?.activityIndicatorContainerView.isHidden = !isAnimating
+      .observeValues { [weak self] isHidden in
+        self?.activityIndicatorContainerView.isHidden = isHidden
     }
 
-    self.activityIndicator.rac.animating = self.viewModel.outputs.activityIndicatorIsAnimating
     self.pledgeCTAButton.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
     self.pledgeCTAButton.rac.backgroundColor = self.viewModel.outputs.buttonBackgroundColor
     self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText
@@ -205,6 +189,15 @@ final class PledgeCTAContainerView: UIView {
       self.pledgeRetryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.pledgeRetryButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth)
     ])
+  }
+
+  fileprivate func animateView(_ view: UIView?, isHidden: Bool) {
+    let duration = isHidden ? 0.0 : 0.18
+    let alpha: CGFloat = isHidden ? 0.0 : 1.0
+    UIView.animate(withDuration: duration, animations: {
+      _ = view
+        ?|> \.alpha .~ alpha
+    })
   }
 }
 
