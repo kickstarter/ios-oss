@@ -8,13 +8,18 @@ public typealias PledgeData = (project: Project, reward: Reward, refTag: RefTag?
 public protocol RewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?)
   func rewardSelected(with rewardId: Int)
+  func traitCollectionDidChange(_ traitCollection: UITraitCollection)
+  func viewDidAppear()
   func viewDidLoad()
 }
 
 public protocol RewardsCollectionViewModelOutputs {
+  var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
+  var flashScrollIndicators: Signal<Void, Never> { get }
   var goToDeprecatedPledge: Signal<PledgeData, Never> { get }
   var goToPledge: Signal<PledgeData, Never> { get }
   var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
+  var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   func selectedReward() -> Reward?
 }
 
@@ -43,6 +48,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         rewards.map { (project, Either<Reward, Backing>.left($0)) }
       }
 
+    self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
+      .map { $0.count }
+
+    self.flashScrollIndicators = self.viewDidAppearProperty.signal
+
     let selectedRewardFromId = rewards
       .takePairWhen(self.rewardSelectedWithRewardIdProperty.signal.skipNil())
       .map { rewards, rewardId in
@@ -69,6 +79,10 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     self.goToDeprecatedPledge = goToPledge
       .filter { _ in !featureNativeCheckoutPledgeViewEnabled() }
+
+    self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
+      .skipNil()
+      .map { isFalse($0.verticalSizeClass == .regular) }
   }
 
   private let configDataProperty = MutableProperty<(Project, RefTag?)?>(nil)
@@ -81,14 +95,27 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.rewardSelectedWithRewardIdProperty.value = rewardId
   }
 
+  private let traitCollectionChangedProperty = MutableProperty<UITraitCollection?>(nil)
+  public func traitCollectionDidChange(_ traitCollection: UITraitCollection) {
+    self.traitCollectionChangedProperty.value = traitCollection
+  }
+
+  private let viewDidAppearProperty = MutableProperty(())
+  public func viewDidAppear() {
+    self.viewDidAppearProperty.value = ()
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
+  public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
+  public let flashScrollIndicators: Signal<Void, Never>
   public let goToDeprecatedPledge: Signal<PledgeData, Never>
   public let goToPledge: Signal<PledgeData, Never>
   public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>
+  public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
 
   private let selectedRewardProperty = MutableProperty<Reward?>(nil)
   public func selectedReward() -> Reward? {
