@@ -11,6 +11,8 @@ import XCTest
 final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
 
+  private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
+
   private let configureSummaryCellWithDataPledgeTotal = TestObserver<Double, Never>()
   private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
 
@@ -23,6 +25,9 @@ final class PledgeViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
+
+    self.vm.outputs.configurePaymentMethodsViewControllerWithUser
+      .observe(self.configurePaymentMethodsViewControllerWithUser.observer)
 
     self.vm.outputs.configureSummaryViewControllerWithData.map(second)
       .observe(self.configureSummaryCellWithDataPledgeTotal.observer)
@@ -48,6 +53,8 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
 
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
@@ -67,6 +74,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -89,6 +98,8 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
 
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
@@ -109,6 +120,8 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
 
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
@@ -128,6 +141,8 @@ final class PledgeViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -156,6 +171,8 @@ final class PledgeViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -193,6 +210,8 @@ final class PledgeViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -235,6 +254,8 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
 
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
@@ -244,6 +265,8 @@ final class PledgeViewModelTests: TestCase {
 
       withEnvironment(currentUser: user) {
         self.vm.inputs.userSessionStarted()
+
+        self.configurePaymentMethodsViewControllerWithUser.assertValues([user])
 
         self.configureWithPledgeViewDataProject.assertValues([project])
         self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -263,6 +286,8 @@ final class PledgeViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: project, reward: reward)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
