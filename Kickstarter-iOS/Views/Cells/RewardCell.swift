@@ -58,6 +58,13 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> \.isActive .~ true
 
     self.rewardCardContainerView.pinBottomViews(to: self.contentView.layoutMarginsGuide)
+
+    NSLayoutConstraint.activate([
+      self.rewardCardContainerView.gradientView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
+      self.rewardCardContainerView.gradientView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
+      self.rewardCardContainerView.gradientView.bottomAnchor
+        .constraint(equalTo: self.contentView.bottomAnchor)
+      ])
   }
 
   override func bindStyles() {

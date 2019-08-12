@@ -93,9 +93,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
     if itemSize != layout.itemSize {
       layout.invalidateLayout()
     }
-
-    print("***COLLECTION VIEW: \(self.collectionView.frame)")
-    print("***ITEM SIZE: \(self.flowLayout?.itemSize)")
   }
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -183,19 +180,14 @@ final class RewardsCollectionViewController: UICollectionViewController {
     using collectionView: UICollectionView
     ) -> CGSize {
 
-    print("CALCULATE ITEM SIZE: \(self.collectionView.frame)")
-
-    let cardWidth = CheckoutConstants.RewardCard.Layout.width
-
     let sectionInsets = layout.sectionInset
     let adjustedContentInset = collectionView.adjustedContentInset
 
     let topBottomSectionInsets = sectionInsets.top + sectionInsets.bottom
     let topBottomContentInsets = adjustedContentInset.top + adjustedContentInset.bottom
-    let leftRightInsets = sectionInsets.left + sectionInsets.right
 
     let itemHeight = collectionView.frame.height - topBottomSectionInsets - topBottomContentInsets
-    let itemWidth = cardWidth - leftRightInsets
+    let itemWidth = CheckoutConstants.RewardCard.Layout.width
 
     return CGSize(width: itemWidth, height: itemHeight)
   }

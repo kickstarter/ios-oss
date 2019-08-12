@@ -15,7 +15,7 @@ public final class RewardCardContainerView: UIView {
 
   private let viewModel: RewardCardContainerViewModelType = RewardCardContainerViewModel()
 
-  private let gradientView: GradientView = {
+  let gradientView: GradientView = {
     GradientView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -206,12 +206,7 @@ public final class RewardCardContainerView: UIView {
     self.pledgeButtonMarginConstraints = pledgeButtonMarginConstraints
 
     NSLayoutConstraint.activate([
-      self.gradientView.leftAnchor.constraint(equalTo: layoutMarginsGuide.leftAnchor),
-      self.gradientView.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor),
-      self.gradientView.topAnchor.constraint(equalTo: self.pledgeButton.topAnchor, constant: -minTouchSize),
-      self.gradientView.bottomAnchor.constraint(
-        equalTo: self.pledgeButton.bottomAnchor, constant: minTouchSize / 2
-      )
+      self.gradientView.topAnchor.constraint(equalTo: self.pledgeButton.topAnchor, constant: -minTouchSize)
     ])
   }
 
