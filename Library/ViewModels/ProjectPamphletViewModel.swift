@@ -83,7 +83,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
 
     self.goToRewards = freshProjectAndRefTag
-      .skip(first: 1)
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, refTag in
         (project, refTag)
