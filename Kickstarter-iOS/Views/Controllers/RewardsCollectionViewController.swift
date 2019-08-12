@@ -196,16 +196,11 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }
 
   private func updateRewardCollectionViewFooterConstraints(_ isHidden: Bool) {
-    self.collectionViewBottomConstraintSuperview?.isActive = false
-    self.collectionViewBottomConstraintFooterView?.isActive = false
-
     _ = self.collectionViewBottomConstraintSuperview
       ?|> \.isActive .~ isHidden
 
     _ = self.collectionViewBottomConstraintFooterView
       ?|> \.isActive .~ !isHidden
-
-    self.collectionView.setNeedsLayout()
   }
 
   private func goToPledge(project: Project, reward: Reward, refTag _: RefTag?) {
