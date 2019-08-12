@@ -4,8 +4,6 @@ import Library
 import Prelude
 import ReactiveSwift
 
-private let scrollViewTopInset = Styles.grid(6)
-
 protocol RewardCellDelegate: AnyObject {
   func rewardCellDidTapPledgeButton(_ rewardCell: RewardCell, rewardId: Int)
   func rewardCell(_ rewardCell: RewardCell, shouldShowDividerLine show: Bool)
@@ -122,6 +120,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
 extension RewardCell: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let scrollViewTopInset = scrollView.contentInset.top
+
     let cardContainerViewY = self.rewardCardContainerView.frame.origin.y
     let yOffset = scrollView.contentOffset.y - scrollViewTopInset - cardContainerViewY
     let showDivider = yOffset + scrollViewTopInset >= 0
@@ -160,6 +160,6 @@ private let contentViewStyle: ViewStyle = { view in
 private let scrollViewStyle: ScrollStyle = { scrollView in
   scrollView
     |> \.backgroundColor .~ .clear
-    |> \.contentInset .~ .init(topBottom: scrollViewTopInset)
+    |> \.contentInset .~ .init(topBottom: Styles.grid(6))
     |> \.showsVerticalScrollIndicator .~ false
 }
