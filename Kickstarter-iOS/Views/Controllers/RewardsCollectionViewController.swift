@@ -178,8 +178,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
   private func calculateItemSize(
     from layout: UICollectionViewFlowLayout,
     using collectionView: UICollectionView
-    ) -> CGSize {
-
+  ) -> CGSize {
     let sectionInsets = layout.sectionInset
     let adjustedContentInset = collectionView.adjustedContentInset
 
@@ -251,7 +250,7 @@ extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(
     _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
     sizeForItemAt _: IndexPath
-    ) -> CGSize {
+  ) -> CGSize {
     guard let layout = collectionViewLayout as? UICollectionViewFlowLayout else {
       return .zero
     }

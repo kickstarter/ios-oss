@@ -64,7 +64,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.rewardCardContainerView.gradientView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
       self.rewardCardContainerView.gradientView.bottomAnchor
         .constraint(equalTo: self.contentView.bottomAnchor)
-      ])
+    ])
   }
 
   override func bindStyles() {
