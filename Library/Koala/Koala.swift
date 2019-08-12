@@ -2066,7 +2066,7 @@ private func properties(
   props["update_count"] = project.stats.updatesCount
   props["comments_count"] = project.stats.commentsCount
 
-  let now = MockDate().timeIntervalSince1970
+  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
   props["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
   props["duration"] = Int(round(project.dates.deadline - project.dates.launchedAt))
 
@@ -2102,7 +2102,7 @@ private func properties(
   props["location"] = project.location.name
   props["country"] = project.country.countryCode
 
-  let now = MockDate().timeIntervalSince1970
+  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
   props["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
 
   props["percent_raised"] = project.stats.fundingProgress

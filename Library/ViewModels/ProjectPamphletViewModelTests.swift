@@ -517,7 +517,7 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testbackThisButton_eventTracking() {
-    let config = Config.template |> \.features .~ [Feature.checkout.rawValue: true]
+    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
     let client = MockTrackingClient()
     let project = Project.template
 
