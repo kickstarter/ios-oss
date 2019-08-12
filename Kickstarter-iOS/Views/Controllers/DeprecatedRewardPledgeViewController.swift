@@ -189,20 +189,17 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
     _ = self.cardPanelView
-      |> UIView.lens.backgroundColor .~ .white
+      |> UIView.lens.backgroundColor .~ .clear
 
     _ = self.cardInnerView
       |> roundedStyle(cornerRadius: 18.0)
-
-    _ = self.cardView.layer
-      |> \.shadowColor .~ UIColor.ksr_green_500.cgColor
-      |> \.shadowOpacity .~ 0.15
-      |> \.shadowOffset .~ CGSize(width: 0.0, height: 0.0)
-      |> \.shadowRadius .~ 6.0
-      |> \.cornerRadius .~ 18.0
+      |> UIView.lens.backgroundColor .~ .white
 
     _ = self.cardView
+      |> roundedStyle(cornerRadius: 18.0)
       |> UIView.lens.backgroundColor .~ .clear
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_500.withAlphaComponent(0.06).cgColor
+      |> UIView.lens.layer.borderWidth .~ 6.0
 
     _ = self.changePaymentMethodButton
       |> greyButtonStyle
@@ -596,8 +593,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     for (idx, item) in allItems.enumerated() {
       let label = UILabel()
-        |> UILabel.lens.font .~ (idx == 0 ? UIFont.ksr_caption1(size: 16).bolded : .ksr_body(size: 14))
-        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_text_dark_grey_400 : .ksr_text_dark_grey_500)
+        |> UILabel.lens.font .~ (idx == 0 ? UIFont.ksr_caption1(size: 16).bolded : .ksr_body())
+        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_text_dark_grey_400 : .ksr_soft_black)
         |> UILabel.lens.text .~ item
         |> UILabel.lens.numberOfLines .~ 0
 
