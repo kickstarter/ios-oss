@@ -54,12 +54,10 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   }
 
   private func setupConstraints() {
-    _ = self.rewardCardContainerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)
-      |> \.isActive .~ true
-
     self.rewardCardContainerView.pinBottomViews(to: self.contentView.layoutMarginsGuide)
 
     NSLayoutConstraint.activate([
+      self.rewardCardContainerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor),
       self.rewardCardContainerView.gradientView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
       self.rewardCardContainerView.gradientView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
       self.rewardCardContainerView.gradientView.bottomAnchor
@@ -152,5 +150,5 @@ private let scrollViewStyle: ScrollStyle = { scrollView in
     |> \.backgroundColor .~ .clear
     |> \.contentInset .~ .init(topBottom: Styles.grid(6))
     |> \.showsVerticalScrollIndicator .~ false
-    |> \.contentInsetAdjustmentBehavior .~ .never
+    |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.never
 }

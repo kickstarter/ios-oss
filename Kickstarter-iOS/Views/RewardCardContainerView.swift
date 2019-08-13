@@ -61,8 +61,8 @@ public final class RewardCardContainerView: UIView {
       |> \.endPoint .~ CGPoint(x: 0, y: 1)
 
     let gradient: [(UIColor?, Float)] = [
-      (UIColor.red.withAlphaComponent(0.1), 0.0),
-      (UIColor.red.withAlphaComponent(1.0), 1)
+      (UIColor.white.withAlphaComponent(0.1), 0.0),
+      (UIColor.white.withAlphaComponent(1.0), 1)
     ]
     self.gradientView.setGradient(gradient)
 
