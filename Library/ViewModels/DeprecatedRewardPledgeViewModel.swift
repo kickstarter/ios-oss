@@ -138,6 +138,8 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
   /// Emits when we should go to the trust & safety page.
   var goToTrustAndSafety: Signal<(), Never> { get }
 
+  var managePledgeStackViewHidden: Signal<Bool, Never> { get }
+
   /// Emits an array of strings that are to be loaded into the itemization stack view.
   var items: Signal<[String], Never> { get }
 
@@ -303,6 +305,8 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
       .map { project, reward in !userIsBacking(reward: reward, inProject: project) }
 
     self.changePaymentMethodButtonHidden = self.cancelPledgeButtonHidden
+
+    self.managePledgeStackViewHidden = self.cancelPledgeButtonHidden
 
     self.orLabelHidden = self.cancelPledgeButtonHidden
 
@@ -947,7 +951,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
   public var minimumLabelText: Signal<String, Never> {
     return self.rewardViewModel.outputs.minimumLabelText
   }
-
+  public let managePledgeStackViewHidden: Signal<Bool, Never>
   public let navigationTitle: Signal<String, Never>
   public let orLabelHidden: Signal<Bool, Never>
   public let paddingViewHeightConstant: Signal<CGFloat, Never>

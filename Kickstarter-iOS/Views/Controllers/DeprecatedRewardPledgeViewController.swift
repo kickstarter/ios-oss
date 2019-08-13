@@ -29,10 +29,11 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var itemsStackView: UIStackView!
   @IBOutlet fileprivate var loadingIndicatorView: UIActivityIndicatorView!
   @IBOutlet fileprivate var loadingOverlayView: UIView!
+  @IBOutlet fileprivate var updateStackView: UIStackView!
+  @IBOutlet fileprivate var managePledgeStackView: UIStackView!
   @IBOutlet fileprivate var middleStackView: UIStackView!
   @IBOutlet fileprivate var minimumAndConversionStackView: UIStackView!
   @IBOutlet fileprivate var minimumPledgeLabel: UILabel!
-  @IBOutlet fileprivate var orLabel: UILabel!
   @IBOutlet fileprivate var paddingViewHeightLayoutConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var pledgeButtonsStackView: UIStackView!
   @IBOutlet fileprivate var pledgeContainerView: UIView!
@@ -46,6 +47,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var readMoreLabel: UILabel!
   @IBOutlet fileprivate var rootStackView: UIStackView!
   @IBOutlet fileprivate var scrollView: UIScrollView!
+  @IBOutlet fileprivate var separatorView: UIView!
   @IBOutlet fileprivate var shippingActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet fileprivate var shippingAmountLabel: UILabel!
   @IBOutlet fileprivate var shippingContainerView: UIView!
@@ -282,11 +284,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UILabel.lens.font .~ .ksr_title2()
       |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
-    _ = self.orLabel
-      |> UILabel.lens.font .~ .ksr_footnote()
-      |> UILabel.lens.textColor .~ .ksr_dark_grey_500
-      |> UILabel.lens.text %~ { _ in localizedString(key: "Reward_pledge_or", defaultValue: "– or –") }
-
     _ = self.readMoreContainerView
       |> UIView.lens.backgroundColor .~ .clear
       |> UIView.lens.isUserInteractionEnabled .~ true
@@ -306,6 +303,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UILabel.lens.textColor .~ .ksr_green_500
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.text %~ { _ in Strings.ellipsis_more() }
+
+    _ = self.separatorView
+      |> separatorStyle
+
+    _ = self.updateStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(5)
 
     _ = self.pledgeButtonsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -422,9 +425,10 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       = self.viewModel.outputs.fulfillmentAndShippingFooterStackViewHidden
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.pledgeIsLoading
     self.loadingOverlayView.rac.hidden = self.viewModel.outputs.loadingOverlayIsHidden
+    self.separatorView.rac.hidden = self.viewModel.outputs.managePledgeStackViewHidden
+    self.managePledgeStackView.rac.hidden = self.viewModel.outputs.managePledgeStackViewHidden
     self.minimumPledgeLabel.rac.text = self.viewModel.outputs.minimumLabelText
     self.navigationItem.rac.title = self.viewModel.outputs.navigationTitle
-    self.orLabel.rac.hidden = self.viewModel.outputs.orLabelHidden
     self.pledgeCurrencyLabel.rac.text = self.viewModel.outputs.pledgeCurrencyLabelText
     self.pledgeTextField.rac.text = self.viewModel.outputs.pledgeTextFieldText
     self.readMoreContainerView.rac.hidden = self.viewModel.outputs.readMoreContainerViewHidden
@@ -434,6 +438,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.titleLabel.rac.hidden = self.viewModel.outputs.titleLabelHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
     self.updatePledgeButton.rac.hidden = self.viewModel.outputs.updatePledgeButtonHidden
+    self.updateStackView.rac.hidden = self.viewModel.outputs.updatePledgeButtonHidden
 
     self.viewModel.outputs.goToPaymentAuthorization
       .observeForControllerAction()
