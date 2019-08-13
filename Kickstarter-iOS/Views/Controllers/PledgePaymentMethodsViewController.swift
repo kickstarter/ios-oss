@@ -7,18 +7,15 @@ import UIKit
 final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
 
-  private let viewModel = PledgePaymentMethodsViewModel()
-
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
-  private lazy var scrollViewHeightConstraint: NSLayoutConstraint = {
-    self.scrollView.heightAnchor.constraint(equalToConstant: 0)
-  }()
-
+  private lazy var scrollViewContainer: UIView = { UIView(frame: .zero) }()
   private lazy var spacer: UIView = { UIView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private let viewModel = PledgePaymentMethodsViewModel()
 
   // MARK: - Lifecycle
 
@@ -27,14 +24,20 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.configureSubviews()
     self.setupConstraints()
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   private func configureSubviews() {
+    _ = (self.scrollView, self.scrollViewContainer)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
     _ = (self.cardsStackView, self.scrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.applePayButton, self.spacer, self.titleLabel, self.scrollView], self.rootStackView)
+    _ = ([self.applePayButton, self.spacer, self.titleLabel, self.scrollViewContainer], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
@@ -50,21 +53,9 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.scrollViewHeightConstraint,
+      self.cardsStackView.heightAnchor.constraint(equalTo: self.scrollViewContainer.heightAnchor),
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.updateScrollViewHeightConstraint()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    self.updateScrollViewHeightConstraint()
   }
 
   // MARK: - Bind Styles
@@ -94,17 +85,26 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
       .observeValues { [weak self] cards in
         self?.addCardsToStackView(cards)
       }
+
+    self.viewModel.outputs.notifyDelegateLoadPaymentMethodsError
+      .observeForUI()
+      .observeValues { [weak self] errorMessage in
+        guard let self = self else { return }
+
+        self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
+      }
   }
 
   // MARK: - Configuration
 
-  internal func configureWith(value: [GraphUserCreditCard.CreditCard]) {
-    self.viewModel.inputs.configureWith(value)
+  func configureWith(_ user: User) {
+    self.viewModel.inputs.configureWith(user)
   }
 
   // MARK: - Actions
@@ -130,12 +130,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     _ = (cardViews + [addNewCardView], self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
-  }
-
-  private func updateScrollViewHeightConstraint() {
-    self.scrollViewHeightConstraint.constant = self.scrollView.contentSize.height
-
-    self.view.layoutIfNeeded()
   }
 
   // MARK: - Styles

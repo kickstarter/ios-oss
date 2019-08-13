@@ -131,16 +131,16 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page"],
+      ["Project Page", "Viewed Project Page", "Project Page Viewed"],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag],
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
       self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
       "The ref tag is tracked in the koala event."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag],
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
       self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
       "The referral credit is tracked in the koala event."
     )
@@ -168,13 +168,16 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page", "Project Page", "Viewed Project Page"],
+      [
+        "Project Page", "Viewed Project Page", "Project Page Viewed", "Project Page",
+        "Viewed Project Page", "Project Page Viewed"
+      ],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
       [
-        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.recommended.stringTag,
-        RefTag.recommended.stringTag
+        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
+        RefTag.recommended.stringTag, RefTag.recommended.stringTag, RefTag.recommended.stringTag
       ],
       self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
       "The new ref tag is tracked in koala event."
@@ -182,7 +185,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(
       [
         RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
-        RefTag.category.stringTag
+        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag
       ],
       self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
       "The referrer credit did not change, and is still category."
@@ -276,16 +279,16 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page"],
+      ["Project Page", "Viewed Project Page", "Project Page Viewed"],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag],
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
       self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
       "The ref tag is tracked in the koala event."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag],
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
       self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
       "The referral credit is tracked in the koala event."
     )
@@ -313,13 +316,16 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page", "Project Page", "Viewed Project Page"],
+      [
+        "Project Page", "Viewed Project Page", "Project Page Viewed", "Project Page",
+        "Viewed Project Page", "Project Page Viewed"
+      ],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
       [
-        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.recommended.stringTag,
-        RefTag.recommended.stringTag
+        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
+        RefTag.recommended.stringTag, RefTag.recommended.stringTag, RefTag.recommended.stringTag
       ],
       self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
       "The new ref tag is tracked in koala event."
@@ -327,7 +333,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(
       [
         RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
-        RefTag.category.stringTag
+        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag
       ],
       self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
       "The referrer credit did not change, and is still category."
@@ -553,6 +559,34 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull2)
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
+    }
+  }
+      
+  func testbackThisButton_eventTracking() {
+    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+    let client = MockTrackingClient()
+    let project = Project.template
+
+    withEnvironment(
+      apiService: MockService(),
+      config: config,
+      koala: Koala(client: client)
+    ) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
+
+      self.vm.inputs.backThisProjectTapped()
+      XCTAssertEqual(
+        ["Project Page", "Viewed Project Page", "Project Page Viewed", "Back this Project Button Clicked"],
+        client.events
+      )
     }
   }
 }
