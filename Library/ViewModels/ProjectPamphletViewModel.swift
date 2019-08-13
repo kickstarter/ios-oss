@@ -137,6 +137,13 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
+
+    // Tracking
+    project
+      .takeWhen(self.backThisProjectTappedProperty.signal)
+      .observeValues {
+        AppEnvironment.current.koala.trackBackThisButtonClicked(project: $0, screen: .projectPage)
+      }
   }
 
   private let backThisProjectTappedProperty = MutableProperty(())
