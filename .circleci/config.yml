@@ -1,12 +1,12 @@
 version: 2
 
-xcode_version: &xcode_version 10.2.1
+xcode_version: &xcode_version 10.3.0
 iphone_name: &iphone_name iPhone 8
 fabric_sdk_version: &fabric_sdk_version 3.10.5
 hockey_sdk_version: &hockey_sdk_version 5.1.4
 store_hockey_sdk_version: &store_hockey_sdk_version echo "$HOCKEY_SDK_VERSION" > hockey_version.txt
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
-preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (12.2) [" || true
+preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (12.4) [" || true
 
 base_job: &base_job
   macos:
