@@ -82,14 +82,16 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
 
-    self.goToRewards = freshProjectAndRefTag
+    let ctaButtonTapped = freshProjectAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, refTag in
         (project, refTag)
-      }
+    }
+
+    self.goToRewards = ctaButtonTapped
       .filter { _ in featureNativeCheckoutPledgeViewEnabled() }
 
-    self.goToDeprecatedRewards = self.goToRewards
+    self.goToDeprecatedRewards = ctaButtonTapped
       .filter { _ in !featureNativeCheckoutPledgeViewEnabled() }
 
     let project = freshProjectAndRefTag
