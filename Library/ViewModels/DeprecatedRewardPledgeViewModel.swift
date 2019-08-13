@@ -951,6 +951,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
   public var minimumLabelText: Signal<String, Never> {
     return self.rewardViewModel.outputs.minimumLabelText
   }
+
   public let managePledgeStackViewHidden: Signal<Bool, Never>
   public let navigationTitle: Signal<String, Never>
   public let orLabelHidden: Signal<Bool, Never>
