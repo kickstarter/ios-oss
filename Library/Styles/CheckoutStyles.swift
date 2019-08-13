@@ -1,6 +1,26 @@
 import Prelude
 import UIKit
 
+// MARK: - Types
+
+public enum ButtonStyleType: Equatable {
+  case apricot
+  case black
+  case blue
+  case green
+  case none
+
+  public var style: ButtonStyle {
+    switch self {
+    case .apricot: return apricotButtonStyle
+    case .black: return blackButtonStyle
+    case .blue: return blueButtonStyle
+    case .green: return greenButtonStyle
+    case .none: return { $0 }
+    }
+  }
+}
+
 // MARK: - Constants
 
 public enum CheckoutConstants {

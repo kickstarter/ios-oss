@@ -169,6 +169,7 @@
 "Find_projects_youll_love_in_art_design_film" = "お気に入りを見つけて、クリエイティブなプロジェクトに生命を吹き込もう。";
 "First_created" = "1つめのプロジェクト";
 "Fix" = "修正する";
+"Fix_your_payment_method" = "お支払い方法を修正";
 "Follow_friend_name" = "%{friend_name} をフォロー";
 "Follow_friends" = "友達をフォロー";
 "Follow_more_friends" = "もっと友達をフォローする";
@@ -275,6 +276,7 @@
 "Newsletters" = "ニュースレター";
 "No_Results" = "該当結果なし";
 "No_comments_yet" = "まだコメントはありません。";
+"No_longer_available" = "利用できなくなりました";
 "No_messages" = "メッセージがありません。";
 "No_nevermind" = "いいえ、削除しません";
 "No_one_has_posted_an_update_yet" = "まだアップデートの投稿はありません。";
