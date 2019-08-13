@@ -29,16 +29,7 @@
                                         <subviews>
                                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C2f-Es-FaN">
                                                 <rect key="frame" x="5" y="0.0" width="374" height="1190"/>
-                                                <subviews>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fJb-oy-BtY">
-                                                        <rect key="frame" x="-8" y="224" width="400" height="966"/>
-                                                        <color key="backgroundColor" red="0.89916485548019409" green="0.89916485548019409" blue="0.89916485548019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    </view>
-                                                </subviews>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="fJb-oy-BtY" secondAttribute="bottom" id="Kma-eP-p4K"/>
-                                                </constraints>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -422,7 +413,6 @@
                         <outlet property="bottomConstraint" destination="GMs-eB-CVQ" id="L20-X2-auF"/>
                         <outlet property="cancelPledgeButton" destination="zpA-Ap-b5C" id="YQC-cj-fhC"/>
                         <outlet property="cardInnerView" destination="C2f-Es-FaN" id="qKJ-9o-vL9"/>
-                        <outlet property="cardPanelView" destination="fJb-oy-BtY" id="O1D-TS-5dz"/>
                         <outlet property="cardView" destination="yil-nf-4Ss" id="mTV-Qg-0u7"/>
                         <outlet property="changePaymentMethodButton" destination="nZx-Jq-MSk" id="3qh-gU-ULc"/>
                         <outlet property="continueToPaymentButton" destination="Qpn-rd-vnI" id="mNh-fa-QTh"/>

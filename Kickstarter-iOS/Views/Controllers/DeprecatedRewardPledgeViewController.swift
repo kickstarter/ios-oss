@@ -12,15 +12,16 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var bottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var cancelPledgeButton: UIButton!
   @IBOutlet fileprivate var cardInnerView: UIView!
-  @IBOutlet fileprivate var cardPanelView: UIView!
   @IBOutlet fileprivate var cardView: UIView!
   @IBOutlet fileprivate var changePaymentMethodButton: UIButton!
   @IBOutlet fileprivate var continueToPaymentButton: UIButton!
   @IBOutlet fileprivate var conversionLabel: UILabel!
   @IBOutlet fileprivate var countryLabel: UILabel!
   @IBOutlet fileprivate var descriptionLabel: UILabel!
+  @IBOutlet fileprivate var descriptionTitleLabel: UILabel!
   @IBOutlet fileprivate var disclaimerTextView: UITextView!
   @IBOutlet fileprivate var differentPaymentMethodButton: UIButton!
+  @IBOutlet fileprivate var dropDownIconImageView: UIImageView!
   @IBOutlet fileprivate var estimatedDeliveryDateLabel: UILabel!
   @IBOutlet fileprivate var estimatedFulfillmentStackView: UIStackView!
   @IBOutlet fileprivate var estimatedToFulfillLabel: UILabel!
@@ -55,9 +56,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var titleLabel: UILabel!
   @IBOutlet fileprivate var topStackView: UIStackView!
   @IBOutlet fileprivate var updatePledgeButton: UIButton!
-
-  @IBOutlet fileprivate var dropDownIconImageView: UIImageView!
-  @IBOutlet fileprivate var descriptionTitleLabel: UILabel!
 
   private var sessionStartedObserver: Any?
 
@@ -186,9 +184,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     _ = self.cancelPledgeButton
       |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Cancel_your_pledge() }
-
-    _ = self.cardPanelView
-      |> UIView.lens.backgroundColor .~ .clear
 
     _ = self.cardInnerView
       |> roundedStyle(cornerRadius: 18.0)
