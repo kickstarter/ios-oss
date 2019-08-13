@@ -86,7 +86,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, refTag in
         (project, refTag)
-    }
+      }
 
     self.goToRewards = ctaButtonTapped
       .filter { _ in featureNativeCheckoutPledgeViewEnabled() }
