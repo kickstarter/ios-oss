@@ -136,20 +136,25 @@ public final class RewardCardContainerView: UIView {
     self.pledgeButtonHiddenConstraints = self.hiddenPledgeHiddenConstraints()
     self.pledgeButtonShownConstraints = self.shownPledgeButtonConstraints()
 
-    let gradientTopAnchor =  self.gradientView.topAnchor.constraint(equalTo: self.pledgeButton.topAnchor,
-                                                                    constant: -Styles.grid(3))
+    let gradientTopAnchor = self.gradientView.topAnchor.constraint(
+      equalTo: self.pledgeButton.topAnchor,
+      constant: -Styles.grid(3)
+    )
       |> \.priority .~ .defaultLow
 
     let gradientConstraints = [
       gradientTopAnchor,
-      self.gradientView.heightAnchor.constraint(equalTo: self.pledgeButton.heightAnchor,
-                                                constant: Styles.grid(6))
+      self.gradientView.heightAnchor.constraint(
+        equalTo: self.pledgeButton.heightAnchor,
+        constant: Styles.grid(6)
+      )
     ]
 
     NSLayoutConstraint.activate([
       self.pledgeButtonShownConstraints,
-      gradientConstraints]
-      .flatMap { $0 }
+      gradientConstraints
+    ]
+    .flatMap { $0 }
     )
   }
 
