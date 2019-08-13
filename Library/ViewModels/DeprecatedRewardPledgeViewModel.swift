@@ -208,6 +208,8 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
 
   /// Emits a boolean that determines if the update pledge button should be hidden.
   var updatePledgeButtonHidden: Signal<Bool, Never> { get }
+
+  var updateStackViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol DeprecatedRewardPledgeViewModelType {
@@ -300,6 +302,8 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
       .map { project, _ in
         project.personalization.isBacking != .some(true)
       }
+
+    self.updateStackViewHidden = self.updatePledgeButtonHidden
 
     self.cancelPledgeButtonHidden = projectAndReward
       .map { project, reward in !userIsBacking(reward: reward, inProject: project) }
@@ -976,6 +980,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
   public let titleLabelText: Signal<String, Never>
 
   public let updatePledgeButtonHidden: Signal<Bool, Never>
+  public let updateStackViewHidden: Signal<Bool, Never>
   public let changePaymentMethodButtonHidden: Signal<Bool, Never>
   public let cancelPledgeButtonHidden: Signal<Bool, Never>
 

@@ -29,7 +29,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var itemsStackView: UIStackView!
   @IBOutlet fileprivate var loadingIndicatorView: UIActivityIndicatorView!
   @IBOutlet fileprivate var loadingOverlayView: UIView!
-  @IBOutlet fileprivate var updateStackView: UIStackView!
   @IBOutlet fileprivate var managePledgeStackView: UIStackView!
   @IBOutlet fileprivate var middleStackView: UIStackView!
   @IBOutlet fileprivate var minimumAndConversionStackView: UIStackView!
@@ -58,6 +57,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var titleLabel: UILabel!
   @IBOutlet fileprivate var topStackView: UIStackView!
   @IBOutlet fileprivate var updatePledgeButton: UIButton!
+  @IBOutlet fileprivate var updateStackView: UIStackView!
 
   private var sessionStartedObserver: Any?
 
@@ -438,7 +438,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.titleLabel.rac.hidden = self.viewModel.outputs.titleLabelHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
     self.updatePledgeButton.rac.hidden = self.viewModel.outputs.updatePledgeButtonHidden
-    self.updateStackView.rac.hidden = self.viewModel.outputs.updatePledgeButtonHidden
+    self.updateStackView.rac.hidden = self.viewModel.outputs.updateStackViewHidden
 
     self.viewModel.outputs.goToPaymentAuthorization
       .observeForControllerAction()
