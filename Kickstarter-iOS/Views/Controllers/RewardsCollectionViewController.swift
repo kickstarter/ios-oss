@@ -127,7 +127,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ .ksr_grey_200
+      |> rewardsBackgroundStyle
 
     _ = self.collectionView
       |> collectionViewStyle

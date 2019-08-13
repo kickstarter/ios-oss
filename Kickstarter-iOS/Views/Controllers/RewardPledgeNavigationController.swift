@@ -12,7 +12,7 @@ final class RewardPledgeNavigationController: UINavigationController {
       |> \.delegate .~ self
 
     _ = self.navigationBar
-      ?|> checkoutBackgroundStyle
+      ?|> rewardsBackgroundStyle
 
     self.navigationBar.shadowImage = UIImage()
   }
