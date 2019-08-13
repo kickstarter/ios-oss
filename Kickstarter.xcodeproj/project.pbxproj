@@ -4086,7 +4086,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = Kickstarter;
 				TargetAttributes = {
 					A755113B1C8642B3005355CF = {
