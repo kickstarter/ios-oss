@@ -138,8 +138,6 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
   /// Emits when we should go to the trust & safety page.
   var goToTrustAndSafety: Signal<(), Never> { get }
 
-  var managePledgeStackViewHidden: Signal<Bool, Never> { get }
-
   /// Emits an array of strings that are to be loaded into the itemization stack view.
   var items: Signal<[String], Never> { get }
 
@@ -148,6 +146,8 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
 
   /// Emits whether loading overlay view should be hidden.
   var loadingOverlayIsHidden: Signal<Bool, Never> { get }
+
+  var managePledgeStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be put into the minimum pledge label.
   var minimumLabelText: Signal<String, Never> { get }
