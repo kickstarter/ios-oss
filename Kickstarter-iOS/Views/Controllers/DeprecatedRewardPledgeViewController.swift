@@ -210,11 +210,11 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> disclaimerTextViewStyle
       |> UITextView.lens.textAlignment .~ .center
       |> UITextView.lens.textContainerInset .~ .init(
-          top: Styles.gridHalf(1),
-          left: Styles.grid(6),
-          bottom: Styles.gridHalf(1),
-          right: Styles.grid(6)
-    )
+        top: Styles.gridHalf(1),
+        left: Styles.grid(6),
+        bottom: Styles.gridHalf(1),
+        right: Styles.grid(6)
+      )
 
     _ = self.updatePledgeButton
       |> greenButtonStyle
@@ -666,19 +666,18 @@ extension DeprecatedRewardPledgeViewController: UITextViewDelegate {
   func textView(
     _: UITextView, shouldInteractWith _: NSTextAttachment,
     in _: NSRange, interaction _: UITextItemInteraction
-    ) -> Bool {
+  ) -> Bool {
     return false
   }
 
   func textView(
     _: UITextView, shouldInteractWith _: URL, in _: NSRange,
     interaction _: UITextItemInteraction
-    ) -> Bool {
+  ) -> Bool {
     self.viewModel.inputs.disclaimerButtonTapped() // RENAME
     return false
   }
 }
-
 
 private let disclaimerTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
   _ = textView
@@ -696,8 +695,8 @@ private func attributedDisclaimerText() -> NSAttributedString? {
     defaultValue: "Kickstarter is not a store. It's a way to bring creative projects to life.</br><a href=\"%{trust_link}\">Learn more about accountability</a>",
     substitutions: [
       "trust_link": HelpType.trust.url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString
-      ]
-      .compactMapValues { $0.coalesceWith("") }
+    ]
+    .compactMapValues { $0.coalesceWith("") }
   )
   // swiftlint:enable line_length
 
