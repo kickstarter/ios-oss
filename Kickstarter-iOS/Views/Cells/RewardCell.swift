@@ -63,7 +63,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       self.rewardCardContainerView.gradientView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
       self.rewardCardContainerView.gradientView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
       self.rewardCardContainerView.gradientView.bottomAnchor
-        .constraint(equalTo: self.contentView.bottomAnchor)
+        .constraint(lessThanOrEqualTo: self.contentView.bottomAnchor)
     ])
   }
 
