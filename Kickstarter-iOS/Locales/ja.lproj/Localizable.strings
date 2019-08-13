@@ -76,6 +76,7 @@
 "Confirm_password" = "新しいパスワードの確認";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Facebookとリンクさせ、友達がプロジェクトを作成したりバックしたりした際に通知を受け取る";
 "Contact_creator" = "クリエイターに連絡";
+"Content_isnt_loading_right_now" = "現在、コンテンツを読み込めません。";
 "Continue" = "続行する";
 "Continue_to_payment" = "支払いを続ける";
 "Continue_to_update_pledge" = "プレッジをアップデート";
