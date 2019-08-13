@@ -291,6 +291,18 @@ public final class Koala {
     }
   }
 
+  public enum CheckoutContext {
+    case backThisPage
+    case projectPage
+
+    var trackingString: String {
+      switch self {
+      case .backThisPage: return "Back this page"
+      case .projectPage: return "Project page"
+      }
+    }
+  }
+
   /**
    Determines the place from which the update was presented.
 
@@ -565,6 +577,25 @@ public final class Koala {
   }
 
   // MARK: - Checkout Events
+
+  public func trackBackThisButtonClicked(project: Project, screen: CheckoutContext) {
+    let props = properties(project: project)
+      .withAllValuesFrom(["screen": screen.trackingString])
+
+    self.track(event: "Back this Project Button Clicked", properties: props)
+  }
+
+  public func trackSelectRewardButtonClicked(
+    project: Project,
+    reward: Reward?,
+    backing: Backing?,
+    screen: CheckoutContext
+  ) {
+    let props = properties(project: project, reward: reward, backing: backing)
+      .withAllValuesFrom(["screen": screen.trackingString])
+
+    self.track(event: "Select Reward Button Clicked", properties: props)
+  }
 
   public func trackCheckoutCancel(
     project: Project,
@@ -1255,9 +1286,17 @@ public final class Koala {
     props["current_variants"] = AppEnvironment.current.config?.abExperimentsArray
 
     // Deprecated event
-    self.track(event: "Project Page", properties: props.withAllValuesFrom(deprecatedProps))
+    self.track(
+      event: "Project Page",
+      properties: props.withAllValuesFrom(deprecatedProps)
+    )
 
-    self.track(event: "Viewed Project Page", properties: props)
+    self.track(
+      event: "Viewed Project Page",
+      properties: props.withAllValuesFrom(deprecatedProps)
+    )
+
+    self.track(event: "Project Page Viewed", properties: props)
   }
 
   public func trackSwipedProject(_ project: Project, refTag: RefTag?, type: SwipeType) {
@@ -2027,7 +2066,7 @@ private func properties(
   props["update_count"] = project.stats.updatesCount
   props["comments_count"] = project.stats.commentsCount
 
-  let now = MockDate().timeIntervalSince1970
+  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
   props["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
   props["duration"] = Int(round(project.dates.deadline - project.dates.launchedAt))
 
@@ -2046,6 +2085,39 @@ private func properties(
   return props.prefixedKeys(prefix)
     .withAllValuesFrom(properties(user: project.creator, prefix: "creator_"))
     .withAllValuesFrom(loggedInUserProperties)
+}
+
+private func properties(
+  project: Project,
+  reward: Reward? = nil,
+  backing: Backing? = nil,
+  prefix: String = "project_"
+) -> [String: Any] {
+  var props: [String: Any] = [:]
+
+  props["name"] = project.name
+  props["pid"] = project.id
+  props["category"] = project.category.name
+  props["has_video"] = project.video != nil
+  props["location"] = project.location.name
+  props["country"] = project.country.countryCode
+
+  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
+  props["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
+
+  props["percent_raised"] = project.stats.fundingProgress
+
+  var rewardProperties: [String: Any] = [:]
+  rewardProperties["backer_reward_minimum"] = reward?.minimum
+
+  var backingProperties: [String: Any] = [:]
+  backingProperties["pledge_total"] = backing?.amount
+
+  props["currency"] = project.country.currencyCode
+
+  return props.prefixedKeys(prefix)
+    .withAllValuesFrom(rewardProperties)
+    .withAllValuesFrom(backingProperties)
 }
 
 private func properties(update: Update, prefix: String = "update_") -> [String: Any] {
