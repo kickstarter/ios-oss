@@ -55,7 +55,7 @@ final class PledgeCTAContainerView: UIView {
   }()
 
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
-  
+
   private let viewModel: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
   // MARK: - Lifecycle
@@ -130,13 +130,13 @@ final class PledgeCTAContainerView: UIView {
       .observeForUI()
       .observeValues { [weak self] isHidden in
         self?.animateView(self?.pledgeCTAButton, isHidden: isHidden)
-    }
+      }
 
     self.viewModel.outputs.activityIndicatorIsHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
         self?.activityIndicatorContainerView.isHidden = isHidden
-    }
+      }
 
     self.pledgeCTAButton.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
     self.pledgeCTAButton.rac.backgroundColor = self.viewModel.outputs.buttonBackgroundColor
@@ -167,12 +167,16 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.titleLabel, self.subtitleLabel], self.titleAndSubtitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.titleAndSubtitleStackView,
-          self.spacer,
-          self.pledgeCTAButton,
-          self.pledgeRetryButton,
-          self.activityIndicatorContainerView],
-         self.rootStackView)
+    _ = (
+      [
+        self.titleAndSubtitleStackView,
+        self.spacer,
+        self.pledgeCTAButton,
+        self.pledgeRetryButton,
+        self.activityIndicatorContainerView
+      ],
+      self.rootStackView
+    )
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -241,14 +245,5 @@ private let pledgeRetryButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: Styles.grid(3))
     |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(topBottom: Styles.gridHalf(1))
     |> UIButton.lens.image(for: .normal) %~ { _ in image(named: "icon--refresh-small") }
-    |> UIButton.lens.title(for: .normal) %~ { _ in
-      return localizedString(
-        key: "Content_isnt_loading_right_now",
-        defaultValue: """
-          Content isn't loading right now.
-        """,
-        count: nil,
-        substitutions: [:]
-      )
-  }
+    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Content_isnt_loading_right_now() }
 }

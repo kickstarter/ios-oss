@@ -28,7 +28,6 @@ public protocol PledgeCTAContainerViewViewModelType {
 public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
-
     let projectOrError = self.configureWithValueProperty.signal
       .skipNil()
       .filter(second >>> isFalse)
@@ -56,14 +55,14 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
         projectError.ignoreValues().mapConst(false),
         project.ignoreValues().mapConst(true),
         self.activityIndicatorIsHidden.filter(isFalse).mapConst(true)
-    )
+      )
 
     self.pledgeCTAButtonIsHidden = Signal
       .merge(
         project.ignoreValues().mapConst(false),
         projectError.ignoreValues().mapConst(true),
         self.activityIndicatorIsHidden.filter(isFalse).mapConst(true)
-    )
+      )
 
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     self.buttonTitleTextColor = pledgeState.map { $0.buttonTitleTextColor }

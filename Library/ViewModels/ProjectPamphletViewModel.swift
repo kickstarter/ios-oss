@@ -67,9 +67,9 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
         self.pledgeRetryButtonTappedProperty.signal.mapConst(false)
       ))
       .map(unpack)
-      .switchMap { (projectOrParam, refTag, shouldPrefix) in
+      .switchMap { projectOrParam, refTag, shouldPrefix in
 
-        return fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
+        fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
           .on(
             starting: { isLoading.value = true },
             terminated: { isLoading.value = false }
@@ -89,7 +89,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
       .filter { _ in featureNativeCheckoutPledgeViewEnabled() }
 
-    self.goToDeprecatedRewards = goToRewards
+    self.goToDeprecatedRewards = self.goToRewards
       .filter { _ in !featureNativeCheckoutPledgeViewEnabled() }
 
     let project = freshProjectAndRefTag
@@ -286,7 +286,7 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
 
-  if let project = projectOrParam.left, shouldPrefix  {
+  if let project = projectOrParam.left, shouldPrefix {
     return projectProducer.prefix(value: project)
   }
 

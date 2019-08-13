@@ -514,7 +514,7 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testConfigurePledgeCTAView_reloadsUponRetryButtonTappedEvent() {
-    let config = Config.template |> \.features .~ [Feature.checkout.rawValue: true]
+    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
     let project = Project.template
     let projectFull = Project.template
       |> \.id .~ 2
