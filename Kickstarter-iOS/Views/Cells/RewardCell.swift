@@ -85,13 +85,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     return self.rewardCardContainerView.currentReward(is: reward)
   }
 
-  func cancelDepress() {
-    _ = self.longPressGestureRecognizer
-      |> \.isEnabled .~ false
-    _ = self.longPressGestureRecognizer
-      |> \.isEnabled .~ true
-  }
-
   // MARK: - Depress Transform
 
   @objc func depress(_ gestureRecognizer: UILongPressGestureRecognizer) {

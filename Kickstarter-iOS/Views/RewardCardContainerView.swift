@@ -87,7 +87,7 @@ public final class RewardCardContainerView: UIView {
     }
     self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
     self.pledgeButton.rac.hidden = self.viewModel.outputs.pledgeButtonHidden
-    self.gradientView.rac.hidden = self.viewModel.outputs.gradientHidden
+    self.gradientView.rac.hidden = self.viewModel.outputs.gradientViewHidden
 
     self.viewModel.outputs.pledgeButtonHidden.observeValues { [weak self] hidden in
       guard let self = self else { return }

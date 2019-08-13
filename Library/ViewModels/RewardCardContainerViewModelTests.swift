@@ -60,7 +60,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.gradientHidden.observe(self.gradientHidden.observer)
+    self.vm.outputs.gradientViewHidden.observe(self.gradientHidden.observer)
     self.vm.outputs.pledgeButtonStyleType.observe(self.pledgeButtonStyleType.observer)
     self.vm.outputs.pledgeButtonEnabled.observe(self.pledgeButtonEnabled.observer)
     self.vm.outputs.pledgeButtonHidden.observe(self.pledgeButtonHidden.observer)
