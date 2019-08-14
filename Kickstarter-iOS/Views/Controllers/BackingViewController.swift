@@ -47,6 +47,11 @@ internal final class BackingViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    if UIDevice.current.orientation.isPortrait {
+      self.actionsStackView.axis = .vertical
+    } else {
+      self.actionsStackView.axis = .horizontal
+    }
     _ = self.messageCreatorButton
       |> UIButton.lens.targets .~ [(self, #selector(messageCreatorTapped), .touchUpInside)]
 
@@ -63,6 +68,18 @@ internal final class BackingViewController: UIViewController {
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
+  }
+
+  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    super.viewWillTransition(to: size, with: coordinator)
+
+    if UIDevice.current.orientation.isPortrait {
+      self.actionsStackView.axis = .vertical
+//      self.actionsStackView.distribution = .fillEqually
+    } else {
+      self.actionsStackView.axis = .horizontal
+//      self.actionsStackView.distribution = .fillEqually
+    }
   }
 
   internal override func bindViewModel() {
@@ -122,8 +139,8 @@ internal final class BackingViewController: UIViewController {
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.project_view_button() }
 
-    _ = self.actionsStackView
-      |> \.axis .~ .vertical
+    _  = self.actionsStackView
+      |> \.distribution .~ .fillEqually
 
     _ = self.backerAvatarImageView
       |> ignoresInvertColorsImageViewStyle
