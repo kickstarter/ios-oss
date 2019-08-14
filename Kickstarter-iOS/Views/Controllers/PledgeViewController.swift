@@ -87,6 +87,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.extendedLayoutIncludesOpaqueBars = true
+
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     _ = self
@@ -260,7 +262,14 @@ extension PledgeViewController: RewardPledgeTransitionAnimatorDelegate {
   }
 
   func destinationFrameData(withContainerView view: UIView) -> RewardPledgeTransitionDestinationFrameData? {
-    return self.descriptionViewController.destinationFrameData(withContainerView: view)
+    guard let (destination, mask) = self.descriptionViewController
+      .destinationFrameData(withContainerView: view)
+    else { return nil }
+
+    let offsetDestination = destination
+      .offsetBy(dx: 0, dy: -self.view.safeAreaInsets.top)
+
+    return (offsetDestination, mask)
   }
 
   func endTransition(_ operation: UINavigationController.Operation) {

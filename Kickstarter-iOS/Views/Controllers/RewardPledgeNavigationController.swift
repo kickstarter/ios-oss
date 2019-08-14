@@ -12,7 +12,8 @@ final class RewardPledgeNavigationController: UINavigationController {
       |> \.delegate .~ self
 
     _ = self.navigationBar
-      ?|> rewardsBackgroundStyle
+      ?|> \.isTranslucent .~ false
+      ?|> \.barTintColor .~ .ksr_grey_400
 
     self.navigationBar.shadowImage = UIImage()
   }

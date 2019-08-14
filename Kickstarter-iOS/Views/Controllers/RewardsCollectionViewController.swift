@@ -68,6 +68,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.extendedLayoutIncludesOpaqueBars = true
+
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
 
@@ -119,6 +121,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     _ = self.collectionView
       |> collectionViewStyle
+      |> rewardsBackgroundStyle
   }
 
   override func bindViewModel() {
@@ -342,7 +345,6 @@ extension RewardsCollectionViewController: RewardPledgeTransitionAnimatorDelegat
 
 private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICollectionView in
   collectionView
-    |> \.backgroundColor .~ .ksr_grey_200
     |> \.clipsToBounds .~ false
     |> \.allowsSelection .~ true
     |> \.showsHorizontalScrollIndicator .~ true

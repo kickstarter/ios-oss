@@ -28,6 +28,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       .DepressAnimation.longPressMinimumDuration
       |> \.delegate .~ self
       |> \.cancelsTouchesInView .~ false
+      |> \.isEnabled .~ false // FIXME: remove once we're ready to handle the transition again
   }()
 
   override init(frame: CGRect) {
@@ -75,6 +76,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     _ = self.contentView
       |> contentViewStyle
+      |> rewardsBackgroundStyle
 
     _ = self.scrollView
       |> scrollViewStyle
@@ -152,7 +154,6 @@ extension RewardCell: UIGestureRecognizerDelegate {
 private let contentViewStyle: ViewStyle = { view in
   view
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
-    |> \.backgroundColor .~ .ksr_grey_200
 }
 
 private let scrollViewStyle: ScrollStyle = { scrollView in

@@ -34,6 +34,7 @@ final class PillCell: UICollectionViewCell, ValueCell {
 
     _ = self.contentView
       |> contentViewStyle
+      |> \.backgroundColor .~ .ksr_grey_200
 
     _ = self.label
       |> labelStyle
