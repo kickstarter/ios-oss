@@ -1,10 +1,14 @@
 import Foundation
 import KsApi
 
+public func userCanSeeNativeCheckout() -> Bool {
+  return Experiment.Name.nativeCheckoutV1.isEnabled() && featureNativeCheckoutEnabled()
+}
+
 public func featureNativeCheckoutEnabled() -> Bool {
-  return AppEnvironment.current.config?.features[Feature.nativeCheckout.rawValue] == .some(true)
+  return Feature.nativeCheckout.isEnabled()
 }
 
 public func featureNativeCheckoutPledgeViewEnabled() -> Bool {
-  return AppEnvironment.current.config?.features[Feature.nativeCheckoutPledgeView.rawValue] == .some(true)
+  return Feature.nativeCheckoutPledgeView.isEnabled()
 }
