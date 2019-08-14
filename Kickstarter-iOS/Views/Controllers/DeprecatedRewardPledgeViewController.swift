@@ -231,7 +231,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
     _ = self.descriptionTitleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 16).bolded
+      |> UILabel.lens.font .~ UIFont.ksr_callout().bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.text %~ { _ in Strings.Description() }
 
@@ -248,12 +248,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Other_payment_methods() }
 
     _ = self.estimatedToFulfillLabel
-      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 16).bolded
+      |> UILabel.lens.font .~ UIFont.ksr_callout().bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
 
     _ = self.estimatedDeliveryDateLabel
-      |> UILabel.lens.font .~ UIFont.ksr_body(size: 16)
+      |> UILabel.lens.font .~ UIFont.ksr_callout()
       |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.estimatedFulfillmentStackView
@@ -332,7 +332,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.pledgeInputTitleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 15)
+      |> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
       |> UILabel.lens.text %~ { _ in Strings.Your_pledge_amount() }
 
@@ -363,7 +363,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> baseActivityIndicatorStyle
 
     _ = self.shippingAmountLabel
-      |> UILabel.lens.font .~ .ksr_caption1(size: 15)
+      |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriority.required
 
@@ -371,7 +371,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.shippingInputTitleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 15)
+      |> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
       |> UILabel.lens.text %~ { _ in Strings.Your_shipping_destination() }
 
@@ -679,7 +679,7 @@ extension DeprecatedRewardPledgeViewController: UITextViewDelegate {
     _: UITextView, shouldInteractWith _: URL, in _: NSRange,
     interaction _: UITextItemInteraction
   ) -> Bool {
-    self.viewModel.inputs.disclaimerButtonTapped() // RENAME
+    self.viewModel.inputs.disclaimerButtonTapped()
     return false
   }
 }
