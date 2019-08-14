@@ -54,10 +54,15 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   }
 
   private func setupConstraints() {
-    _ = self.rewardCardContainerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)
-      |> \.isActive .~ true
-
     self.rewardCardContainerView.pinBottomViews(to: self.contentView.layoutMarginsGuide)
+
+    NSLayoutConstraint.activate([
+      self.rewardCardContainerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor),
+      self.rewardCardContainerView.gradientView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
+      self.rewardCardContainerView.gradientView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
+      self.rewardCardContainerView.gradientView.bottomAnchor
+        .constraint(lessThanOrEqualTo: self.contentView.bottomAnchor)
+    ])
   }
 
   override func bindStyles() {
@@ -78,13 +83,6 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
   func currentReward(is reward: Reward) -> Bool {
     return self.rewardCardContainerView.currentReward(is: reward)
-  }
-
-  func cancelDepress() {
-    _ = self.longPressGestureRecognizer
-      |> \.isEnabled .~ false
-    _ = self.longPressGestureRecognizer
-      |> \.isEnabled .~ true
   }
 
   // MARK: - Depress Transform
@@ -145,4 +143,5 @@ private let scrollViewStyle: ScrollStyle = { scrollView in
     |> \.backgroundColor .~ .clear
     |> \.contentInset .~ .init(topBottom: Styles.grid(6))
     |> \.showsVerticalScrollIndicator .~ false
+    |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.never
 }

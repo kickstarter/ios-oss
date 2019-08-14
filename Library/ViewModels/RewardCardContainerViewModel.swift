@@ -8,6 +8,7 @@ public protocol RewardCardContainerViewModelInputs {
 }
 
 public protocol RewardCardContainerViewModelOutputs {
+  var gradientViewHidden: Signal<Bool, Never> { get }
   var pledgeButtonStyleType: Signal<ButtonStyleType, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var pledgeButtonHidden: Signal<Bool, Never> { get }
@@ -54,6 +55,8 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
 
     self.pledgeButtonHidden = pledgeButtonTitleText.map(isNil)
 
+    self.gradientViewHidden = self.pledgeButtonHidden
+
     self.rewardSelected = reward
       .takeWhen(self.pledgeButtonTappedProperty.signal)
       .map { $0.id }
@@ -82,6 +85,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.pledgeButtonTappedProperty.value = ()
   }
 
+  public let gradientViewHidden: Signal<Bool, Never>
   public let pledgeButtonStyleType: Signal<ButtonStyleType, Never>
   public let pledgeButtonEnabled: Signal<Bool, Never>
   public let pledgeButtonHidden: Signal<Bool, Never>
