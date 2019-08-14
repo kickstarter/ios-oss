@@ -68,7 +68,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.extendedLayoutIncludesOpaqueBars = true
+    _ = self
+      |> \.extendedLayoutIncludesOpaqueBars .~ true
 
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource

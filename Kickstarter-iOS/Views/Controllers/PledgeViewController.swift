@@ -87,7 +87,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.extendedLayoutIncludesOpaqueBars = true
+    _ = self
+      |> \.extendedLayoutIncludesOpaqueBars .~ true
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
