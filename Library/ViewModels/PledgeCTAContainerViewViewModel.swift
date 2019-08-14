@@ -41,7 +41,6 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     let pledgeState = Signal.combineLatest(project, backing)
       .map(pledgeCTA(project:backing:))
 
-
     self.buttonStyleType = pledgeState.map { $0.buttonStyle }
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }

@@ -108,7 +108,7 @@ final class PledgeCTAContainerView: UIView {
       .observeForUI()
       .observeValues { [weak self] buttonStyleType in
         _ = self?.pledgeCTAButton ?|> buttonStyleType.style
-    }
+      }
 
     self.viewModel.outputs.rootStackViewAnimateIsHidden
       .observeValues { [weak self] isHidden in

@@ -11,6 +11,6 @@ internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
       |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ {
         _ in Strings.See_all_category_name_projects(category_name: category.name)
-    }
+      }
   }
 }
