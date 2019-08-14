@@ -194,28 +194,21 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
     didTapBackThisProject project: Project,
     refTag: RefTag?
   ) {
-    let vc = self.rewardsCollectionViewController(project: project, refTag: refTag, deprecated: true)
+    let vc = self.rewardsCollectionViewController(project: project, refTag: refTag)
 
     self.present(vc, animated: true)
   }
 
   private func rewardsCollectionViewController(
     project: Project,
-    refTag: RefTag?,
-    deprecated: Bool = false
+    refTag: RefTag?
   ) -> UINavigationController {
     let rewardsCollectionViewController = RewardsCollectionViewController
       .instantiate(with: project, refTag: refTag)
 
-    let navigationController: UINavigationController
-
-    if deprecated {
-      navigationController = UINavigationController(rootViewController: rewardsCollectionViewController)
-    } else {
-      navigationController = RewardPledgeNavigationController(
-        rootViewController: rewardsCollectionViewController
-      )
-    }
+    let navigationController = RewardPledgeNavigationController(
+      rootViewController: rewardsCollectionViewController
+    )
 
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       _ = navigationController

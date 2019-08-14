@@ -15,7 +15,7 @@ public final class RewardCardContainerView: UIView {
 
   private let viewModel: RewardCardContainerViewModelType = RewardCardContainerViewModel()
 
-  private let gradientView: GradientView = {
+  let gradientView: GradientView = {
     GradientView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -38,6 +38,7 @@ public final class RewardCardContainerView: UIView {
     super.init(frame: frame)
 
     self.configureViews()
+    self.setupConstraints()
 
     self.bindViewModel()
   }
@@ -85,8 +86,8 @@ public final class RewardCardContainerView: UIView {
       self?.pledgeButton.setTitle(text, for: .normal)
     }
     self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
-
     self.pledgeButton.rac.hidden = self.viewModel.outputs.pledgeButtonHidden
+    self.gradientView.rac.hidden = self.viewModel.outputs.gradientViewHidden
 
     self.viewModel.outputs.pledgeButtonHidden.observeValues { [weak self] hidden in
       guard let self = self else { return }
@@ -128,15 +129,33 @@ public final class RewardCardContainerView: UIView {
     _ = (self.pledgeButton, self)
       |> ksr_addSubviewToParent()
 
-    self.setupConstraints()
-
     self.pledgeButton.addTarget(self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside)
   }
 
   public func setupConstraints() {
     self.pledgeButtonHiddenConstraints = self.hiddenPledgeHiddenConstraints()
     self.pledgeButtonShownConstraints = self.shownPledgeButtonConstraints()
-    NSLayoutConstraint.activate(self.pledgeButtonShownConstraints)
+
+    let gradientTopAnchor = self.gradientView.topAnchor.constraint(
+      equalTo: self.pledgeButton.topAnchor,
+      constant: -Styles.grid(3)
+    )
+      |> \.priority .~ .defaultLow
+
+    let gradientConstraints = [
+      gradientTopAnchor,
+      self.gradientView.heightAnchor.constraint(
+        equalTo: self.pledgeButton.heightAnchor,
+        constant: Styles.grid(6)
+      )
+    ]
+
+    NSLayoutConstraint.activate([
+      self.pledgeButtonShownConstraints,
+      gradientConstraints
+    ]
+    .flatMap { $0 }
+    )
   }
 
   private func hiddenPledgeHiddenConstraints() -> [NSLayoutConstraint] {
@@ -204,15 +223,6 @@ public final class RewardCardContainerView: UIView {
     NSLayoutConstraint.activate(pledgeButtonMarginConstraints)
 
     self.pledgeButtonMarginConstraints = pledgeButtonMarginConstraints
-
-    NSLayoutConstraint.activate([
-      self.gradientView.leftAnchor.constraint(equalTo: layoutMarginsGuide.leftAnchor),
-      self.gradientView.rightAnchor.constraint(equalTo: layoutMarginsGuide.rightAnchor),
-      self.gradientView.topAnchor.constraint(equalTo: self.pledgeButton.topAnchor, constant: -minTouchSize),
-      self.gradientView.bottomAnchor.constraint(
-        equalTo: self.pledgeButton.bottomAnchor, constant: minTouchSize / 2
-      )
-    ])
   }
 
   // MARK: - Accessors
