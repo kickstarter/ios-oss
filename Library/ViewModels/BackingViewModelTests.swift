@@ -26,7 +26,6 @@ internal final class BackingViewModelTests: TestCase {
   private let rewardSectionAndShippingIsHidden = TestObserver<Bool, Never>()
   private let rewardSectionTitle = TestObserver<String, Never>()
   private let rewardTitleWithAmount = TestObserver<String, Never>()
-  private let rootStackViewAxis = TestObserver<NSLayoutConstraint.Axis, Never>()
   private let shippingAmount = TestObserver<String, Never>()
   private let statusDescription = TestObserver<String, Never>()
   private let totalPledgeAmount = TestObserver<String, Never>()
@@ -52,7 +51,6 @@ internal final class BackingViewModelTests: TestCase {
     self.vm.outputs.rewardSectionAndShippingIsHidden.observe(self.rewardSectionAndShippingIsHidden.observer)
     self.vm.outputs.rewardSectionTitle.map { $0.string }.observe(self.rewardSectionTitle.observer)
     self.vm.outputs.rewardTitleWithAmount.observe(self.rewardTitleWithAmount.observer)
-    self.vm.outputs.rootStackViewAxis.observe(self.rootStackViewAxis.observer)
     self.vm.outputs.shippingAmount.observe(self.shippingAmount.observer)
     self.vm.outputs.statusDescription.map { $0.string }.observe(self.statusDescription.observer)
     self.vm.outputs.totalPledgeAmount.observe(self.totalPledgeAmount.observer)
@@ -460,21 +458,6 @@ internal final class BackingViewModelTests: TestCase {
         [nil, true],
         self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
       )
-    }
-  }
-
-  func testRootStackViewAxis() {
-    let project = Project.template
-    let backer = User.template |> \.id .~ 20
-
-    withEnvironment(currentUser: backer, language: .de) {
-      self.vm.inputs.configureWith(project: project, backer: backer)
-
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.rootStackViewAxis.assertValues([NSLayoutConstraint.Axis.vertical])
     }
   }
 }

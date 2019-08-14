@@ -9,7 +9,7 @@ public protocol PledgeCTAContainerViewViewModelInputs {
 
 public protocol PledgeCTAContainerViewViewModelOutputs {
   var activityIndicatorIsAnimating: Signal<Bool, Never> { get }
-  var buttonStyle: Signal<ButtonStyle, Never> { get }
+  var buttonStyleType: Signal<ButtonStyleType, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
   var rootStackViewAnimateIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
@@ -42,7 +42,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .map(pledgeCTA(project:backing:))
 
 
-    self.buttonStyle = pledgeState.map { $0.buttonStyle.style }
+    self.buttonStyleType = pledgeState.map { $0.buttonStyle }
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
     self.spacerIsHidden = stackViewAndSpacerAreHidden
@@ -61,7 +61,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public var outputs: PledgeCTAContainerViewViewModelOutputs { return self }
 
   public let activityIndicatorIsAnimating: Signal<Bool, Never>
-  public let buttonStyle: Signal<ButtonStyle, Never>
+  public let buttonStyleType: Signal<ButtonStyleType, Never>
   public let buttonTitleText: Signal<String, Never>
   public let rootStackViewAnimateIsHidden: Signal<Bool, Never>
   public let spacerIsHidden: Signal<Bool, Never>
