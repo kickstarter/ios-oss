@@ -104,7 +104,7 @@ final class PledgeCTAContainerView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.buttonStyle
+    self.viewModel.outputs.buttonStyleType
       .observeForUI()
       .observeValues { [weak self] buttonStyleType in
         _ = self?.pledgeCTAButton ?|> buttonStyleType.style
