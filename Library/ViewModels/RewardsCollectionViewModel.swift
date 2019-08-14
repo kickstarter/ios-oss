@@ -7,10 +7,12 @@ public typealias PledgeData = (project: Project, reward: Reward, refTag: RefTag?
 
 public protocol RewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?)
+  func rewardCellShouldShowDividerLine(_ show: Bool)
   func rewardSelected(with rewardId: Int)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
   func viewDidAppear()
   func viewDidLoad()
+  func viewWillAppear()
 }
 
 public protocol RewardsCollectionViewModelOutputs {
@@ -18,6 +20,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var flashScrollIndicators: Signal<Void, Never> { get }
   var goToDeprecatedPledge: Signal<PledgeData, Never> { get }
   var goToPledge: Signal<PledgeData, Never> { get }
+  var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   func selectedReward() -> Reward?
@@ -83,11 +86,24 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()
       .map { isFalse($0.verticalSizeClass == .regular) }
+
+    let hideDividerLine = self.rewardCellShouldShowDividerLineProperty.signal
+      .negate()
+
+    self.navigationBarShadowImageHidden = Signal.merge(
+      hideDividerLine,
+      hideDividerLine.takeWhen(self.viewWillAppearProperty.signal)
+    )
   }
 
   private let configDataProperty = MutableProperty<(Project, RefTag?)?>(nil)
   public func configure(with project: Project, refTag: RefTag?) {
     self.configDataProperty.value = (project, refTag)
+  }
+
+  private let rewardCellShouldShowDividerLineProperty = MutableProperty<Bool>(false)
+  public func rewardCellShouldShowDividerLine(_ show: Bool) {
+    self.rewardCellShouldShowDividerLineProperty.value = show
   }
 
   private let rewardSelectedWithRewardIdProperty = MutableProperty<Int?>(nil)
@@ -110,10 +126,16 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
+  private let viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
+  }
+
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToDeprecatedPledge: Signal<PledgeData, Never>
   public let goToPledge: Signal<PledgeData, Never>
+  public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
 
