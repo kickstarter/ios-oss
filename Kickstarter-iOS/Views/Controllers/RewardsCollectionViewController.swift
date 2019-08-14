@@ -89,12 +89,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.viewModel.inputs.viewDidAppear()
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-
-    self.viewModel.inputs.viewWillAppear()
-  }
-
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
@@ -105,6 +99,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
     if itemSize != layout.itemSize {
       layout.invalidateLayout()
     }
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
   }
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
