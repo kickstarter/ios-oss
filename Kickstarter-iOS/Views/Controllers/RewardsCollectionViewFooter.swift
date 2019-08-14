@@ -24,13 +24,13 @@ final class RewardsCollectionViewFooter: UIView {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ .ksr_grey_200
+      |> rewardsBackgroundStyle
 
     _ = self.countLabel
       |> countLabelStyle
 
     _ = self.separatorView
-      |> separatorStyle
+      |> separatorStyleDark
   }
 
   // MARK: - Functions
@@ -69,5 +69,5 @@ private let countLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_footnote()
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.textAlignment .~ .center
-    |> \.backgroundColor .~ UIColor.ksr_grey_200
+    |> \.backgroundColor .~ UIColor.ksr_grey_400
 }
