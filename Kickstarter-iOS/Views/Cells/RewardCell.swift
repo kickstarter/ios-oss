@@ -6,6 +6,7 @@ import ReactiveSwift
 
 protocol RewardCellDelegate: AnyObject {
   func rewardCellDidTapPledgeButton(_ rewardCell: RewardCell, rewardId: Int)
+  func rewardCell(_ rewardCell: RewardCell, shouldShowDividerLine show: Bool)
 }
 
 final class RewardCell: UICollectionViewCell, ValueCell {
@@ -14,7 +15,11 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   internal weak var delegate: RewardCellDelegate?
 
   internal let rewardCardContainerView = RewardCardContainerView(frame: .zero)
-  private let scrollView = UIScrollView(frame: .zero)
+  private lazy var scrollView = {
+    UIScrollView(frame: .zero)
+      |> \.delegate .~ self
+  }()
+
   private lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
     UILongPressGestureRecognizer(
       target: self, action: #selector(RewardCell.depress(_:))
@@ -23,6 +28,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       .DepressAnimation.longPressMinimumDuration
       |> \.delegate .~ self
       |> \.cancelsTouchesInView .~ false
+      |> \.isEnabled .~ false // FIXME: remove once we're ready to handle the transition again
   }()
 
   override init(frame: CGRect) {
@@ -70,6 +76,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     _ = self.contentView
       |> contentViewStyle
+      |> rewardsBackgroundStyle
 
     _ = self.scrollView
       |> scrollViewStyle
@@ -103,11 +110,23 @@ final class RewardCell: UICollectionViewCell, ValueCell {
         transform = .identity
       }
 
-      _ = self
+      _ = self.rewardCardContainerView
         |> \.transform .~ transform
     }
 
     animator.startAnimation()
+  }
+}
+
+extension RewardCell: UIScrollViewDelegate {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let scrollViewTopInset = scrollView.contentInset.top
+
+    let cardContainerViewY = self.rewardCardContainerView.frame.origin.y
+    let yOffset = scrollView.contentOffset.y - scrollViewTopInset - cardContainerViewY
+    let showDivider = yOffset + scrollViewTopInset >= 0
+
+    self.delegate?.rewardCell(self, shouldShowDividerLine: showDivider)
   }
 }
 
@@ -135,7 +154,6 @@ extension RewardCell: UIGestureRecognizerDelegate {
 private let contentViewStyle: ViewStyle = { view in
   view
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
-    |> \.backgroundColor .~ .ksr_grey_200
 }
 
 private let scrollViewStyle: ScrollStyle = { scrollView in
