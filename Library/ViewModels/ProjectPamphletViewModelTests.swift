@@ -364,10 +364,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(config: config) {
       let project = Project.template
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
+      self.configureInitialState(.left(project))
 
       self.goToDeprecatedRewardsProject.assertDidNotEmitValue()
       self.goToDeprecatedRewardsRefTag.assertDidNotEmitValue()
@@ -419,10 +416,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
+      self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
@@ -449,10 +443,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
+      self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
@@ -475,10 +466,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
+      self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
@@ -501,10 +489,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
+      self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
@@ -616,10 +601,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     let project = Project.template
 
     withEnvironment(config: config) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
+      self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
@@ -633,10 +615,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     let project = Project.template
 
     withEnvironment(config: config) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
+      self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
@@ -655,10 +634,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     ) {
       XCTAssertEqual([], client.events)
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
+      self.configureInitialState(.left(project))
 
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
@@ -669,5 +645,12 @@ final class ProjectPamphletViewModelTests: TestCase {
         client.events
       )
     }
+  }
+
+  private func configureInitialState(_ projectOrParam: Either<Project, Param>) {
+    self.vm.inputs.configureWith(projectOrParam: projectOrParam, refTag: .discovery)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewDidAppear(animated: false)
   }
 }

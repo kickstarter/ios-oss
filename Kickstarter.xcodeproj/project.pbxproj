@@ -1063,6 +1063,8 @@
 		D6AE52251FD1B3F600BEC788 /* RootCategoriesEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE52241FD1B3F600BEC788 /* RootCategoriesEnvelope.swift */; };
 		D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */; };
 		D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */; };
+		D6B188DE23048187005C7B19 /* ProjectPamphlet+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B188DD23048187005C7B19 /* ProjectPamphlet+Helpers.swift */; };
+		D6B188E0230481E6005C7B19 /* ProjectPamphlet+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B188DF230481E6005C7B19 /* ProjectPamphlet+HelpersTests.swift */; };
 		D6B4D9BF209B88F3002C7B68 /* PushNotificationdialogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */; };
 		D6B4EFC6210686270079159D /* SettingsNewslettersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */; };
 		D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B4EFFD21079C870079159D /* SettingsNewslettersViewModelTests.swift */; };
@@ -2313,6 +2315,8 @@
 		D6AE52261FD1B41200BEC788 /* RootCategoriesEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RootCategoriesEnvelope.swift; path = lenses/RootCategoriesEnvelope.swift; sourceTree = "<group>"; };
 		D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryEnvelope.swift; sourceTree = "<group>"; };
 		D6AE53151FD1E05E00BEC788 /* String+Base64Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Base64Tests.swift"; sourceTree = "<group>"; };
+		D6B188DD23048187005C7B19 /* ProjectPamphlet+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectPamphlet+Helpers.swift"; sourceTree = "<group>"; };
+		D6B188DF230481E6005C7B19 /* ProjectPamphlet+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectPamphlet+HelpersTests.swift"; sourceTree = "<group>"; };
 		D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationdialogTests.swift; sourceTree = "<group>"; };
 		D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewModel.swift; sourceTree = "<group>"; };
 		D6B4EFFD21079C870079159D /* SettingsNewslettersViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersViewModelTests.swift; sourceTree = "<group>"; };
@@ -3050,6 +3054,8 @@
 				9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */,
 				A75C811A1D210C4700B5AD03 /* ProjectActivityItemProvider.swift */,
 				D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */,
+				D6B188DD23048187005C7B19 /* ProjectPamphlet+Helpers.swift */,
+				D6B188DF230481E6005C7B19 /* ProjectPamphlet+HelpersTests.swift */,
 				D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */,
 				D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */,
 				D76437782241500600DAFC9E /* PushNotificationDialogType.swift */,
@@ -4416,6 +4422,7 @@
 				D79F0F7521068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift in Sources */,
 				37280272226F880100E0ACBB /* CheckoutStyles.swift in Sources */,
 				013744F81D99A39B00E50C78 /* EmptyStatesViewModel.swift in Sources */,
+				D6B188DE23048187005C7B19 /* ProjectPamphlet+Helpers.swift in Sources */,
 				770D86C822F337B800CDC6A1 /* PledgeAddNewCardViewModel.swift in Sources */,
 				8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */,
 				D04AAC2E218BB70D00CF713E /* SettingsViewModel.swift in Sources */,
@@ -4731,6 +4738,7 @@
 				A7ED1F281E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift in Sources */,
 				A7ED1FF61E831C5C00BFFA01 /* ProjectNavigatorViewModelTests.swift in Sources */,
 				A7ED1FB81E831C5C00BFFA01 /* BackingCellViewModelTests.swift in Sources */,
+				D6B188E0230481E6005C7B19 /* ProjectPamphlet+HelpersTests.swift in Sources */,
 				A7ED1FFD1E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift in Sources */,
 				A7ED1F341E830FDC00BFFA01 /* SharedFunctionsTests.swift in Sources */,
 				D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */,
