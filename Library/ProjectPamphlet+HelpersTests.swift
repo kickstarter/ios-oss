@@ -5,7 +5,6 @@ import Prelude
 import XCTest
 
 final class ProjectPamphlet_HelpersTests: TestCase {
-
   func testUserCanSeeNativeCheckout_featureNativeCheckoutEnabled_checkoutExperimentEnabled() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
