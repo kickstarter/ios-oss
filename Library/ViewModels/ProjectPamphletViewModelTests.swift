@@ -404,8 +404,10 @@ final class ProjectPamphletViewModelTests: TestCase {
       .assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
   }
 
-  func testConfigurePledgeCTAView_fetchProjectSuccess_featureEnabled() {
-    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+  func testConfigurePledgeCTAView_fetchProjectSuccess_featureEnabled_experimentEnabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
     let project = Project.template
     let projectFull = Project.template
       |> \.id .~ 2
@@ -432,8 +434,39 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
   }
 
-  func testConfigurePledgeCTAView_fetchProjectFailure_featureEnabled() {
-    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+  func testConfigurePledgeCTAView_fetchProjectSuccess_featureEnabled_experimentDisabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
+    let project = Project.template
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+
+    let mockService = MockService(fetchProjectResponse: projectFull)
+
+    withEnvironment(apiService: mockService, apiDelayInterval: .seconds(1), config: config) {
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+    }
+  }
+
+  func testConfigurePledgeCTAView_fetchProjectFailure_featureEnabled_experimentEnabled {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
     let project = Project.template
     let mockService = MockService(fetchProjectError: .couldNotParseJSON)
 

@@ -92,7 +92,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       project,
       isLoading.signal
     )
-    .filter { _ in featureNativeCheckoutEnabled() }
+    .filter { _ in userCanSeeNativeCheckout() }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
