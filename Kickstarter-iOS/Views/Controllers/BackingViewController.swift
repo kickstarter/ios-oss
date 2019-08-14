@@ -67,7 +67,6 @@ internal final class BackingViewController: UIViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
-    self.actionsStackView.rac.axis = self.viewModel.outputs.rootStackViewAxis
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
     self.backerPledgeAmountLabel.rac.text = self.viewModel.outputs.pledgeAmount
     self.backerRewardDescriptionLabel.rac.text = self.viewModel.outputs.rewardDescription
@@ -122,6 +121,9 @@ internal final class BackingViewController: UIViewController {
     _ = self
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.project_view_button() }
+
+    _ = self.actionsStackView
+      |> \.axis .~ .vertical
 
     _ = self.backerAvatarImageView
       |> ignoresInvertColorsImageViewStyle

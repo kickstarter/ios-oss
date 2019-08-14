@@ -69,9 +69,6 @@ public protocol BackingViewModelOutputs {
   /// Emits the backer reward title and amount to display.
   var rewardTitleWithAmount: Signal<String, Never> { get }
 
-  /// Emits the axis of the stackview.
-  var rootStackViewAxis: Signal<NSLayoutConstraint.Axis, Never> { get }
-
   /// Emits the backer's shipping amount.
   var shippingAmount: Signal<String, Never> { get }
 
@@ -256,9 +253,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       projectAndBackingAndBackerIsCurrentUser.mapConst(1.0)
     )
 
-    self.rootStackViewAxis = projectAndBackingAndBackerIsCurrentUser
-      .map { _ in AppEnvironment.current.language == .en ? .horizontal : .vertical }
-
     project.observeValues { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
   }
 
@@ -303,7 +297,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let rewardSectionAndShippingIsHidden: Signal<Bool, Never>
   public var rewardTitleWithAmount: Signal<String, Never>
   public var rewardSectionTitle: Signal<NSAttributedString, Never>
-  public let rootStackViewAxis: Signal<NSLayoutConstraint.Axis, Never>
   public let shippingAmount: Signal<String, Never>
   public let statusDescription: Signal<NSAttributedString, Never>
   public let totalPledgeAmount: Signal<String, Never>

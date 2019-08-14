@@ -104,11 +104,11 @@ final class PledgeCTAContainerView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.buttonTitleTextColor
+    self.viewModel.outputs.buttonStyle
       .observeForUI()
-      .observeValues { [weak self] textColor in
-        self?.pledgeCTAButton.setTitleColor(textColor, for: .normal)
-      }
+      .observeValues { [weak self] buttonStyle in
+        _ = self?.pledgeCTAButton ?|> buttonStyle
+    }
 
     self.viewModel.outputs.rootStackViewAnimateIsHidden
       .observeValues { [weak self] isHidden in
@@ -126,7 +126,6 @@ final class PledgeCTAContainerView: UIView {
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
 
     // NB: vm needs to return button style
-    self.pledgeCTAButton.rac.backgroundColor = self.viewModel.outputs.buttonBackgroundColor
     self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText
     self.spacer.rac.hidden = self.viewModel.outputs.spacerIsHidden
   }
