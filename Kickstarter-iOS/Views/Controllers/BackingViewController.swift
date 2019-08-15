@@ -46,12 +46,6 @@ internal final class BackingViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-
-    if UIDevice.current.orientation.isPortrait {
-      self.actionsStackView.axis = .vertical
-    } else {
-      self.actionsStackView.axis = .horizontal
-    }
     _ = self.messageCreatorButton
       |> UIButton.lens.targets .~ [(self, #selector(messageCreatorTapped), .touchUpInside)]
 
@@ -70,20 +64,17 @@ internal final class BackingViewController: UIViewController {
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
-  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+  internal override func viewWillTransition(
+    to size: CGSize,
+    with coordinator: UIViewControllerTransitionCoordinator
+  ) {
     super.viewWillTransition(to: size, with: coordinator)
-
-    if UIDevice.current.orientation.isPortrait {
-      self.actionsStackView.axis = .vertical
-//      self.actionsStackView.distribution = .fillEqually
-    } else {
-      self.actionsStackView.axis = .horizontal
-//      self.actionsStackView.distribution = .fillEqually
-    }
+    self.viewModel.inputs.viewWillTransition()
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
+    self.actionsStackView.rac.axis = self.viewModel.outputs.actionsStackViewAxis
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
     self.backerPledgeAmountLabel.rac.text = self.viewModel.outputs.pledgeAmount
     self.backerRewardDescriptionLabel.rac.text = self.viewModel.outputs.rewardDescription
@@ -139,7 +130,7 @@ internal final class BackingViewController: UIViewController {
       |> baseControllerStyle()
       |> UIViewController.lens.title %~ { _ in Strings.project_view_button() }
 
-    _  = self.actionsStackView
+    _ = self.actionsStackView
       |> \.distribution .~ .fillEqually
 
     _ = self.backerAvatarImageView
