@@ -18,8 +18,10 @@ final class PledgeCTAContainerView: UIView {
   // MARK: - Properties
 
   private lazy var activityIndicator: UIActivityIndicatorView = {
-    UIActivityIndicatorView(frame: .zero)
+    let indicator = UIActivityIndicatorView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    indicator.startAnimating()
+    return indicator
   }()
 
   private lazy var activityIndicatorContainerView: UIView = {
@@ -81,7 +83,6 @@ final class PledgeCTAContainerView: UIView {
 
     _ = self.pledgeRetryButton
       |> pledgeRetryButtonStyle
-      |> \.isHidden .~ true
 
     _ = self.titleAndSubtitleStackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
@@ -111,14 +112,14 @@ final class PledgeCTAContainerView: UIView {
 
     _ = self.activityIndicator
       |> \.color .~ UIColor.ksr_dark_grey_500
-
-    self.activityIndicator.startAnimating()
   }
 
   // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    // NB: vm needs to return button style
 
     self.viewModel.outputs.buttonTitleTextColor
       .observeForUI()
@@ -132,12 +133,7 @@ final class PledgeCTAContainerView: UIView {
         self?.animateView(self?.pledgeCTAButton, isHidden: isHidden)
       }
 
-    self.viewModel.outputs.activityIndicatorIsHidden
-      .observeForUI()
-      .observeValues { [weak self] isHidden in
-        self?.activityIndicatorContainerView.isHidden = isHidden
-      }
-
+    self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden
     self.pledgeCTAButton.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
     self.pledgeCTAButton.rac.backgroundColor = self.viewModel.outputs.buttonBackgroundColor
     self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText

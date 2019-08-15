@@ -14,7 +14,7 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call after the view loads and passes the initial TopConstraint constant.
   func initial(topConstraint: CGFloat)
 
-  /// Call when "Content isn't loading right now." is tapped.
+  /// Call when pledgeRetryButton is tapped.
   func pledgeRetryButtonTapped()
 
   /// Call when the view did appear, and pass the animated parameter.

@@ -28,10 +28,10 @@ public protocol PledgeCTAContainerViewViewModelType {
 public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
-    let projectOrError = self.configureWithValueProperty.signal
+    let projectOrError = self.projectOrErrorProperty.signal
       .skipNil()
       .filter(second >>> isFalse)
-      .map { $0.0 }
+      .map(first)
 
     let project = projectOrError
       .map(Either.left)
@@ -41,7 +41,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .map(Either.right)
       .skipNil()
 
-    self.activityIndicatorIsHidden = self.configureWithValueProperty.signal
+    self.activityIndicatorIsHidden = self.projectOrErrorProperty.signal
       .skipNil()
       .map(second)
       .negate()
@@ -75,10 +75,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .map(subtitle(project:pledgeState:))
   }
 
-  fileprivate let configureWithValueProperty =
+  fileprivate let projectOrErrorProperty =
     MutableProperty<(Either<Project, ErrorEnvelope>, isLoading: Bool)?>(nil)
   public func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool)) {
-    self.configureWithValueProperty.value = value
+    self.projectOrErrorProperty.value = value
   }
 
   public var inputs: PledgeCTAContainerViewViewModelInputs { return self }
