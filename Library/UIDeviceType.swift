@@ -30,7 +30,10 @@ internal struct MockDevice: UIDeviceType {
   internal let userInterfaceIdiom: UIUserInterfaceIdiom
   internal let orientation: UIDeviceOrientation
 
-  internal init(userInterfaceIdiom: UIUserInterfaceIdiom = .phone, orientation: UIDeviceOrientation = .portrait) {
+  internal init(
+    userInterfaceIdiom: UIUserInterfaceIdiom = .phone,
+    orientation: UIDeviceOrientation = .portrait
+  ) {
     self.userInterfaceIdiom = userInterfaceIdiom
     self.orientation = orientation
   }
