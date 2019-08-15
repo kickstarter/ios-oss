@@ -8,6 +8,7 @@ import XCTest
 internal final class BackingViewModelTests: TestCase {
   private let vm: BackingViewModelType = BackingViewModel()
 
+  private let actionsStackViewAxis = TestObserver<NSLayoutConstraint.Axis, Never>()
   private let backerAvatarURL = TestObserver<String?, Never>()
   private let backerName = TestObserver<String, Never>()
   private let backerSequence = TestObserver<String, Never>()
@@ -33,6 +34,7 @@ internal final class BackingViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "hello", user: .template))
+    self.vm.outputs.actionsStackViewAxis.observe(self.actionsStackViewAxis.observer)
     self.vm.outputs.backerAvatarURL.map { $0?.absoluteString }.observe(self.backerAvatarURL.observer)
     self.vm.outputs.backerName.observe(self.backerName.observer)
     self.vm.outputs.backerSequence.observe(self.backerSequence.observer)
@@ -460,4 +462,21 @@ internal final class BackingViewModelTests: TestCase {
       )
     }
   }
+
+  func testActionsStackViewAxis() {
+    let project = Project.template
+    let backer = User.template |> \.id .~ 20
+    let device = MockDevice()
+
+    withEnvironment(currentUser: backer, device: device, language: .de) {
+      self.vm.inputs.configureWith(project: project, backer: backer)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.actionsStackViewAxis.assertValues([NSLayoutConstraint.Axis.vertical])
+    }
+  }
+
 }
