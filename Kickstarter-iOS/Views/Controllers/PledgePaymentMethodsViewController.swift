@@ -103,8 +103,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   // MARK: - Configuration
 
-  func configureWith(_ user: User) {
-    self.viewModel.inputs.configureWith(user)
+  func configureWith(_ value: (User, Project)) {
+    self.viewModel.inputs.configureWith(value)
   }
 
   // MARK: - Actions

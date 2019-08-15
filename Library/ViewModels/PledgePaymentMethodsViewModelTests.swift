@@ -25,7 +25,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethods.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(User.template)
+      self.vm.inputs.configureWith((User.template, Project.template))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
@@ -41,7 +41,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: apiService, currentUser: User.template) {
       self.reloadPaymentMethods.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(User.template)
+      self.vm.inputs.configureWith((User.template, Project.template))
       self.vm.inputs.viewDidLoad()
 
       self.reloadPaymentMethods.assertDidNotEmitValue()

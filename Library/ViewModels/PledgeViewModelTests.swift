@@ -12,6 +12,7 @@ final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
 
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
+  private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()
 
   private let configureSummaryCellWithDataPledgeTotal = TestObserver<Double, Never>()
   private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
@@ -26,7 +27,7 @@ final class PledgeViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.configurePaymentMethodsViewControllerWithUser
+    self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map(first)
       .observe(self.configurePaymentMethodsViewControllerWithUser.observer)
 
     self.vm.outputs.configureSummaryViewControllerWithData.map(second)
