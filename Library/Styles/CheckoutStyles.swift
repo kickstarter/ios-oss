@@ -175,6 +175,11 @@ public let rewardCardShadowStyle: ViewStyle = { (view: UIView) in
     |> \.layer.shouldRasterize .~ false
 }
 
+public let rewardsBackgroundStyle: ViewStyle = { (view: UIView) in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_grey_400
+}
+
 public let cardImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.contentMode .~ .scaleAspectFit

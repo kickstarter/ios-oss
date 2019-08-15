@@ -25,6 +25,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var navigationBarShadowImage: UIImage? = {
+    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
+  }()
+
   private var collectionViewBottomConstraintSuperview: NSLayoutConstraint?
   private var collectionViewBottomConstraintFooterView: NSLayoutConstraint?
 
@@ -64,6 +68,9 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    _ = self
+      |> \.extendedLayoutIncludesOpaqueBars .~ true
+
     _ = self.collectionView
       |> \.dataSource .~ self.dataSource
 
@@ -95,6 +102,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
     }
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.viewModel.inputs.viewWillAppear()
+  }
+
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
 
@@ -105,10 +118,11 @@ final class RewardsCollectionViewController: UICollectionViewController {
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ .ksr_grey_200
+      |> rewardsBackgroundStyle
 
     _ = self.collectionView
       |> collectionViewStyle
+      |> rewardsBackgroundStyle
   }
 
   override func bindViewModel() {
@@ -152,6 +166,15 @@ final class RewardsCollectionViewController: UICollectionViewController {
       }
 
     self.rewardsCollectionFooterView.rac.hidden = self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
+
+    self.viewModel.outputs.navigationBarShadowImageHidden
+      .observeForUI()
+      .observeValues { [weak self] hidden in
+        guard let self = self else { return }
+        self.navigationController?.navigationBar.shadowImage = hidden
+          ? UIImage()
+          : self.navigationBarShadowImage
+      }
   }
 
   // MARK: - Functions
@@ -219,12 +242,14 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
   }
 
-  // MARK: - Public Functions
+  // MARK: - Actions
 
   @objc func closeButtonTapped() {
     self.navigationController?.dismiss(animated: true)
   }
 }
+
+// MARK: - Functions
 
 // MARK: - UICollectionViewDelegate
 
@@ -261,6 +286,10 @@ extension RewardsCollectionViewController: UICollectionViewDelegateFlowLayout {
 extension RewardsCollectionViewController: RewardCellDelegate {
   func rewardCellDidTapPledgeButton(_: RewardCell, rewardId: Int) {
     self.viewModel.inputs.rewardSelected(with: rewardId)
+  }
+
+  func rewardCell(_: RewardCell, shouldShowDividerLine show: Bool) {
+    self.viewModel.inputs.rewardCellShouldShowDividerLine(show)
   }
 }
 
@@ -317,7 +346,6 @@ extension RewardsCollectionViewController: RewardPledgeTransitionAnimatorDelegat
 
 private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICollectionView in
   collectionView
-    |> \.backgroundColor .~ .ksr_grey_200
     |> \.clipsToBounds .~ false
     |> \.allowsSelection .~ true
     |> \.showsHorizontalScrollIndicator .~ true

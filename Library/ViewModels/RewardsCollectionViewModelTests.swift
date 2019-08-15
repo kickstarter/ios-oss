@@ -17,6 +17,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let goToPledgeProject = TestObserver<Project, Never>()
   private let goToPledgeRefTag = TestObserver<RefTag?, Never>()
   private let goToPledgeReward = TestObserver<Reward, Never>()
+  private let navigationBarShadowImageHidden = TestObserver<Bool, Never>()
   private let reloadDataWithValues = TestObserver<[(Project, Either<Reward, Backing>)], Never>()
   private let reloadDataWithValuesProject = TestObserver<[Project], Never>()
   private let reloadDataWithValuesRewardOrBacking = TestObserver<[Either<Reward, Backing>], Never>()
@@ -34,6 +35,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.goToPledge.map { $0.project }.observe(self.goToPledgeProject.observer)
     self.vm.outputs.goToPledge.map { $0.reward }.observe(self.goToPledgeReward.observer)
     self.vm.outputs.goToPledge.map { $0.refTag }.observe(self.goToPledgeRefTag.observer)
+    self.vm.outputs.navigationBarShadowImageHidden.observe(self.navigationBarShadowImageHidden.observer)
     self.vm.outputs.reloadDataWithValues.observe(self.reloadDataWithValues.observer)
     self.vm.outputs.reloadDataWithValues.map { $0.map { $0.0 } }
       .observe(self.reloadDataWithValuesProject.observer)
@@ -181,5 +183,28 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
 
     self.flashScrollIndicators.assertDidEmitValue()
+  }
+
+  func testNavigationBarShadowImageHidden() {
+    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity)
+    self.vm.inputs.viewDidLoad()
+
+    self.navigationBarShadowImageHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.rewardCellShouldShowDividerLine(false)
+
+    self.navigationBarShadowImageHidden.assertValues([true])
+
+    self.vm.inputs.viewWillAppear()
+
+    self.navigationBarShadowImageHidden.assertValues([true, true])
+
+    self.vm.inputs.rewardCellShouldShowDividerLine(true)
+
+    self.navigationBarShadowImageHidden.assertValues([true, true, false])
+
+    self.vm.inputs.viewWillAppear()
+
+    self.navigationBarShadowImageHidden.assertValues([true, true, false, false])
   }
 }

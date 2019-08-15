@@ -75,21 +75,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
-  fileprivate var statusBarHidden = true
-  override var prefersStatusBarHidden: Bool {
-    return self.statusBarHidden
-  }
-
-  override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-    return .slide
-  }
-
-  internal override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    self.statusBarHidden = false
-    UIView.animate(withDuration: 0.3, animations: { self.setNeedsStatusBarAppearanceUpdate() })
-  }
-
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.disclaimerTextView.delegate = self
@@ -175,8 +160,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    if !featureNativeCheckoutEnabled() {
+      _ = self
+        |> baseControllerStyle()
+    }
+
     _ = self
-      |> baseControllerStyle()
       |> DeprecatedRewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_600
 
     _ = self.applePayButton
@@ -348,16 +337,17 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self.rootStackView
       |> UIStackView.lens.layoutMargins .~ .init(
-        topBottom: Styles.grid(4) + Styles.grid(2),
+        topBottom: Styles.grid(2) + Styles.grid(2),
         leftRight: Styles.grid(2) + 1
       )
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     _ = self.scrollView
-      |> UIScrollView.lens.layoutMargins .~ .init(all: Styles.grid(2))
+      |> UIScrollView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
       |> UIScrollView.lens.delaysContentTouches .~ false
       |> UIScrollView.lens.keyboardDismissMode .~ .interactive
+      |> \.contentInset .~ .init(topBottom: Styles.grid(2))
 
     _ = self.shippingActivityIndicatorView
       |> baseActivityIndicatorStyle
