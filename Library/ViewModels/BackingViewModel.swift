@@ -261,7 +261,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.actionsStackViewAxis = Signal.merge(
       self.viewDidLoadProperty.signal,
       self.viewWillTransitionProperty.signal
-    ).map { _ in UIDevice.current.orientation.isPortrait ? .vertical : .horizontal }
+    ).map { _ in AppEnvironment.current.device.orientation.isPortrait ? .vertical : .horizontal }
 
     project.observeValues { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
   }
