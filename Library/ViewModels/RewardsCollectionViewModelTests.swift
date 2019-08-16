@@ -246,7 +246,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     }
   }
 
-  func testRewardSelected_Backing_ProjectEnded() {
+  func testRewardSelected_Backing_WithReward_ProjectEnded() {
     let reward = Project.cosmicSurgery.rewards.first!
     let backing = Backing.template
       |> Backing.lens.reward .~ reward
@@ -276,6 +276,45 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.goToViewBackingProject.assertDidNotEmitValue()
 
       self.vm.inputs.rewardSelected(with: reward.id)
+
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+
+      self.goToViewBackingProject.assertValues([project])
+      self.goToViewBackingUser.assertValues([user])
+    }
+  }
+
+  func testRewardSelected_Backing_NoReward_ProjectEnded() {
+    let backing = Backing.template
+      |> Backing.lens.reward .~ .noReward
+      |> Backing.lens.rewardId .~ nil
+
+    let project = Project.template
+      |> Project.lens.rewards .~ [Reward.noReward, Reward.template]
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ true
+
+    let user = User.template
+
+    withEnvironment(currentUser: user) {
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+
+      self.vm.inputs.configure(with: project, refTag: nil)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+
+      self.vm.inputs.rewardSelected(with: 123)
+
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+
+      self.vm.inputs.rewardSelected(with: Reward.noReward.id)
 
       self.goToPledgeProject.assertDidNotEmitValue()
       self.goToDeprecatedPledgeProject.assertDidNotEmitValue()

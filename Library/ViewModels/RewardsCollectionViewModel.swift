@@ -86,7 +86,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     let goToViewBacking = project
       .takePairWhen(selectedRewardFromId)
       .filter { project, reward -> Bool in
-        project.state != .live && project.personalization.backing?.rewardId == reward.id
+        project.state != .live && userIsBacking(reward: reward, inProject: project)
       }
       .map(first)
 
