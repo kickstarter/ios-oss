@@ -481,7 +481,10 @@ internal final class BackingViewModelTests: TestCase {
 
       self.vm.inputs.traitCollectionDidChange(UITraitCollection.init(verticalSizeClass: .compact))
 
-      self.actionsStackViewAxis.assertValues([NSLayoutConstraint.Axis.vertical, NSLayoutConstraint.Axis.horizontal])
+      self.actionsStackViewAxis.assertValues([
+        NSLayoutConstraint.Axis.vertical,
+        NSLayoutConstraint.Axis.horizontal
+      ])
     }
   }
 }
