@@ -12,8 +12,6 @@ final class ProjectPamphletViewModelTests: TestCase {
   private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
   private let configurePledgeCTAViewProject = TestObserver<Either<Project, ErrorEnvelope>, Never>()
   private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
-  private let goToDeprecatedRewardsProject = TestObserver<Project, Never>()
-  private let goToDeprecatedRewardsRefTag = TestObserver<RefTag?, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let setNavigationBarHidden = TestObserver<Bool, Never>()
@@ -31,8 +29,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       .observe(self.configureChildViewControllersWithRefTag.observer)
     self.vm.outputs.configurePledgeCTAView.map(first).observe(self.configurePledgeCTAViewProject.observer)
     self.vm.outputs.configurePledgeCTAView.map(second).observe(self.configurePledgeCTAViewIsLoading.observer)
-    self.vm.outputs.goToDeprecatedRewards.map(first).observe(self.goToDeprecatedRewardsProject.observer)
-    self.vm.outputs.goToDeprecatedRewards.map(second).observe(self.goToDeprecatedRewardsRefTag.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(first)
@@ -359,7 +355,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
   func testGoToRewards() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
 
     withEnvironment(config: config) {
       let project = Project.template
@@ -369,39 +365,14 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(animated: false)
       self.vm.inputs.viewDidAppear(animated: false)
 
-      self.goToDeprecatedRewardsProject.assertDidNotEmitValue()
-      self.goToDeprecatedRewardsRefTag.assertDidNotEmitValue()
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
 
       self.vm.inputs.backThisProjectTapped()
 
-      self.goToDeprecatedRewardsProject.assertDidNotEmitValue()
-      self.goToDeprecatedRewardsRefTag.assertDidNotEmitValue()
       self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
       self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
     }
-  }
-
-  func testGoToDeprecatedRewards() {
-    let project = Project.template
-
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: false)
-    self.vm.inputs.viewDidAppear(animated: false)
-
-    self.goToDeprecatedRewardsProject.assertDidNotEmitValue()
-    self.goToDeprecatedRewardsRefTag.assertDidNotEmitValue()
-    self.goToRewardsProject.assertDidNotEmitValue()
-    self.goToRewardsRefTag.assertDidNotEmitValue()
-
-    self.vm.inputs.backThisProjectTapped()
-
-    self.goToDeprecatedRewardsProject
-      .assertValues([project], "Tapping 'Back this project' emits the project")
-    self.goToDeprecatedRewardsRefTag
-      .assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
   }
 
   func testConfigurePledgeCTAView_fetchProjectSuccess_featureEnabled() {

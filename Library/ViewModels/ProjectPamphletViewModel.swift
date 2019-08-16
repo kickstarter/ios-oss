@@ -37,9 +37,6 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
 
-  /// Emits a project and refTag to be used to navigate to the deprecated reward selection screen.
-  var goToDeprecatedRewards: Signal<(Project, RefTag?), Never> { get }
-
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
   var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
 
@@ -89,10 +86,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
 
     self.goToRewards = ctaButtonTapped
-      .filter { _ in featureNativeCheckoutPledgeViewEnabled() }
-
-    self.goToDeprecatedRewards = ctaButtonTapped
-      .filter { _ in !featureNativeCheckoutPledgeViewEnabled() }
+      .filter { _ in featureNativeCheckoutEnabled() }
 
     let project = freshProjectAndRefTag
       .map(first)
@@ -206,7 +200,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
-  public let goToDeprecatedRewards: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
