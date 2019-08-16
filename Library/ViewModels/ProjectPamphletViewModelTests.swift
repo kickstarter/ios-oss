@@ -561,7 +561,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
     }
   }
-      
+
   func testbackThisButton_eventTracking() {
     let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
     let client = MockTrackingClient()
