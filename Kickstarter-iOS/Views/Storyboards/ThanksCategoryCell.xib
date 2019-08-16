@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,39 +19,23 @@
                 <rect key="frame" x="0.0" y="0.0" width="288" height="73.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ykD-AO-atW">
-                        <rect key="frame" x="12" y="12" width="264" height="50"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xif-xY-aXW">
-                                <rect key="frame" x="0.0" y="0.0" width="264" height="50"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="xif-xY-aXW" secondAttribute="trailing" id="RLv-qG-RqC"/>
-                            <constraint firstItem="xif-xY-aXW" firstAttribute="leading" secondItem="ykD-AO-atW" secondAttribute="leading" id="RZe-WH-4xE"/>
-                            <constraint firstAttribute="height" constant="50" id="fc2-Fd-0Bx"/>
-                            <constraint firstAttribute="bottom" secondItem="xif-xY-aXW" secondAttribute="bottom" id="iuZ-VZ-6Qk"/>
-                            <constraint firstItem="xif-xY-aXW" firstAttribute="top" secondItem="ykD-AO-atW" secondAttribute="top" id="r94-JV-JEr"/>
-                        </constraints>
-                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hbb-GW-PrV">
+                        <rect key="frame" x="12" y="12" width="264" height="49.5"/>
+                        <state key="normal" title="Button"/>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="ykD-AO-atW" secondAttribute="bottom" constant="12" id="VPA-32-GNd"/>
-                    <constraint firstItem="ykD-AO-atW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="X2t-6f-Uyl"/>
-                    <constraint firstAttribute="trailing" secondItem="ykD-AO-atW" secondAttribute="trailing" constant="12" id="cDT-No-pbh"/>
-                    <constraint firstItem="ykD-AO-atW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="fcq-oE-EOu"/>
+                    <constraint firstItem="hbb-GW-PrV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="28L-sx-7qS"/>
+                    <constraint firstItem="hbb-GW-PrV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="4gt-wy-P4O"/>
+                    <constraint firstAttribute="trailing" secondItem="hbb-GW-PrV" secondAttribute="trailing" constant="12" id="hdE-gC-SBU"/>
+                    <constraint firstAttribute="bottom" secondItem="hbb-GW-PrV" secondAttribute="bottom" constant="12" id="oER-1K-8bb"/>
                 </constraints>
                 <edgeInsets key="layoutMargins" top="12" left="0.0" bottom="12" right="0.0"/>
             </tableViewCellContentView>
             <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="cardView" destination="ykD-AO-atW" id="0l8-hY-gPI"/>
-                <outlet property="seeAllProjectsLabel" destination="xif-xY-aXW" id="N0B-cm-EIx"/>
+                <outlet property="seeAllProjectsButton" destination="hbb-GW-PrV" id="Sfl-8U-s0p"/>
             </connections>
             <point key="canvasLocation" x="-133" y="-727"/>
         </tableViewCell>
