@@ -10,6 +10,7 @@ extension PKPaymentAuthorizationViewController {
                                                                 .masterCard,
                                                                 .visa,
                                                                 .discover,
+                                                                .JCB,
                                                                 .chinaUnionPay]
 
   public static func applePayCapable() -> Bool {
@@ -32,7 +33,8 @@ extension PKPaymentAuthorizationViewController {
     }
 
     return availableCardTypes
-      .compactMap { cardType in PKPaymentNetwork(rawValue: cardType) }
+      .compactMap(GraphUserCreditCard.CreditCardType.init(rawValue:))
+      .compactMap(pkPaymentNetwork(for:))
   }
 
 
@@ -44,6 +46,26 @@ extension PKPaymentAuthorizationViewController {
       let supportedNetworks: Set<PKPaymentNetwork> = Set.init(allSupportedNetworks)
 
       return Array(supportedNetworks.subtracting(unsupportedNetworks))
+    }
+  }
+
+  private static func pkPaymentNetwork(for graphCreditCardType: GraphUserCreditCard.CreditCardType)
+    -> PKPaymentNetwork? {
+    switch graphCreditCardType {
+    case .amex:
+      return PKPaymentNetwork.amex
+    case .discover:
+      return PKPaymentNetwork.discover
+    case .jcb:
+      return PKPaymentNetwork.JCB
+    case .mastercard:
+      return PKPaymentNetwork.masterCard
+    case .unionPay:
+      return PKPaymentNetwork.chinaUnionPay
+    case .visa:
+      return PKPaymentNetwork.visa
+    default:
+      return nil
     }
   }
 }

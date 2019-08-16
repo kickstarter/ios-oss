@@ -3,8 +3,10 @@ import Prelude
 import ReactiveSwift
 import PassKit
 
+public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
+
 public protocol PledgePaymentMethodsViewModelInputs {
-  func configureWith(_ value: (User, Project))
+  func configureWith(_ value: PledgePaymentMethodsValue)
   func viewDidLoad()
 }
 
@@ -27,8 +29,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       self.configureWithValueProperty.signal.skipNil()
     ).map(second)
 
-    let project = configureWithValue.map(second)
-
     let storedCardsEvent = configureWithValue
     .switchMap { _ in
       AppEnvironment.current.apiService
@@ -37,8 +37,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         .materialize()
     }
 
-    self.applePayButtonHidden = project
-      .map(PKPaymentAuthorizationViewController.applePayCapable(for:))
+    self.applePayButtonHidden = configureWithValue
+      .map { $0.applePayCapable }
+      .negate()
 
     self.reloadPaymentMethods = storedCardsEvent
       .values()
@@ -49,8 +50,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .map { $0.localizedDescription }
   }
 
-  private let configureWithValueProperty = MutableProperty<(User, Project)?>(nil)
-  public func configureWith(_ value: (User, Project)) {
+  private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
+  public func configureWith(_ value: PledgePaymentMethodsValue) {
     self.configureWithValueProperty.value = value
   }
 
