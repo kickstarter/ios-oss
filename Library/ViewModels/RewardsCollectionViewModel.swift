@@ -83,14 +83,14 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       PledgeData(project: project, reward: reward, refTag: refTag)
     }
 
-    let selectedBacking = project
+    let goToViewBacking = project
       .takePairWhen(selectedRewardFromId)
       .filter { project, reward -> Bool in
         project.state != .live && project.personalization.backing?.rewardId == reward.id
       }
       .map(first)
 
-    self.goToViewBacking = selectedBacking
+    self.goToViewBacking = goToViewBacking
       .map { project in
         (project, AppEnvironment.current.currentUser)
       }
