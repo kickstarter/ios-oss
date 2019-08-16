@@ -1,11 +1,11 @@
 import Foundation
 import KsApi
 
-public func featureNativeCheckoutEnabled() -> Bool {
+public func featureNativeCheckoutIsEnabled() -> Bool {
   return Feature.nativeCheckout.isEnabled()
 }
 
-public func featureNativeCheckoutPledgeViewEnabled() -> Bool {
+public func featureNativeCheckoutPledgeViewIsEnabled() -> Bool {
   return Feature.nativeCheckoutPledgeView.isEnabled()
 }
 

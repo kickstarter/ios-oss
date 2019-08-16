@@ -5,22 +5,40 @@ import XCTest
 
 final class ExperimentName_HelpersTests: TestCase {
   // MARK: nativeCheckout
-  func testNativeCheckoutExperimentIsEnabled() {
+  func testExperimentNativeCheckoutIsEnabled_Control() {
 
     let config = Config.template
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
 
     withEnvironment(config: config) {
-      XCTAssertFalse(nativeCheckoutExperimentIsEnabled())
+      XCTAssertFalse(experimentNativeCheckoutIsEnabled())
     }
   }
 
-  func testIsEnabled_Experimental() {
+  func testExperimentNativeCheckoutIsEnabled_Experimental() {
     let config = Config.template
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
 
     withEnvironment(config: config) {
-      XCTAssertTrue(nativeCheckoutExperimentIsEnabled())
+      XCTAssertTrue(experimentNativeCheckoutIsEnabled())
+    }
+  }
+
+  func testExperimentNativeCheckoutIsEnabled_NoExperiments() {
+    let config = Config.template
+      |> \.abExperiments .~ [:]
+
+    withEnvironment(config: config) {
+      XCTAssertFalse(experimentNativeCheckoutIsEnabled())
+    }
+  }
+
+  func testExperimentNativeCheckoutIsEnabled_UnknownExperiment() {
+    let config = Config.template
+      |> \.abExperiments .~ ["unknown": "experimental"]
+
+    withEnvironment(config: config) {
+      XCTAssertFalse(experimentNativeCheckoutIsEnabled())
     }
   }
 }

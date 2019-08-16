@@ -2,5 +2,5 @@ import Foundation
 import KsApi
 
 public func userCanSeeNativeCheckout() -> Bool {
-  return nativeCheckoutExperimentIsEnabled() && featureNativeCheckoutEnabled()
+  return experimentNativeCheckoutIsEnabled() && featureNativeCheckoutIsEnabled()
 }

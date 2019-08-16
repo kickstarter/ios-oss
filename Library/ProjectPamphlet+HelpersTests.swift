@@ -5,7 +5,7 @@ import Prelude
 import XCTest
 
 final class ProjectPamphlet_HelpersTests: TestCase {
-  func testUserCanSeeNativeCheckout_featureNativeCheckoutEnabled_checkoutExperimentEnabled() {
+  func testUserCanSeeNativeCheckout_featureNativeCheckoutEnabled_experimentNativeCheckoutEnabled() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
@@ -15,7 +15,7 @@ final class ProjectPamphlet_HelpersTests: TestCase {
     }
   }
 
-  func testUserCanSeeNativeCheckout_featureNativeCheckoutEnabled_checkoutExperimentDisabled() {
+  func testUserCanSeeNativeCheckout_featureNativeCheckoutEnabled_experimentNativeCheckoutDisabled() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
@@ -25,7 +25,7 @@ final class ProjectPamphlet_HelpersTests: TestCase {
     }
   }
 
-  func testUserCanSeeNativeCheckout_featureNativeCheckoutDisabled_checkoutExperimentEnabled() {
+  func testUserCanSeeNativeCheckout_featureNativeCheckoutDisabled_experimentNativeCheckoutEnabled() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: false]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
@@ -35,7 +35,7 @@ final class ProjectPamphlet_HelpersTests: TestCase {
     }
   }
 
-  func testUserCanSeeNativeCheckout_featureNativeCheckoutDisabled_checkoutExperimentDisabled() {
+  func testUserCanSeeNativeCheckout_featureNativeCheckoutDisabled_experimentNativeCheckoutDisabled() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: false]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]

@@ -1,7 +1,7 @@
 import Foundation
 import KsApi
 
-public func nativeCheckoutExperimentIsEnabled() -> Bool {
+public func experimentNativeCheckoutIsEnabled() -> Bool {
   return Experiment.Name.nativeCheckoutV1.isEnabled()
 }
 
