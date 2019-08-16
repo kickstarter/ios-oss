@@ -1051,6 +1051,7 @@
 		D6534D3C22E7898B00E9D279 /* PledgePaymentMethodsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6534D3B22E7898B00E9D279 /* PledgePaymentMethodsViewModel.swift */; };
 		D6534D3E22E789B900E9D279 /* PledgePaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6534D3D22E789B900E9D279 /* PledgePaymentMethodsViewModelTests.swift */; };
 		D6560C2A2182361800CD24BC /* PaymentMethodsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */; };
+		D667C2BC2305F03300EC094A /* Config+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D667C2BB2305F03300EC094A /* Config+HelpersTests.swift */; };
 		D66FB348218212B700A27BCC /* PaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */; };
 		D67B6C9D221F458700B63A6B /* Config+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6C9C221F458700B63A6B /* Config+Argo.swift */; };
 		D67B6CD6221F468100B63A6B /* Location+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6CD5221F468100B63A6B /* Location+Argo.swift */; };
@@ -2299,6 +2300,7 @@
 		D6534D3B22E7898B00E9D279 /* PledgePaymentMethodsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewModel.swift; sourceTree = "<group>"; };
 		D6534D3D22E789B900E9D279 /* PledgePaymentMethodsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewModelTests.swift; sourceTree = "<group>"; };
 		D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsDataSourceTests.swift; sourceTree = "<group>"; };
+		D667C2BB2305F03300EC094A /* Config+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Config+HelpersTests.swift"; sourceTree = "<group>"; };
 		D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewModelTests.swift; sourceTree = "<group>"; };
 		D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSourceTests.swift; sourceTree = "<group>"; };
 		D67B6C9C221F458700B63A6B /* Config+Argo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Config+Argo.swift"; sourceTree = "<group>"; };
@@ -2992,6 +2994,7 @@
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				A7ED1F131E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift */,
 				77556F1C20A09993008CEA57 /* Config+Helpers.swift */,
+				D667C2BB2305F03300EC094A /* Config+HelpersTests.swift */,
 				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
 				D6534D3922E7878D00E9D279 /* CreditCard+Utils.swift */,
 				D612A21822F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift */,
@@ -4761,6 +4764,7 @@
 				A7ED1F2C1E830FDC00BFFA01 /* KSCacheTests.swift in Sources */,
 				D7237096211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift in Sources */,
 				8A8099F522E2143000373E66 /* RewardCardContainerViewModelTests.swift in Sources */,
+				D667C2BC2305F03300EC094A /* Config+HelpersTests.swift in Sources */,
 				8A8099F622E2143400373E66 /* RewardCardViewModelTests.swift in Sources */,
 				A7ED1FCF1E831C5C00BFFA01 /* CheckoutRacingViewModelTests.swift in Sources */,
 				37D99C5B22247F58008EF839 /* NSBundleType+Tests.swift in Sources */,

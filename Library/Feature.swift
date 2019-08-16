@@ -1,16 +1,9 @@
 import Foundation
 
 public enum Feature: String {
+  case testFeature = "test_feature" // This case is used only for tests. Please, do not delete!
   case nativeCheckout = "ios_native_checkout"
   case nativeCheckoutPledgeView = "ios_native_checkout_pledge_view"
-}
-
-extension Feature {
-  public func isEnabled(in environment: Environment = AppEnvironment.current) -> Bool {
-    guard let features = environment.config?.features, !features.isEmpty else { return false }
-
-    return AppEnvironment.current.config?.features[self.rawValue] == .some(true)
-  }
 }
 
 extension Feature: CustomStringConvertible {
@@ -18,6 +11,7 @@ extension Feature: CustomStringConvertible {
     switch self {
     case .nativeCheckout: return "Native Checkout"
     case .nativeCheckoutPledgeView: return "Native Checkout Pledge View"
+    case .testFeature: return "Test Feature"
     }
   }
 }

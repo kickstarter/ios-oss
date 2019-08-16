@@ -73,9 +73,18 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     self.assertSectionIsShown(config)
   }
 
-  func testRewardsSection_showsWhen_nativeCheckoutFeatureDisabled() {
+  func testRewardsSection_showsWhen_nativeCheckoutFeatureDisabled_checkoutExperimentEnabled() {
     let config = .template
       |> Config.lens.features .~ [Feature.nativeCheckout.rawValue: false]
+      |> Config.lens.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
+
+    self.assertSectionIsShown(config)
+  }
+
+  func testRewardsSection_showsWhen_nativeCheckoutFeatureDisabled_checkoutExperimentDisabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckout.rawValue: false]
+      |> Config.lens.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
 
     self.assertSectionIsShown(config)
   }
