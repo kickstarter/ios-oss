@@ -33,6 +33,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .filter(second >>> isFalse)
       .map(first)
 
+    let isLoading = self.projectOrErrorProperty.signal
+      .skipNil()
+      .map(second)
+
     let project = projectOrError
       .map(Either.left)
       .skipNil()
@@ -41,28 +45,32 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .map(Either.right)
       .skipNil()
 
-    self.activityIndicatorIsHidden = self.projectOrErrorProperty.signal
-      .skipNil()
-      .map(second)
+    self.activityIndicatorIsHidden = isLoading
       .negate()
 
     let backing = project.map { $0.personalization.backing }
     let pledgeState = Signal.combineLatest(project, backing)
       .map(pledgeCTA(project:backing:))
 
-    self.pledgeRetryButtonIsHidden = Signal
-      .merge(
-        projectError.ignoreValues().mapConst(false),
-        project.ignoreValues().mapConst(true),
-        self.activityIndicatorIsHidden.filter(isFalse).mapConst(true)
-      )
+    let inError = Signal.merge(
+      projectError.ignoreValues().mapConst(true),
+      project.ignoreValues().mapConst(false)
+    )
 
-    self.pledgeCTAButtonIsHidden = Signal
-      .merge(
-        project.ignoreValues().mapConst(false),
-        projectError.ignoreValues().mapConst(true),
-        self.activityIndicatorIsHidden.filter(isFalse).mapConst(true)
-      )
+    let updateButtonStates = Signal.merge(
+      projectOrError.ignoreValues(),
+      isLoading.filter(isFalse).ignoreValues()
+    )
+
+    self.pledgeRetryButtonIsHidden = inError
+      .map(isFalse)
+      .takeWhen(updateButtonStates)
+      .skipRepeats()
+
+    self.pledgeCTAButtonIsHidden = inError
+      .map(isTrue)
+      .takeWhen(updateButtonStates)
+      .skipRepeats()
 
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
     self.buttonTitleTextColor = pledgeState.map { $0.buttonTitleTextColor }

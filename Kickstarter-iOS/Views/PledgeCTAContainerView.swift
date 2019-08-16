@@ -236,10 +236,10 @@ private let pledgeRetryButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
     |> UIButton.lens.titleLabel.font .~ .ksr_caption1()
     |> UIButton.lens.backgroundColor(for: .normal) .~ .clear
-    |> UIButton.lens.titleColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
-    |> UIButton.lens.backgroundColor(for: .highlighted) .~ .init(white: 1.0, alpha: 0.5)
-    |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: Styles.grid(3))
+    |> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: Styles.grid(3), bottom: 0, right: 0)
+    |> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.ksr_grey_500.mixLighter(0.36)
     |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(topBottom: Styles.gridHalf(1))
     |> UIButton.lens.image(for: .normal) %~ { _ in image(named: "icon--refresh-small") }
+    |> UIButton.lens.image(for: .highlighted) %~ { _ in image(named: "icon--refresh-small", alpha: 0.36) }
     |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Content_isnt_loading_right_now() }
 }

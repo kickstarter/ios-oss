@@ -144,8 +144,8 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(value: (.left(project), true))
     self.activityIndicatorIsHidden.assertValues([false])
-    self.pledgeCTAButtonIsHidden.assertValues([true])
-    self.pledgeRetryButtonIsHidden.assertValues([true])
+    self.pledgeCTAButtonIsHidden.assertDidNotEmitValue()
+    self.pledgeRetryButtonIsHidden.assertDidNotEmitValue()
 
     self.buttonTitleText.assertDidNotEmitValue()
     self.buttonBackgroundColor.assertDidNotEmitValue()
@@ -154,8 +154,8 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(value: (.left(project), false))
     self.activityIndicatorIsHidden.assertValues([false, true])
-    self.pledgeCTAButtonIsHidden.assertValues([true, false])
-    self.pledgeRetryButtonIsHidden.assertValues([true, true])
+    self.pledgeCTAButtonIsHidden.assertValues([false])
+    self.pledgeRetryButtonIsHidden.assertValues([true])
 
     self.buttonTitleText.assertDidEmitValue()
     self.buttonBackgroundColor.assertDidEmitValue()
