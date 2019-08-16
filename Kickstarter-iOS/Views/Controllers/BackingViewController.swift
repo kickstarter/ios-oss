@@ -64,12 +64,10 @@ internal final class BackingViewController: UIViewController {
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
-  internal override func viewWillTransition(
-    to size: CGSize,
-    with coordinator: UIViewControllerTransitionCoordinator
-  ) {
-    super.viewWillTransition(to: size, with: coordinator)
-    self.viewModel.inputs.viewWillTransition()
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    self.viewModel.inputs.traitCollectionDidChange(self.traitCollection)
   }
 
   internal override func bindViewModel() {

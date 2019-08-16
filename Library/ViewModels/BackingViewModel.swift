@@ -13,8 +13,7 @@ public protocol BackingViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
-  /// Call when view will transition.
-  func viewWillTransition()
+  func traitCollectionDidChange(_ traitCollection: UITraitCollection)
 
   /// Call when the "View messages" button is pressed.
   func viewMessagesTapped()
@@ -258,10 +257,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       projectAndBackingAndBackerIsCurrentUser.mapConst(1.0)
     )
 
-    self.actionsStackViewAxis = Signal.merge(
-      self.viewDidLoadProperty.signal,
-      self.viewWillTransitionProperty.signal
-    ).map { _ in AppEnvironment.current.device.orientation.isPortrait ? .vertical : .horizontal }
+    self.actionsStackViewAxis = self.traitCollectionChangedProperty.signal.skipNil()
+      .map {  $0.verticalSizeClass == .regular ? .vertical : .horizontal }
 
     project.observeValues { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
   }
@@ -281,9 +278,9 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let viewWillTransitionProperty = MutableProperty(())
-  public func viewWillTransition() {
-    self.viewWillTransitionProperty.value = ()
+  private let traitCollectionChangedProperty = MutableProperty<UITraitCollection?>(nil)
+  public func traitCollectionDidChange(_ traitCollection: UITraitCollection) {
+    self.traitCollectionChangedProperty.value = traitCollection
   }
 
   fileprivate let viewMessagesTappedProperty = MutableProperty(())

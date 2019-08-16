@@ -9,7 +9,6 @@ public protocol UIDeviceType {
   var systemName: String { get }
   var systemVersion: String { get }
   var userInterfaceIdiom: UIUserInterfaceIdiom { get }
-  var orientation: UIDeviceOrientation { get }
 }
 
 extension UIDevice: UIDeviceType {
@@ -28,13 +27,8 @@ internal struct MockDevice: UIDeviceType {
   internal let systemName = "MockSystemName"
   internal let systemVersion: String = "MockSystemVersion"
   internal let userInterfaceIdiom: UIUserInterfaceIdiom
-  internal let orientation: UIDeviceOrientation
 
-  internal init(
-    userInterfaceIdiom: UIUserInterfaceIdiom = .phone,
-    orientation: UIDeviceOrientation = .portrait
-  ) {
+  internal init(userInterfaceIdiom: UIUserInterfaceIdiom = .phone) {
     self.userInterfaceIdiom = userInterfaceIdiom
-    self.orientation = orientation
   }
 }

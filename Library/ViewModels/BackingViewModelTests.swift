@@ -473,10 +473,15 @@ internal final class BackingViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
+      self.actionsStackViewAxis.assertDidNotEmitValue()
+
+      self.vm.inputs.traitCollectionDidChange(UITraitCollection.init(verticalSizeClass: .regular))
 
       self.actionsStackViewAxis.assertValues([NSLayoutConstraint.Axis.vertical])
+
+      self.vm.inputs.traitCollectionDidChange(UITraitCollection.init(verticalSizeClass: .compact))
+
+      self.actionsStackViewAxis.assertValues([NSLayoutConstraint.Axis.vertical, NSLayoutConstraint.Axis.horizontal])
     }
   }
-
 }
