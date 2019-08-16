@@ -20,6 +20,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var flashScrollIndicators: Signal<Void, Never> { get }
   var goToDeprecatedPledge: Signal<PledgeData, Never> { get }
   var goToPledge: Signal<PledgeData, Never> { get }
+  var goToViewBacking: Signal<(Project, User?), Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
@@ -73,9 +74,26 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       selectedRewardFromId,
       refTag
     )
+    .filter { arg in
+      let (project, _, _) = arg
+
+      return project.state == .live
+    }
     .map { project, reward, refTag in
       PledgeData(project: project, reward: reward, refTag: refTag)
     }
+
+    let goToViewBacking = project
+      .takePairWhen(selectedRewardFromId)
+      .filter { project, reward -> Bool in
+        project.state != .live && userIsBacking(reward: reward, inProject: project)
+      }
+      .map(first)
+
+    self.goToViewBacking = goToViewBacking
+      .map { project in
+        (project, AppEnvironment.current.currentUser)
+      }
 
     self.goToPledge = goToPledge
       .filter { _ in featureNativeCheckoutPledgeViewEnabled() }
@@ -135,6 +153,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToDeprecatedPledge: Signal<PledgeData, Never>
   public let goToPledge: Signal<PledgeData, Never>
+  public let goToViewBacking: Signal<(Project, User?), Never>
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
