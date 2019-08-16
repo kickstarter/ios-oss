@@ -355,7 +355,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
   func testGoToRewards() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
 
     withEnvironment(config: config) {
       let project = Project.template

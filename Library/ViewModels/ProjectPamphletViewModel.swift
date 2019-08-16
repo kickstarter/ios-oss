@@ -77,7 +77,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
 
     self.goToRewards = goToRewards
-      .filter { _ in featureNativeCheckoutPledgeViewEnabled() }
+      .filter { _ in featureNativeCheckoutEnabled() }
 
     let project = freshProjectAndRefTag
       .map(first)
