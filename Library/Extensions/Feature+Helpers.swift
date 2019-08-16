@@ -10,9 +10,9 @@ public func featureNativeCheckoutPledgeViewEnabled() -> Bool {
 }
 
 extension Feature {
-  public func isEnabled(in environment: Environment = AppEnvironment.current) -> Bool {
+  fileprivate func isEnabled(in environment: Environment = AppEnvironment.current) -> Bool {
     guard let features = environment.config?.features, !features.isEmpty else { return false }
 
-    return AppEnvironment.current.config?.features[self.rawValue] == .some(true)
+    return features[self.rawValue] == .some(true)
   }
 }

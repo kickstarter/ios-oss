@@ -5,26 +5,6 @@ import Prelude
 import XCTest
 
 final class FeatureHelpersTests: TestCase {
-  // MARK: - isEnabled
-
-  func testFeatureIsEnabled_False() {
-    let config = Config.template
-      |> \.features .~ [Feature.testFeature.rawValue: false]
-
-    withEnvironment(config: config) {
-      XCTAssertFalse(Feature.testFeature.isEnabled())
-    }
-  }
-
-  func testFeatureIsEnabled_Experimental() {
-    let config = Config.template
-      |> \.features .~ [Feature.testFeature.rawValue: true]
-
-    withEnvironment(config: config) {
-      XCTAssertTrue(Feature.testFeature.isEnabled())
-    }
-  }
-
   // MARK: - nativeCheckout
 
   func testFeatureNativeCheckoutEnabled_isTrue() {

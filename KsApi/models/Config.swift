@@ -1,6 +1,5 @@
 public enum Experiment {
   public enum Name: String {
-    case testExperiment = "test_experiment" // This case is used only for tests. Please, do not delete!
     case creatorsNameDiscovery = "show_created_by_discovery"
     case nativeCheckoutV1 = "native_checkout_v1"
   }
