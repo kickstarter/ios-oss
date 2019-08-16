@@ -213,7 +213,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Update_pledge() }
 
     _ = self.conversionLabel
-      |> UILabel.lens.font .~ UIFont.ksr_caption1()
+      |> UILabel.lens.font .~ UIFont.ksr_caption1().bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
     _ = self.countryLabel
@@ -273,7 +273,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     _ = self.minimumPledgeLabel
-      |> UILabel.lens.font .~ .ksr_title2()
+      |> UILabel.lens.font .~ UIFont.ksr_title2().bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
     _ = self.projectTitleAndDescriptionStackView
