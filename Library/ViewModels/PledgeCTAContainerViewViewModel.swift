@@ -9,9 +9,8 @@ public protocol PledgeCTAContainerViewViewModelInputs {
 
 public protocol PledgeCTAContainerViewViewModelOutputs {
   var activityIndicatorIsHidden: Signal<Bool, Never> { get }
-  var buttonBackgroundColor: Signal<UIColor, Never> { get }
+  var buttonStyleType: Signal<ButtonStyleType, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
-  var buttonTitleTextColor: Signal<UIColor, Never> { get }
   var pledgeCTAButtonIsHidden: Signal<Bool, Never> { get }
   var pledgeRetryButtonIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
@@ -72,9 +71,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .takeWhen(updateButtonStates)
       .skipRepeats()
 
+    self.buttonStyleType = pledgeState.map { $0.buttonStyle }
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
-    self.buttonTitleTextColor = pledgeState.map { $0.buttonTitleTextColor }
-    self.buttonBackgroundColor = pledgeState.map { $0.buttonBackgroundColor }
     let stackViewAndSpacerAreHidden = pledgeState.map { $0.stackViewAndSpacerAreHidden }
     self.spacerIsHidden = stackViewAndSpacerAreHidden
     self.stackViewIsHidden = stackViewAndSpacerAreHidden
@@ -93,9 +91,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public var outputs: PledgeCTAContainerViewViewModelOutputs { return self }
 
   public let activityIndicatorIsHidden: Signal<Bool, Never>
-  public let buttonBackgroundColor: Signal<UIColor, Never>
+  public let buttonStyleType: Signal<ButtonStyleType, Never>
   public let buttonTitleText: Signal<String, Never>
-  public let buttonTitleTextColor: Signal<UIColor, Never>
   public let pledgeCTAButtonIsHidden: Signal<Bool, Never>
   public let pledgeRetryButtonIsHidden: Signal<Bool, Never>
   public let spacerIsHidden: Signal<Bool, Never>

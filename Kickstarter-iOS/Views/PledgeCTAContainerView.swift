@@ -119,12 +119,10 @@ final class PledgeCTAContainerView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    // NB: vm needs to return button style
-
-    self.viewModel.outputs.buttonTitleTextColor
+    self.viewModel.outputs.buttonStyleType
       .observeForUI()
-      .observeValues { [weak self] textColor in
-        self?.pledgeCTAButton.setTitleColor(textColor, for: .normal)
+      .observeValues { [weak self] buttonStyleType in
+        _ = self?.pledgeCTAButton ?|> buttonStyleType.style
       }
 
     self.viewModel.outputs.pledgeCTAButtonIsHidden
@@ -135,13 +133,15 @@ final class PledgeCTAContainerView: UIView {
 
     self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden
     self.pledgeCTAButton.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
-    self.pledgeCTAButton.rac.backgroundColor = self.viewModel.outputs.buttonBackgroundColor
-    self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText
     self.pledgeRetryButton.rac.hidden = self.viewModel.outputs.pledgeRetryButtonIsHidden
-    self.spacer.rac.hidden = self.viewModel.outputs.spacerIsHidden
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleText
+
+    // NB: vm needs to return button style
+
+    self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText
+    self.spacer.rac.hidden = self.viewModel.outputs.spacerIsHidden
   }
 
   // MARK: - Configuration
