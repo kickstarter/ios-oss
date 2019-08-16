@@ -212,10 +212,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
     let adjustedContentInset = collectionView.adjustedContentInset
 
     let topBottomSectionInsets = sectionInsets.top + sectionInsets.bottom
+    let leftRightSectionInsets = sectionInsets.left + sectionInsets.right
     let topBottomContentInsets = adjustedContentInset.top + adjustedContentInset.bottom
 
     let itemHeight = collectionView.frame.height - topBottomSectionInsets - topBottomContentInsets
-    let itemWidth = CheckoutConstants.RewardCard.Layout.width
+    let widthByBounds = collectionView.bounds.width - leftRightSectionInsets
+    let itemWidth = min(CheckoutConstants.RewardCard.Layout.width, widthByBounds)
 
     return CGSize(width: itemWidth, height: itemHeight)
   }

@@ -13,6 +13,8 @@ public protocol BackingViewModelInputs {
   /// Call when the view loads.
   func viewDidLoad()
 
+  func traitCollectionDidChange(_ traitCollection: UITraitCollection)
+
   /// Call when the "View messages" button is pressed.
   func viewMessagesTapped()
 
@@ -21,6 +23,8 @@ public protocol BackingViewModelInputs {
 }
 
 public protocol BackingViewModelOutputs {
+  var actionsStackViewAxis: Signal<NSLayoutConstraint.Axis, Never> { get }
+
   /// Emits the backer avatar to be displayed.
   var backerAvatarURL: Signal<URL?, Never> { get }
 
@@ -68,9 +72,6 @@ public protocol BackingViewModelOutputs {
 
   /// Emits the backer reward title and amount to display.
   var rewardTitleWithAmount: Signal<String, Never> { get }
-
-  /// Emits the axis of the stackview.
-  var rootStackViewAxis: Signal<NSLayoutConstraint.Axis, Never> { get }
 
   /// Emits the backer's shipping amount.
   var shippingAmount: Signal<String, Never> { get }
@@ -256,8 +257,8 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       projectAndBackingAndBackerIsCurrentUser.mapConst(1.0)
     )
 
-    self.rootStackViewAxis = projectAndBackingAndBackerIsCurrentUser
-      .map { _ in AppEnvironment.current.language == .en ? .horizontal : .vertical }
+    self.actionsStackViewAxis = self.traitCollectionChangedProperty.signal.skipNil()
+      .map { $0.verticalSizeClass == .regular ? .vertical : .horizontal }
 
     project.observeValues { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
   }
@@ -277,6 +278,11 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.viewDidLoadProperty.value = ()
   }
 
+  private let traitCollectionChangedProperty = MutableProperty<UITraitCollection?>(nil)
+  public func traitCollectionDidChange(_ traitCollection: UITraitCollection) {
+    self.traitCollectionChangedProperty.value = traitCollection
+  }
+
   fileprivate let viewMessagesTappedProperty = MutableProperty(())
   public func viewMessagesTapped() {
     self.viewMessagesTappedProperty.value = ()
@@ -287,6 +293,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.rewardReceivedTappedProperty.value = on
   }
 
+  public let actionsStackViewAxis: Signal<NSLayoutConstraint.Axis, Never>
   public let backerAvatarURL: Signal<URL?, Never>
   public let backerName: Signal<String, Never>
   public let backerSequence: Signal<String, Never>
@@ -303,7 +310,6 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
   public let rewardSectionAndShippingIsHidden: Signal<Bool, Never>
   public var rewardTitleWithAmount: Signal<String, Never>
   public var rewardSectionTitle: Signal<NSAttributedString, Never>
-  public let rootStackViewAxis: Signal<NSLayoutConstraint.Axis, Never>
   public let shippingAmount: Signal<String, Never>
   public let statusDescription: Signal<NSAttributedString, Never>
   public let totalPledgeAmount: Signal<String, Never>
