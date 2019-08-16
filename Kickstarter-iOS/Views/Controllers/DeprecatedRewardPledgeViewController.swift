@@ -18,6 +18,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var conversionLabel: UILabel!
   @IBOutlet fileprivate var countryLabel: UILabel!
   @IBOutlet fileprivate var descriptionLabel: UILabel!
+  @IBOutlet fileprivate var descriptionStackView: UIStackView!
   @IBOutlet fileprivate var descriptionTitleLabel: UILabel!
   @IBOutlet fileprivate var disclaimerTextView: UITextView!
   @IBOutlet fileprivate var differentPaymentMethodButton: UIButton!
@@ -33,7 +34,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var middleStackView: UIStackView!
   @IBOutlet fileprivate var minimumAndConversionStackView: UIStackView!
   @IBOutlet fileprivate var minimumPledgeLabel: UILabel!
-  @IBOutlet fileprivate var paddingViewHeightLayoutConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var pledgeButtonsStackView: UIStackView!
   @IBOutlet fileprivate var pledgeContainerView: UIView!
   @IBOutlet fileprivate var pledgeCurrencyLabel: UILabel!
@@ -41,6 +41,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var pledgeInputStackView: UIStackView!
   @IBOutlet fileprivate var pledgeStackView: UIStackView!
   @IBOutlet fileprivate var pledgeTextField: UITextField!
+  @IBOutlet fileprivate var projectTitleAndDescriptionStackView: UIStackView!
   @IBOutlet fileprivate var readMoreContainerView: UIView!
   @IBOutlet fileprivate var readMoreGradientView: GradientView!
   @IBOutlet fileprivate var readMoreLabel: UILabel!
@@ -219,6 +220,9 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
       |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
+    _ = self.projectTitleAndDescriptionStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(2)
+
     _ = self.descriptionTitleLabel
       |> UILabel.lens.font .~ UIFont.ksr_callout().bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
@@ -261,7 +265,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIView.lens.backgroundColor .~ UIColor(white: 1.0, alpha: 0.99)
 
     _ = self.middleStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
@@ -272,6 +275,9 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     _ = self.minimumPledgeLabel
       |> UILabel.lens.font .~ .ksr_title2()
       |> UILabel.lens.textColor .~ UIColor.ksr_green_500
+
+    _ = self.projectTitleAndDescriptionStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.readMoreContainerView
       |> UIView.lens.backgroundColor .~ .clear
@@ -341,7 +347,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
         leftRight: Styles.grid(2) + 1
       )
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     _ = self.scrollView
       |> UIScrollView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
@@ -392,7 +397,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     _ = self.topStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(3)
+      |> UIStackView.lens.spacing .~ Styles.grid(2)
   }
 
   internal override func bindViewModel() {
@@ -490,12 +495,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
         generateNotificationSuccessFeedback()
 
         self?.goToThanks(project: project)
-      }
-
-    self.viewModel.outputs.paddingViewHeightConstant
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.paddingViewHeightLayoutConstraint.constant = $0
       }
 
     self.viewModel.outputs.showAlert
