@@ -258,7 +258,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     )
 
     self.actionsStackViewAxis = self.traitCollectionChangedProperty.signal.skipNil()
-      .map {  $0.verticalSizeClass == .regular ? .vertical : .horizontal }
+      .map { $0.verticalSizeClass == .regular ? .vertical : .horizontal }
 
     project.observeValues { AppEnvironment.current.koala.trackViewedPledge(forProject: $0) }
   }
