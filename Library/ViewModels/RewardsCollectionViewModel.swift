@@ -75,25 +75,25 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       refTag
     )
     .filter { arg in
-        let (project, _, _) = arg
-      
+      let (project, _, _) = arg
+
       return project.state == .live
     }
     .map { project, reward, refTag in
       PledgeData(project: project, reward: reward, refTag: refTag)
     }
-    
+
     let selectedBacking = project
       .takePairWhen(selectedRewardFromId)
       .filter { project, reward -> Bool in
-        return project.state != .live && project.personalization.backing?.rewardId == reward.id
+        project.state != .live && project.personalization.backing?.rewardId == reward.id
       }
       .map(first)
-    
+
     self.goToViewBacking = selectedBacking
       .map { project in
-        return (project, AppEnvironment.current.currentUser)
-    }
+        (project, AppEnvironment.current.currentUser)
+      }
 
     self.goToPledge = goToPledge
       .filter { _ in featureNativeCheckoutPledgeViewEnabled() }

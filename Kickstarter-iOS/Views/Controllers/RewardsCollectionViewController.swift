@@ -146,12 +146,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeValues { [weak self] project, reward, refTag in
         self?.goToDeprecatedPledge(project: project, reward: reward, refTag: refTag)
       }
-    
+
     self.viewModel.outputs.goToViewBacking
       .observeForControllerAction()
       .observeValues { [weak self] project, user in
         self?.goToViewBacking(project: project, user: user)
-    }
+      }
 
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
       .observeForUI()
@@ -238,10 +238,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
   }
-  
+
   private func goToViewBacking(project: Project, user: User?) {
     let backingViewController = BackingViewController.configuredWith(project: project, backer: user)
-    
+
     self.navigationController?.pushViewController(backingViewController, animated: true)
   }
 
