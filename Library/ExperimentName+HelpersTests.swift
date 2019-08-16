@@ -5,8 +5,8 @@ import XCTest
 
 final class ExperimentName_HelpersTests: TestCase {
   // MARK: nativeCheckout
-  func testExperimentNativeCheckoutIsEnabled_Control() {
 
+  func testExperimentNativeCheckoutIsEnabled_Control() {
     let config = Config.template
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
 

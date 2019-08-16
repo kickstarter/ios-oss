@@ -647,7 +647,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
   }
 
-// MARK: - Functions
+  // MARK: - Functions
 
   private func configureInitialState(_ projectOrParam: Either<Project, Param>) {
     self.vm.inputs.configureWith(projectOrParam: projectOrParam, refTag: .discovery)
