@@ -98,6 +98,8 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     let hiddenConstant = self.view.frame.height + (self.view.superview?.safeAreaInsets.bottom ?? 0)
 
     if !isHidden {
+      self.view.superview?.bringSubviewToFront(self.view)
+
       self.view.isHidden = isHidden
 
       self.bottomConstraint?.constant = hiddenConstant

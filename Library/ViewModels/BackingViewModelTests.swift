@@ -8,6 +8,7 @@ import XCTest
 internal final class BackingViewModelTests: TestCase {
   private let vm: BackingViewModelType = BackingViewModel()
 
+  private let actionsStackViewAxis = TestObserver<NSLayoutConstraint.Axis, Never>()
   private let backerAvatarURL = TestObserver<String?, Never>()
   private let backerName = TestObserver<String, Never>()
   private let backerSequence = TestObserver<String, Never>()
@@ -26,7 +27,6 @@ internal final class BackingViewModelTests: TestCase {
   private let rewardSectionAndShippingIsHidden = TestObserver<Bool, Never>()
   private let rewardSectionTitle = TestObserver<String, Never>()
   private let rewardTitleWithAmount = TestObserver<String, Never>()
-  private let rootStackViewAxis = TestObserver<NSLayoutConstraint.Axis, Never>()
   private let shippingAmount = TestObserver<String, Never>()
   private let statusDescription = TestObserver<String, Never>()
   private let totalPledgeAmount = TestObserver<String, Never>()
@@ -34,6 +34,7 @@ internal final class BackingViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "hello", user: .template))
+    self.vm.outputs.actionsStackViewAxis.observe(self.actionsStackViewAxis.observer)
     self.vm.outputs.backerAvatarURL.map { $0?.absoluteString }.observe(self.backerAvatarURL.observer)
     self.vm.outputs.backerName.observe(self.backerName.observer)
     self.vm.outputs.backerSequence.observe(self.backerSequence.observer)
@@ -52,7 +53,6 @@ internal final class BackingViewModelTests: TestCase {
     self.vm.outputs.rewardSectionAndShippingIsHidden.observe(self.rewardSectionAndShippingIsHidden.observer)
     self.vm.outputs.rewardSectionTitle.map { $0.string }.observe(self.rewardSectionTitle.observer)
     self.vm.outputs.rewardTitleWithAmount.observe(self.rewardTitleWithAmount.observer)
-    self.vm.outputs.rootStackViewAxis.observe(self.rootStackViewAxis.observer)
     self.vm.outputs.shippingAmount.observe(self.shippingAmount.observer)
     self.vm.outputs.statusDescription.map { $0.string }.observe(self.statusDescription.observer)
     self.vm.outputs.totalPledgeAmount.observe(self.totalPledgeAmount.observer)
@@ -463,18 +463,28 @@ internal final class BackingViewModelTests: TestCase {
     }
   }
 
-  func testRootStackViewAxis() {
+  func testActionsStackViewAxis() {
     let project = Project.template
     let backer = User.template |> \.id .~ 20
+    let device = MockDevice()
 
-    withEnvironment(currentUser: backer, language: .de) {
+    withEnvironment(currentUser: backer, device: device, language: .de) {
       self.vm.inputs.configureWith(project: project, backer: backer)
 
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
+      self.actionsStackViewAxis.assertDidNotEmitValue()
 
-      self.rootStackViewAxis.assertValues([NSLayoutConstraint.Axis.vertical])
+      self.vm.inputs.traitCollectionDidChange(UITraitCollection.init(verticalSizeClass: .regular))
+
+      self.actionsStackViewAxis.assertValues([NSLayoutConstraint.Axis.vertical])
+
+      self.vm.inputs.traitCollectionDidChange(UITraitCollection.init(verticalSizeClass: .compact))
+
+      self.actionsStackViewAxis.assertValues([
+        NSLayoutConstraint.Axis.vertical,
+        NSLayoutConstraint.Axis.horizontal
+      ])
     }
   }
 }
