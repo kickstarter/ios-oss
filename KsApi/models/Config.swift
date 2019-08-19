@@ -1,6 +1,7 @@
 public enum Experiment {
   public enum Name: String {
     case creatorsNameDiscovery = "show_created_by_discovery"
+    case nativeCheckoutV1 = "native_checkout_v1"
   }
 
   public enum Variant: String {

@@ -27,7 +27,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       inSection: Section.subpages.rawValue
     )
 
-    if !featureNativeCheckoutEnabled() {
+    if !userCanSeeNativeCheckout() {
       self.setRewardTitleArea(project: project)
     }
   }
@@ -48,7 +48,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       inSection: Section.subpages.rawValue
     )
 
-    if !featureNativeCheckoutEnabled() {
+    if !userCanSeeNativeCheckout() {
       self.setRewardTitleArea(project: project)
       self.setRewards(project: project, visible)
     }

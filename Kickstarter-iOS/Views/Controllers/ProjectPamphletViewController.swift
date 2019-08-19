@@ -36,7 +36,7 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    if featureNativeCheckoutEnabled() {
+    if userCanSeeNativeCheckout() {
       self.configurePledgeCTAContainerView()
     }
 
@@ -65,7 +65,7 @@ public final class ProjectPamphletViewController: UIViewController {
       constant: self.initialTopConstraint
     )
 
-    if featureNativeCheckoutEnabled() {
+    if userCanSeeNativeCheckout() {
       self.updateContentInsets()
     }
   }
@@ -101,7 +101,7 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func bindStyles() {
     super.bindStyles()
 
-    if featureNativeCheckoutEnabled() {
+    if userCanSeeNativeCheckout() {
       _ = self.pledgeCTAContainerView
         |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
 
