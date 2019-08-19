@@ -208,9 +208,11 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleSelected(selectedShippingRule)
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum,
-                                                                 reward.minimum + defaultShippingRule.cost,
-                                                                 reward.minimum + selectedShippingRule.cost])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([
+        reward.minimum,
+        reward.minimum + defaultShippingRule.cost,
+        reward.minimum + selectedShippingRule.cost
+      ])
       self.configureSummaryCellWithDataProject.assertValues([project, project, project])
     }
   }
