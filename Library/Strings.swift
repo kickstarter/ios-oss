@@ -2275,9 +2275,9 @@ contributeurs"
     )
   }
   /**
-   "Estimated delivery:"
+   "Estimated delivery"
 
-   - **en**: "Estimated delivery:"
+   - **en**: "Estimated delivery"
    - **de**: "Voraussichtliche Lieferung:"
    - **es**: "Entrega estimada:"
    - **fr**: "Livraison prévue :"
@@ -2286,6 +2286,23 @@ contributeurs"
   public static func Estimated_delivery() -> String {
     return localizedString(
       key: "Estimated_delivery",
+      defaultValue: "Estimated delivery",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Estimated delivery:"
+
+   - **en**: "Estimated delivery:"
+   - **de**: "Voraussichtliche Lieferung:"
+   - **es**: "Entrega estimada:"
+   - **fr**: "Livraison prévue :"
+   - **ja**: "配達予定"
+  */
+  public static func Estimated_delivery_colon() -> String {
+    return localizedString(
+      key: "Estimated_delivery_colon",
       defaultValue: "Estimated delivery:",
       count: nil,
       substitutions: [:]
