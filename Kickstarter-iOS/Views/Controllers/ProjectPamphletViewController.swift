@@ -8,16 +8,6 @@ public protocol ProjectPamphletViewControllerDelegate: AnyObject {
     _ controller: ProjectPamphletViewController,
     panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer
   )
-  func projectPamphletViewController(
-    _ projectPamphletViewController: ProjectPamphletViewController,
-    didTapBackThisProject project: Project,
-    refTag: RefTag?
-  )
-  func deprecatedProjectPamphletViewController(
-    _ projectPamphletViewController: ProjectPamphletViewController,
-    didTapBackThisProject project: Project,
-    refTag: RefTag?
-  )
 }
 
 public final class ProjectPamphletViewController: UIViewController {
@@ -46,7 +36,7 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    if featureNativeCheckoutEnabled() {
+    if userCanSeeNativeCheckout() {
       self.configurePledgeCTAContainerView()
     }
 
@@ -75,7 +65,7 @@ public final class ProjectPamphletViewController: UIViewController {
       constant: self.initialTopConstraint
     )
 
-    if featureNativeCheckoutEnabled() {
+    if userCanSeeNativeCheckout() {
       self.updateContentInsets()
     }
   }
@@ -111,7 +101,7 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func bindStyles() {
     super.bindStyles()
 
-    if featureNativeCheckoutEnabled() {
+    if userCanSeeNativeCheckout() {
       _ = self.pledgeCTAContainerView
         |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
 
@@ -135,14 +125,6 @@ public final class ProjectPamphletViewController: UIViewController {
         let (project, refTag) = params
 
         self?.goToRewards(project: project, refTag: refTag)
-      }
-
-    self.viewModel.outputs.goToDeprecatedRewards
-      .observeForControllerAction()
-      .observeValues { [weak self] params in
-        let (project, refTag) = params
-
-        self?.goToDeprecatedRewards(project: project, refTag: refTag)
       }
 
     self.viewModel.outputs.configureChildViewControllersWithProject
@@ -190,20 +172,10 @@ public final class ProjectPamphletViewController: UIViewController {
     }
   }
 
-  private func goToDeprecatedRewards(project: Project, refTag: RefTag?) {
-    self.delegate?.deprecatedProjectPamphletViewController(
-      self,
-      didTapBackThisProject: project,
-      refTag: refTag
-    )
-  }
-
   private func goToRewards(project: Project, refTag: RefTag?) {
-    self.delegate?.projectPamphletViewController(
-      self,
-      didTapBackThisProject: project,
-      refTag: refTag
-    )
+    let vc = rewardsCollectionViewController(project: project, refTag: refTag)
+
+    self.present(vc, animated: true)
   }
 
   private func updateContentInsets() {
@@ -259,4 +231,23 @@ extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
   public func projectNavBarControllerDidTapTitle(_: ProjectNavBarViewController) {
     self.contentController.tableView.scrollToTop()
   }
+}
+
+private func rewardsCollectionViewController(
+  project: Project,
+  refTag: RefTag?
+) -> UINavigationController {
+  let rewardsCollectionViewController = RewardsCollectionViewController
+    .instantiate(with: project, refTag: refTag)
+
+  let navigationController = RewardPledgeNavigationController(
+    rootViewController: rewardsCollectionViewController
+  )
+
+  if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+    _ = navigationController
+      |> \.modalPresentationStyle .~ .pageSheet
+  }
+
+  return navigationController
 }
