@@ -273,7 +273,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     _ = self.minimumPledgeLabel
-      |> UILabel.lens.font .~ UIFont.ksr_title2().bolded
+      |> UILabel.lens.font .~ UIFont.ksr_title3().bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
     _ = self.projectTitleAndDescriptionStackView
