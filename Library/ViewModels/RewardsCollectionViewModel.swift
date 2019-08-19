@@ -96,10 +96,10 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       }
 
     self.goToPledge = goToPledge
-      .filter { _ in featureNativeCheckoutPledgeViewEnabled() }
+      .filter { _ in featureNativeCheckoutPledgeViewIsEnabled() }
 
     self.goToDeprecatedPledge = goToPledge
-      .filter { _ in !featureNativeCheckoutPledgeViewEnabled() }
+      .filter { _ in !featureNativeCheckoutPledgeViewIsEnabled() }
 
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()

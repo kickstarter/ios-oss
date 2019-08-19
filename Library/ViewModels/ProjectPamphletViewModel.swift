@@ -86,7 +86,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
 
     self.goToRewards = ctaButtonTapped
-      .filter { _ in featureNativeCheckoutEnabled() }
+      .filter { _ in userCanSeeNativeCheckout() }
 
     let project = freshProjectAndRefTag
       .map(first)
@@ -101,10 +101,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       Signal.merge(projectCTA, projectError),
       isLoading.signal
     )
-    .filter { _ in featureNativeCheckoutEnabled() }
-    .map { projectOrError, isLoading in
-      (projectOrError, isLoading)
-    }
+    .filter { _ in userCanSeeNativeCheckout() }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
