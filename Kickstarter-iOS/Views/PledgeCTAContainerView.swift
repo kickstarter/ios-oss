@@ -74,10 +74,7 @@ final class PledgeCTAContainerView: UIView {
       |> \.spacing .~ Styles.gridHalf(1)
 
     _ = self.pledgeCTAButton
-      |> pledgeCTAButtonStyle(
-        isAccessibilityCategory,
-        amountAndRewardTitleStackViewIsHidden: self.titleAndSubtitleStackView.isHidden
-      )
+      |> pledgeCTAButtonStyle
 
     _ = self.rootStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
@@ -107,7 +104,9 @@ final class PledgeCTAContainerView: UIView {
     self.viewModel.outputs.buttonStyleType
       .observeForUI()
       .observeValues { [weak self] buttonStyleType in
-        _ = self?.pledgeCTAButton ?|> buttonStyleType.style
+        _ = self?.pledgeCTAButton
+          ?|> buttonStyleType.style
+          ?|> pledgeCTAButtonStyle
       }
 
     self.viewModel.outputs.rootStackViewAnimateIsHidden
@@ -169,27 +168,19 @@ final class PledgeCTAContainerView: UIView {
 
 private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
   return { (stackView: UIStackView) in
-    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
     let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
 
     return stackView
-      |> \.axis .~ axis
+      |> \.axis .~ NSLayoutConstraint.Axis.horizontal
       |> \.spacing .~ spacing
   }
 }
 
-private func pledgeCTAButtonStyle(
-  _ isAccessibilityCategory: Bool, amountAndRewardTitleStackViewIsHidden: Bool
-) -> (ButtonStyle) {
-  return { (button: UIButton) in
-    let lineBreakMode: NSLineBreakMode = isAccessibilityCategory || amountAndRewardTitleStackViewIsHidden
-      ? NSLineBreakMode.byWordWrapping : NSLineBreakMode.byTruncatingTail
-
-    return button
-      |> roundedStyle(cornerRadius: 12)
-      |> UIButton.lens.titleLabel.font .~ UIFont.ksr_headline(size: 15)
-      |> UIButton.lens.layer.borderWidth .~ 0
-      |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
-      |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ lineBreakMode
-  }
+private let pledgeCTAButtonStyle: ButtonStyle = { button in
+  button
+    |> roundedStyle(cornerRadius: 12)
+    |> UIButton.lens.layer.borderWidth .~ 0
+    |> (UIButton.lens.titleLabel .. UILabel.lens.font) .~ UIFont.boldSystemFont(ofSize: 16)
+    |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ NSLineBreakMode.byTruncatingMiddle
+    |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
 }

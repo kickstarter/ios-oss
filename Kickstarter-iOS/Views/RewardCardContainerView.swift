@@ -20,8 +20,8 @@ public final class RewardCardContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let pledgeButton: MultiLineButton = {
-    MultiLineButton(type: .custom)
+  private let pledgeButton: UIButton = {
+    UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -66,8 +66,8 @@ public final class RewardCardContainerView: UIView {
     ]
     self.gradientView.setGradient(gradient)
 
-    _ = self.pledgeButton.titleLabel
-      ?|> \.lineBreakMode .~ .byTruncatingTail
+    _ = self.pledgeButton
+      |> pledgeButtonStyle
   }
 
   public override func bindViewModel() {
@@ -104,8 +104,9 @@ public final class RewardCardContainerView: UIView {
     self.viewModel.outputs.pledgeButtonStyleType
       .observeForUI()
       .observeValues { [weak self] styleType in
-        guard let self = self else { return }
-        _ = self.pledgeButton |> styleType.style
+        _ = self?.pledgeButton
+          ?|> styleType.style
+          ?|> pledgeButtonStyle
       }
   }
 
@@ -240,4 +241,12 @@ public final class RewardCardContainerView: UIView {
   @objc func pledgeButtonTapped() {
     self.viewModel.inputs.pledgeButtonTapped()
   }
+}
+
+// MARK: - Styles
+
+private let pledgeButtonStyle: ButtonStyle = { button in
+  button
+    |> (UIButton.lens.titleLabel .. UILabel.lens.font) .~ UIFont.boldSystemFont(ofSize: 16)
+    |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ NSLineBreakMode.byTruncatingMiddle
 }

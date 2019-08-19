@@ -5,7 +5,7 @@ import Prelude
 final class PledgeContinueViewController: UIViewController {
   // MARK: - Properties
 
-  private let continueButton = MultiLineButton(type: .custom)
+  private let continueButton = UIButton(type: .custom)
   private let viewModel = PledgeContinueViewModel()
 
   // MARK: - Lifecycle
@@ -25,10 +25,7 @@ final class PledgeContinueViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.continueButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        Strings.Continue()
-      }
+      |> continueButtonStyle
   }
 
   // MARK: - View model
@@ -73,4 +70,16 @@ final class PledgeContinueViewController: UIViewController {
 
     self.presentViewControllerWithSheetOverlay(navigationController, offset: navigationBarHeight)
   }
+}
+
+// MARK: - Styles
+
+private let continueButtonStyle: ButtonStyle = { button in
+  button
+    |> greenButtonStyle
+    |> UIButton.lens.title(for: .normal) %~ { _ in
+      Strings.Continue()
+    }
+    |> (UIButton.lens.titleLabel .. UILabel.lens.font) .~ UIFont.boldSystemFont(ofSize: 16)
+    |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ NSLineBreakMode.byTruncatingMiddle
 }
