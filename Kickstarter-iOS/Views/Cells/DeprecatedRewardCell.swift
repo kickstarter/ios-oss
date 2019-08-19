@@ -134,7 +134,7 @@ internal final class DeprecatedRewardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.numberOfLines .~ 0
 
     _ = self.estimatedDeliveryLabel
-      |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery().uppercased() }
+      |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery_colon().uppercased() }
       |> UILabel.lens.font .~ .ksr_caption1(size: 12)
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
