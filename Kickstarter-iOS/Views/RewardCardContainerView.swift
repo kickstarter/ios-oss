@@ -67,7 +67,7 @@ public final class RewardCardContainerView: UIView {
     self.gradientView.setGradient(gradient)
 
     _ = self.pledgeButton
-      |> pledgeButtonStyle
+      |> ctaButtonStyle
   }
 
   public override func bindViewModel() {
@@ -106,7 +106,7 @@ public final class RewardCardContainerView: UIView {
       .observeValues { [weak self] styleType in
         _ = self?.pledgeButton
           ?|> styleType.style
-          ?|> pledgeButtonStyle
+          ?|> ctaButtonStyle
       }
   }
 
@@ -241,12 +241,4 @@ public final class RewardCardContainerView: UIView {
   @objc func pledgeButtonTapped() {
     self.viewModel.inputs.pledgeButtonTapped()
   }
-}
-
-// MARK: - Styles
-
-private let pledgeButtonStyle: ButtonStyle = { button in
-  button
-    |> (UIButton.lens.titleLabel .. UILabel.lens.font) .~ UIFont.boldSystemFont(ofSize: 16)
-    |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ NSLineBreakMode.byTruncatingMiddle
 }

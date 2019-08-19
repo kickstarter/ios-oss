@@ -74,7 +74,7 @@ final class PledgeCTAContainerView: UIView {
       |> \.spacing .~ Styles.gridHalf(1)
 
     _ = self.pledgeCTAButton
-      |> pledgeCTAButtonStyle
+      |> ctaButtonStyle
 
     _ = self.rootStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
@@ -106,7 +106,7 @@ final class PledgeCTAContainerView: UIView {
       .observeValues { [weak self] buttonStyleType in
         _ = self?.pledgeCTAButton
           ?|> buttonStyleType.style
-          ?|> pledgeCTAButtonStyle
+          ?|> ctaButtonStyle
       }
 
     self.viewModel.outputs.rootStackViewAnimateIsHidden
@@ -174,13 +174,4 @@ private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackV
       |> \.axis .~ NSLayoutConstraint.Axis.horizontal
       |> \.spacing .~ spacing
   }
-}
-
-private let pledgeCTAButtonStyle: ButtonStyle = { button in
-  button
-    |> roundedStyle(cornerRadius: 12)
-    |> UIButton.lens.layer.borderWidth .~ 0
-    |> (UIButton.lens.titleLabel .. UILabel.lens.font) .~ UIFont.boldSystemFont(ofSize: 16)
-    |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ NSLineBreakMode.byTruncatingMiddle
-    |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
 }
