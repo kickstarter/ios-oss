@@ -14,6 +14,8 @@ final class RewardCardViewModelTests: TestCase {
   private let conversionLabelHidden = TestObserver<Bool, Never>()
   private let conversionLabelText = TestObserver<String, Never>()
   private let descriptionLabelText = TestObserver<String, Never>()
+  private let estimatedDeliveryDateLabelHidden = TestObserver<Bool, Never>()
+  private let estimatedDeliveryDateLabelText = TestObserver<String, Never>()
   private let includedItemsStackViewHidden = TestObserver<Bool, Never>()
   private let items = TestObserver<[String], Never>()
   private let pillCollectionViewHidden = TestObserver<Bool, Never>()
@@ -34,6 +36,8 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.descriptionLabelText.observe(self.descriptionLabelText.observer)
+    self.vm.outputs.estimatedDeliveryDateLabelHidden.observe(self.estimatedDeliveryDateLabelHidden.observer)
+    self.vm.outputs.estimatedDeliveryDateLabelText.observe(self.estimatedDeliveryDateLabelText.observer)
     self.vm.outputs.includedItemsStackViewHidden.observe(self.includedItemsStackViewHidden.observer)
     self.vm.outputs.items.observe(self.items.observer)
     self.vm.outputs.pillCollectionViewHidden.observe(self.pillCollectionViewHidden.observer)
@@ -658,7 +662,40 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
-      ["25 left"]
+      ["25 left of 100"]
+    ])
+  }
+
+  func testPillsLimitedReward_HasBackers() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.backersCount .~ 25
+      |> Reward.lens.remaining .~ 25
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["25 left of 100"]
+    ])
+  }
+
+  func testPillsUnlimitedReward_HasBackers() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.backersCount .~ 25
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["25 backers"]
     ])
   }
 
@@ -668,6 +705,7 @@ final class RewardCardViewModelTests: TestCase {
 
     let reward = Reward.postcards
       |> Reward.lens.limit .~ nil
+      |> Reward.lens.backersCount .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
 
@@ -687,6 +725,7 @@ final class RewardCardViewModelTests: TestCase {
 
     let reward = Reward.postcards
       |> Reward.lens.limit .~ nil
+      |> Reward.lens.backersCount .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
@@ -706,6 +745,7 @@ final class RewardCardViewModelTests: TestCase {
 
     let reward = Reward.postcards
       |> Reward.lens.limit .~ 100
+      |> Reward.lens.backersCount .~ nil
       |> Reward.lens.remaining .~ 75
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
@@ -713,7 +753,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
-      ["4 days left", "75 left"]
+      ["4 days left", "75 left of 100"]
     ])
   }
 
@@ -725,6 +765,7 @@ final class RewardCardViewModelTests: TestCase {
 
     let reward = Reward.postcards
       |> Reward.lens.limit .~ 100
+      |> Reward.lens.backersCount .~ nil
       |> Reward.lens.remaining .~ 75
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
       |> Reward.lens.shipping .~ (
@@ -738,7 +779,65 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
-      ["4 days left", "75 left", "Anywhere in the world"]
+      ["4 days left", "75 left of 100", "Anywhere in the world"]
+    ])
+  }
+
+  func testPillsTimebasedAndLimitedReward_ShippingEnabled_Available_HasBackers() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.backersCount .~ 50
+      |> Reward.lens.remaining .~ 25
+      |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
+      |> Reward.lens.shipping .~ (
+        .template
+          |> Reward.Shipping.lens.enabled .~ true
+          |> Reward.Shipping.lens.preference .~ .restricted
+          |> Reward.Shipping.lens.summary .~ "Anywhere in the world"
+      )
+
+    let project = Project.template
+      |> Project.lens.state .~ .live
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["4 days left", "25 left of 100", "Anywhere in the world"]
+    ])
+  }
+
+  func testPillsTimebasedAndLimitedReward_ShippingEnabled_Unavailable_HasBackers() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.backersCount .~ 50
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
+      |> Reward.lens.shipping .~ (
+        .template
+          |> Reward.Shipping.lens.enabled .~ true
+          |> Reward.Shipping.lens.preference .~ .restricted
+          |> Reward.Shipping.lens.summary .~ "Anywhere in the world"
+      )
+
+    let project = Project.template
+      |> Project.lens.state .~ .live
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["4 days left", "50 backers", "Anywhere in the world"]
     ])
   }
 
@@ -753,6 +852,7 @@ final class RewardCardViewModelTests: TestCase {
 
     let reward = Reward.postcards
       |> Reward.lens.limit .~ 100
+      |> Reward.lens.backersCount .~ nil
       |> Reward.lens.remaining .~ 75
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
       |> Reward.lens.shipping .~ (
@@ -779,6 +879,7 @@ final class RewardCardViewModelTests: TestCase {
 
     let reward = Reward.postcards
       |> Reward.lens.limit .~ 100
+      |> Reward.lens.backersCount .~ nil
       |> Reward.lens.remaining .~ 75
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
@@ -788,19 +889,20 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([[]])
   }
 
-  func testPillsTimebasedAndLimitedReward_Unavailable() {
+  func testPillsTimebasedAndLimitedReward_Unavailable_NoBackers() {
     self.pillCollectionViewHidden.assertValueCount(0)
     self.reloadPills.assertValueCount(0)
 
     let reward = Reward.postcards
       |> Reward.lens.limit .~ 100
+      |> Reward.lens.backersCount .~ nil
       |> Reward.lens.remaining .~ 0
       |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
-    self.pillCollectionViewHidden.assertValues([false])
-    self.reloadPills.assertValues([["0 left"]])
+    self.pillCollectionViewHidden.assertValues([true])
+    self.reloadPills.assertValues([[]])
   }
 
   func testPillsNonLimitedReward() {
@@ -809,6 +911,7 @@ final class RewardCardViewModelTests: TestCase {
 
     let reward = Reward.postcards
       |> Reward.lens.limit .~ nil
+      |> Reward.lens.backersCount .~ nil
       |> Reward.lens.endsAt .~ nil
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
@@ -817,7 +920,43 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([[]])
   }
 
-  // State Icon Image
+  func testPillsLimitedReward_LiveProject_HasBackers() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 50
+      |> Reward.lens.backersCount .~ 50
+
+    let project = Project.template
+      |> Project.lens.state .~ .live
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([["50 left of 100"]])
+  }
+
+  func testPillsLimitedReward_NonLiveProject_HasBackers() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.remaining .~ 50
+      |> Reward.lens.backersCount .~ 50
+
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([["50 backers"]])
+  }
+
+  // MARK: - State Icon Image
 
   func testStateIconImage_BackedReward() {
     self.stateIconImageName.assertValueCount(0)
