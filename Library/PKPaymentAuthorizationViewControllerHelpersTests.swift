@@ -1,20 +1,22 @@
-@testable import Library
-@testable import KsApi
 import Foundation
-import XCTest
+@testable import KsApi
+@testable import Library
 import PassKit
 import Prelude
+import XCTest
 
 final class PKPaymentAuthorizationViewControllerHelpersTests: XCTestCase {
   func test_supportedNetworksForProject_allCardTypes() {
     let project = Project.template
-      |> \.availableCardTypes .~ ["AMEX",
+      |> \.availableCardTypes .~ [
+        "AMEX",
         "DISCOVER",
         "JCB",
         "MASTERCARD",
         "VISA",
-//        "DINERS", // figure out what to do with this type
-        "UNION_PAY"]
+        //        "DINERS", // figure out what to do with this type
+        "UNION_PAY"
+      ]
 
     let supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks(for: project)
 

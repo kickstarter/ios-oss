@@ -6,15 +6,17 @@ extension PKPaymentAuthorizationViewController {
     return Secrets.ApplePay.merchantIdentifier
   }
 
-  public static var allSupportedNetworks: [PKPaymentNetwork] = [.amex,
-                                                                .masterCard,
-                                                                .visa,
-                                                                .discover,
-                                                                .JCB,
-                                                                .chinaUnionPay]
+  public static var allSupportedNetworks: [PKPaymentNetwork] = [
+    .amex,
+    .masterCard,
+    .visa,
+    .discover,
+    .JCB,
+    .chinaUnionPay
+  ]
 
   public static func applePayCapable() -> Bool {
-    return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: allSupportedNetworks)
+    return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: self.allSupportedNetworks)
   }
 
   public static func applePayDevice() -> Bool {
@@ -29,21 +31,20 @@ extension PKPaymentAuthorizationViewController {
 
   public static func supportedNetworks(for project: Project) -> [PKPaymentNetwork] {
     guard let availableCardTypes = project.availableCardTypes else {
-      return supportedNetworks(projectCountry: project.country)
+      return self.supportedNetworks(projectCountry: project.country)
     }
 
     return availableCardTypes
       .compactMap(GraphUserCreditCard.CreditCardType.init(rawValue:))
-      .compactMap(pkPaymentNetwork(for:))
+      .compactMap(self.pkPaymentNetwork(for:))
   }
-
 
   private static func supportedNetworks(projectCountry: Project.Country) -> [PKPaymentNetwork] {
     if projectCountry == Project.Country.us {
-      return allSupportedNetworks
+      return self.allSupportedNetworks
     } else {
       let unsupportedNetworks: Set<PKPaymentNetwork> = [.chinaUnionPay, .discover]
-      let supportedNetworks: Set<PKPaymentNetwork> = Set.init(allSupportedNetworks)
+      let supportedNetworks: Set<PKPaymentNetwork> = Set.init(self.allSupportedNetworks)
 
       return Array(supportedNetworks.subtracting(unsupportedNetworks))
     }
@@ -69,4 +70,3 @@ extension PKPaymentAuthorizationViewController {
     }
   }
 }
-

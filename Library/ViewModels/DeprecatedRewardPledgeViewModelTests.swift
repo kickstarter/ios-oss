@@ -534,7 +534,6 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     }
   }
 
-
   func testGoToPaymentAuthorization_NoShipping_NoRewardTitle() {
     let project = Project.template
     let reward = Reward.template
