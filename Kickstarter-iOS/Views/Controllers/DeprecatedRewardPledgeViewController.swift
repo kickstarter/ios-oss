@@ -161,7 +161,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    if !featureNativeCheckoutEnabled() {
+    if !featureNativeCheckoutIsEnabled() {
       _ = self
         |> baseControllerStyle()
     }
