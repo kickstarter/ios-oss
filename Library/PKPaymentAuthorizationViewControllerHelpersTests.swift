@@ -14,13 +14,13 @@ final class PKPaymentAuthorizationViewControllerHelpersTests: XCTestCase {
         "JCB",
         "MASTERCARD",
         "VISA",
-        //        "DINERS", // figure out what to do with this type
+        "DINERS",
         "UNION_PAY"
       ]
 
     let supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks(for: project)
 
-    XCTAssertEqual(supportedNetworks.count, project.availableCardTypes?.count)
+    XCTAssertEqual(supportedNetworks.count, PKPaymentAuthorizationViewController.allSupportedNetworks.count)
     XCTAssertTrue(supportedNetworks.contains(.amex))
     XCTAssertTrue(supportedNetworks.contains(.discover))
     XCTAssertTrue(supportedNetworks.contains(.JCB))
