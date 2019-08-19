@@ -133,15 +133,12 @@ final class PledgeCTAContainerView: UIView {
 
     self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden
     self.pledgeCTAButton.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
+    self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText
     self.pledgeRetryButton.rac.hidden = self.viewModel.outputs.pledgeRetryButtonIsHidden
+    self.spacer.rac.hidden = self.viewModel.outputs.spacerIsHidden
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleText
-
-    // NB: vm needs to return button style
-
-    self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText
-    self.spacer.rac.hidden = self.viewModel.outputs.spacerIsHidden
   }
 
   // MARK: - Configuration
@@ -185,9 +182,7 @@ final class PledgeCTAContainerView: UIView {
       self.activityIndicatorContainerView.widthAnchor.constraint(equalTo: self.layoutMarginsGuide.widthAnchor),
       // swiftlint:enable line_length
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
-      self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
-      self.pledgeRetryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
-      self.pledgeRetryButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth)
+      self.pledgeRetryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight)
     ])
   }
 
@@ -233,13 +228,13 @@ private func pledgeCTAButtonStyle(
 private let pledgeRetryButtonStyle: ButtonStyle = { button in
   button
     |> baseButtonStyle
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_black
     |> UIButton.lens.titleLabel.font .~ .ksr_caption1()
     |> UIButton.lens.backgroundColor(for: .normal) .~ .clear
     |> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: Styles.grid(3), bottom: 0, right: 0)
-    |> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.ksr_grey_500.mixLighter(0.36)
+    |> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.ksr_text_black.mixLighter(0.36)
     |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(topBottom: Styles.gridHalf(1))
     |> UIButton.lens.image(for: .normal) %~ { _ in image(named: "icon--refresh-small") }
-    |> UIButton.lens.image(for: .highlighted) %~ { _ in image(named: "icon--refresh-small", alpha: 0.36) }
+    |> UIButton.lens.image(for: .highlighted) %~ { _ in image(named: "icon--refresh-small", alpha: 0.66) }
     |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Content_isnt_loading_right_now() }
 }
