@@ -99,6 +99,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
       }
+
+    self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
   }
 
   // MARK: - Configuration

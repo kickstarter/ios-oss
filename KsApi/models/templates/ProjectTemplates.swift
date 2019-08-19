@@ -4,13 +4,13 @@ import Prelude
 extension Project {
   internal static let template = Project(
     availableCardTypes: [
-      "Visa",
-      "MasterCard",
-      "American Express",
-      "Discover",
+      "AMEX",
+      "MASTERCARD",
+      "VISA",
+      "DISCOVER",
       "JCB",
-      "Diners Club",
-      "UnionPay"
+      "DINERS",
+      "UNION_PAY"
     ],
     blurb: "A fun project.",
     category: .template,

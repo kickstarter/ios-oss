@@ -65,7 +65,7 @@ extension PKPaymentAuthorizationViewController {
     case .visa:
       return PKPaymentNetwork.visa
     default:
-      return nil
+      return nil // case .diners and case .generic
     }
   }
 }
