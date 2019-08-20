@@ -125,8 +125,10 @@ private func subtitle(project: Project, pledgeState: PledgeStateCTAType) -> Stri
 
   if pledgeState == .fix { return pledgeState.subtitleLabel ?? "" }
 
-  let amount = formattedAmountForRewardOrBacking(project: project,
-                                                 rewardOrBacking: .right(backing))
+  let amount = formattedAmountForRewardOrBacking(
+    project: project,
+    rewardOrBacking: .right(backing)
+  )
 
   let reward = backing.reward
     ?? project.rewards.filter { $0.id == backing.rewardId }.first
