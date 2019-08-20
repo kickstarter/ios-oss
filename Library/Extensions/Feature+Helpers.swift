@@ -7,6 +7,7 @@ public func featureNativeCheckoutIsEnabled() -> Bool {
 
 public func featureNativeCheckoutPledgeViewIsEnabled() -> Bool {
   return Feature.nativeCheckoutPledgeView.isEnabled()
+    && !AppEnvironment.current.mainBundle.isRelease // disables native checkout pledge view on Release build
 }
 
 extension Feature {
