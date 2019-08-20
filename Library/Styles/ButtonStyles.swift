@@ -89,6 +89,15 @@ public let facebookButtonStyle = baseButtonStyle
 
   <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
 
+// MARK: - Multiline
+
+public let multiLineButtonStyle: ButtonStyle = { button in
+  button
+    |> UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode .~ NSLineBreakMode.byWordWrapping
+    |> UIButton.lens.titleLabel .. UILabel.lens.numberOfLines .~ 0
+    |> UIButton.lens.titleLabel .. UILabel.lens.textAlignment .~ NSTextAlignment.center
+}
+
 // MARK: - Red
 
 public let redButtonStyle = baseButtonStyle
