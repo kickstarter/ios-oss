@@ -76,7 +76,6 @@ final class PledgeContinueViewController: UIViewController {
 
 private let continueButtonStyle: ButtonStyle = { button in
   button
-    |> ButtonStyleType.green.style
-    |> ctaButtonStyle
+    |> greenButtonStyle
     |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
 }
