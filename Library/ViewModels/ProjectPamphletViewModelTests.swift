@@ -6,6 +6,10 @@ import ReactiveSwift
 import XCTest
 
 final class ProjectPamphletViewModelTests: TestCase {
+  private let releaseBundle = MockBundle(
+    bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+    lang: "en"
+  )
   fileprivate var vm: ProjectPamphletViewModelType!
 
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
@@ -358,7 +362,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: self.releaseBundle) {
       let project = Project.template
 
       self.configureInitialState(.left(project))
@@ -385,7 +389,12 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     let mockService = MockService(fetchProjectResponse: projectFull)
 
-    withEnvironment(apiService: mockService, apiDelayInterval: .seconds(1), config: config) {
+    withEnvironment(
+      apiService: mockService,
+      apiDelayInterval: .seconds(1),
+      config: config,
+      mainBundle: releaseBundle
+    ) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
@@ -414,7 +423,12 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     let mockService = MockService(fetchProjectResponse: projectFull)
 
-    withEnvironment(apiService: mockService, apiDelayInterval: .seconds(1), config: config) {
+    withEnvironment(
+      apiService: mockService,
+      apiDelayInterval: .seconds(1),
+      config: config,
+      mainBundle: releaseBundle
+    ) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
@@ -437,7 +451,12 @@ final class ProjectPamphletViewModelTests: TestCase {
     let project = Project.template
     let mockService = MockService(fetchProjectError: .couldNotParseJSON)
 
-    withEnvironment(apiService: mockService, apiDelayInterval: .seconds(1), config: config) {
+    withEnvironment(
+      apiService: mockService,
+      apiDelayInterval: .seconds(1),
+      config: config,
+      mainBundle: releaseBundle
+    ) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
@@ -462,7 +481,12 @@ final class ProjectPamphletViewModelTests: TestCase {
     let project = Project.template
     let mockService = MockService(fetchProjectError: .couldNotParseJSON)
 
-    withEnvironment(apiService: mockService, apiDelayInterval: .seconds(1), config: config) {
+    withEnvironment(
+      apiService: mockService,
+      apiDelayInterval: .seconds(1),
+      config: config,
+      mainBundle: releaseBundle
+    ) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
@@ -491,7 +515,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     let mockService = MockService(fetchProjectResponse: projectFull)
 
-    withEnvironment(apiService: mockService, config: config) {
+    withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
@@ -509,7 +533,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchProjectResponse: projectFull2),
-      config: config
+      config: config,
+      mainBundle: releaseBundle
     ) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.vm.inputs.viewDidAppear(animated: true)
@@ -537,7 +562,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     let mockService = MockService(fetchProjectResponse: projectFull)
 
-    withEnvironment(apiService: mockService, config: config) {
+    withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
@@ -555,7 +580,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     withEnvironment(
       apiService: MockService(fetchProjectResponse: projectFull2),
-      config: config
+      config: config,
+      mainBundle: releaseBundle
     ) {
       self.vm.inputs.viewWillAppear(animated: true)
       self.vm.inputs.viewDidAppear(animated: true)
@@ -576,7 +602,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
     let project = Project.template
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: self.releaseBundle) {
       self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
@@ -590,7 +616,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
     let project = Project.template
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: self.releaseBundle) {
       self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
