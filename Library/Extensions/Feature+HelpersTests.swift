@@ -58,8 +58,10 @@ final class FeatureHelpersTests: TestCase {
   }
 
   func testFeatureNativeCheckoutPledgeViewEnabled_isFalse_ffIsFalse_inReleaseBuild() {
-    let testBundle = MockBundle.init(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
-                                     lang: "en")
+    let testBundle = MockBundle.init(
+      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+      lang: "en"
+    )
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: false]
 
@@ -69,8 +71,10 @@ final class FeatureHelpersTests: TestCase {
   }
 
   func testFeatureNativeCheckoutPledgeViewEnabled_isFalse_ffIsTrue_inReleaseBuild() {
-    let testBundle = MockBundle.init(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
-                                     lang: "en")
+    let testBundle = MockBundle.init(
+      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+      lang: "en"
+    )
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
 
@@ -80,8 +84,10 @@ final class FeatureHelpersTests: TestCase {
   }
 
   func testFeatureNativeCheckoutPledgeViewEnabled_isFalse_ffIsNil_inReleaseBuild() {
-    let testBundle = MockBundle.init(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
-                                     lang: "en")
+    let testBundle = MockBundle.init(
+      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+      lang: "en"
+    )
     let config = Config.template
       |> \.features .~ [:]
 
