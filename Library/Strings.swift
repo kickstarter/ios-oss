@@ -1272,6 +1272,23 @@ contributeurs"
     )
   }
   /**
+   "Content isn't loading right now."
+
+   - **en**: "Content isn't loading right now."
+   - **de**: "Inhalt kann derzeit leider nicht geladen werden."
+   - **es**: "El contenido no se está cargando en este momento."
+   - **fr**: "Échec de chargement du contenu."
+   - **ja**: "現在、コンテンツを読み込めません。"
+  */
+  public static func Content_isnt_loading_right_now() -> String {
+    return localizedString(
+      key: "Content_isnt_loading_right_now",
+      defaultValue: "Content isn't loading right now.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Continue"
 
    - **en**: "Continue"

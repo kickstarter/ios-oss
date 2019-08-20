@@ -3,6 +3,12 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum CTAContainerView {
+    static let minHeight: CGFloat = 130
+  }
+}
+
 public protocol ProjectPamphletViewControllerDelegate: AnyObject {
   func projectPamphlet(
     _ controller: ProjectPamphletViewController,
@@ -86,6 +92,10 @@ public final class ProjectPamphletViewController: UIViewController {
 
     self.pledgeCTAContainerView.pledgeCTAButton.addTarget(
       self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
+    )
+
+    self.pledgeCTAContainerView.pledgeRetryButton.addTarget(
+      self, action: #selector(ProjectPamphletViewController.pledgeRetryButtonTapped), for: .touchUpInside
     )
 
     // Configure constraints
@@ -191,6 +201,10 @@ public final class ProjectPamphletViewController: UIViewController {
 
   @objc func backThisProjectTapped() {
     self.viewModel.inputs.backThisProjectTapped()
+  }
+
+  @objc func pledgeRetryButtonTapped() {
+    self.viewModel.inputs.pledgeRetryButtonTapped()
   }
 }
 
