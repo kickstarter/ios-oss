@@ -9,17 +9,21 @@ public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
     UIColor.ksr_text_dark_grey_400.withAlphaComponent(0.5)
   }
+
   <> UIButton.lens.titleLabel.font %~~ { _, label in
     label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote(size: 11.0)
   }
+
   <> UIButton.lens.titleLabel.textAlignment .~ .center
   <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_disclaimer_agree_to_terms()
   }
+
   <> UIButton.lens.accessibilityValue %~ { _ in Strings.general_navigation_buttons_help() }
   <> UIButton.lens.accessibilityLabel %~ { _ in
     Strings.login_tout_disclaimer_agree_to_terms()
   }
+
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
 public let showHidePasswordButtonStyle = UIButton.lens.title(for: .normal) .~ ""
