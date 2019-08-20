@@ -85,33 +85,19 @@ final class PledgeCTAContainerView: UIView {
       |> pledgeRetryButtonStyle
 
     _ = self.titleAndSubtitleStackView
-      |> \.axis .~ NSLayoutConstraint.Axis.vertical
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.spacing .~ Styles.gridHalf(1)
-
-    _ = self.pledgeCTAButton
-      |> pledgeCTAButtonStyle(
-        isAccessibilityCategory,
-        amountAndRewardTitleStackViewIsHidden: self.titleAndSubtitleStackView.isHidden
-      )
+      |> titleAndSubtitleStackViewStyle
 
     _ = self.rootStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
-      |> \.alignment .~ .center
 
     _ = self.titleLabel
-      |> \.font .~ UIFont.ksr_callout().bolded
-      |> \.numberOfLines .~ 0
+      |> titleLabelStyle
 
     _ = self.subtitleLabel
-      |> \.font .~ UIFont.ksr_caption1().bolded
-      |> \.textColor .~ UIColor.ksr_dark_grey_500
-      |> \.numberOfLines .~ 0
+      |> subtitleLabelStyle
 
     _ = self.activityIndicator
-      |> \.color .~ UIColor.ksr_dark_grey_500
+      |> activityIndicatorStyle
   }
 
   // MARK: - View model
@@ -122,7 +108,8 @@ final class PledgeCTAContainerView: UIView {
     self.viewModel.outputs.buttonStyleType
       .observeForUI()
       .observeValues { [weak self] buttonStyleType in
-        _ = self?.pledgeCTAButton ?|> buttonStyleType.style
+        _ = self?.pledgeCTAButton
+          ?|> buttonStyleType.style
       }
 
     self.viewModel.outputs.pledgeCTAButtonIsHidden
@@ -196,31 +183,43 @@ final class PledgeCTAContainerView: UIView {
 
 // MARK: - Styles
 
+private let activityIndicatorStyle: ActivityIndicatorStyle = { activityIndicator in
+  activityIndicator
+    |> \.color .~ UIColor.ksr_dark_grey_500
+    |> \.hidesWhenStopped .~ true
+}
+
 private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
   return { (stackView: UIStackView) in
-    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
     let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
 
     return stackView
-      |> \.axis .~ axis
+      |> \.alignment .~ .center
+      |> \.axis .~ NSLayoutConstraint.Axis.horizontal
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
       |> \.spacing .~ spacing
   }
 }
 
-private func pledgeCTAButtonStyle(
-  _ isAccessibilityCategory: Bool, amountAndRewardTitleStackViewIsHidden: Bool
-) -> (ButtonStyle) {
-  return { (button: UIButton) in
-    let lineBreakMode: NSLineBreakMode = isAccessibilityCategory || amountAndRewardTitleStackViewIsHidden
-      ? NSLineBreakMode.byWordWrapping : NSLineBreakMode.byTruncatingTail
+private let subtitleLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_caption1().bolded
+    |> \.textColor .~ UIColor.ksr_dark_grey_500
+    |> \.numberOfLines .~ 0
+}
 
-    return button
-      |> roundedStyle(cornerRadius: 12)
-      |> UIButton.lens.titleLabel.font .~ UIFont.ksr_headline(size: 15)
-      |> UIButton.lens.layer.borderWidth .~ 0
-      |> (UIButton.lens.titleLabel .. UILabel.lens.textAlignment) .~ NSTextAlignment.center
-      |> (UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode) .~ lineBreakMode
-  }
+private let titleAndSubtitleStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ Styles.gridHalf(1)
+}
+
+private let titleLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_callout().bolded
+    |> \.numberOfLines .~ 0
 }
 
 private let pledgeRetryButtonStyle: ButtonStyle = { button in
