@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgeViewController: UIViewController {
+final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
   private lazy var descriptionSectionSeparator: UIView = {
@@ -45,12 +45,15 @@ final class PledgeViewController: UIViewController {
     [self.continueViewController.view]
   }()
 
+  internal var messageBannerViewController: MessageBannerViewController?
+
   private lazy var paymentMethodsSectionViews = {
     [self.paymentMethodsViewController.view]
   }()
 
   private lazy var paymentMethodsViewController = {
     PledgePaymentMethodsViewController.instantiate()
+      |> \.messageDisplayingDelegate .~ self
   }()
 
   private lazy var shippingLocationViewController = {
@@ -83,6 +86,11 @@ final class PledgeViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    _ = self
+      |> \.extendedLayoutIncludesOpaqueBars .~ true
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     _ = self
       |> \.title %~ { _ in Strings.Back_this_project() }
@@ -183,15 +191,18 @@ final class PledgeViewController: UIViewController {
         self?.descriptionViewController.configureWith(value: data)
         self?.pledgeAmountViewController.configureWith(value: data)
         self?.shippingLocationViewController.configureWith(value: data)
-        self?.paymentMethodsViewController.configureWith(
-          value: GraphUserCreditCard.template.storedCards.nodes
-        )
       }
 
     self.viewModel.outputs.configureSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] project, pledgeTotal in
         self?.summaryViewController.configureWith(value: (project, pledgeTotal))
+      }
+
+    self.viewModel.outputs.configurePaymentMethodsViewControllerWithUser
+      .observeForUI()
+      .observeValues { [weak self] user in
+        self?.paymentMethodsViewController.configureWith(user)
       }
 
     self.sessionStartedObserver = NotificationCenter.default
@@ -252,11 +263,28 @@ extension PledgeViewController: RewardPledgeTransitionAnimatorDelegate {
   }
 
   func destinationFrameData(withContainerView view: UIView) -> RewardPledgeTransitionDestinationFrameData? {
-    return self.descriptionViewController.destinationFrameData(withContainerView: view)
+    guard let (destination, mask) = self.descriptionViewController
+      .destinationFrameData(withContainerView: view)
+    else { return nil }
+
+    let offsetDestination = destination
+      .offsetBy(dx: 0, dy: -self.view.safeAreaInsets.top)
+
+    return (offsetDestination, mask)
   }
 
   func endTransition(_ operation: UINavigationController.Operation) {
     self.descriptionViewController.endTransition(operation)
+  }
+}
+
+extension PledgeViewController: PledgeViewControllerMessageDisplaying {
+  func pledgeViewController(_: UIViewController, didErrorWith message: String) {
+    self.messageBannerViewController?.showBanner(with: .error, message: message)
+  }
+
+  func pledgeViewController(_: UIViewController, didSucceedWith message: String) {
+    self.messageBannerViewController?.showBanner(with: .success, message: message)
   }
 }
 

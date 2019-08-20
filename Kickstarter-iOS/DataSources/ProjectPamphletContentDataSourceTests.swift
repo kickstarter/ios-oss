@@ -46,9 +46,10 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: unavailableSection))
   }
 
-  func testRewardsSection_nativeCheckoutFeature_hidesWhenTurnedOn() {
+  func testRewardsSection_hidesWhen_nativeCheckoutFeatureEnabled_checkoutExperimentEnabled() {
     let config = .template
       |> Config.lens.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> Config.lens.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
 
     withEnvironment(config: config) {
       let availableReward = Reward.template
@@ -64,10 +65,31 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     }
   }
 
-  func testRewardsSection_nativeCheckoutFeature_showsWithTurnedOff() {
+  func testRewardsSection_showsWhen_nativeCheckoutFeatureEnabled_checkoutExperimentDisabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> Config.lens.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
+
+    self.assertSectionIsShown(config)
+  }
+
+  func testRewardsSection_showsWhen_nativeCheckoutFeatureDisabled_checkoutExperimentEnabled() {
     let config = .template
       |> Config.lens.features .~ [Feature.nativeCheckout.rawValue: false]
+      |> Config.lens.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
 
+    self.assertSectionIsShown(config)
+  }
+
+  func testRewardsSection_showsWhen_nativeCheckoutFeatureDisabled_checkoutExperimentDisabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckout.rawValue: false]
+      |> Config.lens.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
+
+    self.assertSectionIsShown(config)
+  }
+
+  private func assertSectionIsShown(_ config: Config) {
     withEnvironment(config: config) {
       let availableSection = ProjectPamphletContentDataSource.Section.availableRewards.rawValue
       let unavailableSection = ProjectPamphletContentDataSource.Section.unavailableRewards.rawValue

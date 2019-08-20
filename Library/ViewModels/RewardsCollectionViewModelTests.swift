@@ -17,6 +17,9 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let goToPledgeProject = TestObserver<Project, Never>()
   private let goToPledgeRefTag = TestObserver<RefTag?, Never>()
   private let goToPledgeReward = TestObserver<Reward, Never>()
+  private let goToViewBackingProject = TestObserver<Project, Never>()
+  private let goToViewBackingUser = TestObserver<User?, Never>()
+  private let navigationBarShadowImageHidden = TestObserver<Bool, Never>()
   private let reloadDataWithValues = TestObserver<[(Project, Either<Reward, Backing>)], Never>()
   private let reloadDataWithValuesProject = TestObserver<[Project], Never>()
   private let reloadDataWithValuesRewardOrBacking = TestObserver<[Either<Reward, Backing>], Never>()
@@ -34,6 +37,9 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.goToPledge.map { $0.project }.observe(self.goToPledgeProject.observer)
     self.vm.outputs.goToPledge.map { $0.reward }.observe(self.goToPledgeReward.observer)
     self.vm.outputs.goToPledge.map { $0.refTag }.observe(self.goToPledgeRefTag.observer)
+    self.vm.outputs.goToViewBacking.map(first).observe(self.goToViewBackingProject.observer)
+    self.vm.outputs.goToViewBacking.map(second).observe(self.goToViewBackingUser.observer)
+    self.vm.outputs.navigationBarShadowImageHidden.observe(self.navigationBarShadowImageHidden.observer)
     self.vm.outputs.reloadDataWithValues.observe(self.reloadDataWithValues.observer)
     self.vm.outputs.reloadDataWithValues.map { $0.map { $0.0 } }
       .observe(self.reloadDataWithValuesProject.observer)
@@ -87,6 +93,8 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.goToPledgeProject.assertValues([project])
       self.goToPledgeReward.assertValues([project.rewards[0]])
       self.goToPledgeRefTag.assertValues([.activity])
+      self.goToViewBackingUser.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
       XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[0])
 
       let lastCardRewardId = project.rewards.last!.id
@@ -100,6 +108,8 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.goToPledgeProject.assertValues([project, project])
       self.goToPledgeReward.assertValues([project.rewards[0], project.rewards[endIndex - 1]])
       self.goToPledgeRefTag.assertValues([.activity, .activity])
+      self.goToViewBackingUser.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
       XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[endIndex - 1])
     }
   }
@@ -127,6 +137,8 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.goToPledgeProject.assertDidNotEmitValue()
     self.goToPledgeReward.assertDidNotEmitValue()
     self.goToPledgeRefTag.assertDidNotEmitValue()
+    self.goToViewBackingUser.assertDidNotEmitValue()
+    self.goToViewBackingProject.assertDidNotEmitValue()
     XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[0])
 
     let lastCardRewardId = project.rewards.last!.id
@@ -140,6 +152,8 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.goToPledgeProject.assertDidNotEmitValue()
     self.goToPledgeReward.assertDidNotEmitValue()
     self.goToPledgeRefTag.assertDidNotEmitValue()
+    self.goToViewBackingUser.assertDidNotEmitValue()
+    self.goToViewBackingProject.assertDidNotEmitValue()
     XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[endIndex - 1])
   }
 
@@ -181,5 +195,132 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
 
     self.flashScrollIndicators.assertDidEmitValue()
+  }
+
+  func testNavigationBarShadowImageHidden() {
+    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity)
+    self.vm.inputs.viewDidLoad()
+
+    self.navigationBarShadowImageHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.rewardCellShouldShowDividerLine(false)
+
+    self.navigationBarShadowImageHidden.assertValues([true])
+
+    self.vm.inputs.viewWillAppear()
+
+    self.navigationBarShadowImageHidden.assertValues([true, true])
+
+    self.vm.inputs.rewardCellShouldShowDividerLine(true)
+
+    self.navigationBarShadowImageHidden.assertValues([true, true, false])
+
+    self.vm.inputs.viewWillAppear()
+
+    self.navigationBarShadowImageHidden.assertValues([true, true, false, false])
+  }
+
+  func testRewardSelected_NonBacking_ProjectEnded() {
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.personalization.isBacking .~ nil
+
+    let reward = project.rewards.first!
+
+    withEnvironment {
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+
+      self.vm.inputs.configure(with: project, refTag: nil)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+
+      self.vm.inputs.rewardSelected(with: reward.id)
+
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+    }
+  }
+
+  func testRewardSelected_Backing_WithReward_ProjectEnded() {
+    let reward = Project.cosmicSurgery.rewards.first!
+    let backing = Backing.template
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ true
+
+    let user = User.template
+
+    withEnvironment(currentUser: user) {
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+
+      self.vm.inputs.configure(with: project, refTag: nil)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+
+      self.vm.inputs.rewardSelected(with: 123)
+
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+
+      self.vm.inputs.rewardSelected(with: reward.id)
+
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+
+      self.goToViewBackingProject.assertValues([project])
+      self.goToViewBackingUser.assertValues([user])
+    }
+  }
+
+  func testRewardSelected_Backing_NoReward_ProjectEnded() {
+    let backing = Backing.template
+      |> Backing.lens.reward .~ .noReward
+      |> Backing.lens.rewardId .~ nil
+
+    let project = Project.template
+      |> Project.lens.rewards .~ [Reward.noReward, Reward.template]
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ true
+
+    let user = User.template
+
+    withEnvironment(currentUser: user) {
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+
+      self.vm.inputs.configure(with: project, refTag: nil)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+
+      self.vm.inputs.rewardSelected(with: 123)
+
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+
+      self.vm.inputs.rewardSelected(with: Reward.noReward.id)
+
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+
+      self.goToViewBackingProject.assertValues([project])
+      self.goToViewBackingUser.assertValues([user])
+    }
   }
 }

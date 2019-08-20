@@ -24,11 +24,10 @@ public func == (lhs: ServerConfigType, rhs: ServerConfigType) -> Bool {
     lhs.environment == rhs.environment
 }
 
-public enum EnvironmentType: String {
-  public static let allCases: [EnvironmentType] = [.production, .staging, .local]
-
+public enum EnvironmentType: String, CaseIterable {
   case production = "Production"
   case staging = "Staging"
+  case development = "Development"
   case local = "Local"
 }
 
@@ -62,6 +61,16 @@ public struct ServerConfig: ServerConfigType {
     environment: EnvironmentType.staging
   )
 
+  public static let development: ServerConfigType = ServerConfig(
+    apiBaseUrl: URL(string: "https://\(Secrets.Api.Endpoint.development)")!,
+    webBaseUrl: URL(string: "https://\(Secrets.WebEndpoint.development)")!,
+    apiClientAuth: ClientAuth.development,
+    basicHTTPAuth: BasicHTTPAuth.development,
+    graphQLEndpointUrl: URL(string: "https://\(Secrets.WebEndpoint.development)")!
+      .appendingPathComponent(gqlPath),
+    environment: EnvironmentType.development
+  )
+
   public static let local: ServerConfigType = ServerConfig(
     apiBaseUrl: URL(string: "http://api.ksr.test")!,
     webBaseUrl: URL(string: "http://ksr.test")!,
@@ -91,6 +100,8 @@ public struct ServerConfig: ServerConfigType {
     switch environment {
     case .local:
       return ServerConfig.local
+    case .development:
+      return ServerConfig.development
     case .staging:
       return ServerConfig.staging
     case .production:

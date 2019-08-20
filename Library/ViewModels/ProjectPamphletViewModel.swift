@@ -14,6 +14,10 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call after the view loads and passes the initial TopConstraint constant.
   func initial(topConstraint: CGFloat)
 
+  /// Call when pledgeRetryButton is tapped.
+  func pledgeRetryButtonTapped()
+
+  /// Call when the view did appear, and pass the animated parameter.
   func viewDidAppear(animated: Bool)
 
   /// Call when the view will appear, and pass the animated parameter.
@@ -28,13 +32,10 @@ public protocol ProjectPamphletViewModelOutputs {
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
   /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
-  var configurePledgeCTAView: Signal<(Project, Bool), Never> { get }
+  var configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
-
-  /// Emits a project and refTag to be used to navigate to the deprecated reward selection screen.
-  var goToDeprecatedRewards: Signal<(Project, RefTag?), Never> { get }
 
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
   var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
@@ -56,13 +57,15 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public init() {
     let isLoading = MutableProperty(false)
 
-    let freshProjectAndRefTag = self.configDataProperty.signal.skipNil()
+    let freshProjectAndRefTagEvent = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
-        self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false)
+        self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false),
+        self.pledgeRetryButtonTappedProperty.signal.mapConst(false)
       ))
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
+
         fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
           .on(
             starting: { isLoading.value = true },
@@ -71,28 +74,34 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
           .map { project in
             (project, refTag.map(cleanUp(refTag:)))
           }
+          .materialize()
       }
 
-    let goToRewards = freshProjectAndRefTag
+    let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
+
+    let ctaButtonTapped = freshProjectAndRefTag
       .takeWhen(self.backThisProjectTappedProperty.signal)
       .map { project, refTag in
         (project, refTag)
       }
 
-    self.goToRewards = goToRewards
-      .filter { _ in featureNativeCheckoutPledgeViewEnabled() }
-
-    self.goToDeprecatedRewards = goToRewards
-      .filter { _ in !featureNativeCheckoutPledgeViewEnabled() }
+    self.goToRewards = ctaButtonTapped
+      .filter { _ in userCanSeeNativeCheckout() }
 
     let project = freshProjectAndRefTag
       .map(first)
 
+    let projectCTA: Signal<Either<Project, ErrorEnvelope>, Never> = project
+      .map { .left($0) }
+
+    let projectError: Signal<Either<Project, ErrorEnvelope>, Never> = freshProjectAndRefTagEvent.errors()
+      .map { .right($0) }
+
     self.configurePledgeCTAView = Signal.combineLatest(
-      project,
+      Signal.merge(projectCTA, projectError),
       isLoading.signal
     )
-    .filter { _ in featureNativeCheckoutEnabled() }
+    .filter { _ in userCanSeeNativeCheckout() }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -137,6 +146,13 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
+
+    // Tracking
+    project
+      .takeWhen(self.backThisProjectTappedProperty.signal)
+      .observeValues {
+        AppEnvironment.current.koala.trackBackThisButtonClicked(project: $0, screen: .projectPage)
+      }
   }
 
   private let backThisProjectTappedProperty = MutableProperty(())
@@ -147,6 +163,11 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
   public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
     self.configDataProperty.value = (projectOrParam, refTag)
+  }
+
+  private let pledgeRetryButtonTappedProperty = MutableProperty(())
+  public func pledgeRetryButtonTapped() {
+    self.pledgeRetryButtonTappedProperty.value = ()
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
@@ -176,8 +197,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
-  public let configurePledgeCTAView: Signal<(Project, Bool), Never>
-  public let goToDeprecatedRewards: Signal<(Project, RefTag?), Never>
+  public let configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
@@ -259,12 +279,11 @@ private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
 }
 
 private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)
-  -> SignalProducer<Project, Never> {
+  -> SignalProducer<Project, ErrorEnvelope> {
   let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
 
   let projectProducer = AppEnvironment.current.apiService.fetchProject(param: param)
     .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    .demoteErrors()
 
   if let project = projectOrParam.left, shouldPrefix {
     return projectProducer.prefix(value: project)
