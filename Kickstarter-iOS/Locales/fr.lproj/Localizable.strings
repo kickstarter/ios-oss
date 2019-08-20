@@ -137,6 +137,7 @@
 "Ending_in_last_four" = "Finissant par %{last_four}";
 "Ending_soon" = "Campagnes bientôt terminées";
 "Estimated_delivery" = "Livraison prévue :";
+"Estimated_delivery_colon" = "Livraison prévue :";
 "Estimated_delivery_of" = "Livraison prévue le";
 "Expands_subcategories" = "Développe les sous-catégories.";
 "Expiration" = "Expiration";

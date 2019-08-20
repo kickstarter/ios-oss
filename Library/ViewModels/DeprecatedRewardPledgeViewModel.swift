@@ -99,6 +99,8 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
   /// Emits a string to be put into the description label.
   var descriptionLabelText: Signal<String, Never> { get }
 
+  var descriptionTitleLabelHidden: Signal<Bool, Never> { get }
+
   /// Emits a boolean that determines if the "different payment method" button is hidden.
   var differentPaymentMethodButtonHidden: Signal<Bool, Never> { get }
 
@@ -144,6 +146,8 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
 
   /// Emits whether loading overlay view should be hidden.
   var loadingOverlayIsHidden: Signal<Bool, Never> { get }
+
+  var managePledgeStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be put into the minimum pledge label.
   var minimumLabelText: Signal<String, Never> { get }
@@ -204,6 +208,8 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
 
   /// Emits a boolean that determines if the update pledge button should be hidden.
   var updatePledgeButtonHidden: Signal<Bool, Never> { get }
+
+  var updateStackViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol DeprecatedRewardPledgeViewModelType {
@@ -283,6 +289,9 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
 
     self.differentPaymentMethodButtonHidden = self.applePayButtonHidden
 
+    self.descriptionTitleLabelHidden = reward
+      .map { $0.description == "" || $0 == Reward.noReward }
+
     self.continueToPaymentsButtonHidden = Signal.combineLatest(applePayCapable, project)
       .map { applePayCapable, project in
         !applePayButtonHiddenFor(applePayCapable: applePayCapable, project: project)
@@ -294,10 +303,14 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
         project.personalization.isBacking != .some(true)
       }
 
+    self.updateStackViewHidden = self.updatePledgeButtonHidden
+
     self.cancelPledgeButtonHidden = projectAndReward
       .map { project, reward in !userIsBacking(reward: reward, inProject: project) }
 
     self.changePaymentMethodButtonHidden = self.cancelPledgeButtonHidden
+
+    self.managePledgeStackViewHidden = self.cancelPledgeButtonHidden
 
     self.orLabelHidden = self.cancelPledgeButtonHidden
 
@@ -920,6 +933,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     return self.rewardViewModel.outputs.descriptionLabelText
   }
 
+  public let descriptionTitleLabelHidden: Signal<Bool, Never>
   public let differentPaymentMethodButtonHidden: Signal<Bool, Never>
   public let dismissViewController: Signal<(), Never>
   public let estimatedDeliveryDateLabelText: Signal<String, Never>
@@ -942,6 +956,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     return self.rewardViewModel.outputs.minimumLabelText
   }
 
+  public let managePledgeStackViewHidden: Signal<Bool, Never>
   public let navigationTitle: Signal<String, Never>
   public let orLabelHidden: Signal<Bool, Never>
   public let paddingViewHeightConstant: Signal<CGFloat, Never>
@@ -965,6 +980,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
   public let titleLabelText: Signal<String, Never>
 
   public let updatePledgeButtonHidden: Signal<Bool, Never>
+  public let updateStackViewHidden: Signal<Bool, Never>
   public let changePaymentMethodButtonHidden: Signal<Bool, Never>
   public let cancelPledgeButtonHidden: Signal<Bool, Never>
 
