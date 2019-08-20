@@ -15,10 +15,10 @@ public let applePayButtonStyle: ButtonStyle = { button in
 public let baseButtonStyle: ButtonStyle = { button in
   button
     |> roundedStyle(cornerRadius: Styles.grid(2))
-    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_callout().bolded
+    |> UIButton.lens.titleLabel .. UILabel.lens.font .~ UIFont.boldSystemFont(ofSize: 16)
+    |> UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode .~ NSLineBreakMode.byTruncatingMiddle
     |> UIButton.lens.titleLabel .. UILabel.lens.textAlignment .~ NSTextAlignment.center
     |> UIButton.lens.contentEdgeInsets .~ .init(all: Styles.grid(2))
-    |> UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode .~ NSLineBreakMode.byTruncatingMiddle
     |> UIButton.lens.titleLabel .. UILabel.lens.numberOfLines .~ 1
     |> UIButton.lens.adjustsImageWhenDisabled .~ false
     |> UIButton.lens.adjustsImageWhenHighlighted .~ false
@@ -51,14 +51,6 @@ public let blueButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .highlighted) .~ .white
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_blue_500.mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_blue_500.mixLighter(0.36)
-
-// MARK: - CTA
-
-public let ctaButtonStyle: ButtonStyle = { button in
-  button
-    |> UIButton.lens.titleLabel .. UILabel.lens.font .~ UIFont.boldSystemFont(ofSize: 16)
-    |> UIButton.lens.titleLabel .. UILabel.lens.lineBreakMode .~ NSLineBreakMode.byTruncatingMiddle
-}
 
 // MARK: - Green
 

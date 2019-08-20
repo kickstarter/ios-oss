@@ -65,9 +65,6 @@ public final class RewardCardContainerView: UIView {
       (UIColor.white.withAlphaComponent(1.0), 1)
     ]
     self.gradientView.setGradient(gradient)
-
-    _ = self.pledgeButton
-      |> ctaButtonStyle
   }
 
   public override func bindViewModel() {
@@ -106,7 +103,6 @@ public final class RewardCardContainerView: UIView {
       .observeValues { [weak self] styleType in
         _ = self?.pledgeButton
           ?|> styleType.style
-          ?|> ctaButtonStyle
       }
   }
 

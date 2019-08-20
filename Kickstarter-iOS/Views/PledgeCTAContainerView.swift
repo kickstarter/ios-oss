@@ -73,9 +73,6 @@ final class PledgeCTAContainerView: UIView {
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.spacing .~ Styles.gridHalf(1)
 
-    _ = self.pledgeCTAButton
-      |> ctaButtonStyle
-
     _ = self.rootStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
       |> \.isLayoutMarginsRelativeArrangement .~ true
@@ -106,7 +103,6 @@ final class PledgeCTAContainerView: UIView {
       .observeValues { [weak self] buttonStyleType in
         _ = self?.pledgeCTAButton
           ?|> buttonStyleType.style
-          ?|> ctaButtonStyle
       }
 
     self.viewModel.outputs.rootStackViewAnimateIsHidden
