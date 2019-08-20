@@ -69,28 +69,19 @@ final class PledgeCTAContainerView: UIView {
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
     _ = self.titleAndSubtitleStackView
-      |> \.axis .~ NSLayoutConstraint.Axis.vertical
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.spacing .~ Styles.gridHalf(1)
+      |> titleAndSubtitleStackViewStyle
 
     _ = self.rootStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
-      |> \.alignment .~ .center
 
     _ = self.titleLabel
-      |> \.font .~ UIFont.ksr_callout().bolded
-      |> \.numberOfLines .~ 0
+      |> titleLabelStyle
 
     _ = self.subtitleLabel
-      |> \.font .~ UIFont.ksr_caption1().bolded
-      |> \.textColor .~ UIColor.ksr_dark_grey_500
-      |> \.numberOfLines .~ 0
+      |> subtitleLabelStyle
 
     _ = self.activityIndicator
-      |> \.color .~ UIColor.ksr_dark_grey_500
-      |> \.hidesWhenStopped .~ true
+      |> activityIndicatorStyle
   }
 
   // MARK: - View model
@@ -162,12 +153,41 @@ final class PledgeCTAContainerView: UIView {
 
 // MARK: - Styles
 
+private let activityIndicatorStyle: ActivityIndicatorStyle = { activityIndicator in
+  activityIndicator
+    |> \.color .~ UIColor.ksr_dark_grey_500
+    |> \.hidesWhenStopped .~ true
+}
+
 private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
   return { (stackView: UIStackView) in
     let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
 
     return stackView
+      |> \.alignment .~ .center
       |> \.axis .~ NSLayoutConstraint.Axis.horizontal
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
       |> \.spacing .~ spacing
   }
+}
+
+private let subtitleLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_caption1().bolded
+    |> \.textColor .~ UIColor.ksr_dark_grey_500
+    |> \.numberOfLines .~ 0
+}
+
+private let titleAndSubtitleStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ Styles.gridHalf(1)
+}
+
+private let titleLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_callout().bolded
+    |> \.numberOfLines .~ 0
 }
