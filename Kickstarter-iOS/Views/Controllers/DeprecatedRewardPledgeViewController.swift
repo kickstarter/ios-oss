@@ -288,13 +288,13 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     _ = self.readMoreGradientView.endPoint = CGPoint(x: 1, y: 0)
 
     let gradient: [(UIColor?, Float)] = [
-      (UIColor.ksr_grey_100.withAlphaComponent(0.0), 0),
-      (UIColor.ksr_grey_100.withAlphaComponent(1.0), 1)
+      (UIColor.white.withAlphaComponent(0.0), 0),
+      (UIColor.white.withAlphaComponent(1.0), 1)
     ]
     _ = self.readMoreGradientView.setGradient(gradient)
 
     _ = self.readMoreLabel
-      |> UILabel.lens.backgroundColor .~ .ksr_grey_100
+      |> UILabel.lens.backgroundColor .~ .white
       |> UILabel.lens.textColor .~ .ksr_green_500
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.text %~ { _ in Strings.ellipsis_more() }
