@@ -64,11 +64,13 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     self.pledgeRetryButtonIsHidden = inError
       .map(isFalse)
       .takeWhen(updateButtonStates)
+      .merge(with: isLoading.filter(isTrue).mapConst(true))
       .skipRepeats()
 
     self.pledgeCTAButtonIsHidden = inError
       .map(isTrue)
       .takeWhen(updateButtonStates)
+      .merge(with: isLoading.filter(isTrue).mapConst(true))
       .skipRepeats()
 
     self.buttonStyleType = pledgeState.map { $0.buttonStyle }
