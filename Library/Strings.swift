@@ -2281,7 +2281,7 @@ contributeurs"
    - **de**: "Voraussichtliche Lieferung:"
    - **es**: "Entrega estimada:"
    - **fr**: "Livraison prévue :"
-   - **ja**: "配達予定日："
+   - **ja**: "配達予定"
   */
   public static func Estimated_delivery() -> String {
     return localizedString(
