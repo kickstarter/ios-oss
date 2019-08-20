@@ -46,4 +46,17 @@ final class ExperimentName_HelpersTests: TestCase {
       XCTAssertFalse(experimentNativeCheckoutIsEnabled())
     }
   }
+
+  func testExperimentNativeCheckout_ReturnsDefaultValue_NonReleaseBuild() {
+    let betaBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue,
+      lang: "en"
+    )
+    let config = Config.template
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
+
+    withEnvironment(config: config, mainBundle: betaBundle) {
+      XCTAssertEqual(experimentNativeCheckoutIsEnabled(), Experiment.Name.nativeCheckoutV1.debugDefault)
+    }
+  }
 }
