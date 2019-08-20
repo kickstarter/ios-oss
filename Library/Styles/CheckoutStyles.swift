@@ -188,7 +188,6 @@ public let cardImageViewStyle: ImageViewStyle = { imageView in
 public let cardSelectButtonStyle: ButtonStyle = { button in
   button
     |> checkoutSmallBlackButtonStyle
-    |> UIButton.lens.titleLabel .. UILabel.lens.font .~ UIFont.ksr_headline()
 }
 
 public let pledgeCardViewStyle: ViewStyle = { view in
