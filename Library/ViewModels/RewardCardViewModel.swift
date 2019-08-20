@@ -201,8 +201,11 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
 private func pillStrings(project: Project, reward: Reward) -> [String] {
   var pillStrings: [String] = []
 
-  if project.state == .live, let endsAt = reward.endsAt, endsAt > 0,
-    endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
+  if project.state == .live,
+    let endsAt = reward.endsAt,
+    endsAt > 0,
+    endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970,
+    reward.limit == nil || reward.remaining ?? 0 > 0 {
     let (time, unit) = Format.duration(
       secondsInUTC: min(endsAt, project.dates.deadline),
       abbreviate: true,

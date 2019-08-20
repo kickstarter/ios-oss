@@ -837,7 +837,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
-      ["4 days left", "50 backers", "Anywhere in the world"]
+      ["50 backers", "Anywhere in the world"]
     ])
   }
 
