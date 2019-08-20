@@ -5,6 +5,8 @@ import Prelude
 import XCTest
 
 final class ProjectPamphletContentDataSourceTests: TestCase {
+
+  
   let dataSource = ProjectPamphletContentDataSource()
   let tableView = UITableView()
 
@@ -90,7 +92,9 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
   }
 
   private func assertSectionIsShown(_ config: Config) {
-    withEnvironment(config: config) {
+    let releaseBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+                                   lang: "en")
+    withEnvironment(config: config, mainBundle: releaseBundle) {
       let availableSection = ProjectPamphletContentDataSource.Section.availableRewards.rawValue
       let unavailableSection = ProjectPamphletContentDataSource.Section.unavailableRewards.rawValue
 

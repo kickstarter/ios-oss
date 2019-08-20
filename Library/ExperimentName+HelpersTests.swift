@@ -4,13 +4,15 @@ import Prelude
 import XCTest
 
 final class ExperimentName_HelpersTests: TestCase {
+  private let releaseBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+                                         lang: "en")
   // MARK: nativeCheckout
 
   func testExperimentNativeCheckoutIsEnabled_Control() {
     let config = Config.template
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: releaseBundle) {
       XCTAssertFalse(experimentNativeCheckoutIsEnabled())
     }
   }
@@ -19,7 +21,7 @@ final class ExperimentName_HelpersTests: TestCase {
     let config = Config.template
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: releaseBundle) {
       XCTAssertTrue(experimentNativeCheckoutIsEnabled())
     }
   }
@@ -28,7 +30,7 @@ final class ExperimentName_HelpersTests: TestCase {
     let config = Config.template
       |> \.abExperiments .~ [:]
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: releaseBundle) {
       XCTAssertFalse(experimentNativeCheckoutIsEnabled())
     }
   }
@@ -37,7 +39,7 @@ final class ExperimentName_HelpersTests: TestCase {
     let config = Config.template
       |> \.abExperiments .~ ["unknown": "experimental"]
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: releaseBundle) {
       XCTAssertFalse(experimentNativeCheckoutIsEnabled())
     }
   }

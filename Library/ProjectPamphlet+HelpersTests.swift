@@ -5,12 +5,15 @@ import Prelude
 import XCTest
 
 final class ProjectPamphlet_HelpersTests: TestCase {
+  private let releaseBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+                                         lang: "en")
+
   func testUserCanSeeNativeCheckout_featureNativeCheckoutEnabled_experimentNativeCheckoutEnabled() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: releaseBundle) {
       XCTAssertTrue(userCanSeeNativeCheckout())
     }
   }
@@ -20,7 +23,7 @@ final class ProjectPamphlet_HelpersTests: TestCase {
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: releaseBundle) {
       XCTAssertFalse(userCanSeeNativeCheckout())
     }
   }
@@ -30,7 +33,7 @@ final class ProjectPamphlet_HelpersTests: TestCase {
       |> \.features .~ [Feature.nativeCheckout.rawValue: false]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: releaseBundle) {
       XCTAssertFalse(userCanSeeNativeCheckout())
     }
   }
@@ -40,7 +43,7 @@ final class ProjectPamphlet_HelpersTests: TestCase {
       |> \.features .~ [Feature.nativeCheckout.rawValue: false]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: releaseBundle) {
       XCTAssertFalse(userCanSeeNativeCheckout())
     }
   }
