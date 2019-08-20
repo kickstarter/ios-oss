@@ -4,14 +4,15 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeCTAContainerViewViewModelInputs {
-  func configureWith(value: (project: Project, isLoading: Bool))
+  func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool))
 }
 
 public protocol PledgeCTAContainerViewViewModelOutputs {
-  var activityIndicatorIsAnimating: Signal<Bool, Never> { get }
+  var activityIndicatorIsHidden: Signal<Bool, Never> { get }
   var buttonStyleType: Signal<ButtonStyleType, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
-  var rootStackViewAnimateIsHidden: Signal<Bool, Never> { get }
+  var pledgeCTAButtonIsHidden: Signal<Bool, Never> { get }
+  var pledgeRetryButtonIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
   var subtitleText: Signal<String, Never> { get }
@@ -26,20 +27,51 @@ public protocol PledgeCTAContainerViewViewModelType {
 public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
-    let project = self.configureWithValueProperty.signal
+    let projectOrError = self.projectOrErrorProperty.signal
       .skipNil()
       .filter(second >>> isFalse)
       .map(first)
 
-    self.activityIndicatorIsAnimating = self.configureWithValueProperty.signal
+    let isLoading = self.projectOrErrorProperty.signal
       .skipNil()
       .map(second)
 
-    self.rootStackViewAnimateIsHidden = self.activityIndicatorIsAnimating
+    let project = projectOrError
+      .map(Either.left)
+      .skipNil()
+
+    let projectError = projectOrError
+      .map(Either.right)
+      .skipNil()
+
+    self.activityIndicatorIsHidden = isLoading
+      .negate()
 
     let backing = project.map { $0.personalization.backing }
     let pledgeState = Signal.combineLatest(project, backing)
       .map(pledgeCTA(project:backing:))
+
+    let inError = Signal.merge(
+      projectError.ignoreValues().mapConst(true),
+      project.ignoreValues().mapConst(false)
+    )
+
+    let updateButtonStates = Signal.merge(
+      projectOrError.ignoreValues(),
+      isLoading.filter(isFalse).ignoreValues()
+    )
+
+    self.pledgeRetryButtonIsHidden = inError
+      .map(isFalse)
+      .takeWhen(updateButtonStates)
+      .merge(with: isLoading.filter(isTrue).mapConst(true))
+      .skipRepeats()
+
+    self.pledgeCTAButtonIsHidden = inError
+      .map(isTrue)
+      .takeWhen(updateButtonStates)
+      .merge(with: isLoading.filter(isTrue).mapConst(true))
+      .skipRepeats()
 
     self.buttonStyleType = pledgeState.map { $0.buttonStyle }
     self.buttonTitleText = pledgeState.map { $0.buttonTitle }
@@ -51,18 +83,20 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .map(subtitle(project:pledgeState:))
   }
 
-  fileprivate let configureWithValueProperty = MutableProperty<(project: Project, isLoading: Bool)?>(nil)
-  public func configureWith(value: (project: Project, isLoading: Bool)) {
-    self.configureWithValueProperty.value = value
+  fileprivate let projectOrErrorProperty =
+    MutableProperty<(Either<Project, ErrorEnvelope>, isLoading: Bool)?>(nil)
+  public func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool)) {
+    self.projectOrErrorProperty.value = value
   }
 
   public var inputs: PledgeCTAContainerViewViewModelInputs { return self }
   public var outputs: PledgeCTAContainerViewViewModelOutputs { return self }
 
-  public let activityIndicatorIsAnimating: Signal<Bool, Never>
+  public let activityIndicatorIsHidden: Signal<Bool, Never>
   public let buttonStyleType: Signal<ButtonStyleType, Never>
   public let buttonTitleText: Signal<String, Never>
-  public let rootStackViewAnimateIsHidden: Signal<Bool, Never>
+  public let pledgeCTAButtonIsHidden: Signal<Bool, Never>
+  public let pledgeRetryButtonIsHidden: Signal<Bool, Never>
   public let spacerIsHidden: Signal<Bool, Never>
   public let stackViewIsHidden: Signal<Bool, Never>
   public let subtitleText: Signal<String, Never>
