@@ -76,6 +76,7 @@
 "Confirm_password" = "新しいパスワードの確認";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Facebookとリンクさせ、友達がプロジェクトを作成したりバックしたりした際に通知を受け取る";
 "Contact_creator" = "クリエイターに連絡";
+"Content_isnt_loading_right_now" = "現在、コンテンツを読み込めません。";
 "Continue" = "続行する";
 "Continue_to_payment" = "支払いを続ける";
 "Continue_to_update_pledge" = "プレッジをアップデート";
@@ -135,7 +136,8 @@
 "Email_unverified" = "このメールアドレスは認証されていません。";
 "Ending_in_last_four" = "下の桁が%{last_four} の番号";
 "Ending_soon" = "終了直前";
-"Estimated_delivery" = "配達予定日：";
+"Estimated_delivery" = "配達予定";
+"Estimated_delivery_colon" = "配達予定:";
 "Estimated_delivery_of" = "配送予定日";
 "Expands_subcategories" = "サブカテゴリーを表示";
 "Expiration" = "有効期限";

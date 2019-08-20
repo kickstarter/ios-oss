@@ -56,7 +56,6 @@ public func emailFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
 }
 
 public let fbLoginButtonStyle = facebookButtonStyle
-  <> baseButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in
     Strings.login_tout_buttons_log_in_with_facebook()
   }
