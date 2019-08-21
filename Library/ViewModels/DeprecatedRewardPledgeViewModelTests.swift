@@ -36,6 +36,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   fileprivate let conversionLabelHidden = TestObserver<Bool, Never>()
   fileprivate let conversionLabelText = TestObserver<String, Never>()
   fileprivate let countryLabelText = TestObserver<String, Never>()
+  fileprivate let descriptionTitleLabelHidden = TestObserver<Bool, Never>()
   fileprivate let descriptionLabelText = TestObserver<String, Never>()
   fileprivate let differentPaymentMethodButtonHidden = TestObserver<Bool, Never>()
   fileprivate let dismissViewController = TestObserver<(), Never>()
@@ -54,6 +55,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   fileprivate let items = TestObserver<[String], Never>()
   fileprivate let itemsContainerHidden = TestObserver<Bool, Never>()
   fileprivate let loadingOverlayIsHidden = TestObserver<Bool, Never>()
+  fileprivate let managePledgeStackViewHidden = TestObserver<Bool, Never>()
   fileprivate let minimumLabelText = TestObserver<String, Never>()
   fileprivate let navigationTitle = TestObserver<String, Never>()
   fileprivate let orLabelHidden = TestObserver<Bool, Never>()
@@ -75,6 +77,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   fileprivate let titleLabelHidden = TestObserver<Bool, Never>()
   fileprivate let titleLabelText = TestObserver<String, Never>()
   fileprivate let updatePledgeButtonHidden = TestObserver<Bool, Never>()
+  fileprivate let updateStackViewHidden = TestObserver<Bool, Never>()
 
   // todo koala tracking testing
 
@@ -88,6 +91,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.countryLabelText.observe(self.countryLabelText.observer)
+    self.vm.outputs.descriptionTitleLabelHidden.observe(self.descriptionTitleLabelHidden.observer)
     self.vm.outputs.descriptionLabelText.observe(self.descriptionLabelText.observer)
     self.vm.outputs.differentPaymentMethodButtonHidden
       .observe(self.differentPaymentMethodButtonHidden.observer)
@@ -113,6 +117,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.outputs.items.observe(self.items.observer)
     self.vm.outputs.itemsContainerHidden.observe(self.itemsContainerHidden.observer)
     self.vm.outputs.loadingOverlayIsHidden.observe(self.loadingOverlayIsHidden.observer)
+    self.vm.outputs.managePledgeStackViewHidden.observe(self.managePledgeStackViewHidden.observer)
     self.vm.outputs.minimumLabelText.observe(self.minimumLabelText.observer)
     self.vm.outputs.navigationTitle.observe(self.navigationTitle.observer)
     self.vm.outputs.orLabelHidden.observe(self.orLabelHidden.observer)
@@ -134,6 +139,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.outputs.titleLabelHidden.observe(self.titleLabelHidden.observer)
     self.vm.outputs.titleLabelText.observe(self.titleLabelText.observer)
     self.vm.outputs.updatePledgeButtonHidden.observe(self.updatePledgeButtonHidden.observer)
+    self.vm.outputs.updateStackViewHidden.observe(self.updateStackViewHidden.observer)
 
     AppEnvironment.pushEnvironment(currentUser: .template)
   }
@@ -477,6 +483,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.cancelPledgeButtonHidden.assertValues([false])
+    self.managePledgeStackViewHidden.assertValues([false])
 
     self.vm.inputs.cancelPledgeButtonTapped()
 
@@ -1225,11 +1232,13 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.applePayButtonHidden.assertValues([true])
     self.cancelPledgeButtonHidden.assertValues([true])
+    self.managePledgeStackViewHidden.assertValues([true])
     self.changePaymentMethodButtonHidden.assertValues([true])
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
     self.loadingOverlayIsHidden.assertValues([true])
     self.updatePledgeButtonHidden.assertValues([false])
+    self.updateStackViewHidden.assertValues([false])
     self.pledgeIsLoading.assertValueCount(0)
 
     // Updating pledge response comes back with a checkout url when we need a further webview checkout step
@@ -1270,11 +1279,13 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.applePayButtonHidden.assertValues([true])
     self.cancelPledgeButtonHidden.assertValues([false])
+    self.managePledgeStackViewHidden.assertValues([false])
     self.changePaymentMethodButtonHidden.assertValues([false])
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
     self.loadingOverlayIsHidden.assertValues([true])
     self.updatePledgeButtonHidden.assertValues([false])
+    self.updateStackViewHidden.assertValues([false])
     self.pledgeIsLoading.assertValueCount(0)
 
     // Updating pledge response comes back with a checkout url when we need a further webview checkout step
@@ -1400,7 +1411,9 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.applePayButtonHidden.assertValues([true])
     self.updatePledgeButtonHidden.assertValues([false])
+    self.updateStackViewHidden.assertValues([false])
     self.cancelPledgeButtonHidden.assertValues([true])
+    self.managePledgeStackViewHidden.assertValues([true])
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
     self.loadingOverlayIsHidden.assertValues([true])
@@ -1442,10 +1455,12 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.applePayButtonHidden.assertValues([true])
     self.cancelPledgeButtonHidden.assertValues([false])
+    self.managePledgeStackViewHidden.assertValues([false])
     self.changePaymentMethodButtonHidden.assertValues([false])
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
     self.updatePledgeButtonHidden.assertValues([false])
+    self.updateStackViewHidden.assertValues([false])
     self.loadingOverlayIsHidden.assertValues([true])
     self.pledgeIsLoading.assertValueCount(0)
 
@@ -2782,5 +2797,16 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.inputs.willMove(toParent: nil)
 
     XCTAssertEqual(["Reward Checkout", "Selected Reward", "Closed Reward"], self.trackingClient.events)
+  }
+
+  func testDescriptionTitleLabelHidden() {
+    let reward = .template
+      |> Reward.lens.description .~ ""
+
+    self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.descriptionLabelText.assertValues([reward.description])
+    self.descriptionTitleLabelHidden.assertValues([true])
   }
 }

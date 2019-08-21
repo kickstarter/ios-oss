@@ -76,6 +76,7 @@
 "Confirm_password" = "Confirmer le nouveau mot de passe";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Si vous vous connectez avec votre compte Facebook, vous pourrez suivre vos amis et recevoir des notifications chaque fois qu'ils lancent ou soutiennent de nouveaux projets.";
 "Contact_creator" = "Contacter le créateur";
+"Content_isnt_loading_right_now" = "Échec de chargement du contenu.";
 "Continue" = "Continuer";
 "Continue_to_payment" = "Continuer vers le paiement";
 "Continue_to_update_pledge" = "Continuer la modification de mon engagement";
@@ -136,6 +137,7 @@
 "Ending_in_last_four" = "Finissant par %{last_four}";
 "Ending_soon" = "Campagnes bientôt terminées";
 "Estimated_delivery" = "Livraison prévue :";
+"Estimated_delivery_colon" = "Livraison prévue :";
 "Estimated_delivery_of" = "Livraison prévue le";
 "Expands_subcategories" = "Développe les sous-catégories.";
 "Expiration" = "Expiration";
