@@ -564,6 +564,90 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testPresentViewController_ProjectPreviewLink_PrelaunchActivated_True() {
+    let project = Project.template
+      |> Project.lens.prelaunchActivated .~ true
+
+    let apiService = MockService(fetchProjectResponse: project)
+    withEnvironment(apiService: apiService) {
+      let rootUrl = "https://www.kickstarter.com/"
+
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      self.presentViewController.assertValues([])
+
+      let projectUrl = rootUrl + "projects/tequila/help-me-transform-this-pile-of-wood"
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: projectUrl)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.presentViewController.assertValues([])
+      XCTAssertEqual(self.goToMobileSafari.values.map { $0.absoluteString }, [projectUrl])
+    }
+  }
+
+  func testPresentViewController_ProjectPreviewLink_PrelaunchActivated_False() {
+    let project = Project.template
+      |> Project.lens.prelaunchActivated .~ false
+
+    let apiService = MockService(fetchProjectResponse: project)
+    withEnvironment(apiService: apiService) {
+      let rootUrl = "https://www.kickstarter.com/"
+
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      self.presentViewController.assertValues([])
+
+      let projectUrl = rootUrl + "projects/tequila/help-me-transform-this-pile-of-wood"
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: projectUrl)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.presentViewController.assertValues([1])
+      self.goToMobileSafari.assertValues([])
+    }
+  }
+
+  func testPresentViewController_ProjectPreviewLink_PrelaunchActivated_Nil() {
+    let project = Project.template
+      |> Project.lens.prelaunchActivated .~ nil
+
+    let apiService = MockService(fetchProjectResponse: project)
+    withEnvironment(apiService: apiService) {
+      let rootUrl = "https://www.kickstarter.com/"
+
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      self.presentViewController.assertValues([])
+
+      let projectUrl = rootUrl + "projects/tequila/help-me-transform-this-pile-of-wood"
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: projectUrl)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.presentViewController.assertValues([1])
+      self.goToMobileSafari.assertValues([])
+    }
+  }
+
   func testGoToActivity() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,

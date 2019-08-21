@@ -19989,6 +19989,23 @@ projets enregistrés"
     )
   }
   /**
+   "%{remaining_count} left of %{limit_count}"
+
+   - **en**: "%{remaining_count} left of %{limit_count}"
+   - **de**: "%{remaining_count} übrig von %{limit_count}"
+   - **es**: "%{remaining_count} restante de %{limit_count}"
+   - **fr**: "%{remaining_count} sur %{limit_count}"
+   - **ja**: "%{limit_count} 個中のこり%{remaining_count} 個"
+  */
+  public static func remaining_count_left_of_limit_count(remaining_count: String, limit_count: String) -> String {
+    return localizedString(
+      key: "remaining_count_left_of_limit_count",
+      defaultValue: "%{remaining_count} left of %{limit_count}",
+      count: nil,
+      substitutions: ["remaining_count": remaining_count, "limit_count": limit_count]
+    )
+  }
+  /**
    "All gone"
 
    - **en**: "All gone"
