@@ -89,6 +89,22 @@ public let facebookButtonStyle = baseButtonStyle
 
   <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
 
+public let fbButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_facebookBlue
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_facebookBlue.mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_facebookBlue.mixLighter(0.36)
+  <> UIButton.lens.tintColor .~ .white
+  <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 18.0)
+  <> UIButton.lens.contentEdgeInsets %~~ { _, button in
+    button.traitCollection.verticalSizeClass == .compact
+    ? .init(top: 10, left: 10, bottom: 10, right: 20)
+    : .init(top: 12, left: 14, bottom: 12, right: 24)
+  }
+  <> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: 10, bottom: 0, right: -10)
+  <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
+
 // MARK: - Red
 
 public let redButtonStyle = baseButtonStyle
