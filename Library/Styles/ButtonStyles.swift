@@ -99,10 +99,10 @@ public let fbButtonStyle = baseButtonStyle
   <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 18.0)
   <> UIButton.lens.contentEdgeInsets %~~ { _, button in
     button.traitCollection.verticalSizeClass == .compact
-    ? .init(top: 10, left: 10, bottom: 10, right: 20)
-    : .init(top: 12, left: 14, bottom: 12, right: 24)
+    ? .init(top: 10.0, left: 10.0, bottom: 10.0, right: 20.0)
+    : .init(top: 12.0, left: 14.0, bottom: 12.0, right: 24.0)
   }
-  <> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: 10, bottom: 0, right: -10)
+  <> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: 10.0, bottom: 0, right: -10.0)
   <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
 
 // MARK: - Red
