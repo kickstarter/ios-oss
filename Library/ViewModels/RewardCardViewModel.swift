@@ -199,31 +199,32 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
 }
 
 private func pillStrings(project: Project, reward: Reward) -> [String] {
-  var pillStrings: [String] = []
+  return [
+    timeLeftString(project: project, reward: reward),
+    backerCountOrRemainingString(project: project, reward: reward),
+    shippingSummaryString(project: project, reward: reward)
+  ]
+  .compact()
+}
+
+private func timeLeftString(project: Project, reward: Reward) -> String? {
+  let isUnlimitedOrAvailable = reward.limit == nil || reward.remaining ?? 0 > 0
 
   if project.state == .live,
     let endsAt = reward.endsAt,
     endsAt > 0,
     endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970,
-    reward.limit == nil || reward.remaining ?? 0 > 0 {
+    isUnlimitedOrAvailable {
     let (time, unit) = Format.duration(
       secondsInUTC: min(endsAt, project.dates.deadline),
       abbreviate: true,
       useToGo: false
     )
 
-    pillStrings.append(Strings.Time_left_left(time_left: time + " " + unit))
+    return Strings.Time_left_left(time_left: time + " " + unit)
   }
 
-  if let backerCountOrRemaining = backerCountOrRemainingString(project: project, reward: reward) {
-    pillStrings.append(backerCountOrRemaining)
-  }
-
-  if project.state == .live, reward.shipping.enabled, let shippingSummary = reward.shipping.summary {
-    pillStrings.append(shippingSummary)
-  }
-
-  return pillStrings
+  return nil
 }
 
 private func backerCountOrRemainingString(project: Project, reward: Reward) -> String? {
@@ -244,6 +245,14 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> S
     remaining_count: "\(remaining)",
     limit_count: "\(limit)"
   )
+}
+
+private func shippingSummaryString(project: Project, reward: Reward) -> String? {
+  if project.state == .live, reward.shipping.enabled, let shippingSummary = reward.shipping.summary {
+    return shippingSummary
+  }
+
+  return nil
 }
 
 private func stateIconImageColor(project: Project, reward: Reward) -> UIColor? {
