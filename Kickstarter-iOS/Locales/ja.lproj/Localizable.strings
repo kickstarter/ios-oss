@@ -1365,6 +1365,7 @@
 "projects_count_newline_saved.zero" = "0\n件保存済み";
 "push_notifications.alert.buttons.close" = "閉じる";
 "push_notifications.alert.buttons.view" = "みる";
+"remaining_count_left_of_limit_count" = "%{limit_count} 個中のこり%{remaining_count} 個";
 "rewards.info.all_gone" = "終了";
 "rewards.info.backer_count_backers.few" = "%{backer_count} バッカー";
 "rewards.info.backer_count_backers.many" = "%{backer_count} バッカー";

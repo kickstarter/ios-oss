@@ -1365,6 +1365,7 @@
 "projects_count_newline_saved.zero" = "0\nprojets enregistrés";
 "push_notifications.alert.buttons.close" = "Fermer";
 "push_notifications.alert.buttons.view" = "Afficher";
+"remaining_count_left_of_limit_count" = "%{remaining_count} sur %{limit_count}";
 "rewards.info.all_gone" = "Épuisé";
 "rewards.info.backer_count_backers.few" = "%{backer_count} contributeurs";
 "rewards.info.backer_count_backers.many" = "%{backer_count} contributeurs";

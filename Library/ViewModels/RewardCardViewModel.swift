@@ -240,13 +240,9 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> S
       : nil
   }
 
-  return localizedString(
-    key: "remaining_left_of_limit",
-    defaultValue: "%{remaining} left of %{limit}",
-    substitutions: [
-      "remaining": "\(remaining)",
-      "limit": "\(limit)"
-    ]
+  return Strings.remaining_count_left_of_limit_count(
+    remaining_count: "\(remaining)",
+    limit_count: "\(limit)"
   )
 }
 
