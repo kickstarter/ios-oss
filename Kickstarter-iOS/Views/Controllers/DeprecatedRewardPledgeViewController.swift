@@ -352,6 +352,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIScrollView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
       |> UIScrollView.lens.delaysContentTouches .~ false
       |> UIScrollView.lens.keyboardDismissMode .~ .interactive
+      |> \.alwaysBounceVertical .~ true
       |> \.contentInset .~ .init(topBottom: Styles.grid(2))
 
     _ = self.shippingActivityIndicatorView
