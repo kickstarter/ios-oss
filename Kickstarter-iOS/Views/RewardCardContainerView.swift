@@ -20,8 +20,8 @@ public final class RewardCardContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let pledgeButton: MultiLineButton = {
-    MultiLineButton(type: .custom)
+  private let pledgeButton: UIButton = {
+    UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -65,9 +65,6 @@ public final class RewardCardContainerView: UIView {
       (UIColor.white.withAlphaComponent(1.0), 1)
     ]
     self.gradientView.setGradient(gradient)
-
-    _ = self.pledgeButton.titleLabel
-      ?|> \.lineBreakMode .~ .byTruncatingTail
   }
 
   public override func bindViewModel() {
@@ -104,8 +101,8 @@ public final class RewardCardContainerView: UIView {
     self.viewModel.outputs.pledgeButtonStyleType
       .observeForUI()
       .observeValues { [weak self] styleType in
-        guard let self = self else { return }
-        _ = self.pledgeButton |> styleType.style
+        _ = self?.pledgeButton
+          ?|> styleType.style
       }
   }
 

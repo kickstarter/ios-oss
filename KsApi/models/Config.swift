@@ -1,6 +1,14 @@
 public enum Experiment {
   public enum Name: String {
     case creatorsNameDiscovery = "show_created_by_discovery"
+    case nativeCheckoutV1 = "native_checkout_v1"
+
+    public var debugDefault: Bool {
+      switch self {
+      case .nativeCheckoutV1: return true
+      case .creatorsNameDiscovery: return true
+      }
+    }
   }
 
   public enum Variant: String {
