@@ -89,7 +89,7 @@ public let facebookButtonStyle = baseButtonStyle
 
   <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
 
-public let fbButtonStyle = baseButtonStyle
+public let fbFollowButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_facebookBlue
   <> UIButton.lens.titleColor(for: .highlighted) .~ .white

@@ -70,7 +70,7 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
       }
 
     _ = self.findFriendsButton
-      |> fbButtonStyle
+      |> fbFollowButtonStyle
       |> UIButton.lens.targets .~ [(self, action: #selector(findFriendsButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.social_following_header_button_find_your_friends()
