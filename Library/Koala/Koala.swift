@@ -578,11 +578,22 @@ public final class Koala {
 
   // MARK: - Checkout Events
 
-  public func trackBackThisButtonClicked(event: String, project: Project, screen: CheckoutContext) {
+  public func trackBackThisButtonClicked(stateType: PledgeStateCTAType, project: Project, screen: CheckoutContext) {
     let props = properties(project: project)
       .withAllValuesFrom(["screen": screen.trackingString])
 
-    self.track(event: event, properties: props)
+    switch stateType {
+    case .fix:
+       self.track(event: "Fix", properties: props)
+    case .pledge:
+       self.track(event: "Back this Project Button Clicked", properties: props)
+    case .manage:
+      self.track(event: "Manage Pledge Button Clicked", properties: props)
+    case .viewBacking:
+      self.track(event: "View Your Pledge Button Clicked", properties: props)
+    case .viewRewards:
+      self.track(event:"View Rewards Button Clicked", properties: props)
+    }
   }
 
   public func trackSelectRewardButtonClicked(

@@ -86,13 +86,17 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     self.subtitleText = Signal.combineLatest(project, pledgeState)
       .map(subtitle(project:pledgeState:))
 
-    // Tracking
-    Signal.combineLatest(project, pledgeState)
-      .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
-      .observeValues { (arg) in
+    let pledgeTypeAndProject = Signal.combineLatest(pledgeState, project)
 
-        let (project, pledgeState) = arg
-        AppEnvironment.current.koala.trackBackThisButtonClicked(event: pledgeState.trackingString ,project: project, screen: .projectPage)
+    // Tracking
+    pledgeTypeAndProject
+      .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
+      .observeValues {
+        AppEnvironment.current.koala.trackBackThisButtonClicked(
+          stateType: $0,
+          project: $1,
+          screen: .projectPage
+      )
     }
   }
 

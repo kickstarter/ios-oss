@@ -7,22 +7,6 @@ public enum PledgeStateCTAType {
   case viewBacking
   case viewRewards
 
-  public var trackingString: String {
-    switch self {
-    case .fix:
-      return ""
-    case .pledge:
-      return "Back this Project Button Clicked"
-    case .manage:
-      return "Manage Pledge Button Clicked"
-    case .viewBacking:
-      return "View Your Pledge Button Clicked"
-    case .viewRewards:
-      return "View Rewards Button Clicked"
-    }
-  }
-
-
   public var buttonTitle: String {
     switch self {
     case .fix:
