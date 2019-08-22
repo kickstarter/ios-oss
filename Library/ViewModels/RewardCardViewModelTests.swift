@@ -779,7 +779,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
-      ["4 days left", "75 left of 100", "Anywhere in the world"]
+      ["4 days left", "75 left of 100", "Ships to: Anywhere in the world"]
     ])
   }
 
@@ -808,7 +808,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
-      ["4 days left", "25 left of 100", "Anywhere in the world"]
+      ["4 days left", "25 left of 100", "Ships to: Anywhere in the world"]
     ])
   }
 
@@ -837,7 +837,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
-      ["50 backers", "Anywhere in the world"]
+      ["50 backers", "Ships to: Anywhere in the world"]
     ])
   }
 
@@ -859,7 +859,7 @@ final class RewardCardViewModelTests: TestCase {
         .template
           |> Reward.Shipping.lens.enabled .~ true
           |> Reward.Shipping.lens.preference .~ .restricted
-          |> Reward.Shipping.lens.summary .~ "Anywhere in the world"
+          |> Reward.Shipping.lens.summary .~ "Ships to: Anywhere in the world"
       )
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
