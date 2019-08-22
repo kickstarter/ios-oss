@@ -131,7 +131,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page", "Project Page Viewed"],
+      ["Project Page Viewed", "Viewed Project Page", "Project Page"],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
@@ -169,8 +169,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       [
-        "Project Page", "Viewed Project Page", "Project Page Viewed", "Project Page",
-        "Viewed Project Page", "Project Page Viewed"
+        "Project Page Viewed", "Viewed Project Page", "Project Page", "Project Page Viewed",
+        "Viewed Project Page", "Project Page"
       ],
       self.trackingClient.events, "A project page koala event is tracked."
     )
@@ -279,7 +279,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page", "Project Page Viewed"],
+     ["Project Page Viewed", "Viewed Project Page", "Project Page"],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
@@ -317,8 +317,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       [
-        "Project Page", "Viewed Project Page", "Project Page Viewed", "Project Page",
-        "Viewed Project Page", "Project Page Viewed"
+        "Project Page Viewed", "Viewed Project Page", "Project Page", "Project Page Viewed",
+        "Viewed Project Page", "Project Page"
       ],
       self.trackingClient.events, "A project page koala event is tracked."
     )
@@ -688,7 +688,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.vm.inputs.backThisProjectTapped()
       XCTAssertEqual(
-        ["Project Page", "Viewed Project Page", "Project Page Viewed", "Back this Project Button Clicked"],
+        ["Project Page Viewed", "Viewed Project Page", "Project Page"],
         client.events
       )
     }
