@@ -89,6 +89,16 @@ public let facebookButtonStyle = baseButtonStyle
 
   <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
 
+public let fbFollowButtonStyle = facebookButtonStyle
+  <> UIButton.lens.contentEdgeInsets %~~ { _, button in
+    button.traitCollection.verticalSizeClass == .compact
+      ? .init(top: 10.0, left: 10.0, bottom: 10.0, right: 20.0)
+      : .init(top: 12.0, left: 14.0, bottom: 12.0, right: 24.0)
+  }
+
+  <> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: 10.0, bottom: 0, right: -10.0)
+  <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
+
 // MARK: - Multiline
 
 public let multiLineButtonStyle =
