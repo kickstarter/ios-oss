@@ -6772,6 +6772,23 @@ daring ideas."
     )
   }
   /**
+   "Ships to: %{shipping_summary}"
+
+   - **en**: "Ships to: %{shipping_summary}"
+   - **de**: "Ships to: %{shipping_summary}"
+   - **es**: "Ships to: %{shipping_summary}"
+   - **fr**: "Ships to: %{shipping_summary}"
+   - **ja**: "Ships to: %{shipping_summary}"
+  */
+  public static func Ships_to_shipping_summary(shipping_summary: String) -> String {
+    return localizedString(
+      key: "Ships_to_shipping_summary",
+      defaultValue: "Ships to: %{shipping_summary}",
+      count: nil,
+      substitutions: ["shipping_summary": shipping_summary]
+    )
+  }
+  /**
    "Show password"
 
    - **en**: "Show password"

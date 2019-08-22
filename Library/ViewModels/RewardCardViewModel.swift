@@ -249,11 +249,7 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> S
 
 private func shippingSummaryString(project: Project, reward: Reward) -> String? {
   if project.state == .live, reward.shipping.enabled, let shippingSummary = reward.shipping.summary {
-    return localizedString(
-      key: "Ships_to_shipping_summary",
-      defaultValue: "Ships to: %{shipping_summary}",
-      substitutions: ["shipping_summary": shippingSummary]
-    )
+    return Strings.Ships_to_shipping_summary(shipping_summary: shippingSummary)
   }
 
   return nil

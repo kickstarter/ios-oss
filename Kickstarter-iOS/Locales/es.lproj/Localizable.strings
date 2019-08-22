@@ -419,6 +419,7 @@
 "Shipping" = "Envío";
 "Shipping_addresses" = "Direcciones de envío";
 "Ships_to" = "Envío a:";
+"Ships_to_shipping_summary" = "Ships to: %{shipping_summary}";
 "Show_password" = "Mostrar contraseña";
 "Shows_list_of_subcategories" = "Mostrar lista de subcategorías.";
 "Sign_up_newsletter" = "Suscríbete a Nuestros favoritos para recibir una combinación semanal de proyectos destacados, seleccionados por el equipo de Kickstarter.";
