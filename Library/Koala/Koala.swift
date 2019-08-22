@@ -578,7 +578,7 @@ public final class Koala {
 
   // MARK: - Checkout Events
 
-  public func trackBackThisButtonClicked(
+  public func trackPledgeCTAButtonClicked(
     stateType: PledgeStateCTAType,
     project: Project, screen: CheckoutContext
   ) {

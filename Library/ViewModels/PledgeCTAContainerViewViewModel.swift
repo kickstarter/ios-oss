@@ -92,7 +92,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     pledgeTypeAndProject
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
       .observeValues {
-        AppEnvironment.current.koala.trackBackThisButtonClicked(
+        AppEnvironment.current.koala.trackPledgeCTAButtonClicked(
           stateType: $0,
           project: $1,
           screen: .projectPage

@@ -184,4 +184,20 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.vm.inputs.pledgeCTAButtonTapped()
     self.notifyDelegateCTATapped.assertValueCount(1)
   }
+
+  func testTrackingEvents() {
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.isBacking .~ false
+
+    self.notifyDelegateCTATapped.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.black])
+    self.buttonTitleText.assertValues([Strings.View_rewards()])
+
+    self.vm.inputs.pledgeCTAButtonTapped()
+    self.notifyDelegateCTATapped.assertValueCount(1)
+    XCTAssertEqual(["View Rewards Button Clicked"], self.trackingClient.events)
+  }
 }
