@@ -669,7 +669,9 @@ workflows:
       - itunes:
           filters:
             branches:
-              only: itunes-dist
+              only: 
+                - itunes-dist
+                - /release-.*/
           requires:
             - build-and-cache
             - kickstarter-tests
