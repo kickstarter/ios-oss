@@ -736,6 +736,14 @@ extension DeprecatedRewardPledgeViewController: DeprecatedRewardShippingPickerVi
     _ controller: DeprecatedRewardShippingPickerViewController
   ) {
     controller.dismiss(animated: true, completion: nil)
+
+    self.navigationController?.view.tintAdjustmentMode = .normal
+  }
+
+  func rewardShippingPickerViewControllerWillPresent(
+    _ controller: DeprecatedRewardShippingPickerViewController
+    ) {
+    self.navigationController?.view.tintAdjustmentMode = .dimmed
   }
 
   internal func rewardShippingPickerViewController(
