@@ -96,8 +96,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
           stateType: $0,
           project: $1,
           screen: .projectPage
-      )
-    }
+        )
+      }
   }
 
   fileprivate let projectOrErrorProperty =

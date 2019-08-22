@@ -6,6 +6,7 @@ import UIKit
 protocol PledgeCTAContainerViewDelegate: AnyObject {
   func pledgeCTAButtonTapped()
 }
+
 private enum Layout {
   enum Button {
     static let minHeight: CGFloat = 48.0
@@ -114,7 +115,7 @@ final class PledgeCTAContainerView: UIView {
       .observeForUI()
       .observeValues { [weak self] in
         self?.delegate?.pledgeCTAButtonTapped()
-    }
+      }
 
     self.viewModel.outputs.buttonStyleType
       .observeForUI()
@@ -171,7 +172,7 @@ final class PledgeCTAContainerView: UIView {
       |> ksr_addArrangedSubviewsToStackView()
 
     self.pledgeCTAButton.addTarget(
-      self, action: #selector(pledgeCTAButtonTapped), for: .touchUpInside
+      self, action: #selector(self.pledgeCTAButtonTapped), for: .touchUpInside
     )
   }
 
