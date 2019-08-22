@@ -126,7 +126,7 @@ final class KoalaTests: TestCase {
 
     let properties = client.properties.last
 
-    XCTAssertEqual("Project Page Viewed", client.events.last)
+    XCTAssertEqual("Project Page", client.events.last)
     XCTAssertEqual(project.stats.backersCount, properties?["project_backers_count"] as? Int)
     XCTAssertEqual(project.country.countryCode, properties?["project_country"] as? String)
     XCTAssertEqual(project.country.currencyCode, properties?["project_currency"] as? String)
@@ -475,7 +475,7 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackBackThisButtonClicked(project: project, screen: .projectPage)
+    koala.trackBackThisButtonClicked(stateType: .pledge, project: project, screen: .projectPage)
 
     let properties = client.properties.last
 
