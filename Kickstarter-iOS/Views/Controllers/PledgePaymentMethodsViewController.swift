@@ -105,11 +105,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   // MARK: - Configuration
 
-  func configureWith(_ value: (User, Project)) {
+  func configure(with value: (user: User, project: Project)) {
     let pledgePaymentMethodsValue = PledgePaymentMethodsValue(
-      user: value.0,
-      project: value.1,
-      applePayCapable: PKPaymentAuthorizationViewController.applePayCapable(for: value.1)
+      user: value.user,
+      project: value.project,
+      applePayCapable: PKPaymentAuthorizationViewController.applePayCapable(for: value.project)
     )
 
     self.viewModel.inputs.configureWith(pledgePaymentMethodsValue)

@@ -202,7 +202,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
       .observeForUI()
       .observeValues { [weak self] value in
-        self?.paymentMethodsViewController.configureWith(value)
+        self?.paymentMethodsViewController.configure(with: value)
       }
 
     self.sessionStartedObserver = NotificationCenter.default

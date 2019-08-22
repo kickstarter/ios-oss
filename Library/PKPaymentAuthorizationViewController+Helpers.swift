@@ -65,8 +65,10 @@ extension PKPaymentAuthorizationViewController {
       return PKPaymentNetwork.chinaUnionPay
     case .visa:
       return PKPaymentNetwork.visa
-    default:
-      return nil // case .diners and case .generic
+    case .diners:
+      return nil
+    case .generic:
+      return nil
     }
   }
 }
