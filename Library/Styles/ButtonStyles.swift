@@ -117,21 +117,15 @@ public let shareButtonStyle =
 
 // Remove when DeprecatedRewardShippingPickerViewController is removed.
 public let textOnlyButtonStyle = roundedStyle(cornerRadius: 0)
-  <> UIButton.lens.titleLabel.font %~~ { _, button in
-    button.traitCollection.verticalSizeClass == .compact
-      ? .ksr_callout(size: 12)
-      : .ksr_callout(size: 14)
-  }
-
+  <> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 16)
   <> UIButton.lens.contentEdgeInsets %~~ { _, button in
     button.traitCollection.verticalSizeClass == .compact
       ? .init(topBottom: 10.0, leftRight: 12.0)
       : .init(topBottom: 13.0, leftRight: 16.0)
   }
-
   <> UIButton.lens.adjustsImageWhenDisabled .~ false
   <> UIButton.lens.adjustsImageWhenHighlighted .~ false
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
   <> UIButton.lens.backgroundColor(for: .normal) .~ .clear
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_green_400
-  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_dark_grey_400
+  <> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.ksr_green_500.mixDarker(0.36)
+  <> UIButton.lens.titleColor(for: .disabled) .~ UIColor.ksr_green_500.mixDarker(0.36)
