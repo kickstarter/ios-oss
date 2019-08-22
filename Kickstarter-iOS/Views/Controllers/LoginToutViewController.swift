@@ -106,7 +106,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> fbLoginButtonStyle
 
     _ = self.disclaimerButton
-      |> baseMultiLineButtonStyle
+      |> multiLineButtonStyle
       |> disclaimerButtonStyle
 
     _ = self.loginButton
@@ -420,13 +420,4 @@ private let baseLabelStyle: LabelStyle = { label in
     |> \.backgroundColor .~ UIColor.white
     |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
     |> \.numberOfLines .~ 0
-}
-
-private let baseMultiLineButtonStyle: ButtonStyle = { button in
-  _ = button.titleLabel
-    ?|> \.textAlignment .~ NSTextAlignment.center
-    ?|> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
-    ?|> \.numberOfLines .~ 0
-
-  return button
 }

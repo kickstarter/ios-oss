@@ -2736,6 +2736,7 @@
 				D63BBD382180BE5D007E01F0 /* PaymentMethodsFooterView.swift */,
 				D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */,
 				770D86C522F0D47000CDC6A1 /* PledgeAddNewCardView.swift */,
+				D66511A522F8750100232841 /* PledgeCTAErrorView.swift */,
 				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,

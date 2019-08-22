@@ -1272,6 +1272,23 @@ contributeurs"
     )
   }
   /**
+   "Content isn't loading right now."
+
+   - **en**: "Content isn't loading right now."
+   - **de**: "Inhalt kann derzeit leider nicht geladen werden."
+   - **es**: "El contenido no se está cargando en este momento."
+   - **fr**: "Échec de chargement du contenu."
+   - **ja**: "現在、コンテンツを読み込めません。"
+  */
+  public static func Content_isnt_loading_right_now() -> String {
+    return localizedString(
+      key: "Content_isnt_loading_right_now",
+      defaultValue: "Content isn't loading right now.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Continue"
 
    - **en**: "Continue"
@@ -2275,17 +2292,34 @@ contributeurs"
     )
   }
   /**
+   "Estimated delivery"
+
+   - **en**: "Estimated delivery"
+   - **de**: "Voraussichtliche Lieferung:"
+   - **es**: "Entrega estimada:"
+   - **fr**: "Livraison prévue :"
+   - **ja**: "配達予定"
+  */
+  public static func Estimated_delivery() -> String {
+    return localizedString(
+      key: "Estimated_delivery",
+      defaultValue: "Estimated delivery",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Estimated delivery:"
 
    - **en**: "Estimated delivery:"
    - **de**: "Voraussichtliche Lieferung:"
    - **es**: "Entrega estimada:"
    - **fr**: "Livraison prévue :"
-   - **ja**: "配達予定日："
+   - **ja**: "配達予定:"
   */
-  public static func Estimated_delivery() -> String {
+  public static func Estimated_delivery_colon() -> String {
     return localizedString(
-      key: "Estimated_delivery",
+      key: "Estimated_delivery_colon",
       defaultValue: "Estimated delivery:",
       count: nil,
       substitutions: [:]
@@ -19952,6 +19986,23 @@ projets enregistrés"
       defaultValue: "View",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "%{remaining_count} left of %{limit_count}"
+
+   - **en**: "%{remaining_count} left of %{limit_count}"
+   - **de**: "%{remaining_count} übrig von %{limit_count}"
+   - **es**: "%{remaining_count} restante de %{limit_count}"
+   - **fr**: "%{remaining_count} sur %{limit_count}"
+   - **ja**: "%{limit_count} 個中のこり%{remaining_count} 個"
+  */
+  public static func remaining_count_left_of_limit_count(remaining_count: String, limit_count: String) -> String {
+    return localizedString(
+      key: "remaining_count_left_of_limit_count",
+      defaultValue: "%{remaining_count} left of %{limit_count}",
+      count: nil,
+      substitutions: ["remaining_count": remaining_count, "limit_count": limit_count]
     )
   }
   /**

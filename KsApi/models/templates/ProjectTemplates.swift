@@ -40,6 +40,7 @@ extension Project {
       isStarred: nil
     ),
     photo: .template,
+    prelaunchActivated: nil,
     rewards: [],
     slug: "a-fun-project",
     staffPick: false,

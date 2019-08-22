@@ -76,6 +76,7 @@
 "Confirm_password" = "Confirm new password";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Connect with Facebook to follow friends and get notified when they back or launch projects.";
 "Contact_creator" = "Contact creator";
+"Content_isnt_loading_right_now" = "Content isn't loading right now.";
 "Continue" = "Continue";
 "Continue_to_payment" = "Continue to payment";
 "Continue_to_update_pledge" = "Continue to update pledge";
@@ -135,7 +136,8 @@
 "Email_unverified" = "This email address is unverified.";
 "Ending_in_last_four" = "Ending in %{last_four}";
 "Ending_soon" = "Ending Soon";
-"Estimated_delivery" = "Estimated delivery:";
+"Estimated_delivery" = "Estimated delivery";
+"Estimated_delivery_colon" = "Estimated delivery:";
 "Estimated_delivery_of" = "Estimated delivery of";
 "Expands_subcategories" = "Expands subcategories.";
 "Expiration" = "Expiration";
@@ -1363,6 +1365,7 @@
 "projects_count_newline_saved.zero" = "0\nsaved";
 "push_notifications.alert.buttons.close" = "Close";
 "push_notifications.alert.buttons.view" = "View";
+"remaining_count_left_of_limit_count" = "%{remaining_count} left of %{limit_count}";
 "rewards.info.all_gone" = "All gone";
 "rewards.info.backer_count_backers.few" = "%{backer_count} backers";
 "rewards.info.backer_count_backers.many" = "%{backer_count} backers";

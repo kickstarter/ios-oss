@@ -15,6 +15,7 @@ public enum Styles {
   }
 }
 
+public typealias ActivityIndicatorStyle = (UIActivityIndicatorView) -> UIActivityIndicatorView
 public typealias ButtonStyle = (UIButton) -> UIButton
 public typealias CollectionViewStyle = (UICollectionView) -> UICollectionView
 public typealias ImageViewStyle = (UIImageView) -> UIImageView
