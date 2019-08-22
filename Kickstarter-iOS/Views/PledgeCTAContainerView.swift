@@ -3,6 +3,9 @@ import Library
 import Prelude
 import UIKit
 
+protocol PledgeCTAContainerViewDelegate: AnyObject {
+  func pledgeCTAButtonTapped()
+}
 private enum Layout {
   enum Button {
     static let minHeight: CGFloat = 48.0
@@ -58,6 +61,8 @@ final class PledgeCTAContainerView: UIView {
 
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  weak var delegate: PledgeCTAContainerViewDelegate?
+
   private let viewModel: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
   // MARK: - Lifecycle
@@ -104,6 +109,12 @@ final class PledgeCTAContainerView: UIView {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.notifyDelegateCTATapped
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.delegate?.pledgeCTAButtonTapped()
+    }
 
     self.viewModel.outputs.buttonStyleType
       .observeForUI()
@@ -158,6 +169,10 @@ final class PledgeCTAContainerView: UIView {
       self.rootStackView
     )
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.pledgeCTAButton.addTarget(
+      self, action: #selector(pledgeCTAButtonTapped), for: .touchUpInside
+    )
   }
 
   private func setupConstraints() {
@@ -178,6 +193,10 @@ final class PledgeCTAContainerView: UIView {
       _ = view
         ?|> \.alpha .~ alpha
     })
+  }
+
+  @objc func pledgeCTAButtonTapped() {
+    self.viewModel.inputs.pledgeCTAButtonTapped()
   }
 }
 

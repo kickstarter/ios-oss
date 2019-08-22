@@ -5,12 +5,14 @@ import ReactiveSwift
 
 public protocol PledgeCTAContainerViewViewModelInputs {
   func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool))
+  func pledgeCTAButtonTapped()
 }
 
 public protocol PledgeCTAContainerViewViewModelOutputs {
   var activityIndicatorIsHidden: Signal<Bool, Never> { get }
   var buttonStyleType: Signal<ButtonStyleType, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
+  var notifyDelegateCTATapped: Signal<(), Never> { get }
   var pledgeCTAButtonIsHidden: Signal<Bool, Never> { get }
   var pledgeRetryButtonIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
@@ -61,6 +63,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       isLoading.filter(isFalse).ignoreValues()
     )
 
+    self.notifyDelegateCTATapped = self.pledgeCTAButtonTappedProperty.signal
+
     self.pledgeRetryButtonIsHidden = inError
       .map(isFalse)
       .takeWhen(updateButtonStates)
@@ -89,12 +93,18 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     self.projectOrErrorProperty.value = value
   }
 
+  fileprivate let pledgeCTAButtonTappedProperty = MutableProperty(())
+  public func pledgeCTAButtonTapped() {
+    self.pledgeCTAButtonTappedProperty.value = ()
+  }
+
   public var inputs: PledgeCTAContainerViewViewModelInputs { return self }
   public var outputs: PledgeCTAContainerViewViewModelOutputs { return self }
 
   public let activityIndicatorIsHidden: Signal<Bool, Never>
   public let buttonStyleType: Signal<ButtonStyleType, Never>
   public let buttonTitleText: Signal<String, Never>
+  public let notifyDelegateCTATapped: Signal<Void, Never>
   public let pledgeCTAButtonIsHidden: Signal<Bool, Never>
   public let pledgeRetryButtonIsHidden: Signal<Bool, Never>
   public let spacerIsHidden: Signal<Bool, Never>

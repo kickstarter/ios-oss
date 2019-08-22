@@ -54,6 +54,8 @@ public final class ProjectPamphletViewController: UIViewController {
       .compactMap { $0 as? ProjectPamphletContentViewController }.first
     self.contentController.delegate = self
 
+    self.pledgeCTAContainerView.delegate = self
+
     self.viewModel.inputs.initial(topConstraint: self.initialTopConstraint)
 
     self.viewModel.inputs.viewDidLoad()
@@ -89,10 +91,6 @@ public final class ProjectPamphletViewController: UIViewController {
     // Configure subviews
     _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
-
-    self.pledgeCTAContainerView.pledgeCTAButton.addTarget(
-      self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
-    )
 
     self.pledgeCTAContainerView.pledgeRetryButton.addTarget(
       self, action: #selector(ProjectPamphletViewController.pledgeRetryButtonTapped), for: .touchUpInside
@@ -199,12 +197,14 @@ public final class ProjectPamphletViewController: UIViewController {
 
   // MARK: - Selectors
 
-  @objc func backThisProjectTapped() {
-    self.viewModel.inputs.backThisProjectTapped()
-  }
-
   @objc func pledgeRetryButtonTapped() {
     self.viewModel.inputs.pledgeRetryButtonTapped()
+  }
+}
+
+extension ProjectPamphletViewController: PledgeCTAContainerViewDelegate {
+  func pledgeCTAButtonTapped() {
+    self.viewModel.inputs.backThisProjectTapped()
   }
 }
 

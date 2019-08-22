@@ -1287,7 +1287,7 @@ public final class Koala {
 
     // Deprecated event
     self.track(
-      event: "Project Page",
+      event: "Project Page Viewed",
       properties: props.withAllValuesFrom(deprecatedProps)
     )
 
@@ -1296,7 +1296,7 @@ public final class Koala {
       properties: props.withAllValuesFrom(deprecatedProps)
     )
 
-    self.track(event: "Project Page Viewed", properties: props)
+    self.track(event: "Project Page", properties: props)
   }
 
   public func trackSwipedProject(_ project: Project, refTag: RefTag?, type: SwipeType) {
