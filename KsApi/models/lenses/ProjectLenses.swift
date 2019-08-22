@@ -8,8 +8,8 @@ extension Project {
         availableCardTypes: $0, blurb: $1.blurb, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
-        rewards: $1.rewards, slug: $1.slug, staffPick: $1.staffPick, state: $1.state,
-        stats: $1.stats, urls: $1.urls, video: $1.video
+        prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
+        staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
       ) }
     )
 
@@ -148,8 +148,8 @@ extension Project {
     public static let prelaunchActivated = Lens<Project, Bool?>(
       view: { $0.prelaunchActivated },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $0, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
