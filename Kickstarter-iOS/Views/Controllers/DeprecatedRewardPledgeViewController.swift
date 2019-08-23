@@ -518,7 +518,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       }
       .observeValues { [weak self] change in
         self?.scrollView.handleKeyboardVisibilityDidChange(change)
-    }
+      }
   }
 
   fileprivate func goToCheckout(
