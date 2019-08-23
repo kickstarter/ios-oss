@@ -78,6 +78,28 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  func testReloadPaymentMethods_Error_LoggedIn_ApplePayCapable_isTrue() {
+    let error = GraphResponseError(message: "Something went wrong")
+    let apiService = MockService(fetchGraphCreditCardsError: GraphError.decodeError(error))
+
+    withEnvironment(apiService: apiService, currentUser: User.template) {
+      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.applePayButtonHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith((User.template, Project.template, true))
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.applePayButtonHidden.assertValues([false])
+      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.notifyDelegateLoadPaymentMethodsError.assertValue("Something went wrong")
+    }
+  }
+
   func testReloadPaymentMethods_LoggedOut() {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
