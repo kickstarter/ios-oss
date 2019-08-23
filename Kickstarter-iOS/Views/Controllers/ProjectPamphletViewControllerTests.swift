@@ -158,6 +158,39 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
+  func testLoggedIn_Backer_NonLiveProject_Error_NativeCheckout_Enabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
+    let currentUser = User.template
+    let backing = Backing.template
+      |> Backing.lens.status .~ .errored
+    let backedProject = Project.cosmicSurgery
+      |> Project.lens.photo.full .~ ""
+      |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.state .~ .successful
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(
+        apiService: MockService(fetchProjectResponse: backedProject),
+        config: config, currentUser: currentUser, language: language
+      ) {
+        let vc = ProjectPamphletViewController.configuredWith(
+          projectOrParam: .left(backedProject), refTag: nil
+        )
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
+      }
+    }
+  }
+
   func testLoggedIn_NonBacker_NonLiveProject_NativeCheckout_Enabled() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]

@@ -133,9 +133,8 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
     return project.state == .live ? PledgeStateCTAType.pledge : PledgeStateCTAType.viewRewards
   }
 
+  // NB: Add error case back once correctly returned
   switch (project.state, projectBacking.status) {
-  case (.live, .errored):
-    return .fix
   case (.live, _):
     return .manage
   case (_, _):

@@ -100,12 +100,29 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ backing
 
     self.vm.inputs.configureWith(value: (.left(project), false))
-    self.buttonStyleType.assertValues([ButtonStyleType.apricot])
-    self.buttonTitleText.assertValues([Strings.Fix()])
-    self.titleText.assertValues([Strings.Check_your_payment_details()])
-    self.subtitleText.assertValues([Strings.We_couldnt_process_your_pledge()])
+    self.buttonStyleType.assertValues([ButtonStyleType.blue])
+    self.buttonTitleText.assertValues([Strings.Manage()])
+    self.titleText.assertValues([Strings.Youre_a_backer()])
+    self.subtitleText.assertValues(["$10"])
     self.spacerIsHidden.assertValues([false])
     self.stackViewIsHidden.assertValues([false])
+  }
+
+  func testPledgeCTA_Backer_NonLiveProject_Error() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .errored
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.backing .~ backing
+
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.black])
+    self.buttonTitleText.assertValues([Strings.View_your_pledge()])
+    self.titleText.assertValues([])
+    self.subtitleText.assertValues(["$10"])
+    self.spacerIsHidden.assertValues([true])
+    self.stackViewIsHidden.assertValues([true])
   }
 
   func testPledgeCTA_NonBacker_LiveProject_loggedIn() {
