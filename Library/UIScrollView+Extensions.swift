@@ -27,8 +27,10 @@ extension UIScrollView {
         switch change.notificationName {
         case UIResponder.keyboardWillShowNotification:
           self?.contentInset.bottom = change.frame.height
+          self?.scrollIndicatorInsets.bottom = change.frame.height
         case UIResponder.keyboardWillHideNotification:
           self?.contentInset.bottom = .zero
+          self?.scrollIndicatorInsets.bottom = .zero
         default:
           return
         }

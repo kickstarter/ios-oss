@@ -9,11 +9,10 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   fileprivate var applePayButton = PKPaymentButton()
   @IBOutlet fileprivate var applePayButtonContainerView: UIStackView!
-  @IBOutlet fileprivate var bottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var cancelPledgeButton: UIButton!
-  @IBOutlet fileprivate var cardInnerView: UIView!
   @IBOutlet fileprivate var cardView: UIView!
   @IBOutlet fileprivate var changePaymentMethodButton: UIButton!
+  @IBOutlet fileprivate var containerView: UIView!
   @IBOutlet fileprivate var continueToPaymentButton: UIButton!
   @IBOutlet fileprivate var conversionLabel: UILabel!
   @IBOutlet fileprivate var countryLabel: UILabel!
@@ -177,13 +176,13 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
-    _ = self.cardInnerView
-      |> roundedStyle(cornerRadius: 18.0)
-      |> UIView.lens.backgroundColor .~ .white
+    _ = self.containerView
+      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+      |> UIView.lens.backgroundColor .~ .ksr_grey_600
 
     _ = self.cardView
       |> roundedStyle(cornerRadius: 18.0)
-      |> UIView.lens.backgroundColor .~ .clear
+      |> UIView.lens.backgroundColor .~ .white
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_500.withAlphaComponent(0.06).cgColor
       |> UIView.lens.layer.borderWidth .~ 6.0
 
@@ -265,8 +264,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIView.lens.backgroundColor .~ UIColor(white: 1.0, alpha: 0.99)
 
     _ = self.middleStackView
-      |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
-      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.minimumAndConversionStackView
@@ -343,16 +340,14 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self.rootStackView
       |> UIStackView.lens.layoutMargins .~ .init(
-        topBottom: Styles.grid(2) + Styles.grid(2),
-        leftRight: Styles.grid(2) + 1
+        topBottom: Styles.grid(5),
+        leftRight: Styles.grid(5)
       )
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.scrollView
-      |> UIScrollView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
       |> UIScrollView.lens.delaysContentTouches .~ false
       |> UIScrollView.lens.keyboardDismissMode .~ .interactive
-      |> \.contentInset .~ .init(topBottom: Styles.grid(2))
 
     _ = self.shippingActivityIndicatorView
       |> baseActivityIndicatorStyle
@@ -395,8 +390,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UILabel.lens.isUserInteractionEnabled .~ true
 
     _ = self.topStackView
-      |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
-      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
   }
 
@@ -517,8 +510,16 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in self?.goToTrustAndSafety() }
 
-    Keyboard.change.observeForUI()
-      .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
+    Keyboard.change
+      .observeForUI()
+      .filter { [weak self] _ in
+        guard AppEnvironment.current.device.userInterfaceIdiom == .pad else { return true }
+
+        return self?.navigationController?.modalPresentationStyle != .formSheet
+      }
+      .observeValues { [weak self] change in
+        self?.scrollView.handleKeyboardVisibilityDidChange(change)
+    }
   }
 
   fileprivate func goToCheckout(
@@ -644,15 +645,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   @objc fileprivate func cancelPledgeButtonTapped() {
     self.viewModel.inputs.cancelPledgeButtonTapped()
-  }
-
-  fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
-    guard self.view.window != nil else { return }
-
-    UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
-      self.bottomConstraint.constant = self.view.frame.height - change.frame.minY
-      self.scrollView.contentOffset.y += self.bottomConstraint.constant
-    }, completion: nil)
   }
 }
 
