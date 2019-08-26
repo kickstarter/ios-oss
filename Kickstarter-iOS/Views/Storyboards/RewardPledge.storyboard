@@ -336,12 +336,9 @@
                                                             <constraint firstItem="zVf-Ev-AXG" firstAttribute="height" secondItem="zhJ-QH-nIU" secondAttribute="height" id="aKV-pK-eYU"/>
                                                         </constraints>
                                                     </stackView>
-                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UNa-7R-hSQ">
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="400" placeholderIntrinsicHeight="60" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UNa-7R-hSQ">
                                                         <rect key="frame" x="0.0" y="554.5" width="400" height="60"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="60" id="oyz-bK-1w1"/>
-                                                        </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     </textView>
