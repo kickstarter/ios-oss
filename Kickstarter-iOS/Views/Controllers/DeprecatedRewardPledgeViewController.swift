@@ -524,8 +524,11 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in self?.goToTrustAndSafety() }
 
-    Keyboard.change.observeForUI()
-      .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        self?.scrollView.handleKeyboardVisibilityDidChange(change, insets: .init(topBottom: Styles.grid(2)))
+      }
   }
 
   fileprivate func goToCheckout(
@@ -651,15 +654,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   @objc fileprivate func cancelPledgeButtonTapped() {
     self.viewModel.inputs.cancelPledgeButtonTapped()
-  }
-
-  fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
-    guard self.view.window != nil else { return }
-
-    UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
-      self.bottomConstraint.constant = self.view.frame.height - change.frame.minY
-      self.scrollView.contentOffset.y += self.bottomConstraint.constant
-    }, completion: nil)
   }
 }
 
