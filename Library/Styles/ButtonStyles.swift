@@ -123,6 +123,7 @@ public let textOnlyButtonStyle = roundedStyle(cornerRadius: 0)
       ? .init(topBottom: 10.0, leftRight: 12.0)
       : .init(topBottom: 13.0, leftRight: 16.0)
   }
+
   <> UIButton.lens.adjustsImageWhenDisabled .~ false
   <> UIButton.lens.adjustsImageWhenHighlighted .~ false
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500

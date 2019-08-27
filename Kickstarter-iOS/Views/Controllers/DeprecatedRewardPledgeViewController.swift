@@ -735,14 +735,14 @@ extension DeprecatedRewardPledgeViewController: DeprecatedRewardShippingPickerVi
   internal func rewardShippingPickerViewController(
     _ controller: DeprecatedRewardShippingPickerViewController,
     choseShippingRule: ShippingRule
-    ) {
+  ) {
     controller.dismiss(animated: true) {
       self.viewModel.inputs.change(shippingRule: choseShippingRule)
     }
 
     self.navigationController?.view.tintAdjustmentMode = .normal
   }
-  
+
   internal func rewardShippingPickerViewControllerCancelled(
     _ controller: DeprecatedRewardShippingPickerViewController
   ) {
@@ -752,8 +752,8 @@ extension DeprecatedRewardPledgeViewController: DeprecatedRewardShippingPickerVi
   }
 
   func rewardShippingPickerViewControllerWillPresent(
-    _ controller: DeprecatedRewardShippingPickerViewController
-    ) {
+    _: DeprecatedRewardShippingPickerViewController
+  ) {
     self.navigationController?.view.tintAdjustmentMode = .dimmed
   }
 }
