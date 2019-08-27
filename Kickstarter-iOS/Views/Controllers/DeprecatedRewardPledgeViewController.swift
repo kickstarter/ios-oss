@@ -359,6 +359,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIScrollView.lens.keyboardDismissMode .~ .interactive
       |> \.alwaysBounceVertical .~ true
       |> \.contentInset .~ .init(topBottom: Styles.grid(2))
+      |> \.scrollIndicatorInsets .~ .init(topBottom: Styles.grid(2))
 
     _ = self.shippingActivityIndicatorView
       |> baseActivityIndicatorStyle
