@@ -18,17 +18,29 @@ extension UIScrollView {
   /**
    Adjusts its contentInset according to Keyboard visibility.
    */
-  public func handleKeyboardVisibilityDidChange(_ change: Keyboard.Change) {
+  public func handleKeyboardVisibilityDidChange(_ change: Keyboard.Change, insets: UIEdgeInsets = .zero) {
     UIView.animate(
       withDuration: change.duration,
       delay: 0.0,
       options: change.options,
-      animations: { [weak self] in
+      animations: {
         switch change.notificationName {
         case UIResponder.keyboardWillShowNotification:
-          self?.contentInset.bottom = change.frame.height
+          guard let window = self.window else { return }
+
+          // We need to properly calculate how much of the keyboard is taking over the scroll view
+          // which could be presented using modal presentation style .formSheet on iPads
+          let frameInWindowCoordinates = window.convert(self.frame, from: self.superview)
+          let bottomEdgeInWindowCoordinates = window.frame.maxY - frameInWindowCoordinates.maxY
+          let bottomInsets = max(insets.bottom, change.frame.height - bottomEdgeInWindowCoordinates)
+
+          self.contentInset.bottom = bottomInsets
+          self.scrollIndicatorInsets.bottom = bottomInsets
+
         case UIResponder.keyboardWillHideNotification:
-          self?.contentInset.bottom = .zero
+          self.contentInset = insets
+          self.scrollIndicatorInsets = insets
+
         default:
           return
         }

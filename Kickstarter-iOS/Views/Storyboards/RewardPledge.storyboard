@@ -18,7 +18,7 @@
                         <viewControllerLayoutGuide type="top" id="eqn-eq-1d7"/>
                         <viewControllerLayoutGuide type="bottom" id="arh-iv-jXh"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="1cJ-Ma-9F5">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1cJ-Ma-9F5">
                         <rect key="frame" x="0.0" y="0.0" width="400" height="900"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -26,10 +26,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="400" height="900"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yil-nf-4Ss">
-                                        <rect key="frame" x="8" y="0.0" width="384" height="855.5"/>
+                                        <rect key="frame" x="8" y="0.0" width="384" height="863.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C2f-Es-FaN">
-                                                <rect key="frame" x="5" y="5" width="374" height="845.5"/>
+                                                <rect key="frame" x="5" y="5" width="374" height="853.5"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </view>
                                         </subviews>
@@ -390,7 +390,7 @@
                                         </constraints>
                                     </view>
                                     <view alpha="0.45000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w6Y-M6-Iic">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="863.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="871.5"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Fmq-2m-cO1">
@@ -403,13 +403,13 @@
                                     <constraint firstAttribute="bottom" secondItem="w6Y-M6-Iic" secondAttribute="bottom" id="8OQ-dd-JLE"/>
                                     <constraint firstItem="yil-nf-4Ss" firstAttribute="top" secondItem="a0d-eK-Yei" secondAttribute="top" id="9n5-fd-l0F"/>
                                     <constraint firstItem="asd-PP-se6" firstAttribute="top" secondItem="a0d-eK-Yei" secondAttribute="top" id="HX5-VA-isL"/>
+                                    <constraint firstItem="asd-PP-se6" firstAttribute="bottom" secondItem="yil-nf-4Ss" secondAttribute="bottomMargin" constant="8" id="JFG-eW-e1A"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="yil-nf-4Ss" secondAttribute="bottom" id="KZT-Zq-tSS"/>
                                     <constraint firstItem="asd-PP-se6" firstAttribute="width" secondItem="a0d-eK-Yei" secondAttribute="width" id="O8Y-YP-VVS"/>
                                     <constraint firstItem="kec-ng-s61" firstAttribute="trailing" secondItem="bgU-kl-VIB" secondAttribute="trailing" id="RJq-dk-ILg"/>
                                     <constraint firstItem="kec-ng-s61" firstAttribute="bottom" secondItem="bgU-kl-VIB" secondAttribute="bottom" id="X61-Sa-d9Z"/>
                                     <constraint firstItem="yil-nf-4Ss" firstAttribute="leading" secondItem="a0d-eK-Yei" secondAttribute="leadingMargin" id="XUA-It-6tM"/>
                                     <constraint firstItem="w6Y-M6-Iic" firstAttribute="top" secondItem="a0d-eK-Yei" secondAttribute="top" id="YN9-4P-ftX"/>
-                                    <constraint firstAttribute="bottom" secondItem="asd-PP-se6" secondAttribute="bottom" id="Yus-hC-dNf"/>
                                     <constraint firstItem="w6Y-M6-Iic" firstAttribute="leading" secondItem="a0d-eK-Yei" secondAttribute="leading" id="dX9-vi-yan"/>
                                     <constraint firstItem="asd-PP-se6" firstAttribute="leading" secondItem="a0d-eK-Yei" secondAttribute="leading" id="jAm-6N-eQM"/>
                                     <constraint firstAttribute="trailing" secondItem="asd-PP-se6" secondAttribute="trailing" id="uuc-Bl-QPX"/>
@@ -420,7 +420,7 @@
                         <constraints>
                             <constraint firstItem="Fmq-2m-cO1" firstAttribute="centerX" secondItem="1cJ-Ma-9F5" secondAttribute="centerX" id="1UB-34-VMt"/>
                             <constraint firstItem="Fmq-2m-cO1" firstAttribute="centerY" secondItem="1cJ-Ma-9F5" secondAttribute="centerY" id="9JM-YA-EUc"/>
-                            <constraint firstItem="arh-iv-jXh" firstAttribute="top" secondItem="a0d-eK-Yei" secondAttribute="bottom" id="GMs-eB-CVQ"/>
+                            <constraint firstAttribute="bottom" secondItem="a0d-eK-Yei" secondAttribute="bottom" id="GMs-eB-CVQ"/>
                             <constraint firstItem="a0d-eK-Yei" firstAttribute="top" secondItem="1cJ-Ma-9F5" secondAttribute="top" id="Jvl-of-ra3"/>
                             <constraint firstItem="a0d-eK-Yei" firstAttribute="leading" secondItem="1cJ-Ma-9F5" secondAttribute="leading" id="KUY-MR-Oru"/>
                             <constraint firstAttribute="trailing" secondItem="a0d-eK-Yei" secondAttribute="trailing" id="dOb-vF-MGO"/>
@@ -432,7 +432,6 @@
                     <size key="freeformSize" width="400" height="900"/>
                     <connections>
                         <outlet property="applePayButtonContainerView" destination="zVf-Ev-AXG" id="rWQ-1u-QcB"/>
-                        <outlet property="bottomConstraint" destination="GMs-eB-CVQ" id="L20-X2-auF"/>
                         <outlet property="cancelPledgeButton" destination="zpA-Ap-b5C" id="YQC-cj-fhC"/>
                         <outlet property="cardInnerView" destination="C2f-Es-FaN" id="qKJ-9o-vL9"/>
                         <outlet property="cardView" destination="yil-nf-4Ss" id="mTV-Qg-0u7"/>
@@ -496,7 +495,7 @@
                         <viewControllerLayoutGuide type="top" id="pFj-YJ-iTM"/>
                         <viewControllerLayoutGuide type="bottom" id="2Al-EC-Bdb"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8CZ-aZ-UHc">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8CZ-aZ-UHc">
                         <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>

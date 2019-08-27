@@ -9,7 +9,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   fileprivate var applePayButton = PKPaymentButton()
   @IBOutlet fileprivate var applePayButtonContainerView: UIStackView!
-  @IBOutlet fileprivate var bottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var cancelPledgeButton: UIButton!
   @IBOutlet fileprivate var cardInnerView: UIView!
   @IBOutlet fileprivate var cardView: UIView!
@@ -78,6 +77,13 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.view.addGestureRecognizer(
+      UITapGestureRecognizer(
+        target: self, action: #selector(DeprecatedRewardPledgeViewController.pledgedTextFieldDoneEditing)
+      )
+    )
+
     self.disclaimerTextView.delegate = self
 
     self.applePayButtonContainerView.addArrangedSubview(self.applePayButton)
@@ -349,11 +355,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.scrollView
-      |> UIScrollView.lens.layoutMargins .~ .init(leftRight: Styles.grid(2))
-      |> UIScrollView.lens.delaysContentTouches .~ false
-      |> UIScrollView.lens.keyboardDismissMode .~ .interactive
+      |> \.layoutMargins .~ UIEdgeInsets(leftRight: Styles.grid(2))
+      |> \.delaysContentTouches .~ false
+      |> \.keyboardDismissMode .~ UIScrollView.KeyboardDismissMode.interactive
       |> \.alwaysBounceVertical .~ true
-      |> \.contentInset .~ .init(topBottom: Styles.grid(2))
+      |> \.contentInset .~ UIEdgeInsets(topBottom: Styles.grid(2))
+      |> \.scrollIndicatorInsets .~ UIEdgeInsets(topBottom: Styles.grid(2))
 
     _ = self.shippingActivityIndicatorView
       |> baseActivityIndicatorStyle
@@ -518,8 +525,11 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in self?.goToTrustAndSafety() }
 
-    Keyboard.change.observeForUI()
-      .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        self?.scrollView.handleKeyboardVisibilityDidChange(change, insets: .init(topBottom: Styles.grid(2)))
+      }
   }
 
   fileprivate func goToCheckout(
@@ -645,15 +655,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   @objc fileprivate func cancelPledgeButtonTapped() {
     self.viewModel.inputs.cancelPledgeButtonTapped()
-  }
-
-  fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
-    guard self.view.window != nil else { return }
-
-    UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
-      self.bottomConstraint.constant = self.view.frame.height - change.frame.minY
-      self.scrollView.contentOffset.y += self.bottomConstraint.constant
-    }, completion: nil)
   }
 }
 
