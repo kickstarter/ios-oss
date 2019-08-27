@@ -732,6 +732,17 @@ extension DeprecatedRewardPledgeViewController: PKPaymentAuthorizationViewContro
 }
 
 extension DeprecatedRewardPledgeViewController: DeprecatedRewardShippingPickerViewControllerDelegate {
+  internal func rewardShippingPickerViewController(
+    _ controller: DeprecatedRewardShippingPickerViewController,
+    choseShippingRule: ShippingRule
+    ) {
+    controller.dismiss(animated: true) {
+      self.viewModel.inputs.change(shippingRule: choseShippingRule)
+    }
+
+    self.navigationController?.view.tintAdjustmentMode = .normal
+  }
+  
   internal func rewardShippingPickerViewControllerCancelled(
     _ controller: DeprecatedRewardShippingPickerViewController
   ) {
@@ -744,14 +755,5 @@ extension DeprecatedRewardPledgeViewController: DeprecatedRewardShippingPickerVi
     _ controller: DeprecatedRewardShippingPickerViewController
     ) {
     self.navigationController?.view.tintAdjustmentMode = .dimmed
-  }
-
-  internal func rewardShippingPickerViewController(
-    _ controller: DeprecatedRewardShippingPickerViewController,
-    choseShippingRule: ShippingRule
-  ) {
-    controller.dismiss(animated: true) {
-      self.viewModel.inputs.change(shippingRule: choseShippingRule)
-    }
   }
 }
