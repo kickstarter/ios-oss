@@ -23,9 +23,7 @@ extension UIScrollView {
       withDuration: change.duration,
       delay: 0.0,
       options: change.options,
-      animations: { [weak self] in
-        guard let self = self else { return }
-
+      animations: {
         switch change.notificationName {
         case UIResponder.keyboardWillShowNotification:
           guard let window = self.window else { return }
