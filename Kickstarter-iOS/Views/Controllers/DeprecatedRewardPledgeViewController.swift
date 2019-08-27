@@ -78,6 +78,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.view.addGestureRecognizer(UITapGestureRecognizer(
+      target: self, action: #selector(DeprecatedRewardPledgeViewController.pledgedTextFieldDoneEditing)
+    )
+    )
+
     self.disclaimerTextView.delegate = self
 
     self.applePayButtonContainerView.addArrangedSubview(self.applePayButton)
