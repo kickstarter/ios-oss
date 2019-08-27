@@ -9,7 +9,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   fileprivate var applePayButton = PKPaymentButton()
   @IBOutlet fileprivate var applePayButtonContainerView: UIStackView!
-  @IBOutlet fileprivate var bottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var cancelPledgeButton: UIButton!
   @IBOutlet fileprivate var cardInnerView: UIView!
   @IBOutlet fileprivate var cardView: UIView!
