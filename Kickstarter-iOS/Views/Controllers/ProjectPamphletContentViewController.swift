@@ -129,7 +129,12 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     )
 
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = nav
+        |> \.modalPresentationStyle .~ .formSheet
+    }
+
     self.present(nav, animated: true, completion: nil)
   }
 

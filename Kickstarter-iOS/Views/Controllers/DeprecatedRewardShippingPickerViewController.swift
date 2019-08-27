@@ -12,6 +12,11 @@ internal protocol DeprecatedRewardShippingPickerViewControllerDelegate: AnyObjec
 
   /// Called when the user wants to cancel the picker.
   func rewardShippingPickerViewControllerCancelled(_ controller: DeprecatedRewardShippingPickerViewController)
+
+  /// Called when the controller is presented.
+  func rewardShippingPickerViewControllerWillPresent(
+    _ controller: DeprecatedRewardShippingPickerViewController
+  )
 }
 
 internal final class DeprecatedRewardShippingPickerViewController: UIViewController {
@@ -55,6 +60,9 @@ internal final class DeprecatedRewardShippingPickerViewController: UIViewControl
 
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+
+    self.delegate.rewardShippingPickerViewControllerWillPresent(self)
+
     self.viewModel.inputs.viewWillAppear()
   }
 
