@@ -395,7 +395,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   }
 
   func testLive_BackedProject_BackedReward_Errored() {
-    // exclude reward states we can't get to
+    // only test reward states that we can get to
     let rewards = [
       availableLimitedReward,
       availableTimebasedReward,
@@ -441,32 +441,42 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonTitleText.assertValueCount(rewards.count)
 
     self.gradientViewHidden.assertValues([false, false, false, false, false])
-    self.pledgeButtonStyleType.assertValues([.apricot, .apricot, .apricot, .apricot, .apricot])
+    self.pledgeButtonStyleType.assertValues([.blue, .blue, .blue, .blue, .blue])
     self.pledgeButtonEnabled.assertValues([true, true, true, true, true])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "Fix your payment method",
-      "Fix your payment method",
-      "Fix your payment method",
-      "Fix your payment method",
-      "Fix your payment method"
+      "Manage your pledge",
+      "Manage your pledge",
+      "Manage your pledge",
+      "Manage your pledge",
+      "Manage your pledge"
     ])
   }
 
-  func testLive_BackedProject_NonBackedReward_Errored() {
+  func testNonLive_BackedProject_BackedReward_Errored() {
+    // only test reward states that we can get to
+    let rewards = [
+      availableLimitedReward,
+      availableTimebasedReward,
+      availableLimitedTimebasedReward,
+      availableNonLimitedReward,
+      Reward.noReward
+    ]
+
+    self.gradientViewHidden.assertValueCount(0)
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)
     self.pledgeButtonHidden.assertValueCount(0)
     self.pledgeButtonTitleText.assertValueCount(0)
 
-    for (index, reward) in self.allRewards.enumerated() {
+    for (index, reward) in rewards.enumerated() {
       let project = Project.cosmicSurgery
-        |> Project.lens.state .~ .live
+        |> Project.lens.state .~ .successful
         |> Project.lens.personalization.isBacking .~ true
         |> Project.lens.personalization.backing .~ (
           .template
-            |> Backing.lens.reward .~ Reward.otherReward
-            |> Backing.lens.rewardId .~ Reward.otherReward.id
+            |> Backing.lens.reward .~ reward
+            |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
             |> Backing.lens.amount .~ 700
             |> Backing.lens.status .~ .errored
@@ -483,25 +493,22 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
     }
 
-    self.gradientViewHidden.assertValueCount(self.allRewards.count)
-    self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
-    self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
-    self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
-    self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
+    self.gradientViewHidden.assertValueCount(rewards.count)
+    self.pledgeButtonStyleType.assertValueCount(rewards.count)
+    self.pledgeButtonEnabled.assertValueCount(rewards.count)
+    self.pledgeButtonHidden.assertValueCount(rewards.count)
+    self.pledgeButtonTitleText.assertValueCount(rewards.count)
 
-    self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
-    self.pledgeButtonStyleType.assertValues([.green, .green, .green, .green, .green, .green, .green, .green])
-    self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
-    self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
+    self.gradientViewHidden.assertValues([false, false, false, false, false])
+    self.pledgeButtonStyleType.assertValues([.black, .black, .black, .black, .black])
+    self.pledgeButtonEnabled.assertValues([true, true, true, true, true])
+    self.pledgeButtonHidden.assertValues([false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "Select this reward instead",
-      "Select this reward instead",
-      "Select this reward instead",
-      "Select this reward instead",
-      "No longer available",
-      "No longer available",
-      "No longer available",
-      "Select this reward instead"
+      "View your pledge",
+      "View your pledge",
+      "View your pledge",
+      "View your pledge",
+      "View your pledge"
     ])
   }
 
