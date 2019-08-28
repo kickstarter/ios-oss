@@ -5,29 +5,22 @@ private let flushInterval = 60.0
 private let chunkSize = 4
 
 public final class KoalaTrackingClient: TrackingClientType {
-  fileprivate let endpoint: Endpoint
   fileprivate let URLSession: URLSession
   fileprivate let queue = DispatchQueue(label: "com.kickstarter.KoalaTrackingClient")
   fileprivate var buffer: [[String: Any]] = []
   fileprivate var timer: Timer?
   fileprivate var taskId = UIBackgroundTaskIdentifier.invalid
 
-  public enum Endpoint {
-    case staging
-    case production
-
-    var base: String {
-      switch self {
-      case .staging:
-        return Secrets.KoalaEndpoint.staging
-      case .production:
-        return Secrets.KoalaEndpoint.production
-      }
+  fileprivate var base: String {
+    switch AppEnvironment.current.environmentType {
+    case .production:
+      return Secrets.KoalaEndpoint.production
+    default:
+      return Secrets.KoalaEndpoint.staging
     }
   }
 
-  public init(endpoint: Endpoint = .production, URLSession: URLSession = .shared) {
-    self.endpoint = endpoint
+  public init(URLSession: URLSession = .shared) {
     self.URLSession = URLSession
 
     let notifications = NotificationCenter.default
@@ -130,7 +123,7 @@ public final class KoalaTrackingClient: TrackingClientType {
     if dataString.count >= 10_000 {
       print("🐨 [Koala Error]: Base64 payload is longer than 10,000 characters.")
     }
-    return URL(string: "\(self.endpoint.base)?data=\(dataString)")
+    return URL(string: "\(self.base)?data=\(dataString)")
   }
 
   fileprivate static func koalaRequest(_ url: URL) -> URLRequest {
