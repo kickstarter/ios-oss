@@ -43,6 +43,7 @@ final class KoalaTests: TestCase {
 
     XCTAssertNil(properties?["user_uid"])
     XCTAssertEqual(false, properties?["user_logged_in"] as? Bool)
+    XCTAssertNil(properties?["user_is_admin"])
     XCTAssertEqual("GB", properties?["user_country"] as? String)
   }
 
@@ -83,6 +84,7 @@ final class KoalaTests: TestCase {
 
     XCTAssertEqual(user.id, properties?["user_uid"] as? Int)
     XCTAssertEqual(true, properties?["user_logged_in"] as? Bool)
+    XCTAssertEqual(user.isAdmin, properties?["user_is_admin"] as? Bool)
     XCTAssertEqual(user.stats.backedProjectsCount, properties?["user_backed_projects_count"] as? Int)
     XCTAssertEqual(user.stats.createdProjectsCount, properties?["user_created_projects_count"] as? Int)
     XCTAssertEqual(user.stats.starredProjectsCount, properties?["user_starred_projects_count"] as? Int)

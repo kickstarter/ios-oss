@@ -45,6 +45,7 @@ final class UserTests: XCTestCase {
 
     XCTAssertNil(decoded.error)
     XCTAssertEqual(1, user?.id)
+    XCTAssertEqual(false, user?.isAdmin)
     XCTAssertEqual("http://www.kickstarter.com/small.jpg", user?.avatar.small)
     XCTAssertEqual(2, user?.stats.backedProjectsCount)
     XCTAssertEqual(false, user?.newsletters.weekly)

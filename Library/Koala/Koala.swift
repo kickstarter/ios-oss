@@ -2002,6 +2002,7 @@ public final class Koala {
     if let loggedInUser = self.loggedInUser {
       properties(user: loggedInUser).forEach { props[$0] = $1 }
     }
+    props["user_is_admin"] = self.loggedInUser?.isAdmin
     props["user_logged_in"] = self.loggedInUser != nil
     props["user_country"] = self.loggedInUser?.location?.country ?? self.config?.countryCode
 

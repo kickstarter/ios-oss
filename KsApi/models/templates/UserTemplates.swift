@@ -5,7 +5,7 @@ extension User {
     avatar: .template,
     facebookConnected: nil,
     id: 1,
-    isAdmin: nil,
+    isAdmin: false,
     isFriend: nil,
     location: nil,
     name: "Blob",
