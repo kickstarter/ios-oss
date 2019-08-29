@@ -76,7 +76,7 @@ extension User {
         optedOutOfRecommendations: $1.optedOutOfRecommendations,
         showPublicProfile: $1.showPublicProfile,
         social: $1.social, stats: $1.stats, unseenActivityCount: $1.unseenActivityCount
-        ) }
+      ) }
     )
 
     public static let isFriend = Lens<User, Bool?>(
