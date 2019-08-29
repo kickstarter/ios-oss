@@ -58,7 +58,7 @@ public protocol ServiceType {
     -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError>
 
   func createBacking(input: CreateBackingInput) ->
-    SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    SignalProducer<CreateBackingEnvelope, GraphError>
 
   func createPassword(input: CreatePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>

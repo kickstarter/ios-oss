@@ -34,3 +34,22 @@ public struct CreateBackingInput: GraphMutationInput {
     ]
   }
 }
+
+public struct CreateBackingEnvelope: Decodable {
+  public var createBacking: CreateBacking
+
+  public struct CreateBacking: Decodable {
+    public var checkout: Checkout
+
+    public struct Checkout: Decodable {
+      public var checkoutState: CheckoutState
+
+      public enum CheckoutState: String, Decodable, CaseIterable {
+        case authorizing = "AUTHORIZING"
+        case verifying = "VERIFYING"
+        case successful = "SUCCESSFUL"
+        case failed = "FAILED"
+      }
+    }
+  }
+}

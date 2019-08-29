@@ -18,6 +18,9 @@ public protocol PledgeViewModelOutputs {
   var continueViewHidden: Signal<Bool, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
+
+  var createBackingSuccess: Signal<Void, Never> { get }
+  var createBackingFailure: Signal<String, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -70,6 +73,20 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.shippingLocationViewHidden = reward
       .map { $0.shipping.enabled }
       .negate()
+
+    let createBackingOnLoad = projectAndReward
+      .map { CreateBackingInput(projectId: $0.0.id, amount: "20", locationId: "locationid", rewardId: $0.1.id, paymentSourceId: "source", paymentType: "card") }
+      .switchMap {
+        AppEnvironment.current.apiService.createBacking(input: $0)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+    }
+
+    self.createBackingFailure = createBackingOnLoad.errors()
+      .map {
+        $0.localizedDescription
+    }
+    self.createBackingSuccess = createBackingOnLoad.values().ignoreValues()
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -103,6 +120,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
+
+  public let createBackingSuccess: Signal<Void, Never>
+  public let createBackingFailure: Signal<String, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
