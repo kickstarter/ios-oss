@@ -201,7 +201,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.updateConfigInEnvironment = Signal.merge([
       self.applicationWillEnterForegroundProperty.signal,
-      self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+      self.userSessionEndedProperty.signal,
+      self.userSessionStartedProperty.signal
     ])
       .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
 
