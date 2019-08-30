@@ -539,7 +539,8 @@
       }
     }
 
-    internal func createBacking(input: CreateBackingInput) -> SignalProducer<CreateBackingEnvelope, GraphError> {
+    internal func createBacking(input: CreateBackingInput)
+      -> SignalProducer<CreateBackingEnvelope, GraphError> {
       return producer(for: self.createBackingResult)
     }
 
