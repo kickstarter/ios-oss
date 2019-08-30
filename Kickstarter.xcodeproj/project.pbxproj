@@ -1123,6 +1123,7 @@
 		D7417D0E20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */; };
 		D755ECA52315E6E10096F189 /* CreateBackingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECA42315E6E10096F189 /* CreateBackingInput.swift */; };
 		D755ECA72315E95C0096F189 /* CreateBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */; };
+		D755ECA92319AF4D0096F189 /* CreateBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECA82319AF4D0096F189 /* CreateBackingEnvelope.swift */; };
 		D75DACA8221DC4340027F478 /* CreatePasswordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DACA7221DC4340027F478 /* CreatePasswordInput.swift */; };
 		D764370A224040D100DAFC9E /* SharedFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76436D1224040B700DAFC9E /* SharedFunctions.swift */; };
 		D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */; };
@@ -2381,6 +2382,7 @@
 		D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportStateEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D755ECA42315E6E10096F189 /* CreateBackingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingInput.swift; sourceTree = "<group>"; };
 		D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingMutation.swift; sourceTree = "<group>"; };
+		D755ECA82319AF4D0096F189 /* CreateBackingEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingEnvelope.swift; sourceTree = "<group>"; };
 		D75DACA7221DC4340027F478 /* CreatePasswordInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordInput.swift; sourceTree = "<group>"; };
 		D76436D1224040B700DAFC9E /* SharedFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedFunctions.swift; sourceTree = "<group>"; };
 		D764373F22414FA900DAFC9E /* AppEnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironmentType.swift; sourceTree = "<group>"; };
@@ -3669,6 +3671,7 @@
 				D01587831EEB2ED6006E7684 /* CheckoutEnvelope.swift */,
 				D01587841EEB2ED6006E7684 /* CheckoutEnvelopeTests.swift */,
 				D0E78C3522A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift */,
+				D755ECA82319AF4D0096F189 /* CreateBackingEnvelope.swift */,
 				D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */,
 				D01587851EEB2ED6006E7684 /* Comment.swift */,
 				D01587861EEB2ED6006E7684 /* CommentsEnvelope.swift */,
@@ -5413,6 +5416,7 @@
 				D08CD1F921910DF5009F89F0 /* UnwatchProjectMutation.swift in Sources */,
 				D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */,
 				D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */,
+				D755ECA92319AF4D0096F189 /* CreateBackingEnvelope.swift in Sources */,
 				D0158A4D1EEB3220006E7684 /* MockService.swift in Sources */,
 				D01588651EEB2ED7006E7684 /* CreatePledgeEnvelope.swift in Sources */,
 				D0158A131EEB30A2006E7684 /* DiscoveryEnvelopeTemplates.swift in Sources */,
