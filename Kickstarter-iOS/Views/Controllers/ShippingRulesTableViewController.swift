@@ -31,6 +31,20 @@ final class ShippingRulesTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.deselectCellAtIndex
+      .map { IndexPath(row: $0, section: 0) }
+      .observeForUI()
+      .observeValues { [weak self] indexPath in
+        self?.tableView.cellForRow(at: indexPath)?.accessoryType = .none
+      }
+
+    self.viewModel.outputs.selectCellAtIndex
+      .map { IndexPath(row: $0, section: 0) }
+      .observeForUI()
+      .observeValues { [weak self] indexPath in
+        self?.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+      }
+
     self.viewModel.outputs.reloadDataWithShippingRules
       .observeForUI()
       .observeValues { [weak self] shippingRules, reload in
@@ -49,5 +63,13 @@ final class ShippingRulesTableViewController: UITableViewController {
       shippingRules: shippingRules,
       selectedShippingRule: selectedShippingRule
     )
+  }
+
+  // MARK: - UITableViewDelegate
+
+  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    self.viewModel.inputs.didSelectShippingRule(at: indexPath.row)
+
+    self.tableView.deselectRow(at: indexPath, animated: true)
   }
 }

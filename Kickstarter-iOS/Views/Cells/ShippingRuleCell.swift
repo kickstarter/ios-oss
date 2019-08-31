@@ -24,7 +24,12 @@ final class ShippingRuleCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.textLabel?.rac.text = self.viewModel.outputs.textLabelText
-    self.rac.accessoryType = self.viewModel.outputs.accessoryType
+
+    self.viewModel.outputs.isSelected
+      .observeForUI()
+      .observeValues { [weak self] isSelected in
+        self?.accessoryType = isSelected ? .checkmark : .none
+      }
   }
 
   // MARK: - Configuration

@@ -3,14 +3,13 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import UIKit.UITableViewCell
 
 public protocol ShippingRuleCellViewModelInputs {
   func configureWith(_ values: ShippingRuleData)
 }
 
 public protocol ShippingRuleCellViewModelOutputs {
-  var accessoryType: Signal<UITableViewCell.AccessoryType, Never> { get }
+  var isSelected: Signal<Bool, Never> { get }
   var textLabelText: Signal<String, Never> { get }
 }
 
@@ -25,8 +24,8 @@ public final class ShippingRuleCellViewModel: ShippingRuleCellViewModelType,
     let data = self.configDataProperty.signal
       .skipNil()
 
-    self.accessoryType = data
-      .map { $0.selectedShippingRule == $0.shippingRule ? .checkmark : .none }
+    self.isSelected = data
+      .map { $0.selectedShippingRule == $0.shippingRule }
 
     self.textLabelText = data
       .map { ($0.project, $0.shippingRule) }
@@ -38,7 +37,7 @@ public final class ShippingRuleCellViewModel: ShippingRuleCellViewModelType,
     self.configDataProperty.value = values
   }
 
-  public let accessoryType: Signal<UITableViewCell.AccessoryType, Never>
+  public let isSelected: Signal<Bool, Never>
   public let textLabelText: Signal<String, Never>
 
   public var inputs: ShippingRuleCellViewModelInputs { return self }
