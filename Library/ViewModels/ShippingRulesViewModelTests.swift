@@ -7,15 +7,21 @@ import ReactiveExtensions_TestHelpers
 final class ShippingRulesViewModelTests: TestCase {
   private let vm: ShippingRulesViewModelType = ShippingRulesViewModel()
 
-  private let loadValues = TestObserver<[ShippingRuleData], Never>()
+  private let reloadDataWithShippingRulesData = TestObserver<[ShippingRuleData], Never>()
+  private let reloadDataWithShippingRulesReload = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.loadValues.observe(self.loadValues.observer)
+    self.vm.outputs.reloadDataWithShippingRules.map(first).observe(
+      self.reloadDataWithShippingRulesData.observer
+    )
+    self.vm.outputs.reloadDataWithShippingRules.map(second).observe(
+      self.reloadDataWithShippingRulesReload.observer
+    )
   }
 
-  func testValues() {
+  func testReloadDataWithShippingRules() {
     let project = Project.template
       |> Project.lens.country .~ Project.Country.ca
 
@@ -39,7 +45,7 @@ final class ShippingRulesViewModelTests: TestCase {
     )
     self.vm.inputs.viewDidLoad()
 
-    self.loadValues.assertValues([
+    self.reloadDataWithShippingRulesData.assertValues([
       [
         ShippingRuleData(
           project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRule1
@@ -52,5 +58,6 @@ final class ShippingRulesViewModelTests: TestCase {
         )
       ]
     ])
+    self.reloadDataWithShippingRulesReload.assertValues([true])
   }
 }

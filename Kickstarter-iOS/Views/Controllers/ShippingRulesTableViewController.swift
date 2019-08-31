@@ -31,11 +31,13 @@ final class ShippingRulesTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.loadValues
+    self.viewModel.outputs.reloadDataWithShippingRules
       .observeForUI()
-      .observeValues { [weak self] values in
-        self?.dataSource.load(values)
-        self?.tableView.reloadData()
+      .observeValues { [weak self] shippingRules, reload in
+        self?.dataSource.load(shippingRules)
+        if reload {
+          self?.tableView.reloadData()
+        }
       }
   }
 

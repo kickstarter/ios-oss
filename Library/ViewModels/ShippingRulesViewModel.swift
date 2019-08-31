@@ -15,7 +15,7 @@ public protocol ShippingRulesViewModelInputs {
 }
 
 public protocol ShippingRulesViewModelOutputs {
-  var loadValues: Signal<[ShippingRuleData], Never> { get }
+  var reloadDataWithShippingRules: Signal<([ShippingRuleData], Bool), Never> { get }
 }
 
 public protocol ShippingRulesViewModelType {
@@ -26,13 +26,14 @@ public protocol ShippingRulesViewModelType {
 public final class ShippingRulesViewModel: ShippingRulesViewModelType,
   ShippingRulesViewModelInputs, ShippingRulesViewModelOutputs {
   public init() {
-    self.loadValues = Signal.combineLatest(
+    self.reloadDataWithShippingRules = Signal.combineLatest(
       self.viewDidLoadProperty.signal,
       self.configDataProperty.signal
     )
     .map(second)
     .skipNil()
     .map(shippingRuleData(for:shippingRules:selectedShippingRule:))
+      .map { ($0, true) }
   }
 
   private let configDataProperty = MutableProperty<(Project, [ShippingRule], ShippingRule)?>(nil)
@@ -49,7 +50,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let loadValues: Signal<[ShippingRuleData], Never>
+  public let reloadDataWithShippingRules: Signal<([ShippingRuleData], Bool), Never>
 
   public var inputs: ShippingRulesViewModelInputs { return self }
   public var outputs: ShippingRulesViewModelOutputs { return self }
