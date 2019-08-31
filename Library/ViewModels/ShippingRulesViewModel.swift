@@ -41,7 +41,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       self.didSelectShippingRuleAtIndexProperty.signal.skipNil()
     )
     .map { data, index in (data.0, data.1, index) }
-    .filter { _, shippingRules, index in 0 <= index && index < shippingRules.count }
+    .filter { _, shippingRules, index in index >= 0 && index < shippingRules.count }
     .map { project, shippingRules, index in (project, shippingRules, shippingRules[index]) }
 
     let selectedShippingRuleIndexInitial = dataInitial
