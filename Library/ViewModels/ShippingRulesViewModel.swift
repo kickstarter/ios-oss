@@ -1,8 +1,13 @@
 import Foundation
 import KsApi
 import Prelude
-import ReactiveExtensions
 import ReactiveSwift
+
+public struct ShippingRuleData: Equatable {
+  public let project: Project
+  public let selectedShippingRule: ShippingRule
+  public let shippingRule: ShippingRule
+}
 
 public protocol ShippingRulesViewModelInputs {
   func configureWith(_ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule)
@@ -10,7 +15,7 @@ public protocol ShippingRulesViewModelInputs {
 }
 
 public protocol ShippingRulesViewModelOutputs {
-  var loadValues: Signal<[String], Never> { get }
+  var loadValues: Signal<[ShippingRuleData], Never> { get }
 }
 
 public protocol ShippingRulesViewModelType {
@@ -27,9 +32,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     )
     .map(second)
     .skipNil()
-    .map { project, shippingRules, _ in
-      shippingRules.compactMap { shippingRule in formattedValue(project, shippingRule: shippingRule) }
-    }
+    .map(shippingRuleData(for:shippingRules:selectedShippingRule:))
   }
 
   private let configDataProperty = MutableProperty<(Project, [ShippingRule], ShippingRule)?>(nil)
@@ -46,7 +49,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let loadValues: Signal<[String], Never>
+  public let loadValues: Signal<[ShippingRuleData], Never>
 
   public var inputs: ShippingRulesViewModelInputs { return self }
   public var outputs: ShippingRulesViewModelOutputs { return self }
@@ -54,11 +57,12 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
 
 // MARK: - Functions
 
-private func formattedValue(_ project: Project, shippingRule: ShippingRule) -> String {
-  let locationName = shippingRule.location.localizedName
-  let shippingCost = Strings.plus_shipping_cost(
-    shipping_cost: Format.currency(shippingRule.cost, country: project.country)
-  )
-
-  return "\(locationName) (\(shippingCost))"
+private func shippingRuleData(
+  for project: Project,
+  shippingRules: [ShippingRule],
+  selectedShippingRule: ShippingRule
+) -> [ShippingRuleData] {
+  return shippingRules.map {
+    ShippingRuleData(project: project, selectedShippingRule: selectedShippingRule, shippingRule: $0)
+  }
 }
