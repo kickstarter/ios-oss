@@ -42,7 +42,7 @@ final class ShippingRulesTableViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.tableView.flashScrollIndicators()
-    }
+      }
 
     self.viewModel.outputs.reloadDataWithShippingRules
       .observeForUI()
