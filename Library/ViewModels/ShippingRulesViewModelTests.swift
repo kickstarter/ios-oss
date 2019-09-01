@@ -8,15 +8,17 @@ final class ShippingRulesViewModelTests: TestCase {
   private let vm: ShippingRulesViewModelType = ShippingRulesViewModel()
 
   private let deselectCellAtIndex = TestObserver<Int, Never>()
-  private let selectCellAtIndex = TestObserver<Int, Never>()
+  private let flashScrollIndicators = TestObserver<Void, Never>()
   private let reloadDataWithShippingRulesData = TestObserver<[ShippingRuleData], Never>()
   private let reloadDataWithShippingRulesReload = TestObserver<Bool, Never>()
+  private let scrollToCellAtIndex = TestObserver<Int, Never>()
+  private let selectCellAtIndex = TestObserver<Int, Never>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.deselectCellAtIndex.observe(self.deselectCellAtIndex.observer)
-    self.vm.outputs.selectCellAtIndex.observe(self.selectCellAtIndex.observer)
+    self.vm.outputs.flashScrollIndicators.observe(self.flashScrollIndicators.observer)
 
     self.vm.outputs.reloadDataWithShippingRules.map(first).observe(
       self.reloadDataWithShippingRulesData.observer
@@ -24,6 +26,8 @@ final class ShippingRulesViewModelTests: TestCase {
     self.vm.outputs.reloadDataWithShippingRules.map(second).observe(
       self.reloadDataWithShippingRulesReload.observer
     )
+    self.vm.outputs.scrollToCellAtIndex.observe(self.scrollToCellAtIndex.observer)
+    self.vm.outputs.selectCellAtIndex.observe(self.selectCellAtIndex.observer)
   }
 
   func testShippingRuleSelection() {
@@ -31,16 +35,13 @@ final class ShippingRulesViewModelTests: TestCase {
       |> Project.lens.country .~ Project.Country.ca
 
     let shippingRule1 = ShippingRule.template
-      |> ShippingRule.lens.cost .~ 50
-      |> (ShippingRule.lens.location .. Location.lens.localizedName) .~ "Canada"
+      |> ShippingRule.lens.location .~ .canada
 
     let shippingRule2 = ShippingRule.template
-      |> ShippingRule.lens.cost .~ 99
-      |> (ShippingRule.lens.location .. Location.lens.localizedName) .~ "Czechoslovakia"
+      |> ShippingRule.lens.location .~ .greatBritain
 
     let shippingRule3 = ShippingRule.template
-      |> ShippingRule.lens.cost .~ 1_337
-      |> (ShippingRule.lens.location .. Location.lens.localizedName) .~ "Kazakhstan"
+      |> ShippingRule.lens.location .~ .usa
 
     let shippingRules = [shippingRule1, shippingRule2, shippingRule3]
     let selectedShippingRule = shippingRule2
@@ -63,26 +64,41 @@ final class ShippingRulesViewModelTests: TestCase {
         )
       ]
     ])
+
+    self.flashScrollIndicators.assertValueCount(1)
     self.reloadDataWithShippingRulesData.assertValueCount(1)
     self.reloadDataWithShippingRulesReload.assertValues([true])
+    self.scrollToCellAtIndex.assertValues([1])
 
     self.vm.inputs.didSelectShippingRule(at: 0)
+
+    self.flashScrollIndicators.assertValueCount(1)
     self.reloadDataWithShippingRulesData.assertValueCount(2)
     self.reloadDataWithShippingRulesReload.assertValues([true, false])
+    self.scrollToCellAtIndex.assertValues([1])
 
     // Selecting out of bounds index does nothing Jon Snow
     self.vm.inputs.didSelectShippingRule(at: Int.min)
+
+    self.flashScrollIndicators.assertValueCount(1)
     self.reloadDataWithShippingRulesData.assertValueCount(2)
     self.reloadDataWithShippingRulesReload.assertValues([true, false])
+    self.scrollToCellAtIndex.assertValues([1])
 
     self.vm.inputs.didSelectShippingRule(at: Int.max)
+
+    self.flashScrollIndicators.assertValueCount(1)
     self.reloadDataWithShippingRulesData.assertValueCount(2)
     self.reloadDataWithShippingRulesReload.assertValues([true, false])
+    self.scrollToCellAtIndex.assertValues([1])
 
     // Selecting index within bounds does work
     self.vm.inputs.didSelectShippingRule(at: 2)
+
+    self.flashScrollIndicators.assertValueCount(1)
     self.reloadDataWithShippingRulesData.assertValueCount(3)
     self.reloadDataWithShippingRulesReload.assertValues([true, false, false])
+    self.scrollToCellAtIndex.assertValues([1])
   }
 
   func testCellSelectionDeselection() {

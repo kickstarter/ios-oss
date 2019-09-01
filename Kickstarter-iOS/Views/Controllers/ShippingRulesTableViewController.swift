@@ -38,12 +38,11 @@ final class ShippingRulesTableViewController: UITableViewController {
         self?.tableView.cellForRow(at: indexPath)?.accessoryType = .none
       }
 
-    self.viewModel.outputs.selectCellAtIndex
-      .map { IndexPath(row: $0, section: 0) }
+    self.viewModel.outputs.flashScrollIndicators
       .observeForUI()
-      .observeValues { [weak self] indexPath in
-        self?.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-      }
+      .observeValues { [weak self] in
+        self?.tableView.flashScrollIndicators()
+    }
 
     self.viewModel.outputs.reloadDataWithShippingRules
       .observeForUI()
@@ -52,6 +51,20 @@ final class ShippingRulesTableViewController: UITableViewController {
         if reload {
           self?.tableView.reloadData()
         }
+      }
+
+    self.viewModel.outputs.scrollToCellAtIndex
+      .map { IndexPath(row: $0, section: 0) }
+      .observeForUI()
+      .observeValues { [weak self] indexPath in
+        self?.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+      }
+
+    self.viewModel.outputs.selectCellAtIndex
+      .map { IndexPath(row: $0, section: 0) }
+      .observeForUI()
+      .observeValues { [weak self] indexPath in
+        self?.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
       }
   }
 

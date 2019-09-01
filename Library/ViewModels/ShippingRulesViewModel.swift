@@ -17,8 +17,10 @@ public protocol ShippingRulesViewModelInputs {
 
 public protocol ShippingRulesViewModelOutputs {
   var deselectCellAtIndex: Signal<Int, Never> { get }
-  var selectCellAtIndex: Signal<Int, Never> { get }
+  var flashScrollIndicators: Signal<Void, Never> { get }
   var reloadDataWithShippingRules: Signal<([ShippingRuleData], Bool), Never> { get }
+  var scrollToCellAtIndex: Signal<Int, Never> { get }
+  var selectCellAtIndex: Signal<Int, Never> { get }
 }
 
 public protocol ShippingRulesViewModelType {
@@ -44,23 +46,6 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     .filter { _, shippingRules, index in index >= 0 && index < shippingRules.count }
     .map { project, shippingRules, index in (project, shippingRules, shippingRules[index]) }
 
-    let selectedShippingRuleIndexInitial = dataInitial
-      .map { _, shippingRules, selectedShippingRule in shippingRules.firstIndex(of: selectedShippingRule) }
-      .skipNil()
-
-    let selectedShippingRuleIndexSelected = self.didSelectShippingRuleAtIndexProperty.signal
-      .skipNil()
-
-    self.selectCellAtIndex = Signal.merge(
-      selectedShippingRuleIndexInitial,
-      selectedShippingRuleIndexSelected
-    )
-    .skipRepeats()
-
-    self.deselectCellAtIndex = self.selectCellAtIndex
-      .combinePrevious()
-      .map(first)
-
     let reloadDataWithShippingRulesInitial = dataInitial
       .map(shippingRuleData(for:shippingRules:selectedShippingRule:))
       .map { ($0, true) }
@@ -73,6 +58,32 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       reloadDataWithShippingRulesInitial,
       reloadDataWithShippingRulesSelected
     )
+
+    self.flashScrollIndicators = reloadDataWithShippingRulesInitial
+      .ignoreValues()
+
+    let selectedShippingRuleIndexInitial = dataInitial
+      .map { _, shippingRules, selectedShippingRule in shippingRules.firstIndex(of: selectedShippingRule) }
+      .skipNil()
+
+    let selectedShippingRuleIndexSelected = self.didSelectShippingRuleAtIndexProperty.signal
+      .skipNil()
+
+    self.scrollToCellAtIndex = Signal.combineLatest(
+      selectedShippingRuleIndexInitial,
+      reloadDataWithShippingRulesInitial
+    )
+    .map(first)
+
+    self.selectCellAtIndex = Signal.merge(
+      selectedShippingRuleIndexInitial,
+      selectedShippingRuleIndexSelected
+    )
+    .skipRepeats()
+
+    self.deselectCellAtIndex = self.selectCellAtIndex
+      .combinePrevious()
+      .map(first)
   }
 
   private let configDataProperty = MutableProperty<(Project, [ShippingRule], ShippingRule)?>(nil)
@@ -95,8 +106,10 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
   }
 
   public let deselectCellAtIndex: Signal<Int, Never>
-  public let selectCellAtIndex: Signal<Int, Never>
+  public let flashScrollIndicators: Signal<Void, Never>
   public let reloadDataWithShippingRules: Signal<([ShippingRuleData], Bool), Never>
+  public let scrollToCellAtIndex: Signal<Int, Never>
+  public let selectCellAtIndex: Signal<Int, Never>
 
   public var inputs: ShippingRulesViewModelInputs { return self }
   public var outputs: ShippingRulesViewModelOutputs { return self }
