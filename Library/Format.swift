@@ -51,6 +51,14 @@ public enum Format {
     return formatter.string(for: percentage) ?? (String(percentage) + "%")
   }
 
+  public static func decimalCurrency(for amount: Double) -> String {
+    let formatter = NumberFormatterConfig.cachedFormatter(
+      forConfig: .defaultDecimalCurrencyConfig
+    )
+
+    return formatter.string(for: amount) ?? String(format: "%.2f", amount)
+  }
+
   /**
    Formats an int with currency symbol into a string.
 
@@ -435,6 +443,7 @@ private struct NumberFormatterConfig {
   fileprivate let numberStyle: NumberFormatter.Style
   fileprivate let roundingMode: NumberFormatter.RoundingMode
   fileprivate let maximumFractionDigits: Int
+  fileprivate let minimumFractionDigits: Int
   fileprivate let generatesDecimalNumbers: Bool
   fileprivate let locale: Locale
   fileprivate let currencySymbol: String
@@ -444,6 +453,7 @@ private struct NumberFormatterConfig {
     formatter.numberStyle = self.numberStyle
     formatter.roundingMode = self.roundingMode
     formatter.maximumFractionDigits = self.maximumFractionDigits
+    formatter.minimumFractionDigits = self.minimumFractionDigits
     formatter.generatesDecimalNumbers = self.generatesDecimalNumbers
     formatter.locale = self.locale
     formatter.currencySymbol = self.currencySymbol
@@ -456,8 +466,19 @@ private struct NumberFormatterConfig {
     numberStyle: .decimal,
     roundingMode: .down,
     maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
     generatesDecimalNumbers: false,
     locale: .current,
+    currencySymbol: "$"
+  )
+
+  fileprivate static let defaultDecimalCurrencyConfig = NumberFormatterConfig(
+    numberStyle: .decimal,
+    roundingMode: .down,
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+    generatesDecimalNumbers: false,
+    locale: Locale(identifier: "en"), //Always format decimal currency amounts using En locale
     currencySymbol: "$"
   )
 
@@ -465,6 +486,7 @@ private struct NumberFormatterConfig {
     numberStyle: .percent,
     roundingMode: .down,
     maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
     generatesDecimalNumbers: false,
     locale: .current,
     currencySymbol: "$"
@@ -474,6 +496,7 @@ private struct NumberFormatterConfig {
     numberStyle: .currency,
     roundingMode: .down,
     maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
     generatesDecimalNumbers: false,
     locale: .current,
     currencySymbol: "$"
@@ -513,7 +536,9 @@ extension NumberFormatterConfig {
       view: { $0.numberStyle },
       set: { .init(
         numberStyle: $0, roundingMode: $1.roundingMode,
-        maximumFractionDigits: $1.maximumFractionDigits, generatesDecimalNumbers: $1.generatesDecimalNumbers,
+        maximumFractionDigits: $1.maximumFractionDigits,
+        minimumFractionDigits: $1.minimumFractionDigits,
+        generatesDecimalNumbers: $1.generatesDecimalNumbers,
         locale: $1.locale, currencySymbol: $1.currencySymbol
       ) }
     )
@@ -522,7 +547,9 @@ extension NumberFormatterConfig {
       view: { $0.roundingMode },
       set: { .init(
         numberStyle: $1.numberStyle, roundingMode: $0,
-        maximumFractionDigits: $1.maximumFractionDigits, generatesDecimalNumbers: $1.generatesDecimalNumbers,
+        maximumFractionDigits: $1.maximumFractionDigits,
+        minimumFractionDigits: $1.minimumFractionDigits,
+        generatesDecimalNumbers: $1.generatesDecimalNumbers,
         locale: $1.locale, currencySymbol: $1.currencySymbol
       ) }
     )
@@ -531,16 +558,30 @@ extension NumberFormatterConfig {
       view: { $0.maximumFractionDigits },
       set: { .init(
         numberStyle: $1.numberStyle, roundingMode: $1.roundingMode, maximumFractionDigits: $0,
+        minimumFractionDigits: $1.minimumFractionDigits,
         generatesDecimalNumbers: $1.generatesDecimalNumbers, locale: $1.locale,
         currencySymbol: $1.currencySymbol
       ) }
+    )
+
+    fileprivate static let minimumFractionDigits = Lens<NumberFormatterConfig, Int>(
+      view: { $0.minimumFractionDigits },
+      set: { .init(
+        numberStyle: $1.numberStyle, roundingMode: $1.roundingMode,
+        maximumFractionDigits: $1.maximumFractionDigits,
+        minimumFractionDigits: $0,
+        generatesDecimalNumbers: $1.generatesDecimalNumbers, locale: $1.locale,
+        currencySymbol: $1.currencySymbol
+        ) }
     )
 
     fileprivate static let generatesDecimalNumbers = Lens<NumberFormatterConfig, Bool>(
       view: { $0.generatesDecimalNumbers },
       set: { .init(
         numberStyle: $1.numberStyle, roundingMode: $1.roundingMode,
-        maximumFractionDigits: $1.maximumFractionDigits, generatesDecimalNumbers: $0, locale: $1.locale,
+        maximumFractionDigits: $1.maximumFractionDigits,
+        minimumFractionDigits: $1.minimumFractionDigits,
+        generatesDecimalNumbers: $0, locale: $1.locale,
         currencySymbol: $1.currencySymbol
       ) }
     )
@@ -549,7 +590,9 @@ extension NumberFormatterConfig {
       view: { $0.locale },
       set: { .init(
         numberStyle: $1.numberStyle, roundingMode: $1.roundingMode,
-        maximumFractionDigits: $1.maximumFractionDigits, generatesDecimalNumbers: $1.generatesDecimalNumbers,
+        maximumFractionDigits: $1.maximumFractionDigits,
+        minimumFractionDigits: $1.minimumFractionDigits,
+        generatesDecimalNumbers: $1.generatesDecimalNumbers,
         locale: $0, currencySymbol: $1.currencySymbol
       ) }
     )
@@ -558,7 +601,9 @@ extension NumberFormatterConfig {
       view: { $0.currencySymbol },
       set: { .init(
         numberStyle: $1.numberStyle, roundingMode: $1.roundingMode,
-        maximumFractionDigits: $1.maximumFractionDigits, generatesDecimalNumbers: $1.generatesDecimalNumbers,
+        maximumFractionDigits: $1.maximumFractionDigits,
+        minimumFractionDigits: $1.minimumFractionDigits,
+        generatesDecimalNumbers: $1.generatesDecimalNumbers,
         locale: $1.locale, currencySymbol: $0
       ) }
     )

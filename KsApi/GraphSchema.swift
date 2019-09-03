@@ -108,6 +108,7 @@ public enum GraphError: Error {
   case emptyResponse(URLResponse?)
   case decodeError(GraphResponseError)
   case jsonDecodingError(responseString: String?, error: Error?)
+  case jsonEncodingError
 }
 
 public enum Query {

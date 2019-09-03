@@ -94,6 +94,14 @@ final class FormatTests: TestCase {
     }
   }
 
+  func testDecimalCurrency() {
+    XCTAssertEqual(Format.decimalCurrency(for: 10), "10.00")
+    XCTAssertEqual(Format.decimalCurrency(for: 10.00), "10.00")
+    XCTAssertEqual(Format.decimalCurrency(for: 10.50), "10.50")
+    XCTAssertEqual(Format.decimalCurrency(for: 10.5555), "10.55", "Rounds down to 2 fraction digits")
+    XCTAssertEqual(Format.decimalCurrency(for: 10.511), "10.51", "Rounds down to 2 fraction digits")
+  }
+
   func testCurrency() {
     withEnvironment(locale: Locale(identifier: "en")) {
       withEnvironment(countryCode: "US") {
