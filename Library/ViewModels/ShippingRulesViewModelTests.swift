@@ -44,36 +44,56 @@ final class ShippingRulesViewModelTests: TestCase {
       |> ShippingRule.lens.location .~ .usa
 
     let shippingRules = [shippingRule1, shippingRule2, shippingRule3]
-    let selectedShippingRule = shippingRule2
 
     self.vm.inputs.configureWith(
-      project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
+      project, shippingRules: shippingRules, selectedShippingRule: shippingRule2
     )
     self.vm.inputs.viewDidLoad()
 
+    self.flashScrollIndicators.assertValueCount(1)
     self.reloadDataWithShippingRulesData.assertValues([
       [
         ShippingRuleData(
-          project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRule1
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule1
         ),
         ShippingRuleData(
-          project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRule2
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule2
         ),
         ShippingRuleData(
-          project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRule3
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule3
         )
       ]
     ])
-
-    self.flashScrollIndicators.assertValueCount(1)
-    self.reloadDataWithShippingRulesData.assertValueCount(1)
     self.reloadDataWithShippingRulesReload.assertValues([true])
     self.scrollToCellAtIndex.assertValues([1])
 
     self.vm.inputs.didSelectShippingRule(at: 0)
 
     self.flashScrollIndicators.assertValueCount(1)
-    self.reloadDataWithShippingRulesData.assertValueCount(2)
+    self.reloadDataWithShippingRulesData.assertValues([
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule3
+        )
+      ],
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule3
+        )
+      ]
+    ])
     self.reloadDataWithShippingRulesReload.assertValues([true, false])
     self.scrollToCellAtIndex.assertValues([1])
 
@@ -81,14 +101,60 @@ final class ShippingRulesViewModelTests: TestCase {
     self.vm.inputs.didSelectShippingRule(at: Int.min)
 
     self.flashScrollIndicators.assertValueCount(1)
-    self.reloadDataWithShippingRulesData.assertValueCount(2)
+    self.reloadDataWithShippingRulesData.assertValues([
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule3
+        )
+      ],
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule3
+        )
+      ]
+    ])
     self.reloadDataWithShippingRulesReload.assertValues([true, false])
     self.scrollToCellAtIndex.assertValues([1])
 
     self.vm.inputs.didSelectShippingRule(at: Int.max)
 
     self.flashScrollIndicators.assertValueCount(1)
-    self.reloadDataWithShippingRulesData.assertValueCount(2)
+    self.reloadDataWithShippingRulesData.assertValues([
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule3
+        )
+      ],
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule3
+        )
+      ]
+    ])
     self.reloadDataWithShippingRulesReload.assertValues([true, false])
     self.scrollToCellAtIndex.assertValues([1])
 
@@ -96,7 +162,41 @@ final class ShippingRulesViewModelTests: TestCase {
     self.vm.inputs.didSelectShippingRule(at: 2)
 
     self.flashScrollIndicators.assertValueCount(1)
-    self.reloadDataWithShippingRulesData.assertValueCount(3)
+    self.reloadDataWithShippingRulesData.assertValues([
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule3
+        )
+      ],
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule3
+        )
+      ],
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule3, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule3, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule3, shippingRule: shippingRule3
+        )
+      ]
+    ])
     self.reloadDataWithShippingRulesReload.assertValues([true, false, false])
     self.scrollToCellAtIndex.assertValues([1])
   }
