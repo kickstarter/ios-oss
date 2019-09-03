@@ -19,6 +19,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
   var goToDeprecatedPledge: Signal<PledgeData, Never> { get }
+  var goToManagePledge: Signal<PledgeData, Never> { get }
   var goToPledge: Signal<PledgeData, Never> { get }
   var goToViewBacking: Signal<(Project, User?), Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
@@ -75,9 +76,9 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       refTag
     )
     .filter { arg in
-      let (project, _, _) = arg
+      let (project, reward, _) = arg
 
-      return project.state == .live
+      return project.state == .live && !userIsBacking(reward: reward, inProject: project)
     }
     .map { project, reward, refTag in
       PledgeData(project: project, reward: reward, refTag: refTag)
@@ -89,6 +90,18 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         project.state != .live && userIsBacking(reward: reward, inProject: project)
       }
       .map(first)
+
+    self.goToManagePledge = Signal.combineLatest(
+      project,
+      selectedRewardFromId,
+      refTag
+    )
+      .filter { project, reward, _ -> Bool in
+        project.state == .live && userIsBacking(reward: reward, inProject: project)
+      }
+      .map { project, reward, refTag in
+        PledgeData(project: project, reward: reward, refTag: refTag)
+    }
 
     self.goToViewBacking = goToViewBacking
       .map { project in
@@ -152,6 +165,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToDeprecatedPledge: Signal<PledgeData, Never>
+  public let goToManagePledge: Signal<PledgeData, Never>
   public let goToPledge: Signal<PledgeData, Never>
   public let goToViewBacking: Signal<(Project, User?), Never>
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
