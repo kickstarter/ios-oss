@@ -5,7 +5,7 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol ShippingRuleCellViewModelInputs {
-  func configureWith(_ values: ShippingRuleData)
+  func configureWith(_ value: ShippingRuleData)
 }
 
 public protocol ShippingRuleCellViewModelOutputs {
@@ -33,8 +33,8 @@ public final class ShippingRuleCellViewModel: ShippingRuleCellViewModelType,
   }
 
   private let configDataProperty = MutableProperty<ShippingRuleData?>(nil)
-  public func configureWith(_ values: ShippingRuleData) {
-    self.configDataProperty.value = values
+  public func configureWith(_ value: ShippingRuleData) {
+    self.configDataProperty.value = value
   }
 
   public let isSelected: Signal<Bool, Never>
