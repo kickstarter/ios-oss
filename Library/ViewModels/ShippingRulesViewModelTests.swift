@@ -202,7 +202,7 @@ final class ShippingRulesViewModelTests: TestCase {
           project: project, selectedShippingRule: shippingRule3, shippingRule: shippingRule3
         )
       ]
-      ])
+    ])
     self.reloadDataWithShippingRulesReload.assertValues([true, false, false])
     self.scrollToCellAtIndex.assertValues([1])
 
