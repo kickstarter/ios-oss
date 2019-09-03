@@ -168,7 +168,6 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
 
     withEnvironment(config: config) {
-
       let reward = Project.cosmicSurgery.rewards.first!
       let backing = Backing.template
         |> Backing.lens.reward .~ reward
@@ -232,7 +231,6 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: false]
 
     withEnvironment(config: config) {
-
       let reward = Project.cosmicSurgery.rewards.first!
       let backing = Backing.template
         |> Backing.lens.reward .~ reward
@@ -316,7 +314,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity)
     self.vm.inputs.viewDidLoad()
 
-  self.configureRewardsCollectionViewFooterWithCount.assertValues([Project.cosmicSurgery.rewards.count])
+    self.configureRewardsCollectionViewFooterWithCount.assertValues([Project.cosmicSurgery.rewards.count])
   }
 
   func testFlashScrollIndicators() {

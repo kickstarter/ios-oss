@@ -7,8 +7,7 @@ public protocol ManagePledgeViewModelInputs {
   func configureWith(_ project: Project, reward: Reward)
 }
 
-public protocol ManagePledgeViewModelOutputs {
-}
+public protocol ManagePledgeViewModelOutputs {}
 
 public protocol ManagePledgeViewModelType {
   var inputs: ManagePledgeViewModelInputs { get }
@@ -16,11 +15,8 @@ public protocol ManagePledgeViewModelType {
 }
 
 public final class ManagePledgeViewModel:
-ManagePledgeViewModelType, ManagePledgeViewModelInputs, ManagePledgeViewModelOutputs {
-
-  public init() {
-
-  }
+  ManagePledgeViewModelType, ManagePledgeViewModelInputs, ManagePledgeViewModelOutputs {
+  public init() {}
 
   private let projectAndReward = MutableProperty<(Project, Reward)?>(nil)
   public func configureWith(_ project: Project, reward: Reward) {

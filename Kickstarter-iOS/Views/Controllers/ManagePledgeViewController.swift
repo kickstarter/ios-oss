@@ -4,9 +4,8 @@ import Prelude
 import UIKit
 
 final class ManagePledgeViewController: UIViewController {
-
   private lazy var closeButton: UIBarButtonItem = {
-    return UIBarButtonItem(
+    UIBarButtonItem(
       image: UIImage(named: "icon--cross"),
       style: .plain,
       target: self,
@@ -15,7 +14,7 @@ final class ManagePledgeViewController: UIViewController {
   }()
 
   private lazy var editButton: UIBarButtonItem = {
-    return UIBarButtonItem(
+    UIBarButtonItem(
       barButtonSystemItem: .edit,
       target: self,
       action: #selector(ManagePledgeViewController.editButtonTapped)

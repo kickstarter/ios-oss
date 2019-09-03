@@ -96,11 +96,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       selectedRewardFromId,
       refTag
     )
-      .filter { project, reward, _ -> Bool in
-        project.state == .live && userIsBacking(reward: reward, inProject: project)
-      }
-      .map { project, reward, refTag in
-        PledgeData(project: project, reward: reward, refTag: refTag)
+    .filter { project, reward, _ -> Bool in
+      project.state == .live && userIsBacking(reward: reward, inProject: project)
+    }
+    .map { project, reward, refTag in
+      PledgeData(project: project, reward: reward, refTag: refTag)
     }
 
     self.goToManagePledge = goToManagePledge
@@ -114,12 +114,12 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.goToPledge = goToPledge
       .filter { project, reward, _ in
         featureNativeCheckoutPledgeViewIsEnabled() && !userIsBacking(reward: reward, inProject: project)
-    }
+      }
 
     self.goToDeprecatedPledge = goToPledge
       .filter { _ in
         !featureNativeCheckoutPledgeViewIsEnabled()
-    }
+      }
 
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()

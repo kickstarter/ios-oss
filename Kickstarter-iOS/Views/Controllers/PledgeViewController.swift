@@ -117,7 +117,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
-  // MARK: - Configurati
+  // MARK: - Configuration
+
   private func configureChildViewControllers() {
     let childViewControllers = [
       self.descriptionViewController,
