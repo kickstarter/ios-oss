@@ -11,6 +11,9 @@ public struct CreateBackingMutation<T: GraphMutationInput>: GraphMutation {
     return """
     mutation createBacking($input: CreateBackingInput!) {
     createBacking(input: $input) {
+    checkout {
+      state
+    }
       clientMutationId
       }
     }

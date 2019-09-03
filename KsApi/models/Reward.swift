@@ -22,6 +22,10 @@ public struct Reward {
     return self.id == Reward.noReward.id
   }
 
+  public static func decode(id: Int) -> String {
+    return "Reward-\(id)"
+  }
+
   public struct Shipping {
     public let enabled: Bool
     public let preference: Preference?

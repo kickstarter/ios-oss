@@ -128,3 +128,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
 }
+
+private func toBase64(_ project: KsApi.Project) -> String {
+  let id = project.id
+  let decodedId = Project.decode(id: id)
+  return decodedId.toBase64()
+}
+
+private func toBase64(_ reward: KsApi.Reward) -> String {
+  let id = reward.id
+  let decodedId = Reward.decode(id: id)
+  return decodedId.toBase64()
+}

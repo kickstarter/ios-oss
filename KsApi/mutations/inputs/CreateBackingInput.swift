@@ -1,17 +1,17 @@
 import Foundation
 
 public struct CreateBackingInput: GraphMutationInput {
-  let projectId: Int
+  let projectId: String
   let amount: String
   let locationId: String
-  let rewardId: Int
+  let rewardId: String
   let paymentSourceId: String
   let paymentType: String
 
-  public init(projectId: Int,
+  public init(projectId: String,
               amount: String,
               locationId: String,
-              rewardId: Int,
+              rewardId: String,
               paymentSourceId: String,
               paymentType: String
     ) {
