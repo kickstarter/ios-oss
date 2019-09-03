@@ -12,6 +12,7 @@ final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
 
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
+  private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()
 
   private let configureSummaryCellWithDataPledgeTotal = TestObserver<Double, Never>()
   private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
@@ -26,8 +27,10 @@ final class PledgeViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.configurePaymentMethodsViewControllerWithUser
+    self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map(first)
       .observe(self.configurePaymentMethodsViewControllerWithUser.observer)
+    self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map(second)
+      .observe(self.configurePaymentMethodsViewControllerWithProject.observer)
 
     self.vm.outputs.configureSummaryViewControllerWithData.map(second)
       .observe(self.configureSummaryCellWithDataPledgeTotal.observer)
@@ -54,6 +57,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -76,6 +80,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -99,6 +104,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -121,6 +127,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -143,6 +150,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -158,7 +166,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleSelected(defaultShippingRule)
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
+      self.configureSummaryCellWithDataPledgeTotal
+        .assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
       self.configureSummaryCellWithDataProject.assertValues([project, project])
     }
   }
@@ -173,6 +182,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -188,7 +198,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleSelected(defaultShippingRule)
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
+      self.configureSummaryCellWithDataPledgeTotal
+        .assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
       self.configureSummaryCellWithDataProject.assertValues([project, project])
 
       let selectedShippingRule = ShippingRule.template
@@ -197,7 +208,11 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleSelected(selectedShippingRule)
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost, reward.minimum + selectedShippingRule.cost])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([
+        reward.minimum,
+        reward.minimum + defaultShippingRule.cost,
+        reward.minimum + selectedShippingRule.cost
+      ])
       self.configureSummaryCellWithDataProject.assertValues([project, project, project])
     }
   }
@@ -212,6 +227,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -255,6 +271,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -267,6 +284,7 @@ final class PledgeViewModelTests: TestCase {
         self.vm.inputs.userSessionStarted()
 
         self.configurePaymentMethodsViewControllerWithUser.assertValues([user])
+        self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
         self.configureWithPledgeViewDataProject.assertValues([project])
         self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -288,6 +306,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])

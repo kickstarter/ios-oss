@@ -3,6 +3,15 @@ import Prelude
 // swiftlint:disable line_length
 extension Project {
   internal static let template = Project(
+    availableCardTypes: [
+      "AMEX",
+      "MASTERCARD",
+      "VISA",
+      "DISCOVER",
+      "JCB",
+      "DINERS",
+      "UNION_PAY"
+    ],
     blurb: "A fun project.",
     category: .template,
     country: .us,
