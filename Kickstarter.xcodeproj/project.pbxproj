@@ -1053,6 +1053,7 @@
 		D6560C2A2182361800CD24BC /* PaymentMethodsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */; };
 		D667C2BC2305F03300EC094A /* ExperimentName+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D667C2BB2305F03300EC094A /* ExperimentName+HelpersTests.swift */; };
 		D66FB348218212B700A27BCC /* PaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */; };
+		D673317F231EC25E00DB1173 /* ManagePledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D673317E231EC25E00DB1173 /* ManagePledgeViewModel.swift */; };
 		D67B6C9D221F458700B63A6B /* Config+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6C9C221F458700B63A6B /* Config+Argo.swift */; };
 		D67B6CD6221F468100B63A6B /* Location+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6CD5221F468100B63A6B /* Location+Argo.swift */; };
 		D67B6CD8221F46D700B63A6B /* Project.Country+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6CD7221F46D700B63A6B /* Project.Country+Argo.swift */; };
@@ -2303,6 +2304,7 @@
 		D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsDataSourceTests.swift; sourceTree = "<group>"; };
 		D667C2BB2305F03300EC094A /* ExperimentName+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExperimentName+HelpersTests.swift"; sourceTree = "<group>"; };
 		D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewModelTests.swift; sourceTree = "<group>"; };
+		D673317E231EC25E00DB1173 /* ManagePledgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewModel.swift; sourceTree = "<group>"; };
 		D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSourceTests.swift; sourceTree = "<group>"; };
 		D67B6C9C221F458700B63A6B /* Config+Argo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Config+Argo.swift"; sourceTree = "<group>"; };
 		D67B6CD5221F468100B63A6B /* Location+Argo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Argo.swift"; sourceTree = "<group>"; };
@@ -3588,6 +3590,7 @@
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
+				D673317E231EC25E00DB1173 /* ManagePledgeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -4492,6 +4495,7 @@
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
 				37EB3E4C228CF4A400076E4C /* NumberFormatter.swift in Sources */,
 				D0D77C1E22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift in Sources */,
+				D673317F231EC25E00DB1173 /* ManagePledgeViewModel.swift in Sources */,
 				A7F441C71D005A9400FE6FC5 /* MessageCellViewModel.swift in Sources */,
 				59673CBF1D50EE9B0035AFD9 /* VideoViewModel.swift in Sources */,
 				9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */,

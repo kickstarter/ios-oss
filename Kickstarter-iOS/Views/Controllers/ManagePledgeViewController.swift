@@ -5,16 +5,43 @@ import UIKit
 
 final class ManagePledgeViewController: UIViewController {
 
+  private lazy var closeButton: UIBarButtonItem = {
+    return UIBarButtonItem(
+      image: UIImage(named: "icon--cross"),
+      style: .plain,
+      target: self,
+      action: #selector(RewardsCollectionViewController.closeButtonTapped)
+    )
+  }()
+
+  private lazy var editButton: UIBarButtonItem = {
+    return UIBarButtonItem(
+      barButtonSystemItem: .edit,
+      target: self,
+      action: #selector(ManagePledgeViewController.editButtonTapped)
+    )
+  }()
+
+  private lazy var navigationBarShadowImage: UIImage? = {
+    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
+  }()
+
+  private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
     _ = self
       |> \.title %~ { _ in Strings.Manage_your_pledge() }
+      |> \.extendedLayoutIncludesOpaqueBars .~ true
 
-    let navigationBarButton = UIBarButtonItem(barButtonSystemItem: .edit,
-                                              target: self,
-                                              action: #selector(ManagePledgeViewController.editButtonTapped))
-    self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
+    _ = self.navigationController?.navigationBar
+      ?|> \.shadowImage .~ UIImage()
+      ?|> \.isTranslucent .~ true
+      ?|> \.barTintColor .~ .ksr_grey_400
+
+    self.navigationItem.setRightBarButton(self.editButton, animated: false)
+    self.navigationItem.setLeftBarButton(self.closeButton, animated: false)
   }
 
   override func bindStyles() {
@@ -22,9 +49,17 @@ final class ManagePledgeViewController: UIViewController {
 
     _ = self.view
       |> checkoutBackgroundStyle
+
+    _ = self.closeButton
+      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
   }
 
-  // MARK: Functions
+  func configureWith(project: Project, reward: Reward) {
+    self.viewModel.inputs.configureWith(project, reward: reward)
+  }
+
+  // MARK: Actions
+
   @objc func editButtonTapped() {
     let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -35,5 +70,9 @@ final class ManagePledgeViewController: UIViewController {
       UIAlertAction(title: Strings.Cancel(), style: .cancel)
     )
     self.present(actionSheet, animated: true, completion: nil)
+  }
+
+  @objc func closeButtonTapped() {
+    self.navigationController?.dismiss(animated: true)
   }
 }

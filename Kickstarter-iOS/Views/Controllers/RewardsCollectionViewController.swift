@@ -151,7 +151,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project, reward, refTag in
         self?.goToManagePledge(project: project, reward: reward, refTag: refTag)
-    }
+      }
 
     self.viewModel.outputs.goToViewBacking
       .observeForControllerAction()
@@ -242,8 +242,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
   private func goToManagePledge(project: Project, reward: Reward, refTag _: RefTag?) {
     let managePledgeViewController = ManagePledgeViewController.instantiate()
-    //pledgeViewController.configureWith(project: project, reward: reward)
-    self.navigationController?.pushViewController(managePledgeViewController, animated: true)
+    managePledgeViewController.configureWith(project: project, reward: reward)
+
+    let nav = UINavigationController(rootViewController: managePledgeViewController)
+      |> \.modalPresentationStyle .~ .formSheet
+
+    self.present(nav, animated: true, completion: nil)
   }
 
   private func goToPledge(project: Project, reward: Reward, refTag _: RefTag?) {
