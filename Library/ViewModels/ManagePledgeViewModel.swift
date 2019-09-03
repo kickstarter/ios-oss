@@ -15,7 +15,8 @@ public protocol ManagePledgeViewModelType {
   var outputs: ManagePledgeViewModelOutputs { get }
 }
 
-public final class ManagePledgeViewModel: ManagePledgeViewModelType, ManagePledgeViewModelInputs, ManagePledgeViewModelOutputs {
+public final class ManagePledgeViewModel:
+ManagePledgeViewModelType, ManagePledgeViewModelInputs, ManagePledgeViewModelOutputs {
 
   public init() {
 
