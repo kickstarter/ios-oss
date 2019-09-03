@@ -75,18 +75,20 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .negate()
 
     let createBackingOnLoad = projectAndReward
-      .map { CreateBackingInput(projectId: $0.0.id, amount: "20",
-            locationId: "locationid", rewardId: $0.1.id, paymentSourceId: "source", paymentType: "card") }
+      .map { CreateBackingInput(
+        projectId: toBase64($0.0), amount: "200", locationId: "\($0.0.location.id)",
+        rewardId: toBase64($0.1), paymentSourceId: "source", paymentType: "card"
+      ) }
       .switchMap {
         AppEnvironment.current.apiService.createBacking(input: $0)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     self.createBackingFailure = createBackingOnLoad.errors()
       .map {
         $0.localizedDescription
-    }
+      }
     self.createBackingSuccess = createBackingOnLoad.values().ignoreValues()
   }
 
