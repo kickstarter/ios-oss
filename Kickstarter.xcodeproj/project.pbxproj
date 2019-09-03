@@ -248,6 +248,7 @@
 		77CD8981217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */; };
 		77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */; };
 		77DB532A2215D0AA0078991C /* GraphUserCreditCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */; };
+		77E023D62305E02C00C63444 /* PKPaymentAuthorizationViewControllerHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E023D52305E02C00C63444 /* PKPaymentAuthorizationViewControllerHelpersTests.swift */; };
 		77E44B7421823A56006446B8 /* ChangePasswordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E44B7321823A56006446B8 /* ChangePasswordInput.swift */; };
 		77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440020F64F0B005F6B38 /* HelpDataSource.swift */; };
 		77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440220F65074005F6B38 /* HelpViewController.swift */; };
@@ -658,7 +659,7 @@
 		A7ED20641E83256700BFFA01 /* RootViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED205F1E83256700BFFA01 /* RootViewModelTests.swift */; };
 		A7ED20651E83256700BFFA01 /* UpdatePreviewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20601E83256700BFFA01 /* UpdatePreviewViewModelTests.swift */; };
 		A7ED20661E83256700BFFA01 /* UpdateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20611E83256700BFFA01 /* UpdateViewModelTests.swift */; };
-		A7EDEE571D83453F00780B34 /* PKPaymentAuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EDEE561D83453F00780B34 /* PKPaymentAuthorizationViewController.swift */; };
+		A7EDEE571D83453F00780B34 /* PKPaymentAuthorizationViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EDEE561D83453F00780B34 /* PKPaymentAuthorizationViewController+Helpers.swift */; };
 		A7F441AD1D005A9400FE6FC5 /* ActivitiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F4418E1D005A9400FE6FC5 /* ActivitiesViewModel.swift */; };
 		A7F441AF1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F4418F1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift */; };
 		A7F441B31D005A9400FE6FC5 /* ActivityProjectStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441911D005A9400FE6FC5 /* ActivityProjectStatusViewModel.swift */; };
@@ -1567,6 +1568,7 @@
 		77CD8980217FA01B003066DA /* ProjectPamphletContentViewControllerConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletContentViewControllerConversionTests.swift; sourceTree = "<group>"; };
 		77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCellType.swift; sourceTree = "<group>"; };
 		77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserCreditCardTests.swift; sourceTree = "<group>"; };
+		77E023D52305E02C00C63444 /* PKPaymentAuthorizationViewControllerHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKPaymentAuthorizationViewControllerHelpersTests.swift; sourceTree = "<group>"; };
 		77E44B7321823A56006446B8 /* ChangePasswordInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordInput.swift; sourceTree = "<group>"; };
 		77E6440020F64F0B005F6B38 /* HelpDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSource.swift; sourceTree = "<group>"; };
 		77E6440220F65074005F6B38 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
@@ -1987,7 +1989,7 @@
 		A7ED205F1E83256700BFFA01 /* RootViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED20601E83256700BFFA01 /* UpdatePreviewViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePreviewViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED20611E83256700BFFA01 /* UpdateViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateViewModelTests.swift; sourceTree = "<group>"; };
-		A7EDEE561D83453F00780B34 /* PKPaymentAuthorizationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PKPaymentAuthorizationViewController.swift; sourceTree = "<group>"; };
+		A7EDEE561D83453F00780B34 /* PKPaymentAuthorizationViewController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PKPaymentAuthorizationViewController+Helpers.swift"; sourceTree = "<group>"; };
 		A7F4418E1D005A9400FE6FC5 /* ActivitiesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewModel.swift; sourceTree = "<group>"; };
 		A7F4418F1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendBackingViewModel.swift; sourceTree = "<group>"; };
 		A7F441901D005A9400FE6FC5 /* ActivityFriendFollowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFriendFollowCellViewModel.swift; sourceTree = "<group>"; };
@@ -3054,7 +3056,8 @@
 				A7ED1F1C1E830FDC00BFFA01 /* PaginateTests.swift */,
 				373AB25C222A0D8900769FC2 /* PasswordValidation.swift */,
 				373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */,
-				A7EDEE561D83453F00780B34 /* PKPaymentAuthorizationViewController.swift */,
+				A7EDEE561D83453F00780B34 /* PKPaymentAuthorizationViewController+Helpers.swift */,
+				77E023D52305E02C00C63444 /* PKPaymentAuthorizationViewControllerHelpersTests.swift */,
 				A7B11A761D79F03300A5036E /* PKPaymentRequest.swift */,
 				A7ED1F1D1E830FDC00BFFA01 /* PKPaymentRequestTests.swift */,
 				D78E0355229305E20043E92F /* PledgeStateCTAType.swift */,
@@ -4634,7 +4637,7 @@
 				A755116C1C8642C3005355CF /* UIPress-Extensions.swift in Sources */,
 				D798A6AE21656D970053D097 /* Currency.swift in Sources */,
 				77F6E73521222E7C005A5C55 /* EmailFrequency.swift in Sources */,
-				A7EDEE571D83453F00780B34 /* PKPaymentAuthorizationViewController.swift in Sources */,
+				A7EDEE571D83453F00780B34 /* PKPaymentAuthorizationViewController+Helpers.swift in Sources */,
 				D0237C2622BD7B540092C792 /* PledgeSummaryViewModel.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
@@ -4726,6 +4729,7 @@
 				A7ED1FE41E831C5C00BFFA01 /* EmptyStatesViewModelTests.swift in Sources */,
 				D04AACA8218BB72100CF713E /* FindFriendsCellViewModelTests.swift in Sources */,
 				D04AACA6218BB72100CF713E /* ChangePasswordViewModelTests.swift in Sources */,
+				77E023D62305E02C00C63444 /* PKPaymentAuthorizationViewControllerHelpersTests.swift in Sources */,
 				A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */,
 				A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */,
 				A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */,
