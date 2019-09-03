@@ -224,18 +224,24 @@ final class RewardCardContainerViewTests: TestCase {
     }
   }
 
-  func testLive_BackedProject_NonBackedReward_Errored() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
+  func testNonLive_BackedProject_BackedReward_Errored() {
+    // Filter these out because they aren't states we can get to
+    let filteredRewards = allRewards
+      .filter { (name, _) -> Bool in
+        !name.lowercased().contains("unavailable")
+      }
+
+    combos([Language.en], [Device.phone4_7inch], filteredRewards).forEach { language, device, rewardTuple in
       withEnvironment(language: language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .live
+          |> Project.lens.state .~ .successful
           |> Project.lens.personalization.isBacking .~ true
           |> Project.lens.personalization.backing .~ (
             .template
-              |> Backing.lens.reward .~ Reward.otherReward
-              |> Backing.lens.rewardId .~ Reward.otherReward.id
+              |> Backing.lens.reward .~ reward
+              |> Backing.lens.rewardId .~ reward.id
               |> Backing.lens.shippingAmount .~ 10
               |> Backing.lens.amount .~ 700
               |> Backing.lens.status .~ .errored

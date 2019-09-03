@@ -419,6 +419,7 @@
 "Shipping" = "Shipping";
 "Shipping_addresses" = "Shipping addresses";
 "Ships_to" = "Ships to:";
+"Ships_to_shipping_summary" = "Ships to: %{shipping_summary}";
 "Show_password" = "Show password";
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
 "Sign_up_newsletter" = "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team.";

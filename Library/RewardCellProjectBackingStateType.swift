@@ -16,9 +16,8 @@ public enum RewardCellProjectBackingStateType: Equatable {
       return .nonBacked(live: project.state == .live ? .live : .nonLive)
     }
 
+    // NB: Add error case back once correctly returned
     switch (project.state, backing.status) {
-    case(.live, .errored):
-      return .backedError
     case(.live, _):
       return .backed(live: .live)
     case (_, _):

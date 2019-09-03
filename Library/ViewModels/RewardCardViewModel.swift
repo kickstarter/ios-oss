@@ -249,7 +249,7 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> S
 
 private func shippingSummaryString(project: Project, reward: Reward) -> String? {
   if project.state == .live, reward.shipping.enabled, let shippingSummary = reward.shipping.summary {
-    return shippingSummary
+    return Strings.Ships_to_shipping_summary(shipping_summary: shippingSummary)
   }
 
   return nil
@@ -268,7 +268,8 @@ private func stateIconImageColor(project: Project, reward: Reward) -> UIColor? {
 private func stateIconImageName(project: Project, reward: Reward) -> String? {
   guard userIsBacking(reward: reward, inProject: project) else { return nil }
 
-  return project.personalization.backing?.status == .errored ? "icon--alert" : "checkmark-reward"
+  // NB: Revert `nil` back to "icon--alert" when we're handling error state
+  return project.personalization.backing?.status == .errored ? nil : "checkmark-reward"
 }
 
 private func estimatedDeliveryText(with reward: Reward) -> String? {

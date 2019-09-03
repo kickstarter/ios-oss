@@ -578,11 +578,25 @@ public final class Koala {
 
   // MARK: - Checkout Events
 
-  public func trackBackThisButtonClicked(project: Project, screen: CheckoutContext) {
+  public func trackPledgeCTAButtonClicked(
+    stateType: PledgeStateCTAType,
+    project: Project, screen: CheckoutContext
+  ) {
     let props = properties(project: project)
       .withAllValuesFrom(["screen": screen.trackingString])
 
-    self.track(event: "Back this Project Button Clicked", properties: props)
+    switch stateType {
+    case .fix:
+      self.track(event: "Fix Pledge Button Clicked", properties: props)
+    case .pledge:
+      self.track(event: "Back this Project Button Clicked", properties: props)
+    case .manage:
+      self.track(event: "Manage Pledge Button Clicked", properties: props)
+    case .viewBacking:
+      self.track(event: "View Your Pledge Button Clicked", properties: props)
+    case .viewRewards:
+      self.track(event: "View Rewards Button Clicked", properties: props)
+    }
   }
 
   public func trackSelectRewardButtonClicked(
@@ -1287,7 +1301,7 @@ public final class Koala {
 
     // Deprecated event
     self.track(
-      event: "Project Page",
+      event: "Project Page Viewed",
       properties: props.withAllValuesFrom(deprecatedProps)
     )
 
@@ -1296,7 +1310,7 @@ public final class Koala {
       properties: props.withAllValuesFrom(deprecatedProps)
     )
 
-    self.track(event: "Project Page Viewed", properties: props)
+    self.track(event: "Project Page", properties: props)
   }
 
   public func trackSwipedProject(_ project: Project, refTag: RefTag?, type: SwipeType) {
@@ -1988,6 +2002,7 @@ public final class Koala {
     if let loggedInUser = self.loggedInUser {
       properties(user: loggedInUser).forEach { props[$0] = $1 }
     }
+    props["user_is_admin"] = self.loggedInUser?.isAdmin
     props["user_logged_in"] = self.loggedInUser != nil
     props["user_country"] = self.loggedInUser?.location?.country ?? self.config?.countryCode
 

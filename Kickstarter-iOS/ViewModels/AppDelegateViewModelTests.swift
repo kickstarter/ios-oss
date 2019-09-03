@@ -498,6 +498,18 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationWillEnterForeground()
       self.updateConfigInEnvironment.assertValues([config1, config2])
     }
+
+    let config3 = Config.template |> Config.lens.countryCode .~ "CZ"
+    withEnvironment(apiService: MockService(fetchConfigResponse: config3)) {
+      self.vm.inputs.userSessionEnded()
+      self.updateConfigInEnvironment.assertValues([config1, config2, config3])
+    }
+
+    let config4 = Config.template |> Config.lens.countryCode .~ "CA"
+    withEnvironment(apiService: MockService(fetchConfigResponse: config4)) {
+      self.vm.inputs.userSessionStarted()
+      self.updateConfigInEnvironment.assertValues([config1, config2, config3, config4])
+    }
   }
 
   func testPresentViewController() {

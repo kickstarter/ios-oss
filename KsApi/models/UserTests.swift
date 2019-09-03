@@ -34,6 +34,7 @@ final class UserTests: XCTestCase {
         "localized_name": "Brooklyn, NY",
         "name": "Brooklyn"
       ],
+      "is_admin": false,
       "is_friend": false,
       "opted_out_of_recommendations": true,
       "show_public_profile": false,
@@ -44,6 +45,7 @@ final class UserTests: XCTestCase {
 
     XCTAssertNil(decoded.error)
     XCTAssertEqual(1, user?.id)
+    XCTAssertEqual(false, user?.isAdmin)
     XCTAssertEqual("http://www.kickstarter.com/small.jpg", user?.avatar.small)
     XCTAssertEqual(2, user?.stats.backedProjectsCount)
     XCTAssertEqual(false, user?.newsletters.weekly)
@@ -80,6 +82,7 @@ final class UserTests: XCTestCase {
         "localized_name": "Brooklyn, NY",
         "name": "Brooklyn"
       ],
+      "is_admin": false,
       "is_friend": false,
       "opted_out_of_recommendations": true,
       "show_public_profile": false,
