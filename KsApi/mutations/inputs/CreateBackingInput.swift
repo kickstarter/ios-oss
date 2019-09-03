@@ -8,13 +8,14 @@ public struct CreateBackingInput: GraphMutationInput {
   let paymentSourceId: String
   let paymentType: String
 
-  public init(projectId: String,
-              amount: String,
-              locationId: String,
-              rewardId: String,
-              paymentSourceId: String,
-              paymentType: String
-    ) {
+  public init(
+    projectId: String,
+    amount: String,
+    locationId: String,
+    rewardId: String,
+    paymentSourceId: String,
+    paymentType: String
+  ) {
     self.projectId = projectId
     self.amount = amount
     self.locationId = locationId
@@ -23,7 +24,7 @@ public struct CreateBackingInput: GraphMutationInput {
     self.paymentType = paymentType
   }
 
-  public func toInputDictionary() -> [String : Any] {
+  public func toInputDictionary() -> [String: Any] {
     return [
       "projectId": projectId,
       "amount": amount,
@@ -34,4 +35,3 @@ public struct CreateBackingInput: GraphMutationInput {
     ]
   }
 }
-

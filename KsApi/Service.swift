@@ -90,7 +90,7 @@ public struct Service: ServiceType {
 
   public func createBacking(input: CreateBackingInput) ->
     SignalProducer<CreateBackingEnvelope, GraphError> {
-      return applyMutation(mutation: CreateBackingMutation(input: input))
+    return applyMutation(mutation: CreateBackingMutation(input: input))
   }
 
   public func createPassword(input: CreatePasswordInput) ->
