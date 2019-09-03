@@ -4,6 +4,7 @@ import Prelude
 import Runes
 
 public struct Project {
+  public var availableCardTypes: [String]?
   public var blurb: String
   public var category: Category
   public var country: Country
@@ -188,7 +189,8 @@ extension Project: CustomDebugStringConvertible {
 extension Project: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project> {
     let tmp1 = curry(Project.init)
-      <^> json <| "blurb"
+      <^> json <||? "available_card_types"
+      <*> json <| "blurb"
       <*> ((json <| "category" >>- decodeToGraphCategory) as Decoded<Category>)
       <*> Project.Country.decode(json)
       <*> json <| "creator"

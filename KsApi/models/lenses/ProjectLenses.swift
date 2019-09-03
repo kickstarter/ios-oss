@@ -2,10 +2,21 @@ import Prelude
 
 extension Project {
   public enum lens {
+    public static let availableCardTypes = Lens<Project, [String]?>(
+      view: { $0.availableCardTypes },
+      set: { Project(
+        availableCardTypes: $0, blurb: $1.blurb, category: $1.category, country: $1.country,
+        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
+        prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
+        staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
+      ) }
+    )
+
     public static let blurb = Lens<Project, String>(
       view: { $0.blurb },
       set: { Project(
-        blurb: $0, category: $1.category, country: $1.country,
+        availableCardTypes: $1.availableCardTypes, blurb: $0, category: $1.category, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug, staffPick:
@@ -16,8 +27,8 @@ extension Project {
     public static let staffPick = Lens<Project, Bool>(
       view: { $0.staffPick },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization,
         photo: $1.photo, prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $0, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -27,7 +38,7 @@ extension Project {
     public static let category = Lens<Project, Category>(
       view: { $0.category },
       set: { Project(
-        blurb: $1.blurb, category: $0, country: $1.country,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $0, country: $1.country,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
@@ -38,7 +49,7 @@ extension Project {
     public static let country = Lens<Project, Country>(
       view: { $0.country },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $0,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category, country: $0,
         creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
@@ -49,8 +60,8 @@ extension Project {
     public static let creator = Lens<Project, User>(
       view: { $0.creator },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $0, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $0, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -60,8 +71,8 @@ extension Project {
     public static let dates = Lens<Project, Project.Dates>(
       view: { $0.dates },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $0, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $0, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -71,8 +82,8 @@ extension Project {
     public static let id = Lens<Project, Int>(
       view: { $0.id },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $0,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $0,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -82,8 +93,8 @@ extension Project {
     public static let location = Lens<Project, Location>(
       view: { $0.location },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $0, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -93,8 +104,8 @@ extension Project {
     public static let memberData = Lens<Project, Project.MemberData>(
       view: { $0.memberData },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $0, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $0, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -104,8 +115,8 @@ extension Project {
     public static let name = Lens<Project, String>(
       view: { $0.name },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $0, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -115,8 +126,8 @@ extension Project {
     public static let personalization = Lens<Project, Project.Personalization>(
       view: { $0.personalization },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $0, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -126,8 +137,8 @@ extension Project {
     public static let photo = Lens<Project, Project.Photo>(
       view: { $0.photo },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $0,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -137,8 +148,8 @@ extension Project {
     public static let prelaunchActivated = Lens<Project, Bool?>(
       view: { $0.prelaunchActivated },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $0, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -148,8 +159,8 @@ extension Project {
     public static let rewards = Lens<Project, [Reward]>(
       view: { $0.rewards },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $0, slug: $1.slug, staffPick: $1.staffPick,
         state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -159,8 +170,8 @@ extension Project {
     public static let slug = Lens<Project, String>(
       view: { $0.slug },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $0, staffPick: $1.staffPick,
         state: $1.state, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -170,8 +181,8 @@ extension Project {
     public static let state = Lens<Project, Project.State>(
       view: { $0.state },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $0, stats: $1.stats, urls: $1.urls, video: $1.video
@@ -181,8 +192,8 @@ extension Project {
     public static let stats = Lens<Project, Project.Stats>(
       view: { $0.stats },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $0, urls: $1.urls, video: $1.video
@@ -192,8 +203,8 @@ extension Project {
     public static let urls = Lens<Project, Project.UrlsEnvelope>(
       view: { $0.urls },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $0, video: $1.video
@@ -203,8 +214,8 @@ extension Project {
     public static let video = Lens<Project, Project.Video?>(
       view: { $0.video },
       set: { Project(
-        blurb: $1.blurb, category: $1.category, country: $1.country,
-        creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
+        availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $1.category,
+        country: $1.country, creator: $1.creator, memberData: $1.memberData, dates: $1.dates, id: $1.id,
         location: $1.location, name: $1.name, personalization: $1.personalization, photo: $1.photo,
         prelaunchActivated: $1.prelaunchActivated, rewards: $1.rewards, slug: $1.slug,
         staffPick: $1.staffPick, state: $1.state, stats: $1.stats, urls: $1.urls, video: $0
