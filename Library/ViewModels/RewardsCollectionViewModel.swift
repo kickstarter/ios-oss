@@ -76,9 +76,9 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       refTag
     )
     .filter { arg in
-      let (project, reward, _) = arg
+      let (project, _, _) = arg
 
-      return project.state == .live && !userIsBacking(reward: reward, inProject: project)
+      return project.state == .live
     }
     .map { project, reward, refTag in
       PledgeData(project: project, reward: reward, refTag: refTag)
@@ -91,7 +91,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       }
       .map(first)
 
-    self.goToManagePledge = Signal.combineLatest(
+    let goToManagePledge = Signal.combineLatest(
       project,
       selectedRewardFromId,
       refTag
@@ -103,16 +103,23 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         PledgeData(project: project, reward: reward, refTag: refTag)
     }
 
+    self.goToManagePledge = goToManagePledge
+      .filter { _ in featureNativeCheckoutPledgeViewIsEnabled() }
+
     self.goToViewBacking = goToViewBacking
       .map { project in
         (project, AppEnvironment.current.currentUser)
       }
 
     self.goToPledge = goToPledge
-      .filter { _ in featureNativeCheckoutPledgeViewIsEnabled() }
+      .filter { project, reward, _ in
+        featureNativeCheckoutPledgeViewIsEnabled() && !userIsBacking(reward: reward, inProject: project)
+    }
 
     self.goToDeprecatedPledge = goToPledge
-      .filter { _ in !featureNativeCheckoutPledgeViewIsEnabled() }
+      .filter { _ in
+        !featureNativeCheckoutPledgeViewIsEnabled()
+    }
 
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()
