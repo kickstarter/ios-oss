@@ -1,17 +1,19 @@
 import Foundation
-import XCTest
 @testable import KsApi
+import XCTest
 
 final class CreateApplePayBackingInputTests: XCTestCase {
   func testCreateApplePayBacking_toInputDictionary_noNilValues() {
-    let input = CreateApplePayBackingInput(amount: "10.00",
-                                           locationId: 123,
-                                           paymentInstrumentName: "instrumentName",
-                                           paymentNetwork: "paymentNetwork",
-                                           projectId: 12345,
-                                           rewardId: 321,
-                                           stripeToken: "stripeTokenXYZ",
-                                           transactionIdentifier: "transactionId")
+    let input = CreateApplePayBackingInput(
+      amount: "10.00",
+      locationId: 123,
+      paymentInstrumentName: "instrumentName",
+      paymentNetwork: "paymentNetwork",
+      projectId: 12_345,
+      rewardId: 321,
+      stripeToken: "stripeTokenXYZ",
+      transactionIdentifier: "transactionId"
+    )
 
     let inputDictionary = input.toInputDictionary()
 
@@ -26,14 +28,16 @@ final class CreateApplePayBackingInputTests: XCTestCase {
   }
 
   func testCreateApplePayBacking_toInputDictionary_withNilValues() {
-    let input = CreateApplePayBackingInput(amount: "10.50",
-                                            locationId: nil,
-                                            paymentInstrumentName: "instrumentName",
-                                            paymentNetwork: "paymentNetwork",
-                                            projectId: 12345,
-                                            rewardId: nil,
-                                            stripeToken: "stripeTokenXYZ",
-                                            transactionIdentifier: "transactionId")
+    let input = CreateApplePayBackingInput(
+      amount: "10.50",
+      locationId: nil,
+      paymentInstrumentName: "instrumentName",
+      paymentNetwork: "paymentNetwork",
+      projectId: 12_345,
+      rewardId: nil,
+      stripeToken: "stripeTokenXYZ",
+      transactionIdentifier: "transactionId"
+    )
 
     let inputDictionary = input.toInputDictionary()
 

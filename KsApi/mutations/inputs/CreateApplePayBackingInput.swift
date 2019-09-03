@@ -10,8 +10,10 @@ public struct CreateApplePayBackingInput: GraphMutationInput {
   let stripeToken: String
   let transactionIdentifier: String
 
-  public init(amount: String, locationId: Int?, paymentInstrumentName: String, paymentNetwork: String,
-              projectId: Int, rewardId: Int?, stripeToken: String, transactionIdentifier: String) {
+  public init(
+    amount: String, locationId: Int?, paymentInstrumentName: String, paymentNetwork: String,
+    projectId: Int, rewardId: Int?, stripeToken: String, transactionIdentifier: String
+  ) {
     self.amount = amount
     self.locationId = locationId
     self.paymentInstrumentName = paymentInstrumentName
@@ -22,7 +24,7 @@ public struct CreateApplePayBackingInput: GraphMutationInput {
     self.transactionIdentifier = transactionIdentifier
   }
 
-  public func toInputDictionary() -> [String : Any] {
+  public func toInputDictionary() -> [String: Any] {
     var inputDictionary = [
       "amount": self.amount,
       "paymentInstrumentName": self.paymentInstrumentName,

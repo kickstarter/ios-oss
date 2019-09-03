@@ -478,7 +478,7 @@ private struct NumberFormatterConfig {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
     generatesDecimalNumbers: false,
-    locale: Locale(identifier: "en"), //Always format decimal currency amounts using En locale
+    locale: Locale(identifier: "en"), // Always format decimal currency amounts using En locale
     currencySymbol: "$"
   )
 
@@ -572,7 +572,7 @@ extension NumberFormatterConfig {
         minimumFractionDigits: $0,
         generatesDecimalNumbers: $1.generatesDecimalNumbers, locale: $1.locale,
         currencySymbol: $1.currencySymbol
-        ) }
+      ) }
     )
 
     fileprivate static let generatesDecimalNumbers = Lens<NumberFormatterConfig, Bool>(
