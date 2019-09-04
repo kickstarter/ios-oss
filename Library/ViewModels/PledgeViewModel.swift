@@ -19,7 +19,7 @@ public protocol PledgeViewModelOutputs {
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
 
-  var createBackingSuccess: Signal<Void, Never> { get }
+  var createBackingSuccess: Signal<String, Never> { get }
   var createBackingFailure: Signal<String, Never> { get }
 }
 
@@ -89,7 +89,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map {
         $0.localizedDescription
       }
-    self.createBackingSuccess = createBackingOnLoad.values().ignoreValues()
+    self.createBackingSuccess = createBackingOnLoad.values().map { $0.createBacking.checkout.state.rawValue }
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -124,7 +124,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
 
-  public let createBackingSuccess: Signal<Void, Never>
+  public let createBackingSuccess: Signal<String, Never>
   public let createBackingFailure: Signal<String, Never>
 
   public var inputs: PledgeViewModelInputs { return self }

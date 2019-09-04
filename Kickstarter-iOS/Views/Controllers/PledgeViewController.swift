@@ -194,8 +194,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.viewModel.outputs.createBackingSuccess
       .observeForUI()
-      .observeValues { [weak self] _ in
-        print("BACKING Success!!!")
+      .observeValues { [weak self] state in
+        print("\(state)")
     }
 
 

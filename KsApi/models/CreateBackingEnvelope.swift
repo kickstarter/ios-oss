@@ -1,15 +1,17 @@
 import Foundation
 
 public struct CreateBackingEnvelope: Decodable {
-  public struct CreateBacking {
-    public var checkoutState: Checkout.CheckoutState
+  public var createBacking: CreateBacking
+
+  public struct CreateBacking: Decodable {
+    public var checkout: Checkout
   }
 }
 
 public struct Checkout: Decodable {
-  public var checkoutState: CheckoutState
+  public var state: State
 
-  public enum CheckoutState: String, Decodable, CaseIterable {
+  public enum State: String, Decodable, CaseIterable {
     case authorizing = "AUTHORIZING"
     case verifying = "VERIFYING"
     case successful = "SUCCESSFUL"
@@ -17,17 +19,13 @@ public struct Checkout: Decodable {
   }
 }
 
-extension CreateBackingEnvelope.CreateBacking {
+extension Checkout {
   enum CodingKeys: String, CodingKey {
-    case createBacking
-    case checkout
-    case checkoutState
+    case state
   }
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-    self.checkoutState = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .createBacking)
-      .nestedContainer(keyedBy: CodingKeys.self, forKey: .checkout)
-      .decode(Checkout.CheckoutState.self, forKey: .checkoutState)
+    self.state = try values.decode(State.self, forKey: .state)
   }
 }
