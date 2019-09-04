@@ -59,6 +59,8 @@ final class ManagePledgeViewController: UIViewController {
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
   }
 
+  // MARK: - Configuration
+
   func configureWith(project: Project, reward: Reward) {
     self.viewModel.inputs.configureWith(project, reward: reward)
   }
