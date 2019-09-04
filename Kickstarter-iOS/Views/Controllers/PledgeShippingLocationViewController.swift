@@ -136,29 +136,34 @@ final class PledgeShippingLocationViewController: UIViewController {
     self.viewModel.inputs.shippingLocationButtonTapped()
   }
 
-  @objc private func dismissShippingRules() {
-    self.viewModel.inputs.dismissShippingRulesButtonTapped()
-  }
-
   // MARK: - Functions
 
   private func presentShippingRules(
     _ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
   ) {
     let viewController = ShippingRulesTableViewController.instantiate()
-      |> \.navigationItem.leftBarButtonItem .~ UIBarButtonItem(
-        barButtonSystemItem: .cancel,
-        target: self,
-        action: #selector(PledgeShippingLocationViewController.dismissShippingRules)
-      )
     viewController.configureWith(
       project, shippingRules: shippingRules,
       selectedShippingRule: selectedShippingRule
     )
+    viewController.delegate = self
 
     let navigationController = UINavigationController(rootViewController: viewController)
 
     self.presentViewControllerWithSheetOverlay(navigationController, offset: Layout.Sheet.offset)
+  }
+}
+
+extension PledgeShippingLocationViewController: ShippingRulesTableViewControllerDelegate {
+  func shippingRulesTableViewControllerCancelButtonTapped() {
+    self.viewModel.inputs.shippingRulesCancelButtonTapped()
+  }
+
+  func shippingRulesTableViewController(
+    _: ShippingRulesTableViewController,
+    didSelect shippingRule: ShippingRule
+  ) {
+    self.viewModel.inputs.shippingRuleUpdated(to: shippingRule)
   }
 }
 

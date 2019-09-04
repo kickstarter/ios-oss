@@ -9,6 +9,7 @@ final class ShippingRulesViewModelTests: TestCase {
 
   private let deselectCellAtIndex = TestObserver<Int, Never>()
   private let flashScrollIndicators = TestObserver<Void, Never>()
+  private let notifyDelegateOfSelectedShippingRule = TestObserver<ShippingRule, Never>()
   private let reloadDataWithShippingRulesData = TestObserver<[ShippingRuleData], Never>()
   private let reloadDataWithShippingRulesReload = TestObserver<Bool, Never>()
   private let scrollToCellAtIndex = TestObserver<Int, Never>()
@@ -19,7 +20,9 @@ final class ShippingRulesViewModelTests: TestCase {
 
     self.vm.outputs.deselectCellAtIndex.observe(self.deselectCellAtIndex.observer)
     self.vm.outputs.flashScrollIndicators.observe(self.flashScrollIndicators.observer)
-
+    self.vm.outputs.notifyDelegateOfSelectedShippingRule.observe(
+      self.notifyDelegateOfSelectedShippingRule.observer
+    )
     self.vm.outputs.reloadDataWithShippingRules.map(first).observe(
       self.reloadDataWithShippingRulesData.observer
     )
@@ -70,6 +73,7 @@ final class ShippingRulesViewModelTests: TestCase {
     self.vm.inputs.didSelectShippingRule(at: 0)
 
     self.flashScrollIndicators.assertValueCount(1)
+    self.notifyDelegateOfSelectedShippingRule.assertValues([shippingRule1])
     self.reloadDataWithShippingRulesData.assertValues([
       [
         ShippingRuleData(
@@ -94,6 +98,7 @@ final class ShippingRulesViewModelTests: TestCase {
         )
       ]
     ])
+
     self.reloadDataWithShippingRulesReload.assertValues([true, false])
     self.scrollToCellAtIndex.assertValues([1])
 
@@ -162,6 +167,50 @@ final class ShippingRulesViewModelTests: TestCase {
     self.vm.inputs.didSelectShippingRule(at: 2)
 
     self.flashScrollIndicators.assertValueCount(1)
+    self.notifyDelegateOfSelectedShippingRule.assertValues([shippingRule1, shippingRule3])
+    self.reloadDataWithShippingRulesData.assertValues([
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule2, shippingRule: shippingRule3
+        )
+      ],
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule1, shippingRule: shippingRule3
+        )
+      ],
+      [
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule3, shippingRule: shippingRule1
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule3, shippingRule: shippingRule2
+        ),
+        ShippingRuleData(
+          project: project, selectedShippingRule: shippingRule3, shippingRule: shippingRule3
+        )
+      ]
+    ])
+    self.reloadDataWithShippingRulesReload.assertValues([true, false, false])
+    self.scrollToCellAtIndex.assertValues([1])
+
+    // Selecting the same index as is currently selected does nothing
+    self.vm.inputs.didSelectShippingRule(at: 1)
+
+    self.flashScrollIndicators.assertValueCount(1)
+    self.notifyDelegateOfSelectedShippingRule.assertValues([shippingRule1, shippingRule3])
     self.reloadDataWithShippingRulesData.assertValues([
       [
         ShippingRuleData(
@@ -220,12 +269,12 @@ final class ShippingRulesViewModelTests: TestCase {
     self.deselectCellAtIndex.assertValues([2])
     self.selectCellAtIndex.assertValues([2, 0])
 
-    // Selecting the same index as is currently selected does nothing Jon Snow
-    self.vm.inputs.didSelectShippingRule(at: 0)
+    self.vm.inputs.didSelectShippingRule(at: 1)
 
-    self.deselectCellAtIndex.assertValues([2])
-    self.selectCellAtIndex.assertValues([2, 0])
+    self.deselectCellAtIndex.assertValues([2, 0])
+    self.selectCellAtIndex.assertValues([2, 0, 1])
 
+    // Selecting the same index as is currently selected does nothing
     self.vm.inputs.didSelectShippingRule(at: 1)
 
     self.deselectCellAtIndex.assertValues([2, 0])
