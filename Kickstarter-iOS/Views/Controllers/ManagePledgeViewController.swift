@@ -41,7 +41,7 @@ final class ManagePledgeViewController: UIViewController {
 
     _ = self.navigationController?.navigationBar
       ?|> \.shadowImage .~ UIImage()
-      ?|> \.isTranslucent .~ true
+      ?|> \.isTranslucent .~ false
       ?|> \.barTintColor .~ .ksr_grey_400
 
     _ = self.navigationItem
