@@ -125,7 +125,7 @@ public enum Format {
   public static func attributedCurrency(
     _ amount: Double,
     country: Project.Country,
-    omitCurrencyCode: Bool = false,
+    omitCurrencyCode: Bool = true,
     defaultAttributes: String.Attributes = [:],
     superscriptAttributes: String.Attributes = [:],
     env: Environment = AppEnvironment.current
@@ -134,6 +134,7 @@ public enum Format {
     let config = NumberFormatterConfig.defaultCurrencyConfig
       |> NumberFormatterConfig.lens.locale .~ env.locale
       |> NumberFormatterConfig.lens.currencySymbol .~ symbol
+      |> NumberFormatterConfig.lens.minimumFractionDigits .~ 2
       |> NumberFormatterConfig.lens.maximumFractionDigits .~ 2
 
     guard let formatter = NumberFormatterConfig.cachedFormatter(forConfig: config)

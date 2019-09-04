@@ -102,6 +102,28 @@ final class FormatTests: TestCase {
     XCTAssertEqual(Format.decimalCurrency(for: 10.511), "10.51", "Rounds down to 2 fraction digits")
   }
 
+  func testAttributedCurrency() {
+    withEnvironment(locale: Locale(identifier: "en")) {
+      withEnvironment(countryCode: "US") {
+        XCTAssertEqual(Format.attributedCurrency(1_000, country: .us)!.string, "$1,000.00")
+        XCTAssertEqual(Format.attributedCurrency(1_000, country: .ca)!.string, " CA$ 1,000.00")
+        XCTAssertEqual(Format.attributedCurrency(1_000, country: .gb)!.string, "£1,000.00")
+        XCTAssertEqual(Format.attributedCurrency(1_000, country: .dk)!.string, " DKK 1,000.00")
+        XCTAssertEqual(Format.attributedCurrency(1_000, country: .de)!.string, "€1,000.00")
+        XCTAssertEqual(Format.attributedCurrency(1_000, country: .jp)!.string, "¥1,000.00")
+
+        XCTAssertEqual(Format.attributedCurrency(1_000, country: .ca,
+                                                 omitCurrencyCode: true)!.string, " CA$ 1,000.00")
+        XCTAssertEqual(Format.attributedCurrency(1_000, country: .ca,
+                                                 omitCurrencyCode: false)!.string, " CA$ 1,000.00")
+        XCTAssertEqual(Format.attributedCurrency(1_000, country: .us,
+                                                 omitCurrencyCode: true)!.string, "$1,000.00")
+        XCTAssertEqual(Format.attributedCurrency(1_000, country: .us,
+                                                 omitCurrencyCode: false)!.string, " US$ 1,000.00")
+      }
+    }
+  }
+
   func testCurrency() {
     withEnvironment(locale: Locale(identifier: "en")) {
       withEnvironment(countryCode: "US") {
