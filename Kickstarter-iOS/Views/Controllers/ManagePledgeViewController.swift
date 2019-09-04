@@ -11,7 +11,7 @@ final class ManagePledgeViewController: UIViewController {
       image: UIImage(named: "icon--cross"),
       style: .plain,
       target: self,
-      action: #selector(RewardsCollectionViewController.closeButtonTapped)
+      action: #selector(ManagePledgeViewController.closeButtonTapped)
     )
   }()
 
@@ -29,7 +29,7 @@ final class ManagePledgeViewController: UIViewController {
 
   private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
 
-  MARK: - Lifecycle
+  // MARK: - Lifecycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -43,8 +43,9 @@ final class ManagePledgeViewController: UIViewController {
       ?|> \.isTranslucent .~ true
       ?|> \.barTintColor .~ .ksr_grey_400
 
-    self.navigationItem.setRightBarButton(self.editButton, animated: false)
-    self.navigationItem.setLeftBarButton(self.closeButton, animated: false)
+    _ = self.navigationItem
+      ?|> \.leftBarButtonItem .~ self.closeButton
+      ?|> \.rightBarButtonItem .~ self.editButton
   }
 
   // MARK: - Styles
@@ -53,7 +54,7 @@ final class ManagePledgeViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> checkoutBackgroundStyle
+      |> viewStyle
 
     _ = self.closeButton
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
@@ -67,7 +68,7 @@ final class ManagePledgeViewController: UIViewController {
 
   // MARK: Actions
 
-  @objc func editButtonTapped() {
+  @objc private func editButtonTapped() {
     let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
     actionSheet.addAction(
@@ -76,10 +77,17 @@ final class ManagePledgeViewController: UIViewController {
     actionSheet.addAction(
       UIAlertAction(title: Strings.Cancel(), style: .cancel)
     )
-    self.present(actionSheet, animated: true, completion: nil)
+    self.present(actionSheet, animated: true)
   }
 
-  @objc func closeButtonTapped() {
-    self.navigationController?.dismiss(animated: true)
+  @objc private func closeButtonTapped() {
+    self.dismiss(animated: true)
   }
+}
+
+// MARK: Styles
+
+public let viewStyle: ViewStyle = { (view: UIView) in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_grey_400
 }

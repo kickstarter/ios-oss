@@ -245,9 +245,11 @@ final class RewardsCollectionViewController: UICollectionViewController {
     managePledgeViewController.configureWith(project: project, reward: reward)
 
     let nav = UINavigationController(rootViewController: managePledgeViewController)
-      |> \.modalPresentationStyle .~ .formSheet
-
-    self.present(nav, animated: true, completion: nil)
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = nav
+        |> \.modalPresentationStyle .~ .formSheet
+    }
+    self.present(nav, animated: true)
   }
 
   private func goToPledge(project: Project, reward: Reward, refTag _: RefTag?) {
