@@ -4,6 +4,8 @@ import Prelude
 import UIKit
 
 final class ManagePledgeViewController: UIViewController {
+  // MARK: - Properties
+
   private lazy var closeButton: UIBarButtonItem = {
     UIBarButtonItem(
       image: UIImage(named: "icon--cross"),
