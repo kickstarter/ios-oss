@@ -1,13 +1,18 @@
 import KsApi
 import Prelude
+import PassKit
 import ReactiveSwift
 
 public protocol PledgePaymentMethodsViewModelInputs {
+  func applePayButtonTapped()
   func configureWith(_ user: User)
   func viewDidLoad()
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
+  // To configure Stripe SDK Integration with the required fields
+  var configureStripeIntegration: Signal<Void, Never> { get }
+  var goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
 }
