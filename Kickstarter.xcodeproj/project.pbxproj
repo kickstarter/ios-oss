@@ -124,6 +124,8 @@
 		379CFFFF2242DAF900F6F0C2 /* UIImageView+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */; };
 		37BB45C92243031200E7392A /* UIView+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BB45C82243031100E7392A /* UIView+AutoLayout.swift */; };
 		37BFD8802208F24300815C9C /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
+		37C7B81523187BA400C78278 /* ShippingRuleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C7B81423187BA400C78278 /* ShippingRuleCellViewModel.swift */; };
+		37C7B81723187BAC00C78278 /* ShippingRuleCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C7B81623187BAC00C78278 /* ShippingRuleCellViewModelTests.swift */; };
 		37CBA64D221E10E100E6CAB6 /* HelpTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */; };
 		37D6722F221E61D300B6D415 /* SettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D671F6221E61B600B6D415 /* SettingsFooterView.swift */; };
 		37D67231221E656500B6D415 /* SettingsFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37D67230221E656500B6D415 /* SettingsFooterView.xib */; };
@@ -1448,6 +1450,8 @@
 		379CFFF12242DAC400F6F0C2 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		37BB45C82243031100E7392A /* UIView+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayout.swift"; sourceTree = "<group>"; };
 		37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordTableViewController.swift; sourceTree = "<group>"; };
+		37C7B81423187BA400C78278 /* ShippingRuleCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingRuleCellViewModel.swift; sourceTree = "<group>"; };
+		37C7B81623187BAC00C78278 /* ShippingRuleCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingRuleCellViewModelTests.swift; sourceTree = "<group>"; };
 		37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTypeTests.swift; sourceTree = "<group>"; };
 		37D671F6221E61B600B6D415 /* SettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFooterView.swift; sourceTree = "<group>"; };
 		37D67230221E656500B6D415 /* SettingsFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsFooterView.xib; sourceTree = "<group>"; };
@@ -3577,6 +3581,8 @@
 				D04AAC09218BB70800CF713E /* SettingsViewModelTests.swift */,
 				A75C81161D210BD700B5AD03 /* ShareViewModel.swift */,
 				A7ED1F811E831C5C00BFFA01 /* ShareViewModelTests.swift */,
+				37C7B81423187BA400C78278 /* ShippingRuleCellViewModel.swift */,
+				37C7B81623187BAC00C78278 /* ShippingRuleCellViewModelTests.swift */,
 				3767EDB022CFFF2B0088E8E4 /* ShippingRulesViewModel.swift */,
 				3767EDB222CFFF380088E8E4 /* ShippingRulesViewModelTests.swift */,
 				A74900171D00E23000BC3BE7 /* SignupViewModel.swift */,
@@ -4544,6 +4550,7 @@
 				3706408622A8A6D700889CBD /* PledgeShippingLocationViewModel.swift in Sources */,
 				3757D0CE228E51F800241AE6 /* UIFont.swift in Sources */,
 				778F891C22D3E37300D095C5 /* Feature+Helpers.swift in Sources */,
+				37C7B81523187BA400C78278 /* ShippingRuleCellViewModel.swift in Sources */,
 				9D9F581B1D1324E200CE81DE /* DashboardViewModel.swift in Sources */,
 				D796867C20FE655300E54C61 /* SettingsFollowCellViewModel.swift in Sources */,
 				D79A01A42242E8CD004BC6A8 /* AppEnvironmentType.swift in Sources */,
@@ -4720,6 +4727,7 @@
 				3706408822A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift in Sources */,
 				A7ED1F2B1E830FDC00BFFA01 /* IsValidEmailTests.swift in Sources */,
 				A7ED1FEB1E831C5C00BFFA01 /* DashboardReferrersCellViewModelTests.swift in Sources */,
+				37C7B81723187BAC00C78278 /* ShippingRuleCellViewModelTests.swift in Sources */,
 				37FDAFAD2273BA4B00662CC8 /* UIStackView+Tests.swift in Sources */,
 				D04AACA7218BB72100CF713E /* DiscoveryProjectCategoryViewModelTests.swift in Sources */,
 				A7ED1FD41E831C5C00BFFA01 /* DashboardRewardRowStackViewViewModelTests.swift in Sources */,
