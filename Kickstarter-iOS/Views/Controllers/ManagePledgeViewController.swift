@@ -29,6 +29,8 @@ final class ManagePledgeViewController: UIViewController {
 
   private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
 
+  MARK: - Lifecycle
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
