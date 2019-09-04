@@ -17,7 +17,8 @@ final class ManagePledgeViewController: UIViewController {
 
   private lazy var editButton: UIBarButtonItem = {
     UIBarButtonItem(
-      barButtonSystemItem: .edit,
+      image: UIImage(named: "icon--more-menu"),
+      style: .plain,
       target: self,
       action: #selector(ManagePledgeViewController.editButtonTapped)
     )
@@ -58,6 +59,7 @@ final class ManagePledgeViewController: UIViewController {
 
     _ = self.closeButton
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+      |> \.width .~ Styles.minTouchSize.width
   }
 
   // MARK: - Configuration
