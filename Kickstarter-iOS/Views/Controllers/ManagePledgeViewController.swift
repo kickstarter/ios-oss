@@ -47,6 +47,8 @@ final class ManagePledgeViewController: UIViewController {
     self.navigationItem.setLeftBarButton(self.closeButton, animated: false)
   }
 
+  // MARK: - Styles
+
   override func bindStyles() {
     super.bindStyles()
 
