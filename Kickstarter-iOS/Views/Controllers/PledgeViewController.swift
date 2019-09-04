@@ -185,20 +185,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.createBackingFailure
-      .observeForControllerAction()
-      .observeValues { [weak self] errorMessage in
-        self?.present(UIAlertController.genericError(errorMessage),
-                      animated: true, completion: nil)
-    }
-
-    self.viewModel.outputs.createBackingSuccess
-      .observeForUI()
-      .observeValues { [weak self] state in
-        print("\(state)")
-    }
-
-
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
