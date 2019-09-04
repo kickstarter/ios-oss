@@ -1124,6 +1124,7 @@
 		D755ECA52315E6E10096F189 /* CreateBackingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECA42315E6E10096F189 /* CreateBackingInput.swift */; };
 		D755ECA72315E95C0096F189 /* CreateBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */; };
 		D755ECA92319AF4D0096F189 /* CreateBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECA82319AF4D0096F189 /* CreateBackingEnvelope.swift */; };
+		D755ECAB232005A70096F189 /* Checkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECAA232005A70096F189 /* Checkout.swift */; };
 		D75DACA8221DC4340027F478 /* CreatePasswordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DACA7221DC4340027F478 /* CreatePasswordInput.swift */; };
 		D764370A224040D100DAFC9E /* SharedFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76436D1224040B700DAFC9E /* SharedFunctions.swift */; };
 		D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */; };
@@ -2383,6 +2384,7 @@
 		D755ECA42315E6E10096F189 /* CreateBackingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingInput.swift; sourceTree = "<group>"; };
 		D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingMutation.swift; sourceTree = "<group>"; };
 		D755ECA82319AF4D0096F189 /* CreateBackingEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingEnvelope.swift; sourceTree = "<group>"; };
+		D755ECAA232005A70096F189 /* Checkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkout.swift; sourceTree = "<group>"; };
 		D75DACA7221DC4340027F478 /* CreatePasswordInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordInput.swift; sourceTree = "<group>"; };
 		D76436D1224040B700DAFC9E /* SharedFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedFunctions.swift; sourceTree = "<group>"; };
 		D764373F22414FA900DAFC9E /* AppEnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironmentType.swift; sourceTree = "<group>"; };
@@ -3660,6 +3662,7 @@
 				D015877A1EEB2ED6006E7684 /* ActivityEnvelope.swift */,
 				D015877B1EEB2ED6006E7684 /* ActivityTests.swift */,
 				D6B9F90922035840003282A5 /* Author.swift */,
+				D755ECAA232005A70096F189 /* Checkout.swift */,
 				D6B9F94422035E34003282A5 /* AuthorTests.swift */,
 				D015877C1EEB2ED6006E7684 /* Backing.swift */,
 				D015877D1EEB2ED6006E7684 /* BackingTests.swift */,
@@ -5427,6 +5430,7 @@
 				D01589871EEB2ED7006E7684 /* UpdatePledgeEnvelope.swift in Sources */,
 				D01588DD1EEB2ED7006E7684 /* User.NotificationsLenses.swift in Sources */,
 				D015886B1EEB2ED7006E7684 /* DiscoveryParams.swift in Sources */,
+				D755ECAB232005A70096F189 /* Checkout.swift in Sources */,
 				D01588BF1EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift in Sources */,
 				D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */,
 			);
