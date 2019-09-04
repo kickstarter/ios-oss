@@ -203,17 +203,6 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
     self.dismiss(animated: true, completion: nil)
   }
 
-  private func handleKeyboardVisibilityDidChange(_ change: Keyboard.Change) {
-    UIView.animate(
-      withDuration: change.duration,
-      delay: 0.0,
-      options: change.options,
-      animations: { [weak self] in
-        self?.scrollView.contentInset.bottom = change.frame.height
-      }, completion: nil
-    )
-  }
-
   private func onePasswordFindPassword(forURLString string: String) {
     OnePasswordExtension.shared()
       .findLogin(forURLString: string, for: self, sender: self.onePasswordButton) { result, _ in

@@ -56,7 +56,7 @@ final class RewardCellProjectBackingStateTypeTests: TestCase {
     )
   }
 
-  func test_Backed_Error() {
+  func test_Backed_Error_Live() {
     let backing = Backing.template
       |> Backing.lens.status .~ .errored
 
@@ -66,7 +66,22 @@ final class RewardCellProjectBackingStateTypeTests: TestCase {
       |> Project.lens.state .~ .live
 
     XCTAssertEqual(
-      .backedError,
+      .backed(live: .live),
+      RewardCellProjectBackingStateType.state(with: project)
+    )
+  }
+
+  func test_Backed_Error_NonLive() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .errored
+
+    let project = .template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.state .~ .successful
+
+    XCTAssertEqual(
+      .backed(live: .nonLive),
       RewardCellProjectBackingStateType.state(with: project)
     )
   }

@@ -499,6 +499,48 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.goToCheckoutProject.assertValues([project])
   }
 
+  func testGoToPaymentAuthorization_NoShipping_LimitedSupportedNetworks() {
+    let project = Project.template
+      |> \.availableCardTypes .~ ["AMEX"]
+    let reward = Reward.template
+
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: []))) {
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.applePayButtonHidden.assertValues([false])
+      self.goToPaymentAuthorization.assertValues([])
+
+      self.vm.inputs.applePayButtonTapped()
+
+      let paymentRequest: NSDictionary = [
+        "countryCode": project.country.countryCode,
+        "currencyCode": project.country.currencyCode,
+        "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
+        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
+        "supportedNetworks": [PKPaymentNetwork.amex],
+        "shippingType": PKShippingType.shipping.rawValue,
+        "paymentSummaryItems": [
+          [
+            "label": project.name,
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ],
+          [
+            "label": "Kickstarter (if funded)",
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ]
+        ]
+      ]
+
+      self.goToPaymentAuthorization.assertValues([paymentRequest])
+      self.goToCheckoutRequest.assertValueCount(0)
+      self.goToCheckoutProject.assertValues([])
+    }
+  }
+
   func testGoToPaymentAuthorization_NoShipping_NoRewardTitle() {
     let project = Project.template
     let reward = Reward.template
@@ -518,7 +560,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -542,7 +584,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
   func testGoToPaymentAuthorization_NoShipping_WithRewardTitle() {
     let project = Project.template
-    let reward = Reward.template |> Reward.lens.title .~ "The thing!"
+    let reward = Reward.template
+      |> Reward.lens.title .~ "The thing!"
 
     withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: []))) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
@@ -559,7 +602,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -602,7 +645,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -649,7 +692,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:
@@ -703,7 +746,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:
@@ -759,7 +802,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:
@@ -1005,42 +1048,6 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.goToThanks.assertValues([])
     self.pledgeIsLoading.assertValueCount(0)
     self.loadingOverlayIsHidden.assertValues([true])
-  }
-
-  func testDiscoverCard_NotAvailable_ProjectsOutsideUS() {
-    let project = Project.template
-      |> Project.lens.country .~ Project.Country.au
-    let user = User.template
-
-    withEnvironment(currentUser: user) {
-      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
-        .contains(.discover))
-      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
-        .contains(.chinaUnionPay))
-    }
-  }
-
-  func testDiscoverCard_NotAvailable_ProjectsInsideUS_UserOutsideUS() {
-    let env = Environment.init(countryCode: "AU")
-    let project = Project.template
-
-    withEnvironment(env) {
-      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
-        .contains(.discover))
-      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
-        .contains(.chinaUnionPay))
-    }
-  }
-
-  func testDiscoverCard_Available_ProjectsInsideUS_UserInUS() {
-    let project = Project.template
-    let user = User.template
-    let config = Config.template
-      |> Config.lens.countryCode .~ "AU"
-
-    withEnvironment(config: config, currentUser: user) {
-      XCTAssertTrue(PKPaymentAuthorizationViewController.supportedNetworks(for: project).contains(.discover))
-    }
   }
 
   func testApplePay_LoggedOutFlow() {

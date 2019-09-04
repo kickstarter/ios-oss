@@ -1045,12 +1045,12 @@ final class RewardCardViewModelTests: TestCase {
       rewardOrBacking: .left(reward)
     )
 
-    self.stateIconImageName.assertValues(["icon--alert"])
+    self.stateIconImageName.assertDidNotEmitValue()
     self.stateIconImageTintColor.assertValues([.ksr_apricot_500])
     self.stateIconImageViewContainerBackgroundColor.assertValues(
       [UIColor.ksr_apricot_500.withAlphaComponent(0.06)]
     )
-    self.stateIconImageViewContainerHidden.assertValues([false])
+    self.stateIconImageViewContainerHidden.assertValues([true])
   }
 
   func testStateIconImage_NonBacked() {

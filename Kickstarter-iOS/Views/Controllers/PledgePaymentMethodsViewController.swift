@@ -99,12 +99,20 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
       }
+
+    self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
   }
 
   // MARK: - Configuration
 
-  func configureWith(_ user: User) {
-    self.viewModel.inputs.configureWith(user)
+  func configure(with value: (user: User, project: Project)) {
+    let pledgePaymentMethodsValue = PledgePaymentMethodsValue(
+      user: value.user,
+      project: value.project,
+      applePayCapable: PKPaymentAuthorizationViewController.applePayCapable(for: value.project)
+    )
+
+    self.viewModel.inputs.configureWith(pledgePaymentMethodsValue)
   }
 
   // MARK: - Actions
