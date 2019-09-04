@@ -6,8 +6,8 @@ import ReactiveSwift
 
 public protocol PledgeShippingLocationViewModelInputs {
   func configureWith(project: Project, reward: Reward)
-  func dismissShippingRulesButtonTapped()
   func shippingLocationButtonTapped()
+  func shippingRulesCancelButtonTapped()
   func shippingRuleUpdated(to rule: ShippingRule)
   func viewDidLoad()
 }
@@ -89,7 +89,12 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     self.shippingLocationButtonTitle = self.notifyDelegateOfSelectedShippingRule
       .map { $0.location.localizedName }
 
-    self.dismissShippingRules = self.dismissShippingRulesButtonTappedProperty.signal
+    self.dismissShippingRules = Signal.merge(
+      self.shippingRulesCancelButtonTappedProperty.signal,
+      self.shippingRuleUpdatedSignal.signal
+        .ignoreValues()
+        .ksr_debounce(.milliseconds(300), on: AppEnvironment.current.scheduler)
+    )
   }
 
   private let configDataProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -97,15 +102,15 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     self.configDataProperty.value = (project, reward)
   }
 
-  private let dismissShippingRulesButtonTappedProperty = MutableProperty(())
-  public func dismissShippingRulesButtonTapped() {
-    self.dismissShippingRulesButtonTappedProperty.value = ()
-  }
-
   private let (shippingLocationButtonTappedSignal, shippingLocationButtonTappedObserver)
     = Signal<Void, Never>.pipe()
   public func shippingLocationButtonTapped() {
     self.shippingLocationButtonTappedObserver.send(value: ())
+  }
+
+  private let shippingRulesCancelButtonTappedProperty = MutableProperty(())
+  public func shippingRulesCancelButtonTapped() {
+    self.shippingRulesCancelButtonTappedProperty.value = ()
   }
 
   private let (shippingRuleUpdatedSignal, shippingRuleUpdatedObserver) = Signal<ShippingRule, Never>.pipe()

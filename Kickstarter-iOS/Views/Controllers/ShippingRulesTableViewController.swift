@@ -3,11 +3,20 @@ import Library
 import Prelude
 import UIKit
 
+protocol ShippingRulesTableViewControllerDelegate: AnyObject {
+  func shippingRulesTableViewControllerCancelButtonTapped()
+  func shippingRulesTableViewController(
+    _ tableViewController: ShippingRulesTableViewController,
+    didSelect rule: ShippingRule
+  )
+}
+
 final class ShippingRulesTableViewController: UITableViewController {
   // MARK: - Properties
 
   private let dataSource: ShippingRulesDataSource = ShippingRulesDataSource()
   private let viewModel: ShippingRulesViewModelType = ShippingRulesViewModel()
+  weak var delegate: ShippingRulesTableViewControllerDelegate?
 
   // MARK: - Lifecycle
 
@@ -17,6 +26,13 @@ final class ShippingRulesTableViewController: UITableViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    _ = self
+      |> \.navigationItem.leftBarButtonItem .~ UIBarButtonItem(
+        barButtonSystemItem: .cancel,
+        target: self,
+        action: #selector(ShippingRulesTableViewController.dismissViewController)
+      )
 
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
@@ -42,6 +58,14 @@ final class ShippingRulesTableViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.tableView.flashScrollIndicators()
+      }
+
+    self.viewModel.outputs.notifyDelegateOfSelectedShippingRule
+      .observeForUI()
+      .observeValues { [weak self] selectedShippingRule in
+        guard let self = self else { return }
+
+        self.delegate?.shippingRulesTableViewController(self, didSelect: selectedShippingRule)
       }
 
     self.viewModel.outputs.reloadDataWithShippingRules
@@ -76,6 +100,12 @@ final class ShippingRulesTableViewController: UITableViewController {
       shippingRules: shippingRules,
       selectedShippingRule: selectedShippingRule
     )
+  }
+
+  // MARK: - Actions
+
+  @objc private func dismissViewController() {
+    self.delegate?.shippingRulesTableViewControllerCancelButtonTapped()
   }
 
   // MARK: - UITableViewDelegate
