@@ -51,6 +51,14 @@ public enum Format {
     return formatter.string(for: percentage) ?? (String(percentage) + "%")
   }
 
+  /**
+    Formats a Double currency amount into a string.
+
+   - parameter amount: A Double associated with a currency amount
+
+   - returns: A formatted string with 2 fraction digits
+   */
+
   public static func decimalCurrency(for amount: Double) -> String {
     let formatter = NumberFormatterConfig.cachedFormatter(
       forConfig: .defaultDecimalCurrencyConfig
