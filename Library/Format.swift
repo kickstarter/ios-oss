@@ -507,7 +507,8 @@ private struct NumberFormatterConfig {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
     generatesDecimalNumbers: false,
-    locale: Locale(identifier: "en"), // Always format decimal currency amounts using En locale
+    // Decimal currency amounts are always formatted using En locale for compatibility with the API
+    locale: Locale(identifier: "en"),
     currencySymbol: "$"
   )
 
