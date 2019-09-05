@@ -7,12 +7,12 @@ import ReactiveSwift
 public typealias StripeConfigurationData = (merchantIdentifier: String, publishableKey: String)
 
 public protocol PledgeViewModelInputs {
-  func applePayTapped()
+  func applePayButtonTapped()
   func configureWith(project: Project, reward: Reward)
-  func paymentAuthorization(didAuthorizePayment: PKPayment)
+  func paymentAuthorization(didAuthorizePayment payment: PKPayment)
   func pledgeAmountDidUpdate(to amount: Double)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
-  func stripeTokenCreated(tokenOrError: Either<String, Error>)
+  func stripeTokenCreated(tokenOrError: Either<String, Error>) -> PKPaymentAuthorizationStatus
   func userSessionStarted()
   func viewDidLoad()
 }
@@ -34,6 +34,8 @@ public protocol PledgeViewModelType {
 }
 
 public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, PledgeViewModelOutputs {
+  private let createApplePayBackingAction: Action<String, PKPaymentAuthorizationStatus, Never>
+
   public init() {
     let projectAndReward = Signal.combineLatest(
       self.configureProjectAndRewardProperty.signal,
@@ -102,18 +104,28 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     self.goToApplePayPaymentAuthorization = paymentAuthorizationData
-      .takeWhen(self.applePayTappedProperty.signal)
+      .takeWhen(self.applePayButtonTappedSignal)
       .map(PKPaymentRequest.paymentRequest(for:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
+
+    self.createApplePayBackingAction = Action<String, PKPaymentAuthorizationStatus, Never>(execute: { token in
+
+
+    })
   }
 
-  private let applePayTappedProperty = MutableProperty(())
-  public func applePayTapped() {
-    self.applePayTappedProperty.value = ()
+  private let (applePayButtonTappedSignal, applePayButtonTappedObserver) = Signal<Void, Never>.pipe()
+  public func applePayButtonTapped() {
+    self.applePayButtonTappedObserver.send(value: ())
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
   public func configureWith(project: Project, reward: Reward) {
     self.configureProjectAndRewardProperty.value = (project, reward)
+  }
+
+  private let (pkPaymentSignal, pkPaymentObserver) = Signal<PKPayment, Never>.pipe()
+  public func paymentAuthorization(didAuthorizePayment payment: PKPayment) {
+    self.pkPaymentObserver.send(value: payment)
   }
 
   private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
@@ -124,6 +136,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule, Never>.pipe()
   public func shippingRuleSelected(_ shippingRule: ShippingRule) {
     self.shippingRuleSelectedObserver.send(value: shippingRule)
+  }
+
+  private let (tokenOrErrorSignal, tokenOrErrorObserver) = Signal<Either<String, Error>, Never>.pipe()
+  public func stripeTokenCreated(tokenOrError: Either<String, Error>) -> PKPaymentAuthorizationStatus {
+    self.tokenOrErrorObserver.send(value: tokenOrError)
   }
 
   private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()

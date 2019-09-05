@@ -271,13 +271,24 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
     didAuthorizePayment payment: PKPayment,
     completion: @escaping (PKPaymentAuthorizationStatus) -> Void
     ) {
-    //self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: .init(payment: payment))
+
+    self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: payment)
 
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
-      let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error)
-      if let status = status {
-        completion(status)
-      } else {
+      let tokenOrError: Either<String, Error>
+
+      if let stripeToken = token {
+        tokenOrError = .init(left: stripeToken.tokenId)
+      } else if let error = error {
+        tokenOrError = .init(right: error)
+      }
+
+      let paymentAuthorizationStatus = self.viewModel.inputs.stripeTokenCreated(tokenOrError: tokenOrError)
+
+      switch paymentAuthorizationStatus {
+      case .success:
+        completion(paymentAuthorizationStatus)
+      default:
         completion(.failure)
       }
     }
@@ -355,7 +366,7 @@ extension PledgeViewController: PledgeViewControllerMessageDisplaying {
 
 extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
   func pledgePaymentMethodsViewControllerDidTapApplePayButton(_ viewController: PledgePaymentMethodsViewController) {
-    self.viewModel.inputs.applePayTapped()
+    self.viewModel.inputs.applePayButtonTapped()
   }
 }
 
