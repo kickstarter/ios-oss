@@ -135,8 +135,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
   func testApplePayButton_applePayCapable_supportedProjectCountry_isShown() {
     let mockConfig = Config.template
-      |> \.applePayCountries .~ [Project.Country.us.countryCode,
-                                 Project.Country.gb.countryCode]
+      |> \.applePayCountries .~ [
+        Project.Country.us.countryCode,
+        Project.Country.gb.countryCode
+      ]
     let project = Project.template
       |> \.country .~ .gb
 
