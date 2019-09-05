@@ -8,7 +8,6 @@ public struct CreateBackingInput: GraphMutationInput {
   let projectId: String
   let rewardId: String?
 
-
   public init(
     amount: String,
     locationId: String?,

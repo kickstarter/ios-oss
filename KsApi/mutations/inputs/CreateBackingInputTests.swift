@@ -3,7 +3,6 @@ import Prelude
 import XCTest
 
 final class CreateBackingInputTests: XCTestCase {
-
   func testCreateBackingInputDictionary() {
     let createBackingInput = CreateBackingInput(
       amount: "200.00",
@@ -11,7 +10,8 @@ final class CreateBackingInputTests: XCTestCase {
       paymentSourceId: "paymentSourceId",
       paymentType: "card",
       projectId: "projectId",
-      rewardId: "rewardId")
+      rewardId: "rewardId"
+    )
 
     let input = createBackingInput.toInputDictionary()
 

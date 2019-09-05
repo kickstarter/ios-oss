@@ -2,18 +2,17 @@
 import XCTest
 
 final class CreateBackingEnvelopeTests: XCTestCase {
-
   func testCreateBackingEnvelopeDecoding() {
     let jsonString =
-    """
-      {
-        "createBacking": {
-          "checkout": {
-              "state": "VERIFYING"
+      """
+        {
+          "createBacking": {
+            "checkout": {
+                "state": "VERIFYING"
+            }
           }
         }
-      }
-    """
+      """
 
     let data = jsonString.data(using: .utf8)
 
