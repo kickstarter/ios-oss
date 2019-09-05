@@ -4,11 +4,16 @@ import PassKit
 import Prelude
 import UIKit
 
+protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
+  func pledgePaymentMethodsViewControllerDidTapApplePayButton(_ viewController: PledgePaymentMethodsViewController)
+}
+
 final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
@@ -99,6 +104,15 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
       }
+
+    self.viewModel.outputs.notifyDelegateApplePayButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+
+        self.delegate?
+          .pledgePaymentMethodsViewControllerDidTapApplePayButton(self)
+    }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
   }

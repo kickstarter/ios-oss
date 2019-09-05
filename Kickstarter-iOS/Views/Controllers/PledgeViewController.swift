@@ -2,6 +2,7 @@ import KsApi
 import Library
 import Prelude
 import UIKit
+import Stripe
 
 final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
@@ -54,6 +55,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   private lazy var paymentMethodsViewController = {
     PledgePaymentMethodsViewController.instantiate()
       |> \.messageDisplayingDelegate .~ self
+      |> \.delegate .~ self
   }()
 
   private lazy var shippingLocationViewController = {
@@ -185,6 +187,13 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.configureStripeIntegration
+      .observeForUI()
+      .observeValues { merchantIdentifier, publishableKey in
+        STPPaymentConfiguration.shared().publishableKey = publishableKey
+        STPPaymentConfiguration.shared().appleMerchantIdentifier = merchantIdentifier
+    }
+
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
@@ -278,6 +287,8 @@ extension PledgeViewController: RewardPledgeTransitionAnimatorDelegate {
   }
 }
 
+// MARK: - PledgeViewControllerMessageDisplaying
+
 extension PledgeViewController: PledgeViewControllerMessageDisplaying {
   func pledgeViewController(_: UIViewController, didErrorWith message: String) {
     self.messageBannerViewController?.showBanner(with: .error, message: message)
@@ -285,6 +296,14 @@ extension PledgeViewController: PledgeViewControllerMessageDisplaying {
 
   func pledgeViewController(_: UIViewController, didSucceedWith message: String) {
     self.messageBannerViewController?.showBanner(with: .success, message: message)
+  }
+}
+
+// MARK: - PledgePaymentMethodsViewControllerDelegate
+
+extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
+  func pledgePaymentMethodsViewControllerDidTapApplePayButton(_ viewController: PledgePaymentMethodsViewController) {
+    self.viewModel.inputs.applePayTapped()
   }
 }
 

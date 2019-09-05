@@ -64,8 +64,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.configureWithValueProperty.value = value
   }
 
-  }
-
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()

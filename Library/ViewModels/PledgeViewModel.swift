@@ -20,11 +20,6 @@ public protocol PledgeViewModelOutputs {
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
 //  var goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
 
-  var configurePaymentMethodsViewControllerWithUser: Signal<User, Never> { get }
-  // To configure Stripe SDK Integration with the required fields
-  var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
-//  var goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
-
   var configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never> { get }
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
