@@ -3,6 +3,7 @@ import Prelude
 extension Reward {
   internal static let template = Reward(
     backersCount: 50,
+    convertedMinimum: nil,
     description: "A cool thing",
     endsAt: nil,
     estimatedDeliveryOn: Date(
@@ -24,6 +25,7 @@ extension Reward {
 
   public static let noReward = Reward(
     backersCount: nil,
+    convertedMinimum: nil,
     description: "",
     endsAt: nil,
     estimatedDeliveryOn: nil,
@@ -41,6 +43,7 @@ extension Reward {
 
   public static let otherReward = Reward(
     backersCount: nil,
+    convertedMinimum: nil,
     description: "",
     endsAt: nil,
     estimatedDeliveryOn: nil,
