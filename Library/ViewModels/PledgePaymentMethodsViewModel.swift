@@ -38,7 +38,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
 
     self.applePayButtonHidden = configureWithValue
-      .map { $0.applePayCapable }
+      .map { ($0.project, $0.applePayCapable) }
+      .map { project, applePayCapable in showApplePayButton(for: project, applePayCapable: applePayCapable) }
       .negate()
 
     self.reloadPaymentMethods = storedCardsEvent
@@ -66,4 +67,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public let applePayButtonHidden: Signal<Bool, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
+}
+
+private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {
+  return applePayCapable &&
+    AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
 }
