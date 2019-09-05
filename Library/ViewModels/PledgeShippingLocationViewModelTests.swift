@@ -18,7 +18,7 @@ private let shippingRules = [
 final class PledgeShippingLocationViewModelTests: TestCase {
   private let vm: PledgeShippingLocationViewModelType = PledgeShippingLocationViewModel()
 
-  private let amountAttributedText = TestObserver<NSAttributedString, Never>()
+  private let amountText = TestObserver<String, Never>()
   private let dismissShippingRules = TestObserver<Void, Never>()
   private let isLoading = TestObserver<Bool, Never>()
   private let presentShippingRulesProject = TestObserver<Project, Never>()
@@ -31,7 +31,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.amountAttributedText.observe(self.amountAttributedText.observer)
+    self.vm.outputs.amountAttributedText.map { $0.string }.observe(self.amountText.observer)
     self.vm.outputs.dismissShippingRules.observe(self.dismissShippingRules.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.presentShippingRules.map { $0.0 }.observe(self.presentShippingRulesProject.observer)
@@ -43,7 +43,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     self.vm.outputs.shippingRulesError.observe(self.shippingRulesError.observer)
   }
 
-  func testDefaultShippingLocation() {
+  func testDefaultShippingRule() {
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
 
     let reward = Reward.template
@@ -53,24 +53,27 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, reward: reward)
       self.vm.inputs.viewDidLoad()
 
+      self.amountText.assertValues(["+$0.00"])
       self.isLoading.assertValues([true])
-      XCTAssertEqual(self.amountAttributedText.values.last?.string, "+$0.00")
-      self.shippingLocationButtonTitle.assertValues([])
       self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
+      self.shippingLocationButtonTitle.assertValues([])
 
-      self.scheduler.run()
+      self.scheduler.advance()
 
-      let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn })
+      guard let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn }) else {
+        XCTFail("Default shipping rule should exist")
+        return
+      }
 
-      XCTAssertEqual(self.amountAttributedText.values.last?.string, "+$5.00")
+      self.amountText.assertValues(["+$0.00", "+$5.00"])
       self.isLoading.assertValues([true, false])
-      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule!])
+      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule])
       self.shippingLocationButtonTitle.assertValues(["Brooklyn, NY"])
       self.shippingRulesError.assertDidNotEmitValue()
     }
   }
 
-  func testSelectShippingLocation() {
+  func testShippingRulesSelection() {
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
@@ -79,27 +82,66 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, reward: reward)
       self.vm.inputs.viewDidLoad()
 
-      self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
+      guard let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn }) else {
+        XCTFail("Default shipping rule should exist")
+        return
+      }
 
-      let selectedShippingRule = shippingRules.first(where: { $0.location == .australia })
-      let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn })
+      guard let selectedShippingRule = shippingRules.first(where: { $0.location == .australia }) else {
+        XCTFail("Selected shipping rule should exist")
+        return
+      }
+
+      self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
 
       self.scheduler.advance()
 
-      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule!])
+      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule])
+
+      self.vm.inputs.shippingLocationButtonTapped()
+
+      self.dismissShippingRules.assertDidNotEmitValue()
+      self.presentShippingRulesProject.assertValues([.template])
+      self.presentShippingRulesAllRules.assertValues([shippingRules])
+      self.presentShippingRulesSelectedRule.assertValues([defaultShippingRule])
+
+      self.vm.inputs.shippingRuleUpdated(to: selectedShippingRule)
+
+      self.scheduler.advance(by: .milliseconds(300))
+
+      self.dismissShippingRules.assertValueCount(1)
+      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule, selectedShippingRule])
+    }
+  }
+
+  func testShippingRulesCancelation() {
+    let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+
+    withEnvironment(apiService: mockService, countryCode: "US") {
+      self.vm.inputs.configureWith(project: .template, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      guard let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn }) else {
+        XCTFail("Default shipping rule should exist")
+        return
+      }
+
+      self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule])
 
       self.vm.inputs.shippingLocationButtonTapped()
 
       self.presentShippingRulesProject.assertValues([.template])
       self.presentShippingRulesAllRules.assertValues([shippingRules])
-      self.presentShippingRulesSelectedRule.assertValues([defaultShippingRule!])
+      self.presentShippingRulesSelectedRule.assertValues([defaultShippingRule])
 
-      self.vm.inputs.shippingRuleUpdated(to: selectedShippingRule!)
-
-      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule!, selectedShippingRule!])
-
-      self.dismissShippingRules.assertValueCount(0)
-      self.vm.inputs.dismissShippingRulesButtonTapped()
+      self.dismissShippingRules.assertDidNotEmitValue()
+      self.vm.inputs.shippingRulesCancelButtonTapped()
       self.dismissShippingRules.assertValueCount(1)
     }
   }
@@ -113,13 +155,11 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, reward: reward)
       self.vm.inputs.viewDidLoad()
 
-      self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
-
       self.shippingRulesError.assertValues([])
 
       self.scheduler.advance()
 
-      XCTAssertEqual(self.amountAttributedText.values.last?.string, "+$0.00")
+      self.amountText.assertValues(["+$0.00"])
       self.isLoading.assertValues([true, false])
       self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
       self.shippingLocationButtonTitle.assertValues([])
