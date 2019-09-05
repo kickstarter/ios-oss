@@ -481,16 +481,6 @@ private struct NumberFormatterConfig {
     currencySymbol: "$"
   )
 
-  fileprivate static let defaultDecimalCurrencyConfig = NumberFormatterConfig(
-    numberStyle: .decimal,
-    roundingMode: .down,
-    maximumFractionDigits: 2,
-    minimumFractionDigits: 2,
-    generatesDecimalNumbers: false,
-    locale: Locale(identifier: "en"), // Always format decimal currency amounts using En locale
-    currencySymbol: "$"
-  )
-
   fileprivate static let defaultPercentageConfig = NumberFormatterConfig(
     numberStyle: .percent,
     roundingMode: .down,
@@ -508,6 +498,16 @@ private struct NumberFormatterConfig {
     minimumFractionDigits: 0,
     generatesDecimalNumbers: false,
     locale: .current,
+    currencySymbol: "$"
+  )
+
+  fileprivate static let defaultDecimalCurrencyConfig = NumberFormatterConfig(
+    numberStyle: .decimal,
+    roundingMode: .down,
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+    generatesDecimalNumbers: false,
+    locale: Locale(identifier: "en"), // Always format decimal currency amounts using En locale
     currencySymbol: "$"
   )
 
