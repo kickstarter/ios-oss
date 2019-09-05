@@ -69,9 +69,9 @@ public final class DeprecatedRewardCellViewModel: DeprecatedRewardCellViewModelT
         ) ?? (.us, project.stats.staticUsdRate)
         switch rewardOrBacking {
         case let .left(reward):
-          let min = minPledgeAmount(forProject: project, reward: reward)
+          let amount = reward.convertedMinimum ?? max(1, reward.minimum * Double(rate))
           return Format.currency(
-            max(1, Int(Float(min) * rate)),
+            amount,
             country: country,
             omitCurrencyCode: project.stats.omitUSCurrencyCode
           )
