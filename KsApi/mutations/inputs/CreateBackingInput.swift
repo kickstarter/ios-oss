@@ -3,16 +3,16 @@ import Foundation
 public struct CreateBackingInput: GraphMutationInput {
   let projectId: String
   let amount: String
-  let locationId: String
-  let rewardId: String
+  let locationId: String?
+  let rewardId: String?
   let paymentSourceId: String
   let paymentType: String
 
   public init(
     projectId: String,
     amount: String,
-    locationId: String,
-    rewardId: String,
+    locationId: String?,
+    rewardId: String?,
     paymentSourceId: String,
     paymentType: String
   ) {
@@ -25,13 +25,21 @@ public struct CreateBackingInput: GraphMutationInput {
   }
 
   public func toInputDictionary() -> [String: Any] {
-    return [
+    var inputDictionary = [
       "projectId": projectId,
       "amount": amount,
-      "locationId": locationId,
-      "rewardId": rewardId,
       "paymentSourceId": paymentSourceId,
       "paymentType": paymentType
     ]
+
+    if let locationId = self.locationId {
+      inputDictionary["locationId"] = locationId
+    }
+
+    if let rewardId = self.rewardId {
+      inputDictionary["rewardId"] = rewardId
+    }
+
+    return inputDictionary
   }
 }

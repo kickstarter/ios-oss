@@ -22,10 +22,6 @@ public struct Reward {
     return self.id == Reward.noReward.id
   }
 
-  public static func decode(id: Int) -> String {
-    return "Reward-\(id)"
-  }
-
   public struct Shipping {
     public let enabled: Bool
     public let preference: Preference?
@@ -81,3 +77,9 @@ extension Reward.Shipping: Argo.Decodable {
 }
 
 extension Reward.Shipping.Preference: Argo.Decodable {}
+
+extension Reward: GraphIDBridging {
+  public static var modelName: String {
+    return "Reward"
+  }
+}
