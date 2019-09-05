@@ -99,6 +99,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
       }
+
   }
 
   // MARK: - Configuration

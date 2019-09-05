@@ -1,6 +1,5 @@
 import KsApi
 import Prelude
-import PassKit
 import ReactiveSwift
 
 public protocol PledgePaymentMethodsViewModelInputs {
@@ -10,9 +9,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
-  // To configure Stripe SDK Integration with the required fields
-  var configureStripeIntegration: Signal<Void, Never> { get }
-  var goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
+  var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
 }
@@ -40,9 +37,16 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .values()
       .map { $0.me.storedCards.nodes }
 
+    self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
+
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
       .map { $0.localizedDescription }
+  }
+
+  private let applePayButtonTappedProperty = MutableProperty(())
+  public func applePayButtonTapped() {
+    self.applePayButtonTappedProperty.value = ()
   }
 
   private let configureWithUserProperty = MutableProperty<User?>(nil)
@@ -58,6 +62,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }
   public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
 
+  public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
 }

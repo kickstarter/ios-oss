@@ -1,9 +1,13 @@
 import Foundation
 import KsApi
+import PassKit
 import Prelude
 import ReactiveSwift
 
+public typealias StripeConfigurationData = (merchantIdentifier: String, publishableKey: String)
+
 public protocol PledgeViewModelInputs {
+  func applePayTapped()
   func configureWith(project: Project, reward: Reward)
   func pledgeAmountDidUpdate(to amount: Double)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
@@ -12,6 +16,10 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
+  // To configure Stripe SDK Integration with the required fields
+  var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
+//  var goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
+
   var configurePaymentMethodsViewControllerWithUser: Signal<User, Never> { get }
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
@@ -70,6 +78,19 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.shippingLocationViewHidden = reward
       .map { $0.shipping.enabled }
       .negate()
+
+    self.configureStripeIntegration = projectAndReward.ignoreValues()
+      .map { _ in AppEnvironment.current.environmentType }
+      .map { environmentType in
+        (PKPaymentAuthorizationViewController.merchantIdentifier, environmentType.stripePublishableKey)
+    }
+
+//    self.goToApplePayPaymentAuthorization = self.applePayTappedProperty.signal
+  }
+
+  private let applePayTappedProperty = MutableProperty(())
+  public func applePayTapped() {
+    self.applePayTappedProperty.value = ()
   }
 
   private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
@@ -97,6 +118,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
+  public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
+//  public let goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never>
   public let configurePaymentMethodsViewControllerWithUser: Signal<User, Never>
   public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
   public let continueViewHidden: Signal<Bool, Never>
