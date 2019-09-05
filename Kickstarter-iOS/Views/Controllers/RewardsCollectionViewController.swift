@@ -147,6 +147,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self?.goToDeprecatedPledge(project: project, reward: reward, refTag: refTag)
       }
 
+    self.viewModel.outputs.goToManagePledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project, reward, refTag in
+        self?.goToManagePledge(project: project, reward: reward, refTag: refTag)
+      }
+
     self.viewModel.outputs.goToViewBacking
       .observeForControllerAction()
       .observeValues { [weak self] project, user in
@@ -232,6 +238,18 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     _ = self.collectionViewBottomConstraintFooterView
       ?|> \.isActive .~ !isHidden
+  }
+
+  private func goToManagePledge(project: Project, reward: Reward, refTag _: RefTag?) {
+    let managePledgeViewController = ManagePledgeViewController.instantiate()
+    managePledgeViewController.configureWith(project: project, reward: reward)
+
+    let nav = UINavigationController(rootViewController: managePledgeViewController)
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = nav
+        |> \.modalPresentationStyle .~ .formSheet
+    }
+    self.present(nav, animated: true)
   }
 
   private func goToPledge(project: Project, reward: Reward, refTag _: RefTag?) {
