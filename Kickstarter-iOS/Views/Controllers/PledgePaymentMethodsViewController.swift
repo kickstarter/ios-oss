@@ -132,7 +132,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Actions
 
   @objc private func applePayButtonTapped() {
-    print("Apple Pay tapped")
+    self.viewModel.inputs.applePayButtonTapped()
   }
 
   // MARK: - Functions

@@ -263,34 +263,30 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
   func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                           didAuthorizePayment payment: PKPayment,
                                           handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
-
-  }
-
-  func paymentAuthorizationViewController(
-    _: PKPaymentAuthorizationViewController,
-    didAuthorizePayment payment: PKPayment,
-    completion: @escaping (PKPaymentAuthorizationStatus) -> Void
-    ) {
-
     self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: payment)
 
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
-      let tokenOrError: Either<String, Error>
+      guard let self = self else { return }
+
+      let tokenOrError: Either<String, Error?>
 
       if let stripeToken = token {
         tokenOrError = .init(left: stripeToken.tokenId)
-      } else if let error = error {
+      } else {
         tokenOrError = .init(right: error)
       }
 
-      let paymentAuthorizationStatus = self.viewModel.inputs.stripeTokenCreated(tokenOrError: tokenOrError)
+      self.viewModel.outputs.createApplePayBackingStatus
+        .take(first: 1)
+        .observeValues { status in
+          print("***CREATE APPLE PAY BACKING: \(status)")
 
-      switch paymentAuthorizationStatus {
-      case .success:
-        completion(paymentAuthorizationStatus)
-      default:
-        completion(.failure)
+          let result = PKPaymentAuthorizationResult(status: status, errors: nil)
+
+          completion(result)
       }
+
+      self.viewModel.inputs.stripeTokenCreated(tokenOrError: tokenOrError)
     }
   }
 
