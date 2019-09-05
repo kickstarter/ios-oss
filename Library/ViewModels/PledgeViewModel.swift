@@ -9,17 +9,17 @@ public typealias StripeConfigurationData = (merchantIdentifier: String, publisha
 public protocol PledgeViewModelInputs {
   func applePayTapped()
   func configureWith(project: Project, reward: Reward)
+  func paymentAuthorization(didAuthorizePayment: PKPayment)
   func pledgeAmountDidUpdate(to amount: Double)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
+  func stripeTokenCreated(tokenOrError: Either<String, Error>)
   func userSessionStarted()
   func viewDidLoad()
 }
 
 public protocol PledgeViewModelOutputs {
-  // To configure Stripe SDK Integration with the required fields
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
-//  var goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
-
+  var goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never> { get }
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
@@ -89,7 +89,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         (PKPaymentAuthorizationViewController.merchantIdentifier, environmentType.stripePublishableKey)
     }
 
-//    self.goToApplePayPaymentAuthorization = self.applePayTappedProperty.signal
+    let paymentAuthorizationData = Signal.combineLatest(
+      projectAndReward,
+      pledgeAmount,
+      shippingRuleSelectedSignal
+      ).map { projectAndReward, pledgeAmount, selectedShippingRule in
+        return (projectAndReward.0,
+                projectAndReward.1,
+                pledgeAmount,
+                selectedShippingRule,
+                PKPaymentAuthorizationViewController.merchantIdentifier)
+      }
+
+    self.goToApplePayPaymentAuthorization = paymentAuthorizationData
+      .takeWhen(self.applePayTappedProperty.signal)
+      .map(PKPaymentRequest.paymentRequest(for:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
   }
 
   private let applePayTappedProperty = MutableProperty(())
@@ -123,7 +137,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   }
 
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
-//  public let goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never>
+  public let goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never>
   public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
   public let continueViewHidden: Signal<Bool, Never>

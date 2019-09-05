@@ -219,6 +219,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.viewModel.inputs.userSessionStarted()
       }
 
+    self.viewModel.outputs.goToApplePayPaymentAuthorization
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToPaymentAuthorization(request: $0)
+    }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -231,10 +237,56 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
   }
 
+  private func goToPaymentAuthorization(request: PKPaymentRequest) {
+    guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: request) else { return }
+    paymentAuthorizationViewController.delegate = self
+
+    self.present(paymentAuthorizationViewController, animated: true)
+  }
+
   // MARK: - Actions
 
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
+  }
+}
+
+// MARK: - PKPaymentAuthorizationViewControllerDelegate
+
+extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
+  func paymentAuthorizationViewControllerWillAuthorizePayment(
+    _: PKPaymentAuthorizationViewController
+    ) {
+    //self.viewModel.inputs.paymentAuthorizationWillAuthorizePayment()
+  }
+
+  func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
+                                          didAuthorizePayment payment: PKPayment,
+                                          handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+
+  }
+
+  func paymentAuthorizationViewController(
+    _: PKPaymentAuthorizationViewController,
+    didAuthorizePayment payment: PKPayment,
+    completion: @escaping (PKPaymentAuthorizationStatus) -> Void
+    ) {
+    //self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: .init(payment: payment))
+
+    STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
+      let status = self?.viewModel.inputs.stripeCreatedToken(stripeToken: token?.tokenId, error: error)
+      if let status = status {
+        completion(status)
+      } else {
+        completion(.failure)
+      }
+    }
+  }
+
+  func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+    controller.dismiss(animated: true) {
+      //self.viewModel.inputs.paymentAuthorizationDidFinish()
+    }
   }
 }
 
