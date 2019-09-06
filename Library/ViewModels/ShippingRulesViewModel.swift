@@ -56,11 +56,23 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     .map { project, shippingRules, index in (project, shippingRules, shippingRules[index]) }
 
     let reloadDataWithShippingRulesInitial = dataInitial
-      .map(shippingRuleData(for:shippingRules:selectedShippingRule:))
+      .map { project, shippingRules, selectedShippingRule in
+        shippingRules.map {
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: $0
+          )
+        }
+      }
       .map { ($0, true) }
 
     let reloadDataWithShippingRulesSelected = dataSelected
-      .map(shippingRuleData(for:shippingRules:selectedShippingRule:))
+      .map { project, shippingRules, selectedShippingRule in
+        shippingRules.map {
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: $0
+          )
+        }
+      }
       .map { ($0, false) }
 
     self.reloadDataWithShippingRules = Signal.merge(
@@ -126,16 +138,4 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
 
   public var inputs: ShippingRulesViewModelInputs { return self }
   public var outputs: ShippingRulesViewModelOutputs { return self }
-}
-
-// MARK: - Functions
-
-private func shippingRuleData(
-  for project: Project,
-  shippingRules: [ShippingRule],
-  selectedShippingRule: ShippingRule
-) -> [ShippingRuleData] {
-  return shippingRules.map {
-    ShippingRuleData(project: project, selectedShippingRule: selectedShippingRule, shippingRule: $0)
-  }
 }
