@@ -275,12 +275,14 @@ private func createApplePayBackingInput(for project: Project,
   let pledgeTotal = NSDecimalNumber(decimal: pledgeAmountDecimal + shippingAmountDecimal)
   let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal.doubleValue)
 
+  let rewardId = reward == Reward.noReward ? nil : reward.graphID
+
   return CreateApplePayBackingInput(amount: formattedPledgeTotal,
                                     locationId: shippingLocationId,
                                     paymentInstrumentName: pkPayment.displayName,
                                     paymentNetwork: pkPayment.network,
                                     projectId: project.graphID,
-                                    rewardId: String(reward.id), // TODO: use graphId
+                                    rewardId: rewardId,
                                     stripeToken: stripeToken,
                                     transactionIdentifier: pkPayment.transactionIdentifier)
 
