@@ -2,8 +2,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 public protocol ProjectPamphletViewModelInputs {
-  /// Call when "Back this project" is tapped
-  func backThisProjectTapped()
 
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
@@ -13,6 +11,9 @@ public protocol ProjectPamphletViewModelInputs {
 
   /// Call after the view loads and passes the initial TopConstraint constant.
   func initial(topConstraint: CGFloat)
+
+  /// Call when the pledge CTA button is tapped
+  func pledgeCTAButtonTapped(_ state: PledgeStateCTAType)
 
   /// Call when pledgeRetryButton is tapped.
   func pledgeRetryButtonTapped()
@@ -33,6 +34,8 @@ public protocol ProjectPamphletViewModelOutputs {
 
   /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
   var configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never> { get }
+
+  var goToManagePledge: Signal<PledgeData, Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
@@ -80,13 +83,25 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let freshProjectAndRefTag = freshProjectAndRefTagEvent.values()
 
     let ctaButtonTapped = freshProjectAndRefTag
-      .takeWhen(self.backThisProjectTappedProperty.signal)
-      .map { project, refTag in
-        (project, refTag)
-      }
+      .takePairWhen(self.pledgeCTAButtonTappedProperty.signal)
+      .map(unpack)
+
+    let goToManagePledge = ctaButtonTapped
+      .filter( { (arg) -> Bool in
+        let (project, _, state) = arg
+        return canShowManageViewPledgeScreen(project, state: state)
+      })
+      .map { (project, refTag, _) -> PledgeData in
+        let r = reward(from: project.personalization.backing, inProject: project)
+        return PledgeData(project: project, reward: r, refTag: refTag)
+    }
+
+    self.goToManagePledge = goToManagePledge
 
     self.goToRewards = ctaButtonTapped
-      .filter { _ in userCanSeeNativeCheckout() }
+      .filter { _, _, pledgeState in
+        userCanSeeNativeCheckout() && pledgeState == .pledge
+      }.map { project, refTag, _ in (project, refTag) }
 
     let project = freshProjectAndRefTag
       .map(first)
@@ -148,9 +163,9 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
 
-  private let backThisProjectTappedProperty = MutableProperty(())
-  public func backThisProjectTapped() {
-    self.backThisProjectTappedProperty.value = ()
+  private let pledgeCTAButtonTappedProperty = MutableProperty<PledgeStateCTAType?>(nil)
+  public func pledgeCTAButtonTapped(_ state: PledgeStateCTAType) {
+    self.pledgeCTAButtonTappedProperty.value = state
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -191,6 +206,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never>
+  public let goToManagePledge: Signal<PledgeData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
@@ -283,4 +299,17 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   }
 
   return projectProducer
+}
+
+private func canShowManageViewPledgeScreen(_ project: Project,
+                                           state: PledgeStateCTAType?) -> Bool {
+  return (state == .manage || state == .viewBacking) &&
+    isTrue(project.personalization.isBacking!) &&
+    featureNativeCheckoutPledgeViewIsEnabled()
+}
+
+private func reward(from backing: Backing?, inProject project: Project) -> Reward {
+  return backing?.reward
+    ?? project.rewards.filter { $0.id == backing?.rewardId }.first
+    ?? Reward.noReward
 }

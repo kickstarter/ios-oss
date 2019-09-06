@@ -12,7 +12,7 @@ public protocol PledgeCTAContainerViewViewModelOutputs {
   var activityIndicatorIsHidden: Signal<Bool, Never> { get }
   var buttonStyleType: Signal<ButtonStyleType, Never> { get }
   var buttonTitleText: Signal<String, Never> { get }
-  var notifyDelegateCTATapped: Signal<(), Never> { get }
+  var notifyDelegateCTATapped: Signal<PledgeStateCTAType, Never> { get }
   var pledgeCTAButtonIsHidden: Signal<Bool, Never> { get }
   var pledgeRetryButtonIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
@@ -63,7 +63,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       isLoading.filter(isFalse).ignoreValues()
     )
 
-    self.notifyDelegateCTATapped = self.pledgeCTAButtonTappedProperty.signal
+    self.notifyDelegateCTATapped = pledgeState
+      .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
 
     self.pledgeRetryButtonIsHidden = inError
       .map(isFalse)
@@ -117,7 +118,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public let activityIndicatorIsHidden: Signal<Bool, Never>
   public let buttonStyleType: Signal<ButtonStyleType, Never>
   public let buttonTitleText: Signal<String, Never>
-  public let notifyDelegateCTATapped: Signal<Void, Never>
+  public let notifyDelegateCTATapped: Signal<PledgeStateCTAType, Never>
   public let pledgeCTAButtonIsHidden: Signal<Bool, Never>
   public let pledgeRetryButtonIsHidden: Signal<Bool, Never>
   public let spacerIsHidden: Signal<Bool, Never>

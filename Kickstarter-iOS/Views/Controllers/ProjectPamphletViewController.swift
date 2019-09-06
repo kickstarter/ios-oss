@@ -135,6 +135,14 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.goToRewards(project: project, refTag: refTag)
       }
 
+    self.viewModel.outputs.goToManagePledge
+      .observeForControllerAction()
+      .observeValues { [weak self] (params) in
+        let (project, reward, refTag) = params
+
+        self?.goToManagePledge(project: project, reward: reward, refTag: refTag)
+    }
+
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, refTag in
@@ -186,6 +194,24 @@ public final class ProjectPamphletViewController: UIViewController {
     self.present(vc, animated: true)
   }
 
+  private func goToManagePledge(project: Project, reward: Reward, refTag _: RefTag?) {
+    let managePledgeViewController = ManagePledgeViewController.instantiate()
+    managePledgeViewController.configureWith(project: project, reward: reward)
+
+    let nav = UINavigationController(rootViewController: managePledgeViewController)
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = nav
+        |> \.modalPresentationStyle .~ .formSheet
+    }
+    self.present(nav, animated: true)
+  }
+
+  private func goToViewBacking(project: Project, user: User?) {
+    let backingViewController = BackingViewController.configuredWith(project: project, backer: user)
+
+    self.navigationController?.pushViewController(backingViewController, animated: true)
+  }
+
   private func updateContentInsets() {
     let buttonSize = self.pledgeCTAContainerView.pledgeCTAButton.systemLayoutSizeFitting(
       UIView.layoutFittingCompressedSize
@@ -203,8 +229,9 @@ public final class ProjectPamphletViewController: UIViewController {
 }
 
 extension ProjectPamphletViewController: PledgeCTAContainerViewDelegate {
-  func pledgeCTAButtonTapped() {
-    self.viewModel.inputs.backThisProjectTapped()
+
+  func pledgeCTAButtonTapped(_ state: PledgeStateCTAType) {
+    self.viewModel.inputs.pledgeCTAButtonTapped(state)
   }
 }
 

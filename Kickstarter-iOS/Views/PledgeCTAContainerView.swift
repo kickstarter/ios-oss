@@ -4,7 +4,7 @@ import Prelude
 import UIKit
 
 protocol PledgeCTAContainerViewDelegate: AnyObject {
-  func pledgeCTAButtonTapped()
+  func pledgeCTAButtonTapped(_ state: PledgeStateCTAType)
 }
 
 private enum Layout {
@@ -113,8 +113,8 @@ final class PledgeCTAContainerView: UIView {
 
     self.viewModel.outputs.notifyDelegateCTATapped
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.delegate?.pledgeCTAButtonTapped()
+      .observeValues { [weak self] state in
+        self?.delegate?.pledgeCTAButtonTapped(state)
       }
 
     self.viewModel.outputs.buttonStyleType
