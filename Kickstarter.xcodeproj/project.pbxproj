@@ -229,6 +229,9 @@
 		7790DF892200D3BD005DBB11 /* SettingsFormFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */; };
 		7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */; };
 		77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */; };
+		77950F0A231EB8C300308331 /* CreateApplePayBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */; };
+		77950F0C231EBC4200308331 /* CreateApplePayBackingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77950F0B231EBC4200308331 /* CreateApplePayBackingInput.swift */; };
+		77950F0E231EC12700308331 /* CreateApplePayBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77950F0D231EC12700308331 /* CreateApplePayBackingInputTests.swift */; };
 		7798B5612174F3CD008BC50D /* UserQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B5602174F3CD008BC50D /* UserQueries.swift */; };
 		7798B5632174F494008BC50D /* UserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B5622174F494008BC50D /* UserEnvelope.swift */; };
 		7798B56521750041008BC50D /* UserCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B56421750041008BC50D /* UserCurrency.swift */; };
@@ -1557,6 +1560,9 @@
 		7790DF882200D3BD005DBB11 /* SettingsFormFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsFormFieldView.xib; sourceTree = "<group>"; };
 		7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderView.swift; sourceTree = "<group>"; };
 		77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewControllerTests.swift; sourceTree = "<group>"; };
+		77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateApplePayBackingMutation.swift; sourceTree = "<group>"; };
+		77950F0B231EBC4200308331 /* CreateApplePayBackingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateApplePayBackingInput.swift; sourceTree = "<group>"; };
+		77950F0D231EC12700308331 /* CreateApplePayBackingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateApplePayBackingInputTests.swift; sourceTree = "<group>"; };
 		7798B5602174F3CD008BC50D /* UserQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserQueries.swift; sourceTree = "<group>"; };
 		7798B5622174F494008BC50D /* UserEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEnvelope.swift; sourceTree = "<group>"; };
 		7798B56421750041008BC50D /* UserCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCurrency.swift; sourceTree = "<group>"; };
@@ -2580,6 +2586,7 @@
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
+				77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */,
 				D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */,
 				D79CF32B219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift */,
 				D085100F219500F200BC418B /* PaymentSourceDeleteMutation.swift */,
@@ -3915,6 +3922,8 @@
 			isa = PBXGroup;
 			children = (
 				D777442E217A3382008D679F /* ChangeCurrencyInput.swift */,
+				77950F0B231EBC4200308331 /* CreateApplePayBackingInput.swift */,
+				77950F0D231EC12700308331 /* CreateApplePayBackingInputTests.swift */,
 				D79CF32D219CE51A00ECB73A /* CreatePaymentSourceInput.swift */,
 				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
 				77E44B7321823A56006446B8 /* ChangePasswordInput.swift */,
@@ -5360,6 +5369,7 @@
 				D01588EB1EEB2ED7006E7684 /* MessageSubject.swift in Sources */,
 				D770DDE8217D729300B5319A /* UserCurrencyTemplates.swift in Sources */,
 				D01589171EEB2ED7006E7684 /* RewardsItem.swift in Sources */,
+				77950F0A231EB8C300308331 /* CreateApplePayBackingMutation.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
 				D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */,
@@ -5416,6 +5426,7 @@
 				D01588891EEB2ED7006E7684 /* CheckoutEnvelopeLenses.swift in Sources */,
 				D0158A2E1EEB30A2006E7684 /* User.AvatarTemplates.swift in Sources */,
 				D01588571EEB2ED7006E7684 /* CheckoutEnvelope.swift in Sources */,
+				77950F0C231EBC4200308331 /* CreateApplePayBackingInput.swift in Sources */,
 				D01588771EEB2ED7006E7684 /* FriendStatsEnvelope.swift in Sources */,
 				D015891D1EEB2ED7006E7684 /* ShippingRule.swift in Sources */,
 				D67B6CD6221F468100B63A6B /* Location+Argo.swift in Sources */,
@@ -5462,6 +5473,7 @@
 				D0D10C1C1EEB4550005EBAD0 /* UpdateDraftTests.swift in Sources */,
 				D0D10C0D1EEB4550005EBAD0 /* FriendStatsEnvelopeTests.swift in Sources */,
 				77DB532A2215D0AA0078991C /* GraphUserCreditCardTests.swift in Sources */,
+				77950F0E231EC12700308331 /* CreateApplePayBackingInputTests.swift in Sources */,
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
 				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,
