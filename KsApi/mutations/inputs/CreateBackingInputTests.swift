@@ -22,4 +22,24 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(input["projectId"] as? String, "projectId")
     XCTAssertEqual(input["rewardId"] as? String, "rewardId")
   }
+
+  func testCreateBackingInputDictionary_TestNilLocationAndReward() {
+    let createBackingInput = CreateBackingInput(
+      amount: "200.00",
+      locationId: nil,
+      paymentSourceId: "paymentSourceId",
+      paymentType: "card",
+      projectId: "projectId",
+      rewardId: nil
+    )
+
+    let input = createBackingInput.toInputDictionary()
+
+    XCTAssertEqual(input["amount"] as? String, "200.00")
+    XCTAssertNil(input["locationId"])
+    XCTAssertEqual(input["paymentSourceId"] as? String, "paymentSourceId")
+    XCTAssertEqual(input["paymentType"] as? String, "card")
+    XCTAssertEqual(input["projectId"] as? String, "projectId")
+    XCTAssertNil(input["rewardId"])
+  }
 }

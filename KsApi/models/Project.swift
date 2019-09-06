@@ -25,10 +25,6 @@ public struct Project {
   public var urls: UrlsEnvelope
   public var video: Video?
 
-  public static func decode(id: Int) -> String {
-    return "Project-\(id)"
-  }
-
   public struct UrlsEnvelope {
     public var web: WebEnvelope
 
