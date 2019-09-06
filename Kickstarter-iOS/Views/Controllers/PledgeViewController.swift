@@ -225,6 +225,14 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.goToPaymentAuthorization(request: $0)
     }
 
+    self.viewModel.outputs.goToThanks
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        generateNotificationSuccessFeedback()
+
+        self?.goToThanks(project: project)
+    }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -238,10 +246,16 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   }
 
   private func goToPaymentAuthorization(request: PKPaymentRequest) {
-    guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: request) else { return }
+    guard let paymentAuthorizationViewController =
+      PKPaymentAuthorizationViewController(paymentRequest: request) else { return }
     paymentAuthorizationViewController.delegate = self
 
     self.present(paymentAuthorizationViewController, animated: true)
+  }
+
+  private func goToThanks(project: Project) {
+    let thanksVC = ThanksViewController.configuredWith(project: project)
+    self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 
   // MARK: - Actions

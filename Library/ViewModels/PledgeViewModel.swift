@@ -14,6 +14,7 @@ public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func paymentAuthorizationDidAuthorizePayment(paymentData:
     (displayName: String?, network: String?, transactionIdentifier: String))
+  func paymentAuthorizationDidFinish()
   func pledgeAmountDidUpdate(to amount: Double)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(tokenOrError: Either<String, Error?>)
@@ -24,6 +25,7 @@ public protocol PledgeViewModelInputs {
 public protocol PledgeViewModelOutputs {
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
+  var goToThanks: Signal<Project, Never> { get }
   var createApplePayBackingStatus: Signal<(PKPaymentAuthorizationStatus, Error?), Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never> { get }
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
@@ -186,6 +188,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       applePayBackingEventSuccess,
       applePayBackingEventError
     )
+
+    self.goToThanks = Signal.combineLatest(project, applePayBackingEventSuccess)
+      .takeWhen(paymentAuthorizationDidFinishSignal)
+      .map(first)
   }
 
   private let (applePayButtonTappedSignal, applePayButtonTappedObserver) = Signal<Void, Never>.pipe()
@@ -203,6 +209,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public func paymentAuthorizationDidAuthorizePayment(paymentData: (displayName: String?,
     network: String?, transactionIdentifier: String)) {
     self.pkPaymentObserver.send(value: paymentData)
+  }
+
+  private let (paymentAuthorizationDidFinishSignal, paymentAuthorizationDidFinishObserver)
+    = Signal<Void, Never>.pipe()
+  public func paymentAuthorizationDidFinish() {
+    self.paymentAuthorizationDidFinishObserver.send(value: ())
   }
 
   private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
@@ -233,6 +245,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let createApplePayBackingStatus: Signal<(PKPaymentAuthorizationStatus, Error?), Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let goToApplePayPaymentAuthorization: Signal<PKPaymentRequest, Never>
+  public let goToThanks: Signal<Project, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never>
   public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
   public let continueViewHidden: Signal<Bool, Never>
