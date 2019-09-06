@@ -258,7 +258,13 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
                                           didAuthorizePayment payment: PKPayment,
                                           handler completion: @escaping (PKPaymentAuthorizationResult)
     -> Void) {
-    self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: payment)
+    let paymentDisplayName = payment.token.paymentMethod.displayName
+    let paymentNetworkName = payment.token.paymentMethod.network?.rawValue
+    let transactionId = payment.token.transactionIdentifier
+
+    self.viewModel.inputs.paymentAuthorizationDidAuthorizePayment(paymentData: (paymentDisplayName,
+                                                                                paymentNetworkName,
+                                                                                transactionId))
 
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
       guard let self = self else { return }

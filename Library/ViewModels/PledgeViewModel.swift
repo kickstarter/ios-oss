@@ -12,7 +12,8 @@ public typealias PKPaymentData = (displayName: String, network: String, transact
 public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
   func configureWith(project: Project, reward: Reward)
-  func paymentAuthorization(didAuthorizePayment payment: PKPayment)
+  func paymentAuthorizationDidAuthorizePayment(paymentData:
+    (displayName: String?, network: String?, transactionIdentifier: String))
   func pledgeAmountDidUpdate(to amount: Double)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(tokenOrError: Either<String, Error?>)
@@ -142,10 +143,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let pkPaymentData = pkPaymentSignal
       .map { pkPayment -> PKPaymentData? in
-        guard let displayName = pkPayment.token.paymentMethod.displayName else { return nil }
-        guard let network = pkPayment.token.paymentMethod.network?.rawValue else { return nil }
+        guard let displayName = pkPayment.displayName else { return nil }
+        guard let network = pkPayment.network else { return nil }
 
-        return (displayName, network, pkPayment.token.transactionIdentifier)
+        return (displayName, network, pkPayment.transactionIdentifier)
     }
 
     let createApplePayBackingData = Signal.combineLatest(backingData, pkPaymentData.skipNil())
@@ -197,9 +198,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.configureProjectAndRewardProperty.value = (project, reward)
   }
 
-  private let (pkPaymentSignal, pkPaymentObserver) = Signal<PKPayment, Never>.pipe()
-  public func paymentAuthorization(didAuthorizePayment payment: PKPayment) {
-    self.pkPaymentObserver.send(value: payment)
+  private let (pkPaymentSignal, pkPaymentObserver) = Signal<(displayName: String?,
+    network: String?, transactionIdentifier: String), Never>.pipe()
+  public func paymentAuthorizationDidAuthorizePayment(paymentData: (displayName: String?,
+    network: String?, transactionIdentifier: String)) {
+    self.pkPaymentObserver.send(value: paymentData)
   }
 
   private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
