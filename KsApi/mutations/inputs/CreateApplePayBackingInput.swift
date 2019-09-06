@@ -2,17 +2,17 @@ import Foundation
 
 public struct CreateApplePayBackingInput: GraphMutationInput {
   let amount: String
-  let locationId: Int?
+  let locationId: String?
   let paymentInstrumentName: String
   let paymentNetwork: String
-  let projectId: Int
-  let rewardId: Int?
+  let projectId: String
+  let rewardId: String?
   let stripeToken: String
   let transactionIdentifier: String
 
   public init(
-    amount: String, locationId: Int?, paymentInstrumentName: String, paymentNetwork: String,
-    projectId: Int, rewardId: Int?, stripeToken: String, transactionIdentifier: String
+    amount: String, locationId: String?, paymentInstrumentName: String, paymentNetwork: String,
+    projectId: String, rewardId: String?, stripeToken: String, transactionIdentifier: String
   ) {
     self.amount = amount
     self.locationId = locationId
@@ -29,17 +29,17 @@ public struct CreateApplePayBackingInput: GraphMutationInput {
       "amount": self.amount,
       "paymentInstrumentName": self.paymentInstrumentName,
       "paymentNetwork": self.paymentNetwork,
-      "projectId": String(self.projectId),
+      "projectId": self.projectId,
       "token": self.stripeToken,
       "transactionIdentifier": self.transactionIdentifier
     ]
 
     if let locationId = self.locationId {
-      inputDictionary["locationId"] = String(locationId)
+      inputDictionary["locationId"] = locationId
     }
 
     if let rewardId = self.rewardId {
-      inputDictionary["rewardId"] = String(rewardId)
+      inputDictionary["rewardId"] = rewardId
     }
 
     return inputDictionary

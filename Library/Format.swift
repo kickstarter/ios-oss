@@ -511,6 +511,17 @@ private struct NumberFormatterConfig {
     currencySymbol: "$"
   )
 
+  fileprivate static let defaultDecimalCurrencyConfig = NumberFormatterConfig(
+    numberStyle: .decimal,
+    roundingMode: .down,
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+    generatesDecimalNumbers: false,
+    // Decimal currency amounts are always formatted using En locale for compatibility with the API
+    locale: Locale(identifier: "en"),
+    currencySymbol: "$"
+  )
+
   fileprivate static func cachedFormatter(forConfig config: NumberFormatterConfig) -> NumberFormatter {
     let formatter = self.formatters[config] ?? config.formatter()
     self.formatters[config] = formatter
