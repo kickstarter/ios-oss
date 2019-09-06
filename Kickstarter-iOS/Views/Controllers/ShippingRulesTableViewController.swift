@@ -18,6 +18,13 @@ final class ShippingRulesTableViewController: UITableViewController {
   private let viewModel: ShippingRulesViewModelType = ShippingRulesViewModel()
   weak var delegate: ShippingRulesTableViewControllerDelegate?
 
+  private lazy var searchBar: UISearchBar = {
+    UISearchBar(frame: .zero)
+      |> \.delegate .~ self
+      |> \.searchBarStyle .~ .minimal
+      |> \.showsCancelButton .~ false
+  }()
+
   // MARK: - Lifecycle
 
   static func instantiate() -> ShippingRulesTableViewController {
@@ -28,11 +35,14 @@ final class ShippingRulesTableViewController: UITableViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.navigationItem.leftBarButtonItem .~ UIBarButtonItem(
+      |> \.navigationItem.rightBarButtonItem .~ UIBarButtonItem(
         barButtonSystemItem: .cancel,
         target: self,
         action: #selector(ShippingRulesTableViewController.dismissViewController)
       )
+
+    _ = self.navigationItem
+      |> \.titleView .~ self.searchBar
 
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
@@ -114,5 +124,11 @@ final class ShippingRulesTableViewController: UITableViewController {
     self.viewModel.inputs.didSelectShippingRule(at: indexPath.row)
 
     self.tableView.deselectRow(at: indexPath, animated: true)
+  }
+}
+
+extension ShippingRulesTableViewController: UISearchBarDelegate {
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    print("search text: \(searchText)")
   }
 }
