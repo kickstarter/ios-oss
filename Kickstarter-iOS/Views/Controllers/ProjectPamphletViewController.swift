@@ -143,6 +143,18 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.goToManagePledge(project: project, reward: reward, refTag: refTag)
     }
 
+    self.viewModel.outputs.goToDeprecatedViewBacking
+      .observeForControllerAction()
+      .observeValues { [weak self] project, user in
+        self?.goToViewBacking(project: project, user: user)
+    }
+
+    self.viewModel.outputs.goToDeprecatedManagePledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project, reward, refTag in
+        self?.goToDeprecatedPledge(project: project, reward: reward, refTag: refTag)
+    }
+
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, refTag in
@@ -198,12 +210,16 @@ public final class ProjectPamphletViewController: UIViewController {
     let managePledgeViewController = ManagePledgeViewController.instantiate()
     managePledgeViewController.configureWith(project: project, reward: reward)
 
-    let nav = UINavigationController(rootViewController: managePledgeViewController)
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = nav
-        |> \.modalPresentationStyle .~ .formSheet
-    }
-    self.present(nav, animated: true)
+    self.navigationController?.pushViewController(managePledgeViewController, animated: true)
+  }
+
+  private func goToDeprecatedPledge(project: Project, reward: Reward, refTag _: RefTag?) {
+    let pledgeViewController = DeprecatedRewardPledgeViewController
+      .configuredWith(
+        project: project, reward: reward
+    )
+
+    self.navigationController?.pushViewController(pledgeViewController, animated: true)
   }
 
   private func goToViewBacking(project: Project, user: User?) {

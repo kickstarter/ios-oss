@@ -35,6 +35,10 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
   var configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never> { get }
 
+  var goToDeprecatedManagePledge: Signal<PledgeData, Never> { get }
+
+  var goToDeprecatedViewBacking: Signal<(Project, User?), Never> { get }
+
   var goToManagePledge: Signal<PledgeData, Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
@@ -87,16 +91,27 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(unpack)
 
     let goToManagePledge = ctaButtonTapped
-      .filter( { (arg) -> Bool in
-        let (project, _, state) = arg
-        return canShowManageViewPledgeScreen(project, state: state)
-      })
+      .filter(canShowManageViewPledgeScreen(_:_:state:))
       .map { (project, refTag, _) -> PledgeData in
         let r = reward(from: project.personalization.backing, inProject: project)
         return PledgeData(project: project, reward: r, refTag: refTag)
     }
 
     self.goToManagePledge = goToManagePledge
+      .filter { _ in featureNativeCheckoutPledgeViewIsEnabled() }
+
+    self.goToDeprecatedManagePledge = ctaButtonTapped
+      .filter(shouldGoToDeprecatedManagePledge(_:_:state:))
+      .map { (project, refTag, _) -> PledgeData in
+        let r = reward(from: project.personalization.backing, inProject: project)
+        return PledgeData(project: project, reward: r, refTag: refTag)
+    }
+
+    self.goToDeprecatedViewBacking = ctaButtonTapped
+      .filter(shouldGoToDeprecatedViewBacking(_:_:state:))
+      .map { (project, _, _) in
+        (project, AppEnvironment.current.currentUser)
+    }
 
     self.goToRewards = ctaButtonTapped
       .filter { _, _, pledgeState in
@@ -206,6 +221,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never>
+  public let goToDeprecatedManagePledge: Signal<PledgeData, Never>
+  public let goToDeprecatedViewBacking: Signal<(Project, User?), Never>
   public let goToManagePledge: Signal<PledgeData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
@@ -301,15 +318,35 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   return projectProducer
 }
 
-private func canShowManageViewPledgeScreen(_ project: Project,
-                                           state: PledgeStateCTAType?) -> Bool {
-  return (state == .manage || state == .viewBacking) &&
-    isTrue(project.personalization.isBacking!) &&
-    featureNativeCheckoutPledgeViewIsEnabled()
-}
-
 private func reward(from backing: Backing?, inProject project: Project) -> Reward {
   return backing?.reward
     ?? project.rewards.filter { $0.id == backing?.rewardId }.first
     ?? Reward.noReward
+}
+
+private func canShowManageViewPledgeScreen(_ project: Project,
+                                           _: RefTag?,
+                                           state: PledgeStateCTAType?) -> Bool {
+  guard let isBacking = project.personalization.isBacking, let state = state else {
+    return false
+  }
+  return isBacking && (state == .manage || state == .viewBacking)
+}
+
+private func shouldGoToDeprecatedViewBacking(_ project: Project,
+                                             _: RefTag?,
+                                             state: PledgeStateCTAType?) -> Bool {
+  guard let isBacking = project.personalization.isBacking, let state = state else {
+    return false
+  }
+  return !featureNativeCheckoutPledgeViewIsEnabled() && isBacking && state == .viewBacking
+}
+
+private func shouldGoToDeprecatedManagePledge(_ project: Project,
+                                              _: RefTag?,
+                                              state: PledgeStateCTAType?) -> Bool {
+  guard let isBacking = project.personalization.isBacking, let state = state else {
+    return false
+  }
+  return !featureNativeCheckoutPledgeViewIsEnabled() && isBacking && state == .manage
 }
