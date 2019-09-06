@@ -254,15 +254,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 // MARK: - PKPaymentAuthorizationViewControllerDelegate
 
 extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
-  func paymentAuthorizationViewControllerWillAuthorizePayment(
-    _: PKPaymentAuthorizationViewController
-    ) {
-    //self.viewModel.inputs.paymentAuthorizationWillAuthorizePayment()
-  }
-
   func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                           didAuthorizePayment payment: PKPayment,
-                                          handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+                                          handler completion: @escaping (PKPaymentAuthorizationResult)
+    -> Void) {
     self.viewModel.inputs.paymentAuthorization(didAuthorizePayment: payment)
 
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
@@ -278,10 +273,16 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 
       self.viewModel.outputs.createApplePayBackingStatus
         .take(first: 1)
-        .observeValues { status in
+        .observeValues { status, error in
           print("***CREATE APPLE PAY BACKING: \(status)")
 
-          let result = PKPaymentAuthorizationResult(status: status, errors: nil)
+          var errors = [Error]()
+
+          if let error = error {
+            errors.append(error)
+          }
+
+          let result = PKPaymentAuthorizationResult(status: status, errors: errors)
 
           completion(result)
       }
@@ -291,9 +292,7 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
   }
 
   func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-    controller.dismiss(animated: true) {
-      //self.viewModel.inputs.paymentAuthorizationDidFinish()
-    }
+    controller.dismiss(animated: true)
   }
 }
 
