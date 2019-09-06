@@ -93,6 +93,11 @@ public struct Service: ServiceType {
     return applyMutation(mutation: CreateApplePayBackingMutation(input: input))
   }
 
+  public func createBacking(input: CreateBackingInput) ->
+    SignalProducer<CreateBackingEnvelope, GraphError> {
+    return applyMutation(mutation: CreateBackingMutation(input: input))
+  }
+
   public func createPassword(input: CreatePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
     return applyMutation(mutation: UpdateUserAccountMutation(input: input))

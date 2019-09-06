@@ -1133,6 +1133,12 @@
 		D7237099211A3DA9001EA4CA /* SettingsFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7237097211A3925001EA4CA /* SettingsFollowCell.swift */; };
 		D7417CD620BF12F4004DABA6 /* ExportDataEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7417CD520BF12F4004DABA6 /* ExportDataEnvelope.swift */; };
 		D7417D0E20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */; };
+		D755ECA52315E6E10096F189 /* CreateBackingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECA42315E6E10096F189 /* CreateBackingInput.swift */; };
+		D755ECA72315E95C0096F189 /* CreateBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */; };
+		D755ECA92319AF4D0096F189 /* CreateBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECA82319AF4D0096F189 /* CreateBackingEnvelope.swift */; };
+		D755ECAB232005A70096F189 /* Checkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECAA232005A70096F189 /* Checkout.swift */; };
+		D755ECAE23216C290096F189 /* CreateBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECAC23216C0D0096F189 /* CreateBackingInputTests.swift */; };
+		D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D755ECAF23217D550096F189 /* CreateBackingEnvelopeTests.swift */; };
 		D75DACA8221DC4340027F478 /* CreatePasswordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DACA7221DC4340027F478 /* CreatePasswordInput.swift */; };
 		D764370A224040D100DAFC9E /* SharedFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76436D1224040B700DAFC9E /* SharedFunctions.swift */; };
 		D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */; };
@@ -2401,6 +2407,12 @@
 		D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCTAContainerView.swift; sourceTree = "<group>"; };
 		D7417CD520BF12F4004DABA6 /* ExportDataEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportDataEnvelope.swift; sourceTree = "<group>"; };
 		D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportStateEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		D755ECA42315E6E10096F189 /* CreateBackingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingInput.swift; sourceTree = "<group>"; };
+		D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingMutation.swift; sourceTree = "<group>"; };
+		D755ECA82319AF4D0096F189 /* CreateBackingEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingEnvelope.swift; sourceTree = "<group>"; };
+		D755ECAA232005A70096F189 /* Checkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkout.swift; sourceTree = "<group>"; };
+		D755ECAC23216C0D0096F189 /* CreateBackingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingInputTests.swift; sourceTree = "<group>"; };
+		D755ECAF23217D550096F189 /* CreateBackingEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateBackingEnvelopeTests.swift; sourceTree = "<group>"; };
 		D75DACA7221DC4340027F478 /* CreatePasswordInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordInput.swift; sourceTree = "<group>"; };
 		D76436D1224040B700DAFC9E /* SharedFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedFunctions.swift; sourceTree = "<group>"; };
 		D764373F22414FA900DAFC9E /* AppEnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironmentType.swift; sourceTree = "<group>"; };
@@ -2593,6 +2605,7 @@
 				77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */,
 				D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */,
 				D79CF32B219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift */,
+				D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */,
 				D085100F219500F200BC418B /* PaymentSourceDeleteMutation.swift */,
 				D08CD1F821910DF5009F89F0 /* UnwatchProjectMutation.swift */,
 				D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */,
@@ -3691,10 +3704,11 @@
 				D015877C1EEB2ED6006E7684 /* Backing.swift */,
 				D015877D1EEB2ED6006E7684 /* BackingTests.swift */,
 				D6B9DF3E1F72E25A0064A4D8 /* Category.swift */,
-				D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */,
 				D6AE52271FD1B4BA00BEC788 /* CategoryEnvelope.swift */,
+				D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */,
 				D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */,
 				D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */,
+				D755ECAA232005A70096F189 /* Checkout.swift */,
 				D01587831EEB2ED6006E7684 /* CheckoutEnvelope.swift */,
 				D01587841EEB2ED6006E7684 /* CheckoutEnvelopeTests.swift */,
 				D0E78C3522A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift */,
@@ -3705,6 +3719,8 @@
 				D01587881EEB2ED6006E7684 /* Config.swift */,
 				D67B6C9C221F458700B63A6B /* Config+Argo.swift */,
 				D01587891EEB2ED6006E7684 /* ConfigTests.swift */,
+				D755ECA82319AF4D0096F189 /* CreateBackingEnvelope.swift */,
+				D755ECAF23217D550096F189 /* CreateBackingEnvelopeTests.swift */,
 				D79440562203A63300D0A747 /* CreatePaymentSourceEnvelope.swift */,
 				D015878A1EEB2ED6006E7684 /* CreatePledgeEnvelope.swift */,
 				D015878B1EEB2ED6006E7684 /* CreatePledgeEnvelopeTests.swift */,
@@ -3725,6 +3741,7 @@
 				77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
 				D01587961EEB2ED6006E7684 /* ItemTests.swift */,
+				D01587971EEB2ED6006E7684 /* lenses */,
 				D01587CB1EEB2ED7006E7684 /* Location.swift */,
 				D67B6CD5221F468100B63A6B /* Location+Argo.swift */,
 				D01587CC1EEB2ED7006E7684 /* LocationTests.swift */,
@@ -3764,6 +3781,7 @@
 				D01587EB1EEB2ED7006E7684 /* SubmitApplePayEnvelopeTests.swift */,
 				D01587EC1EEB2ED7006E7684 /* SurveyResponse.swift */,
 				D01587ED1EEB2ED7006E7684 /* SurveyResponseTests.swift */,
+				D01587EE1EEB2ED7006E7684 /* templates */,
 				D015881A1EEB2ED7006E7684 /* Update.swift */,
 				D015881B1EEB2ED7006E7684 /* UpdateDraft.swift */,
 				D015881C1EEB2ED7006E7684 /* UpdateDraftTests.swift */,
@@ -3779,8 +3797,6 @@
 				7798B5622174F494008BC50D /* UserEnvelope.swift */,
 				D01588241EEB2ED7006E7684 /* UserTests.swift */,
 				D01588251EEB2ED7006E7684 /* VoidEnvelope.swift */,
-				D01587971EEB2ED6006E7684 /* lenses */,
-				D01587EE1EEB2ED7006E7684 /* templates */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -3933,6 +3949,8 @@
 				D79CF32D219CE51A00ECB73A /* CreatePaymentSourceInput.swift */,
 				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
 				77E44B7321823A56006446B8 /* ChangePasswordInput.swift */,
+				D755ECA42315E6E10096F189 /* CreateBackingInput.swift */,
+				D755ECAC23216C0D0096F189 /* CreateBackingInputTests.swift */,
 				D75DACA7221DC4340027F478 /* CreatePasswordInput.swift */,
 				D6B686E82191FE5E005F5DA7 /* EmptyInput.swift */,
 				D08510112195015F00BC418B /* PaymentSourceDeleteInput.swift */,
@@ -5300,6 +5318,7 @@
 				D6AE52251FD1B3F600BEC788 /* RootCategoriesEnvelope.swift in Sources */,
 				D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */,
 				D0158A2D1EEB30A2006E7684 /* UpdateTemplates.swift in Sources */,
+				D755ECA52315E6E10096F189 /* CreateBackingInput.swift in Sources */,
 				D0158A181EEB30A2006E7684 /* MessageTemplates.swift in Sources */,
 				D0158A191EEB30A2006E7684 /* MessageThreadTemplates.swift in Sources */,
 				D01588AF1EEB2ED7006E7684 /* Project.VideoLenses.swift in Sources */,
@@ -5404,6 +5423,7 @@
 				D01588C11EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift in Sources */,
 				D015890B1EEB2ED7006E7684 /* ProjectStatsEnvelope.swift in Sources */,
 				D015889B1EEB2ED7006E7684 /* ItemLenses.swift in Sources */,
+				D755ECA72315E95C0096F189 /* CreateBackingMutation.swift in Sources */,
 				D01588951EEB2ED7006E7684 /* FindFriendsEnvelopeLenses.swift in Sources */,
 				D0158A331EEB30A2006E7684 /* UserTemplates.swift in Sources */,
 				7798B5632174F494008BC50D /* UserEnvelope.swift in Sources */,
@@ -5452,6 +5472,7 @@
 				D08CD1F921910DF5009F89F0 /* UnwatchProjectMutation.swift in Sources */,
 				D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */,
 				D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */,
+				D755ECA92319AF4D0096F189 /* CreateBackingEnvelope.swift in Sources */,
 				D0158A4D1EEB3220006E7684 /* MockService.swift in Sources */,
 				D01588651EEB2ED7006E7684 /* CreatePledgeEnvelope.swift in Sources */,
 				D0158A131EEB30A2006E7684 /* DiscoveryEnvelopeTemplates.swift in Sources */,
@@ -5462,6 +5483,7 @@
 				D01589871EEB2ED7006E7684 /* UpdatePledgeEnvelope.swift in Sources */,
 				D01588DD1EEB2ED7006E7684 /* User.NotificationsLenses.swift in Sources */,
 				D015886B1EEB2ED7006E7684 /* DiscoveryParams.swift in Sources */,
+				D755ECAB232005A70096F189 /* Checkout.swift in Sources */,
 				D01588BF1EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift in Sources */,
 				D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */,
 			);
@@ -5502,6 +5524,8 @@
 				D0D10C171EEB4550005EBAD0 /* PushEnvelopeTests.swift in Sources */,
 				D0D10C1D1EEB4550005EBAD0 /* UpdatePledgeEnvelopeTests.swift in Sources */,
 				D0D10C0E1EEB4550005EBAD0 /* ItemTests.swift in Sources */,
+				D755ECAE23216C290096F189 /* CreateBackingInputTests.swift in Sources */,
+				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
 				D0D10C1B1EEB4550005EBAD0 /* SurveyResponseTests.swift in Sources */,
 				D0D10C061EEB4550005EBAD0 /* CheckoutEnvelopeTests.swift in Sources */,
 				D0D10C1F1EEB4550005EBAD0 /* User.AvatarTests.swift in Sources */,

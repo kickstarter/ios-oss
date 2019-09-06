@@ -60,6 +60,9 @@ public protocol ServiceType {
   func createApplePayBacking(input: CreateApplePayBackingInput)
     -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 
+  func createBacking(input: CreateBackingInput) ->
+    SignalProducer<CreateBackingEnvelope, GraphError>
+
   func createPassword(input: CreatePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 
