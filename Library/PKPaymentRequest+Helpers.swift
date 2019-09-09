@@ -28,7 +28,7 @@ extension PKPaymentRequest {
     return request
   }
 
-  static func paymentSummaryItems(
+  private static func paymentSummaryItems(
     forProject project: Project,
     reward: Reward,
     pledgeAmount: Double,
