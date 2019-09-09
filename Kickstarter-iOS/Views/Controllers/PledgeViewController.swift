@@ -221,8 +221,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.viewModel.outputs.goToApplePayPaymentAuthorization
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToPaymentAuthorization(request: $0)
+      .observeValues { [weak self] paymentAuthorizationData in
+        self?.goToPaymentAuthorization(paymentAuthorizationData)
     }
 
     self.viewModel.outputs.goToThanks
@@ -253,7 +253,14 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
   }
 
-  private func goToPaymentAuthorization(request: PKPaymentRequest) {
+  private func goToPaymentAuthorization(_ paymentAuthorizationData: PaymentAuthorizationData) {
+    let request = PKPaymentRequest
+      .paymentRequest(for: paymentAuthorizationData.project,
+                      reward: paymentAuthorizationData.reward,
+                      pledgeAmount: paymentAuthorizationData.pledgeAmount,
+                      selectedShippingRule: paymentAuthorizationData.selectedShippingRule,
+                      merchantIdentifier: paymentAuthorizationData.merchantIdentifier)
+
     guard let paymentAuthorizationViewController =
       PKPaymentAuthorizationViewController(paymentRequest: request) else { return }
     paymentAuthorizationViewController.delegate = self

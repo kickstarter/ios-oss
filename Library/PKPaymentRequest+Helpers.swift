@@ -3,7 +3,7 @@ import PassKit
 import KsApi
 
 extension PKPaymentRequest {
-  static func paymentRequest(
+  public static func paymentRequest(
     for project: Project,
     reward: Reward,
     pledgeAmount: Double,

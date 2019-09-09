@@ -28,7 +28,12 @@ final class PledgeViewModelTests: TestCase {
 
   private let createBackingError = TestObserver<String, Never>()
 
-  private let goToApplePayPaymentAuthorization = TestObserver<PKPaymentRequest, Never>()
+  private let goToApplePayPaymentAuthorizationProject = TestObserver<Project, Never>()
+  private let goToApplePayPaymentAuthorizationReward = TestObserver<Reward, Never>()
+  private let goToApplePayPaymentAuthorizationPledgeAmount = TestObserver<Double, Never>()
+  private let goToApplePayPaymentAuthorizationShippingRule = TestObserver<ShippingRule?, Never>()
+  private let goToApplePayPaymentAuthorizationMerchantId = TestObserver<String, Never>()
+
   private let goToThanks = TestObserver<Project, Never>()
 
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
@@ -61,7 +66,17 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.outputs.createBackingError.observe(self.createBackingError.observer)
 
-    self.vm.outputs.goToApplePayPaymentAuthorization.observe(self.goToApplePayPaymentAuthorization.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.project }
+      .observe(self.goToApplePayPaymentAuthorizationProject.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.reward }
+      .observe(self.goToApplePayPaymentAuthorizationReward.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.pledgeAmount }
+      .observe(self.goToApplePayPaymentAuthorizationPledgeAmount.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.selectedShippingRule }
+      .observe(self.goToApplePayPaymentAuthorizationShippingRule.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.merchantIdentifier }
+      .observe(self.goToApplePayPaymentAuthorizationMerchantId.observer)
+
     self.vm.outputs.goToThanks.observe(self.goToThanks.observer)
 
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
@@ -441,18 +456,19 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward)
     self.vm.inputs.viewDidLoad()
 
-    self.goToApplePayPaymentAuthorization.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.vm.inputs.applePayButtonTapped()
 
-    let expectedPkPaymentRequest = PKPaymentRequest
-      .paymentRequest(for: project,
-                      reward: reward,
-                      pledgeAmount: 5,
-                      selectedShippingRule: nil,
-                      merchantIdentifier: Secrets.ApplePay.merchantIdentifier)
-
-    self.goToApplePayPaymentAuthorization.assertValues([expectedPkPaymentRequest])
+    self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+    self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+    self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([5])
+    self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
   func testGoToApplePayPaymentAuthorization_WhenApplePayButtonTapped_ShippingEnabled() {
@@ -465,20 +481,21 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward)
     self.vm.inputs.viewDidLoad()
 
-    self.goToApplePayPaymentAuthorization.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.vm.inputs.shippingRuleSelected(shippingRule)
 
     self.vm.inputs.applePayButtonTapped()
 
-    let expectedPkPaymentRequest = PKPaymentRequest
-      .paymentRequest(for: project,
-                      reward: reward,
-                      pledgeAmount: 26,
-                      selectedShippingRule: shippingRule,
-                      merchantIdentifier: Secrets.ApplePay.merchantIdentifier)
-
-    self.goToApplePayPaymentAuthorization.assertValues([expectedPkPaymentRequest])
+    self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+    self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+    self.goToApplePayPaymentAuthorizationShippingRule.assertValues([shippingRule])
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([25])
+    self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
   func testStripeTokenCreated_ReturnsStatusFailure_WhenPKPaymentData_IsNil() {
@@ -490,8 +507,6 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
-
-    self.goToApplePayPaymentAuthorization.assertValueCount(1)
 
     self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
       paymentData: (displayName: nil, network: nil, transactionIdentifier: "12345"))
@@ -509,8 +524,6 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
-
-    self.goToApplePayPaymentAuthorization.assertValueCount(1)
 
     self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
       paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345"))
@@ -531,8 +544,6 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.applePayButtonTapped()
 
-    self.goToApplePayPaymentAuthorization.assertValueCount(1)
-
     self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
       paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345"))
 
@@ -549,8 +560,6 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
-
-    self.goToApplePayPaymentAuthorization.assertValueCount(1)
 
     self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
       paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345"))
@@ -570,7 +579,6 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.applePayButtonTapped()
 
-      self.goToApplePayPaymentAuthorization.assertValueCount(1)
       self.goToThanks.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
@@ -603,7 +611,6 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.applePayButtonTapped()
 
-      self.goToApplePayPaymentAuthorization.assertValueCount(1)
       self.goToThanks.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
@@ -620,7 +627,8 @@ final class PledgeViewModelTests: TestCase {
       self.createBackingError.assertDidNotEmitValue("Signal waits for the Apple Pay sheet to be dismissed")
       self.vm.inputs.paymentAuthorizationDidFinish()
 
-      self.goToThanks.assertValues([project])
+      self.createBackingError.assertValues([GraphError.invalidInput.localizedDescription])
+      self.goToThanks.assertDidNotEmitValue()
     }
   }
 }
