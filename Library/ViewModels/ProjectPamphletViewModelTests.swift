@@ -505,7 +505,6 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testGoToDeprecatedViewBacking_NativeCheckoutPledgeViewFeature_Disabled() {
-
     let config = .template
       |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: false]
     let user = User.template
@@ -541,9 +540,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
   }
 
-  func testGoToViewBacking_NativeCheckoutPledgeViewFeature_Disabled() {
-
-  }
+  func testGoToViewBacking_NativeCheckoutPledgeViewFeature_Disabled() {}
 
   func testConfigurePledgeCTAView_fetchProjectSuccess_featureEnabled_experimentEnabled() {
     let config = Config.template

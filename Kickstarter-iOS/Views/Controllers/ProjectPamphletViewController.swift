@@ -137,23 +137,23 @@ public final class ProjectPamphletViewController: UIViewController {
 
     self.viewModel.outputs.goToManageViewPledge
       .observeForControllerAction()
-      .observeValues { [weak self] (params) in
+      .observeValues { [weak self] params in
         let (project, reward, refTag) = params
 
         self?.goToManagePledge(project: project, reward: reward, refTag: refTag)
-    }
+      }
 
     self.viewModel.outputs.goToDeprecatedViewBacking
       .observeForControllerAction()
       .observeValues { [weak self] project, user in
         self?.goToViewBacking(project: project, user: user)
-    }
+      }
 
     self.viewModel.outputs.goToDeprecatedManagePledge
       .observeForControllerAction()
       .observeValues { [weak self] project, reward, refTag in
         self?.goToDeprecatedPledge(project: project, reward: reward, refTag: refTag)
-    }
+      }
 
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
@@ -222,7 +222,7 @@ public final class ProjectPamphletViewController: UIViewController {
     let pledgeViewController = DeprecatedRewardPledgeViewController
       .configuredWith(
         project: project, reward: reward
-    )
+      )
     pledgeViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
       image: image(named: "icon--cross", tintColor: .ksr_navy_600),
       style: .plain,
@@ -238,7 +238,7 @@ public final class ProjectPamphletViewController: UIViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  private func goToViewBacking(project: Project, user: User?) {
+  private func goToViewBacking(project: Project, user _: User?) {
     let backingViewController = BackingViewController.configuredWith(project: project, backer: nil)
 
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
@@ -267,7 +267,6 @@ public final class ProjectPamphletViewController: UIViewController {
 }
 
 extension ProjectPamphletViewController: PledgeCTAContainerViewDelegate {
-
   func pledgeCTAButtonTapped(_ state: PledgeStateCTAType) {
     self.viewModel.inputs.pledgeCTAButtonTapped(state)
   }
