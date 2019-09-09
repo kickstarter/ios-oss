@@ -233,6 +233,14 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.goToThanks(project: project)
     }
 
+    // Errors
+
+    self.viewModel.outputs.createBackingError
+      .observeForUI()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
+    }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -291,28 +299,17 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
         tokenOrError = .init(right: error)
       }
 
-      self.viewModel.outputs.createApplePayBackingStatus
-        .take(first: 1)
-        .observeValues { status, error in
-          print("***CREATE APPLE PAY BACKING: \(status)")
+      let status = self.viewModel.inputs.stripeTokenCreated(tokenOrError: tokenOrError)
+      let result = PKPaymentAuthorizationResult(status: status, errors: [])
 
-          var errors = [Error]()
-
-          if let error = error {
-            errors.append(error)
-          }
-
-          let result = PKPaymentAuthorizationResult(status: status, errors: errors)
-
-          completion(result)
-      }
-
-      self.viewModel.inputs.stripeTokenCreated(tokenOrError: tokenOrError)
+      completion(result)
     }
   }
 
   func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-    controller.dismiss(animated: true)
+    controller.dismiss(animated: true, completion: { [weak self] in
+      self?.viewModel.inputs.paymentAuthorizationDidFinish()
+    })
   }
 }
 
@@ -380,7 +377,8 @@ extension PledgeViewController: PledgeViewControllerMessageDisplaying {
 // MARK: - PledgePaymentMethodsViewControllerDelegate
 
 extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
-  func pledgePaymentMethodsViewControllerDidTapApplePayButton(_ viewController: PledgePaymentMethodsViewController) {
+  func pledgePaymentMethodsViewControllerDidTapApplePayButton(_
+    viewController: PledgePaymentMethodsViewController) {
     self.viewModel.inputs.applePayButtonTapped()
   }
 }
