@@ -135,7 +135,7 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.goToRewards(project: project, refTag: refTag)
       }
 
-    self.viewModel.outputs.goToManagePledge
+    self.viewModel.outputs.goToManageViewPledge
       .observeForControllerAction()
       .observeValues { [weak self] (params) in
         let (project, reward, refTag) = params
@@ -210,7 +210,12 @@ public final class ProjectPamphletViewController: UIViewController {
     let managePledgeViewController = ManagePledgeViewController.instantiate()
     managePledgeViewController.configureWith(project: project, reward: reward)
 
-    self.navigationController?.pushViewController(managePledgeViewController, animated: true)
+    let nav = UINavigationController(rootViewController: managePledgeViewController)
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = nav
+        |> \.modalPresentationStyle .~ .formSheet
+    }
+    self.present(nav, animated: true)
   }
 
   private func goToDeprecatedPledge(project: Project, reward: Reward, refTag _: RefTag?) {
@@ -218,14 +223,31 @@ public final class ProjectPamphletViewController: UIViewController {
       .configuredWith(
         project: project, reward: reward
     )
+    pledgeViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+      image: image(named: "icon--cross", tintColor: .ksr_navy_600),
+      style: .plain,
+      target: pledgeViewController,
+      action: #selector(DeprecatedRewardPledgeViewController.closeButtonTapped)
+    )
 
-    self.navigationController?.pushViewController(pledgeViewController, animated: true)
+    let nav = UINavigationController(rootViewController: pledgeViewController)
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = nav
+        |> \.modalPresentationStyle .~ .formSheet
+    }
+    self.present(nav, animated: true, completion: nil)
   }
 
   private func goToViewBacking(project: Project, user: User?) {
-    let backingViewController = BackingViewController.configuredWith(project: project, backer: user)
+    let backingViewController = BackingViewController.configuredWith(project: project, backer: nil)
 
-    self.navigationController?.pushViewController(backingViewController, animated: true)
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      let nav = UINavigationController(rootViewController: backingViewController)
+        |> \.modalPresentationStyle .~ .formSheet
+      self.present(nav, animated: true, completion: nil)
+    } else {
+      self.navigationController?.pushViewController(backingViewController, animated: true)
+    }
   }
 
   private func updateContentInsets() {

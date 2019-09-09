@@ -39,7 +39,7 @@ public protocol ProjectPamphletViewModelOutputs {
 
   var goToDeprecatedViewBacking: Signal<(Project, User?), Never> { get }
 
-  var goToManagePledge: Signal<PledgeData, Never> { get }
+  var goToManageViewPledge: Signal<PledgeData, Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
@@ -97,7 +97,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
         return PledgeData(project: project, reward: r, refTag: refTag)
     }
 
-    self.goToManagePledge = goToManagePledge
+    self.goToManageViewPledge = goToManagePledge
       .filter { _ in featureNativeCheckoutPledgeViewIsEnabled() }
 
     self.goToDeprecatedManagePledge = ctaButtonTapped
@@ -223,7 +223,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public let configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never>
   public let goToDeprecatedManagePledge: Signal<PledgeData, Never>
   public let goToDeprecatedViewBacking: Signal<(Project, User?), Never>
-  public let goToManagePledge: Signal<PledgeData, Never>
+  public let goToManageViewPledge: Signal<PledgeData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
