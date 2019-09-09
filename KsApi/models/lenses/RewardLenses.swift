@@ -37,7 +37,7 @@ extension Reward {
         shipping: $1.shipping,
         startsAt: $1.startsAt,
         title: $1.title
-        ) }
+      ) }
     )
 
     public static let description = Lens<Reward, String>(
