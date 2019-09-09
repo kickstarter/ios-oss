@@ -110,7 +110,11 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
   }
 
   func test_USProject_NonUSUser_NonUSLocation() {
+    let rewards = self.cosmicSurgery.rewards
+      .map { $0 |> Reward.lens.convertedMinimum .~ ($0.minimum * 3.0) }
+
     self.cosmicSurgery = self.cosmicSurgery
+      |> Project.lens.rewards .~ rewards
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ "USD"
       |> Project.lens.stats.currentCurrency .~ "SEK"

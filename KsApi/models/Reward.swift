@@ -5,7 +5,7 @@ import Runes
 
 public struct Reward {
   public let backersCount: Int?
-  public let convertedMinimum: Double?
+  public let convertedMinimum: Double
   public let description: String
   public let endsAt: TimeInterval?
   public let estimatedDeliveryOn: TimeInterval?
@@ -52,7 +52,7 @@ extension Reward: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Reward> {
     let tmp1 = curry(Reward.init)
       <^> json <|? "backers_count"
-      <*> json <|? "converted_minimum"
+      <*> json <| "converted_minimum"
       <*> (json <| "description" <|> json <| "reward")
       <*> json <|? "ends_at"
       <*> json <|? "estimated_delivery_on"

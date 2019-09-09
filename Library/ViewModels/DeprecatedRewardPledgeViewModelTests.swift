@@ -212,11 +212,9 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 2
       |> Project.lens.stats.currentCurrency .~ "USD"
-      |> Project.lens.stats.currentCurrencyRate .~ 2
     let reward = .template
-      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.convertedMinimum .~ 2_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -231,10 +229,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 2
-      |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template
-      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.convertedMinimum .~ 2_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -250,10 +246,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.ca.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 2
-      |> Project.lens.stats.currentCurrencyRate .~ 1.2
     let reward = .template
-      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.convertedMinimum .~ 1_200
 
     withEnvironment(countryCode: "CA") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -268,10 +262,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 2
-      |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template
-      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.convertedMinimum .~ 2_000
 
     withEnvironment(countryCode: "CA") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)

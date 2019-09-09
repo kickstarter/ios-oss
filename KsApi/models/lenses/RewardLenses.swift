@@ -21,7 +21,7 @@ extension Reward {
       ) }
     )
 
-    public static let convertedMinimum = Lens<Reward, Double?>(
+    public static let convertedMinimum = Lens<Reward, Double>(
       view: { $0.convertedMinimum },
       set: { Reward(
         backersCount: $1.backersCount,
