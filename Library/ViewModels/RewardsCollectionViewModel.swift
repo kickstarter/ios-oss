@@ -19,6 +19,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
   var goToDeprecatedPledge: Signal<PledgeData, Never> { get }
+  var goToManagePledge: Signal<PledgeData, Never> { get }
   var goToPledge: Signal<PledgeData, Never> { get }
   var goToViewBacking: Signal<(Project, User?), Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
@@ -90,16 +91,35 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       }
       .map(first)
 
+    let goToManagePledge = Signal.combineLatest(
+      project,
+      selectedRewardFromId,
+      refTag
+    )
+    .filter { project, reward, _ -> Bool in
+      project.state == .live && userIsBacking(reward: reward, inProject: project)
+    }
+    .map { project, reward, refTag in
+      PledgeData(project: project, reward: reward, refTag: refTag)
+    }
+
+    self.goToManagePledge = goToManagePledge
+      .filter { _ in featureNativeCheckoutPledgeViewIsEnabled() }
+
     self.goToViewBacking = goToViewBacking
       .map { project in
         (project, AppEnvironment.current.currentUser)
       }
 
     self.goToPledge = goToPledge
-      .filter { _ in featureNativeCheckoutPledgeViewIsEnabled() }
+      .filter { project, reward, _ in
+        featureNativeCheckoutPledgeViewIsEnabled() && !userIsBacking(reward: reward, inProject: project)
+      }
 
     self.goToDeprecatedPledge = goToPledge
-      .filter { _ in !featureNativeCheckoutPledgeViewIsEnabled() }
+      .filter { _ in
+        !featureNativeCheckoutPledgeViewIsEnabled()
+      }
 
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()
@@ -152,6 +172,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToDeprecatedPledge: Signal<PledgeData, Never>
+  public let goToManagePledge: Signal<PledgeData, Never>
   public let goToPledge: Signal<PledgeData, Never>
   public let goToViewBacking: Signal<(Project, User?), Never>
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
