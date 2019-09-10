@@ -7,6 +7,7 @@ extension Project.Stats {
       set: { .init(
         backersCount: $1.backersCount,
         commentsCount: $1.commentsCount,
+        convertedPledged: $1.convertedPledged,
         currency: $1.currency,
         currentCurrency: $1.currentCurrency,
         currentCurrencyRate: $1.currentCurrencyRate,

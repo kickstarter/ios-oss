@@ -54,6 +54,7 @@ public struct Project {
   public struct Stats {
     public var backersCount: Int
     public var commentsCount: Int?
+    public var convertedPledged: Double
     /// The currency code of the project ex. USD
     public var currency: String
     /// The currency code of the User's preferred currency ex. SEK
@@ -235,6 +236,7 @@ extension Project.Stats: Argo.Decodable {
     let tmp1 = curry(Project.Stats.init)
       <^> json <| "backers_count"
       <*> json <|? "comments_count"
+      <*> json <| "converted_pledged_amount"
       <*> json <| "currency"
       <*> json <|? "current_currency"
       <*> json <|? "fx_rate"
