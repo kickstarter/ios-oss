@@ -151,7 +151,8 @@ private func shippingRulesData(
 
 private func dataMatching(
   _ data: (project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule),
-  searchText: String)
+  searchText: String
+)
   -> (Project, [ShippingRule], ShippingRule) {
   let filteredRules = data.shippingRules.filter {
     searchText.count == 0 ||

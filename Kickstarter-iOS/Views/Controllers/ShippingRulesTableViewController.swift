@@ -60,7 +60,7 @@ final class ShippingRulesTableViewController: UITableViewController {
     self.viewModel.outputs.deselectCellAtIndex
       .map { IndexPath(row: $0, section: 0) }
       .observeForUI()
-      .observeValues { [weak self] indexPath in
+      .observeValues { [weak self] _ in
         self?.tableView.visibleCells.forEach { $0.accessoryType = .none }
       }
 

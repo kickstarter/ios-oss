@@ -123,7 +123,7 @@ final class ShippingRulesViewModelTests: TestCase {
           ),
           ShippingRuleData(
             project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
-          ),
+          )
         ]
       ]
     )
@@ -285,7 +285,6 @@ final class ShippingRulesViewModelTests: TestCase {
         // Filtered list by "x"
         // Empty (no matches found)
         [
-
         ]
       ]
     )
@@ -344,7 +343,6 @@ final class ShippingRulesViewModelTests: TestCase {
         // Filtered list by "x"
         // Empty (no matches found)
         [
-
         ],
         // Filtered list by "c"
         // [Canada]
@@ -416,7 +414,7 @@ final class ShippingRulesViewModelTests: TestCase {
           ),
           ShippingRuleData(
             project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
-          ),
+          )
         ]
       ]
     )
@@ -724,7 +722,7 @@ final class ShippingRulesViewModelTests: TestCase {
           ),
           ShippingRuleData(
             project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
-          ),
+          )
         ]
       ]
     )
