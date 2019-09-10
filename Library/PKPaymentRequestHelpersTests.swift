@@ -1,9 +1,9 @@
 import Foundation
-import XCTest
-import PassKit
-import Prelude
 @testable import KsApi
 @testable import Library
+import PassKit
+import Prelude
+import XCTest
 
 final class PKPaymentRequestHelpersTests: XCTestCase {
   func testPaymentRequest_NoShipping() {
@@ -12,11 +12,13 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     let reward = Reward.noReward
     let merchantId = "merchant_id"
 
-    let paymentRequest = PKPaymentRequest.paymentRequest(for: project,
-                                                         reward: reward,
-                                                         pledgeAmount: 100,
-                                                         selectedShippingRule: nil,
-                                                         merchantIdentifier: merchantId)
+    let paymentRequest = PKPaymentRequest.paymentRequest(
+      for: project,
+      reward: reward,
+      pledgeAmount: 100,
+      selectedShippingRule: nil,
+      merchantIdentifier: merchantId
+    )
 
     XCTAssertEqual(paymentRequest.merchantIdentifier, merchantId)
     XCTAssertEqual(paymentRequest.merchantCapabilities, .capability3DS)
@@ -42,11 +44,13 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
       |> ShippingRule.lens.cost .~ 6
     let merchantId = "merchant_id"
 
-    let paymentRequest = PKPaymentRequest.paymentRequest(for: project,
-                                                         reward: reward,
-                                                         pledgeAmount: 5,
-                                                         selectedShippingRule: shippingRule,
-                                                         merchantIdentifier: merchantId)
+    let paymentRequest = PKPaymentRequest.paymentRequest(
+      for: project,
+      reward: reward,
+      pledgeAmount: 5,
+      selectedShippingRule: shippingRule,
+      merchantIdentifier: merchantId
+    )
 
     XCTAssertEqual(paymentRequest.merchantIdentifier, merchantId)
     XCTAssertEqual(paymentRequest.merchantCapabilities, .capability3DS)
@@ -75,11 +79,13 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
       |> ShippingRule.lens.cost .~ 6
     let merchantId = "merchant_id"
 
-    let paymentRequest = PKPaymentRequest.paymentRequest(for: project,
-                                                         reward: reward,
-                                                         pledgeAmount: 10.60,
-                                                         selectedShippingRule: shippingRule,
-                                                         merchantIdentifier: merchantId)
+    let paymentRequest = PKPaymentRequest.paymentRequest(
+      for: project,
+      reward: reward,
+      pledgeAmount: 10.60,
+      selectedShippingRule: shippingRule,
+      merchantIdentifier: merchantId
+    )
 
     XCTAssertEqual(paymentRequest.merchantIdentifier, merchantId)
     XCTAssertEqual(paymentRequest.merchantCapabilities, .capability3DS)

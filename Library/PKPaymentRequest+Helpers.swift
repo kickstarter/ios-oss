@@ -1,6 +1,6 @@
 import Foundation
-import PassKit
 import KsApi
+import PassKit
 
 extension PKPaymentRequest {
   public static func paymentRequest(
@@ -9,7 +9,7 @@ extension PKPaymentRequest {
     pledgeAmount: Double,
     selectedShippingRule: ShippingRule?,
     merchantIdentifier: String
-    ) -> PKPaymentRequest {
+  ) -> PKPaymentRequest {
     let request = PKPaymentRequest()
     request.merchantIdentifier = merchantIdentifier
     request.supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks(for: project)
@@ -18,7 +18,7 @@ extension PKPaymentRequest {
     request.currencyCode = project.country.currencyCode
     request.shippingType = .shipping
 
-    request.paymentSummaryItems = paymentSummaryItems(
+    request.paymentSummaryItems = self.paymentSummaryItems(
       forProject: project,
       reward: reward,
       pledgeAmount: pledgeAmount,
@@ -33,7 +33,7 @@ extension PKPaymentRequest {
     reward: Reward,
     pledgeAmount: Double,
     selectedShippingRule: ShippingRule?
-    ) -> [PKPaymentSummaryItem] {
+  ) -> [PKPaymentSummaryItem] {
     var paymentSummaryItems: [PKPaymentSummaryItem] = []
 
     paymentSummaryItems.append(
@@ -68,5 +68,4 @@ extension PKPaymentRequest {
 
     return paymentSummaryItems
   }
-
 }

@@ -5,7 +5,9 @@ import Prelude
 import UIKit
 
 protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
-  func pledgePaymentMethodsViewControllerDidTapApplePayButton(_ viewController: PledgePaymentMethodsViewController)
+  func pledgePaymentMethodsViewControllerDidTapApplePayButton(
+    _ viewController: PledgePaymentMethodsViewController
+  )
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
@@ -112,7 +114,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
         self.delegate?
           .pledgePaymentMethodsViewControllerDidTapApplePayButton(self)
-    }
+      }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
   }

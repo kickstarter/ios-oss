@@ -9,9 +9,9 @@ public enum EnvironmentType: String, CaseIterable {
   public var stripePublishableKey: String {
     switch self {
     case .production:
-        return Secrets.StripePublishableKey.production
+      return Secrets.StripePublishableKey.production
     default:
-        return Secrets.StripePublishableKey.staging
+      return Secrets.StripePublishableKey.staging
     }
   }
 }

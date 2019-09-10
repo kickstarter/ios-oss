@@ -1,8 +1,8 @@
 import KsApi
 import Library
 import Prelude
-import UIKit
 import Stripe
+import UIKit
 
 final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
@@ -192,7 +192,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeValues { merchantIdentifier, publishableKey in
         STPPaymentConfiguration.shared().publishableKey = publishableKey
         STPPaymentConfiguration.shared().appleMerchantIdentifier = merchantIdentifier
-    }
+      }
 
     self.viewModel.outputs.configureWithData
       .observeForUI()
@@ -223,7 +223,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeForControllerAction()
       .observeValues { [weak self] paymentAuthorizationData in
         self?.goToPaymentAuthorization(paymentAuthorizationData)
-    }
+      }
 
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
@@ -231,7 +231,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         generateNotificationSuccessFeedback()
 
         self?.goToThanks(project: project)
-    }
+      }
 
     // Errors
 
@@ -239,7 +239,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeForUI()
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
-    }
+      }
 
     Keyboard.change
       .observeForUI()
@@ -255,11 +255,13 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PaymentAuthorizationData) {
     let request = PKPaymentRequest
-      .paymentRequest(for: paymentAuthorizationData.project,
-                      reward: paymentAuthorizationData.reward,
-                      pledgeAmount: paymentAuthorizationData.pledgeAmount,
-                      selectedShippingRule: paymentAuthorizationData.selectedShippingRule,
-                      merchantIdentifier: paymentAuthorizationData.merchantIdentifier)
+      .paymentRequest(
+        for: paymentAuthorizationData.project,
+        reward: paymentAuthorizationData.reward,
+        pledgeAmount: paymentAuthorizationData.pledgeAmount,
+        selectedShippingRule: paymentAuthorizationData.selectedShippingRule,
+        merchantIdentifier: paymentAuthorizationData.merchantIdentifier
+      )
 
     guard let paymentAuthorizationViewController =
       PKPaymentAuthorizationViewController(paymentRequest: request) else { return }
@@ -283,17 +285,21 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 // MARK: - PKPaymentAuthorizationViewControllerDelegate
 
 extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
-  func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
-                                          didAuthorizePayment payment: PKPayment,
-                                          handler completion: @escaping (PKPaymentAuthorizationResult)
-    -> Void) {
+  func paymentAuthorizationViewController(
+    _: PKPaymentAuthorizationViewController,
+    didAuthorizePayment payment: PKPayment,
+    handler completion: @escaping (PKPaymentAuthorizationResult)
+      -> Void
+  ) {
     let paymentDisplayName = payment.token.paymentMethod.displayName
     let paymentNetworkName = payment.token.paymentMethod.network?.rawValue
     let transactionId = payment.token.transactionIdentifier
 
-    self.viewModel.inputs.paymentAuthorizationDidAuthorizePayment(paymentData: (paymentDisplayName,
-                                                                                paymentNetworkName,
-                                                                                transactionId))
+    self.viewModel.inputs.paymentAuthorizationDidAuthorizePayment(paymentData: (
+      paymentDisplayName,
+      paymentNetworkName,
+      transactionId
+    ))
 
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
       guard let self = self else { return }
@@ -384,8 +390,10 @@ extension PledgeViewController: PledgeViewControllerMessageDisplaying {
 // MARK: - PledgePaymentMethodsViewControllerDelegate
 
 extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
-  func pledgePaymentMethodsViewControllerDidTapApplePayButton(_
-    viewController: PledgePaymentMethodsViewController) {
+  func pledgePaymentMethodsViewControllerDidTapApplePayButton(
+    _:
+    PledgePaymentMethodsViewController
+  ) {
     self.viewModel.inputs.applePayButtonTapped()
   }
 }
