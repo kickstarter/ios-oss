@@ -14,6 +14,9 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let goToDeprecatedPledgeProject = TestObserver<Project, Never>()
   private let goToDeprecatedPledgeRefTag = TestObserver<RefTag?, Never>()
   private let goToDeprecatedPledgeReward = TestObserver<Reward, Never>()
+  private let goToManagePledgeProject = TestObserver<Project, Never>()
+  private let goToManagePledgeRefTag = TestObserver<RefTag?, Never>()
+  private let goToManagePledgeReward = TestObserver<Reward, Never>()
   private let goToPledgeProject = TestObserver<Project, Never>()
   private let goToPledgeRefTag = TestObserver<RefTag?, Never>()
   private let goToPledgeReward = TestObserver<Reward, Never>()
@@ -34,6 +37,9 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.goToDeprecatedPledge.map { $0.project }.observe(self.goToDeprecatedPledgeProject.observer)
     self.vm.outputs.goToDeprecatedPledge.map { $0.reward }.observe(self.goToDeprecatedPledgeReward.observer)
     self.vm.outputs.goToDeprecatedPledge.map { $0.refTag }.observe(self.goToDeprecatedPledgeRefTag.observer)
+    self.vm.outputs.goToManagePledge.map { $0.project }.observe(self.goToManagePledgeProject.observer)
+    self.vm.outputs.goToManagePledge.map { $0.reward }.observe(self.goToManagePledgeReward.observer)
+    self.vm.outputs.goToManagePledge.map { $0.refTag }.observe(self.goToManagePledgeRefTag.observer)
     self.vm.outputs.goToPledge.map { $0.project }.observe(self.goToPledgeProject.observer)
     self.vm.outputs.goToPledge.map { $0.reward }.observe(self.goToPledgeReward.observer)
     self.vm.outputs.goToPledge.map { $0.refTag }.observe(self.goToPledgeRefTag.observer)
@@ -155,6 +161,131 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.goToViewBackingUser.assertDidNotEmitValue()
     self.goToViewBackingProject.assertDidNotEmitValue()
     XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[endIndex - 1])
+  }
+
+  func testGoToManagePledge_featureNativeCheckoutPledgeView_Enabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
+
+    withEnvironment(config: config) {
+      let reward = Project.cosmicSurgery.rewards.first!
+      let backing = Backing.template
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
+
+      self.vm.inputs.configure(with: project, refTag: .activity)
+      self.vm.inputs.viewDidLoad()
+
+      self.goToManagePledgeRefTag.assertDidNotEmitValue()
+      self.goToManagePledgeReward.assertDidNotEmitValue()
+      self.goToManagePledgeProject.assertDidNotEmitValue()
+
+      XCTAssertNil(self.vm.outputs.selectedReward())
+
+      self.vm.inputs.rewardSelected(with: reward.id)
+
+      self.goToManagePledgeProject.assertValues([project])
+      self.goToManagePledgeReward.assertValues([project.rewards[0]])
+      self.goToManagePledgeRefTag.assertValues([.activity])
+
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeReward.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeRefTag.assertDidNotEmitValue()
+
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToPledgeReward.assertDidNotEmitValue()
+      self.goToPledgeRefTag.assertDidNotEmitValue()
+
+      self.goToViewBackingUser.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+
+      let lastCardRewardId = project.rewards.last!.id
+      let endIndex = project.rewards.endIndex
+
+      self.vm.inputs.rewardSelected(with: lastCardRewardId)
+
+      // The signal "goToManagePledge" doesn't emit again.
+      self.goToManagePledgeProject.assertValues([project])
+      self.goToManagePledgeReward.assertValues([project.rewards[0]])
+      self.goToManagePledgeRefTag.assertValues([.activity])
+
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeReward.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeRefTag.assertDidNotEmitValue()
+
+      self.goToPledgeProject.assertValues([project])
+      self.goToPledgeReward.assertValues([project.rewards[endIndex - 1]])
+      self.goToPledgeRefTag.assertValues([.activity])
+
+      self.goToViewBackingUser.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToManagePledge_featureNativeCheckoutPledgeView_Disabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: false]
+
+    withEnvironment(config: config) {
+      let reward = Project.cosmicSurgery.rewards.first!
+      let backing = Backing.template
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
+
+      self.vm.inputs.configure(with: project, refTag: .activity)
+      self.vm.inputs.viewDidLoad()
+
+      self.goToManagePledgeRefTag.assertDidNotEmitValue()
+      self.goToManagePledgeReward.assertDidNotEmitValue()
+      self.goToManagePledgeProject.assertDidNotEmitValue()
+
+      XCTAssertNil(self.vm.outputs.selectedReward())
+
+      self.vm.inputs.rewardSelected(with: reward.id)
+
+      self.goToDeprecatedPledgeProject.assertValues([project])
+      self.goToDeprecatedPledgeReward.assertValues([project.rewards[0]])
+      self.goToDeprecatedPledgeRefTag.assertValues([.activity])
+
+      self.goToManagePledgeProject.assertDidNotEmitValue()
+      self.goToManagePledgeReward.assertDidNotEmitValue()
+      self.goToManagePledgeRefTag.assertDidNotEmitValue()
+
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToPledgeReward.assertDidNotEmitValue()
+      self.goToPledgeRefTag.assertDidNotEmitValue()
+
+      self.goToViewBackingUser.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+
+      let lastCardRewardId = project.rewards.last!.id
+      let endIndex = project.rewards.endIndex
+
+      self.vm.inputs.rewardSelected(with: lastCardRewardId)
+
+      self.goToDeprecatedPledgeProject.assertValues([project, project])
+      self.goToDeprecatedPledgeReward.assertValues([project.rewards[0], project.rewards[endIndex - 1]])
+      self.goToDeprecatedPledgeRefTag.assertValues([.activity, .activity])
+
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToPledgeReward.assertDidNotEmitValue()
+      self.goToPledgeRefTag.assertDidNotEmitValue()
+
+      self.goToManagePledgeProject.assertDidNotEmitValue()
+      self.goToManagePledgeReward.assertDidNotEmitValue()
+      self.goToManagePledgeRefTag.assertDidNotEmitValue()
+
+      self.goToViewBackingUser.assertDidNotEmitValue()
+      self.goToViewBackingProject.assertDidNotEmitValue()
+    }
   }
 
   func testRewardsCollectionViewFooterViewIsHidden() {
