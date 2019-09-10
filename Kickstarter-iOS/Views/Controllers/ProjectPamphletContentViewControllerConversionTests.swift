@@ -18,7 +18,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.dates.launchedAt .~ launchedAt
       |> Project.lens.state .~ .live
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
-      |> \.stats.convertedPledgedAmount .~ 21_615
+      |> Project.lens.stats.convertedPledgedAmount .~ 21_615
 
     self.cosmicSurgery = project
 
