@@ -61,7 +61,7 @@ final class ShippingRulesTableViewController: UITableViewController {
       .map { IndexPath(row: $0, section: 0) }
       .observeForUI()
       .observeValues { [weak self] indexPath in
-        self?.tableView.cellForRow(at: indexPath)?.accessoryType = .none
+        self?.tableView.visibleCells.forEach { $0.accessoryType = .none }
       }
 
     self.viewModel.outputs.flashScrollIndicators
@@ -128,7 +128,7 @@ final class ShippingRulesTableViewController: UITableViewController {
 }
 
 extension ShippingRulesTableViewController: UISearchBarDelegate {
-  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    print("search text: \(searchText)")
+  func searchBar(_: UISearchBar, textDidChange searchText: String) {
+    self.viewModel.inputs.searchTextDidChange(searchText)
   }
 }

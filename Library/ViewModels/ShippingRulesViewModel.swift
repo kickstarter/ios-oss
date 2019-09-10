@@ -12,6 +12,7 @@ public struct ShippingRuleData: Equatable {
 public protocol ShippingRulesViewModelInputs {
   func configureWith(_ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule)
   func didSelectShippingRule(at index: Int)
+  func searchTextDidChange(_ searchText: String)
   func viewDidLoad()
 }
 
@@ -32,82 +33,73 @@ public protocol ShippingRulesViewModelType {
 public final class ShippingRulesViewModel: ShippingRulesViewModelType,
   ShippingRulesViewModelInputs, ShippingRulesViewModelOutputs {
   public init() {
-    let dataInitial = Signal.combineLatest(
+    let initialData = Signal.combineLatest(
       self.viewDidLoadProperty.signal,
       self.configDataProperty.signal
     )
     .map(second)
     .skipNil()
 
-    let selectedIndex = Signal.combineLatest(
-      dataInitial,
-      self.didSelectShippingRuleAtIndexProperty.signal.skipNil()
-    )
-    .map { data, newIndex in (data.1.firstIndex(of: data.2), newIndex) }
-    .filter { oldIndex, newIndex in oldIndex != newIndex }
-    .map(second)
+    let searchText = self.searchTextDidChangeProperty.signal
+      .ksr_debounce(.milliseconds(100), on: AppEnvironment.current.scheduler)
+      .skipNil()
 
-    let dataSelected = Signal.combineLatest(
-      dataInitial,
-      selectedIndex
-    )
-    .map { data, index in (data.0, data.1, index) }
-    .filter { _, shippingRules, index in index >= 0 && index < shippingRules.count }
-    .map { project, shippingRules, index in (project, shippingRules, shippingRules[index]) }
+    let selectedIndex = self.didSelectShippingRuleAtIndexProperty.signal
+      .skipNil()
 
-    let reloadDataWithShippingRulesInitial = dataInitial
-      .map { project, shippingRules, selectedShippingRule in
-        shippingRules.map {
-          ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: $0
-          )
-        }
-      }
+    self.deselectCellAtIndex = selectedIndex
+
+    let filteredData = initialData
+      .takePairWhen(searchText)
+      .map(dataMatching(_:searchText:))
+
+    let selectedShippingRule = Signal.merge(
+      initialData,
+      filteredData
+    )
+    .takePairWhen(selectedIndex)
+    .map { data, selectedIndex in (data.1, selectedIndex) }
+    .map { shippingRules, selectedIndex in shippingRules[selectedIndex] }
+
+    self.notifyDelegateOfSelectedShippingRule = selectedShippingRule
+      .skipRepeats()
+
+    let reloadDataInitial = initialData
+      .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
       .map { ($0, true) }
 
-    let reloadDataWithShippingRulesSelected = dataSelected
-      .map { project, shippingRules, selectedShippingRule in
-        shippingRules.map {
-          ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: $0
-          )
-        }
-      }
-      .map { ($0, false) }
+    let reloadDataFiltered = filteredData
+      .withLatest(from: Signal.merge(initialData.map(third), selectedShippingRule))
+      .map { data, selectedShippingRule in (data.0, data.1, selectedShippingRule) }
+      .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
+      .map { ($0, true) }
 
-    self.reloadDataWithShippingRules = Signal.merge(
-      reloadDataWithShippingRulesInitial,
-      reloadDataWithShippingRulesSelected
+    let reloadDataSelected = Signal.merge(
+      initialData,
+      filteredData
     )
+    .takePairWhen(selectedIndex)
+    .map { data, selectedIndex in (data.0, data.1, selectedIndex) }
+    .map { project, shippingRules, selectedIndex in (project, shippingRules, shippingRules[selectedIndex]) }
+    .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
+    .map { ($0, false) }
 
-    self.flashScrollIndicators = reloadDataWithShippingRulesInitial
+    self.flashScrollIndicators = initialData
+      .take(first: 1)
       .ignoreValues()
 
-    let selectedShippingRuleIndexInitial = dataInitial
+    self.reloadDataWithShippingRules = Signal.merge(
+      reloadDataInitial,
+      reloadDataFiltered,
+      reloadDataSelected
+    )
+
+    self.scrollToCellAtIndex = initialData
+      .take(first: 1)
       .map { _, shippingRules, selectedShippingRule in shippingRules.firstIndex(of: selectedShippingRule) }
       .skipNil()
 
-    let selectedShippingRuleIndexSelected = self.didSelectShippingRuleAtIndexProperty.signal
-      .skipNil()
-
-    self.notifyDelegateOfSelectedShippingRule = dataSelected
-      .map(third)
-
-    self.scrollToCellAtIndex = Signal.combineLatest(
-      selectedShippingRuleIndexInitial,
-      reloadDataWithShippingRulesInitial
-    )
-    .map(first)
-
-    self.selectCellAtIndex = Signal.merge(
-      selectedShippingRuleIndexInitial,
-      selectedShippingRuleIndexSelected
-    )
-    .skipRepeats()
-
-    self.deselectCellAtIndex = self.selectCellAtIndex
-      .combinePrevious()
-      .map(first)
+    self.selectCellAtIndex = self.deselectCellAtIndex
   }
 
   private let configDataProperty = MutableProperty<(Project, [ShippingRule], ShippingRule)?>(nil)
@@ -124,18 +116,46 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     self.didSelectShippingRuleAtIndexProperty.value = index
   }
 
+  private let searchTextDidChangeProperty = MutableProperty<String?>(nil)
+  public func searchTextDidChange(_ searchText: String) {
+    self.searchTextDidChangeProperty.value = searchText
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
   public let deselectCellAtIndex: Signal<Int, Never>
-  public let notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never>
   public let flashScrollIndicators: Signal<Void, Never>
+  public let notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never>
   public let reloadDataWithShippingRules: Signal<([ShippingRuleData], Bool), Never>
   public let scrollToCellAtIndex: Signal<Int, Never>
   public let selectCellAtIndex: Signal<Int, Never>
 
   public var inputs: ShippingRulesViewModelInputs { return self }
   public var outputs: ShippingRulesViewModelOutputs { return self }
+}
+
+// MARK: - Functions
+
+private func shippingRulesData(
+  project: Project,
+  shippingRules: [ShippingRule],
+  selectedShippingRule: ShippingRule
+) -> [ShippingRuleData] {
+  return shippingRules.map {
+    ShippingRuleData(project: project, selectedShippingRule: selectedShippingRule, shippingRule: $0)
+  }
+}
+
+private func dataMatching(
+  _ data: (project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule),
+  searchText: String)
+  -> (Project, [ShippingRule], ShippingRule) {
+  let filteredRules = data.shippingRules.filter {
+    searchText.count == 0 ||
+      $0.location.localizedName.lowercased().hasPrefix(searchText.lowercased())
+  }
+  return (data.project, filteredRules, data.selectedShippingRule)
 }
