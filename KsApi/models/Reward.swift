@@ -79,3 +79,9 @@ extension Reward.Shipping: Argo.Decodable {
 }
 
 extension Reward.Shipping.Preference: Argo.Decodable {}
+
+extension Reward: GraphIDBridging {
+  public static var modelName: String {
+    return "Reward"
+  }
+}
