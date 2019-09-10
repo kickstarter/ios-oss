@@ -39,7 +39,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     self.applePayButtonHidden = configureWithValue
       .map { ($0.project, $0.applePayCapable) }
-      .map { project, applePayCapable in showApplePayButton(for: project, applePayCapable: applePayCapable) }
+      .map(showApplePayButton(for:applePayCapable:))
       .negate()
 
     self.reloadPaymentMethods = storedCardsEvent

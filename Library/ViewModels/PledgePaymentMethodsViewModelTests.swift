@@ -119,7 +119,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testApplePayButton_applePayCapable_unsupportedProjectCountry_isHidden() {
+  func testApplePayButton_isHidden_applePayCapable_unsupportedProjectCountry() {
     let mockConfig = Config.template
       |> \.applePayCountries .~ [Project.Country.us.countryCode]
     let project = Project.template
@@ -133,7 +133,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testApplePayButton_applePayCapable_supportedProjectCountry_isShown() {
+  func testApplePayButton_isNotHidden_applePayCapable_supportedProjectCountry() {
     let mockConfig = Config.template
       |> \.applePayCountries .~ [
         Project.Country.us.countryCode,
