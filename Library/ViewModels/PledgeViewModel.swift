@@ -100,9 +100,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.configureStripeIntegration = projectAndReward.ignoreValues()
       .map { _ in
-        (PKPaymentAuthorizationViewController.merchantIdentifier,
-         AppEnvironment.current.environmentType.stripePublishableKey)
-    }
+        (
+          PKPaymentAuthorizationViewController.merchantIdentifier,
+          AppEnvironment.current.environmentType.stripePublishableKey
+        )
+      }
 
     let selectedShippingRule = Signal.merge(
       projectAndReward.mapConst(nil),
