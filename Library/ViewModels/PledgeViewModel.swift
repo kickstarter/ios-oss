@@ -31,14 +31,14 @@ public protocol PledgeViewModelInputs {
 }
 
 public protocol PledgeViewModelOutputs {
-  var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
-  var createBackingError: Signal<String, Never> { get }
-  var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
-  var goToThanks: Signal<Project, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never> { get }
+  var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
   var continueViewHidden: Signal<Bool, Never> { get }
+  var createBackingError: Signal<String, Never> { get }
+  var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
+  var goToThanks: Signal<Project, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
 }
@@ -99,10 +99,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .negate()
 
     self.configureStripeIntegration = projectAndReward.ignoreValues()
-      .map { _ in AppEnvironment.current.environmentType }
-      .map { environmentType in
-        (PKPaymentAuthorizationViewController.merchantIdentifier, environmentType.stripePublishableKey)
-      }
+      .map { _ in
+        (PKPaymentAuthorizationViewController.merchantIdentifier,
+         AppEnvironment.current.environmentType.stripePublishableKey)
+    }
 
     let selectedShippingRule = Signal.merge(
       projectAndReward.mapConst(nil),
@@ -166,8 +166,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let pkPaymentData = self.pkPaymentSignal
       .map { pkPayment -> PKPaymentData? in
-        guard let displayName = pkPayment.displayName else { return nil }
-        guard let network = pkPayment.network else { return nil }
+        guard let displayName = pkPayment.displayName, let network = pkPayment.network else {
+          return nil
+        }
 
         return (displayName, network, pkPayment.transactionIdentifier)
       }
@@ -290,14 +291,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
-  public let createBackingError: Signal<String, Never>
+  public let configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
+  public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
+  public let configureWithData: Signal<(project: Project, reward: Reward), Never>
+  public let continueViewHidden: Signal<Bool, Never>
+  public let createBackingError: Signal<String, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<Project, Never>
-  public let configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never>
-  public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
-  public let continueViewHidden: Signal<Bool, Never>
-  public let configureWithData: Signal<(project: Project, reward: Reward), Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
 

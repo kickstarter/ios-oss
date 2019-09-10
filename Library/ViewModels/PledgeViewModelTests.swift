@@ -8,7 +8,6 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-// swiftlint:disable line_length
 final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
 
@@ -632,6 +631,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.scheduler.run()
 
+      self.goToThanks.assertDidNotEmitValue("Signal waits for Apple Pay sheet to dismiss")
+      self.createBackingError.assertDidNotEmitValue()
+
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
       self.goToThanks.assertValues([project])
@@ -671,7 +673,7 @@ final class PledgeViewModelTests: TestCase {
       self.createBackingError.assertDidNotEmitValue("Signal waits for the Apple Pay sheet to be dismissed")
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
-      self.createBackingError.assertValues([GraphError.invalidInput.localizedDescription])
+      self.createBackingError.assertValues(["Something went wrong."])
       self.goToThanks.assertDidNotEmitValue()
     }
   }
