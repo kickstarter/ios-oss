@@ -315,7 +315,7 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 
   func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
     controller.dismiss(animated: true, completion: { [weak self] in
-      self?.viewModel.inputs.paymentAuthorizationDidFinish()
+      self?.viewModel.inputs.paymentAuthorizationViewControllerDidFinish()
     })
   }
 }

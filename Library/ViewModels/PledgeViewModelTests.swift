@@ -498,6 +498,32 @@ final class PledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
+  func testPaymentAuthorizationViewControllerDidFinish_WithoutCompletingTransaction() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 25
+      |> Reward.lens.shipping.enabled .~ true
+    let shippingRule = ShippingRule.template
+
+    self.vm.inputs.configureWith(project: project, reward: reward)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.shippingRuleSelected(shippingRule)
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+    self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+    self.goToApplePayPaymentAuthorizationShippingRule.assertValues([shippingRule])
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([25])
+    self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+    self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+    self.goToThanks.assertDidNotEmitValue()
+    self.createBackingError.assertDidNotEmitValue()
+  }
+
   func testStripeTokenCreated_ReturnsStatusFailure_WhenPKPaymentData_IsNil() {
     let project = Project.template
     let reward = Reward.noReward
@@ -591,7 +617,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.vm.inputs.paymentAuthorizationDidFinish()
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
       self.goToThanks.assertValues([project])
       self.createBackingError.assertDidNotEmitValue()
@@ -625,7 +651,7 @@ final class PledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       self.createBackingError.assertDidNotEmitValue("Signal waits for the Apple Pay sheet to be dismissed")
-      self.vm.inputs.paymentAuthorizationDidFinish()
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
       self.createBackingError.assertValues([GraphError.invalidInput.localizedDescription])
       self.goToThanks.assertDidNotEmitValue()

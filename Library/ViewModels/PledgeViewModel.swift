@@ -15,7 +15,7 @@ public protocol PledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func paymentAuthorizationDidAuthorizePayment(paymentData:
     (displayName: String?, network: String?, transactionIdentifier: String))
-  func paymentAuthorizationDidFinish()
+  func paymentAuthorizationViewControllerDidFinish()
   func pledgeAmountDidUpdate(to amount: Double)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(tokenOrError: Either<String, Error?>) -> PKPaymentAuthorizationStatus
@@ -235,7 +235,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
   private let (paymentAuthorizationDidFinishSignal, paymentAuthorizationDidFinishObserver)
     = Signal<Void, Never>.pipe()
-  public func paymentAuthorizationDidFinish() {
+  public func paymentAuthorizationViewControllerDidFinish() {
     self.paymentAuthorizationDidFinishObserver.send(value: ())
   }
 
