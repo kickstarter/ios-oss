@@ -21,6 +21,22 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.reloadPaymentMethods.observe(self.reloadPaymentMethods.observer)
   }
 
+  func testReloadPaymentMethods_LoggedIn_AddedNewCard() {
+    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.reloadPaymentMethods.assertDidNotEmitValue()
+
+      self.vm.inputs.addNewCardSucceeded(with: "Card added successfully")
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      self.reloadPaymentMethods.assertValue(response.me.storedCards.nodes)
+    }
+  }
+
   func testReloadPaymentMethods_LoggedIn_ApplePayCapable_isFalse() {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)

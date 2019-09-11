@@ -33,8 +33,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let storedCardsEvent = Signal.merge(
       configureWithValue.ignoreValues(),
       self.addNewCardSucceededProperty.signal.ignoreValues()
-      )
-      .switchMap { _ in
+    )
+    .switchMap { _ in
         AppEnvironment.current.apiService
           .fetchGraphCreditCards(query: UserQueries.storedCards.query)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
