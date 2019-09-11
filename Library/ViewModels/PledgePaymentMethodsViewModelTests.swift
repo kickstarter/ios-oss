@@ -1,6 +1,7 @@
 import Foundation
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 
@@ -115,6 +116,37 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.applePayButtonHidden.assertDidNotEmitValue()
       self.reloadPaymentMethods.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
+    }
+  }
+
+  func testApplePayButton_isHidden_applePayCapable_unsupportedProjectCountry() {
+    let mockConfig = Config.template
+      |> \.applePayCountries .~ [Project.Country.us.countryCode]
+    let project = Project.template
+      |> \.country .~ .gb
+
+    withEnvironment(config: mockConfig) {
+      self.vm.inputs.configureWith((User.template, project, true))
+      self.vm.inputs.viewDidLoad()
+
+      self.applePayButtonHidden.assertValues([true])
+    }
+  }
+
+  func testApplePayButton_isNotHidden_applePayCapable_supportedProjectCountry() {
+    let mockConfig = Config.template
+      |> \.applePayCountries .~ [
+        Project.Country.us.countryCode,
+        Project.Country.gb.countryCode
+      ]
+    let project = Project.template
+      |> \.country .~ .gb
+
+    withEnvironment(config: mockConfig) {
+      self.vm.inputs.configureWith((User.template, project, true))
+      self.vm.inputs.viewDidLoad()
+
+      self.applePayButtonHidden.assertValues([false])
     }
   }
 }
