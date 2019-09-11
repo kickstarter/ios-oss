@@ -41,6 +41,13 @@ final class ShippingRulesTableViewController: UITableViewController {
         action: #selector(ShippingRulesTableViewController.dismissViewController)
       )
 
+    _ = self.navigationController?.navigationBar
+      ?|> \.barTintColor .~ UIColor.white
+      ?|> \.isTranslucent .~ false
+
+    _ = self.navigationController?.view
+      ?|> \.tintColor .~ UIColor.ksr_green_500
+
     _ = self.navigationItem
       |> \.titleView .~ self.searchBar
 
