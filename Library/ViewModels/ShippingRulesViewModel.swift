@@ -85,7 +85,6 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     .map { ($0, false) }
 
     self.flashScrollIndicators = initialData
-      .take(first: 1)
       .ignoreValues()
 
     self.reloadDataWithShippingRules = Signal.merge(
@@ -95,7 +94,6 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     )
 
     self.scrollToCellAtIndex = initialData
-      .take(first: 1)
       .map { _, shippingRules, selectedShippingRule in shippingRules.firstIndex(of: selectedShippingRule) }
       .skipNil()
 
