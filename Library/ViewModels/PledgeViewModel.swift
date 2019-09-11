@@ -19,7 +19,8 @@ public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
   func configureWith(project: Project, reward: Reward)
   func paymentAuthorizationDidAuthorizePayment(
-    paymentData: (displayName: String?, network: String?, transactionIdentifier: String))
+    paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
+  )
   func paymentAuthorizationViewControllerDidFinish()
   func pledgeAmountDidUpdate(to amount: Double)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
@@ -147,37 +148,39 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     let applePayStatusSuccess = Signal.combineLatest(
-      stripeTokenSignal.skipNil(),
-      stripeErrorSignal.filter(isNil),
+      self.stripeTokenSignal.skipNil(),
+      self.stripeErrorSignal.filter(isNil),
       pkPaymentData.skipNil()
-      ).mapConst(PKPaymentAuthorizationStatus.success)
+    ).mapConst(PKPaymentAuthorizationStatus.success)
 
     let applePayStatusFailure = Signal.merge(
-      stripeErrorSignal.skipNil().ignoreValues(),
-      stripeTokenSignal.filter(isNil).ignoreValues(),
+      self.stripeErrorSignal.skipNil().ignoreValues(),
+      self.stripeTokenSignal.filter(isNil).ignoreValues(),
       pkPaymentData.filter(isNil).ignoreValues()
-      ).mapConst(PKPaymentAuthorizationStatus.failure)
+    ).mapConst(PKPaymentAuthorizationStatus.failure)
 
     self.createApplePayBackingStatusProperty <~ Signal.merge(
       applePayStatusSuccess,
       applePayStatusFailure
     )
 
-    let createApplePayBackingData = Signal.combineLatest(backingData,
-                                                         pkPaymentData.skipNil(),
-                                                         stripeTokenSignal.skipNil())
-      .takeWhen(applePayStatusSuccess)
-      .map { backingData, paymentData, stripeToken
-        -> (Project, Reward, Double, ShippingRule?, PKPaymentData, String) in
-        return (
-          backingData.project,
-          backingData.reward,
-          backingData.pledgeAmount,
-          backingData.selectedShippingRule,
-          paymentData,
-          stripeToken
-        )
-      }
+    let createApplePayBackingData = Signal.combineLatest(
+      backingData,
+      pkPaymentData.skipNil(),
+      self.stripeTokenSignal.skipNil()
+    )
+    .takeWhen(applePayStatusSuccess)
+    .map { backingData, paymentData, stripeToken
+      -> (Project, Reward, Double, ShippingRule?, PKPaymentData, String) in
+      (
+        backingData.project,
+        backingData.reward,
+        backingData.pledgeAmount,
+        backingData.selectedShippingRule,
+        paymentData,
+        stripeToken
+      )
+    }
 
     let createApplePayBackingEvent = createApplePayBackingData
       .map(
