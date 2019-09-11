@@ -140,19 +140,19 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeValues { [weak self] params in
         let (project, reward, refTag) = params
 
-        self?.goToManagePledge(project: project, reward: reward, refTag: refTag)
+        self?.goToManageViewPledge(project: project, reward: reward, refTag: refTag)
       }
 
     self.viewModel.outputs.goToDeprecatedViewBacking
       .observeForControllerAction()
       .observeValues { [weak self] project, user in
-        self?.goToViewBacking(project: project, user: user)
+        self?.goToDeprecatedViewBacking(project: project, user: user)
       }
 
     self.viewModel.outputs.goToDeprecatedManagePledge
       .observeForControllerAction()
       .observeValues { [weak self] project, reward, refTag in
-        self?.goToDeprecatedPledge(project: project, reward: reward, refTag: refTag)
+        self?.goToDeprecatedManagePledge(project: project, reward: reward, refTag: refTag)
       }
 
     self.viewModel.outputs.configureChildViewControllersWithProject
@@ -206,7 +206,7 @@ public final class ProjectPamphletViewController: UIViewController {
     self.present(vc, animated: true)
   }
 
-  private func goToManagePledge(project: Project, reward: Reward, refTag _: RefTag?) {
+  private func goToManageViewPledge(project: Project, reward: Reward, refTag _: RefTag?) {
     let managePledgeViewController = ManagePledgeViewController.instantiate()
     managePledgeViewController.configureWith(project: project, reward: reward)
 
@@ -218,33 +218,27 @@ public final class ProjectPamphletViewController: UIViewController {
     self.present(nav, animated: true)
   }
 
-  private func goToDeprecatedPledge(project: Project, reward: Reward, refTag _: RefTag?) {
+  private func goToDeprecatedManagePledge(project: Project, reward: Reward, refTag _: RefTag?) {
     let pledgeViewController = DeprecatedRewardPledgeViewController
       .configuredWith(
         project: project, reward: reward
       )
-    pledgeViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
-      image: image(named: "icon--cross", tintColor: .ksr_navy_600),
-      style: .plain,
-      target: pledgeViewController,
-      action: #selector(DeprecatedRewardPledgeViewController.closeButtonTapped)
-    )
 
     let nav = UINavigationController(rootViewController: pledgeViewController)
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       _ = nav
         |> \.modalPresentationStyle .~ .formSheet
     }
-    self.present(nav, animated: true, completion: nil)
+    self.present(nav, animated: true)
   }
 
-  private func goToViewBacking(project: Project, user _: User?) {
+  private func goToDeprecatedViewBacking(project: Project, user _: User?) {
     let backingViewController = BackingViewController.configuredWith(project: project, backer: nil)
 
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: backingViewController)
         |> \.modalPresentationStyle .~ .formSheet
-      self.present(nav, animated: true, completion: nil)
+      self.present(nav, animated: true)
     } else {
       self.navigationController?.pushViewController(backingViewController, animated: true)
     }
@@ -267,7 +261,7 @@ public final class ProjectPamphletViewController: UIViewController {
 }
 
 extension ProjectPamphletViewController: PledgeCTAContainerViewDelegate {
-  func pledgeCTAButtonTapped(_ state: PledgeStateCTAType) {
+  func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
     self.viewModel.inputs.pledgeCTAButtonTapped(state)
   }
 }

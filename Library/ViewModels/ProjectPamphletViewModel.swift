@@ -1,6 +1,9 @@
 import KsApi
 import Prelude
 import ReactiveSwift
+
+public typealias BackingData = (Project, User?)
+
 public protocol ProjectPamphletViewModelInputs {
   /// Call with the project given to the view controller.
   func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?)
@@ -36,7 +39,7 @@ public protocol ProjectPamphletViewModelOutputs {
 
   var goToDeprecatedManagePledge: Signal<PledgeData, Never> { get }
 
-  var goToDeprecatedViewBacking: Signal<(Project, User?), Never> { get }
+  var goToDeprecatedViewBacking: Signal<BackingData, Never> { get }
 
   var goToManageViewPledge: Signal<PledgeData, Never> { get }
 
@@ -107,9 +110,10 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
 
     self.goToDeprecatedViewBacking = ctaButtonTapped
-      .filter(shouldGoToDeprecatedViewBacking(_:_:state:))
-      .map { project, _, _ in
-        (project, AppEnvironment.current.currentUser)
+      .map { project, _, state in (project, state) }
+      .filter(shouldGoToDeprecatedViewBacking(_:state:))
+      .map { project, _ in
+        BackingData(project, AppEnvironment.current.currentUser)
       }
 
     self.goToRewards = ctaButtonTapped
@@ -221,7 +225,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never>
   public let goToDeprecatedManagePledge: Signal<PledgeData, Never>
-  public let goToDeprecatedViewBacking: Signal<(Project, User?), Never>
+  public let goToDeprecatedViewBacking: Signal<BackingData, Never>
   public let goToManageViewPledge: Signal<PledgeData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
@@ -336,7 +340,6 @@ private func canShowManageViewPledgeScreen(
 
 private func shouldGoToDeprecatedViewBacking(
   _ project: Project,
-  _: RefTag?,
   state: PledgeStateCTAType?
 ) -> Bool {
   guard let isBacking = project.personalization.isBacking, let state = state else {
