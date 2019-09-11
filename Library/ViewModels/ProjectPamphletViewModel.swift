@@ -328,40 +328,28 @@ private func reward(from backing: Backing?, inProject project: Project) -> Rewar
     ?? Reward.noReward
 }
 
-private func canShowRewardsScreen(
-  _: Project,
-  state: PledgeStateCTAType?
-) -> Bool {
+private func canShowRewardsScreen(_: Project, state: PledgeStateCTAType?) -> Bool {
   guard let state = state else {
     return false
   }
   return userCanSeeNativeCheckout() && (state == .pledge || state == .viewRewards)
 }
 
-private func canShowManageViewPledgeScreen(
-  _ project: Project,
-  state: PledgeStateCTAType?
-) -> Bool {
+private func canShowManageViewPledgeScreen(_ project: Project, state: PledgeStateCTAType?) -> Bool {
   guard let isBacking = project.personalization.isBacking, let state = state else {
     return false
   }
   return isBacking && (state == .manage || state == .viewBacking)
 }
 
-private func shouldGoToDeprecatedViewBacking(
-  _ project: Project,
-  state: PledgeStateCTAType?
-) -> Bool {
+private func shouldGoToDeprecatedViewBacking(_ project: Project, state: PledgeStateCTAType?) -> Bool {
   guard let isBacking = project.personalization.isBacking, let state = state else {
     return false
   }
   return !featureNativeCheckoutPledgeViewIsEnabled() && isBacking && state == .viewBacking
 }
 
-private func shouldGoToDeprecatedManagePledge(
-  _ project: Project,
-  state: PledgeStateCTAType?
-) -> Bool {
+private func shouldGoToDeprecatedManagePledge(_ project: Project, state: PledgeStateCTAType?) -> Bool {
   guard let isBacking = project.personalization.isBacking, let state = state else {
     return false
   }
