@@ -54,6 +54,7 @@ public struct Project {
   public struct Stats {
     public var backersCount: Int
     public var commentsCount: Int?
+    public var convertedPledgedAmount: Int?
     /// The currency code of the project ex. USD
     public var currency: String
     /// The currency code of the User's preferred currency ex. SEK
@@ -85,11 +86,6 @@ public struct Project {
     /// Goal amount converted to USD.
     public var goalUsd: Int {
       return Int(floor(Float(self.goal) * self.staticUsdRate))
-    }
-
-    /// Pledged amount converted to current currency.
-    public var pledgedCurrentCurrency: Int? {
-      return self.currentCurrencyRate.map { Int(floor(Float(self.pledged) * $0)) }
     }
 
     /// Goal amount converted to current currency.
@@ -235,6 +231,7 @@ extension Project.Stats: Argo.Decodable {
     let tmp1 = curry(Project.Stats.init)
       <^> json <| "backers_count"
       <*> json <|? "comments_count"
+      <*> json <|? "converted_pledged_amount"
       <*> json <| "currency"
       <*> json <|? "current_currency"
       <*> json <|? "fx_rate"

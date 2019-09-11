@@ -17,6 +17,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.dates.launchedAt .~ launchedAt
+      |> Project.lens.stats.convertedPledgedAmount .~ 21_615
 
     self.cosmicSurgery = project
 
@@ -55,6 +56,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.dates.stateChangedAt .~ deadline
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.state .~ .successful
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
@@ -110,6 +112,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.rewards %~ { rewards in [rewards[0]] }
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
       |> Project.lens.personalization.backing %~~ { _, _ in
         .template
           |> Backing.lens.amount .~ 5
@@ -147,6 +150,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
@@ -215,6 +219,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   func testMinimalAndFullProjectOverlap() {
     let project = self.cosmicSurgery!
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     withEnvironment(apiService: MockService(fetchProjectResponse: project)) {
       [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
