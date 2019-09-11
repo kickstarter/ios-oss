@@ -28,7 +28,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethods.assertDidNotEmitValue()
 
-      self.vm.inputs.addNewCardSucceeded(with: "Card added successfully")
+      self.vm.inputs.addNewCardSucceeded()
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()

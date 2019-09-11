@@ -6,7 +6,7 @@ import ReactiveSwift
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
 
 public protocol PledgePaymentMethodsViewModelInputs {
-  func addNewCardSucceeded(with message: String)
+  func addNewCardSucceeded()
   func configureWith(_ value: PledgePaymentMethodsValue)
   func viewDidLoad()
 }
@@ -32,7 +32,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     let storedCardsEvent = Signal.merge(
       configureWithValue.ignoreValues(),
-      self.addNewCardSucceededProperty.signal.ignoreValues()
+      self.addNewCardSucceededProperty.signal
     )
     .switchMap { _ in
       AppEnvironment.current.apiService
@@ -55,9 +55,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .map { $0.localizedDescription }
   }
 
-  fileprivate let addNewCardSucceededProperty = MutableProperty<String?>(nil)
-  public func addNewCardSucceeded(with message: String) {
-    self.addNewCardSucceededProperty.value = message
+  fileprivate let addNewCardSucceededProperty = MutableProperty(())
+  public func addNewCardSucceeded() {
+    self.addNewCardSucceededProperty.value = ()
   }
 
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)

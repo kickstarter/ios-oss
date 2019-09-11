@@ -181,10 +181,10 @@ extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
 
   func addNewCardViewController(
     _: AddNewCardViewController,
-    didSucceedWithMessage message: String
+    didSucceedWithMessage _: String
   ) {
     self.dismiss(animated: true) {
-      self.viewModel.inputs.addNewCardSucceeded(with: message)
+      self.viewModel.inputs.addNewCardSucceeded()
     }
   }
 }
