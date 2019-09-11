@@ -6,6 +6,7 @@ import ReactiveSwift
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
 
 public protocol PledgePaymentMethodsViewModelInputs {
+  func addNewCardSucceeded(with message: String)
   func configureWith(_ value: PledgePaymentMethodsValue)
   func viewDidLoad()
 }
@@ -37,18 +38,32 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           .materialize()
       }
 
+    let reloadCardsEvent = self.addNewCardSucceededProperty.signal.ignoreValues()
+      .switchMap { _ in
+        AppEnvironment.current.apiService
+          .fetchGraphCreditCards(query: UserQueries.storedCards.query)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+    }
+
+
     self.applePayButtonHidden = configureWithValue
       .map { ($0.project, $0.applePayCapable) }
       .map(showApplePayButton(for:applePayCapable:))
       .negate()
 
-    self.reloadPaymentMethods = storedCardsEvent
+    self.reloadPaymentMethods = Signal.merge(storedCardsEvent, reloadCardsEvent)
       .values()
       .map { $0.me.storedCards.nodes }
 
-    self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
+    self.notifyDelegateLoadPaymentMethodsError = Signal.merge(storedCardsEvent, reloadCardsEvent)
       .errors()
       .map { $0.localizedDescription }
+  }
+
+  fileprivate let addNewCardSucceededProperty = MutableProperty<String?>(nil)
+  public func addNewCardSucceeded(with message: String) {
+    self.addNewCardSucceededProperty.value = message
   }
 
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
