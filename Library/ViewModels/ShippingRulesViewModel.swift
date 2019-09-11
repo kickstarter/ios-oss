@@ -17,7 +17,7 @@ public protocol ShippingRulesViewModelInputs {
 }
 
 public protocol ShippingRulesViewModelOutputs {
-  var deselectCellAtIndex: Signal<Int, Never> { get }
+  var deselectVisibleCells: Signal<Void, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
   var notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never> { get }
   var reloadDataWithShippingRules: Signal<([ShippingRuleData], Bool), Never> { get }
@@ -47,7 +47,8 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     let selectedIndex = self.didSelectShippingRuleAtIndexProperty.signal
       .skipNil()
 
-    self.deselectCellAtIndex = selectedIndex
+    self.deselectVisibleCells = selectedIndex
+      .ignoreValues()
 
     let filteredData = initialData
       .takePairWhen(searchText)
@@ -97,7 +98,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       .map { _, shippingRules, selectedShippingRule in shippingRules.firstIndex(of: selectedShippingRule) }
       .skipNil()
 
-    self.selectCellAtIndex = self.deselectCellAtIndex
+    self.selectCellAtIndex = selectedIndex
   }
 
   private let configDataProperty = MutableProperty<(Project, [ShippingRule], ShippingRule)?>(nil)
@@ -124,7 +125,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let deselectCellAtIndex: Signal<Int, Never>
+  public let deselectVisibleCells: Signal<Void, Never>
   public let flashScrollIndicators: Signal<Void, Never>
   public let notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never>
   public let reloadDataWithShippingRules: Signal<([ShippingRuleData], Bool), Never>

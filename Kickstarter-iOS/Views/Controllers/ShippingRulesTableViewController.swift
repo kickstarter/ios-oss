@@ -57,10 +57,9 @@ final class ShippingRulesTableViewController: UITableViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.deselectCellAtIndex
-      .map { IndexPath(row: $0, section: 0) }
+    self.viewModel.outputs.deselectVisibleCells
       .observeForUI()
-      .observeValues { [weak self] _ in
+      .observeValues { [weak self] in
         self?.tableView.visibleCells.forEach { $0.accessoryType = .none }
       }
 

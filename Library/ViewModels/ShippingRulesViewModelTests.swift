@@ -27,7 +27,7 @@ private let shippingRules = [
 final class ShippingRulesViewModelTests: TestCase {
   private let vm: ShippingRulesViewModelType = ShippingRulesViewModel()
 
-  private let deselectCellAtIndex = TestObserver<Int, Never>()
+  private let deselectVisibleCells = TestObserver<Void, Never>()
   private let flashScrollIndicators = TestObserver<Void, Never>()
   private let notifyDelegateOfSelectedShippingRule = TestObserver<ShippingRule, Never>()
   private let reloadDataWithShippingRulesData = TestObserver<[ShippingRuleData], Never>()
@@ -38,7 +38,7 @@ final class ShippingRulesViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.deselectCellAtIndex.observe(self.deselectCellAtIndex.observer)
+    self.vm.outputs.deselectVisibleCells.observe(self.deselectVisibleCells.observer)
     self.vm.outputs.flashScrollIndicators.observe(self.flashScrollIndicators.observer)
     self.vm.outputs.notifyDelegateOfSelectedShippingRule.observe(
       self.notifyDelegateOfSelectedShippingRule.observer
@@ -473,7 +473,7 @@ final class ShippingRulesViewModelTests: TestCase {
 
     let firstManuallySelectedShippingRule = shippingRules[5]
 
-    self.deselectCellAtIndex.assertValues([1])
+    self.deselectVisibleCells.assertValueCount(1)
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
@@ -599,7 +599,7 @@ final class ShippingRulesViewModelTests: TestCase {
 
     let secondManuallySelectedShippingRule = shippingRules[2]
 
-    self.deselectCellAtIndex.assertValues([1, 0])
+    self.deselectVisibleCells.assertValueCount(2)
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
@@ -732,7 +732,7 @@ final class ShippingRulesViewModelTests: TestCase {
 
     let firstManuallySelectedShippingRule = shippingRules[6]
 
-    self.deselectCellAtIndex.assertValues([6])
+    self.deselectVisibleCells.assertValueCount(1)
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
@@ -800,7 +800,7 @@ final class ShippingRulesViewModelTests: TestCase {
 
     let secondManuallySelectedShippingRule = shippingRules[3]
 
-    self.deselectCellAtIndex.assertValues([6, 3])
+    self.deselectVisibleCells.assertValueCount(2)
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
