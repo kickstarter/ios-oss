@@ -30,7 +30,10 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       self.configureWithValueProperty.signal.skipNil()
     ).map(second)
 
-    let storedCardsEvent = configureWithValue
+    let storedCardsEvent = Signal.merge(
+      configureWithValue.ignoreValues(),
+      self.addNewCardSucceededProperty.signal.ignoreValues()
+      )
       .switchMap { _ in
         AppEnvironment.current.apiService
           .fetchGraphCreditCards(query: UserQueries.storedCards.query)
@@ -38,25 +41,16 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           .materialize()
       }
 
-    let reloadCardsEvent = self.addNewCardSucceededProperty.signal.ignoreValues()
-      .switchMap { _ in
-        AppEnvironment.current.apiService
-          .fetchGraphCreditCards(query: UserQueries.storedCards.query)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-    }
-
-
     self.applePayButtonHidden = configureWithValue
       .map { ($0.project, $0.applePayCapable) }
       .map(showApplePayButton(for:applePayCapable:))
       .negate()
 
-    self.reloadPaymentMethods = Signal.merge(storedCardsEvent, reloadCardsEvent)
+    self.reloadPaymentMethods = storedCardsEvent
       .values()
       .map { $0.me.storedCards.nodes }
 
-    self.notifyDelegateLoadPaymentMethodsError = Signal.merge(storedCardsEvent, reloadCardsEvent)
+    self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
       .map { $0.localizedDescription }
   }
