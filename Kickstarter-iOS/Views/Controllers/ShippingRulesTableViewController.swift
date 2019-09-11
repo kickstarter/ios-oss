@@ -46,6 +46,7 @@ final class ShippingRulesTableViewController: UITableViewController {
 
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
+      |> \.separatorStyle .~ .none
 
     self.tableView.registerCellClass(ShippingRuleCell.self)
 
