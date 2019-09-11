@@ -18,6 +18,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.dates.launchedAt .~ launchedAt
       |> Project.lens.state .~ .live
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
+      |> Project.lens.stats.convertedPledgedAmount .~ 21_615
 
     self.cosmicSurgery = project
 
@@ -119,6 +120,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currency .~ "USD"
       |> Project.lens.stats.currentCurrency .~ "SEK"
       |> Project.lens.stats.currentCurrencyRate .~ 3.0
+      |> Project.lens.stats.convertedPledgedAmount .~ 49_500
 
     withEnvironment(countryCode: "SE") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
