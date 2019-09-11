@@ -262,7 +262,7 @@ public final class ProjectPamphletViewController: UIViewController {
 
 extension ProjectPamphletViewController: PledgeCTAContainerViewDelegate {
   func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
-    self.viewModel.inputs.pledgeCTAButtonTapped(state)
+    self.viewModel.inputs.pledgeCTAButtonTapped(with: state)
   }
 }
 

@@ -15,7 +15,7 @@ public protocol ProjectPamphletViewModelInputs {
   func initial(topConstraint: CGFloat)
 
   /// Call when the pledge CTA button is tapped
-  func pledgeCTAButtonTapped(_ state: PledgeStateCTAType)
+  func pledgeCTAButtonTapped(with state: PledgeStateCTAType)
 
   /// Call when pledgeRetryButton is tapped.
   func pledgeRetryButtonTapped()
@@ -93,31 +93,33 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(unpack)
 
     let goToManagePledge = ctaButtonTapped
-      .filter(canShowManageViewPledgeScreen(_:_:state:))
+      .filter { canShowManageViewPledgeScreen($0.0, state:$0.2) }
       .map { (project, refTag, _) -> PledgeData in
-        let r = reward(from: project.personalization.backing, inProject: project)
-        return PledgeData(project: project, reward: r, refTag: refTag)
+        PledgeData(project: project,
+                   reward: reward(from: project.personalization.backing, inProject: project),
+                   refTag: refTag)
       }
 
     self.goToManageViewPledge = goToManagePledge
       .filter { _ in featureNativeCheckoutPledgeViewIsEnabled() }
 
     self.goToDeprecatedManagePledge = ctaButtonTapped
-      .filter(shouldGoToDeprecatedManagePledge(_:_:state:))
+      .filter { shouldGoToDeprecatedManagePledge($0.0, state:$0.2) }
       .map { (project, refTag, _) -> PledgeData in
-        let r = reward(from: project.personalization.backing, inProject: project)
-        return PledgeData(project: project, reward: r, refTag: refTag)
+        PledgeData(project: project,
+                   reward: reward(from: project.personalization.backing, inProject: project),
+                   refTag: refTag)
       }
 
     self.goToDeprecatedViewBacking = ctaButtonTapped
       .map { project, _, state in (project, state) }
-      .filter(shouldGoToDeprecatedViewBacking(_:state:))
+      .filter { shouldGoToDeprecatedViewBacking($0.0, state:$0.1) }
       .map { project, _ in
         BackingData(project, AppEnvironment.current.currentUser)
       }
 
     self.goToRewards = ctaButtonTapped
-      .filter(canShowRewardsScreen(_:_:state:))
+      .filter { canShowRewardsScreen($0.0, state:$0.2) }
       .map { project, refTag, _ in (project, refTag) }
 
     let project = freshProjectAndRefTag
@@ -181,7 +183,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   private let pledgeCTAButtonTappedProperty = MutableProperty<PledgeStateCTAType?>(nil)
-  public func pledgeCTAButtonTapped(_ state: PledgeStateCTAType) {
+  public func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
     self.pledgeCTAButtonTappedProperty.value = state
   }
 
@@ -328,7 +330,6 @@ private func reward(from backing: Backing?, inProject project: Project) -> Rewar
 
 private func canShowRewardsScreen(
   _: Project,
-  _: RefTag?,
   state: PledgeStateCTAType?
 ) -> Bool {
   guard let state = state else {
@@ -339,7 +340,6 @@ private func canShowRewardsScreen(
 
 private func canShowManageViewPledgeScreen(
   _ project: Project,
-  _: RefTag?,
   state: PledgeStateCTAType?
 ) -> Bool {
   guard let isBacking = project.personalization.isBacking, let state = state else {
@@ -360,7 +360,6 @@ private func shouldGoToDeprecatedViewBacking(
 
 private func shouldGoToDeprecatedManagePledge(
   _ project: Project,
-  _: RefTag?,
   state: PledgeStateCTAType?
 ) -> Bool {
   guard let isBacking = project.personalization.isBacking, let state = state else {

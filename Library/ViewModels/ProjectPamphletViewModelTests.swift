@@ -390,12 +390,12 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeCTAButtonTapped(.pledge)
+      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 
       self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
       self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
 
-      self.vm.inputs.pledgeCTAButtonTapped(.viewRewards)
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewRewards)
 
       self.goToRewardsProject.assertValues(
         [project, project],
@@ -428,7 +428,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.goToManageViewPledgeReward.assertDidNotEmitValue()
       self.goToManageViewPledgeProject.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeCTAButtonTapped(.manage)
+      self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
       self.goToManageViewPledgeProject.assertValues([project])
       self.goToManageViewPledgeReward.assertValues([project.rewards[0]])
@@ -463,7 +463,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.goToDeprecatedManagePledgeReward.assertDidNotEmitValue()
       self.goToDeprecatedManagePledgeRefTag.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeCTAButtonTapped(.manage)
+      self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
       self.goToDeprecatedManagePledgeProject.assertValues([project])
       self.goToDeprecatedManagePledgeReward.assertValues([project.rewards[0]])
@@ -500,7 +500,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.goToManageViewPledgeReward.assertDidNotEmitValue()
       self.goToManageViewPledgeRefTag.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeCTAButtonTapped(.viewBacking)
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
 
       self.goToManageViewPledgeProject.assertValues([project])
       self.goToManageViewPledgeReward.assertValues([project.rewards[0]])
@@ -536,7 +536,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
       self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeCTAButtonTapped(.viewBacking)
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
 
       self.goToDeprecatedViewBackingUser.assertValues([user])
       self.goToDeprecatedViewBackingProject.assertValues([project])
@@ -862,7 +862,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeCTAButtonTapped(.pledge)
+      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
       XCTAssertEqual(
         ["Project Page Viewed", "Viewed Project Page", "Project Page"],
         client.events
