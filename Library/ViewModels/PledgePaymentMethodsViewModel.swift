@@ -35,11 +35,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       self.addNewCardSucceededProperty.signal.ignoreValues()
     )
     .switchMap { _ in
-        AppEnvironment.current.apiService
-          .fetchGraphCreditCards(query: UserQueries.storedCards.query)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
+      AppEnvironment.current.apiService
+        .fetchGraphCreditCards(query: UserQueries.storedCards.query)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+    }
 
     self.applePayButtonHidden = configureWithValue
       .map { ($0.project, $0.applePayCapable) }
