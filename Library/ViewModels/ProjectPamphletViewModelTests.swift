@@ -394,6 +394,17 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
       self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+
+      self.vm.inputs.pledgeCTAButtonTapped(.viewRewards)
+
+      self.goToRewardsProject.assertValues(
+        [project, project],
+        "Tapping 'View rewards' emits the project"
+      )
+      self.goToRewardsRefTag.assertValues(
+        [.discovery, .discovery],
+        "Tapping 'View rewards' emits the refTag"
+      )
     }
   }
 

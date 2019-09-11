@@ -117,9 +117,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
 
     self.goToRewards = ctaButtonTapped
-      .filter { _, _, pledgeState in
-        userCanSeeNativeCheckout() && pledgeState == .pledge
-      }.map { project, refTag, _ in (project, refTag) }
+      .filter(canShowRewardsScreen(_:_:state:))
+      .map { project, refTag, _ in (project, refTag) }
 
     let project = freshProjectAndRefTag
       .map(first)
@@ -325,6 +324,17 @@ private func reward(from backing: Backing?, inProject project: Project) -> Rewar
   return backing?.reward
     ?? project.rewards.filter { $0.id == backing?.rewardId }.first
     ?? Reward.noReward
+}
+
+private func canShowRewardsScreen(
+  _: Project,
+  _: RefTag?,
+  state: PledgeStateCTAType?
+) -> Bool {
+  guard let state = state else {
+    return false
+  }
+  return userCanSeeNativeCheckout() && (state == .pledge || state == .viewRewards)
 }
 
 private func canShowManageViewPledgeScreen(
