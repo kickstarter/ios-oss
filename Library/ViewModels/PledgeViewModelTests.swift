@@ -539,11 +539,11 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual(
       PKPaymentAuthorizationStatus.failure,
-      self.vm.inputs.stripeTokenCreated(tokenOrError: .left("stripe_token"))
+      self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
     )
   }
 
-  func testStripeTokenCreated_ReturnsStatusFailure_WhenStripeReturnsError() {
+  func testStripeTokenCreated_ReturnsStatusFailure_WhenStripeTokenNil_ErrorNotNil() {
     let project = Project.template
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
@@ -561,11 +561,11 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual(
       PKPaymentAuthorizationStatus.failure,
-      self.vm.inputs.stripeTokenCreated(tokenOrError: .right(stripeError))
+      self.vm.inputs.stripeTokenCreated(token: nil, error: stripeError)
     )
   }
 
-  func testStripeTokenCreated_ReturnsStatusFailure_WhenStripeTokenNilErrorNil() {
+  func testStripeTokenCreated_ReturnsStatusFailure_WhenStripeTokenNil_ErrorNil() {
     let project = Project.template
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
@@ -581,7 +581,28 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual(
       PKPaymentAuthorizationStatus.failure,
-      self.vm.inputs.stripeTokenCreated(tokenOrError: .right(nil))
+      self.vm.inputs.stripeTokenCreated(token: nil, error: nil)
+    )
+  }
+
+  func testStripeTokenCreated_ReturnsStatusFailure_WhenStripeTokenNotNil_ErrorNotNil() {
+    let project = Project.template
+    let reward = Reward.noReward
+
+    self.vm.inputs.configureWith(project: project, reward: reward)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+      paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+    )
+
+    let stripeError = GraphError.invalidJson(responseString: nil)
+
+    XCTAssertEqual(
+      PKPaymentAuthorizationStatus.failure,
+      self.vm.inputs.stripeTokenCreated(token: "stripe-token", error: stripeError)
     )
   }
 
@@ -601,7 +622,7 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual(
       PKPaymentAuthorizationStatus.success,
-      self.vm.inputs.stripeTokenCreated(tokenOrError: .left("stripe-token"))
+      self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
     )
   }
 
@@ -624,7 +645,7 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         PKPaymentAuthorizationStatus.success,
-        self.vm.inputs.stripeTokenCreated(tokenOrError: .left("stripe-token"))
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
       )
 
       self.goToThanks.assertDidNotEmitValue()
@@ -637,6 +658,36 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
       self.goToThanks.assertValues([project])
+      self.createBackingError.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToThanks_WhenStripeTokenCreated_ReturnsFailure() {
+    withEnvironment(apiService: MockService()) {
+      let project = Project.template
+      let reward = Reward.noReward
+
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.failure,
+        self.vm.inputs.stripeTokenCreated(token: nil, error: GraphError.invalidInput)
+      )
+
+      self.scheduler.run()
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.goToThanks.assertDidNotEmitValue()
       self.createBackingError.assertDidNotEmitValue()
     }
   }
@@ -662,7 +713,7 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         PKPaymentAuthorizationStatus.success,
-        self.vm.inputs.stripeTokenCreated(tokenOrError: .left("stripe-token"))
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
       )
 
       self.goToThanks.assertDidNotEmitValue()

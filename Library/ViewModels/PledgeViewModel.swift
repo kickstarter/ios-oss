@@ -19,13 +19,11 @@ public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
   func configureWith(project: Project, reward: Reward)
   func paymentAuthorizationDidAuthorizePayment(
-    paymentData:
-    (displayName: String?, network: String?, transactionIdentifier: String)
-  )
+    paymentData: (displayName: String?, network: String?, transactionIdentifier: String))
   func paymentAuthorizationViewControllerDidFinish()
   func pledgeAmountDidUpdate(to amount: Double)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
-  func stripeTokenCreated(tokenOrError: Either<String, Error?>) -> PKPaymentAuthorizationStatus
+  func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
   func userSessionStarted()
   func viewDidLoad()
 }
@@ -139,33 +137,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.goToApplePayPaymentAuthorization = paymentAuthorizationData
       .takeWhen(self.applePayButtonTappedSignal)
 
-    let stripeToken: Signal<String, Never> = self.tokenOrErrorSignal
-      .map { tokenOrError -> String? in
-        switch tokenOrError {
-        case let .left(token):
-          return token
-        default:
-          return nil
-        }
-      }.skipNil()
-
-    let stripeTokenError: Signal<Error?, Never> = self.tokenOrErrorSignal
-      .filter {
-        if case .right = $0 {
-          return true
-        } else {
-          return false
-        }
-      }
-      .map { tokenOrError -> Error? in
-        switch tokenOrError {
-        case let .right(error):
-          return error
-        default:
-          return nil
-        }
-      }
-
     let pkPaymentData = self.pkPaymentSignal
       .map { pkPayment -> PKPaymentData? in
         guard let displayName = pkPayment.displayName, let network = pkPayment.network else {
@@ -175,30 +146,43 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         return (displayName, network, pkPayment.transactionIdentifier)
       }
 
-    let createApplePayBackingData = Signal.combineLatest(backingData, pkPaymentData.skipNil())
-      .takePairWhen(stripeToken)
-      .map { arg -> (Project, Reward, Double, ShippingRule?, PKPaymentData, String) in
-        let (paymentData, stripeToken) = arg
-        let (backingData, pkPaymentData) = paymentData
+    let applePayStatusSuccess = Signal.combineLatest(
+      stripeTokenSignal.skipNil(),
+      stripeErrorSignal.filter(isNil),
+      pkPaymentData.skipNil()
+      ).mapConst(PKPaymentAuthorizationStatus.success)
 
+    let applePayStatusFailure = Signal.merge(
+      stripeErrorSignal.skipNil().ignoreValues(),
+      stripeTokenSignal.filter(isNil).ignoreValues(),
+      pkPaymentData.filter(isNil).ignoreValues()
+      ).mapConst(PKPaymentAuthorizationStatus.failure)
+
+    self.createApplePayBackingStatusProperty <~ Signal.merge(
+      applePayStatusSuccess,
+      applePayStatusFailure
+    )
+
+    let createApplePayBackingData = Signal.combineLatest(backingData,
+                                                         pkPaymentData.skipNil(),
+                                                         stripeTokenSignal.skipNil())
+      .takeWhen(applePayStatusSuccess)
+      .map { backingData, paymentData, stripeToken
+        -> (Project, Reward, Double, ShippingRule?, PKPaymentData, String) in
         return (
           backingData.project,
           backingData.reward,
           backingData.pledgeAmount,
           backingData.selectedShippingRule,
-          pkPaymentData,
+          paymentData,
           stripeToken
         )
       }
 
     let createApplePayBackingEvent = createApplePayBackingData
-      .map(createApplePayBackingInput(
-        for:
-        reward:
-        pledgeAmount:
-        selectedShippingRule:
-        pkPaymentData:stripeToken:
-      ))
+      .map(
+        createApplePayBackingInput(for:reward:pledgeAmount:selectedShippingRule:pkPaymentData:stripeToken:)
+      )
       .switchMap { input in
         AppEnvironment.current.apiService.createApplePayBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -206,21 +190,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     let createApplePayBackingEventSuccess = createApplePayBackingEvent.values()
-
-    let applePayStatusSuccess = Signal.combineLatest(
-      stripeToken,
-      pkPaymentData.skipNil()
-    ).mapConst(PKPaymentAuthorizationStatus.success)
-
-    let applePayStatusFailure = Signal.merge(
-      stripeTokenError.ignoreValues(),
-      pkPaymentData.filter(isNil).ignoreValues()
-    ).mapConst(PKPaymentAuthorizationStatus.failure)
-
-    self.createApplePayBackingStatusProperty <~ Signal.merge(
-      applePayStatusSuccess,
-      applePayStatusFailure
-    )
 
     let createApplePayBackingEventErrors = createApplePayBackingEvent.errors()
       .map { $0.localizedDescription }
@@ -275,10 +244,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.shippingRuleSelectedObserver.send(value: shippingRule)
   }
 
-  private let (tokenOrErrorSignal, tokenOrErrorObserver) = Signal<Either<String, Error?>, Never>.pipe()
+  private let (stripeTokenSignal, stripeTokenObserver) = Signal<String?, Never>.pipe()
+  private let (stripeErrorSignal, stripeErrorObserver) = Signal<Error?, Never>.pipe()
+
   private let createApplePayBackingStatusProperty = MutableProperty<PKPaymentAuthorizationStatus>(.failure)
-  public func stripeTokenCreated(tokenOrError: Either<String, Error?>) -> PKPaymentAuthorizationStatus {
-    self.tokenOrErrorObserver.send(value: tokenOrError)
+  public func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus {
+    self.stripeTokenObserver.send(value: token)
+    self.stripeErrorObserver.send(value: error)
 
     return self.createApplePayBackingStatusProperty.value
   }

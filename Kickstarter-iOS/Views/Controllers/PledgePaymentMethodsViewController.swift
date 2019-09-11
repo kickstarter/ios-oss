@@ -112,8 +112,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeValues { [weak self] in
         guard let self = self else { return }
 
-        self.delegate?
-          .pledgePaymentMethodsViewControllerDidTapApplePayButton(self)
+        self.delegate?.pledgePaymentMethodsViewControllerDidTapApplePayButton(self)
       }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden

@@ -10,7 +10,7 @@ public enum EnvironmentType: String, CaseIterable {
     switch self {
     case .production:
       return Secrets.StripePublishableKey.production
-    default:
+    case .staging, .development, .local:
       return Secrets.StripePublishableKey.staging
     }
   }

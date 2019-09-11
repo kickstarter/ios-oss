@@ -263,8 +263,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         merchantIdentifier: paymentAuthorizationData.merchantIdentifier
       )
 
-    guard let paymentAuthorizationViewController =
-      PKPaymentAuthorizationViewController(paymentRequest: request) else { return }
+    guard
+      let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: request)
+    else { return }
     paymentAuthorizationViewController.delegate = self
 
     self.present(paymentAuthorizationViewController, animated: true)
@@ -304,15 +305,7 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
     STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
       guard let self = self else { return }
 
-      let tokenOrError: Either<String, Error?>
-
-      if let stripeToken = token {
-        tokenOrError = .init(left: stripeToken.tokenId)
-      } else {
-        tokenOrError = .init(right: error)
-      }
-
-      let status = self.viewModel.inputs.stripeTokenCreated(tokenOrError: tokenOrError)
+      let status = self.viewModel.inputs.stripeTokenCreated(token: token?.tokenId, error: error)
       let result = PKPaymentAuthorizationResult(status: status, errors: [])
 
       completion(result)
