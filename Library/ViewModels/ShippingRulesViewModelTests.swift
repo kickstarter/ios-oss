@@ -60,6 +60,83 @@ final class ShippingRulesViewModelTests: TestCase {
     self.flashScrollIndicators.assertValueCount(1)
   }
 
+  func testDataIsSortedBasedOnLocalizedName() {
+    let shippingRulesUnsorted = [
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .usa,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .portland,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .losAngeles,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .london,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .greatBritain,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .canada,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .brooklyn,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .australia
+    ]
+
+    let project = Project.template
+    let selectedShippingRule = shippingRulesUnsorted[0]
+
+    self.vm.inputs.configureWith(
+      project, shippingRules: shippingRulesUnsorted, selectedShippingRule: selectedShippingRule
+    )
+    self.vm.inputs.viewDidLoad()
+
+    self.reloadDataWithShippingRulesData.assertValues(
+      [
+        // Sorted list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[7]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[6]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[5]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[4]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[3]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[2]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[1]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[0]
+          )
+        ]
+      ]
+    )
+    self.reloadDataWithShippingRulesReload.assertValues([true])
+  }
+
+  /**
+
+   This test checks whether the table scrolls to the selected shipping rule row
+
+   1) We load the list
+    - Selected rule: Brooklyn
+    - Scrolls to Brooklyn
+   2) We perform search for shipping rules locations starting with "Lo" prefix
+    - Selected rule: Brooklyn
+    - Does not scroll since Brooklyn is now not in the filtered list
+   3) We perform search for shipping rules locations starting with "B" prefix
+    - Selected rule: Brooklyn
+    - Scrolls to Brooklyn
+
+   */
   func testScrollToCellAtIndex() {
     let selectedShippingRule = shippingRules[1]
 
@@ -69,6 +146,18 @@ final class ShippingRulesViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.scrollToCellAtIndex.assertValues([1])
+
+    self.vm.inputs.searchTextDidChange("Lo")
+
+    self.scheduler.advance(by: .milliseconds(100))
+
+    self.scrollToCellAtIndex.assertValues([1])
+
+    self.vm.inputs.searchTextDidChange("B")
+    
+    self.scheduler.advance(by: .milliseconds(100))
+
+    self.scrollToCellAtIndex.assertValues([1, 0])
   }
 
   /**
@@ -83,7 +172,9 @@ final class ShippingRulesViewModelTests: TestCase {
     - Shows: Australia
    4) We perform another search for shipping rules locations starting with "x" prefix
     - Shows: empty list
-   5) We perform another search for shipping rules locations starting with "C" prefix
+   5) We clear the search query in order to show the original list
+    - Shows: Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA
+   6) We perform another search for shipping rules locations starting with "C" prefix
     - Shows: Canada
 
    */
@@ -290,6 +381,91 @@ final class ShippingRulesViewModelTests: TestCase {
     )
     self.reloadDataWithShippingRulesReload.assertValues([true, true, true, true])
 
+    self.vm.inputs.searchTextDidChange("")
+
+    self.scheduler.advance(by: .milliseconds(100))
+
+    self.reloadDataWithShippingRulesData.assertValues(
+      [
+        // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+          )
+        ],
+        // Filtered list by "Lo"
+        // [London, Los Angeles]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+          )
+        ],
+        // Filtered list by "a"
+        // [Australia]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+          )
+        ],
+        // Filtered list by "x"
+        // Empty (no matches found)
+        [
+        ],
+        // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+          )
+        ]
+      ]
+    )
+    self.reloadDataWithShippingRulesReload.assertValues([true, true, true, true, true])
+
     self.vm.inputs.searchTextDidChange("C")
 
     self.scheduler.advance(by: .milliseconds(100))
@@ -344,6 +520,33 @@ final class ShippingRulesViewModelTests: TestCase {
         // Empty (no matches found)
         [
         ],
+        // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+          )
+        ],
         // Filtered list by "c"
         // [Canada]
         [
@@ -353,7 +556,7 @@ final class ShippingRulesViewModelTests: TestCase {
         ]
       ]
     )
-    self.reloadDataWithShippingRulesReload.assertValues([true, true, true, true, true])
+    self.reloadDataWithShippingRulesReload.assertValues([true, true, true, true, true, true])
   }
 
   /**
@@ -474,6 +677,7 @@ final class ShippingRulesViewModelTests: TestCase {
     let firstManuallySelectedShippingRule = shippingRules[5]
 
     self.deselectVisibleCells.assertValueCount(1)
+    self.notifyDelegateOfSelectedShippingRule.assertValues([firstManuallySelectedShippingRule])
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
@@ -600,6 +804,9 @@ final class ShippingRulesViewModelTests: TestCase {
     let secondManuallySelectedShippingRule = shippingRules[2]
 
     self.deselectVisibleCells.assertValueCount(2)
+    self.notifyDelegateOfSelectedShippingRule.assertValues(
+      [firstManuallySelectedShippingRule, secondManuallySelectedShippingRule]
+    )
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
@@ -733,6 +940,7 @@ final class ShippingRulesViewModelTests: TestCase {
     let firstManuallySelectedShippingRule = shippingRules[6]
 
     self.deselectVisibleCells.assertValueCount(1)
+    self.notifyDelegateOfSelectedShippingRule.assertValues([firstManuallySelectedShippingRule])
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
@@ -801,6 +1009,9 @@ final class ShippingRulesViewModelTests: TestCase {
     let secondManuallySelectedShippingRule = shippingRules[3]
 
     self.deselectVisibleCells.assertValueCount(2)
+    self.notifyDelegateOfSelectedShippingRule.assertValues(
+      [firstManuallySelectedShippingRule, secondManuallySelectedShippingRule]
+    )
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]

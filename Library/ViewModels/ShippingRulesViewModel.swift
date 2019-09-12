@@ -10,7 +10,7 @@ public struct ShippingRuleData: Equatable {
 }
 
 private typealias ShippingRulesInputData = (
-  project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
+  project: Project, shippingRules: [ShippingRule], initialSelectedShippingRule: ShippingRule
 )
 
 public protocol ShippingRulesViewModelInputs {
@@ -43,6 +43,13 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     )
     .map(second)
     .skipNil()
+    .map { data in
+      (
+        project: data.project,
+        shippingRules: data.shippingRules.sorted { $0.location.localizedName < $1.location.localizedName },
+        initialSelectedShippingRule: data.initialSelectedShippingRule
+      )
+    }
 
     let searchText = self.searchTextDidChangeProperty.signal
       .ksr_debounce(.milliseconds(100), on: AppEnvironment.current.scheduler)
@@ -58,13 +65,20 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       .takePairWhen(searchText)
       .map(dataMatching(_:searchText:))
 
+    let selectedShippingRuleInitial = initialData
+      .map(third)
+
     let selectedShippingRule = Signal.merge(
       initialData,
       filteredData
     )
     .takePairWhen(selectedIndex)
-    .map { data, selectedIndex in (data.shippingRules, selectedIndex) }
-    .map { shippingRules, selectedIndex in shippingRules[selectedIndex] }
+    .map { data, selectedIndex in data.shippingRules[selectedIndex] }
+
+    let selectedShippingRuleCurrent = Signal.merge(
+      selectedShippingRuleInitial,
+      selectedShippingRule
+    )
 
     self.notifyDelegateOfSelectedShippingRule = selectedShippingRule
       .skipRepeats()
@@ -74,7 +88,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       .map { ($0, true) }
 
     let reloadDataFiltered = filteredData
-      .withLatest(from: Signal.merge(initialData.map(third), selectedShippingRule))
+      .withLatest(from: selectedShippingRuleCurrent)
       .map { data, selectedShippingRule in (data.project, data.shippingRules, selectedShippingRule) }
       .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
       .map { ($0, true) }
@@ -97,9 +111,12 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       reloadDataSelected
     )
 
-    self.scrollToCellAtIndex = initialData
-      .map { _, shippingRules, selectedShippingRule in shippingRules.firstIndex(of: selectedShippingRule) }
-      .skipNil()
+    self.scrollToCellAtIndex = Signal.merge(
+      initialData,
+      filteredData
+    )
+    .map { _, shippingRules, selectedShippingRule in shippingRules.firstIndex(of: selectedShippingRule) }
+    .skipNil()
 
     self.selectCellAtIndex = selectedIndex
   }

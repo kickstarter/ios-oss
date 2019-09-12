@@ -84,6 +84,16 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       )
     )
 
+    let closeButton = UIBarButtonItem(
+      image: image(named: "icon--cross", tintColor: .ksr_navy_600),
+      style: .plain,
+      target: self,
+      action: #selector(DeprecatedRewardPledgeViewController.closeButtonTapped)
+    )
+
+    _ = self.navigationItem
+      |> \.leftBarButtonItem .~ closeButton
+
     self.disclaimerTextView.delegate = self
 
     self.applePayButtonContainerView.addArrangedSubview(self.applePayButton)
@@ -632,7 +642,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.viewModel.inputs.expandDescriptionTapped()
   }
 
-  @IBAction internal func closeButtonTapped() {
+  @objc fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
