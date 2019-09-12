@@ -28,7 +28,7 @@ final class ManageViewPledgeViewController: UIViewController {
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
   }()
 
-  private let viewModel: ManageViewPledgeViewModelType = ManageViewPledgeViewModel()
+  private let viewModel = ManageViewPledgeViewModel()
 
   // MARK: - Lifecycle
 
@@ -36,7 +36,6 @@ final class ManageViewPledgeViewController: UIViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.title %~ { _ in Strings.Manage_your_pledge() }
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
     _ = self.navigationController?.navigationBar
@@ -60,6 +59,31 @@ final class ManageViewPledgeViewController: UIViewController {
     _ = self.closeButton
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
       |> \.width .~ Styles.minTouchSize.width
+  }
+
+  // MARK: - View model
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.title
+      .observeValues { [weak self] title in
+        guard let _self = self else { return }
+        _ = _self
+          |> \.title .~ title
+      }
+
+    self.viewModel.outputs.configurePaymentMethodView
+      .observeForUI()
+      .observeValues { _ in }
+
+    self.viewModel.outputs.configurePledgeSummaryView
+      .observeForUI()
+      .observeValues { _ in }
+
+    self.viewModel.outputs.configureRewardSummaryView
+      .observeForUI()
+      .observeValues { _ in }
   }
 
   // MARK: - Configuration

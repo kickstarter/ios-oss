@@ -8,9 +8,9 @@ public protocol ManageViewPledgeViewModelInputs {
 }
 
 public protocol ManageViewPledgeViewModelOutputs {
-  var configurePaymentMethodViewController: Signal<Project, Never> { get }
-  var configurePledgeSummaryViewController: Signal<Project, Never> { get }
-  var configureRewardSummaryViewController: Signal<Reward, Never> { get }
+  var configurePaymentMethodView: Signal<Project, Never> { get }
+  var configurePledgeSummaryView: Signal<Project, Never> { get }
+  var configureRewardSummaryView: Signal<Reward, Never> { get }
   var title: Signal<String, Never> { get }
 }
 
@@ -28,13 +28,13 @@ public final class ManageViewPledgeViewModel:
       .map(first)
       .map(title(with:))
 
-    self.configurePaymentMethodViewController = self.projectAndRewardSignal
+    self.configurePaymentMethodView = self.projectAndRewardSignal
       .map(first)
 
-    self.configurePledgeSummaryViewController = self.projectAndRewardSignal
+    self.configurePledgeSummaryView = self.projectAndRewardSignal
       .map(first)
 
-    self.configureRewardSummaryViewController = self.projectAndRewardSignal
+    self.configureRewardSummaryView = self.projectAndRewardSignal
       .map(second)
   }
 
@@ -43,9 +43,9 @@ public final class ManageViewPledgeViewModel:
     self.projectAndRewardObserver.send(value: (project, reward))
   }
 
-  public let configurePaymentMethodViewController: Signal<Project, Never>
-  public let configurePledgeSummaryViewController: Signal<Project, Never>
-  public let configureRewardSummaryViewController: Signal<Reward, Never>
+  public let configurePaymentMethodView: Signal<Project, Never>
+  public let configurePledgeSummaryView: Signal<Project, Never>
+  public let configureRewardSummaryView: Signal<Reward, Never>
   public let title: Signal<String, Never>
 
   public var inputs: ManageViewPledgeViewModelInputs { return self }
