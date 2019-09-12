@@ -60,17 +60,6 @@ final class ShippingRulesViewModelTests: TestCase {
     self.flashScrollIndicators.assertValueCount(1)
   }
 
-  func testScrollToCellAtIndex() {
-    let selectedShippingRule = shippingRules[1]
-
-    self.vm.inputs.configureWith(
-      .template, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
-    )
-    self.vm.inputs.viewDidLoad()
-
-    self.scrollToCellAtIndex.assertValues([1])
-  }
-
   func testDataIsSortedBasedOnLocalizedName() {
     let shippingRulesUnsorted = [
       ShippingRule.template
@@ -131,6 +120,44 @@ final class ShippingRulesViewModelTests: TestCase {
       ]
     )
     self.reloadDataWithShippingRulesReload.assertValues([true])
+  }
+
+  /**
+
+   This test checks whether the table scrolls to the selected shipping rule row
+
+   1) We load the list
+    - Selected rule: Brooklyn
+    - Scrolls to Brooklyn
+   2) We perform search for shipping rules locations starting with "Lo" prefix
+    - Selected rule: Brooklyn
+    - Does not scroll since Brooklyn is now not in the filtered list
+   3) We perform search for shipping rules locations starting with "B" prefix
+    - Selected rule: Brooklyn
+    - Scrolls to Brooklyn
+
+   */
+  func testScrollToCellAtIndex() {
+    let selectedShippingRule = shippingRules[1]
+
+    self.vm.inputs.configureWith(
+      .template, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
+    )
+    self.vm.inputs.viewDidLoad()
+
+    self.scrollToCellAtIndex.assertValues([1])
+
+    self.vm.inputs.searchTextDidChange("Lo")
+
+    self.scheduler.advance(by: .milliseconds(100))
+
+    self.scrollToCellAtIndex.assertValues([1])
+
+    self.vm.inputs.searchTextDidChange("B")
+    
+    self.scheduler.advance(by: .milliseconds(100))
+
+    self.scrollToCellAtIndex.assertValues([1, 0])
   }
 
   /**

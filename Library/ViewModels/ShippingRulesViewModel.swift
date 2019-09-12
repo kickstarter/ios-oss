@@ -111,9 +111,12 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       reloadDataSelected
     )
 
-    self.scrollToCellAtIndex = initialData
-      .map { _, shippingRules, selectedShippingRule in shippingRules.firstIndex(of: selectedShippingRule) }
-      .skipNil()
+    self.scrollToCellAtIndex = Signal.merge(
+      initialData,
+      filteredData
+    )
+    .map { _, shippingRules, selectedShippingRule in shippingRules.firstIndex(of: selectedShippingRule) }
+    .skipNil()
 
     self.selectCellAtIndex = selectedIndex
   }
