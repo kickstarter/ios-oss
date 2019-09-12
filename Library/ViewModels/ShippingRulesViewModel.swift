@@ -10,7 +10,7 @@ public struct ShippingRuleData: Equatable {
 }
 
 private typealias ShippingRulesInputData = (
-  project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
+  project: Project, shippingRules: [ShippingRule], initialSelectedShippingRule: ShippingRule
 )
 
 public protocol ShippingRulesViewModelInputs {
