@@ -58,13 +58,20 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       .takePairWhen(searchText)
       .map(dataMatching(_:searchText:))
 
+    let selectedShippingRuleInitial = initialData
+      .map(third)
+
     let selectedShippingRule = Signal.merge(
       initialData,
       filteredData
     )
     .takePairWhen(selectedIndex)
-    .map { data, selectedIndex in (data.shippingRules, selectedIndex) }
-    .map { shippingRules, selectedIndex in shippingRules[selectedIndex] }
+    .map { data, selectedIndex in data.shippingRules[selectedIndex] }
+
+    let selectedShippingRuleCurrent = Signal.merge(
+      selectedShippingRuleInitial,
+      selectedShippingRule
+    )
 
     self.notifyDelegateOfSelectedShippingRule = selectedShippingRule
       .skipRepeats()
@@ -74,7 +81,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       .map { ($0, true) }
 
     let reloadDataFiltered = filteredData
-      .withLatest(from: Signal.merge(initialData.map(third), selectedShippingRule))
+      .withLatest(from: selectedShippingRuleCurrent)
       .map { data, selectedShippingRule in (data.project, data.shippingRules, selectedShippingRule) }
       .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
       .map { ($0, true) }
