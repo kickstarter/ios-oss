@@ -474,6 +474,7 @@ final class ShippingRulesViewModelTests: TestCase {
     let firstManuallySelectedShippingRule = shippingRules[5]
 
     self.deselectVisibleCells.assertValueCount(1)
+    self.notifyDelegateOfSelectedShippingRule.assertValues([firstManuallySelectedShippingRule])
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
@@ -600,6 +601,9 @@ final class ShippingRulesViewModelTests: TestCase {
     let secondManuallySelectedShippingRule = shippingRules[2]
 
     self.deselectVisibleCells.assertValueCount(2)
+    self.notifyDelegateOfSelectedShippingRule.assertValues(
+      [firstManuallySelectedShippingRule, secondManuallySelectedShippingRule]
+    )
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
@@ -733,6 +737,7 @@ final class ShippingRulesViewModelTests: TestCase {
     let firstManuallySelectedShippingRule = shippingRules[6]
 
     self.deselectVisibleCells.assertValueCount(1)
+    self.notifyDelegateOfSelectedShippingRule.assertValues([firstManuallySelectedShippingRule])
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
@@ -801,6 +806,9 @@ final class ShippingRulesViewModelTests: TestCase {
     let secondManuallySelectedShippingRule = shippingRules[3]
 
     self.deselectVisibleCells.assertValueCount(2)
+    self.notifyDelegateOfSelectedShippingRule.assertValues(
+      [firstManuallySelectedShippingRule, secondManuallySelectedShippingRule]
+    )
     self.reloadDataWithShippingRulesData.assertValues(
       [
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
