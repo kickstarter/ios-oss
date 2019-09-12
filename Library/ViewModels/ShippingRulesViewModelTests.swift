@@ -154,7 +154,7 @@ final class ShippingRulesViewModelTests: TestCase {
     self.scrollToCellAtIndex.assertValues([1])
 
     self.vm.inputs.searchTextDidChange("B")
-    
+
     self.scheduler.advance(by: .milliseconds(100))
 
     self.scrollToCellAtIndex.assertValues([1, 0])
