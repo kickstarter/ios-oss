@@ -207,7 +207,7 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func goToManageViewPledge(project: Project, reward: Reward, refTag _: RefTag?) {
-    let managePledgeViewController = ManagePledgeViewController.instantiate()
+    let managePledgeViewController = ManageViewPledgeViewController.instantiate()
     managePledgeViewController.configureWith(project: project, reward: reward)
 
     let nav = UINavigationController(rootViewController: managePledgeViewController)

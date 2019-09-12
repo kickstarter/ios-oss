@@ -5,8 +5,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-internal final class ManagePledgeViewModelTests: TestCase {
-  private let vm = ManagePledgeViewModel()
+internal final class ManageViewPledgeViewModelTests: TestCase {
+  private let vm = ManageViewPledgeViewModel()
 
   override func setUp() {
     super.setUp()

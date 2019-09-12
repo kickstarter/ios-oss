@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class ManagePledgeViewController: UIViewController {
+final class ManageViewPledgeViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var closeButton: UIBarButtonItem = {
@@ -11,7 +11,7 @@ final class ManagePledgeViewController: UIViewController {
       image: UIImage(named: "icon--cross"),
       style: .plain,
       target: self,
-      action: #selector(ManagePledgeViewController.closeButtonTapped)
+      action: #selector(ManageViewPledgeViewController.closeButtonTapped)
     )
   }()
 
@@ -20,7 +20,7 @@ final class ManagePledgeViewController: UIViewController {
       image: UIImage(named: "icon--more-menu"),
       style: .plain,
       target: self,
-      action: #selector(ManagePledgeViewController.editButtonTapped)
+      action: #selector(ManageViewPledgeViewController.editButtonTapped)
     )
   }()
 
@@ -28,7 +28,7 @@ final class ManagePledgeViewController: UIViewController {
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
   }()
 
-  private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
+  private let viewModel: ManageViewPledgeViewModelType = ManageViewPledgeViewModel()
 
   // MARK: - Lifecycle
 
