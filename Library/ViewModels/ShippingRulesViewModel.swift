@@ -9,6 +9,10 @@ public struct ShippingRuleData: Equatable {
   public let shippingRule: ShippingRule
 }
 
+private typealias ShippingRulesInputData = (
+  project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
+)
+
 public protocol ShippingRulesViewModelInputs {
   func configureWith(_ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule)
   func didSelectShippingRule(at index: Int)
@@ -59,7 +63,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       filteredData
     )
     .takePairWhen(selectedIndex)
-    .map { data, selectedIndex in (data.1, selectedIndex) }
+    .map { data, selectedIndex in (data.shippingRules, selectedIndex) }
     .map { shippingRules, selectedIndex in shippingRules[selectedIndex] }
 
     self.notifyDelegateOfSelectedShippingRule = selectedShippingRule
@@ -71,7 +75,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
 
     let reloadDataFiltered = filteredData
       .withLatest(from: Signal.merge(initialData.map(third), selectedShippingRule))
-      .map { data, selectedShippingRule in (data.0, data.1, selectedShippingRule) }
+      .map { data, selectedShippingRule in (data.project, data.shippingRules, selectedShippingRule) }
       .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
       .map { ($0, true) }
 
@@ -80,7 +84,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       filteredData
     )
     .takePairWhen(selectedIndex)
-    .map { data, selectedIndex in (data.0, data.1, selectedIndex) }
+    .map { data, selectedIndex in (data.project, data.shippingRules, selectedIndex) }
     .map { project, shippingRules, selectedIndex in (project, shippingRules, shippingRules[selectedIndex]) }
     .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
     .map { ($0, false) }
@@ -101,7 +105,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     self.selectCellAtIndex = selectedIndex
   }
 
-  private let configDataProperty = MutableProperty<(Project, [ShippingRule], ShippingRule)?>(nil)
+  private let configDataProperty = MutableProperty<ShippingRulesInputData?>(nil)
   public func configureWith(
     _ project: Project,
     shippingRules: [ShippingRule],
@@ -152,7 +156,7 @@ private func dataMatching(
   _ data: (project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule),
   searchText: String
 )
-  -> (Project, [ShippingRule], ShippingRule) {
+  -> ShippingRulesInputData {
   let filteredRules = data.shippingRules.filter {
     searchText.count == 0 ||
       $0.location.localizedName.lowercased().hasPrefix(searchText.lowercased())
