@@ -71,6 +71,68 @@ final class ShippingRulesViewModelTests: TestCase {
     self.scrollToCellAtIndex.assertValues([1])
   }
 
+  func testDataIsSortedBasedOnLocalizedName() {
+    let shippingRulesUnsorted = [
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .usa,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .portland,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .losAngeles,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .london,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .greatBritain,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .canada,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .brooklyn,
+      ShippingRule.template
+        |> ShippingRule.lens.location .~ .australia
+    ]
+
+    let project = Project.template
+    let selectedShippingRule = shippingRulesUnsorted[0]
+
+    self.vm.inputs.configureWith(
+      project, shippingRules: shippingRulesUnsorted, selectedShippingRule: selectedShippingRule
+    )
+    self.vm.inputs.viewDidLoad()
+
+    self.reloadDataWithShippingRulesData.assertValues(
+      [
+        // Sorted list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[7]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[6]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[5]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[4]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[3]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[2]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[1]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[0]
+          )
+        ]
+      ]
+    )
+    self.reloadDataWithShippingRulesReload.assertValues([true])
+  }
+
   /**
 
    This test performs a search on shipping rules list

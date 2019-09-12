@@ -43,6 +43,13 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     )
     .map(second)
     .skipNil()
+    .map { data in
+      (
+        project: data.project,
+        shippingRules: data.shippingRules.sorted { $0.location.localizedName < $1.location.localizedName },
+        initialSelectedShippingRule: data.initialSelectedShippingRule
+      )
+    }
 
     let searchText = self.searchTextDidChangeProperty.signal
       .ksr_debounce(.milliseconds(100), on: AppEnvironment.current.scheduler)
