@@ -30,11 +30,14 @@ final class RewardTests: XCTestCase {
     let reward = Reward.decodeJSONDictionary([
       "id": 1,
       "minimum": 10,
+      "converted_minimum": 12,
       "description": "cool stuff"
     ])
 
     XCTAssertNil(reward.error)
     XCTAssertEqual(reward.value?.id, 1)
+    XCTAssertEqual(reward.value?.minimum, 10)
+    XCTAssertEqual(reward.value?.convertedMinimum, 12)
     XCTAssertEqual(reward.value?.description, "cool stuff")
     XCTAssertNotNil(reward.value?.shipping)
     XCTAssertEqual(false, reward.value?.shipping.enabled)
@@ -44,12 +47,14 @@ final class RewardTests: XCTestCase {
     let reward = Reward.decodeJSONDictionary([
       "id": 1,
       "minimum": 10,
+      "converted_minimum": 12,
       "reward": "cool stuff"
     ])
 
     XCTAssertNil(reward.error)
     XCTAssertEqual(reward.value?.id, 1)
     XCTAssertEqual(reward.value?.minimum, 10)
+    XCTAssertEqual(reward.value?.convertedMinimum, 12)
     XCTAssertEqual(reward.value?.description, "cool stuff")
   }
 
@@ -58,6 +63,7 @@ final class RewardTests: XCTestCase {
       "id": 1,
       "description": "Some reward",
       "minimum": 10,
+      "converted_minimum": 12,
       "backers_count": 10
     ])
 
@@ -65,6 +71,7 @@ final class RewardTests: XCTestCase {
     XCTAssertEqual(reward.value?.id, 1)
     XCTAssertEqual(reward.value?.description, "Some reward")
     XCTAssertEqual(reward.value?.minimum, 10)
+    XCTAssertEqual(reward.value?.convertedMinimum, 12)
     XCTAssertEqual(reward.value?.backersCount, 10)
   }
 
@@ -73,6 +80,7 @@ final class RewardTests: XCTestCase {
       "id": 1,
       "description": "Some reward",
       "minimum": 10,
+      "converted_minimum": 12,
       "backers_count": 10,
       "shipping_enabled": true,
       "shipping_preference": "unrestricted",
@@ -83,6 +91,7 @@ final class RewardTests: XCTestCase {
     XCTAssertEqual(reward.value?.id, 1)
     XCTAssertEqual(reward.value?.description, "Some reward")
     XCTAssertEqual(reward.value?.minimum, 10)
+    XCTAssertEqual(reward.value?.convertedMinimum, 12)
     XCTAssertEqual(reward.value?.backersCount, 10)
     XCTAssertEqual(true, reward.value?.shipping.enabled)
     XCTAssertEqual(.unrestricted, reward.value?.shipping.preference)
