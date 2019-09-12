@@ -313,7 +313,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ "USD"
       |> Project.lens.stats.currentCurrency .~ "USD"
-    let reward = .template |> Reward.lens.minimum .~ 1_000
+    let reward = .template |> Reward.lens.convertedMinimum .~ 1_000
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
@@ -352,8 +352,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Project.lens.country .~ .ca
       |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
-    let reward = .template |> Reward.lens.minimum .~ 1
+    let reward = .template |> Reward.lens.convertedMinimum .~ 2
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
@@ -399,8 +398,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Project.lens.country .~ .ca
       |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
-    let reward = .template |> Reward.lens.minimum .~ 1
+    let reward = .template |> Reward.lens.convertedMinimum .~ 2
 
     withEnvironment(countryCode: "MX") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
@@ -445,7 +443,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
-    let reward = .template |> Reward.lens.minimum .~ 1
+    let reward = .template |> Reward.lens.convertedMinimum .~ 1
 
     withEnvironment(countryCode: "XX") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
@@ -463,7 +461,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
-    let reward = .template |> Reward.lens.minimum .~ 1
+    let reward = .template |> Reward.lens.convertedMinimum .~ 1
     let backing = .template
       |> Backing.lens.amount .~ 2
       |> Backing.lens.reward .~ reward
@@ -482,10 +480,9 @@ final class RewardCardViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .ca
       |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 0.76
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
-    let reward = .template |> Reward.lens.minimum .~ 1
+    let reward = .template |> Reward.lens.convertedMinimum .~ 2
 
     withEnvironment(countryCode: "XX") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
@@ -494,7 +491,7 @@ final class RewardCardViewModelTests: TestCase {
         [false],
         "Unknown-location, unknown-currency user viewing non-US project sees conversion to USD."
       )
-      self.conversionLabelText.assertValues(["About US$ 1"], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About US$ 2"], "Conversion label shows convertedMinimum value.")
     }
   }
 
@@ -526,8 +523,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.mx.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
-    let reward = .template |> Reward.lens.minimum .~ 1
+    let reward = .template |> Reward.lens.convertedMinimum .~ 2
 
     withEnvironment(
       apiService: MockService(currency: "MXN"), countryCode: "MX"
@@ -538,7 +534,7 @@ final class RewardCardViewModelTests: TestCase {
         [false],
         "Mexican user viewing US project sees conversion."
       )
-      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label shows convertedMinimum value.")
     }
   }
 
@@ -569,8 +565,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 1.0
-    let reward = .template |> Reward.lens.minimum .~ 1_000
+    let reward = .template |> Reward.lens.convertedMinimum .~ 1_000
 
     withEnvironment(countryCode: "GB") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
