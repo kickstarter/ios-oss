@@ -83,7 +83,9 @@ final class ShippingRulesViewModelTests: TestCase {
     - Shows: Australia
    4) We perform another search for shipping rules locations starting with "x" prefix
     - Shows: empty list
-   5) We perform another search for shipping rules locations starting with "C" prefix
+   5) We clear the search query in order to show the original list
+    - Shows: Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA
+   6) We perform another search for shipping rules locations starting with "C" prefix
     - Shows: Canada
 
    */
@@ -290,6 +292,91 @@ final class ShippingRulesViewModelTests: TestCase {
     )
     self.reloadDataWithShippingRulesReload.assertValues([true, true, true, true])
 
+    self.vm.inputs.searchTextDidChange("")
+
+    self.scheduler.advance(by: .milliseconds(100))
+
+    self.reloadDataWithShippingRulesData.assertValues(
+      [
+        // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+          )
+        ],
+        // Filtered list by "Lo"
+        // [London, Los Angeles]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+          )
+        ],
+        // Filtered list by "a"
+        // [Australia]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+          )
+        ],
+        // Filtered list by "x"
+        // Empty (no matches found)
+        [
+        ],
+        // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+          )
+        ]
+      ]
+    )
+    self.reloadDataWithShippingRulesReload.assertValues([true, true, true, true, true])
+
     self.vm.inputs.searchTextDidChange("C")
 
     self.scheduler.advance(by: .milliseconds(100))
@@ -344,6 +431,33 @@ final class ShippingRulesViewModelTests: TestCase {
         // Empty (no matches found)
         [
         ],
+        // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
+        [
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+          ),
+          ShippingRuleData(
+            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+          )
+        ],
         // Filtered list by "c"
         // [Canada]
         [
@@ -353,7 +467,7 @@ final class ShippingRulesViewModelTests: TestCase {
         ]
       ]
     )
-    self.reloadDataWithShippingRulesReload.assertValues([true, true, true, true, true])
+    self.reloadDataWithShippingRulesReload.assertValues([true, true, true, true, true, true])
   }
 
   /**
