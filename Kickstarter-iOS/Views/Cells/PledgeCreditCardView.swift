@@ -3,11 +3,10 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgeCreditCardView: UIView {
+final class PledgeCreditCardView: UIView, PledgePaymentMethodsDelegate {
   // MARK: - Properties
 
   private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
-
   private let adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let imageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -21,6 +20,7 @@ final class PledgeCreditCardView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
+
     self.configureSubviews()
     self.setupConstraints()
     self.bindViewModel()
@@ -31,6 +31,9 @@ final class PledgeCreditCardView: UIView {
   }
 
   private func configureSubviews() {
+    PledgePaymentMethodsViewController.shared?.delegate = self
+
+
     _ = self
       |> \.accessibilityElements .~ self.subviews
 
@@ -46,6 +49,9 @@ final class PledgeCreditCardView: UIView {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+
+
+    self.selectButton.addTarget(self, action: #selector(selectButtonTapped(_:)), for: .touchUpInside)
   }
 
   private func setupConstraints() {
@@ -67,6 +73,8 @@ final class PledgeCreditCardView: UIView {
     _ = self.selectButton
       |> cardSelectButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
+      |> UIButton.lens.title(for: .selected) %~ { _ in "Selected" }
+      |> UIButton.lens.backgroundColor(for: .selected) .~ .ksr_green_500
 
     _ = self.imageView
       |> cardImageViewStyle
@@ -93,6 +101,12 @@ final class PledgeCreditCardView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.selectButtonSelected
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.selectButton.isSelected = true
+    }
+
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
     self.viewModel.outputs.cardImage
@@ -105,6 +119,15 @@ final class PledgeCreditCardView: UIView {
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: value)
+  }
+
+  @objc fileprivate func selectButtonTapped(_ button: UIButton) {
+    self.viewModel.inputs.selectButtonTapped(selected: button.isSelected)
+  }
+
+  func creditCardCTASelected(_ controller: PledgePaymentMethodsViewController) {
+    print("DELEGATE")
+    self.viewModel.inputs.addedNewCard()
   }
 }
 

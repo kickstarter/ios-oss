@@ -7,6 +7,10 @@ import UIKit
 public protocol CreditCardCellViewModelInputs {
   /// Call to configure cell with card value.
   func configureWith(creditCard: GraphUserCreditCard.CreditCard)
+
+  func selectButtonTapped(selected: Bool)
+
+  func addedNewCard()
 }
 
 public protocol CreditCardCellViewModelOutputs {
@@ -24,6 +28,8 @@ public protocol CreditCardCellViewModelOutputs {
 
   /// Emits the formatted card's expirationdate.
   var expirationDateText: Signal<String, Never> { get }
+
+  var selectButtonSelected: Signal<Void, Never> { get }
 }
 
 public protocol CreditCardCellViewModelType {
@@ -52,6 +58,16 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
 
     self.expirationDateText = self.cardProperty.signal.skipNil()
       .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
+
+    self.selectButtonSelected = Signal.merge(
+      self.selectButtonTappedProperty.signal.ignoreValues(),
+      self.addedNewCardProperty.signal
+    )
+  }
+
+  fileprivate let addedNewCardProperty = MutableProperty(())
+  public func addedNewCard() {
+    self.addedNewCardProperty.value = ()
   }
 
   fileprivate let cardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
@@ -59,11 +75,17 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
     self.cardProperty.value = creditCard
   }
 
+  fileprivate let selectButtonTappedProperty = MutableProperty(false)
+  public func selectButtonTapped(selected: Bool) {
+    self.selectButtonTappedProperty.value = selected
+  }
+
   public let cardImage: Signal<UIImage?, Never>
   public let cardNumberAccessibilityLabel: Signal<String, Never>
   public let cardNumberTextLongStyle: Signal<String, Never>
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
+  public let selectButtonSelected: Signal<Void, Never>
 
   public var inputs: CreditCardCellViewModelInputs { return self }
   public var outputs: CreditCardCellViewModelOutputs { return self }

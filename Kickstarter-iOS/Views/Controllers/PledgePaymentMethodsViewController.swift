@@ -4,8 +4,14 @@ import PassKit
 import Prelude
 import UIKit
 
+internal protocol PledgePaymentMethodsDelegate: AnyObject {
+  func creditCardCTASelected(_ controller: PledgePaymentMethodsViewController)
+}
+
 final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
+
+  static weak var shared: PledgePaymentMethodsViewController?
 
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -17,11 +23,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel = PledgePaymentMethodsViewModel()
 
+  internal weak var delegate: PledgePaymentMethodsDelegate?
+
   // MARK: - Lifecycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    PledgePaymentMethodsViewController.shared = self
     self.configureSubviews()
     self.setupConstraints()
 
@@ -99,6 +108,13 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
       }
+
+    self.viewModel.outputs.notifyDelegateNewCardAdded
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let _self = self else {  return }
+        self?.delegate?.creditCardCTASelected(_self)
+    }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
   }
