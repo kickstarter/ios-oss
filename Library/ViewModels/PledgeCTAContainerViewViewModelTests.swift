@@ -12,7 +12,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   let activityIndicatorIsHidden = TestObserver<Bool, Never>()
   let buttonStyleType = TestObserver<ButtonStyleType, Never>()
   let buttonTitleText = TestObserver<String, Never>()
-  let notifyDelegateCTATapped = TestObserver<Void, Never>()
+  let notifyDelegateCTATapped = TestObserver<PledgeStateCTAType, Never>()
   let pledgeCTAButtonIsHidden = TestObserver<Bool, Never>()
   let pledgeRetryButtonIsHidden = TestObserver<Bool, Never>()
   let spacerIsHidden = TestObserver<Bool, Never>()

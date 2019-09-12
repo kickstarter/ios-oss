@@ -147,18 +147,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self?.goToDeprecatedPledge(project: project, reward: reward, refTag: refTag)
       }
 
-    self.viewModel.outputs.goToManagePledge
-      .observeForControllerAction()
-      .observeValues { [weak self] project, reward, refTag in
-        self?.goToManagePledge(project: project, reward: reward, refTag: refTag)
-      }
-
-    self.viewModel.outputs.goToViewBacking
-      .observeForControllerAction()
-      .observeValues { [weak self] project, user in
-        self?.goToViewBacking(project: project, user: user)
-      }
-
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
@@ -240,29 +228,11 @@ final class RewardsCollectionViewController: UICollectionViewController {
       ?|> \.isActive .~ !isHidden
   }
 
-  private func goToManagePledge(project: Project, reward: Reward, refTag _: RefTag?) {
-    let managePledgeViewController = ManagePledgeViewController.instantiate()
-    managePledgeViewController.configureWith(project: project, reward: reward)
-
-    let nav = UINavigationController(rootViewController: managePledgeViewController)
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = nav
-        |> \.modalPresentationStyle .~ .formSheet
-    }
-    self.present(nav, animated: true)
-  }
-
   private func goToPledge(project: Project, reward: Reward, refTag _: RefTag?) {
     let pledgeViewController = PledgeViewController.instantiate()
     pledgeViewController.configureWith(project: project, reward: reward)
 
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
-  }
-
-  private func goToViewBacking(project: Project, user: User?) {
-    let backingViewController = BackingViewController.configuredWith(project: project, backer: user)
-
-    self.navigationController?.pushViewController(backingViewController, animated: true)
   }
 
   private func goToDeprecatedPledge(project: Project, reward: Reward, refTag _: RefTag?) {

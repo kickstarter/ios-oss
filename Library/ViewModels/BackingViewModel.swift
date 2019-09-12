@@ -268,7 +268,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
     self.messageCreatorTappedProperty.value = ()
   }
 
-  fileprivate let projectAndBackerProperty = MutableProperty<(Project, User?)?>(nil)
+  fileprivate let projectAndBackerProperty = MutableProperty<BackingData?>(nil)
   public func configureWith(project: Project, backer: User?) {
     self.projectAndBackerProperty.value = (project, backer)
   }
