@@ -83,9 +83,8 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       initialData,
       filteredData
     )
-    .takePairWhen(selectedIndex)
-    .map { data, selectedIndex in (data.project, data.shippingRules, selectedIndex) }
-    .map { project, shippingRules, selectedIndex in (project, shippingRules, shippingRules[selectedIndex]) }
+    .takePairWhen(selectedShippingRule)
+    .map { data, selectedShippingRule in (data.project, data.shippingRules, selectedShippingRule) }
     .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
     .map { ($0, false) }
 
