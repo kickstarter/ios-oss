@@ -168,10 +168,11 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   func testConversionLabel_US_User_NonUS_Project_ConfiguredWithReward() {
     let project = .template
       |> Project.lens.country .~ .ca
-      |> Project.lens.stats.staticUsdRate .~ 0.76
       |> Project.lens.stats.currentCurrency .~ "MXN"
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
-    let reward = .template |> Reward.lens.minimum .~ 1
+
+    let reward = .template
+      |> Reward.lens.minimum .~ 1
+      |> Reward.lens.convertedMinimum .~ 2
 
     withEnvironment(
       apiService: MockService(currency: "MXN"),
@@ -183,7 +184,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
         [false],
         "Mexican user viewing non-Mexican project sees conversion."
       )
-      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About MX$ 2"], "Conversion shows the convertedMinimum value.")
     }
   }
 
@@ -191,15 +192,15 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .ca
       |> Project.lens.stats.currency .~ Project.Country.ca.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 0.76
-      |> Project.lens.stats.currentCurrencyRate .~ nil
-    let reward = .template |> Reward.lens.minimum .~ 1
+    let reward = .template
+      |> Reward.lens.minimum .~ 1
+      |> Reward.lens.convertedMinimum .~ 2
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
       self.conversionLabelHidden.assertValues([false], "US user viewing non-US project sees conversion.")
-      self.conversionLabelText.assertValues(["About $1"], "Conversion label rounds up.")
+      self.conversionLabelText.assertValues(["About $2"], "Conversion shows the convertedMinimum value.")
     }
   }
 

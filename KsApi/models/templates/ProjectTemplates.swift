@@ -85,6 +85,7 @@ extension Project {
       .template
         |> Reward.lens.id .~ 20
         |> Reward.lens.minimum .~ 6
+        |> Reward.lens.convertedMinimum .~ 7
         |> Reward.lens.limit .~ nil
         |> Reward.lens.backersCount .~ 23
         |> Reward.lens.title .~ "Postcards"
@@ -93,6 +94,7 @@ extension Project {
       .template
         |> Reward.lens.id .~ 1
         |> Reward.lens.minimum .~ 25
+        |> Reward.lens.convertedMinimum .~ 32
         |> Reward.lens.limit .~ 100
         |> Reward.lens.backersCount .~ 100
         |> Reward.lens.remaining .~ 0
@@ -102,6 +104,7 @@ extension Project {
       .template
         |> Reward.lens.id .~ 2
         |> Reward.lens.minimum .~ 30
+        |> Reward.lens.convertedMinimum .~ 39
         |> Reward.lens.backersCount .~ 83
         |> Reward.lens.title .~ "COSMIC SURGERY BOOK"
         |> Reward.lens.description .~ "You will be the first to receive a copy of the book at the special price of £30. The book will be sold for £35 in shops when released in July.",
@@ -109,6 +112,7 @@ extension Project {
       .template
         |> Reward.lens.id .~ 3
         |> Reward.lens.minimum .~ 650
+        |> Reward.lens.convertedMinimum .~ 851
         |> Reward.lens.limit .~ 10
         |> Reward.lens.backersCount .~ 3
         |> Reward.lens.title .~ "‘PATIENT NO. 16’ PRINT"
