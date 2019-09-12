@@ -9,6 +9,10 @@ public struct ShippingRuleData: Equatable {
   public let shippingRule: ShippingRule
 }
 
+private typealias ShippingRulesInputData = (
+  project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule
+)
+
 public protocol ShippingRulesViewModelInputs {
   func configureWith(_ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule)
   func didSelectShippingRule(at index: Int)
@@ -17,7 +21,7 @@ public protocol ShippingRulesViewModelInputs {
 }
 
 public protocol ShippingRulesViewModelOutputs {
-  var deselectCellAtIndex: Signal<Int, Never> { get }
+  var deselectVisibleCells: Signal<Void, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
   var notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never> { get }
   var reloadDataWithShippingRules: Signal<([ShippingRuleData], Bool), Never> { get }
@@ -47,7 +51,8 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     let selectedIndex = self.didSelectShippingRuleAtIndexProperty.signal
       .skipNil()
 
-    self.deselectCellAtIndex = selectedIndex
+    self.deselectVisibleCells = selectedIndex
+      .ignoreValues()
 
     let filteredData = initialData
       .takePairWhen(searchText)
@@ -58,7 +63,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       filteredData
     )
     .takePairWhen(selectedIndex)
-    .map { data, selectedIndex in (data.1, selectedIndex) }
+    .map { data, selectedIndex in (data.shippingRules, selectedIndex) }
     .map { shippingRules, selectedIndex in shippingRules[selectedIndex] }
 
     self.notifyDelegateOfSelectedShippingRule = selectedShippingRule
@@ -70,7 +75,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
 
     let reloadDataFiltered = filteredData
       .withLatest(from: Signal.merge(initialData.map(third), selectedShippingRule))
-      .map { data, selectedShippingRule in (data.0, data.1, selectedShippingRule) }
+      .map { data, selectedShippingRule in (data.project, data.shippingRules, selectedShippingRule) }
       .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
       .map { ($0, true) }
 
@@ -78,14 +83,12 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       initialData,
       filteredData
     )
-    .takePairWhen(selectedIndex)
-    .map { data, selectedIndex in (data.0, data.1, selectedIndex) }
-    .map { project, shippingRules, selectedIndex in (project, shippingRules, shippingRules[selectedIndex]) }
+    .takePairWhen(selectedShippingRule)
+    .map { data, selectedShippingRule in (data.project, data.shippingRules, selectedShippingRule) }
     .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
     .map { ($0, false) }
 
     self.flashScrollIndicators = initialData
-      .take(first: 1)
       .ignoreValues()
 
     self.reloadDataWithShippingRules = Signal.merge(
@@ -95,14 +98,13 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     )
 
     self.scrollToCellAtIndex = initialData
-      .take(first: 1)
       .map { _, shippingRules, selectedShippingRule in shippingRules.firstIndex(of: selectedShippingRule) }
       .skipNil()
 
-    self.selectCellAtIndex = self.deselectCellAtIndex
+    self.selectCellAtIndex = selectedIndex
   }
 
-  private let configDataProperty = MutableProperty<(Project, [ShippingRule], ShippingRule)?>(nil)
+  private let configDataProperty = MutableProperty<ShippingRulesInputData?>(nil)
   public func configureWith(
     _ project: Project,
     shippingRules: [ShippingRule],
@@ -126,7 +128,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let deselectCellAtIndex: Signal<Int, Never>
+  public let deselectVisibleCells: Signal<Void, Never>
   public let flashScrollIndicators: Signal<Void, Never>
   public let notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never>
   public let reloadDataWithShippingRules: Signal<([ShippingRuleData], Bool), Never>
@@ -153,7 +155,7 @@ private func dataMatching(
   _ data: (project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule),
   searchText: String
 )
-  -> (Project, [ShippingRule], ShippingRule) {
+  -> ShippingRulesInputData {
   let filteredRules = data.shippingRules.filter {
     searchText.count == 0 ||
       $0.location.localizedName.lowercased().hasPrefix(searchText.lowercased())

@@ -18,6 +18,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.dates.launchedAt .~ launchedAt
       |> Project.lens.state .~ .live
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
+      |> Project.lens.stats.convertedPledgedAmount .~ 21_615
 
     self.cosmicSurgery = project
 
@@ -110,11 +111,16 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
   }
 
   func test_USProject_NonUSUser_NonUSLocation() {
+    let rewards = self.cosmicSurgery.rewards
+      .map { $0 |> Reward.lens.convertedMinimum .~ ($0.minimum * 3.0) }
+
     self.cosmicSurgery = self.cosmicSurgery
+      |> Project.lens.rewards .~ rewards
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ "USD"
       |> Project.lens.stats.currentCurrency .~ "SEK"
       |> Project.lens.stats.currentCurrencyRate .~ 3.0
+      |> Project.lens.stats.convertedPledgedAmount .~ 49_500
 
     withEnvironment(countryCode: "SE") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
