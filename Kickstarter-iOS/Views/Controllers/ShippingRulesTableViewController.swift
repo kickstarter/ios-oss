@@ -41,13 +41,6 @@ final class ShippingRulesTableViewController: UITableViewController {
         action: #selector(ShippingRulesTableViewController.dismissViewController)
       )
 
-    _ = self.navigationController?.navigationBar
-      ?|> \.barTintColor .~ UIColor.white
-      ?|> \.isTranslucent .~ false
-
-    _ = self.navigationController?.view
-      ?|> \.tintColor .~ UIColor.ksr_green_500
-
     _ = self.navigationItem
       |> \.titleView .~ self.searchBar
 
@@ -58,6 +51,15 @@ final class ShippingRulesTableViewController: UITableViewController {
     self.tableView.registerCellClass(ShippingRuleCell.self)
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  // MARK: - Styles
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    _ = self
+      |> baseControllerStyle()
   }
 
   // MARK: - View model
