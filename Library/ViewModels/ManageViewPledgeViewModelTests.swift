@@ -22,7 +22,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
     self.vm.outputs.configurePledgeSummaryView
       .observe(self.configurePledgeSummaryView.observer)
     self.vm.outputs.configureRewardSummaryView
-        .observe(self.configureRewardSummaryView.observer)
+      .observe(self.configureRewardSummaryView.observer)
   }
 
   func testNavigationBarTitle() {
