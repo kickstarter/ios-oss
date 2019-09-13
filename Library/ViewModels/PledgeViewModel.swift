@@ -5,7 +5,7 @@ import Prelude
 import ReactiveSwift
 
 public typealias StripeConfigurationData = (merchantIdentifier: String, publishableKey: String)
-public typealias BackingData = (
+public typealias CreateBackingData = (
   project: Project, reward: Reward, pledgeAmount: Double,
   selectedShippingRule: ShippingRule?
 )
@@ -110,7 +110,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.shippingRuleSelectedSignal.wrapInOptional()
     )
 
-    let backingData: Signal<BackingData, Never> = Signal.combineLatest(
+    let backingData: Signal<CreateBackingData, Never> = Signal.combineLatest(
       projectAndReward,
       pledgeAmount,
       selectedShippingRule
