@@ -29,7 +29,7 @@ public protocol CreditCardCellViewModelOutputs {
   /// Emits the formatted card's expirationdate.
   var expirationDateText: Signal<String, Never> { get }
 
-  var selectButtonSelected: Signal<Void, Never> { get }
+  var selectButtonSelected: Signal<Bool, Never> { get }
 }
 
 public protocol CreditCardCellViewModelType {
@@ -59,10 +59,7 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
     self.expirationDateText = self.cardProperty.signal.skipNil()
       .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
 
-    self.selectButtonSelected = Signal.merge(
-      self.selectButtonTappedProperty.signal.ignoreValues(),
-      self.addedNewCardProperty.signal
-    )
+    self.selectButtonSelected = self.addedNewCardProperty.signal.mapConst(true)
   }
 
   fileprivate let addedNewCardProperty = MutableProperty(())
@@ -85,7 +82,7 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
   public let cardNumberTextLongStyle: Signal<String, Never>
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
-  public let selectButtonSelected: Signal<Void, Never>
+  public let selectButtonSelected: Signal<Bool, Never>
 
   public var inputs: CreditCardCellViewModelInputs { return self }
   public var outputs: CreditCardCellViewModelOutputs { return self }

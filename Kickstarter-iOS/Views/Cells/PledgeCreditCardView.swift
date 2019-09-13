@@ -101,11 +101,7 @@ final class PledgeCreditCardView: UIView, PledgePaymentMethodsDelegate {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.selectButtonSelected
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.selectButton.isSelected = true
-    }
+   self.selectButton.rac.selected = self.viewModel.outputs.selectButtonSelected
 
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle

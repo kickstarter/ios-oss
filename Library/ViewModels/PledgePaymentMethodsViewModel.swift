@@ -47,11 +47,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .map(showApplePayButton(for:applePayCapable:))
       .negate()
 
-    self.notifyDelegateNewCardAdded = self.addNewCardSucceededProperty.signal
-
     self.reloadPaymentMethods = storedCardsEvent
       .values()
       .map { $0.me.storedCards.nodes }
+
+    self.notifyDelegateNewCardAdded = self.addNewCardSucceededProperty.signal
 
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
