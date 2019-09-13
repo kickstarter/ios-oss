@@ -33,7 +33,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.title.assertValue(Strings.Manage_your_pledge())
+    self.title.assertValue("Manage your pledge")
   }
 
   func testNavigationBarTitle_FinishedProject() {
@@ -45,7 +45,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.title.assertValue(Strings.View_your_pledge())
+    self.title.assertValue("View your pledge")
   }
 
   func testConfigurePaymentMethodViewController() {
