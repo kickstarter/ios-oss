@@ -283,7 +283,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public var outputs: PledgeViewModelOutputs { return self }
 }
 
-private func createApplePayBackingInput(
+internal func createApplePayBackingInput(
   for project: Project,
   reward: Reward,
   pledgeAmount: Double,
