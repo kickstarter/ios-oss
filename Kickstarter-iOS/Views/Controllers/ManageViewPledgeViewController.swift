@@ -30,6 +30,13 @@ final class ManageViewPledgeViewController: UIViewController {
 
   private let viewModel = ManageViewPledgeViewModel()
 
+  static func instantiate(with project: Project, reward: Reward) -> ManageViewPledgeViewController {
+    let manageViewPledgeVC = ManageViewPledgeViewController.instantiate()
+    manageViewPledgeVC.viewModel.inputs.configureWith(project, reward: reward)
+
+    return manageViewPledgeVC
+  }
+
   // MARK: - Lifecycle
 
   override func viewDidLoad() {
@@ -67,9 +74,10 @@ final class ManageViewPledgeViewController: UIViewController {
     super.bindViewModel()
 
     self.viewModel.outputs.title
+      .observeForUI()
       .observeValues { [weak self] title in
-        guard let _self = self else { return }
-        _ = _self
+        guard let self = self else { return }
+        _ = self
           |> \.title .~ title
       }
 
