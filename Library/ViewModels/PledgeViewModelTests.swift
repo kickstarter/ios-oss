@@ -733,14 +733,18 @@ final class PledgeViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.noReward
 
-    let input = createApplePayBackingInput(for: project,
-                                           reward: reward,
-                                           pledgeAmount: 10,
-                                           selectedShippingRule: nil,
-                                           pkPaymentData: PKPaymentData(displayName: "Visa 123",
-                                                                        network: "Visa",
-                                                                        transactionIdentifier: "12345"),
-                                           stripeToken: "stripe-token")
+    let input = createApplePayBackingInput(
+      for: project,
+      reward: reward,
+      pledgeAmount: 10,
+      selectedShippingRule: nil,
+      pkPaymentData: PKPaymentData(
+        displayName: "Visa 123",
+        network: "Visa",
+        transactionIdentifier: "12345"
+      ),
+      stripeToken: "stripe-token"
+    )
 
     XCTAssertEqual(input.amount, "10.00")
     XCTAssertNil(input.locationId)
@@ -756,17 +760,21 @@ final class PledgeViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.template
     let shippingRule = ShippingRule.template
-      |> ShippingRule.lens.location..Location.lens.id .~ 1
+      |> ShippingRule.lens.location .. Location.lens.id .~ 1
       |> ShippingRule.lens.cost .~ 5
 
-    let input = createApplePayBackingInput(for: project,
-                                            reward: reward,
-                                            pledgeAmount: 10,
-                                            selectedShippingRule: shippingRule,
-                                            pkPaymentData: PKPaymentData(displayName: "Visa 123",
-                                                            network: "Visa",
-                                                            transactionIdentifier: "12345"),
-                                            stripeToken: "stripe-token")
+    let input = createApplePayBackingInput(
+      for: project,
+      reward: reward,
+      pledgeAmount: 10,
+      selectedShippingRule: shippingRule,
+      pkPaymentData: PKPaymentData(
+        displayName: "Visa 123",
+        network: "Visa",
+        transactionIdentifier: "12345"
+      ),
+      stripeToken: "stripe-token"
+    )
 
     XCTAssertEqual(input.amount, "15.00")
     XCTAssertEqual(input.locationId, "1")
