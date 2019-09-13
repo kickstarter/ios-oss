@@ -22,15 +22,13 @@ public protocol ManageViewPledgeViewModelType {
 
 public final class ManageViewPledgeViewModel:
   ManageViewPledgeViewModelType, ManageViewPledgeViewModelInputs, ManageViewPledgeViewModelOutputs {
-
   public init() {
-
     let projectAndReward = self.projectAndRewardSignal
       .takeWhen(self.viewDidLoadSignal.ignoreValues())
 
     self.title = projectAndReward
       .map(first)
-      .map(title(with:))
+      .map(navigationBarTitle(with:))
 
     self.configurePaymentMethodView = projectAndReward
       .map(first)
@@ -63,6 +61,6 @@ public final class ManageViewPledgeViewModel:
 
 // MARK: - Functions
 
-private func title(with project: Project) -> String {
+private func navigationBarTitle(with project: Project) -> String {
   return project.state == .live ? Strings.Manage_your_pledge() : Strings.View_your_pledge()
 }

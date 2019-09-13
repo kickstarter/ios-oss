@@ -37,7 +37,6 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
   }
 
   func testNavigationBarTitle_FinishedProject() {
-
     self.title.assertDidNotEmitValue()
 
     let finishedProject = Project.template
