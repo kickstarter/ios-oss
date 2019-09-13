@@ -498,6 +498,7 @@ extension ServiceType {
     headers["Kickstarter-App-Id"] = self.appId
     headers["Kickstarter-iOS-App"] = self.buildVersion
     headers["User-Agent"] = Self.userAgent
+    headers["X-KICKSTARTER-CLIENT"] = self.serverConfig.apiClientAuth.clientId
 
     return headers
   }
