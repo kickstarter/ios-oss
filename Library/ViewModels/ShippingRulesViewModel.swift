@@ -17,6 +17,7 @@ public protocol ShippingRulesViewModelInputs {
   func configureWith(_ project: Project, shippingRules: [ShippingRule], selectedShippingRule: ShippingRule)
   func didSelectShippingRule(at index: Int)
   func searchTextDidChange(_ searchText: String)
+  func viewDidLayoutSubviews()
   func viewDidLoad()
 }
 
@@ -102,7 +103,13 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
     .map { ($0, false) }
 
-    self.flashScrollIndicators = initialData
+    let viewDidLayoutSubviews = self.viewDidLayoutSubviewsProperty.signal
+      .take(first: 1)
+
+    let initialDataAfterViewDidLayoutSubviews = initialData
+      .takeWhen(viewDidLayoutSubviews)
+
+    self.flashScrollIndicators = initialDataAfterViewDidLayoutSubviews
       .ignoreValues()
 
     self.reloadDataWithShippingRules = Signal.merge(
@@ -112,7 +119,7 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
     )
 
     self.scrollToCellAtIndex = Signal.merge(
-      initialData,
+      initialDataAfterViewDidLayoutSubviews,
       filteredData
     )
     .map { _, shippingRules, selectedShippingRule in shippingRules.firstIndex(of: selectedShippingRule) }
@@ -138,6 +145,11 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
   private let searchTextDidChangeProperty = MutableProperty<String?>(nil)
   public func searchTextDidChange(_ searchText: String) {
     self.searchTextDidChangeProperty.value = searchText
+  }
+
+  private let viewDidLayoutSubviewsProperty = MutableProperty(())
+  public func viewDidLayoutSubviews() {
+    self.viewDidLayoutSubviewsProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty(())

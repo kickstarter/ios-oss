@@ -56,6 +56,7 @@ final class ShippingRulesViewModelTests: TestCase {
   func testFlashScrollIndicators() {
     self.vm.inputs.configureWith(.template, shippingRules: shippingRules, selectedShippingRule: .template)
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLayoutSubviews()
 
     self.flashScrollIndicators.assertValueCount(1)
   }
@@ -144,6 +145,7 @@ final class ShippingRulesViewModelTests: TestCase {
       .template, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
     )
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewDidLayoutSubviews()
 
     self.scrollToCellAtIndex.assertValues([1])
 
