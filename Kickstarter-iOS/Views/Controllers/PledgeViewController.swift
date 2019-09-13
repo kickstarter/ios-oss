@@ -233,14 +233,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.goToThanks(project: project)
       }
 
-    // Errors
-
-    self.viewModel.outputs.createBackingError
-      .observeForUI()
-      .observeValues { [weak self] errorMessage in
-        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
-      }
-
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -251,6 +243,14 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       = self.viewModel.outputs.shippingLocationViewHidden
     self.continueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
+
+    // MARK: Errors
+
+    self.viewModel.outputs.createBackingError
+      .observeForUI()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
+      }
   }
 
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PaymentAuthorizationData) {

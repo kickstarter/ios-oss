@@ -124,7 +124,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       )
     }
 
-    // Apple Pay
+    // MARK: Apple Pay
 
     let paymentAuthorizationData = backingData
       .map { (
@@ -184,7 +184,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let createApplePayBackingEvent = createApplePayBackingData
       .map(
-        createApplePayBackingInput(for:reward:pledgeAmount:selectedShippingRule:pkPaymentData:stripeToken:)
+        CreateApplePayBackingInput.input(
+          from:reward:pledgeAmount:selectedShippingRule:pkPaymentData:stripeToken:
+        )
       )
       .switchMap { input in
         AppEnvironment.current.apiService.createApplePayBacking(input: input)
@@ -207,6 +209,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .takeWhen(self.paymentAuthorizationDidFinishSignal)
       .map(first)
   }
+
+  // MARK: - Inputs
 
   private let (applePayButtonTappedSignal, applePayButtonTappedObserver) = Signal<Void, Never>.pipe()
   public func applePayButtonTapped() {
@@ -268,6 +272,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.viewDidLoadProperty.value = ()
   }
 
+  // MARK: - Outputs
+
   public let configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
@@ -281,38 +287,4 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
-}
-
-internal func createApplePayBackingInput(
-  for project: Project,
-  reward: Reward,
-  pledgeAmount: Double,
-  selectedShippingRule: ShippingRule?,
-  pkPaymentData: PKPaymentData,
-  stripeToken: String
-) -> CreateApplePayBackingInput {
-  let pledgeAmountDecimal = Decimal(pledgeAmount)
-  var shippingAmountDecimal: Decimal = Decimal()
-  var shippingLocationId: String?
-
-  if let shippingRule = selectedShippingRule, shippingRule.cost > 0 {
-    shippingAmountDecimal = Decimal(shippingRule.cost)
-    shippingLocationId = String(shippingRule.location.id)
-  }
-
-  let pledgeTotal = NSDecimalNumber(decimal: pledgeAmountDecimal + shippingAmountDecimal)
-  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal.doubleValue)
-
-  let rewardId = reward == Reward.noReward ? nil : reward.graphID
-
-  return CreateApplePayBackingInput(
-    amount: formattedPledgeTotal,
-    locationId: shippingLocationId,
-    paymentInstrumentName: pkPaymentData.displayName,
-    paymentNetwork: pkPaymentData.network,
-    projectId: project.graphID,
-    rewardId: rewardId,
-    stripeToken: stripeToken,
-    transactionIdentifier: pkPaymentData.transactionIdentifier
-  )
 }
