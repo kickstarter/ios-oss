@@ -93,33 +93,37 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(unpack)
 
     let goToManagePledge = ctaButtonTapped
-      .filter { canShowManageViewPledgeScreen($0.0, state:$0.2) }
+      .filter { canShowManageViewPledgeScreen($0.0, state: $0.2) }
       .map { (project, refTag, _) -> PledgeData in
-        PledgeData(project: project,
-                   reward: reward(from: project.personalization.backing, inProject: project),
-                   refTag: refTag)
+        PledgeData(
+          project: project,
+          reward: reward(from: project.personalization.backing, inProject: project),
+          refTag: refTag
+        )
       }
 
     self.goToManageViewPledge = goToManagePledge
       .filter { _ in featureNativeCheckoutPledgeViewIsEnabled() }
 
     self.goToDeprecatedManagePledge = ctaButtonTapped
-      .filter { shouldGoToDeprecatedManagePledge($0.0, state:$0.2) }
+      .filter { shouldGoToDeprecatedManagePledge($0.0, state: $0.2) }
       .map { (project, refTag, _) -> PledgeData in
-        PledgeData(project: project,
-                   reward: reward(from: project.personalization.backing, inProject: project),
-                   refTag: refTag)
+        PledgeData(
+          project: project,
+          reward: reward(from: project.personalization.backing, inProject: project),
+          refTag: refTag
+        )
       }
 
     self.goToDeprecatedViewBacking = ctaButtonTapped
       .map { project, _, state in (project, state) }
-      .filter { shouldGoToDeprecatedViewBacking($0.0, state:$0.1) }
+      .filter { shouldGoToDeprecatedViewBacking($0.0, state: $0.1) }
       .map { project, _ in
         BackingData(project, AppEnvironment.current.currentUser)
       }
 
     self.goToRewards = ctaButtonTapped
-      .filter { canShowRewardsScreen($0.0, state:$0.2) }
+      .filter { canShowRewardsScreen($0.0, state: $0.2) }
       .map { project, refTag, _ in (project, refTag) }
 
     let project = freshProjectAndRefTag
