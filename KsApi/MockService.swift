@@ -198,7 +198,7 @@
         me: .template
       ),
       changePasswordError: GraphError? = nil,
-	  createApplePayBackingError: GraphError? = nil,
+      createApplePayBackingError: GraphError? = nil,
       createBackingResult: Result<CreateBackingEnvelope, GraphError>? = nil,
       createPasswordError: GraphError? = nil,
       changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
@@ -555,7 +555,7 @@
     internal func createBacking(input _: CreateBackingInput)
       -> SignalProducer<CreateBackingEnvelope, GraphError> {
       return producer(for: self.createBackingResult)
-	}
+    }
 
     internal func createPassword(input _: CreatePasswordInput) ->
       SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
