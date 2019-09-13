@@ -57,7 +57,7 @@ final class ShippingRulesTableViewController: UITableViewController {
 
     self.viewModel.inputs.viewDidLayoutSubviews()
   }
-  
+
   // MARK: - View model
 
   override func bindViewModel() {
