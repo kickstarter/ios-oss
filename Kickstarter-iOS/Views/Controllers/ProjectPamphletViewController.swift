@@ -135,6 +135,26 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.goToRewards(project: project, refTag: refTag)
       }
 
+    self.viewModel.outputs.goToManageViewPledge
+      .observeForControllerAction()
+      .observeValues { [weak self] params in
+        let (project, reward, refTag) = params
+
+        self?.goToManageViewPledge(project: project, reward: reward, refTag: refTag)
+      }
+
+    self.viewModel.outputs.goToDeprecatedViewBacking
+      .observeForControllerAction()
+      .observeValues { [weak self] project, user in
+        self?.goToDeprecatedViewBacking(project: project, user: user)
+      }
+
+    self.viewModel.outputs.goToDeprecatedManagePledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project, reward, refTag in
+        self?.goToDeprecatedManagePledge(project: project, reward: reward, refTag: refTag)
+      }
+
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, refTag in
@@ -186,6 +206,44 @@ public final class ProjectPamphletViewController: UIViewController {
     self.present(vc, animated: true)
   }
 
+  private func goToManageViewPledge(project: Project, reward: Reward, refTag _: RefTag?) {
+    let managePledgeViewController = ManagePledgeViewController.instantiate()
+    managePledgeViewController.configureWith(project: project, reward: reward)
+
+    let nav = UINavigationController(rootViewController: managePledgeViewController)
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = nav
+        |> \.modalPresentationStyle .~ .formSheet
+    }
+    self.present(nav, animated: true)
+  }
+
+  private func goToDeprecatedManagePledge(project: Project, reward: Reward, refTag _: RefTag?) {
+    let pledgeViewController = DeprecatedRewardPledgeViewController
+      .configuredWith(
+        project: project, reward: reward
+      )
+
+    let nav = UINavigationController(rootViewController: pledgeViewController)
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = nav
+        |> \.modalPresentationStyle .~ .formSheet
+    }
+    self.present(nav, animated: true)
+  }
+
+  private func goToDeprecatedViewBacking(project: Project, user _: User?) {
+    let backingViewController = BackingViewController.configuredWith(project: project, backer: nil)
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      let nav = UINavigationController(rootViewController: backingViewController)
+        |> \.modalPresentationStyle .~ .formSheet
+      self.present(nav, animated: true)
+    } else {
+      self.navigationController?.pushViewController(backingViewController, animated: true)
+    }
+  }
+
   private func updateContentInsets() {
     let buttonSize = self.pledgeCTAContainerView.pledgeCTAButton.systemLayoutSizeFitting(
       UIView.layoutFittingCompressedSize
@@ -203,8 +261,8 @@ public final class ProjectPamphletViewController: UIViewController {
 }
 
 extension ProjectPamphletViewController: PledgeCTAContainerViewDelegate {
-  func pledgeCTAButtonTapped() {
-    self.viewModel.inputs.backThisProjectTapped()
+  func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
+    self.viewModel.inputs.pledgeCTAButtonTapped(with: state)
   }
 }
 

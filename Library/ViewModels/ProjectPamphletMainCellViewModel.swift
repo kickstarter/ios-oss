@@ -358,7 +358,7 @@ private func pledgeAmountAndGoalAndCountry(
   }
 
   guard let goalCurrentCurrency = project.stats.goalCurrentCurrency,
-    let pledgedCurrentCurrency = project.stats.pledgedCurrentCurrency,
+    let pledgedCurrentCurrency = project.stats.convertedPledgedAmount,
     let currentCountry = project.stats.currentCountry else {
     return (project.stats.pledgedUsd, project.stats.goalUsd, Project.Country.us)
   }
