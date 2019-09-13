@@ -61,6 +61,8 @@ public final class ManageViewPledgeViewModel:
   public var outputs: ManageViewPledgeViewModelOutputs { return self }
 }
 
+// MARK: - Functions
+
 private func title(with project: Project) -> String {
   return project.state == .live ? Strings.Manage_your_pledge() : Strings.View_your_pledge()
 }
