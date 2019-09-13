@@ -18,6 +18,13 @@ final class ShippingRulesTableViewController: UITableViewController {
   private let viewModel: ShippingRulesViewModelType = ShippingRulesViewModel()
   weak var delegate: ShippingRulesTableViewControllerDelegate?
 
+  private lazy var searchBar: UISearchBar = {
+    UISearchBar(frame: .zero)
+      |> \.delegate .~ self
+      |> \.searchBarStyle .~ .minimal
+      |> \.showsCancelButton .~ false
+  }()
+
   // MARK: - Lifecycle
 
   static func instantiate() -> ShippingRulesTableViewController {
@@ -28,11 +35,14 @@ final class ShippingRulesTableViewController: UITableViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.navigationItem.leftBarButtonItem .~ UIBarButtonItem(
+      |> \.navigationItem.rightBarButtonItem .~ UIBarButtonItem(
         barButtonSystemItem: .cancel,
         target: self,
         action: #selector(ShippingRulesTableViewController.dismissViewController)
       )
+
+    _ = self.navigationItem
+      |> \.titleView .~ self.searchBar
 
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
@@ -42,16 +52,21 @@ final class ShippingRulesTableViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.viewModel.inputs.viewDidLayoutSubviews()
+  }
+
   // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.deselectCellAtIndex
-      .map { IndexPath(row: $0, section: 0) }
+    self.viewModel.outputs.deselectVisibleCells
       .observeForUI()
-      .observeValues { [weak self] indexPath in
-        self?.tableView.cellForRow(at: indexPath)?.accessoryType = .none
+      .observeValues { [weak self] in
+        self?.tableView.visibleCells.forEach { $0.accessoryType = .none }
       }
 
     self.viewModel.outputs.flashScrollIndicators
@@ -114,5 +129,11 @@ final class ShippingRulesTableViewController: UITableViewController {
     self.viewModel.inputs.didSelectShippingRule(at: indexPath.row)
 
     self.tableView.deselectRow(at: indexPath, animated: true)
+  }
+}
+
+extension ShippingRulesTableViewController: UISearchBarDelegate {
+  func searchBar(_: UISearchBar, textDidChange searchText: String) {
+    self.viewModel.inputs.searchTextDidChange(searchText)
   }
 }
