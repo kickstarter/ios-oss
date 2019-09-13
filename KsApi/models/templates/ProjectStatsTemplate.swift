@@ -4,6 +4,7 @@ extension Project.Stats {
   internal static let template = Project.Stats(
     backersCount: 10,
     commentsCount: 10,
+    convertedPledgedAmount: 2_000,
     currency: "USD",
     currentCurrency: nil,
     currentCurrencyRate: 1.5,

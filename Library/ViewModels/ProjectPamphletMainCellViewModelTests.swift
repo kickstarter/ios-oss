@@ -75,6 +75,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 1.2
+      |> Project.lens.stats.convertedPledgedAmount .~ 1_200
     self.vm.inputs.configureWith(project: nonUSProject)
 
     self.statsStackViewAccessibilityLabel.assertValues(

@@ -53,6 +53,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.state .~ .live
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
@@ -83,6 +84,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ .template
       |> Project.lens.state .~ .successful
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
@@ -108,12 +110,15 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
 
+    let liveProject = self.project
+      |> Project.lens.stats.convertedPledgedAmount .~ 1_964
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchProjectResponse: project),
+        apiService: MockService(fetchProjectResponse: liveProject),
         config: config, currentUser: .template, language: language
       ) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(liveProject), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
@@ -200,6 +205,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .successful
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
@@ -227,12 +233,15 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
 
+    let liveProject = self.project
+      |> Project.lens.stats.convertedPledgedAmount .~ 1_964
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchProjectResponse: project),
+        apiService: MockService(fetchProjectResponse: liveProject),
         config: config, currentUser: nil, language: language
       ) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(liveProject), refTag: nil)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
@@ -253,6 +262,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.state .~ .successful
+      |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
@@ -282,13 +292,16 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let language = Language.en
     let device = Device.phone4_7inch
 
+    let liveProject = self.project
+      |> Project.lens.stats.convertedPledgedAmount .~ 1_964
+
     // All we want to see here is that the pledge CTA button is hidden
 
     withEnvironment(
-      apiService: MockService(fetchProjectResponse: self.project),
+      apiService: MockService(fetchProjectResponse: liveProject),
       config: config, currentUser: nil, language: language
     ) {
-      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(liveProject), refTag: nil)
       _ = traitControllers(device: device, orientation: .portrait, child: vc)
 
       FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
@@ -302,12 +315,15 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let language = Language.en
     let device = Device.phone4_7inch
 
+    let liveProject = self.project
+      |> Project.lens.stats.convertedPledgedAmount .~ 1_964
+
     // All we want to see here is that the pledge CTA button is hidden
     withEnvironment(
-      apiService: MockService(fetchProjectResponse: self.project),
+      apiService: MockService(fetchProjectResponse: liveProject),
       config: config, language: language
     ) {
-      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(liveProject), refTag: nil)
 
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
       parent.view.frame.size.height = device == .pad ? 2_300 : 1_800

@@ -215,6 +215,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
   func testManagePledge() {
     let reward = Reward.noReward
+      |> Reward.lens.convertedMinimum .~ 1
     let project = self.cosmicSurgery
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
@@ -239,6 +240,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
   func testManagePledge_ApplePayCapable() {
     let reward = Reward.noReward
+      |> Reward.lens.convertedMinimum .~ 1
     let project = self.cosmicSurgery
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
@@ -261,6 +263,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
     let newReward = self.cosmicReward
       |> Reward.lens.id .~ 42
       |> Reward.lens.minimum .~ 42
+      |> Reward.lens.convertedMinimum .~ 55
       |> Reward.lens.rewardsItems .~ []
     let oldReward = self.cosmicReward
       |> Reward.lens.rewardsItems .~ []
@@ -294,6 +297,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
     let newReward = self.cosmicReward
       |> Reward.lens.id .~ 42
       |> Reward.lens.minimum .~ 42
+      |> Reward.lens.convertedMinimum .~ 55
       |> Reward.lens.rewardsItems .~ []
     let oldReward = self.cosmicReward
       |> Reward.lens.rewardsItems .~ []
@@ -321,6 +325,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
     let project = self.cosmicSurgery
       |> Project.lens.stats.currentCurrencyRate .~ 1.2
     let reward = self.cosmicReward
+      |> Reward.lens.convertedMinimum .~ 780
       |> Reward.lens.rewardsItems .~ []
 
     let launchedCountries = AppEnvironment.current.launchedCountries.countries
