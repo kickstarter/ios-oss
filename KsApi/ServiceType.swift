@@ -57,6 +57,9 @@ public protocol ServiceType {
   func clearUserUnseenActivity(input: EmptyInput)
     -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError>
 
+  func createApplePayBacking(input: CreateApplePayBackingInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+
   func createBacking(input: CreateBackingInput) ->
     SignalProducer<CreateBackingEnvelope, GraphError>
 
