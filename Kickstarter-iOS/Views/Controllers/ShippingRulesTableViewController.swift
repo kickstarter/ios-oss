@@ -46,6 +46,7 @@ final class ShippingRulesTableViewController: UITableViewController {
 
     _ = self.tableView
       |> \.dataSource .~ self.dataSource
+      |> \.separatorStyle .~ .none
 
     self.tableView.registerCellClass(ShippingRuleCell.self)
 
@@ -56,6 +57,15 @@ final class ShippingRulesTableViewController: UITableViewController {
     super.viewDidLayoutSubviews()
 
     self.viewModel.inputs.viewDidLayoutSubviews()
+  }
+
+  // MARK: - Styles
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    _ = self
+      |> baseControllerStyle()
   }
 
   // MARK: - View model
