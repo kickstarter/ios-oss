@@ -25,19 +25,28 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
       .observe(self.configureRewardSummaryView.observer)
   }
 
-  func testNavigationBarTitle() {
+  func testNavigationBarTitle_LiveProject() {
     self.title.assertDidNotEmitValue()
 
     let project = Project.template
     self.vm.inputs.configureWith(project, reward: .template)
 
-    self.title.assertValues([Strings.Manage_your_pledge()])
+    self.vm.inputs.viewDidLoad()
 
-    let finishedProject = project
+    self.title.assertValue(Strings.Manage_your_pledge())
+  }
+
+  func testNavigationBarTitle_FinishedProject() {
+
+    self.title.assertDidNotEmitValue()
+
+    let finishedProject = Project.template
       |> \.state .~ .successful
     self.vm.inputs.configureWith(finishedProject, reward: .template)
 
-    self.title.assertValues([Strings.Manage_your_pledge(), Strings.View_your_pledge()])
+    self.vm.inputs.viewDidLoad()
+
+    self.title.assertValue(Strings.View_your_pledge())
   }
 
   func testConfigurePaymentMethodViewController() {
@@ -45,6 +54,8 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
 
     let project = Project.template
     self.vm.inputs.configureWith(project, reward: .template)
+
+    self.vm.inputs.viewDidLoad()
 
     self.configurePaymentMethodView.assertValue(project)
   }
@@ -55,6 +66,8 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
     let project = Project.template
     self.vm.inputs.configureWith(project, reward: .template)
 
+    self.vm.inputs.viewDidLoad()
+
     self.configurePledgeSummaryView.assertValue(project)
   }
 
@@ -63,6 +76,8 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
 
     let reward = Reward.template
     self.vm.inputs.configureWith(.template, reward: reward)
+
+    self.vm.inputs.viewDidLoad()
 
     self.configureRewardSummaryView.assertValue(reward)
   }

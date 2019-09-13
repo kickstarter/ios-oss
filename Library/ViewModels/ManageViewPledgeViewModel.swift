@@ -5,6 +5,7 @@ import ReactiveSwift
 
 public protocol ManageViewPledgeViewModelInputs {
   func configureWith(_ project: Project, reward: Reward)
+  func viewDidLoad()
 }
 
 public protocol ManageViewPledgeViewModelOutputs {
@@ -24,23 +25,31 @@ public final class ManageViewPledgeViewModel:
 
   public init() {
 
-    self.title = self.projectAndRewardSignal
+    let projectAndReward = self.projectAndRewardSignal
+      .takeWhen(self.viewDidLoadSignal.ignoreValues())
+
+    self.title = projectAndReward
       .map(first)
       .map(title(with:))
 
-    self.configurePaymentMethodView = self.projectAndRewardSignal
+    self.configurePaymentMethodView = projectAndReward
       .map(first)
 
-    self.configurePledgeSummaryView = self.projectAndRewardSignal
+    self.configurePledgeSummaryView = projectAndReward
       .map(first)
 
-    self.configureRewardSummaryView = self.projectAndRewardSignal
+    self.configureRewardSummaryView = projectAndReward
       .map(second)
   }
 
   private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
   public func configureWith(_ project: Project, reward: Reward) {
     self.projectAndRewardObserver.send(value: (project, reward))
+  }
+
+  private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
+  public func viewDidLoad() {
+    self.viewDidLoadObserver.send(value: ())
   }
 
   public let configurePaymentMethodView: Signal<Project, Never>

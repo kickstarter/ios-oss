@@ -53,6 +53,8 @@ final class ManageViewPledgeViewController: UIViewController {
     _ = self.navigationItem
       ?|> \.leftBarButtonItem .~ self.closeButton
       ?|> \.rightBarButtonItem .~ self.editButton
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   // MARK: - Styles
