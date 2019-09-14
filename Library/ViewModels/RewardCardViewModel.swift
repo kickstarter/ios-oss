@@ -250,17 +250,13 @@ private func shippingSummaryString(project: Project, reward: Reward) -> String? 
   if project.state == .live, reward.shipping.enabled, let type = reward.shipping.type {
     switch type {
     case .anywhere:
-      return localizedString(key: "Ships_worldwide", defaultValue: "Ships worldwide")
+      return Strings.Ships_worldwide()
     case .multipleLocations:
-      return localizedString(key: "Limited_shipping", defaultValue: "Limited shipping")
+      return Strings.Limited_shipping()
     case .noShipping: return nil
     case .singleLocation:
       if let name = reward.shipping.location?.localizedName {
-        return localizedString(
-          key: "location_name_only",
-          defaultValue: "%{location_name} only",
-          substitutions: ["location_name": name]
-        )
+        return Strings.location_name_only(location_name: name)
       }
 
       return nil
