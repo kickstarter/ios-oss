@@ -13,7 +13,8 @@ public struct CreateApplePayBackingInput: GraphMutationInput {
 
   public init(
     amount: String, locationId: String?, paymentInstrumentName: String, paymentNetwork: String,
-    projectId: String, refParam: String?, rewardId: String?, stripeToken: String, transactionIdentifier: String
+    projectId: String, refParam: String?, rewardId: String?, stripeToken: String,
+    transactionIdentifier: String
   ) {
     self.amount = amount
     self.locationId = locationId
