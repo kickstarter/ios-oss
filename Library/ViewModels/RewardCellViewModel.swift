@@ -14,8 +14,8 @@ public protocol RewardCellViewModelType {
   var outputs: RewardCellViewModelOutputs { get }
 }
 
-
-public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewModelInputs, RewardCellViewModelOutputs {
+public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewModelInputs,
+  RewardCellViewModelOutputs {
   public init() {
     self.scrollScrollViewToTop = self.prepareForReuseProperty.signal
   }

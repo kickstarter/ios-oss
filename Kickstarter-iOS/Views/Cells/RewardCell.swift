@@ -51,10 +51,14 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       .observeValues { [weak self] in
         guard let self = self else { return }
 
-        self.scrollView.setContentOffset(.init(x: self.scrollView.contentOffset.x,
-                                               y: -self.scrollView.contentInset.top),
-                                         animated: false)
-    }
+        self.scrollView.setContentOffset(
+          .init(
+            x: self.scrollView.contentOffset.x,
+            y: -self.scrollView.contentInset.top
+          ),
+          animated: false
+        )
+      }
   }
 
   // MARK: - Functions
