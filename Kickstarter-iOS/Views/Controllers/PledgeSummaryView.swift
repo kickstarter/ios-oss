@@ -151,13 +151,13 @@ private let backerInfoStackViewStyle: StackViewStyle = { stackView in
 private let backerNumberLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ UIColor.ksr_soft_black
-    |> \.font .~ UIFont.ksr_headline().bolded
+    |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
 }
 
 private let backingDateLabelStyle: LabelStyle = { label in
   label
-    |> \.font .~ UIFont.ksr_caption1()
+    |> \.font .~ UIFont.ksr_subhead()
     |> \.textColor .~ UIColor.ksr_dark_grey_500
     |> \.adjustsFontForContentSizeCategory .~ true
 }
@@ -165,7 +165,7 @@ private let backingDateLabelStyle: LabelStyle = { label in
 private let pledgeLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ UIColor.ksr_dark_grey_500
-    |> \.font .~ UIFont.ksr_headline().bolded
+    |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.text %~ { _ in Strings.Pledge() }
 }
@@ -173,19 +173,20 @@ private let pledgeLabelStyle: LabelStyle = { label in
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> checkoutStackViewStyle
+    |> \.spacing .~ Styles.grid(3)
 }
 
 private let shippingLocationLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ UIColor.ksr_dark_grey_500
-    |> \.font .~ UIFont.ksr_headline().bolded
+    |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
 }
 
 private let totalLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ UIColor.black
-    |> \.font .~ UIFont.ksr_headline().bolded
+    |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.text %~ { _ in Strings.Total() }
+    |> \.text %~ { _ in "Total amount" }
 }

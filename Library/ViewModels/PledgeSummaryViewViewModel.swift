@@ -36,24 +36,34 @@ PledgeSummaryViewViewModelInputs, PledgeSummaryViewViewModelOutputs {
     self.backerNumberText = backing
       .map { "Backer #\($0.sequence)" }
 
-    self.backingDateText = .empty
+    self.backingDateText = backing
+      .map(formattedPledgeDate)
 
     self.pledgeAmountText = projectAndBacking
-      .map { attributedCurrency(of: $0.0, amount: $0.1.amount) }
+      .map { attributedCurrency(with: $0.0, amount: $0.1.amount) }
       .skipNil()
 
-    self.shippingAmountText = projectAndBacking
-      .map { shippingValue(of: $0.0, with: Double($0.1.shippingAmount ?? 0)) }
+    let shippingAmount = backing
+      .map { Double($0.shippingAmount ?? 0) }
+
+    self.shippingAmountText = projectSignal
+      .combineLatest(with: shippingAmount)
+      .map { shippingValue(with: $0.0, with: $0.1) }
       .skipNil()
 
-    self.shippingLocationText = .empty
+    self.totalAmountText = projectAndBacking
+      .combineLatest(with: shippingAmount)
+      .map(unpack)
+      .map { project, backing, shippingAmount in
+        attributedCurrency(with: project, amount: backing.amount + shippingAmount)
+      }
+      .skipNil()
+
+    self.shippingLocationText = backing.ignoreValues()
+      .map { "Shipping: Australia" }
 
     self.shippingLocationStackViewIsHidden = projectSignal
       .map(shouldHideShippingLocationStackView)
-
-    self.totalAmountText = projectAndBacking
-      .map { attributedCurrency(of: $0.0, amount: ($0.1.amount + Double($0.1.shippingAmount ?? 0))) }
-      .skipNil()
   }
 
   private let (projectSignal, projectObserver) = Signal<Project, Never>.pipe()
@@ -81,7 +91,12 @@ private func shouldHideShippingLocationStackView(_ project: Project) -> Bool {
   return reward.shipping.enabled
 }
 
-private func attributedCurrency(of project: Project, amount: Double) -> NSAttributedString? {
+private func formattedPledgeDate(_ backing: Backing) -> String {
+  let formattedDate = Format.date(secondsInUTC: backing.pledgedAt, dateStyle: .long, timeStyle: .none)
+  return "As of \(formattedDate)"
+}
+
+private func attributedCurrency(with project: Project, amount: Double) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
     .withAllValuesFrom([.foregroundColor: UIColor.ksr_green_500])
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
@@ -98,10 +113,10 @@ private func attributedCurrency(of project: Project, amount: Double) -> NSAttrib
   let combinedAttributes = defaultAttributes
     .withAllValuesFrom(superscriptAttributes)
 
-  return Format.attributedAmount("", attributes: combinedAttributes) + attributedCurrency
+  return Format.attributedAmount(attributes: combinedAttributes) + attributedCurrency
 }
 
-private func shippingValue(of project: Project, with shippingRuleCost: Double) -> NSAttributedString? {
+private func shippingValue(with project: Project, with shippingRuleCost: Double) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
