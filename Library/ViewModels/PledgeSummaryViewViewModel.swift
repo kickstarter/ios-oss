@@ -88,7 +88,7 @@ private func shouldHideShippingLocationStackView(_ project: Project) -> Bool {
     return false
   }
 
-  return reward.shipping.enabled
+  return !reward.shipping.enabled || reward.isNoReward
 }
 
 private func formattedPledgeDate(_ backing: Backing) -> String {
@@ -101,9 +101,8 @@ private func attributedCurrency(with project: Project, amount: Double) -> NSAttr
     .withAllValuesFrom([.foregroundColor: UIColor.ksr_green_500])
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
-    let backing = project.personalization.backing,
     let attributedCurrency = Format.attributedCurrency(
-      backing.amount,
+      amount,
       country: project.country,
       omitCurrencyCode: project.stats.omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,
