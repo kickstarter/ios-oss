@@ -677,11 +677,12 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+
       self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([true])
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
 
       self.vm.inputs.applePayButtonTapped()
 
