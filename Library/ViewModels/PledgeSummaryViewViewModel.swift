@@ -12,8 +12,8 @@ public protocol PledgeSummaryViewViewModelOutputs {
   var backingDateText: Signal<String, Never> { get }
   var pledgeAmountText: Signal<NSAttributedString, Never> { get }
   var shippingAmountText: Signal<NSAttributedString, Never> { get }
-  var shippingLocationText: Signal<String, Never> { get }
   var shippingLocationStackViewIsHidden: Signal<Bool, Never> { get }
+  var shippingLocationText: Signal<String, Never> { get }
   var totalAmountText: Signal<NSAttributedString, Never> { get }
 }
 
@@ -34,7 +34,7 @@ PledgeSummaryViewViewModelInputs, PledgeSummaryViewViewModelOutputs {
       .zip(with: backing)
 
     self.backerNumberText = backing
-      .map { "#\($0.sequence)" }
+      .map { "Backer #\($0.sequence)" }
 
     self.backingDateText = .empty
 
@@ -65,8 +65,8 @@ PledgeSummaryViewViewModelInputs, PledgeSummaryViewViewModelOutputs {
   public let backingDateText: Signal<String, Never>
   public let pledgeAmountText: Signal<NSAttributedString, Never>
   public let shippingAmountText: Signal<NSAttributedString, Never>
-  public let shippingLocationText: Signal<String, Never>
   public let shippingLocationStackViewIsHidden: Signal<Bool, Never>
+  public let shippingLocationText: Signal<String, Never>
   public let totalAmountText: Signal<NSAttributedString, Never>
 
   public var inputs: PledgeSummaryViewViewModelInputs { return self }

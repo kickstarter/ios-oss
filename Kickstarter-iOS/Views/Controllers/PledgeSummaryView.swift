@@ -11,16 +11,16 @@ final class PledgeSummaryView: UIView {
   private lazy var backerInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var backerNumberLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var backingDateLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var pledgeLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var pledgeAmountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var pledgeAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var pledgeLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var shippingLocationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var shippingAmountLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var shippingLocationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var shippingLocationStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var totalLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var totalAmountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var totalAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var totalLabel: UILabel = { UILabel(frame: .zero) }()
 
   private let viewModel = PledgeSummaryViewViewModel()
 
@@ -41,7 +41,7 @@ final class PledgeSummaryView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  // MARK: Functions
+  // MARK: Styles
 
   override func bindStyles() {
     super.bindStyles()
@@ -96,6 +96,14 @@ final class PledgeSummaryView: UIView {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.backerNumberLabel.rac.text = self.viewModel.outputs.backerNumberText
+    self.backingDateLabel.rac.text = self.viewModel.outputs.backingDateText
+    self.pledgeAmountLabel.rac.attributedText = self.viewModel.outputs.pledgeAmountText
+    self.shippingAmountLabel.rac.attributedText = self.viewModel.outputs.shippingAmountText
+    self.shippingLocationLabel.rac.text = self.viewModel.outputs.shippingLocationText
+    self.shippingLocationStackView.rac.hidden = self.viewModel.outputs.shippingLocationStackViewIsHidden
+    self.totalAmountLabel.rac.attributedText = self.viewModel.outputs.totalAmountText
   }
 
   // MARK: Functions
@@ -127,9 +135,17 @@ final class PledgeSummaryView: UIView {
 
 // MARK: Styles
 
-private let rootStackViewStyle: StackViewStyle = { stackView in
+private let amountLabelStyle: LabelStyle = { label in
+  label
+    |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.textAlignment .~ NSTextAlignment.right
+    |> \.isAccessibilityElement .~ true
+    |> \.minimumScaleFactor .~ 0.75
+}
+
+private let backerInfoStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> checkoutStackViewStyle
+    |> \.axis .~ .vertical
 }
 
 private let backerNumberLabelStyle: LabelStyle = { label in
@@ -137,11 +153,6 @@ private let backerNumberLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.ksr_soft_black
     |> \.font .~ UIFont.ksr_headline().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
-}
-
-private let backerInfoStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .vertical
 }
 
 private let backingDateLabelStyle: LabelStyle = { label in
@@ -159,12 +170,9 @@ private let pledgeLabelStyle: LabelStyle = { label in
     |> \.text %~ { _ in Strings.Pledge() }
 }
 
-private let amountLabelStyle: LabelStyle = { label in
-  label
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.textAlignment .~ NSTextAlignment.right
-    |> \.isAccessibilityElement .~ true
-    |> \.minimumScaleFactor .~ 0.75
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> checkoutStackViewStyle
 }
 
 private let shippingLocationLabelStyle: LabelStyle = { label in
