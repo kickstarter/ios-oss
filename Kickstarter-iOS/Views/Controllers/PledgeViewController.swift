@@ -82,7 +82,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   // MARK: - Lifecycle
 
-  func configureWith(project: Project, reward: Reward, refTag: RefTag? = nil) {
+  func configureWith(project: Project, reward: Reward, refTag: RefTag?) {
     self.viewModel.inputs.configureWith(project: project, reward: reward, refTag: refTag)
   }
 

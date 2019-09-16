@@ -662,6 +662,51 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  func testApplePay_GoToThanks_WhenRefTag_IsNil() {
+    withEnvironment(apiService: MockService(), currentUser: .template) {
+      let project = Project.template
+      let reward = Reward.noReward
+        |> Reward.lens.minimum .~ 5
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([true])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.goToThanks.assertValues([project])
+      self.createBackingError.assertDidNotEmitValue()
+    }
+  }
+
   func testGoToThanks_WhenStripeTokenCreated_ReturnsFailure() {
     withEnvironment(apiService: MockService()) {
       let project = Project.template
