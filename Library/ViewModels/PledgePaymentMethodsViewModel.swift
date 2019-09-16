@@ -14,8 +14,9 @@ public protocol PledgePaymentMethodsViewModelInputs {
 public protocol PledgePaymentMethodsViewModelOutputs {
   var applePayButtonHidden: Signal<Bool, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
-  var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
   var notifyDelegateNewCardAdded: Signal<Void, Never> { get }
+  var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
+  var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
 }
 
 public protocol PledgePaymentMethodsViewModelType {
@@ -34,8 +35,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let storedCardsEvent = Signal.merge(
       configureWithValue.ignoreValues(),
       self.addNewCardSucceededProperty.signal
-    )
-    .switchMap {
+    ).switchMap { _ in
       AppEnvironment.current.apiService
         .fetchGraphCreditCards(query: UserQueries.storedCards.query)
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -51,7 +51,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .values()
       .map { $0.me.storedCards.nodes }
 
-    self.notifyDelegateNewCardAdded = self.addNewCardSucceededProperty.signal
+    self.newCardAdded = storedCardsEvent.takeWhen(self.addNewCardSucceededProperty.signal)
+      .values()
+      .map { $0.me.storedCards.nodes.first! }
+
+    self.notifyDelegateNewCardAdded = .empty //self.addNewCardSucceededProperty.signal.takeWhen(storedCardsEvent.signal.ignoreValues())
 
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
@@ -80,6 +84,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
   public let notifyDelegateNewCardAdded: Signal<Void, Never>
+  public let newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never>
 }
 
 private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {

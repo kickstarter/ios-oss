@@ -11,8 +11,6 @@ internal protocol PledgePaymentMethodsDelegate: AnyObject {
 final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
 
-  static weak var shared: PledgePaymentMethodsViewController?
-
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
@@ -30,7 +28,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    PledgePaymentMethodsViewController.shared = self
     self.configureSubviews()
     self.setupConstraints()
 
@@ -101,13 +98,19 @@ final class PledgePaymentMethodsViewController: UIViewController {
         self?.addCardsToStackView(cards)
       }
 
+    self.viewModel.outputs.newCardAdded
+      .observeForUI()
+      .observeValues { [weak self] card in
+        self?.insertNewCard(card)
+    }
+
     self.viewModel.outputs.notifyDelegateLoadPaymentMethodsError
       .observeForUI()
       .observeValues { [weak self] errorMessage in
         guard let self = self else { return }
 
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
-      }
+    }
 
     self.viewModel.outputs.notifyDelegateNewCardAdded
       .observeForUI()
@@ -154,6 +157,13 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     _ = (cardViews + [addNewCardView], self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  private func insertNewCard(_ newCard: GraphUserCreditCard.CreditCard) {
+    let newCardView = PledgeCreditCardView(frame: .zero)
+    newCardView.configureWith(value: newCard)
+
+    self.cardsStackView.insertArrangedSubview(newCardView, at: 0)
   }
 
   // MARK: - Styles

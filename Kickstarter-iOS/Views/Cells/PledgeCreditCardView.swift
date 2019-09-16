@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgeCreditCardView: UIView, PledgePaymentMethodsDelegate {
+final class PledgeCreditCardView: UIView {
   // MARK: - Properties
 
   private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
@@ -15,12 +15,14 @@ final class PledgeCreditCardView: UIView, PledgePaymentMethodsDelegate {
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let selectButton: UIButton = { UIButton(type: .custom) }()
 
+  internal weak var delegate: PledgePaymentMethodsDelegate?
+
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-
+    self.delegate = self
     self.configureSubviews()
     self.setupConstraints()
     self.bindViewModel()
@@ -31,9 +33,6 @@ final class PledgeCreditCardView: UIView, PledgePaymentMethodsDelegate {
   }
 
   private func configureSubviews() {
-    PledgePaymentMethodsViewController.shared?.delegate = self
-
-
     _ = self
       |> \.accessibilityElements .~ self.subviews
 
@@ -120,9 +119,10 @@ final class PledgeCreditCardView: UIView, PledgePaymentMethodsDelegate {
   @objc fileprivate func selectButtonTapped(_ button: UIButton) {
     self.viewModel.inputs.selectButtonTapped(selected: button.isSelected)
   }
+}
 
+extension PledgeCreditCardView: PledgePaymentMethodsDelegate {
   func creditCardCTASelected(_ controller: PledgePaymentMethodsViewController) {
-    print("DELEGATE")
     self.viewModel.inputs.addedNewCard()
   }
 }
