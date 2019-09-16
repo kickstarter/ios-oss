@@ -144,6 +144,12 @@ public enum Format {
     return NSAttributedString(string: Strings.plus_shipping_cost(shipping_cost: ""), attributes: attributes)
   }
 
+  public static func attributedAmount(
+    _ string: String,
+    attributes: String.Attributes = [:]) -> NSAttributedString {
+    return NSAttributedString(string: string, attributes: attributes)
+  }
+
   /**
    Create a date from a string with the given format
 

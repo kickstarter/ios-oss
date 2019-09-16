@@ -22,18 +22,77 @@ final class PledgeSummaryView: UIView {
   private lazy var totalAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   public func configureWith(_ project: Project) {
-    _ = self.totalAmountLabel
+    _ = self.shippingAmountLabel
+      |> \.attributedText .~ shippingValue(of: project, with: 7.5)
+
+    _ = self.pledgeAmountLabel
       |> \.attributedText .~ attributedCurrency(with: (project, 10.0))
+
+    _ = self.totalAmountLabel
+      |> \.attributedText .~ attributedCurrency(with: (project, 17.5))
   }
 
   // MARK: Life cycle
 
   override init(frame: CGRect) {
     super.init(frame: frame)
+
+    self.configureViews()
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  // MARK: Functions
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    _ = self.backerInfoStackView
+      |> backerInfoStackViewStyle
+
+    _ = self.pledgeAmountStackView
+      |> checkoutAdaptableStackViewStyle(
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+      )
+
+    _ = self.rootStackView
+      |> rootStackViewStyle
+
+    _ = self.shippingLocationStackView
+      |> checkoutAdaptableStackViewStyle(
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+      )
+
+    _ = self.totalAmountStackView
+      |> checkoutAdaptableStackViewStyle(
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+      )
+
+    _ = self.backerNumberLabel
+      |> backerNumberLabelStyle
+
+    _ = self.backingDateLabel
+      |> backingDateLabelStyle
+
+    _ = self.pledgeLabel
+      |> pledgeLabelStyle
+
+    _ = self.pledgeAmountLabel
+      |> pledgeAmountLabelStyle
+
+    _ = self.shippingLocationLabel
+      |> shippingLocationLabelStyle
+
+    _ = self.shippingAmountLabel
+      |> shippingAmountLabelStyle
+
+    _ = self.totalLabel
+      |> totalLabelStyle
+
+    _ = self.totalAmountLabel
+      |> totalAmountLabelStyle
   }
 
   // MARK: Functions
@@ -63,7 +122,6 @@ final class PledgeSummaryView: UIView {
   }
 }
 
-
 private func attributedCurrency(with data: PledgeSummaryCellData) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
     .withAllValuesFrom([.foregroundColor: UIColor.ksr_green_500])
@@ -80,6 +138,23 @@ private func attributedCurrency(with data: PledgeSummaryCellData) -> NSAttribute
   let combinedAttributes = defaultAttributes
     .withAllValuesFrom(superscriptAttributes)
 
+  return Format.attributedAmount("", attributes: combinedAttributes) + attributedCurrency
+}
+
+private func shippingValue(of project: Project, with shippingRuleCost: Double) -> NSAttributedString? {
+  let defaultAttributes = checkoutCurrencyDefaultAttributes()
+  let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
+  guard
+    let attributedCurrency = Format.attributedCurrency(
+      shippingRuleCost,
+      country: project.country,
+      omitCurrencyCode: project.stats.omitUSCurrencyCode,
+      defaultAttributes: defaultAttributes,
+      superscriptAttributes: superscriptAttributes
+    ) else { return nil }
+
+  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { _, new in new }
+
   return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }
 
@@ -95,13 +170,20 @@ private let backerNumberLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.ksr_soft_black
     |> \.font .~ UIFont.ksr_headline().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.text %~ { _ in "Backer #888" }
 }
 
-private let backingDateLabelStyel: LabelStyle = { label in
+private let backerInfoStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .vertical
+}
+
+private let backingDateLabelStyle: LabelStyle = { label in
   label
-    |> \.font .~ UIFont.ksr_caption1().bolded
+    |> \.font .~ UIFont.ksr_caption1()
     |> \.textColor .~ UIColor.ksr_dark_grey_500
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.text %~ { _ in "As of January 20, 2018" }
 }
 
 private let pledgeLabelStyle: LabelStyle = { label in
@@ -120,12 +202,17 @@ private let pledgeAmountLabelStyle: LabelStyle = { label in
     |> \.minimumScaleFactor .~ 0.75
 }
 
-private let shippingLocationLabel: LabelStyle = { label in
+private let shippingAmountLabelStyle: LabelStyle = { label in
+  label
+    |> pledgeAmountLabelStyle
+}
+
+private let shippingLocationLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ UIColor.ksr_dark_grey_500
     |> \.font .~ UIFont.ksr_headline().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.text %~ { _ in Strings.Pledge() }
+    |> \.text %~ { _ in Strings.Shipping() + ":" +  "Australia" }
 }
 
 private let totalLabelStyle: LabelStyle = { label in
@@ -133,7 +220,7 @@ private let totalLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.black
     |> \.font .~ UIFont.ksr_headline().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.text %~ { _ in Strings.Pledge() }
+    |> \.text %~ { _ in Strings.Total() }
 }
 
 private let totalAmountLabelStyle: LabelStyle = { label in
