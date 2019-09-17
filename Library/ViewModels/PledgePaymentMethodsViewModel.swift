@@ -52,7 +52,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     self.newCardAdded = self.creditCardProperty.signal.skipNil()
 
-    self.notifyDelegateNewCardAdded = self.addNewCardSucceededProperty.signal.takeWhen(storedCardsEvent.signal.ignoreValues())
+    self.notifyDelegateNewCardAdded = self.addNewCardSucceededProperty.signal
+      .takeWhen(storedCardsEvent.signal.ignoreValues())
 
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
