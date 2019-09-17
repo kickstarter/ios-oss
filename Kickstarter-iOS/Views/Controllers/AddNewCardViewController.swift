@@ -178,9 +178,9 @@ internal final class AddNewCardViewController: UIViewController,
     self.viewModel.outputs.newCardAdded
       .observeForUI()
       .observeValues { [weak self] newCard in
-        guard let _self = self else {  return }
-          _self.delegate?.addNewCardViewController(_self, newCard)
-    }
+        guard let _self = self else { return }
+        _self.delegate?.addNewCardViewController(_self, newCard)
+      }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()

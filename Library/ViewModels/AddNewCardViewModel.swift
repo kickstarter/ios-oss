@@ -132,7 +132,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
           .materialize()
       }
 
-     self.newCardAdded = addNewCardEvent.map { $0.value?.paymentSource }.skipNil()
+    self.newCardAdded = addNewCardEvent.map { $0.value?.paymentSource }.skipNil()
 
     let stripeInvalidToken = self.stripeErrorProperty.signal.map {
       $0?.localizedDescription

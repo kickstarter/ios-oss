@@ -34,12 +34,12 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     ).map(second)
 
     let storedCardsEvent = configureWithValue
-        .switchMap { _ in
-      AppEnvironment.current.apiService
-        .fetchGraphCreditCards(query: UserQueries.storedCards.query)
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .materialize()
-    }
+      .switchMap { _ in
+        AppEnvironment.current.apiService
+          .fetchGraphCreditCards(query: UserQueries.storedCards.query)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
 
     self.applePayButtonHidden = configureWithValue
       .map { ($0.project, $0.applePayCapable) }

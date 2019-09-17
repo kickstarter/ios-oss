@@ -46,8 +46,7 @@ final class PledgeCreditCardView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-
-    self.selectButton.addTarget(self, action: #selector(selectButtonTapped(_:)), for: .touchUpInside)
+    self.selectButton.addTarget(self, action: #selector(self.selectButtonTapped(_:)), for: .touchUpInside)
   }
 
   private func setupConstraints() {
@@ -97,7 +96,7 @@ final class PledgeCreditCardView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-   self.selectButton.rac.selected = self.viewModel.outputs.selectButtonSelected
+    self.selectButton.rac.selected = self.viewModel.outputs.selectButtonSelected
 
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle

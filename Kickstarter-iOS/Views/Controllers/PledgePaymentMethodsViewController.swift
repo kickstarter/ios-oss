@@ -96,14 +96,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] card in
         self?.insertNewCard(card)
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateLoadPaymentMethodsError
       .observeForUI()
       .observeValues { [weak self] errorMessage in
         guard let self = self else { return }
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
-    }
+      }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
   }
@@ -149,8 +149,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
     let newCardView = PledgeCreditCardView(frame: .zero)
     newCardView.configureWith(value: newCard, isNew: true)
     self.cardsStackView.insertArrangedSubview(newCardView, at: 0)
-    
-   // self.viewModel.inputs.cardInserted()
+
+    // self.viewModel.inputs.cardInserted()
   }
 
   // MARK: - Styles
@@ -188,7 +188,7 @@ extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
 }
 
 extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
-  func addNewCardViewController(_ viewController: AddNewCardViewController, _ newCard: GraphUserCreditCard.CreditCard) {
+  func addNewCardViewController(_: AddNewCardViewController, _ newCard: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.successfullyAddedCard(newCard: newCard)
   }
 
