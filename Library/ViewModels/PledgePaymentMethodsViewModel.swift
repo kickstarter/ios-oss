@@ -7,6 +7,7 @@ public typealias PledgePaymentMethodsValue = (user: User, project: Project, appl
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func addNewCardSucceeded()
+  func successfullyAddedCard(newCard: GraphUserCreditCard.CreditCard)
   func configureWith(_ value: PledgePaymentMethodsValue)
   func viewDidLoad()
 }
@@ -32,10 +33,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       self.configureWithValueProperty.signal.skipNil()
     ).map(second)
 
-    let storedCardsEvent = Signal.merge(
-      configureWithValue.ignoreValues(),
-      self.addNewCardSucceededProperty.signal
-    ).switchMap { _ in
+    let storedCardsEvent = configureWithValue
+        .switchMap { _ in
       AppEnvironment.current.apiService
         .fetchGraphCreditCards(query: UserQueries.storedCards.query)
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -51,11 +50,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .values()
       .map { $0.me.storedCards.nodes }
 
-    self.newCardAdded = storedCardsEvent.takeWhen(self.addNewCardSucceededProperty.signal)
-      .values()
-      .map { $0.me.storedCards.nodes.first! }
+    self.newCardAdded = self.creditCardProperty.signal.skipNil()
 
-    self.notifyDelegateNewCardAdded = .empty //self.addNewCardSucceededProperty.signal.takeWhen(storedCardsEvent.signal.ignoreValues())
+    self.notifyDelegateNewCardAdded = self.addNewCardSucceededProperty.signal.takeWhen(storedCardsEvent.signal.ignoreValues())
 
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
@@ -70,6 +67,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
   public func configureWith(_ value: PledgePaymentMethodsValue) {
     self.configureWithValueProperty.value = value
+  }
+
+  private let creditCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
+  public func successfullyAddedCard(newCard: GraphUserCreditCard.CreditCard) {
+    self.creditCardProperty.value = newCard
   }
 
   private let viewDidLoadProperty = MutableProperty(())

@@ -39,6 +39,7 @@ public protocol AddNewCardViewModelOutputs {
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var setStripePublishableKey: Signal<String, Never> { get }
   var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
+  var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
 }
 
 public protocol AddNewCardViewModelType {
@@ -130,6 +131,8 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
           .map { (envelope: CreatePaymentSourceEnvelope) in envelope.createPaymentSource }
           .materialize()
       }
+
+     self.newCardAdded = addNewCardEvent.map { $0.value?.paymentSource }.skipNil()
 
     let stripeInvalidToken = self.stripeErrorProperty.signal.map {
       $0?.localizedDescription
@@ -255,6 +258,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
   public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
+  public let newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }

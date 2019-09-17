@@ -207,6 +207,10 @@ extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
     }
   }
 
+  func addNewCardViewController(_ viewController: AddNewCardViewController, _ newCard: GraphUserCreditCard.CreditCard) {
+
+  }
+
   func addNewCardViewControllerDismissed(_: AddNewCardViewController) {
     self.dismiss(animated: true) {
       self.viewModel.inputs.addNewCardDismissed()
