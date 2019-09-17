@@ -162,6 +162,7 @@ private let backingDateLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_subhead()
     |> \.textColor .~ UIColor.ksr_dark_grey_500
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.minimumScaleFactor .~ 0.5
 }
 
 private let pledgeLabelStyle: LabelStyle = { label in
@@ -183,6 +184,7 @@ private let shippingLocationLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.ksr_dark_grey_500
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.minimumScaleFactor .~ 0.5
 }
 
 private let totalLabelStyle: LabelStyle = { label in
