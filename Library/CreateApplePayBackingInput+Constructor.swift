@@ -8,7 +8,8 @@ extension CreateApplePayBackingInput {
     pledgeAmount: Double,
     selectedShippingRule: ShippingRule?,
     pkPaymentData: PKPaymentData,
-    stripeToken: String
+    stripeToken: String,
+    refTag: RefTag?
   ) -> CreateApplePayBackingInput {
     let pledgeAmountDecimal = Decimal(pledgeAmount)
     var shippingAmountDecimal: Decimal = Decimal()
@@ -30,6 +31,7 @@ extension CreateApplePayBackingInput {
       paymentInstrumentName: pkPaymentData.displayName,
       paymentNetwork: pkPaymentData.network,
       projectId: project.graphID,
+      refParam: refTag?.description,
       rewardId: rewardId,
       stripeToken: stripeToken,
       transactionIdentifier: pkPaymentData.transactionIdentifier
