@@ -319,8 +319,7 @@ let allRewards: [(String, Reward)] = {
     |> Reward.lens.shipping .~ (
       .template
         |> Reward.Shipping.lens.enabled .~ true
-        |> Reward.Shipping.lens.preference .~ .restricted
-        |> Reward.Shipping.lens.summary .~ "Anywhere in the world"
+        |> Reward.Shipping.lens.type .~ .anywhere
     )
 
   let unavailableLimitedReward = Reward.postcards
@@ -346,8 +345,7 @@ let allRewards: [(String, Reward)] = {
     |> Reward.lens.shipping .~ (
       .template
         |> Reward.Shipping.lens.enabled .~ true
-        |> Reward.Shipping.lens.preference .~ .restricted
-        |> Reward.Shipping.lens.summary .~ "Anywhere in the world"
+        |> Reward.Shipping.lens.type .~ .anywhere
     )
   let noReward = Reward.noReward
     |> Reward.lens.convertedMinimum .~ 1

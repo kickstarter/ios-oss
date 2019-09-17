@@ -241,6 +241,7 @@
 "Left_count_left.one" = "%{left_count} restante";
 "Left_count_left.two" = "%{left_count} restantes";
 "Left_count_left.zero" = "%{left_count} restantes";
+"Limited_shipping" = "Limited shipping";
 "Live" = "En vivo";
 "Live_Stream" = "Live Streaming";
 "Live_now" = "En vivo";
@@ -420,6 +421,7 @@
 "Shipping_addresses" = "Direcciones de envío";
 "Ships_to" = "Envío a:";
 "Ships_to_shipping_summary" = "Ships to: %{shipping_summary}";
+"Ships_worldwide" = "Ships worldwide";
 "Show_password" = "Mostrar contraseña";
 "Shows_list_of_subcategories" = "Mostrar lista de subcategorías.";
 "Sign_up_newsletter" = "Suscríbete a Nuestros favoritos para recibir una combinación semanal de proyectos destacados, seleccionados por el equipo de Kickstarter.";
@@ -1076,6 +1078,7 @@
 "invalid_api_client_alert.message" = "Parece que estás usando una versión muy antigua de esta aplicación. Por favor descarga la última versión en la App Store para continuar usándola.";
 "invalid_api_client_alert.title" = "Por favor actualizar";
 "invalid_api_client_alert.upgrade" = "Actualizar";
+"location_name_only" = "%{location_name} only";
 "login.buttons.forgot_password" = "¿Olvidaste tu contraseña?";
 "login.buttons.forgot_password_html" = "<u>¿Olvidaste la contraseña?</u>";
 "login.buttons.log_in" = "Iniciar sesión";

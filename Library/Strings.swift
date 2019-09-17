@@ -3944,6 +3944,23 @@ with friends."
     )
   }
   /**
+   "Limited shipping"
+
+   - **en**: "Limited shipping"
+   - **de**: "Limited shipping"
+   - **es**: "Limited shipping"
+   - **fr**: "Limited shipping"
+   - **ja**: "Limited shipping"
+  */
+  public static func Limited_shipping() -> String {
+    return localizedString(
+      key: "Limited_shipping",
+      defaultValue: "Limited shipping",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Live"
 
    - **en**: "Live"
@@ -6786,6 +6803,23 @@ daring ideas."
       defaultValue: "Ships to: %{shipping_summary}",
       count: nil,
       substitutions: ["shipping_summary": shipping_summary]
+    )
+  }
+  /**
+   "Ships worldwide"
+
+   - **en**: "Ships worldwide"
+   - **de**: "Ships worldwide"
+   - **es**: "Ships worldwide"
+   - **fr**: "Ships worldwide"
+   - **ja**: "Ships worldwide"
+  */
+  public static func Ships_worldwide() -> String {
+    return localizedString(
+      key: "Ships_worldwide",
+      defaultValue: "Ships worldwide",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -15533,6 +15567,23 @@ Veuillez réessayer ultérieurement."
       defaultValue: "Upgrade",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "%{location_name} only"
+
+   - **en**: "%{location_name} only"
+   - **de**: "%{location_name} only"
+   - **es**: "%{location_name} only"
+   - **fr**: "%{location_name} only"
+   - **ja**: "%{location_name} only"
+  */
+  public static func location_name_only(location_name: String) -> String {
+    return localizedString(
+      key: "location_name_only",
+      defaultValue: "%{location_name} only",
+      count: nil,
+      substitutions: ["location_name": location_name]
     )
   }
   /**

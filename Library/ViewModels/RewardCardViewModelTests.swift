@@ -752,7 +752,7 @@ final class RewardCardViewModelTests: TestCase {
     ])
   }
 
-  func testPillsTimebasedAndLimitedReward_ShippingEnabled() {
+  func testPillsTimebasedAndLimitedReward_ShippingEnabled_Worldwide() {
     self.pillCollectionViewHidden.assertValueCount(0)
     self.reloadPills.assertValueCount(0)
 
@@ -766,15 +766,65 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.preference .~ .restricted
-          |> Reward.Shipping.lens.summary .~ "Anywhere in the world"
+          |> Reward.Shipping.lens.type .~ .anywhere
       )
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
-      ["4 days left", "75 left of 100", "Ships to: Anywhere in the world"]
+      ["4 days left", "75 left of 100", "Ships worldwide"]
+    ])
+  }
+
+  func testPillsTimebasedAndLimitedReward_ShippingEnabled_SingleLocation() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.backersCount .~ nil
+      |> Reward.lens.remaining .~ 75
+      |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
+      |> Reward.lens.shipping .~ (
+        .template
+          |> Reward.Shipping.lens.enabled .~ true
+          |> Reward.Shipping.lens.type .~ .singleLocation
+          |> Reward.Shipping.lens.location .~ .init(id: 123, localizedName: "United States")
+      )
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["4 days left", "75 left of 100", "United States only"]
+    ])
+  }
+
+  func testPillsTimebasedAndLimitedReward_ShippingEnabled_MultipleLocations() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
+
+    let reward = Reward.postcards
+      |> Reward.lens.limit .~ 100
+      |> Reward.lens.backersCount .~ nil
+      |> Reward.lens.remaining .~ 75
+      |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
+      |> Reward.lens.shipping .~ (
+        .template
+          |> Reward.Shipping.lens.enabled .~ true
+          |> Reward.Shipping.lens.type .~ .multipleLocations
+      )
+
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["4 days left", "75 left of 100", "Limited shipping"]
     ])
   }
 
@@ -792,8 +842,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.preference .~ .restricted
-          |> Reward.Shipping.lens.summary .~ "Anywhere in the world"
+          |> Reward.Shipping.lens.type .~ .anywhere
       )
 
     let project = Project.template
@@ -803,7 +852,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
-      ["4 days left", "25 left of 100", "Ships to: Anywhere in the world"]
+      ["4 days left", "25 left of 100", "Ships worldwide"]
     ])
   }
 
@@ -821,8 +870,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.preference .~ .restricted
-          |> Reward.Shipping.lens.summary .~ "Anywhere in the world"
+          |> Reward.Shipping.lens.type .~ .anywhere
       )
 
     let project = Project.template
@@ -832,7 +880,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
-      ["50 backers", "Ships to: Anywhere in the world"]
+      ["50 backers", "Ships worldwide"]
     ])
   }
 
@@ -853,8 +901,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (
         .template
           |> Reward.Shipping.lens.enabled .~ true
-          |> Reward.Shipping.lens.preference .~ .restricted
-          |> Reward.Shipping.lens.summary .~ "Ships to: Anywhere in the world"
+          |> Reward.Shipping.lens.type .~ .anywhere
       )
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))

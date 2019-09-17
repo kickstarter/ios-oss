@@ -25,13 +25,27 @@ public struct Reward {
 
   public struct Shipping {
     public let enabled: Bool
+    public let location: Location?
     public let preference: Preference?
     public let summary: String?
+    public let type: ShippingType?
+
+    public struct Location: Equatable {
+      public let id: Int
+      public let localizedName: String
+    }
 
     public enum Preference: String {
       case none
       case restricted
       case unrestricted
+    }
+
+    public enum ShippingType: String {
+      case anywhere
+      case multipleLocations = "multiple_locations"
+      case noShipping = "no_shipping"
+      case singleLocation = "single_location"
     }
   }
 }
@@ -73,12 +87,23 @@ extension Reward.Shipping: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Reward.Shipping> {
     return curry(Reward.Shipping.init)
       <^> (json <| "shipping_enabled" <|> .success(false))
+      <*> json <|? "shipping_single_location"
       <*> json <|? "shipping_preference"
       <*> json <|? "shipping_summary"
+      <*> json <|? "shipping_type"
+  }
+}
+
+extension Reward.Shipping.Location: Argo.Decodable {
+  public static func decode(_ json: JSON) -> Decoded<Reward.Shipping.Location> {
+    return curry(Reward.Shipping.Location.init)
+      <^> json <| "id"
+      <*> json <| "localized_name"
   }
 }
 
 extension Reward.Shipping.Preference: Argo.Decodable {}
+extension Reward.Shipping.ShippingType: Argo.Decodable {}
 
 extension Reward: GraphIDBridging {
   public static var modelName: String {

@@ -241,6 +241,7 @@
 "Left_count_left.one" = "残り%{left_count}";
 "Left_count_left.two" = "残り%{left_count}";
 "Left_count_left.zero" = "残り%{left_count}";
+"Limited_shipping" = "Limited shipping";
 "Live" = "ライブ";
 "Live_Stream" = "ライブ配信";
 "Live_now" = "ライブ配信中";
@@ -420,6 +421,7 @@
 "Shipping_addresses" = "配送先住所";
 "Ships_to" = "配送先：";
 "Ships_to_shipping_summary" = "Ships to: %{shipping_summary}";
+"Ships_worldwide" = "Ships worldwide";
 "Show_password" = "パスワードを表示する";
 "Shows_list_of_subcategories" = "サブカテゴリーリストを見せる。";
 "Sign_up_newsletter" = "Projects We Love に登録して、私たち Kickstarter チームが選別した注目プロジェクトに関する情報を週に1度受け取りましょう。";
@@ -1076,6 +1078,7 @@
 "invalid_api_client_alert.message" = "引き続き利用するにはApp Storeからアプリのバージョンを更新してください。";
 "invalid_api_client_alert.title" = "アップグレードしてください";
 "invalid_api_client_alert.upgrade" = "アップグレード";
+"location_name_only" = "%{location_name} only";
 "login.buttons.forgot_password" = "パスワードを忘れましたか？";
 "login.buttons.forgot_password_html" = "<u>パスワードを忘れましたか？</u>";
 "login.buttons.log_in" = "ログイン";
