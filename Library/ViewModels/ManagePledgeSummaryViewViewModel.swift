@@ -83,11 +83,15 @@ public class ManagePledgeSummaryViewViewModel: ManagePledgeSummaryViewViewModelT
 }
 
 private func shouldHideShippingLocationStackView(_ project: Project) -> Bool {
-  guard let reward = project.personalization.backing?.reward else {
-    return false
+  guard let backing = project.personalization.backing,
+    let _ = backing.rewardId else {
+    return true
+  }
+  if let reward = backing.reward {
+    return !reward.shipping.enabled || reward.isNoReward
   }
 
-  return !reward.shipping.enabled || reward.isNoReward
+  return backing.locationId.isNil
 }
 
 private func formattedPledgeDate(_ backing: Backing) -> String {
