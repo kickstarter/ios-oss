@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class ManagePledgeViewController: UIViewController {
+final class ManageViewPledgeViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var closeButton: UIBarButtonItem = {
@@ -11,7 +11,7 @@ final class ManagePledgeViewController: UIViewController {
       image: UIImage(named: "icon--cross"),
       style: .plain,
       target: self,
-      action: #selector(ManagePledgeViewController.closeButtonTapped)
+      action: #selector(ManageViewPledgeViewController.closeButtonTapped)
     )
   }()
 
@@ -20,7 +20,7 @@ final class ManagePledgeViewController: UIViewController {
       image: UIImage(named: "icon--more-menu"),
       style: .plain,
       target: self,
-      action: #selector(ManagePledgeViewController.editButtonTapped)
+      action: #selector(ManageViewPledgeViewController.editButtonTapped)
     )
   }()
 
@@ -28,7 +28,14 @@ final class ManagePledgeViewController: UIViewController {
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
   }()
 
-  private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
+  private let viewModel = ManageViewPledgeViewModel()
+
+  static func instantiate(with project: Project, reward: Reward) -> ManageViewPledgeViewController {
+    let manageViewPledgeVC = ManageViewPledgeViewController.instantiate()
+    manageViewPledgeVC.viewModel.inputs.configureWith(project, reward: reward)
+
+    return manageViewPledgeVC
+  }
 
   // MARK: - Lifecycle
 
@@ -36,7 +43,6 @@ final class ManagePledgeViewController: UIViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.title %~ { _ in Strings.Manage_your_pledge() }
       |> \.extendedLayoutIncludesOpaqueBars .~ true
 
     _ = self.navigationController?.navigationBar
@@ -47,6 +53,8 @@ final class ManagePledgeViewController: UIViewController {
     _ = self.navigationItem
       ?|> \.leftBarButtonItem .~ self.closeButton
       ?|> \.rightBarButtonItem .~ self.editButton
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   // MARK: - Styles
@@ -60,6 +68,32 @@ final class ManagePledgeViewController: UIViewController {
     _ = self.closeButton
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
       |> \.width .~ Styles.minTouchSize.width
+  }
+
+  // MARK: - View model
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.title
+      .observeForUI()
+      .observeValues { [weak self] title in
+        guard let self = self else { return }
+        _ = self
+          |> \.title .~ title
+      }
+
+    self.viewModel.outputs.configurePaymentMethodView
+      .observeForUI()
+      .observeValues { _ in }
+
+    self.viewModel.outputs.configurePledgeSummaryView
+      .observeForUI()
+      .observeValues { _ in }
+
+    self.viewModel.outputs.configureRewardSummaryView
+      .observeForUI()
+      .observeValues { _ in }
   }
 
   // MARK: - Configuration

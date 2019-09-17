@@ -61,7 +61,7 @@ extension Service {
           let decodedObject = try JSONDecoder().decode(GraphResponse<A>.self, from: data)
           if let errors = decodedObject.errors, let error = errors.first {
             observer.send(error: .decodeError(error))
-            print("🔴 [KsApi] Failure - Decoding error: \(error.message)")
+            print("🔴 [KsApi] Failure - Error: \(error.message)")
           } else if let value = decodedObject.data {
             print("🔵 [KsApi] Success")
             observer.send(value: value)
@@ -106,6 +106,8 @@ extension Service {
         input: mutation.input.toInputDictionary()
       )
       print("⚪️ [KsApi] Starting mutation:\n \(mutation.description)")
+      print("⚪️ [KsApi] Input:\n \(mutation.input.toInputDictionary())")
+
       return self.performRequest(request: request)
     } catch {
       return SignalProducer(error: .invalidInput)
