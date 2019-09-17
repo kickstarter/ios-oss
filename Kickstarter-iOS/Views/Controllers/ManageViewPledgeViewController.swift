@@ -15,12 +15,12 @@ final class ManageViewPledgeViewController: UIViewController {
     )
   }()
 
-  private lazy var editButton: UIBarButtonItem = {
+  private lazy var menuButton: UIBarButtonItem = {
     UIBarButtonItem(
       image: UIImage(named: "icon--more-menu"),
       style: .plain,
       target: self,
-      action: #selector(ManageViewPledgeViewController.editButtonTapped)
+      action: #selector(ManageViewPledgeViewController.menuButtonTapped)
     )
   }()
 
@@ -52,7 +52,7 @@ final class ManageViewPledgeViewController: UIViewController {
 
     _ = self.navigationItem
       ?|> \.leftBarButtonItem .~ self.closeButton
-      ?|> \.rightBarButtonItem .~ self.editButton
+      ?|> \.rightBarButtonItem .~ self.menuButton
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -94,6 +94,12 @@ final class ManageViewPledgeViewController: UIViewController {
     self.viewModel.outputs.configureRewardSummaryView
       .observeForUI()
       .observeValues { _ in }
+
+    self.viewModel.outputs.showActionSheetMenuWithOptions
+      .observeForControllerAction()
+      .observeValues { [weak self] options in
+        self?.showActionSheetMenuWithOptions(options)
+    }
   }
 
   // MARK: - Configuration
@@ -104,15 +110,47 @@ final class ManageViewPledgeViewController: UIViewController {
 
   // MARK: Actions
 
-  @objc private func editButtonTapped() {
-    let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+  @objc private func menuButtonTapped() {
+    self.viewModel.inputs.menuButtonTapped()
+  }
 
-    actionSheet.addAction(
-      UIAlertAction(title: Strings.Contact_creator(), style: .default)
+  private func showActionSheetMenuWithOptions(_ options: [ActionSheetMenuOption]) {
+    let preferredStyle: UIAlertController.Style =
+      AppEnvironment.current.device.userInterfaceIdiom == .pad ? .alert : .actionSheet
+
+    let actionSheet = UIAlertController.alert(
+      title: "Select an option",
+      preferredStyle: preferredStyle,
+      barButtonItem: self.menuButton
     )
+
+    options.forEach { option in
+      let title: String
+
+      switch option {
+      case .updatePledge:
+        title = Strings.Update_pledge()
+      case .changePaymentMethod:
+        title = Strings.Change_payment_method()
+      case .chooseAnotherReward:
+        title = Strings.Choose_another_reward()
+      case .contactCreator:
+        title = Strings.Contact_creator()
+      case .cancelPledge:
+        title = Strings.Cancel_pledge()
+      }
+
+      let style: UIAlertAction.Style = option == .cancelPledge ? .destructive : .default
+
+      actionSheet.addAction(
+        UIAlertAction(title: title, style: style)
+      )
+    }
+
     actionSheet.addAction(
       UIAlertAction(title: Strings.Cancel(), style: .cancel)
     )
+
     self.present(actionSheet, animated: true)
   }
 
