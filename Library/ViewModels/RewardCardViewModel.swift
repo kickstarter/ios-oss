@@ -247,8 +247,20 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> S
 }
 
 private func shippingSummaryString(project: Project, reward: Reward) -> String? {
-  if project.state == .live, reward.shipping.enabled, let shippingSummary = reward.shipping.summary {
-    return Strings.Ships_to_shipping_summary(shipping_summary: shippingSummary)
+  if project.state == .live, reward.shipping.enabled, let type = reward.shipping.type {
+    switch type {
+    case .anywhere:
+      return Strings.Ships_worldwide()
+    case .multipleLocations:
+      return Strings.Limited_shipping()
+    case .noShipping: return nil
+    case .singleLocation:
+      if let name = reward.shipping.location?.localizedName {
+        return Strings.location_name_only(location_name: name)
+      }
+
+      return nil
+    }
   }
 
   return nil

@@ -7,7 +7,7 @@ import ReactiveSwift
 public typealias StripeConfigurationData = (merchantIdentifier: String, publishableKey: String)
 public typealias CreateBackingData = (
   project: Project, reward: Reward, pledgeAmount: Double,
-  selectedShippingRule: ShippingRule?
+  selectedShippingRule: ShippingRule?, refTag: RefTag?
 )
 public typealias PaymentAuthorizationData = (
   project: Project, reward: Reward, pledgeAmount: Double,
@@ -17,7 +17,7 @@ public typealias PKPaymentData = (displayName: String, network: String, transact
 
 public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
-  func configureWith(project: Project, reward: Reward)
+  func configureWith(project: Project, reward: Reward, refTag: RefTag?)
   func paymentAuthorizationDidAuthorizePayment(
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
   )
@@ -49,32 +49,33 @@ public protocol PledgeViewModelType {
 
 public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, PledgeViewModelOutputs {
   public init() {
-    let projectAndReward = Signal.combineLatest(
-      self.configureProjectAndRewardProperty.signal,
+    let initialData = Signal.combineLatest(
+      self.configureWithDataProperty.signal,
       self.viewDidLoadProperty.signal
     )
     .map(first)
     .skipNil()
 
-    let project = projectAndReward.map(first)
-    let reward = projectAndReward.map(second)
-    let isLoggedIn = Signal.merge(projectAndReward.ignoreValues(), self.userSessionStartedSignal)
+    let project = initialData.map(first)
+    let reward = initialData.map(second)
+    let refTag = initialData.map(third)
+    let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
     let pledgeAmount = Signal.merge(
       self.pledgeAmountSignal,
-      projectAndReward.map { $1.minimum }
+      reward.map { $0.minimum }
     )
 
-    let initialShippingAmount = projectAndReward.mapConst(0.0)
+    let initialShippingAmount = initialData.mapConst(0.0)
     let shippingAmount = self.shippingRuleSelectedSignal
       .map { $0.cost }
     let shippingCost = Signal.merge(shippingAmount, initialShippingAmount)
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost).map(+)
 
-    self.configureWithData = projectAndReward.map { (project: $0.0, reward: $0.1) }
+    self.configureWithData = initialData.map { (project: $0.0, reward: $0.1) }
 
     self.configureSummaryViewControllerWithData = project
       .takePairWhen(pledgeTotal)
@@ -97,7 +98,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { $0.shipping.enabled }
       .negate()
 
-    self.configureStripeIntegration = projectAndReward.ignoreValues()
+    self.configureStripeIntegration = initialData.ignoreValues()
       .map { _ in
         (
           PKPaymentAuthorizationViewController.merchantIdentifier,
@@ -106,23 +107,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     let selectedShippingRule = Signal.merge(
-      projectAndReward.mapConst(nil),
+      initialData.mapConst(nil),
       self.shippingRuleSelectedSignal.wrapInOptional()
     )
 
-    let backingData: Signal<CreateBackingData, Never> = Signal.combineLatest(
-      projectAndReward,
+    let backingData = Signal.combineLatest(
+      project,
+      reward,
       pledgeAmount,
-      selectedShippingRule
-    )
-    .map { projectAndReward, pledgeAmount, selectedShippingRule in
-      (
-        projectAndReward.0,
-        projectAndReward.1,
-        pledgeAmount,
-        selectedShippingRule
-      )
-    }
+      selectedShippingRule,
+      refTag
+    ).map { $0 as CreateBackingData }
 
     // MARK: Apple Pay
 
@@ -171,21 +166,22 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
     .takeWhen(applePayStatusSuccess)
     .map { backingData, paymentData, stripeToken
-      -> (Project, Reward, Double, ShippingRule?, PKPaymentData, String) in
+      -> (Project, Reward, Double, ShippingRule?, PKPaymentData, String, RefTag?) in
       (
         backingData.project,
         backingData.reward,
         backingData.pledgeAmount,
         backingData.selectedShippingRule,
         paymentData,
-        stripeToken
+        stripeToken,
+        backingData.refTag
       )
     }
 
     let createApplePayBackingEvent = createApplePayBackingData
       .map(
         CreateApplePayBackingInput.input(
-          from:reward:pledgeAmount:selectedShippingRule:pkPaymentData:stripeToken:
+          from:reward:pledgeAmount:selectedShippingRule:pkPaymentData:stripeToken:refTag:
         )
       )
       .switchMap { input in
@@ -217,9 +213,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.applePayButtonTappedObserver.send(value: ())
   }
 
-  private let configureProjectAndRewardProperty = MutableProperty<(Project, Reward)?>(nil)
-  public func configureWith(project: Project, reward: Reward) {
-    self.configureProjectAndRewardProperty.value = (project, reward)
+  private let configureWithDataProperty = MutableProperty<(Project, Reward, RefTag?)?>(nil)
+  public func configureWith(project: Project, reward: Reward, refTag: RefTag?) {
+    self.configureWithDataProperty.value = (project, reward, refTag)
   }
 
   private let (pkPaymentSignal, pkPaymentObserver) = Signal<

@@ -19,7 +19,8 @@ final class CreateApplePayBackingInputConstructorTests: XCTestCase {
         network: "Visa",
         transactionIdentifier: "12345"
       ),
-      stripeToken: "stripe-token"
+      stripeToken: "stripe-token",
+      refTag: RefTag.projectPage
     )
 
     XCTAssertEqual(input.amount, "10.00")
@@ -30,6 +31,7 @@ final class CreateApplePayBackingInputConstructorTests: XCTestCase {
     XCTAssertNil(input.rewardId)
     XCTAssertEqual(input.stripeToken, "stripe-token")
     XCTAssertEqual(input.transactionIdentifier, "12345")
+    XCTAssertEqual(input.refParam, "project_page")
   }
 
   func testCreateApplePayBackingInput_WithShipping() {
@@ -49,7 +51,8 @@ final class CreateApplePayBackingInputConstructorTests: XCTestCase {
         network: "Visa",
         transactionIdentifier: "12345"
       ),
-      stripeToken: "stripe-token"
+      stripeToken: "stripe-token",
+      refTag: nil
     )
 
     XCTAssertEqual(input.amount, "15.00")
@@ -60,5 +63,6 @@ final class CreateApplePayBackingInputConstructorTests: XCTestCase {
     XCTAssertEqual(input.rewardId, reward.graphID)
     XCTAssertEqual(input.stripeToken, "stripe-token")
     XCTAssertEqual(input.transactionIdentifier, "12345")
+    XCTAssertNil(input.refParam)
   }
 }
