@@ -6,7 +6,7 @@ import UIKit
 
 public protocol CreditCardCellViewModelInputs {
   /// Call to configure cell with card value.
-  func configureWith(creditCard: GraphUserCreditCard.CreditCard)
+  func configureWith(creditCard: GraphUserCreditCard.CreditCard, isNew: Bool)
 
   func selectButtonTapped(selected: Bool)
 
@@ -59,7 +59,7 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
     self.expirationDateText = self.cardProperty.signal.skipNil()
       .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
 
-    self.selectButtonSelected = self.addedNewCardProperty.signal.mapConst(true)
+    self.selectButtonSelected = self.isNewCardProperty.signal
   }
 
   fileprivate let addedNewCardProperty = MutableProperty(())
@@ -68,8 +68,10 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
   }
 
   fileprivate let cardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
-  public func configureWith(creditCard: GraphUserCreditCard.CreditCard) {
+  fileprivate let isNewCardProperty = MutableProperty(false)
+  public func configureWith(creditCard: GraphUserCreditCard.CreditCard, isNew: Bool) {
     self.cardProperty.value = creditCard
+    self.isNewCardProperty.value = isNew
   }
 
   fileprivate let selectButtonTappedProperty = MutableProperty(false)

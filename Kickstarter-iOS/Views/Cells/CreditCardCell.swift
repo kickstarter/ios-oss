@@ -13,7 +13,7 @@ internal final class CreditCardCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var expirationDateLabel: UILabel!
 
   public func configureWith(value card: GraphUserCreditCard.CreditCard) {
-    self.viewModel.inputs.configureWith(creditCard: card)
+    self.viewModel.inputs.configureWith(creditCard: card, isNew: false)
   }
 
   override func bindStyles() {

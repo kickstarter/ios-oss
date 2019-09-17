@@ -4,10 +4,6 @@ import PassKit
 import Prelude
 import UIKit
 
-internal protocol PledgePaymentMethodsDelegate: AnyObject {
-  func creditCardCTASelected(_ controller: PledgePaymentMethodsViewController)
-}
-
 final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
 
@@ -20,8 +16,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var spacer: UIView = { UIView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel = PledgePaymentMethodsViewModel()
-
-  internal weak var delegate: PledgePaymentMethodsDelegate?
 
   // MARK: - Lifecycle
 
@@ -108,15 +102,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] errorMessage in
         guard let self = self else { return }
-
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
-    }
-
-    self.viewModel.outputs.notifyDelegateNewCardAdded
-      .observeForUI()
-      .observeValues { [weak self] in
-        guard let _self = self else {  return }
-        self?.delegate?.creditCardCTASelected(_self)
     }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
@@ -148,7 +134,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
     let cardViews: [UIView] = cards
       .map { card -> PledgeCreditCardView in
         let cardView = PledgeCreditCardView(frame: .zero)
-        cardView.configureWith(value: card)
+        cardView.configureWith(value: card, isNew: false)
         return cardView
       }
 
@@ -161,9 +147,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   private func insertNewCard(_ newCard: GraphUserCreditCard.CreditCard) {
     let newCardView = PledgeCreditCardView(frame: .zero)
-    newCardView.configureWith(value: newCard)
-
+    newCardView.configureWith(value: newCard, isNew: true)
     self.cardsStackView.insertArrangedSubview(newCardView, at: 0)
+    
+   // self.viewModel.inputs.cardInserted()
   }
 
   // MARK: - Styles

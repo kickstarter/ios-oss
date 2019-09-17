@@ -15,14 +15,11 @@ final class PledgeCreditCardView: UIView {
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let selectButton: UIButton = { UIButton(type: .custom) }()
 
-  internal weak var delegate: PledgePaymentMethodsDelegate?
-
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.delegate = self
     self.configureSubviews()
     self.setupConstraints()
     self.bindViewModel()
@@ -112,18 +109,12 @@ final class PledgeCreditCardView: UIView {
       }
   }
 
-  func configureWith(value: GraphUserCreditCard.CreditCard) {
-    self.viewModel.inputs.configureWith(creditCard: value)
+  func configureWith(value: GraphUserCreditCard.CreditCard, isNew: Bool) {
+    self.viewModel.inputs.configureWith(creditCard: value, isNew: isNew)
   }
 
   @objc fileprivate func selectButtonTapped(_ button: UIButton) {
     self.viewModel.inputs.selectButtonTapped(selected: button.isSelected)
-  }
-}
-
-extension PledgeCreditCardView: PledgePaymentMethodsDelegate {
-  func creditCardCTASelected(_ controller: PledgePaymentMethodsViewController) {
-    self.viewModel.inputs.addedNewCard()
   }
 }
 
