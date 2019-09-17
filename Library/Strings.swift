@@ -864,6 +864,23 @@ contributeurs"
     )
   }
   /**
+   "Cancel pledge"
+
+   - **en**: "Cancel pledge"
+   - **de**: "Beitrag zurückziehen"
+   - **es**: "Cancelar contribución"
+   - **fr**: "Annuler mon engagement"
+   - **ja**: "プレッジを取り消す"
+  */
+  public static func Cancel_pledge() -> String {
+    return localizedString(
+      key: "Cancel_pledge",
+      defaultValue: "Cancel pledge",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Cancel your pledge"
 
    - **en**: "Cancel your pledge"
@@ -1039,13 +1056,30 @@ contributeurs"
    - **en**: "Check your payment details"
    - **de**: "Überprüfe die Daten deiner Zahlungsweise"
    - **es**: "Revisa tu información de pago"
-   - **fr**: "Check your payment details"
+   - **fr**: "Vérifiez vos coordonnées bancaires"
    - **ja**: "お支払い情報をご確認ください"
   */
   public static func Check_your_payment_details() -> String {
     return localizedString(
       key: "Check_your_payment_details",
       defaultValue: "Check your payment details",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Choose another reward"
+
+   - **en**: "Choose another reward"
+   - **de**: "Andere Belohnung auswählen"
+   - **es**: "Elegir otra recompensa"
+   - **fr**: "Choisir une autre récompense"
+   - **ja**: "他のリワードを選択"
+  */
+  public static func Choose_another_reward() -> String {
+    return localizedString(
+      key: "Choose_another_reward",
+      defaultValue: "Choose another reward",
       count: nil,
       substitutions: [:]
     )
