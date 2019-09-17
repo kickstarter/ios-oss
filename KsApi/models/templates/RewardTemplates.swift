@@ -16,8 +16,10 @@ extension Reward {
     rewardsItems: [],
     shipping: Reward.Shipping(
       enabled: false,
+      location: nil,
       preference: nil,
-      summary: nil
+      summary: nil,
+      type: nil
     ),
     startsAt: nil,
     title: nil
@@ -35,7 +37,11 @@ extension Reward {
     remaining: nil,
     rewardsItems: [],
     shipping: Reward.Shipping(
-      enabled: false, preference: nil, summary: nil
+      enabled: false,
+      location: nil,
+      preference: nil,
+      summary: nil,
+      type: nil
     ),
     startsAt: nil,
     title: nil
@@ -53,7 +59,11 @@ extension Reward {
     remaining: nil,
     rewardsItems: [],
     shipping: Reward.Shipping(
-      enabled: false, preference: nil, summary: nil
+      enabled: false,
+      location: nil,
+      preference: nil,
+      summary: nil,
+      type: nil
     ),
     startsAt: nil,
     title: nil

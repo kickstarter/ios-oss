@@ -10,6 +10,7 @@ final class CreateApplePayBackingInputTests: XCTestCase {
       paymentInstrumentName: "instrumentName",
       paymentNetwork: "paymentNetwork",
       projectId: "12345",
+      refParam: "activity",
       rewardId: "321",
       stripeToken: "stripeTokenXYZ",
       transactionIdentifier: "transactionId"
@@ -22,6 +23,7 @@ final class CreateApplePayBackingInputTests: XCTestCase {
     XCTAssertEqual(inputDictionary["paymentInstrumentName"] as? String, "instrumentName")
     XCTAssertEqual(inputDictionary["paymentNetwork"] as? String, "paymentNetwork")
     XCTAssertEqual(inputDictionary["projectId"] as? String, "12345")
+    XCTAssertEqual(inputDictionary["refParam"] as? String, "activity")
     XCTAssertEqual(inputDictionary["rewardId"] as? String, "321")
     XCTAssertEqual(inputDictionary["token"] as? String, "stripeTokenXYZ")
     XCTAssertEqual(inputDictionary["transactionIdentifier"] as? String, "transactionId")
@@ -34,6 +36,7 @@ final class CreateApplePayBackingInputTests: XCTestCase {
       paymentInstrumentName: "instrumentName",
       paymentNetwork: "paymentNetwork",
       projectId: "12345",
+      refParam: nil,
       rewardId: nil,
       stripeToken: "stripeTokenXYZ",
       transactionIdentifier: "transactionId"
@@ -49,5 +52,6 @@ final class CreateApplePayBackingInputTests: XCTestCase {
     XCTAssertEqual(inputDictionary["transactionIdentifier"] as? String, "transactionId")
     XCTAssertNil(inputDictionary["locationId"])
     XCTAssertNil(inputDictionary["rewardId"])
+    XCTAssertNil(inputDictionary["refParam"])
   }
 }

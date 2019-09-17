@@ -241,6 +241,7 @@
 "Left_count_left.one" = "%{left_count} left";
 "Left_count_left.two" = "%{left_count} left";
 "Left_count_left.zero" = "%{left_count} left";
+"Limited_shipping" = "Limited shipping";
 "Live" = "Live";
 "Live_Stream" = "Live Stream";
 "Live_now" = "Live now";
@@ -420,6 +421,7 @@
 "Shipping_addresses" = "Shipping addresses";
 "Ships_to" = "Ships to:";
 "Ships_to_shipping_summary" = "Ships to: %{shipping_summary}";
+"Ships_worldwide" = "Ships worldwide";
 "Show_password" = "Show password";
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
 "Sign_up_newsletter" = "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team.";
@@ -1076,6 +1078,7 @@
 "invalid_api_client_alert.message" = "You seem to be using a really old version of the app. Please upgrade from the App Store to continue using.";
 "invalid_api_client_alert.title" = "Please Upgrade";
 "invalid_api_client_alert.upgrade" = "Upgrade";
+"location_name_only" = "%{location_name} only";
 "login.buttons.forgot_password" = "Forgot your password?";
 "login.buttons.forgot_password_html" = "<u>Forgot your password?</u>";
 "login.buttons.log_in" = "Log in";
