@@ -3,11 +3,11 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol PledgeSummaryViewViewModelInputs {
+public protocol ManagePledgeSummaryViewViewModelInputs {
   func configureWith(_ project: Project)
 }
 
-public protocol PledgeSummaryViewViewModelOutputs {
+public protocol ManagePledgeSummaryViewViewModelOutputs {
   var backerNumberText: Signal<String, Never> { get }
   var backingDateText: Signal<String, Never> { get }
   var pledgeAmountText: Signal<NSAttributedString, Never> { get }
@@ -17,20 +17,19 @@ public protocol PledgeSummaryViewViewModelOutputs {
   var totalAmountText: Signal<NSAttributedString, Never> { get }
 }
 
-public protocol PledgeSummaryViewViewModelType {
-  var inputs: PledgeSummaryViewViewModelInputs { get }
-  var outputs: PledgeSummaryViewViewModelOutputs { get }
+public protocol ManagePledgeSummaryViewViewModelType {
+  var inputs: ManagePledgeSummaryViewViewModelInputs { get }
+  var outputs: ManagePledgeSummaryViewViewModelOutputs { get }
 }
 
-public class PledgeSummaryViewViewModel: PledgeSummaryViewViewModelType,
-PledgeSummaryViewViewModelInputs, PledgeSummaryViewViewModelOutputs {
+public class ManagePledgeSummaryViewViewModel: ManagePledgeSummaryViewViewModelType,
+  ManagePledgeSummaryViewViewModelInputs, ManagePledgeSummaryViewViewModelOutputs {
   public init() {
-
-    let backing = projectSignal
+    let backing = self.projectSignal
       .map { $0.personalization.backing }
       .skipNil()
 
-    let projectAndBacking = projectSignal
+    let projectAndBacking = self.projectSignal
       .zip(with: backing)
 
     self.backerNumberText = backing
@@ -46,7 +45,7 @@ PledgeSummaryViewViewModelInputs, PledgeSummaryViewViewModelOutputs {
     let shippingAmount = backing
       .map { Double($0.shippingAmount ?? 0) }
 
-    self.shippingAmountText = projectSignal
+    self.shippingAmountText = self.projectSignal
       .combineLatest(with: shippingAmount)
       .map { shippingValue(with: $0.0, with: $0.1) }
       .skipNil()
@@ -62,7 +61,7 @@ PledgeSummaryViewViewModelInputs, PledgeSummaryViewViewModelOutputs {
     self.shippingLocationText = backing.ignoreValues()
       .map { "Shipping: Australia" }
 
-    self.shippingLocationStackViewIsHidden = projectSignal
+    self.shippingLocationStackViewIsHidden = self.projectSignal
       .map(shouldHideShippingLocationStackView)
   }
 
@@ -79,8 +78,8 @@ PledgeSummaryViewViewModelInputs, PledgeSummaryViewViewModelOutputs {
   public let shippingLocationText: Signal<String, Never>
   public let totalAmountText: Signal<NSAttributedString, Never>
 
-  public var inputs: PledgeSummaryViewViewModelInputs { return self }
-  public var outputs: PledgeSummaryViewViewModelOutputs { return self }
+  public var inputs: ManagePledgeSummaryViewViewModelInputs { return self }
+  public var outputs: ManagePledgeSummaryViewViewModelOutputs { return self }
 }
 
 private func shouldHideShippingLocationStackView(_ project: Project) -> Bool {

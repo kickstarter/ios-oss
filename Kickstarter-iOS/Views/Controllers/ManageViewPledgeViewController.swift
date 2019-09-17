@@ -24,7 +24,7 @@ final class ManageViewPledgeViewController: UIViewController {
     )
   }()
 
-  private lazy var pledgeSummaryView: PledgeSummaryView = { PledgeSummaryView(frame: .zero) }()
+  private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
 
   private lazy var navigationBarShadowImage: UIImage? = {
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
@@ -105,7 +105,7 @@ final class ManageViewPledgeViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] project in
         self?.pledgeSummaryView.configureWith(project)
-    }
+      }
 
     self.viewModel.outputs.configureRewardSummaryView
       .observeForUI()
@@ -121,7 +121,7 @@ final class ManageViewPledgeViewController: UIViewController {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
-      ])
+    ])
   }
 
   // MARK: Functions

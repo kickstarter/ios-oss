@@ -5,7 +5,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-final class PledgeSummaryView: UIView {
+final class ManagePledgeSummaryView: UIView {
   // MARK: Properties
 
   private lazy var backerInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -22,7 +22,7 @@ final class PledgeSummaryView: UIView {
   private lazy var totalAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var totalLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private let viewModel = PledgeSummaryViewViewModel()
+  private let viewModel = ManagePledgeSummaryViewViewModel()
 
   // MARK: Life cycle
 
@@ -37,7 +37,7 @@ final class PledgeSummaryView: UIView {
     self.bindViewModel()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -125,10 +125,12 @@ final class PledgeSummaryView: UIView {
     _ = ([self.totalLabel, self.totalAmountLabel], self.totalAmountStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.backerInfoStackView,
-          self.pledgeAmountStackView,
-          self.shippingLocationStackView,
-          self.totalAmountStackView], self.rootStackView)
+    _ = ([
+      self.backerInfoStackView,
+      self.pledgeAmountStackView,
+      self.shippingLocationStackView,
+      self.totalAmountStackView
+    ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 }

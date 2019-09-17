@@ -145,7 +145,8 @@ public enum Format {
   }
 
   public static func attributedAmount(
-    attributes: String.Attributes = [:]) -> NSAttributedString {
+    attributes: String.Attributes = [:]
+  ) -> NSAttributedString {
     return NSAttributedString(string: "", attributes: attributes)
   }
 

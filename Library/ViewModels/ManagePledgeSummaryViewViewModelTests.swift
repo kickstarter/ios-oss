@@ -6,8 +6,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-final class PledgeSummaryViewViewModelTests: TestCase {
-  private let vm = PledgeSummaryViewViewModel()
+final class ManagePledgeSummaryViewViewModelTests: TestCase {
+  private let vm = ManagePledgeSummaryViewViewModel()
 
   private let backerNumberText = TestObserver<String, Never>()
   private let backingDateText = TestObserver<String, Never>()
@@ -34,7 +34,7 @@ final class PledgeSummaryViewViewModelTests: TestCase {
 
   func testTextOutputsEmitTheCorrectValue() {
     let backing = .template
-      |> Backing.lens.sequence .~ 9999
+      |> Backing.lens.sequence .~ 9_999
       |> Backing.lens.pledgedAt .~ 1_568_666_243
       |> Backing.lens.amount .~ 30
       |> Backing.lens.shippingAmount .~ 7
@@ -54,8 +54,10 @@ final class PledgeSummaryViewViewModelTests: TestCase {
   }
 
   func testShippingLocationStackViewIsHidden_isFalse_WithShippableRewards() {
+    let reward = .template
+      |> Reward.lens.shipping.enabled .~ true
     let backing = .template
-      |> Backing.lens.reward .~ Reward.postcards
+      |> Backing.lens.reward .~ reward
     let project = Project.template
       |> \.personalization.backing .~ backing
 
