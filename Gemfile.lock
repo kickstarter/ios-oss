@@ -177,7 +177,7 @@ GEM
     nap (1.1.0)
     naturally (2.2.0)
     no_proxy_fix (0.1.2)
-    nokogiri (1.10.4)
+    nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
     octokit (4.14.0)
       sawyer (~> 0.8.0, >= 0.5.3)
