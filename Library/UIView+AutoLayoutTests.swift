@@ -1,4 +1,5 @@
 @testable import Library
+import Prelude
 import XCTest
 
 final class UIViewAutoLayoutExtensionTests: TestCase {
@@ -59,5 +60,16 @@ final class UIViewAutoLayoutExtensionTests: TestCase {
     _ = ksr_addLayoutGuideToView()(layoutGuide, view)
 
     XCTAssertEqual(view.layoutGuides.count, 1)
+  }
+
+  func testSetContentCompressionResistancePriority() {
+    let view = UIView(frame: .zero)
+
+    _ = view
+      |> ksr_setContentCompressionResistancePriority(.init(244), for: .horizontal)
+      |> ksr_setContentCompressionResistancePriority(.init(264), for: .vertical)
+
+    XCTAssertEqual(view.contentCompressionResistancePriority(for: .horizontal).rawValue, 244)
+    XCTAssertEqual(view.contentCompressionResistancePriority(for: .vertical).rawValue, 264)
   }
 }
