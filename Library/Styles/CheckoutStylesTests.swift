@@ -39,6 +39,15 @@ final class CheckoutStylesTests: XCTestCase {
     XCTAssertEqual(9, stackView.spacing)
   }
 
+  func testCheckoutSwitchControlStyle() {
+    let toggle = UISwitch(frame: .zero)
+
+    _ = toggle |> checkoutSwitchControlStyle
+
+    XCTAssertEqual(toggle.onTintColor, UIColor.ksr_green_500)
+    XCTAssertEqual(toggle.tintColor, UIColor.ksr_green_500)
+  }
+
   func testCheckoutTitleLabelStyle() {
     let label = UILabel(frame: .zero)
 

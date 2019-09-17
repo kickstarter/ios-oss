@@ -109,6 +109,12 @@ public let checkoutStackViewStyle: StackViewStyle = { (stackView: UIStackView) i
     |> \.spacing .~ (Styles.grid(1) + Styles.gridHalf(1))
 }
 
+public let checkoutSwitchControlStyle: SwitchControlStyle = { switchControl in
+  switchControl
+    |> \.onTintColor .~ UIColor.ksr_green_500
+    |> \.tintColor .~ UIColor.ksr_green_500
+}
+
 public let checkoutTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.accessibilityTraits .~ UIAccessibilityTraits.header
