@@ -88,7 +88,6 @@
 		370F527A2254267900F159B9 /* UIApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52792254267900F159B9 /* UIApplicationType.swift */; };
 		370F52B3225426C700F159B9 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52B2225426C700F159B9 /* UIApplication.swift */; };
 		37280272226F880100E0ACBB /* CheckoutStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37280250226F878300E0ACBB /* CheckoutStyles.swift */; };
-		37280273226F880700E0ACBB /* CheckoutStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37280270226F879300E0ACBB /* CheckoutStylesTests.swift */; };
 		3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */; };
 		373AB222222A058600769FC2 /* CreatePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */; };
 		373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */; };
@@ -1432,7 +1431,6 @@
 		370F52792254267900F159B9 /* UIApplicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationType.swift; sourceTree = "<group>"; };
 		370F52B2225426C700F159B9 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		37280250226F878300E0ACBB /* CheckoutStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutStyles.swift; sourceTree = "<group>"; };
-		37280270226F879300E0ACBB /* CheckoutStylesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutStylesTests.swift; sourceTree = "<group>"; };
 		3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModel.swift; sourceTree = "<group>"; };
 		373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -2679,7 +2677,6 @@
 				A73378FA1D0AE33B00C91445 /* BaseStyles.swift */,
 				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
 				37280250226F878300E0ACBB /* CheckoutStyles.swift */,
-				37280270226F879300E0ACBB /* CheckoutStylesTests.swift */,
 				A73379441D0E36A600C91445 /* Colors.swift */,
 				5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */,
 				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
@@ -4779,7 +4776,6 @@
 				A7ED1F491E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift in Sources */,
 				A7ED1FBB1E831C5C00BFFA01 /* CommentsViewModelTests.swift in Sources */,
 				A7ED1FD91E831C5C00BFFA01 /* ProjectActivitiesViewModelTests.swift in Sources */,
-				37280273226F880700E0ACBB /* CheckoutStylesTests.swift in Sources */,
 				A7ED1FDB1E831C5C00BFFA01 /* DashboardViewModelTests.swift in Sources */,
 				3706408822A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift in Sources */,
 				A7ED1F2B1E830FDC00BFFA01 /* IsValidEmailTests.swift in Sources */,
