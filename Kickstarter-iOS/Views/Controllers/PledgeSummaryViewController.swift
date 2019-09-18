@@ -153,18 +153,17 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
 private func attributedTermsText() -> NSAttributedString? {
   let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
 
-  // swiftlint:disable line_length
-  let string = localizedString(
-    key: "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy",
-    defaultValue: "By pledging you agree to Kickstarter's <a href=\"%{terms_of_use_link}\">Terms of Use</a>, <a href=\"%{privacy_policy_link}\">Privacy Policy</a> and <a href=\"%{cookie_policy_link}\">Cookie Policy</a>.",
-    substitutions: [
-      "terms_of_use_link": HelpType.terms.url(withBaseUrl: baseUrl)?.absoluteString,
-      "privacy_policy_link": HelpType.privacy.url(withBaseUrl: baseUrl)?.absoluteString,
-      "cookie_policy_link": HelpType.cookie.url(withBaseUrl: baseUrl)?.absoluteString
-    ]
-    .compactMapValues { $0.coalesceWith("") }
+  guard
+    let termsOfUseLink = HelpType.terms.url(withBaseUrl: baseUrl)?.absoluteString,
+    let privacyPolicyLink = HelpType.privacy.url(withBaseUrl: baseUrl)?.absoluteString,
+    let cookiePolicyLink = HelpType.cookie.url(withBaseUrl: baseUrl)?.absoluteString
+  else { return nil }
+
+  let string = Strings.By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy(
+    terms_of_use_link: termsOfUseLink,
+    privacy_policy_link: privacyPolicyLink,
+    cookie_policy_link: cookiePolicyLink
   )
-  // swiftlint:enable line_length
 
   return checkoutAttributedLink(with: string)
 }
