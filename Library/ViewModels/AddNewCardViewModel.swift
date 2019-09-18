@@ -117,7 +117,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.dismissKeyboard = submitPaymentDetails.ignoreValues()
 
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
-      .map(value: publishableKey(for: AppEnvironment.current.environmentType))
+      .map { _ in AppEnvironment.current.environmentType.stripePublishableKey }
 
     let addNewCardEvent = self.stripeTokenProperty.signal.skipNil()
       .map { CreatePaymentSourceInput(
@@ -258,11 +258,4 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }
-}
-
-// MARK: - View Model Helpers
-
-private func publishableKey(for environment: EnvironmentType) -> String {
-  return environment == .production ? Secrets.StripePublishableKey.production :
-    Secrets.StripePublishableKey.staging
 }

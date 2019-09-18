@@ -24,13 +24,6 @@ public func == (lhs: ServerConfigType, rhs: ServerConfigType) -> Bool {
     lhs.environment == rhs.environment
 }
 
-public enum EnvironmentType: String, CaseIterable {
-  case production = "Production"
-  case staging = "Staging"
-  case development = "Development"
-  case local = "Local"
-}
-
 private let gqlPath = "graph"
 
 public struct ServerConfig: ServerConfigType {
