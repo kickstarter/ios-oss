@@ -10,7 +10,10 @@ final class PledgeSummaryViewController: UIViewController {
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
   private lazy var termsTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel = PledgeSummaryViewModel()
@@ -122,8 +125,7 @@ private let adaptableStackViewStyle: StackViewStyle = { (stackView: UIStackView)
 
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    |> verticalStackViewStyle
     |> \.spacing .~ Styles.gridHalf(3)
 }
 

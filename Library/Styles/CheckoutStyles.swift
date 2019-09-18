@@ -105,7 +105,7 @@ public let checkoutRoundedCornersStyle: ViewStyle = { (view: UIView) in
 
 public let checkoutStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> verticalStackViewStyle
     |> \.spacing .~ (Styles.grid(1) + Styles.gridHalf(1))
 }
 
@@ -168,6 +168,25 @@ public func checkoutAttributedLink(with string: String) -> NSAttributedString? {
   attributedString.addAttributes(attributes, range: fullRange)
 
   return attributedString
+}
+
+public let checkoutCardStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
+  stackView
+    |> verticalStackViewStyle
+    |> \.spacing .~ Styles.grid(3)
+}
+
+public let checkoutRootStackViewStyle = { (stackView: UIStackView) in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
+    |> \.spacing .~ Styles.grid(4)
+}
+
+public let checkoutSubStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
+  stackView
+    |> \.spacing .~ Styles.grid(3)
 }
 
 public let rewardCardShadowStyle: ViewStyle = { (view: UIView) in

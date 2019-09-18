@@ -98,7 +98,7 @@ final class ManageViewPledgeViewController: UIViewController {
       |> rootScrollViewStyle
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> checkoutRootStackViewStyle
   }
 
   // MARK: - View model
@@ -178,12 +178,6 @@ final class ManageViewPledgeViewController: UIViewController {
 private let rootScrollViewStyle = { (scrollView: UIScrollView) in
   scrollView
     |> \.alwaysBounceVertical .~ true
-}
-
-private let rootStackViewStyle = { (stackView: UIStackView) in
-  stackView
-    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
-    |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 
 private let viewStyle: ViewStyle = { (view: UIView) in

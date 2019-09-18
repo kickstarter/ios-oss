@@ -87,7 +87,7 @@ final class PledgeCreditCardView: UIView {
       |> adaptableStackViewStyle
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> checkoutCardStackViewStyle
   }
 
   override func bindViewModel() {
@@ -135,11 +135,4 @@ private let labelsStackViewStyle: StackViewStyle = { stackView in
     |> \.backgroundColor .~ UIColor.white
     |> \.axis .~ .vertical
     |> \.spacing .~ Styles.gridHalf(1)
-}
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> checkoutStackViewStyle
-    |> \.backgroundColor .~ UIColor.white
-    |> \.spacing .~ Styles.grid(3)
 }
