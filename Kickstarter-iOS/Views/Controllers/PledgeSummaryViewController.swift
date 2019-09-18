@@ -14,6 +14,7 @@ final class PledgeSummaryViewController: UIViewController {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var termsTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel = PledgeSummaryViewModel()
