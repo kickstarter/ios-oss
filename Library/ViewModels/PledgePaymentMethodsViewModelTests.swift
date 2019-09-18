@@ -9,6 +9,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let vm: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
 
   private let applePayButtonHidden = TestObserver<Bool, Never>()
+  private let newCardAdded = TestObserver<GraphUserCreditCard.CreditCard, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
   private let reloadPaymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
 
@@ -16,24 +17,30 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.applePayButtonHidden.observe(self.applePayButtonHidden.observer)
+    self.vm.outputs.newCardAdded.observe(self.newCardAdded.observer)
     self.vm.outputs.notifyDelegateLoadPaymentMethodsError
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
     self.vm.outputs.reloadPaymentMethods.observe(self.reloadPaymentMethods.observer)
   }
 
-  func testReloadPaymentMethods_LoggedIn_AddedNewCard() {
+  func testNewCardAdded() {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let userCreditCard = GraphUserCreditCard.amex
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.newCardAdded.assertDidNotEmitValue()
 
-      self.vm.inputs.addNewCardSucceeded()
+      self.vm.inputs.configureWith((User.template, Project.template, false))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
 
       self.reloadPaymentMethods.assertValue(response.me.storedCards.nodes)
+      self.vm.inputs.successfullyAddedCard(newCard: userCreditCard)
+
+      self.newCardAdded.assertValue(userCreditCard)
     }
   }
 

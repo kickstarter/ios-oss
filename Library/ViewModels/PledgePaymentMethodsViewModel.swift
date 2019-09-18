@@ -15,7 +15,6 @@ public protocol PledgePaymentMethodsViewModelInputs {
 public protocol PledgePaymentMethodsViewModelOutputs {
   var applePayButtonHidden: Signal<Bool, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
-  var notifyDelegateNewCardAdded: Signal<Void, Never> { get }
   var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
   var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
 }
@@ -52,9 +51,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     self.newCardAdded = self.creditCardProperty.signal.skipNil()
 
-    self.notifyDelegateNewCardAdded = self.addNewCardSucceededProperty.signal
-      .takeWhen(storedCardsEvent.signal.ignoreValues())
-
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
       .map { $0.localizedDescription }
@@ -86,7 +82,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public let applePayButtonHidden: Signal<Bool, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
-  public let notifyDelegateNewCardAdded: Signal<Void, Never>
   public let newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never>
 }
 
