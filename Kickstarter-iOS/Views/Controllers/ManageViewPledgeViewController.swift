@@ -94,9 +94,6 @@ final class ManageViewPledgeViewController: UIViewController {
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
       |> \.width .~ Styles.minTouchSize.width
 
-    _ = self
-      |> \.title %~ { _ in Strings.Your_pledge() }
-
     _ = self.rootScrollView
       |> rootScrollViewStyle
 
