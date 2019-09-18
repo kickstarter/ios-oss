@@ -408,6 +408,8 @@
 "Select_another_project" = "他のプロジェクトを選ぶ";
 "Select_this_reward" = "このリワードを選ぶ";
 "Select_this_reward_instead" = "このリワードを選択";
+"Selected" = "選択済み";
+"Selected_reward" = "選択したリワード";
 "Send" = "送信";
 "Send_verfication_email" = "認証メールを送信する";
 "Share" = "シェア";

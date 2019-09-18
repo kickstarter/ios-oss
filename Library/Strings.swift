@@ -6585,6 +6585,40 @@ daring ideas."
     )
   }
   /**
+   "Selected"
+
+   - **en**: "Selected"
+   - **de**: "Ausgewählt"
+   - **es**: "Seleccionada"
+   - **fr**: "Sélectionné"
+   - **ja**: "選択済み"
+  */
+  public static func Selected() -> String {
+    return localizedString(
+      key: "Selected",
+      defaultValue: "Selected",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Selected reward"
+
+   - **en**: "Selected reward"
+   - **de**: "Gewählte Belohnung"
+   - **es**: "Recompensa seleccionada"
+   - **fr**: "Récompense sélectionnée"
+   - **ja**: "選択したリワード"
+  */
+  public static func Selected_reward() -> String {
+    return localizedString(
+      key: "Selected_reward",
+      defaultValue: "Selected reward",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Send"
 
    - **en**: "Send"
