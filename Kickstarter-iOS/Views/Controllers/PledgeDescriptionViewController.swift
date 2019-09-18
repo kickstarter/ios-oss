@@ -356,7 +356,7 @@ private let rewardCardContainerShadowViewStyle: ViewStyle = { (view: UIView) -> 
 private func attributedLearnMoreText() -> NSAttributedString? {
   guard let trustLink = HelpType.trust.url(
     withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
-    )?.absoluteString else { return nil }
+  )?.absoluteString else { return nil }
 
   // swiftlint:disable line_length
   let string = Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability(
