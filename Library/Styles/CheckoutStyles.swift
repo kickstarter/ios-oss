@@ -112,7 +112,7 @@ public let checkoutStackViewStyle: StackViewStyle = { (stackView: UIStackView) i
 public let checkoutSwitchControlStyle: SwitchControlStyle = { switchControl in
   switchControl
     |> \.onTintColor .~ UIColor.ksr_green_500
-    |> \.tintColor .~ UIColor.ksr_green_500
+    |> \.tintColor .~ UIColor.ksr_grey_500
 }
 
 public let checkoutTitleLabelStyle: LabelStyle = { (label: UILabel) in

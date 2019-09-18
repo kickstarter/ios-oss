@@ -19,16 +19,19 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
 
   func testView() {
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
-    combos([Language.en], devices).forEach { language, device in
+    let toggleStates = [true, false]
+    combos([Language.en], devices, toggleStates).forEach { language, device, toggleState in
       withEnvironment(language: language) {
         let controller = ManageViewPledgeRewardReceivedViewController.instantiate()
-        controller.toggle.setOn(true, animated: false)
+        controller.toggle.setOn(toggleState, animated: false)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         parent.view.frame.size.height = 60
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(language)_device_\(device)_toggle_\(toggleState)"
+        )
       }
     }
   }
