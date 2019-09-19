@@ -119,7 +119,7 @@ final class ManageViewPledgeViewController: UIViewController {
       AppEnvironment.current.device.userInterfaceIdiom == .pad ? .alert : .actionSheet
 
     let actionSheet = UIAlertController.alert(
-      title: "Select an option",
+      title: Strings.Select_an_option(),
       preferredStyle: preferredStyle,
       barButtonItem: self.menuButton
     )
