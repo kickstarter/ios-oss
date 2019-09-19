@@ -2,6 +2,7 @@ import KsApi
 import PassKit
 import Prelude
 import ReactiveSwift
+import UIKit
 
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
 
@@ -10,6 +11,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
   func successfullyAddedCard(newCard: GraphUserCreditCard.CreditCard)
   func configureWith(_ value: PledgePaymentMethodsValue)
   func viewDidLoad()
+  func didCreateCards(_ cards: [UIView])
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
@@ -17,6 +19,7 @@ public protocol PledgePaymentMethodsViewModelOutputs {
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
   var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
+  func savedCards() -> [UIView]
 }
 
 public protocol PledgePaymentMethodsViewModelType {
@@ -74,6 +77,15 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let savedCardsProperty = MutableProperty<[UIView]>([])
+  public func didCreateCards(_ cards: [UIView]) {
+    self.savedCardsProperty.value = cards
+  }
+
+  public func savedCards() -> [UIView] {
+    return self.savedCardsProperty.value
   }
 
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }

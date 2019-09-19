@@ -127,26 +127,29 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   // MARK: - Functions
-
   private func addCardsToStackView(_ cards: [GraphUserCreditCard.CreditCard]) {
     self.cardsStackView.arrangedSubviews.forEach(self.cardsStackView.removeArrangedSubview)
 
-    let cardViews: [UIView] = cards
+   let cardViews = cards
       .map { card -> PledgeCreditCardView in
         let cardView = PledgeCreditCardView(frame: .zero)
+        cardView.delegate = self
         cardView.configureWith(value: card, isNew: false)
         return cardView
-      }
+    }
 
-    let addNewCardView: UIView = PledgeAddNewCardView(frame: .zero)
+    let addNewCardView: PledgeAddNewCardView = PledgeAddNewCardView(frame: .zero)
       |> \.delegate .~ self
 
     _ = (cardViews + [addNewCardView], self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.viewModel.inputs.didCreateCards(cardViews)
   }
 
   private func insertNewCard(_ newCard: GraphUserCreditCard.CreditCard) {
     let newCardView = PledgeCreditCardView(frame: .zero)
+    newCardView.delegate = self
     newCardView.configureWith(value: newCard, isNew: true)
     self.cardsStackView.insertArrangedSubview(newCardView, at: 0)
 
@@ -173,6 +176,16 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.textColor .~ UIColor.ksr_text_dark_grey_500
       |> \.font .~ UIFont.ksr_caption1()
       |> \.textAlignment .~ .center
+  }
+}
+
+extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
+  func didSelectCard(_ cardView: PledgeCreditCardView) {
+    if let cards: [PledgeCreditCardView] = self.viewModel.outputs.savedCards() as? [PledgeCreditCardView] {
+      cards.forEach { card in
+        card.updateButtonState(card == cardView)
+      }
+    }
   }
 }
 

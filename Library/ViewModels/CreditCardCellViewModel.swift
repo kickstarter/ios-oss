@@ -8,7 +8,7 @@ public protocol CreditCardCellViewModelInputs {
   /// Call to configure cell with card value.
   func configureWith(creditCard: GraphUserCreditCard.CreditCard, isNew: Bool)
 
-  func selectButtonTapped(selected: Bool)
+  func selectButtonTapped()
 
   func addedNewCard()
 }
@@ -30,6 +30,8 @@ public protocol CreditCardCellViewModelOutputs {
   var expirationDateText: Signal<String, Never> { get }
 
   var selectButtonSelected: Signal<Bool, Never> { get }
+
+  var notifyButtonTapped: Signal<Void, Never> { get }
 }
 
 public protocol CreditCardCellViewModelType {
@@ -60,6 +62,9 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
       .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
 
     self.selectButtonSelected = self.isNewCardProperty.signal
+
+    self.notifyButtonTapped = self.selectButtonTappedProperty.signal
+
   }
 
   fileprivate let addedNewCardProperty = MutableProperty(())
@@ -74,9 +79,9 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
     self.isNewCardProperty.value = isNew
   }
 
-  fileprivate let selectButtonTappedProperty = MutableProperty(false)
-  public func selectButtonTapped(selected: Bool) {
-    self.selectButtonTappedProperty.value = selected
+  fileprivate let selectButtonTappedProperty = MutableProperty(())
+  public func selectButtonTapped() {
+    self.selectButtonTappedProperty.value = ()
   }
 
   public let cardImage: Signal<UIImage?, Never>
@@ -85,6 +90,7 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
   public let selectButtonSelected: Signal<Bool, Never>
+  public let notifyButtonTapped: Signal<Void, Never>
 
   public var inputs: CreditCardCellViewModelInputs { return self }
   public var outputs: CreditCardCellViewModelOutputs { return self }

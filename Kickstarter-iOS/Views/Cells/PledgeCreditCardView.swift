@@ -3,7 +3,11 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgeCreditCardView: UIView {
+protocol PledgeCreditCardViewDelegate: class {
+  func didSelectCard(_ cardView: PledgeCreditCardView)
+}
+
+public class PledgeCreditCardView: UIView {
   // MARK: - Properties
 
   private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
@@ -14,6 +18,8 @@ final class PledgeCreditCardView: UIView {
   private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let selectButton: UIButton = { UIButton(type: .custom) }()
+
+  internal weak var delegate: PledgeCreditCardViewDelegate?
 
   // MARK: - Lifecycle
 
@@ -46,7 +52,7 @@ final class PledgeCreditCardView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    self.selectButton.addTarget(self, action: #selector(self.selectButtonTapped(_:)), for: .touchUpInside)
+    self.selectButton.addTarget(self, action: #selector(self.selectButtonTapped), for: .touchUpInside)
   }
 
   private func setupConstraints() {
@@ -59,7 +65,7 @@ final class PledgeCreditCardView: UIView {
 
   // MARK: - Styles
 
-  override func bindStyles() {
+  override public func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -94,8 +100,15 @@ final class PledgeCreditCardView: UIView {
       |> rootStackViewStyle
   }
 
-  override func bindViewModel() {
+  override public func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.notifyButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        guard let _self = self else { return }
+        _self.delegate?.didSelectCard(_self)
+    }
 
     self.selectButton.rac.selected = self.viewModel.outputs.selectButtonSelected
 
@@ -113,8 +126,13 @@ final class PledgeCreditCardView: UIView {
     self.viewModel.inputs.configureWith(creditCard: value, isNew: isNew)
   }
 
-  @objc fileprivate func selectButtonTapped(_ button: UIButton) {
-    self.viewModel.inputs.selectButtonTapped(selected: button.isSelected)
+  public func updateButtonState(_ selected: Bool) {
+    _ = self.selectButton
+    |> \.isSelected .~ selected
+  }
+
+  @objc fileprivate func selectButtonTapped() {
+    self.viewModel.inputs.selectButtonTapped()
   }
 }
 
