@@ -68,6 +68,9 @@ final class ManageViewPledgeViewController: UIViewController {
     _ = self.closeButton
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
       |> \.width .~ Styles.minTouchSize.width
+
+    _ = self.menuButton
+      |> \.accessibilityLabel %~ { _ in Strings.Manage_your_pledge() }
   }
 
   // MARK: - View model
