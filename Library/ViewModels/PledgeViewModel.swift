@@ -98,7 +98,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.paymentMethodsViewHidden = isLoggedIn.negate()
 
     let paymentSourceSelected = Signal.combineLatest(
-      initialData, self.creditCardSelectedSignal
+      self.configurePaymentMethodsViewControllerWithValue, self.creditCardSelectedSignal
       )
 
     self.pledgeButtonEnabled = paymentSourceSelected.mapConst(true)

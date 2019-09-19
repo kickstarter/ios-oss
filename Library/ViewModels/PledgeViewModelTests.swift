@@ -36,6 +36,7 @@ final class PledgeViewModelTests: TestCase {
   private let goToThanks = TestObserver<Project, Never>()
 
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
+  private let pledgeButtonEnabled = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
@@ -79,6 +80,8 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.goToThanks.observe(self.goToThanks.observer)
 
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
+
+    self.vm.outputs.pledgeButtonEnabled.observe(self.pledgeButtonEnabled.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
   }
 
@@ -772,6 +775,19 @@ final class PledgeViewModelTests: TestCase {
 
       self.createBackingError.assertValues(["Something went wrong."])
       self.goToThanks.assertDidNotEmitValue()
+    }
+  }
+
+  func testPledgeButtonEnabled() {
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeButtonEnabled.assertDidNotEmitValue()
+
+      self.vm.inputs.creditCardSelected(with: "123")
+
+      self.pledgeButtonEnabled.assertValues([true])
     }
   }
 }

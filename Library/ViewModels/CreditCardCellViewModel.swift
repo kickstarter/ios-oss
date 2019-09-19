@@ -26,6 +26,7 @@ public protocol CreditCardCellViewModelOutputs {
   /// Emits the formatted card's expirationdate.
   var expirationDateText: Signal<String, Never> { get }
 
+  /// Emits the paymentSourceId of the current card
   var notifyDelegateOfCardSelected: Signal<String, Never> { get }
 }
 

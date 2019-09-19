@@ -14,8 +14,8 @@ public protocol PledgePaymentMethodsViewModelInputs {
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
-  var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var applePayButtonHidden: Signal<Bool, Never> { get }
+  var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
@@ -48,13 +48,10 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .map(showApplePayButton(for:applePayCapable:))
       .negate()
 
-    let pledgeButtonEnabled = Signal.combineLatest(configureWithValue, pledgeButtonEnabledSignal)
-      .map(second)
-
     self.pledgeButtonEnabled = Signal.merge(
       configureWithValue.mapConst(false),
-      pledgeButtonEnabled
-    )
+      pledgeButtonEnabledSignal
+    ).skipRepeats()
 
     self.reloadPaymentMethods = storedCardsEvent
       .values()
