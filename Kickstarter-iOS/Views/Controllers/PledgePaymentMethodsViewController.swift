@@ -8,8 +8,10 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
   func pledgePaymentMethodsViewControllerDidTapApplePayButton(
     _ viewController: PledgePaymentMethodsViewController
   )
-  func pledgePaymentMethodsViewController(_ viewController: PledgePaymentMethodsViewController,
-                                          didSelectCreditCard paymentSourceId: String)
+  func pledgePaymentMethodsViewController(
+    _ viewController: PledgePaymentMethodsViewController,
+    didSelectCreditCard paymentSourceId: String
+  )
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
@@ -47,8 +49,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.applePayButton, self.spacer, self.titleLabel, self.scrollViewContainer, self.pledgeButton],
-         self.rootStackView)
+    _ = (
+      [self.applePayButton, self.spacer, self.titleLabel, self.scrollViewContainer, self.pledgeButton],
+      self.rootStackView
+    )
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
@@ -130,7 +134,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
         guard let self = self else { return }
 
         self.delegate?.pledgePaymentMethodsViewController(self, didSelectCreditCard: paymentSourceId)
-    }
+      }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
     self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
@@ -227,7 +231,7 @@ extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
 }
 
 extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
-  func pledgeCreditCardViewSelected(_ pledgeCreditCardView: PledgeCreditCardView, paymentSourceId: String) {
+  func pledgeCreditCardViewSelected(_: PledgeCreditCardView, paymentSourceId: String) {
     self.viewModel.creditCardSelected(paymentSourceId: paymentSourceId)
   }
 }

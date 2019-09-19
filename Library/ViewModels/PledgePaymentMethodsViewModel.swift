@@ -50,7 +50,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     self.pledgeButtonEnabled = Signal.merge(
       configureWithValue.mapConst(false),
-      pledgeButtonEnabledSignal
+      self.pledgeButtonEnabledSignal
     ).skipRepeats()
 
     self.reloadPaymentMethods = storedCardsEvent

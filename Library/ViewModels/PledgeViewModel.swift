@@ -99,10 +99,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let paymentSourceSelected = Signal.combineLatest(
       self.configurePaymentMethodsViewControllerWithValue, self.creditCardSelectedSignal
-      )
+    )
 
     self.pledgeButtonEnabled = paymentSourceSelected.mapConst(true)
-    
+
     self.shippingLocationViewHidden = reward
       .map { $0.shipping.enabled }
       .negate()

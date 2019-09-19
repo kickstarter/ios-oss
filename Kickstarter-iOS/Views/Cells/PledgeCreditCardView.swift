@@ -4,8 +4,10 @@ import Prelude
 import UIKit
 
 protocol PledgeCreditCardViewDelegate: AnyObject {
-  func pledgeCreditCardViewSelected(_ pledgeCreditCardView: PledgeCreditCardView,
-                                    paymentSourceId: String)
+  func pledgeCreditCardViewSelected(
+    _ pledgeCreditCardView: PledgeCreditCardView,
+    paymentSourceId: String
+  )
 }
 
 final class PledgeCreditCardView: UIView {
@@ -52,8 +54,10 @@ final class PledgeCreditCardView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    self.selectButton.addTarget(self, action: #selector(PledgeCreditCardView.selectButtonTapped),
-                                for: .touchUpInside)
+    self.selectButton.addTarget(
+      self, action: #selector(PledgeCreditCardView.selectButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   private func setupConstraints() {
@@ -116,7 +120,7 @@ final class PledgeCreditCardView: UIView {
         guard let self = self else { return }
 
         self.delegate?.pledgeCreditCardViewSelected(self, paymentSourceId: paymentSourceId)
-    }
+      }
   }
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {
@@ -124,6 +128,7 @@ final class PledgeCreditCardView: UIView {
   }
 
   // MARK: - Accessors
+
   @objc func selectButtonTapped() {
     self.viewModel.inputs.selectButtonTapped()
   }

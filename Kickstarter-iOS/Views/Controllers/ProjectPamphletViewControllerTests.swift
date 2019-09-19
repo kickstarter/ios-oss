@@ -190,7 +190,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
 
         scheduler.run()
-        
+
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
