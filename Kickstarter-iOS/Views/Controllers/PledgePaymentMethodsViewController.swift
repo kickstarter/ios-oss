@@ -17,6 +17,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
+  private lazy var pledgeButton: UIButton = { UIButton.init(type: .system) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var scrollViewContainer: UIView = { UIView(frame: .zero) }()
@@ -44,7 +45,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.applePayButton, self.spacer, self.titleLabel, self.scrollViewContainer], self.rootStackView)
+    _ = ([self.applePayButton, self.spacer, self.titleLabel, self.scrollViewContainer, self.pledgeButton],
+         self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
@@ -61,7 +63,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.cardsStackView.heightAnchor.constraint(equalTo: self.scrollViewContainer.heightAnchor),
-      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+      self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
   }
 
@@ -77,6 +80,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     _ = self.applePayButton
       |> applePayButtonStyle
+
+    _ = self.pledgeButton
+      |> greenButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Pledge() }
 
     _ = self.scrollView
       |> checkoutBackgroundStyle
