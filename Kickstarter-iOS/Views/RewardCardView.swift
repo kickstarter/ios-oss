@@ -332,7 +332,6 @@ private let baseRewardLabelStyle: LabelStyle = { label in
 
 private let baseStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.backgroundColor .~ .white
     |> \.spacing .~ Styles.grid(3)
 }
 
