@@ -219,6 +219,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.viewModel.inputs.userSessionStarted()
       }
 
+    self.viewModel.outputs.pledgeButtonEnabled
+      .observeForUI()
+      .observeValues { [weak self] isEnabled in
+        self?.paymentMethodsViewController.updatePledgeButton(isEnabled)
+    }
+
     self.viewModel.outputs.goToApplePayPaymentAuthorization
       .observeForControllerAction()
       .observeValues { [weak self] paymentAuthorizationData in
@@ -384,10 +390,13 @@ extension PledgeViewController: PledgeViewControllerMessageDisplaying {
 
 extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
   func pledgePaymentMethodsViewControllerDidTapApplePayButton(
-    _:
-    PledgePaymentMethodsViewController
-  ) {
+    _:PledgePaymentMethodsViewController) {
     self.viewModel.inputs.applePayButtonTapped()
+  }
+
+  func pledgePaymentMethodsViewController(_ viewController: PledgePaymentMethodsViewController,
+                                          didSelectCreditCard paymentSourceId: String) {
+    self.viewModel.inputs.creditCardSelected(with: paymentSourceId)
   }
 }
 

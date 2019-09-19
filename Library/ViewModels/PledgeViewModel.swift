@@ -18,6 +18,7 @@ public typealias PKPaymentData = (displayName: String, network: String, transact
 public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
   func configureWith(project: Project, reward: Reward, refTag: RefTag?)
+  func creditCardSelected(with paymentSourceId: String)
   func paymentAuthorizationDidAuthorizePayment(
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
   )
@@ -39,44 +40,13 @@ public protocol PledgeViewModelOutputs {
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<Project, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
+  var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeViewModelType {
   var inputs: PledgeViewModelInputs { get }
   var outputs: PledgeViewModelOutputs { get }
-}
-
-public class UpdatePledgeViewModel {
-  public init() {
-    let initialData = Signal.combineLatest(
-      self.configureWithDataProperty.signal,
-      self.viewDidLoadProperty.signal
-      )
-      .map(first)
-      .skipNil()
-
-    let project = initialData.map(first)
-    let reward = initialData.map(second)
-
-    let pledgeAmount = Signal.merge(
-      self.pledgeAmountSignal,
-      reward.map { $0.minimum }
-    )
-
-    let initialShippingAmount = initialData.mapConst(0.0)
-    let shippingAmount = self.shippingRuleSelectedSignal
-      .map { $0.cost }
-    let shippingCost = Signal.merge(shippingAmount, initialShippingAmount)
-
-    let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost).map(+)
-
-    self.configureWithData = initialData.map { (project: $0.0, reward: $0.1) }
-
-    self.configureSummaryViewControllerWithData = project
-      .takePairWhen(pledgeTotal)
-      .map { project, total in (project, total) }
-  }
 }
 
 public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, PledgeViewModelOutputs {
@@ -126,6 +96,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.continueViewHidden = isLoggedIn
     self.paymentMethodsViewHidden = isLoggedIn.negate()
+
+    let paymentSourceSelected = Signal.combineLatest(
+      initialData, self.creditCardSelectedSignal
+      )
+
+    self.pledgeButtonEnabled = paymentSourceSelected.mapConst(true)
+    
     self.shippingLocationViewHidden = reward
       .map { $0.shipping.enabled }
       .negate()
@@ -250,6 +227,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.configureWithDataProperty.value = (project, reward, refTag)
   }
 
+  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<String, Never>.pipe()
+  public func creditCardSelected(with paymentSourceId: String) {
+    self.creditCardSelectedObserver.send(value: paymentSourceId)
+  }
+
   private let (pkPaymentSignal, pkPaymentObserver) = Signal<
     (
       displayName: String?,
@@ -311,6 +293,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<Project, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public let pledgeButtonEnabled: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
 
   public var inputs: PledgeViewModelInputs { return self }

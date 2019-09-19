@@ -8,6 +8,8 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
   func pledgePaymentMethodsViewControllerDidTapApplePayButton(
     _ viewController: PledgePaymentMethodsViewController
   )
+  func pledgePaymentMethodsViewController(_ viewController: PledgePaymentMethodsViewController,
+                                          didSelectCreditCard paymentSourceId: String)
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
@@ -122,7 +124,16 @@ final class PledgePaymentMethodsViewController: UIViewController {
         self.delegate?.pledgePaymentMethodsViewControllerDidTapApplePayButton(self)
       }
 
+    self.viewModel.outputs.notifyDelegateCreditCardSelected
+      .observeForUI()
+      .observeValues { [weak self] paymentSourceId in
+        guard let self = self else { return }
+
+        self.delegate?.pledgePaymentMethodsViewController(self, didSelectCreditCard: paymentSourceId)
+    }
+
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
+    self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
   }
 
   // MARK: - Configuration
@@ -137,10 +148,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.viewModel.inputs.configureWith(pledgePaymentMethodsValue)
   }
 
-  // MARK: - Actions
+  // MARK: - Accessors
 
   @objc private func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
+  }
+
+  func updatePledgeButton(_ enabled: Bool) {
+    self.viewModel.inputs.updatePledgeButtonEnabled(isEnabled: enabled)
   }
 
   // MARK: - Functions
@@ -152,6 +167,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .map { card -> PledgeCreditCardView in
         let cardView = PledgeCreditCardView(frame: .zero)
         cardView.configureWith(value: card)
+        cardView.delegate = self
+
         return cardView
       }
 
@@ -206,5 +223,11 @@ extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
     didSucceedWithMessage _: String
   ) {
     // TODO:
+  }
+}
+
+extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
+  func pledgeCreditCardViewSelected(_ pledgeCreditCardView: PledgeCreditCardView, paymentSourceId: String) {
+    self.viewModel.creditCardSelected(paymentSourceId: paymentSourceId)
   }
 }
