@@ -20,21 +20,21 @@ final class ShippingRulesTableViewControllerTests: TestCase {
   }
 
   func testView() {
-    let shippingRules: [ShippingRule] = [
-      .template
-        |> ShippingRule.lens.cost .~ 25
-        |> (ShippingRule.lens.location .. Location.lens.localizedName) .~ "Canada",
-      .template
-        |> ShippingRule.lens.cost .~ 100
-        |> (ShippingRule.lens.location .. Location.lens.localizedName) .~ "Czech Republic",
-      .template
-        |> ShippingRule.lens.cost .~ 5
-        |> (ShippingRule.lens.location .. Location.lens.localizedName) .~ "United States of America"
-    ]
+    let shippingRule1 = ShippingRule.template
+      |> ShippingRule.lens.location .~ .canada
+
+    let shippingRule2 = ShippingRule.template
+      |> ShippingRule.lens.location .~ .greatBritain
+
+    let shippingRule3 = ShippingRule.template
+      |> ShippingRule.lens.location .~ .usa
+
+    let shippingRules = [shippingRule1, shippingRule2, shippingRule3]
+    let selectedShippingRule = shippingRule2
 
     Device.allCases.forEach { device in
       let vc = ShippingRulesTableViewController.instantiate()
-      vc.configureWith(.template, shippingRules: shippingRules, selectedShippingRule: .template)
+      vc.configureWith(.template, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule)
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 
       FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")

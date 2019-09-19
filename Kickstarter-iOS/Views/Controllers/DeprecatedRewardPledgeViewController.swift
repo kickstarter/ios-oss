@@ -9,25 +9,19 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   fileprivate var applePayButton = PKPaymentButton()
   @IBOutlet fileprivate var applePayButtonContainerView: UIStackView!
-  @IBOutlet fileprivate var bottomConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var cancelPledgeButton: UIButton!
   @IBOutlet fileprivate var cardInnerView: UIView!
-  @IBOutlet fileprivate var cardPanelView: UIView!
   @IBOutlet fileprivate var cardView: UIView!
   @IBOutlet fileprivate var changePaymentMethodButton: UIButton!
-  @IBOutlet fileprivate var checkmarkBadgeView: UIView!
-  @IBOutlet fileprivate var checkmarkImageView: UIImageView!
   @IBOutlet fileprivate var continueToPaymentButton: UIButton!
   @IBOutlet fileprivate var conversionLabel: UILabel!
   @IBOutlet fileprivate var countryLabel: UILabel!
   @IBOutlet fileprivate var descriptionLabel: UILabel!
-  @IBOutlet fileprivate var disclaimerButton: UIButton!
-  @IBOutlet fileprivate var disclaimerContainerView: UIView!
-  @IBOutlet fileprivate var disclaimerPrimaryLabel: UILabel!
-  @IBOutlet fileprivate var disclaimerSecondaryLabel: UILabel!
-  @IBOutlet fileprivate var disclaimerStackView: UIStackView!
-  @IBOutlet fileprivate var disclaimerTertiaryLabel: UILabel!
+  @IBOutlet fileprivate var descriptionStackView: UIStackView!
+  @IBOutlet fileprivate var descriptionTitleLabel: UILabel!
+  @IBOutlet fileprivate var disclaimerTextView: UITextView!
   @IBOutlet fileprivate var differentPaymentMethodButton: UIButton!
+  @IBOutlet fileprivate var dropDownIconImageView: UIImageView!
   @IBOutlet fileprivate var estimatedDeliveryDateLabel: UILabel!
   @IBOutlet fileprivate var estimatedFulfillmentStackView: UIStackView!
   @IBOutlet fileprivate var estimatedToFulfillLabel: UILabel!
@@ -35,11 +29,10 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var itemsStackView: UIStackView!
   @IBOutlet fileprivate var loadingIndicatorView: UIActivityIndicatorView!
   @IBOutlet fileprivate var loadingOverlayView: UIView!
+  @IBOutlet fileprivate var managePledgeStackView: UIStackView!
   @IBOutlet fileprivate var middleStackView: UIStackView!
   @IBOutlet fileprivate var minimumAndConversionStackView: UIStackView!
   @IBOutlet fileprivate var minimumPledgeLabel: UILabel!
-  @IBOutlet fileprivate var orLabel: UILabel!
-  @IBOutlet fileprivate var paddingViewHeightLayoutConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var pledgeButtonsStackView: UIStackView!
   @IBOutlet fileprivate var pledgeContainerView: UIView!
   @IBOutlet fileprivate var pledgeCurrencyLabel: UILabel!
@@ -47,12 +40,13 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var pledgeInputStackView: UIStackView!
   @IBOutlet fileprivate var pledgeStackView: UIStackView!
   @IBOutlet fileprivate var pledgeTextField: UITextField!
+  @IBOutlet fileprivate var projectTitleAndDescriptionStackView: UIStackView!
   @IBOutlet fileprivate var readMoreContainerView: UIView!
   @IBOutlet fileprivate var readMoreGradientView: GradientView!
   @IBOutlet fileprivate var readMoreLabel: UILabel!
   @IBOutlet fileprivate var rootStackView: UIStackView!
   @IBOutlet fileprivate var scrollView: UIScrollView!
-  @IBOutlet fileprivate var separatorViews: [UIView]!
+  @IBOutlet fileprivate var separatorView: UIView!
   @IBOutlet fileprivate var shippingActivityIndicatorView: UIActivityIndicatorView!
   @IBOutlet fileprivate var shippingAmountLabel: UILabel!
   @IBOutlet fileprivate var shippingContainerView: UIView!
@@ -63,6 +57,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @IBOutlet fileprivate var titleLabel: UILabel!
   @IBOutlet fileprivate var topStackView: UIStackView!
   @IBOutlet fileprivate var updatePledgeButton: UIButton!
+  @IBOutlet fileprivate var updateStackView: UIStackView!
 
   private var sessionStartedObserver: Any?
 
@@ -80,23 +75,26 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
-  fileprivate var statusBarHidden = true
-  override var prefersStatusBarHidden: Bool {
-    return self.statusBarHidden
-  }
-
-  override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-    return .slide
-  }
-
-  internal override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    self.statusBarHidden = false
-    UIView.animate(withDuration: 0.3, animations: { self.setNeedsStatusBarAppearanceUpdate() })
-  }
-
   internal override func viewDidLoad() {
     super.viewDidLoad()
+
+    self.view.addGestureRecognizer(
+      UITapGestureRecognizer(
+        target: self, action: #selector(DeprecatedRewardPledgeViewController.pledgedTextFieldDoneEditing)
+      )
+    )
+
+    let closeButton = UIBarButtonItem(
+      image: image(named: "icon--cross", tintColor: .ksr_navy_600),
+      style: .plain,
+      target: self,
+      action: #selector(DeprecatedRewardPledgeViewController.closeButtonTapped)
+    )
+
+    _ = self.navigationItem
+      |> \.leftBarButtonItem .~ closeButton
+
+    self.disclaimerTextView.delegate = self
 
     self.applePayButtonContainerView.addArrangedSubview(self.applePayButton)
 
@@ -128,11 +126,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.differentPaymentMethodButton.addTarget(
       self,
       action: #selector(DeprecatedRewardPledgeViewController.differentPaymentMethodTapped),
-      for: .touchUpInside
-    )
-    self.disclaimerButton.addTarget(
-      self,
-      action: #selector(DeprecatedRewardPledgeViewController.disclaimerButtonTapped),
       for: .touchUpInside
     )
     self.pledgeTextField.addTarget(
@@ -184,8 +177,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
+    if !featureNativeCheckoutIsEnabled() {
+      _ = self
+        |> baseControllerStyle()
+    }
+
     _ = self
-      |> baseControllerStyle()
       |> DeprecatedRewardPledgeViewController.lens.view.backgroundColor .~ .ksr_grey_600
 
     _ = self.applePayButton
@@ -197,52 +194,60 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Cancel_your_pledge() }
 
     _ = self.cardInnerView
-      |> cardStyle()
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
-      |> UIView.lens.backgroundColor .~ .ksr_grey_100
-
-    _ = self.cardPanelView
-      |> UIView.lens.backgroundColor .~ .ksr_navy_200
+      |> roundedStyle(cornerRadius: 18.0)
+      |> UIView.lens.backgroundColor .~ .white
 
     _ = self.cardView
-      |> UIView.lens.layer.shouldRasterize .~ true
+      |> roundedStyle(cornerRadius: 18.0)
       |> UIView.lens.backgroundColor .~ .clear
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_500.withAlphaComponent(0.06).cgColor
+      |> UIView.lens.layer.borderWidth .~ 6.0
 
     _ = self.changePaymentMethodButton
       |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Change_payment_method() }
 
-    _ = self.checkmarkBadgeView
-      |> UIView.lens.layer.cornerRadius %~~ { _, badge in badge.frame.width / 2 }
-      |> UIView.lens.layer.masksToBounds .~ true
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_green_700.cgColor
-      |> UIView.lens.layer.borderWidth .~ 1
-      |> UIView.lens.backgroundColor .~ UIColor.ksr_green_700
-
-    _ = self.checkmarkImageView
-      |> UIImageView.lens.contentMode .~ .center
-      |> UIImageView.lens.image .~ image(named: "checkmark-icon", tintColor: .white)
+    _ = self.dropDownIconImageView
+      |> UIImageView.lens.tintColor .~ UIColor.ksr_dark_grey_400
 
     _ = self.continueToPaymentButton
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue_to_payment() }
+
+    _ = self.disclaimerTextView
+      |> disclaimerTextViewStyle
+      |> UITextView.lens.textAlignment .~ .center
+      |> UITextView.lens.textContainerInset .~ .init(
+        top: Styles.gridHalf(1),
+        left: Styles.grid(6),
+        bottom: Styles.gridHalf(1),
+        right: Styles.grid(6)
+      )
 
     _ = self.updatePledgeButton
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Update_pledge() }
 
     _ = self.conversionLabel
-      |> UILabel.lens.font .~ UIFont.ksr_caption1().italicized
-      |> UILabel.lens.textColor .~ UIColor.ksr_green_700
+      |> UILabel.lens.font .~ UIFont.ksr_caption1().bolded
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
     _ = self.countryLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_500
+
+    _ = self.projectTitleAndDescriptionStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(2)
+
+    _ = self.descriptionTitleLabel
+      |> UILabel.lens.font .~ UIFont.ksr_callout().bolded
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
+      |> UILabel.lens.text %~ { _ in Strings.Description() }
 
     _ = self.descriptionLabel
       |> UILabel.lens.contentMode .~ .topLeft
-      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
+      |> UILabel.lens.font .~ UIFont.ksr_body()
+      |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
       |> UILabel.lens.numberOfLines .~ 3
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
       |> UILabel.lens.isUserInteractionEnabled .~ true
@@ -251,53 +256,17 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Other_payment_methods() }
 
-    _ = self.disclaimerButton
-      |> UIButton.lens.accessibilityLabel %~ { _ in
-        Strings.Kickstarter_is_not_a_store()
-          + " " + Strings.Its_a_way_to_bring_creative_projects_to_life()
-          + " " + Strings.Learn_more_about_accountability()
-      }
-
-    _ = self.disclaimerContainerView
-      |> UIView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
-
-    _ = self.disclaimerPrimaryLabel
-      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12).bolded
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
-      |> UILabel.lens.textAlignment .~ .center
-      |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.text %~ { _ in Strings.Kickstarter_is_not_a_store() }
-
-    _ = self.disclaimerSecondaryLabel
-      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
-      |> UILabel.lens.textAlignment .~ .center
-      |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.text %~ { _ in Strings.Its_a_way_to_bring_creative_projects_to_life() }
-
-    _ = self.disclaimerTertiaryLabel
-      |> UILabel.lens.font .~ UIFont.ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_500
-      |> UILabel.lens.textAlignment .~ .center
-      |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.attributedText %~ { _ in
-        NSAttributedString(
-          string: Strings.Learn_more_about_accountability(),
-          attributes: [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue]
-        )
-      }
-
     _ = self.estimatedToFulfillLabel
+      |> UILabel.lens.font .~ UIFont.ksr_callout().bolded
+      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_400
       |> UILabel.lens.text %~ { _ in Strings.Estimated_delivery() }
-      |> UILabel.lens.font .~ .ksr_caption1(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
 
     _ = self.estimatedDeliveryDateLabel
-      |> UILabel.lens.font .~ .ksr_headline(size: 14)
+      |> UILabel.lens.font .~ UIFont.ksr_callout()
       |> UILabel.lens.textColor .~ .ksr_soft_black
 
     _ = self.estimatedFulfillmentStackView
-      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
+      |> UIStackView.lens.spacing .~ Styles.grid(1)
 
     _ = self.fulfillmentAndShippingFooterStackView
       |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
@@ -312,22 +281,19 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIView.lens.backgroundColor .~ UIColor(white: 1.0, alpha: 0.99)
 
     _ = self.middleStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(4)
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: 0, leftRight: Styles.grid(4))
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.minimumAndConversionStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(1)
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
 
     _ = self.minimumPledgeLabel
-      |> UILabel.lens.font .~ .ksr_title2()
-      |> UILabel.lens.textColor .~ UIColor.ksr_green_700
+      |> UILabel.lens.font .~ UIFont.ksr_title3().bolded
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
-    _ = self.orLabel
-      |> UILabel.lens.font .~ .ksr_footnote()
-      |> UILabel.lens.textColor .~ .ksr_dark_grey_500
-      |> UILabel.lens.text %~ { _ in localizedString(key: "Reward_pledge_or", defaultValue: "– or –") }
+    _ = self.projectTitleAndDescriptionStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.readMoreContainerView
       |> UIView.lens.backgroundColor .~ .clear
@@ -338,16 +304,22 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     _ = self.readMoreGradientView.endPoint = CGPoint(x: 1, y: 0)
 
     let gradient: [(UIColor?, Float)] = [
-      (UIColor.ksr_grey_100.withAlphaComponent(0.0), 0),
-      (UIColor.ksr_grey_100.withAlphaComponent(1.0), 1)
+      (UIColor.white.withAlphaComponent(0.0), 0),
+      (UIColor.white.withAlphaComponent(1.0), 1)
     ]
     _ = self.readMoreGradientView.setGradient(gradient)
 
     _ = self.readMoreLabel
-      |> UILabel.lens.backgroundColor .~ .ksr_grey_100
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.backgroundColor .~ .white
+      |> UILabel.lens.textColor .~ .ksr_green_500
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
       |> UILabel.lens.text %~ { _ in Strings.ellipsis_more() }
+
+    _ = self.separatorView
+      |> separatorStyle
+
+    _ = self.updateStackView
+      |> UIStackView.lens.spacing .~ Styles.grid(5)
 
     _ = self.pledgeButtonsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
@@ -359,20 +331,20 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
         bottom: Styles.grid(2),
         right: Styles.grid(4)
       )
-      |> roundedStyle(cornerRadius: 0)
+      |> roundedStyle(cornerRadius: 6)
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
-      |> UIView.lens.layer.borderWidth .~ 1
+      |> UIView.lens.layer.borderWidth .~ 2
 
     _ = self.pledgeCurrencyLabel
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ UIColor.ksr_green_700
+      |> UILabel.lens.textColor .~ UIColor.ksr_green_500
 
     _ = self.pledgeInputStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.pledgeInputTitleLabel
-      |> UILabel.lens.font .~ .ksr_caption1()
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_navy_600
+      |> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
+      |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
       |> UILabel.lens.text %~ { _ in Strings.Your_pledge_amount() }
 
     _ = self.pledgeStackView
@@ -381,40 +353,39 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     _ = self.pledgeTextField
       |> UITextField.lens.borderStyle .~ .none
-      |> UITextField.lens.textColor .~ UIColor.ksr_green_700
+      |> UITextField.lens.textColor .~ UIColor.ksr_green_500
       |> UITextField.lens.font .~ UIFont.ksr_headline(size: 14)
       |> UITextField.lens.keyboardType .~ .decimalPad
 
     _ = self.rootStackView
       |> UIStackView.lens.layoutMargins .~ .init(
-        topBottom: Styles.grid(4) + Styles.grid(2),
+        topBottom: Styles.grid(2) + Styles.grid(2),
         leftRight: Styles.grid(2) + 1
       )
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     _ = self.scrollView
-      |> UIScrollView.lens.layoutMargins .~ .init(all: Styles.grid(2))
-      |> UIScrollView.lens.delaysContentTouches .~ false
-      |> UIScrollView.lens.keyboardDismissMode .~ .interactive
-
-    _ = self.separatorViews
-      ||> separatorStyle
+      |> \.layoutMargins .~ UIEdgeInsets(leftRight: Styles.grid(2))
+      |> \.delaysContentTouches .~ false
+      |> \.keyboardDismissMode .~ UIScrollView.KeyboardDismissMode.interactive
+      |> \.alwaysBounceVertical .~ true
+      |> \.contentInset .~ UIEdgeInsets(topBottom: Styles.grid(2))
+      |> \.scrollIndicatorInsets .~ UIEdgeInsets(topBottom: Styles.grid(2))
 
     _ = self.shippingActivityIndicatorView
       |> baseActivityIndicatorStyle
 
     _ = self.shippingAmountLabel
-      |> UILabel.lens.font .~ .ksr_caption1(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.font .~ .ksr_subhead()
+      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.contentCompressionResistancePriority(for: .horizontal) .~ UILayoutPriority.required
 
     _ = self.shippingInputStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.shippingInputTitleLabel
-      |> UILabel.lens.font .~ .ksr_caption1()
-      |> UILabel.lens.textColor .~ UIColor.ksr_text_dark_grey_500
+      |> UILabel.lens.font .~ UIFont.ksr_subhead().bolded
+      |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
       |> UILabel.lens.text %~ { _ in Strings.Your_shipping_destination() }
 
     _ = self.shippingMenuStackView
@@ -426,9 +397,9 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIView.lens.layoutMargins .~ .init(
         top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(4)
       )
-      |> roundedStyle(cornerRadius: 0)
+      |> roundedStyle(cornerRadius: 6)
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
-      |> UIView.lens.layer.borderWidth .~ 1
+      |> UIView.lens.layer.borderWidth .~ 2
 
     _ = self.shippingDestinationButton
       |> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_navy_200
@@ -436,7 +407,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_shipping_options() }
 
     _ = self.titleLabel
-      |> UILabel.lens.font .~ UIFont.ksr_title3(size: 17)
+      |> UILabel.lens.font .~ UIFont.ksr_title2().bolded
       |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
       |> UILabel.lens.numberOfLines .~ 0
       |> UILabel.lens.isUserInteractionEnabled .~ true
@@ -458,6 +429,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.countryLabel.rac.text = self.viewModel.outputs.countryLabelText
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
+    self.descriptionTitleLabel.rac.hidden = self.viewModel.outputs.descriptionTitleLabelHidden
     self.differentPaymentMethodButton.rac.hidden = self.viewModel.outputs.differentPaymentMethodButtonHidden
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.estimatedFulfillmentStackView.rac.hidden
@@ -466,9 +438,10 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       = self.viewModel.outputs.fulfillmentAndShippingFooterStackViewHidden
     self.loadingIndicatorView.rac.animating = self.viewModel.outputs.pledgeIsLoading
     self.loadingOverlayView.rac.hidden = self.viewModel.outputs.loadingOverlayIsHidden
+    self.separatorView.rac.hidden = self.viewModel.outputs.managePledgeStackViewHidden
+    self.managePledgeStackView.rac.hidden = self.viewModel.outputs.managePledgeStackViewHidden
     self.minimumPledgeLabel.rac.text = self.viewModel.outputs.minimumLabelText
     self.navigationItem.rac.title = self.viewModel.outputs.navigationTitle
-    self.orLabel.rac.hidden = self.viewModel.outputs.orLabelHidden
     self.pledgeCurrencyLabel.rac.text = self.viewModel.outputs.pledgeCurrencyLabelText
     self.pledgeTextField.rac.text = self.viewModel.outputs.pledgeTextFieldText
     self.readMoreContainerView.rac.hidden = self.viewModel.outputs.readMoreContainerViewHidden
@@ -478,6 +451,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.titleLabel.rac.hidden = self.viewModel.outputs.titleLabelHidden
     self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
     self.updatePledgeButton.rac.hidden = self.viewModel.outputs.updatePledgeButtonHidden
+    self.updateStackView.rac.hidden = self.viewModel.outputs.updateStackViewHidden
 
     self.viewModel.outputs.goToPaymentAuthorization
       .observeForControllerAction()
@@ -541,12 +515,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
         self?.goToThanks(project: project)
       }
 
-    self.viewModel.outputs.paddingViewHeightConstant
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.paddingViewHeightLayoutConstraint.constant = $0
-      }
-
     self.viewModel.outputs.showAlert
       .observeForControllerAction()
       .observeValues { [weak self] message, shouldDismiss in
@@ -567,8 +535,11 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in self?.goToTrustAndSafety() }
 
-    Keyboard.change.observeForUI()
-      .observeValues { [weak self] in self?.animateTextViewConstraint($0) }
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        self?.scrollView.handleKeyboardVisibilityDidChange(change, insets: .init(topBottom: Styles.grid(2)))
+      }
   }
 
   fileprivate func goToCheckout(
@@ -631,8 +602,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     for (idx, item) in allItems.enumerated() {
       let label = UILabel()
-        |> UILabel.lens.font .~ (idx == 0 ? .ksr_headline(size: 13) : .ksr_body(size: 14))
-        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_soft_black : .ksr_text_dark_grey_500)
+        |> UILabel.lens.font .~ (idx == 0 ? UIFont.ksr_callout().bolded : .ksr_body())
+        |> UILabel.lens.textColor .~ (idx == 0 ? .ksr_text_dark_grey_400 : .ksr_soft_black)
         |> UILabel.lens.text .~ item
         |> UILabel.lens.numberOfLines .~ 0
 
@@ -655,10 +626,6 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.viewModel.inputs.shippingButtonTapped()
   }
 
-  @objc fileprivate func disclaimerButtonTapped() {
-    self.viewModel.inputs.disclaimerButtonTapped()
-  }
-
   @objc fileprivate func continueWithPaymentButtonTapped() {
     self.viewModel.inputs.continueToPaymentsButtonTapped()
   }
@@ -675,7 +642,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.viewModel.inputs.expandDescriptionTapped()
   }
 
-  @IBAction internal func closeButtonTapped() {
+  @objc fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
@@ -699,15 +666,46 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   @objc fileprivate func cancelPledgeButtonTapped() {
     self.viewModel.inputs.cancelPledgeButtonTapped()
   }
+}
 
-  fileprivate func animateTextViewConstraint(_ change: Keyboard.Change) {
-    guard self.view.window != nil else { return }
-
-    UIView.animate(withDuration: change.duration, delay: 0.0, options: change.options, animations: {
-      self.bottomConstraint.constant = self.view.frame.height - change.frame.minY
-      self.scrollView.contentOffset.y += self.bottomConstraint.constant
-    }, completion: nil)
+extension DeprecatedRewardPledgeViewController: UITextViewDelegate {
+  func textView(
+    _: UITextView, shouldInteractWith _: NSTextAttachment,
+    in _: NSRange, interaction _: UITextItemInteraction
+  ) -> Bool {
+    return false
   }
+
+  func textView(
+    _: UITextView, shouldInteractWith _: URL, in _: NSRange,
+    interaction _: UITextItemInteraction
+  ) -> Bool {
+    self.viewModel.inputs.disclaimerButtonTapped()
+    return false
+  }
+}
+
+private let disclaimerTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
+  _ = textView
+    |> tappableLinksViewStyle
+    |> \.attributedText .~ attributedDisclaimerText()
+    |> \.accessibilityTraits .~ [.staticText]
+
+  return textView
+}
+
+private func attributedDisclaimerText() -> NSAttributedString? {
+  guard let trustLink = HelpType.trust.url(
+    withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
+  )?.absoluteString else { return nil }
+
+  // swiftlint:disable line_length
+  let string = Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability(
+    trust_link: trustLink
+  )
+  // swiftlint:enable line_length
+
+  return checkoutAttributedLink(with: string)
 }
 
 extension DeprecatedRewardPledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
@@ -744,12 +742,6 @@ extension DeprecatedRewardPledgeViewController: PKPaymentAuthorizationViewContro
 }
 
 extension DeprecatedRewardPledgeViewController: DeprecatedRewardShippingPickerViewControllerDelegate {
-  internal func rewardShippingPickerViewControllerCancelled(
-    _ controller: DeprecatedRewardShippingPickerViewController
-  ) {
-    controller.dismiss(animated: true, completion: nil)
-  }
-
   internal func rewardShippingPickerViewController(
     _ controller: DeprecatedRewardShippingPickerViewController,
     choseShippingRule: ShippingRule
@@ -757,5 +749,21 @@ extension DeprecatedRewardPledgeViewController: DeprecatedRewardShippingPickerVi
     controller.dismiss(animated: true) {
       self.viewModel.inputs.change(shippingRule: choseShippingRule)
     }
+
+    self.navigationController?.view.tintAdjustmentMode = .normal
+  }
+
+  internal func rewardShippingPickerViewControllerCancelled(
+    _ controller: DeprecatedRewardShippingPickerViewController
+  ) {
+    controller.dismiss(animated: true, completion: nil)
+
+    self.navigationController?.view.tintAdjustmentMode = .normal
+  }
+
+  func rewardShippingPickerViewControllerWillPresent(
+    _: DeprecatedRewardShippingPickerViewController
+  ) {
+    self.navigationController?.view.tintAdjustmentMode = .dimmed
   }
 }

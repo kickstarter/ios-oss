@@ -6,14 +6,24 @@ import ReactiveSwift
 import XCTest
 
 final class ProjectPamphletViewModelTests: TestCase {
+  private let releaseBundle = MockBundle(
+    bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+    lang: "en"
+  )
   fileprivate var vm: ProjectPamphletViewModelType!
 
   private let configureChildViewControllersWithProject = TestObserver<Project, Never>()
   private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
-  private let configurePledgeCTAViewProject = TestObserver<Project, Never>()
+  private let configurePledgeCTAViewProject = TestObserver<Either<Project, ErrorEnvelope>, Never>()
   private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
-  private let goToDeprecatedRewardsProject = TestObserver<Project, Never>()
-  private let goToDeprecatedRewardsRefTag = TestObserver<RefTag?, Never>()
+  private let goToDeprecatedManagePledgeProject = TestObserver<Project, Never>()
+  private let goToDeprecatedManagePledgeRefTag = TestObserver<RefTag?, Never>()
+  private let goToDeprecatedManagePledgeReward = TestObserver<Reward, Never>()
+  private let goToDeprecatedViewBackingProject = TestObserver<Project, Never>()
+  private let goToDeprecatedViewBackingUser = TestObserver<User?, Never>()
+  private let goToManageViewPledgeProject = TestObserver<Project, Never>()
+  private let goToManageViewPledgeRefTag = TestObserver<RefTag?, Never>()
+  private let goToManageViewPledgeReward = TestObserver<Reward, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let setNavigationBarHidden = TestObserver<Bool, Never>()
@@ -31,10 +41,20 @@ final class ProjectPamphletViewModelTests: TestCase {
       .observe(self.configureChildViewControllersWithRefTag.observer)
     self.vm.outputs.configurePledgeCTAView.map(first).observe(self.configurePledgeCTAViewProject.observer)
     self.vm.outputs.configurePledgeCTAView.map(second).observe(self.configurePledgeCTAViewIsLoading.observer)
-    self.vm.outputs.goToDeprecatedRewards.map(first).observe(self.goToDeprecatedRewardsProject.observer)
-    self.vm.outputs.goToDeprecatedRewards.map(second).observe(self.goToDeprecatedRewardsRefTag.observer)
+    self.vm.outputs.goToDeprecatedManagePledge.map { $0.project }
+      .observe(self.goToDeprecatedManagePledgeProject.observer)
+    self.vm.outputs.goToDeprecatedManagePledge.map { $0.reward }
+      .observe(self.goToDeprecatedManagePledgeReward.observer)
+    self.vm.outputs.goToDeprecatedManagePledge.map { $0.refTag }
+      .observe(self.goToDeprecatedManagePledgeRefTag.observer)
+    self.vm.outputs.goToManageViewPledge.map { $0.project }.observe(self.goToManageViewPledgeProject.observer)
+    self.vm.outputs.goToManageViewPledge.map { $0.reward }.observe(self.goToManageViewPledgeReward.observer)
+    self.vm.outputs.goToManageViewPledge.map { $0.refTag }.observe(self.goToManageViewPledgeRefTag.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
+    self.vm.outputs.goToDeprecatedViewBacking.map(first)
+      .observe(self.goToDeprecatedViewBackingProject.observer)
+    self.vm.outputs.goToDeprecatedViewBacking.map(second).observe(self.goToDeprecatedViewBackingUser.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(first)
       .observe(self.setNavigationBarHidden.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(second)
@@ -131,16 +151,16 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page"],
+      ["Project Page Viewed", "Viewed Project Page", "Project Page"],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag],
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
       self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
       "The ref tag is tracked in the koala event."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag],
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
       self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
       "The referral credit is tracked in the koala event."
     )
@@ -168,13 +188,16 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page", "Project Page", "Viewed Project Page"],
+      [
+        "Project Page Viewed", "Viewed Project Page", "Project Page", "Project Page Viewed",
+        "Viewed Project Page", "Project Page"
+      ],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
       [
-        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.recommended.stringTag,
-        RefTag.recommended.stringTag
+        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
+        RefTag.recommended.stringTag, RefTag.recommended.stringTag, RefTag.recommended.stringTag
       ],
       self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
       "The new ref tag is tracked in koala event."
@@ -182,7 +205,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(
       [
         RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
-        RefTag.category.stringTag
+        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag
       ],
       self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
       "The referrer credit did not change, and is still category."
@@ -276,16 +299,16 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page"],
+      ["Project Page Viewed", "Viewed Project Page", "Project Page"],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag],
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
       self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
       "The ref tag is tracked in the koala event."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag],
+      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
       self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
       "The referral credit is tracked in the koala event."
     )
@@ -313,13 +336,16 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page", "Viewed Project Page", "Project Page", "Viewed Project Page"],
+      [
+        "Project Page Viewed", "Viewed Project Page", "Project Page", "Project Page Viewed",
+        "Viewed Project Page", "Project Page"
+      ],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
       [
-        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.recommended.stringTag,
-        RefTag.recommended.stringTag
+        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
+        RefTag.recommended.stringTag, RefTag.recommended.stringTag, RefTag.recommended.stringTag
       ],
       self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
       "The new ref tag is tracked in koala event."
@@ -327,7 +353,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(
       [
         RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
-        RefTag.category.stringTag
+        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag
       ],
       self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
       "The referrer credit did not change, and is still category."
@@ -353,53 +379,185 @@ final class ProjectPamphletViewModelTests: TestCase {
 
   func testGoToRewards() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
 
-    withEnvironment(config: config) {
+    withEnvironment(config: config, mainBundle: self.releaseBundle) {
       let project = Project.template
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
+      self.configureInitialState(.left(project))
 
-      self.goToDeprecatedRewardsProject.assertDidNotEmitValue()
-      self.goToDeprecatedRewardsRefTag.assertDidNotEmitValue()
       self.goToRewardsProject.assertDidNotEmitValue()
       self.goToRewardsRefTag.assertDidNotEmitValue()
 
-      self.vm.inputs.backThisProjectTapped()
+      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 
-      self.goToDeprecatedRewardsProject.assertDidNotEmitValue()
-      self.goToDeprecatedRewardsRefTag.assertDidNotEmitValue()
       self.goToRewardsProject.assertValues([project], "Tapping 'Back this project' emits the project")
       self.goToRewardsRefTag.assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewRewards)
+
+      self.goToRewardsProject.assertValues(
+        [project, project],
+        "Tapping 'View rewards' emits the project"
+      )
+      self.goToRewardsRefTag.assertValues(
+        [.discovery, .discovery],
+        "Tapping 'View rewards' emits the refTag"
+      )
     }
   }
 
-  func testGoToDeprecatedRewards() {
-    let project = Project.template
+  func testGoToManageViewPledge_ManagingPledge_FeatureNativeCheckoutPledgeView_Enabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
 
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: false)
-    self.vm.inputs.viewDidAppear(animated: false)
+    withEnvironment(config: config) {
+      let reward = Project.cosmicSurgery.rewards.first!
+      let backing = Backing.template
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
 
-    self.goToDeprecatedRewardsProject.assertDidNotEmitValue()
-    self.goToDeprecatedRewardsRefTag.assertDidNotEmitValue()
-    self.goToRewardsProject.assertDidNotEmitValue()
-    self.goToRewardsRefTag.assertDidNotEmitValue()
+      let project = Project.cosmicSurgery
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
 
-    self.vm.inputs.backThisProjectTapped()
+      self.configureInitialState(.left(project))
 
-    self.goToDeprecatedRewardsProject
-      .assertValues([project], "Tapping 'Back this project' emits the project")
-    self.goToDeprecatedRewardsRefTag
-      .assertValues([.discovery], "Tapping 'Back this project' emits the refTag")
+      self.goToManageViewPledgeRefTag.assertDidNotEmitValue()
+      self.goToManageViewPledgeReward.assertDidNotEmitValue()
+      self.goToManageViewPledgeProject.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+
+      self.goToManageViewPledgeProject.assertValues([project])
+      self.goToManageViewPledgeReward.assertValues([project.rewards[0]])
+      self.goToManageViewPledgeRefTag.assertValues([.discovery])
+
+      self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
+      self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
+
+      self.goToDeprecatedManagePledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedManagePledgeReward.assertDidNotEmitValue()
+      self.goToDeprecatedManagePledgeRefTag.assertDidNotEmitValue()
+    }
   }
 
-  func testConfigurePledgeCTAView_fetchProjectSuccess_featureEnabled() {
-    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+  func testGoToDeprecatedManagePledge_ManagingPledge_featureNativeCheckoutPledgeView_Disabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: false]
+
+    withEnvironment(config: config) {
+      let reward = Project.cosmicSurgery.rewards.first!
+      let backing = Backing.template
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
+
+      self.configureInitialState(.left(project))
+
+      self.goToDeprecatedManagePledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedManagePledgeReward.assertDidNotEmitValue()
+      self.goToDeprecatedManagePledgeRefTag.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+
+      self.goToDeprecatedManagePledgeProject.assertValues([project])
+      self.goToDeprecatedManagePledgeReward.assertValues([project.rewards[0]])
+      self.goToDeprecatedManagePledgeRefTag.assertValues([.discovery])
+
+      self.goToManageViewPledgeRefTag.assertDidNotEmitValue()
+      self.goToManageViewPledgeReward.assertDidNotEmitValue()
+      self.goToManageViewPledgeProject.assertDidNotEmitValue()
+
+      self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
+      self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToManageViewPledge_ViewingPledge_featureNativeCheckoutPledgeView_Enabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
+    let user = User.template
+
+    withEnvironment(config: config, currentUser: user) {
+      let reward = Project.cosmicSurgery.rewards.first!
+      let backing = Backing.template
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.state .~ .successful
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
+
+      self.configureInitialState(.left(project))
+
+      self.goToManageViewPledgeProject.assertDidNotEmitValue()
+      self.goToManageViewPledgeReward.assertDidNotEmitValue()
+      self.goToManageViewPledgeRefTag.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
+
+      self.goToManageViewPledgeProject.assertValues([project])
+      self.goToManageViewPledgeReward.assertValues([project.rewards[0]])
+      self.goToManageViewPledgeRefTag.assertValues([.discovery])
+
+      self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
+      self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
+
+      self.goToDeprecatedManagePledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedManagePledgeReward.assertDidNotEmitValue()
+      self.goToDeprecatedManagePledgeRefTag.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToDeprecatedViewBacking_NativeCheckoutPledgeViewFeature_Disabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: false]
+    let user = User.template
+
+    withEnvironment(config: config, currentUser: user) {
+      let reward = Project.cosmicSurgery.rewards.first!
+      let backing = Backing.template
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.state .~ .successful
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
+
+      self.configureInitialState(.left(project))
+
+      self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
+      self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
+
+      self.goToDeprecatedViewBackingUser.assertValues([user])
+      self.goToDeprecatedViewBackingProject.assertValues([project])
+
+      self.goToDeprecatedManagePledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedManagePledgeReward.assertDidNotEmitValue()
+      self.goToDeprecatedManagePledgeRefTag.assertDidNotEmitValue()
+
+      self.goToManageViewPledgeRefTag.assertDidNotEmitValue()
+      self.goToManageViewPledgeReward.assertDidNotEmitValue()
+      self.goToManageViewPledgeProject.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToViewBacking_NativeCheckoutPledgeViewFeature_Disabled() {}
+
+  func testConfigurePledgeCTAView_fetchProjectSuccess_featureEnabled_experimentEnabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
+
     let project = Project.template
     let projectFull = Project.template
       |> \.id .~ 2
@@ -407,51 +565,245 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     let mockService = MockService(fetchProjectResponse: projectFull)
 
-    withEnvironment(apiService: mockService, apiDelayInterval: .seconds(1), config: config) {
+    withEnvironment(
+      apiService: mockService,
+      apiDelayInterval: .seconds(1),
+      config: config,
+      mainBundle: releaseBundle
+    ) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
+      self.configureInitialState(.left(project))
 
-      self.configurePledgeCTAViewProject.assertValues([project])
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == project)
+
       self.configurePledgeCTAViewIsLoading.assertValues([true])
 
       self.scheduler.run()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull)
+
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
     }
   }
 
-  func testConfigurePledgeCTAView_fetchProjectFailure_featureEnabled() {
-    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+  func testConfigurePledgeCTAView_fetchProjectSuccess_featureEnabled_experimentDisabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
+    let project = Project.template
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+
+    let mockService = MockService(fetchProjectResponse: projectFull)
+
+    withEnvironment(
+      apiService: mockService,
+      apiDelayInterval: .seconds(1),
+      config: config,
+      mainBundle: releaseBundle
+    ) {
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.configureInitialState(.left(project))
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+    }
+  }
+
+  func testConfigurePledgeCTAView_fetchProjectFailure_featureEnabled_experimentEnabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
     let project = Project.template
     let mockService = MockService(fetchProjectError: .couldNotParseJSON)
 
-    withEnvironment(apiService: mockService, apiDelayInterval: .seconds(1), config: config) {
+    withEnvironment(
+      apiService: mockService,
+      apiDelayInterval: .seconds(1),
+      config: config,
+      mainBundle: releaseBundle
+    ) {
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.configureInitialState(.left(project))
+
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == project)
+      self.configurePledgeCTAViewIsLoading.assertValues([true])
+
+      self.scheduler.run()
+
+      let error = self.configurePledgeCTAViewProject.lastValue?.right
+
+      XCTAssertNotNil(error)
+      self.configurePledgeCTAViewIsLoading.assertValues([true, false, false])
+    }
+  }
+
+  func testConfigurePledgeCTAView_fetchProjectFailure_featureEnabled_experimentDisabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
+    let project = Project.template
+    let mockService = MockService(fetchProjectError: .couldNotParseJSON)
+
+    withEnvironment(
+      apiService: mockService,
+      apiDelayInterval: .seconds(1),
+      config: config,
+      mainBundle: releaseBundle
+    ) {
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.configureInitialState(.left(project))
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+    }
+  }
+
+  func testConfigurePledgeCTAView_reloadsUponReturnToView_featureEnabled_experimentEnabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
+    let project = Project.template
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+    let projectFull2 = Project.template
+      |> \.id .~ 3
+
+    let mockService = MockService(fetchProjectResponse: projectFull)
+
+    withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
 
-      self.configurePledgeCTAViewProject.assertValues([project])
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == project)
       self.configurePledgeCTAViewIsLoading.assertValues([true])
 
-      self.scheduler.run()
+      self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project, project])
-      self.configurePledgeCTAViewIsLoading.assertValues([true, false])
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull)
+      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+    }
+
+    withEnvironment(
+      apiService: MockService(fetchProjectResponse: projectFull2),
+      config: config,
+      mainBundle: releaseBundle
+    ) {
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.vm.inputs.viewDidAppear(animated: true)
+
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull)
+      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
+
+      self.scheduler.advance()
+
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull2)
+      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
     }
   }
 
-  func testConfigurePledgeCTAView_reloadsUponReturnToView_featureEnabled() {
-    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+  func testConfigurePledgeCTAView_reloadsUponReturnToView_featureEnabled_experimentDisabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
+    let project = Project.template
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+    let projectFull2 = Project.template
+      |> \.id .~ 3
+
+    let mockService = MockService(fetchProjectResponse: projectFull)
+
+    withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+    }
+
+    withEnvironment(
+      apiService: MockService(fetchProjectResponse: projectFull2),
+      config: config,
+      mainBundle: releaseBundle
+    ) {
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.vm.inputs.viewDidAppear(animated: true)
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+    }
+  }
+
+  func testConfigurePledgeCTAView_featureDisabled_experimentEnabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: false]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
+    let project = Project.template
+
+    withEnvironment(config: config, mainBundle: self.releaseBundle) {
+      self.configureInitialState(.left(project))
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+    }
+  }
+
+  func testConfigurePledgeCTAView_featureDisabled_experimentDisabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: false]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
+    let project = Project.template
+
+    withEnvironment(config: config, mainBundle: self.releaseBundle) {
+      self.configureInitialState(.left(project))
+
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+    }
+  }
+
+  func testConfigurePledgeCTAView_reloadsUponRetryButtonTappedEvent() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
     let project = Project.template
     let projectFull = Project.template
       |> \.id .~ 2
@@ -468,12 +820,12 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
 
-      self.configurePledgeCTAViewProject.assertValues([project])
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == project)
       self.configurePledgeCTAViewIsLoading.assertValues([true])
 
       self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull)
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
     }
 
@@ -481,32 +833,49 @@ final class ProjectPamphletViewModelTests: TestCase {
       apiService: MockService(fetchProjectResponse: projectFull2),
       config: config
     ) {
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.viewDidAppear(animated: true)
+      self.vm.inputs.pledgeRetryButtonTapped()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull, projectFull])
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull)
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
 
       self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues(
-        [project, projectFull, projectFull, projectFull, projectFull2, projectFull2])
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull2)
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
     }
   }
 
-  func testConfigurePledgeCTAView_featureDisabled() {
-    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: false]
+  func testbackThisButton_eventTracking() {
+    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+    let client = MockTrackingClient()
     let project = Project.template
 
-    withEnvironment(config: config) {
-      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.viewDidAppear(animated: false)
+    withEnvironment(
+      apiService: MockService(),
+      config: config,
+      koala: Koala(client: client)
+    ) {
+      XCTAssertEqual([], client.events)
 
-      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
-      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configureInitialState(.left(project))
+
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+      XCTAssertEqual(
+        ["Project Page Viewed", "Viewed Project Page", "Project Page"],
+        client.events
+      )
     }
+  }
+
+  // MARK: - Functions
+
+  private func configureInitialState(_ projectOrParam: Either<Project, Param>) {
+    self.vm.inputs.configureWith(projectOrParam: projectOrParam, refTag: .discovery)
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: false)
+    self.vm.inputs.viewDidAppear(animated: false)
   }
 }

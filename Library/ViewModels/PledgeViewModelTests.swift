@@ -1,15 +1,21 @@
 import Foundation
 @testable import KsApi
 @testable import Library
+import PassKit
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-// swiftlint:disable line_length
 final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
+
+  private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
+  private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()
+
+  private let configureStripeIntegrationMerchantId = TestObserver<String, Never>()
+  private let configureStripeIntegrationPublishableKey = TestObserver<String, Never>()
 
   private let configureSummaryCellWithDataPledgeTotal = TestObserver<Double, Never>()
   private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
@@ -18,11 +24,27 @@ final class PledgeViewModelTests: TestCase {
   private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
 
   private let continueViewHidden = TestObserver<Bool, Never>()
+
+  private let createBackingError = TestObserver<String, Never>()
+
+  private let goToApplePayPaymentAuthorizationProject = TestObserver<Project, Never>()
+  private let goToApplePayPaymentAuthorizationReward = TestObserver<Reward, Never>()
+  private let goToApplePayPaymentAuthorizationPledgeAmount = TestObserver<Double, Never>()
+  private let goToApplePayPaymentAuthorizationShippingRule = TestObserver<ShippingRule?, Never>()
+  private let goToApplePayPaymentAuthorizationMerchantId = TestObserver<String, Never>()
+
+  private let goToThanks = TestObserver<Project, Never>()
+
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
+
+    self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map(first)
+      .observe(self.configurePaymentMethodsViewControllerWithUser.observer)
+    self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map(second)
+      .observe(self.configurePaymentMethodsViewControllerWithProject.observer)
 
     self.vm.outputs.configureSummaryViewControllerWithData.map(second)
       .observe(self.configureSummaryCellWithDataPledgeTotal.observer)
@@ -34,7 +56,28 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configureWithData.map { $0.reward }
       .observe(self.configureWithPledgeViewDataReward.observer)
 
+    self.vm.outputs.configureStripeIntegration.map(first)
+      .observe(self.configureStripeIntegrationMerchantId.observer)
+    self.vm.outputs.configureStripeIntegration.map(second)
+      .observe(self.configureStripeIntegrationPublishableKey.observer)
+
     self.vm.outputs.continueViewHidden.observe(self.continueViewHidden.observer)
+
+    self.vm.outputs.createBackingError.observe(self.createBackingError.observer)
+
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.project }
+      .observe(self.goToApplePayPaymentAuthorizationProject.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.reward }
+      .observe(self.goToApplePayPaymentAuthorizationReward.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.pledgeAmount }
+      .observe(self.goToApplePayPaymentAuthorizationPledgeAmount.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.selectedShippingRule }
+      .observe(self.goToApplePayPaymentAuthorizationShippingRule.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.merchantIdentifier }
+      .observe(self.goToApplePayPaymentAuthorizationMerchantId.observer)
+
+    self.vm.outputs.goToThanks.observe(self.goToThanks.observer)
+
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
   }
@@ -45,8 +88,11 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ false
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -65,8 +111,11 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -86,8 +135,11 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -106,8 +158,11 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -126,8 +181,11 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -143,7 +201,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleSelected(defaultShippingRule)
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
+      self.configureSummaryCellWithDataPledgeTotal
+        .assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
       self.configureSummaryCellWithDataProject.assertValues([project, project])
     }
   }
@@ -154,8 +213,11 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -171,7 +233,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleSelected(defaultShippingRule)
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
+      self.configureSummaryCellWithDataPledgeTotal
+        .assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
       self.configureSummaryCellWithDataProject.assertValues([project, project])
 
       let selectedShippingRule = ShippingRule.template
@@ -180,7 +243,11 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleSelected(selectedShippingRule)
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost, reward.minimum + selectedShippingRule.cost])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([
+        reward.minimum,
+        reward.minimum + defaultShippingRule.cost,
+        reward.minimum + selectedShippingRule.cost
+      ])
       self.configureSummaryCellWithDataProject.assertValues([project, project, project])
     }
   }
@@ -191,8 +258,11 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -232,8 +302,11 @@ final class PledgeViewModelTests: TestCase {
     let user = User.template
 
     withEnvironment(currentUser: nil) {
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -244,6 +317,9 @@ final class PledgeViewModelTests: TestCase {
 
       withEnvironment(currentUser: user) {
         self.vm.inputs.userSessionStarted()
+
+        self.configurePaymentMethodsViewControllerWithUser.assertValues([user])
+        self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
         self.configureWithPledgeViewDataProject.assertValues([project])
         self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -261,8 +337,11 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
       self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -335,6 +414,364 @@ final class PledgeViewModelTests: TestCase {
         ]
       )
       self.configureSummaryCellWithDataProject.assertValues([project, project, project, project, project])
+    }
+  }
+
+  func testStripeConfiguration_StagingEnvironment() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .projectPage)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+    }
+  }
+
+  func testStripeConfiguration_ProductionEnvironment() {
+    let mockService = MockService(serverConfig: ServerConfig.production)
+
+    withEnvironment(apiService: mockService) {
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.production])
+    }
+  }
+
+  func testGoToApplePayPaymentAuthorization_WhenApplePayButtonTapped_ShippingDisabled() {
+    let project = Project.template
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 5
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+    self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+    self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([5])
+    self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+  }
+
+  func testGoToApplePayPaymentAuthorization_WhenApplePayButtonTapped_ShippingEnabled() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 25
+      |> Reward.lens.shipping.enabled .~ true
+    let shippingRule = ShippingRule.template
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+    self.vm.inputs.shippingRuleSelected(shippingRule)
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+    self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+    self.goToApplePayPaymentAuthorizationShippingRule.assertValues([shippingRule])
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([25])
+    self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+  }
+
+  func testPaymentAuthorizationViewControllerDidFinish_WithoutCompletingTransaction() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 25
+      |> Reward.lens.shipping.enabled .~ true
+    let shippingRule = ShippingRule.template
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.shippingRuleSelected(shippingRule)
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+    self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+    self.goToApplePayPaymentAuthorizationShippingRule.assertValues([shippingRule])
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([25])
+    self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+    self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+    self.goToThanks.assertDidNotEmitValue()
+    self.createBackingError.assertDidNotEmitValue()
+  }
+
+  func testStripeTokenCreated_ReturnsStatusFailure_WhenPKPaymentData_IsNil() {
+    let project = Project.template
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 5
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+      paymentData: (displayName: nil, network: nil, transactionIdentifier: "12345")
+    )
+
+    XCTAssertEqual(
+      PKPaymentAuthorizationStatus.failure,
+      self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+    )
+  }
+
+  func testStripeTokenCreated_ReturnsStatusFailure_WhenStripeTokenNil_ErrorNotNil() {
+    let project = Project.template
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 5
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+      paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+    )
+
+    let stripeError = GraphError.invalidJson(responseString: nil) // Generic error
+
+    XCTAssertEqual(
+      PKPaymentAuthorizationStatus.failure,
+      self.vm.inputs.stripeTokenCreated(token: nil, error: stripeError)
+    )
+  }
+
+  func testStripeTokenCreated_ReturnsStatusFailure_WhenStripeTokenNil_ErrorNil() {
+    let project = Project.template
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 5
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+      paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+    )
+
+    XCTAssertEqual(
+      PKPaymentAuthorizationStatus.failure,
+      self.vm.inputs.stripeTokenCreated(token: nil, error: nil)
+    )
+  }
+
+  func testStripeTokenCreated_ReturnsStatusFailure_WhenStripeTokenNotNil_ErrorNotNil() {
+    let project = Project.template
+    let reward = Reward.noReward
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+      paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+    )
+
+    let stripeError = GraphError.invalidJson(responseString: nil)
+
+    XCTAssertEqual(
+      PKPaymentAuthorizationStatus.failure,
+      self.vm.inputs.stripeTokenCreated(token: "stripe-token", error: stripeError)
+    )
+  }
+
+  func testStripeTokenCreated_ReturnsStatusSuccess() {
+    let project = Project.template
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 5
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+      paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+    )
+
+    XCTAssertEqual(
+      PKPaymentAuthorizationStatus.success,
+      self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+    )
+  }
+
+  func testGoToThanks() {
+    withEnvironment(apiService: MockService()) {
+      let project = Project.template
+      let reward = Reward.noReward
+        |> Reward.lens.minimum .~ 5
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.goToThanks.assertDidNotEmitValue("Signal waits for Apple Pay sheet to dismiss")
+      self.createBackingError.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.goToThanks.assertValues([project])
+      self.createBackingError.assertDidNotEmitValue()
+    }
+  }
+
+  func testApplePay_GoToThanks_WhenRefTag_IsNil() {
+    withEnvironment(apiService: MockService(), currentUser: .template) {
+      let project = Project.template
+      let reward = Reward.noReward
+        |> Reward.lens.minimum .~ 5
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([true])
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.goToThanks.assertValues([project])
+      self.createBackingError.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToThanks_WhenStripeTokenCreated_ReturnsFailure() {
+    withEnvironment(apiService: MockService()) {
+      let project = Project.template
+      let reward = Reward.noReward
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.failure,
+        self.vm.inputs.stripeTokenCreated(token: nil, error: GraphError.invalidInput)
+      )
+
+      self.scheduler.run()
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.goToThanks.assertDidNotEmitValue()
+      self.createBackingError.assertDidNotEmitValue()
+    }
+  }
+
+  func testCreateApplePayBackingError() {
+    let mockService = MockService(createApplePayBackingError: GraphError.invalidInput)
+
+    withEnvironment(apiService: mockService) {
+      let project = Project.template
+      let reward = Reward.noReward
+        |> Reward.lens.minimum .~ 5
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.goToThanks.assertDidNotEmitValue()
+      self.createBackingError.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.createBackingError.assertDidNotEmitValue("Signal waits for the Apple Pay sheet to be dismissed")
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.createBackingError.assertValues(["Something went wrong."])
+      self.goToThanks.assertDidNotEmitValue()
     }
   }
 }

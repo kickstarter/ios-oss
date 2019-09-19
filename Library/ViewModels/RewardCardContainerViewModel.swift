@@ -8,6 +8,7 @@ public protocol RewardCardContainerViewModelInputs {
 }
 
 public protocol RewardCardContainerViewModelOutputs {
+  var gradientViewHidden: Signal<Bool, Never> { get }
   var pledgeButtonStyleType: Signal<ButtonStyleType, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var pledgeButtonHidden: Signal<Bool, Never> { get }
@@ -54,9 +55,24 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
 
     self.pledgeButtonHidden = pledgeButtonTitleText.map(isNil)
 
+    self.gradientViewHidden = self.pledgeButtonHidden
+
     self.rewardSelected = reward
       .takeWhen(self.pledgeButtonTappedProperty.signal)
       .map { $0.id }
+
+    // Tracking
+    projectAndRewardOrBacking
+      .takeWhen(self.pledgeButtonTappedProperty.signal)
+      .observeValues { projectAndRewardOrBacking in
+        let (project, rewardOrBacking) = projectAndRewardOrBacking
+        AppEnvironment.current.koala.trackSelectRewardButtonClicked(
+          project: project,
+          reward: rewardOrBacking.left,
+          backing: rewardOrBacking.right,
+          screen: .backThisPage
+        )
+      }
   }
 
   private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
@@ -69,6 +85,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.pledgeButtonTappedProperty.value = ()
   }
 
+  public let gradientViewHidden: Signal<Bool, Never>
   public let pledgeButtonStyleType: Signal<ButtonStyleType, Never>
   public let pledgeButtonEnabled: Signal<Bool, Never>
   public let pledgeButtonHidden: Signal<Bool, Never>
@@ -112,7 +129,7 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
   case (.backed(.live), true, _):
     return Strings.Manage_your_pledge()
   case (.nonBacked(.live), _, true):
-    return nonBackedPledgeButtonTitle(project: project, reward: reward)
+    return Strings.Select()
   case (.backed(.nonLive), true, _):
     return Strings.View_your_pledge()
   case (.backed(.nonLive), false, _),
@@ -148,15 +165,6 @@ private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleTyp
   }
 
   return .green
-}
-
-private func nonBackedPledgeButtonTitle(project: Project, reward: Reward) -> String {
-  let minimumFormattedAmount = formattedAmountForRewardOrBacking(
-    project: project,
-    rewardOrBacking: .init(left: reward)
-  )
-
-  return Strings.rewards_title_pledge_reward_currency_or_more(reward_currency: minimumFormattedAmount)
 }
 
 private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {

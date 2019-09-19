@@ -99,6 +99,8 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
   /// Emits a string to be put into the description label.
   var descriptionLabelText: Signal<String, Never> { get }
 
+  var descriptionTitleLabelHidden: Signal<Bool, Never> { get }
+
   /// Emits a boolean that determines if the "different payment method" button is hidden.
   var differentPaymentMethodButtonHidden: Signal<Bool, Never> { get }
 
@@ -144,6 +146,8 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
 
   /// Emits whether loading overlay view should be hidden.
   var loadingOverlayIsHidden: Signal<Bool, Never> { get }
+
+  var managePledgeStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits a string to be put into the minimum pledge label.
   var minimumLabelText: Signal<String, Never> { get }
@@ -204,6 +208,8 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
 
   /// Emits a boolean that determines if the update pledge button should be hidden.
   var updatePledgeButtonHidden: Signal<Bool, Never> { get }
+
+  var updateStackViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol DeprecatedRewardPledgeViewModelType {
@@ -283,6 +289,9 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
 
     self.differentPaymentMethodButtonHidden = self.applePayButtonHidden
 
+    self.descriptionTitleLabelHidden = reward
+      .map { $0.description == "" || $0 == Reward.noReward }
+
     self.continueToPaymentsButtonHidden = Signal.combineLatest(applePayCapable, project)
       .map { applePayCapable, project in
         !applePayButtonHiddenFor(applePayCapable: applePayCapable, project: project)
@@ -294,10 +303,14 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
         project.personalization.isBacking != .some(true)
       }
 
+    self.updateStackViewHidden = self.updatePledgeButtonHidden
+
     self.cancelPledgeButtonHidden = projectAndReward
       .map { project, reward in !userIsBacking(reward: reward, inProject: project) }
 
     self.changePaymentMethodButtonHidden = self.cancelPledgeButtonHidden
+
+    self.managePledgeStackViewHidden = self.cancelPledgeButtonHidden
 
     self.orLabelHidden = self.cancelPledgeButtonHidden
 
@@ -484,7 +497,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     )
     .map { ($0.0, $0.1, $1, $2, $3) }
     .takeWhen(Signal.merge(applePayEventAfterLogin, loggedInUserTappedApplePayButton))
-    .map(paymentRequest(forProject:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
+    .map(PKPaymentRequest.paymentRequest(for:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
 
     let isLoading = MutableProperty(false)
     pledgeIsLoading = isLoading.signal
@@ -920,6 +933,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     return self.rewardViewModel.outputs.descriptionLabelText
   }
 
+  public let descriptionTitleLabelHidden: Signal<Bool, Never>
   public let differentPaymentMethodButtonHidden: Signal<Bool, Never>
   public let dismissViewController: Signal<(), Never>
   public let estimatedDeliveryDateLabelText: Signal<String, Never>
@@ -942,6 +956,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     return self.rewardViewModel.outputs.minimumLabelText
   }
 
+  public let managePledgeStackViewHidden: Signal<Bool, Never>
   public let navigationTitle: Signal<String, Never>
   public let orLabelHidden: Signal<Bool, Never>
   public let paddingViewHeightConstant: Signal<CGFloat, Never>
@@ -965,77 +980,12 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
   public let titleLabelText: Signal<String, Never>
 
   public let updatePledgeButtonHidden: Signal<Bool, Never>
+  public let updateStackViewHidden: Signal<Bool, Never>
   public let changePaymentMethodButtonHidden: Signal<Bool, Never>
   public let cancelPledgeButtonHidden: Signal<Bool, Never>
 
   public var inputs: DeprecatedRewardPledgeViewModelInputs { return self }
   public var outputs: DeprecatedRewardPledgeViewModelOutputs { return self }
-}
-
-private func paymentRequest(
-  forProject project: Project,
-  reward: Reward,
-  pledgeAmount: Double,
-  selectedShippingRule: ShippingRule?,
-  merchantIdentifier: String
-) -> PKPaymentRequest {
-  let request = PKPaymentRequest()
-  request.merchantIdentifier = merchantIdentifier
-  request.supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks(for: project)
-  request.merchantCapabilities = .capability3DS
-  request.countryCode = project.country.countryCode
-  request.currencyCode = project.country.currencyCode
-  request.shippingType = .shipping
-
-  request.paymentSummaryItems = paymentSummaryItems(
-    forProject: project,
-    reward: reward,
-    pledgeAmount: pledgeAmount,
-    selectedShippingRule: selectedShippingRule
-  )
-
-  return request
-}
-
-private func paymentSummaryItems(
-  forProject project: Project,
-  reward: Reward,
-  pledgeAmount: Double,
-  selectedShippingRule: ShippingRule?
-) -> [PKPaymentSummaryItem] {
-  var paymentSummaryItems: [PKPaymentSummaryItem] = []
-
-  paymentSummaryItems.append(
-    PKPaymentSummaryItem(
-      label: reward.title ?? project.name,
-      amount: NSDecimalNumber(value: pledgeAmount),
-      type: .final
-    )
-  )
-
-  if let selectedShippingRule = selectedShippingRule, selectedShippingRule.cost != 0.0 {
-    paymentSummaryItems.append(
-      PKPaymentSummaryItem(
-        label: Strings.Shipping(),
-        amount: NSDecimalNumber(value: selectedShippingRule.cost),
-        type: .final
-      )
-    )
-  }
-
-  let total = paymentSummaryItems.reduce(NSDecimalNumber.zero) { accum, item in
-    accum.adding(item.amount)
-  }
-
-  paymentSummaryItems.append(
-    PKPaymentSummaryItem(
-      label: Strings.Kickstarter_if_funded(),
-      amount: total,
-      type: .final
-    )
-  )
-
-  return paymentSummaryItems
 }
 
 private func backingError(forProject project: Project, amount: Double, reward: Reward?) -> PledgeError? {

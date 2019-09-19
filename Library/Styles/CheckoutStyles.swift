@@ -93,11 +93,6 @@ public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> 
   }
 }
 
-public let checkoutSmallBlackButtonStyle: ButtonStyle = { button -> UIButton in
-  button
-    |> blackButtonStyle
-}
-
 public let checkoutBackgroundStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.ksr_grey_300
@@ -152,7 +147,10 @@ public let tappableLinksViewStyle: TextViewStyle = { (textView: UITextView) -> U
 public func checkoutAttributedLink(with string: String) -> NSAttributedString? {
   guard let attributedString = try? NSMutableAttributedString(
     data: Data(string.utf8),
-    options: [.documentType: NSAttributedString.DocumentType.html],
+    options: [
+      .documentType: NSAttributedString.DocumentType.html,
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
     documentAttributes: nil
   ) else { return nil }
 
@@ -175,6 +173,11 @@ public let rewardCardShadowStyle: ViewStyle = { (view: UIView) in
     |> \.layer.shouldRasterize .~ false
 }
 
+public let rewardsBackgroundStyle: ViewStyle = { (view: UIView) in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_grey_400
+}
+
 public let cardImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.contentMode .~ .scaleAspectFit
@@ -182,8 +185,7 @@ public let cardImageViewStyle: ImageViewStyle = { imageView in
 
 public let cardSelectButtonStyle: ButtonStyle = { button in
   button
-    |> checkoutSmallBlackButtonStyle
-    |> UIButton.lens.titleLabel .. UILabel.lens.font .~ UIFont.ksr_headline()
+    |> blackButtonStyle
 }
 
 public let pledgeCardViewStyle: ViewStyle = { view in

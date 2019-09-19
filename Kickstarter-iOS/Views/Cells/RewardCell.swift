@@ -6,15 +6,21 @@ import ReactiveSwift
 
 protocol RewardCellDelegate: AnyObject {
   func rewardCellDidTapPledgeButton(_ rewardCell: RewardCell, rewardId: Int)
+  func rewardCell(_ rewardCell: RewardCell, shouldShowDividerLine show: Bool)
 }
 
 final class RewardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
   internal weak var delegate: RewardCellDelegate?
+  private let viewModel = RewardCellViewModel()
 
   internal let rewardCardContainerView = RewardCardContainerView(frame: .zero)
-  private let scrollView = UIScrollView(frame: .zero)
+  private lazy var scrollView = {
+    UIScrollView(frame: .zero)
+      |> \.delegate .~ self
+  }()
+
   private lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
     UILongPressGestureRecognizer(
       target: self, action: #selector(RewardCell.depress(_:))
@@ -23,19 +29,39 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       .DepressAnimation.longPressMinimumDuration
       |> \.delegate .~ self
       |> \.cancelsTouchesInView .~ false
+      |> \.isEnabled .~ false // FIXME: remove once we're ready to handle the transition again
   }()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
     self.configureViews()
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  // MARK: - Private Helpers
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.scrollScrollViewToTop
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+
+        self.scrollView.setContentOffset(
+          .init(
+            x: self.scrollView.contentOffset.x,
+            y: -self.scrollView.contentInset.top
+          ),
+          animated: false
+        )
+      }
+  }
+
+  // MARK: - Functions
 
   private func configureViews() {
     _ = (self.scrollView, self.contentView)
@@ -54,10 +80,15 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   }
 
   private func setupConstraints() {
-    _ = self.rewardCardContainerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)
-      |> \.isActive .~ true
-
     self.rewardCardContainerView.pinBottomViews(to: self.contentView.layoutMarginsGuide)
+
+    NSLayoutConstraint.activate([
+      self.rewardCardContainerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor),
+      self.rewardCardContainerView.gradientView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
+      self.rewardCardContainerView.gradientView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
+      self.rewardCardContainerView.gradientView.bottomAnchor
+        .constraint(lessThanOrEqualTo: self.contentView.bottomAnchor)
+    ])
   }
 
   override func bindStyles() {
@@ -65,6 +96,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     _ = self.contentView
       |> contentViewStyle
+      |> rewardsBackgroundStyle
 
     _ = self.scrollView
       |> scrollViewStyle
@@ -74,17 +106,16 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     self.rewardCardContainerView.configure(with: value)
   }
 
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    self.viewModel.inputs.prepareForReuse()
+  }
+
   // MARK: - Accessors
 
   func currentReward(is reward: Reward) -> Bool {
     return self.rewardCardContainerView.currentReward(is: reward)
-  }
-
-  func cancelDepress() {
-    _ = self.longPressGestureRecognizer
-      |> \.isEnabled .~ false
-    _ = self.longPressGestureRecognizer
-      |> \.isEnabled .~ true
   }
 
   // MARK: - Depress Transform
@@ -105,11 +136,23 @@ final class RewardCell: UICollectionViewCell, ValueCell {
         transform = .identity
       }
 
-      _ = self
+      _ = self.rewardCardContainerView
         |> \.transform .~ transform
     }
 
     animator.startAnimation()
+  }
+}
+
+extension RewardCell: UIScrollViewDelegate {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let scrollViewTopInset = scrollView.contentInset.top
+
+    let cardContainerViewY = self.rewardCardContainerView.frame.origin.y
+    let yOffset = scrollView.contentOffset.y - scrollViewTopInset - cardContainerViewY
+    let showDivider = yOffset + scrollViewTopInset >= 0
+
+    self.delegate?.rewardCell(self, shouldShowDividerLine: showDivider)
   }
 }
 
@@ -137,7 +180,6 @@ extension RewardCell: UIGestureRecognizerDelegate {
 private let contentViewStyle: ViewStyle = { view in
   view
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
-    |> \.backgroundColor .~ .ksr_grey_200
 }
 
 private let scrollViewStyle: ScrollStyle = { scrollView in
@@ -145,4 +187,5 @@ private let scrollViewStyle: ScrollStyle = { scrollView in
     |> \.backgroundColor .~ .clear
     |> \.contentInset .~ .init(topBottom: Styles.grid(6))
     |> \.showsVerticalScrollIndicator .~ false
+    |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.never
 }

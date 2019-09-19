@@ -3,20 +3,16 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum CTAContainerView {
+    static let minHeight: CGFloat = 130
+  }
+}
+
 public protocol ProjectPamphletViewControllerDelegate: AnyObject {
   func projectPamphlet(
     _ controller: ProjectPamphletViewController,
     panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer
-  )
-  func projectPamphletViewController(
-    _ projectPamphletViewController: ProjectPamphletViewController,
-    didTapBackThisProject project: Project,
-    refTag: RefTag?
-  )
-  func deprecatedProjectPamphletViewController(
-    _ projectPamphletViewController: ProjectPamphletViewController,
-    didTapBackThisProject project: Project,
-    refTag: RefTag?
   )
 }
 
@@ -46,7 +42,7 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    if featureNativeCheckoutEnabled() {
+    if userCanSeeNativeCheckout() {
       self.configurePledgeCTAContainerView()
     }
 
@@ -57,6 +53,8 @@ public final class ProjectPamphletViewController: UIViewController {
     self.contentController = self.children
       .compactMap { $0 as? ProjectPamphletContentViewController }.first
     self.contentController.delegate = self
+
+    self.pledgeCTAContainerView.delegate = self
 
     self.viewModel.inputs.initial(topConstraint: self.initialTopConstraint)
 
@@ -75,7 +73,7 @@ public final class ProjectPamphletViewController: UIViewController {
       constant: self.initialTopConstraint
     )
 
-    if featureNativeCheckoutEnabled() {
+    if userCanSeeNativeCheckout() {
       self.updateContentInsets()
     }
   }
@@ -94,8 +92,8 @@ public final class ProjectPamphletViewController: UIViewController {
     _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
 
-    self.pledgeCTAContainerView.pledgeCTAButton.addTarget(
-      self, action: #selector(ProjectPamphletViewController.backThisProjectTapped), for: .touchUpInside
+    self.pledgeCTAContainerView.pledgeRetryButton.addTarget(
+      self, action: #selector(ProjectPamphletViewController.pledgeRetryButtonTapped), for: .touchUpInside
     )
 
     // Configure constraints
@@ -111,7 +109,7 @@ public final class ProjectPamphletViewController: UIViewController {
   public override func bindStyles() {
     super.bindStyles()
 
-    if featureNativeCheckoutEnabled() {
+    if userCanSeeNativeCheckout() {
       _ = self.pledgeCTAContainerView
         |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
 
@@ -137,12 +135,24 @@ public final class ProjectPamphletViewController: UIViewController {
         self?.goToRewards(project: project, refTag: refTag)
       }
 
-    self.viewModel.outputs.goToDeprecatedRewards
+    self.viewModel.outputs.goToManageViewPledge
       .observeForControllerAction()
       .observeValues { [weak self] params in
-        let (project, refTag) = params
+        let (project, reward, refTag) = params
 
-        self?.goToDeprecatedRewards(project: project, refTag: refTag)
+        self?.goToManageViewPledge(project: project, reward: reward, refTag: refTag)
+      }
+
+    self.viewModel.outputs.goToDeprecatedViewBacking
+      .observeForControllerAction()
+      .observeValues { [weak self] project, user in
+        self?.goToDeprecatedViewBacking(project: project, user: user)
+      }
+
+    self.viewModel.outputs.goToDeprecatedManagePledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project, reward, refTag in
+        self?.goToDeprecatedManagePledge(project: project, reward: reward, refTag: refTag)
       }
 
     self.viewModel.outputs.configureChildViewControllersWithProject
@@ -190,20 +200,47 @@ public final class ProjectPamphletViewController: UIViewController {
     }
   }
 
-  private func goToDeprecatedRewards(project: Project, refTag: RefTag?) {
-    self.delegate?.deprecatedProjectPamphletViewController(
-      self,
-      didTapBackThisProject: project,
-      refTag: refTag
-    )
+  private func goToRewards(project: Project, refTag: RefTag?) {
+    let vc = rewardsCollectionViewController(project: project, refTag: refTag)
+
+    self.present(vc, animated: true)
   }
 
-  private func goToRewards(project: Project, refTag: RefTag?) {
-    self.delegate?.projectPamphletViewController(
-      self,
-      didTapBackThisProject: project,
-      refTag: refTag
-    )
+  private func goToManageViewPledge(project: Project, reward: Reward, refTag _: RefTag?) {
+    let managePledgeViewController = ManageViewPledgeViewController.instantiate(with: project, reward: reward)
+
+    let nav = UINavigationController(rootViewController: managePledgeViewController)
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = nav
+        |> \.modalPresentationStyle .~ .formSheet
+    }
+    self.present(nav, animated: true)
+  }
+
+  private func goToDeprecatedManagePledge(project: Project, reward: Reward, refTag _: RefTag?) {
+    let pledgeViewController = DeprecatedRewardPledgeViewController
+      .configuredWith(
+        project: project, reward: reward
+      )
+
+    let nav = UINavigationController(rootViewController: pledgeViewController)
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = nav
+        |> \.modalPresentationStyle .~ .formSheet
+    }
+    self.present(nav, animated: true)
+  }
+
+  private func goToDeprecatedViewBacking(project: Project, user _: User?) {
+    let backingViewController = BackingViewController.configuredWith(project: project, backer: nil)
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      let nav = UINavigationController(rootViewController: backingViewController)
+        |> \.modalPresentationStyle .~ .formSheet
+      self.present(nav, animated: true)
+    } else {
+      self.navigationController?.pushViewController(backingViewController, animated: true)
+    }
   }
 
   private func updateContentInsets() {
@@ -217,8 +254,14 @@ public final class ProjectPamphletViewController: UIViewController {
 
   // MARK: - Selectors
 
-  @objc func backThisProjectTapped() {
-    self.viewModel.inputs.backThisProjectTapped()
+  @objc func pledgeRetryButtonTapped() {
+    self.viewModel.inputs.pledgeRetryButtonTapped()
+  }
+}
+
+extension ProjectPamphletViewController: PledgeCTAContainerViewDelegate {
+  func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
+    self.viewModel.inputs.pledgeCTAButtonTapped(with: state)
   }
 }
 
@@ -259,4 +302,23 @@ extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
   public func projectNavBarControllerDidTapTitle(_: ProjectNavBarViewController) {
     self.contentController.tableView.scrollToTop()
   }
+}
+
+private func rewardsCollectionViewController(
+  project: Project,
+  refTag: RefTag?
+) -> UINavigationController {
+  let rewardsCollectionViewController = RewardsCollectionViewController
+    .instantiate(with: project, refTag: refTag)
+
+  let navigationController = RewardPledgeNavigationController(
+    rootViewController: rewardsCollectionViewController
+  )
+
+  if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+    _ = navigationController
+      |> \.modalPresentationStyle .~ .pageSheet
+  }
+
+  return navigationController
 }

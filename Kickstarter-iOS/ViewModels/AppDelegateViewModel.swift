@@ -201,7 +201,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.updateConfigInEnvironment = Signal.merge([
       self.applicationWillEnterForegroundProperty.signal,
-      self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+      self.userSessionEndedProperty.signal,
+      self.userSessionStartedProperty.signal
     ])
       .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
 
@@ -375,10 +377,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { $0 == .tab(.me) }
       .ignoreValues()
 
-    self.goToMobileSafari = deepLinkUrl
-      .filter { Navigation.deepLinkMatch($0) == nil }
-
-    let projectLink = deepLink
+    let projectLinkValues = deepLink
       .map { link -> (Param, Navigation.Project, RefTag?)? in
         guard case let .project(param, subpage, refTag) = link else { return nil }
         return (param, subpage, refTag)
@@ -395,6 +394,20 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
             )
           }
       }
+
+    let projectLink = projectLinkValues
+      .filter { project, _, _ in project.prelaunchActivated != true }
+
+    let projectPreviewLink = projectLinkValues
+      .filter { project, _, _ in project.prelaunchActivated == true }
+
+    let resolvedRedirectUrl = deepLinkUrl
+      .filter { Navigation.deepLinkMatch($0) == nil }
+
+    self.goToMobileSafari = Signal.merge(
+      resolvedRedirectUrl,
+      Signal.zip(deepLinkUrl, projectPreviewLink).map(first)
+    )
 
     self.goToDashboard = deepLink
       .map { link -> Param?? in

@@ -57,6 +57,12 @@ public protocol ServiceType {
   func clearUserUnseenActivity(input: EmptyInput)
     -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError>
 
+  func createApplePayBacking(input: CreateApplePayBackingInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+
+  func createBacking(input: CreateBackingInput) ->
+    SignalProducer<CreateBackingEnvelope, GraphError>
+
   func createPassword(input: CreatePasswordInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 
@@ -492,6 +498,7 @@ extension ServiceType {
     headers["Kickstarter-App-Id"] = self.appId
     headers["Kickstarter-iOS-App"] = self.buildVersion
     headers["User-Agent"] = Self.userAgent
+    headers["X-KICKSTARTER-CLIENT"] = self.serverConfig.apiClientAuth.clientId
 
     return headers
   }

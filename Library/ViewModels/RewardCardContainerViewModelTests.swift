@@ -9,6 +9,7 @@ import XCTest
 final class RewardCardContainerViewModelTests: TestCase {
   fileprivate let vm: RewardCardContainerViewModelType = RewardCardContainerViewModel()
 
+  private let gradientViewHidden = TestObserver<Bool, Never>()
   private let pledgeButtonStyleType = TestObserver<ButtonStyleType, Never>()
   private let pledgeButtonEnabled = TestObserver<Bool, Never>()
   private let pledgeButtonHidden = TestObserver<Bool, Never>()
@@ -59,6 +60,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.gradientViewHidden.observe(self.gradientViewHidden.observer)
     self.vm.outputs.pledgeButtonStyleType.observe(self.pledgeButtonStyleType.observer)
     self.vm.outputs.pledgeButtonEnabled.observe(self.pledgeButtonEnabled.observer)
     self.vm.outputs.pledgeButtonHidden.observe(self.pledgeButtonHidden.observer)
@@ -67,6 +69,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   }
 
   func testLive_BackedProject_BackedReward() {
+    self.gradientViewHidden.assertValueCount(0)
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)
     self.pledgeButtonHidden.assertValueCount(0)
@@ -88,17 +91,20 @@ final class RewardCardContainerViewModelTests: TestCase {
 
       let emissionCount = index + 1
 
+      self.gradientViewHidden.assertValueCount(emissionCount)
       self.pledgeButtonStyleType.assertValueCount(emissionCount)
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
     }
 
+    self.gradientViewHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
+    self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonStyleType.assertValues([.blue, .blue, .blue, .blue, .blue, .blue, .blue, .blue])
     self.pledgeButtonEnabled.assertValues([true, true, true, true, true, true, true, true])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
@@ -115,6 +121,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   }
 
   func testLive_BackedProject_NonBackedReward() {
+    self.gradientViewHidden.assertValueCount(0)
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)
     self.pledgeButtonHidden.assertValueCount(0)
@@ -136,17 +143,20 @@ final class RewardCardContainerViewModelTests: TestCase {
 
       let emissionCount = index + 1
 
+      self.gradientViewHidden.assertValueCount(emissionCount)
       self.pledgeButtonStyleType.assertValueCount(emissionCount)
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
     }
 
+    self.gradientViewHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
+    self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonStyleType.assertValues([.green, .green, .green, .green, .green, .green, .green, .green])
     self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
@@ -163,6 +173,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   }
 
   func testLive_NonBackedProject_LoggedIn() {
+    self.gradientViewHidden.assertValueCount(0)
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)
     self.pledgeButtonHidden.assertValueCount(0)
@@ -177,33 +188,37 @@ final class RewardCardContainerViewModelTests: TestCase {
 
       let emissionCount = index + 1
 
+      self.gradientViewHidden.assertValueCount(emissionCount)
       self.pledgeButtonStyleType.assertValueCount(emissionCount)
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
     }
 
+    self.gradientViewHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
+    self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonStyleType.assertValues([.green, .green, .green, .green, .green, .green, .green, .green])
     self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "Pledge £6 or more",
-      "Pledge £6 or more",
-      "Pledge £6 or more",
-      "Pledge £6 or more",
+      "Select",
+      "Select",
+      "Select",
+      "Select",
       "No longer available",
       "No longer available",
       "No longer available",
-      "Pledge £1 or more"
+      "Select"
     ])
   }
 
   func testLive_NonBackedProject_LoggedOut() {
+    self.gradientViewHidden.assertValueCount(0)
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)
     self.pledgeButtonHidden.assertValueCount(0)
@@ -219,33 +234,37 @@ final class RewardCardContainerViewModelTests: TestCase {
 
       let emissionCount = index + 1
 
+      self.gradientViewHidden.assertValueCount(emissionCount)
       self.pledgeButtonStyleType.assertValueCount(emissionCount)
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
     }
 
+    self.gradientViewHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
+    self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonStyleType.assertValues([.green, .green, .green, .green, .green, .green, .green, .green])
     self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "Pledge £6 or more",
-      "Pledge £6 or more",
-      "Pledge £6 or more",
-      "Pledge £6 or more",
+      "Select",
+      "Select",
+      "Select",
+      "Select",
       "No longer available",
       "No longer available",
       "No longer available",
-      "Pledge £1 or more"
+      "Select"
     ])
   }
 
   func testNonLive_BackedProject_BackedReward() {
+    self.gradientViewHidden.assertValueCount(0)
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)
     self.pledgeButtonHidden.assertValueCount(0)
@@ -267,17 +286,20 @@ final class RewardCardContainerViewModelTests: TestCase {
 
       let emissionCount = index + 1
 
+      self.gradientViewHidden.assertValueCount(emissionCount)
       self.pledgeButtonStyleType.assertValueCount(emissionCount)
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
     }
 
+    self.gradientViewHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
+    self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonStyleType.assertValues([.black, .black, .black, .black, .black, .black, .black, .black])
     self.pledgeButtonEnabled.assertValues([true, true, true, true, true, true, true, true])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
@@ -294,6 +316,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   }
 
   func testNonLive_BackedProject_NonBackedReward() {
+    self.gradientViewHidden.assertValueCount(0)
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)
     self.pledgeButtonHidden.assertValueCount(0)
@@ -315,17 +338,20 @@ final class RewardCardContainerViewModelTests: TestCase {
 
       let emissionCount = index + 1
 
+      self.gradientViewHidden.assertValueCount(emissionCount)
       self.pledgeButtonStyleType.assertValueCount(emissionCount)
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
     }
 
+    self.gradientViewHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
+    self.gradientViewHidden.assertValues([true, true, true, true, true, true, true, true])
     self.pledgeButtonStyleType.assertValues([.none, .none, .none, .none, .none, .none, .none, .none])
     self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
@@ -333,6 +359,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   }
 
   func testNonLive_NonBackedProject() {
+    self.gradientViewHidden.assertValueCount(0)
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)
     self.pledgeButtonHidden.assertValueCount(0)
@@ -347,17 +374,20 @@ final class RewardCardContainerViewModelTests: TestCase {
 
       let emissionCount = index + 1
 
+      self.gradientViewHidden.assertValueCount(emissionCount)
       self.pledgeButtonStyleType.assertValueCount(emissionCount)
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
     }
 
+    self.gradientViewHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
+    self.gradientViewHidden.assertValues([true, true, true, true, true, true, true, true])
     self.pledgeButtonStyleType.assertValues([.none, .none, .none, .none, .none, .none, .none, .none])
     self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
@@ -365,7 +395,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   }
 
   func testLive_BackedProject_BackedReward_Errored() {
-    // exclude reward states we can't get to
+    // only test reward states that we can get to
     let rewards = [
       availableLimitedReward,
       availableTimebasedReward,
@@ -374,6 +404,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       Reward.noReward
     ]
 
+    self.gradientViewHidden.assertValueCount(0)
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)
     self.pledgeButtonHidden.assertValueCount(0)
@@ -396,43 +427,56 @@ final class RewardCardContainerViewModelTests: TestCase {
 
       let emissionCount = index + 1
 
+      self.gradientViewHidden.assertValueCount(emissionCount)
       self.pledgeButtonStyleType.assertValueCount(emissionCount)
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
     }
 
+    self.gradientViewHidden.assertValueCount(rewards.count)
     self.pledgeButtonStyleType.assertValueCount(rewards.count)
     self.pledgeButtonEnabled.assertValueCount(rewards.count)
     self.pledgeButtonHidden.assertValueCount(rewards.count)
     self.pledgeButtonTitleText.assertValueCount(rewards.count)
 
-    self.pledgeButtonStyleType.assertValues([.apricot, .apricot, .apricot, .apricot, .apricot])
+    self.gradientViewHidden.assertValues([false, false, false, false, false])
+    self.pledgeButtonStyleType.assertValues([.blue, .blue, .blue, .blue, .blue])
     self.pledgeButtonEnabled.assertValues([true, true, true, true, true])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "Fix your payment method",
-      "Fix your payment method",
-      "Fix your payment method",
-      "Fix your payment method",
-      "Fix your payment method"
+      "Manage your pledge",
+      "Manage your pledge",
+      "Manage your pledge",
+      "Manage your pledge",
+      "Manage your pledge"
     ])
   }
 
-  func testLive_BackedProject_NonBackedReward_Errored() {
+  func testNonLive_BackedProject_BackedReward_Errored() {
+    // only test reward states that we can get to
+    let rewards = [
+      availableLimitedReward,
+      availableTimebasedReward,
+      availableLimitedTimebasedReward,
+      availableNonLimitedReward,
+      Reward.noReward
+    ]
+
+    self.gradientViewHidden.assertValueCount(0)
     self.pledgeButtonStyleType.assertValueCount(0)
     self.pledgeButtonEnabled.assertValueCount(0)
     self.pledgeButtonHidden.assertValueCount(0)
     self.pledgeButtonTitleText.assertValueCount(0)
 
-    for (index, reward) in self.allRewards.enumerated() {
+    for (index, reward) in rewards.enumerated() {
       let project = Project.cosmicSurgery
-        |> Project.lens.state .~ .live
+        |> Project.lens.state .~ .successful
         |> Project.lens.personalization.isBacking .~ true
         |> Project.lens.personalization.backing .~ (
           .template
-            |> Backing.lens.reward .~ Reward.otherReward
-            |> Backing.lens.rewardId .~ Reward.otherReward.id
+            |> Backing.lens.reward .~ reward
+            |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
             |> Backing.lens.amount .~ 700
             |> Backing.lens.status .~ .errored
@@ -442,29 +486,29 @@ final class RewardCardContainerViewModelTests: TestCase {
 
       let emissionCount = index + 1
 
+      self.gradientViewHidden.assertValueCount(emissionCount)
       self.pledgeButtonStyleType.assertValueCount(emissionCount)
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
     }
 
-    self.pledgeButtonStyleType.assertValueCount(self.allRewards.count)
-    self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
-    self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
-    self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
+    self.gradientViewHidden.assertValueCount(rewards.count)
+    self.pledgeButtonStyleType.assertValueCount(rewards.count)
+    self.pledgeButtonEnabled.assertValueCount(rewards.count)
+    self.pledgeButtonHidden.assertValueCount(rewards.count)
+    self.pledgeButtonTitleText.assertValueCount(rewards.count)
 
-    self.pledgeButtonStyleType.assertValues([.green, .green, .green, .green, .green, .green, .green, .green])
-    self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
-    self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
+    self.gradientViewHidden.assertValues([false, false, false, false, false])
+    self.pledgeButtonStyleType.assertValues([.black, .black, .black, .black, .black])
+    self.pledgeButtonEnabled.assertValues([true, true, true, true, true])
+    self.pledgeButtonHidden.assertValues([false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "Select this reward instead",
-      "Select this reward instead",
-      "Select this reward instead",
-      "Select this reward instead",
-      "No longer available",
-      "No longer available",
-      "No longer available",
-      "Select this reward instead"
+      "View your pledge",
+      "View your pledge",
+      "View your pledge",
+      "View your pledge",
+      "View your pledge"
     ])
   }
 
@@ -474,5 +518,19 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.vm.inputs.pledgeButtonTapped()
 
     self.rewardSelected.assertValues([Reward.template.id])
+  }
+
+  func testPledgeButtonTapped_eventTracking() {
+    let client = MockTrackingClient()
+
+    withEnvironment(apiService: MockService(), koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
+
+      self.vm.inputs.pledgeButtonTapped()
+
+      XCTAssertEqual(["Select Reward Button Clicked"], client.events)
+    }
   }
 }

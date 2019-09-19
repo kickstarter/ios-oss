@@ -7,27 +7,27 @@ import XCTest
 final class FeatureHelpersTests: TestCase {
   // MARK: - nativeCheckout
 
-  func testFeatureNativeCheckoutEnabled_isTrue() {
+  func testFeatureNativeCheckoutIsEnabled_isTrue() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
 
     withEnvironment(config: config) {
-      XCTAssertTrue(featureNativeCheckoutEnabled())
+      XCTAssertTrue(featureNativeCheckoutIsEnabled())
     }
   }
 
-  func testFeatureNativeCheckoutEnabled_isFalse() {
+  func testFeatureNativeCheckoutIsEnabled_isFalse() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: false]
 
     withEnvironment(config: config) {
-      XCTAssertFalse(featureNativeCheckoutEnabled())
+      XCTAssertFalse(featureNativeCheckoutIsEnabled())
     }
   }
 
-  func testFeatureNativeCheckoutEnabled_isFalse_whenNil() {
+  func testFeatureNativeCheckoutIsEnabled_isFalse_whenNil() {
     withEnvironment(config: .template) {
-      XCTAssertFalse(featureNativeCheckoutEnabled())
+      XCTAssertFalse(featureNativeCheckoutIsEnabled())
     }
   }
 
@@ -38,7 +38,7 @@ final class FeatureHelpersTests: TestCase {
       |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
 
     withEnvironment(config: config) {
-      XCTAssertTrue(featureNativeCheckoutPledgeViewEnabled())
+      XCTAssertTrue(featureNativeCheckoutPledgeViewIsEnabled())
     }
   }
 
@@ -47,13 +47,52 @@ final class FeatureHelpersTests: TestCase {
       |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: false]
 
     withEnvironment(config: config) {
-      XCTAssertFalse(featureNativeCheckoutPledgeViewEnabled())
+      XCTAssertFalse(featureNativeCheckoutPledgeViewIsEnabled())
     }
   }
 
   func testFeatureNativeCheckoutPledgeViewEnabled_isFalse_whenNil() {
     withEnvironment(config: .template) {
-      XCTAssertFalse(featureNativeCheckoutPledgeViewEnabled())
+      XCTAssertFalse(featureNativeCheckoutPledgeViewIsEnabled())
+    }
+  }
+
+  func testFeatureNativeCheckoutPledgeViewEnabled_isFalse_ffIsFalse_inReleaseBuild() {
+    let testBundle = MockBundle.init(
+      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+      lang: "en"
+    )
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: false]
+
+    withEnvironment(config: config, mainBundle: testBundle) {
+      XCTAssertFalse(featureNativeCheckoutPledgeViewIsEnabled())
+    }
+  }
+
+  func testFeatureNativeCheckoutPledgeViewEnabled_isFalse_ffIsTrue_inReleaseBuild() {
+    let testBundle = MockBundle.init(
+      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+      lang: "en"
+    )
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
+
+    withEnvironment(config: config, mainBundle: testBundle) {
+      XCTAssertFalse(featureNativeCheckoutPledgeViewIsEnabled())
+    }
+  }
+
+  func testFeatureNativeCheckoutPledgeViewEnabled_isFalse_ffIsNil_inReleaseBuild() {
+    let testBundle = MockBundle.init(
+      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+      lang: "en"
+    )
+    let config = Config.template
+      |> \.features .~ [:]
+
+    withEnvironment(config: config, mainBundle: testBundle) {
+      XCTAssertFalse(featureNativeCheckoutPledgeViewIsEnabled())
     }
   }
 }

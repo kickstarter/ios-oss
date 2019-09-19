@@ -4,6 +4,7 @@ import Prelude
 import Runes
 
 public struct Project {
+  public var availableCardTypes: [String]?
   public var blurb: String
   public var category: Category
   public var country: Country
@@ -15,6 +16,7 @@ public struct Project {
   public var name: String
   public var personalization: Personalization
   public var photo: Photo
+  public var prelaunchActivated: Bool?
   public var rewards: [Reward]
   public var slug: String
   public var staffPick: Bool
@@ -52,6 +54,7 @@ public struct Project {
   public struct Stats {
     public var backersCount: Int
     public var commentsCount: Int?
+    public var convertedPledgedAmount: Int?
     /// The currency code of the project ex. USD
     public var currency: String
     /// The currency code of the User's preferred currency ex. SEK
@@ -83,11 +86,6 @@ public struct Project {
     /// Goal amount converted to USD.
     public var goalUsd: Int {
       return Int(floor(Float(self.goal) * self.staticUsdRate))
-    }
-
-    /// Pledged amount converted to current currency.
-    public var pledgedCurrentCurrency: Int? {
-      return self.currentCurrencyRate.map { Int(floor(Float(self.pledged) * $0)) }
     }
 
     /// Goal amount converted to current currency.
@@ -187,7 +185,8 @@ extension Project: CustomDebugStringConvertible {
 extension Project: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project> {
     let tmp1 = curry(Project.init)
-      <^> json <| "blurb"
+      <^> json <||? "available_card_types"
+      <*> json <| "blurb"
       <*> ((json <| "category" >>- decodeToGraphCategory) as Decoded<Category>)
       <*> Project.Country.decode(json)
       <*> json <| "creator"
@@ -200,6 +199,7 @@ extension Project: Argo.Decodable {
       <*> json <| "name"
       <*> Project.Personalization.decode(json)
       <*> json <| "photo"
+      <*> json <|? "prelaunch_activated"
       <*> (json <|| "rewards" <|> .success([]))
       <*> json <| "slug"
     return tmp3
@@ -231,6 +231,7 @@ extension Project.Stats: Argo.Decodable {
     let tmp1 = curry(Project.Stats.init)
       <^> json <| "backers_count"
       <*> json <|? "comments_count"
+      <*> json <|? "converted_pledged_amount"
       <*> json <| "currency"
       <*> json <|? "current_currency"
       <*> json <|? "fx_rate"

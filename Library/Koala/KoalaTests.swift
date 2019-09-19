@@ -43,6 +43,7 @@ final class KoalaTests: TestCase {
 
     XCTAssertNil(properties?["user_uid"])
     XCTAssertEqual(false, properties?["user_logged_in"] as? Bool)
+    XCTAssertNil(properties?["user_is_admin"])
     XCTAssertEqual("GB", properties?["user_country"] as? String)
   }
 
@@ -83,6 +84,7 @@ final class KoalaTests: TestCase {
 
     XCTAssertEqual(user.id, properties?["user_uid"] as? Int)
     XCTAssertEqual(true, properties?["user_logged_in"] as? Bool)
+    XCTAssertEqual(user.isAdmin, properties?["user_is_admin"] as? Bool)
     XCTAssertEqual(user.stats.backedProjectsCount, properties?["user_backed_projects_count"] as? Int)
     XCTAssertEqual(user.stats.createdProjectsCount, properties?["user_created_projects_count"] as? Int)
     XCTAssertEqual(user.stats.starredProjectsCount, properties?["user_starred_projects_count"] as? Int)
@@ -122,11 +124,11 @@ final class KoalaTests: TestCase {
     let project = Project.template
 
     koala.trackProjectShow(project, refTag: .discovery, cookieRefTag: .recommended)
-    XCTAssertEqual(2, client.properties.count)
+    XCTAssertEqual(3, client.properties.count)
 
     let properties = client.properties.last
 
-    XCTAssertEqual("Viewed Project Page", client.events.last)
+    XCTAssertEqual("Project Page", client.events.last)
     XCTAssertEqual(project.stats.backersCount, properties?["project_backers_count"] as? Int)
     XCTAssertEqual(project.country.countryCode, properties?["project_country"] as? String)
     XCTAssertEqual(project.country.currencyCode, properties?["project_currency"] as? String)
@@ -170,7 +172,7 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
-    XCTAssertEqual(2, client.properties.count)
+    XCTAssertEqual(3, client.properties.count)
 
     let properties = client.properties.last
 
@@ -188,7 +190,7 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
-    XCTAssertEqual(2, client.properties.count)
+    XCTAssertEqual(3, client.properties.count)
 
     let properties = client.properties.last
 
@@ -206,7 +208,7 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
-    XCTAssertEqual(2, client.properties.count)
+    XCTAssertEqual(3, client.properties.count)
 
     let properties = client.properties.last
 
@@ -224,7 +226,7 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
-    XCTAssertEqual(2, client.properties.count)
+    XCTAssertEqual(3, client.properties.count)
 
     let properties = client.properties.last
 
@@ -466,5 +468,104 @@ final class KoalaTests: TestCase {
 
     koala.trackDiscoveryPullToRefresh()
     XCTAssertEqual(["Triggered Refresh"], client.events)
+  }
+
+  func testTrackPledgeCTAButtonClicked_FixState() {
+    let client = MockTrackingClient()
+    let project = Project.template
+    let loggedInUser = User.template |> \.id .~ 42
+
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackPledgeCTAButtonClicked(stateType: .fix, project: project, screen: .projectPage)
+
+    let properties = client.properties.last
+
+    XCTAssertEqual(["Fix Pledge Button Clicked"], client.events)
+    XCTAssertEqual("Project page", properties?["screen"] as? String)
+  }
+
+  func testTrackPledgeCTAButtonClicked_PledgeState() {
+    let client = MockTrackingClient()
+    let project = Project.template
+    let loggedInUser = User.template |> \.id .~ 42
+
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackPledgeCTAButtonClicked(stateType: .pledge, project: project, screen: .projectPage)
+
+    let properties = client.properties.last
+
+    XCTAssertEqual(["Back this Project Button Clicked"], client.events)
+    XCTAssertEqual("Project page", properties?["screen"] as? String)
+  }
+
+  func testTrackPledgeCTAButtonClicked_ManageState() {
+    let client = MockTrackingClient()
+    let project = Project.template
+    let loggedInUser = User.template |> \.id .~ 42
+
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackPledgeCTAButtonClicked(stateType: .manage, project: project, screen: .projectPage)
+
+    let properties = client.properties.last
+
+    XCTAssertEqual(["Manage Pledge Button Clicked"], client.events)
+    XCTAssertEqual("Project page", properties?["screen"] as? String)
+  }
+
+  func testTrackPledgeCTAButtonClicked_ViewBackingState() {
+    let client = MockTrackingClient()
+    let project = Project.template
+    let loggedInUser = User.template |> \.id .~ 42
+
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackPledgeCTAButtonClicked(stateType: .viewBacking, project: project, screen: .projectPage)
+
+    let properties = client.properties.last
+
+    XCTAssertEqual(["View Your Pledge Button Clicked"], client.events)
+    XCTAssertEqual("Project page", properties?["screen"] as? String)
+  }
+
+  func testTrackPledgeCTAButtonClicked_ViewRewardState() {
+    let client = MockTrackingClient()
+    let project = Project.template
+    let loggedInUser = User.template |> \.id .~ 42
+
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackPledgeCTAButtonClicked(stateType: .viewRewards, project: project, screen: .projectPage)
+
+    let properties = client.properties.last
+
+    XCTAssertEqual(["View Rewards Button Clicked"], client.events)
+    XCTAssertEqual("Project page", properties?["screen"] as? String)
+  }
+
+  func testTrackSelectRewardButtonClicked() {
+    let client = MockTrackingClient()
+    let reward = Reward.template
+    let backing = .template
+      |> Backing.lens.reward .~ reward
+    let project = .template
+      |> Project.lens.personalization.backing .~ backing
+    let loggedInUser = User.template |> \.id .~ 42
+
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackSelectRewardButtonClicked(
+      project: project,
+      reward: reward,
+      backing: backing,
+      screen: .backThisPage
+    )
+
+    let properties = client.properties.last
+
+    XCTAssertEqual(["Select Reward Button Clicked"], client.events)
+    XCTAssertEqual("Back this page", properties?["screen"] as? String)
   }
 }

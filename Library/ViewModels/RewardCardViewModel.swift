@@ -12,6 +12,8 @@ public protocol RewardCardViewModelOutputs {
   var conversionLabelHidden: Signal<Bool, Never> { get }
   var conversionLabelText: Signal<String, Never> { get }
   var descriptionLabelText: Signal<String, Never> { get }
+  var estimatedDeliveryDateLabelHidden: Signal<Bool, Never> { get }
+  var estimatedDeliveryDateLabelText: Signal<String, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
   var items: Signal<[String], Never> { get }
   var pillCollectionViewHidden: Signal<Bool, Never> { get }
@@ -62,9 +64,8 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
         ) ?? (.us, project.stats.staticUsdRate)
         switch rewardOrBacking {
         case let .left(reward):
-          let min = minPledgeAmount(forProject: project, reward: reward)
           return Format.currency(
-            max(1, Int(Float(min) * rate)),
+            reward.convertedMinimum,
             country: country,
             omitCurrencyCode: project.stats.omitUSCurrencyCode
           )
@@ -125,6 +126,9 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       .map { $0.id }
 
     self.cardUserInteractionIsEnabled = rewardAvailable
+
+    self.estimatedDeliveryDateLabelHidden = reward.map { $0.estimatedDeliveryOn }.map(isNil)
+    self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryText(with:)).skipNil()
   }
 
   private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
@@ -141,6 +145,8 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
   public let descriptionLabelText: Signal<String, Never>
+  public let estimatedDeliveryDateLabelHidden: Signal<Bool, Never>
+  public let estimatedDeliveryDateLabelText: Signal<String, Never>
   public let items: Signal<[String], Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
   public let pillCollectionViewHidden: Signal<Bool, Never>
@@ -192,24 +198,72 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
 }
 
 private func pillStrings(project: Project, reward: Reward) -> [String] {
-  var pillStrings: [String] = []
+  return [
+    timeLeftString(project: project, reward: reward),
+    backerCountOrRemainingString(project: project, reward: reward),
+    shippingSummaryString(project: project, reward: reward)
+  ]
+  .compact()
+}
 
-  if let endsAt = reward.endsAt, project.state == .live, endsAt > 0,
-    endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970 {
+private func timeLeftString(project: Project, reward: Reward) -> String? {
+  let isUnlimitedOrAvailable = reward.limit == nil || reward.remaining ?? 0 > 0
+
+  if project.state == .live,
+    let endsAt = reward.endsAt,
+    endsAt > 0,
+    endsAt >= AppEnvironment.current.dateType.init().timeIntervalSince1970,
+    isUnlimitedOrAvailable {
     let (time, unit) = Format.duration(
       secondsInUTC: min(endsAt, project.dates.deadline),
       abbreviate: true,
       useToGo: false
     )
 
-    pillStrings.append(Strings.Time_left_left(time_left: time + " " + unit))
+    return Strings.Time_left_left(time_left: time + " " + unit)
   }
 
-  if let remaining = reward.remaining, reward.limit != nil, project.state == .live {
-    pillStrings.append(Strings.Left_count_left(left_count: remaining))
+  return nil
+}
+
+private func backerCountOrRemainingString(project: Project, reward: Reward) -> String? {
+  guard
+    let limit = reward.limit,
+    let remaining = reward.remaining,
+    remaining > 0,
+    project.state == .live
+  else {
+    let backersCount = reward.backersCount ?? 0
+
+    return backersCount > 0
+      ? Strings.general_backer_count_backers(backer_count: backersCount)
+      : nil
   }
 
-  return pillStrings
+  return Strings.remaining_count_left_of_limit_count(
+    remaining_count: "\(remaining)",
+    limit_count: "\(limit)"
+  )
+}
+
+private func shippingSummaryString(project: Project, reward: Reward) -> String? {
+  if project.state == .live, reward.shipping.enabled, let type = reward.shipping.type {
+    switch type {
+    case .anywhere:
+      return Strings.Ships_worldwide()
+    case .multipleLocations:
+      return Strings.Limited_shipping()
+    case .noShipping: return nil
+    case .singleLocation:
+      if let name = reward.shipping.location?.localizedName {
+        return Strings.location_name_only(location_name: name)
+      }
+
+      return nil
+    }
+  }
+
+  return nil
 }
 
 private func stateIconImageColor(project: Project, reward: Reward) -> UIColor? {
@@ -225,5 +279,18 @@ private func stateIconImageColor(project: Project, reward: Reward) -> UIColor? {
 private func stateIconImageName(project: Project, reward: Reward) -> String? {
   guard userIsBacking(reward: reward, inProject: project) else { return nil }
 
-  return project.personalization.backing?.status == .errored ? "icon--alert" : "checkmark-reward"
+  // NB: Revert `nil` back to "icon--alert" when we're handling error state
+  return project.personalization.backing?.status == .errored ? nil : "checkmark-reward"
+}
+
+private func estimatedDeliveryText(with reward: Reward) -> String? {
+  return reward.estimatedDeliveryOn.map {
+    Strings.backing_info_estimated_delivery_date(
+      delivery_date: Format.date(
+        secondsInUTC: $0,
+        template: DateFormatter.monthYear,
+        timeZone: UTCTimeZone
+      )
+    )
+  }
 }

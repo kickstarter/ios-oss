@@ -21,6 +21,10 @@
 
     fileprivate let changePasswordError: GraphError?
 
+    fileprivate let createApplePayBackingError: GraphError?
+
+    fileprivate let createBackingResult: Result<CreateBackingEnvelope, GraphError>?
+
     fileprivate let createPasswordError: GraphError?
 
     fileprivate let changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>?
@@ -194,6 +198,8 @@
         me: .template
       ),
       changePasswordError: GraphError? = nil,
+      createApplePayBackingError: GraphError? = nil,
+      createBackingResult: Result<CreateBackingEnvelope, GraphError>? = nil,
       createPasswordError: GraphError? = nil,
       changeCurrencyResponse: GraphMutationEmptyResponseEnvelope? = nil,
       changeCurrencyError: GraphError? = nil,
@@ -302,6 +308,9 @@
       self.changePasswordError = changePasswordError
 
       self.clearUserUnseenActivityResult = clearUserUnseenActivityResult
+
+      self.createBackingResult = createBackingResult
+      self.createApplePayBackingError = createApplePayBackingError
 
       self.createPasswordError = createPasswordError
 
@@ -532,6 +541,20 @@
       } else {
         return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
       }
+    }
+
+    internal func createApplePayBacking(input _: CreateApplePayBackingInput)
+      -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      if let error = self.createApplePayBackingError {
+        return SignalProducer(error: error)
+      } else {
+        return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+      }
+    }
+
+    internal func createBacking(input _: CreateBackingInput)
+      -> SignalProducer<CreateBackingEnvelope, GraphError> {
+      return producer(for: self.createBackingResult)
     }
 
     internal func createPassword(input _: CreatePasswordInput) ->

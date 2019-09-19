@@ -224,18 +224,24 @@ final class RewardCardContainerViewTests: TestCase {
     }
   }
 
-  func testLive_BackedProject_NonBackedReward_Errored() {
-    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
+  func testNonLive_BackedProject_BackedReward_Errored() {
+    // Filter these out because they aren't states we can get to
+    let filteredRewards = allRewards
+      .filter { (name, _) -> Bool in
+        !name.lowercased().contains("unavailable")
+      }
+
+    combos([Language.en], [Device.phone4_7inch], filteredRewards).forEach { language, device, rewardTuple in
       withEnvironment(language: language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
-          |> Project.lens.state .~ .live
+          |> Project.lens.state .~ .successful
           |> Project.lens.personalization.isBacking .~ true
           |> Project.lens.personalization.backing .~ (
             .template
-              |> Backing.lens.reward .~ Reward.otherReward
-              |> Backing.lens.rewardId .~ Reward.otherReward.id
+              |> Backing.lens.reward .~ reward
+              |> Backing.lens.rewardId .~ reward.id
               |> Backing.lens.shippingAmount .~ 10
               |> Backing.lens.amount .~ 700
               |> Backing.lens.status .~ .errored
@@ -289,39 +295,71 @@ let allRewards: [(String, Reward)] = {
   let availableLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
+    |> Reward.lens.convertedMinimum .~ 7
   let availableTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
+    |> Reward.lens.convertedMinimum .~ 7
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
   let availableLimitedTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
+    |> Reward.lens.convertedMinimum .~ 7
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
   let availableNonLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.endsAt .~ nil
+    |> Reward.lens.convertedMinimum .~ 7
+  let availableShippingEnabledReward = Reward.postcards
+    |> Reward.lens.limit .~ 100
+    |> Reward.lens.remaining .~ 25
+    |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
+    |> Reward.lens.convertedMinimum .~ 7
+    |> Reward.lens.shipping .~ (
+      .template
+        |> Reward.Shipping.lens.enabled .~ true
+        |> Reward.Shipping.lens.type .~ .anywhere
+    )
 
   let unavailableLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 0
+    |> Reward.lens.convertedMinimum .~ 7
   let unavailableTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+    |> Reward.lens.convertedMinimum .~ 7
   let unavailableLimitedTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 0
+    |> Reward.lens.convertedMinimum .~ 7
     |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+  let unavailableShippingEnabledReward = Reward.postcards
+    |> Reward.lens.limit .~ 100
+    |> Reward.lens.remaining .~ 0
+    |> Reward.lens.convertedMinimum .~ 7
+
+    |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+    |> Reward.lens.shipping .~ (
+      .template
+        |> Reward.Shipping.lens.enabled .~ true
+        |> Reward.Shipping.lens.type .~ .anywhere
+    )
+  let noReward = Reward.noReward
+    |> Reward.lens.convertedMinimum .~ 1
 
   return [
     ("AvailableLimitedReward", availableLimitedReward),
     ("AvailableTimebasedReward", availableTimebasedReward),
     ("AvailableLimitedTimebasedReward", availableLimitedTimebasedReward),
     ("AvailableNonLimitedReward", availableNonLimitedReward),
+    ("AvailableShippingEnabledReward", availableShippingEnabledReward),
     ("UnavailableLimitedReward", unavailableLimitedReward),
     ("UnavailableTimebasedReward", unavailableTimebasedReward),
     ("UnavailableLimitedTimebasedReward", unavailableLimitedTimebasedReward),
-    ("NoReward", Reward.noReward)
+    ("UnavailableShippingEnabledReward", unavailableShippingEnabledReward),
+    ("NoReward", noReward)
   ]
 }()

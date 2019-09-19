@@ -36,6 +36,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   fileprivate let conversionLabelHidden = TestObserver<Bool, Never>()
   fileprivate let conversionLabelText = TestObserver<String, Never>()
   fileprivate let countryLabelText = TestObserver<String, Never>()
+  fileprivate let descriptionTitleLabelHidden = TestObserver<Bool, Never>()
   fileprivate let descriptionLabelText = TestObserver<String, Never>()
   fileprivate let differentPaymentMethodButtonHidden = TestObserver<Bool, Never>()
   fileprivate let dismissViewController = TestObserver<(), Never>()
@@ -54,6 +55,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   fileprivate let items = TestObserver<[String], Never>()
   fileprivate let itemsContainerHidden = TestObserver<Bool, Never>()
   fileprivate let loadingOverlayIsHidden = TestObserver<Bool, Never>()
+  fileprivate let managePledgeStackViewHidden = TestObserver<Bool, Never>()
   fileprivate let minimumLabelText = TestObserver<String, Never>()
   fileprivate let navigationTitle = TestObserver<String, Never>()
   fileprivate let orLabelHidden = TestObserver<Bool, Never>()
@@ -75,6 +77,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   fileprivate let titleLabelHidden = TestObserver<Bool, Never>()
   fileprivate let titleLabelText = TestObserver<String, Never>()
   fileprivate let updatePledgeButtonHidden = TestObserver<Bool, Never>()
+  fileprivate let updateStackViewHidden = TestObserver<Bool, Never>()
 
   // todo koala tracking testing
 
@@ -88,6 +91,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.countryLabelText.observe(self.countryLabelText.observer)
+    self.vm.outputs.descriptionTitleLabelHidden.observe(self.descriptionTitleLabelHidden.observer)
     self.vm.outputs.descriptionLabelText.observe(self.descriptionLabelText.observer)
     self.vm.outputs.differentPaymentMethodButtonHidden
       .observe(self.differentPaymentMethodButtonHidden.observer)
@@ -113,6 +117,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.outputs.items.observe(self.items.observer)
     self.vm.outputs.itemsContainerHidden.observe(self.itemsContainerHidden.observer)
     self.vm.outputs.loadingOverlayIsHidden.observe(self.loadingOverlayIsHidden.observer)
+    self.vm.outputs.managePledgeStackViewHidden.observe(self.managePledgeStackViewHidden.observer)
     self.vm.outputs.minimumLabelText.observe(self.minimumLabelText.observer)
     self.vm.outputs.navigationTitle.observe(self.navigationTitle.observer)
     self.vm.outputs.orLabelHidden.observe(self.orLabelHidden.observer)
@@ -134,6 +139,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.outputs.titleLabelHidden.observe(self.titleLabelHidden.observer)
     self.vm.outputs.titleLabelText.observe(self.titleLabelText.observer)
     self.vm.outputs.updatePledgeButtonHidden.observe(self.updatePledgeButtonHidden.observer)
+    self.vm.outputs.updateStackViewHidden.observe(self.updateStackViewHidden.observer)
 
     AppEnvironment.pushEnvironment(currentUser: .template)
   }
@@ -206,11 +212,9 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 2
       |> Project.lens.stats.currentCurrency .~ "USD"
-      |> Project.lens.stats.currentCurrencyRate .~ 2
     let reward = .template
-      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.convertedMinimum .~ 2_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -225,10 +229,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 2
-      |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template
-      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.convertedMinimum .~ 2_000
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -244,10 +246,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.ca.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 2
-      |> Project.lens.stats.currentCurrencyRate .~ 1.2
     let reward = .template
-      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.convertedMinimum .~ 1_200
 
     withEnvironment(countryCode: "CA") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -262,10 +262,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let project = .template
       |> Project.lens.country .~ .gb
       |> Project.lens.stats.currency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.staticUsdRate .~ 2
-      |> Project.lens.stats.currentCurrencyRate .~ nil
     let reward = .template
-      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.convertedMinimum .~ 2_000
 
     withEnvironment(countryCode: "CA") {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -477,6 +475,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.scheduler.advance()
 
     self.cancelPledgeButtonHidden.assertValues([false])
+    self.managePledgeStackViewHidden.assertValues([false])
 
     self.vm.inputs.cancelPledgeButtonTapped()
 
@@ -490,6 +489,48 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     )
 
     self.goToCheckoutProject.assertValues([project])
+  }
+
+  func testGoToPaymentAuthorization_NoShipping_LimitedSupportedNetworks() {
+    let project = Project.template
+      |> \.availableCardTypes .~ ["AMEX"]
+    let reward = Reward.template
+
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: []))) {
+      self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.applePayButtonHidden.assertValues([false])
+      self.goToPaymentAuthorization.assertValues([])
+
+      self.vm.inputs.applePayButtonTapped()
+
+      let paymentRequest: NSDictionary = [
+        "countryCode": project.country.countryCode,
+        "currencyCode": project.country.currencyCode,
+        "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
+        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
+        "supportedNetworks": [PKPaymentNetwork.amex],
+        "shippingType": PKShippingType.shipping.rawValue,
+        "paymentSummaryItems": [
+          [
+            "label": project.name,
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ],
+          [
+            "label": "Kickstarter (if funded)",
+            "amount": NSDecimalNumber(value: reward.minimum),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ]
+        ]
+      ]
+
+      self.goToPaymentAuthorization.assertValues([paymentRequest])
+      self.goToCheckoutRequest.assertValueCount(0)
+      self.goToCheckoutProject.assertValues([])
+    }
   }
 
   func testGoToPaymentAuthorization_NoShipping_NoRewardTitle() {
@@ -511,7 +552,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -535,7 +576,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
   func testGoToPaymentAuthorization_NoShipping_WithRewardTitle() {
     let project = Project.template
-    let reward = Reward.template |> Reward.lens.title .~ "The thing!"
+    let reward = Reward.template
+      |> Reward.lens.title .~ "The thing!"
 
     withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: []))) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
@@ -552,7 +594,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -595,7 +637,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -642,7 +684,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:
@@ -696,7 +738,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:
@@ -752,7 +794,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.supportedNetworks,
+        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:
@@ -1000,42 +1042,6 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.loadingOverlayIsHidden.assertValues([true])
   }
 
-  func testDiscoverCard_NotAvailable_ProjectsOutsideUS() {
-    let project = Project.template
-      |> Project.lens.country .~ Project.Country.au
-    let user = User.template
-
-    withEnvironment(currentUser: user) {
-      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
-        .contains(.discover))
-      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
-        .contains(.chinaUnionPay))
-    }
-  }
-
-  func testDiscoverCard_NotAvailable_ProjectsInsideUS_UserOutsideUS() {
-    let env = Environment.init(countryCode: "AU")
-    let project = Project.template
-
-    withEnvironment(env) {
-      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
-        .contains(.discover))
-      XCTAssertFalse(PKPaymentAuthorizationViewController.supportedNetworks(for: project)
-        .contains(.chinaUnionPay))
-    }
-  }
-
-  func testDiscoverCard_Available_ProjectsInsideUS_UserInUS() {
-    let project = Project.template
-    let user = User.template
-    let config = Config.template
-      |> Config.lens.countryCode .~ "AU"
-
-    withEnvironment(config: config, currentUser: user) {
-      XCTAssertTrue(PKPaymentAuthorizationViewController.supportedNetworks(for: project).contains(.discover))
-    }
-  }
-
   func testApplePay_LoggedOutFlow() {
     withEnvironment(currentUser: nil) {
       let project = Project.template
@@ -1225,11 +1231,13 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.applePayButtonHidden.assertValues([true])
     self.cancelPledgeButtonHidden.assertValues([true])
+    self.managePledgeStackViewHidden.assertValues([true])
     self.changePaymentMethodButtonHidden.assertValues([true])
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
     self.loadingOverlayIsHidden.assertValues([true])
     self.updatePledgeButtonHidden.assertValues([false])
+    self.updateStackViewHidden.assertValues([false])
     self.pledgeIsLoading.assertValueCount(0)
 
     // Updating pledge response comes back with a checkout url when we need a further webview checkout step
@@ -1270,11 +1278,13 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.applePayButtonHidden.assertValues([true])
     self.cancelPledgeButtonHidden.assertValues([false])
+    self.managePledgeStackViewHidden.assertValues([false])
     self.changePaymentMethodButtonHidden.assertValues([false])
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
     self.loadingOverlayIsHidden.assertValues([true])
     self.updatePledgeButtonHidden.assertValues([false])
+    self.updateStackViewHidden.assertValues([false])
     self.pledgeIsLoading.assertValueCount(0)
 
     // Updating pledge response comes back with a checkout url when we need a further webview checkout step
@@ -1400,7 +1410,9 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.applePayButtonHidden.assertValues([true])
     self.updatePledgeButtonHidden.assertValues([false])
+    self.updateStackViewHidden.assertValues([false])
     self.cancelPledgeButtonHidden.assertValues([true])
+    self.managePledgeStackViewHidden.assertValues([true])
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
     self.loadingOverlayIsHidden.assertValues([true])
@@ -1442,10 +1454,12 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
     self.applePayButtonHidden.assertValues([true])
     self.cancelPledgeButtonHidden.assertValues([false])
+    self.managePledgeStackViewHidden.assertValues([false])
     self.changePaymentMethodButtonHidden.assertValues([false])
     self.continueToPaymentsButtonHidden.assertValues([true])
     self.differentPaymentMethodButtonHidden.assertValues([true])
     self.updatePledgeButtonHidden.assertValues([false])
+    self.updateStackViewHidden.assertValues([false])
     self.loadingOverlayIsHidden.assertValues([true])
     self.pledgeIsLoading.assertValueCount(0)
 
@@ -2782,5 +2796,16 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.inputs.willMove(toParent: nil)
 
     XCTAssertEqual(["Reward Checkout", "Selected Reward", "Closed Reward"], self.trackingClient.events)
+  }
+
+  func testDescriptionTitleLabelHidden() {
+    let reward = .template
+      |> Reward.lens.description .~ ""
+
+    self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
+    self.vm.inputs.viewDidLoad()
+
+    self.descriptionLabelText.assertValues([reward.description])
+    self.descriptionTitleLabelHidden.assertValues([true])
   }
 }

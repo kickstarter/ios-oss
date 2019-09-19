@@ -22,25 +22,16 @@ public enum PledgeStateCTAType {
     }
   }
 
-  public var buttonBackgroundColor: UIColor {
+  public var buttonStyle: ButtonStyleType {
     switch self {
     case .fix:
-      return .ksr_apricot_500
+      return .apricot
     case .pledge:
-      return .ksr_green_500
+      return .green
     case .manage:
-      return .ksr_blue_500
+      return .blue
     case .viewBacking, .viewRewards:
-      return .ksr_soft_black
-    }
-  }
-
-  public var buttonTitleTextColor: UIColor {
-    switch self {
-    case .pledge, .manage, .viewBacking, .viewRewards:
-      return .white
-    case .fix:
-      return .ksr_soft_black
+      return .black
     }
   }
 

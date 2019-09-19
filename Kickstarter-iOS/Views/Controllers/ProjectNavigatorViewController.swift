@@ -178,52 +178,6 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
       isDragging: scrollView.isTracking
     )
   }
-
-  func projectPamphletViewController(
-    _: ProjectPamphletViewController,
-    didTapBackThisProject project: Project,
-    refTag: RefTag?
-  ) {
-    let vc = self.rewardsCollectionViewController(project: project, refTag: refTag)
-
-    self.present(vc, animated: true)
-  }
-
-  func deprecatedProjectPamphletViewController(
-    _: ProjectPamphletViewController,
-    didTapBackThisProject project: Project,
-    refTag: RefTag?
-  ) {
-    let vc = self.rewardsCollectionViewController(project: project, refTag: refTag, deprecated: true)
-
-    self.present(vc, animated: true)
-  }
-
-  private func rewardsCollectionViewController(
-    project: Project,
-    refTag: RefTag?,
-    deprecated: Bool = false
-  ) -> UINavigationController {
-    let rewardsCollectionViewController = RewardsCollectionViewController
-      .instantiate(with: project, refTag: refTag)
-
-    let navigationController: UINavigationController
-
-    if deprecated {
-      navigationController = UINavigationController(rootViewController: rewardsCollectionViewController)
-    } else {
-      navigationController = RewardPledgeNavigationController(
-        rootViewController: rewardsCollectionViewController
-      )
-    }
-
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = navigationController
-        |> \.modalPresentationStyle .~ .pageSheet
-    }
-
-    return navigationController
-  }
 }
 
 // MARK: - UIGestureRecognizerDelegate

@@ -114,7 +114,7 @@ public struct Environment {
     environmentVariables: EnvironmentVariables = EnvironmentVariables(),
     is1PasswordSupported: @escaping () -> Bool = { ksr_is1PasswordSupported() },
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
-    koala: Koala = Koala(client: KoalaTrackingClient(endpoint: .production)),
+    koala: Koala = Koala(client: KoalaTrackingClient()),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
     locale: Locale = .current,

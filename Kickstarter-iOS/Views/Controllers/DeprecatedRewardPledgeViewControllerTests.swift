@@ -4,8 +4,6 @@ import Library
 import Prelude
 import XCTest
 
-private let tolerance: CGFloat = 0.0001
-
 internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
   fileprivate let cosmicSurgery = Project.cosmicSurgery
     |> Project.lens.state .~ .live
@@ -48,12 +46,12 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
           project: project, reward: reward, applePayCapable: applePayCapable
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height -= 64
+        parent.view.frame.size.height += 100
 
         self.scheduler.run()
 
         FBSnapshotVerifyView(
-          vc.view, identifier: "lang_\(language)_apple_pay_\(applePayCapable)", tolerance: tolerance
+          vc.view, identifier: "lang_\(language)_apple_pay_\(applePayCapable)"
         )
       }
     }
@@ -74,7 +72,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
       vc.viewModel.inputs.continueToPaymentsButtonTapped()
 
-      FBSnapshotVerifyView(vc.view, identifier: "lang_en_apple_pay_false", tolerance: tolerance)
+      FBSnapshotVerifyView(parent.view, identifier: "lang_en_apple_pay_false")
     }
   }
 
@@ -98,7 +96,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
     self.scheduler.run()
 
-    FBSnapshotVerifyView(parent.view, tolerance: tolerance)
+    FBSnapshotVerifyView(parent.view)
   }
 
   func testExpandReward() {
@@ -112,7 +110,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
     vc.viewModel.inputs.expandDescriptionTapped()
     self.scheduler.run()
 
-    FBSnapshotVerifyView(vc.view, tolerance: tolerance)
+    FBSnapshotVerifyView(vc.view)
   }
 
   func testPledge_NoShipping() {
@@ -164,7 +162,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
       self.scheduler.run()
 
-      FBSnapshotVerifyView(vc.view, identifier: "apple_pay_\(applePayCapable)", tolerance: tolerance)
+      FBSnapshotVerifyView(vc.view, identifier: "apple_pay_\(applePayCapable)")
     }
   }
 
@@ -206,17 +204,18 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
           project: project, reward: reward, applePayCapable: false
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height += 100
+        parent.view.frame.size.height += 200
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)", tolerance: tolerance)
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
 
   func testManagePledge() {
     let reward = Reward.noReward
+      |> Reward.lens.convertedMinimum .~ 1
     let project = self.cosmicSurgery
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
@@ -241,6 +240,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
   func testManagePledge_ApplePayCapable() {
     let reward = Reward.noReward
+      |> Reward.lens.convertedMinimum .~ 1
     let project = self.cosmicSurgery
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
@@ -263,6 +263,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
     let newReward = self.cosmicReward
       |> Reward.lens.id .~ 42
       |> Reward.lens.minimum .~ 42
+      |> Reward.lens.convertedMinimum .~ 55
       |> Reward.lens.rewardsItems .~ []
     let oldReward = self.cosmicReward
       |> Reward.lens.rewardsItems .~ []
@@ -286,7 +287,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
         self.scheduler.run()
 
         FBSnapshotVerifyView(
-          parent.view, identifier: "lang_\(language)_apple_pay_\(applePayCapable)", tolerance: tolerance
+          parent.view, identifier: "lang_\(language)_apple_pay_\(applePayCapable)"
         )
       }
     }
@@ -296,6 +297,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
     let newReward = self.cosmicReward
       |> Reward.lens.id .~ 42
       |> Reward.lens.minimum .~ 42
+      |> Reward.lens.convertedMinimum .~ 55
       |> Reward.lens.rewardsItems .~ []
     let oldReward = self.cosmicReward
       |> Reward.lens.rewardsItems .~ []
@@ -316,13 +318,14 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
     self.scheduler.run()
 
-    FBSnapshotVerifyView(parent.view, tolerance: tolerance)
+    FBSnapshotVerifyView(parent.view)
   }
 
   func testAmbigiousCurrencies() {
     let project = self.cosmicSurgery
       |> Project.lens.stats.currentCurrencyRate .~ 1.2
     let reward = self.cosmicReward
+      |> Reward.lens.convertedMinimum .~ 780
       |> Reward.lens.rewardsItems .~ []
 
     let launchedCountries = AppEnvironment.current.launchedCountries.countries
@@ -343,8 +346,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
         FBSnapshotVerifyView(
           vc.view,
-          identifier: "country_\(country.countryCode)_current_user_country_\(currentUserCountry)",
-          tolerance: tolerance
+          identifier: "country_\(country.countryCode)_current_user_country_\(currentUserCountry)"
         )
       }
     }

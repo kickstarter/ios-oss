@@ -9,11 +9,12 @@ import XCTest
 internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   let vm: PledgeCTAContainerViewViewModelType = PledgeCTAContainerViewViewModel()
 
-  let activityIndicatorIsAnimating = TestObserver<Bool, Never>()
-  let buttonBackgroundColor = TestObserver<UIColor, Never>()
+  let activityIndicatorIsHidden = TestObserver<Bool, Never>()
+  let buttonStyleType = TestObserver<ButtonStyleType, Never>()
   let buttonTitleText = TestObserver<String, Never>()
-  let buttonTitleTextColor = TestObserver<UIColor, Never>()
-  let rootStackViewAnimateIsHidden = TestObserver<Bool, Never>()
+  let notifyDelegateCTATapped = TestObserver<PledgeStateCTAType, Never>()
+  let pledgeCTAButtonIsHidden = TestObserver<Bool, Never>()
+  let pledgeRetryButtonIsHidden = TestObserver<Bool, Never>()
   let spacerIsHidden = TestObserver<Bool, Never>()
   let stackViewIsHidden = TestObserver<Bool, Never>()
   let subtitleText = TestObserver<String, Never>()
@@ -21,11 +22,13 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-    self.vm.outputs.activityIndicatorIsAnimating.observe(self.activityIndicatorIsAnimating.observer)
-    self.vm.outputs.buttonBackgroundColor.observe(self.buttonBackgroundColor.observer)
+
+    self.vm.outputs.activityIndicatorIsHidden.observe(self.activityIndicatorIsHidden.observer)
+    self.vm.outputs.buttonStyleType.observe(self.buttonStyleType.observer)
     self.vm.outputs.buttonTitleText.observe(self.buttonTitleText.observer)
-    self.vm.outputs.buttonTitleTextColor.observe(self.buttonTitleTextColor.observer)
-    self.vm.outputs.rootStackViewAnimateIsHidden.observe(self.rootStackViewAnimateIsHidden.observer)
+    self.vm.outputs.notifyDelegateCTATapped.observe(self.notifyDelegateCTATapped.observer)
+    self.vm.outputs.pledgeCTAButtonIsHidden.observe(self.pledgeCTAButtonIsHidden.observer)
+    self.vm.outputs.pledgeRetryButtonIsHidden.observe(self.pledgeRetryButtonIsHidden.observer)
     self.vm.outputs.spacerIsHidden.observe(self.spacerIsHidden.observer)
     self.vm.outputs.stackViewIsHidden.observe(self.stackViewIsHidden.observer)
     self.vm.outputs.subtitleText.observe(self.subtitleText.observer)
@@ -33,7 +36,6 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
   }
 
   func testPledgeCTA_Backer_LiveProject() {
-    let manageCTAColor: UIColor = .ksr_blue_500
     let reward = .template
       |> Reward.lens.title .~ "Magic Lamp"
     let backing = .template
@@ -43,57 +45,53 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.stats.currentCurrency .~ "USD"
 
-    self.vm.inputs.configureWith(value: (project, false))
-    self.buttonBackgroundColor.assertValues([manageCTAColor])
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.blue])
     self.buttonTitleText.assertValues([Strings.Manage()])
     self.titleText.assertValues([Strings.Youre_a_backer()])
-    self.subtitleText.assertValues(["$8 • Magic Lamp"])
+    self.subtitleText.assertValues(["$10 • Magic Lamp"])
     self.spacerIsHidden.assertValues([false])
     self.stackViewIsHidden.assertValues([false])
   }
 
   func testPledgeCTA_Backer_NonLiveProject() {
-    let viewPledgeCTAColor: UIColor = .ksr_soft_black
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ Backing.template
       |> Project.lens.state .~ .successful
 
-    self.vm.inputs.configureWith(value: (project, false))
-    self.buttonBackgroundColor.assertValues([viewPledgeCTAColor])
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.black])
     self.buttonTitleText.assertValues([Strings.View_your_pledge()])
     self.spacerIsHidden.assertValues([true])
     self.stackViewIsHidden.assertValues([true])
   }
 
   func testPledgeCTA_NonBacker_LiveProject_loggedOut() {
-    let pledgeCTAColor: UIColor = .ksr_green_500
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ nil
       |> Project.lens.state .~ .live
 
-    self.vm.inputs.configureWith(value: (project, false))
-    self.buttonBackgroundColor.assertValues([pledgeCTAColor])
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.green])
     self.buttonTitleText.assertValues([Strings.Back_this_project()])
     self.spacerIsHidden.assertValues([true])
     self.stackViewIsHidden.assertValues([true])
   }
 
   func testPledgeCTA_NonBacker_NonLiveProject_loggedOut() {
-    let viewRewardsCTAColor: UIColor = .ksr_soft_black
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ nil
       |> Project.lens.state .~ .successful
 
-    self.vm.inputs.configureWith(value: (project, false))
-    self.buttonBackgroundColor.assertValues([viewRewardsCTAColor])
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.black])
     self.buttonTitleText.assertValues([Strings.View_rewards()])
     self.spacerIsHidden.assertValues([true])
     self.stackViewIsHidden.assertValues([true])
   }
 
   func testPledgeCTA_Backer_LiveProject_Error() {
-    let viewPledgeCTAColor: UIColor = .ksr_apricot_500
     let backing = Backing.template
       |> Backing.lens.status .~ .errored
     let project = Project.template
@@ -101,36 +99,51 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.backing .~ backing
 
-    self.vm.inputs.configureWith(value: (project, false))
-    self.buttonBackgroundColor.assertValues([viewPledgeCTAColor])
-    self.buttonTitleText.assertValues([Strings.Fix()])
-    self.titleText.assertValues([Strings.Check_your_payment_details()])
-    self.subtitleText.assertValues([Strings.We_couldnt_process_your_pledge()])
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.blue])
+    self.buttonTitleText.assertValues([Strings.Manage()])
+    self.titleText.assertValues([Strings.Youre_a_backer()])
+    self.subtitleText.assertValues(["$10"])
     self.spacerIsHidden.assertValues([false])
     self.stackViewIsHidden.assertValues([false])
   }
 
+  func testPledgeCTA_Backer_NonLiveProject_Error() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .errored
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.backing .~ backing
+
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.black])
+    self.buttonTitleText.assertValues([Strings.View_your_pledge()])
+    self.titleText.assertValues([])
+    self.subtitleText.assertValues(["$10"])
+    self.spacerIsHidden.assertValues([true])
+    self.stackViewIsHidden.assertValues([true])
+  }
+
   func testPledgeCTA_NonBacker_LiveProject_loggedIn() {
-    let pledgeCTAColor: UIColor = .ksr_green_500
     let project = Project.template
       |> Project.lens.personalization.backing .~ nil
       |> Project.lens.personalization.isBacking .~ false
 
-    self.vm.inputs.configureWith(value: (project, false))
-    self.buttonBackgroundColor.assertValues([pledgeCTAColor])
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.green])
     self.buttonTitleText.assertValues([Strings.Back_this_project()])
     self.spacerIsHidden.assertValues([true])
     self.stackViewIsHidden.assertValues([true])
   }
 
   func testPledgeCTA_NonBacker_NonLiveProject_loggedIn() {
-    let viewRewardsCTAColor: UIColor = .ksr_soft_black
     let project = Project.template
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isBacking .~ false
 
-    self.vm.inputs.configureWith(value: (project, false))
-    self.buttonBackgroundColor.assertValues([viewRewardsCTAColor])
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.black])
     self.buttonTitleText.assertValues([Strings.View_rewards()])
     self.spacerIsHidden.assertValues([true])
     self.stackViewIsHidden.assertValues([true])
@@ -140,22 +153,68 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.state .~ .live
 
-    self.vm.inputs.configureWith(value: (project, true))
-    self.activityIndicatorIsAnimating.assertValues([true])
-    self.rootStackViewAnimateIsHidden.assertValues([true])
+    self.vm.inputs.configureWith(value: (.left(project), true))
+    self.activityIndicatorIsHidden.assertValues([false])
+    self.pledgeCTAButtonIsHidden.assertValues([true])
+    self.pledgeRetryButtonIsHidden.assertValues([true])
 
     self.buttonTitleText.assertDidNotEmitValue()
-    self.buttonBackgroundColor.assertDidNotEmitValue()
+    self.buttonStyleType.assertValues([])
     self.spacerIsHidden.assertDidNotEmitValue()
     self.stackViewIsHidden.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(value: (project, false))
-    self.activityIndicatorIsAnimating.assertValues([true, false])
-    self.rootStackViewAnimateIsHidden.assertValues([true, false])
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.activityIndicatorIsHidden.assertValues([false, true])
+    self.pledgeCTAButtonIsHidden.assertValues([true, false])
+    self.pledgeRetryButtonIsHidden.assertValues([true])
 
     self.buttonTitleText.assertDidEmitValue()
-    self.buttonBackgroundColor.assertDidEmitValue()
+    self.buttonStyleType.assertValues([ButtonStyleType.green])
     self.spacerIsHidden.assertDidEmitValue()
     self.stackViewIsHidden.assertDidEmitValue()
+  }
+
+  func testPledgeCTA_pledgeRetryButtonIsVisible_AfterFailure() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+
+    self.pledgeRetryButtonIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.pledgeRetryButtonIsHidden.assertValues([true])
+
+    self.vm.inputs.configureWith(value: (.right(.couldNotParseJSON), false))
+    self.pledgeRetryButtonIsHidden.assertValues([true, false])
+  }
+
+  func testNotifyDelegateCTATapped() {
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.personalization.isBacking .~ false
+
+    self.notifyDelegateCTATapped.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.green])
+    self.buttonTitleText.assertValues([Strings.Back_this_project()])
+
+    self.vm.inputs.pledgeCTAButtonTapped()
+    self.notifyDelegateCTATapped.assertValueCount(1)
+  }
+
+  func testTrackingEvents() {
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.isBacking .~ false
+
+    self.notifyDelegateCTATapped.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.black])
+    self.buttonTitleText.assertValues([Strings.View_rewards()])
+
+    self.vm.inputs.pledgeCTAButtonTapped()
+    self.notifyDelegateCTATapped.assertValueCount(1)
+    XCTAssertEqual(["View Rewards Button Clicked"], self.trackingClient.events)
   }
 }
