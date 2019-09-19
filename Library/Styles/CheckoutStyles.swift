@@ -153,7 +153,10 @@ public let tappableLinksViewStyle: TextViewStyle = { (textView: UITextView) -> U
 public func checkoutAttributedLink(with string: String) -> NSAttributedString? {
   guard let attributedString = try? NSMutableAttributedString(
     data: Data(string.utf8),
-    options: [.documentType: NSAttributedString.DocumentType.html],
+    options: [
+      .documentType: NSAttributedString.DocumentType.html,
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
     documentAttributes: nil
   ) else { return nil }
 
