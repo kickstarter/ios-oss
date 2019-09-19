@@ -219,7 +219,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.viewModel.inputs.userSessionStarted()
       }
 
-    self.viewModel.outputs.pledgeButtonEnabled
+    self.viewModel.outputs.updatePledgeButtonEnabled
       .observeForUI()
       .observeValues { [weak self] isEnabled in
         self?.paymentMethodsViewController.updatePledgeButton(isEnabled)

@@ -40,8 +40,8 @@ public protocol PledgeViewModelOutputs {
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<Project, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
-  var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
+  var updatePledgeButtonEnabled: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -101,7 +101,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.configurePaymentMethodsViewControllerWithValue, self.creditCardSelectedSignal
     )
 
-    self.pledgeButtonEnabled = paymentSourceSelected.mapConst(true)
+    self.updatePledgeButtonEnabled = paymentSourceSelected.mapConst(true)
 
     self.shippingLocationViewHidden = reward
       .map { $0.shipping.enabled }
@@ -293,8 +293,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<Project, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
-  public let pledgeButtonEnabled: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
+  public let updatePledgeButtonEnabled: Signal<Bool, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
