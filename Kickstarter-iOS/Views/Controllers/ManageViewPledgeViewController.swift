@@ -99,7 +99,7 @@ final class ManageViewPledgeViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] options in
         self?.showActionSheetMenuWithOptions(options)
-    }
+      }
   }
 
   // MARK: - Configuration
