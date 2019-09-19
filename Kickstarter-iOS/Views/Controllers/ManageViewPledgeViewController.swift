@@ -118,12 +118,9 @@ final class ManageViewPledgeViewController: UIViewController {
   }
 
   private func showActionSheetMenuWithOptions(_ options: [ActionSheetMenuOption]) {
-    let preferredStyle: UIAlertController.Style =
-      AppEnvironment.current.device.userInterfaceIdiom == .pad ? .alert : .actionSheet
-
     let actionSheet = UIAlertController.alert(
       title: Strings.Select_an_option(),
-      preferredStyle: preferredStyle,
+      preferredStyle: .actionSheet,
       barButtonItem: self.menuButton
     )
 
