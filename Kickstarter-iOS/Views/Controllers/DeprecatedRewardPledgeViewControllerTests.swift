@@ -46,7 +46,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
           project: project, reward: reward, applePayCapable: applePayCapable
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height -= 64
+        parent.view.frame.size.height += 100
 
         self.scheduler.run()
 
@@ -72,7 +72,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
       vc.viewModel.inputs.continueToPaymentsButtonTapped()
 
-      FBSnapshotVerifyView(vc.view, identifier: "lang_en_apple_pay_false")
+      FBSnapshotVerifyView(parent.view, identifier: "lang_en_apple_pay_false")
     }
   }
 
@@ -204,11 +204,11 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
           project: project, reward: reward, applePayCapable: false
         )
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height += 100
+        parent.view.frame.size.height += 200
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
       }
     }
   }
