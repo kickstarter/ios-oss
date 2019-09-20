@@ -3,11 +3,11 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol ManagePledgeSummaryViewViewModelInputs {
+public protocol ManagePledgeSummaryViewModelInputs {
   func configureWith(_ project: Project)
 }
 
-public protocol ManagePledgeSummaryViewViewModelOutputs {
+public protocol ManagePledgeSummaryViewModelOutputs {
   var backerNumberText: Signal<String, Never> { get }
   var backingDateText: Signal<String, Never> { get }
   var pledgeAmountText: Signal<NSAttributedString, Never> { get }
@@ -17,13 +17,13 @@ public protocol ManagePledgeSummaryViewViewModelOutputs {
   var totalAmountText: Signal<NSAttributedString, Never> { get }
 }
 
-public protocol ManagePledgeSummaryViewViewModelType {
-  var inputs: ManagePledgeSummaryViewViewModelInputs { get }
-  var outputs: ManagePledgeSummaryViewViewModelOutputs { get }
+public protocol ManagePledgeSummaryViewModelType {
+  var inputs: ManagePledgeSummaryViewModelInputs { get }
+  var outputs: ManagePledgeSummaryViewModelOutputs { get }
 }
 
-public class ManagePledgeSummaryViewViewModel: ManagePledgeSummaryViewViewModelType,
-  ManagePledgeSummaryViewViewModelInputs, ManagePledgeSummaryViewViewModelOutputs {
+public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
+  ManagePledgeSummaryViewModelInputs, ManagePledgeSummaryViewModelOutputs {
   public init() {
     let backing = self.projectSignal
       .map { $0.personalization.backing }
@@ -78,8 +78,8 @@ public class ManagePledgeSummaryViewViewModel: ManagePledgeSummaryViewViewModelT
   public let shippingLocationText: Signal<String, Never>
   public let totalAmountText: Signal<NSAttributedString, Never>
 
-  public var inputs: ManagePledgeSummaryViewViewModelInputs { return self }
-  public var outputs: ManagePledgeSummaryViewViewModelOutputs { return self }
+  public var inputs: ManagePledgeSummaryViewModelInputs { return self }
+  public var outputs: ManagePledgeSummaryViewModelOutputs { return self }
 }
 
 private func shouldHideShippingLocationStackView(_ project: Project) -> Bool {

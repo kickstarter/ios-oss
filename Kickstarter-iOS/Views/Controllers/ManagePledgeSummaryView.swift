@@ -22,7 +22,7 @@ final class ManagePledgeSummaryView: UIView {
   private lazy var totalAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var totalLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private let viewModel = ManagePledgeSummaryViewViewModel()
+  private let viewModel = ManagePledgeSummaryViewModel()
 
   // MARK: Life cycle
 
@@ -52,7 +52,7 @@ final class ManagePledgeSummaryView: UIView {
     _ = self.pledgeAmountStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
+    )
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -60,12 +60,12 @@ final class ManagePledgeSummaryView: UIView {
     _ = self.shippingLocationStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
+    )
 
     _ = self.totalAmountStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
+    )
 
     _ = self.backerNumberLabel
       |> backerNumberLabelStyle
@@ -130,7 +130,7 @@ final class ManagePledgeSummaryView: UIView {
       self.pledgeAmountStackView,
       self.shippingLocationStackView,
       self.totalAmountStackView
-    ], self.rootStackView)
+      ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 }
@@ -192,5 +192,12 @@ private let totalLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.black
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.text %~ { _ in "Total amount" }
+    |> \.text %~ { _ in
+      localizedString(
+        key: "Total_amount",
+        defaultValue: "Total amount",
+        count: nil,
+        substitutions: [:]
+      )
+    }
 }

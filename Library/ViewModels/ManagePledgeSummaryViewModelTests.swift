@@ -6,8 +6,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-final class ManagePledgeSummaryViewViewModelTests: TestCase {
-  private let vm = ManagePledgeSummaryViewViewModel()
+final class ManagePledgeSummaryViewModelTests: TestCase {
+  private let vm = ManagePledgeSummaryViewModel()
 
   private let backerNumberText = TestObserver<String, Never>()
   private let backingDateText = TestObserver<String, Never>()
