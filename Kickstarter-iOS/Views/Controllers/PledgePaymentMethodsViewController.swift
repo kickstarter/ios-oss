@@ -164,7 +164,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   private let rootStackViewStyle: StackViewStyle = { stackView in
     stackView
-      |> checkoutStackViewStyle
+      |> verticalStackViewStyle
       |> \.spacing .~ Styles.grid(2)
   }
 

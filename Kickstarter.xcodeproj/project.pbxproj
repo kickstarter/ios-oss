@@ -88,7 +88,6 @@
 		370F527A2254267900F159B9 /* UIApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52792254267900F159B9 /* UIApplicationType.swift */; };
 		370F52B3225426C700F159B9 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52B2225426C700F159B9 /* UIApplication.swift */; };
 		37280272226F880100E0ACBB /* CheckoutStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37280250226F878300E0ACBB /* CheckoutStyles.swift */; };
-		37280273226F880700E0ACBB /* CheckoutStylesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37280270226F879300E0ACBB /* CheckoutStylesTests.swift */; };
 		3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */; };
 		373AB222222A058600769FC2 /* CreatePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */; };
 		373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */; };
@@ -126,6 +125,10 @@
 		37BFD8802208F24300815C9C /* CreatePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */; };
 		37C7B81523187BA400C78278 /* ShippingRuleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C7B81423187BA400C78278 /* ShippingRuleCellViewModel.swift */; };
 		37C7B81723187BAC00C78278 /* ShippingRuleCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C7B81623187BAC00C78278 /* ShippingRuleCellViewModelTests.swift */; };
+		37CA16AD23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CA16AC23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift */; };
+		37CA16AF2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CA16AE2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift */; };
+		37CA16B123304DCA006044F9 /* ToggleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CA16B023304DCA006044F9 /* ToggleViewController.swift */; };
+		37CA16B323304DD9006044F9 /* ToggleViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CA16B223304DD9006044F9 /* ToggleViewControllerTests.swift */; };
 		37CBA64D221E10E100E6CAB6 /* HelpTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */; };
 		37D6722F221E61D300B6D415 /* SettingsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D671F6221E61B600B6D415 /* SettingsFooterView.swift */; };
 		37D67231221E656500B6D415 /* SettingsFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37D67230221E656500B6D415 /* SettingsFooterView.xib */; };
@@ -1430,7 +1433,6 @@
 		370F52792254267900F159B9 /* UIApplicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationType.swift; sourceTree = "<group>"; };
 		370F52B2225426C700F159B9 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		37280250226F878300E0ACBB /* CheckoutStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutStyles.swift; sourceTree = "<group>"; };
-		37280270226F879300E0ACBB /* CheckoutStylesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutStylesTests.swift; sourceTree = "<group>"; };
 		3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModel.swift; sourceTree = "<group>"; };
 		373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewModelTests.swift; sourceTree = "<group>"; };
@@ -1468,6 +1470,10 @@
 		37BFD8472208F22C00815C9C /* CreatePasswordTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordTableViewController.swift; sourceTree = "<group>"; };
 		37C7B81423187BA400C78278 /* ShippingRuleCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingRuleCellViewModel.swift; sourceTree = "<group>"; };
 		37C7B81623187BAC00C78278 /* ShippingRuleCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingRuleCellViewModelTests.swift; sourceTree = "<group>"; };
+		37CA16AC23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewPledgeRewardReceivedViewController.swift; sourceTree = "<group>"; };
+		37CA16AE2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewPledgeRewardReceivedViewControllerTests.swift; sourceTree = "<group>"; };
+		37CA16B023304DCA006044F9 /* ToggleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleViewController.swift; sourceTree = "<group>"; };
+		37CA16B223304DD9006044F9 /* ToggleViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleViewControllerTests.swift; sourceTree = "<group>"; };
 		37CBA64C221E10E100E6CAB6 /* HelpTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpTypeTests.swift; sourceTree = "<group>"; };
 		37D671F6221E61B600B6D415 /* SettingsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFooterView.swift; sourceTree = "<group>"; };
 		37D67230221E656500B6D415 /* SettingsFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsFooterView.xib; sourceTree = "<group>"; };
@@ -2675,7 +2681,6 @@
 				A73378FA1D0AE33B00C91445 /* BaseStyles.swift */,
 				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
 				37280250226F878300E0ACBB /* CheckoutStyles.swift */,
-				37280270226F879300E0ACBB /* CheckoutStylesTests.swift */,
 				A73379441D0E36A600C91445 /* Colors.swift */,
 				5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */,
 				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
@@ -2945,6 +2950,8 @@
 				A7ED203A1E8323E900BFFA01 /* LoginToutViewControllerTests.swift */,
 				018F1F821C8E182200643DAA /* LoginViewController.swift */,
 				A7ED202D1E8323E900BFFA01 /* LoginViewControllerTests.swift */,
+				37CA16AC23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift */,
+				37CA16AE2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift */,
 				D6A45DB62319A7E1006DDB01 /* ManageViewPledgeViewController.swift */,
 				D61440FF23200FD3002A6507 /* ManageViewPledgeViewControllerTests.swift */,
 				D6E7DAF922089F3900689BD6 /* MessageBannerViewController.swift */,
@@ -3011,6 +3018,8 @@
 				9D7536CC1D78D78600A7623B /* SurveyResponseViewController.swift */,
 				0148EF8F1CDD2879000DEFF8 /* ThanksViewController.swift */,
 				77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */,
+				37CA16B023304DCA006044F9 /* ToggleViewController.swift */,
+				37CA16B223304DD9006044F9 /* ToggleViewControllerTests.swift */,
 				01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */,
 				A7ED203F1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift */,
 				803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */,
@@ -4774,7 +4783,6 @@
 				A7ED1F491E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift in Sources */,
 				A7ED1FBB1E831C5C00BFFA01 /* CommentsViewModelTests.swift in Sources */,
 				A7ED1FD91E831C5C00BFFA01 /* ProjectActivitiesViewModelTests.swift in Sources */,
-				37280273226F880700E0ACBB /* CheckoutStylesTests.swift in Sources */,
 				A7ED1FDB1E831C5C00BFFA01 /* DashboardViewModelTests.swift in Sources */,
 				3706408822A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift in Sources */,
 				A7ED1F2B1E830FDC00BFFA01 /* IsValidEmailTests.swift in Sources */,
@@ -5020,6 +5028,7 @@
 				37096C3422BC24DD003D1F40 /* UIFeedbackGeneratorType.swift in Sources */,
 				59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */,
 				A757EABD1D19FAEE00A5C978 /* ProjectActivitiesViewController.swift in Sources */,
+				37CA16B123304DCA006044F9 /* ToggleViewController.swift in Sources */,
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
@@ -5107,6 +5116,7 @@
 				015706161E649DEE0087DD68 /* BackerDashboardViewController.swift in Sources */,
 				A749001F1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
 				59B0DFFE1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */,
+				37CA16AD23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift in Sources */,
 				D770DE75217E598C00B5319A /* AddNewCardViewController.swift in Sources */,
 				778CCC5222822B5D00FB8D35 /* SheetOverlayTransitionAnimator.swift in Sources */,
 				D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */,
@@ -5272,6 +5282,7 @@
 				A7ED20531E8323E900BFFA01 /* SearchViewControllerTests.swift in Sources */,
 				A7ED20121E83229E00BFFA01 /* CommentsDataSourceTests.swift in Sources */,
 				778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */,
+				37CA16AF2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift in Sources */,
 				A7ED20641E83256700BFFA01 /* RootViewModelTests.swift in Sources */,
 				A7ED204B1E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */,
 				A7ED204F1E8323E900BFFA01 /* CommentsViewControllerTests.swift in Sources */,
@@ -5286,6 +5297,7 @@
 				A7ED201C1E83229E00BFFA01 /* ProjectPamphletContentDataSourceTests.swift in Sources */,
 				77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */,
 				A7ED20521E8323E900BFFA01 /* FacebookConfirmationViewControllerTests.swift in Sources */,
+				37CA16B323304DD9006044F9 /* ToggleViewControllerTests.swift in Sources */,
 				A7ED20231E83237F00BFFA01 /* Combos.swift in Sources */,
 				D6F741A821836E5700C2DDA2 /* PaymentMethodsViewControllerTests.swift in Sources */,
 				A7ED20461E8323E900BFFA01 /* BackingViewControllerTests.swift in Sources */,
