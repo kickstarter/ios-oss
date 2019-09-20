@@ -51,14 +51,6 @@ final class ManageViewPledgeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    _ = self
-      |> \.extendedLayoutIncludesOpaqueBars .~ true
-
-    _ = self.navigationController?.navigationBar
-      ?|> \.shadowImage .~ UIImage()
-      ?|> \.isTranslucent .~ false
-      ?|> \.barTintColor .~ .ksr_grey_400
-
     _ = self.navigationItem
       ?|> \.leftBarButtonItem .~ self.closeButton
       ?|> \.rightBarButtonItem .~ self.editButton
