@@ -47,7 +47,7 @@ final class PledgeAddNewCardView: UIView {
       |> \.accessibilityElements .~ [self.addNewCardButton]
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> checkoutCardStackViewStyle
 
     _ = self.addNewCardImageView
       |> cardImageViewStyle
@@ -111,13 +111,4 @@ final class PledgeAddNewCardView: UIView {
   @objc private func addNewCardButtonTapped() {
     self.viewModel.inputs.addNewCardButtonTapped()
   }
-}
-
-// MARK: - Styles
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> checkoutStackViewStyle
-    |> \.backgroundColor .~ UIColor.white
-    |> \.spacing .~ Styles.grid(3)
 }

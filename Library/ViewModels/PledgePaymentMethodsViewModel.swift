@@ -7,6 +7,7 @@ import UIKit
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
 
 public protocol PledgePaymentMethodsViewModelInputs {
+  func applePayButtonTapped()
   func addNewCardSucceeded()
   func configureWith(_ value: PledgePaymentMethodsValue)
   func didCreateCards(_ cards: [UIView])
@@ -15,6 +16,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
+  var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var applePayButtonHidden: Signal<Bool, Never> { get }
   var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
@@ -52,11 +54,18 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .values()
       .map { $0.me.storedCards.nodes }
 
+self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
+
     self.newCardAdded = self.creditCardProperty.signal.skipNil()
 
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
       .map { $0.localizedDescription }
+  }
+
+  private let applePayButtonTappedProperty = MutableProperty(())
+  public func applePayButtonTapped() {
+    self.applePayButtonTappedProperty.value = ()
   }
 
   fileprivate let addNewCardSucceededProperty = MutableProperty(())
@@ -91,6 +100,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }
   public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
 
+  public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
   public let applePayButtonHidden: Signal<Bool, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>

@@ -84,3 +84,14 @@ public func ksr_constrainViewToMarginsInParent(priority: UILayoutPriority = .req
     return (subview, parent)
   }
 }
+
+public func ksr_setContentCompressionResistancePriority(
+  _ priority: UILayoutPriority,
+  for axis: NSLayoutConstraint.Axis
+) -> (UIView) -> (UIView) {
+  return { view in
+    view.setContentCompressionResistancePriority(priority, for: axis)
+
+    return (view)
+  }
+}

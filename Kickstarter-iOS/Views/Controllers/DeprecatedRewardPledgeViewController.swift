@@ -84,6 +84,16 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
       )
     )
 
+    let closeButton = UIBarButtonItem(
+      image: image(named: "icon--cross", tintColor: .ksr_navy_600),
+      style: .plain,
+      target: self,
+      action: #selector(DeprecatedRewardPledgeViewController.closeButtonTapped)
+    )
+
+    _ = self.navigationItem
+      |> \.leftBarButtonItem .~ closeButton
+
     self.disclaimerTextView.delegate = self
 
     self.applePayButtonContainerView.addArrangedSubview(self.applePayButton)
@@ -632,7 +642,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.viewModel.inputs.expandDescriptionTapped()
   }
 
-  @IBAction internal func closeButtonTapped() {
+  @objc fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
 
@@ -685,14 +695,13 @@ private let disclaimerTextViewStyle: TextViewStyle = { (textView: UITextView) ->
 }
 
 private func attributedDisclaimerText() -> NSAttributedString? {
+  guard let trustLink = HelpType.trust.url(
+    withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
+  )?.absoluteString else { return nil }
+
   // swiftlint:disable line_length
-  let string = localizedString(
-    key: "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability",
-    defaultValue: "Kickstarter is not a store. It's a way to bring creative projects to life.</br><a href=\"%{trust_link}\">Learn more about accountability</a>",
-    substitutions: [
-      "trust_link": HelpType.trust.url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString
-    ]
-    .compactMapValues { $0.coalesceWith("") }
+  let string = Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability(
+    trust_link: trustLink
   )
   // swiftlint:enable line_length
 

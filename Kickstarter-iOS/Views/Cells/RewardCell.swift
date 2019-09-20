@@ -13,6 +13,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
   internal weak var delegate: RewardCellDelegate?
+  private let viewModel = RewardCellViewModel()
 
   internal let rewardCardContainerView = RewardCardContainerView(frame: .zero)
   private lazy var scrollView = {
@@ -35,10 +36,29 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     super.init(frame: frame)
 
     self.configureViews()
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.scrollScrollViewToTop
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+
+        self.scrollView.setContentOffset(
+          .init(
+            x: self.scrollView.contentOffset.x,
+            y: -self.scrollView.contentInset.top
+          ),
+          animated: false
+        )
+      }
   }
 
   // MARK: - Functions
@@ -84,6 +104,12 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
   internal func configureWith(value: (project: Project, reward: Either<Reward, Backing>)) {
     self.rewardCardContainerView.configure(with: value)
+  }
+
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    self.viewModel.inputs.prepareForReuse()
   }
 
   // MARK: - Accessors

@@ -9,6 +9,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let vm: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
 
   private let applePayButtonHidden = TestObserver<Bool, Never>()
+private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
   private let newCardAdded = TestObserver<GraphUserCreditCard.CreditCard, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
   private let reloadPaymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
@@ -17,6 +18,9 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     super.setUp()
     self.vm.outputs.applePayButtonHidden.observe(self.applePayButtonHidden.observer)
     self.vm.outputs.newCardAdded.observe(self.newCardAdded.observer)
+
+    self.vm.outputs.notifyDelegateApplePayButtonTapped
+     .observe(self.notifyDelegateApplePayButtonTapped.observer)
     self.vm.outputs.notifyDelegateLoadPaymentMethodsError
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
     self.vm.outputs.reloadPaymentMethods.observe(self.reloadPaymentMethods.observer)
@@ -138,6 +142,19 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.applePayButtonHidden.assertDidNotEmitValue()
       self.reloadPaymentMethods.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
+    }
+  }
+
+  func testApplePayButtonTapped() {
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith((user: .template, project: .template, true))
+      self.vm.inputs.viewDidLoad()
+
+      self.notifyDelegateApplePayButtonTapped.assertDidNotEmitValue()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.notifyDelegateApplePayButtonTapped.assertValueCount(1)
     }
   }
 
