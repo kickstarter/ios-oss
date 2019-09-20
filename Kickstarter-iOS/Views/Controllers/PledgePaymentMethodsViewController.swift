@@ -179,7 +179,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 }
 
 extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
-  func pledgeAddNewCardView(_ view: PledgeAddNewCardView, didTapAddNewCardWith intent: AddNewCardIntent) {
+  func pledgeAddNewCardView(_: PledgeAddNewCardView, didTapAddNewCardWith intent: AddNewCardIntent) {
     let addNewCardViewController = AddNewCardViewController.instantiate()
       |> \.delegate .~ self
     addNewCardViewController.configure(with: intent)
