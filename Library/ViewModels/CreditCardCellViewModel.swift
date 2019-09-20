@@ -5,14 +5,14 @@ import ReactiveSwift
 import UIKit
 
 public protocol CreditCardCellViewModelInputs {
+  /// Call when a new card has been added by user.
+  func addedNewCard()
+
   /// Call to configure cell with card value.
   func configureWith(creditCard: GraphUserCreditCard.CreditCard, isNew: Bool)
 
   /// Call when the "select" button is tapped.
   func selectButtonTapped()
-
-  /// Call when a new card has been added by user.
-  func addedNewCard()
 }
 
 public protocol CreditCardCellViewModelOutputs {

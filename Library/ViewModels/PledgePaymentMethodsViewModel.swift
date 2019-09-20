@@ -8,10 +8,10 @@ public typealias PledgePaymentMethodsValue = (user: User, project: Project, appl
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func addNewCardSucceeded()
-  func successfullyAddedCard(newCard: GraphUserCreditCard.CreditCard)
   func configureWith(_ value: PledgePaymentMethodsValue)
-  func viewDidLoad()
   func didCreateCards(_ cards: [UIView])
+  func successfullyAddedCard(newCard: GraphUserCreditCard.CreditCard)
+  func viewDidLoad()
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
