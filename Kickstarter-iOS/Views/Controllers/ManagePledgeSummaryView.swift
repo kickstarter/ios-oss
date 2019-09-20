@@ -52,7 +52,7 @@ final class ManagePledgeSummaryView: UIView {
     _ = self.pledgeAmountStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    )
+      )
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -60,12 +60,12 @@ final class ManagePledgeSummaryView: UIView {
     _ = self.shippingLocationStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    )
+      )
 
     _ = self.totalAmountStackView
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    )
+      )
 
     _ = self.backerNumberLabel
       |> backerNumberLabelStyle
@@ -130,7 +130,7 @@ final class ManagePledgeSummaryView: UIView {
       self.pledgeAmountStackView,
       self.shippingLocationStackView,
       self.totalAmountStackView
-      ], self.rootStackView)
+    ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 }
