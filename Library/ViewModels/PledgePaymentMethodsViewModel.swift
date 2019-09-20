@@ -7,8 +7,8 @@ import UIKit
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
 
 public protocol PledgePaymentMethodsViewModelInputs {
-  func applePayButtonTapped()
   func addNewCardSucceeded()
+  func applePayButtonTapped()
   func configureWith(_ value: PledgePaymentMethodsValue)
   func didCreateCards(_ cards: [UIView])
   func successfullyAddedCard(newCard: GraphUserCreditCard.CreditCard)
@@ -16,9 +16,9 @@ public protocol PledgePaymentMethodsViewModelInputs {
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
-  var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var applePayButtonHidden: Signal<Bool, Never> { get }
   var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
+  var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
   func savedCards() -> [UIView]

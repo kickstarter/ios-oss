@@ -9,8 +9,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let vm: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
 
   private let applePayButtonHidden = TestObserver<Bool, Never>()
-private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
   private let newCardAdded = TestObserver<GraphUserCreditCard.CreditCard, Never>()
+  private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
   private let reloadPaymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
 
@@ -18,7 +18,6 @@ private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
     super.setUp()
     self.vm.outputs.applePayButtonHidden.observe(self.applePayButtonHidden.observer)
     self.vm.outputs.newCardAdded.observe(self.newCardAdded.observer)
-
     self.vm.outputs.notifyDelegateApplePayButtonTapped
      .observe(self.notifyDelegateApplePayButtonTapped.observer)
     self.vm.outputs.notifyDelegateLoadPaymentMethodsError
