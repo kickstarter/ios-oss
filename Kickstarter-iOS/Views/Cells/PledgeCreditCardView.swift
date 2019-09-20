@@ -127,8 +127,13 @@ public class PledgeCreditCardView: UIView {
   }
 
   public func updateButtonState(_ selected: Bool) {
-    _ = self.selectButton
-    |> \.isSelected .~ selected
+    if self.selectButton.isSelected {
+      _ = self.selectButton
+        |> \.isSelected .~ false
+    } else {
+      _ = self.selectButton
+        |> \.isSelected .~ selected
+    }
   }
 
   @objc fileprivate func selectButtonTapped() {

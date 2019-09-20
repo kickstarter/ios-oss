@@ -64,7 +64,6 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
     self.selectButtonSelected = self.isNewCardProperty.signal
 
     self.notifyButtonTapped = self.selectButtonTappedProperty.signal
-
   }
 
   fileprivate let addedNewCardProperty = MutableProperty(())

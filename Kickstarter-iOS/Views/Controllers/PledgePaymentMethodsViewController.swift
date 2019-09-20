@@ -152,8 +152,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
     newCardView.delegate = self
     newCardView.configureWith(value: newCard, isNew: true)
     self.cardsStackView.insertArrangedSubview(newCardView, at: 0)
-
-    // self.viewModel.inputs.cardInserted()
   }
 
   // MARK: - Styles
