@@ -102,8 +102,10 @@ final class PledgeAmountViewController: UIViewController {
 
     self.amountInputView.doneButton.rac.enabled = self.viewModel.outputs.doneButtonIsEnabled
     self.amountInputView.label.rac.text = self.viewModel.outputs.currency
+    self.amountInputView.label.rac.textColor = self.viewModel.outputs.labelTextColor
     self.amountInputView.textField.rac.isFirstResponder = self.viewModel.outputs.textFieldIsFirstResponder
     self.amountInputView.textField.rac.text = self.viewModel.outputs.textFieldValue
+    self.amountInputView.textField.rac.textColor = self.viewModel.outputs.textFieldTextColor
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
     self.stepper.rac.stepValue = self.viewModel.outputs.stepperStepValue
