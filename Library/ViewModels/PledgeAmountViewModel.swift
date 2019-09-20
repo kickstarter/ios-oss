@@ -44,20 +44,16 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .skipNil()
       .map(second)
 
-    let initialValue = Signal.combineLatest(
+    let minAndMax = Signal.combineLatest(
       project,
       reward
     )
     .map(minAndMaxPledgeAmount)
-    .map(first)
 
-    let minAndMax = Signal.combineLatest(project, reward)
-      .map(minAndMaxPledgeAmount)
-
-    let minValue = minAndMax.signal
+    let minValue = minAndMax
       .map(first)
 
-    let maxValue = minAndMax.signal
+    let maxValue = minAndMax
       .map(second)
 
     let textFieldInputValue = self.textFieldDidEndEditingProperty.signal
@@ -66,7 +62,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .skipNil()
 
     let stepperValue = Signal.merge(
-      initialValue,
+      minValue,
       textFieldInputValue,
       self.stepperValueProperty.signal
     )
@@ -74,12 +70,13 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.textFieldValue = stepperValue
       .map { String(format: "%.0f", $0) }
       .skipRepeats()
+    .logEvents(identifier: "***")
 
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
 
-    self.stepperMinValue = initialValue.mapConst(0)
-    self.stepperMaxValue = initialValue.mapConst(Double.greatestFiniteMagnitude)
+    self.stepperMinValue = minValue.mapConst(0)
+    self.stepperMaxValue = minValue.mapConst(Double.greatestFiniteMagnitude)
 
     let stepperValueChanged = Signal.combineLatest(
       self.stepperMinValue.signal,
@@ -128,7 +125,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.stepperStepValue = minValue
 
     self.stepperValue = Signal.merge(
-      initialValue,
+      minValue,
       textFieldValue
     )
 
