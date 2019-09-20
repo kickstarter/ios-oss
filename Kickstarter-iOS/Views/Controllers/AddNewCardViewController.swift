@@ -22,6 +22,9 @@ internal final class AddNewCardViewController: UIViewController,
   @IBOutlet private var creditCardTextField: STPPaymentCardTextField!
   @IBOutlet private var creditCardValidationErrorLabel: UILabel!
   @IBOutlet private var creditCardValidationErrorContainer: UIView!
+  @IBOutlet private var reusableCardStackview: UIStackView!
+  @IBOutlet private var reusableCardLabel: UILabel!
+  @IBOutlet private var reusableCardSwitch: UISwitch!
   @IBOutlet private var scrollView: UIScrollView!
   @IBOutlet private var stackView: UIStackView!
   @IBOutlet private var zipcodeView: SettingsFormFieldView!
@@ -125,9 +128,6 @@ internal final class AddNewCardViewController: UIViewController,
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
 
-    _ = self.stackView
-      |> \.layoutMargins .~ .init(leftRight: Styles.grid(2))
-
     _ = self.zipcodeView.titleLabel
       |> \.text %~ { _ in
         localizedPostalCode()
@@ -136,6 +136,15 @@ internal final class AddNewCardViewController: UIViewController,
     _ = self.zipcodeView
       |> \.autocapitalizationType .~ .allCharacters
       |> \.returnKeyType .~ .done
+
+    _ = self.reusableCardLabel
+      |> \.text %~ { _ in Strings.Remember_this_card() }
+
+    _ = self.reusableCardStackview
+      |> \.alignment .~ .center
+
+    _ = self.reusableCardSwitch
+      |> baseSwitchControlStyle
   }
 
   override func bindViewModel() {
