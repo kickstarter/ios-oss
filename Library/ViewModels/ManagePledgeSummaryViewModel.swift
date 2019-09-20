@@ -33,7 +33,7 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
       .zip(with: backing)
 
     self.backerNumberText = backing
-      .map { "Backer #\($0.sequence)" }
+      .map { Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence)) }
 
     self.backingDateText = backing
       .map(formattedPledgeDate)
@@ -59,7 +59,7 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
       .skipNil()
 
     self.shippingLocationText = backing.ignoreValues()
-      .map { "Shipping: Australia" }
+      .map { Strings.Shipping() + ": " + "Australia" }
 
     self.shippingLocationStackViewIsHidden = self.projectSignal
       .map(shouldHideShippingLocationStackView)
@@ -96,7 +96,7 @@ private func shouldHideShippingLocationStackView(_ project: Project) -> Bool {
 
 private func formattedPledgeDate(_ backing: Backing) -> String {
   let formattedDate = Format.date(secondsInUTC: backing.pledgedAt, dateStyle: .long, timeStyle: .none)
-  return "As of \(formattedDate)"
+  return Strings.As_of_pledge_date(pledge_date: formattedDate)
 }
 
 private func attributedCurrency(with project: Project, amount: Double) -> NSAttributedString? {
@@ -112,10 +112,7 @@ private func attributedCurrency(with project: Project, amount: Double) -> NSAttr
       superscriptAttributes: superscriptAttributes
     ) else { return nil }
 
-  let combinedAttributes = defaultAttributes
-    .withAllValuesFrom(superscriptAttributes)
-
-  return Format.attributedAmount(attributes: combinedAttributes) + attributedCurrency
+  return attributedCurrency
 }
 
 private func shippingValue(with project: Project, with shippingRuleCost: Double) -> NSAttributedString? {
@@ -130,7 +127,7 @@ private func shippingValue(with project: Project, with shippingRuleCost: Double)
       superscriptAttributes: superscriptAttributes
     ) else { return nil }
 
-  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { _, new in new }
+  let combinedAttributes = defaultAttributes.withAllValuesFrom(superscriptAttributes)
 
   return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }
