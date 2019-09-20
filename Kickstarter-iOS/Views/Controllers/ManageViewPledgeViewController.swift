@@ -169,7 +169,7 @@ final class ManageViewPledgeViewController: UIViewController {
     self.viewModel.inputs.menuButtonTapped()
   }
 
-  private func showActionSheetMenuWithOptions(_ options: [ActionSheetMenuOption]) {
+  private func showActionSheetMenuWithOptions(_ options: [ManagePledgeAlertAction]) {
     let actionSheet = UIAlertController.alert(
       title: Strings.Select_an_option(),
       preferredStyle: .actionSheet,

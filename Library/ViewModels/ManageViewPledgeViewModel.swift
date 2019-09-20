@@ -3,7 +3,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public enum ActionSheetMenuOption: CaseIterable {
+public enum ManagePledgeAlertAction: CaseIterable {
   case updatePledge
   case changePaymentMethod
   case chooseAnotherReward
@@ -21,7 +21,7 @@ public protocol ManageViewPledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<Project, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<Reward, Never> { get }
-  var showActionSheetMenuWithOptions: Signal<[ActionSheetMenuOption], Never> { get }
+  var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var title: Signal<String, Never> { get }
 }
 
@@ -53,9 +53,9 @@ public final class ManageViewPledgeViewModel:
 
     self.showActionSheetMenuWithOptions = project
       .takeWhen(self.menuButtonTappedSignal)
-      .map { project -> [ActionSheetMenuOption] in
+      .map { project -> [ManagePledgeAlertAction] in
         if project.state == .live {
-          return ActionSheetMenuOption.allCases
+          return ManagePledgeAlertAction.allCases
         } else {
           return [.contactCreator]
         }
@@ -80,7 +80,7 @@ public final class ManageViewPledgeViewModel:
   public let configurePaymentMethodView: Signal<Project, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<Reward, Never>
-  public let showActionSheetMenuWithOptions: Signal<[ActionSheetMenuOption], Never>
+  public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let title: Signal<String, Never>
 
   public var inputs: ManageViewPledgeViewModelInputs { return self }
