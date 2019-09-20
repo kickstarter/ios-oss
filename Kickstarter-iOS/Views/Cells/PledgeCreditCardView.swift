@@ -65,7 +65,7 @@ public class PledgeCreditCardView: UIView {
 
   // MARK: - Styles
 
-  override public func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -100,7 +100,7 @@ public class PledgeCreditCardView: UIView {
       |> rootStackViewStyle
   }
 
-  override public func bindViewModel() {
+  public override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.notifyButtonTapped
@@ -108,9 +108,9 @@ public class PledgeCreditCardView: UIView {
       .observeValues { [weak self] _ in
         guard let _self = self else { return }
         _self.delegate?.didSelectCard(_self)
-    }
+      }
 
-    self.selectButton.rac.selected = self.viewModel.outputs.selectButtonSelected
+    self.selectButton.rac.selected = self.viewModel.outputs.newlyAddedCardSelected
 
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle

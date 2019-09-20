@@ -16,9 +16,9 @@ public protocol PledgePaymentMethodsViewModelInputs {
 
 public protocol PledgePaymentMethodsViewModelOutputs {
   var applePayButtonHidden: Signal<Bool, Never> { get }
+  var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
-  var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
   func savedCards() -> [UIView]
 }
 

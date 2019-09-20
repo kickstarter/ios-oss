@@ -13,7 +13,8 @@ internal final class CreditCardCellViewModelTests: TestCase {
   let cardNumberTextLongStyle = TestObserver<String, Never>()
   let cardNumberTextShortStyle = TestObserver<String, Never>()
   let expirationDateText = TestObserver<String, Never>()
-  let selectButtonSelected = TestObserver<Bool, Never>()
+  let newlyAddedCardSelected = TestObserver<Bool, Never>()
+  let notifyButtonTapped = TestObserver<Void, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -23,7 +24,8 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.vm.outputs.cardNumberTextLongStyle.observe(self.cardNumberTextLongStyle.observer)
     self.vm.outputs.cardNumberTextShortStyle.observe(self.cardNumberTextShortStyle.observer)
     self.vm.outputs.expirationDateText.observe(self.expirationDateText.observer)
-    self.vm.outputs.selectButtonSelected.observe(self.selectButtonSelected.observer)
+    self.vm.outputs.newlyAddedCardSelected.observe(self.newlyAddedCardSelected.observer)
+    self.vm.outputs.notifyButtonTapped.observe(self.notifyButtonTapped.observer)
   }
 
   func testCardInfoForSupportedCards() {
@@ -34,7 +36,7 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 8882")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 8882")
     self.expirationDateText.assertLastValue("Expires 01/2024")
-    self.selectButtonSelected.assertValues([false])
+    self.newlyAddedCardSelected.assertValues([false])
 
     self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.discover, isNew: false)
 
@@ -43,7 +45,7 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 4242")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 4242")
     self.expirationDateText.assertLastValue("Expires 03/2022")
-    self.selectButtonSelected.assertValues([false, false])
+    self.newlyAddedCardSelected.assertValues([false, false])
 
     self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.jcb, isNew: false)
 
@@ -52,7 +54,7 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 2222")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 2222")
     self.expirationDateText.assertLastValue("Expires 01/2022")
-    self.selectButtonSelected.assertValues([false, false, false])
+    self.newlyAddedCardSelected.assertValues([false, false, false])
 
     self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.masterCard, isNew: false)
 
@@ -61,7 +63,7 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 0000")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 0000")
     self.expirationDateText.assertLastValue("Expires 10/2018")
-    self.selectButtonSelected.assertValues([false, false, false, false])
+    self.newlyAddedCardSelected.assertValues([false, false, false, false])
 
     self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.visa, isNew: false)
 
@@ -70,7 +72,7 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 1111")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1111")
     self.expirationDateText.assertLastValue("Expires 09/2019")
-    self.selectButtonSelected.assertValues([false, false, false, false, false])
+    self.newlyAddedCardSelected.assertValues([false, false, false, false, false])
 
     self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.diners, isNew: false)
 
@@ -79,8 +81,22 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 1212")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1212")
     self.expirationDateText.assertLastValue("Expires 09/2022")
-    self.selectButtonSelected.assertValues([false, false, false, false, false, false])
+    self.newlyAddedCardSelected.assertValues([false, false, false, false, false, false])
+  }
 
+  func testNotifyButtonSelected() {
+    self.vm.inputs.configureWith(creditCard: GraphUserCreditCard.amex, isNew: false)
+    self.notifyButtonTapped.assertDidNotEmitValue()
+
+    self.cardImage.assertLastValue(UIImage(named: "icon--amex"))
+    self.cardNumberAccessibilityLabel.assertLastValue("Amex, Card ending in 8882")
+    self.cardNumberTextLongStyle.assertLastValue("Card ending in 8882")
+    self.cardNumberTextShortStyle.assertLastValue("Ending in 8882")
+    self.expirationDateText.assertLastValue("Expires 01/2024")
+    self.newlyAddedCardSelected.assertValues([false])
+
+    self.vm.inputs.selectButtonTapped()
+    self.notifyButtonTapped.assertValueCount(1)
   }
 
   func testSelectedCard() {
@@ -90,7 +106,7 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 1882")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
     self.expirationDateText.assertValue("Expires 01/2024")
-    self.selectButtonSelected.assertValues([true])
+    self.newlyAddedCardSelected.assertValues([true])
   }
 
   func testCardInfoForUnsupportedCards() {
@@ -100,7 +116,7 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 1882")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
     self.expirationDateText.assertValue("Expires 01/2024")
-    self.selectButtonSelected.assertValues([false])
+    self.newlyAddedCardSelected.assertValues([false])
   }
 
   func testCardInfoForUnknownCardType() {
@@ -113,6 +129,6 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.cardNumberTextLongStyle.assertLastValue("Card ending in 1882")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
     self.expirationDateText.assertValue("Expires 01/2024")
-    self.selectButtonSelected.assertValues([false])
+    self.newlyAddedCardSelected.assertValues([false])
   }
 }

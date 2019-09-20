@@ -11,8 +11,10 @@ internal protocol AddNewCardViewControllerDelegate: AnyObject {
     didSucceedWithMessage message: String
   )
   func addNewCardViewControllerDismissed(_ viewController: AddNewCardViewController)
-  func addNewCardViewController(_ viewController: AddNewCardViewController,
-                                _ newCard: GraphUserCreditCard.CreditCard)
+  func addNewCardViewController(
+    _ viewController: AddNewCardViewController,
+    _ newCard: GraphUserCreditCard.CreditCard
+  )
 }
 
 internal final class AddNewCardViewController: UIViewController,

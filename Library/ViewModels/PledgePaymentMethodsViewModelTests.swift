@@ -15,7 +15,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
     self.vm.outputs.applePayButtonHidden.observe(self.applePayButtonHidden.observer)
     self.vm.outputs.newCardAdded.observe(self.newCardAdded.observer)
     self.vm.outputs.notifyDelegateLoadPaymentMethodsError

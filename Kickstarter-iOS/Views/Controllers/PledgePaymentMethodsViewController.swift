@@ -127,16 +127,17 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   // MARK: - Functions
+
   private func addCardsToStackView(_ cards: [GraphUserCreditCard.CreditCard]) {
     self.cardsStackView.arrangedSubviews.forEach(self.cardsStackView.removeArrangedSubview)
 
-   let cardViews = cards
+    let cardViews = cards
       .map { card -> PledgeCreditCardView in
         let cardView = PledgeCreditCardView(frame: .zero)
         cardView.delegate = self
         cardView.configureWith(value: card, isNew: false)
         return cardView
-    }
+      }
 
     let addNewCardView: PledgeAddNewCardView = PledgeAddNewCardView(frame: .zero)
       |> \.delegate .~ self
