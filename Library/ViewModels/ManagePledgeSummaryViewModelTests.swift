@@ -34,7 +34,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
 
   func testTextOutputsEmitTheCorrectValue() {
     let backing = .template
-      |> Backing.lens.sequence .~ 9_999
+      |> Backing.lens.sequence .~ 999
       |> Backing.lens.pledgedAt .~ 1_568_666_243
       |> Backing.lens.amount .~ 30
       |> Backing.lens.shippingAmount .~ 7
@@ -45,7 +45,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project)
 
-    self.backerNumberText.assertValue("Backer #9999")
+    self.backerNumberText.assertValue("Backer #999")
     self.backingDateText.assertValue("As of September 16, 2019")
     self.pledgeAmountText.assertValue("$30.00")
     self.shippingAmountText.assertValue("+$7.00")
