@@ -54,7 +54,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .values()
       .map { $0.me.storedCards.nodes }
 
-self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
+    self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
 
     self.newCardAdded = self.creditCardProperty.signal.skipNil()
 

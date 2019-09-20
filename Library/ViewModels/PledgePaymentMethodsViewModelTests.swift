@@ -19,7 +19,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.applePayButtonHidden.observe(self.applePayButtonHidden.observer)
     self.vm.outputs.newCardAdded.observe(self.newCardAdded.observer)
     self.vm.outputs.notifyDelegateApplePayButtonTapped
-     .observe(self.notifyDelegateApplePayButtonTapped.observer)
+      .observe(self.notifyDelegateApplePayButtonTapped.observer)
     self.vm.outputs.notifyDelegateLoadPaymentMethodsError
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
     self.vm.outputs.reloadPaymentMethods.observe(self.reloadPaymentMethods.observer)
