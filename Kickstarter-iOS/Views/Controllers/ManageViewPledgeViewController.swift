@@ -30,7 +30,14 @@ final class ManageViewPledgeViewController: UIViewController {
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
   }()
 
-  private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
+  private lazy var rewardReceivedViewController: ManageViewPledgeRewardReceivedViewController = {
+    ManageViewPledgeRewardReceivedViewController.instantiate()
+  }()
+
+  private lazy var rootScrollView: UIScrollView = {
+    UIScrollView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -55,8 +62,18 @@ final class ManageViewPledgeViewController: UIViewController {
       ?|> \.leftBarButtonItem .~ self.closeButton
       ?|> \.rightBarButtonItem .~ self.editButton
 
-    self.configureViews()
+    _ = (self.rootScrollView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    self.configureViews()    
+    self.configureChildViewControllers()
     self.setupConstraints()
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -72,8 +89,11 @@ final class ManageViewPledgeViewController: UIViewController {
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
       |> \.width .~ Styles.minTouchSize.width
 
+    _ = self.rootScrollView
+      |> rootScrollViewStyle
+
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> checkoutRootStackViewStyle
   }
 
   // MARK: - View model
@@ -106,7 +126,22 @@ final class ManageViewPledgeViewController: UIViewController {
 
   // MARK: - Configuration
 
-  private func configureWith(project: Project, reward: Reward) {
+  private func configureChildViewControllers() {
+    let childViewControllers = [
+      self.rewardReceivedViewController
+    ]
+
+    childViewControllers.forEach { viewController in
+      self.addChild(viewController)
+
+      _ = ([viewController.view], self.rootStackView)
+        |> ksr_addArrangedSubviewsToStackView()
+
+      viewController.didMove(toParent: self)
+    }
+  }
+
+  func configureWith(project: Project, reward: Reward) {
     self.viewModel.inputs.configureWith(project, reward: reward)
   }
 
@@ -152,7 +187,12 @@ final class ManageViewPledgeViewController: UIViewController {
 
 // MARK: Styles
 
-public let viewStyle: ViewStyle = { (view: UIView) in
+private let rootScrollViewStyle = { (scrollView: UIScrollView) in
+  scrollView
+    |> \.alwaysBounceVertical .~ true
+}
+
+private let viewStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.ksr_grey_400
 }

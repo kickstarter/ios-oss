@@ -169,3 +169,8 @@ public let keyboardDoneButtonStyle: ButtonStyle = { button -> UIButton in
   button
     |> greenButtonStyle
 }
+
+public let verticalStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+}
