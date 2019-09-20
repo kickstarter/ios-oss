@@ -75,8 +75,8 @@ public class PledgeCreditCardView: UIView {
       |> cardSelectButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
       |> UIButton.lens.title(for: .selected) %~ { _ in Strings.Selected() }
-      |> UIButton.lens.titleColor(for: .selected) %~ { _ in .ksr_text_dark_grey_500 }
-      |> UIButton.lens.backgroundColor(for: .selected) .~ .ksr_grey_500
+      |> UIButton.lens.titleColor(for: .selected) %~ { _ in .white }
+      |> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_soft_black.withAlphaComponent(0.60)
 
     _ = self.imageView
       |> cardImageViewStyle
