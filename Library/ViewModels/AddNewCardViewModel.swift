@@ -16,6 +16,7 @@ public protocol AddNewCardViewModelInputs {
   func cardholderNameChanged(_ cardholderName: String?)
   func cardholderNameTextFieldReturn()
   func creditCardChanged(cardDetails: CardDetails)
+  func configure(with intent: AddNewCardIntent)
   func paymentCardTextFieldDidEndEditing()
   func paymentInfo(isValid: Bool)
   func saveButtonTapped()
@@ -36,6 +37,7 @@ public protocol AddNewCardViewModelOutputs {
   var dismissKeyboard: Signal<Void, Never> { get }
   var paymentDetails: Signal<PaymentDetails, Never> { get }
   var paymentDetailsBecomeFirstResponder: Signal<Void, Never> { get }
+  var reusableCardSwitchIsHidden: Signal<Bool, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var setStripePublishableKey: Signal<String, Never> { get }
   var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
@@ -160,6 +162,12 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       self.addNewCardFailure.mapConst(false)
     )
 
+    self.reusableCardSwitchIsHidden = Signal.combineLatest(
+      self.addNewCardIntentProperty.signal.map { $0 == .settings },
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
+
     // Koala
     self.viewWillAppearProperty.signal
       .observeValues {
@@ -195,6 +203,11 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   private let creditCardChangedProperty = MutableProperty<CardDetails?>(nil)
   public func creditCardChanged(cardDetails: CardDetails) {
     self.creditCardChangedProperty.value = cardDetails
+  }
+
+  private let addNewCardIntentProperty = MutableProperty<AddNewCardIntent?>(nil)
+  public func configure(with intent: AddNewCardIntent) {
+    self.addNewCardIntentProperty.value = intent
   }
 
   private let paymentCardTextFieldDidEndEditingProperty = MutableProperty(())
@@ -254,6 +267,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let paymentDetailsBecomeFirstResponder: Signal<Void, Never>
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
+  public let reusableCardSwitchIsHidden: Signal<Bool, Never>
   public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }

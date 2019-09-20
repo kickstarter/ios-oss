@@ -22,7 +22,8 @@ internal final class AddNewCardViewController: UIViewController,
   @IBOutlet private var creditCardTextField: STPPaymentCardTextField!
   @IBOutlet private var creditCardValidationErrorLabel: UILabel!
   @IBOutlet private var creditCardValidationErrorContainer: UIView!
-  @IBOutlet private var reusableCardStackview: UIStackView!
+  @IBOutlet private var reusableCardStackViewContainer: UIView!
+  @IBOutlet private var reusableCardStackView: UIStackView!
   @IBOutlet private var reusableCardLabel: UILabel!
   @IBOutlet private var reusableCardSwitch: UISwitch!
   @IBOutlet private var scrollView: UIScrollView!
@@ -47,6 +48,10 @@ internal final class AddNewCardViewController: UIViewController,
 
   internal static func instantiate() -> AddNewCardViewController {
     return Storyboard.Settings.instantiate(AddNewCardViewController.self)
+  }
+
+  func configure(with intent: AddNewCardIntent) {
+    self.viewModel.inputs.configure(with: intent)
   }
 
   override func viewDidLoad() {
@@ -140,7 +145,7 @@ internal final class AddNewCardViewController: UIViewController,
     _ = self.reusableCardLabel
       |> \.text %~ { _ in Strings.Remember_this_card() }
 
-    _ = self.reusableCardStackview
+    _ = self.reusableCardStackView
       |> \.alignment .~ .center
 
     _ = self.reusableCardSwitch
@@ -149,6 +154,8 @@ internal final class AddNewCardViewController: UIViewController,
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.reusableCardStackViewContainer.rac.hidden = self.viewModel.outputs.reusableCardSwitchIsHidden
 
     self.creditCardValidationErrorContainer.rac.hidden =
       self.viewModel.outputs.creditCardValidationErrorContainerHidden

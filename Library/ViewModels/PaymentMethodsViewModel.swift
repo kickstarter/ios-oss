@@ -18,7 +18,7 @@ public protocol PaymentMethodsViewModelOutputs {
   var editButtonIsEnabled: Signal<Bool, Never> { get }
   var editButtonTitle: Signal<String, Never> { get }
   var errorLoadingPaymentMethods: Signal<String, Never> { get }
-  var goToAddCardScreen: Signal<Void, Never> { get }
+  var goToAddCardScreenWithIntent: Signal<AddNewCardIntent, Never> { get }
   var paymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
   var presentBanner: Signal<String, Never> { get }
   var reloadData: Signal<Void, Never> { get }
@@ -98,7 +98,8 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
     )
     .skipRepeats()
 
-    self.goToAddCardScreen = self.didTapAddCardButtonProperty.signal
+    self.goToAddCardScreenWithIntent = self.didTapAddCardButtonProperty.signal
+      .mapConst(.settings)
 
     self.presentBanner = self.addNewCardSucceededProperty.signal.skipNil()
 
@@ -183,7 +184,7 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
   public let editButtonIsEnabled: Signal<Bool, Never>
   public let editButtonTitle: Signal<String, Never>
   public let errorLoadingPaymentMethods: Signal<String, Never>
-  public let goToAddCardScreen: Signal<Void, Never>
+  public let goToAddCardScreenWithIntent: Signal<AddNewCardIntent, Never>
   public let paymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
   public let presentBanner: Signal<String, Never>
   public let reloadData: Signal<Void, Never>

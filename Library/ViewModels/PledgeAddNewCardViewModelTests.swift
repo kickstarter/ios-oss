@@ -7,23 +7,24 @@ import XCTest
 final class PledgeAddNewCardViewModelTests: TestCase {
   private let vm = PledgeAddNewCardViewModel()
 
-  private let notifyDelegateAddNewCardTapped = TestObserver<Void, Never>()
+  private let notifyDelegateAddNewCardTappedWithIntent = TestObserver<AddNewCardIntent, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.notifyDelegateAddNewCardTapped.observe(self.notifyDelegateAddNewCardTapped.observer)
+    self.vm.outputs.notifyDelegateAddNewCardTappedWithIntent
+      .observe(self.notifyDelegateAddNewCardTappedWithIntent.observer)
   }
 
   func testAddNewCard() {
-    self.notifyDelegateAddNewCardTapped.assertDidNotEmitValue()
+    self.notifyDelegateAddNewCardTappedWithIntent.assertDidNotEmitValue()
 
     self.vm.inputs.addNewCardButtonTapped()
 
-    self.notifyDelegateAddNewCardTapped.assertValueCount(1)
+    self.notifyDelegateAddNewCardTappedWithIntent.assertValues([.pledgeView])
 
     self.vm.inputs.addNewCardButtonTapped()
 
-    self.notifyDelegateAddNewCardTapped.assertValueCount(2)
+    self.notifyDelegateAddNewCardTappedWithIntent.assertValues([.pledgeView, .pledgeView])
   }
 }

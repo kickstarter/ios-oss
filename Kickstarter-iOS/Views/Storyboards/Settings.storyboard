@@ -877,15 +877,15 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="lnb-P0-tav" firstAttribute="top" secondItem="WND-4C-aQn" secondAttribute="top" id="APw-GW-rXx"/>
-                                    <constraint firstItem="lnb-P0-tav" firstAttribute="width" secondItem="WND-4C-aQn" secondAttribute="width" id="EPt-hD-oiB"/>
                                     <constraint firstItem="lnb-P0-tav" firstAttribute="leading" secondItem="WND-4C-aQn" secondAttribute="leading" id="OIK-1Z-bRx"/>
-                                    <constraint firstAttribute="trailing" secondItem="lnb-P0-tav" secondAttribute="trailing" id="jDZ-V7-z0T"/>
-                                    <constraint firstAttribute="bottom" secondItem="lnb-P0-tav" secondAttribute="bottom" id="y9W-Ob-6iH"/>
+                                    <constraint firstItem="lnb-P0-tav" firstAttribute="trailing" secondItem="WND-4C-aQn" secondAttribute="trailing" id="jDZ-V7-z0T"/>
+                                    <constraint firstItem="lnb-P0-tav" firstAttribute="bottom" secondItem="WND-4C-aQn" secondAttribute="bottom" id="y9W-Ob-6iH"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="lnb-P0-tav" firstAttribute="width" secondItem="8Z2-wp-VS9" secondAttribute="width" id="9Ae-Vw-JZ1"/>
                             <constraint firstItem="uO6-wU-ph7" firstAttribute="trailing" secondItem="WND-4C-aQn" secondAttribute="trailing" id="EuV-qO-bni"/>
                             <constraint firstItem="WND-4C-aQn" firstAttribute="leading" secondItem="uO6-wU-ph7" secondAttribute="leading" id="bKt-mR-G6r"/>
                             <constraint firstItem="uO6-wU-ph7" firstAttribute="bottom" secondItem="WND-4C-aQn" secondAttribute="bottom" id="s0b-d5-aBB"/>
@@ -900,7 +900,8 @@
                         <outlet property="creditCardValidationErrorContainer" destination="HyS-jM-HV4" id="zFW-PF-1TP"/>
                         <outlet property="creditCardValidationErrorLabel" destination="AWc-a8-i6h" id="O8r-yb-f86"/>
                         <outlet property="reusableCardLabel" destination="Xp6-hu-CPq" id="Iwo-Sh-hUB"/>
-                        <outlet property="reusableCardStackview" destination="ghT-qE-fCp" id="64V-qg-JZq"/>
+                        <outlet property="reusableCardStackView" destination="ghT-qE-fCp" id="Jw2-Tm-eKK"/>
+                        <outlet property="reusableCardStackViewContainer" destination="DLm-ya-kS8" id="Ml3-nb-X9F"/>
                         <outlet property="reusableCardSwitch" destination="cwK-8a-nfw" id="2Zg-Yz-bhc"/>
                         <outlet property="scrollView" destination="WND-4C-aQn" id="XA9-mF-c5y"/>
                         <outlet property="stackView" destination="lnb-P0-tav" id="kzf-xr-dC0"/>

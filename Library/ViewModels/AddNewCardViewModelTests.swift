@@ -20,6 +20,7 @@ internal final class AddNewCardViewModelTests: TestCase {
   private let cardExpYear = TestObserver<Year, Never>()
   private let cardCVC = TestObserver<String, Never>()
   private let paymentDetailsBecomeFirstResponder = TestObserver<Void, Never>()
+  private let reusableCardSwitchIsHidden = TestObserver<Bool, Never>()
   private let saveButtonIsEnabled = TestObserver<Bool, Never>()
   private let setStripePublishableKey = TestObserver<String, Never>()
   private let zipcode = TestObserver<String, Never>()
@@ -43,6 +44,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.outputs.paymentDetails.map { $0.5 }.observe(self.zipcode.observer)
     self.vm.outputs.paymentDetailsBecomeFirstResponder
       .observe(self.paymentDetailsBecomeFirstResponder.observer)
+    self.vm.outputs.reusableCardSwitchIsHidden.observe(self.reusableCardSwitchIsHidden.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
     self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
     self.vm.outputs.zipcodeTextFieldBecomeFirstResponder
@@ -356,5 +358,21 @@ internal final class AddNewCardViewModelTests: TestCase {
 
     self.creditCardValidationErrorContainerHidden
       .assertValues([true, true], "Unsupported card message stays hidden when the card number is < 2 digits")
+  }
+
+  func testReusableCardSwitchIsHidden() {
+    self.reusableCardSwitchIsHidden.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.reusableCardSwitchIsHidden.assertValueCount(0)
+
+    self.vm.inputs.configure(with: .settings)
+
+    self.reusableCardSwitchIsHidden.assertValues([true])
+
+    self.vm.inputs.configure(with: .pledgeView)
+
+    self.reusableCardSwitchIsHidden.assertValues([true, false])
   }
 }
