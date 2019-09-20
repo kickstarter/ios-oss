@@ -12,7 +12,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
   private let configurePaymentMethodView = TestObserver<Project, Never>()
   private let configurePledgeSummaryView = TestObserver<Project, Never>()
   private let configureRewardSummaryView = TestObserver<Reward, Never>()
-  private let showActionSheetMenuWithOptions = TestObserver<[ActionSheetMenuOption], Never>()
+  private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
   private let title = TestObserver<String, Never>()
 
   override func setUp() {
@@ -94,7 +94,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
 
     self.vm.inputs.menuButtonTapped()
 
-    self.showActionSheetMenuWithOptions.assertValues([ActionSheetMenuOption.allCases])
+    self.showActionSheetMenuWithOptions.assertValues([ManagePledgeAlertAction.allCases])
   }
 
   func testMenuButtonTapped_WhenProject_IsNotLive() {
