@@ -100,6 +100,8 @@
 		374CB94F22C17D4E00B84219 /* CharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374CB94E22C17D4E00B84219 /* CharacterSet.swift */; };
 		374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374CB95022C17D6700B84219 /* CharacterSetTests.swift */; };
 		374F507922614A1000DE6746 /* PledgeFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374F507822614A1000DE6746 /* PledgeFooterView.swift */; };
+		3751E4292335871600047E9A /* PledgeAmountViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3751E4282335871600047E9A /* PledgeAmountViewControllerTests.swift */; };
+		3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3751E42A2335E7CE00047E9A /* TraitCollection.swift */; };
 		3757D0CE228E51F800241AE6 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3757D0CD228E51F800241AE6 /* UIFont.swift */; };
 		3757D107228E521600241AE6 /* UIFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3757D106228E521600241AE6 /* UIFontTests.swift */; };
 		37637ED8224AA03D00777AD2 /* CreatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */; };
@@ -1445,6 +1447,8 @@
 		374CB94E22C17D4E00B84219 /* CharacterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSet.swift; sourceTree = "<group>"; };
 		374CB95022C17D6700B84219 /* CharacterSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterSetTests.swift; sourceTree = "<group>"; };
 		374F507822614A1000DE6746 /* PledgeFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeFooterView.swift; sourceTree = "<group>"; };
+		3751E4282335871600047E9A /* PledgeAmountViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountViewControllerTests.swift; sourceTree = "<group>"; };
+		3751E42A2335E7CE00047E9A /* TraitCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitCollection.swift; sourceTree = "<group>"; };
 		3757D0CD228E51F800241AE6 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		3757D106228E521600241AE6 /* UIFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontTests.swift; sourceTree = "<group>"; };
 		37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewController.swift; sourceTree = "<group>"; };
@@ -2963,6 +2967,7 @@
 				D63BBCCF217E5460007E01F0 /* PaymentMethodsViewController.swift */,
 				D6F7416F21836C3D00C2DDA2 /* PaymentMethodsViewControllerTests.swift */,
 				370ACAFF225D337900C8745F /* PledgeAmountViewController.swift */,
+				3751E4282335871600047E9A /* PledgeAmountViewControllerTests.swift */,
 				7748438322D8DE8200508C9B /* PledgeContinueViewController.swift */,
 				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionViewController.swift */,
 				8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */,
@@ -3384,6 +3389,7 @@
 				A7ED20211E83237F00BFFA01 /* Combos.swift */,
 				37096C3122BC23AD003D1F40 /* MockAppEnvironment.swift */,
 				37096C2F22BC238C003D1F40 /* MockFeedbackGenerator.swift */,
+				3751E42A2335E7CE00047E9A /* TraitCollection.swift */,
 				A7ED20221E83237F00BFFA01 /* TraitController.swift */,
 			);
 			path = TestHelpers;
@@ -5237,6 +5243,7 @@
 				A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */,
 				D6B6875221923BCF005F5DA7 /* ChangeEmailViewControllerTests.swift in Sources */,
 				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,
+				3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */,
 				3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */,
 				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
 				A7ED20651E83256700BFFA01 /* UpdatePreviewViewModelTests.swift in Sources */,
@@ -5258,6 +5265,7 @@
 				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
 				8A8099FF22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift in Sources */,
 				A7ED20541E8323E900BFFA01 /* ProjectPamphletContentViewControllerTests.swift in Sources */,
+				3751E4292335871600047E9A /* PledgeAmountViewControllerTests.swift in Sources */,
 				D6560C2A2182361800CD24BC /* PaymentMethodsDataSourceTests.swift in Sources */,
 				A7ED201E1E83231C00BFFA01 /* MockBundle.swift in Sources */,
 				A7ED20551E8323E900BFFA01 /* LoginToutViewControllerTests.swift in Sources */,
