@@ -70,7 +70,6 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.textFieldValue = stepperValue
       .map { String(format: "%.0f", $0) }
       .skipRepeats()
-    .logEvents(identifier: "***")
 
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
