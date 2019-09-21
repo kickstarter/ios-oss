@@ -1,6 +1,6 @@
 @testable import Kickstarter_Framework
-@testable import Library
 @testable import KsApi
+@testable import Library
 import Prelude
 import UIKit
 
@@ -35,7 +35,7 @@ final class PledgeViewControllerTests: TestCase {
 
   func testView_WithShippingLocation() {
     let reward = Reward.template
-        |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {

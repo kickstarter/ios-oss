@@ -112,7 +112,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     let isValueValid = updatedValue
       .map { (min: Double, max: Double, doubleValue: Double) -> Bool in
         min <= doubleValue && doubleValue <= max
-    }
+      }
 
     self.doneButtonIsEnabled = isValueValid
 
