@@ -33,7 +33,7 @@ final class PledgeViewControllerTests: TestCase {
     }
   }
 
-  func testView_WithShippingLocation() {
+  func testView_ShowsShippingLocationSection() {
     let reward = Reward.template
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
 
