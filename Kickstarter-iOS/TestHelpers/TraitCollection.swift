@@ -16,4 +16,3 @@ extension UITraitCollection {
     UITraitCollection(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge)
   ]
 }
-
