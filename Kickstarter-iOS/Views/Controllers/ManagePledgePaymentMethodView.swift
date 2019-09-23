@@ -96,6 +96,8 @@ final class ManagePledgePaymentMethodView: UIView {
     }
   }
 
+  // MARK: - Functions
+
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.cardImageView.widthAnchor.constraint(

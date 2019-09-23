@@ -19,14 +19,3 @@ extension Backing {
     status: .pledged
   )
 }
-
-extension Backing.PaymentSource {
-  internal static let template = Backing.PaymentSource(
-    expirationDate: "09/19/2019",
-    id: 1,
-    lastFour: "1234",
-    paymentType: "APPLE_PAY",
-    state: "ACTIVE",
-    type: "MASTERCARD"
-  )
-}

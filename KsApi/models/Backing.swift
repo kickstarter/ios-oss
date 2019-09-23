@@ -19,15 +19,6 @@ public struct Backing {
   public let shippingAmount: Int?
   public let status: Status
 
-  public struct PaymentSource {
-    public let expirationDate: String
-    public let id: Int
-    public let lastFour: String
-    public let paymentType: String
-    public let state: String
-    public let type: String
-  }
-
   public enum Status: String {
     case canceled
     case collected

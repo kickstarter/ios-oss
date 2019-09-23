@@ -13,10 +13,6 @@ public struct GraphUserCreditCard: Swift.Decodable {
     public let state: String?
     public var type: CreditCardType?
 
-    public var intID: Int? {
-      return decompose(id: self.id)
-    }
-
     public var formattedExpirationDate: String {
       return String(self.expirationDate.dropLast(3))
     }
