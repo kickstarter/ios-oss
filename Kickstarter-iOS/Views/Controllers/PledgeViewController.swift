@@ -176,7 +176,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> rootScrollViewStyle
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> checkoutRootStackViewStyle
 
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
@@ -409,19 +409,4 @@ private let rootScrollViewStyle: ScrollStyle = { scrollView in
   scrollView
     |> UIScrollView.lens.showsVerticalScrollIndicator .~ false
     |> \.alwaysBounceVertical .~ true
-}
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.layoutMargins .~ .init(
-      top: Styles.grid(3),
-      left: Styles.grid(4),
-      bottom: Styles.grid(3),
-      right: Styles.grid(4)
-    )
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.distribution .~ UIStackView.Distribution.fill
-    |> \.alignment .~ UIStackView.Alignment.fill
-    |> \.spacing .~ Styles.grid(4)
 }

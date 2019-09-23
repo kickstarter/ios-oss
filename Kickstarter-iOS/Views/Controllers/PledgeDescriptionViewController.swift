@@ -298,9 +298,8 @@ extension PledgeDescriptionViewController: RewardCardViewDelegate {
 
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
+    |> checkoutSubStackViewStyle
     |> \.alignment .~ UIStackView.Alignment.top
-    |> \.axis .~ NSLayoutConstraint.Axis.horizontal
-    |> \.spacing .~ Styles.grid(3)
 }
 
 private let descriptionStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
