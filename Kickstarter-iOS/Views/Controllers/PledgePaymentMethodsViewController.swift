@@ -21,7 +21,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
-  private lazy var pledgeButton: UIButton = { UIButton.init(type: .system) }()
+  private lazy var pledgeButton: UIButton = { UIButton.init(type: .custom) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var scrollViewContainer: UIView = { UIView(frame: .zero) }()
