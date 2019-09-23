@@ -8,13 +8,17 @@ public typealias PledgePaymentMethodsValue = (user: User, project: Project, appl
 public protocol PledgePaymentMethodsViewModelInputs {
   func applePayButtonTapped()
   func configureWith(_ value: PledgePaymentMethodsValue)
+  func creditCardSelected(paymentSourceId: String)
+  func updatePledgeButtonEnabled(isEnabled: Bool)
   func viewDidLoad()
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
-  var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var applePayButtonHidden: Signal<Bool, Never> { get }
+  var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
+  var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
+  var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
 }
 
@@ -44,6 +48,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .map(showApplePayButton(for:applePayCapable:))
       .negate()
 
+    self.pledgeButtonEnabled = Signal.merge(
+      configureWithValue.mapConst(false),
+      self.pledgeButtonEnabledSignal
+    ).skipRepeats()
+
     self.reloadPaymentMethods = storedCardsEvent
       .values()
       .map { $0.me.storedCards.nodes }
@@ -53,6 +62,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
       .map { $0.localizedDescription }
+
+    self.notifyDelegateCreditCardSelected = self.creditCardSelectedSignal
+      .skipRepeats()
   }
 
   private let applePayButtonTappedProperty = MutableProperty(())
@@ -65,6 +77,16 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.configureWithValueProperty.value = value
   }
 
+  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<String, Never>.pipe()
+  public func creditCardSelected(paymentSourceId: String) {
+    self.creditCardSelectedObserver.send(value: paymentSourceId)
+  }
+
+  private let (pledgeButtonEnabledSignal, pledgeButtonEnabledObserver) = Signal<Bool, Never>.pipe()
+  public func updatePledgeButtonEnabled(isEnabled: Bool) {
+    self.pledgeButtonEnabledObserver.send(value: isEnabled)
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -75,7 +97,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
   public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
   public let applePayButtonHidden: Signal<Bool, Never>
+  public let notifyDelegateCreditCardSelected: Signal<String, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
+  public let pledgeButtonEnabled: Signal<Bool, Never>
   public let reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
 }
 
