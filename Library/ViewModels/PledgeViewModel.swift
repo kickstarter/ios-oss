@@ -18,6 +18,7 @@ public typealias PKPaymentData = (displayName: String, network: String, transact
 public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
   func configureWith(project: Project, reward: Reward, refTag: RefTag?)
+  func creditCardSelected(with paymentSourceId: String)
   func paymentAuthorizationDidAuthorizePayment(
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
   )
@@ -40,6 +41,7 @@ public protocol PledgeViewModelOutputs {
   var goToThanks: Signal<Project, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
+  var updatePledgeButtonEnabled: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -94,6 +96,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.continueViewHidden = isLoggedIn
     self.paymentMethodsViewHidden = isLoggedIn.negate()
+
+    let paymentSourceSelected = Signal.combineLatest(
+      self.configurePaymentMethodsViewControllerWithValue, self.creditCardSelectedSignal
+    )
+
+    self.updatePledgeButtonEnabled = paymentSourceSelected.mapConst(true)
+
     self.shippingLocationViewHidden = reward
       .map { $0.shipping.enabled }
       .negate()
@@ -218,6 +227,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.configureWithDataProperty.value = (project, reward, refTag)
   }
 
+  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<String, Never>.pipe()
+  public func creditCardSelected(with paymentSourceId: String) {
+    self.creditCardSelectedObserver.send(value: paymentSourceId)
+  }
+
   private let (pkPaymentSignal, pkPaymentObserver) = Signal<
     (
       displayName: String?,
@@ -280,6 +294,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let goToThanks: Signal<Project, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
+  public let updatePledgeButtonEnabled: Signal<Bool, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
