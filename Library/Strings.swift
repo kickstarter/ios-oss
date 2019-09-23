@@ -4584,6 +4584,23 @@ with friends."
     )
   }
   /**
+   "Menu"
+
+   - **en**: "Menu"
+   - **de**: "Menü"
+   - **es**: "Menú"
+   - **fr**: "Menu"
+   - **ja**: "メニュー"
+  */
+  public static func Menu() -> String {
+    return localizedString(
+      key: "Menu",
+      defaultValue: "Menu",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Message backer"
 
    - **en**: "Message backer"
