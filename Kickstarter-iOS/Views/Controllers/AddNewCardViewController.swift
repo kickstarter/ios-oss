@@ -143,10 +143,13 @@ internal final class AddNewCardViewController: UIViewController,
       |> \.returnKeyType .~ .done
 
     _ = self.reusableCardLabel
+      |> \.font .~ .ksr_body()
       |> \.text %~ { _ in Strings.Remember_this_card() }
 
     _ = self.reusableCardStackView
-      |> \.alignment .~ .center
+      |> checkoutAdaptableStackViewStyle(
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+      )
 
     _ = self.reusableCardSwitch
       |> baseSwitchControlStyle
