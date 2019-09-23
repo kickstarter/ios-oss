@@ -70,7 +70,7 @@ final class ManageViewPledgeViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.configureViews()    
+    self.configureViews()
     self.configureChildViewControllers()
     self.setupConstraints()
 
