@@ -36,7 +36,7 @@ class ToggleViewController: UIViewController {
       self.titleLabel.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.titleLabel.centerYAnchor.constraint(equalTo: self.toggle.centerYAnchor),
       self.titleLabel.rightAnchor.constraint(equalTo: self.toggle.leftAnchor, constant: -Styles.grid(3)),
-      self.toggle.leftAnchor.constraint(equalTo: self.view.rightAnchor, constant: -toggle.frame.size.width)
+      self.toggle.leftAnchor.constraint(equalTo: self.view.rightAnchor, constant: -self.toggle.frame.width)
     ])
   }
 
