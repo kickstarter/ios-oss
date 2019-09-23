@@ -26,7 +26,7 @@ final class ManagePledgePaymentMethodView: UIView {
     self.bindViewModel()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -93,7 +93,7 @@ final class ManagePledgePaymentMethodView: UIView {
       .observeValues { [weak self] image in
         _ = self?.cardImageView
           ?|> \.image .~ image
-    }
+      }
   }
 
   // MARK: - Functions

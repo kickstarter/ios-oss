@@ -8,13 +8,13 @@ final class BackingTests: XCTestCase {
       "backer_id": 1,
       "id": 1,
       "location_id": 1,
-      "payment_source" : [
+      "payment_source": [
         "expiration_date": "2019-09-23",
         "id": 20,
         "last_four": "1234",
         "payment_type": "CREDIT_CARD",
         "state": "ACTIVE",
-        "type": "VISA",
+        "type": "VISA"
       ],
       "pledged_at": 1_000,
       "project_country": "US",
