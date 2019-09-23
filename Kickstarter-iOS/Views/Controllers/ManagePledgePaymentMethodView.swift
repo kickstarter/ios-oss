@@ -37,6 +37,9 @@ final class ManagePledgePaymentMethodView: UIView {
   }
 
   private func configureViews() {
+    _ = self
+      |> \.accessibilityElements .~ self.subviews
+
     _ = ([self.lastFourLabel, self.expirationDateLabel], self.cardLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -114,18 +117,17 @@ private let adaptableStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(2)
 }
 
-private let cardLabelsStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> verticalStackViewStyle
-}
-
 private let cardExpirationDateLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
     |> \.font .~ UIFont.ksr_caption1().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
-
     |> \.textColor .~ .ksr_text_dark_grey_500
+}
+
+private let cardLabelsStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> verticalStackViewStyle
 }
 
 private let cardLastFourLabelStyle: LabelStyle = { label in
