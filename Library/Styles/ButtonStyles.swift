@@ -71,6 +71,14 @@ public let greyButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_grey_500.mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_grey_500.mixLighter(0.12)
 
+public let greyButtonWhiteTextStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_grey_500
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.titleColor(for: .disabled) .~ .white
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_grey_500.mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_grey_500.mixLighter(0.12)
+
 // MARK: - Facebook
 
 public let facebookButtonStyle = baseButtonStyle

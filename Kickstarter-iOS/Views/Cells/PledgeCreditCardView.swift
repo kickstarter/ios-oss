@@ -21,9 +21,7 @@ final class PledgeCreditCardView: UIView {
   private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let selectButton: UIButton = { UIButton(type: .custom) }()
-  private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
-
-  internal weak var delegate: PledgeCreditCardViewDelegate?
+  private let viewModel: PledgeCreditCardViewModelType = PledgeCreditCardViewModel()
 
   // MARK: - Lifecycle
 
@@ -78,13 +76,6 @@ final class PledgeCreditCardView: UIView {
     _ = self
       |> pledgeCardViewStyle
 
-    _ = self.selectButton
-      |> cardSelectButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
-      |> UIButton.lens.title(for: .selected) %~ { _ in Strings.Selected() }
-      |> UIButton.lens.titleColor(for: .selected) %~ { _ in .white }
-      |> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_soft_black.withAlphaComponent(0.60)
-
     _ = self.imageView
       |> cardImageViewStyle
 
@@ -110,14 +101,15 @@ final class PledgeCreditCardView: UIView {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.notifyButtonTapped
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        guard let _self = self else { return }
-        _self.delegate?.didSelectCard(_self)
-      }
+    self.selectButton.rac.title = self.viewModel.outputs.selectButtonTitle
 
-    self.selectButton.rac.selected = self.viewModel.outputs.newlyAddedCardSelected
+    self.viewModel.outputs.selectButtonStyleType
+      .observeForUI()
+      .observeValues { [weak self] type in
+        guard let self = self else { return }
+        _ = self.selectButton
+          |> type.style
+      }
 
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
@@ -137,25 +129,15 @@ final class PledgeCreditCardView: UIView {
       }
   }
 
-  func configureWith(value: GraphUserCreditCard.CreditCard, isNew: Bool) {
-    self.viewModel.inputs.configureWith(creditCard: value, isNew: isNew)
-  }
-
-  public func updateButtonState(_ selected: Bool) {
-    if self.selectButton.isSelected {
-      _ = self.selectButton
-        |> \.isSelected .~ false
-    } else {
-      _ = self.selectButton
-        |> \.isSelected .~ selected
-    }
-  }
-
-  @objc fileprivate func selectButtonTapped() {
-    self.viewModel.inputs.selectButtonTapped()
+  func configureWith(value: GraphUserCreditCard.CreditCard) {
+    self.viewModel.inputs.configureWith(value: value)
   }
 
   // MARK: - Accessors
+
+  func setSelectedCard(_ card: GraphUserCreditCard.CreditCard) {
+    self.viewModel.inputs.setSelectedCard(card)
+  }
 
   @objc func selectButtonTapped() {
     self.viewModel.inputs.selectButtonTapped()
