@@ -3,21 +3,25 @@ import Library
 import Prelude
 import UIKit
 
-protocol PledgeCreditCardViewDelegate: class {
-  func didSelectCard(_ cardView: PledgeCreditCardView)
+protocol PledgeCreditCardViewDelegate: AnyObject {
+  func pledgeCreditCardViewSelected(
+    _ pledgeCreditCardView: PledgeCreditCardView,
+    paymentSourceId: String
+  )
 }
 
-public class PledgeCreditCardView: UIView {
+final class PledgeCreditCardView: UIView {
   // MARK: - Properties
 
-  private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
   private let adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
+  weak var delegate: PledgeCreditCardViewDelegate?
   private let expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let imageView: UIImageView = { UIImageView(frame: .zero) }()
   private let labelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let selectButton: UIButton = { UIButton(type: .custom) }()
+  private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
 
   internal weak var delegate: PledgeCreditCardViewDelegate?
 
@@ -52,7 +56,10 @@ public class PledgeCreditCardView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    self.selectButton.addTarget(self, action: #selector(self.selectButtonTapped), for: .touchUpInside)
+    self.selectButton.addTarget(
+      self, action: #selector(PledgeCreditCardView.selectButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   private func setupConstraints() {
@@ -120,6 +127,14 @@ public class PledgeCreditCardView: UIView {
         _ = self?.imageView
           ?|> \.image .~ image
       }
+
+    self.viewModel.outputs.notifyDelegateOfCardSelected
+      .observeForUI()
+      .observeValues { [weak self] paymentSourceId in
+        guard let self = self else { return }
+
+        self.delegate?.pledgeCreditCardViewSelected(self, paymentSourceId: paymentSourceId)
+      }
   }
 
   func configureWith(value: GraphUserCreditCard.CreditCard, isNew: Bool) {
@@ -137,6 +152,12 @@ public class PledgeCreditCardView: UIView {
   }
 
   @objc fileprivate func selectButtonTapped() {
+    self.viewModel.inputs.selectButtonTapped()
+  }
+
+  // MARK: - Accessors
+
+  @objc func selectButtonTapped() {
     self.viewModel.inputs.selectButtonTapped()
   }
 }

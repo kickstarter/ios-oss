@@ -36,6 +36,9 @@ public protocol CreditCardCellViewModelOutputs {
 
   /// Emits that select button should be in the selected state.
   var notifyButtonTapped: Signal<Void, Never> { get }
+
+  /// Emits the paymentSourceId of the current card
+  var notifyDelegateOfCardSelected: Signal<String, Never> { get }
 }
 
 public protocol CreditCardCellViewModelType {
@@ -65,6 +68,11 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
     self.expirationDateText = self.cardProperty.signal.skipNil()
       .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
 
+    self.notifyDelegateOfCardSelected = self.cardProperty.signal
+      .takeWhen(self.selectButtonTappedProperty.signal)
+      .skipNil()
+      .map { $0.id }
+
     self.newlyAddedCardSelected = self.isNewCardProperty.signal
 
     self.notifyButtonTapped = self.selectButtonTappedProperty.signal
@@ -87,6 +95,11 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
     self.selectButtonTappedProperty.value = ()
   }
 
+  fileprivate let selectButtonTappedProperty = MutableProperty(())
+  public func selectButtonTapped() {
+    self.selectButtonTappedProperty.value = ()
+  }
+
   public let cardImage: Signal<UIImage?, Never>
   public let cardNumberAccessibilityLabel: Signal<String, Never>
   public let cardNumberTextLongStyle: Signal<String, Never>
@@ -94,6 +107,7 @@ public final class CreditCardCellViewModel: CreditCardCellViewModelInputs,
   public let expirationDateText: Signal<String, Never>
   public let newlyAddedCardSelected: Signal<Bool, Never>
   public let notifyButtonTapped: Signal<Void, Never>
+  public let notifyDelegateOfCardSelected: Signal<String, Never>
 
   public var inputs: CreditCardCellViewModelInputs { return self }
   public var outputs: CreditCardCellViewModelOutputs { return self }

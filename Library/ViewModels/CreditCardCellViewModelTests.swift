@@ -8,13 +8,12 @@ import XCTest
 internal final class CreditCardCellViewModelTests: TestCase {
   internal let vm: CreditCardCellViewModelType = CreditCardCellViewModel()
 
-  let cardImage = TestObserver<UIImage?, Never>()
-  let cardNumberAccessibilityLabel = TestObserver<String, Never>()
-  let cardNumberTextLongStyle = TestObserver<String, Never>()
-  let cardNumberTextShortStyle = TestObserver<String, Never>()
-  let expirationDateText = TestObserver<String, Never>()
-  let newlyAddedCardSelected = TestObserver<Bool, Never>()
-  let notifyButtonTapped = TestObserver<Void, Never>()
+  private let cardImage = TestObserver<UIImage?, Never>()
+  private let cardNumberAccessibilityLabel = TestObserver<String, Never>()
+  private let cardNumberTextLongStyle = TestObserver<String, Never>()
+  private let cardNumberTextShortStyle = TestObserver<String, Never>()
+  private let expirationDateText = TestObserver<String, Never>()
+  private let notifyDelegateOfCardSelected = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -24,8 +23,7 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.vm.outputs.cardNumberTextLongStyle.observe(self.cardNumberTextLongStyle.observer)
     self.vm.outputs.cardNumberTextShortStyle.observe(self.cardNumberTextShortStyle.observer)
     self.vm.outputs.expirationDateText.observe(self.expirationDateText.observer)
-    self.vm.outputs.newlyAddedCardSelected.observe(self.newlyAddedCardSelected.observer)
-    self.vm.outputs.notifyButtonTapped.observe(self.notifyButtonTapped.observer)
+    self.vm.outputs.notifyDelegateOfCardSelected.observe(self.notifyDelegateOfCardSelected.observer)
   }
 
   func testCardInfoForSupportedCards() {
@@ -130,5 +128,18 @@ internal final class CreditCardCellViewModelTests: TestCase {
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
     self.expirationDateText.assertValue("Expires 01/2024")
     self.newlyAddedCardSelected.assertValues([false])
+  }
+
+  func testSelectButtonTapped() {
+    let card = GraphUserCreditCard.amex
+      |> \.id .~ "123"
+
+    self.vm.inputs.configureWith(creditCard: card)
+
+    self.notifyDelegateOfCardSelected.assertDidNotEmitValue()
+
+    self.vm.inputs.selectButtonTapped()
+
+    self.notifyDelegateOfCardSelected.assertValues(["123"])
   }
 }

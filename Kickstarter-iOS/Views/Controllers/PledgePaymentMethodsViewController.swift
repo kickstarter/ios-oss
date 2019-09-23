@@ -8,6 +8,10 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
   func pledgePaymentMethodsViewControllerDidTapApplePayButton(
     _ viewController: PledgePaymentMethodsViewController
   )
+  func pledgePaymentMethodsViewController(
+    _ viewController: PledgePaymentMethodsViewController,
+    didSelectCreditCard paymentSourceId: String
+  )
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
@@ -17,6 +21,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
+  private lazy var pledgeButton: UIButton = { UIButton.init(type: .custom) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var scrollViewContainer: UIView = { UIView(frame: .zero) }()
@@ -44,7 +49,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.applePayButton, self.spacer, self.titleLabel, self.scrollViewContainer], self.rootStackView)
+    _ = (
+      [self.applePayButton, self.spacer, self.titleLabel, self.scrollViewContainer, self.pledgeButton],
+      self.rootStackView
+    )
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
@@ -61,7 +69,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.cardsStackView.heightAnchor.constraint(equalTo: self.scrollViewContainer.heightAnchor),
-      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+      self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
   }
 
@@ -77,6 +86,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     _ = self.applePayButton
       |> applePayButtonStyle
+
+    _ = self.pledgeButton
+      |> greenButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Pledge() }
 
     _ = self.scrollView
       |> checkoutBackgroundStyle
@@ -120,7 +133,16 @@ final class PledgePaymentMethodsViewController: UIViewController {
         self.delegate?.pledgePaymentMethodsViewControllerDidTapApplePayButton(self)
       }
 
+    self.viewModel.outputs.notifyDelegateCreditCardSelected
+      .observeForUI()
+      .observeValues { [weak self] paymentSourceId in
+        guard let self = self else { return }
+
+        self.delegate?.pledgePaymentMethodsViewController(self, didSelectCreditCard: paymentSourceId)
+      }
+
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
+    self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
   }
 
   // MARK: - Configuration
@@ -135,10 +157,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.viewModel.inputs.configureWith(pledgePaymentMethodsValue)
   }
 
-  // MARK: - Actions
+  // MARK: - Accessors
 
   @objc private func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
+  }
+
+  func updatePledgeButton(_ enabled: Bool) {
+    self.viewModel.inputs.updatePledgeButtonEnabled(isEnabled: enabled)
   }
 
   // MARK: - Functions
@@ -151,6 +177,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
         let cardView = PledgeCreditCardView(frame: .zero)
         cardView.delegate = self
         cardView.configureWith(value: card, isNew: false)
+
         return cardView
       }
 
@@ -230,5 +257,11 @@ extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
     self.dismiss(animated: true) {
       self.viewModel.inputs.addNewCardSucceeded()
     }
+  }
+}
+
+extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
+  func pledgeCreditCardViewSelected(_: PledgeCreditCardView, paymentSourceId: String) {
+    self.viewModel.creditCardSelected(paymentSourceId: paymentSourceId)
   }
 }
