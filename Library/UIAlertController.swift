@@ -9,7 +9,8 @@ public extension UIAlertController {
     title: String,
     message: String? = nil,
     preferredStyle: UIAlertController.Style,
-    sourceView: UIView? = nil
+    sourceView: UIView? = nil,
+    barButtonItem: UIBarButtonItem? = nil
   ) -> UIAlertController {
     let alert = UIAlertController(
       title: title,
@@ -20,6 +21,7 @@ public extension UIAlertController {
     if UIAlertController.requiresPopOverConfiguration(preferredStyle) {
       alert.modalPresentationStyle = .popover
       alert.popoverPresentationController?.sourceView = sourceView
+      alert.popoverPresentationController?.barButtonItem = barButtonItem
     }
 
     return alert
