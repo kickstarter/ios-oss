@@ -3,8 +3,17 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+public enum ManagePledgeAlertAction: CaseIterable {
+  case updatePledge
+  case changePaymentMethod
+  case chooseAnotherReward
+  case contactCreator
+  case cancelPledge
+}
+
 public protocol ManageViewPledgeViewModelInputs {
   func configureWith(_ project: Project, reward: Reward)
+  func menuButtonTapped()
   func viewDidLoad()
 }
 
@@ -12,6 +21,7 @@ public protocol ManageViewPledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<Project, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<Reward, Never> { get }
+  var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var title: Signal<String, Never> { get }
 }
 
@@ -38,11 +48,28 @@ public final class ManageViewPledgeViewModel:
 
     self.configureRewardSummaryView = projectAndReward
       .map(second)
+
+    let project = projectAndReward.map(first)
+
+    self.showActionSheetMenuWithOptions = project
+      .takeWhen(self.menuButtonTappedSignal)
+      .map { project -> [ManagePledgeAlertAction] in
+        if project.state == .live {
+          return ManagePledgeAlertAction.allCases
+        } else {
+          return [.contactCreator]
+        }
+      }
   }
 
   private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
   public func configureWith(_ project: Project, reward: Reward) {
     self.projectAndRewardObserver.send(value: (project, reward))
+  }
+
+  private let (menuButtonTappedSignal, menuButtonTappedObserver) = Signal<Void, Never>.pipe()
+  public func menuButtonTapped() {
+    self.menuButtonTappedObserver.send(value: ())
   }
 
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
@@ -53,6 +80,7 @@ public final class ManageViewPledgeViewModel:
   public let configurePaymentMethodView: Signal<Project, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<Reward, Never>
+  public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let title: Signal<String, Never>
 
   public var inputs: ManageViewPledgeViewModelInputs { return self }
