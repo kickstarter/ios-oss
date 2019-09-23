@@ -12,6 +12,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
   private let configurePaymentMethodView = TestObserver<Project, Never>()
   private let configurePledgeSummaryView = TestObserver<Project, Never>()
   private let configureRewardSummaryView = TestObserver<Reward, Never>()
+  private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
   private let title = TestObserver<String, Never>()
 
   override func setUp() {
@@ -23,6 +24,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
       .observe(self.configurePledgeSummaryView.observer)
     self.vm.outputs.configureRewardSummaryView
       .observe(self.configureRewardSummaryView.observer)
+    self.vm.outputs.showActionSheetMenuWithOptions.observe(self.showActionSheetMenuWithOptions.observer)
   }
 
   func testNavigationBarTitle_LiveProject() {
@@ -79,5 +81,33 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.configureRewardSummaryView.assertValue(reward)
+  }
+
+  func testMenuButtonTapped_WhenProject_IsLive() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+
+    self.vm.inputs.configureWith(project, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+    self.vm.inputs.menuButtonTapped()
+
+    self.showActionSheetMenuWithOptions.assertValues([ManagePledgeAlertAction.allCases])
+  }
+
+  func testMenuButtonTapped_WhenProject_IsNotLive() {
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+
+    self.vm.inputs.configureWith(project, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+    self.vm.inputs.menuButtonTapped()
+
+    self.showActionSheetMenuWithOptions.assertValues([[.contactCreator]])
   }
 }
