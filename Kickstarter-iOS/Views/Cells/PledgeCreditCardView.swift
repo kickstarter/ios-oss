@@ -96,20 +96,16 @@ final class PledgeCreditCardView: UIView {
 
     _ = self.rootStackView
       |> checkoutCardStackViewStyle
+
+    _ = self.selectButton
+      |> blackButtonStyle
   }
 
   public override func bindViewModel() {
     super.bindViewModel()
 
     self.selectButton.rac.title = self.viewModel.outputs.selectButtonTitle
-
-    self.viewModel.outputs.selectButtonStyleType
-      .observeForUI()
-      .observeValues { [weak self] type in
-        guard let self = self else { return }
-        _ = self.selectButton
-          |> type.style
-      }
+    self.selectButton.rac.selected = self.viewModel.outputs.selectButtonIsSelected
 
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle

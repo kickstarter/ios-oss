@@ -31,11 +31,11 @@ public protocol PledgeCreditCardViewModelOutputs {
   /// Emits the paymentSourceId of the current card.
   var notifyDelegateOfCardSelected: Signal<String, Never> { get }
 
-  /// Emits the button style type based on its selected state.
-  var selectButtonStyleType: Signal<ButtonStyleType, Never> { get }
-
   /// Emits the button title.
   var selectButtonTitle: Signal<String, Never> { get }
+
+  /// Emits whether or not the button is selected.
+  var selectButtonIsSelected: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeCreditCardViewModelType {
@@ -78,9 +78,8 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       .map(==)
       .map { $0 ? Strings.Selected() : Strings.Select() }
 
-    self.selectButtonStyleType = cardAndSelectedCard
+    self.selectButtonIsSelected = cardAndSelectedCard
       .map(==)
-      .map { $0 ? .greyWhiteText : .black }
   }
 
   fileprivate let creditCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
@@ -103,8 +102,8 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
   public let notifyDelegateOfCardSelected: Signal<String, Never>
+  public let selectButtonIsSelected: Signal<Bool, Never>
   public let selectButtonTitle: Signal<String, Never>
-  public let selectButtonStyleType: Signal<ButtonStyleType, Never>
 
   public var inputs: PledgeCreditCardViewModelInputs { return self }
   public var outputs: PledgeCreditCardViewModelOutputs { return self }

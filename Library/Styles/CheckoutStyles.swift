@@ -9,7 +9,6 @@ public enum ButtonStyleType: Equatable {
   case blue
   case green
   case grey
-  case greyWhiteText
   case none
 
   public var style: ButtonStyle {
@@ -19,7 +18,6 @@ public enum ButtonStyleType: Equatable {
     case .blue: return blueButtonStyle
     case .green: return greenButtonStyle
     case .grey: return greyButtonStyle
-    case .greyWhiteText: return greyButtonWhiteTextStyle
     case .none: return { $0 }
     }
   }
