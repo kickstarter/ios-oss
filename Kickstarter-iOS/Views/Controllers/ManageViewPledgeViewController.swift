@@ -95,7 +95,7 @@ final class ManageViewPledgeViewController: UIViewController {
       |> \.width .~ Styles.minTouchSize.width
 
     _ = self.menuButton
-      |> \.accessibilityLabel %~ { _ in Strings.Manage_your_pledge() }
+      |> \.accessibilityLabel %~ { _ in Strings.Menu() }
 
     _ = self.rootScrollView
       |> rootScrollViewStyle
