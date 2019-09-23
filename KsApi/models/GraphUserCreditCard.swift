@@ -1,3 +1,7 @@
+import Argo
+import Curry
+import Runes
+
 public struct GraphUserCreditCard: Swift.Decodable {
   public var storedCards: CreditCardConnection
 
@@ -5,7 +9,13 @@ public struct GraphUserCreditCard: Swift.Decodable {
     public var expirationDate: String
     public var id: String
     public var lastFour: String
+    public let paymentType: String?
+    public let state: String?
     public var type: CreditCardType?
+
+    public var intID: Int? {
+      return decompose(id: self.id)
+    }
 
     public var formattedExpirationDate: String {
       return String(self.expirationDate.dropLast(3))
@@ -21,7 +31,7 @@ public struct GraphUserCreditCard: Swift.Decodable {
     }
   }
 
-  public enum CreditCardType: String, Decodable, CaseIterable {
+  public enum CreditCardType: String, Swift.Decodable, CaseIterable {
     case amex = "AMEX"
     case diners = "DINERS"
     case discover = "DISCOVER"
@@ -54,4 +64,22 @@ public struct GraphUserCreditCard: Swift.Decodable {
   public struct CreditCardConnection: Swift.Decodable {
     public let nodes: [CreditCard]
   }
+}
+
+extension GraphUserCreditCard.CreditCard: Argo.Decodable {
+  public static func decode(_ json: JSON) -> Decoded<GraphUserCreditCard.CreditCard> {
+    return curry(GraphUserCreditCard.CreditCard.init)
+      <^> json <| "expiration_date"
+      <*> (json <| "id" <|> (json <| "id" >>- intToString))
+      <*> json <| "last_four"
+      <*> json <|? "payment_type"
+      <*> json <| "state"
+      <*> json <|? "type"
+  }
+}
+
+extension GraphUserCreditCard.CreditCardType: Argo.Decodable {}
+
+private func intToString(_ input: Int) -> Decoded<String> {
+  return .success(Data("User-\(input)".utf8).base64EncodedString())
 }

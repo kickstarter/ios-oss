@@ -90,6 +90,8 @@ final class PledgeCreditCardView: UIView {
       |> checkoutCardStackViewStyle
   }
 
+  // MARK: - View model
+
   override func bindViewModel() {
     super.bindViewModel()
 

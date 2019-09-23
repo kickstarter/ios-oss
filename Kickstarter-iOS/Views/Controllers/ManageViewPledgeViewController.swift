@@ -28,6 +28,10 @@ final class ManageViewPledgeViewController: UIViewController {
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
   }()
 
+  private lazy var paymentMethodView: ManagePledgePaymentMethodView = {
+    ManagePledgePaymentMethodView(frame: .zero)
+  }()
+
   private lazy var rewardReceivedViewController: ManageViewPledgeRewardReceivedViewController = {
     ManageViewPledgeRewardReceivedViewController.instantiate()
   }()
@@ -68,15 +72,7 @@ final class ManageViewPledgeViewController: UIViewController {
       ?|> \.leftBarButtonItem .~ self.closeButton
       ?|> \.rightBarButtonItem .~ self.editButton
 
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = (self.rootStackView, self.rootScrollView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    self.configureChildViewControllers()
+    self.configureViews()
     self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
@@ -116,7 +112,9 @@ final class ManageViewPledgeViewController: UIViewController {
 
     self.viewModel.outputs.configurePaymentMethodView
       .observeForUI()
-      .observeValues { _ in }
+      .observeValues { [weak self] in
+        self?.paymentMethodView.configure(with: $0)
+    }
 
     self.viewModel.outputs.configurePledgeSummaryView
       .observeForUI()
@@ -129,19 +127,22 @@ final class ManageViewPledgeViewController: UIViewController {
 
   // MARK: - Configuration
 
-  private func configureChildViewControllers() {
-    let childViewControllers = [
-      self.rewardReceivedViewController
+  private func configureViews() {
+    _ = (self.rootScrollView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    let childViews: [UIView] = [
+      self.paymentMethodView,
+      self.rewardReceivedViewController.view
     ]
 
-    childViewControllers.forEach { viewController in
-      self.addChild(viewController)
-
-      _ = ([viewController.view], self.rootStackView)
-        |> ksr_addArrangedSubviewsToStackView()
-
-      viewController.didMove(toParent: self)
-    }
+    _ = (childViews, self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {

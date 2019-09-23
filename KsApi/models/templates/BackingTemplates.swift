@@ -8,7 +8,7 @@ extension Backing {
     backerCompleted: true,
     id: 1,
     locationId: 1,
-    paymentSource: .template,
+    paymentSource: GraphUserCreditCard.visa,
     pledgedAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,
     projectCountry: "US",
     projectId: 1,

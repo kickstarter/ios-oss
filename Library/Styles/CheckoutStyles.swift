@@ -78,11 +78,13 @@ public enum Layout {
   }
 }
 
-public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
+public func checkoutAdaptableStackViewStyle(
+  _ isAccessibilityCategory: Bool,
+  distribution: UIStackView.Distribution = .fill) -> (StackViewStyle) {
   return { (stackView: UIStackView) in
     let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
     let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
-    let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
+    let distribution: UIStackView.Distribution  = (isAccessibilityCategory ? .equalSpacing : distribution)
     let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
 
     return stackView

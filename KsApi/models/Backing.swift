@@ -9,7 +9,7 @@ public struct Backing {
   public let backerCompleted: Bool?
   public let id: Int
   public let locationId: Int?
-  public let paymentSource: PaymentSource?
+  public let paymentSource: GraphUserCreditCard.CreditCard?
   public let pledgedAt: TimeInterval
   public let projectCountry: String
   public let projectId: Int
@@ -53,8 +53,8 @@ extension Backing: Argo.Decodable {
       <*> json <|? "backer_completed_at"
       <*> json <| "id"
     let tmp2 = tmp1
-      <*> json <|? "payment_source"
       <*> json <|? "location_id"
+      <*> json <|? "payment_source"
       <*> json <| "pledged_at"
       <*> json <| "project_country"
       <*> json <| "project_id"
