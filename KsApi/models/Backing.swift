@@ -67,19 +67,6 @@ extension Backing: Argo.Decodable {
   }
 }
 
-extension Backing.PaymentSource: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Backing.PaymentSource> {
-    return curry(Backing.PaymentSource.init)
-      <^> json <| "expiration_date"
-      <*> json <| "id"
-      <*> json <| "last_four"
-      <*> json <| "payment_type"
-      <*> json <| "state"
-      <*> json <| "type"
-  }
-}
-
-
 extension Backing: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]
