@@ -38,7 +38,7 @@ public final class RewardCardView: UIView {
         sectionInset: UIEdgeInsets(topBottom: Styles.grid(1))
       )
     )
-      |> \.backgroundColor .~ UIColor.white
+      |> \.backgroundColor .~ self.backgroundColor
       |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
       |> \.dataSource .~ self.pillDataSource
       |> \.delegate .~ self
@@ -83,9 +83,6 @@ public final class RewardCardView: UIView {
 
   public override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> checkoutWhiteBackgroundStyle
 
     _ = [
       self.baseStackView,
@@ -292,7 +289,7 @@ public final class RewardCardView: UIView {
 
     let separatedItemViews = includedItemViews.dropLast().map { view -> [UIView] in
       let separator = UIView()
-        |> separatorStyle
+        |> separatorStyleDark
       separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
       return [view, separator]
@@ -327,7 +324,6 @@ private let baseRewardLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 0
     |> \.textAlignment .~ .left
     |> \.lineBreakMode .~ .byWordWrapping
-    |> \.backgroundColor .~ .white
 }
 
 private let baseStackViewStyle: StackViewStyle = { stackView in

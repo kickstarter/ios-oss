@@ -55,6 +55,9 @@ public final class RewardCardContainerView: UIView {
       |> roundedStyle(cornerRadius: Styles.grid(3))
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
+    _ = self.rewardCardView
+      |> checkoutWhiteBackgroundStyle
+
     _ = self.gradientView
       |> \.backgroundColor .~ .clear
       |> \.startPoint .~ .zero

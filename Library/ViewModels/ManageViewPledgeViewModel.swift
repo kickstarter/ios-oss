@@ -20,7 +20,7 @@ public protocol ManageViewPledgeViewModelInputs {
 public protocol ManageViewPledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<Project, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
-  var configureRewardSummaryView: Signal<Reward, Never> { get }
+  var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var title: Signal<String, Never> { get }
 }
@@ -47,7 +47,7 @@ public final class ManageViewPledgeViewModel:
       .map(first)
 
     self.configureRewardSummaryView = projectAndReward
-      .map(second)
+      .map { (project, reward) in (project, .left(reward)) }
 
     let project = projectAndReward.map(first)
 
@@ -79,7 +79,7 @@ public final class ManageViewPledgeViewModel:
 
   public let configurePaymentMethodView: Signal<Project, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
-  public let configureRewardSummaryView: Signal<Reward, Never>
+  public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let title: Signal<String, Never>
 
