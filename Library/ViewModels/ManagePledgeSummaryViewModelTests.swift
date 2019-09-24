@@ -89,4 +89,32 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
 
     self.shippingLocationStackViewIsHidden.assertValue(true)
   }
+
+  func testShippingLocationStackViewIsHidden_isTrue_WhenLocationNameIsNil() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+    let backing = .template
+      |> Backing.lens.locationName .~ nil
+      |> Backing.lens.reward .~ reward
+    let project = Project.template
+      |> \.personalization.backing .~ backing
+
+    self.vm.inputs.configureWith(project)
+
+    self.shippingLocationStackViewIsHidden.assertValue(true)
+  }
+
+  func testShippingLocationStackViewIsHidden_isFalse_WhenLocationNameIsNotNil() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+    let backing = .template
+      |> Backing.lens.locationName .~ "Brazil"
+      |> Backing.lens.reward .~ reward
+    let project = Project.template
+      |> \.personalization.backing .~ backing
+
+    self.vm.inputs.configureWith(project)
+
+    self.shippingLocationStackViewIsHidden.assertValue(false)
+  }
 }
