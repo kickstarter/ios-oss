@@ -24,8 +24,8 @@ internal final class AddNewCardViewController: UIViewController,
   @IBOutlet private var cardholderNameLabel: UILabel!
   @IBOutlet private var cardholderNameTextField: UITextField!
   @IBOutlet private var creditCardTextField: STPPaymentCardTextField!
-  @IBOutlet private var creditCardValidationErrorLabel: UILabel!
   @IBOutlet private var creditCardValidationErrorContainer: UIView!
+  @IBOutlet private var creditCardValidationErrorLabel: UILabel!
   @IBOutlet private var scrollView: UIScrollView!
   @IBOutlet private var stackView: UIStackView!
   @IBOutlet private var zipcodeView: SettingsFormFieldView!
@@ -184,6 +184,13 @@ internal final class AddNewCardViewController: UIViewController,
         guard let _self = self else { return }
         _self.delegate?.addNewCardViewController(_self, newCard)
       }
+
+    self.viewModel.outputs.dismissAfterAdding
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        guard let _self = self else { return }
+        _self.delegate?.addNewCardViewControllerDismissed(_self)
+    }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()

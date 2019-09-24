@@ -33,13 +33,14 @@ public protocol AddNewCardViewModelOutputs {
   var addNewCardSuccess: Signal<String, Never> { get }
   var creditCardValidationErrorContainerHidden: Signal<Bool, Never> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, Never> { get }
+  var dismissAfterAdding: Signal<Void, Never> { get }
   var dismissKeyboard: Signal<Void, Never> { get }
+  var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
   var paymentDetails: Signal<PaymentDetails, Never> { get }
   var paymentDetailsBecomeFirstResponder: Signal<Void, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var setStripePublishableKey: Signal<String, Never> { get }
   var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
-  var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
 }
 
 public protocol AddNewCardViewModelType {
@@ -133,6 +134,8 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       }
 
     self.newCardAdded = addNewCardEvent.map { $0.value?.paymentSource }.skipNil()
+
+    self.dismissAfterAdding =  self.newCardAdded.ignoreValues()
 
     let stripeInvalidToken = self.stripeErrorProperty.signal.map {
       $0?.localizedDescription
@@ -253,12 +256,15 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let creditCardValidationErrorContainerHidden: Signal<Bool, Never>
   public let cardholderNameBecomeFirstResponder: Signal<Void, Never>
   public let dismissKeyboard: Signal<Void, Never>
+  public let newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never>
   public let paymentDetails: Signal<PaymentDetails, Never>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, Never>
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
   public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
-  public let newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never>
+
+  public let dismissAfterAdding: Signal<Void, Never>
+
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }

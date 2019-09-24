@@ -8,11 +8,11 @@ public protocol PledgeCreditCardViewModelInputs {
   /// Call to configure cell with card and selected card values.
   func configureWith(value: GraphUserCreditCard.CreditCard)
 
-  /// Call with the currently selected card.
-  func setSelectedCard(_ creditCard: GraphUserCreditCard.CreditCard)
-
   /// Call when the "select" button is tapped.
   func selectButtonTapped()
+
+  /// Call with the currently selected card.
+  func setSelectedCard(_ creditCard: GraphUserCreditCard.CreditCard)
 }
 
 public protocol PledgeCreditCardViewModelOutputs {

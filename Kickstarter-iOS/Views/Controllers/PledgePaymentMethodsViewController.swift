@@ -111,7 +111,9 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
       .observeValues { [weak self] cards in
-        self?.addCardsToStackView(cards)
+        guard let self = self else { return }
+        self.scrollView.setContentOffset(.zero, animated: false)
+        self.addCardsToStackView(cards)
       }
 
     self.viewModel.outputs.notifyDelegateLoadPaymentMethodsError

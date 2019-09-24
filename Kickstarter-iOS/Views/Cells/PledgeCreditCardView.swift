@@ -106,9 +106,9 @@ final class PledgeCreditCardView: UIView {
 
     self.selectButton.rac.title = self.viewModel.outputs.selectButtonTitle
     self.selectButton.rac.selected = self.viewModel.outputs.selectButtonIsSelected
-
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
+
     self.viewModel.outputs.cardImage
       .observeForUI()
       .observeValues { [weak self] image in
@@ -120,7 +120,6 @@ final class PledgeCreditCardView: UIView {
       .observeForUI()
       .observeValues { [weak self] paymentSourceId in
         guard let self = self else { return }
-
         self.delegate?.pledgeCreditCardViewSelected(self, paymentSourceId: paymentSourceId)
       }
   }
