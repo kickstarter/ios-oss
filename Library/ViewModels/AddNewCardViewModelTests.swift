@@ -22,6 +22,8 @@ internal final class AddNewCardViewModelTests: TestCase {
   private let cardCVC = TestObserver<String, Never>()
   private let newCardAdded = TestObserver<GraphUserCreditCard.CreditCard, Never>()
   private let paymentDetailsBecomeFirstResponder = TestObserver<Void, Never>()
+  private let rememberThisCardToggleViewControllerContainerIsHidden = TestObserver<Bool, Never>()
+  private let rememberThisCardToggleViewControllerIsOn = TestObserver<Bool, Never>()
   private let saveButtonIsEnabled = TestObserver<Bool, Never>()
   private let setStripePublishableKey = TestObserver<String, Never>()
   private let zipcode = TestObserver<String, Never>()
@@ -47,6 +49,10 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.outputs.paymentDetails.map { $0.5 }.observe(self.zipcode.observer)
     self.vm.outputs.paymentDetailsBecomeFirstResponder
       .observe(self.paymentDetailsBecomeFirstResponder.observer)
+    self.vm.outputs.rememberThisCardToggleViewControllerContainerIsHidden
+      .observe(self.rememberThisCardToggleViewControllerContainerIsHidden.observer)
+    self.vm.outputs.rememberThisCardToggleViewControllerIsOn
+      .observe(self.rememberThisCardToggleViewControllerIsOn.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
     self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
     self.vm.outputs.zipcodeTextFieldBecomeFirstResponder
@@ -388,5 +394,29 @@ internal final class AddNewCardViewModelTests: TestCase {
 
     self.creditCardValidationErrorContainerHidden
       .assertValues([true, true], "Unsupported card message stays hidden when the card number is < 2 digits")
+  }
+
+  func testReusableCardSwitchIsHidden() {
+    self.rememberThisCardToggleViewControllerContainerIsHidden.assertValueCount(0)
+
+    self.vm.inputs.viewDidLoad()
+
+    self.rememberThisCardToggleViewControllerContainerIsHidden.assertValueCount(0)
+
+    self.vm.inputs.configure(with: .settings)
+
+    self.rememberThisCardToggleViewControllerContainerIsHidden.assertValues([true])
+
+    self.vm.inputs.configure(with: .pledge)
+
+    self.rememberThisCardToggleViewControllerContainerIsHidden.assertValues([true, false])
+  }
+
+  func testReusableCardSwitchisOnByDefault() {
+    self.rememberThisCardToggleViewControllerIsOn.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLoad()
+
+    self.rememberThisCardToggleViewControllerIsOn.assertValues([true])
   }
 }

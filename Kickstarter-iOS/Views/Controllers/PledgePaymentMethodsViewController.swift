@@ -230,9 +230,10 @@ extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
 }
 
 extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
-  func pledgeAddNewCardViewDidTapAddNewCard(_: PledgeAddNewCardView) {
+  func pledgeAddNewCardView(_: PledgeAddNewCardView, didTapAddNewCardWith intent: AddNewCardIntent) {
     let addNewCardViewController = AddNewCardViewController.instantiate()
       |> \.delegate .~ self
+    addNewCardViewController.configure(with: intent)
     let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
     let offset = navigationController.navigationBar.bounds.height
 

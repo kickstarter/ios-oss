@@ -93,10 +93,10 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.goToAddCardScreen
+    self.viewModel.outputs.goToAddCardScreenWithIntent
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.goToAddCardScreen()
+      .observeValues { [weak self] intent in
+        self?.goToAddCardScreen(with: intent)
       }
 
     self.viewModel.outputs.errorLoadingPaymentMethods
@@ -137,8 +137,9 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
     self.viewModel.inputs.editButtonTapped()
   }
 
-  private func goToAddCardScreen() {
+  private func goToAddCardScreen(with intent: AddNewCardIntent) {
     let vc = AddNewCardViewController.instantiate()
+    vc.configure(with: intent)
     vc.delegate = self
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet

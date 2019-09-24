@@ -16,6 +16,7 @@ public protocol AddNewCardViewModelInputs {
   func cardholderNameChanged(_ cardholderName: String?)
   func cardholderNameTextFieldReturn()
   func creditCardChanged(cardDetails: CardDetails)
+  func configure(with intent: AddNewCardIntent)
   func paymentCardTextFieldDidEndEditing()
   func paymentInfo(isValid: Bool)
   func saveButtonTapped()
@@ -38,6 +39,8 @@ public protocol AddNewCardViewModelOutputs {
   var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
   var paymentDetails: Signal<PaymentDetails, Never> { get }
   var paymentDetailsBecomeFirstResponder: Signal<Void, Never> { get }
+  var rememberThisCardToggleViewControllerContainerIsHidden: Signal<Bool, Never> { get }
+  var rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var setStripePublishableKey: Signal<String, Never> { get }
   var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
@@ -166,6 +169,15 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       self.addNewCardFailure.mapConst(false)
     )
 
+    self.rememberThisCardToggleViewControllerContainerIsHidden = Signal.combineLatest(
+      self.addNewCardIntentProperty.signal.map { $0 == .settings },
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
+
+    self.rememberThisCardToggleViewControllerIsOn = self.viewDidLoadProperty.signal
+      .mapConst(true)
+
     // Koala
     self.viewWillAppearProperty.signal
       .observeValues {
@@ -201,6 +213,11 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   private let creditCardChangedProperty = MutableProperty<CardDetails?>(nil)
   public func creditCardChanged(cardDetails: CardDetails) {
     self.creditCardChangedProperty.value = cardDetails
+  }
+
+  private let addNewCardIntentProperty = MutableProperty<AddNewCardIntent?>(nil)
+  public func configure(with intent: AddNewCardIntent) {
+    self.addNewCardIntentProperty.value = intent
   }
 
   private let paymentCardTextFieldDidEndEditingProperty = MutableProperty(())
@@ -260,6 +277,8 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never>
   public let paymentDetails: Signal<PaymentDetails, Never>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, Never>
+  public var rememberThisCardToggleViewControllerContainerIsHidden: Signal<Bool, Never>
+  public var rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never>
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
   public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>

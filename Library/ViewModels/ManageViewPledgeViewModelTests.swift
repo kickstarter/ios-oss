@@ -47,7 +47,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.title.assertValue("View your pledge")
+    self.title.assertValue("Your pledge")
   }
 
   func testConfigurePaymentMethodViewController() {
