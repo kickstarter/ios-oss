@@ -3,11 +3,11 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol PledgeSummaryViewViewModelInputs {
+public protocol ManagePledgeSummaryViewModelInputs {
   func configureWith(_ project: Project)
 }
 
-public protocol PledgeSummaryViewViewModelOutputs {
+public protocol ManagePledgeSummaryViewModelOutputs {
   var backerNumberText: Signal<String, Never> { get }
   var backingDateText: Signal<String, Never> { get }
   var pledgeAmountText: Signal<NSAttributedString, Never> { get }
@@ -17,24 +17,23 @@ public protocol PledgeSummaryViewViewModelOutputs {
   var totalAmountText: Signal<NSAttributedString, Never> { get }
 }
 
-public protocol PledgeSummaryViewViewModelType {
-  var inputs: PledgeSummaryViewViewModelInputs { get }
-  var outputs: PledgeSummaryViewViewModelOutputs { get }
+public protocol ManagePledgeSummaryViewModelType {
+  var inputs: ManagePledgeSummaryViewModelInputs { get }
+  var outputs: ManagePledgeSummaryViewModelOutputs { get }
 }
 
-public class PledgeSummaryViewViewModel: PledgeSummaryViewViewModelType,
-PledgeSummaryViewViewModelInputs, PledgeSummaryViewViewModelOutputs {
+public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
+  ManagePledgeSummaryViewModelInputs, ManagePledgeSummaryViewModelOutputs {
   public init() {
-
-    let backing = projectSignal
+    let backing = self.projectSignal
       .map { $0.personalization.backing }
       .skipNil()
 
-    let projectAndBacking = projectSignal
+    let projectAndBacking = self.projectSignal
       .zip(with: backing)
 
     self.backerNumberText = backing
-      .map { "Backer #\($0.sequence)" }
+      .map { Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence)) }
 
     self.backingDateText = backing
       .map(formattedPledgeDate)
@@ -46,7 +45,7 @@ PledgeSummaryViewViewModelInputs, PledgeSummaryViewViewModelOutputs {
     let shippingAmount = backing
       .map { Double($0.shippingAmount ?? 0) }
 
-    self.shippingAmountText = projectSignal
+    self.shippingAmountText = self.projectSignal
       .combineLatest(with: shippingAmount)
       .map { shippingValue(with: $0.0, with: $0.1) }
       .skipNil()
@@ -60,9 +59,9 @@ PledgeSummaryViewViewModelInputs, PledgeSummaryViewViewModelOutputs {
       .skipNil()
 
     self.shippingLocationText = backing.ignoreValues()
-      .map { "Shipping: Australia" }
+      .map { Strings.Shipping() + ": " + "Australia" }
 
-    self.shippingLocationStackViewIsHidden = projectSignal
+    self.shippingLocationStackViewIsHidden = self.projectSignal
       .map(shouldHideShippingLocationStackView)
   }
 
@@ -79,21 +78,25 @@ PledgeSummaryViewViewModelInputs, PledgeSummaryViewViewModelOutputs {
   public let shippingLocationText: Signal<String, Never>
   public let totalAmountText: Signal<NSAttributedString, Never>
 
-  public var inputs: PledgeSummaryViewViewModelInputs { return self }
-  public var outputs: PledgeSummaryViewViewModelOutputs { return self }
+  public var inputs: ManagePledgeSummaryViewModelInputs { return self }
+  public var outputs: ManagePledgeSummaryViewModelOutputs { return self }
 }
 
 private func shouldHideShippingLocationStackView(_ project: Project) -> Bool {
-  guard let reward = project.personalization.backing?.reward else {
-    return false
+  guard let backing = project.personalization.backing,
+    let _ = backing.rewardId else {
+    return true
+  }
+  if let reward = backing.reward {
+    return !reward.shipping.enabled || reward.isNoReward
   }
 
-  return !reward.shipping.enabled || reward.isNoReward
+  return backing.locationId.isNil
 }
 
 private func formattedPledgeDate(_ backing: Backing) -> String {
   let formattedDate = Format.date(secondsInUTC: backing.pledgedAt, dateStyle: .long, timeStyle: .none)
-  return "As of \(formattedDate)"
+  return Strings.As_of_pledge_date(pledge_date: formattedDate)
 }
 
 private func attributedCurrency(with project: Project, amount: Double) -> NSAttributedString? {
@@ -109,10 +112,7 @@ private func attributedCurrency(with project: Project, amount: Double) -> NSAttr
       superscriptAttributes: superscriptAttributes
     ) else { return nil }
 
-  let combinedAttributes = defaultAttributes
-    .withAllValuesFrom(superscriptAttributes)
-
-  return Format.attributedAmount(attributes: combinedAttributes) + attributedCurrency
+  return attributedCurrency
 }
 
 private func shippingValue(with project: Project, with shippingRuleCost: Double) -> NSAttributedString? {
@@ -127,7 +127,7 @@ private func shippingValue(with project: Project, with shippingRuleCost: Double)
       superscriptAttributes: superscriptAttributes
     ) else { return nil }
 
-  let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { _, new in new }
+  let combinedAttributes = defaultAttributes.withAllValuesFrom(superscriptAttributes)
 
   return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }

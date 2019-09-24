@@ -6,8 +6,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-final class PledgeSummaryViewViewModelTests: TestCase {
-  private let vm = PledgeSummaryViewViewModel()
+final class ManagePledgeSummaryViewModelTests: TestCase {
+  private let vm = ManagePledgeSummaryViewModel()
 
   private let backerNumberText = TestObserver<String, Never>()
   private let backingDateText = TestObserver<String, Never>()
@@ -34,7 +34,7 @@ final class PledgeSummaryViewViewModelTests: TestCase {
 
   func testTextOutputsEmitTheCorrectValue() {
     let backing = .template
-      |> Backing.lens.sequence .~ 9999
+      |> Backing.lens.sequence .~ 999
       |> Backing.lens.pledgedAt .~ 1_568_666_243
       |> Backing.lens.amount .~ 30
       |> Backing.lens.shippingAmount .~ 7
@@ -45,7 +45,7 @@ final class PledgeSummaryViewViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project)
 
-    self.backerNumberText.assertValue("Backer #9999")
+    self.backerNumberText.assertValue("Backer #999")
     self.backingDateText.assertValue("As of September 16, 2019")
     self.pledgeAmountText.assertValue("$30.00")
     self.shippingAmountText.assertValue("+$7.00")
@@ -54,8 +54,10 @@ final class PledgeSummaryViewViewModelTests: TestCase {
   }
 
   func testShippingLocationStackViewIsHidden_isFalse_WithShippableRewards() {
+    let reward = .template
+      |> Reward.lens.shipping.enabled .~ true
     let backing = .template
-      |> Backing.lens.reward .~ Reward.postcards
+      |> Backing.lens.reward .~ reward
     let project = Project.template
       |> \.personalization.backing .~ backing
 

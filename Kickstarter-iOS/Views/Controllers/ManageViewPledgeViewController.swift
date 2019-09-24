@@ -15,22 +15,29 @@ final class ManageViewPledgeViewController: UIViewController {
     )
   }()
 
-  private lazy var editButton: UIBarButtonItem = {
+  private lazy var menuButton: UIBarButtonItem = {
     UIBarButtonItem(
       image: UIImage(named: "icon--more-menu"),
       style: .plain,
       target: self,
-      action: #selector(ManageViewPledgeViewController.editButtonTapped)
+      action: #selector(ManageViewPledgeViewController.menuButtonTapped)
     )
   }()
 
-  private lazy var pledgeSummaryView: PledgeSummaryView = { PledgeSummaryView(frame: .zero) }()
+  private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
 
   private lazy var navigationBarShadowImage: UIImage? = {
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
   }()
 
-  private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
+  private lazy var rewardReceivedViewController: ManageViewPledgeRewardReceivedViewController = {
+    ManageViewPledgeRewardReceivedViewController.instantiate()
+  }()
+
+  private lazy var rootScrollView: UIScrollView = {
+    UIScrollView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -51,20 +58,22 @@ final class ManageViewPledgeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    _ = self
-      |> \.extendedLayoutIncludesOpaqueBars .~ true
-
-    _ = self.navigationController?.navigationBar
-      ?|> \.shadowImage .~ UIImage()
-      ?|> \.isTranslucent .~ false
-      ?|> \.barTintColor .~ .ksr_grey_400
-
     _ = self.navigationItem
       ?|> \.leftBarButtonItem .~ self.closeButton
-      ?|> \.rightBarButtonItem .~ self.editButton
+      ?|> \.rightBarButtonItem .~ self.menuButton
+
+    _ = (self.rootScrollView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     self.configureViews()
+    self.configureChildViewControllers()
     self.setupConstraints()
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -80,8 +89,14 @@ final class ManageViewPledgeViewController: UIViewController {
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
       |> \.width .~ Styles.minTouchSize.width
 
+    _ = self.menuButton
+      |> \.accessibilityLabel %~ { _ in Strings.Menu() }
+
+    _ = self.rootScrollView
+      |> rootScrollViewStyle
+
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> checkoutRootStackViewStyle
   }
 
   // MARK: - View model
@@ -105,23 +120,44 @@ final class ManageViewPledgeViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] project in
         self?.pledgeSummaryView.configureWith(project)
-    }
+      }
 
     self.viewModel.outputs.configureRewardSummaryView
       .observeForUI()
       .observeValues { _ in }
+
+    self.viewModel.outputs.showActionSheetMenuWithOptions
+      .observeForControllerAction()
+      .observeValues { [weak self] options in
+        self?.showActionSheetMenuWithOptions(options)
+      }
   }
 
   // MARK: - Configuration
 
-  private func configureWith(project: Project, reward: Reward) {
+  private func configureChildViewControllers() {
+    let childViewControllers = [
+      self.rewardReceivedViewController
+    ]
+
+    childViewControllers.forEach { viewController in
+      self.addChild(viewController)
+
+      _ = ([viewController.view], self.rootStackView)
+        |> ksr_addArrangedSubviewsToStackView()
+
+      viewController.didMove(toParent: self)
+    }
+  }
+
+  func configureWith(project: Project, reward: Reward) {
     self.viewModel.inputs.configureWith(project, reward: reward)
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
-      ])
+    ])
   }
 
   // MARK: Functions
@@ -141,15 +177,44 @@ final class ManageViewPledgeViewController: UIViewController {
 
   // MARK: Actions
 
-  @objc private func editButtonTapped() {
-    let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+  @objc private func menuButtonTapped() {
+    self.viewModel.inputs.menuButtonTapped()
+  }
 
-    actionSheet.addAction(
-      UIAlertAction(title: Strings.Contact_creator(), style: .default)
+  private func showActionSheetMenuWithOptions(_ options: [ManagePledgeAlertAction]) {
+    let actionSheet = UIAlertController.alert(
+      title: Strings.Select_an_option(),
+      preferredStyle: .actionSheet,
+      barButtonItem: self.menuButton
     )
+
+    options.forEach { option in
+      let title: String
+
+      switch option {
+      case .updatePledge:
+        title = Strings.Update_pledge()
+      case .changePaymentMethod:
+        title = Strings.Change_payment_method()
+      case .chooseAnotherReward:
+        title = Strings.Choose_another_reward()
+      case .contactCreator:
+        title = Strings.Contact_creator()
+      case .cancelPledge:
+        title = Strings.Cancel_pledge()
+      }
+
+      let style: UIAlertAction.Style = option == .cancelPledge ? .destructive : .default
+
+      actionSheet.addAction(
+        UIAlertAction(title: title, style: style)
+      )
+    }
+
     actionSheet.addAction(
       UIAlertAction(title: Strings.Cancel(), style: .cancel)
     )
+
     self.present(actionSheet, animated: true)
   }
 
@@ -160,7 +225,12 @@ final class ManageViewPledgeViewController: UIViewController {
 
 // MARK: Styles
 
-public let viewStyle: ViewStyle = { (view: UIView) in
+private let rootScrollViewStyle = { (scrollView: UIScrollView) in
+  scrollView
+    |> \.alwaysBounceVertical .~ true
+}
+
+private let viewStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.ksr_grey_400
 }

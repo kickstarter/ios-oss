@@ -158,7 +158,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -191,7 +191,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
         scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.01)
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }

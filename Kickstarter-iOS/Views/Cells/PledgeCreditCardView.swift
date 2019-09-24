@@ -3,18 +3,25 @@ import Library
 import Prelude
 import UIKit
 
+protocol PledgeCreditCardViewDelegate: AnyObject {
+  func pledgeCreditCardViewSelected(
+    _ pledgeCreditCardView: PledgeCreditCardView,
+    paymentSourceId: String
+  )
+}
+
 final class PledgeCreditCardView: UIView {
   // MARK: - Properties
 
-  private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
-
   private let adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
+  weak var delegate: PledgeCreditCardViewDelegate?
   private let expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let imageView: UIImageView = { UIImageView(frame: .zero) }()
   private let labelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let selectButton: UIButton = { UIButton(type: .custom) }()
+  private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
 
   // MARK: - Lifecycle
 
@@ -46,6 +53,11 @@ final class PledgeCreditCardView: UIView {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+
+    self.selectButton.addTarget(
+      self, action: #selector(PledgeCreditCardView.selectButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   private func setupConstraints() {
@@ -87,7 +99,7 @@ final class PledgeCreditCardView: UIView {
       |> adaptableStackViewStyle
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> checkoutCardStackViewStyle
   }
 
   override func bindViewModel() {
@@ -101,10 +113,24 @@ final class PledgeCreditCardView: UIView {
         _ = self?.imageView
           ?|> \.image .~ image
       }
+
+    self.viewModel.outputs.notifyDelegateOfCardSelected
+      .observeForUI()
+      .observeValues { [weak self] paymentSourceId in
+        guard let self = self else { return }
+
+        self.delegate?.pledgeCreditCardViewSelected(self, paymentSourceId: paymentSourceId)
+      }
   }
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.configureWith(creditCard: value)
+  }
+
+  // MARK: - Accessors
+
+  @objc func selectButtonTapped() {
+    self.viewModel.inputs.selectButtonTapped()
   }
 }
 
@@ -112,7 +138,6 @@ final class PledgeCreditCardView: UIView {
 
 private let adaptableStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.backgroundColor .~ UIColor.white
     |> \.spacing .~ Styles.grid(2)
 }
 
@@ -132,14 +157,6 @@ private let cardLastFourLabelStyle: LabelStyle = { label in
 
 private let labelsStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.backgroundColor .~ UIColor.white
     |> \.axis .~ .vertical
     |> \.spacing .~ Styles.gridHalf(1)
-}
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> checkoutStackViewStyle
-    |> \.backgroundColor .~ UIColor.white
-    |> \.spacing .~ Styles.grid(3)
 }

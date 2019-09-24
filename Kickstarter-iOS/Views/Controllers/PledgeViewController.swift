@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import Stripe
 import UIKit
 
 final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
@@ -54,6 +55,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   private lazy var paymentMethodsViewController = {
     PledgePaymentMethodsViewController.instantiate()
       |> \.messageDisplayingDelegate .~ self
+      |> \.delegate .~ self
   }()
 
   private lazy var shippingLocationViewController = {
@@ -80,8 +82,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   // MARK: - Lifecycle
 
-  func configureWith(project: Project, reward: Reward) {
-    self.viewModel.inputs.configureWith(project: project, reward: reward)
+  func configureWith(project: Project, reward: Reward, refTag: RefTag?) {
+    self.viewModel.inputs.configureWith(project: project, reward: reward, refTag: refTag)
   }
 
   override func viewDidLoad() {
@@ -174,7 +176,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> rootScrollViewStyle
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> checkoutRootStackViewStyle
 
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
@@ -184,6 +186,13 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.configureStripeIntegration
+      .observeForUI()
+      .observeValues { merchantIdentifier, publishableKey in
+        STPPaymentConfiguration.shared().publishableKey = publishableKey
+        STPPaymentConfiguration.shared().appleMerchantIdentifier = merchantIdentifier
+      }
 
     self.viewModel.outputs.configureWithData
       .observeForUI()
@@ -209,6 +218,26 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.viewModel.inputs.userSessionStarted()
       }
 
+    self.viewModel.outputs.updatePledgeButtonEnabled
+      .observeForUI()
+      .observeValues { [weak self] isEnabled in
+        self?.paymentMethodsViewController.updatePledgeButton(isEnabled)
+      }
+
+    self.viewModel.outputs.goToApplePayPaymentAuthorization
+      .observeForControllerAction()
+      .observeValues { [weak self] paymentAuthorizationData in
+        self?.goToPaymentAuthorization(paymentAuthorizationData)
+      }
+
+    self.viewModel.outputs.goToThanks
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        generateNotificationSuccessFeedback()
+
+        self?.goToThanks(project: project)
+      }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -219,12 +248,79 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       = self.viewModel.outputs.shippingLocationViewHidden
     self.continueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
+
+    // MARK: Errors
+
+    self.viewModel.outputs.createBackingError
+      .observeForUI()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
+      }
+  }
+
+  private func goToPaymentAuthorization(_ paymentAuthorizationData: PaymentAuthorizationData) {
+    let request = PKPaymentRequest
+      .paymentRequest(
+        for: paymentAuthorizationData.project,
+        reward: paymentAuthorizationData.reward,
+        pledgeAmount: paymentAuthorizationData.pledgeAmount,
+        selectedShippingRule: paymentAuthorizationData.selectedShippingRule,
+        merchantIdentifier: paymentAuthorizationData.merchantIdentifier
+      )
+
+    guard
+      let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: request)
+    else { return }
+    paymentAuthorizationViewController.delegate = self
+
+    self.present(paymentAuthorizationViewController, animated: true)
+  }
+
+  private func goToThanks(project: Project) {
+    let thanksVC = ThanksViewController.configuredWith(project: project)
+    self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 
   // MARK: - Actions
 
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
+  }
+}
+
+// MARK: - PKPaymentAuthorizationViewControllerDelegate
+
+extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
+  func paymentAuthorizationViewController(
+    _: PKPaymentAuthorizationViewController,
+    didAuthorizePayment payment: PKPayment,
+    handler completion: @escaping (PKPaymentAuthorizationResult)
+      -> Void
+  ) {
+    let paymentDisplayName = payment.token.paymentMethod.displayName
+    let paymentNetworkName = payment.token.paymentMethod.network?.rawValue
+    let transactionId = payment.token.transactionIdentifier
+
+    self.viewModel.inputs.paymentAuthorizationDidAuthorizePayment(paymentData: (
+      paymentDisplayName,
+      paymentNetworkName,
+      transactionId
+    ))
+
+    STPAPIClient.shared().createToken(with: payment) { [weak self] token, error in
+      guard let self = self else { return }
+
+      let status = self.viewModel.inputs.stripeTokenCreated(token: token?.tokenId, error: error)
+      let result = PKPaymentAuthorizationResult(status: status, errors: [])
+
+      completion(result)
+    }
+  }
+
+  func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+    controller.dismiss(animated: true, completion: { [weak self] in
+      self?.viewModel.inputs.paymentAuthorizationViewControllerDidFinish()
+    })
   }
 }
 
@@ -277,6 +373,8 @@ extension PledgeViewController: RewardPledgeTransitionAnimatorDelegate {
   }
 }
 
+// MARK: - PledgeViewControllerMessageDisplaying
+
 extension PledgeViewController: PledgeViewControllerMessageDisplaying {
   func pledgeViewController(_: UIViewController, didErrorWith message: String) {
     self.messageBannerViewController?.showBanner(with: .error, message: message)
@@ -287,25 +385,27 @@ extension PledgeViewController: PledgeViewControllerMessageDisplaying {
   }
 }
 
+// MARK: - PledgePaymentMethodsViewControllerDelegate
+
+extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
+  func pledgePaymentMethodsViewControllerDidTapApplePayButton(
+    _: PledgePaymentMethodsViewController
+  ) {
+    self.viewModel.inputs.applePayButtonTapped()
+  }
+
+  func pledgePaymentMethodsViewController(
+    _: PledgePaymentMethodsViewController,
+    didSelectCreditCard paymentSourceId: String
+  ) {
+    self.viewModel.inputs.creditCardSelected(with: paymentSourceId)
+  }
+}
+
 // MARK: - Styles
 
 private let rootScrollViewStyle: ScrollStyle = { scrollView in
   scrollView
     |> UIScrollView.lens.showsVerticalScrollIndicator .~ false
     |> \.alwaysBounceVertical .~ true
-}
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.layoutMargins .~ .init(
-      top: Styles.grid(3),
-      left: Styles.grid(4),
-      bottom: Styles.grid(3),
-      right: Styles.grid(4)
-    )
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.distribution .~ UIStackView.Distribution.fill
-    |> \.alignment .~ UIStackView.Alignment.fill
-    |> \.spacing .~ Styles.grid(4)
 }

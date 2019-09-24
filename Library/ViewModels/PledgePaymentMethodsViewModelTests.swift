@@ -9,15 +9,23 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let vm: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
 
   private let applePayButtonHidden = TestObserver<Bool, Never>()
+  private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
+  private let notifyDelegateCreditCardSelected = TestObserver<String, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
+  private let pledgeButtonEnabled = TestObserver<Bool, Never>()
   private let reloadPaymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.applePayButtonHidden.observe(self.applePayButtonHidden.observer)
+    self.vm.outputs.notifyDelegateApplePayButtonTapped
+      .observe(self.notifyDelegateApplePayButtonTapped.observer)
+    self.vm.outputs.notifyDelegateCreditCardSelected
+      .observe(self.notifyDelegateCreditCardSelected.observer)
     self.vm.outputs.notifyDelegateLoadPaymentMethodsError
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
+    self.vm.outputs.pledgeButtonEnabled.observe(self.pledgeButtonEnabled.observer)
     self.vm.outputs.reloadPaymentMethods.observe(self.reloadPaymentMethods.observer)
   }
 
@@ -119,6 +127,19 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  func testApplePayButtonTapped() {
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith((user: .template, project: .template, true))
+      self.vm.inputs.viewDidLoad()
+
+      self.notifyDelegateApplePayButtonTapped.assertDidNotEmitValue()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.notifyDelegateApplePayButtonTapped.assertValueCount(1)
+    }
+  }
+
   func testApplePayButton_isHidden_applePayCapable_unsupportedProjectCountry() {
     let mockConfig = Config.template
       |> \.applePayCountries .~ [Project.Country.us.countryCode]
@@ -148,5 +169,39 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.applePayButtonHidden.assertValues([false])
     }
+  }
+
+  func testCreditCardSelected() {
+    self.vm.inputs.configureWith((User.template, Project.template, true))
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegateCreditCardSelected.assertDidNotEmitValue()
+
+    self.vm.inputs.creditCardSelected(paymentSourceId: "123")
+
+    self.notifyDelegateCreditCardSelected.assertValues(["123"])
+
+    self.vm.inputs.creditCardSelected(paymentSourceId: "abc")
+
+    self.notifyDelegateCreditCardSelected.assertValues(["123", "abc"])
+  }
+
+  func testPledgeButtonEnabled() {
+    self.vm.inputs.configureWith((User.template, Project.template, true))
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeButtonEnabled.assertValues([false], "Defaults to false")
+
+    self.vm.inputs.updatePledgeButtonEnabled(isEnabled: true)
+
+    self.pledgeButtonEnabled.assertValues([false, true])
+
+    self.vm.inputs.updatePledgeButtonEnabled(isEnabled: true)
+
+    self.pledgeButtonEnabled.assertValues([false, true], "Skips repeats")
+
+    self.vm.inputs.updatePledgeButtonEnabled(isEnabled: false)
+
+    self.pledgeButtonEnabled.assertValues([false, true, false])
   }
 }
