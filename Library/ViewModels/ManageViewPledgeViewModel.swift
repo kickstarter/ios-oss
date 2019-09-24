@@ -90,5 +90,5 @@ public final class ManageViewPledgeViewModel:
 // MARK: - Functions
 
 private func navigationBarTitle(with project: Project) -> String {
-  return project.state == .live ? Strings.Manage_your_pledge() : Strings.View_your_pledge()
+  return project.state == .live ? Strings.Manage_your_pledge() : Strings.Your_pledge()
 }
