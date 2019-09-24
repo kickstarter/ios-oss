@@ -31,11 +31,11 @@ public protocol PledgeCreditCardViewModelOutputs {
   /// Emits the paymentSourceId of the current card.
   var notifyDelegateOfCardSelected: Signal<String, Never> { get }
 
-  /// Emits the button title.
-  var selectButtonTitle: Signal<String, Never> { get }
-
   /// Emits whether or not the button is selected.
   var selectButtonIsSelected: Signal<Bool, Never> { get }
+
+  /// Emits the button title.
+  var selectButtonTitle: Signal<String, Never> { get }
 }
 
 public protocol PledgeCreditCardViewModelType {
