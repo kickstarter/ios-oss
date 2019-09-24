@@ -21,10 +21,10 @@ final class PledgeAddNewCardViewModelTests: TestCase {
 
     self.vm.inputs.addNewCardButtonTapped()
 
-    self.notifyDelegateAddNewCardTappedWithIntent.assertValues([.pledgeView])
+    self.notifyDelegateAddNewCardTappedWithIntent.assertValues([.pledge])
 
     self.vm.inputs.addNewCardButtonTapped()
 
-    self.notifyDelegateAddNewCardTappedWithIntent.assertValues([.pledgeView, .pledgeView])
+    self.notifyDelegateAddNewCardTappedWithIntent.assertValues([.pledge, .pledge])
   }
 }

@@ -26,7 +26,7 @@ final class AddNewCardViewControllerTests: TestCase {
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(language: language) {
         let controller = AddNewCardViewController.instantiate()
-        controller.configure(with: .pledgeView)
+        controller.configure(with: .pledge)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")

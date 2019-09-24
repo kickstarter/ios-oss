@@ -20,12 +20,8 @@ internal final class AddNewCardViewController: UIViewController,
   @IBOutlet private var cardholderNameLabel: UILabel!
   @IBOutlet private var cardholderNameTextField: UITextField!
   @IBOutlet private var creditCardTextField: STPPaymentCardTextField!
-  @IBOutlet private var creditCardValidationErrorLabel: UILabel!
   @IBOutlet private var creditCardValidationErrorContainer: UIView!
-  @IBOutlet private var reusableCardStackViewContainer: UIView!
-  @IBOutlet private var reusableCardStackView: UIStackView!
-  @IBOutlet private var reusableCardLabel: UILabel!
-  @IBOutlet private var reusableCardSwitch: UISwitch!
+  @IBOutlet private var creditCardValidationErrorLabel: UILabel!
   @IBOutlet private var scrollView: UIScrollView!
   @IBOutlet private var stackView: UIStackView!
   @IBOutlet private var zipcodeView: SettingsFormFieldView!
@@ -99,6 +95,8 @@ internal final class AddNewCardViewController: UIViewController,
 
     self.creditCardTextField.delegate = self
 
+    self.configureRememberThisCardToggleViewController()
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -142,23 +140,30 @@ internal final class AddNewCardViewController: UIViewController,
       |> \.autocapitalizationType .~ .allCharacters
       |> \.returnKeyType .~ .done
 
-    _ = self.reusableCardLabel
-      |> \.font .~ .ksr_body()
+    _ = self.rememberThisCardToggleViewController.titleLabel
       |> \.text %~ { _ in Strings.Remember_this_card() }
 
-    _ = self.reusableCardStackView
-      |> checkoutAdaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
+    _ = self.rememberThisCardToggleViewController.toggle
+      |> \.accessibilityLabel %~ { _ in Strings.Remember_this_card() }
 
-    _ = self.reusableCardSwitch
-      |> baseSwitchControlStyle
+    _ = [
+      self.rememberThisCardToggleViewControllerContainer,
+      self.rememberThisCardToggleViewController.view
+    ]
+    .compact()
+    ||> \.backgroundColor .~ UIColor.white
   }
 
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.reusableCardStackViewContainer.rac.hidden = self.viewModel.outputs.reusableCardSwitchIsHidden
+    self.rememberThisCardToggleViewControllerContainer.rac.hidden =
+      self.viewModel.outputs.rememberThisCardToggleViewControllerContainerIsHidden
+
+    self.viewModel.outputs.rememberThisCardToggleViewControllerIsOn
+      .observeValues { [weak self] isOn in
+        self?.rememberThisCardToggleViewController.toggle.isOn = isOn
+      }
 
     self.creditCardValidationErrorContainer.rac.hidden =
       self.viewModel.outputs.creditCardValidationErrorContainerHidden
@@ -258,6 +263,50 @@ internal final class AddNewCardViewController: UIViewController,
 
   // MARK: - Functions
 
+  private func configureRememberThisCardToggleViewController() {
+    self.rememberThisCardToggleViewController.willMove(toParent: self)
+    self.addChild(self.rememberThisCardToggleViewController)
+
+    _ = (self.rememberThisCardToggleViewController.view, self.rememberThisCardToggleViewControllerContainer)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    self.rememberThisCardToggleViewController.didMove(toParent: self)
+
+    self.stackView.addArrangedSubview(self.rememberThisCardToggleViewControllerContainer)
+
+    let topSeparator = UIView(frame: .zero)
+    let bottomSeparator = UIView(frame: .zero)
+
+    _ = [topSeparator, bottomSeparator]
+      ||> \.translatesAutoresizingMaskIntoConstraints .~ false
+      ||> \.backgroundColor .~ .ksr_grey_400
+
+    self.rememberThisCardToggleViewControllerContainer.addSubview(topSeparator)
+    self.rememberThisCardToggleViewControllerContainer.addSubview(bottomSeparator)
+
+    NSLayoutConstraint.activate([
+      topSeparator.leftAnchor
+        .constraint(equalTo: self.rememberThisCardToggleViewControllerContainer.leftAnchor),
+      topSeparator.topAnchor
+        .constraint(equalTo: self.rememberThisCardToggleViewControllerContainer.topAnchor),
+      topSeparator.rightAnchor
+        .constraint(equalTo: self.rememberThisCardToggleViewControllerContainer.rightAnchor),
+      topSeparator.heightAnchor.constraint(equalToConstant: 0.5),
+      bottomSeparator.leftAnchor
+        .constraint(equalTo: self.rememberThisCardToggleViewControllerContainer.leftAnchor),
+      bottomSeparator.bottomAnchor
+        .constraint(equalTo: self.rememberThisCardToggleViewControllerContainer.bottomAnchor),
+      bottomSeparator.rightAnchor
+        .constraint(equalTo: self.rememberThisCardToggleViewControllerContainer.rightAnchor),
+      bottomSeparator.heightAnchor.constraint(equalToConstant: 0.5)
+    ])
+
+    self.rememberThisCardToggleViewControllerContainer.heightAnchor
+      .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      .isActive = true
+  }
+
   private func createStripeToken(with paymentDetails: PaymentDetails) {
     let cardParams = STPCardParams()
     cardParams.name = paymentDetails.cardholderName
@@ -288,6 +337,17 @@ internal final class AddNewCardViewController: UIViewController,
     [self.cardholderNameTextField, self.creditCardTextField, self.zipcodeView.textField]
       .forEach { $0?.resignFirstResponder() }
   }
+
+  // MARK: - Subviews
+
+  private lazy var rememberThisCardToggleViewControllerContainer: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var rememberThisCardToggleViewController: ToggleViewController = {
+    ToggleViewController(nibName: nil, bundle: nil)
+  }()
 }
 
 // MARK: - Zipcode UITextField Delegate

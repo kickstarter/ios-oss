@@ -23,8 +23,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     self.vm.outputs.editButtonIsEnabled.observe(self.editButtonIsEnabled.observer)
     self.vm.outputs.editButtonTitle.observe(self.editButtonTitle.observer)
-    self.vm.outputs.goToAddCardScreenWithIntent.observe(self.goToAddCardScreenWithIntent.observer)
     self.vm.outputs.errorLoadingPaymentMethods.observe(self.errorLoadingPaymentMethods.observer)
+    self.vm.outputs.goToAddCardScreenWithIntent.observe(self.goToAddCardScreenWithIntent.observer)
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
     self.vm.outputs.presentBanner.observe(self.presentBanner.observer)
     self.vm.outputs.reloadData.observe(self.reloadData.observer)

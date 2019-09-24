@@ -18,7 +18,7 @@ public final class PledgeAddNewCardViewModel: PledgeAddNewCardViewModelType, Ple
   PledgeAddNewCardViewModelOutputs {
   public init() {
     self.notifyDelegateAddNewCardTappedWithIntent = self.addNewCardButtonTappedProperty.signal
-      .mapConst(.pledgeView)
+      .mapConst(.pledge)
   }
 
   private let addNewCardButtonTappedProperty = MutableProperty(())

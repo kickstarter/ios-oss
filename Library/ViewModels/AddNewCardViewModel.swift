@@ -37,7 +37,8 @@ public protocol AddNewCardViewModelOutputs {
   var dismissKeyboard: Signal<Void, Never> { get }
   var paymentDetails: Signal<PaymentDetails, Never> { get }
   var paymentDetailsBecomeFirstResponder: Signal<Void, Never> { get }
-  var reusableCardSwitchIsHidden: Signal<Bool, Never> { get }
+  var rememberThisCardToggleViewControllerContainerIsHidden: Signal<Bool, Never> { get }
+  var rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var setStripePublishableKey: Signal<String, Never> { get }
   var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
@@ -162,11 +163,14 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       self.addNewCardFailure.mapConst(false)
     )
 
-    self.reusableCardSwitchIsHidden = Signal.combineLatest(
+    self.rememberThisCardToggleViewControllerContainerIsHidden = Signal.combineLatest(
       self.addNewCardIntentProperty.signal.map { $0 == .settings },
       self.viewDidLoadProperty.signal
     )
     .map(first)
+
+    self.rememberThisCardToggleViewControllerIsOn = self.viewDidLoadProperty.signal
+      .mapConst(true)
 
     // Koala
     self.viewWillAppearProperty.signal
@@ -265,9 +269,10 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let dismissKeyboard: Signal<Void, Never>
   public let paymentDetails: Signal<PaymentDetails, Never>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, Never>
+  public var rememberThisCardToggleViewControllerContainerIsHidden: Signal<Bool, Never>
+  public var rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never>
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
-  public let reusableCardSwitchIsHidden: Signal<Bool, Never>
   public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }

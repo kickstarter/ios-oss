@@ -705,7 +705,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lnb-P0-tav">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="310"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="266"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oRB-S8-IL5">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="36"/>
@@ -823,55 +823,6 @@
                                                     <constraint firstAttribute="height" constant="36" id="jUY-Gb-szA"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DLm-ya-kS8">
-                                                <rect key="frame" x="0.0" y="266" width="375" height="44"/>
-                                                <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mAo-KC-yep">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
-                                                        <color key="backgroundColor" red="0.86667495969999997" green="0.87058132889999995" blue="0.8666592836" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="0.5" id="Ab6-Au-afe"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ghT-qE-fCp">
-                                                        <rect key="frame" x="8" y="0.0" width="359" height="44"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xp6-hu-CPq">
-                                                                <rect key="frame" x="0.0" y="0.0" width="310" height="44"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cwK-8a-nfw">
-                                                                <rect key="frame" x="310" y="0.0" width="51" height="44"/>
-                                                            </switch>
-                                                        </subviews>
-                                                    </stackView>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dqb-Hj-k2Q">
-                                                        <rect key="frame" x="0.0" y="43.5" width="375" height="0.5"/>
-                                                        <color key="backgroundColor" red="0.86667495969999997" green="0.87058132889999995" blue="0.8666592836" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="0.5" id="oVn-IR-8qi"/>
-                                                        </constraints>
-                                                    </view>
-                                                </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstItem="dqb-Hj-k2Q" firstAttribute="leading" secondItem="DLm-ya-kS8" secondAttribute="leading" id="5Sw-TB-bzl"/>
-                                                    <constraint firstItem="ghT-qE-fCp" firstAttribute="trailing" secondItem="DLm-ya-kS8" secondAttribute="trailingMargin" id="ATK-mU-g2S"/>
-                                                    <constraint firstAttribute="trailing" secondItem="dqb-Hj-k2Q" secondAttribute="trailing" id="NVU-ja-x0N"/>
-                                                    <constraint firstItem="dqb-Hj-k2Q" firstAttribute="width" secondItem="DLm-ya-kS8" secondAttribute="width" id="NgW-gb-kQg"/>
-                                                    <constraint firstItem="ghT-qE-fCp" firstAttribute="leading" secondItem="DLm-ya-kS8" secondAttribute="leadingMargin" id="QPW-jN-LKo"/>
-                                                    <constraint firstItem="ghT-qE-fCp" firstAttribute="top" secondItem="DLm-ya-kS8" secondAttribute="top" id="QPc-2c-lfZ"/>
-                                                    <constraint firstAttribute="bottom" secondItem="dqb-Hj-k2Q" secondAttribute="bottom" id="SO0-kY-sBs"/>
-                                                    <constraint firstAttribute="bottom" secondItem="ghT-qE-fCp" secondAttribute="bottom" id="eSa-qK-0Cv"/>
-                                                    <constraint firstAttribute="trailing" secondItem="mAo-KC-yep" secondAttribute="trailing" id="gxl-Pd-7Ii"/>
-                                                    <constraint firstItem="mAo-KC-yep" firstAttribute="width" secondItem="DLm-ya-kS8" secondAttribute="width" id="rfH-QZ-VYS"/>
-                                                    <constraint firstItem="mAo-KC-yep" firstAttribute="top" secondItem="DLm-ya-kS8" secondAttribute="top" id="tyt-wd-JE5"/>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="uAL-ZK-YNl"/>
-                                                    <constraint firstItem="mAo-KC-yep" firstAttribute="leading" secondItem="DLm-ya-kS8" secondAttribute="leading" id="zGe-Co-hHM"/>
-                                                </constraints>
-                                            </view>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -899,10 +850,6 @@
                         <outlet property="creditCardTextField" destination="0rS-r2-TWS" id="Ya1-gS-6aM"/>
                         <outlet property="creditCardValidationErrorContainer" destination="HyS-jM-HV4" id="zFW-PF-1TP"/>
                         <outlet property="creditCardValidationErrorLabel" destination="AWc-a8-i6h" id="O8r-yb-f86"/>
-                        <outlet property="reusableCardLabel" destination="Xp6-hu-CPq" id="Iwo-Sh-hUB"/>
-                        <outlet property="reusableCardStackView" destination="ghT-qE-fCp" id="Jw2-Tm-eKK"/>
-                        <outlet property="reusableCardStackViewContainer" destination="DLm-ya-kS8" id="Ml3-nb-X9F"/>
-                        <outlet property="reusableCardSwitch" destination="cwK-8a-nfw" id="2Zg-Yz-bhc"/>
                         <outlet property="scrollView" destination="WND-4C-aQn" id="XA9-mF-c5y"/>
                         <outlet property="stackView" destination="lnb-P0-tav" id="kzf-xr-dC0"/>
                         <outlet property="zipcodeView" destination="gef-dZ-cuA" id="VkZ-Pq-jNK"/>
