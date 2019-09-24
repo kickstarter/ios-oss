@@ -11,7 +11,7 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   private let editButtonIsEnabled = TestObserver<Bool, Never>()
   private let editButtonTitle = TestObserver<String, Never>()
   private let errorLoadingPaymentMethods = TestObserver<String, Never>()
-  private let goToAddCardScreen = TestObserver<Void, Never>()
+  private let goToAddCardScreenWithIntent = TestObserver<AddNewCardIntent, Never>()
   private let paymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
   private let presentBanner = TestObserver<String, Never>()
   private let reloadData = TestObserver<Void, Never>()
@@ -23,8 +23,8 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     self.vm.outputs.editButtonIsEnabled.observe(self.editButtonIsEnabled.observer)
     self.vm.outputs.editButtonTitle.observe(self.editButtonTitle.observer)
-    self.vm.outputs.goToAddCardScreen.observe(self.goToAddCardScreen.observer)
     self.vm.outputs.errorLoadingPaymentMethods.observe(self.errorLoadingPaymentMethods.observer)
+    self.vm.outputs.goToAddCardScreenWithIntent.observe(self.goToAddCardScreenWithIntent.observer)
     self.vm.outputs.paymentMethods.observe(self.paymentMethods.observer)
     self.vm.outputs.presentBanner.observe(self.presentBanner.observer)
     self.vm.outputs.reloadData.observe(self.reloadData.observer)
@@ -217,11 +217,11 @@ internal final class PaymentMethodsViewModelTests: TestCase {
   }
 
   func testGoToAddCardScreenEmits_WhenAddNewCardIsTapped() {
-    self.goToAddCardScreen.assertValueCount(0)
+    self.goToAddCardScreenWithIntent.assertValueCount(0)
 
     self.vm.inputs.paymentMethodsFooterViewDidTapAddNewCardButton()
 
-    self.goToAddCardScreen.assertValueCount(1, "Should emit after tapping button")
+    self.goToAddCardScreenWithIntent.assertValues([.settings], "Should emit after tapping button")
   }
 
   func testTableViewIsEditing_isFalse_WhenAddNewCardIsPresented() {
