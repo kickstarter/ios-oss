@@ -4,7 +4,7 @@ import Prelude
 import UIKit
 
 protocol PledgeAddNewCardViewDelegate: AnyObject {
-  func pledgeAddNewCardViewDidTapAddNewCard(_ view: PledgeAddNewCardView)
+  func pledgeAddNewCardView(_ view: PledgeAddNewCardView, didTapAddNewCardWith intent: AddNewCardIntent)
 }
 
 final class PledgeAddNewCardView: UIView {
@@ -60,12 +60,12 @@ final class PledgeAddNewCardView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.notifyDelegateAddNewCardTapped
+    self.viewModel.outputs.notifyDelegateAddNewCardTappedWithIntent
       .observeForControllerAction()
-      .observeValues { [weak self] in
+      .observeValues { [weak self] intent in
         guard let self = self else { return }
 
-        self.delegate?.pledgeAddNewCardViewDidTapAddNewCard(self)
+        self.delegate?.pledgeAddNewCardView(self, didTapAddNewCardWith: intent)
       }
   }
 
