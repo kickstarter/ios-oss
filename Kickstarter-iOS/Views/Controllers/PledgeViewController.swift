@@ -207,7 +207,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeValues { [weak self] project, pledgeTotal in
         self?.summaryViewController.configureWith(value: (project, pledgeTotal))
       }
-
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
       .observeForUI()
       .observeValues { [weak self] value in
