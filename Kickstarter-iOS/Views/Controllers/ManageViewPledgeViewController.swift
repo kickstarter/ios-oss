@@ -24,6 +24,8 @@ final class ManageViewPledgeViewController: UIViewController {
     )
   }()
 
+  private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
+
   private lazy var navigationBarShadowImage: UIImage? = {
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
   }()
@@ -60,14 +62,6 @@ final class ManageViewPledgeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    _ = self
-      |> \.extendedLayoutIncludesOpaqueBars .~ true
-
-    _ = self.navigationController?.navigationBar
-      ?|> \.shadowImage .~ UIImage()
-      ?|> \.isTranslucent .~ false
-      ?|> \.barTintColor .~ .ksr_grey_400
-
     _ = self.navigationItem
       ?|> \.leftBarButtonItem .~ self.closeButton
       ?|> \.rightBarButtonItem .~ self.menuButton
@@ -80,6 +74,7 @@ final class ManageViewPledgeViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
+    self.configureViews()
     self.configureChildViewControllers()
     self.setupConstraints()
 
@@ -130,7 +125,9 @@ final class ManageViewPledgeViewController: UIViewController {
 
     self.viewModel.outputs.configurePledgeSummaryView
       .observeForUI()
-      .observeValues { _ in }
+      .observeValues { [weak self] project in
+        self?.pledgeSummaryView.configureWith(project)
+      }
 
     self.viewModel.outputs.configureRewardSummaryView
       .observeForUI()
@@ -167,14 +164,29 @@ final class ManageViewPledgeViewController: UIViewController {
       |> ksr_addArrangedSubviewsToStackView()
   }
 
+  func configureWith(project: Project, reward: Reward) {
+    self.viewModel.inputs.configureWith(project, reward: reward)
+  }
+
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
   }
 
-  func configureWith(project: Project, reward: Reward) {
-    self.viewModel.inputs.configureWith(project, reward: reward)
+  // MARK: Functions
+
+  private func configureViews() {
+    _ = (self.rootScrollView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = ([self.pledgeSummaryView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   // MARK: Actions
@@ -235,4 +247,19 @@ private let rootScrollViewStyle = { (scrollView: UIScrollView) in
 private let viewStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.ksr_grey_400
+}
+
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.layoutMargins .~ .init(
+      top: Styles.grid(3),
+      left: Styles.grid(4),
+      bottom: Styles.grid(3),
+      right: Styles.grid(4)
+    )
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.distribution .~ UIStackView.Distribution.fill
+    |> \.alignment .~ UIStackView.Alignment.fill
+    |> \.spacing .~ Styles.grid(4)
 }

@@ -2,7 +2,7 @@ import Foundation
 import ReactiveSwift
 
 public protocol PledgeAddNewCardViewModelOutputs {
-  var notifyDelegateAddNewCardTapped: Signal<Void, Never> { get }
+  var notifyDelegateAddNewCardTappedWithIntent: Signal<AddNewCardIntent, Never> { get }
 }
 
 public protocol PledgeAddNewCardViewModelInputs {
@@ -17,7 +17,8 @@ public protocol PledgeAddNewCardViewModelType {
 public final class PledgeAddNewCardViewModel: PledgeAddNewCardViewModelType, PledgeAddNewCardViewModelInputs,
   PledgeAddNewCardViewModelOutputs {
   public init() {
-    self.notifyDelegateAddNewCardTapped = self.addNewCardButtonTappedProperty.signal
+    self.notifyDelegateAddNewCardTappedWithIntent = self.addNewCardButtonTappedProperty.signal
+      .mapConst(.pledge)
   }
 
   private let addNewCardButtonTappedProperty = MutableProperty(())
@@ -25,7 +26,7 @@ public final class PledgeAddNewCardViewModel: PledgeAddNewCardViewModelType, Ple
     self.addNewCardButtonTappedProperty.value = ()
   }
 
-  public let notifyDelegateAddNewCardTapped: Signal<Void, Never>
+  public let notifyDelegateAddNewCardTappedWithIntent: Signal<AddNewCardIntent, Never>
 
   public var inputs: PledgeAddNewCardViewModelInputs { return self }
   public var outputs: PledgeAddNewCardViewModelOutputs { return self }
