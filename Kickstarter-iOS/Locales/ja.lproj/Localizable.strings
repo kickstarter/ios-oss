@@ -449,6 +449,7 @@
 "Shipping" = "配送";
 "Shipping_addresses" = "配送先住所";
 "Shipping_destination" = "配送地域";
+"Shipping_to_country" = "送料：%{country}";
 "Ships_to" = "配送先：";
 "Ships_to_shipping_summary" = "配送先: %{shipping_summary}";
 "Ships_worldwide" = "Ships worldwide";
