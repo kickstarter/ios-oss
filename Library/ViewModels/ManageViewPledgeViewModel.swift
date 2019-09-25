@@ -68,8 +68,8 @@ public final class ManageViewPledgeViewModel:
         }
       }
 
-    self.goToUpdatePledge = project.takeWhen(
-      self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
+    self.goToUpdatePledge = project
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
 
     self.goToRewards = project
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .chooseAnotherReward })
@@ -81,6 +81,7 @@ public final class ManageViewPledgeViewModel:
     self.goToContactCreator = self.menuOptionSelectedSignal
       .filter { $0 == .contactCreator }
       .ignoreValues()
+
     self.goToChangePaymentMethod = self.menuOptionSelectedSignal
       .filter { $0 == .changePaymentMethod }
       .ignoreValues()

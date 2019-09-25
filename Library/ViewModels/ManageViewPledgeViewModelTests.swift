@@ -166,7 +166,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
     self.vm.inputs.menuButtonTapped()
     self.vm.inputs.menuOptionSelected(with: .chooseAnotherReward)
 
-    self.goToRewards.assertValueCount(1)
+    self.goToRewards.assertValues([.template])
   }
 
   func testGoToUpdatePledge() {
@@ -178,6 +178,6 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
     self.vm.inputs.menuButtonTapped()
     self.vm.inputs.menuOptionSelected(with: .updatePledge)
 
-    self.goToUpdatePledge.assertValueCount(1)
+    self.goToUpdatePledge.assertValues([.template])
   }
 }
