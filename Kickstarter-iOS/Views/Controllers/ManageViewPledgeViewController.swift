@@ -135,7 +135,7 @@ final class ManageViewPledgeViewController: UIViewController {
     self.viewModel.outputs.configureRewardSummaryView
       .observeForUI()
       .observeValues { [weak self] in
-        self?.rewardView.configure(with: $0)
+        self?.rewardView.configure(with: $0, context: .pledgeView)
     }
 
     self.viewModel.outputs.showActionSheetMenuWithOptions

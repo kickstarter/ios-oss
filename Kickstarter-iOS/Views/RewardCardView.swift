@@ -157,6 +157,7 @@ public final class RewardCardView: UIView {
     self.pillCollectionView.rac.hidden = self.viewModel.outputs.pillCollectionViewHidden
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.rewardTitleLabelHidden
     self.rewardTitleLabel.rac.text = self.viewModel.outputs.rewardTitleLabelText
+    self.includedItemsTitleLabel.rac.textColor = self.viewModel.outputs.sectionTitleLabelTextColor
 
     self.viewModel.outputs.stateIconImageName
       .observeForUI()
@@ -274,11 +275,11 @@ public final class RewardCardView: UIView {
     self.setNeedsLayout()
   }
 
-  fileprivate func load(items: [String]) {
+  fileprivate func load(items: ([String], RewardCardViewContext)) {
     _ = self.includedItemsStackView.subviews
       ||> { $0.removeFromSuperview() }
 
-    let includedItemViews = items.map { item -> UIView in
+    let includedItemViews = items.0.map { item -> UIView in
       let label = UILabel()
         |> baseRewardLabelStyle
         |> sectionBodyLabelStyle
@@ -289,7 +290,7 @@ public final class RewardCardView: UIView {
 
     let separatedItemViews = includedItemViews.dropLast().map { view -> [UIView] in
       let separator = UIView()
-        |> separatorStyleDark
+        |> (items.1 == .rewardsCollectionView ? separatorStyle : separatorStyleDark)
       separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
       return [view, separator]
@@ -306,8 +307,8 @@ public final class RewardCardView: UIView {
 
   // MARK: - Configuration
 
-  internal func configure(with value: (Project, Either<Reward, Backing>)) {
-    self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
+  internal func configure(with value: (Project, Either<Reward, Backing>), context: RewardCardViewContext) {
+    self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1, context: context)
   }
 
   // MARK: - Selectors
@@ -368,7 +369,6 @@ private let sectionStackViewStyle: StackViewStyle = { stackView in
 
 private let sectionTitleLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_text_dark_grey_500
     |> \.font .~ .ksr_headline()
 }
 

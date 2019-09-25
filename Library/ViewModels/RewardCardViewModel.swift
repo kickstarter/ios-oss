@@ -2,8 +2,15 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public enum RewardCardViewContext {
+  case pledgeView
+  case rewardsCollectionView
+}
+
 public protocol RewardCardViewModelInputs {
-  func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
+  func configureWith(project: Project,
+                     rewardOrBacking: Either<Reward, Backing>,
+                     context: RewardCardViewContext)
   func rewardCardTapped()
 }
 
@@ -15,13 +22,14 @@ public protocol RewardCardViewModelOutputs {
   var estimatedDeliveryDateLabelHidden: Signal<Bool, Never> { get }
   var estimatedDeliveryDateLabelText: Signal<String, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
-  var items: Signal<[String], Never> { get }
+  var items: Signal<([String], RewardCardViewContext), Never> { get }
   var pillCollectionViewHidden: Signal<Bool, Never> { get }
   var reloadPills: Signal<[String], Never> { get }
   var rewardMinimumLabelText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
   var rewardTitleLabelText: Signal<String, Never> { get }
+  var sectionTitleLabelTextColor: Signal<UIColor, Never> { get }
   var stateIconImageName: Signal<String, Never> { get }
   var stateIconImageTintColor: Signal<UIColor, Never> { get }
   var stateIconImageViewContainerBackgroundColor: Signal<UIColor, Never> { get }
@@ -37,7 +45,9 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   RewardCardViewModelOutputs {
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
-      self.projectAndRewardOrBackingProperty.signal.skipNil()
+      self.projectAndRewardOrBackingProperty.signal
+        .skipNil()
+        .map { ($0.0, $0.1) }
 
     let project: Signal<Project, Never> = projectAndRewardOrBacking.map(first)
 
@@ -99,6 +109,10 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     self.includedItemsStackViewHidden = rewardItemsIsEmpty.skipRepeats()
 
+    let context = self.projectAndRewardOrBackingProperty.signal
+      .skipNil()
+      .map { $0.2 }
+
     self.items = reward
       .map { reward in
         reward.rewardsItems.map { rewardsItem in
@@ -107,6 +121,11 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
             : rewardsItem.item.name
         }
       }
+      .combineLatest(with: context)
+      .map { $0 }
+
+    self.sectionTitleLabelTextColor = context
+      .map { $0 == .rewardsCollectionView ? UIColor.ksr_grey_400 : UIColor.ksr_grey_500 }
 
     self.reloadPills = projectAndReward.map(pillStrings(project:reward:))
     self.pillCollectionViewHidden = self.reloadPills.map { $0.isEmpty }
@@ -119,7 +138,9 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.stateIconImageViewContainerBackgroundColor = stateIconImageColor
       .skipNil()
       .map { $0.withAlphaComponent(0.06) }
-    self.stateIconImageViewContainerHidden = stateIconImageName.map(isNil)
+    self.stateIconImageViewContainerHidden = stateIconImageName
+      .combineLatest(with: context)
+      .map { imageName, context in imageName.isNil || context == .pledgeView }
 
     self.rewardSelected = reward
       .takeWhen(self.rewardCardTappedProperty.signal)
@@ -131,9 +152,12 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryText(with:)).skipNil()
   }
 
-  private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
-  public func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>) {
-    self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking)
+  private let projectAndRewardOrBackingProperty =
+    MutableProperty<(Project, Either<Reward, Backing>, RewardCardViewContext)?>(nil)
+  public func configureWith(project: Project,
+                            rewardOrBacking: Either<Reward, Backing>,
+                            context: RewardCardViewContext) {
+    self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking, context)
   }
 
   private let rewardCardTappedProperty = MutableProperty(())
@@ -147,7 +171,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let descriptionLabelText: Signal<String, Never>
   public let estimatedDeliveryDateLabelHidden: Signal<Bool, Never>
   public let estimatedDeliveryDateLabelText: Signal<String, Never>
-  public let items: Signal<[String], Never>
+  public let items: Signal<([String], RewardCardViewContext), Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
   public let pillCollectionViewHidden: Signal<Bool, Never>
   public let reloadPills: Signal<[String], Never>
@@ -155,6 +179,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>
   public let rewardTitleLabelText: Signal<String, Never>
+  public let sectionTitleLabelTextColor: Signal<UIColor, Never>
   public let stateIconImageName: Signal<String, Never>
   public let stateIconImageTintColor: Signal<UIColor, Never>
   public let stateIconImageViewContainerBackgroundColor: Signal<UIColor, Never>
@@ -188,7 +213,7 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
 
   if reward.isNoReward {
     if userIsBacking(reward: reward, inProject: project) {
-      return Strings.Thank_you_for_supporting_this_project()
+      return Strings.You_pledged_without_a_reward()
     }
 
     return Strings.Make_a_pledge_without_a_reward()
