@@ -132,24 +132,6 @@ final class ManageViewPledgeViewController: UIViewController {
 
   // MARK: - Configuration
 
-  private func configureViews() {
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = (self.rootStackView, self.rootScrollView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    let childViews: [UIView] = [
-      self.paymentMethodView,
-      self.rewardReceivedViewController.view
-    ]
-
-    _ = (childViews, self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-  }
-
   func configureWith(project: Project, reward: Reward) {
     self.viewModel.inputs.configureWith(project, reward: reward)
   }
@@ -171,7 +153,13 @@ final class ManageViewPledgeViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.pledgeSummaryView], self.rootStackView)
+    let childViews: [UIView] = [
+      self.pledgeSummaryView,
+      self.paymentMethodView,
+      self.rewardReceivedViewController.view
+    ]
+
+    _ = (childViews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
