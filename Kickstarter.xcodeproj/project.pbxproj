@@ -301,6 +301,9 @@
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
 		8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */; };
 		8A23EF0822F11470001262E1 /* RewardCardContainerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */; };
+		8A73EAD5233A8F1E00FF9051 /* UpdatePledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD4233A8F1E00FF9051 /* UpdatePledgeViewController.swift */; };
+		8A73EAD7233A8F5800FF9051 /* UpdatePledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD6233A8F5800FF9051 /* UpdatePledgeViewModel.swift */; };
+		8A73EAD9233B00A500FF9051 /* NSMutableAttributedString+SetFontKeepingTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD8233B00A500FF9051 /* NSMutableAttributedString+SetFontKeepingTraits.swift */; };
 		8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099E922E213F100373E66 /* RewardCardView.swift */; };
 		8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */; };
 		8A8099F122E2142C00373E66 /* RewardCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099ED22E2142C00373E66 /* RewardCardViewModel.swift */; };
@@ -1651,6 +1654,9 @@
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardIntent.swift; sourceTree = "<group>"; };
 		8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCardContainerViewTests.swift; sourceTree = "<group>"; };
+		8A73EAD4233A8F1E00FF9051 /* UpdatePledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePledgeViewController.swift; sourceTree = "<group>"; };
+		8A73EAD6233A8F5800FF9051 /* UpdatePledgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePledgeViewModel.swift; sourceTree = "<group>"; };
+		8A73EAD8233B00A500FF9051 /* NSMutableAttributedString+SetFontKeepingTraits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+SetFontKeepingTraits.swift"; sourceTree = "<group>"; };
 		8A8099E922E213F100373E66 /* RewardCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardView.swift; sourceTree = "<group>"; };
 		8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardContainerView.swift; sourceTree = "<group>"; };
 		8A8099ED22E2142C00373E66 /* RewardCardViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardViewModel.swift; sourceTree = "<group>"; };
@@ -3032,6 +3038,7 @@
 				01DEFB941CB44A5D003709C0 /* TwoFactorViewController.swift */,
 				A7ED203F1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift */,
 				803BDF731D11AF7C004A785A /* UpdateDraftViewController.swift */,
+				8A73EAD4233A8F1E00FF9051 /* UpdatePledgeViewController.swift */,
 				8072F41C1D46B75200999EF1 /* UpdatePreviewViewController.swift */,
 				A731BF8B1D1EE44E00A734AC /* UpdateViewController.swift */,
 				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
@@ -3051,6 +3058,7 @@
 		A7C725771C85D36D005A016B /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */,
 				A709697D1D143D1300DB39D3 /* AlertError.swift */,
 				A7C725781C85D36D005A016B /* AppEnvironment.swift */,
 				A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */,
@@ -3114,6 +3122,7 @@
 				A7C725911C85D36D005A016B /* NSBundleType.swift */,
 				37D99C2222247F4A008EF839 /* NSBundleType+Tests.swift */,
 				A78537F71CB5803B00385B73 /* NSHTTPCookieStorageType.swift */,
+				8A73EAD8233B00A500FF9051 /* NSMutableAttributedString+SetFontKeepingTraits.swift */,
 				37EB3E4B228CF4A400076E4C /* NumberFormatter.swift */,
 				37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
@@ -3208,7 +3217,6 @@
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
-				8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -3662,6 +3670,7 @@
 				A7ED1FA71E831C5C00BFFA01 /* TwoFactorViewModelTests.swift */,
 				809F8B651D08B4FF005BADD9 /* UpdateDraftViewModel.swift */,
 				A7ED1FA81E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift */,
+				8A73EAD6233A8F5800FF9051 /* UpdatePledgeViewModel.swift */,
 				59673CBE1D50EE9B0035AFD9 /* VideoViewModel.swift */,
 				A7ED1F9C1E831C5C00BFFA01 /* VideoViewModelTests.swift */,
 				D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */,
@@ -4708,6 +4717,7 @@
 				A755116B1C8642C3005355CF /* UILabel+SimpleHTML.swift in Sources */,
 				A721DF621C8CF503000CB97C /* TrackingClientType.swift in Sources */,
 				5955E6811D21805200B4153D /* DashboardReferrersCellViewModel.swift in Sources */,
+				8A73EAD9233B00A500FF9051 /* NSMutableAttributedString+SetFontKeepingTraits.swift in Sources */,
 				A75C81201D210C4700B5AD03 /* UpdateActivityItemProvider.swift in Sources */,
 				A7F441B91D005A9400FE6FC5 /* CommentCellViewModel.swift in Sources */,
 				9D7536CF1D78D88D00A7623B /* SurveyResponseViewModel.swift in Sources */,
@@ -4726,6 +4736,7 @@
 				77F6E73521222E7C005A5C55 /* EmailFrequency.swift in Sources */,
 				A7EDEE571D83453F00780B34 /* PKPaymentAuthorizationViewController+Helpers.swift in Sources */,
 				D0237C2622BD7B540092C792 /* PledgeSummaryViewModel.swift in Sources */,
+				8A73EAD7233A8F5800FF9051 /* UpdatePledgeViewModel.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
 				D63BBD35217FAB85007E01F0 /* PaymentMethodsViewModel.swift in Sources */,
@@ -5082,6 +5093,7 @@
 				A75A29251CE0AE5A00D35E5C /* MessagesViewController.swift in Sources */,
 				A7CC14361D00E73D00035C52 /* FindFriendsViewController.swift in Sources */,
 				3708DD43220A5A5700F8E569 /* SettingsGroupedFooterView.swift in Sources */,
+				8A73EAD5233A8F1E00FF9051 /* UpdatePledgeViewController.swift in Sources */,
 				A7CA8BB71D8F14260086A3E9 /* ProjectPamphletMainCell.swift in Sources */,
 				593AC5CF1D33F4BF002613F4 /* DashboardFundingCell.swift in Sources */,
 				A71003E31CDD077200B4F4D7 /* MessageCell.swift in Sources */,

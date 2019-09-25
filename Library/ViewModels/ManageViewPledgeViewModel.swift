@@ -14,6 +14,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
 public protocol ManageViewPledgeViewModelInputs {
   func configureWith(_ project: Project, reward: Reward)
   func menuButtonTapped()
+  func updatePledgeTapped()
   func viewDidLoad()
 }
 
@@ -21,6 +22,7 @@ public protocol ManageViewPledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<Project, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<Reward, Never> { get }
+  var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var title: Signal<String, Never> { get }
 }
@@ -60,6 +62,9 @@ public final class ManageViewPledgeViewModel:
           return [.contactCreator]
         }
       }
+
+    self.goToUpdatePledge = projectAndReward
+      .takeWhen(self.updatePledgeTappedSignal)
   }
 
   private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
@@ -72,6 +77,11 @@ public final class ManageViewPledgeViewModel:
     self.menuButtonTappedObserver.send(value: ())
   }
 
+  private let (updatePledgeTappedSignal, updatePledgeTappedObserver) = Signal<Void, Never>.pipe()
+  public func updatePledgeTapped() {
+    self.updatePledgeTappedObserver.send(value: ())
+  }
+
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
   public func viewDidLoad() {
     self.viewDidLoadObserver.send(value: ())
@@ -80,6 +90,7 @@ public final class ManageViewPledgeViewModel:
   public let configurePaymentMethodView: Signal<Project, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<Reward, Never>
+  public let goToUpdatePledge: Signal<(Project, Reward), Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let title: Signal<String, Never>
 

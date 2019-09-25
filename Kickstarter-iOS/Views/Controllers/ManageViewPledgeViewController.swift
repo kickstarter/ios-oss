@@ -83,7 +83,7 @@ final class ManageViewPledgeViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> viewStyle
+      |> checkoutBackgroundStyle
 
     _ = self.closeButton
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
@@ -130,6 +130,12 @@ final class ManageViewPledgeViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] options in
         self?.showActionSheetMenuWithOptions(options)
+      }
+
+    self.viewModel.outputs.goToUpdatePledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project, reward in
+        self?.goToUpdatePledge(project: project, reward: reward)
       }
   }
 
@@ -190,10 +196,12 @@ final class ManageViewPledgeViewController: UIViewController {
 
     options.forEach { option in
       let title: String
+      var handler: ((UIAlertAction) -> ())?
 
       switch option {
       case .updatePledge:
         title = Strings.Update_pledge()
+        handler = { _ in self.viewModel.inputs.updatePledgeTapped() }
       case .changePaymentMethod:
         title = Strings.Change_payment_method()
       case .chooseAnotherReward:
@@ -207,7 +215,7 @@ final class ManageViewPledgeViewController: UIViewController {
       let style: UIAlertAction.Style = option == .cancelPledge ? .destructive : .default
 
       actionSheet.addAction(
-        UIAlertAction(title: title, style: style)
+        UIAlertAction(title: title, style: style, handler: handler)
       )
     }
 
@@ -221,6 +229,13 @@ final class ManageViewPledgeViewController: UIViewController {
   @objc private func closeButtonTapped() {
     self.dismiss(animated: true)
   }
+
+  private func goToUpdatePledge(project: Project, reward: Reward) {
+    let vc = UpdatePledgeViewController.instantiate()
+    vc.configureWith(project: project, reward: reward, refTag: nil)
+
+    self.show(vc, sender: nil)
+  }
 }
 
 // MARK: Styles
@@ -228,11 +243,6 @@ final class ManageViewPledgeViewController: UIViewController {
 private let rootScrollViewStyle = { (scrollView: UIScrollView) in
   scrollView
     |> \.alwaysBounceVertical .~ true
-}
-
-private let viewStyle: ViewStyle = { (view: UIView) in
-  view
-    |> \.backgroundColor .~ UIColor.ksr_grey_400
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
