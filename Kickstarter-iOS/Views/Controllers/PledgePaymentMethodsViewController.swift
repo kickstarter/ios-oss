@@ -17,8 +17,6 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
 final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
 
-  private var cardViews: [PledgeCreditCardView] = []
-
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
@@ -141,8 +139,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.updateSelectedCreditCard
       .observeForUI()
-      .observeValues { [weak self] card in
-        self?.cardViews.forEach { $0.setSelectedCard(card) }
+      .observeValues { [weak self] _ in
       }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
@@ -176,13 +173,38 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private func reloadPaymentMethods(with cards: [GraphUserCreditCard.CreditCard]) {
     self.cardsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-    let cardViews = newCardViews(with: cards, delegate: self)
+    let cardViews = self.newCardViews(with: cards)
 
     let addNewCardView: PledgeAddNewCardView = PledgeAddNewCardView(frame: .zero)
       |> \.delegate .~ self
 
     _ = (cardViews + [addNewCardView], self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  private func setSelectedCard(to card: GraphUserCreditCard.CreditCard) {
+    self.cardsStackView.arrangedSubviews
+      .compactMap { $0 as? PledgeCreditCardView }
+      .forEach { $0.setSelectedCard(card) }
+  }
+
+  private func newCardViews(
+    with cards: [GraphUserCreditCard.CreditCard]
+  ) -> [UIView] {
+    let selectedCard = cards.first
+
+    return cards.map { card -> PledgeCreditCardView in
+      let cardView = PledgeCreditCardView(frame: .zero)
+        |> \.delegate .~ self
+
+      cardView.configureWith(value: card)
+
+      if let selectedCard = selectedCard {
+        cardView.setSelectedCard(selectedCard)
+      }
+
+      return cardView
+    }
   }
 
   // MARK: - Styles
@@ -205,28 +227,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.textColor .~ UIColor.ksr_text_dark_grey_500
       |> \.font .~ UIFont.ksr_caption1()
       |> \.textAlignment .~ .center
-  }
-}
-
-// MARK: - Functions
-
-private func newCardViews(
-  with cards: [GraphUserCreditCard.CreditCard],
-  delegate: PledgeCreditCardViewDelegate
-) -> [UIView] {
-  let selectedCard = cards.first
-
-  return cards.map { card -> PledgeCreditCardView in
-    let cardView = PledgeCreditCardView(frame: .zero)
-      |> \.delegate .~ delegate
-
-    cardView.configureWith(value: card)
-
-    if let selectedCard = selectedCard {
-      cardView.setSelectedCard(selectedCard)
-    }
-
-    return cardView
   }
 }
 
