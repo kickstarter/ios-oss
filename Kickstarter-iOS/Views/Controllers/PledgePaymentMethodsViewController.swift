@@ -139,7 +139,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.updateSelectedCreditCard
       .observeForUI()
-      .observeValues { [weak self] _ in
+      .observeValues { [weak self] card in
+        self?.updateSelectedCard(to: card)
       }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
@@ -182,7 +183,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addArrangedSubviewsToStackView()
   }
 
-  private func setSelectedCard(to card: GraphUserCreditCard.CreditCard) {
+  private func updateSelectedCard(to card: GraphUserCreditCard.CreditCard) {
     self.cardsStackView.arrangedSubviews
       .compactMap { $0 as? PledgeCreditCardView }
       .forEach { $0.setSelectedCard(card) }
