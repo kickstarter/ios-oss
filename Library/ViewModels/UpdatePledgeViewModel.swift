@@ -8,6 +8,7 @@ public protocol UpdatePledgeViewModelInputs {
   func configureWith(project: Project, reward: Reward, refTag: RefTag?)
   func pledgeAmountDidUpdate(to amount: Double)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
+  func traitCollectionDidChange()
   func viewDidLoad()
 }
 
@@ -58,9 +59,12 @@ public class UpdatePledgeViewModel: UpdatePledgeViewModelType, UpdatePledgeViewM
       .map { $0.shipping.enabled }
       .negate()
 
-    self.confirmationLabelAttributedText = project
-      .map(attributedConfirmationString(with:))
-      .skipNil()
+    self.confirmationLabelAttributedText = Signal.merge(
+      project,
+      project.takeWhen(self.traitCollectionDidChangeSignal)
+    )
+    .map(attributedConfirmationString(with:))
+    .skipNil()
   }
 
   // MARK: - Inputs
@@ -78,6 +82,11 @@ public class UpdatePledgeViewModel: UpdatePledgeViewModelType, UpdatePledgeViewM
   private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule, Never>.pipe()
   public func shippingRuleSelected(_ shippingRule: ShippingRule) {
     self.shippingRuleSelectedObserver.send(value: shippingRule)
+  }
+
+  private let (traitCollectionDidChangeSignal, traitCollectionDidChangeObserver) = Signal<(), Never>.pipe()
+  public func traitCollectionDidChange() {
+    self.traitCollectionDidChangeObserver.send(value: ())
   }
 
   private let viewDidLoadProperty = MutableProperty(())

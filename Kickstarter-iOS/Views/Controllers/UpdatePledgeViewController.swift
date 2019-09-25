@@ -14,6 +14,10 @@ final class UpdatePledgeViewController: UIViewController, MessageBannerViewContr
 
   internal var messageBannerViewController: MessageBannerViewController?
 
+  private lazy var confirmButton: UIButton = {
+    UIButton(type: .custom)
+  }()
+
   private lazy var confirmationLabel: UILabel = {
     UILabel(frame: .zero)
   }()
@@ -71,8 +75,10 @@ final class UpdatePledgeViewController: UIViewController, MessageBannerViewContr
     self.viewModel.inputs.viewDidLoad()
   }
 
-  deinit {
-    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    self.viewModel.inputs.traitCollectionDidChange()
   }
 
   // MARK: - Configuration
@@ -88,7 +94,8 @@ final class UpdatePledgeViewController: UIViewController, MessageBannerViewContr
       self.pledgeAmountViewController.view,
       self.shippingLocationViewController.view,
       self.summaryViewController.view,
-      self.confirmationLabel
+      self.confirmationLabel,
+      self.confirmButton
     ]
     .compact()
 
@@ -103,7 +110,10 @@ final class UpdatePledgeViewController: UIViewController, MessageBannerViewContr
   }
 
   private func setupConstraints() {
-    self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor).isActive = true
+    NSLayoutConstraint.activate([
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
+      self.confirmButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+    ])
   }
 
   // MARK: - Styles
@@ -119,6 +129,10 @@ final class UpdatePledgeViewController: UIViewController, MessageBannerViewContr
 
     _ = self.rootStackView
       |> checkoutRootStackViewStyle
+
+    _ = self.confirmButton
+      |> greenButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Confirm() }
 
     _ = self.confirmationLabel
       |> \.numberOfLines .~ 0
@@ -181,18 +195,6 @@ extension UpdatePledgeViewController: PledgeShippingLocationViewControllerDelega
     didSelect shippingRule: ShippingRule
   ) {
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
-  }
-}
-
-// MARK: - UpdatePledgeViewControllerMessageDisplaying
-
-extension UpdatePledgeViewController: PledgeViewControllerMessageDisplaying {
-  func pledgeViewController(_: UIViewController, didErrorWith message: String) {
-    self.messageBannerViewController?.showBanner(with: .error, message: message)
-  }
-
-  func pledgeViewController(_: UIViewController, didSucceedWith message: String) {
-    self.messageBannerViewController?.showBanner(with: .success, message: message)
   }
 }
 
