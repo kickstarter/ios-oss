@@ -24,10 +24,19 @@ final class ManageViewPledgeViewController: UIViewController {
     )
   }()
 
-  private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
-
   private lazy var navigationBarShadowImage: UIImage? = {
     UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
+  }()
+
+  private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
+
+  private lazy var pledgeSummarySectionViews = {
+    [self.pledgeSummaryView, self.pledgeSummarySectionSeparator]
+  }()
+
+  private lazy var pledgeSummarySectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var rewardView: RewardCardView = {
@@ -38,6 +47,15 @@ final class ManageViewPledgeViewController: UIViewController {
     ManageViewPledgeRewardReceivedViewController.instantiate()
   }()
 
+  private lazy var rewardSectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var rewardSectionViews = {
+    [self.rewardView, self.rewardSectionSeparator]
+  }()
+
   private lazy var rootScrollView: UIScrollView = {
     UIScrollView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -46,6 +64,10 @@ final class ManageViewPledgeViewController: UIViewController {
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var sectionSeparatorViews = {
+    [self.pledgeSummarySectionSeparator, self.rewardSectionSeparator]
   }()
 
   private let viewModel = ManageViewPledgeViewModel()
@@ -104,6 +126,9 @@ final class ManageViewPledgeViewController: UIViewController {
 
     _ = self.rootStackView
       |> checkoutRootStackViewStyle
+
+    _ = self.sectionSeparatorViews
+      ||> separatorStyleDark
   }
 
   // MARK: - View model
@@ -156,9 +181,11 @@ final class ManageViewPledgeViewController: UIViewController {
 
 
     let childViews: [UIView] = [
-      self.rewardView,
-      self.rewardReceivedViewController.view
+      self.pledgeSummarySectionViews,
+      self.rewardSectionViews,
+      [self.rewardReceivedViewController.view]
     ]
+    .flatMap { $0 }
 
     _ = (childViews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -172,6 +199,13 @@ final class ManageViewPledgeViewController: UIViewController {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
+
+    self.sectionSeparatorViews.forEach { view in
+      _ = view.heightAnchor.constraint(equalToConstant: 1)
+        |> \.isActive .~ true
+
+      view.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
   }
 
   // MARK: Functions

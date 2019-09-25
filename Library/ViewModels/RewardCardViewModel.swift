@@ -22,7 +22,7 @@ public protocol RewardCardViewModelOutputs {
   var estimatedDeliveryDateLabelHidden: Signal<Bool, Never> { get }
   var estimatedDeliveryDateLabelText: Signal<String, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
-  var items: Signal<([String], RewardCardViewContext), Never> { get }
+  var items: Signal<([String], UIColor), Never> { get }
   var pillCollectionViewHidden: Signal<Bool, Never> { get }
   var reloadPills: Signal<[String], Never> { get }
   var rewardMinimumLabelText: Signal<String, Never> { get }
@@ -122,10 +122,13 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
         }
       }
       .combineLatest(with: context)
-      .map { $0 }
+      .map { (items, context) in
+        let separatorsColor = separatorColor(for: context)
+        return (items, separatorsColor)
+    }
 
     self.sectionTitleLabelTextColor = context
-      .map { $0 == .rewardsCollectionView ? UIColor.ksr_grey_400 : UIColor.ksr_grey_500 }
+      .map(titleLabelTextColor(for:))
 
     self.reloadPills = projectAndReward.map(pillStrings(project:reward:))
     self.pillCollectionViewHidden = self.reloadPills.map { $0.isEmpty }
@@ -171,7 +174,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let descriptionLabelText: Signal<String, Never>
   public let estimatedDeliveryDateLabelHidden: Signal<Bool, Never>
   public let estimatedDeliveryDateLabelText: Signal<String, Never>
-  public let items: Signal<([String], RewardCardViewContext), Never>
+  public let items: Signal<([String], UIColor), Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
   public let pillCollectionViewHidden: Signal<Bool, Never>
   public let reloadPills: Signal<[String], Never>
@@ -318,4 +321,12 @@ private func estimatedDeliveryText(with reward: Reward) -> String? {
       )
     )
   }
+}
+
+private func titleLabelTextColor(for context: RewardCardViewContext) -> UIColor {
+  return context == .rewardsCollectionView ? UIColor.ksr_text_dark_grey_500 : UIColor.ksr_text_dark_grey_400
+}
+
+private func separatorColor(for context: RewardCardViewContext) -> UIColor {
+  return context == .rewardsCollectionView ? UIColor.ksr_grey_400 : UIColor.ksr_grey_500
 }

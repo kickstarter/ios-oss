@@ -275,7 +275,7 @@ public final class RewardCardView: UIView {
     self.setNeedsLayout()
   }
 
-  fileprivate func load(items: ([String], RewardCardViewContext)) {
+  fileprivate func load(items: ([String], UIColor)) {
     _ = self.includedItemsStackView.subviews
       ||> { $0.removeFromSuperview() }
 
@@ -290,7 +290,8 @@ public final class RewardCardView: UIView {
 
     let separatedItemViews = includedItemViews.dropLast().map { view -> [UIView] in
       let separator = UIView()
-        |> (items.1 == .rewardsCollectionView ? separatorStyle : separatorStyleDark)
+        |> separatorStyle
+        |> \.backgroundColor .~ items.1
       separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
       return [view, separator]
