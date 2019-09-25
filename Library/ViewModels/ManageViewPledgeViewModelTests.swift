@@ -12,6 +12,11 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
   private let configurePaymentMethodView = TestObserver<Project, Never>()
   private let configurePledgeSummaryView = TestObserver<Project, Never>()
   private let configureRewardSummaryView = TestObserver<Reward, Never>()
+  private let goToCancelPledge = TestObserver<Void, Never>()
+  private let goToChangePaymentMethod = TestObserver<Void, Never>()
+  private let goToContactCreator = TestObserver<Void, Never>()
+  private let goToRewards = TestObserver<Project, Never>()
+  private let goToUpdatePledge = TestObserver<Project, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
   private let title = TestObserver<String, Never>()
 
@@ -24,6 +29,11 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
       .observe(self.configurePledgeSummaryView.observer)
     self.vm.outputs.configureRewardSummaryView
       .observe(self.configureRewardSummaryView.observer)
+    self.vm.outputs.goToCancelPledge.observe(self.goToCancelPledge.observer)
+    self.vm.outputs.goToChangePaymentMethod.observe(self.goToChangePaymentMethod.observer)
+    self.vm.outputs.goToContactCreator.observe(self.goToContactCreator.observer)
+    self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
+    self.vm.outputs.goToUpdatePledge.observe(self.goToUpdatePledge.observer)
     self.vm.outputs.showActionSheetMenuWithOptions.observe(self.showActionSheetMenuWithOptions.observer)
   }
 
@@ -109,5 +119,65 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
     self.vm.inputs.menuButtonTapped()
 
     self.showActionSheetMenuWithOptions.assertValues([[.contactCreator]])
+  }
+
+  func testGoToCancelPledge() {
+    self.vm.inputs.configureWith(.template, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToCancelPledge.assertDidNotEmitValue()
+
+    self.vm.inputs.menuButtonTapped()
+    self.vm.inputs.menuOptionSelected(with: .cancelPledge)
+
+    self.goToCancelPledge.assertValueCount(1)
+  }
+
+  func testGoToChangePaymentMethod() {
+    self.vm.inputs.configureWith(.template, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToChangePaymentMethod.assertDidNotEmitValue()
+
+    self.vm.inputs.menuButtonTapped()
+    self.vm.inputs.menuOptionSelected(with: .changePaymentMethod)
+
+    self.goToChangePaymentMethod.assertValueCount(1)
+  }
+
+  func testGoToContactCreator() {
+    self.vm.inputs.configureWith(.template, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToContactCreator.assertDidNotEmitValue()
+
+    self.vm.inputs.menuButtonTapped()
+    self.vm.inputs.menuOptionSelected(with: .contactCreator)
+
+    self.goToContactCreator.assertValueCount(1)
+  }
+
+  func testGoToRewards() {
+    self.vm.inputs.configureWith(.template, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToRewards.assertDidNotEmitValue()
+
+    self.vm.inputs.menuButtonTapped()
+    self.vm.inputs.menuOptionSelected(with: .chooseAnotherReward)
+
+    self.goToRewards.assertValueCount(1)
+  }
+
+  func testGoToUpdatePledge() {
+    self.vm.inputs.configureWith(.template, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.goToUpdatePledge.assertDidNotEmitValue()
+
+    self.vm.inputs.menuButtonTapped()
+    self.vm.inputs.menuOptionSelected(with: .updatePledge)
+
+    self.goToUpdatePledge.assertValueCount(1)
   }
 }

@@ -193,7 +193,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private let rootStackViewStyle: StackViewStyle = { stackView in
     stackView
       |> verticalStackViewStyle
-      |> \.spacing .~ Styles.grid(2)
+      |> \.spacing .~ Styles.grid(3)
   }
 
   private let titleLabelStyle: LabelStyle = { label in
