@@ -13,7 +13,6 @@ internal final class AddNewCardViewModelTests: TestCase {
   private let addNewCardSuccess = TestObserver<String, Never>()
   private let creditCardValidationErrorContainerHidden = TestObserver<Bool, Never>()
   private let cardholderNameBecomeFirstResponder = TestObserver<Void, Never>()
-  private let dismissAfterAddingCard = TestObserver<Void, Never>()
   private let dismissKeyboard = TestObserver<Void, Never>()
   private let cardholderName = TestObserver<String, Never>()
   private let cardNumber = TestObserver<String, Never>()
@@ -38,7 +37,6 @@ internal final class AddNewCardViewModelTests: TestCase {
       .observe(self.creditCardValidationErrorContainerHidden.observer)
     self.vm.outputs.cardholderNameBecomeFirstResponder
       .observe(self.cardholderNameBecomeFirstResponder.observer)
-    self.vm.outputs.dismissAfterAddingCard.observe(self.dismissAfterAddingCard.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.newCardAdded.observe(self.newCardAdded.observer)
     self.vm.outputs.paymentDetails.map { $0.0 }.observe(self.cardholderName.observer)
@@ -111,34 +109,6 @@ internal final class AddNewCardViewModelTests: TestCase {
 
       self.addNewCardSuccess.assertValues([Strings.Got_it_your_changes_have_been_saved()])
       self.activityIndicatorShouldShow.assertValues([true, false])
-    }
-  }
-
-  func testNewCardAdded() {
-    withEnvironment(
-      apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
-    ) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.cardholderNameChanged("Native Squad")
-      self.vm.inputs.cardholderNameTextFieldReturn()
-      self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
-      self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123"))
-
-      self.vm.inputs.paymentInfo(isValid: true)
-      self.vm.inputs.cardBrand(isValid: true)
-      self.vm.inputs.zipcodeChanged(zipcode: "123")
-      self.saveButtonIsEnabled.assertValues([true])
-
-      self.vm.inputs.saveButtonTapped()
-      self.activityIndicatorShouldShow.assertValues([true])
-
-      self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
-
-      self.scheduler.advance()
-
-      self.activityIndicatorShouldShow.assertValues([true, false])
-      self.newCardAdded.assertValue(GraphUserCreditCard.amex)
-      self.dismissAfterAddingCard.assertValueCount(1)
     }
   }
 
