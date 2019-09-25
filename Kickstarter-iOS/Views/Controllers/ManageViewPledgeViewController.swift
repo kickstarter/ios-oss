@@ -139,31 +139,31 @@ final class ManageViewPledgeViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project in
         self?.goToRewards(project)
-    }
+      }
 
     self.viewModel.outputs.goToUpdatePledge
       .observeForControllerAction()
       .observeValues { [weak self] project in
         self?.goToUpdatePledge(project)
-    }
+      }
 
     self.viewModel.outputs.goToChangePaymentMethod
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToChangePaymentMethod()
-    }
+      }
 
     self.viewModel.outputs.goToContactCreator
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToContactCreator()
-    }
+      }
 
     self.viewModel.outputs.goToCancelPledge
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.goToCancelPledge()
-    }
+      }
   }
 
   // MARK: - Configuration
@@ -250,20 +250,20 @@ final class ManageViewPledgeViewController: UIViewController {
     self.navigationController?.pushViewController(rewardsVC, animated: true)
   }
 
-  private func goToUpdatePledge(_ project: Project) {
-    // TODO
+  private func goToUpdatePledge(_: Project) {
+    // TODO:
   }
 
   private func goToCancelPledge() {
-    // TODO
+    // TODO:
   }
 
   private func goToChangePaymentMethod() {
-    // TODO
+    // TODO:
   }
 
   private func goToContactCreator() {
-    // TODO
+    // TODO:
   }
 }
 
