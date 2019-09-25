@@ -113,7 +113,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeValues { [weak self] cards in
         guard let self = self else { return }
         self.scrollView.setContentOffset(.zero, animated: false)
-        self.addCardsToStackView(cards)
+        self.reloadPaymentMethods(with: cards)
       }
 
     self.viewModel.outputs.notifyDelegateLoadPaymentMethodsError
@@ -173,25 +173,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   // MARK: - Functions
 
-  private func addCardsToStackView(_ cards: [GraphUserCreditCard.CreditCard]) {
-    self.cardsStackView.arrangedSubviews.forEach(self.cardsStackView.removeArrangedSubview)
+  private func reloadPaymentMethods(with cards: [GraphUserCreditCard.CreditCard]) {
+    self.cardsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-    let selectedCard = cards.first
-
-    let cardViews = cards
-      .map { card -> PledgeCreditCardView in
-        let cardView = PledgeCreditCardView(frame: .zero)
-        cardView.delegate = self
-        cardView.configureWith(value: card)
-
-        if let selectedCard = selectedCard {
-          cardView.setSelectedCard(selectedCard)
-        }
-
-        return cardView
-      }
-
-    self.cardViews = cardViews
+    let cardViews = newCardViews(with: cards, delegate: self)
 
     let addNewCardView: PledgeAddNewCardView = PledgeAddNewCardView(frame: .zero)
       |> \.delegate .~ self
@@ -220,6 +205,28 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.textColor .~ UIColor.ksr_text_dark_grey_500
       |> \.font .~ UIFont.ksr_caption1()
       |> \.textAlignment .~ .center
+  }
+}
+
+// MARK: - Functions
+
+private func newCardViews(
+  with cards: [GraphUserCreditCard.CreditCard],
+  delegate: PledgeCreditCardViewDelegate
+) -> [UIView] {
+  let selectedCard = cards.first
+
+  return cards.map { card -> PledgeCreditCardView in
+    let cardView = PledgeCreditCardView(frame: .zero)
+      |> \.delegate .~ delegate
+
+    cardView.configureWith(value: card)
+
+    if let selectedCard = selectedCard {
+      cardView.setSelectedCard(selectedCard)
+    }
+
+    return cardView
   }
 }
 

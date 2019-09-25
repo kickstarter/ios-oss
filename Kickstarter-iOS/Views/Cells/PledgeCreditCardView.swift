@@ -70,7 +70,7 @@ final class PledgeCreditCardView: UIView {
 
   // MARK: - Styles
 
-  public override func bindStyles() {
+  override func bindStyles() {
     super.bindStyles()
 
     _ = self
@@ -101,7 +101,7 @@ final class PledgeCreditCardView: UIView {
       |> blackButtonStyle
   }
 
-  public override func bindViewModel() {
+  override func bindViewModel() {
     super.bindViewModel()
 
     self.selectButton.rac.title = self.viewModel.outputs.selectButtonTitle
