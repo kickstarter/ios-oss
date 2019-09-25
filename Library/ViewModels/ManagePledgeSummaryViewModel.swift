@@ -61,7 +61,7 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     self.shippingLocationText = backing
       .map { $0.locationName }
       .skipNil()
-      .map { Strings.Shipping() + ": " + $0 }
+      .map { Strings.Shipping_to_country(country: $0) }
 
     self.shippingLocationStackViewIsHidden = self.projectSignal
       .map(shouldHideShippingLocationStackView)
