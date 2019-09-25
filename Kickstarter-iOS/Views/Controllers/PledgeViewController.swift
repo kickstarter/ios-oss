@@ -207,7 +207,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeValues { [weak self] project, pledgeTotal in
         self?.summaryViewController.configureWith(value: (project, pledgeTotal))
       }
-
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
       .observeForUI()
       .observeValues { [weak self] value in
@@ -217,6 +216,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
+      }
+
+    self.viewModel.outputs.updatePledgeButtonEnabled
+      .observeForUI()
+      .observeValues { [weak self] isEnabled in
+        self?.paymentMethodsViewController.updatePledgeButton(isEnabled)
       }
 
     self.viewModel.outputs.goToApplePayPaymentAuthorization
@@ -384,10 +389,16 @@ extension PledgeViewController: PledgeViewControllerMessageDisplaying {
 
 extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
   func pledgePaymentMethodsViewControllerDidTapApplePayButton(
-    _:
-    PledgePaymentMethodsViewController
+    _: PledgePaymentMethodsViewController
   ) {
     self.viewModel.inputs.applePayButtonTapped()
+  }
+
+  func pledgePaymentMethodsViewController(
+    _: PledgePaymentMethodsViewController,
+    didSelectCreditCard paymentSourceId: String
+  ) {
+    self.viewModel.inputs.creditCardSelected(with: paymentSourceId)
   }
 }
 
