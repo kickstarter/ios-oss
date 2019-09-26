@@ -12,6 +12,9 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
     _ viewController: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSourceId: String
   )
+
+  func pledgePaymentMethodsViewControllerDidTapPledgeButton(_
+    viewController: PledgePaymentMethodsViewController)
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
@@ -62,6 +65,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.applePayButton.addTarget(
       self,
       action: #selector(PledgePaymentMethodsViewController.applePayButtonTapped),
+      for: .touchUpInside
+    )
+
+    self.pledgeButton.addTarget(
+      self,
+      action: #selector(PledgePaymentMethodsViewController.pledgeButtonTapped),
       for: .touchUpInside
     )
   }
@@ -136,6 +145,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
         self.delegate?.pledgePaymentMethodsViewController(self, didSelectCreditCard: paymentSourceId)
       }
 
+    self.viewModel.outputs.notifyDelegatePledgeButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+
+        self.delegate?.pledgePaymentMethodsViewControllerDidTapPledgeButton(self)
+    }
+
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
     self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
   }
@@ -156,6 +173,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   @objc private func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
+  }
+
+  @objc private func pledgeButtonTapped() {
+    self.viewModel.inputs.pledgeButtonTapped()
   }
 
   func updatePledgeButton(_ enabled: Bool) {
