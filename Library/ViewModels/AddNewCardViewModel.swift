@@ -124,7 +124,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.environmentType.stripePublishableKey }
 
-    self.rememberThisCardToggleViewControllerIsOn = self.viewDidLoadProperty.signal.mapConst(false)
+    self.rememberThisCardToggleViewControllerIsOn = self.viewDidLoadProperty.signal.mapConst(true)
 
     let rememberThisCard = Signal.merge(
       self.rememberThisCardToggleViewControllerIsOn,
