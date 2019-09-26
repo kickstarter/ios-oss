@@ -8,9 +8,9 @@ final class CreateBackingInputTests: XCTestCase {
       amount: "200.00",
       locationId: "NY",
       paymentSourceId: "paymentSourceId",
-      paymentType: "card",
       projectId: "projectId",
-      rewardId: "rewardId"
+      rewardId: "rewardId",
+      refParam: "activity"
     )
 
     let input = createBackingInput.toInputDictionary()
@@ -18,9 +18,10 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(input["amount"] as? String, "200.00")
     XCTAssertEqual(input["locationId"] as? String, "NY")
     XCTAssertEqual(input["paymentSourceId"] as? String, "paymentSourceId")
-    XCTAssertEqual(input["paymentType"] as? String, "card")
+    XCTAssertEqual(input["paymentType"] as? String, "credit_card")
     XCTAssertEqual(input["projectId"] as? String, "projectId")
     XCTAssertEqual(input["rewardId"] as? String, "rewardId")
+    XCTAssertEqual(input["refParam"] as? String, "activity")
   }
 
   func testCreateBackingInputDictionary_TestNilLocationAndReward() {
@@ -28,9 +29,9 @@ final class CreateBackingInputTests: XCTestCase {
       amount: "200.00",
       locationId: nil,
       paymentSourceId: "paymentSourceId",
-      paymentType: "card",
       projectId: "projectId",
-      rewardId: nil
+      rewardId: nil,
+      refParam: nil
     )
 
     let input = createBackingInput.toInputDictionary()
@@ -38,8 +39,9 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(input["amount"] as? String, "200.00")
     XCTAssertNil(input["locationId"])
     XCTAssertEqual(input["paymentSourceId"] as? String, "paymentSourceId")
-    XCTAssertEqual(input["paymentType"] as? String, "card")
+    XCTAssertEqual(input["paymentType"] as? String, "credit_card")
     XCTAssertEqual(input["projectId"] as? String, "projectId")
     XCTAssertNil(input["rewardId"])
+    XCTAssertNil(input["refParam"])
   }
 }
