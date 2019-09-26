@@ -13,8 +13,10 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
     didSelectCreditCard paymentSourceId: String
   )
 
-  func pledgePaymentMethodsViewControllerDidTapPledgeButton(_
-    viewController: PledgePaymentMethodsViewController)
+  func pledgePaymentMethodsViewControllerDidTapPledgeButton(
+    _
+    viewController: PledgePaymentMethodsViewController
+  )
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
@@ -151,7 +153,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
         guard let self = self else { return }
 
         self.delegate?.pledgePaymentMethodsViewControllerDidTapPledgeButton(self)
-    }
+      }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
     self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled

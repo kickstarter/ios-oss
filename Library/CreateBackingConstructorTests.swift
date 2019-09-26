@@ -50,4 +50,3 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     XCTAssertNil(input.refParam)
   }
 }
-

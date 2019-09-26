@@ -131,22 +131,24 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // MARK: Create Backing
 
-    let createBackingEvent = Signal.combineLatest(backingData, creditCardSelectedSignal)
+    let createBackingEvent = Signal.combineLatest(backingData, self.creditCardSelectedSignal)
       .takeWhen(self.pledgeButtonTappedSignal)
       .map { backingData, paymentSourceId in
-        return (backingData.project,
-                backingData.reward,
-                backingData.pledgeAmount,
-                backingData.selectedShippingRule,
-                backingData.refTag,
-                paymentSourceId)
+        (
+          backingData.project,
+          backingData.reward,
+          backingData.pledgeAmount,
+          backingData.selectedShippingRule,
+          backingData.refTag,
+          paymentSourceId
+        )
       }
       .map(CreateBackingInput.input(from:reward:pledgeAmount:selectedShippingRule:refTag:paymentSourceId:))
       .switchMap { input in
         AppEnvironment.current.apiService.createBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-    }
+      }
 
     let createBackingEventSuccess = createBackingEvent.values()
     let createBackingEventError = createBackingEvent.errors()

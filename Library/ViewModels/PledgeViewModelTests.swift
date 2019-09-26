@@ -793,8 +793,10 @@ final class PledgeViewModelTests: TestCase {
 
   func testCreateBacking() {
     let createBacking = CreateBackingEnvelope.CreateBacking.init(checkout: Checkout(state: .verifying))
-    let mockService = MockService(createBackingResult:
-      Result.success(CreateBackingEnvelope(createBacking: createBacking)))
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
       self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity)
@@ -821,8 +823,10 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testCreateBacking_Failure() {
-    let mockService = MockService(createBackingResult:
-      Result.failure(GraphError.invalidInput))
+    let mockService = MockService(
+      createBackingResult:
+      Result.failure(GraphError.invalidInput)
+    )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
       self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity)

@@ -9,7 +9,7 @@ extension CreateBackingInput {
     selectedShippingRule: ShippingRule?,
     refTag: RefTag?,
     paymentSourceId: String
-    ) -> CreateBackingInput {
+  ) -> CreateBackingInput {
     let pledgeAmountDecimal = Decimal(pledgeAmount)
     var shippingAmountDecimal: Decimal = Decimal()
     var shippingLocationId: String?
@@ -24,11 +24,13 @@ extension CreateBackingInput {
 
     let rewardId = reward == Reward.noReward ? nil : reward.graphID
 
-    return CreateBackingInput(amount: formattedPledgeTotal,
-                              locationId: shippingLocationId,
-                              paymentSourceId: paymentSourceId,
-                              projectId: project.graphID,
-                              rewardId: rewardId,
-                              refParam: refTag?.description)
+    return CreateBackingInput(
+      amount: formattedPledgeTotal,
+      locationId: shippingLocationId,
+      paymentSourceId: paymentSourceId,
+      projectId: project.graphID,
+      rewardId: rewardId,
+      refParam: refTag?.description
+    )
   }
 }
