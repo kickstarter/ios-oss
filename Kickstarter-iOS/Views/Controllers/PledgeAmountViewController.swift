@@ -21,11 +21,7 @@ final class PledgeAmountViewController: UIViewController {
   private lazy var amountInputView: AmountInputView = { AmountInputView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var spacer: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
+  private lazy var horizontalSpacer: UIView = { UIView(frame: .zero) }()
   private lazy var stepper: UIStepper = { UIStepper(frame: .zero) }()
 
   // MARK: - Lifecycle
@@ -40,15 +36,13 @@ final class PledgeAmountViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleLabel, self.adaptableStackView], self.rootStackView)
+    _ = ([self.titleLabel, self.adaptableStackView, UIView(frame: .zero)], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.stepper, self.spacer, self.amountInputView], self.adaptableStackView)
+    _ = ([self.stepper, self.horizontalSpacer, self.amountInputView], self.adaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.amountInputView.textField.delegate = self
-
-    self.spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(3)).isActive = true
 
     self.amountInputView.doneButton.addTarget(
       self,
@@ -74,13 +68,17 @@ final class PledgeAmountViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
+    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+
     _ = self.view
       |> checkoutBackgroundStyle
 
     _ = self.adaptableStackView
-      |> checkoutAdaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
+      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> \.spacing .~ Styles.grid(3)
+
+    _ = self.horizontalSpacer
+      |> \.isHidden .~ isAccessibilityCategory
 
     _ = self.titleLabel
       |> checkoutBackgroundStyle
@@ -102,8 +100,10 @@ final class PledgeAmountViewController: UIViewController {
 
     self.amountInputView.doneButton.rac.enabled = self.viewModel.outputs.doneButtonIsEnabled
     self.amountInputView.label.rac.text = self.viewModel.outputs.currency
+    self.amountInputView.label.rac.textColor = self.viewModel.outputs.labelTextColor
     self.amountInputView.textField.rac.isFirstResponder = self.viewModel.outputs.textFieldIsFirstResponder
     self.amountInputView.textField.rac.text = self.viewModel.outputs.textFieldValue
+    self.amountInputView.textField.rac.textColor = self.viewModel.outputs.textFieldTextColor
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
     self.stepper.rac.stepValue = self.viewModel.outputs.stepperStepValue
