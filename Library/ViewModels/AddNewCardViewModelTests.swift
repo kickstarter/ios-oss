@@ -301,6 +301,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
     ) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.paymentInfo(isValid: true)
       self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
@@ -312,6 +313,7 @@ internal final class AddNewCardViewModelTests: TestCase {
 
   func testTrackFailedPaymentMethodCreation() {
     withEnvironment(apiService: MockService(addNewCreditCardResult: .failure(.emptyResponse(nil)))) {
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
       self.scheduler.advance()

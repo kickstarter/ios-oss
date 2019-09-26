@@ -316,6 +316,12 @@ internal final class AddNewCardViewController: UIViewController,
     self.rememberThisCardToggleViewControllerContainer.heightAnchor
       .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
       .isActive = true
+
+    self.rememberThisCardToggleViewController.toggle.addTarget(
+      self,
+      action: #selector(AddNewCardViewController.rememberThisCardToggled(_:)),
+      for: .valueChanged
+    )
   }
 
   private func createStripeToken(with paymentDetails: PaymentDetails) {
@@ -347,6 +353,12 @@ internal final class AddNewCardViewController: UIViewController,
   private func dismissKeyboard() {
     [self.cardholderNameTextField, self.creditCardTextField, self.zipcodeView.textField]
       .forEach { $0?.resignFirstResponder() }
+  }
+
+  // MARK: - Actions
+
+  @objc private func rememberThisCardToggled(_ sender: UISwitch) {
+    self.viewModel.inputs.rememberThisCardToggleChanged(to: sender.isOn)
   }
 
   // MARK: - Subviews

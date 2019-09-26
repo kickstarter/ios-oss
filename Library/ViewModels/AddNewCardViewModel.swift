@@ -19,6 +19,7 @@ public protocol AddNewCardViewModelInputs {
   func configure(with intent: AddNewCardIntent)
   func paymentCardTextFieldDidEndEditing()
   func paymentInfo(isValid: Bool)
+  func rememberThisCardToggleChanged(to value: Bool)
   func saveButtonTapped()
   func stripeCreated(_ token: String?, stripeID: String?)
   func stripeError(_ error: Error?)
@@ -123,17 +124,25 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.environmentType.stripePublishableKey }
 
-    let addNewCardEvent = self.stripeTokenProperty.signal.skipNil()
-      .map { CreatePaymentSourceInput(
-        paymentType: PaymentType.creditCard,
-        stripeToken: $0.0, stripeCardId: $0.1
-      ) }
-      .switchMap {
-        AppEnvironment.current.apiService.addNewCreditCard(input: $0)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { (envelope: CreatePaymentSourceEnvelope) in envelope.createPaymentSource }
-          .materialize()
-      }
+    self.rememberThisCardToggleViewControllerIsOn = self.viewDidLoadProperty.signal.mapConst(false)
+
+    let rememberThisCard = Signal.merge(
+      self.rememberThisCardToggleViewControllerIsOn,
+      self.rememberThisCardToggleChangedToValue.signal
+    )
+
+    let addNewCardEvent = Signal.combineLatest(
+      self.stripeTokenProperty.signal.skipNil(),
+      rememberThisCard
+    )
+    .map(unpack)
+    .map(createPaymentSourceInput(token:stripeCardId:reusable:))
+    .switchMap {
+      AppEnvironment.current.apiService.addNewCreditCard(input: $0)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .map { (envelope: CreatePaymentSourceEnvelope) in envelope.createPaymentSource }
+        .materialize()
+    }
 
     self.newCardAdded = addNewCardEvent.map { $0.value?.paymentSource }.skipNil()
 
@@ -171,9 +180,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       self.viewDidLoadProperty.signal
     )
     .map(first)
-
-    self.rememberThisCardToggleViewControllerIsOn = self.viewDidLoadProperty.signal
-      .mapConst(true)
 
     // Koala
     self.viewWillAppearProperty.signal
@@ -227,6 +233,11 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.paymentInfoIsValidProperty.value = isValid
   }
 
+  private let rememberThisCardToggleChangedToValue = MutableProperty(false)
+  public func rememberThisCardToggleChanged(to value: Bool) {
+    self.rememberThisCardToggleChangedToValue.value = value
+  }
+
   private let saveButtonTappedProperty = MutableProperty(())
   public func saveButtonTapped() {
     self.saveButtonTappedProperty.value = ()
@@ -273,12 +284,25 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never>
   public let paymentDetails: Signal<PaymentDetails, Never>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, Never>
-  public var rememberThisCardToggleViewControllerContainerIsHidden: Signal<Bool, Never>
-  public var rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never>
+  public let rememberThisCardToggleViewControllerContainerIsHidden: Signal<Bool, Never>
+  public let rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never>
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
   public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }
+}
+
+// MARK: - Functions
+
+private func createPaymentSourceInput(
+  token: String, stripeCardId: String, reusable: Bool
+) -> CreatePaymentSourceInput {
+  return CreatePaymentSourceInput(
+    paymentType: PaymentType.creditCard,
+    reusable: reusable,
+    stripeToken: token,
+    stripeCardId: stripeCardId
+  )
 }
