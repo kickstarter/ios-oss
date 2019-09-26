@@ -384,11 +384,11 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.rememberThisCardToggleViewControllerContainerIsHidden.assertValues([true, false])
   }
 
-  func testReusableCardSwitchisOnByDefault() {
+  func testReusableCardSwitchisOffByDefault() {
     self.rememberThisCardToggleViewControllerIsOn.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
 
-    self.rememberThisCardToggleViewControllerIsOn.assertValues([true])
+    self.rememberThisCardToggleViewControllerIsOn.assertValues([false])
   }
 }
