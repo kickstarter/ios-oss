@@ -30,12 +30,13 @@ class ToggleViewController: UIViewController {
       |> ksr_addSubviewToParent()
 
     NSLayoutConstraint.activate([
+      self.view.heightAnchor.constraint(greaterThanOrEqualTo: self.toggle.heightAnchor),
       self.titleLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.titleLabel.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.titleLabel.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.titleLabel.centerYAnchor.constraint(equalTo: self.toggle.centerYAnchor),
-      self.titleLabel.rightAnchor.constraint(lessThanOrEqualTo: self.toggle.leftAnchor),
-      self.toggle.rightAnchor.constraint(equalTo: self.view.rightAnchor)
+      self.titleLabel.rightAnchor.constraint(equalTo: self.toggle.leftAnchor, constant: -Styles.grid(3)),
+      self.toggle.leftAnchor.constraint(equalTo: self.view.rightAnchor, constant: -self.toggle.frame.width)
     ])
   }
 
