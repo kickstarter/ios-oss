@@ -1,11 +1,11 @@
 ### Internal
 
 github "kickstarter/Kickstarter-Prelude" "d03f8831dcec9ad157db4f1c5f769ec17e1a3766"
-github "kickstarter/Kickstarter-ReactiveExtensions" "aa994f0921dca1965ae537fe77c2edc798eef230"
+github "kickstarter/Kickstarter-ReactiveExtensions" "c3ce269fd2dd14b8d63ce1bc5b78f7397c0c0753"
 
 ### 3rd Party
 
-github "Alamofire/AlamofireImage" "c41f8b0acfbb3180fe045df73596e4332c338633"
+github "Alamofire/AlamofireImage" "8e635e6151212f8871a321bbdd980af7c31af73b"
 github "AgileBits/onepassword-extension" == 1.8.4
 github "facebook/facebook-objc-sdk" == 5.0.2
 github "ReactiveCocoa/ReactiveSwift" == 6.0.0
