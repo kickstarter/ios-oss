@@ -11,13 +11,13 @@ public enum ManagePledgeAlertAction: CaseIterable {
   case cancelPledge
 }
 
-public protocol ManageViewPledgeViewModelInputs {
+public protocol ManagePledgeViewModelInputs {
   func configureWith(_ project: Project, reward: Reward)
   func menuButtonTapped()
   func viewDidLoad()
 }
 
-public protocol ManageViewPledgeViewModelOutputs {
+public protocol ManagePledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<Project, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<Reward, Never> { get }
@@ -25,13 +25,13 @@ public protocol ManageViewPledgeViewModelOutputs {
   var title: Signal<String, Never> { get }
 }
 
-public protocol ManageViewPledgeViewModelType {
-  var inputs: ManageViewPledgeViewModelInputs { get }
-  var outputs: ManageViewPledgeViewModelOutputs { get }
+public protocol ManagePledgeViewModelType {
+  var inputs: ManagePledgeViewModelInputs { get }
+  var outputs: ManagePledgeViewModelOutputs { get }
 }
 
-public final class ManageViewPledgeViewModel:
-  ManageViewPledgeViewModelType, ManageViewPledgeViewModelInputs, ManageViewPledgeViewModelOutputs {
+public final class ManagePledgeViewModel:
+  ManagePledgeViewModelType, ManagePledgeViewModelInputs, ManagePledgeViewModelOutputs {
   public init() {
     let projectAndReward = self.projectAndRewardSignal
       .takeWhen(self.viewDidLoadSignal.ignoreValues())
@@ -83,8 +83,8 @@ public final class ManageViewPledgeViewModel:
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let title: Signal<String, Never>
 
-  public var inputs: ManageViewPledgeViewModelInputs { return self }
-  public var outputs: ManageViewPledgeViewModelOutputs { return self }
+  public var inputs: ManagePledgeViewModelInputs { return self }
+  public var outputs: ManagePledgeViewModelOutputs { return self }
 }
 
 // MARK: - Functions

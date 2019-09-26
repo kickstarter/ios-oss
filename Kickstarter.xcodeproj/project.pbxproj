@@ -1051,7 +1051,7 @@
 		D60C8CE12149A65000D96152 /* SettingsPrivacyDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */; };
 		D60CAB922208A1B60083FA40 /* SelectCurrencyViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */; };
 		D612A21922F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D612A21822F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift */; };
-		D61440FE23200F09002A6507 /* ManageViewPledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FD23200F09002A6507 /* ManageViewPledgeViewModelTests.swift */; };
+		D61440FE23200F09002A6507 /* ManagePledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FD23200F09002A6507 /* ManagePledgeViewModelTests.swift */; };
 		D614410023200FD3002A6507 /* ManageViewPledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FF23200FD3002A6507 /* ManageViewPledgeViewControllerTests.swift */; };
 		D62B1477221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */; };
 		D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */; };
@@ -1080,7 +1080,7 @@
 		D67B6C9D221F458700B63A6B /* Config+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6C9C221F458700B63A6B /* Config+Argo.swift */; };
 		D67B6CD6221F468100B63A6B /* Location+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6CD5221F468100B63A6B /* Location+Argo.swift */; };
 		D67B6CD8221F46D700B63A6B /* Project.Country+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6CD7221F46D700B63A6B /* Project.Country+Argo.swift */; };
-		D67DF564232ABB960051D207 /* ManageViewPledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DF563232ABB950051D207 /* ManageViewPledgeViewModel.swift */; };
+		D67DF564232ABB960051D207 /* ManagePledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DF563232ABB950051D207 /* ManagePledgeViewModel.swift */; };
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
 		D6A45DB72319A7E1006DDB01 /* ManagePledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */; };
 		D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */; };
@@ -2332,7 +2332,7 @@
 		D60C8BF221481BCC00D96152 /* SettingsAccountViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewControllerTests.swift; sourceTree = "<group>"; };
 		D60C8CE02149A65000D96152 /* SettingsPrivacyDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyDataSourceTests.swift; sourceTree = "<group>"; };
 		D612A21822F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreditCard+UtilsTests.swift"; sourceTree = "<group>"; };
-		D61440FD23200F09002A6507 /* ManageViewPledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewPledgeViewModelTests.swift; sourceTree = "<group>"; };
+		D61440FD23200F09002A6507 /* ManagePledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewModelTests.swift; sourceTree = "<group>"; };
 		D61440FF23200FD3002A6507 /* ManageViewPledgeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewPledgeViewControllerTests.swift; sourceTree = "<group>"; };
 		D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePaymentMethodEnvelope.swift; sourceTree = "<group>"; };
 		D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePaymentMethodEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -2362,7 +2362,7 @@
 		D67B6C9C221F458700B63A6B /* Config+Argo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Config+Argo.swift"; sourceTree = "<group>"; };
 		D67B6CD5221F468100B63A6B /* Location+Argo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Argo.swift"; sourceTree = "<group>"; };
 		D67B6CD7221F46D700B63A6B /* Project.Country+Argo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project.Country+Argo.swift"; sourceTree = "<group>"; };
-		D67DF563232ABB950051D207 /* ManageViewPledgeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageViewPledgeViewModel.swift; sourceTree = "<group>"; };
+		D67DF563232ABB950051D207 /* ManagePledgeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewModel.swift; sourceTree = "<group>"; };
 		D67F29351F68333800E399A6 /* GraphSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSchema.swift; sourceTree = "<group>"; };
 		D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertControllerTests.swift; sourceTree = "<group>"; };
 		D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewController.swift; sourceTree = "<group>"; };
@@ -3529,8 +3529,8 @@
 				A7ED1F761E831C5C00BFFA01 /* LoginToutViewModelTests.swift */,
 				A7698B291D00602800953FD3 /* LoginViewModel.swift */,
 				A7ED1F931E831C5C00BFFA01 /* LoginViewModelTests.swift */,
-				D67DF563232ABB950051D207 /* ManageViewPledgeViewModel.swift */,
-				D61440FD23200F09002A6507 /* ManageViewPledgeViewModelTests.swift */,
+				D67DF563232ABB950051D207 /* ManagePledgeViewModel.swift */,
+				D61440FD23200F09002A6507 /* ManagePledgeViewModelTests.swift */,
 				D04AAC1B218BB70C00CF713E /* MessageBannerViewModel.swift */,
 				D04AAC11218BB70A00CF713E /* MessageBannerViewModelTests.swift */,
 				A7F4419B1D005A9400FE6FC5 /* MessageCellViewModel.swift */,
@@ -4650,7 +4650,7 @@
 				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
 				D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
 				0199545F1D2D818E00BC1390 /* DashboardProjectsDrawerViewModel.swift in Sources */,
-				D67DF564232ABB960051D207 /* ManageViewPledgeViewModel.swift in Sources */,
+				D67DF564232ABB960051D207 /* ManagePledgeViewModel.swift in Sources */,
 				D0A787BF2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift in Sources */,
 				A76126B91C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */,
 				A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */,
@@ -4850,7 +4850,7 @@
 				A7ED1F341E830FDC00BFFA01 /* SharedFunctionsTests.swift in Sources */,
 				D6B4EFFE21079C870079159D /* SettingsNewslettersViewModelTests.swift in Sources */,
 				A7ED1FC81E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift in Sources */,
-				D61440FE23200F09002A6507 /* ManageViewPledgeViewModelTests.swift in Sources */,
+				D61440FE23200F09002A6507 /* ManagePledgeViewModelTests.swift in Sources */,
 				A7ED1F311E830FDC00BFFA01 /* PaginateTests.swift in Sources */,
 				77BC00F02326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift in Sources */,
 				77277C3022B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift in Sources */,

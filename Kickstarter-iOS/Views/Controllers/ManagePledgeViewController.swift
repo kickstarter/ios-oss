@@ -44,7 +44,7 @@ final class ManagePledgeViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel = ManageViewPledgeViewModel()
+  private let viewModel = ManagePledgeViewModel()
 
   static func instantiate(with project: Project, reward: Reward) -> ManagePledgeViewController {
     let manageViewPledgeVC = ManagePledgeViewController.instantiate()
