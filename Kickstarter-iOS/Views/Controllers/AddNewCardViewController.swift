@@ -11,6 +11,10 @@ internal protocol AddNewCardViewControllerDelegate: AnyObject {
     didSucceedWithMessage message: String
   )
   func addNewCardViewControllerDismissed(_ viewController: AddNewCardViewController)
+  func addNewCardViewController(
+    _ viewController: AddNewCardViewController,
+    _ newCard: GraphUserCreditCard.CreditCard
+  )
 }
 
 internal final class AddNewCardViewController: UIViewController,
@@ -196,6 +200,13 @@ internal final class AddNewCardViewController: UIViewController,
       .observeForUI()
       .observeValues {
         STPPaymentConfiguration.shared().publishableKey = $0
+      }
+
+    self.viewModel.outputs.newCardAdded
+      .observeForUI()
+      .observeValues { [weak self] newCard in
+        guard let _self = self else { return }
+        _self.delegate?.addNewCardViewController(_self, newCard)
       }
 
     self.viewModel.outputs.dismissKeyboard
