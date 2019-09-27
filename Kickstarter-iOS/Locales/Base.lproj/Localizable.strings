@@ -449,6 +449,7 @@
 "Shipping" = "Shipping";
 "Shipping_addresses" = "Shipping addresses";
 "Shipping_destination" = "Shipping destination";
+"Shipping_to_country" = "Shipping: %{country}";
 "Ships_to" = "Ships to:";
 "Ships_to_shipping_summary" = "Ships to: %{shipping_summary}";
 "Ships_worldwide" = "Ships worldwide";

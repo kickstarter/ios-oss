@@ -34,14 +34,8 @@ final class ToggleViewControllerTests: TestCase {
     }
   }
 
-  func testViewSupportsDynamicType() {
-    let traits = [
-      UITraitCollection(preferredContentSizeCategory: .extraExtraLarge),
-      UITraitCollection(preferredContentSizeCategory: .accessibilityLarge),
-      UITraitCollection(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge)
-    ]
-
-    traits.forEach { additionalTraits in
+  func testView_LargerText() {
+    UITraitCollection.allCases.forEach { additionalTraits in
       let controller = ToggleViewController.instantiate()
       controller.titleLabel.text = "Title for testing purposes only"
       controller.toggle.setOn(true, animated: false)

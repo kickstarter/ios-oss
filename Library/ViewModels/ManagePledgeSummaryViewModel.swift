@@ -58,8 +58,10 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
       }
       .skipNil()
 
-    self.shippingLocationText = backing.ignoreValues()
-      .map { Strings.Shipping() + ": " + "Australia" }
+    self.shippingLocationText = backing
+      .map { $0.locationName }
+      .skipNil()
+      .map { Strings.Shipping_to_country(country: $0) }
 
     self.shippingLocationStackViewIsHidden = self.projectSignal
       .map(shouldHideShippingLocationStackView)
@@ -84,14 +86,14 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
 
 private func shouldHideShippingLocationStackView(_ project: Project) -> Bool {
   guard let backing = project.personalization.backing,
-    let _ = backing.rewardId else {
+    let _ = backing.locationName else {
     return true
   }
   if let reward = backing.reward {
     return !reward.shipping.enabled || reward.isNoReward
   }
 
-  return backing.locationId.isNil
+  return false
 }
 
 private func formattedPledgeDate(_ backing: Backing) -> String {

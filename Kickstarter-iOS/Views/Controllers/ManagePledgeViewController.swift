@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class ManageViewPledgeViewController: UIViewController {
+final class ManagePledgeViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var closeButton: UIBarButtonItem = {
@@ -11,7 +11,7 @@ final class ManageViewPledgeViewController: UIViewController {
       image: UIImage(named: "icon--cross"),
       style: .plain,
       target: self,
-      action: #selector(ManageViewPledgeViewController.closeButtonTapped)
+      action: #selector(ManagePledgeViewController.closeButtonTapped)
     )
   }()
 
@@ -20,7 +20,7 @@ final class ManageViewPledgeViewController: UIViewController {
       image: UIImage(named: "icon--more-menu"),
       style: .plain,
       target: self,
-      action: #selector(ManageViewPledgeViewController.menuButtonTapped)
+      action: #selector(ManagePledgeViewController.menuButtonTapped)
     )
   }()
 
@@ -48,10 +48,10 @@ final class ManageViewPledgeViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel = ManageViewPledgeViewModel()
+  private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
 
-  static func instantiate(with project: Project, reward: Reward) -> ManageViewPledgeViewController {
-    let manageViewPledgeVC = ManageViewPledgeViewController.instantiate()
+  static func instantiate(with project: Project, reward: Reward) -> ManagePledgeViewController {
+    let manageViewPledgeVC = ManagePledgeViewController.instantiate()
     manageViewPledgeVC.viewModel.inputs.configureWith(project, reward: reward)
 
     return manageViewPledgeVC

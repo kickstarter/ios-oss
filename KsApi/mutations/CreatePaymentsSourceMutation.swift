@@ -14,6 +14,12 @@ public struct CreatePaymentSourceMutation<T: GraphMutationInput>: GraphMutation 
       clientMutationId
       errorMessage
       isSuccessful
+      paymentSource {
+          expirationDate
+          id
+          lastFour
+          type
+        }
       }
     }
     """

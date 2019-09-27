@@ -42,6 +42,7 @@ public let blackButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .highlighted) .~ .white
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_soft_black.mixDarker(0.66)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_soft_black.mixLighter(0.36)
+  <> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_soft_black.mixLighter(0.46)
 
 // MARK: - Blue
 
