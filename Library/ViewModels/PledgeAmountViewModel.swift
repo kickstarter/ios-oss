@@ -4,6 +4,11 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+public enum PledgeAmountStepperConstants {
+  static let min: Double = 0
+  static let max: Double = 1_000_000_000
+}
+
 public protocol PledgeAmountViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func doneButtonTapped()
@@ -86,8 +91,8 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
 
-    self.stepperMinValue = minValue.mapConst(0)
-    self.stepperMaxValue = minValue.mapConst(1_000_000_000)
+    self.stepperMinValue = minValue.mapConst(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue = minValue.mapConst(PledgeAmountStepperConstants.max)
 
     let stepperValueChanged = Signal.combineLatest(
       self.stepperMinValue.signal,

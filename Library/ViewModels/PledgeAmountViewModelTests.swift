@@ -46,8 +46,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([1])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(0)
-    self.stepperMaxValue.assertValue(1_000_000_000)
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperStepValue.assertValue(1)
     self.stepperValue.assertValues([1])
     self.textFieldValue.assertValues(["1"])
@@ -61,8 +61,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([10])
     self.currency.assertValues(["MX$"])
-    self.stepperMinValue.assertValue(0)
-    self.stepperMaxValue.assertValue(1_000_000_000)
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperStepValue.assertValue(10)
     self.stepperValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
@@ -79,8 +79,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([1])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(0)
-    self.stepperMaxValue.assertValue(1_000_000_000)
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperStepValue.assertValue(1)
     self.stepperValue.assertValues([1])
     self.textFieldValue.assertValues(["1"])
@@ -91,8 +91,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([10])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(0)
-    self.stepperMaxValue.assertValue(1_000_000_000)
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperStepValue.assertValue(10)
     self.stepperValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
@@ -109,8 +109,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([200])
     self.currency.assertValues(["¥"])
-    self.stepperMinValue.assertValue(0)
-    self.stepperMaxValue.assertValue(1_000_000_000)
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperStepValue.assertValue(200)
     self.stepperValue.assertValues([200])
     self.textFieldValue.assertValues(["200"])
@@ -654,7 +654,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.stepperValueChanged(11)
     self.generateSelectionFeedback.assertValueCount(1)
 
-    self.vm.inputs.stepperValueChanged(1_000_000_000)
+    self.vm.inputs.stepperValueChanged(PledgeAmountStepperConstants.max)
     self.generateSelectionFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(12)
@@ -674,7 +674,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.stepperValueChanged(11)
     self.generateNotificationWarningFeedback.assertValueCount(0)
 
-    self.vm.inputs.stepperValueChanged(1_000_000_000)
+    self.vm.inputs.stepperValueChanged(PledgeAmountStepperConstants.max)
     self.generateNotificationWarningFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(12)
@@ -712,11 +712,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testStepperValueChangesWithTextFieldInput() {
-    let maxValue: Double = 1_000_000_000
-    let maxValueFormatted = String(format: "%.0f", maxValue)
+    let maxValue = PledgeAmountStepperConstants.max
 
     self.vm.inputs.configureWith(project: .template, reward: .template)
-
     self.stepperValue.assertValues([10])
 
     self.vm.inputs.textFieldValueChanged("11")
@@ -725,7 +723,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.textFieldValueChanged("16")
     self.stepperValue.assertValues([10, 11, 16])
 
-    self.vm.inputs.textFieldValueChanged(maxValueFormatted)
+    self.vm.inputs.textFieldValueChanged(String(format: "%.0f", maxValue))
     self.stepperValue.assertValues([10, 11, 16, maxValue])
 
     self.vm.inputs.textFieldValueChanged("0")
@@ -760,7 +758,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testTextFieldDidEndEditing() {
-    let maxValue: Double = 1_000_000_000
+    let maxValue = PledgeAmountStepperConstants.max
     let maxValueFormatted = String(format: "%.0f", maxValue)
 
     self.vm.inputs.configureWith(project: .template, reward: .template)
