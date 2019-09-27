@@ -7293,6 +7293,23 @@ daring ideas."
     )
   }
   /**
+   "Shipping: %{country}"
+
+   - **en**: "Shipping: %{country}"
+   - **de**: "Versand: %{country}"
+   - **es**: "Envío: %{country}"
+   - **fr**: "Frais de port : %{country}"
+   - **ja**: "送料：%{country}"
+  */
+  public static func Shipping_to_country(country: String) -> String {
+    return localizedString(
+      key: "Shipping_to_country",
+      defaultValue: "Shipping: %{country}",
+      count: nil,
+      substitutions: ["country": country]
+    )
+  }
+  /**
    "Ships to:"
 
    - **en**: "Ships to:"

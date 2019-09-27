@@ -6,8 +6,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-internal final class ManageViewPledgeViewModelTests: TestCase {
-  private let vm = ManageViewPledgeViewModel()
+internal final class ManagePledgeViewModelTests: TestCase {
+  private let vm = ManagePledgeViewModel()
 
   private let configurePaymentMethodView = TestObserver<Project, Never>()
   private let configurePledgeSummaryView = TestObserver<Project, Never>()

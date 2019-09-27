@@ -449,6 +449,7 @@
 "Shipping" = "Envío";
 "Shipping_addresses" = "Direcciones de envío";
 "Shipping_destination" = "Destino de envío";
+"Shipping_to_country" = "Envío: %{country}";
 "Ships_to" = "Envío a:";
 "Ships_to_shipping_summary" = "Países de envío: %{shipping_summary}";
 "Ships_worldwide" = "Envíos a todo el mundo";
