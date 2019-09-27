@@ -14,6 +14,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
 public protocol ManagePledgeViewModelInputs {
   func configureWith(_ project: Project, reward: Reward)
   func menuButtonTapped()
+  func menuOptionSelected(with action: ManagePledgeAlertAction)
   func viewDidLoad()
 }
 
@@ -21,6 +22,12 @@ public protocol ManagePledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<Reward, Never> { get }
+  var goToCancelPledge: Signal<Void, Never> { get }
+  var goToChangePaymentMethod: Signal<Void, Never> { get }
+  var goToContactCreator: Signal<Void, Never> { get }
+  var goToRewards: Signal<Project, Never> { get }
+  var goToUpdatePledge: Signal<Project, Never> { get }
+
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var title: Signal<String, Never> { get }
 }
@@ -62,6 +69,24 @@ public final class ManagePledgeViewModel:
           return [.contactCreator]
         }
       }
+
+    self.goToUpdatePledge = project
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
+
+    self.goToRewards = project
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .chooseAnotherReward })
+
+    self.goToCancelPledge = self.menuOptionSelectedSignal
+      .filter { $0 == .cancelPledge }
+      .ignoreValues()
+
+    self.goToContactCreator = self.menuOptionSelectedSignal
+      .filter { $0 == .contactCreator }
+      .ignoreValues()
+
+    self.goToChangePaymentMethod = self.menuOptionSelectedSignal
+      .filter { $0 == .changePaymentMethod }
+      .ignoreValues()
   }
 
   private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
@@ -74,6 +99,12 @@ public final class ManagePledgeViewModel:
     self.menuButtonTappedObserver.send(value: ())
   }
 
+  private let (menuOptionSelectedSignal, menuOptionSelectedObserver) = Signal<ManagePledgeAlertAction, Never>
+    .pipe()
+  public func menuOptionSelected(with action: ManagePledgeAlertAction) {
+    self.menuOptionSelectedObserver.send(value: action)
+  }
+
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
   public func viewDidLoad() {
     self.viewDidLoadObserver.send(value: ())
@@ -82,6 +113,11 @@ public final class ManagePledgeViewModel:
   public let configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<Reward, Never>
+  public let goToCancelPledge: Signal<Void, Never>
+  public let goToChangePaymentMethod: Signal<Void, Never>
+  public let goToContactCreator: Signal<Void, Never>
+  public let goToRewards: Signal<Project, Never>
+  public let goToUpdatePledge: Signal<Project, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let title: Signal<String, Never>
 

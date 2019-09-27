@@ -128,6 +128,36 @@ final class ManagePledgeViewController: UIViewController {
       .observeValues { [weak self] options in
         self?.showActionSheetMenuWithOptions(options)
       }
+
+    self.viewModel.outputs.goToRewards
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToRewards(project)
+      }
+
+    self.viewModel.outputs.goToUpdatePledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToUpdatePledge(project)
+      }
+
+    self.viewModel.outputs.goToChangePaymentMethod
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToChangePaymentMethod()
+      }
+
+    self.viewModel.outputs.goToContactCreator
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToContactCreator()
+      }
+
+    self.viewModel.outputs.goToCancelPledge
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToCancelPledge()
+      }
   }
 
   // MARK: - Configuration
@@ -195,7 +225,9 @@ final class ManagePledgeViewController: UIViewController {
       let style: UIAlertAction.Style = option == .cancelPledge ? .destructive : .default
 
       actionSheet.addAction(
-        UIAlertAction(title: title, style: style)
+        UIAlertAction(title: title, style: style, handler: { _ in
+          self.viewModel.inputs.menuOptionSelected(with: option)
+        })
       )
     }
 
@@ -208,6 +240,30 @@ final class ManagePledgeViewController: UIViewController {
 
   @objc private func closeButtonTapped() {
     self.dismiss(animated: true)
+  }
+
+  // MARK: - Functions
+
+  private func goToRewards(_ project: Project) {
+    let rewardsVC = RewardsCollectionViewController.instantiate(with: project, refTag: nil)
+
+    self.navigationController?.pushViewController(rewardsVC, animated: true)
+  }
+
+  private func goToUpdatePledge(_: Project) {
+    // TODO:
+  }
+
+  private func goToCancelPledge() {
+    // TODO:
+  }
+
+  private func goToChangePaymentMethod() {
+    // TODO:
+  }
+
+  private func goToContactCreator() {
+    // TODO:
   }
 }
 
