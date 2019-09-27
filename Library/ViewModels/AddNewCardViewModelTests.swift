@@ -19,6 +19,7 @@ internal final class AddNewCardViewModelTests: TestCase {
   private let cardExpMonth = TestObserver<Month, Never>()
   private let cardExpYear = TestObserver<Year, Never>()
   private let cardCVC = TestObserver<String, Never>()
+  private let newCardAdded = TestObserver<GraphUserCreditCard.CreditCard, Never>()
   private let paymentDetailsBecomeFirstResponder = TestObserver<Void, Never>()
   private let rememberThisCardToggleViewControllerContainerIsHidden = TestObserver<Bool, Never>()
   private let rememberThisCardToggleViewControllerIsOn = TestObserver<Bool, Never>()
@@ -37,6 +38,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.outputs.cardholderNameBecomeFirstResponder
       .observe(self.cardholderNameBecomeFirstResponder.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
+    self.vm.outputs.newCardAdded.observe(self.newCardAdded.observer)
     self.vm.outputs.paymentDetails.map { $0.0 }.observe(self.cardholderName.observer)
     self.vm.outputs.paymentDetails.map { $0.1 }.observe(self.cardNumber.observer)
     self.vm.outputs.paymentDetails.map { $0.2 }.observe(self.cardExpMonth.observer)
