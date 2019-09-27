@@ -60,6 +60,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .skipNil()
       .map(Double.init)
       .skipNil()
+      .map(rounded)
 
     let stepperValue = Signal.merge(
       minValue,
@@ -68,14 +69,25 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     )
 
     self.textFieldValue = stepperValue
-      .map { String(format: "%.0f", $0) }
-      .skipRepeats()
+      .map { value in
+        // Adds trailing zeros if the rounded number has non-zero remainder
+        // Removes trailing zeros and the decimal point otherwise
+        // Example:
+        //  25 => 25
+        //  25. => 25
+        //  25.0  => 25
+        //  25.00 => 25
+        //  25.1 => 25.10
+        //  25.10 = 25.10
+        let numberOfDecimalPlaces = value.truncatingRemainder(dividingBy: 1) == 0 ? 0 : 2
+        return String(format: "%.\(numberOfDecimalPlaces)f", value)
+      }
 
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
 
     self.stepperMinValue = minValue.mapConst(0)
-    self.stepperMaxValue = minValue.mapConst(Double.greatestFiniteMagnitude)
+    self.stepperMaxValue = minValue.mapConst(1_000_000_000)
 
     let stepperValueChanged = Signal.combineLatest(
       self.stepperMinValue.signal,
@@ -107,12 +119,14 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.amountPrimitive = updatedValue
       .map(third)
+      .map(rounded)
       .skipRepeats()
 
     let isValueValid = updatedValue
       .map { (min: Double, max: Double, doubleValue: Double) -> Bool in
         min <= doubleValue && doubleValue <= max
       }
+      .skipRepeats()
 
     self.doneButtonIsEnabled = isValueValid
 
@@ -125,8 +139,9 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.stepperValue = Signal.merge(
       minValue,
-      textFieldValue
+      self.amountPrimitive
     )
+    .skipRepeats()
 
     self.textFieldIsFirstResponder = self.doneButtonTappedProperty.signal
       .mapConst(false)
@@ -176,4 +191,16 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
   public var inputs: PledgeAmountViewModelInputs { return self }
   public var outputs: PledgeAmountViewModelOutputs { return self }
+}
+
+// MARK: - Functions
+
+// Limits the amount of decimal numbers to 2
+// Example:
+//  rounded(1.12) => 1.12
+//  rounded(1.123) => 1.12
+//  rounded(1.125) => 1.13
+//  rounded(1.123456789) => 1.12
+private func rounded(_ value: Double) -> Double {
+  return round(value * 100) / 100
 }
