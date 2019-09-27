@@ -39,8 +39,8 @@ final class ManageViewPledgeViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var rewardView: RewardCardView = {
-    RewardCardView(frame: .zero)
+  private lazy var rewardView: ManagePledgeRewardView = {
+    ManagePledgeRewardView(frame: .zero)
   }()
 
   private lazy var rewardReceivedViewController: ManageViewPledgeRewardReceivedViewController = {
