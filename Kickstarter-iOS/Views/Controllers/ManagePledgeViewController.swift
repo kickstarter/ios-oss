@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class ManageViewPledgeViewController: UIViewController {
+final class ManagePledgeViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var closeButton: UIBarButtonItem = {
@@ -11,7 +11,7 @@ final class ManageViewPledgeViewController: UIViewController {
       image: UIImage(named: "icon--cross"),
       style: .plain,
       target: self,
-      action: #selector(ManageViewPledgeViewController.closeButtonTapped)
+      action: #selector(ManagePledgeViewController.closeButtonTapped)
     )
   }()
 
@@ -20,7 +20,7 @@ final class ManageViewPledgeViewController: UIViewController {
       image: UIImage(named: "icon--more-menu"),
       style: .plain,
       target: self,
-      action: #selector(ManageViewPledgeViewController.menuButtonTapped)
+      action: #selector(ManagePledgeViewController.menuButtonTapped)
     )
   }()
 
@@ -44,10 +44,10 @@ final class ManageViewPledgeViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel = ManageViewPledgeViewModel()
+  private let viewModel = ManagePledgeViewModel()
 
-  static func instantiate(with project: Project, reward: Reward) -> ManageViewPledgeViewController {
-    let manageViewPledgeVC = ManageViewPledgeViewController.instantiate()
+  static func instantiate(with project: Project, reward: Reward) -> ManagePledgeViewController {
+    let manageViewPledgeVC = ManagePledgeViewController.instantiate()
     manageViewPledgeVC.viewModel.inputs.configureWith(project, reward: reward)
 
     return manageViewPledgeVC
@@ -131,6 +131,36 @@ final class ManageViewPledgeViewController: UIViewController {
       .observeValues { [weak self] options in
         self?.showActionSheetMenuWithOptions(options)
       }
+
+    self.viewModel.outputs.goToRewards
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToRewards(project)
+      }
+
+    self.viewModel.outputs.goToUpdatePledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToUpdatePledge(project)
+      }
+
+    self.viewModel.outputs.goToChangePaymentMethod
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToChangePaymentMethod()
+      }
+
+    self.viewModel.outputs.goToContactCreator
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToContactCreator()
+      }
+
+    self.viewModel.outputs.goToCancelPledge
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToCancelPledge()
+      }
   }
 
   // MARK: - Configuration
@@ -207,7 +237,9 @@ final class ManageViewPledgeViewController: UIViewController {
       let style: UIAlertAction.Style = option == .cancelPledge ? .destructive : .default
 
       actionSheet.addAction(
-        UIAlertAction(title: title, style: style)
+        UIAlertAction(title: title, style: style, handler: { _ in
+          self.viewModel.inputs.menuOptionSelected(with: option)
+        })
       )
     }
 
@@ -220,6 +252,30 @@ final class ManageViewPledgeViewController: UIViewController {
 
   @objc private func closeButtonTapped() {
     self.dismiss(animated: true)
+  }
+
+  // MARK: - Functions
+
+  private func goToRewards(_ project: Project) {
+    let rewardsVC = RewardsCollectionViewController.instantiate(with: project, refTag: nil)
+
+    self.navigationController?.pushViewController(rewardsVC, animated: true)
+  }
+
+  private func goToUpdatePledge(_: Project) {
+    // TODO:
+  }
+
+  private func goToCancelPledge() {
+    // TODO:
+  }
+
+  private func goToChangePaymentMethod() {
+    // TODO:
+  }
+
+  private func goToContactCreator() {
+    // TODO:
   }
 }
 
