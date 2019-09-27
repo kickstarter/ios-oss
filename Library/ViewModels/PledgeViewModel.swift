@@ -23,7 +23,7 @@ public protocol PledgeViewModelInputs {
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
   )
   func paymentAuthorizationViewControllerDidFinish()
-  func pledgeAmountDidUpdate(to amount: Double)
+  func pledgeAmountDidUpdate(_ amount: (value: Double, isValid: Bool))
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
   func userSessionStarted()
@@ -66,7 +66,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(isNotNil)
 
     let pledgeAmount = Signal.merge(
-      self.pledgeAmountSignal,
+      self.pledgeAmountSignal.map(first),
       reward.map { $0.minimum }
     )
 
@@ -101,7 +101,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.configurePaymentMethodsViewControllerWithValue, self.creditCardSelectedSignal
     )
 
-    self.updatePledgeButtonEnabled = paymentSourceSelected.mapConst(true)
+    self.updatePledgeButtonEnabled = Signal.combineLatest(
+      paymentSourceSelected.mapConst(true),
+      self.pledgeAmountSignal.map(second)
+    )
+    .map { paymentSourceSelected, amountInputIsValid in paymentSourceSelected && amountInputIsValid }
 
     self.shippingLocationViewHidden = reward
       .map { $0.shipping.enabled }
@@ -251,8 +255,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.paymentAuthorizationDidFinishObserver.send(value: ())
   }
 
-  private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
-  public func pledgeAmountDidUpdate(to amount: Double) {
+  private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<(Double, Bool), Never>.pipe()
+  public func pledgeAmountDidUpdate(_ amount: (value: Double, isValid: Bool)) {
     self.pledgeAmountObserver.send(value: amount)
   }
 
