@@ -29,7 +29,7 @@ public struct CreateBackingInput: GraphMutationInput {
       "amount": amount,
       "paymentSourceId": paymentSourceId,
       // swiftlint:disable:next line_length
-      "paymentType": "credit_card", // this is temporary and will be removed once the mutation has been updated
+      "paymentType": PaymentType.creditCard.rawValue, // this is temporary and will be removed once the mutation has been updated
       "projectId": projectId
     ]
 
