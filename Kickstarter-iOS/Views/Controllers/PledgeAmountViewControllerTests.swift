@@ -78,12 +78,14 @@ final class PledgeAmountViewControllerTests: TestCase {
   }
 
   func testView_StepperIncrementButtonDisabled_WhenStepperValueSetToMaximumStepperValue() {
+    let maxValue = PledgeAmountStepperConstants.max
+
     let stepper = UIStepper(frame: .zero)
-      |> \.maximumValue .~ maximumValue()
-      |> \.value .~ maximumValue()
+      |> \.maximumValue .~ maxValue
+      |> \.value .~ maxValue
 
     let textField = UITextField(frame: .zero)
-      |> \.text .~ String(format: "%.0f", maximumValue())
+      |> \.text .~ String(format: "%.0f", maxValue)
 
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
@@ -141,7 +143,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       |> (Project.lens.country .. Project.Country.lens.maxPledge) .~ 10_000
 
     let stepper = UIStepper(frame: .zero)
-      |> \.maximumValue .~ maximumValue()
+      |> \.maximumValue .~ PledgeAmountStepperConstants.max
       |> \.value .~ 10_000
 
     [Device.phone4_7inch, Device.pad].forEach { device in
@@ -161,7 +163,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       |> (Project.lens.country .. Project.Country.lens.maxPledge) .~ 10_000
 
     let stepper = UIStepper(frame: .zero)
-      |> \.maximumValue .~ maximumValue()
+      |> \.maximumValue .~ PledgeAmountStepperConstants.max
       |> \.value .~ 10_001
 
     [Device.phone4_7inch, Device.pad].forEach { device in

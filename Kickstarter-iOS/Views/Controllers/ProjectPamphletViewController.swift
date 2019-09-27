@@ -207,7 +207,7 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func goToManageViewPledge(project: Project, reward: Reward, refTag _: RefTag?) {
-    let managePledgeViewController = ManageViewPledgeViewController.instantiate(with: project, reward: reward)
+    let managePledgeViewController = ManagePledgeViewController.instantiate(with: project, reward: reward)
 
     let nav = RewardPledgeNavigationController(rootViewController: managePledgeViewController)
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
