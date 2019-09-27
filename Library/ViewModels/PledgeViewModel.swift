@@ -4,6 +4,25 @@ import PassKit
 import Prelude
 import ReactiveSwift
 
+public enum PledgeViewContext {
+  case pledge
+  case update
+
+  var isPledge: Bool {
+    switch self {
+    case .pledge: return true
+    case .update: return false
+    }
+  }
+
+  var isUpdate: Bool {
+    switch self {
+    case .pledge: return false
+    case .update: return true
+    }
+  }
+}
+
 public typealias StripeConfigurationData = (merchantIdentifier: String, publishableKey: String)
 public typealias CreateBackingData = (
   project: Project, reward: Reward, pledgeAmount: Double,
@@ -17,7 +36,7 @@ public typealias PKPaymentData = (displayName: String, network: String, transact
 
 public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
-  func configureWith(project: Project, reward: Reward, refTag: RefTag?)
+  func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext)
   func creditCardSelected(with paymentSourceId: String)
   func paymentAuthorizationDidAuthorizePayment(
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
@@ -26,6 +45,7 @@ public protocol PledgeViewModelInputs {
   func pledgeAmountDidUpdate(to amount: Double)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
+  func traitCollectionDidChange()
   func userSessionStarted()
   func viewDidLoad()
 }
@@ -35,11 +55,16 @@ public protocol PledgeViewModelOutputs {
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
+  var confirmButtonHidden: Signal<Bool, Never> { get }
+  var confirmationLabelAttributedText: Signal<NSAttributedString, Never> { get }
+  var confirmationLabelHidden: Signal<Bool, Never> { get }
   var continueViewHidden: Signal<Bool, Never> { get }
   var createBackingError: Signal<String, Never> { get }
+  var descriptionViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<Project, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
+  var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var updatePledgeButtonEnabled: Signal<Bool, Never> { get }
 }
@@ -58,9 +83,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map(first)
     .skipNil()
 
-    let project = initialData.map(first)
-    let reward = initialData.map(second)
-    let refTag = initialData.map(third)
+    let project = initialData.map { $0.0 }
+    let reward = initialData.map { $0.1 }
+    let refTag = initialData.map { $0.2 }
+    let context = initialData.map { $0.3 }
+
+    self.descriptionViewHidden = context.map { $0.isUpdate }
+    self.sectionSeparatorsHidden = context.map { $0.isUpdate }
+
+    self.confirmButtonHidden = context.map { $0.isPledge }
+    self.confirmationLabelHidden = context.map { $0.isPledge }
+
     let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
@@ -94,8 +127,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
     .skipNil()
 
-    self.continueViewHidden = isLoggedIn
-    self.paymentMethodsViewHidden = isLoggedIn.negate()
+    self.continueViewHidden = Signal
+      .combineLatest(isLoggedIn, context)
+      .map { $0 || $1.isUpdate }
+
+    self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
+      .map { !$0 || $1.isUpdate }
 
     let paymentSourceSelected = Signal.combineLatest(
       self.configurePaymentMethodsViewControllerWithValue, self.creditCardSelectedSignal
@@ -213,6 +250,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.goToThanks = Signal.combineLatest(project, createApplePayBackingEventSuccess)
       .takeWhen(self.paymentAuthorizationDidFinishSignal)
       .map(first)
+
+    self.confirmationLabelAttributedText = Signal.merge(
+      project,
+      project.takeWhen(self.traitCollectionDidChangeSignal)
+    )
+    .map(attributedConfirmationString(with:))
+    .skipNil()
   }
 
   // MARK: - Inputs
@@ -222,9 +266,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.applePayButtonTappedObserver.send(value: ())
   }
 
-  private let configureWithDataProperty = MutableProperty<(Project, Reward, RefTag?)?>(nil)
-  public func configureWith(project: Project, reward: Reward, refTag: RefTag?) {
-    self.configureWithDataProperty.value = (project, reward, refTag)
+  private let configureWithDataProperty = MutableProperty<(Project, Reward, RefTag?, PledgeViewContext)?>(nil)
+  public func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext) {
+    self.configureWithDataProperty.value = (project, reward, refTag, context)
   }
 
   private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<String, Never>.pipe()
@@ -272,6 +316,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     return self.createApplePayBackingStatusProperty.value
   }
 
+  private let (traitCollectionDidChangeSignal, traitCollectionDidChangeObserver) = Signal<(), Never>.pipe()
+  public func traitCollectionDidChange() {
+    self.traitCollectionDidChangeObserver.send(value: ())
+  }
+
   private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
   public func userSessionStarted() {
     self.userSessionStartedObserver.send(value: ())
@@ -288,14 +337,55 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
+  public let confirmButtonHidden: Signal<Bool, Never>
+  public let confirmationLabelAttributedText: Signal<NSAttributedString, Never>
+  public let confirmationLabelHidden: Signal<Bool, Never>
   public let continueViewHidden: Signal<Bool, Never>
+  public let descriptionViewHidden: Signal<Bool, Never>
   public let createBackingError: Signal<String, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<Project, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let updatePledgeButtonEnabled: Signal<Bool, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
+}
+
+private func attributedConfirmationString(with project: Project) -> NSAttributedString? {
+  let string = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
+    project_deadline: Format.date(
+      secondsInUTC: project.dates.deadline,
+      template: "MMMM d, yyyy"
+    )
+  )
+
+  guard let attributedString = try? NSMutableAttributedString(
+    data: Data(string.utf8),
+    options: [
+      .documentType: NSAttributedString.DocumentType.html,
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
+    documentAttributes: nil
+  ) else { return nil }
+
+  let paragraphStyle = NSMutableParagraphStyle()
+  paragraphStyle.alignment = .center
+
+  let attributes: String.Attributes = [
+    .paragraphStyle: paragraphStyle
+  ]
+
+  let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
+
+  attributedString.addAttributes(attributes, range: fullRange)
+
+  attributedString.setFontKeepingTraits(
+    to: UIFont.ksr_caption1(),
+    color: UIColor.ksr_text_dark_grey_500
+  )
+
+  return attributedString
 }

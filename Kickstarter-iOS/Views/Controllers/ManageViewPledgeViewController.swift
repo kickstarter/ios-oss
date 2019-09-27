@@ -231,8 +231,8 @@ final class ManageViewPledgeViewController: UIViewController {
   }
 
   private func goToUpdatePledge(project: Project, reward: Reward) {
-    let vc = UpdatePledgeViewController.instantiate()
-    vc.configureWith(project: project, reward: reward, refTag: nil)
+    let vc = PledgeViewController.instantiate()
+    vc.configureWith(project: project, reward: reward, refTag: nil, context: .update)
 
     self.show(vc, sender: nil)
   }
