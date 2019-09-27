@@ -23,7 +23,7 @@ final class PledgeViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: .template, reward: .template, refTag: nil)
+        controller.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.run()
@@ -40,7 +40,7 @@ final class PledgeViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: .template, reward: reward, refTag: nil)
+        controller.configureWith(project: .template, reward: reward, refTag: nil, context: .pledge)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.run()
