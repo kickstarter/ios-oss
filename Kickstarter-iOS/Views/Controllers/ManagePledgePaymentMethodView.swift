@@ -37,9 +37,6 @@ final class ManagePledgePaymentMethodView: UIView {
   }
 
   private func configureViews() {
-    _ = self
-      |> \.accessibilityElements .~ self.subviews
-
     _ = ([self.lastFourLabel, self.expirationDateLabel], self.cardLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
