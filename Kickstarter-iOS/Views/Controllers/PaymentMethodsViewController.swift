@@ -204,7 +204,9 @@ extension PaymentMethodsViewController: AddNewCardViewControllerDelegate {
     didAdd _: GraphUserCreditCard.CreditCard,
     withMessage message: String
   ) {
-    self.viewModel.inputs.addNewCardSucceeded(with: message)
+    self.dismiss(animated: true) {
+      self.viewModel.inputs.addNewCardSucceeded(with: message)
+    }
   }
 
   func addNewCardViewControllerDismissed(_: AddNewCardViewController) {
