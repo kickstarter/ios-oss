@@ -140,11 +140,9 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
       |> \.id .~ "123"
 
     self.vm.inputs.configureWith(value: card)
-
-    self.notifyDelegateOfCardSelected.assertDidNotEmitValue()
+    self.notifyDelegateOfCardSelected.assertValues(["123"])
 
     self.vm.inputs.selectButtonTapped()
-
-    self.notifyDelegateOfCardSelected.assertValues(["123"])
+    self.notifyDelegateOfCardSelected.assertValues(["123", "123"])
   }
 }

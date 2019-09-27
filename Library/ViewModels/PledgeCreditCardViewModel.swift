@@ -65,9 +65,17 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
     self.expirationDateText = creditCard
       .map { Strings.Credit_card_expiration(expiration_date: $0.expirationDate()) }
 
-    self.notifyDelegateOfCardSelected = creditCard
+    let creditCardInitial = creditCard
+      .map { $0.id }
+
+    let creditCardSelected = creditCard
       .takeWhen(self.selectButtonTappedProperty.signal)
       .map { $0.id }
+
+    self.notifyDelegateOfCardSelected = Signal.merge(
+      creditCardInitial,
+      creditCardSelected
+    )
 
     let cardAndSelectedCard = Signal.combineLatest(
       creditCard,
