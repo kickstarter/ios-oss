@@ -43,6 +43,7 @@ public protocol PledgeViewModelInputs {
   )
   func paymentAuthorizationViewControllerDidFinish()
   func pledgeAmountDidUpdate(to amount: Double)
+  func pledgeButtonTapped()
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
   func traitCollectionDidChange()
@@ -177,6 +178,31 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       refTag
     ).map { $0 as CreateBackingData }
 
+    // MARK: Create Backing
+
+    let createBackingEvent = Signal.combineLatest(backingData, self.creditCardSelectedSignal)
+      .takeWhen(self.pledgeButtonTappedSignal)
+      .map { backingData, paymentSourceId in
+        (
+          backingData.project,
+          backingData.reward,
+          backingData.pledgeAmount,
+          backingData.selectedShippingRule,
+          backingData.refTag,
+          paymentSourceId
+        )
+      }
+      .map(CreateBackingInput.input(from:reward:pledgeAmount:selectedShippingRule:refTag:paymentSourceId:))
+      .switchMap { input in
+        AppEnvironment.current.apiService.createBacking(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    let createBackingEventSuccess = createBackingEvent.values()
+    let createBackingEventError = createBackingEvent.errors()
+      .map { $0.localizedDescription }
+
     // MARK: Apple Pay
 
     let paymentAuthorizationData = backingData
@@ -256,10 +282,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .takeWhen(self.paymentAuthorizationDidFinishSignal)
 
     self.createBackingError = Signal.merge(
-      createApplePayBackingError
+      createApplePayBackingError,
+      createBackingEventError
     )
 
-    self.goToThanks = Signal.combineLatest(project, createApplePayBackingEventSuccess)
+    let applePayTransactionCompleted = Signal.combineLatest(project, createApplePayBackingEventSuccess)
       .takeWhen(self.paymentAuthorizationDidFinishSignal)
       .map(first)
 
@@ -269,6 +296,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
     .map(attributedConfirmationString(with:))
     .skipNil()
+
+    let createBackingTransactionSuccess = project.takeWhen(createBackingEventSuccess)
+
+    self.goToThanks = Signal.merge(applePayTransactionCompleted, createBackingTransactionSuccess)
   }
 
   // MARK: - Inputs
@@ -310,6 +341,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<Double, Never>.pipe()
   public func pledgeAmountDidUpdate(to amount: Double) {
     self.pledgeAmountObserver.send(value: amount)
+  }
+
+  private let (pledgeButtonTappedSignal, pledgeButtonTappedObserver) = Signal<Void, Never>.pipe()
+  public func pledgeButtonTapped() {
+    self.pledgeButtonTappedObserver.send(value: ())
   }
 
   private let (shippingRuleSelectedSignal, shippingRuleSelectedObserver) = Signal<ShippingRule, Never>.pipe()
