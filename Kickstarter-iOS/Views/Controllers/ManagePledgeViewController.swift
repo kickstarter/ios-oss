@@ -137,6 +137,30 @@ final class ManagePledgeViewController: UIViewController {
       .observeValues { [weak self] project, reward in
         self?.goToUpdatePledge(project: project, reward: reward)
       }
+
+    self.viewModel.outputs.goToRewards
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToRewards(project)
+      }
+
+    self.viewModel.outputs.goToChangePaymentMethod
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToChangePaymentMethod()
+      }
+
+    self.viewModel.outputs.goToContactCreator
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToContactCreator()
+      }
+
+    self.viewModel.outputs.goToCancelPledge
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToCancelPledge()
+      }
   }
 
   // MARK: - Configuration
@@ -196,12 +220,10 @@ final class ManagePledgeViewController: UIViewController {
 
     options.forEach { option in
       let title: String
-      var handler: ((UIAlertAction) -> ())?
 
       switch option {
       case .updatePledge:
         title = Strings.Update_pledge()
-        handler = { _ in self.viewModel.inputs.updatePledgeTapped() }
       case .changePaymentMethod:
         title = Strings.Change_payment_method()
       case .chooseAnotherReward:
@@ -215,7 +237,9 @@ final class ManagePledgeViewController: UIViewController {
       let style: UIAlertAction.Style = option == .cancelPledge ? .destructive : .default
 
       actionSheet.addAction(
-        UIAlertAction(title: title, style: style, handler: handler)
+        UIAlertAction(title: title, style: style, handler: { _ in
+          self.viewModel.inputs.menuOptionSelected(with: option)
+        })
       )
     }
 
@@ -230,11 +254,31 @@ final class ManagePledgeViewController: UIViewController {
     self.dismiss(animated: true)
   }
 
+  // MARK: - Functions
+
+  private func goToRewards(_ project: Project) {
+    let rewardsVC = RewardsCollectionViewController.instantiate(with: project, refTag: nil)
+
+    self.navigationController?.pushViewController(rewardsVC, animated: true)
+  }
+
   private func goToUpdatePledge(project: Project, reward: Reward) {
     let vc = PledgeViewController.instantiate()
     vc.configureWith(project: project, reward: reward, refTag: nil, context: .update)
 
     self.show(vc, sender: nil)
+  }
+
+  private func goToCancelPledge() {
+    // TODO:
+  }
+
+  private func goToChangePaymentMethod() {
+    // TODO:
+  }
+
+  private func goToContactCreator() {
+    // TODO:
   }
 }
 
