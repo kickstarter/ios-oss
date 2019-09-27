@@ -971,5 +971,6 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.textFieldDidEndEditing("9.99")
     self.textFieldValue.assertValues(["10", "10", "10", "10", "10.01", "10.01", "10.01", "10.02", "10.02", "10", "9.99"])
   }
+
   // swiftlint:enable line_length
 }
