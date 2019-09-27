@@ -122,7 +122,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
   }
 
   func testGoToCancelPledge() {
-    self.vm.inputs.configureWith(.template, reward: .template)
+    self.vm.inputs.configureWith(Project.template, reward: .template)
     self.vm.inputs.viewDidLoad()
 
     self.goToCancelPledge.assertDidNotEmitValue()
@@ -134,7 +134,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
   }
 
   func testGoToChangePaymentMethod() {
-    self.vm.inputs.configureWith(.template, reward: .template)
+    self.vm.inputs.configureWith(Project.template, reward: .template)
     self.vm.inputs.viewDidLoad()
 
     self.goToChangePaymentMethod.assertDidNotEmitValue()
@@ -146,7 +146,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
   }
 
   func testGoToContactCreator() {
-    self.vm.inputs.configureWith(.template, reward: .template)
+    self.vm.inputs.configureWith(Project.template, reward: .template)
     self.vm.inputs.viewDidLoad()
 
     self.goToContactCreator.assertDidNotEmitValue()
@@ -158,7 +158,7 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
   }
 
   func testGoToRewards() {
-    self.vm.inputs.configureWith(.template, reward: .template)
+    self.vm.inputs.configureWith(Project.template, reward: .template)
     self.vm.inputs.viewDidLoad()
 
     self.goToRewards.assertDidNotEmitValue()
@@ -166,11 +166,11 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
     self.vm.inputs.menuButtonTapped()
     self.vm.inputs.menuOptionSelected(with: .chooseAnotherReward)
 
-    self.goToRewards.assertValues([.template])
+    self.goToRewards.assertValues([Project.template])
   }
 
   func testGoToUpdatePledge() {
-    self.vm.inputs.configureWith(.template, reward: .template)
+    self.vm.inputs.configureWith(Project.template, reward: .template)
     self.vm.inputs.viewDidLoad()
 
     self.goToUpdatePledge.assertDidNotEmitValue()
@@ -178,6 +178,6 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
     self.vm.inputs.menuButtonTapped()
     self.vm.inputs.menuOptionSelected(with: .updatePledge)
 
-    self.goToUpdatePledge.assertValues([.template])
+    self.goToUpdatePledge.assertValues([Project.template])
   }
 }
