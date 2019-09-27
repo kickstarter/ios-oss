@@ -49,7 +49,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
     self.backingDateText.assertValue("As of September 16, 2019")
     self.pledgeAmountText.assertValue("$30.00")
     self.shippingAmountText.assertValue("+$7.00")
-    self.shippingLocationText.assertValue("Shipping: Australia")
+    self.shippingLocationText.assertValue("Shipping: United States")
     self.totalAmountText.assertValue("$37.00")
   }
 
@@ -88,5 +88,33 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
     self.vm.inputs.configureWith(project)
 
     self.shippingLocationStackViewIsHidden.assertValue(true)
+  }
+
+  func testShippingLocationStackViewIsHidden_isTrue_WhenLocationNameIsNil() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+    let backing = .template
+      |> Backing.lens.locationName .~ nil
+      |> Backing.lens.reward .~ reward
+    let project = Project.template
+      |> \.personalization.backing .~ backing
+
+    self.vm.inputs.configureWith(project)
+
+    self.shippingLocationStackViewIsHidden.assertValue(true)
+  }
+
+  func testShippingLocationStackViewIsHidden_isFalse_WhenLocationNameIsNotNil() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+    let backing = .template
+      |> Backing.lens.locationName .~ "Brazil"
+      |> Backing.lens.reward .~ reward
+    let project = Project.template
+      |> \.personalization.backing .~ backing
+
+    self.vm.inputs.configureWith(project)
+
+    self.shippingLocationStackViewIsHidden.assertValue(false)
   }
 }
