@@ -109,8 +109,8 @@ final class ManagePledgeViewController: UIViewController {
 
     self.viewModel.outputs.configurePaymentMethodView
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.paymentMethodView.configure(with: $0)
+      .observeValues { [weak self] card in
+        self?.paymentMethodView.configure(with: card)
       }
 
     self.viewModel.outputs.configurePledgeSummaryView

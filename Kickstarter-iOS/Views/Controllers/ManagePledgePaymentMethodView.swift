@@ -63,7 +63,7 @@ final class ManagePledgePaymentMethodView: UIView {
       |> cardImageViewStyle
 
     _ = self.cardLabelsStackView
-      |> cardLabelsStackViewStyle
+      |> verticalStackViewStyle
 
     _ = self.expirationDateLabel
       |> cardExpirationDateLabelStyle
@@ -119,11 +119,6 @@ private let cardExpirationDateLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_caption1().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
-}
-
-private let cardLabelsStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> verticalStackViewStyle
 }
 
 private let cardLastFourLabelStyle: LabelStyle = { label in
