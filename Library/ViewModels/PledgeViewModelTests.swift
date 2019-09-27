@@ -794,4 +794,67 @@ final class PledgeViewModelTests: TestCase {
       self.updatePledgeButtonEnabled.assertValues([true, false])
     }
   }
+
+  func testCreateBacking() {
+    let createBacking = CreateBackingEnvelope.CreateBacking.init(checkout: Checkout(state: .verifying))
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity)
+      self.vm.inputs.viewDidLoad()
+
+      self.updatePledgeButtonEnabled.assertDidNotEmitValue()
+      self.goToThanks.assertDidNotEmitValue()
+      self.createBackingError.assertDidNotEmitValue()
+
+      self.vm.inputs.creditCardSelected(with: "123")
+      self.vm.inputs.pledgeAmountDidUpdate((value: 25, isValid: true))
+
+      self.updatePledgeButtonEnabled.assertValues([true])
+
+      self.vm.inputs.pledgeButtonTapped()
+
+      self.goToThanks.assertDidNotEmitValue()
+      self.createBackingError.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.goToThanks.assertValues([.template])
+      self.createBackingError.assertDidNotEmitValue()
+    }
+  }
+
+  func testCreateBacking_Failure() {
+    let mockService = MockService(
+      createBackingResult:
+      Result.failure(GraphError.invalidInput)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity)
+      self.vm.inputs.viewDidLoad()
+
+      self.updatePledgeButtonEnabled.assertDidNotEmitValue()
+      self.goToThanks.assertDidNotEmitValue()
+      self.createBackingError.assertDidNotEmitValue()
+
+      self.vm.inputs.creditCardSelected(with: "123")
+      self.vm.inputs.pledgeAmountDidUpdate((value: 25, isValid: true))
+
+      self.updatePledgeButtonEnabled.assertValues([true])
+
+      self.vm.inputs.pledgeButtonTapped()
+
+      self.goToThanks.assertDidNotEmitValue()
+      self.createBackingError.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.goToThanks.assertDidNotEmitValue()
+      self.createBackingError.assertValues(["Something went wrong."])
+    }
+  }
 }

@@ -400,6 +400,10 @@ extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
   ) {
     self.viewModel.inputs.creditCardSelected(with: paymentSourceId)
   }
+
+  func pledgePaymentMethodsViewControllerDidTapPledgeButton(_: PledgePaymentMethodsViewController) {
+    self.viewModel.inputs.pledgeButtonTapped()
+  }
 }
 
 // MARK: - Styles
