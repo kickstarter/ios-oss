@@ -37,6 +37,8 @@ final class PledgeCreditCardView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // MARK: - Configuration
+
   private func configureSubviews() {
     _ = self
       |> \.accessibilityElements .~ self.subviews
