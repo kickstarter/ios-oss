@@ -449,6 +449,7 @@
 "Shipping" = "Expédition";
 "Shipping_addresses" = "Adresses de livraison";
 "Shipping_destination" = "Destination d'expédition";
+"Shipping_to_country" = "Frais de port : %{country}";
 "Ships_to" = "Livraison :";
 "Ships_to_shipping_summary" = "Pays de livraison : %{shipping_summary}";
 "Ships_worldwide" = "Ships worldwide";
