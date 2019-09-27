@@ -178,9 +178,3 @@ final class PledgeAmountViewControllerTests: TestCase {
     }
   }
 }
-
-// MARK: - Functions
-
-private func maximumValue() -> Double {
-  return 1_000_000_000
-}
