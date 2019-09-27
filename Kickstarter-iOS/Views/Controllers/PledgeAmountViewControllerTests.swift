@@ -77,13 +77,15 @@ final class PledgeAmountViewControllerTests: TestCase {
     }
   }
 
-  func testView_StepperIncrementButtonDisabled_WhenStepperValueSetToMaximum() {
+  func testView_StepperIncrementButtonDisabled_WhenStepperValueSetToMaximumStepperValue() {
+    let maxValue = PledgeAmountStepperConstants.max
+
     let stepper = UIStepper(frame: .zero)
-      |> \.maximumValue .~ Double.greatestFiniteMagnitude
-      |> \.value .~ Double.greatestFiniteMagnitude
+      |> \.maximumValue .~ maxValue
+      |> \.value .~ maxValue
 
     let textField = UITextField(frame: .zero)
-      |> \.text .~ String(format: "%.0f", Double.greatestFiniteMagnitude)
+      |> \.text .~ String(format: "%.0f", maxValue)
 
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
@@ -98,7 +100,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     }
   }
 
-  func testView_TextColorIsRedWhenBellowMinimum() {
+  func testView_TextColorIsGreenWhenEqualToMinimumPledgeAmount() {
     let reward = Reward.template
       |> Reward.lens.minimum .~ 10
 
@@ -117,13 +119,52 @@ final class PledgeAmountViewControllerTests: TestCase {
     }
   }
 
-  func testView_TextColorIsRedWhenAboveMaximum() {
+  func testView_TextColorIsRedWhenBellowMinimumPledgeAmount() {
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 10
+
+    let stepper = UIStepper(frame: .zero)
+      |> \.value .~ 5
+
+    [Device.phone4_7inch, Device.pad].forEach { device in
+      let controller = PledgeAmountViewController.instantiate()
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+      parent.view.frame.size.height = 100
+
+      controller.configureWith(value: (project: .template, reward: reward))
+      controller.stepperValueChanged(stepper)
+
+      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+    }
+  }
+
+  func testView_TextColorIsGreenWhenEqualToMaximumPledgeAmount() {
     let project = Project.template
       |> (Project.lens.country .. Project.Country.lens.maxPledge) .~ 10_000
 
     let stepper = UIStepper(frame: .zero)
-      |> \.maximumValue .~ Double.greatestFiniteMagnitude
-      |> \.value .~ Double.greatestFiniteMagnitude
+      |> \.maximumValue .~ PledgeAmountStepperConstants.max
+      |> \.value .~ 10_000
+
+    [Device.phone4_7inch, Device.pad].forEach { device in
+      let controller = PledgeAmountViewController.instantiate()
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+      parent.view.frame.size.height = 100
+
+      controller.configureWith(value: (project: project, reward: .template))
+      controller.stepperValueChanged(stepper)
+
+      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+    }
+  }
+
+  func testView_TextColorIsRedWhenAboveMaximumPledgeAmount() {
+    let project = Project.template
+      |> (Project.lens.country .. Project.Country.lens.maxPledge) .~ 10_000
+
+    let stepper = UIStepper(frame: .zero)
+      |> \.maximumValue .~ PledgeAmountStepperConstants.max
+      |> \.value .~ 10_001
 
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
