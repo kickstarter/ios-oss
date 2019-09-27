@@ -32,11 +32,10 @@ public protocol AddNewCardViewModelInputs {
 public protocol AddNewCardViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, Never> { get }
   var addNewCardFailure: Signal<String, Never> { get }
-  var addNewCardSuccess: Signal<String, Never> { get }
   var creditCardValidationErrorContainerHidden: Signal<Bool, Never> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, Never> { get }
   var dismissKeyboard: Signal<Void, Never> { get }
-  var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
+  var newCardAddedWithMessage: Signal<(GraphUserCreditCard.CreditCard, String), Never> { get }
   var paymentDetails: Signal<PaymentDetails, Never> { get }
   var paymentDetailsBecomeFirstResponder: Signal<Void, Never> { get }
   var rememberThisCardToggleViewControllerContainerIsHidden: Signal<Bool, Never> { get }
@@ -110,11 +109,13 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
         )
       }
 
+    let saveButtonTappedOrZipCodeEditingEnded = Signal.merge(
+      self.saveButtonTappedProperty.signal,
+      self.zipcodeTextFieldDidEndEditingProperty.signal
+    )
+
     let submitPaymentDetails = self.saveButtonIsEnabled
-      .takeWhen(Signal.merge(
-        self.saveButtonTappedProperty.signal,
-        self.zipcodeTextFieldDidEndEditingProperty.signal
-      ))
+      .takeWhen(saveButtonTappedOrZipCodeEditingEnded)
       .filter(isTrue)
 
     self.paymentDetails = paymentInput.takeWhen(submitPaymentDetails)
@@ -124,7 +125,12 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.environmentType.stripePublishableKey }
 
-    self.rememberThisCardToggleViewControllerIsOn = self.viewDidLoadProperty.signal.mapConst(false)
+    self.rememberThisCardToggleViewControllerIsOn = Signal.combineLatest(
+      self.addNewCardIntentProperty.signal,
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
+    .map { $0 == .settings }
 
     let rememberThisCard = Signal.merge(
       self.rememberThisCardToggleViewControllerIsOn,
@@ -136,7 +142,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       rememberThisCard
     )
     .map(unpack)
-    .map(createPaymentSourceInput(token:stripeCardId:reusable:))
+    .map(CreatePaymentSourceInput.input(fromToken:stripeCardId:reusable:))
     .switchMap {
       AppEnvironment.current.apiService.addNewCreditCard(input: $0)
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -144,7 +150,10 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
         .materialize()
     }
 
-    self.newCardAdded = addNewCardEvent.map { $0.value?.paymentSource }.skipNil()
+    self.newCardAddedWithMessage = addNewCardEvent
+      .map { $0.value?.paymentSource }
+      .skipNil()
+      .map { card in (card, Strings.Got_it_your_changes_have_been_saved()) }
 
     let stripeInvalidToken = self.stripeErrorProperty.signal.map {
       $0?.localizedDescription
@@ -162,16 +171,9 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
     self.addNewCardFailure = errorMessage.map { $0 }
 
-    let cardAddedSuccessfully = addNewCardEvent
-      .filter { $0.value?.isSuccessful == true }
-      .mapConst(true)
-
-    self.addNewCardSuccess = cardAddedSuccessfully
-      .map { _ in Strings.Got_it_your_changes_have_been_saved() }
-
     self.activityIndicatorShouldShow = Signal.merge(
       submitPaymentDetails.mapConst(true),
-      self.addNewCardSuccess.mapConst(false),
+      self.newCardAddedWithMessage.mapConst(false),
       self.addNewCardFailure.mapConst(false)
     )
 
@@ -187,7 +189,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
         AppEnvironment.current.koala.trackViewedAddNewCard()
       }
 
-    self.addNewCardSuccess
+    self.newCardAddedWithMessage
       .observeValues { _ in
         AppEnvironment.current.koala.trackSavedPaymentMethod()
       }
@@ -277,11 +279,10 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
   public let activityIndicatorShouldShow: Signal<Bool, Never>
   public let addNewCardFailure: Signal<String, Never>
-  public let addNewCardSuccess: Signal<String, Never>
   public let creditCardValidationErrorContainerHidden: Signal<Bool, Never>
   public let cardholderNameBecomeFirstResponder: Signal<Void, Never>
   public let dismissKeyboard: Signal<Void, Never>
-  public let newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never>
+  public let newCardAddedWithMessage: Signal<(GraphUserCreditCard.CreditCard, String), Never>
   public let paymentDetails: Signal<PaymentDetails, Never>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, Never>
   public let rememberThisCardToggleViewControllerContainerIsHidden: Signal<Bool, Never>
@@ -292,17 +293,4 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }
-}
-
-// MARK: - Functions
-
-private func createPaymentSourceInput(
-  token: String, stripeCardId: String, reusable: Bool
-) -> CreatePaymentSourceInput {
-  return CreatePaymentSourceInput(
-    paymentType: PaymentType.creditCard,
-    reusable: reusable,
-    stripeToken: token,
-    stripeCardId: stripeCardId
-  )
 }
