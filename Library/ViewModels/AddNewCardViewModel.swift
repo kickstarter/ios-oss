@@ -35,6 +35,7 @@ public protocol AddNewCardViewModelOutputs {
   var creditCardValidationErrorContainerHidden: Signal<Bool, Never> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, Never> { get }
   var dismissKeyboard: Signal<Void, Never> { get }
+  var newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never> { get }
   var paymentDetails: Signal<PaymentDetails, Never> { get }
   var paymentDetailsBecomeFirstResponder: Signal<Void, Never> { get }
   var rememberThisCardToggleViewControllerContainerIsHidden: Signal<Bool, Never> { get }
@@ -133,6 +134,8 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
           .map { (envelope: CreatePaymentSourceEnvelope) in envelope.createPaymentSource }
           .materialize()
       }
+
+    self.newCardAdded = addNewCardEvent.map { $0.value?.paymentSource }.skipNil()
 
     let stripeInvalidToken = self.stripeErrorProperty.signal.map {
       $0?.localizedDescription
@@ -267,6 +270,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let creditCardValidationErrorContainerHidden: Signal<Bool, Never>
   public let cardholderNameBecomeFirstResponder: Signal<Void, Never>
   public let dismissKeyboard: Signal<Void, Never>
+  public let newCardAdded: Signal<GraphUserCreditCard.CreditCard, Never>
   public let paymentDetails: Signal<PaymentDetails, Never>
   public let paymentDetailsBecomeFirstResponder: Signal<Void, Never>
   public var rememberThisCardToggleViewControllerContainerIsHidden: Signal<Bool, Never>
