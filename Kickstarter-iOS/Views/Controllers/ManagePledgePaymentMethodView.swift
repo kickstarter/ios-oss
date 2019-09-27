@@ -144,4 +144,5 @@ private let titleLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.text %~ { _ in Strings.Payment_method() }
+    |> \.numberOfLines .~ 0
 }
