@@ -12,11 +12,13 @@ internal final class PledgeAmountViewModelTests: TestCase {
   private let doneButtonIsEnabled = TestObserver<Bool, Never>()
   private let generateSelectionFeedback = TestObserver<Void, Never>()
   private let generateNotificationWarningFeedback = TestObserver<Void, Never>()
+  private let labelTextColor = TestObserver<UIColor, Never>()
   private let stepperMaxValue = TestObserver<Double, Never>()
   private let stepperMinValue = TestObserver<Double, Never>()
   private let stepperStepValue = TestObserver<Double, Never>()
   private let stepperValue = TestObserver<Double, Never>()
   private let textFieldIsFirstResponder = TestObserver<Bool, Never>()
+  private let textFieldTextColor = TestObserver<UIColor?, Never>()
   private let textFieldValue = TestObserver<String, Never>()
 
   override func setUp() {
@@ -29,11 +31,13 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.outputs.generateNotificationWarningFeedback.observe(
       self.generateNotificationWarningFeedback.observer
     )
+    self.vm.outputs.labelTextColor.observe(self.labelTextColor.observer)
     self.vm.outputs.stepperMaxValue.observe(self.stepperMaxValue.observer)
     self.vm.outputs.stepperMinValue.observe(self.stepperMinValue.observer)
     self.vm.outputs.stepperStepValue.observe(self.stepperStepValue.observer)
     self.vm.outputs.stepperValue.observe(self.stepperValue.observer)
     self.vm.outputs.textFieldIsFirstResponder.observe(self.textFieldIsFirstResponder.observer)
+    self.vm.outputs.textFieldTextColor.observe(self.textFieldTextColor.observer)
     self.vm.outputs.textFieldValue.observe(self.textFieldValue.observer)
   }
 
@@ -42,8 +46,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([1])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(1)
-    self.stepperMaxValue.assertValue(10_000)
+    self.stepperMinValue.assertValue(0)
+    self.stepperMaxValue.assertValue(Double.greatestFiniteMagnitude)
     self.stepperStepValue.assertValue(1)
     self.stepperValue.assertValue(1)
     self.textFieldValue.assertValues(["1"])
@@ -57,9 +61,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([10])
     self.currency.assertValues(["MX$"])
-    self.stepperMinValue.assertValue(10)
-    self.stepperMinValue.assertValue(10)
-    self.stepperMaxValue.assertValue(200_000)
+    self.stepperMinValue.assertValue(0)
+    self.stepperMaxValue.assertValue(Double.greatestFiniteMagnitude)
     self.stepperStepValue.assertValue(10)
     self.stepperValue.assertValue(10)
     self.textFieldValue.assertValues(["10"])
@@ -76,8 +79,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([1])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(1)
-    self.stepperMaxValue.assertValue(10_000)
+    self.stepperMinValue.assertValue(0)
+    self.stepperMaxValue.assertValue(Double.greatestFiniteMagnitude)
     self.stepperStepValue.assertValue(1)
     self.stepperValue.assertValue(1)
     self.textFieldValue.assertValues(["1"])
@@ -88,8 +91,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([10])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(10)
-    self.stepperMaxValue.assertValue(10_000)
+    self.stepperMinValue.assertValue(0)
+    self.stepperMaxValue.assertValue(Double.greatestFiniteMagnitude)
     self.stepperStepValue.assertValue(10)
     self.stepperValue.assertValue(10)
     self.textFieldValue.assertValues(["10"])
@@ -106,8 +109,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([200])
     self.currency.assertValues(["¥"])
-    self.stepperMinValue.assertValue(200)
-    self.stepperMaxValue.assertValue(1_200_000)
+    self.stepperMinValue.assertValue(0)
+    self.stepperMaxValue.assertValue(Double.greatestFiniteMagnitude)
     self.stepperStepValue.assertValue(200)
     self.stepperValue.assertValue(200)
     self.textFieldValue.assertValues(["200"])
@@ -646,17 +649,18 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
   func testGenerateSelectionFeedback() {
     self.vm.inputs.configureWith(project: .template, reward: .template)
+    self.generateSelectionFeedback.assertDidNotEmitValue()
 
     self.vm.inputs.stepperValueChanged(11)
     self.generateSelectionFeedback.assertValueCount(1)
 
-    self.vm.inputs.stepperValueChanged(10_001)
+    self.vm.inputs.stepperValueChanged(Double.greatestFiniteMagnitude)
     self.generateSelectionFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(12)
     self.generateSelectionFeedback.assertValueCount(2)
 
-    self.vm.inputs.stepperValueChanged(10)
+    self.vm.inputs.stepperValueChanged(0)
     self.generateSelectionFeedback.assertValueCount(2)
 
     self.vm.inputs.stepperValueChanged(20)
@@ -665,26 +669,52 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
   func testGenerateNotificationWarningFeedback() {
     self.vm.inputs.configureWith(project: .template, reward: .template)
-
-    self.generateNotificationWarningFeedback.assertValueCount(0)
+    self.generateNotificationWarningFeedback.assertDidNotEmitValue()
 
     self.vm.inputs.stepperValueChanged(11)
     self.generateNotificationWarningFeedback.assertValueCount(0)
 
-    self.vm.inputs.stepperValueChanged(10_001)
+    self.vm.inputs.stepperValueChanged(Double.greatestFiniteMagnitude)
     self.generateNotificationWarningFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(12)
     self.generateNotificationWarningFeedback.assertValueCount(1)
 
-    self.vm.inputs.stepperValueChanged(10)
+    self.vm.inputs.stepperValueChanged(0)
     self.generateNotificationWarningFeedback.assertValueCount(2)
 
     self.vm.inputs.stepperValueChanged(11)
     self.generateNotificationWarningFeedback.assertValueCount(2)
   }
 
+  func testLabelTextColor() {
+    let green = UIColor.ksr_green_500
+    let red = UIColor.ksr_red_400
+
+    self.vm.inputs.configureWith(project: .template, reward: Reward.noReward)
+
+    self.labelTextColor.assertValues([green])
+
+    self.vm.inputs.stepperValueChanged(2)
+    self.labelTextColor.assertValues([green, green])
+
+    self.vm.inputs.stepperValueChanged(100_000)
+    self.labelTextColor.assertValues([green, green, red])
+
+    self.vm.inputs.stepperValueChanged(10_000)
+    self.labelTextColor.assertValues([green, green, red, green])
+
+    self.vm.inputs.stepperValueChanged(0)
+    self.labelTextColor.assertValues([green, green, red, green, red])
+
+    self.vm.inputs.stepperValueChanged(1)
+    self.labelTextColor.assertValues([green, green, red, green, red, green])
+  }
+
   func testStepperValueChangesWithTextFieldInput() {
+    let maxValue = Double.greatestFiniteMagnitude
+    let maxValueFormatted = String(format: "%.0f", Double.greatestFiniteMagnitude)
+
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
     self.stepperValue.assertValue(10)
@@ -695,14 +725,14 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.textFieldValueChanged("16")
     self.stepperValue.assertValues([10, 11, 16])
 
-    self.vm.inputs.textFieldValueChanged("10001")
-    self.stepperValue.assertValues([10, 11, 16, 10_000])
+    self.vm.inputs.textFieldValueChanged(maxValueFormatted)
+    self.stepperValue.assertValues([10, 11, 16, maxValue])
 
-    self.vm.inputs.textFieldValueChanged("1")
-    self.stepperValue.assertValues([10, 11, 16, 10_000, 10])
+    self.vm.inputs.textFieldValueChanged("0")
+    self.stepperValue.assertValues([10, 11, 16, maxValue, 0])
 
     self.vm.inputs.textFieldValueChanged("11")
-    self.stepperValue.assertValues([10, 11, 16, 10_000, 10, 11])
+    self.stepperValue.assertValues([10, 11, 16, maxValue, 0, 11])
   }
 
   func testTextFieldIsFirstResponder() {
@@ -730,6 +760,9 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testTextFieldDidEndEditing() {
+    let maxValue = Double.greatestFiniteMagnitude
+    let maxValueFormatted = String(format: "%.0f", Double.greatestFiniteMagnitude)
+
     self.vm.inputs.configureWith(project: .template, reward: .template)
     self.amountPrimitive.assertValues([10])
     self.textFieldValue.assertValues(["10"])
@@ -742,20 +775,44 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.amountPrimitive.assertValues([10, 16])
     self.textFieldValue.assertValues(["10", "16"])
 
-    self.vm.inputs.textFieldDidEndEditing("10001")
-    self.amountPrimitive.assertValues([10, 16, 10_000])
-    self.textFieldValue.assertValues(["10", "16", "10000"])
+    self.vm.inputs.textFieldDidEndEditing(String(maxValue))
+    self.amountPrimitive.assertValues([10, 16, maxValue])
+    self.textFieldValue.assertValues(["10", "16", maxValueFormatted])
 
-    self.vm.inputs.textFieldDidEndEditing("8")
-    self.amountPrimitive.assertValues([10, 16, 10_000, 10])
-    self.textFieldValue.assertValues(["10", "16", "10000", "10"])
+    self.vm.inputs.textFieldDidEndEditing("0")
+    self.amountPrimitive.assertValues([10, 16, maxValue, 0])
+    self.textFieldValue.assertValues(["10", "16", maxValueFormatted, "0"])
 
     self.vm.inputs.textFieldDidEndEditing("17")
-    self.amountPrimitive.assertValues([10, 16, 10_000, 10, 17])
-    self.textFieldValue.assertValues(["10", "16", "10000", "10", "17"])
+    self.amountPrimitive.assertValues([10, 16, maxValue, 0, 17])
+    self.textFieldValue.assertValues(["10", "16", maxValueFormatted, "0", "17"])
 
     self.vm.inputs.textFieldDidEndEditing("")
-    self.amountPrimitive.assertValues([10, 16, 10_000, 10, 17, 10])
-    self.textFieldValue.assertValues(["10", "16", "10000", "10", "17", "10"])
+    self.amountPrimitive.assertValues([10, 16, maxValue, 0, 17])
+    self.textFieldValue.assertValues(["10", "16", maxValueFormatted, "0", "17"])
+  }
+
+  func testTextFieldTextColor() {
+    let green = UIColor.ksr_green_500
+    let red = UIColor.ksr_red_400
+
+    self.vm.inputs.configureWith(project: .template, reward: Reward.noReward)
+
+    self.textFieldTextColor.assertValues([green])
+
+    self.vm.inputs.stepperValueChanged(2)
+    self.textFieldTextColor.assertValues([green, green])
+
+    self.vm.inputs.stepperValueChanged(100_000)
+    self.textFieldTextColor.assertValues([green, green, red])
+
+    self.vm.inputs.stepperValueChanged(10_000)
+    self.textFieldTextColor.assertValues([green, green, red, green])
+
+    self.vm.inputs.stepperValueChanged(0)
+    self.textFieldTextColor.assertValues([green, green, red, green, red])
+
+    self.vm.inputs.stepperValueChanged(1)
+    self.textFieldTextColor.assertValues([green, green, red, green, red, green])
   }
 }

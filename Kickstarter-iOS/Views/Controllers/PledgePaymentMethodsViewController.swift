@@ -109,14 +109,15 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
       .observeValues { [weak self] cards in
-        self?.addCardsToStackView(cards)
+        guard let self = self else { return }
+        self.scrollView.setContentOffset(.zero, animated: false)
+        self.reloadPaymentMethods(with: cards)
       }
 
     self.viewModel.outputs.notifyDelegateLoadPaymentMethodsError
       .observeForUI()
       .observeValues { [weak self] errorMessage in
         guard let self = self else { return }
-
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
       }
 
@@ -134,6 +135,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
         guard let self = self else { return }
 
         self.delegate?.pledgePaymentMethodsViewController(self, didSelectCreditCard: paymentSourceId)
+      }
+
+    self.viewModel.outputs.updateSelectedCreditCard
+      .observeForUI()
+      .observeValues { [weak self] card in
+        self?.updateSelectedCard(to: card)
       }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
@@ -164,23 +171,41 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   // MARK: - Functions
 
-  private func addCardsToStackView(_ cards: [GraphUserCreditCard.CreditCard]) {
-    self.cardsStackView.arrangedSubviews.forEach(self.cardsStackView.removeArrangedSubview)
+  private func reloadPaymentMethods(with cards: [GraphUserCreditCard.CreditCard]) {
+    self.cardsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-    let cardViews: [UIView] = cards
-      .map { card -> PledgeCreditCardView in
-        let cardView = PledgeCreditCardView(frame: .zero)
-        cardView.configureWith(value: card)
-        cardView.delegate = self
+    let cardViews = self.newCardViews(with: cards)
 
-        return cardView
-      }
-
-    let addNewCardView: UIView = PledgeAddNewCardView(frame: .zero)
+    let addNewCardView: PledgeAddNewCardView = PledgeAddNewCardView(frame: .zero)
       |> \.delegate .~ self
 
     _ = (cardViews + [addNewCardView], self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  private func updateSelectedCard(to card: GraphUserCreditCard.CreditCard) {
+    self.cardsStackView.arrangedSubviews
+      .compactMap { $0 as? PledgeCreditCardView }
+      .forEach { $0.setSelectedCard(card) }
+  }
+
+  private func newCardViews(
+    with cards: [GraphUserCreditCard.CreditCard]
+  ) -> [UIView] {
+    let selectedCard = cards.first
+
+    return cards.map { card -> PledgeCreditCardView in
+      let cardView = PledgeCreditCardView(frame: .zero)
+        |> \.delegate .~ self
+
+      cardView.configureWith(value: card)
+
+      if let selectedCard = selectedCard {
+        cardView.setSelectedCard(selectedCard)
+      }
+
+      return cardView
+    }
   }
 
   // MARK: - Styles
@@ -206,10 +231,17 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 }
 
+extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
+  func pledgeCreditCardViewSelected(_: PledgeCreditCardView, paymentSourceId: String) {
+    self.viewModel.creditCardSelected(paymentSourceId: paymentSourceId)
+  }
+}
+
 extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
-  func pledgeAddNewCardViewDidTapAddNewCard(_: PledgeAddNewCardView) {
+  func pledgeAddNewCardView(_: PledgeAddNewCardView, didTapAddNewCardWith intent: AddNewCardIntent) {
     let addNewCardViewController = AddNewCardViewController.instantiate()
       |> \.delegate .~ self
+    addNewCardViewController.configure(with: intent)
     let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
     let offset = navigationController.navigationBar.bounds.height
 
@@ -218,20 +250,15 @@ extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
 }
 
 extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
+  func addNewCardViewController(_: AddNewCardViewController, _ newCard: GraphUserCreditCard.CreditCard) {
+    self.viewModel.inputs.addNewCardViewControllerDidAdd(newCard: newCard)
+  }
+
   func addNewCardViewControllerDismissed(_: AddNewCardViewController) {
     self.dismiss(animated: true)
   }
 
-  func addNewCardViewController(
-    _: AddNewCardViewController,
-    didSucceedWithMessage _: String
-  ) {
-    // TODO:
-  }
-}
-
-extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
-  func pledgeCreditCardViewSelected(_: PledgeCreditCardView, paymentSourceId: String) {
-    self.viewModel.creditCardSelected(paymentSourceId: paymentSourceId)
+  func addNewCardViewController(_: AddNewCardViewController, didSucceedWithMessage _: String) {
+    self.dismiss(animated: true)
   }
 }
