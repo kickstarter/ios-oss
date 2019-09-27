@@ -118,7 +118,7 @@ private let cardExpirationDateLabelStyle: LabelStyle = { label in
     |> checkoutTitleLabelStyle
     |> \.font .~ UIFont.ksr_caption1().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
 }
 
 private let cardLabelsStackViewStyle: StackViewStyle = { stackView in
@@ -131,7 +131,7 @@ private let cardLastFourLabelStyle: LabelStyle = { label in
     |> checkoutTitleLabelStyle
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ UIColor.ksr_soft_black
 }
 
 private let paymentMethodAdaptableStackViewStyle: StackViewStyle = { stackView in
