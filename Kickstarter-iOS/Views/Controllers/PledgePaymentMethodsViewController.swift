@@ -14,8 +14,7 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
   )
 
   func pledgePaymentMethodsViewControllerDidTapPledgeButton(
-    _
-    viewController: PledgePaymentMethodsViewController
+    _ viewController: PledgePaymentMethodsViewController
   )
 }
 
