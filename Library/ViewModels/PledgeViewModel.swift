@@ -116,10 +116,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .takePairWhen(pledgeTotal)
       .map { project, total in (project, total) }
 
-    self.configurePaymentMethodsViewControllerWithValue = Signal.merge(
+    let configurePaymentMethodsViewController = Signal.merge(
       project,
       project.takeWhen(self.userSessionStartedSignal)
     )
+
+    self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(
+      configurePaymentMethodsViewController,
+      context
+    )
+    .filter { $1.isPledge }
+    .map(first)
     .map { project -> (User, Project)? in
       guard let user = AppEnvironment.current.currentUser else { return nil }
 
@@ -144,13 +151,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { $0.shipping.enabled }
       .negate()
 
-    self.configureStripeIntegration = initialData.ignoreValues()
-      .map { _ in
-        (
-          PKPaymentAuthorizationViewController.merchantIdentifier,
-          AppEnvironment.current.environmentType.stripePublishableKey
-        )
-      }
+    self.configureStripeIntegration = Signal.combineLatest(
+      initialData,
+      context
+    )
+    .filter { $1.isPledge }
+    .ignoreValues()
+    .map { _ in
+      (
+        PKPaymentAuthorizationViewController.merchantIdentifier,
+        AppEnvironment.current.environmentType.stripePublishableKey
+      )
+    }
 
     let selectedShippingRule = Signal.merge(
       initialData.mapConst(nil),

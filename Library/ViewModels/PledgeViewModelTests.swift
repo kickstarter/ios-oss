@@ -23,7 +23,13 @@ final class PledgeViewModelTests: TestCase {
   private let configureWithPledgeViewDataProject = TestObserver<Project, Never>()
   private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
 
+  private let confirmButtonHidden = TestObserver<Bool, Never>()
+  private let confirmationLabelAttributedText = TestObserver<NSAttributedString, Never>()
+  private let confirmationLabelHidden = TestObserver<Bool, Never>()
+
   private let continueViewHidden = TestObserver<Bool, Never>()
+
+  private let descriptionViewHidden = TestObserver<Bool, Never>()
 
   private let createBackingError = TestObserver<String, Never>()
 
@@ -36,6 +42,7 @@ final class PledgeViewModelTests: TestCase {
   private let goToThanks = TestObserver<Project, Never>()
 
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
+  private let sectionSeparatorsHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
   private let updatePledgeButtonEnabled = TestObserver<Bool, Never>()
 
@@ -62,9 +69,15 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configureStripeIntegration.map(second)
       .observe(self.configureStripeIntegrationPublishableKey.observer)
 
+    self.vm.outputs.confirmButtonHidden.observe(self.confirmButtonHidden.observer)
+    self.vm.outputs.confirmationLabelAttributedText.observe(self.confirmationLabelAttributedText.observer)
+    self.vm.outputs.confirmationLabelHidden.observe(self.confirmationLabelHidden.observer)
+
     self.vm.outputs.continueViewHidden.observe(self.continueViewHidden.observer)
 
     self.vm.outputs.createBackingError.observe(self.createBackingError.observer)
+
+    self.vm.outputs.descriptionViewHidden.observe(self.descriptionViewHidden.observer)
 
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.project }
       .observe(self.goToApplePayPaymentAuthorizationProject.observer)
@@ -82,7 +95,144 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
 
     self.vm.outputs.updatePledgeButtonEnabled.observe(self.updatePledgeButtonEnabled.observer)
+    self.vm.outputs.sectionSeparatorsHidden.observe(self.sectionSeparatorsHidden.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
+  }
+
+  func testPledgeContext_LoggedIn() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+
+      self.confirmButtonHidden.assertValues([true])
+      self.confirmationLabelHidden.assertValues([true])
+
+      self.descriptionViewHidden.assertValues([false])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.sectionSeparatorsHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+    }
+  }
+
+  func testPledgeContext_LoggedOut() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: nil) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+
+      self.confirmButtonHidden.assertValues([true])
+      self.confirmationLabelHidden.assertValues([true])
+
+      self.descriptionViewHidden.assertValues([false])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([true])
+      self.sectionSeparatorsHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+    }
+  }
+
+  func testUpdateContext_LoggedIn() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
+
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
+
+      self.confirmButtonHidden.assertValues([false])
+      self.confirmationLabelHidden.assertValues([false])
+
+      self.descriptionViewHidden.assertValues([true])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([true])
+      self.sectionSeparatorsHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+    }
+  }
+
+  func testUpdateContext_LoggedOut() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: nil) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
+
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
+
+      self.confirmButtonHidden.assertValues([false])
+      self.confirmationLabelHidden.assertValues([false])
+
+      self.descriptionViewHidden.assertValues([true])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([true])
+      self.sectionSeparatorsHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+    }
   }
 
   func testPledgeView_Logged_Out_Shipping_Disabled() {
