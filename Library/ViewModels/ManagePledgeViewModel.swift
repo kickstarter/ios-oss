@@ -22,7 +22,7 @@ public protocol ManagePledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<Project, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<Reward, Never> { get }
-  var goToCancelPledge: Signal<Void, Never> { get }
+  var goToCancelPledge: Signal<(Project, Backing), Never> { get }
   var goToChangePaymentMethod: Signal<Void, Never> { get }
   var goToContactCreator: Signal<Void, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
@@ -57,6 +57,9 @@ public final class ManagePledgeViewModel:
       .map(second)
 
     let project = projectAndReward.map(first)
+    let backing = project
+      .map { $0.personalization.backing }
+      .skipNil()
 
     self.showActionSheetMenuWithOptions = project
       .takeWhen(self.menuButtonTappedSignal)
@@ -74,9 +77,12 @@ public final class ManagePledgeViewModel:
     self.goToRewards = project
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .chooseAnotherReward })
 
-    self.goToCancelPledge = self.menuOptionSelectedSignal
+    let cancelPledgeSelected = self.menuOptionSelectedSignal
       .filter { $0 == .cancelPledge }
       .ignoreValues()
+
+    self.goToCancelPledge = Signal.combineLatest(project, backing)
+      .takeWhen(cancelPledgeSelected)
 
     self.goToContactCreator = self.menuOptionSelectedSignal
       .filter { $0 == .contactCreator }
@@ -111,7 +117,7 @@ public final class ManagePledgeViewModel:
   public let configurePaymentMethodView: Signal<Project, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<Reward, Never>
-  public let goToCancelPledge: Signal<Void, Never>
+  public let goToCancelPledge: Signal<(Project, Backing), Never>
   public let goToChangePaymentMethod: Signal<Void, Never>
   public let goToContactCreator: Signal<Void, Never>
   public let goToRewards: Signal<Project, Never>

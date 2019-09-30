@@ -26,10 +26,6 @@ final class ManagePledgeViewController: UIViewController {
 
   private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
 
-  private lazy var navigationBarShadowImage: UIImage? = {
-    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
-  }()
-
   private lazy var rewardReceivedViewController: ManageViewPledgeRewardReceivedViewController = {
     ManageViewPledgeRewardReceivedViewController.instantiate()
   }()
@@ -158,8 +154,8 @@ final class ManagePledgeViewController: UIViewController {
 
     self.viewModel.outputs.goToCancelPledge
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToCancelPledge()
+      .observeValues { [weak self] project, backing in
+        self?.goToCancelPledge(project: project, backing: backing)
       }
   }
 
@@ -266,8 +262,11 @@ final class ManagePledgeViewController: UIViewController {
     // TODO:
   }
 
-  private func goToCancelPledge() {
-    // TODO:
+  private func goToCancelPledge(project: Project, backing: Backing) {
+    let cancelPledgeViewController = CancelPledgeViewController.instantiate()
+    cancelPledgeViewController.configure(with: project, backing: backing)
+
+    self.navigationController?.pushViewController(cancelPledgeViewController, animated: true)
   }
 
   private func goToChangePaymentMethod() {
