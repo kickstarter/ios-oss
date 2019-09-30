@@ -57,13 +57,13 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: Reward.postcards)
 
     self.amountIsValid.assertValues([true])
-    self.amountValue.assertValues([700])
+    self.amountValue.assertValues([690])
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperStepValue.assertValue(6)
-    self.stepperValue.assertValues([6, 700])
-    self.textFieldValue.assertValues(["700"])
+    self.stepperValue.assertValues([6, 690])
+    self.textFieldValue.assertValues(["690"])
   }
 
   func testAmountCurrencyAndStepper_NoReward() {
