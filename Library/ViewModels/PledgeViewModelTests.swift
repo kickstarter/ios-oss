@@ -279,7 +279,7 @@ final class PledgeViewModelTests: TestCase {
 
       let amount1 = 66.0
 
-      self.vm.inputs.pledgeAmountDidUpdate((value: amount1, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: amount1, isValid: true))
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -289,7 +289,7 @@ final class PledgeViewModelTests: TestCase {
 
       let amount2 = 99.0
 
-      self.vm.inputs.pledgeAmountDidUpdate((value: amount2, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: amount2, isValid: true))
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -372,7 +372,7 @@ final class PledgeViewModelTests: TestCase {
 
       let amount1 = 200.0
 
-      self.vm.inputs.pledgeAmountDidUpdate((value: amount1, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: amount1, isValid: true))
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -402,7 +402,7 @@ final class PledgeViewModelTests: TestCase {
 
       let amount2 = 1_999.0
 
-      self.vm.inputs.pledgeAmountDidUpdate((value: amount2, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: amount2, isValid: true))
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -784,13 +784,13 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.updatePledgeButtonEnabled.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeAmountDidUpdate((value: 25, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: true))
       self.updatePledgeButtonEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
       self.updatePledgeButtonEnabled.assertValues([true])
 
-      self.vm.inputs.pledgeAmountDidUpdate((value: 25, isValid: false))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: false))
       self.updatePledgeButtonEnabled.assertValues([true, false])
     }
   }
@@ -811,7 +811,7 @@ final class PledgeViewModelTests: TestCase {
       self.createBackingError.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
-      self.vm.inputs.pledgeAmountDidUpdate((value: 25, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: true))
 
       self.updatePledgeButtonEnabled.assertValues([true])
 
@@ -842,7 +842,7 @@ final class PledgeViewModelTests: TestCase {
       self.createBackingError.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
-      self.vm.inputs.pledgeAmountDidUpdate((value: 25, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: true))
 
       self.updatePledgeButtonEnabled.assertValues([true])
 

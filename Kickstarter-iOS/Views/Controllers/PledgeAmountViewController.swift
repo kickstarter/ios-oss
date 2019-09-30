@@ -7,7 +7,7 @@ import UIKit
 protocol PledgeAmountViewControllerDelegate: AnyObject {
   func pledgeAmountViewController(
     _ viewController: PledgeAmountViewController,
-    didUpdate amount: (value: Double, isValid: Bool)
+    didUpdateWith data: PledgeAmountData
   )
 }
 
@@ -119,10 +119,10 @@ final class PledgeAmountViewController: UIViewController {
 
     self.viewModel.outputs.amount
       .observeForUI()
-      .observeValues { [weak self] amount in
+      .observeValues { [weak self] data in
         guard let self = self else { return }
 
-        self.delegate?.pledgeAmountViewController(self, didUpdate: amount)
+        self.delegate?.pledgeAmountViewController(self, didUpdateWith: data)
       }
   }
 

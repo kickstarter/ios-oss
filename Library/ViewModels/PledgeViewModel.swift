@@ -14,6 +14,7 @@ public typealias PaymentAuthorizationData = (
   selectedShippingRule: ShippingRule?, merchantIdentifier: String
 )
 public typealias PKPaymentData = (displayName: String, network: String, transactionIdentifier: String)
+public typealias PledgeAmountData = (amount: Double, isValid: Bool)
 
 public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
@@ -23,7 +24,7 @@ public protocol PledgeViewModelInputs {
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
   )
   func paymentAuthorizationViewControllerDidFinish()
-  func pledgeAmountDidUpdate(_ amount: (value: Double, isValid: Bool))
+  func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
   func pledgeButtonTapped()
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
@@ -67,7 +68,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(isNotNil)
 
     let pledgeAmount = Signal.merge(
-      self.pledgeAmountSignal.map(first),
+      self.pledgeAmountDataSignal.map(first),
       reward.map { $0.minimum }
     )
 
@@ -104,7 +105,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.updatePledgeButtonEnabled = Signal.combineLatest(
       paymentSourceSelected.mapConst(true),
-      self.pledgeAmountSignal.map(second)
+      self.pledgeAmountDataSignal.map(second)
     )
     .map { paymentSourceSelected, amountInputIsValid in paymentSourceSelected && amountInputIsValid }
 
@@ -286,9 +287,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.paymentAuthorizationDidFinishObserver.send(value: ())
   }
 
-  private let (pledgeAmountSignal, pledgeAmountObserver) = Signal<(Double, Bool), Never>.pipe()
-  public func pledgeAmountDidUpdate(_ amount: (value: Double, isValid: Bool)) {
-    self.pledgeAmountObserver.send(value: amount)
+  private let (pledgeAmountDataSignal, pledgeAmountObserver) = Signal<PledgeAmountData, Never>.pipe()
+  public func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData) {
+    self.pledgeAmountObserver.send(value: data)
   }
 
   private let (pledgeButtonTappedSignal, pledgeButtonTappedObserver) = Signal<Void, Never>.pipe()
