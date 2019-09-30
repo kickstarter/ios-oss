@@ -142,7 +142,6 @@ internal final class AddNewCardViewController: UIViewController,
     _ = self.creditCardValidationErrorLabel
       |> settingsDescriptionLabelStyle
       |> \.textColor .~ .ksr_red_400
-      |> \.text %~ { _ in Strings.Unsupported_card_type() }
 
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
@@ -172,6 +171,7 @@ internal final class AddNewCardViewController: UIViewController,
 
   override func bindViewModel() {
     super.bindViewModel()
+    self.creditCardValidationErrorLabel.rac.text = self.viewModel.outputs.unsupportedCardError
 
     self.rememberThisCardToggleViewControllerContainer.rac.hidden =
       self.viewModel.outputs.rememberThisCardToggleViewControllerContainerIsHidden

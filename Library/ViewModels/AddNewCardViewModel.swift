@@ -43,6 +43,7 @@ public protocol AddNewCardViewModelOutputs {
   var rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var setStripePublishableKey: Signal<String, Never> { get }
+  var unsupportedCardError: Signal<String, Never> { get }
   var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
 }
 
@@ -185,6 +186,13 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       projectCountry
     )
 
+    self.unsupportedCardError = Signal.combineLatest(projectCountry, cardBrandIsValidProperty.signal)
+      .map { projectCountry, isValid in
+        projectCountry.country != "US" && !isValid ?
+          Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
+            project_country: projectCountry.displayableName) : Strings.Unsupported_card_type()
+    }
+
     // Koala
     self.viewWillAppearProperty.signal
       .observeValues {
@@ -290,6 +298,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public var rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never>
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
+  public let unsupportedCardError: Signal<String, Never>
   public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }
