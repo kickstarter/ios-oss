@@ -135,6 +135,19 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.expirationDateText.assertValue("Expires 01/2024")
   }
 
+  func testCardConfiguredAsSelected() {
+    let card = GraphUserCreditCard.amex
+      |> \.id .~ "123"
+
+    self.vm.inputs.configureWith(value: card)
+
+    self.notifyDelegateOfCardSelected.assertDidNotEmitValue()
+
+    self.vm.inputs.setSelectedCard(card)
+
+    self.notifyDelegateOfCardSelected.assertValues(["123"])
+  }
+
   func testSelectButtonTapped() {
     let card = GraphUserCreditCard.amex
       |> \.id .~ "123"
