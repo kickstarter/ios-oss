@@ -132,16 +132,16 @@ final class ManagePledgeViewController: UIViewController {
         self?.showActionSheetMenuWithOptions(options)
       }
 
-    self.viewModel.outputs.goToUpdatePledge
-      .observeForControllerAction()
-      .observeValues { [weak self] project, reward in
-        self?.goToUpdatePledge(project: project, reward: reward)
-      }
-
     self.viewModel.outputs.goToRewards
       .observeForControllerAction()
       .observeValues { [weak self] project in
         self?.goToRewards(project)
+      }
+
+    self.viewModel.outputs.goToUpdatePledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project, reward in
+        self?.goToUpdatePledge(project: project, reward: reward)
       }
 
     self.viewModel.outputs.goToChangePaymentMethod
