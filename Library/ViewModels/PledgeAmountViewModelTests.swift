@@ -46,10 +46,10 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([1])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(0)
-    self.stepperMaxValue.assertValue(Double.greatestFiniteMagnitude)
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperStepValue.assertValue(1)
-    self.stepperValue.assertValue(1)
+    self.stepperValue.assertValues([1])
     self.textFieldValue.assertValues(["1"])
   }
 
@@ -61,10 +61,10 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([10])
     self.currency.assertValues(["MX$"])
-    self.stepperMinValue.assertValue(0)
-    self.stepperMaxValue.assertValue(Double.greatestFiniteMagnitude)
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperStepValue.assertValue(10)
-    self.stepperValue.assertValue(10)
+    self.stepperValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
   }
 
@@ -79,10 +79,10 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([1])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(0)
-    self.stepperMaxValue.assertValue(Double.greatestFiniteMagnitude)
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperStepValue.assertValue(1)
-    self.stepperValue.assertValue(1)
+    self.stepperValue.assertValues([1])
     self.textFieldValue.assertValues(["1"])
   }
 
@@ -91,10 +91,10 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([10])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(0)
-    self.stepperMaxValue.assertValue(Double.greatestFiniteMagnitude)
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperStepValue.assertValue(10)
-    self.stepperValue.assertValue(10)
+    self.stepperValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
   }
 
@@ -109,10 +109,10 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountPrimitive.assertValues([200])
     self.currency.assertValues(["¥"])
-    self.stepperMinValue.assertValue(0)
-    self.stepperMaxValue.assertValue(Double.greatestFiniteMagnitude)
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperStepValue.assertValue(200)
-    self.stepperValue.assertValue(200)
+    self.stepperValue.assertValues([200])
     self.textFieldValue.assertValues(["200"])
   }
 
@@ -122,19 +122,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(2)
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.stepperValueChanged(1)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Stepper_Country_HasMinMax_NoReward() {
@@ -146,19 +146,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(11)
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.stepperValueChanged(75_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.stepperValueChanged(9)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.stepperValueChanged(10)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Stepper_Country_DoesNotHaveMinMax_NoReward() {
@@ -174,19 +174,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(2)
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.stepperValueChanged(1)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Stepper_Country_HasMinMax_Reward_Minimum_Template() {
@@ -195,19 +195,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(11)
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.stepperValueChanged(11)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Stepper_Country_HasMinMax_Reward_Minimum_Custom() {
@@ -219,19 +219,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(300)
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.stepperValueChanged(100)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.stepperValueChanged(200)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Stepper_Country_DoesNotHaveMinMax_Reward_Minimum_Template() {
@@ -247,19 +247,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(11)
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.stepperValueChanged(10)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Stepper_Country_DoesNotHaveMinMax_Reward_Minimum_Custom() {
@@ -278,19 +278,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(300)
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.stepperValueChanged(200)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_TextField_NoReward() {
@@ -299,19 +299,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("2")
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.textFieldValueChanged("0")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.textFieldValueChanged("1")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_TextField_Country_HasMinMax_NoReward() {
@@ -323,19 +323,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("11")
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.textFieldValueChanged("75000")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.textFieldValueChanged("9")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.textFieldValueChanged("10")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_TextField_Country_DoesNotHaveMinMax_NoReward() {
@@ -351,19 +351,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("2")
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.textFieldValueChanged("0")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.textFieldValueChanged("1")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_TextField_Country_HasMinMax_Reward_Minimum_Template() {
@@ -372,19 +372,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("11")
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.textFieldValueChanged("0")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.textFieldValueChanged("11")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_TextField_Country_HasMinMax_Reward_Minimum_Custom() {
@@ -396,19 +396,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("300")
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.textFieldValueChanged("100")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.textFieldValueChanged("200")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_TextField_Country_DoesNotHaveMinMax_Reward_Minimum_Template() {
@@ -424,19 +424,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("11")
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.textFieldValueChanged("0")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.textFieldValueChanged("10")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_TextField_Country_DoesNotHaveMinMax_Reward_Minimum_Custom() {
@@ -455,19 +455,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("300")
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.textFieldValueChanged("0")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.textFieldValueChanged("200")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Combined_NoReward() {
@@ -476,19 +476,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("2")
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.textFieldValueChanged("1")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Combined_Country_HasMinMax_NoReward() {
@@ -500,19 +500,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(11)
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.stepperValueChanged(75_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.textFieldValueChanged("9")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.stepperValueChanged(10)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Combined_Country_DoesNotHaveMinMax_NoReward() {
@@ -528,19 +528,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("2")
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.textFieldValueChanged("1")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Combined_Country_HasMinMax_Reward_Minimum_Template() {
@@ -549,19 +549,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(11)
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.textFieldValueChanged("0")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.stepperValueChanged(11)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Combined_Country_HasMinMax_Reward_Minimum_Custom() {
@@ -573,19 +573,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("300")
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.stepperValueChanged(100)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.textFieldValueChanged("200")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Combined_Country_DoesNotHaveMinMax_Reward_Minimum_Template() {
@@ -601,19 +601,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(11)
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("100000")
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.stepperValueChanged(10_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.textFieldValueChanged("0")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.stepperValueChanged(10)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testDoneButtonIsEnabled_Combined_Country_DoesNotHaveMinMax_Reward_Minimum_Custom() {
@@ -632,19 +632,19 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.textFieldValueChanged("300")
-    self.doneButtonIsEnabled.assertValues([true, true])
+    self.doneButtonIsEnabled.assertValues([true])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.doneButtonIsEnabled.assertValues([true, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false])
 
     self.vm.inputs.textFieldValueChanged("10000")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
 
     self.vm.inputs.stepperValueChanged(0)
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false])
 
     self.vm.inputs.textFieldValueChanged("200")
-    self.doneButtonIsEnabled.assertValues([true, true, false, true, false, true])
+    self.doneButtonIsEnabled.assertValues([true, false, true, false, true])
   }
 
   func testGenerateSelectionFeedback() {
@@ -654,7 +654,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.stepperValueChanged(11)
     self.generateSelectionFeedback.assertValueCount(1)
 
-    self.vm.inputs.stepperValueChanged(Double.greatestFiniteMagnitude)
+    self.vm.inputs.stepperValueChanged(PledgeAmountStepperConstants.max)
     self.generateSelectionFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(12)
@@ -674,7 +674,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.stepperValueChanged(11)
     self.generateNotificationWarningFeedback.assertValueCount(0)
 
-    self.vm.inputs.stepperValueChanged(Double.greatestFiniteMagnitude)
+    self.vm.inputs.stepperValueChanged(PledgeAmountStepperConstants.max)
     self.generateNotificationWarningFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(12)
@@ -696,28 +696,26 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.labelTextColor.assertValues([green])
 
     self.vm.inputs.stepperValueChanged(2)
-    self.labelTextColor.assertValues([green, green])
+    self.labelTextColor.assertValues([green])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.labelTextColor.assertValues([green, green, red])
+    self.labelTextColor.assertValues([green, red])
 
     self.vm.inputs.stepperValueChanged(10_000)
-    self.labelTextColor.assertValues([green, green, red, green])
+    self.labelTextColor.assertValues([green, red, green])
 
     self.vm.inputs.stepperValueChanged(0)
-    self.labelTextColor.assertValues([green, green, red, green, red])
+    self.labelTextColor.assertValues([green, red, green, red])
 
     self.vm.inputs.stepperValueChanged(1)
-    self.labelTextColor.assertValues([green, green, red, green, red, green])
+    self.labelTextColor.assertValues([green, red, green, red, green])
   }
 
   func testStepperValueChangesWithTextFieldInput() {
-    let maxValue = Double.greatestFiniteMagnitude
-    let maxValueFormatted = String(format: "%.0f", Double.greatestFiniteMagnitude)
+    let maxValue = PledgeAmountStepperConstants.max
 
     self.vm.inputs.configureWith(project: .template, reward: .template)
-
-    self.stepperValue.assertValue(10)
+    self.stepperValue.assertValues([10])
 
     self.vm.inputs.textFieldValueChanged("11")
     self.stepperValue.assertValues([10, 11])
@@ -725,7 +723,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.textFieldValueChanged("16")
     self.stepperValue.assertValues([10, 11, 16])
 
-    self.vm.inputs.textFieldValueChanged(maxValueFormatted)
+    self.vm.inputs.textFieldValueChanged(String(format: "%.0f", maxValue))
     self.stepperValue.assertValues([10, 11, 16, maxValue])
 
     self.vm.inputs.textFieldValueChanged("0")
@@ -760,8 +758,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testTextFieldDidEndEditing() {
-    let maxValue = Double.greatestFiniteMagnitude
-    let maxValueFormatted = String(format: "%.0f", Double.greatestFiniteMagnitude)
+    let maxValue = PledgeAmountStepperConstants.max
+    let maxValueFormatted = String(format: "%.0f", maxValue)
 
     self.vm.inputs.configureWith(project: .template, reward: .template)
     self.amountPrimitive.assertValues([10])
@@ -801,18 +799,141 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.textFieldTextColor.assertValues([green])
 
     self.vm.inputs.stepperValueChanged(2)
-    self.textFieldTextColor.assertValues([green, green])
+    self.textFieldTextColor.assertValues([green])
 
     self.vm.inputs.stepperValueChanged(100_000)
-    self.textFieldTextColor.assertValues([green, green, red])
+    self.textFieldTextColor.assertValues([green, red])
 
     self.vm.inputs.stepperValueChanged(10_000)
-    self.textFieldTextColor.assertValues([green, green, red, green])
+    self.textFieldTextColor.assertValues([green, red, green])
 
     self.vm.inputs.stepperValueChanged(0)
-    self.textFieldTextColor.assertValues([green, green, red, green, red])
+    self.textFieldTextColor.assertValues([green, red, green, red])
 
     self.vm.inputs.stepperValueChanged(1)
-    self.textFieldTextColor.assertValues([green, green, red, green, red, green])
+    self.textFieldTextColor.assertValues([green, red, green, red, green])
   }
+
+  func testTextFieldValueChangedRounding() {
+    let green = UIColor.ksr_green_500
+    let red = UIColor.ksr_red_400
+
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+
+    self.vm.inputs.textFieldValueChanged("10")
+    self.amountPrimitive.assertValues([10])
+    self.doneButtonIsEnabled.assertValues([true])
+    self.labelTextColor.assertValues([green])
+    self.stepperValue.assertValues([10])
+    self.textFieldTextColor.assertValues([green])
+
+    self.vm.inputs.textFieldValueChanged("10.")
+    self.amountPrimitive.assertValues([10])
+    self.doneButtonIsEnabled.assertValues([true])
+    self.labelTextColor.assertValues([green])
+    self.stepperValue.assertValues([10])
+    self.textFieldTextColor.assertValues([green])
+
+    self.vm.inputs.textFieldValueChanged("10.0")
+    self.amountPrimitive.assertValues([10])
+    self.doneButtonIsEnabled.assertValues([true])
+    self.labelTextColor.assertValues([green])
+    self.stepperValue.assertValues([10])
+    self.textFieldTextColor.assertValues([green])
+
+    self.vm.inputs.textFieldValueChanged("10.00")
+    self.amountPrimitive.assertValues([10])
+    self.doneButtonIsEnabled.assertValues([true])
+    self.labelTextColor.assertValues([green])
+    self.stepperValue.assertValues([10])
+    self.textFieldTextColor.assertValues([green])
+
+    self.vm.inputs.textFieldValueChanged("10.01")
+    self.amountPrimitive.assertValues([10, 10.01])
+    self.doneButtonIsEnabled.assertValues([true])
+    self.labelTextColor.assertValues([green])
+    self.stepperValue.assertValues([10, 10.01])
+    self.textFieldTextColor.assertValues([green])
+
+    self.vm.inputs.textFieldValueChanged("10.010")
+    self.amountPrimitive.assertValues([10, 10.01])
+    self.doneButtonIsEnabled.assertValues([true])
+    self.labelTextColor.assertValues([green])
+    self.stepperValue.assertValues([10, 10.01])
+    self.textFieldTextColor.assertValues([green])
+
+    self.vm.inputs.textFieldValueChanged("10.0100")
+    self.amountPrimitive.assertValues([10, 10.01])
+    self.doneButtonIsEnabled.assertValues([true])
+    self.labelTextColor.assertValues([green])
+    self.stepperValue.assertValues([10, 10.01])
+    self.textFieldTextColor.assertValues([green])
+
+    self.vm.inputs.textFieldValueChanged("10.019")
+    self.amountPrimitive.assertValues([10, 10.01, 10.02])
+    self.doneButtonIsEnabled.assertValues([true])
+    self.labelTextColor.assertValues([green])
+    self.stepperValue.assertValues([10, 10.01, 10.02])
+    self.textFieldTextColor.assertValues([green])
+
+    self.vm.inputs.textFieldValueChanged("10.0194444444")
+    self.amountPrimitive.assertValues([10, 10.01, 10.02])
+    self.doneButtonIsEnabled.assertValues([true])
+    self.labelTextColor.assertValues([green])
+    self.stepperValue.assertValues([10, 10.01, 10.02])
+    self.textFieldTextColor.assertValues([green])
+
+    self.vm.inputs.textFieldValueChanged("9.999")
+    self.amountPrimitive.assertValues([10, 10.01, 10.02, 10])
+    self.doneButtonIsEnabled.assertValues([true, false])
+    self.labelTextColor.assertValues([green, red])
+    self.stepperValue.assertValues([10, 10.01, 10.02, 10])
+    self.textFieldTextColor.assertValues([green, red])
+
+    self.vm.inputs.textFieldValueChanged("9.99")
+    self.amountPrimitive.assertValues([10, 10.01, 10.02, 10, 9.99])
+    self.doneButtonIsEnabled.assertValues([true, false])
+    self.labelTextColor.assertValues([green, red])
+    self.stepperValue.assertValues([10, 10.01, 10.02, 10, 9.99])
+    self.textFieldTextColor.assertValues([green, red])
+  }
+
+  // swiftlint:disable line_length
+  func testTextFieldDidEndEditingRoundingAndTruncation() {
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+
+    self.textFieldValue.assertValues(["10"])
+
+    self.vm.inputs.textFieldDidEndEditing("10.")
+    self.textFieldValue.assertValues(["10", "10"])
+
+    self.vm.inputs.textFieldDidEndEditing("10.0")
+    self.textFieldValue.assertValues(["10", "10", "10"])
+
+    self.vm.inputs.textFieldDidEndEditing("10.00")
+    self.textFieldValue.assertValues(["10", "10", "10", "10"])
+
+    self.vm.inputs.textFieldDidEndEditing("10.01")
+    self.textFieldValue.assertValues(["10", "10", "10", "10", "10.01"])
+
+    self.vm.inputs.textFieldDidEndEditing("10.010")
+    self.textFieldValue.assertValues(["10", "10", "10", "10", "10.01", "10.01"])
+
+    self.vm.inputs.textFieldDidEndEditing("10.0100")
+    self.textFieldValue.assertValues(["10", "10", "10", "10", "10.01", "10.01", "10.01"])
+
+    self.vm.inputs.textFieldDidEndEditing("10.019")
+    self.textFieldValue.assertValues(["10", "10", "10", "10", "10.01", "10.01", "10.01", "10.02"])
+
+    self.vm.inputs.textFieldDidEndEditing("10.0194444444")
+    self.textFieldValue.assertValues(["10", "10", "10", "10", "10.01", "10.01", "10.01", "10.02", "10.02"])
+
+    self.vm.inputs.textFieldDidEndEditing("9.999")
+    self.textFieldValue.assertValues(["10", "10", "10", "10", "10.01", "10.01", "10.01", "10.02", "10.02", "10"])
+
+    self.vm.inputs.textFieldDidEndEditing("9.99")
+    self.textFieldValue.assertValues(["10", "10", "10", "10", "10.01", "10.01", "10.01", "10.02", "10.02", "10", "9.99"])
+  }
+
+  // swiftlint:enable line_length
 }
