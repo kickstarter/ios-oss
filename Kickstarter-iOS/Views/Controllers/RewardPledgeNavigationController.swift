@@ -33,7 +33,7 @@ extension RewardPledgeNavigationController: UINavigationControllerDelegate {
       return RewardPledgePopTransitionAnimator()
     default:
       // We're not performing any custom transition, bring back the standard divider line
-      self.navigationBar.shadowImage = nil
+//      self.navigationBar.shadowImage = nil
       return nil
     }
   }
