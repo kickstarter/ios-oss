@@ -78,7 +78,8 @@ final class ManagePledgePaymentMethodView: UIView {
       |> checkoutCardStackViewStyle
 
     _ = self.titleLabel
-      |> titleLabelStyle
+      |> checkoutTitleLabelStyle
+      |> \.text %~ { _ in Strings.Payment_method() }
   }
 
   // MARK: - View model
@@ -129,10 +130,4 @@ private let lastFourDigitsLabelStyle: LabelStyle = { label in
 private let paymentMethodAdaptableStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.spacing .~ Styles.grid(2)
-}
-
-private let titleLabelStyle: LabelStyle = { label in
-  label
-    |> checkoutTitleLabelStyle
-    |> \.text %~ { _ in Strings.Payment_method() }
 }
