@@ -37,6 +37,7 @@ final class CancelPledgeViewController: UIViewController {
 
     _ = (self.rootStackView, self.scrollView)
       |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.cancellationDetailsTextLabel,
           self.cancellationReasonTextField,
@@ -133,9 +134,6 @@ final class CancelPledgeViewController: UIViewController {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootStackView.leftAnchor.constraint(equalTo: self.scrollView.leftAnchor),
-      self.rootStackView.rightAnchor.constraint(equalTo: self.scrollView.rightAnchor),
-      self.rootStackView.centerYAnchor.constraint(equalTo: self.scrollView.centerYAnchor),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
       self.cancelButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.goBackButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
