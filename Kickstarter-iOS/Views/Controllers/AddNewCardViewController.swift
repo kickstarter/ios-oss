@@ -30,7 +30,7 @@ internal final class AddNewCardViewController: UIViewController,
   @IBOutlet private var stackView: UIStackView!
   @IBOutlet private var zipcodeView: SettingsFormFieldView!
 
-  private let supportedCardBrands: [STPCardBrand] = [
+  private let allCardBrands: [STPCardBrand] = [
     .amex,
     .dinersClub,
     .discover,
@@ -38,6 +38,18 @@ internal final class AddNewCardViewController: UIViewController,
     .masterCard,
     .unionPay,
     .visa
+  ]
+
+  private let supportedCardBrands: [STPCardBrand] = [
+    .amex,
+    .masterCard,
+    .visa
+  ]
+
+  private let unsupportedCardBrands: [STPCardBrand] = [
+    .dinersClub,
+    .discover,
+    .JCB
   ]
 
   private var saveButtonView: LoadingBarButtonItemView!
@@ -50,8 +62,8 @@ internal final class AddNewCardViewController: UIViewController,
     return Storyboard.Settings.instantiate(AddNewCardViewController.self)
   }
 
-  func configure(with intent: AddNewCardIntent) {
-    self.viewModel.inputs.configure(with: intent)
+  func configure(with intent: AddNewCardIntent, project: Project? = nil) {
+    self.viewModel.inputs.configure(with: intent, project: project)
   }
 
   override func viewDidLoad() {
@@ -249,6 +261,13 @@ internal final class AddNewCardViewController: UIViewController,
         self?.zipcodeView.textField.becomeFirstResponder()
       }
 
+    self.viewModel.outputs.cardNumberAndProjectCountry
+      .observeForUI()
+      .observeValues { [weak self] cardNumber, projectCountry in
+        guard let _self = self else { return }
+        _self.cardBrandIsSupported(projectCountry: projectCountry, cardNumber: cardNumber, supportedCardBrands: _self.unsupportedCardBrands)
+    }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -336,8 +355,17 @@ internal final class AddNewCardViewController: UIViewController,
     }
   }
 
-  private func cardBrandIsSupported(brand: STPCardBrand, supportedCardBrands _: [STPCardBrand]) -> Bool {
-    return self.supportedCardBrands.contains(brand)
+  private func cardBrandIsSupported(projectCountry: Location, cardNumber: String, supportedCardBrands _: [STPCardBrand]) {
+        let country = projectCountry.country
+        let brand = STPCardValidator.brand(forNumber: cardNumber)
+
+        if country != "US" && self.unsupportedCardBrands.contains(brand) {
+          self.viewModel.inputs.cardBrand(isValid: false)
+        } else if country != "US" && self.supportedCardBrands.contains(brand) {
+          self.viewModel.inputs.cardBrand(isValid: true)
+        } else if country == "US" && self.allCardBrands.contains(brand) {
+          self.viewModel.inputs.cardBrand(isValid: true)
+      }
   }
 
   private func dismissAndPresentMessageBanner(with message: String) {
@@ -382,11 +410,6 @@ extension AddNewCardViewController {
     guard let cardnumber = textField.cardNumber else {
       return
     }
-
-    let cardBrand = STPCardValidator.brand(forNumber: cardnumber)
-    let isValid = self.cardBrandIsSupported(brand: cardBrand, supportedCardBrands: self.supportedCardBrands)
-
-    self.viewModel.inputs.cardBrand(isValid: isValid)
 
     self.viewModel.inputs.creditCardChanged(cardDetails: (
       cardnumber, textField.expirationMonth,

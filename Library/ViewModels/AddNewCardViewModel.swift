@@ -16,7 +16,7 @@ public protocol AddNewCardViewModelInputs {
   func cardholderNameChanged(_ cardholderName: String?)
   func cardholderNameTextFieldReturn()
   func creditCardChanged(cardDetails: CardDetails)
-  func configure(with intent: AddNewCardIntent)
+  func configure(with intent: AddNewCardIntent, project: Project?)
   func paymentCardTextFieldDidEndEditing()
   func paymentInfo(isValid: Bool)
   func saveButtonTapped()
@@ -32,6 +32,7 @@ public protocol AddNewCardViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, Never> { get }
   var addNewCardFailure: Signal<String, Never> { get }
   var addNewCardSuccess: Signal<String, Never> { get }
+  var cardNumberAndProjectCountry: Signal<(String, Location), Never> { get }
   var creditCardValidationErrorContainerHidden: Signal<Bool, Never> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, Never> { get }
   var dismissKeyboard: Signal<Void, Never> { get }
@@ -75,6 +76,10 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
     let zipcode = self.zipcodeProperty.signal.skipNil()
     let zipcodeIsValid: Signal<Bool, Never> = zipcode.map { !$0.isEmpty }
+
+    let projectCountry = projectProperty.signal
+      .skipNil()
+      .map { $0.location }
 
     let cardBrandValidAndCardNumberValid = Signal
       .combineLatest(
@@ -167,13 +172,18 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     )
 
     self.rememberThisCardToggleViewControllerContainerIsHidden = Signal.combineLatest(
-      self.addNewCardIntentProperty.signal.map { $0 == .settings },
+      self.addNewCardIntentProperty.signal.skipNil().map { $0 == .settings },
       self.viewDidLoadProperty.signal
     )
     .map(first)
 
     self.rememberThisCardToggleViewControllerIsOn = self.viewDidLoadProperty.signal
       .mapConst(true)
+
+    self.cardNumberAndProjectCountry = Signal.combineLatest(
+      cardNumber,
+      projectCountry
+    )
 
     // Koala
     self.viewWillAppearProperty.signal
@@ -213,8 +223,10 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   }
 
   private let addNewCardIntentProperty = MutableProperty<AddNewCardIntent?>(nil)
-  public func configure(with intent: AddNewCardIntent) {
+  private let projectProperty = MutableProperty<Project?>(nil)
+  public func configure(with intent: AddNewCardIntent, project: Project?) {
     self.addNewCardIntentProperty.value = intent
+    self.projectProperty.value = project
   }
 
   private let paymentCardTextFieldDidEndEditingProperty = MutableProperty(())
@@ -267,6 +279,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let activityIndicatorShouldShow: Signal<Bool, Never>
   public let addNewCardFailure: Signal<String, Never>
   public let addNewCardSuccess: Signal<String, Never>
+  public let cardNumberAndProjectCountry: Signal<(String, Location), Never>
   public let creditCardValidationErrorContainerHidden: Signal<Bool, Never>
   public let cardholderNameBecomeFirstResponder: Signal<Void, Never>
   public let dismissKeyboard: Signal<Void, Never>

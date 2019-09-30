@@ -13,6 +13,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
   func updatePledgeButtonEnabled(isEnabled: Bool)
   func addNewCardViewControllerDidAdd(newCard card: GraphUserCreditCard.CreditCard)
   func viewDidLoad()
+  func goToAddNewCardScreen(intent: AddNewCardIntent)
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
@@ -23,6 +24,7 @@ public protocol PledgePaymentMethodsViewModelOutputs {
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
   var updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never> { get }
+  var newCardScreenConfig: Signal<(AddNewCardIntent, Project), Never> { get }
 }
 
 public protocol PledgePaymentMethodsViewModelType {
@@ -80,6 +82,10 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .takePairWhen(self.creditCardSelectedSignal)
       .map { cards, id in cards.filter { $0.id == id }.first }
       .skipNil()
+
+    let project = configureWithValue.map { $0.project }
+
+    self.newCardScreenConfig = Signal.combineLatest(intentProperty.signal.skipNil(), project)
   }
 
   private let applePayButtonTappedProperty = MutableProperty(())
@@ -107,6 +113,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.newCreditCardProperty.value = card
   }
 
+  private let intentProperty = MutableProperty<AddNewCardIntent?>(nil)
+  public func goToAddNewCardScreen(intent: AddNewCardIntent) {
+    self.intentProperty.value = intent
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -122,6 +133,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public let pledgeButtonEnabled: Signal<Bool, Never>
   public let reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
   public let updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never>
+  public let newCardScreenConfig: Signal<(AddNewCardIntent, Project), Never>
 }
 
 private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {
