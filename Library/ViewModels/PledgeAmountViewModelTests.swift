@@ -43,6 +43,29 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.outputs.textFieldValue.observe(self.textFieldValue.observer)
   }
 
+  func testAmountCurrencyAndStepper_FromBacking() {
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.postcards
+          |> Backing.lens.rewardId .~ Reward.postcards.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.vm.inputs.configureWith(project: project, reward: Reward.postcards)
+
+    self.amountIsValid.assertValues([true])
+    self.amountValue.assertValues([700])
+    self.currency.assertValues(["$"])
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
+    self.stepperStepValue.assertValue(6)
+    self.stepperValue.assertValues([6, 700])
+    self.textFieldValue.assertValues(["700"])
+  }
+
   func testAmountCurrencyAndStepper_NoReward() {
     self.vm.inputs.configureWith(project: .template, reward: Reward.noReward)
 
