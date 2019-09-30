@@ -99,10 +99,11 @@ final class CancelPledgeViewController: UIViewController {
     self.viewModel.outputs.cancellationDetailsTextLabelValue
       .observeForUI()
       .observeValues { [weak self] amount, projectName in
-        _ = self?.cancellationDetailsTextLabel
-          ?|> \.text %~ { _ in Strings.Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name(amount: amount, project_name: projectName) }
+        self?.setCancellationDetailsAttributedText(with: amount, projectName: projectName)
     }
   }
+
+  // MARK: - Functions
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
@@ -114,6 +115,22 @@ final class CancelPledgeViewController: UIViewController {
       self.goBackButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.cancellationReasonTextField.heightAnchor.constraint(equalTo: self.cancelButton.heightAnchor)
       ])
+  }
+
+  private func setCancellationDetailsAttributedText(with amount: String, projectName: String) {
+    let fullString = Strings
+      .Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name(amount: amount,
+                                                                          project_name: projectName)
+    let attributedString: NSMutableAttributedString = NSMutableAttributedString.init(string: fullString)
+    let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_callout().bolded]
+    let range1: NSRange = (fullString as NSString).localizedStandardRange(of: amount)
+    let range2: NSRange = (fullString as NSString).localizedStandardRange(of: projectName)
+
+    attributedString.addAttributes(boldFontAttribute, range: range1)
+    attributedString.addAttributes(boldFontAttribute, range: range2)
+
+    _ = self.cancellationDetailsTextLabel
+      |> \.attributedText .~ attributedString
   }
 }
 
@@ -137,7 +154,6 @@ private let cancellationReasonTextFieldStyle: TextFieldStyle = { textField in
 
 private let cancellationDetailsTextLabelStyle: LabelStyle = { label in
   label
-    |> \.font .~ UIFont.ksr_callout()
     |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
     |> \.textAlignment .~ NSTextAlignment.center
     |> \.numberOfLines .~ 0
