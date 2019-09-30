@@ -2,12 +2,12 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public protocol CancelPledgeViewModelOutputs {}
-
 public protocol CancelPledgeViewModelInputs {
   func configure(with project: Project, backing: Backing)
   func viewDidLoad()
 }
+
+public protocol CancelPledgeViewModelOutputs {}
 
 public protocol CancelPledgeViewModelType {
   var inputs: CancelPledgeViewModelInputs { get }
