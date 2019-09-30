@@ -1,6 +1,6 @@
+import Foundation
 @testable import Kickstarter_Framework
 @testable import Library
-import Foundation
 import XCTest
 
 final class CancelPledgeViewControllerTests: TestCase {
