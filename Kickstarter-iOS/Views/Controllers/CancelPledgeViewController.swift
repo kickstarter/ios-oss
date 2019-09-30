@@ -45,11 +45,19 @@ final class CancelPledgeViewController: UIViewController {
           self.goBackButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.rootStackView.setCustomSpacing(Styles.grid(10), after: self.cancellationReasonDisclaimerLabel) // TODO: move this to a custom ksr function
+    // TODO: move this to a custom ksr function
+    self.rootStackView.setCustomSpacing(Styles.grid(10), after: self.cancellationReasonDisclaimerLabel)
     self.rootStackView.setCustomSpacing(Styles.grid(6), after: self.cancellationDetailsTextLabel)
     self.rootStackView.setCustomSpacing(Styles.grid(1), after: self.cancellationReasonTextField)
 
     self.setupConstraints()
+
+    self.view.addGestureRecognizer(
+      UITapGestureRecognizer(target: self, action: #selector(CancelPledgeViewController.dismissKeyboard))
+    )
+
+    self.goBackButton.addTarget(self, action: #selector(CancelPledgeViewController.goBackButtonTapped),
+                                for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -101,6 +109,18 @@ final class CancelPledgeViewController: UIViewController {
       .observeValues { [weak self] amount, projectName in
         self?.setCancellationDetailsAttributedText(with: amount, projectName: projectName)
     }
+
+    self.viewModel.outputs.popCancelPledgeViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.navigationController?.popViewController(animated: true)
+    }
+
+    Keyboard.change
+      .observeForUI()
+      .observeValues { [weak self] change in
+        self?.scrollView.handleKeyboardVisibilityDidChange(change)
+    }
   }
 
   // MARK: - Functions
@@ -131,6 +151,16 @@ final class CancelPledgeViewController: UIViewController {
 
     _ = self.cancellationDetailsTextLabel
       |> \.attributedText .~ attributedString
+  }
+
+  // MARK: - Accessors
+
+  @objc private func dismissKeyboard() {
+    self.view.endEditing(true)
+  }
+
+  @objc private func goBackButtonTapped() {
+    self.viewModel.inputs.goBackButtonTapped()
   }
 }
 

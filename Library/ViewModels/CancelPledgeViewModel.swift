@@ -5,10 +5,12 @@ import Prelude
 
 public protocol CancelPledgeViewModelOutputs {
   var cancellationDetailsTextLabelValue: Signal<(amount: String, projectName: String), Never> { get }
+  var popCancelPledgeViewController: Signal<Void, Never> { get }
 }
 
 public protocol CancelPledgeViewModelInputs {
   func configure(with project: Project, backing: Backing)
+  func goBackButtonTapped()
   func viewDidLoad()
 }
 
@@ -31,11 +33,18 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
                                      omitCurrencyCode: project.stats.omitUSCurrencyCode)
         return (formattedAmount, project.name)
     }
+
+    self.popCancelPledgeViewController = self.goBackButtonTappedProperty.signal
   }
 
   private let configureWithProjectAndBackingProperty = MutableProperty<(Project, Backing)?>(nil)
   public func configure(with project: Project, backing: Backing) {
     self.configureWithProjectAndBackingProperty.value = (project, backing)
+  }
+
+  private let goBackButtonTappedProperty = MutableProperty(())
+  public func goBackButtonTapped() {
+    self.goBackButtonTappedProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -44,6 +53,7 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
   }
 
   public let cancellationDetailsTextLabelValue: Signal<(amount: String, projectName: String), Never>
+  public let popCancelPledgeViewController: Signal<Void, Never>
 
   public var inputs: CancelPledgeViewModelInputs { return self }
   public var outputs: CancelPledgeViewModelOutputs { return self }
