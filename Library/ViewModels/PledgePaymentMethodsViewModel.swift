@@ -85,7 +85,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     let project = configureWithValue.map { $0.project }
 
-    self.newCardScreenConfig = Signal.combineLatest(intentProperty.signal.skipNil(), project)
+    self.newCardScreenConfig = Signal.combineLatest(self.intentProperty.signal.skipNil(), project)
   }
 
   private let applePayButtonTappedProperty = MutableProperty(())

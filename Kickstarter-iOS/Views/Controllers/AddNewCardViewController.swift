@@ -265,10 +265,12 @@ internal final class AddNewCardViewController: UIViewController,
       .observeForUI()
       .observeValues { [weak self] cardNumber, projectCountry in
         guard let _self = self else { return }
-        _self.cardBrandIsSupported(projectCountry: projectCountry,
-                                   cardNumber: cardNumber,
-                                   supportedCardBrands: _self.unsupportedCardBrands)
-    }
+        _self.cardBrandIsSupported(
+          projectCountry: projectCountry,
+          cardNumber: cardNumber,
+          supportedCardBrands: _self.unsupportedCardBrands
+        )
+      }
 
     Keyboard.change
       .observeForUI()
@@ -357,18 +359,20 @@ internal final class AddNewCardViewController: UIViewController,
     }
   }
 
-  private func cardBrandIsSupported(projectCountry: Location,
-                                    cardNumber: String, supportedCardBrands _: [STPCardBrand]) {
-        let country = projectCountry.country
-        let brand = STPCardValidator.brand(forNumber: cardNumber)
+  private func cardBrandIsSupported(
+    projectCountry: Location,
+    cardNumber: String, supportedCardBrands _: [STPCardBrand]
+  ) {
+    let country = projectCountry.country
+    let brand = STPCardValidator.brand(forNumber: cardNumber)
 
-        if country != "US" && self.unsupportedCardBrands.contains(brand) {
-          self.viewModel.inputs.cardBrand(isValid: false)
-        } else if country != "US" && self.supportedCardBrands.contains(brand) {
-          self.viewModel.inputs.cardBrand(isValid: true)
-        } else if country == "US" && self.allCardBrands.contains(brand) {
-          self.viewModel.inputs.cardBrand(isValid: true)
-      }
+    if country != "US", self.unsupportedCardBrands.contains(brand) {
+      self.viewModel.inputs.cardBrand(isValid: false)
+    } else if country != "US", self.supportedCardBrands.contains(brand) {
+      self.viewModel.inputs.cardBrand(isValid: true)
+    } else if country == "US", self.allCardBrands.contains(brand) {
+      self.viewModel.inputs.cardBrand(isValid: true)
+    }
   }
 
   private func dismissAndPresentMessageBanner(with message: String) {

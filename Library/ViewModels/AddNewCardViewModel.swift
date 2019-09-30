@@ -78,7 +78,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let zipcode = self.zipcodeProperty.signal.skipNil()
     let zipcodeIsValid: Signal<Bool, Never> = zipcode.map { !$0.isEmpty }
 
-    let projectCountry = projectProperty.signal
+    let projectCountry = self.projectProperty.signal
       .skipNil()
       .map { $0.location }
 
@@ -186,12 +186,13 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       projectCountry
     )
 
-    self.unsupportedCardError = Signal.combineLatest(projectCountry, cardBrandIsValidProperty.signal)
+    self.unsupportedCardError = Signal.combineLatest(projectCountry, self.cardBrandIsValidProperty.signal)
       .map { projectCountry, isValid in
         projectCountry.country != "US" && !isValid ?
           Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-            project_country: projectCountry.displayableName) : Strings.Unsupported_card_type()
-    }
+            project_country: projectCountry.displayableName
+          ) : Strings.Unsupported_card_type()
+      }
 
     // Koala
     self.viewWillAppearProperty.signal

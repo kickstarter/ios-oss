@@ -146,7 +146,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] intent, project in
         self?.goToAddNewCard(intent: intent, project: project)
-    }
+      }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
     self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
