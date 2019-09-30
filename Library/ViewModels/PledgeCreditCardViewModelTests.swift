@@ -157,7 +157,6 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.notifyDelegateOfCardSelected.assertDidNotEmitValue()
 
     self.vm.inputs.selectButtonTapped()
-
     self.notifyDelegateOfCardSelected.assertValues(["123"])
   }
 }

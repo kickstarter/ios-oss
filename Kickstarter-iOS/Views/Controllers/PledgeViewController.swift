@@ -362,9 +362,9 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 extension PledgeViewController: PledgeAmountViewControllerDelegate {
   func pledgeAmountViewController(
     _: PledgeAmountViewController,
-    didUpdateAmount amount: Double
+    didUpdateWith data: PledgeAmountData
   ) {
-    self.viewModel.inputs.pledgeAmountDidUpdate(to: amount)
+    self.viewModel.inputs.pledgeAmountViewControllerDidUpdate(with: data)
   }
 }
 
