@@ -150,9 +150,8 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
         .materialize()
     }
 
-    self.newCardAddedWithMessage = addNewCardEvent
-      .map { $0.value?.paymentSource }
-      .skipNil()
+    self.newCardAddedWithMessage = addNewCardEvent.values()
+      .map { $0.paymentSource }
       .map { card in (card, Strings.Got_it_your_changes_have_been_saved()) }
 
     let stripeInvalidToken = self.stripeErrorProperty.signal.map {
