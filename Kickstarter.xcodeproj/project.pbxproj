@@ -198,8 +198,8 @@
 		771669D0210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */; };
 		7717805A22F9ED130064A32F /* RewardsCollectionViewFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717805922F9ED130064A32F /* RewardsCollectionViewFooter.swift */; };
 		771E3C632289DBA8003E7CF1 /* SheetOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */; };
-		771E6309234258D1005967E8 /* CancelBackingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771E6308234258D1005967E8 /* CancelBackingViewModel.swift */; };
-		771E630B23425977005967E8 /* CancelBackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771E630A23425977005967E8 /* CancelBackingViewController.swift */; };
+		771E6309234258D1005967E8 /* CancelPledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771E6308234258D1005967E8 /* CancelPledgeViewModel.swift */; };
+		771E630B23425977005967E8 /* CancelPledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771E630A23425977005967E8 /* CancelPledgeViewController.swift */; };
 		7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7720BA6C22DE79260071FDA1 /* UIViewController+Presentation.swift */; };
 		7720BA7022E0DBD10071FDA1 /* InstantiableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7720BA6F22E0DBD00071FDA1 /* InstantiableTests.swift */; };
 		77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */; };
@@ -1556,8 +1556,8 @@
 		771669CF210B93BE007A64A4 /* SettingsNotificationsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsDataSourceTests.swift; sourceTree = "<group>"; };
 		7717805922F9ED130064A32F /* RewardsCollectionViewFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewFooter.swift; sourceTree = "<group>"; };
 		771E3C622289DBA8003E7CF1 /* SheetOverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetOverlayViewController.swift; sourceTree = "<group>"; };
-		771E6308234258D1005967E8 /* CancelBackingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBackingViewModel.swift; sourceTree = "<group>"; };
-		771E630A23425977005967E8 /* CancelBackingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBackingViewController.swift; sourceTree = "<group>"; };
+		771E6308234258D1005967E8 /* CancelPledgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelPledgeViewModel.swift; sourceTree = "<group>"; };
+		771E630A23425977005967E8 /* CancelPledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelPledgeViewController.swift; sourceTree = "<group>"; };
 		7720BA6C22DE79260071FDA1 /* UIViewController+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Presentation.swift"; sourceTree = "<group>"; };
 		7720BA6F22E0DBD00071FDA1 /* InstantiableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantiableTests.swift; sourceTree = "<group>"; };
 		77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConnectionType.swift; sourceTree = "<group>"; };
@@ -2933,7 +2933,7 @@
 				A7ED202B1E8323E900BFFA01 /* BackingViewControllerTests.swift */,
 				774A76E820D841110012A71F /* BetaToolsViewController.swift */,
 				774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */,
-				771E630A23425977005967E8 /* CancelBackingViewController.swift */,
+				771E630A23425977005967E8 /* CancelPledgeViewController.swift */,
 				776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */,
 				D6B6871721923BA6005F5DA7 /* ChangeEmailViewControllerTests.swift */,
 				7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */,
@@ -3454,7 +3454,7 @@
 				A7ED1F641E831C5C00BFFA01 /* BackingViewModelTests.swift */,
 				D04AAC12218BB70A00CF713E /* BetaToolsViewModel.swift */,
 				D04AAC1A218BB70B00CF713E /* BetaToolsViewModelTests.swift */,
-				771E6308234258D1005967E8 /* CancelBackingViewModel.swift */,
+				771E6308234258D1005967E8 /* CancelPledgeViewModel.swift */,
 				D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */,
 				D6ED1B36216D0C64007F7547 /* ChangeEmailViewModelTests.swift */,
 				D04AAC0A218BB70800CF713E /* ChangePasswordViewModel.swift */,
@@ -4602,7 +4602,7 @@
 				3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */,
 				A73379601D0EDFEE00C91445 /* UIViewController-Preparation.swift in Sources */,
 				A72C3A951D00F6C70075227E /* DiscoveryPageViewModel.swift in Sources */,
-				771E6309234258D1005967E8 /* CancelBackingViewModel.swift in Sources */,
+				771E6309234258D1005967E8 /* CancelPledgeViewModel.swift in Sources */,
 				37EB3E4C228CF4A400076E4C /* NumberFormatter.swift in Sources */,
 				D0D77C1E22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift in Sources */,
 				A7F441C71D005A9400FE6FC5 /* MessageCellViewModel.swift in Sources */,
@@ -5084,7 +5084,7 @@
 				37653F82220A07710016E7F9 /* SettingsGroupedHeaderView.swift in Sources */,
 				379CFFFA2242DAD500F6F0C2 /* DeprecatedWebViewController.swift in Sources */,
 				D796868021013C1F00E54C61 /* SettingsPrivacyStaticCell.swift in Sources */,
-				771E630B23425977005967E8 /* CancelBackingViewController.swift in Sources */,
+				771E630B23425977005967E8 /* CancelPledgeViewController.swift in Sources */,
 				A7A0534E1CD19C68005AF5E2 /* CommentDialogViewController.swift in Sources */,
 				A75AB2231C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
 				A75A292E1CE0B95300D35E5C /* MessagesDataSource.swift in Sources */,

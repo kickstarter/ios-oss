@@ -2,23 +2,23 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public protocol CancelBackingViewModelOutputs {
+public protocol CancelPledgeViewModelOutputs {
 
 }
 
-public protocol CancelBackingViewModelInputs {
+public protocol CancelPledgeViewModelInputs {
   func configure(with project: Project, backing: Backing)
   func viewDidLoad()
 }
 
-public protocol CancelBackingViewModelType {
-  var inputs: CancelBackingViewModelInputs { get }
-  var outputs: CancelBackingViewModelOutputs { get }
+public protocol CancelPledgeViewModelType {
+  var inputs: CancelPledgeViewModelInputs { get }
+  var outputs: CancelPledgeViewModelOutputs { get }
 }
 
 
-public final class CancelBackingViewModel: CancelBackingViewModelType, CancelBackingViewModelInputs,
-CancelBackingViewModelOutputs {
+public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledgeViewModelInputs,
+CancelPledgeViewModelOutputs {
   public init() {}
 
   private let configureWithProjectAndBackingProperty = MutableProperty<(Project, Backing)?>(nil)
@@ -31,6 +31,6 @@ CancelBackingViewModelOutputs {
     self.viewDidLoadProperty.value = ()
   }
 
-  public var inputs: CancelBackingViewModelInputs { return self }
-  public var outputs: CancelBackingViewModelOutputs { return self }
+  public var inputs: CancelPledgeViewModelInputs { return self }
+  public var outputs: CancelPledgeViewModelOutputs { return self }
 }

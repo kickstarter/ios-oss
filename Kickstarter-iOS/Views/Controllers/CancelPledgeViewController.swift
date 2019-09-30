@@ -4,8 +4,8 @@ import Prelude
 import Library
 import KsApi
 
-final class CancelBackingViewController: UIViewController {
-  private let viewModel: CancelBackingViewModelType = CancelBackingViewModel()
+final class CancelPledgeViewController: UIViewController {
+  private let viewModel: CancelPledgeViewModelType = CancelPledgeViewModel()
 
   // MARK: - Lifecycle
   override func viewDidLoad() {
