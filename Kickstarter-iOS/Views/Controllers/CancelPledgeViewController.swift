@@ -13,8 +13,7 @@ final class CancelPledgeViewController: UIViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.title %~ { _ in Strings.Cancel_pledge()
-      }
+      |> \.title %~ { _ in Strings.Cancel_pledge() }
   }
 
   // MARK: - Configuration
