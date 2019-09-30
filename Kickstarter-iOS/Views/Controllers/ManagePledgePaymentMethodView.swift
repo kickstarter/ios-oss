@@ -112,17 +112,17 @@ final class ManagePledgePaymentMethodView: UIView {
 
 private let expirationDateLabelStyle: LabelStyle = { label in
   label
-    |> checkoutTitleLabelStyle
-    |> \.font .~ UIFont.ksr_caption1().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.font .~ UIFont.ksr_caption1().bolded
+    |> \.numberOfLines .~ 0
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
 }
 
 private let lastFourDigitsLabelStyle: LabelStyle = { label in
   label
-    |> checkoutTitleLabelStyle
-    |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.font .~ UIFont.ksr_subhead().bolded
+    |> \.numberOfLines .~ 0
     |> \.textColor .~ UIColor.ksr_soft_black
 }
 
@@ -133,9 +133,6 @@ private let paymentMethodAdaptableStackViewStyle: StackViewStyle = { stackView i
 
 private let titleLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ UIColor.black
-    |> \.font .~ UIFont.ksr_subhead().bolded
-    |> \.adjustsFontForContentSizeCategory .~ true
+    |> checkoutTitleLabelStyle
     |> \.text %~ { _ in Strings.Payment_method() }
-    |> \.numberOfLines .~ 0
 }
