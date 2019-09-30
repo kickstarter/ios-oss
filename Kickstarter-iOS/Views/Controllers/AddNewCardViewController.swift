@@ -265,7 +265,9 @@ internal final class AddNewCardViewController: UIViewController,
       .observeForUI()
       .observeValues { [weak self] cardNumber, projectCountry in
         guard let _self = self else { return }
-        _self.cardBrandIsSupported(projectCountry: projectCountry, cardNumber: cardNumber, supportedCardBrands: _self.unsupportedCardBrands)
+        _self.cardBrandIsSupported(projectCountry: projectCountry,
+                                   cardNumber: cardNumber,
+                                   supportedCardBrands: _self.unsupportedCardBrands)
     }
 
     Keyboard.change
@@ -355,7 +357,8 @@ internal final class AddNewCardViewController: UIViewController,
     }
   }
 
-  private func cardBrandIsSupported(projectCountry: Location, cardNumber: String, supportedCardBrands _: [STPCardBrand]) {
+  private func cardBrandIsSupported(projectCountry: Location,
+                                    cardNumber: String, supportedCardBrands _: [STPCardBrand]) {
         let country = projectCountry.country
         let brand = STPCardValidator.brand(forNumber: cardNumber)
 
