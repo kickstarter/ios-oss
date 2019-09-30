@@ -1,24 +1,25 @@
 import Foundation
-import UIKit
-import Prelude
-import Library
 import KsApi
+import Library
+import Prelude
+import UIKit
 
 final class CancelPledgeViewController: UIViewController {
   private let viewModel: CancelPledgeViewModelType = CancelPledgeViewModel()
 
   // MARK: - Lifecycle
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
     _ = self
       |> \.title %~ { _ in Strings.Cancel_pledge()
-    }
+      }
   }
 
   // MARK: - Configuration
-  internal func configure(with project: Project, backing: Backing) {
-  }
+
+  internal func configure(with _: Project, backing _: Backing) {}
 
   override func bindStyles() {
     super.bindStyles()

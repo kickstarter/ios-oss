@@ -2,9 +2,7 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public protocol CancelPledgeViewModelOutputs {
-
-}
+public protocol CancelPledgeViewModelOutputs {}
 
 public protocol CancelPledgeViewModelInputs {
   func configure(with project: Project, backing: Backing)
@@ -16,9 +14,8 @@ public protocol CancelPledgeViewModelType {
   var outputs: CancelPledgeViewModelOutputs { get }
 }
 
-
 public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledgeViewModelInputs,
-CancelPledgeViewModelOutputs {
+  CancelPledgeViewModelOutputs {
   public init() {}
 
   private let configureWithProjectAndBackingProperty = MutableProperty<(Project, Backing)?>(nil)
