@@ -12,7 +12,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let configurePaymentMethodView = TestObserver<Project, Never>()
   private let configurePledgeSummaryView = TestObserver<Project, Never>()
   private let configureRewardSummaryView = TestObserver<Reward, Never>()
-  private let goToCancelPledge = TestObserver<Void, Never>()
+  private let goToCancelPledgeProject = TestObserver<Project, Never>()
+  private let goToCancelPledgeBacking = TestObserver<Backing, Never>()
   private let goToChangePaymentMethod = TestObserver<Void, Never>()
   private let goToContactCreator = TestObserver<Void, Never>()
   private let goToRewards = TestObserver<Project, Never>()
@@ -29,7 +30,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       .observe(self.configurePledgeSummaryView.observer)
     self.vm.outputs.configureRewardSummaryView
       .observe(self.configureRewardSummaryView.observer)
-    self.vm.outputs.goToCancelPledge.observe(self.goToCancelPledge.observer)
+    self.vm.outputs.goToCancelPledge.map(first).observe(self.goToCancelPledgeProject.observer)
+    self.vm.outputs.goToCancelPledge.map(second).observe(self.goToCancelPledgeBacking.observer)
     self.vm.outputs.goToChangePaymentMethod.observe(self.goToChangePaymentMethod.observer)
     self.vm.outputs.goToContactCreator.observe(self.goToContactCreator.observer)
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
@@ -122,15 +124,20 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testGoToCancelPledge() {
-    self.vm.inputs.configureWith(Project.template, reward: .template)
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ Backing.template
+
+    self.vm.inputs.configureWith(project, reward: .template)
     self.vm.inputs.viewDidLoad()
 
-    self.goToCancelPledge.assertDidNotEmitValue()
+    self.goToCancelPledgeProject.assertDidNotEmitValue()
+    self.goToCancelPledgeBacking.assertDidNotEmitValue()
 
     self.vm.inputs.menuButtonTapped()
     self.vm.inputs.menuOptionSelected(with: .cancelPledge)
 
-    self.goToCancelPledge.assertValueCount(1)
+    self.goToCancelPledgeProject.assertValues([project])
+    self.goToCancelPledgeBacking.assertValues([Backing.template])
   }
 
   func testGoToChangePaymentMethod() {
