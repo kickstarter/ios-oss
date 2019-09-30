@@ -23,7 +23,13 @@ final class PledgeViewModelTests: TestCase {
   private let configureWithPledgeViewDataProject = TestObserver<Project, Never>()
   private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
 
+  private let confirmButtonHidden = TestObserver<Bool, Never>()
+  private let confirmationLabelAttributedText = TestObserver<NSAttributedString, Never>()
+  private let confirmationLabelHidden = TestObserver<Bool, Never>()
+
   private let continueViewHidden = TestObserver<Bool, Never>()
+
+  private let descriptionViewHidden = TestObserver<Bool, Never>()
 
   private let createBackingError = TestObserver<String, Never>()
 
@@ -36,6 +42,7 @@ final class PledgeViewModelTests: TestCase {
   private let goToThanks = TestObserver<Project, Never>()
 
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
+  private let sectionSeparatorsHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
   private let updatePledgeButtonEnabled = TestObserver<Bool, Never>()
 
@@ -62,9 +69,15 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configureStripeIntegration.map(second)
       .observe(self.configureStripeIntegrationPublishableKey.observer)
 
+    self.vm.outputs.confirmButtonHidden.observe(self.confirmButtonHidden.observer)
+    self.vm.outputs.confirmationLabelAttributedText.observe(self.confirmationLabelAttributedText.observer)
+    self.vm.outputs.confirmationLabelHidden.observe(self.confirmationLabelHidden.observer)
+
     self.vm.outputs.continueViewHidden.observe(self.continueViewHidden.observer)
 
     self.vm.outputs.createBackingError.observe(self.createBackingError.observer)
+
+    self.vm.outputs.descriptionViewHidden.observe(self.descriptionViewHidden.observer)
 
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.project }
       .observe(self.goToApplePayPaymentAuthorizationProject.observer)
@@ -82,7 +95,144 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
 
     self.vm.outputs.updatePledgeButtonEnabled.observe(self.updatePledgeButtonEnabled.observer)
+    self.vm.outputs.sectionSeparatorsHidden.observe(self.sectionSeparatorsHidden.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
+  }
+
+  func testPledgeContext_LoggedIn() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+
+      self.confirmButtonHidden.assertValues([true])
+      self.confirmationLabelHidden.assertValues([true])
+
+      self.descriptionViewHidden.assertValues([false])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.sectionSeparatorsHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+    }
+  }
+
+  func testPledgeContext_LoggedOut() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: nil) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+
+      self.confirmButtonHidden.assertValues([true])
+      self.confirmationLabelHidden.assertValues([true])
+
+      self.descriptionViewHidden.assertValues([false])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([true])
+      self.sectionSeparatorsHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+    }
+  }
+
+  func testUpdateContext_LoggedIn() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
+
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
+
+      self.confirmButtonHidden.assertValues([false])
+      self.confirmationLabelHidden.assertValues([false])
+
+      self.descriptionViewHidden.assertValues([true])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([true])
+      self.sectionSeparatorsHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+    }
+  }
+
+  func testUpdateContext_LoggedOut() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: nil) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
+
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
+
+      self.confirmButtonHidden.assertValues([false])
+      self.confirmationLabelHidden.assertValues([false])
+
+      self.descriptionViewHidden.assertValues([true])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([true])
+      self.sectionSeparatorsHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
+    }
   }
 
   func testPledgeView_Logged_Out_Shipping_Disabled() {
@@ -91,7 +241,7 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ false
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
@@ -114,7 +264,7 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
@@ -138,7 +288,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -161,7 +311,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -184,7 +334,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -216,7 +366,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -261,7 +411,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -305,7 +455,7 @@ final class PledgeViewModelTests: TestCase {
     let user = User.template
 
     withEnvironment(currentUser: nil) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
@@ -340,7 +490,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -427,7 +577,9 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
       self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .projectPage)
+      self.vm.inputs.configureWith(
+        project: .template, reward: .template, refTag: .projectPage, context: .pledge
+      )
       self.vm.inputs.viewDidLoad()
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
@@ -442,7 +594,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
       self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity)
+      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
@@ -455,7 +607,7 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
     self.vm.inputs.viewDidLoad()
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -480,7 +632,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
     let shippingRule = ShippingRule.template
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
     self.vm.inputs.viewDidLoad()
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -507,7 +659,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
     let shippingRule = ShippingRule.template
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.shippingRuleSelected(shippingRule)
@@ -531,7 +683,7 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
@@ -551,7 +703,7 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
@@ -573,7 +725,7 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
@@ -592,7 +744,7 @@ final class PledgeViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.noReward
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
@@ -614,7 +766,7 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
@@ -635,7 +787,7 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.noReward
         |> Reward.lens.minimum .~ 5
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.applePayButtonTapped()
@@ -671,7 +823,7 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.noReward
         |> Reward.lens.minimum .~ 5
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -716,7 +868,7 @@ final class PledgeViewModelTests: TestCase {
       let project = Project.template
       let reward = Reward.noReward
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.applePayButtonTapped()
@@ -749,7 +901,7 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.noReward
         |> Reward.lens.minimum .~ 5
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage)
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.applePayButtonTapped()
@@ -780,7 +932,7 @@ final class PledgeViewModelTests: TestCase {
 
   func testPledgeButtonEnabled() {
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil)
+      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.updatePledgeButtonEnabled.assertDidNotEmitValue()
@@ -799,7 +951,7 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity)
+      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.updatePledgeButtonEnabled.assertDidNotEmitValue()
@@ -829,7 +981,7 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity)
+      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
       self.updatePledgeButtonEnabled.assertDidNotEmitValue()

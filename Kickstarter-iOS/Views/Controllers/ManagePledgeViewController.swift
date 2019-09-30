@@ -79,7 +79,7 @@ final class ManagePledgeViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> viewStyle
+      |> checkoutBackgroundStyle
 
     _ = self.closeButton
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
@@ -136,8 +136,8 @@ final class ManagePledgeViewController: UIViewController {
 
     self.viewModel.outputs.goToUpdatePledge
       .observeForControllerAction()
-      .observeValues { [weak self] project in
-        self?.goToUpdatePledge(project)
+      .observeValues { [weak self] project, reward in
+        self?.goToUpdatePledge(project: project, reward: reward)
       }
 
     self.viewModel.outputs.goToChangePaymentMethod
@@ -258,8 +258,11 @@ final class ManagePledgeViewController: UIViewController {
     self.navigationController?.pushViewController(rewardsVC, animated: true)
   }
 
-  private func goToUpdatePledge(_: Project) {
-    // TODO:
+  private func goToUpdatePledge(project: Project, reward: Reward) {
+    let vc = PledgeViewController.instantiate()
+    vc.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+
+    self.show(vc, sender: nil)
   }
 
   private func goToCancelPledge(project: Project, backing: Backing) {
@@ -283,11 +286,6 @@ final class ManagePledgeViewController: UIViewController {
 private let rootScrollViewStyle = { (scrollView: UIScrollView) in
   scrollView
     |> \.alwaysBounceVertical .~ true
-}
-
-private let viewStyle: ViewStyle = { (view: UIView) in
-  view
-    |> \.backgroundColor .~ UIColor.ksr_grey_400
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
