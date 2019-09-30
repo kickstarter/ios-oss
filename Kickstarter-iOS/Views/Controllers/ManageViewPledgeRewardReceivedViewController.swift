@@ -14,5 +14,8 @@ final class ManageViewPledgeRewardReceivedViewController: ToggleViewController {
 
     _ = self.toggle
       |> checkoutSwitchControlStyle
+      |> \.accessibilityLabel %~ {
+        _ in localizedString(key: "Reward_received", defaultValue: "Reward received")
+      }
   }
 }
