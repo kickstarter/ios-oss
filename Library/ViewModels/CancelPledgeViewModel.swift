@@ -11,6 +11,7 @@ public protocol CancelPledgeViewModelOutputs {
 public protocol CancelPledgeViewModelInputs {
   func configure(with project: Project, backing: Backing)
   func goBackButtonTapped()
+  func traitCollectionDidChange()
   func viewDidLoad()
 }
 
@@ -26,7 +27,9 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
                                            self.viewDidLoadProperty.signal)
       .map(first)
 
-    self.cancellationDetailsTextLabelValue = initialData
+    self.cancellationDetailsTextLabelValue = Signal.merge(
+      initialData,
+      initialData.takeWhen(self.traitCollectionDidChangeProperty.signal))
       .map { project, backing in
         let formattedAmount = Format.currency(backing.amount,
                                      country: project.country,
@@ -45,6 +48,11 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
   private let goBackButtonTappedProperty = MutableProperty(())
   public func goBackButtonTapped() {
     self.goBackButtonTappedProperty.value = ()
+  }
+
+  private let traitCollectionDidChangeProperty = MutableProperty(())
+  public func traitCollectionDidChange() {
+    self.traitCollectionDidChangeProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty(())

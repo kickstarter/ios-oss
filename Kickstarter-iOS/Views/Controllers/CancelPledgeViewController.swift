@@ -62,6 +62,12 @@ final class CancelPledgeViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    self.viewModel.inputs.traitCollectionDidChange()
+  }
+
   // MARK: - Configuration
 
   internal func configure(with project: Project, backing: Backing) {
@@ -142,12 +148,15 @@ final class CancelPledgeViewController: UIViewController {
       .Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name(amount: amount,
                                                                           project_name: projectName)
     let attributedString: NSMutableAttributedString = NSMutableAttributedString.init(string: fullString)
+    let regularFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_callout()]
     let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_callout().bolded]
-    let range1: NSRange = (fullString as NSString).localizedStandardRange(of: amount)
-    let range2: NSRange = (fullString as NSString).localizedStandardRange(of: projectName)
+    let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
+    let rangeAmount: NSRange = (fullString as NSString).localizedStandardRange(of: amount)
+    let rangeProjectName: NSRange = (fullString as NSString).localizedStandardRange(of: projectName)
 
-    attributedString.addAttributes(boldFontAttribute, range: range1)
-    attributedString.addAttributes(boldFontAttribute, range: range2)
+    attributedString.addAttributes(regularFontAttribute, range: fullRange)
+    attributedString.addAttributes(boldFontAttribute, range: rangeAmount)
+    attributedString.addAttributes(boldFontAttribute, range: rangeProjectName)
 
     _ = self.cancellationDetailsTextLabel
       |> \.attributedText .~ attributedString
