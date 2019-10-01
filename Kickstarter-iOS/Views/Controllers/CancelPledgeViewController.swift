@@ -12,19 +12,16 @@ final class CancelPledgeViewController: UIViewController {
   }()
 
   private lazy var cancellationDetailsTextLabel = { UILabel(frame: .zero) }()
-  private lazy var cancellationReasonTextField = { UITextField(frame: .zero) }()
   private lazy var cancellationReasonDisclaimerLabel = { UILabel(frame: .zero) }()
+  private lazy var cancellationReasonTextField = { UITextField(frame: .zero) }()
   private lazy var goBackButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
   private lazy var scrollView = { UIScrollView(frame: .zero) }()
-
   private let viewModel: CancelPledgeViewModelType = CancelPledgeViewModel()
 
   // MARK: - Lifecycle

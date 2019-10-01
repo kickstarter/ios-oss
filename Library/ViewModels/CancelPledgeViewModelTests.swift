@@ -33,6 +33,11 @@ final class CancelPledgeViewModelTests: TestCase {
 
     self.cancellationDetailsTextLabelAmount.assertValues(["$5"])
     self.cancellationDetailsTextLabelProjectName.assertValues(["Cosmic Surgery"])
+
+    self.vm.inputs.traitCollectionDidChange()
+
+    self.cancellationDetailsTextLabelAmount.assertValues(["$5", "$5"])
+    self.cancellationDetailsTextLabelProjectName.assertValues(["Cosmic Surgery", "Cosmic Surgery"])
   }
 
   func testGoBackButtonTapped() {
