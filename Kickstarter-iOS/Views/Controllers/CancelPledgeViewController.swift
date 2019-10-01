@@ -17,10 +17,12 @@ final class CancelPledgeViewController: UIViewController {
   private lazy var goBackButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var scrollView = { UIScrollView(frame: .zero) }()
   private let viewModel: CancelPledgeViewModelType = CancelPledgeViewModel()
 
