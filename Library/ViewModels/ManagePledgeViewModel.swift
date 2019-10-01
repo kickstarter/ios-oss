@@ -21,13 +21,13 @@ public protocol ManagePledgeViewModelInputs {
 public protocol ManagePledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<Project, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
+  var configureRewardReceivedWithProject: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<Reward, Never> { get }
   var goToCancelPledge: Signal<(Project, Backing), Never> { get }
   var goToChangePaymentMethod: Signal<Void, Never> { get }
   var goToContactCreator: Signal<Void, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
-
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var title: Signal<String, Never> { get }
 }
@@ -43,6 +43,11 @@ public final class ManagePledgeViewModel:
     let projectAndReward = self.projectAndRewardSignal
       .takeWhen(self.viewDidLoadSignal.ignoreValues())
 
+    let project = projectAndReward.map(first)
+    let backing = project
+      .map { $0.personalization.backing }
+      .skipNil()
+
     self.title = projectAndReward
       .map(first)
       .map(navigationBarTitle(with:))
@@ -53,13 +58,10 @@ public final class ManagePledgeViewModel:
     self.configurePledgeSummaryView = projectAndReward
       .map(first)
 
+    self.configureRewardReceivedWithProject = project
+
     self.configureRewardSummaryView = projectAndReward
       .map(second)
-
-    let project = projectAndReward.map(first)
-    let backing = project
-      .map { $0.personalization.backing }
-      .skipNil()
 
     self.showActionSheetMenuWithOptions = project
       .takeWhen(self.menuButtonTappedSignal)
@@ -116,6 +118,7 @@ public final class ManagePledgeViewModel:
 
   public let configurePaymentMethodView: Signal<Project, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
+  public let configureRewardReceivedWithProject: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<Reward, Never>
   public let goToCancelPledge: Signal<(Project, Backing), Never>
   public let goToChangePaymentMethod: Signal<Void, Never>

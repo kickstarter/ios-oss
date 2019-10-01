@@ -1,8 +1,28 @@
 import Library
+import KsApi
 import Prelude
 import UIKit
 
 final class ManageViewPledgeRewardReceivedViewController: ToggleViewController {
+  // MARK: - Properties
+
+  private let viewModel: ManageViewPledgeRewardReceivedViewModelType
+    = ManageViewPledgeRewardReceivedViewModel()
+
+  // MARK: - Lifecycle
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    self.viewModel.inputs.viewDidLoad()
+  }
+
+  // MARK: - Configuration
+
+  public func configureWith(project: Project) {
+    self.viewModel.inputs.configureWith(project)
+  }
+
   // MARK: - Styles
 
   override func bindStyles() {
@@ -14,5 +34,17 @@ final class ManageViewPledgeRewardReceivedViewController: ToggleViewController {
 
     _ = self.toggle
       |> checkoutSwitchControlStyle
+  }
+
+  // MARK: - View model
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.rewardReceived
+      .observeForUI()
+      .observeValues { [weak self] isOn in
+        self?.toggle.isOn = isOn
+    }
   }
 }
