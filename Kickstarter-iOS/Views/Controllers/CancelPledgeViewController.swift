@@ -39,6 +39,9 @@ final class CancelPledgeViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
+    _ = self.scrollView
+      |> \.contentInset .~ .init(top: self.view.frame.size.height / 4)
+
     _ = ([self.cancellationDetailsTextLabel,
           self.cancellationReasonTextField,
           self.cancellationReasonDisclaimerLabel,
@@ -46,10 +49,14 @@ final class CancelPledgeViewController: UIViewController {
           self.goBackButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    // TODO: move this to a custom ksr function
-    self.rootStackView.setCustomSpacing(Styles.grid(10), after: self.cancellationReasonDisclaimerLabel)
-    self.rootStackView.setCustomSpacing(Styles.grid(6), after: self.cancellationDetailsTextLabel)
-    self.rootStackView.setCustomSpacing(Styles.grid(1), after: self.cancellationReasonTextField)
+    _ = (self.cancellationReasonDisclaimerLabel, self.rootStackView)
+      |> ksr_setCustomSpacing(Styles.grid(10))
+
+    _ = (self.cancellationDetailsTextLabel, self.rootStackView)
+      |> ksr_setCustomSpacing(Styles.grid(6))
+
+    _ = (self.cancellationReasonTextField, self.rootStackView)
+      |> ksr_setCustomSpacing(Styles.grid(1))
 
     self.setupConstraints()
 
@@ -100,7 +107,7 @@ final class CancelPledgeViewController: UIViewController {
       |> \.text %~ { _ in Strings.We_wont_share_this_with_the_creator() }
 
     _ = self.cancelButton
-      |> apricotButtonStyle
+      |> redButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Yes_cancel_it() }
 
     _ = self.goBackButton

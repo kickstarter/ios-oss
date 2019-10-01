@@ -7,3 +7,12 @@ public func ksr_addArrangedSubviewsToStackView() -> (([UIView], UIStackView) -> 
     return stackView
   }
 }
+
+public func ksr_setCustomSpacing(_ spacing: CGFloat) -> ((UIView, UIStackView) -> UIStackView) {
+  return { view, stackView in
+    stackView.setCustomSpacing(spacing, after: view)
+    
+    return stackView
+  }
+}
+
