@@ -1,7 +1,7 @@
 import Foundation
 import KsApi
-import ReactiveSwift
 import Prelude
+import ReactiveSwift
 
 public protocol CancelPledgeViewModelInputs {
   func configure(with project: Project, backing: Backing)
@@ -23,18 +23,23 @@ public protocol CancelPledgeViewModelType {
 public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledgeViewModelInputs,
   CancelPledgeViewModelOutputs {
   public init() {
-    let initialData = Signal.combineLatest(self.configureWithProjectAndBackingProperty.signal.skipNil(),
-                                           self.viewDidLoadProperty.signal)
-      .map(first)
+    let initialData = Signal.combineLatest(
+      self.configureWithProjectAndBackingProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
 
     self.cancellationDetailsTextLabelValue = Signal.merge(
       initialData,
-      initialData.takeWhen(self.traitCollectionDidChangeProperty.signal))
-      .map { project, backing in
-        let formattedAmount = Format.currency(backing.amount,
-                                     country: project.country,
-                                     omitCurrencyCode: project.stats.omitUSCurrencyCode)
-        return (formattedAmount, project.name)
+      initialData.takeWhen(self.traitCollectionDidChangeProperty.signal)
+    )
+    .map { project, backing in
+      let formattedAmount = Format.currency(
+        backing.amount,
+        country: project.country,
+        omitCurrencyCode: project.stats.omitUSCurrencyCode
+      )
+      return (formattedAmount, project.name)
     }
 
     self.popCancelPledgeViewController = self.goBackButtonTappedProperty.signal

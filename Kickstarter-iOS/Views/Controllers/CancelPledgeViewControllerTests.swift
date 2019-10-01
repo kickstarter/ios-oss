@@ -1,7 +1,7 @@
 import Foundation
 @testable import Kickstarter_Framework
-@testable import Library
 @testable import KsApi
+@testable import Library
 import XCTest
 
 final class CancelPledgeViewControllerTests: TestCase {

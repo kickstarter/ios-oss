@@ -15,4 +15,3 @@ public func ksr_setCustomSpacing(_ spacing: CGFloat) -> ((UIView, UIStackView) -
     return stackView
   }
 }
-

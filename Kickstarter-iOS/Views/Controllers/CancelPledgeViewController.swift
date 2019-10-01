@@ -6,19 +6,23 @@ import UIKit
 
 final class CancelPledgeViewController: UIViewController {
   // MARK: - Properties
+
   private lazy var cancelButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var cancellationDetailsTextLabel = { UILabel(frame: .zero) }()
   private lazy var cancellationReasonTextField = { UITextField(frame: .zero) }()
   private lazy var cancellationReasonDisclaimerLabel = { UILabel(frame: .zero) }()
   private lazy var goBackButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var scrollView = { UIScrollView(frame: .zero) }()
 
   private let viewModel: CancelPledgeViewModelType = CancelPledgeViewModel()
@@ -39,11 +43,13 @@ final class CancelPledgeViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.cancellationDetailsTextLabel,
-          self.cancellationReasonTextField,
-          self.cancellationReasonDisclaimerLabel,
-          self.cancelButton,
-          self.goBackButton], self.rootStackView)
+    _ = ([
+      self.cancellationDetailsTextLabel,
+      self.cancellationReasonTextField,
+      self.cancellationReasonDisclaimerLabel,
+      self.cancelButton,
+      self.goBackButton
+    ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.cancellationReasonDisclaimerLabel, self.rootStackView)
@@ -61,8 +67,10 @@ final class CancelPledgeViewController: UIViewController {
       UITapGestureRecognizer(target: self, action: #selector(CancelPledgeViewController.dismissKeyboard))
     )
 
-    self.goBackButton.addTarget(self, action: #selector(CancelPledgeViewController.goBackButtonTapped),
-                                for: .touchUpInside)
+    self.goBackButton.addTarget(
+      self, action: #selector(CancelPledgeViewController.goBackButtonTapped),
+      for: .touchUpInside
+    )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -123,13 +131,13 @@ final class CancelPledgeViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] amount, projectName in
         self?.setCancellationDetailsAttributedText(with: amount, projectName: projectName)
-    }
+      }
 
     self.viewModel.outputs.popCancelPledgeViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.navigationController?.popViewController(animated: true)
-    }
+      }
 
     Keyboard.change
       .observeForUI()
@@ -137,7 +145,7 @@ final class CancelPledgeViewController: UIViewController {
         guard let self = self else { return }
 
         self.scrollView.handleKeyboardVisibilityDidChange(change, insets: self.scrollView.contentInset)
-    }
+      }
   }
 
   // MARK: - Functions
@@ -149,13 +157,15 @@ final class CancelPledgeViewController: UIViewController {
       self.goBackButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.cancellationReasonTextField.heightAnchor
         .constraint(greaterThanOrEqualTo: self.cancelButton.heightAnchor)
-      ])
+    ])
   }
 
   private func setCancellationDetailsAttributedText(with amount: String, projectName: String) {
     let fullString = Strings
-      .Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name(amount: amount,
-                                                                          project_name: projectName)
+      .Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name(
+        amount: amount,
+        project_name: projectName
+      )
     let attributedString: NSMutableAttributedString = NSMutableAttributedString.init(string: fullString)
     let regularFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_callout()]
     let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_callout().bolded]
@@ -171,10 +181,10 @@ final class CancelPledgeViewController: UIViewController {
       |> \.attributedText .~ attributedString
   }
 
-    private func contentInsetsFor(traitCollection: UITraitCollection) -> UIEdgeInsets {
-      return traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-        ? .init(top: 0) : .init(top: self.view.frame.size.height / 4)
-    }
+  private func contentInsetsFor(traitCollection: UITraitCollection) -> UIEdgeInsets {
+    return traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+      ? .init(top: 0) : .init(top: self.view.frame.size.height / 4)
+  }
 
   // MARK: - Accessors
 

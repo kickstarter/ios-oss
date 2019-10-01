@@ -1,9 +1,9 @@
 import Foundation
-@testable import Library
 @testable import KsApi
+@testable import Library
 import Prelude
-import XCTest
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 final class CancelPledgeViewModelTests: TestCase {
   private let vm: CancelPledgeViewModelType = CancelPledgeViewModel()
