@@ -9,8 +9,8 @@ public struct UpdateBackingMutation<T: GraphMutationInput>: GraphMutation {
 
   public var description: String {
     return """
-    mutation createBacking($input: UpdateBackingInput!) {
-      createBacking(input: $input) {
+    mutation updateBacking($input: UpdateBackingInput!) {
+      updateBacking(input: $input) {
         checkout {
           state
           backing {
