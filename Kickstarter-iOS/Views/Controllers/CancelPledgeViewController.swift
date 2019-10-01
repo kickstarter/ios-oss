@@ -83,11 +83,14 @@ final class CancelPledgeViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ UIColor.ksr_grey_400
+      |> checkoutBackgroundStyle
 
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
-      |> \.contentInset .~ .init(top: self.view.frame.size.height / 4)
+      |> \.showsVerticalScrollIndicator .~ false
+      |> \.contentInset %~ { _ -> UIEdgeInsets in
+        self.contentInsetsFor(traitCollection: self.traitCollection)
+      }
 
     _ = self.rootStackView
       |> checkoutRootStackViewStyle
@@ -131,7 +134,9 @@ final class CancelPledgeViewController: UIViewController {
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
-        self?.scrollView.handleKeyboardVisibilityDidChange(change)
+        guard let self = self else { return }
+
+        self.scrollView.handleKeyboardVisibilityDidChange(change, insets: self.scrollView.contentInset)
     }
   }
 
@@ -165,6 +170,11 @@ final class CancelPledgeViewController: UIViewController {
     _ = self.cancellationDetailsTextLabel
       |> \.attributedText .~ attributedString
   }
+
+    private func contentInsetsFor(traitCollection: UITraitCollection) -> UIEdgeInsets {
+      return traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        ? .init(top: 0) : .init(top: self.view.frame.size.height / 4)
+    }
 
   // MARK: - Accessors
 
