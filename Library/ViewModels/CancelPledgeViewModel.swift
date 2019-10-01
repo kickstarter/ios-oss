@@ -3,16 +3,16 @@ import KsApi
 import ReactiveSwift
 import Prelude
 
-public protocol CancelPledgeViewModelOutputs {
-  var cancellationDetailsTextLabelValue: Signal<(amount: String, projectName: String), Never> { get }
-  var popCancelPledgeViewController: Signal<Void, Never> { get }
-}
-
 public protocol CancelPledgeViewModelInputs {
   func configure(with project: Project, backing: Backing)
   func goBackButtonTapped()
   func traitCollectionDidChange()
   func viewDidLoad()
+}
+
+public protocol CancelPledgeViewModelOutputs {
+  var cancellationDetailsTextLabelValue: Signal<(amount: String, projectName: String), Never> { get }
+  var popCancelPledgeViewController: Signal<Void, Never> { get }
 }
 
 public protocol CancelPledgeViewModelType {
