@@ -30,6 +30,6 @@ final class Encodable_DictionaryTests: XCTestCase {
 
     XCTAssertEqual(dict?["a"] as? Int, 1)
     XCTAssertEqual(dict?["b"] as? String, "foo")
-    XCTAssertFalse(dict?.keys.contains("c") == .some(false))
+    XCTAssertEqual(dict?.keys.contains("c"), .some(false))
   }
 }
