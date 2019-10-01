@@ -17,7 +17,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let goToChangePaymentMethod = TestObserver<Void, Never>()
   private let goToContactCreator = TestObserver<Void, Never>()
   private let goToRewards = TestObserver<Project, Never>()
-  private let goToUpdatePledge = TestObserver<Project, Never>()
+  private let goToUpdatePledgeProject = TestObserver<Project, Never>()
+  private let goToUpdatePledgeReward = TestObserver<Reward, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
   private let title = TestObserver<String, Never>()
 
@@ -35,7 +36,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.goToChangePaymentMethod.observe(self.goToChangePaymentMethod.observer)
     self.vm.outputs.goToContactCreator.observe(self.goToContactCreator.observer)
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
-    self.vm.outputs.goToUpdatePledge.observe(self.goToUpdatePledge.observer)
+    self.vm.outputs.goToUpdatePledge.map(first).observe(self.goToUpdatePledgeProject.observer)
+    self.vm.outputs.goToUpdatePledge.map(second).observe(self.goToUpdatePledgeReward.observer)
     self.vm.outputs.showActionSheetMenuWithOptions.observe(self.showActionSheetMenuWithOptions.observer)
   }
 
@@ -180,11 +182,13 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(Project.template, reward: .template)
     self.vm.inputs.viewDidLoad()
 
-    self.goToUpdatePledge.assertDidNotEmitValue()
+    self.goToUpdatePledgeProject.assertDidNotEmitValue()
+    self.goToUpdatePledgeReward.assertDidNotEmitValue()
 
     self.vm.inputs.menuButtonTapped()
     self.vm.inputs.menuOptionSelected(with: .updatePledge)
 
-    self.goToUpdatePledge.assertValues([Project.template])
+    self.goToUpdatePledgeProject.assertValues([Project.template])
+    self.goToUpdatePledgeReward.assertValues([Reward.template])
   }
 }

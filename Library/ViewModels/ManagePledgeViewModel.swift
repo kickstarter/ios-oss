@@ -26,7 +26,7 @@ public protocol ManagePledgeViewModelOutputs {
   var goToChangePaymentMethod: Signal<Void, Never> { get }
   var goToContactCreator: Signal<Void, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
-  var goToUpdatePledge: Signal<Project, Never> { get }
+  var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
 
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var title: Signal<String, Never> { get }
@@ -71,7 +71,7 @@ public final class ManagePledgeViewModel:
         }
       }
 
-    self.goToUpdatePledge = project
+    self.goToUpdatePledge = projectAndReward
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
 
     self.goToRewards = project
@@ -121,7 +121,7 @@ public final class ManagePledgeViewModel:
   public let goToChangePaymentMethod: Signal<Void, Never>
   public let goToContactCreator: Signal<Void, Never>
   public let goToRewards: Signal<Project, Never>
-  public let goToUpdatePledge: Signal<Project, Never>
+  public let goToUpdatePledge: Signal<(Project, Reward), Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let title: Signal<String, Never>
 
