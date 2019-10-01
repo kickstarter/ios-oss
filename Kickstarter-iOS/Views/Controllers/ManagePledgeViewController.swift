@@ -42,13 +42,6 @@ final class ManagePledgeViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  static func instantiate(with project: Project, reward: Reward) -> ManagePledgeViewController {
-    let manageViewPledgeVC = ManagePledgeViewController.instantiate()
-    manageViewPledgeVC.viewModel.inputs.configureWith(project, reward: reward)
-
-    return manageViewPledgeVC
-  }
-
   // MARK: - Lifecycle
 
   override func viewDidLoad() {
@@ -99,6 +92,9 @@ final class ManagePledgeViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.rewardReceivedViewController.view.rac.hidden =
+      self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
 
     self.viewModel.outputs.title
       .observeForUI()

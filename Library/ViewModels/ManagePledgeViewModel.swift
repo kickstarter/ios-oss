@@ -28,6 +28,7 @@ public protocol ManagePledgeViewModelOutputs {
   var goToContactCreator: Signal<Void, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
+  var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var title: Signal<String, Never> { get }
 }
@@ -93,6 +94,9 @@ public final class ManagePledgeViewModel:
     self.goToChangePaymentMethod = self.menuOptionSelectedSignal
       .filter { $0 == .changePaymentMethod }
       .ignoreValues()
+
+    self.rewardReceivedViewControllerViewIsHidden = projectAndReward
+      .map { project, reward in reward.isNoReward || project.personalization.backing?.status != .collected }
   }
 
   private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
@@ -125,6 +129,7 @@ public final class ManagePledgeViewModel:
   public let goToContactCreator: Signal<Void, Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
+  public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let title: Signal<String, Never>
 

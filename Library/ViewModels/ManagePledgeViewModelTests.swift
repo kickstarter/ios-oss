@@ -19,6 +19,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let goToRewards = TestObserver<Project, Never>()
   private let goToUpdatePledgeProject = TestObserver<Project, Never>()
   private let goToUpdatePledgeReward = TestObserver<Reward, Never>()
+  private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
   private let title = TestObserver<String, Never>()
 
@@ -38,6 +39,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
     self.vm.outputs.goToUpdatePledge.map(first).observe(self.goToUpdatePledgeProject.observer)
     self.vm.outputs.goToUpdatePledge.map(second).observe(self.goToUpdatePledgeReward.observer)
+    self.vm.outputs.rewardReceivedViewControllerViewIsHidden.observe(
+      self.rewardReceivedViewControllerViewIsHidden.observer
+    )
     self.vm.outputs.showActionSheetMenuWithOptions.observe(self.showActionSheetMenuWithOptions.observer)
   }
 
@@ -190,5 +194,161 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     self.goToUpdatePledgeProject.assertValues([Project.template])
     self.goToUpdatePledgeReward.assertValues([Reward.template])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_NoReward_Canceled() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .canceled
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: Reward.noReward)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_NoReward_Collected() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .collected
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: Reward.noReward)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_NoReward_Dropped() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .dropped
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: Reward.noReward)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_NoReward_Errored() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .errored
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: Reward.noReward)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_NoReward_Pledged() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .pledged
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: Reward.noReward)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_NoReward_Preauth() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .preauth
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: Reward.noReward)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_Reward_Canceled() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .preauth
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_Reward_Collected() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .collected
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([false])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_Reward_Dropped() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .dropped
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_Reward_Errored() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .errored
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_Reward_Pledged() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .pledged
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testRewardReceivedViewControllerIsHidden_Reward_Preauth() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .preauth
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    self.vm.inputs.configureWith(project, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
   }
 }
