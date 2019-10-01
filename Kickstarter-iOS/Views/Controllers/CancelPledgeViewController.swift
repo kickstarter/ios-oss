@@ -39,9 +39,6 @@ final class CancelPledgeViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = self.scrollView
-      |> \.contentInset .~ .init(top: self.view.frame.size.height / 4)
-
     _ = ([self.cancellationDetailsTextLabel,
           self.cancellationReasonTextField,
           self.cancellationReasonDisclaimerLabel,
@@ -90,6 +87,7 @@ final class CancelPledgeViewController: UIViewController {
 
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
+      |> \.contentInset .~ .init(top: self.view.frame.size.height / 4)
 
     _ = self.rootStackView
       |> checkoutRootStackViewStyle
@@ -144,7 +142,8 @@ final class CancelPledgeViewController: UIViewController {
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
       self.cancelButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.goBackButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
-      self.cancellationReasonTextField.heightAnchor.constraint(equalTo: self.cancelButton.heightAnchor)
+      self.cancellationReasonTextField.heightAnchor
+        .constraint(greaterThanOrEqualTo: self.cancelButton.heightAnchor)
       ])
   }
 
