@@ -9,7 +9,7 @@ final class ManagePledgePaymentMethodView: UIView {
   private lazy var cardImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var cardLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var lastFourLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var lastFourDigitsLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var paymentMethodAdaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
@@ -37,7 +37,7 @@ final class ManagePledgePaymentMethodView: UIView {
   }
 
   private func configureViews() {
-    _ = ([self.lastFourLabel, self.expirationDateLabel], self.cardLabelsStackView)
+    _ = ([self.lastFourDigitsLabel, self.expirationDateLabel], self.cardLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.cardImageView, self.cardLabelsStackView], self.paymentMethodAdaptableStackView)
@@ -63,10 +63,10 @@ final class ManagePledgePaymentMethodView: UIView {
       |> verticalStackViewStyle
 
     _ = self.expirationDateLabel
-      |> cardExpirationDateLabelStyle
+      |> expirationDateLabelStyle
 
-    _ = self.lastFourLabel
-      |> cardLastFourLabelStyle
+    _ = self.lastFourDigitsLabel
+      |> lastFourDigitsLabelStyle
 
     _ = self.paymentMethodAdaptableStackView
       |> checkoutAdaptableStackViewStyle(
@@ -78,7 +78,8 @@ final class ManagePledgePaymentMethodView: UIView {
       |> checkoutCardStackViewStyle
 
     _ = self.titleLabel
-      |> titleLabelStyle
+      |> checkoutTitleLabelStyle
+      |> \.text %~ { _ in Strings.Payment_method() }
   }
 
   // MARK: - View model
@@ -87,7 +88,7 @@ final class ManagePledgePaymentMethodView: UIView {
     super.bindViewModel()
 
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
-    self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
+    self.lastFourDigitsLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
 
     self.viewModel.outputs.cardImage
       .observeForUI()
@@ -110,32 +111,23 @@ final class ManagePledgePaymentMethodView: UIView {
 
 // MARK: - Styles
 
-private let cardExpirationDateLabelStyle: LabelStyle = { label in
+private let expirationDateLabelStyle: LabelStyle = { label in
   label
-    |> checkoutTitleLabelStyle
-    |> \.font .~ UIFont.ksr_caption1().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.font .~ UIFont.ksr_caption1().bolded
+    |> \.numberOfLines .~ 0
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
 }
 
-private let cardLastFourLabelStyle: LabelStyle = { label in
+private let lastFourDigitsLabelStyle: LabelStyle = { label in
   label
-    |> checkoutTitleLabelStyle
-    |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.font .~ UIFont.ksr_subhead().bolded
+    |> \.numberOfLines .~ 0
     |> \.textColor .~ UIColor.ksr_soft_black
 }
 
 private let paymentMethodAdaptableStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.spacing .~ Styles.grid(2)
-}
-
-private let titleLabelStyle: LabelStyle = { label in
-  label
-    |> \.textColor .~ UIColor.black
-    |> \.font .~ UIFont.ksr_subhead().bolded
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.text %~ { _ in Strings.Payment_method() }
-    |> \.numberOfLines .~ 0
 }

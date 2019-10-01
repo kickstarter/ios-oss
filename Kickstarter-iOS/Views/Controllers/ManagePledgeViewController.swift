@@ -183,14 +183,17 @@ final class ManagePledgeViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    let childViews: [UIView] = [
-      self.pledgeSummaryView,
-      self.paymentMethodView,
-      self.rewardReceivedViewController.view
-    ]
-
-    _ = (childViews, self.rootStackView)
+    _ = ([self.pledgeSummaryView, self.paymentMethodView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    [self.rewardReceivedViewController].forEach { viewController in
+      self.addChild(viewController)
+
+      _ = ([viewController.view], self.rootStackView)
+        |> ksr_addArrangedSubviewsToStackView()
+
+      viewController.didMove(toParent: self)
+    }
   }
 
   // MARK: Actions
