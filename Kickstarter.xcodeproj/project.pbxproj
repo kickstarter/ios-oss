@@ -331,6 +331,8 @@
 		8AF34C7A2342D864000B211D /* Encodable+DictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C792342D864000B211D /* Encodable+DictionaryTests.swift */; };
 		8AF34C7F2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */; };
 		8AF34C802343C41C000B211D /* UpdateBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */; };
+		8AF34C8423440327000B211D /* ApplePayParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C8323440327000B211D /* ApplePayParams.swift */; };
+		8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C8523440565000B211D /* ApplePayParamsTests.swift */; };
 		8AF91CDD22EF5AF8005F9C90 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF91CDC22EF5AF7005F9C90 /* Feature.swift */; };
 		8AFB8C97233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */; };
 		8AFB8C99233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */; };
@@ -1702,6 +1704,8 @@
 		8AF34C792342D864000B211D /* Encodable+DictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+DictionaryTests.swift"; sourceTree = "<group>"; };
 		8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingEnvelope.swift; sourceTree = "<group>"; };
 		8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingEnvelopeTests.swift; sourceTree = "<group>"; };
+		8AF34C8323440327000B211D /* ApplePayParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayParams.swift; sourceTree = "<group>"; };
+		8AF34C8523440565000B211D /* ApplePayParamsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayParamsTests.swift; sourceTree = "<group>"; };
 		8AF91CDC22EF5AF7005F9C90 /* Feature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+Constructor.swift"; sourceTree = "<group>"; };
 		8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+ConstructorTests.swift"; sourceTree = "<group>"; };
@@ -4040,6 +4044,8 @@
 		D6ED1B3C216D617E007F7547 /* inputs */ = {
 			isa = PBXGroup;
 			children = (
+				8AF34C8323440327000B211D /* ApplePayParams.swift */,
+				8AF34C8523440565000B211D /* ApplePayParamsTests.swift */,
 				D777442E217A3382008D679F /* ChangeCurrencyInput.swift */,
 				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
 				77E44B7321823A56006446B8 /* ChangePasswordInput.swift */,
@@ -5413,6 +5419,7 @@
 				D0158A111EEB30A2006E7684 /* ConfigTemplates.swift in Sources */,
 				D015885D1EEB2ED7006E7684 /* CommentsEnvelope.swift in Sources */,
 				D79CF32C219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift in Sources */,
+				8AF34C8423440327000B211D /* ApplePayParams.swift in Sources */,
 				D0158A151EEB30A2006E7684 /* FriendStatsEnvelopeTemplates.swift in Sources */,
 				D01589111EEB2ED7006E7684 /* PushEnvelope.swift in Sources */,
 				D01589971EEB2ED7006E7684 /* VoidEnvelope.swift in Sources */,
@@ -5631,6 +5638,7 @@
 				D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */,
 				D0D10C1C1EEB4550005EBAD0 /* UpdateDraftTests.swift in Sources */,
 				D0D10C0D1EEB4550005EBAD0 /* FriendStatsEnvelopeTests.swift in Sources */,
+				8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */,
 				77DB532A2215D0AA0078991C /* GraphUserCreditCardTests.swift in Sources */,
 				77950F0E231EC12700308331 /* CreateApplePayBackingInputTests.swift in Sources */,
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
