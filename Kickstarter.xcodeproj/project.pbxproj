@@ -329,6 +329,8 @@
 		8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C752342D1D2000B211D /* UpdateBackingInputTests.swift */; };
 		8AF34C782342D6A5000B211D /* Encodable+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C772342D6A5000B211D /* Encodable+Dictionary.swift */; };
 		8AF34C7A2342D864000B211D /* Encodable+DictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C792342D864000B211D /* Encodable+DictionaryTests.swift */; };
+		8AF34C7F2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */; };
+		8AF34C802343C41C000B211D /* UpdateBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */; };
 		8AF91CDD22EF5AF8005F9C90 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF91CDC22EF5AF7005F9C90 /* Feature.swift */; };
 		8AFB8C97233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */; };
 		8AFB8C99233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */; };
@@ -1698,6 +1700,8 @@
 		8AF34C752342D1D2000B211D /* UpdateBackingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingInputTests.swift; sourceTree = "<group>"; };
 		8AF34C772342D6A5000B211D /* Encodable+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Dictionary.swift"; sourceTree = "<group>"; };
 		8AF34C792342D864000B211D /* Encodable+DictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+DictionaryTests.swift"; sourceTree = "<group>"; };
+		8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingEnvelope.swift; sourceTree = "<group>"; };
+		8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingEnvelopeTests.swift; sourceTree = "<group>"; };
 		8AF91CDC22EF5AF7005F9C90 /* Feature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+Constructor.swift"; sourceTree = "<group>"; };
 		8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+ConstructorTests.swift"; sourceTree = "<group>"; };
@@ -3832,7 +3836,6 @@
 				77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
 				D01587961EEB2ED6006E7684 /* ItemTests.swift */,
-				D01587971EEB2ED6006E7684 /* lenses */,
 				D01587CB1EEB2ED7006E7684 /* Location.swift */,
 				D67B6CD5221F468100B63A6B /* Location+Argo.swift */,
 				D01587CC1EEB2ED7006E7684 /* LocationTests.swift */,
@@ -3872,8 +3875,9 @@
 				D01587EB1EEB2ED7006E7684 /* SubmitApplePayEnvelopeTests.swift */,
 				D01587EC1EEB2ED7006E7684 /* SurveyResponse.swift */,
 				D01587ED1EEB2ED7006E7684 /* SurveyResponseTests.swift */,
-				D01587EE1EEB2ED7006E7684 /* templates */,
 				D015881A1EEB2ED7006E7684 /* Update.swift */,
+				8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */,
+				8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */,
 				D015881B1EEB2ED7006E7684 /* UpdateDraft.swift */,
 				D015881C1EEB2ED7006E7684 /* UpdateDraftTests.swift */,
 				D015881D1EEB2ED7006E7684 /* UpdatePledgeEnvelope.swift */,
@@ -3888,6 +3892,8 @@
 				7798B5622174F494008BC50D /* UserEnvelope.swift */,
 				D01588241EEB2ED7006E7684 /* UserTests.swift */,
 				D01588251EEB2ED7006E7684 /* VoidEnvelope.swift */,
+				D01587971EEB2ED6006E7684 /* lenses */,
+				D01587EE1EEB2ED7006E7684 /* templates */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -5607,6 +5613,7 @@
 				D015886B1EEB2ED7006E7684 /* DiscoveryParams.swift in Sources */,
 				D755ECAB232005A70096F189 /* Checkout.swift in Sources */,
 				D01588BF1EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift in Sources */,
+				8AF34C802343C41C000B211D /* UpdateBackingEnvelope.swift in Sources */,
 				D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5638,6 +5645,7 @@
 				D0D10C0C1EEB4550005EBAD0 /* FindFriendsEnvelopeTests.swift in Sources */,
 				D0D10C141EEB4550005EBAD0 /* Project.VideoTests.swift in Sources */,
 				D0D10C181EEB4550005EBAD0 /* RewardsItemTests.swift in Sources */,
+				8AF34C7F2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift in Sources */,
 				D0D10C131EEB4550005EBAD0 /* Project.PhotoTests.swift in Sources */,
 				D0D10C071EEB4550005EBAD0 /* CommentTests.swift in Sources */,
 				8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */,

@@ -1,6 +1,6 @@
 import Foundation
-import XCTest
 @testable import KsApi
+import XCTest
 
 private struct MyStruct: Encodable {
   let a: Int
