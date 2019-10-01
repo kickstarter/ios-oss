@@ -19,7 +19,7 @@ public protocol ManagePledgeViewModelInputs {
 }
 
 public protocol ManagePledgeViewModelOutputs {
-  var configurePaymentMethodView: Signal<Project, Never> { get }
+  var configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardReceivedWithProject: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<Reward, Never> { get }
@@ -55,6 +55,8 @@ public final class ManagePledgeViewModel:
 
     self.configurePaymentMethodView = projectAndReward
       .map(first)
+      .map { $0.personalization.backing?.paymentSource }
+      .skipNil()
 
     self.configurePledgeSummaryView = projectAndReward
       .map(first)
@@ -120,7 +122,7 @@ public final class ManagePledgeViewModel:
     self.viewDidLoadObserver.send(value: ())
   }
 
-  public let configurePaymentMethodView: Signal<Project, Never>
+  public let configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
   public let configureRewardReceivedWithProject: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<Reward, Never>
