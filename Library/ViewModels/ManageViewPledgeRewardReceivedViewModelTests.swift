@@ -23,6 +23,7 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ nil
 
     self.vm.inputs.configureWith(project)
+    self.vm.inputs.viewDidLoad()
 
     self.rewardReceived.assertValues([false])
   }
@@ -35,6 +36,7 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
     self.vm.inputs.configureWith(project)
+    self.vm.inputs.viewDidLoad()
 
     self.rewardReceived.assertValues([false])
   }
@@ -47,7 +49,35 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
     self.vm.inputs.configureWith(project)
+    self.vm.inputs.viewDidLoad()
 
     self.rewardReceived.assertValues([true])
+  }
+
+  func testRewardReceived_Toggle() {
+    let backing = Backing.template
+      |> Backing.lens.backerCompleted .~ false
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    withEnvironment(apiService: MockService(backingUpdate: .template), currentUser: User.template) {
+      self.vm.inputs.configureWith(project)
+      self.vm.inputs.viewDidLoad()
+
+      self.rewardReceived.assertValues([false])
+
+      self.vm.inputs.rewardReceivedToggleTapped(isOn: true)
+
+      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
+
+      self.rewardReceived.assertValues([false, true])
+
+      self.vm.inputs.rewardReceivedToggleTapped(isOn: false)
+
+      self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
+
+      self.rewardReceived.assertValues([false, true, false])
+    }
   }
 }

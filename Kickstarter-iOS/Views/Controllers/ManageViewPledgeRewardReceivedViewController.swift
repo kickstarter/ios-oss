@@ -14,7 +14,15 @@ final class ManageViewPledgeRewardReceivedViewController: ToggleViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.toggle.addTarget(self, action: #selector(toggleValueDidChange(_:)), for: .valueChanged)
+
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  // MARK: - Actions
+
+  @objc private func toggleValueDidChange(_ toggle: UISwitch) {
+    self.viewModel.inputs.rewardReceivedToggleTapped(isOn: toggle.isOn)
   }
 
   // MARK: - Configuration
