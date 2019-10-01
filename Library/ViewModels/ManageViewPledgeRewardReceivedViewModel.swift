@@ -21,7 +21,7 @@ public protocol ManageViewPledgeRewardReceivedViewModelType {
 public class ManageViewPledgeRewardReceivedViewModel:
   ManageViewPledgeRewardReceivedViewModelType,
   ManageViewPledgeRewardReceivedViewModelInputs,
-ManageViewPledgeRewardReceivedViewModelOutputs {
+  ManageViewPledgeRewardReceivedViewModelOutputs {
   public init() {
     let project = Signal.combineLatest(
       self.configureWithProjectProperty.signal,
@@ -77,7 +77,6 @@ ManageViewPledgeRewardReceivedViewModelOutputs {
   public func viewDidLoad() {
     self.viewDidLoadObserver.send(value: ())
   }
-
 
   public let rewardReceived: Signal<Bool, Never>
 

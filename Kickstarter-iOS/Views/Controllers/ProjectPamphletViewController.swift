@@ -216,7 +216,7 @@ public final class ProjectPamphletViewController: UIViewController {
       _ = nc
         |> \.modalPresentationStyle .~ .formSheet
     }
-    
+
     self.present(nc, animated: true)
   }
 

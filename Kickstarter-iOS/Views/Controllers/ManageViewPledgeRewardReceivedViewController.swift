@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import UIKit
 
@@ -14,7 +14,11 @@ final class ManageViewPledgeRewardReceivedViewController: ToggleViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.toggle.addTarget(self, action: #selector(toggleValueDidChange(_:)), for: .valueChanged)
+    self.toggle.addTarget(
+      self,
+      action: #selector(ManageViewPledgeRewardReceivedViewController.toggleValueDidChange(_:)),
+      for: .valueChanged
+    )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -53,6 +57,6 @@ final class ManageViewPledgeRewardReceivedViewController: ToggleViewController {
       .observeForUI()
       .observeValues { [weak self] isOn in
         self?.toggle.isOn = isOn
-    }
+      }
   }
 }

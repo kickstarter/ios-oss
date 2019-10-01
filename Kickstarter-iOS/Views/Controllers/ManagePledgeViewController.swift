@@ -115,7 +115,7 @@ final class ManagePledgeViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project in
         self?.rewardReceivedViewController.configureWith(project: project)
-    }
+      }
 
     self.viewModel.outputs.configureRewardSummaryView
       .observeForUI()
