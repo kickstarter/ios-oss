@@ -77,15 +77,15 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let zipcode = self.zipcodeProperty.signal.skipNil()
     let zipcodeIsValid: Signal<Bool, Never> = zipcode.map { !$0.isEmpty }
 
-    let projectLocation = self.addNewCardIntentAndProjectProperty.signal.skipNil()
-      .map { $0.1?.location }.skipNil()
+    let project = self.addNewCardIntentAndProjectProperty.signal.skipNil()
+      .map { $0.1 }.skipNil()
 
 
     let cardBrandIsValid = Signal.combineLatest(
       cardNumber,
-      projectLocation
-      ).map { cardNumber, location in
-        cardBrandIsSupported(projectLocation: location, cardNumber: cardNumber)
+      project
+      ).map { cardNumber, project in
+        cardBrandIsSupported(project: project, cardNumber: cardNumber)
     }
 
     let cardBrandValidAndCardNumberValid = Signal
@@ -97,10 +97,10 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
         brandValid || cardNumber.count < 2
     }
 
-    self.unsupportedCardBrandError = Signal.combineLatest(cardBrandIsValid, projectLocation)
-      .map { _, projectLocation in
+    self.unsupportedCardBrandError = Signal.combineLatest(cardBrandIsValid, project)
+      .map { _, project in
         Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-          project_country: projectLocation.displayableName
+          project_country: project.location.displayableName
         )
     }
 
@@ -297,8 +297,8 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public var outputs: AddNewCardViewModelOutputs { return self }
 }
 
-private func cardBrandIsSupported(projectLocation: Location, cardNumber: String) -> Bool {
-  let country = projectLocation.country
+private func cardBrandIsSupported(project: Project, cardNumber: String) -> Bool {
+  let allOthers = project.location.country != Project.Country.us.countryCode
   let brand = STPCardValidator.brand(forNumber: cardNumber)
 
   let allCardBrands: [STPCardBrand] = [
@@ -311,25 +311,16 @@ private func cardBrandIsSupported(projectLocation: Location, cardNumber: String)
     .visa
   ]
 
-  let supportedCardBrands: [STPCardBrand] = [
-    .amex,
-    .masterCard,
-    .visa
-  ]
-
   let unsupportedCardBrands: [STPCardBrand] = [
     .dinersClub,
     .discover,
     .JCB
   ]
 
-  if country != "US", unsupportedCardBrands.contains(brand) {
-    return false
-  } else if country != "US", supportedCardBrands.contains(brand) {
-    return true
-  } else if country == "US", allCardBrands.contains(brand) {
-    return true
+  switch(allOthers) {
+  case true:
+    return unsupportedCardBrands.contains(brand) ? false : true
+  case false:
+     return allCardBrands.contains(brand)
   }
-
-  return false
 }
