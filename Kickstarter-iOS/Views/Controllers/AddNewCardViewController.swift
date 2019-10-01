@@ -363,16 +363,16 @@ internal final class AddNewCardViewController: UIViewController,
     projectLocation: Location,
     cardNumber: String, supportedCardBrands _: [STPCardBrand]
   ) {
-    let country = projectLocation.country
-    let brand = STPCardValidator.brand(forNumber: cardNumber)
-
-    if country != "US", self.unsupportedCardBrands.contains(brand) {
-      self.viewModel.inputs.cardBrand(isValid: false)
-    } else if country != "US", self.supportedCardBrands.contains(brand) {
-      self.viewModel.inputs.cardBrand(isValid: true)
-    } else if country == "US", self.allCardBrands.contains(brand) {
-      self.viewModel.inputs.cardBrand(isValid: true)
-    }
+//    let country = projectLocation.country
+//    let brand = STPCardValidator.brand(forNumber: cardNumber)
+//
+//    if country != "US", self.unsupportedCardBrands.contains(brand) {
+//      self.viewModel.inputs.cardBrand(isValid: false)
+//    } else if country != "US", self.supportedCardBrands.contains(brand) {
+//      self.viewModel.inputs.cardBrand(isValid: true)
+//    } else if country == "US", self.allCardBrands.contains(brand) {
+//      self.viewModel.inputs.cardBrand(isValid: true)
+//    }
   }
 
   private func dismissAndPresentMessageBanner(with message: String) {

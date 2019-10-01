@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import Stripe
 
 public typealias Month = UInt
 public typealias Year = UInt
@@ -12,7 +13,7 @@ public typealias PaymentDetails = (
 )
 
 public protocol AddNewCardViewModelInputs {
-  func cardBrand(isValid: Bool)
+//  func cardBrand(isValid: Bool)
   func cardholderNameChanged(_ cardholderName: String?)
   func cardholderNameTextFieldReturn()
   func creditCardChanged(cardDetails: CardDetails)
@@ -81,9 +82,26 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let projectLocation = self.addNewCardIntentAndProjectProperty.signal.skipNil()
       .map { $0.1?.location }.skipNil()
 
-    let cardBrandValidAndCardNumberValid = Signal
+
+    let isValid = Signal.combineLatest(
+      cardNumber,
+      projectLocation
+      ).map { cardNumber, location in
+        cardBrandIsSupported(projectLocation: location, cardNumber: cardNumber)
+    }
+
+    self.unsupportedCardBrandError = Signal.combineLatest(isValid, projectLocation)
+      .map { _, projectLocation in
+        Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
+          project_country: projectLocation.displayableName
+        )
+    }
+
+
+    let cardBrandValidAndCardNumberValid = Signal // investigate
       .combineLatest(
-        self.cardBrandIsValidProperty.signal,
+        isValid,
+//        self.cardBrandIsValidProperty.signal,
         cardNumber
       )
       .map { (brandValid, cardNumber) -> Bool in
@@ -93,13 +111,14 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
     self.creditCardValidationErrorContainerHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
-      cardBrandValidAndCardNumberValid
+      cardBrandValidAndCardNumberValid // investigate
     )
 
     self.saveButtonIsEnabled = Signal.combineLatest(
       cardholderName.map { !$0.isEmpty },
       self.paymentInfoIsValidProperty.signal,
-      self.cardBrandIsValidProperty.signal,
+      isValid,
+//      self.cardBrandIsValidProperty.signal,
       zipcodeIsValid
     ).map { cardholderNameFieldNotEmpty, creditCardIsValid, cardBrandIsValid, zipcodeIsValid in
       cardholderNameFieldNotEmpty && creditCardIsValid && cardBrandIsValid && zipcodeIsValid
@@ -180,19 +199,9 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.rememberThisCardToggleViewControllerIsOn = self.viewDidLoadProperty.signal
       .mapConst(true)
 
-    self.cardNumberAndProjectLocation = Signal.combineLatest(
-      cardNumber,
-      projectLocation
-    )
+    self.cardNumberAndProjectLocation = .empty
 
-    self.unsupportedCardBrandError = Signal
-      .combineLatest(projectLocation, self.cardBrandIsValidProperty.signal)
-      .map { projectLocation, isValid in
-        projectLocation.country != "US" && !isValid ?
-          Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-            project_country: projectLocation.displayableName
-          ) : Strings.Unsupported_card_type()
-      }
+    self.cardBrand = .empty
 
     // Koala
     self.viewWillAppearProperty.signal
@@ -211,10 +220,10 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       }
   }
 
-  private let cardBrandIsValidProperty = MutableProperty<Bool>(true)
-  public func cardBrand(isValid: Bool) {
-    self.cardBrandIsValidProperty.value = isValid
-  }
+//  private let cardBrandIsValidProperty = MutableProperty<Bool>(true)
+//  public func cardBrand(isValid: Bool) {
+//    self.cardBrandIsValidProperty.value = isValid
+//  }
 
   private let cardholderNameChangedProperty = MutableProperty<String?>(nil)
   public func cardholderNameChanged(_ cardholderName: String?) {
@@ -299,7 +308,45 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let setStripePublishableKey: Signal<String, Never>
   public let unsupportedCardBrandError: Signal<String, Never>
   public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
+  public let cardBrand: Signal<STPCardBrand, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }
+}
+
+private func cardBrandIsSupported(projectLocation: Location, cardNumber: String) -> Bool {
+  let country = projectLocation.country
+  let brand = STPCardValidator.brand(forNumber: cardNumber)
+
+  let allCardBrands: [STPCardBrand] = [
+    .amex,
+    .dinersClub,
+    .discover,
+    .JCB,
+    .masterCard,
+    .unionPay,
+    .visa
+  ]
+
+  let supportedCardBrands: [STPCardBrand] = [
+    .amex,
+    .masterCard,
+    .visa
+  ]
+
+  let unsupportedCardBrands: [STPCardBrand] = [
+    .dinersClub,
+    .discover,
+    .JCB
+  ]
+
+  if country != "US", unsupportedCardBrands.contains(brand) {
+    return false
+  } else if country != "US", supportedCardBrands.contains(brand) {
+    return true
+  } else if country == "US", allCardBrands.contains(brand) {
+    return true
+  }
+
+  return false
 }
