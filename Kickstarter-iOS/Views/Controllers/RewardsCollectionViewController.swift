@@ -230,7 +230,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
   private func goToPledge(project: Project, reward: Reward, refTag: RefTag?) {
     let pledgeViewController = PledgeViewController.instantiate()
-    pledgeViewController.configureWith(project: project, reward: reward, refTag: refTag)
+    pledgeViewController.configureWith(project: project, reward: reward, refTag: refTag, context: .pledge)
 
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
   }

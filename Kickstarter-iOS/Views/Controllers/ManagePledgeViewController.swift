@@ -26,10 +26,6 @@ final class ManagePledgeViewController: UIViewController {
 
   private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
 
-  private lazy var navigationBarShadowImage: UIImage? = {
-    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
-  }()
-
   private lazy var paymentMethodView: ManagePledgePaymentMethodView = {
     ManagePledgePaymentMethodView(frame: .zero)
   }()
@@ -78,7 +74,7 @@ final class ManagePledgeViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> viewStyle
+      |> checkoutBackgroundStyle
 
     _ = self.closeButton
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
@@ -137,8 +133,8 @@ final class ManagePledgeViewController: UIViewController {
 
     self.viewModel.outputs.goToUpdatePledge
       .observeForControllerAction()
-      .observeValues { [weak self] project in
-        self?.goToUpdatePledge(project)
+      .observeValues { [weak self] project, reward in
+        self?.goToUpdatePledge(project: project, reward: reward)
       }
 
     self.viewModel.outputs.goToChangePaymentMethod
@@ -155,8 +151,8 @@ final class ManagePledgeViewController: UIViewController {
 
     self.viewModel.outputs.goToCancelPledge
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToCancelPledge()
+      .observeValues { [weak self] project, backing in
+        self?.goToCancelPledge(project: project, backing: backing)
       }
   }
 
@@ -253,12 +249,18 @@ final class ManagePledgeViewController: UIViewController {
     self.navigationController?.pushViewController(rewardsVC, animated: true)
   }
 
-  private func goToUpdatePledge(_: Project) {
-    // TODO:
+  private func goToUpdatePledge(project: Project, reward: Reward) {
+    let vc = PledgeViewController.instantiate()
+    vc.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+
+    self.show(vc, sender: nil)
   }
 
-  private func goToCancelPledge() {
-    // TODO:
+  private func goToCancelPledge(project: Project, backing: Backing) {
+    let cancelPledgeViewController = CancelPledgeViewController.instantiate()
+    cancelPledgeViewController.configure(with: project, backing: backing)
+
+    self.navigationController?.pushViewController(cancelPledgeViewController, animated: true)
   }
 
   private func goToChangePaymentMethod() {
@@ -275,11 +277,6 @@ final class ManagePledgeViewController: UIViewController {
 private let rootScrollViewStyle = { (scrollView: UIScrollView) in
   scrollView
     |> \.alwaysBounceVertical .~ true
-}
-
-private let viewStyle: ViewStyle = { (view: UIView) in
-  view
-    |> \.backgroundColor .~ UIColor.ksr_grey_400
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
