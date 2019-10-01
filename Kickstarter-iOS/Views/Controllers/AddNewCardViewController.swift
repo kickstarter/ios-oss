@@ -171,7 +171,7 @@ internal final class AddNewCardViewController: UIViewController,
 
   override func bindViewModel() {
     super.bindViewModel()
-    self.creditCardValidationErrorLabel.rac.text = self.viewModel.outputs.unsupportedCardError
+    self.creditCardValidationErrorLabel.rac.text = self.viewModel.outputs.unsupportedCardBrandError
 
     self.rememberThisCardToggleViewControllerContainer.rac.hidden =
       self.viewModel.outputs.rememberThisCardToggleViewControllerContainerIsHidden
@@ -261,12 +261,12 @@ internal final class AddNewCardViewController: UIViewController,
         self?.zipcodeView.textField.becomeFirstResponder()
       }
 
-    self.viewModel.outputs.cardNumberAndProjectCountry
+    self.viewModel.outputs.cardNumberAndProjectLocation
       .observeForUI()
-      .observeValues { [weak self] cardNumber, projectCountry in
+      .observeValues { [weak self] cardNumber, location in
         guard let _self = self else { return }
         _self.cardBrandIsSupported(
-          projectCountry: projectCountry,
+          projectLocation: location,
           cardNumber: cardNumber,
           supportedCardBrands: _self.unsupportedCardBrands
         )
@@ -360,10 +360,10 @@ internal final class AddNewCardViewController: UIViewController,
   }
 
   private func cardBrandIsSupported(
-    projectCountry: Location,
+    projectLocation: Location,
     cardNumber: String, supportedCardBrands _: [STPCardBrand]
   ) {
-    let country = projectCountry.country
+    let country = projectLocation.country
     let brand = STPCardValidator.brand(forNumber: cardNumber)
 
     if country != "US", self.unsupportedCardBrands.contains(brand) {

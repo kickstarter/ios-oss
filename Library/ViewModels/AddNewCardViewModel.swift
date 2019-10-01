@@ -32,7 +32,7 @@ public protocol AddNewCardViewModelOutputs {
   var activityIndicatorShouldShow: Signal<Bool, Never> { get }
   var addNewCardFailure: Signal<String, Never> { get }
   var addNewCardSuccess: Signal<String, Never> { get }
-  var cardNumberAndProjectCountry: Signal<(String, Location), Never> { get }
+  var cardNumberAndProjectLocation: Signal<(String, Location), Never> { get }
   var creditCardValidationErrorContainerHidden: Signal<Bool, Never> { get }
   var cardholderNameBecomeFirstResponder: Signal<Void, Never> { get }
   var dismissKeyboard: Signal<Void, Never> { get }
@@ -43,7 +43,7 @@ public protocol AddNewCardViewModelOutputs {
   var rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var setStripePublishableKey: Signal<String, Never> { get }
-  var unsupportedCardError: Signal<String, Never> { get }
+  var unsupportedCardBrandError: Signal<String, Never> { get }
   var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
 }
 
@@ -78,9 +78,8 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let zipcode = self.zipcodeProperty.signal.skipNil()
     let zipcodeIsValid: Signal<Bool, Never> = zipcode.map { !$0.isEmpty }
 
-    let projectCountry = self.projectProperty.signal
-      .skipNil()
-      .map { $0.location }
+    let projectLocation = self.addNewCardIntentAndProjectProperty.signal.skipNil()
+      .map { $0.1?.location }.skipNil()
 
     let cardBrandValidAndCardNumberValid = Signal
       .combineLatest(
@@ -173,7 +172,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     )
 
     self.rememberThisCardToggleViewControllerContainerIsHidden = Signal.combineLatest(
-      self.addNewCardIntentProperty.signal.skipNil().map { $0 == .settings },
+      self.addNewCardIntentAndProjectProperty.signal.skipNil().map { $0.0 == .settings },
       self.viewDidLoadProperty.signal
     )
     .map(first)
@@ -181,16 +180,17 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.rememberThisCardToggleViewControllerIsOn = self.viewDidLoadProperty.signal
       .mapConst(true)
 
-    self.cardNumberAndProjectCountry = Signal.combineLatest(
+    self.cardNumberAndProjectLocation = Signal.combineLatest(
       cardNumber,
-      projectCountry
+      projectLocation
     )
 
-    self.unsupportedCardError = Signal.combineLatest(projectCountry, self.cardBrandIsValidProperty.signal)
-      .map { projectCountry, isValid in
-        projectCountry.country != "US" && !isValid ?
+    self.unsupportedCardBrandError = Signal
+      .combineLatest(projectLocation, self.cardBrandIsValidProperty.signal)
+      .map { projectLocation, isValid in
+        projectLocation.country != "US" && !isValid ?
           Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-            project_country: projectCountry.displayableName
+            project_country: projectLocation.displayableName
           ) : Strings.Unsupported_card_type()
       }
 
@@ -231,11 +231,9 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.creditCardChangedProperty.value = cardDetails
   }
 
-  private let addNewCardIntentProperty = MutableProperty<AddNewCardIntent?>(nil)
-  private let projectProperty = MutableProperty<Project?>(nil)
+  private let addNewCardIntentAndProjectProperty = MutableProperty<(AddNewCardIntent, Project?)?>(nil)
   public func configure(with intent: AddNewCardIntent, project: Project?) {
-    self.addNewCardIntentProperty.value = intent
-    self.projectProperty.value = project
+    self.addNewCardIntentAndProjectProperty.value = (intent, project)
   }
 
   private let paymentCardTextFieldDidEndEditingProperty = MutableProperty(())
@@ -288,7 +286,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let activityIndicatorShouldShow: Signal<Bool, Never>
   public let addNewCardFailure: Signal<String, Never>
   public let addNewCardSuccess: Signal<String, Never>
-  public let cardNumberAndProjectCountry: Signal<(String, Location), Never>
+  public let cardNumberAndProjectLocation: Signal<(String, Location), Never>
   public let creditCardValidationErrorContainerHidden: Signal<Bool, Never>
   public let cardholderNameBecomeFirstResponder: Signal<Void, Never>
   public let dismissKeyboard: Signal<Void, Never>
@@ -299,7 +297,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public var rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never>
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
-  public let unsupportedCardError: Signal<String, Never>
+  public let unsupportedCardBrandError: Signal<String, Never>
   public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }

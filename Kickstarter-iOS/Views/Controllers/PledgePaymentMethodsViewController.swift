@@ -142,7 +142,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
         self?.updateSelectedCard(to: card)
       }
 
-    self.viewModel.outputs.newCardScreenConfig
+    self.viewModel.outputs.goToAddCardScreen
       .observeForUI()
       .observeValues { [weak self] intent, project in
         self?.goToAddNewCard(intent: intent, project: project)
@@ -254,7 +254,7 @@ extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
 
 extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
   func pledgeAddNewCardView(_: PledgeAddNewCardView, didTapAddNewCardWith intent: AddNewCardIntent) {
-    self.viewModel.inputs.goToAddNewCardScreen(intent: intent)
+    self.viewModel.inputs.addNewCardTapped(with: intent)
   }
 }
 
