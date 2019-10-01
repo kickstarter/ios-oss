@@ -6,6 +6,8 @@ import UIKit
 final class ManagePledgeViewController: UIViewController {
   // MARK: - Properties
 
+  private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
+
   private lazy var closeButton: UIBarButtonItem = {
     UIBarButtonItem(
       image: UIImage(named: "icon--cross"),
@@ -39,8 +41,6 @@ final class ManagePledgeViewController: UIViewController {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
-  private let viewModel = ManagePledgeViewModel()
 
   static func instantiate(with project: Project, reward: Reward) -> ManagePledgeViewController {
     let manageViewPledgeVC = ManagePledgeViewController.instantiate()
