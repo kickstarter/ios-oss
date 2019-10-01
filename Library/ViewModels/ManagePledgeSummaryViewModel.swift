@@ -39,7 +39,9 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
       .map(formattedPledgeDate)
 
     self.pledgeAmountText = projectAndBacking
-      .map { attributedCurrency(with: $0.0, amount: $0.1.amount) }
+      .map { project, backing in
+        attributedCurrency(with: project, amount: backing.pledgeAmount)
+      }
       .skipNil()
 
     let shippingAmount = backing
@@ -47,14 +49,14 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
 
     self.shippingAmountText = self.projectSignal
       .combineLatest(with: shippingAmount)
-      .map { shippingValue(with: $0.0, with: $0.1) }
+      .map { project, shippingAmount in
+        shippingValue(with: project, with: shippingAmount)
+      }
       .skipNil()
 
     self.totalAmountText = projectAndBacking
-      .combineLatest(with: shippingAmount)
-      .map(unpack)
-      .map { project, backing, shippingAmount in
-        attributedCurrency(with: project, amount: backing.amount + shippingAmount)
+      .map { project, backing in
+        attributedCurrency(with: project, amount: backing.amount)
       }
       .skipNil()
 
