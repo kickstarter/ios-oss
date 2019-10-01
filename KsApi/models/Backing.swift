@@ -67,3 +67,13 @@ extension Backing: EncodableType {
 }
 
 extension Backing.Status: Argo.Decodable {}
+
+extension Backing {
+  /// Returns the pledge amount subtracting the shipping amount
+  public var pledgeAmount: Double {
+    let shippingAmount = Double(self.shippingAmount ?? 0)
+    let pledgeAmount = Decimal(amount) - Decimal(shippingAmount)
+
+    return (pledgeAmount as NSDecimalNumber).doubleValue
+  }
+}

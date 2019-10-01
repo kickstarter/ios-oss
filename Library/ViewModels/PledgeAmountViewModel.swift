@@ -69,8 +69,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     let initialValue = Signal.combineLatest(
       project
-        .map { $0.personalization.backing }
-        .map(amountFromBacking),
+        .map { $0.personalization.backing?.pledgeAmount },
       minValue
     )
     .map { backedAmount, minValue in backedAmount ?? minValue }
@@ -214,10 +213,4 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 //  rounded(1.123456789) => 1.12
 private func rounded(_ value: Double) -> Double {
   return round(value * 100) / 100
-}
-
-private func amountFromBacking(_ backing: Backing?) -> Double? {
-  guard let amount = backing?.amount else { return nil }
-
-  return amount - Double(backing?.shippingAmount ?? 0)
 }
