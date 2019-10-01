@@ -26,6 +26,10 @@ final class ManagePledgeViewController: UIViewController {
 
   private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
 
+  private lazy var paymentMethodView: ManagePledgePaymentMethodView = {
+    ManagePledgePaymentMethodView(frame: .zero)
+  }()
+
   private lazy var rewardReceivedViewController: ManageViewPledgeRewardReceivedViewController = {
     ManageViewPledgeRewardReceivedViewController.instantiate()
   }()
@@ -40,7 +44,7 @@ final class ManagePledgeViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel = ManagePledgeViewModel()
+  private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
 
   static func instantiate(with project: Project, reward: Reward) -> ManagePledgeViewController {
     let manageViewPledgeVC = ManagePledgeViewController.instantiate()
@@ -58,16 +62,7 @@ final class ManagePledgeViewController: UIViewController {
       ?|> \.leftBarButtonItem .~ self.closeButton
       ?|> \.rightBarButtonItem .~ self.menuButton
 
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = (self.rootStackView, self.rootScrollView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
     self.configureViews()
-    self.configureChildViewControllers()
     self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
@@ -110,7 +105,9 @@ final class ManagePledgeViewController: UIViewController {
 
     self.viewModel.outputs.configurePaymentMethodView
       .observeForUI()
-      .observeValues { _ in }
+      .observeValues { [weak self] card in
+        self?.paymentMethodView.configure(with: card)
+      }
 
     self.viewModel.outputs.configurePledgeSummaryView
       .observeForUI()
@@ -161,21 +158,6 @@ final class ManagePledgeViewController: UIViewController {
 
   // MARK: - Configuration
 
-  private func configureChildViewControllers() {
-    let childViewControllers = [
-      self.rewardReceivedViewController
-    ]
-
-    childViewControllers.forEach { viewController in
-      self.addChild(viewController)
-
-      _ = ([viewController.view], self.rootStackView)
-        |> ksr_addArrangedSubviewsToStackView()
-
-      viewController.didMove(toParent: self)
-    }
-  }
-
   func configureWith(project: Project, reward: Reward) {
     self.viewModel.inputs.configureWith(project, reward: reward)
   }
@@ -197,8 +179,17 @@ final class ManagePledgeViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.pledgeSummaryView], self.rootStackView)
+    _ = ([self.pledgeSummaryView, self.paymentMethodView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    [self.rewardReceivedViewController].forEach { viewController in
+      self.addChild(viewController)
+
+      _ = ([viewController.view], self.rootStackView)
+        |> ksr_addArrangedSubviewsToStackView()
+
+      viewController.didMove(toParent: self)
+    }
   }
 
   // MARK: Actions
