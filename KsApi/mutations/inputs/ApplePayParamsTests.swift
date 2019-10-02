@@ -2,7 +2,7 @@
 import XCTest
 
 final class ApplePayParamsTests: XCTestCase {
-  func test() {
+  func testApplePayParams() {
     let params = ApplePayParams(
       paymentInstrumentName: "instrument-name",
       paymentNetwork: "payment-network",
