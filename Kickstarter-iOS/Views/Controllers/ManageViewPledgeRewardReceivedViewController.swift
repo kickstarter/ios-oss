@@ -10,12 +10,10 @@ final class ManageViewPledgeRewardReceivedViewController: ToggleViewController {
 
     _ = self.titleLabel
       |> checkoutTitleLabelStyle
-      |> \.text %~ { _ in localizedString(key: "Reward_received", defaultValue: "Reward received") }
+      |> \.text %~ { _ in Strings.Reward_received() }
 
     _ = self.toggle
       |> checkoutSwitchControlStyle
-      |> \.accessibilityLabel %~ {
-        _ in localizedString(key: "Reward_received", defaultValue: "Reward received")
-      }
+      |> \.accessibilityLabel %~ { _ in Strings.Reward_received() }
   }
 }
