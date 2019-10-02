@@ -948,7 +948,9 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testCreateBacking() {
-    let createBacking = CreateBackingEnvelope.CreateBacking.init(checkout: Checkout(state: .verifying))
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(state: .verifying, backing: .init(requiresAction: false, clientSecret: nil))
+    )
     let mockService = MockService(
       createBackingResult:
       Result.success(CreateBackingEnvelope(createBacking: createBacking))

@@ -310,6 +310,9 @@ public protocol ServiceType {
   /// Unfollow a user with their id.
   func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope>
 
+  /// Updates a backing
+  func updateBacking(input: UpdateBackingInput) -> SignalProducer<UpdateBackingEnvelope, GraphError>
+
   /// Performs the first step of checkout by creating a pledge on the server.
   func updatePledge(
     project: Project,

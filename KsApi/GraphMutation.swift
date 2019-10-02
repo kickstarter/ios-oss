@@ -11,3 +11,9 @@ protocol GraphMutation: CustomStringConvertible {
 }
 
 public struct GraphMutationEmptyResponseEnvelope: Decodable {}
+
+extension GraphMutationInput where Self: Encodable {
+  public func toInputDictionary() -> [String: Any] {
+    return self.dictionaryRepresentation ?? [:]
+  }
+}
