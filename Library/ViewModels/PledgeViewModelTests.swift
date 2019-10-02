@@ -1039,7 +1039,7 @@ final class PledgeViewModelTests: TestCase {
     self.confirmButtonHidden.assertValues([false])
     self.confirmButtonEnabled.assertDidNotEmitValue()
 
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (700, true))
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (690, true))
 
     self.confirmButtonHidden.assertValues([false])
     self.confirmButtonEnabled.assertValues([false])
@@ -1049,7 +1049,7 @@ final class PledgeViewModelTests: TestCase {
     self.confirmButtonHidden.assertValues([false])
     self.confirmButtonEnabled.assertValues([false, true])
 
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (700, true))
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (690, true))
 
     self.confirmButtonHidden.assertValues([false])
     self.confirmButtonEnabled.assertValues([false, true, false])

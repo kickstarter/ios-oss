@@ -310,7 +310,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.goToThanks = Signal.merge(applePayTransactionCompleted, createBackingTransactionSuccess)
 
     let amountChanged = Signal.combineLatest(
-      project.map { $0.personalization.backing?.amount }, // TODO: use pledgeAmount
+      project.map { $0.personalization.backing?.pledgeAmount },
       self.pledgeAmountDataSignal.map(first)
     )
     .map(!=)
