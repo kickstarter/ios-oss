@@ -11,7 +11,8 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
 
   private let configurePaymentMethodView = TestObserver<Project, Never>()
   private let configurePledgeSummaryView = TestObserver<Project, Never>()
-  private let configureRewardSummaryView = TestObserver<Reward, Never>()
+  private let configureRewardSummaryViewProject = TestObserver<Project, Never>()
+  private let configureRewardSummaryViewReward = TestObserver<Reward, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
   private let title = TestObserver<String, Never>()
 
@@ -22,8 +23,12 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
       .observe(self.configurePaymentMethodView.observer)
     self.vm.outputs.configurePledgeSummaryView
       .observe(self.configurePledgeSummaryView.observer)
+    self.vm.outputs.configureRewardSummaryView.map(first)
+      .observe(self.configureRewardSummaryViewProject.observer)
     self.vm.outputs.configureRewardSummaryView
-      .observe(self.configureRewardSummaryView.observer)
+      .map { $0.1.left }
+      .skipNil()
+      .observe(self.configureRewardSummaryViewReward.observer)
     self.vm.outputs.showActionSheetMenuWithOptions.observe(self.showActionSheetMenuWithOptions.observer)
   }
 
@@ -73,14 +78,17 @@ internal final class ManageViewPledgeViewModelTests: TestCase {
   }
 
   func testConfigureRewardSummaryViewController() {
-    self.configureRewardSummaryView.assertDidNotEmitValue()
+    self.configureRewardSummaryViewProject.assertDidNotEmitValue()
+    self.configureRewardSummaryViewReward.assertDidNotEmitValue()
 
     let reward = Reward.template
-    self.vm.inputs.configureWith(.template, reward: reward)
+    let project = Project.template
+    self.vm.inputs.configureWith(project, reward: reward)
 
     self.vm.inputs.viewDidLoad()
 
-    self.configureRewardSummaryView.assertValue(reward)
+    self.configureRewardSummaryViewProject.assertValue(project)
+    self.configureRewardSummaryViewReward.assertValue(reward)
   }
 
   func testMenuButtonTapped_WhenProject_IsLive() {
