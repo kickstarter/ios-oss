@@ -4,6 +4,11 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+public enum PledgeAmountStepperConstants {
+  static let min: Double = 0
+  static let max: Double = 1_000_000_000
+}
+
 public protocol PledgeAmountViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func doneButtonTapped()
@@ -13,7 +18,7 @@ public protocol PledgeAmountViewModelInputs {
 }
 
 public protocol PledgeAmountViewModelOutputs {
-  var amountPrimitive: Signal<Double, Never> { get }
+  var amount: Signal<(Double, Bool), Never> { get }
   var currency: Signal<String, Never> { get }
   var doneButtonIsEnabled: Signal<Bool, Never> { get }
   var generateSelectionFeedback: Signal<Void, Never> { get }
@@ -60,22 +65,41 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .skipNil()
       .map(Double.init)
       .skipNil()
+      .map(rounded)
+
+    let initialValue = Signal.combineLatest(
+      project
+        .map { $0.personalization.backing?.pledgeAmount },
+      minValue
+    )
+    .map { backedAmount, minValue in backedAmount ?? minValue }
 
     let stepperValue = Signal.merge(
-      minValue,
+      initialValue,
       textFieldInputValue,
       self.stepperValueProperty.signal
     )
 
     self.textFieldValue = stepperValue
-      .map { String(format: "%.0f", $0) }
-      .skipRepeats()
+      .map { value in
+        // Adds trailing zeros if the rounded number has non-zero remainder
+        // Removes trailing zeros and the decimal point otherwise
+        // Example:
+        //  25 => 25
+        //  25. => 25
+        //  25.0  => 25
+        //  25.00 => 25
+        //  25.1 => 25.10
+        //  25.10 = 25.10
+        let numberOfDecimalPlaces = value.truncatingRemainder(dividingBy: 1) == 0 ? 0 : 2
+        return String(format: "%.\(numberOfDecimalPlaces)f", value)
+      }
 
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
 
-    self.stepperMinValue = minValue.mapConst(0)
-    self.stepperMaxValue = minValue.mapConst(Double.greatestFiniteMagnitude)
+    self.stepperMinValue = minValue.mapConst(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue = minValue.mapConst(PledgeAmountStepperConstants.max)
 
     let stepperValueChanged = Signal.combineLatest(
       self.stepperMinValue.signal,
@@ -105,14 +129,14 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       )
     )
 
-    self.amountPrimitive = updatedValue
-      .map(third)
-      .skipRepeats()
-
-    let isValueValid = updatedValue
-      .map { (min: Double, max: Double, doubleValue: Double) -> Bool in
-        min <= doubleValue && doubleValue <= max
+    self.amount = updatedValue
+      .map { min, max, value in
+        (rounded(value), min <= value && value <= max)
       }
+
+    let isValueValid = self.amount
+      .map(second)
+      .skipRepeats()
 
     self.doneButtonIsEnabled = isValueValid
 
@@ -125,8 +149,9 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.stepperValue = Signal.merge(
       minValue,
-      textFieldValue
+      self.amount.map(first)
     )
+    .skipRepeats()
 
     self.textFieldIsFirstResponder = self.doneButtonTappedProperty.signal
       .mapConst(false)
@@ -160,7 +185,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.textFieldValueProperty.value = value
   }
 
-  public let amountPrimitive: Signal<Double, Never>
+  public let amount: Signal<(Double, Bool), Never>
   public let currency: Signal<String, Never>
   public let doneButtonIsEnabled: Signal<Bool, Never>
   public let generateSelectionFeedback: Signal<Void, Never>
@@ -176,4 +201,16 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
   public var inputs: PledgeAmountViewModelInputs { return self }
   public var outputs: PledgeAmountViewModelOutputs { return self }
+}
+
+// MARK: - Functions
+
+// Limits the amount of decimal numbers to 2
+// Example:
+//  rounded(1.12) => 1.12
+//  rounded(1.123) => 1.12
+//  rounded(1.125) => 1.13
+//  rounded(1.123456789) => 1.12
+private func rounded(_ value: Double) -> Double {
+  return round(value * 100) / 100
 }

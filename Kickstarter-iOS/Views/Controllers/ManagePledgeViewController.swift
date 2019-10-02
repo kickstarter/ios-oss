@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class ManageViewPledgeViewController: UIViewController {
+final class ManagePledgeViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var closeButton: UIBarButtonItem = {
@@ -11,7 +11,7 @@ final class ManageViewPledgeViewController: UIViewController {
       image: UIImage(named: "icon--cross"),
       style: .plain,
       target: self,
-      action: #selector(ManageViewPledgeViewController.closeButtonTapped)
+      action: #selector(ManagePledgeViewController.closeButtonTapped)
     )
   }()
 
@@ -20,14 +20,14 @@ final class ManageViewPledgeViewController: UIViewController {
       image: UIImage(named: "icon--more-menu"),
       style: .plain,
       target: self,
-      action: #selector(ManageViewPledgeViewController.menuButtonTapped)
+      action: #selector(ManagePledgeViewController.menuButtonTapped)
     )
   }()
 
   private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
 
-  private lazy var navigationBarShadowImage: UIImage? = {
-    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
+  private lazy var paymentMethodView: ManagePledgePaymentMethodView = {
+    ManagePledgePaymentMethodView(frame: .zero)
   }()
 
   private lazy var rewardReceivedViewController: ManageViewPledgeRewardReceivedViewController = {
@@ -44,10 +44,10 @@ final class ManageViewPledgeViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel = ManageViewPledgeViewModel()
+  private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
 
-  static func instantiate(with project: Project, reward: Reward) -> ManageViewPledgeViewController {
-    let manageViewPledgeVC = ManageViewPledgeViewController.instantiate()
+  static func instantiate(with project: Project, reward: Reward) -> ManagePledgeViewController {
+    let manageViewPledgeVC = ManagePledgeViewController.instantiate()
     manageViewPledgeVC.viewModel.inputs.configureWith(project, reward: reward)
 
     return manageViewPledgeVC
@@ -62,16 +62,7 @@ final class ManageViewPledgeViewController: UIViewController {
       ?|> \.leftBarButtonItem .~ self.closeButton
       ?|> \.rightBarButtonItem .~ self.menuButton
 
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = (self.rootStackView, self.rootScrollView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
     self.configureViews()
-    self.configureChildViewControllers()
     self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
@@ -83,7 +74,7 @@ final class ManageViewPledgeViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> viewStyle
+      |> checkoutBackgroundStyle
 
     _ = self.closeButton
       |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
@@ -114,7 +105,9 @@ final class ManageViewPledgeViewController: UIViewController {
 
     self.viewModel.outputs.configurePaymentMethodView
       .observeForUI()
-      .observeValues { _ in }
+      .observeValues { [weak self] card in
+        self?.paymentMethodView.configure(with: card)
+      }
 
     self.viewModel.outputs.configurePledgeSummaryView
       .observeForUI()
@@ -131,24 +124,39 @@ final class ManageViewPledgeViewController: UIViewController {
       .observeValues { [weak self] options in
         self?.showActionSheetMenuWithOptions(options)
       }
+
+    self.viewModel.outputs.goToRewards
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.goToRewards(project)
+      }
+
+    self.viewModel.outputs.goToUpdatePledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project, reward in
+        self?.goToUpdatePledge(project: project, reward: reward)
+      }
+
+    self.viewModel.outputs.goToChangePaymentMethod
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToChangePaymentMethod()
+      }
+
+    self.viewModel.outputs.goToContactCreator
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.goToContactCreator()
+      }
+
+    self.viewModel.outputs.goToCancelPledge
+      .observeForControllerAction()
+      .observeValues { [weak self] project, backing in
+        self?.goToCancelPledge(project: project, backing: backing)
+      }
   }
 
   // MARK: - Configuration
-
-  private func configureChildViewControllers() {
-    let childViewControllers = [
-      self.rewardReceivedViewController
-    ]
-
-    childViewControllers.forEach { viewController in
-      self.addChild(viewController)
-
-      _ = ([viewController.view], self.rootStackView)
-        |> ksr_addArrangedSubviewsToStackView()
-
-      viewController.didMove(toParent: self)
-    }
-  }
 
   func configureWith(project: Project, reward: Reward) {
     self.viewModel.inputs.configureWith(project, reward: reward)
@@ -171,8 +179,17 @@ final class ManageViewPledgeViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.pledgeSummaryView], self.rootStackView)
+    _ = ([self.pledgeSummaryView, self.paymentMethodView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    [self.rewardReceivedViewController].forEach { viewController in
+      self.addChild(viewController)
+
+      _ = ([viewController.view], self.rootStackView)
+        |> ksr_addArrangedSubviewsToStackView()
+
+      viewController.didMove(toParent: self)
+    }
   }
 
   // MARK: Actions
@@ -207,7 +224,9 @@ final class ManageViewPledgeViewController: UIViewController {
       let style: UIAlertAction.Style = option == .cancelPledge ? .destructive : .default
 
       actionSheet.addAction(
-        UIAlertAction(title: title, style: style)
+        UIAlertAction(title: title, style: style, handler: { _ in
+          self.viewModel.inputs.menuOptionSelected(with: option)
+        })
       )
     }
 
@@ -221,6 +240,36 @@ final class ManageViewPledgeViewController: UIViewController {
   @objc private func closeButtonTapped() {
     self.dismiss(animated: true)
   }
+
+  // MARK: - Functions
+
+  private func goToRewards(_ project: Project) {
+    let rewardsVC = RewardsCollectionViewController.instantiate(with: project, refTag: nil)
+
+    self.navigationController?.pushViewController(rewardsVC, animated: true)
+  }
+
+  private func goToUpdatePledge(project: Project, reward: Reward) {
+    let vc = PledgeViewController.instantiate()
+    vc.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+
+    self.show(vc, sender: nil)
+  }
+
+  private func goToCancelPledge(project: Project, backing: Backing) {
+    let cancelPledgeViewController = CancelPledgeViewController.instantiate()
+    cancelPledgeViewController.configure(with: project, backing: backing)
+
+    self.navigationController?.pushViewController(cancelPledgeViewController, animated: true)
+  }
+
+  private func goToChangePaymentMethod() {
+    // TODO:
+  }
+
+  private func goToContactCreator() {
+    // TODO:
+  }
 }
 
 // MARK: Styles
@@ -228,11 +277,6 @@ final class ManageViewPledgeViewController: UIViewController {
 private let rootScrollViewStyle = { (scrollView: UIScrollView) in
   scrollView
     |> \.alwaysBounceVertical .~ true
-}
-
-private let viewStyle: ViewStyle = { (view: UIView) in
-  view
-    |> \.backgroundColor .~ UIColor.ksr_grey_400
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in

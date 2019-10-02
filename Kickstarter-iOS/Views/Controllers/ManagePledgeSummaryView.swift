@@ -111,7 +111,7 @@ final class ManagePledgeSummaryView: UIView {
   private func configureViews() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.backerNumberLabel, self.backingDateLabel], self.backerInfoStackView)
       |> ksr_addArrangedSubviewsToStackView()

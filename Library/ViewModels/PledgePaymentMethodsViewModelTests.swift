@@ -14,6 +14,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
   private let notifyDelegateCreditCardSelected = TestObserver<String, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
+  private let notifyDelegatePledgeButtonTapped = TestObserver<Void, Never>()
   private let pledgeButtonEnabled = TestObserver<Bool, Never>()
   private let reloadPaymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
   private let updateSelectedCreditCard = TestObserver<GraphUserCreditCard.CreditCard, Never>()
@@ -29,6 +30,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.notifyDelegateCreditCardSelected.observer)
     self.vm.outputs.notifyDelegateLoadPaymentMethodsError
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
+    self.vm.outputs.notifyDelegatePledgeButtonTapped.observe(self.notifyDelegatePledgeButtonTapped.observer)
     self.vm.outputs.pledgeButtonEnabled.observe(self.pledgeButtonEnabled.observer)
     self.vm.outputs.reloadPaymentMethods.observe(self.reloadPaymentMethods.observer)
     self.vm.outputs.updateSelectedCreditCard.observe(self.updateSelectedCreditCard.observer)
@@ -258,6 +260,21 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.inputs.updatePledgeButtonEnabled(isEnabled: false)
 
     self.pledgeButtonEnabled.assertValues([false, true, false])
+  }
+
+  func testPledgeButtonTapped() {
+    self.vm.inputs.configureWith((User.template, Project.template, true))
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegatePledgeButtonTapped.assertDidNotEmitValue()
+
+    self.vm.inputs.pledgeButtonTapped()
+
+    self.notifyDelegatePledgeButtonTapped.assertValueCount(1)
+
+    self.vm.inputs.pledgeButtonTapped()
+
+    self.notifyDelegatePledgeButtonTapped.assertValueCount(2)
   }
 
   func testGoToAddNewCard() {

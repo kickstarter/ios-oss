@@ -7,6 +7,12 @@ import UIKit
 final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
+  private lazy var confirmButton: UIButton = { UIButton(type: .custom) }()
+  private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var confirmationSectionViews = {
+    [self.confirmationLabel, self.confirmButton]
+  }()
+
   private lazy var descriptionSectionSeparator: UIView = {
     UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -82,8 +88,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   // MARK: - Lifecycle
 
-  func configureWith(project: Project, reward: Reward, refTag: RefTag?) {
-    self.viewModel.inputs.configureWith(project: project, reward: reward, refTag: refTag)
+  func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext) {
+    self.viewModel.inputs.configureWith(project: project, reward: reward, refTag: refTag, context: context)
   }
 
   override func viewDidLoad() {
@@ -115,6 +121,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    self.viewModel.inputs.traitCollectionDidChange()
+  }
+
   deinit {
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
@@ -136,7 +148,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.inputsSectionViews,
       self.summarySectionViews,
       self.loginSectionViews,
-      self.paymentMethodsSectionViews
+      self.paymentMethodsSectionViews,
+      self.confirmationSectionViews
     ]
     .flatMap { $0 }
     .compact()
@@ -153,7 +166,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
+      self.confirmButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
     self.sectionSeparatorViews.forEach { view in
@@ -180,6 +194,14 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
+
+    _ = self.confirmButton
+      |> greenButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Confirm() }
+
+    _ = self.confirmationLabel
+      |> \.numberOfLines .~ 0
+      |> checkoutBackgroundStyle
   }
 
   // MARK: - View model
@@ -244,10 +266,21 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
       }
 
+    self.viewModel.outputs.sectionSeparatorsHidden
+      .observeForUI()
+      .observeValues { [weak self] hidden in self?.sectionSeparatorViews.forEach { $0.isHidden = hidden } }
+
+    self.descriptionViewController.view.rac.hidden = self.viewModel.outputs.descriptionViewHidden
+
     self.shippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
     self.continueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
+
+    self.confirmButton.rac.hidden = self.viewModel.outputs.confirmButtonHidden
+    self.confirmationLabel.rac.hidden = self.viewModel.outputs.confirmationLabelHidden
+
+    self.confirmationLabel.rac.attributedText = self.viewModel.outputs.confirmationLabelAttributedText
 
     // MARK: Errors
 
@@ -329,9 +362,9 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 extension PledgeViewController: PledgeAmountViewControllerDelegate {
   func pledgeAmountViewController(
     _: PledgeAmountViewController,
-    didUpdateAmount amount: Double
+    didUpdateWith data: PledgeAmountData
   ) {
-    self.viewModel.inputs.pledgeAmountDidUpdate(to: amount)
+    self.viewModel.inputs.pledgeAmountViewControllerDidUpdate(with: data)
   }
 }
 
@@ -399,6 +432,10 @@ extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
     didSelectCreditCard paymentSourceId: String
   ) {
     self.viewModel.inputs.creditCardSelected(with: paymentSourceId)
+  }
+
+  func pledgePaymentMethodsViewControllerDidTapPledgeButton(_: PledgePaymentMethodsViewController) {
+    self.viewModel.inputs.pledgeButtonTapped()
   }
 }
 

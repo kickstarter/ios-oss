@@ -59,14 +59,20 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
       shippingRulesEvent.filter { $0.isTerminating }.mapConst(false)
     )
 
-    let defaultShippingRule = shippingRulesEvent.values().map(defaultShippingRule(fromShippingRules:))
+    let shippingRules = shippingRulesEvent.values()
+
+    let initialShippingRule = Signal.combineLatest(
+      project,
+      shippingRules
+    )
+    .map(determineShippingRule(with:shippingRules:))
 
     self.shippingRulesError = shippingRulesEvent.errors().map { _ in
       Strings.We_were_unable_to_load_the_shipping_destinations()
     }
 
     self.notifyDelegateOfSelectedShippingRule = Signal.merge(
-      defaultShippingRule.skipNil(),
+      initialShippingRule.skipNil(),
       self.shippingRuleUpdatedSignal
     )
 
@@ -152,4 +158,13 @@ private func shippingValue(of project: Project, with shippingRuleCost: Double) -
   let combinedAttributes = defaultAttributes.merging(superscriptAttributes) { _, new in new }
 
   return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
+}
+
+private func determineShippingRule(with project: Project, shippingRules: [ShippingRule]) -> ShippingRule? {
+  guard
+    let backing = project.personalization.backing,
+    let selectedRule = shippingRules.filter({ $0.location.id == backing.locationId }).first
+  else { return defaultShippingRule(fromShippingRules: shippingRules) }
+
+  return selectedRule
 }

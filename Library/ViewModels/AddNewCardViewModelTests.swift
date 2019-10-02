@@ -10,7 +10,6 @@ internal final class AddNewCardViewModelTests: TestCase {
 
   private let activityIndicatorShouldShow = TestObserver<Bool, Never>()
   private let addNewCardFailure = TestObserver<String, Never>()
-  private let addNewCardSuccess = TestObserver<String, Never>()
   private let creditCardValidationErrorContainerHidden = TestObserver<Bool, Never>()
   private let cardholderNameBecomeFirstResponder = TestObserver<Void, Never>()
   private let dismissKeyboard = TestObserver<Void, Never>()
@@ -19,7 +18,8 @@ internal final class AddNewCardViewModelTests: TestCase {
   private let cardExpMonth = TestObserver<Month, Never>()
   private let cardExpYear = TestObserver<Year, Never>()
   private let cardCVC = TestObserver<String, Never>()
-  private let newCardAdded = TestObserver<GraphUserCreditCard.CreditCard, Never>()
+  private let newCardAddedCard = TestObserver<GraphUserCreditCard.CreditCard, Never>()
+  private let newCardAddedMessage = TestObserver<String, Never>()
   private let paymentDetailsBecomeFirstResponder = TestObserver<Void, Never>()
   private let rememberThisCardToggleViewControllerContainerIsHidden = TestObserver<Bool, Never>()
   private let rememberThisCardToggleViewControllerIsOn = TestObserver<Bool, Never>()
@@ -33,13 +33,13 @@ internal final class AddNewCardViewModelTests: TestCase {
     super.setUp()
     self.vm.outputs.activityIndicatorShouldShow.observe(self.activityIndicatorShouldShow.observer)
     self.vm.outputs.addNewCardFailure.observe(self.addNewCardFailure.observer)
-    self.vm.outputs.addNewCardSuccess.observe(self.addNewCardSuccess.observer)
     self.vm.outputs.creditCardValidationErrorContainerHidden
       .observe(self.creditCardValidationErrorContainerHidden.observer)
     self.vm.outputs.cardholderNameBecomeFirstResponder
       .observe(self.cardholderNameBecomeFirstResponder.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
-    self.vm.outputs.newCardAdded.observe(self.newCardAdded.observer)
+    self.vm.outputs.newCardAddedWithMessage.map(first).observe(self.newCardAddedCard.observer)
+    self.vm.outputs.newCardAddedWithMessage.map(second).observe(self.newCardAddedMessage.observer)
     self.vm.outputs.paymentDetails.map { $0.0 }.observe(self.cardholderName.observer)
     self.vm.outputs.paymentDetails.map { $0.1 }.observe(self.cardNumber.observer)
     self.vm.outputs.paymentDetails.map { $0.2 }.observe(self.cardExpMonth.observer)
@@ -63,6 +63,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
     ) {
+      self.vm.inputs.configure(with: .settings)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: .settings, project: nil)
       self.saveButtonIsEnabled.assertDidNotEmitValue()
@@ -82,7 +83,8 @@ internal final class AddNewCardViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.addNewCardSuccess.assertValues([Strings.Got_it_your_changes_have_been_saved()])
+      self.newCardAddedCard.assertValues([GraphUserCreditCard.amex])
+      self.newCardAddedMessage.assertValues([Strings.Got_it_your_changes_have_been_saved()])
       self.activityIndicatorShouldShow.assertValues([true, false])
     }
   }
@@ -91,6 +93,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
     ) {
+      self.vm.inputs.configure(with: .settings)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: .pledge, project: Project.template)
 
@@ -110,7 +113,8 @@ internal final class AddNewCardViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.addNewCardSuccess.assertValues([Strings.Got_it_your_changes_have_been_saved()])
+      self.newCardAddedCard.assertValues([GraphUserCreditCard.amex])
+      self.newCardAddedMessage.assertValues([Strings.Got_it_your_changes_have_been_saved()])
       self.activityIndicatorShouldShow.assertValues([true, false])
     }
   }
@@ -143,6 +147,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     let error = GraphError.emptyResponse(nil)
 
     withEnvironment(apiService: MockService(addNewCreditCardResult: .failure(.emptyResponse(nil)))) {
+      self.vm.inputs.configure(with: .settings)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: .pledge, project: Project.template)
       self.vm.inputs.cardholderNameChanged("Native Squad")
@@ -160,6 +165,8 @@ internal final class AddNewCardViewModelTests: TestCase {
 
       self.scheduler.advance()
 
+      self.newCardAddedCard.assertValues([])
+      self.newCardAddedMessage.assertValues([])
       self.addNewCardFailure.assertValues([error.localizedDescription])
       self.activityIndicatorShouldShow.assertValues([true, false])
     }
@@ -290,6 +297,8 @@ internal final class AddNewCardViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
     ) {
+      self.vm.inputs.configure(with: .settings)
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.paymentInfo(isValid: true)
       self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
@@ -301,6 +310,8 @@ internal final class AddNewCardViewModelTests: TestCase {
 
   func testTrackFailedPaymentMethodCreation() {
     withEnvironment(apiService: MockService(addNewCreditCardResult: .failure(.emptyResponse(nil)))) {
+      self.vm.inputs.configure(with: .settings)
+      self.vm.inputs.viewDidLoad()
       self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
       self.scheduler.advance()
@@ -373,9 +384,19 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.rememberThisCardToggleViewControllerContainerIsHidden.assertValues([true, false])
   }
 
-  func testReusableCardSwitchisOnByDefault() {
+  func testReusableCardSwitchisOffByDefault_Pledge() {
     self.rememberThisCardToggleViewControllerIsOn.assertDidNotEmitValue()
 
+    self.vm.inputs.configure(with: .pledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.rememberThisCardToggleViewControllerIsOn.assertValues([false])
+  }
+
+  func testReusableCardSwitchisOnByDefault_Settings() {
+    self.rememberThisCardToggleViewControllerIsOn.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: .settings)
     self.vm.inputs.viewDidLoad()
 
     self.rememberThisCardToggleViewControllerIsOn.assertValues([true])

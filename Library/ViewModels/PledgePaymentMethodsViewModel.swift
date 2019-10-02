@@ -10,6 +10,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
   func applePayButtonTapped()
   func configureWith(_ value: PledgePaymentMethodsValue)
   func creditCardSelected(paymentSourceId: String)
+  func pledgeButtonTapped()
   func updatePledgeButtonEnabled(isEnabled: Bool)
   func addNewCardViewControllerDidAdd(newCard card: GraphUserCreditCard.CreditCard)
   func viewDidLoad()
@@ -22,6 +23,7 @@ public protocol PledgePaymentMethodsViewModelOutputs {
   var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
+  var notifyDelegatePledgeButtonTapped: Signal<Void, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
   var updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never> { get }
@@ -70,6 +72,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     .scan([]) { current, new in new + current }
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
+    self.notifyDelegatePledgeButtonTapped = self.pledgeButtonTappedSignal
 
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
@@ -103,6 +106,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.creditCardSelectedObserver.send(value: paymentSourceId)
   }
 
+  private let (pledgeButtonTappedSignal, pledgeButtonTappedObserver) = Signal<Void, Never>.pipe()
+  public func pledgeButtonTapped() {
+    self.pledgeButtonTappedObserver.send(value: ())
+  }
+
   private let (pledgeButtonEnabledSignal, pledgeButtonEnabledObserver) = Signal<Bool, Never>.pipe()
   public func updatePledgeButtonEnabled(isEnabled: Bool) {
     self.pledgeButtonEnabledObserver.send(value: isEnabled)
@@ -128,6 +136,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
   public let notifyDelegateCreditCardSelected: Signal<String, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
+  public let notifyDelegatePledgeButtonTapped: Signal<Void, Never>
   public let pledgeButtonEnabled: Signal<Bool, Never>
   public let reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
   public let updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never>
