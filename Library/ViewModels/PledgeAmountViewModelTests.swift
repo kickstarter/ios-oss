@@ -7,7 +7,8 @@ import XCTest
 internal final class PledgeAmountViewModelTests: TestCase {
   private let vm: PledgeAmountViewModelType = PledgeAmountViewModel()
 
-  private let amountPrimitive = TestObserver<Double, Never>()
+  private let amountIsValid = TestObserver<Bool, Never>()
+  private let amountValue = TestObserver<Double, Never>()
   private let currency = TestObserver<String, Never>()
   private let doneButtonIsEnabled = TestObserver<Bool, Never>()
   private let generateSelectionFeedback = TestObserver<Void, Never>()
@@ -24,7 +25,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.amountPrimitive.observe(self.amountPrimitive.observer)
+    self.vm.outputs.amount.map(second).observe(self.amountIsValid.observer)
+    self.vm.outputs.amount.map(first).observe(self.amountValue.observer)
     self.vm.outputs.currency.observe(self.currency.observer)
     self.vm.outputs.doneButtonIsEnabled.observe(self.doneButtonIsEnabled.observer)
     self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
@@ -41,10 +43,34 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.outputs.textFieldValue.observe(self.textFieldValue.observer)
   }
 
+  func testAmountCurrencyAndStepper_FromBacking() {
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.postcards
+          |> Backing.lens.rewardId .~ Reward.postcards.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.vm.inputs.configureWith(project: project, reward: Reward.postcards)
+
+    self.amountIsValid.assertValues([true])
+    self.amountValue.assertValues([690])
+    self.currency.assertValues(["$"])
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
+    self.stepperStepValue.assertValue(6)
+    self.stepperValue.assertValues([6, 690])
+    self.textFieldValue.assertValues(["690"])
+  }
+
   func testAmountCurrencyAndStepper_NoReward() {
     self.vm.inputs.configureWith(project: .template, reward: Reward.noReward)
 
-    self.amountPrimitive.assertValues([1])
+    self.amountIsValid.assertValues([true])
+    self.amountValue.assertValues([1])
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
@@ -59,7 +85,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project, reward: Reward.noReward)
 
-    self.amountPrimitive.assertValues([10])
+    self.amountIsValid.assertValues([true])
+    self.amountValue.assertValues([10])
     self.currency.assertValues(["MX$"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
@@ -77,7 +104,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project, reward: Reward.noReward)
 
-    self.amountPrimitive.assertValues([1])
+    self.amountIsValid.assertValues([true])
+    self.amountValue.assertValues([1])
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
@@ -89,7 +117,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
   func testAmountCurrencyAndStepper_Reward_Minimum_Template() {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
-    self.amountPrimitive.assertValues([10])
+    self.amountIsValid.assertValues([true])
+    self.amountValue.assertValues([10])
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
@@ -107,7 +136,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project, reward: reward)
 
-    self.amountPrimitive.assertValues([200])
+    self.amountIsValid.assertValues([true])
+    self.amountValue.assertValues([200])
     self.currency.assertValues(["¥"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
@@ -742,19 +772,24 @@ internal final class PledgeAmountViewModelTests: TestCase {
   func testNilInputReturnsZero() {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
-    self.amountPrimitive.assertValue(10)
+    self.amountIsValid.assertValues([true])
+    self.amountValue.assertValue(10)
 
     self.vm.inputs.textFieldValueChanged("11")
-    self.amountPrimitive.assertValues([10, 11])
+    self.amountIsValid.assertValues([true, true])
+    self.amountValue.assertValues([10, 11])
 
     self.vm.inputs.textFieldValueChanged("")
-    self.amountPrimitive.assertValues([10, 11, 0])
+    self.amountIsValid.assertValues([true, true, false])
+    self.amountValue.assertValues([10, 11, 0])
 
     self.vm.inputs.textFieldValueChanged("5")
-    self.amountPrimitive.assertValues([10, 11, 0, 5])
+    self.amountIsValid.assertValues([true, true, false, false])
+    self.amountValue.assertValues([10, 11, 0, 5])
 
     self.vm.inputs.textFieldValueChanged(nil)
-    self.amountPrimitive.assertValues([10, 11, 0, 5, 0])
+    self.amountIsValid.assertValues([true, true, false, false, false])
+    self.amountValue.assertValues([10, 11, 0, 5, 0])
   }
 
   func testTextFieldDidEndEditing() {
@@ -762,31 +797,38 @@ internal final class PledgeAmountViewModelTests: TestCase {
     let maxValueFormatted = String(format: "%.0f", maxValue)
 
     self.vm.inputs.configureWith(project: .template, reward: .template)
-    self.amountPrimitive.assertValues([10])
+    self.amountIsValid.assertValues([true])
+    self.amountValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
 
     self.vm.inputs.textFieldDidEndEditing(nil)
-    self.amountPrimitive.assertValues([10])
+    self.amountIsValid.assertValues([true])
+    self.amountValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
 
     self.vm.inputs.textFieldDidEndEditing("16")
-    self.amountPrimitive.assertValues([10, 16])
+    self.amountIsValid.assertValues([true, true])
+    self.amountValue.assertValues([10, 16])
     self.textFieldValue.assertValues(["10", "16"])
 
     self.vm.inputs.textFieldDidEndEditing(String(maxValue))
-    self.amountPrimitive.assertValues([10, 16, maxValue])
+    self.amountIsValid.assertValues([true, true, false])
+    self.amountValue.assertValues([10, 16, maxValue])
     self.textFieldValue.assertValues(["10", "16", maxValueFormatted])
 
     self.vm.inputs.textFieldDidEndEditing("0")
-    self.amountPrimitive.assertValues([10, 16, maxValue, 0])
+    self.amountIsValid.assertValues([true, true, false, false])
+    self.amountValue.assertValues([10, 16, maxValue, 0])
     self.textFieldValue.assertValues(["10", "16", maxValueFormatted, "0"])
 
     self.vm.inputs.textFieldDidEndEditing("17")
-    self.amountPrimitive.assertValues([10, 16, maxValue, 0, 17])
+    self.amountIsValid.assertValues([true, true, false, false, true])
+    self.amountValue.assertValues([10, 16, maxValue, 0, 17])
     self.textFieldValue.assertValues(["10", "16", maxValueFormatted, "0", "17"])
 
     self.vm.inputs.textFieldDidEndEditing("")
-    self.amountPrimitive.assertValues([10, 16, maxValue, 0, 17])
+    self.amountIsValid.assertValues([true, true, false, false, true])
+    self.amountValue.assertValues([10, 16, maxValue, 0, 17])
     self.textFieldValue.assertValues(["10", "16", maxValueFormatted, "0", "17"])
   }
 
@@ -814,91 +856,109 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.textFieldTextColor.assertValues([green, red, green, red, green])
   }
 
+  // swiftlint:disable line_length
   func testTextFieldValueChangedRounding() {
     let green = UIColor.ksr_green_500
     let red = UIColor.ksr_red_400
 
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
+    self.amountIsValid.assertValues([true])
+    self.amountValue.assertValues([10])
+    self.doneButtonIsEnabled.assertValues([true])
+    self.labelTextColor.assertValues([green])
+    self.stepperValue.assertValues([10])
+    self.textFieldTextColor.assertValues([green])
+
     self.vm.inputs.textFieldValueChanged("10")
-    self.amountPrimitive.assertValues([10])
+    self.amountIsValid.assertValues([true, true])
+    self.amountValue.assertValues([10, 10])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
     self.stepperValue.assertValues([10])
     self.textFieldTextColor.assertValues([green])
 
     self.vm.inputs.textFieldValueChanged("10.")
-    self.amountPrimitive.assertValues([10])
+    self.amountIsValid.assertValues([true, true, true])
+    self.amountValue.assertValues([10, 10, 10])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
     self.stepperValue.assertValues([10])
     self.textFieldTextColor.assertValues([green])
 
     self.vm.inputs.textFieldValueChanged("10.0")
-    self.amountPrimitive.assertValues([10])
+    self.amountIsValid.assertValues([true, true, true, true])
+    self.amountValue.assertValues([10, 10, 10, 10])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
     self.stepperValue.assertValues([10])
     self.textFieldTextColor.assertValues([green])
 
     self.vm.inputs.textFieldValueChanged("10.00")
-    self.amountPrimitive.assertValues([10])
+    self.amountIsValid.assertValues([true, true, true, true, true])
+    self.amountValue.assertValues([10, 10, 10, 10, 10])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
     self.stepperValue.assertValues([10])
     self.textFieldTextColor.assertValues([green])
 
     self.vm.inputs.textFieldValueChanged("10.01")
-    self.amountPrimitive.assertValues([10, 10.01])
+    self.amountIsValid.assertValues([true, true, true, true, true, true])
+    self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
     self.stepperValue.assertValues([10, 10.01])
     self.textFieldTextColor.assertValues([green])
 
     self.vm.inputs.textFieldValueChanged("10.010")
-    self.amountPrimitive.assertValues([10, 10.01])
+    self.amountIsValid.assertValues([true, true, true, true, true, true, true])
+    self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
     self.stepperValue.assertValues([10, 10.01])
     self.textFieldTextColor.assertValues([green])
 
     self.vm.inputs.textFieldValueChanged("10.0100")
-    self.amountPrimitive.assertValues([10, 10.01])
+    self.amountIsValid.assertValues([true, true, true, true, true, true, true, true])
+    self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
     self.stepperValue.assertValues([10, 10.01])
     self.textFieldTextColor.assertValues([green])
 
     self.vm.inputs.textFieldValueChanged("10.019")
-    self.amountPrimitive.assertValues([10, 10.01, 10.02])
+    self.amountIsValid.assertValues([true, true, true, true, true, true, true, true, true])
+    self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01, 10.02])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
     self.stepperValue.assertValues([10, 10.01, 10.02])
     self.textFieldTextColor.assertValues([green])
 
     self.vm.inputs.textFieldValueChanged("10.0194444444")
-    self.amountPrimitive.assertValues([10, 10.01, 10.02])
+    self.amountIsValid.assertValues([true, true, true, true, true, true, true, true, true, true])
+    self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01, 10.02, 10.02])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
     self.stepperValue.assertValues([10, 10.01, 10.02])
     self.textFieldTextColor.assertValues([green])
 
     self.vm.inputs.textFieldValueChanged("9.999")
-    self.amountPrimitive.assertValues([10, 10.01, 10.02, 10])
+    self.amountIsValid.assertValues([true, true, true, true, true, true, true, true, true, true, false])
+    self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01, 10.02, 10.02, 10])
     self.doneButtonIsEnabled.assertValues([true, false])
     self.labelTextColor.assertValues([green, red])
     self.stepperValue.assertValues([10, 10.01, 10.02, 10])
     self.textFieldTextColor.assertValues([green, red])
 
     self.vm.inputs.textFieldValueChanged("9.99")
-    self.amountPrimitive.assertValues([10, 10.01, 10.02, 10, 9.99])
+    self.amountIsValid.assertValues([true, true, true, true, true, true, true, true, true, true, false, false])
+    self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01, 10.02, 10.02, 10, 9.99])
     self.doneButtonIsEnabled.assertValues([true, false])
     self.labelTextColor.assertValues([green, red])
     self.stepperValue.assertValues([10, 10.01, 10.02, 10, 9.99])
     self.textFieldTextColor.assertValues([green, red])
   }
 
-  // swiftlint:disable line_length
   func testTextFieldDidEndEditingRoundingAndTruncation() {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 

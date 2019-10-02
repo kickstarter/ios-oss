@@ -18,7 +18,7 @@ public protocol PledgeAmountViewModelInputs {
 }
 
 public protocol PledgeAmountViewModelOutputs {
-  var amountPrimitive: Signal<Double, Never> { get }
+  var amount: Signal<(Double, Bool), Never> { get }
   var currency: Signal<String, Never> { get }
   var doneButtonIsEnabled: Signal<Bool, Never> { get }
   var generateSelectionFeedback: Signal<Void, Never> { get }
@@ -67,8 +67,15 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .skipNil()
       .map(rounded)
 
+    let initialValue = Signal.combineLatest(
+      project
+        .map { $0.personalization.backing?.pledgeAmount },
+      minValue
+    )
+    .map { backedAmount, minValue in backedAmount ?? minValue }
+
     let stepperValue = Signal.merge(
-      minValue,
+      initialValue,
       textFieldInputValue,
       self.stepperValueProperty.signal
     )
@@ -122,15 +129,13 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       )
     )
 
-    self.amountPrimitive = updatedValue
-      .map(third)
-      .map(rounded)
-      .skipRepeats()
-
-    let isValueValid = updatedValue
-      .map { (min: Double, max: Double, doubleValue: Double) -> Bool in
-        min <= doubleValue && doubleValue <= max
+    self.amount = updatedValue
+      .map { min, max, value in
+        (rounded(value), min <= value && value <= max)
       }
+
+    let isValueValid = self.amount
+      .map(second)
       .skipRepeats()
 
     self.doneButtonIsEnabled = isValueValid
@@ -144,7 +149,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.stepperValue = Signal.merge(
       minValue,
-      self.amountPrimitive
+      self.amount.map(first)
     )
     .skipRepeats()
 
@@ -180,7 +185,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.textFieldValueProperty.value = value
   }
 
-  public let amountPrimitive: Signal<Double, Never>
+  public let amount: Signal<(Double, Bool), Never>
   public let currency: Signal<String, Never>
   public let doneButtonIsEnabled: Signal<Bool, Never>
   public let generateSelectionFeedback: Signal<Void, Never>
