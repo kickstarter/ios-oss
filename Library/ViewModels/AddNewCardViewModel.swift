@@ -144,11 +144,11 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       .map { _ in AppEnvironment.current.environmentType.stripePublishableKey }
 
     self.rememberThisCardToggleViewControllerIsOn = Signal.combineLatest(
-      self.addNewCardIntentProperty.signal,
+      self.addNewCardIntentAndProjectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
-    .map { $0 == .settings }
+    .map { $0.0 == .settings }
 
     let rememberThisCard = Signal.merge(
       self.rememberThisCardToggleViewControllerIsOn,

@@ -63,7 +63,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
     ) {
-      self.vm.inputs.configure(with: .settings)
+      self.vm.inputs.configure(with: .settings, project: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: .settings, project: nil)
       self.saveButtonIsEnabled.assertDidNotEmitValue()
@@ -93,7 +93,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
     ) {
-      self.vm.inputs.configure(with: .settings)
+      self.vm.inputs.configure(with: .settings, project: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: .pledge, project: Project.template)
 
@@ -147,7 +147,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     let error = GraphError.emptyResponse(nil)
 
     withEnvironment(apiService: MockService(addNewCreditCardResult: .failure(.emptyResponse(nil)))) {
-      self.vm.inputs.configure(with: .settings)
+      self.vm.inputs.configure(with: .settings, project: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.configure(with: .pledge, project: Project.template)
       self.vm.inputs.cardholderNameChanged("Native Squad")
@@ -297,7 +297,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
     ) {
-      self.vm.inputs.configure(with: .settings)
+      self.vm.inputs.configure(with: .settings, project: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.paymentInfo(isValid: true)
       self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
@@ -310,7 +310,7 @@ internal final class AddNewCardViewModelTests: TestCase {
 
   func testTrackFailedPaymentMethodCreation() {
     withEnvironment(apiService: MockService(addNewCreditCardResult: .failure(.emptyResponse(nil)))) {
-      self.vm.inputs.configure(with: .settings)
+      self.vm.inputs.configure(with: .settings, project: nil)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
 
@@ -387,7 +387,7 @@ internal final class AddNewCardViewModelTests: TestCase {
   func testReusableCardSwitchisOffByDefault_Pledge() {
     self.rememberThisCardToggleViewControllerIsOn.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: .pledge)
+    self.vm.inputs.configure(with: .pledge, project: Project.template)
     self.vm.inputs.viewDidLoad()
 
     self.rememberThisCardToggleViewControllerIsOn.assertValues([false])
@@ -396,7 +396,7 @@ internal final class AddNewCardViewModelTests: TestCase {
   func testReusableCardSwitchisOnByDefault_Settings() {
     self.rememberThisCardToggleViewControllerIsOn.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: .settings)
+    self.vm.inputs.configure(with: .settings, project: nil)
     self.vm.inputs.viewDidLoad()
 
     self.rememberThisCardToggleViewControllerIsOn.assertValues([true])

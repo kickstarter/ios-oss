@@ -218,12 +218,6 @@ internal final class AddNewCardViewController: UIViewController,
         }
       }
 
-    self.viewModel.outputs.addNewCardSuccess
-      .observeForControllerAction()
-      .observeValues { [weak self] message in
-        self?.dismissAndPresentMessageBanner(with: message)
-      }
-
     self.viewModel.outputs.addNewCardFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
@@ -327,10 +321,6 @@ internal final class AddNewCardViewController: UIViewController,
         self.viewModel.inputs.stripeError(error)
       }
     }
-  }
-
-  private func dismissAndPresentMessageBanner(with message: String) {
-    self.delegate?.addNewCardViewController(self, didSucceedWithMessage: message)
   }
 
   private func dismissKeyboard() {
