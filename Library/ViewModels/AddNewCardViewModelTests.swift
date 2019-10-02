@@ -329,7 +329,7 @@ internal final class AddNewCardViewModelTests: TestCase {
 
   func testUnsupportedCardMessage_showsWithInvalidCardBrand_AndExistingCardNumber() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configure(with: .pledge  , project: Project.template)
+    self.vm.inputs.configure(with: .pledge, project: Project.template)
 
     self.creditCardValidationErrorContainerHidden
       .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
@@ -402,7 +402,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.rememberThisCardToggleViewControllerIsOn.assertValues([true])
   }
 
-  func testUnsupportedCardBrandsError(){
+  func testUnsupportedCardBrandsError() {
     let project = Project.template
       |> Project.lens.location .~ .australia
 
@@ -417,7 +417,9 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.creditCardValidationErrorContainerHidden
       .assertValues([true, false], "Unsupported card message hides with a valid card brand")
     self.unsupportedCardBrandError
-      .assertValues(["You can’t use this credit card to back a project from Australia."],
-                    "Card is unsupported")
+      .assertValues(
+        ["You can’t use this credit card to back a project from Australia."],
+        "Card is unsupported"
+      )
   }
 }

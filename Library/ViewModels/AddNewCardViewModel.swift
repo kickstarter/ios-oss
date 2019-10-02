@@ -80,12 +80,11 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let project = self.addNewCardIntentAndProjectProperty.signal.skipNil()
       .map { $0.1 }
 
-
     let cardBrandIsValid = Signal.combineLatest(
       cardNumber,
       project
-      ).map { cardNumber, project in
-        cardBrandIsSupported(project: project, cardNumber: cardNumber)
+    ).map { cardNumber, project in
+      cardBrandIsSupported(project: project, cardNumber: cardNumber)
     }
 
     let cardBrandValidAndCardNumberValid = Signal
@@ -95,14 +94,14 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       )
       .map { (brandValid, cardNumber) -> Bool in
         brandValid || cardNumber.count < 2
-    }
+      }
 
     self.unsupportedCardBrandError = Signal.combineLatest(cardBrandIsValid, project.skipNil())
       .map { _, project in
         Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
           project_country: project.location.displayableName
         )
-    }
+      }
 
     self.creditCardValidationErrorContainerHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),
@@ -330,10 +329,10 @@ private func cardBrandIsSupported(project: Project?, cardNumber: String) -> Bool
     .JCB
   ]
 
-  switch(allOthers) {
+  switch allOthers {
   case true:
     return unsupportedCardBrands.contains(brand) ? false : true
   case false:
-     return allCardBrands.contains(brand)
+    return allCardBrands.contains(brand)
   }
 }
