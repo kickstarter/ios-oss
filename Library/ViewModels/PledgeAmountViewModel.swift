@@ -24,6 +24,7 @@ public protocol PledgeAmountViewModelOutputs {
   var generateSelectionFeedback: Signal<Void, Never> { get }
   var generateNotificationWarningFeedback: Signal<Void, Never> { get }
   var labelTextColor: Signal<UIColor, Never> { get }
+  var minPledgeAmountLabelText: Signal<String, Never> { get }
   var stepperMaxValue: Signal<Double, Never> { get }
   var stepperMinValue: Signal<Double, Never> { get }
   var stepperStepValue: Signal<Double, Never> { get }
@@ -145,6 +146,19 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.labelTextColor = textColor
 
+    self.minPledgeAmountLabelText = Signal.combineLatest(
+      project,
+      minValue
+    )
+    .map { project, min in
+      localizedString(
+        key: "The_minimum_pledge_is",
+        defaultValue: "The minimum pledge is %{min_pledge}.",
+        count: nil,
+        substitutions: ["min_pledge": Format.currency(min, country: project.country, omitCurrencyCode: false)]
+      )
+    }
+
     self.stepperStepValue = minValue
 
     self.stepperValue = Signal.merge(
@@ -191,6 +205,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
   public let generateSelectionFeedback: Signal<Void, Never>
   public let generateNotificationWarningFeedback: Signal<Void, Never>
   public let labelTextColor: Signal<UIColor, Never>
+  public let minPledgeAmountLabelText: Signal<String, Never>
   public let stepperMaxValue: Signal<Double, Never>
   public let stepperMinValue: Signal<Double, Never>
   public let stepperStepValue: Signal<Double, Never>

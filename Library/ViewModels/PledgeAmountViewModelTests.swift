@@ -14,6 +14,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
   private let generateSelectionFeedback = TestObserver<Void, Never>()
   private let generateNotificationWarningFeedback = TestObserver<Void, Never>()
   private let labelTextColor = TestObserver<UIColor, Never>()
+  private let minPledgeAmountLabelText = TestObserver<String, Never>()
   private let stepperMaxValue = TestObserver<Double, Never>()
   private let stepperMinValue = TestObserver<Double, Never>()
   private let stepperStepValue = TestObserver<Double, Never>()
@@ -34,6 +35,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       self.generateNotificationWarningFeedback.observer
     )
     self.vm.outputs.labelTextColor.observe(self.labelTextColor.observer)
+    self.vm.outputs.minPledgeAmountLabelText.observe(self.minPledgeAmountLabelText.observer)
     self.vm.outputs.stepperMaxValue.observe(self.stepperMaxValue.observer)
     self.vm.outputs.stepperMinValue.observe(self.stepperMinValue.observer)
     self.vm.outputs.stepperStepValue.observe(self.stepperStepValue.observer)
@@ -739,6 +741,12 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.stepperValueChanged(1)
     self.labelTextColor.assertValues([green, red, green, red, green])
+  }
+
+  func testMinPledgeAmountLabelText() {
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+
+    self.minPledgeAmountLabelText.assertValues(["The minimum pledge is US$ 10."])
   }
 
   func testStepperValueChangesWithTextFieldInput() {
