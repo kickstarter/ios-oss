@@ -49,10 +49,10 @@ final class BackingTests: XCTestCase {
     let backing = Backing.template
       |> Backing.lens.reward .~ Reward.postcards
       |> Backing.lens.rewardId .~ Reward.postcards.id
-      |> Backing.lens.shippingAmount .~ 116
-      |> Backing.lens.amount .~ 700.75
+      |> Backing.lens.shippingAmount .~ 100
+      |> Backing.lens.amount .~ 700.50
 
-    XCTAssertEqual(backing.amount, 700.75)
-    XCTAssertEqual(backing.pledgeAmount, 584.75)
+    XCTAssertEqual(backing.amount, 700.50)
+    XCTAssertEqual(backing.pledgeAmount, 600.50)
   }
 }
