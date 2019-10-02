@@ -9,6 +9,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let vm: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
 
   private let applePayButtonHidden = TestObserver<Bool, Never>()
+  private let goToAddCardIntent = TestObserver<AddNewCardIntent, Never>()
+  private let goToProject = TestObserver<Project, Never>()
   private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
   private let notifyDelegateCreditCardSelected = TestObserver<String, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
@@ -19,6 +21,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
     self.vm.outputs.applePayButtonHidden.observe(self.applePayButtonHidden.observer)
+    self.vm.outputs.goToAddCardScreen.map(first).observe(self.goToAddCardIntent.observer)
+    self.vm.outputs.goToAddCardScreen.map(second).observe(self.goToProject.observer)
     self.vm.outputs.notifyDelegateApplePayButtonTapped
       .observe(self.notifyDelegateApplePayButtonTapped.observer)
     self.vm.outputs.notifyDelegateCreditCardSelected
@@ -254,5 +258,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.inputs.updatePledgeButtonEnabled(isEnabled: false)
 
     self.pledgeButtonEnabled.assertValues([false, true, false])
+  }
+
+  func testGoToAddNewCard() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith((User.template, project, true))
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.addNewCardTapped(with: .pledge)
+    self.goToAddCardIntent.assertValues([.pledge])
+    self.goToProject.assertValues([project])
   }
 }

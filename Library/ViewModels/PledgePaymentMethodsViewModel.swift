@@ -18,13 +18,13 @@ public protocol PledgePaymentMethodsViewModelInputs {
 
 public protocol PledgePaymentMethodsViewModelOutputs {
   var applePayButtonHidden: Signal<Bool, Never> { get }
+  var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
   var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
   var updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never> { get }
-  var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
 }
 
 public protocol PledgePaymentMethodsViewModelType {

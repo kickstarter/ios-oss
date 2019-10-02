@@ -78,7 +78,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let zipcodeIsValid: Signal<Bool, Never> = zipcode.map { !$0.isEmpty }
 
     let project = self.addNewCardIntentAndProjectProperty.signal.skipNil()
-      .map { $0.1 }.skipNil()
+      .map { $0.1 }
 
 
     let cardBrandIsValid = Signal.combineLatest(
@@ -97,7 +97,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
         brandValid || cardNumber.count < 2
     }
 
-    self.unsupportedCardBrandError = Signal.combineLatest(cardBrandIsValid, project)
+    self.unsupportedCardBrandError = Signal.combineLatest(cardBrandIsValid, project.skipNil())
       .map { _, project in
         Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
           project_country: project.location.displayableName
@@ -297,7 +297,9 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public var outputs: AddNewCardViewModelOutputs { return self }
 }
 
-private func cardBrandIsSupported(project: Project, cardNumber: String) -> Bool {
+private func cardBrandIsSupported(project: Project?, cardNumber: String) -> Bool {
+  guard let project = project else { return true }
+
   let allOthers = project.location.country != Project.Country.us.countryCode
   let brand = STPCardValidator.brand(forNumber: cardNumber)
 
