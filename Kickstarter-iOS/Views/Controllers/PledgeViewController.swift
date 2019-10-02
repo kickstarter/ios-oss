@@ -277,6 +277,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.continueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
 
+    self.confirmButton.rac.enabled = self.viewModel.outputs.confirmButtonEnabled
     self.confirmButton.rac.hidden = self.viewModel.outputs.confirmButtonHidden
     self.confirmationLabel.rac.hidden = self.viewModel.outputs.confirmationLabelHidden
 

@@ -38,6 +38,7 @@ public typealias PledgeAmountData = (amount: Double, isValid: Bool)
 public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
   func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext)
+  func confirmButtonTapped()
   func creditCardSelected(with paymentSourceId: String)
   func paymentAuthorizationDidAuthorizePayment(
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
@@ -57,6 +58,7 @@ public protocol PledgeViewModelOutputs {
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
+  var confirmButtonEnabled: Signal<Bool, Never> { get }
   var confirmButtonHidden: Signal<Bool, Never> { get }
   var confirmationLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var confirmationLabelHidden: Signal<Bool, Never> { get }
@@ -69,6 +71,7 @@ public protocol PledgeViewModelOutputs {
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var updatePledgeButtonEnabled: Signal<Bool, Never> { get }
+//  var title: Signal<String, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -305,6 +308,47 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let createBackingTransactionSuccess = project.takeWhen(createBackingEventSuccess)
 
     self.goToThanks = Signal.merge(applePayTransactionCompleted, createBackingTransactionSuccess)
+
+    let amountChanged = Signal.combineLatest(
+      project.map { $0.personalization.backing?.amount }, // TODO: use pledgeAmount
+      self.pledgeAmountDataSignal.map(first)
+    )
+    .map(!=)
+
+    let shippingRuleChanged = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      Signal.combineLatest(
+        project.map { $0.personalization.backing?.locationId },
+        self.shippingRuleSelectedSignal.map { $0.location.id }
+      )
+      .map(!=)
+    )
+
+    let paymentMethodChanged = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      Signal.combineLatest(
+        project.map { $0.personalization.backing?.paymentSourceId },
+        self.creditCardSelectedSignal
+      )
+      .map(!=)
+    )
+
+    let valuesChanged = Signal.combineLatest(
+      amountChanged,
+      shippingRuleChanged,
+      paymentMethodChanged,
+      self.viewDidLoadProperty.signal
+    )
+    .map { amountChanged, shippingRuleChanged, paymentMethodChanged, _ -> Bool in
+      [amountChanged, shippingRuleChanged, paymentMethodChanged].contains(true)
+    }
+
+    self.confirmButtonEnabled = Signal.combineLatest(
+      valuesChanged,
+      self.pledgeAmountDataSignal.map { $1 }
+    )
+    .map { $0 && $1 }
+    .skipRepeats()
   }
 
   // MARK: - Inputs
@@ -317,6 +361,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   private let configureWithDataProperty = MutableProperty<(Project, Reward, RefTag?, PledgeViewContext)?>(nil)
   public func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext) {
     self.configureWithDataProperty.value = (project, reward, refTag, context)
+  }
+
+  private let (confirmButtonTappedSignal, confirmButtonTappedObserver) = Signal<(), Never>.pipe()
+  public func confirmButtonTapped() {
+    self.confirmButtonTappedObserver.send(value: ())
   }
 
   private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<String, Never>.pipe()
@@ -390,6 +439,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
+  public let confirmButtonEnabled: Signal<Bool, Never>
   public let confirmButtonHidden: Signal<Bool, Never>
   public let confirmationLabelAttributedText: Signal<NSAttributedString, Never>
   public let confirmationLabelHidden: Signal<Bool, Never>

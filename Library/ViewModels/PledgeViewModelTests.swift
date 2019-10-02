@@ -23,6 +23,7 @@ final class PledgeViewModelTests: TestCase {
   private let configureWithPledgeViewDataProject = TestObserver<Project, Never>()
   private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
 
+  private let confirmButtonEnabled = TestObserver<Bool, Never>()
   private let confirmButtonHidden = TestObserver<Bool, Never>()
   private let confirmationLabelAttributedText = TestObserver<NSAttributedString, Never>()
   private let confirmationLabelHidden = TestObserver<Bool, Never>()
@@ -69,6 +70,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configureStripeIntegration.map(second)
       .observe(self.configureStripeIntegrationPublishableKey.observer)
 
+    self.vm.outputs.confirmButtonEnabled.observe(self.confirmButtonEnabled.observer)
     self.vm.outputs.confirmButtonHidden.observe(self.confirmButtonHidden.observer)
     self.vm.outputs.confirmationLabelAttributedText.observe(self.confirmationLabelAttributedText.observer)
     self.vm.outputs.confirmationLabelHidden.observe(self.confirmationLabelHidden.observer)
@@ -1010,5 +1012,66 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanks.assertDidNotEmitValue()
       self.createBackingError.assertValues(["Something went wrong."])
     }
+  }
+
+  func testConfirmButtonEnabled() {
+    let reward = Reward.postcards
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSourceId .~ "id-1234"
+          |> Backing.lens.status .~ .errored
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.confirmButtonHidden.assertDidNotEmitValue()
+    self.confirmButtonEnabled.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+    self.vm.inputs.viewDidLoad()
+
+    self.confirmButtonHidden.assertValues([false])
+    self.confirmButtonEnabled.assertDidNotEmitValue()
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (700, true))
+
+    self.confirmButtonHidden.assertValues([false])
+    self.confirmButtonEnabled.assertValues([false])
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (550, true))
+
+    self.confirmButtonHidden.assertValues([false])
+    self.confirmButtonEnabled.assertValues([false, true])
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (700, true))
+
+    self.confirmButtonHidden.assertValues([false])
+    self.confirmButtonEnabled.assertValues([false, true, false])
+
+    self.vm.inputs.shippingRuleSelected(.template)
+
+    self.confirmButtonHidden.assertValues([false])
+    self.confirmButtonEnabled.assertValues([false, true, false, true])
+
+    self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
+
+    self.confirmButtonHidden.assertValues([false])
+    self.confirmButtonEnabled.assertValues([false, true, false, true, false])
+
+    self.vm.inputs.creditCardSelected(with: "another-card")
+
+    self.confirmButtonHidden.assertValues([false])
+    self.confirmButtonEnabled.assertValues([false, true, false, true, false, true])
+
+    self.vm.inputs.creditCardSelected(with: "id-1234")
+
+    self.confirmButtonHidden.assertValues([false])
+    self.confirmButtonEnabled.assertValues([false, true, false, true, false, true, false])
   }
 }
