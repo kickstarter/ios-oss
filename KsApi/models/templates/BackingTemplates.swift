@@ -9,7 +9,7 @@ extension Backing {
     id: 1,
     locationId: 1,
     locationName: "United States",
-    paymentSourceId: nil,
+    paymentSource: GraphUserCreditCard.visa,
     pledgedAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,
     projectCountry: "US",
     projectId: 1,

@@ -1022,7 +1022,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.paymentSourceId .~ "id-1234"
+          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
           |> Backing.lens.status .~ .errored
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
@@ -1069,7 +1069,7 @@ final class PledgeViewModelTests: TestCase {
     self.confirmButtonHidden.assertValues([false])
     self.confirmButtonEnabled.assertValues([false, true, false, true, false, true])
 
-    self.vm.inputs.creditCardSelected(with: "id-1234")
+    self.vm.inputs.creditCardSelected(with: GraphUserCreditCard.amex.id)
 
     self.confirmButtonHidden.assertValues([false])
     self.confirmButtonEnabled.assertValues([false, true, false, true, false, true, false])

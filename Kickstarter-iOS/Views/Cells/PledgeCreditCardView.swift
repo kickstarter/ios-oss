@@ -37,6 +37,8 @@ final class PledgeCreditCardView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // MARK: - Configuration
+
   private func configureSubviews() {
     _ = self
       |> \.accessibilityElements .~ self.subviews
@@ -100,6 +102,8 @@ final class PledgeCreditCardView: UIView {
     _ = self.selectButton
       |> blackButtonStyle
   }
+
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()

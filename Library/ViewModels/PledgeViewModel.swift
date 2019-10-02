@@ -327,7 +327,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let paymentMethodChanged = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
       Signal.combineLatest(
-        project.map { $0.personalization.backing?.paymentSourceId },
+        project.map { $0.personalization.backing?.paymentSource?.id },
         self.creditCardSelectedSignal
       )
       .map(!=)

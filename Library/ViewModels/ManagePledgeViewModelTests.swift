@@ -9,7 +9,7 @@ import XCTest
 internal final class ManagePledgeViewModelTests: TestCase {
   private let vm = ManagePledgeViewModel()
 
-  private let configurePaymentMethodView = TestObserver<Project, Never>()
+  private let configurePaymentMethodView = TestObserver<GraphUserCreditCard.CreditCard, Never>()
   private let configurePledgeSummaryView = TestObserver<Project, Never>()
   private let configureRewardSummaryView = TestObserver<Reward, Never>()
   private let goToCancelPledgeProject = TestObserver<Project, Never>()
@@ -67,12 +67,16 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testConfigurePaymentMethodViewController() {
     self.configurePaymentMethodView.assertDidNotEmitValue()
 
+    let backing = Backing.template
+
     let project = Project.template
+      |> \.personalization.backing .~ backing
+
     self.vm.inputs.configureWith(project, reward: .template)
 
     self.vm.inputs.viewDidLoad()
 
-    self.configurePaymentMethodView.assertValue(project)
+    self.configurePaymentMethodView.assertValue(GraphUserCreditCard.visa)
   }
 
   func testConfigurePledgeSummaryViewController() {
