@@ -140,4 +140,36 @@ final class GraphUserCreditCardTests: XCTestCase {
       XCTFail("Failed to decode GraphUserCreditCard")
     }
   }
+
+  func testJSONDecoding_WithStringID() {
+    let card = GraphUserCreditCard.CreditCard.decodeJSONDictionary([
+      "expiration_date": "2019-09-23",
+      "id": "VXNlci0yMA==",
+      "last_four": "1234",
+      "payment_type": "CREDIT_CARD",
+      "state": "ACTIVE",
+      "type": "VISA"
+    ])
+
+    XCTAssertNil(card.error)
+    XCTAssertEqual("2019-09-23", card.value?.expirationDate)
+    XCTAssertEqual("VXNlci0yMA==", card.value?.id)
+    XCTAssertEqual("1234", card.value?.lastFour)
+    XCTAssertEqual("CREDIT_CARD", card.value?.paymentType)
+    XCTAssertEqual("ACTIVE", card.value?.state)
+    XCTAssertEqual(GraphUserCreditCard.CreditCardType.visa, card.value?.type)
+  }
+
+  func testJSONDecoding_WithIntID() {
+    let card = GraphUserCreditCard.CreditCard.decodeJSONDictionary([
+      "expiration_date": "2019-09-23",
+      "id": 20,
+      "last_four": "1234",
+      "payment_type": "CREDIT_CARD",
+      "state": "ACTIVE",
+      "type": "VISA"
+    ])
+
+    XCTAssertEqual("VXNlci0yMA==", card.value?.id)
+  }
 }

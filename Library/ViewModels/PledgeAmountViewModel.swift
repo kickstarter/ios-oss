@@ -67,8 +67,15 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .skipNil()
       .map(rounded)
 
+    let initialValue = Signal.combineLatest(
+      project
+        .map { $0.personalization.backing?.pledgeAmount },
+      minValue
+    )
+    .map { backedAmount, minValue in backedAmount ?? minValue }
+
     let stepperValue = Signal.merge(
-      minValue,
+      initialValue,
       textFieldInputValue,
       self.stepperValueProperty.signal
     )

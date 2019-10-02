@@ -10,6 +10,7 @@ public struct Backing {
   public let id: Int
   public let locationId: Int?
   public let locationName: String?
+  public let paymentSource: GraphUserCreditCard.CreditCard?
   public let pledgedAt: TimeInterval
   public let projectCountry: String
   public let projectId: Int
@@ -46,6 +47,7 @@ extension Backing: Argo.Decodable {
     let tmp2 = tmp1
       <*> json <|? "location_id"
       <*> json <|? "location_name"
+      <*> json <|? "payment_source"
       <*> json <| "pledged_at"
       <*> json <| "project_country"
       <*> json <| "project_id"
@@ -67,3 +69,13 @@ extension Backing: EncodableType {
 }
 
 extension Backing.Status: Argo.Decodable {}
+
+extension Backing {
+  /// Returns the pledge amount subtracting the shipping amount
+  public var pledgeAmount: Double {
+    let shippingAmount = Double(self.shippingAmount ?? 0)
+    let pledgeAmount = Decimal(amount) - Decimal(shippingAmount)
+
+    return (pledgeAmount as NSDecimalNumber).doubleValue
+  }
+}
