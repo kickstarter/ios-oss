@@ -21,6 +21,13 @@ public enum PledgeViewContext {
     case .update: return true
     }
   }
+
+  var title: String {
+    switch self {
+    case .pledge: return Strings.Back_this_project()
+    case .update: return Strings.Update_pledge()
+    }
+  }
 }
 
 public typealias StripeConfigurationData = (merchantIdentifier: String, publishableKey: String)
@@ -70,8 +77,8 @@ public protocol PledgeViewModelOutputs {
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
+  var title: Signal<String, Never> { get }
   var updatePledgeButtonEnabled: Signal<Bool, Never> { get }
-//  var title: Signal<String, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -345,10 +352,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.confirmButtonEnabled = Signal.combineLatest(
       valuesChanged,
-      self.pledgeAmountDataSignal.map { $1 }
+      self.pledgeAmountDataSignal.map(second)
     )
     .map { $0 && $1 }
     .skipRepeats()
+
+    self.title = context.map { $0.title }
   }
 
   // MARK: - Inputs
@@ -451,6 +460,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
+  public var title: Signal<String, Never>
   public let updatePledgeButtonEnabled: Signal<Bool, Never>
 
   public var inputs: PledgeViewModelInputs { return self }

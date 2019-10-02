@@ -45,6 +45,7 @@ final class PledgeViewModelTests: TestCase {
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
   private let sectionSeparatorsHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
+  private let title = TestObserver<String, Never>()
   private let updatePledgeButtonEnabled = TestObserver<Bool, Never>()
 
   override func setUp() {
@@ -99,6 +100,8 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.updatePledgeButtonEnabled.observe(self.updatePledgeButtonEnabled.observer)
     self.vm.outputs.sectionSeparatorsHidden.observe(self.sectionSeparatorsHidden.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
+
+    self.vm.outputs.title.observe(self.title.observer)
   }
 
   func testPledgeContext_LoggedIn() {
@@ -111,6 +114,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
+
+      self.title.assertValues(["Back this project"])
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
@@ -146,6 +151,8 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
+      self.title.assertValues(["Back this project"])
+
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
 
@@ -180,6 +187,8 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
       self.vm.inputs.viewDidLoad()
 
+      self.title.assertValues(["Update pledge"])
+
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
 
@@ -213,6 +222,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
       self.vm.inputs.viewDidLoad()
+
+      self.title.assertValues(["Update pledge"])
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
       self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()

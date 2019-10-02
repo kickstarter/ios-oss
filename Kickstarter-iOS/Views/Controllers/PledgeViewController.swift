@@ -100,9 +100,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
-    _ = self
-      |> \.title %~ { _ in Strings.Back_this_project() }
-
     _ = (self.rootScrollView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
@@ -282,6 +279,15 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.confirmationLabel.rac.hidden = self.viewModel.outputs.confirmationLabelHidden
 
     self.confirmationLabel.rac.attributedText = self.viewModel.outputs.confirmationLabelAttributedText
+
+    self.viewModel.outputs.title
+      .observeForUI()
+      .observeValues { [weak self] title in
+        guard let self = self else { return }
+
+        _ = self
+          |> \.title %~ { _ in title }
+      }
 
     // MARK: Errors
 
