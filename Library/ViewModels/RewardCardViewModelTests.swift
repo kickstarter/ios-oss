@@ -115,7 +115,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.rewardTitleLabelHidden.assertValues([false])
     self.rewardTitleLabelText.assertValues([
-      "Thank you for supporting this project."
+      "You pledged without a reward"
     ])
   }
 

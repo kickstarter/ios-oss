@@ -188,10 +188,10 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
 
   if reward.isNoReward {
     if userIsBacking(reward: reward, inProject: project) {
-      return Strings.Thank_you_for_supporting_this_project()
+      return Strings.You_pledged_without_a_reward()
     }
 
-    return Strings.Make_a_pledge_without_a_reward()
+    return Strings.You_pledged_without_a_reward()
   }
 
   return reward.title.coalesceWith("")
