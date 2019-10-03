@@ -150,6 +150,8 @@
 
     fileprivate let unfollowFriendError: ErrorEnvelope?
 
+    fileprivate let updateBackingResult: Result<UpdateBackingEnvelope, GraphError>?
+
     fileprivate let updateDraftError: ErrorEnvelope?
 
     fileprivate let updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>?
@@ -280,6 +282,7 @@
       signupError: ErrorEnvelope? = nil,
       submitApplePayResponse: SubmitApplePayEnvelope = .template,
       unfollowFriendError: ErrorEnvelope? = nil,
+      updateBackingResult: Result<UpdateBackingEnvelope, GraphError>? = nil,
       updateDraftError: ErrorEnvelope? = nil,
       updatePledgeResult: Result<UpdatePledgeEnvelope, ErrorEnvelope>? = nil,
       updateProjectNotificationResponse: ProjectNotification? = nil,
@@ -474,6 +477,8 @@
       self.submitApplePayResponse = submitApplePayResponse
 
       self.unfollowFriendError = unfollowFriendError
+
+      self.updateBackingResult = updateBackingResult
 
       self.updateDraftError = updateDraftError
 
@@ -1321,6 +1326,11 @@
       return SignalProducer(value: updatedDraft)
     }
 
+    internal func updateBacking(input _: UpdateBackingInput)
+      -> SignalProducer<UpdateBackingEnvelope, GraphError> {
+      return producer(for: self.updateBackingResult)
+    }
+
     internal func updatePledge(
       project _: Project,
       amount _: Double,
@@ -1482,6 +1492,7 @@
             signupError: $1.signupError,
             submitApplePayResponse: $1.submitApplePayResponse,
             unfollowFriendError: $1.unfollowFriendError,
+            updateBackingResult: $1.updateBackingResult,
             updateDraftError: $1.updateDraftError,
             updatePledgeResult: $1.updatePledgeResult,
             updateProjectNotificationResponse: $1.updateProjectNotificationResponse,
