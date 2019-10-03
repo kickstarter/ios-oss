@@ -5,6 +5,8 @@ import Prelude
 import UIKit
 
 final class CancelPledgeViewController: UIViewController {
+  private let viewModel: CancelPledgeViewModelType = CancelPledgeViewModel()
+
   // MARK: - Properties
 
   private lazy var cancelButton = { UIButton(type: .custom)
@@ -18,13 +20,8 @@ final class CancelPledgeViewController: UIViewController {
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var rootStackView = {
-    UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
+  private lazy var rootStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView = { UIScrollView(frame: .zero) }()
-  private let viewModel: CancelPledgeViewModelType = CancelPledgeViewModel()
 
   // MARK: - Lifecycle
 
@@ -126,17 +123,14 @@ final class CancelPledgeViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.cancellationDetailsTextLabelValue
-      .observeForUI()
-      .observeValues { [weak self] amount, projectName in
-        self?.setCancellationDetailsAttributedText(with: amount, projectName: projectName)
-      }
-
     self.viewModel.outputs.popCancelPledgeViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.navigationController?.popViewController(animated: true)
       }
+
+    self.cancellationDetailsTextLabel.rac.attributedText = self.viewModel.outputs
+      .cancellationDetailsAttributedText
 
     Keyboard.change
       .observeForUI()
@@ -157,27 +151,6 @@ final class CancelPledgeViewController: UIViewController {
       self.cancellationReasonTextField.heightAnchor
         .constraint(greaterThanOrEqualTo: self.cancelButton.heightAnchor)
     ])
-  }
-
-  private func setCancellationDetailsAttributedText(with amount: String, projectName: String) {
-    let fullString = Strings
-      .Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name(
-        amount: amount,
-        project_name: projectName
-      )
-    let attributedString: NSMutableAttributedString = NSMutableAttributedString.init(string: fullString)
-    let regularFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_callout()]
-    let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_callout().bolded]
-    let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
-    let rangeAmount: NSRange = (fullString as NSString).localizedStandardRange(of: amount)
-    let rangeProjectName: NSRange = (fullString as NSString).localizedStandardRange(of: projectName)
-
-    attributedString.addAttributes(regularFontAttribute, range: fullRange)
-    attributedString.addAttributes(boldFontAttribute, range: rangeAmount)
-    attributedString.addAttributes(boldFontAttribute, range: rangeProjectName)
-
-    _ = self.cancellationDetailsTextLabel
-      |> \.attributedText .~ attributedString
   }
 
   private func contentInsetsFor(traitCollection: UITraitCollection) -> UIEdgeInsets {

@@ -11,7 +11,7 @@ public protocol CancelPledgeViewModelInputs {
 }
 
 public protocol CancelPledgeViewModelOutputs {
-  var cancellationDetailsTextLabelValue: Signal<(amount: String, projectName: String), Never> { get }
+  var cancellationDetailsAttributedText: Signal<NSAttributedString, Never> { get }
   var popCancelPledgeViewController: Signal<Void, Never> { get }
 }
 
@@ -29,7 +29,7 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
     )
     .map(first)
 
-    self.cancellationDetailsTextLabelValue = Signal.merge(
+    self.cancellationDetailsAttributedText = Signal.merge(
       initialData,
       initialData.takeWhen(self.traitCollectionDidChangeProperty.signal)
     )
@@ -41,6 +41,7 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
       )
       return (formattedAmount, project.name)
     }
+    .map(cancellationDetailsAttributedText(with:projectName:))
 
     self.popCancelPledgeViewController = self.goBackButtonTappedProperty.signal
   }
@@ -65,9 +66,30 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
     self.viewDidLoadProperty.value = ()
   }
 
-  public let cancellationDetailsTextLabelValue: Signal<(amount: String, projectName: String), Never>
+  public let cancellationDetailsAttributedText: Signal<NSAttributedString, Never>
   public let popCancelPledgeViewController: Signal<Void, Never>
 
   public var inputs: CancelPledgeViewModelInputs { return self }
   public var outputs: CancelPledgeViewModelOutputs { return self }
+}
+
+private func cancellationDetailsAttributedText(with amount: String, projectName: String)
+  -> NSAttributedString {
+  let fullString = Strings
+    .Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name(
+      amount: amount,
+      project_name: projectName
+  )
+  let attributedString: NSMutableAttributedString = NSMutableAttributedString.init(string: fullString)
+  let regularFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_callout()]
+  let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_callout().bolded]
+  let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
+  let rangeAmount: NSRange = (fullString as NSString).localizedStandardRange(of: amount)
+  let rangeProjectName: NSRange = (fullString as NSString).localizedStandardRange(of: projectName)
+
+  attributedString.addAttributes(regularFontAttribute, range: fullRange)
+  attributedString.addAttributes(boldFontAttribute, range: rangeAmount)
+  attributedString.addAttributes(boldFontAttribute, range: rangeProjectName)
+
+  return attributedString
 }

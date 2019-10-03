@@ -8,17 +8,17 @@ import XCTest
 final class CancelPledgeViewModelTests: TestCase {
   private let vm: CancelPledgeViewModelType = CancelPledgeViewModel()
 
-  private let cancellationDetailsTextLabelAmount = TestObserver<String, Never>()
-  private let cancellationDetailsTextLabelProjectName = TestObserver<String, Never>()
+  private let cancellationDetailsAttributedTextString = TestObserver<String, Never>()
+  private let cancellationDetailsAttributedTextAttributedString = TestObserver<NSAttributedString, Never>()
   private let popCancelPledgeViewController = TestObserver<Void, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.cancellationDetailsTextLabelValue.map(first)
-      .observe(self.cancellationDetailsTextLabelAmount.observer)
-    self.vm.outputs.cancellationDetailsTextLabelValue.map(second)
-      .observe(self.cancellationDetailsTextLabelProjectName.observer)
+    self.vm.outputs.cancellationDetailsAttributedText
+      .observe(self.cancellationDetailsAttributedTextAttributedString.observer)
+    self.vm.outputs.cancellationDetailsAttributedText.map { $0.string }
+      .observe(self.cancellationDetailsAttributedTextString.observer)
     self.vm.outputs.popCancelPledgeViewController.observe(self.popCancelPledgeViewController.observer)
   }
 
@@ -31,13 +31,41 @@ final class CancelPledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: project, backing: backing)
     self.vm.inputs.viewDidLoad()
 
-    self.cancellationDetailsTextLabelAmount.assertValues(["$5"])
-    self.cancellationDetailsTextLabelProjectName.assertValues(["Cosmic Surgery"])
+    let cancellationString = "Are you sure you wish to cancel your $5 pledge to Cosmic Surgery?"
+    var pledgeAmountRange: NSRange = (cancellationString as NSString).range(of: "$5")
+    var projectNameRange: NSRange = (cancellationString as NSString).range(of: "Cosmic Surgery")
+
+    let boldFontAttribute = UIFont.ksr_callout().bolded
+
+    self.cancellationDetailsAttributedTextString
+      .assertValues([cancellationString])
+
+    XCTAssertEqual(self.cancellationDetailsAttributedTextAttributedString.values
+      .compactMap { $0.attribute(.font,
+                                 at: pledgeAmountRange.location,
+                                 effectiveRange: &pledgeAmountRange) } as? [UIFont],
+                   [boldFontAttribute])
+    XCTAssertEqual(self.cancellationDetailsAttributedTextAttributedString.values
+      .compactMap { $0.attribute(.font,
+                                 at: projectNameRange.location,
+                                 effectiveRange: &projectNameRange) } as? [UIFont],
+                   [boldFontAttribute])
 
     self.vm.inputs.traitCollectionDidChange()
 
-    self.cancellationDetailsTextLabelAmount.assertValues(["$5", "$5"])
-    self.cancellationDetailsTextLabelProjectName.assertValues(["Cosmic Surgery", "Cosmic Surgery"])
+    self.cancellationDetailsAttributedTextString
+      .assertValues([cancellationString,
+                     cancellationString])
+    XCTAssertEqual(self.cancellationDetailsAttributedTextAttributedString.values
+      .compactMap { $0.attribute(.font,
+                                 at: pledgeAmountRange.location,
+                                 effectiveRange: &pledgeAmountRange) } as? [UIFont],
+                   [boldFontAttribute, boldFontAttribute])
+    XCTAssertEqual(self.cancellationDetailsAttributedTextAttributedString.values
+      .compactMap { $0.attribute(.font,
+                                 at: projectNameRange.location,
+                                 effectiveRange: &projectNameRange) } as? [UIFont],
+                   [boldFontAttribute, boldFontAttribute])
   }
 
   func testGoBackButtonTapped() {
