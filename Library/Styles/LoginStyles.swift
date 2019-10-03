@@ -16,12 +16,12 @@ public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
 
   <> UIButton.lens.titleLabel.textAlignment .~ .center
   <> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.login_tout_disclaimer_agree_to_terms()
+    Strings.By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy()
   }
 
   <> UIButton.lens.accessibilityValue %~ { _ in Strings.general_navigation_buttons_help() }
   <> UIButton.lens.accessibilityLabel %~ { _ in
-    Strings.login_tout_disclaimer_agree_to_terms()
+    Strings.By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy()
   }
 
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
@@ -148,24 +148,24 @@ public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ks
   <> UIButton.lens.titleLabel.font .~ .ksr_footnote()
   <> UIButton.lens.titleLabel.textAlignment .~ .left
   <> UIButton.lens.title(for: .normal) %~ { _ in
-    Strings.signup_newsletter_full_opt_out()
+    Strings.Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news()
   }
 
   <> UIButton.lens.accessibilityValue %~ { _ in Strings.general_navigation_buttons_help() }
   <> UIButton.lens.accessibilityLabel %~ { _ in
-    Strings.signup_newsletter_full_opt_out()
+    Strings.Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news()
   }
 
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Opens_help_sheet() }
 
 public let signupWithEmailButtonStyle = greenButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.signup_button_email() }
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Sign_up() }
 
 public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
   <> UILabel.lens.lineBreakMode .~ .byWordWrapping
   <> UILabel.lens.numberOfLines .~ 0
-  <> UILabel.lens.text %~ { _ in Strings.signup_newsletter_full_opt_out() }
+  <> UILabel.lens.text %~ { _ in Strings.Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news() }
 
 public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.textAlignment .~ .center
