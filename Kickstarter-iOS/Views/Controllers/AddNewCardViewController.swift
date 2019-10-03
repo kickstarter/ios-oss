@@ -412,18 +412,3 @@ private let creditCardTextFieldStyle: PaymentCardTextFieldStyle = { (textField: 
     |> \.cursorColor .~ .ksr_green_700
     |> \.placeholderColor .~ .ksr_text_dark_grey_400
 }
-
-extension STPCardBrand {
-  public var creditCardType: GraphUserCreditCard.CreditCardType {
-    switch self {
-    case .amex: return .amex
-    case .dinersClub: return .diners
-    case .discover: return .discover
-    case .JCB: return .jcb
-    case .masterCard: return .mastercard
-    case .unionPay: return .unionPay
-    case .unknown: return .generic
-    case .visa: return .visa
-    }
-  }
-}
