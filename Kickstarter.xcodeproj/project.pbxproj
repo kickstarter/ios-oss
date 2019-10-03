@@ -114,6 +114,8 @@
 		3767EDB122CFFF2B0088E8E4 /* ShippingRulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3767EDB022CFFF2B0088E8E4 /* ShippingRulesViewModel.swift */; };
 		3767EDB322CFFF380088E8E4 /* ShippingRulesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3767EDB222CFFF380088E8E4 /* ShippingRulesViewModelTests.swift */; };
 		3772A4C6229C9E2000EDDC6F /* String+Attributed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3772A4C5229C9E2000EDDC6F /* String+Attributed.swift */; };
+		3777F2F72343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777F2F62343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift */; };
+		3777F2F92343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777F2F82343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift */; };
 		3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */; };
 		378CA24622C4449F004E3C86 /* CountryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378CA24522C4449F004E3C86 /* CountryLenses.swift */; };
 		379C00012242DAFF00F6F0C2 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFF12242DAC400F6F0C2 /* WebViewController.swift */; };
@@ -1487,6 +1489,8 @@
 		3767EDB022CFFF2B0088E8E4 /* ShippingRulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingRulesViewModel.swift; sourceTree = "<group>"; };
 		3767EDB222CFFF380088E8E4 /* ShippingRulesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingRulesViewModelTests.swift; sourceTree = "<group>"; };
 		3772A4C5229C9E2000EDDC6F /* String+Attributed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Attributed.swift"; sourceTree = "<group>"; };
+		3777F2F62343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewPledgeRewardReceivedViewModel.swift; sourceTree = "<group>"; };
+		3777F2F82343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageViewPledgeRewardReceivedViewModelTests.swift; sourceTree = "<group>"; };
 		3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextInputCell.swift; sourceTree = "<group>"; };
 		378CA24522C4449F004E3C86 /* CountryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryLenses.swift; sourceTree = "<group>"; };
 		379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+URL.swift"; sourceTree = "<group>"; };
@@ -3592,6 +3596,8 @@
 				D65BF352233023E400B15B25 /* ManagePledgeSummaryViewModelTests.swift */,
 				D67DF563232ABB950051D207 /* ManagePledgeViewModel.swift */,
 				D61440FD23200F09002A6507 /* ManagePledgeViewModelTests.swift */,
+				3777F2F62343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift */,
+				3777F2F82343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift */,
 				D04AAC1B218BB70C00CF713E /* MessageBannerViewModel.swift */,
 				D04AAC11218BB70A00CF713E /* MessageBannerViewModelTests.swift */,
 				A7F4419B1D005A9400FE6FC5 /* MessageCellViewModel.swift */,
@@ -4805,6 +4811,7 @@
 				A7EDEE571D83453F00780B34 /* PKPaymentAuthorizationViewController+Helpers.swift in Sources */,
 				D0237C2622BD7B540092C792 /* PledgeSummaryViewModel.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
+				3777F2F72343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,
 				D63BBD35217FAB85007E01F0 /* PaymentMethodsViewModel.swift in Sources */,
 				8001D4C91D415692009E6667 /* UpdateDraftStyles.swift in Sources */,
@@ -4891,6 +4898,7 @@
 				A7ED1FDE1E831C5C00BFFA01 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */,
 				D6534D3E22E789B900E9D279 /* PledgePaymentMethodsViewModelTests.swift in Sources */,
 				A7ED1FC41E831C5C00BFFA01 /* ProjectActivitySuccessCellViewModelTests.swift in Sources */,
+				3777F2F92343C7AB0030BEF5 /* ManageViewPledgeRewardReceivedViewModelTests.swift in Sources */,
 				A7ED1FE31E831C5C00BFFA01 /* FindFriendsFaceookConnectCellViewModelTests.swift in Sources */,
 				D04AACAF218BB72100CF713E /* SettingsViewModelTests.swift in Sources */,
 				A7ED1FDA1E831C5C00BFFA01 /* DeprecatedRewardPledgeViewModelTests.swift in Sources */,
