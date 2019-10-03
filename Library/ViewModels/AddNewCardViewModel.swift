@@ -6,7 +6,7 @@ import ReactiveSwift
 public typealias Month = UInt
 public typealias Year = UInt
 public typealias CardDetails = (cardNumber: String, expMonth: Month?, expYear: Year?, cvc: String?,
-  cardBrand: GraphUserCreditCard.CreditCardType)
+  cardBrand: GraphUserCreditCard.CreditCardType?)
 public typealias PaymentDetails = (
   cardholderName: String, cardNumber: String, expMonth: Month, expYear: Year,
   cvc: String, postalCode: String
