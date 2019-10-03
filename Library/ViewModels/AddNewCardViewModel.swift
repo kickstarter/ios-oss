@@ -5,8 +5,10 @@ import ReactiveSwift
 
 public typealias Month = UInt
 public typealias Year = UInt
-public typealias CardDetails = (cardNumber: String, expMonth: Month?, expYear: Year?, cvc: String?,
-  cardBrand: GraphUserCreditCard.CreditCardType?)
+public typealias CardDetails = (
+  cardNumber: String, expMonth: Month?, expYear: Year?, cvc: String?,
+  cardBrand: GraphUserCreditCard.CreditCardType?
+)
 public typealias PaymentDetails = (
   cardholderName: String, cardNumber: String, expMonth: Month, expYear: Year,
   cvc: String, postalCode: String
@@ -312,7 +314,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 }
 
 private func cardBrandIsSupported(project: Project?, cardBrand: GraphUserCreditCard.CreditCardType) -> Bool {
-
   guard let project = project else { return true }
 
   guard let availableCardTypes = project.availableCardTypes else {
@@ -320,7 +321,7 @@ private func cardBrandIsSupported(project: Project?, cardBrand: GraphUserCreditC
   }
 
   let availableCreditCardTypes = availableCardTypes
-    .compactMap { GraphUserCreditCard.CreditCardType(rawValue :$0) }
+    .compactMap { GraphUserCreditCard.CreditCardType(rawValue: $0) }
 
   return availableCreditCardTypes.contains(cardBrand)
 }
