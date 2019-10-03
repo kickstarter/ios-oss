@@ -92,7 +92,7 @@ final class RewardCardViewModelTests: TestCase {
     )
 
     self.rewardTitleLabelHidden.assertValues([false])
-    self.rewardTitleLabelText.assertValues(["Make a pledge without a reward"])
+    self.rewardTitleLabelText.assertValues(["Pledge without a reward"])
   }
 
   func testTitleLabel_BackedNoReward() {
