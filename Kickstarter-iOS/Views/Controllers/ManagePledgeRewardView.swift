@@ -60,9 +60,6 @@ final class ManagePledgeRewardView: UIView {
 
 private let titleLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ UIColor.black
-    |> \.font .~ UIFont.ksr_subhead().bolded
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.numberOfLines .~ 0
+    |> checkoutTitleLabelStyle
     |> \.text %~ { _ in Strings.Selected_reward() }
 }

@@ -33,7 +33,7 @@ final class ManagePledgeViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var paymentMethodViewViews = {
+  private lazy var paymentMethodViews = {
     [self.paymentMethodView, self.paymentMethodSectionSeparator]
   }()
 
@@ -121,9 +121,6 @@ final class ManagePledgeViewController: UIViewController {
 
     _ = self.menuButton
       |> \.accessibilityLabel %~ { _ in Strings.Menu() }
-
-    _ = self.rewardView
-      |> \.backgroundColor .~ UIColor.ksr_grey_400
 
     _ = self.rootScrollView
       |> rootScrollViewStyle
@@ -235,7 +232,7 @@ final class ManagePledgeViewController: UIViewController {
 
     let childViews: [UIView] = [
       self.pledgeSummarySectionViews,
-      [self.paymentMethodView],
+      self.paymentMethodViews,
       self.rewardSectionViews,
       [self.rewardReceivedViewController.view]
       ]
