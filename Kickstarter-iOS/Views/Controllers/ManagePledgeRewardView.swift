@@ -1,5 +1,5 @@
-import Library
 import KsApi
+import Library
 import Prelude
 import UIKit
 
@@ -9,6 +9,7 @@ final class ManagePledgeRewardView: UIView {
   private lazy var rewardView: RewardCardView = {
     RewardCardView(frame: .zero)
   }()
+
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -21,7 +22,7 @@ final class ManagePledgeRewardView: UIView {
     self.bindStyles()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 

@@ -161,7 +161,7 @@ final class ManagePledgeViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.rewardView.configure(with: $0, context: .pledgeView)
-    }
+      }
 
     self.viewModel.outputs.showActionSheetMenuWithOptions
       .observeForControllerAction()
@@ -235,8 +235,8 @@ final class ManagePledgeViewController: UIViewController {
       self.paymentMethodViews,
       self.rewardSectionViews,
       [self.rewardReceivedViewController.view]
-      ]
-      .flatMap { $0 }
+    ]
+    .flatMap { $0 }
 
     _ = (childViews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()

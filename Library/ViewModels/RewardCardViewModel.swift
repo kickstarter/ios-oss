@@ -8,9 +8,11 @@ public enum RewardCardViewContext {
 }
 
 public protocol RewardCardViewModelInputs {
-  func configureWith(project: Project,
-                     rewardOrBacking: Either<Reward, Backing>,
-                     context: RewardCardViewContext)
+  func configureWith(
+    project: Project,
+    rewardOrBacking: Either<Reward, Backing>,
+    context: RewardCardViewContext
+  )
   func rewardCardTapped()
 }
 
@@ -46,8 +48,8 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
       self.projectAndRewardOrBackingProperty.signal
-        .skipNil()
-        .map { ($0.0, $0.1) }
+      .skipNil()
+      .map { ($0.0, $0.1) }
 
     let project: Signal<Project, Never> = projectAndRewardOrBacking.map(first)
 
@@ -122,10 +124,10 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
         }
       }
       .combineLatest(with: context)
-      .map { (items, context) in
+      .map { items, context in
         let separatorsColor = separatorColor(for: context)
         return (items, separatorsColor)
-    }
+      }
 
     self.sectionTitleLabelTextColor = context
       .map(titleLabelTextColor(for:))
@@ -157,9 +159,11 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
   private let projectAndRewardOrBackingProperty =
     MutableProperty<(Project, Either<Reward, Backing>, RewardCardViewContext)?>(nil)
-  public func configureWith(project: Project,
-                            rewardOrBacking: Either<Reward, Backing>,
-                            context: RewardCardViewContext) {
+  public func configureWith(
+    project: Project,
+    rewardOrBacking: Either<Reward, Backing>,
+    context: RewardCardViewContext
+  ) {
     self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking, context)
   }
 
