@@ -41,7 +41,7 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
       )
       return (formattedAmount, project.name)
     }
-    .map(cancellationDetailsAttributedText(with:projectName:))
+    .map(createCancellationDetailsAttributedText(with:projectName:))
 
     self.popCancelPledgeViewController = self.goBackButtonTappedProperty.signal
   }
@@ -73,7 +73,7 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
   public var outputs: CancelPledgeViewModelOutputs { return self }
 }
 
-private func cancellationDetailsAttributedText(with amount: String, projectName: String)
+private func createCancellationDetailsAttributedText(with amount: String, projectName: String)
   -> NSAttributedString {
   let fullString = Strings
     .Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name(
