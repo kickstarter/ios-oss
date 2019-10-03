@@ -53,10 +53,6 @@ final class ManageViewPledgeRewardReceivedViewController: ToggleViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.rewardReceived
-      .observeForUI()
-      .observeValues { [weak self] isOn in
-        self?.toggle.isOn = isOn
-      }
+    self.toggle.rac.on = self.viewModel.outputs.rewardReceived
   }
 }
