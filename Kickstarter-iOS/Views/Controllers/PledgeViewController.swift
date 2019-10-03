@@ -289,6 +289,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
+
+    self.viewModel.outputs.showApplePayAlert
+      .observeForControllerAction()
+      .observeValues { [weak self] title, message in
+        self?.presentApplePayInvalidAmountAlert(title: title, message: message)
+    }
   }
 
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PaymentAuthorizationData) {
@@ -312,6 +318,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   private func goToThanks(project: Project) {
     let thanksVC = ThanksViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(thanksVC, animated: true)
+  }
+
+  private func presentApplePayInvalidAmountAlert(title: String, message: String) {
+    self.present(UIAlertController.alert(title, message: message), animated: true)
   }
 
   // MARK: - Actions

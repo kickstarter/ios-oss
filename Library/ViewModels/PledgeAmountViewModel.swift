@@ -18,7 +18,7 @@ public protocol PledgeAmountViewModelInputs {
 }
 
 public protocol PledgeAmountViewModelOutputs {
-  var amount: Signal<(Double, Bool), Never> { get }
+  var amount: Signal<(Double, Double, Double, Bool), Never> { get }
   var currency: Signal<String, Never> { get }
   var doneButtonIsEnabled: Signal<Bool, Never> { get }
   var generateSelectionFeedback: Signal<Void, Never> { get }
@@ -133,11 +133,11 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.amount = updatedValue
       .map { min, max, value in
-        (rounded(value), min <= value && value <= max)
+        (rounded(value), min, max, min <= value && value <= max)
       }
 
     let isValueValid = self.amount
-      .map(second)
+      .map { $0.3 }
       .skipRepeats()
 
     self.doneButtonIsEnabled = isValueValid
@@ -167,7 +167,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.stepperValue = Signal.merge(
       minValue,
-      self.amount.map(first)
+      self.amount.map { $0.0 }
     )
     .skipRepeats()
 
@@ -203,7 +203,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.textFieldValueProperty.value = value
   }
 
-  public let amount: Signal<(Double, Bool), Never>
+  public let amount: Signal<(Double, Double, Double, Bool), Never>
   public let currency: Signal<String, Never>
   public let doneButtonIsEnabled: Signal<Bool, Never>
   public let generateSelectionFeedback: Signal<Void, Never>

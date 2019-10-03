@@ -33,7 +33,7 @@ public typealias PaymentAuthorizationData = (
   selectedShippingRule: ShippingRule?, merchantIdentifier: String
 )
 public typealias PKPaymentData = (displayName: String, network: String, transactionIdentifier: String)
-public typealias PledgeAmountData = (amount: Double, isValid: Bool)
+public typealias PledgeAmountData = (amount: Double, min: Double, max: Double, isValid: Bool)
 
 public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
@@ -68,6 +68,7 @@ public protocol PledgeViewModelOutputs {
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
+  var showApplePayAlert: Signal<(String, String), Never> { get }
   var updatePledgeButtonEnabled: Signal<Bool, Never> { get }
 }
 
@@ -101,7 +102,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(isNotNil)
 
     let pledgeAmount = Signal.merge(
-      self.pledgeAmountDataSignal.map(first),
+      self.pledgeAmountDataSignal.map { $0.amount },
       reward.map { $0.minimum }
     )
 
@@ -147,11 +148,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.configurePaymentMethodsViewControllerWithValue, self.creditCardSelectedSignal
     )
 
+    let pledgeAmountIsValid = self.pledgeAmountDataSignal
+      .map { $0.isValid }
+
     self.updatePledgeButtonEnabled = Signal.combineLatest(
       paymentSourceSelected.mapConst(true),
-      self.pledgeAmountDataSignal.map(second)
+      pledgeAmountIsValid
     )
-    .map { paymentSourceSelected, amountInputIsValid in paymentSourceSelected && amountInputIsValid }
+    .map { paymentSourceSelected, pledgeAmountIsValid in paymentSourceSelected && pledgeAmountIsValid }
 
     self.shippingLocationViewHidden = reward
       .map { $0.shipping.enabled }
@@ -219,8 +223,37 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         PKPaymentAuthorizationViewController.merchantIdentifier
       ) as PaymentAuthorizationData }
 
-    self.goToApplePayPaymentAuthorization = paymentAuthorizationData
+    let goToApplePayPaymentAuthorization = pledgeAmountIsValid
       .takeWhen(self.applePayButtonTappedSignal)
+      .filter { isTrue($0) }
+
+    let showApplePayAlert = pledgeAmountIsValid
+      .takeWhen(self.applePayButtonTappedSignal)
+      .filter { isFalse($0) }
+
+    self.goToApplePayPaymentAuthorization = paymentAuthorizationData
+      .takeWhen(goToApplePayPaymentAuthorization)
+
+    self.showApplePayAlert = Signal.combineLatest(
+      project,
+      self.pledgeAmountDataSignal
+    )
+    .takeWhen(showApplePayAlert)
+    .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
+    .map { project, min, max in
+      (
+        localizedString(key: "Almost_there", defaultValue: "Almost there!"),
+        localizedString(
+          key: "Please_enter_a_pledge_amount_between_min_and_max",
+          defaultValue: "Please enter a pledge amount between %{min} and %{max}.",
+          count: nil,
+          substitutions: [
+            "min": "\(Format.currency(min, country: project.country, omitCurrencyCode: false))",
+            "max": "\(Format.currency(max, country: project.country, omitCurrencyCode: false))"
+          ]
+        )
+      )
+    }
 
     let pkPaymentData = self.pkPaymentSignal
       .map { pkPayment -> PKPaymentData? in
@@ -401,6 +434,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
+  public let showApplePayAlert: Signal<(String, String), Never>
   public let updatePledgeButtonEnabled: Signal<Bool, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
