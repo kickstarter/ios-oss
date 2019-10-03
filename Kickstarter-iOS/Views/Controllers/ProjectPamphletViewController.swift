@@ -207,14 +207,17 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 
   private func goToManageViewPledge(project: Project, reward: Reward, refTag _: RefTag?) {
-    let managePledgeViewController = ManagePledgeViewController.instantiate(with: project, reward: reward)
+    let vc = ManagePledgeViewController.instantiate()
+    vc.configureWith(project: project, reward: reward)
 
-    let nav = RewardPledgeNavigationController(rootViewController: managePledgeViewController)
+    let nc = RewardPledgeNavigationController(rootViewController: vc)
+
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = nav
+      _ = nc
         |> \.modalPresentationStyle .~ .formSheet
     }
-    self.present(nav, animated: true)
+
+    self.present(nc, animated: true)
   }
 
   private func goToDeprecatedManagePledge(project: Project, reward: Reward, refTag _: RefTag?) {
