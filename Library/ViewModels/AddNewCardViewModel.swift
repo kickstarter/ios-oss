@@ -68,7 +68,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
     let cardBrand = self.creditCardChangedProperty.signal
       .skipNil()
-      .map { $0.cardBrand }
+      .map { $0.cardBrand }.skipNil()
 
     let cardNumber = self.creditCardChangedProperty.signal
       .skipNil()

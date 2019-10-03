@@ -404,6 +404,11 @@ internal final class AddNewCardViewModelTests: TestCase {
 
   func testUnsupportedCardBrandsError() {
     let project = Project.cosmicSurgery
+      |> Project.lens.availableCardTypes .~ ["AMEX",
+                                             "MASTERCARD",
+                                             "VISA",
+                                             "UNION_PAY"]
+
 
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configure(with: .pledge, project: project)
