@@ -54,6 +54,7 @@
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Bring creative projects to life.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "By pledging you agree to Kickstarter's <a href=\"%{terms_of_use_link}\">Terms of Use</a>, <a href=\"%{privacy_policy_link}\">Privacy Policy</a> and <a href=\"%{cookie_policy_link}\">Cookie Policy</a>.";
+"By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use.";
 "CVC" = "CVC";
 "Cancel" = "Cancel";
 "Cancel_pledge" = "Cancel pledge";
@@ -378,6 +379,7 @@
 "Read_more_about_the_campaign" = "Read more about the campaign";
 "Read_more_about_the_campaign_arrow" = "Read more about the campaign  →";
 "Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "Receive a reminder 48 hours before this and any other saved project ends by enabling notifications.";
+"Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news" = "Receive a weekly mix of handpicked projects, plus occasional Kickstarter news.";
 "Receive_project_updates_and_more" = "Receive project updates and more by enabling notifications.";
 "Receive_project_updates_messages_and_more" = "Receive project updates, messages, and more by enabling notifications.";
 "Recent_live_stream" = "Recent live stream";
@@ -456,6 +458,7 @@
 "Show_me_projects" = "Show me projects";
 "Show_password" = "Show password";
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
+"Sign_up" = "Sign up";
 "Sign_up_newsletter" = "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team.";
 "Signs_up_with_Email" = "Signs up with Email.";
 "Something_catch_your_eye" = "Something\ncatch your eye?";

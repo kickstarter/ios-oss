@@ -54,6 +54,7 @@
 "Bookmarks" = "Signets";
 "Bring_creative_projects_to_life" = "Réalisez vos projets créatifs.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Lorsque vous vous engagez, vous acceptez les <a href=\"%{terms_of_use_link}\">Conditions d'utilisation</a> de Kickstarter, notre <a href=\"%{privacy_policy_link}\">Politique de confidentialité</a> et notre <a href=\"%{cookie_policy_link}\">Politique en matière de cookies</a>.";
+"By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use.";
 "CVC" = "Cryptogramme";
 "Cancel" = "Annuler";
 "Cancel_pledge" = "Annuler mon engagement";
@@ -378,6 +379,7 @@
 "Read_more_about_the_campaign" = "En savoir plus sur la campagne";
 "Read_more_about_the_campaign_arrow" = "En savoir plus sur la campagne →";
 "Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "Si vous activez vos notifications, vous recevrez un rappel 48 heures avant la fin de ce projet et de tous les autres que vous enregistrez.";
+"Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news" = "Receive a weekly mix of handpicked projects, plus occasional Kickstarter news.";
 "Receive_project_updates_and_more" = "Si vous activez vos notifications, vous recevrez des actus de projet et plus.";
 "Receive_project_updates_messages_and_more" = "Si vous activez vos notifications, vous recevrez des actus de projet, vos messages et plus.";
 "Recent_live_stream" = "Diffusion en direct récente";
@@ -456,6 +458,7 @@
 "Show_me_projects" = "Montrez-moi des projets";
 "Show_password" = "Afficher le mot de passe";
 "Shows_list_of_subcategories" = "Affiche la liste des sous-catégories.";
+"Sign_up" = "Inscription";
 "Sign_up_newsletter" = "Inscrivez-vous à Coups de cœur pour recevoir une sélection hebdomadaire de projets marquants qui nous ont plu.";
 "Signs_up_with_Email" = "Inscription avec l'adresse e-mail.";
 "Something_catch_your_eye" = "Quelque chose a retenu votre attention ?";

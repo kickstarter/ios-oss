@@ -54,6 +54,7 @@
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Bei Leistung eines Finanzierungsbeitrags erkennst du Kickstarters <a href=\"%{terms_of_use_link}\">Nutzungsbedingungen</a>, <a href=\"%{privacy_policy_link}\">Datenschutzrichtlinien</a> und <a href=\"%{cookie_policy_link}\">Cookie-Richtlinien</a> an.";
+"By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Bei Registrierung stimmst du unseren Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu. Unsere Richtlinien erläutern, wie wir deine Daten zur Bereitstellung, Verbesserung und Promotion unserer Services und unserer Webseite nutzen.";
 "CVC" = "CVC";
 "Cancel" = "Abbrechen";
 "Cancel_pledge" = "Beitrag zurückziehen";
@@ -378,6 +379,7 @@
 "Read_more_about_the_campaign" = "Mehr über diese Kampagne lesen";
 "Read_more_about_the_campaign_arrow" = "Mehr über diese Kampagne lesen  →";
 "Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "Aktiviere Benachrichtigungen - wir schicken dir eine Erinnerung 48 Stunden, bevor dieses und andere gespeicherte Projekte abläuft.";
+"Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news" = "Du erhältst unseren wöchentlichen Mix handverlesener Projekte plus gelegentliche Nachrichten von Kickstarter.";
 "Receive_project_updates_and_more" = "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen Bescheid.";
 "Receive_project_updates_messages_and_more" = "Aktiviere Benachrichtigungen - so weißt du immer über Projektaktualisierungen, neue Nachrichten und ähnliches Bescheid.";
 "Recent_live_stream" = "Kürzlich gesendeter Live-Stream";
@@ -456,6 +458,7 @@
 "Show_me_projects" = "Projekte anzeigen";
 "Show_password" = "Passwort anzeigen";
 "Shows_list_of_subcategories" = "Unterkategorien anzeigen.";
+"Sign_up" = "Registrieren";
 "Sign_up_newsletter" = "Abonniere unsere \"Team Favoriten\" und wir schicken dir einmal pro Woche eine Auswahl von bemerkenswerten Projekten, handverlesen von unserem Team.";
 "Signs_up_with_Email" = "Mit E-Mail-Adresse registrieren.";
 "Something_catch_your_eye" = "Etwas interessantes gefunden?";
