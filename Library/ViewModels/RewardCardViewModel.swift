@@ -82,8 +82,8 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.rewardMinimumLabelText = projectAndRewardOrBacking
       .map(formattedAmountForRewardOrBacking(project:rewardOrBacking:))
 
-    self.descriptionLabelText = reward
-      .map { $0.isNoReward ? Strings.Back_it_because_you_believe_in_it() : $0.description }
+    self.descriptionLabelText = projectAndReward
+      .map(rewardDescription(project:reward:))
 
     self.rewardTitleLabelHidden = reward
       .map { $0.title == nil && !$0.isNoReward }
@@ -184,7 +184,7 @@ private func backingReward(fromProject project: Project) -> Reward? {
 private func rewardDescription(project: Project, reward: Reward) -> String {
   guard project.personalization.isBacking == true else {
     return reward.isNoReward ?
-      Strings.Pledge_any_amount_to_help_bring_this_project_to_life() :
+      Strings.Back_it_because_you_believe_in_it() :
       reward.description
   }
 
@@ -193,7 +193,7 @@ private func rewardDescription(project: Project, reward: Reward) -> String {
       return Strings.Thanks_for_bringing_this_project_one_step_closer_to_becoming_a_reality()
     }
 
-    return Strings.Pledge_any_amount_to_help_bring_this_project_to_life()
+    return Strings.Back_it_because_you_believe_in_it()
   }
 
   return reward.description
@@ -209,7 +209,7 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
       return Strings.You_pledged_without_a_reward()
     }
 
-    return Strings.You_pledged_without_a_reward()
+    return Strings.Pledge_without_a_reward()
   }
 
   return reward.title.coalesceWith("")

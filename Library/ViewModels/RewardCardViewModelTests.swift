@@ -303,7 +303,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
-    self.descriptionLabelText.assertValues(["Pledge any amount to help bring this project to life."])
+    self.descriptionLabelText.assertValues(["Back it because you believe in it."])
   }
 
   // MARK: - Conversion Label
