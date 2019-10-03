@@ -146,7 +146,7 @@ internal final class AddNewCardViewController: UIViewController,
 
   override func bindViewModel() {
     super.bindViewModel()
-    self.creditCardValidationErrorLabel.rac.text = self.viewModel.outputs.unsupportedCardBrandError
+    self.creditCardValidationErrorLabel.rac.text = self.viewModel.outputs.unsupportedCardBrandErrorText
 
     self.rememberThisCardToggleViewControllerContainer.rac.hidden =
       self.viewModel.outputs.rememberThisCardToggleViewControllerContainerIsHidden
@@ -368,9 +368,11 @@ extension AddNewCardViewController {
       return
     }
 
+    let stpCardBrand = STPCardValidator.brand(forNumber: cardnumber)
+
     self.viewModel.inputs.creditCardChanged(cardDetails: (
       cardnumber, textField.expirationMonth,
-      textField.expirationYear, textField.cvc
+      textField.expirationYear, textField.cvc, stpCardBrand.creditCardType
     ))
   }
 
@@ -409,4 +411,19 @@ private let creditCardTextFieldStyle: PaymentCardTextFieldStyle = { (textField: 
     |> \.textErrorColor .~ .ksr_red_400
     |> \.cursorColor .~ .ksr_green_700
     |> \.placeholderColor .~ .ksr_text_dark_grey_400
+}
+
+extension STPCardBrand {
+  public var creditCardType: GraphUserCreditCard.CreditCardType {
+    switch self {
+    case .amex: return .amex
+    case .dinersClub: return .diners
+    case .discover: return .discover
+    case .JCB: return .jcb
+    case .masterCard: return .mastercard
+    case .unionPay: return .unionPay
+    case .unknown: return .generic
+    case .visa: return .visa
+    }
+  }
 }

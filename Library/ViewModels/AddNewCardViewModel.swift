@@ -2,11 +2,11 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import Stripe
 
 public typealias Month = UInt
 public typealias Year = UInt
-public typealias CardDetails = (cardNumber: String, expMonth: Month?, expYear: Year?, cvc: String?)
+public typealias CardDetails = (cardNumber: String, expMonth: Month?, expYear: Year?, cvc: String?,
+  cardBrand: GraphUserCreditCard.CreditCardType)
 public typealias PaymentDetails = (
   cardholderName: String, cardNumber: String, expMonth: Month, expYear: Year,
   cvc: String, postalCode: String
@@ -42,7 +42,7 @@ public protocol AddNewCardViewModelOutputs {
   var rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var setStripePublishableKey: Signal<String, Never> { get }
-  var unsupportedCardBrandError: Signal<String, Never> { get }
+  var unsupportedCardBrandErrorText: Signal<String, Never> { get }
   var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
 }
 
@@ -66,6 +66,10 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
         return (cardDetails.cardNumber, expMonth, expYear, cvc)
       }
 
+    let cardBrand = self.creditCardChangedProperty.signal
+      .skipNil()
+      .map { $0.cardBrand }
+
     let cardNumber = self.creditCardChangedProperty.signal
       .skipNil()
       .map { $0.cardNumber }
@@ -78,13 +82,13 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let zipcodeIsValid: Signal<Bool, Never> = zipcode.map { !$0.isEmpty }
 
     let project = self.addNewCardIntentAndProjectProperty.signal.skipNil()
-      .map { $0.1 }
+      .map(second)
 
     let cardBrandIsValid = Signal.combineLatest(
-      cardNumber,
+      cardBrand,
       project
-    ).map { cardNumber, project in
-      cardBrandIsSupported(project: project, cardNumber: cardNumber)
+    ).map { cardBrand, project in
+      cardBrandIsSupported(project: project, cardBrand: cardBrand)
     }
 
     let cardBrandValidAndCardNumberValid = Signal
@@ -96,7 +100,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
         brandValid || cardNumber.count < 2
       }
 
-    self.unsupportedCardBrandError = Signal.combineLatest(cardBrandIsValid, project.skipNil())
+    self.unsupportedCardBrandErrorText = Signal.combineLatest(cardBrandIsValid, project.skipNil())
       .map { _, project in
         Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
           project_country: project.location.displayableName
@@ -300,39 +304,23 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never>
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
-  public let unsupportedCardBrandError: Signal<String, Never>
+  public let unsupportedCardBrandErrorText: Signal<String, Never>
   public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }
 }
 
-private func cardBrandIsSupported(project: Project?, cardNumber: String) -> Bool {
+private func cardBrandIsSupported(project: Project?, cardBrand: GraphUserCreditCard.CreditCardType) -> Bool {
+
   guard let project = project else { return true }
 
-  let allOthers = project.location.country != Project.Country.us.countryCode
-  let brand = STPCardValidator.brand(forNumber: cardNumber)
-
-  let allCardBrands: [STPCardBrand] = [
-    .amex,
-    .dinersClub,
-    .discover,
-    .JCB,
-    .masterCard,
-    .unionPay,
-    .visa
-  ]
-
-  let unsupportedCardBrands: [STPCardBrand] = [
-    .dinersClub,
-    .discover,
-    .JCB
-  ]
-
-  switch allOthers {
-  case true:
-    return unsupportedCardBrands.contains(brand) ? false : true
-  case false:
-    return allCardBrands.contains(brand)
+  guard let availableCardTypes = project.availableCardTypes else {
+    return true
   }
+
+  let availableCreditCardTypes = availableCardTypes
+    .compactMap { GraphUserCreditCard.CreditCardType(rawValue :$0) }
+
+  return availableCreditCardTypes.contains(cardBrand)
 }

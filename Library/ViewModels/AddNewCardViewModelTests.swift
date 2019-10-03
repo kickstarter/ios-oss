@@ -25,7 +25,7 @@ internal final class AddNewCardViewModelTests: TestCase {
   private let rememberThisCardToggleViewControllerIsOn = TestObserver<Bool, Never>()
   private let saveButtonIsEnabled = TestObserver<Bool, Never>()
   private let setStripePublishableKey = TestObserver<String, Never>()
-  private let unsupportedCardBrandError = TestObserver<String, Never>()
+  private let unsupportedCardBrandErrorText = TestObserver<String, Never>()
   private let zipcode = TestObserver<String, Never>()
   private let zipcodeTextFieldBecomeFirstResponder = TestObserver<Void, Never>()
 
@@ -54,7 +54,7 @@ internal final class AddNewCardViewModelTests: TestCase {
       .observe(self.rememberThisCardToggleViewControllerIsOn.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
     self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
-    self.vm.outputs.unsupportedCardBrandError.observe(self.unsupportedCardBrandError.observer)
+    self.vm.outputs.unsupportedCardBrandErrorText.observe(self.unsupportedCardBrandErrorText.observer)
     self.vm.outputs.zipcodeTextFieldBecomeFirstResponder
       .observe(self.zipcodeTextFieldBecomeFirstResponder.observer)
   }
@@ -416,7 +416,7 @@ internal final class AddNewCardViewModelTests: TestCase {
 
     self.creditCardValidationErrorContainerHidden
       .assertValues([true, false], "Unsupported card message hides with a valid card brand")
-    self.unsupportedCardBrandError
+    self.unsupportedCardBrandErrorText
       .assertValues(
         ["You can’t use this credit card to back a project from Australia."],
         "Card is unsupported"
