@@ -1022,7 +1022,7 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.inputs.configureWith(
       project: project,
       rewardOrBacking: .left(reward),
-      context: .pledgeView
+      context: .rewardsCollectionView
     )
 
     self.stateIconImageName.assertValues(["checkmark-reward"])

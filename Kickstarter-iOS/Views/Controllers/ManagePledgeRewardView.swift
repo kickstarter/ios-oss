@@ -32,9 +32,6 @@ final class ManagePledgeRewardView: UIView {
   }
 
   private func configureViews() {
-    _ = self
-      |> \.accessibilityElements .~ self.subviews
-
     _ = ([self.titleLabel, self.rewardView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -49,7 +46,7 @@ final class ManagePledgeRewardView: UIView {
     super.bindStyles()
 
     _ = self.rewardView
-      |> rewardViewStyle
+      |> checkoutBackgroundStyle
 
     _ = self.rootStackView
       |> checkoutCardStackViewStyle
@@ -60,11 +57,6 @@ final class ManagePledgeRewardView: UIView {
 }
 
 // MARK: - Styles
-
-private let rewardViewStyle: ViewStyle = { view in
-  view
-    |> \.backgroundColor .~ UIColor.ksr_grey_400
-}
 
 private let titleLabelStyle: LabelStyle = { label in
   label

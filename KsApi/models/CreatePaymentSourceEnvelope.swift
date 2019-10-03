@@ -6,6 +6,7 @@ public struct CreatePaymentSourceEnvelope: Decodable {
   public struct CreatePaymentSource: Decodable {
     public var errorMessage: String?
     public var isSuccessful: Bool
+    public var paymentSource: GraphUserCreditCard.CreditCard
   }
 }
 

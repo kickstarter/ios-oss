@@ -39,7 +39,9 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
       .map(formattedPledgeDate)
 
     self.pledgeAmountText = projectAndBacking
-      .map { attributedCurrency(with: $0.0, amount: $0.1.amount) }
+      .map { project, backing in
+        attributedCurrency(with: project, amount: backing.pledgeAmount)
+      }
       .skipNil()
 
     let shippingAmount = backing
@@ -47,19 +49,21 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
 
     self.shippingAmountText = self.projectSignal
       .combineLatest(with: shippingAmount)
-      .map { shippingValue(with: $0.0, with: $0.1) }
-      .skipNil()
-
-    self.totalAmountText = projectAndBacking
-      .combineLatest(with: shippingAmount)
-      .map(unpack)
-      .map { project, backing, shippingAmount in
-        attributedCurrency(with: project, amount: backing.amount + shippingAmount)
+      .map { project, shippingAmount in
+        shippingValue(with: project, with: shippingAmount)
       }
       .skipNil()
 
-    self.shippingLocationText = backing.ignoreValues()
-      .map { Strings.Shipping() + ": " + "Australia" }
+    self.totalAmountText = projectAndBacking
+      .map { project, backing in
+        attributedCurrency(with: project, amount: backing.amount)
+      }
+      .skipNil()
+
+    self.shippingLocationText = backing
+      .map { $0.locationName }
+      .skipNil()
+      .map { Strings.Shipping_to_country(country: $0) }
 
     self.shippingLocationStackViewIsHidden = self.projectSignal
       .map(shouldHideShippingLocationStackView)
@@ -84,14 +88,14 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
 
 private func shouldHideShippingLocationStackView(_ project: Project) -> Bool {
   guard let backing = project.personalization.backing,
-    let _ = backing.rewardId else {
+    let _ = backing.locationName else {
     return true
   }
   if let reward = backing.reward {
     return !reward.shipping.enabled || reward.isNoReward
   }
 
-  return backing.locationId.isNil
+  return false
 }
 
 private func formattedPledgeDate(_ backing: Backing) -> String {

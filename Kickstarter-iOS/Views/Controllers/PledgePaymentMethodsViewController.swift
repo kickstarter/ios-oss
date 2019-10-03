@@ -12,6 +12,10 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
     _ viewController: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSourceId: String
   )
+
+  func pledgePaymentMethodsViewControllerDidTapPledgeButton(
+    _ viewController: PledgePaymentMethodsViewController
+  )
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
@@ -64,6 +68,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
       action: #selector(PledgePaymentMethodsViewController.applePayButtonTapped),
       for: .touchUpInside
     )
+
+    self.pledgeButton.addTarget(
+      self,
+      action: #selector(PledgePaymentMethodsViewController.pledgeButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   private func setupConstraints() {
@@ -109,14 +119,15 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
       .observeValues { [weak self] cards in
-        self?.addCardsToStackView(cards)
+        guard let self = self else { return }
+        self.scrollView.setContentOffset(.zero, animated: false)
+        self.reloadPaymentMethods(with: cards)
       }
 
     self.viewModel.outputs.notifyDelegateLoadPaymentMethodsError
       .observeForUI()
       .observeValues { [weak self] errorMessage in
         guard let self = self else { return }
-
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
       }
 
@@ -134,6 +145,20 @@ final class PledgePaymentMethodsViewController: UIViewController {
         guard let self = self else { return }
 
         self.delegate?.pledgePaymentMethodsViewController(self, didSelectCreditCard: paymentSourceId)
+      }
+
+    self.viewModel.outputs.notifyDelegatePledgeButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+
+        self.delegate?.pledgePaymentMethodsViewControllerDidTapPledgeButton(self)
+      }
+
+    self.viewModel.outputs.updateSelectedCreditCard
+      .observeForUI()
+      .observeValues { [weak self] card in
+        self?.updateSelectedCard(to: card)
       }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
@@ -158,29 +183,51 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.viewModel.inputs.applePayButtonTapped()
   }
 
+  @objc private func pledgeButtonTapped() {
+    self.viewModel.inputs.pledgeButtonTapped()
+  }
+
   func updatePledgeButton(_ enabled: Bool) {
     self.viewModel.inputs.updatePledgeButtonEnabled(isEnabled: enabled)
   }
 
   // MARK: - Functions
 
-  private func addCardsToStackView(_ cards: [GraphUserCreditCard.CreditCard]) {
-    self.cardsStackView.arrangedSubviews.forEach(self.cardsStackView.removeArrangedSubview)
+  private func reloadPaymentMethods(with cards: [GraphUserCreditCard.CreditCard]) {
+    self.cardsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-    let cardViews: [UIView] = cards
-      .map { card -> PledgeCreditCardView in
-        let cardView = PledgeCreditCardView(frame: .zero)
-        cardView.configureWith(value: card)
-        cardView.delegate = self
+    let cardViews = self.newCardViews(with: cards)
 
-        return cardView
-      }
-
-    let addNewCardView: UIView = PledgeAddNewCardView(frame: .zero)
+    let addNewCardView: PledgeAddNewCardView = PledgeAddNewCardView(frame: .zero)
       |> \.delegate .~ self
 
     _ = (cardViews + [addNewCardView], self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  private func updateSelectedCard(to card: GraphUserCreditCard.CreditCard) {
+    self.cardsStackView.arrangedSubviews
+      .compactMap { $0 as? PledgeCreditCardView }
+      .forEach { $0.setSelectedCard(card) }
+  }
+
+  private func newCardViews(
+    with cards: [GraphUserCreditCard.CreditCard]
+  ) -> [UIView] {
+    let selectedCard = cards.first
+
+    return cards.map { card -> PledgeCreditCardView in
+      let cardView = PledgeCreditCardView(frame: .zero)
+        |> \.delegate .~ self
+
+      cardView.configureWith(value: card)
+
+      if let selectedCard = selectedCard {
+        cardView.setSelectedCard(selectedCard)
+      }
+
+      return cardView
+    }
   }
 
   // MARK: - Styles
@@ -193,7 +240,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private let rootStackViewStyle: StackViewStyle = { stackView in
     stackView
       |> verticalStackViewStyle
-      |> \.spacing .~ Styles.grid(2)
+      |> \.spacing .~ Styles.grid(3)
   }
 
   private let titleLabelStyle: LabelStyle = { label in
@@ -203,6 +250,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.textColor .~ UIColor.ksr_text_dark_grey_500
       |> \.font .~ UIFont.ksr_caption1()
       |> \.textAlignment .~ .center
+  }
+}
+
+extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
+  func pledgeCreditCardViewSelected(_: PledgeCreditCardView, paymentSourceId: String) {
+    self.viewModel.creditCardSelected(paymentSourceId: paymentSourceId)
   }
 }
 
@@ -219,20 +272,17 @@ extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
 }
 
 extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
-  func addNewCardViewControllerDismissed(_: AddNewCardViewController) {
-    self.dismiss(animated: true)
-  }
-
   func addNewCardViewController(
     _: AddNewCardViewController,
-    didSucceedWithMessage _: String
+    didAdd newCard: GraphUserCreditCard.CreditCard,
+    withMessage _: String
   ) {
-    // TODO:
+    self.dismiss(animated: true) {
+      self.viewModel.inputs.addNewCardViewControllerDidAdd(newCard: newCard)
+    }
   }
-}
 
-extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
-  func pledgeCreditCardViewSelected(_: PledgeCreditCardView, paymentSourceId: String) {
-    self.viewModel.creditCardSelected(paymentSourceId: paymentSourceId)
+  func addNewCardViewControllerDismissed(_: AddNewCardViewController) {
+    self.dismiss(animated: true)
   }
 }

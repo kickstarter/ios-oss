@@ -21,7 +21,7 @@ final class PledgeCreditCardView: UIView {
   private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let selectButton: UIButton = { UIButton(type: .custom) }()
-  private let viewModel: CreditCardCellViewModelType = CreditCardCellViewModel()
+  private let viewModel: PledgeCreditCardViewModelType = PledgeCreditCardViewModel()
 
   // MARK: - Lifecycle
 
@@ -36,6 +36,8 @@ final class PledgeCreditCardView: UIView {
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  // MARK: - Configuration
 
   private func configureSubviews() {
     _ = self
@@ -76,10 +78,6 @@ final class PledgeCreditCardView: UIView {
     _ = self
       |> pledgeCardViewStyle
 
-    _ = self.selectButton
-      |> cardSelectButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Select() }
-
     _ = self.imageView
       |> cardImageViewStyle
 
@@ -100,13 +98,21 @@ final class PledgeCreditCardView: UIView {
 
     _ = self.rootStackView
       |> checkoutCardStackViewStyle
+
+    _ = self.selectButton
+      |> blackButtonStyle
   }
+
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.selectButton.rac.title = self.viewModel.outputs.selectButtonTitle
+    self.selectButton.rac.selected = self.viewModel.outputs.selectButtonIsSelected
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
+
     self.viewModel.outputs.cardImage
       .observeForUI()
       .observeValues { [weak self] image in
@@ -118,16 +124,19 @@ final class PledgeCreditCardView: UIView {
       .observeForUI()
       .observeValues { [weak self] paymentSourceId in
         guard let self = self else { return }
-
         self.delegate?.pledgeCreditCardViewSelected(self, paymentSourceId: paymentSourceId)
       }
   }
 
   func configureWith(value: GraphUserCreditCard.CreditCard) {
-    self.viewModel.inputs.configureWith(creditCard: value)
+    self.viewModel.inputs.configureWith(value: value)
   }
 
   // MARK: - Accessors
+
+  func setSelectedCard(_ card: GraphUserCreditCard.CreditCard) {
+    self.viewModel.inputs.setSelectedCard(card)
+  }
 
   @objc func selectButtonTapped() {
     self.viewModel.inputs.selectButtonTapped()

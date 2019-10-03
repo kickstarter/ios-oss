@@ -12,12 +12,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
   private let notifyDelegateCreditCardSelected = TestObserver<String, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
+  private let notifyDelegatePledgeButtonTapped = TestObserver<Void, Never>()
   private let pledgeButtonEnabled = TestObserver<Bool, Never>()
   private let reloadPaymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
+  private let updateSelectedCreditCard = TestObserver<GraphUserCreditCard.CreditCard, Never>()
 
   override func setUp() {
     super.setUp()
-
     self.vm.outputs.applePayButtonHidden.observe(self.applePayButtonHidden.observer)
     self.vm.outputs.notifyDelegateApplePayButtonTapped
       .observe(self.notifyDelegateApplePayButtonTapped.observer)
@@ -25,8 +26,60 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.notifyDelegateCreditCardSelected.observer)
     self.vm.outputs.notifyDelegateLoadPaymentMethodsError
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
+    self.vm.outputs.notifyDelegatePledgeButtonTapped.observe(self.notifyDelegatePledgeButtonTapped.observer)
     self.vm.outputs.pledgeButtonEnabled.observe(self.pledgeButtonEnabled.observer)
     self.vm.outputs.reloadPaymentMethods.observe(self.reloadPaymentMethods.observer)
+    self.vm.outputs.updateSelectedCreditCard.observe(self.updateSelectedCreditCard.observer)
+  }
+
+  func testNewCardAdded() {
+    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let userCreditCard = GraphUserCreditCard.amex
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.reloadPaymentMethods.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith((User.template, Project.template, false))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      self.reloadPaymentMethods.assertValue(response.me.storedCards.nodes)
+      self.vm.inputs.addNewCardViewControllerDidAdd(newCard: userCreditCard)
+
+      self.reloadPaymentMethods.assertValues(
+        [response.me.storedCards.nodes, [userCreditCard] + response.me.storedCards.nodes]
+      )
+    }
+  }
+
+  func testUpdateSelectedCreditCard() {
+    self.updateSelectedCreditCard.assertDidNotEmitValue()
+
+    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let userCreditCard = GraphUserCreditCard.amex
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.reloadPaymentMethods.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith((User.template, Project.template, false))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      self.reloadPaymentMethods.assertValue(response.me.storedCards.nodes)
+      self.vm.inputs.addNewCardViewControllerDidAdd(newCard: userCreditCard)
+
+      self.reloadPaymentMethods.assertValues(
+        [response.me.storedCards.nodes, [userCreditCard] + response.me.storedCards.nodes]
+      )
+
+      self.vm.inputs.creditCardSelected(paymentSourceId: userCreditCard.id)
+
+      self.updateSelectedCreditCard.assertValues([userCreditCard])
+    }
   }
 
   func testReloadPaymentMethods_LoggedIn_ApplePayCapable_isFalse() {
@@ -203,5 +256,20 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.inputs.updatePledgeButtonEnabled(isEnabled: false)
 
     self.pledgeButtonEnabled.assertValues([false, true, false])
+  }
+
+  func testPledgeButtonTapped() {
+    self.vm.inputs.configureWith((User.template, Project.template, true))
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegatePledgeButtonTapped.assertDidNotEmitValue()
+
+    self.vm.inputs.pledgeButtonTapped()
+
+    self.notifyDelegatePledgeButtonTapped.assertValueCount(1)
+
+    self.vm.inputs.pledgeButtonTapped()
+
+    self.notifyDelegatePledgeButtonTapped.assertValueCount(2)
   }
 }
