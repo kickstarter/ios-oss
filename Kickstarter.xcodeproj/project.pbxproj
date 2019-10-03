@@ -326,6 +326,15 @@
 		8A8099FD22E2172D00373E66 /* UISpringTimingParameters+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */; };
 		8A8099FF22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */; };
 		8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */; };
+		8AF34C722342CBAD000B211D /* UpdateBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */; };
+		8AF34C742342CBC2000B211D /* UpdateBackingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C732342CBC2000B211D /* UpdateBackingInput.swift */; };
+		8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C752342D1D2000B211D /* UpdateBackingInputTests.swift */; };
+		8AF34C782342D6A5000B211D /* Encodable+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C772342D6A5000B211D /* Encodable+Dictionary.swift */; };
+		8AF34C7A2342D864000B211D /* Encodable+DictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C792342D864000B211D /* Encodable+DictionaryTests.swift */; };
+		8AF34C7F2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */; };
+		8AF34C802343C41C000B211D /* UpdateBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */; };
+		8AF34C8423440327000B211D /* ApplePayParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C8323440327000B211D /* ApplePayParams.swift */; };
+		8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C8523440565000B211D /* ApplePayParamsTests.swift */; };
 		8AF91CDD22EF5AF8005F9C90 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF91CDC22EF5AF7005F9C90 /* Feature.swift */; };
 		8AFB8C97233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */; };
 		8AFB8C99233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */; };
@@ -1693,6 +1702,15 @@
 		8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISpringTimingParameters+Convenience.swift"; sourceTree = "<group>"; };
 		8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDescriptionViewControllerTests.swift; sourceTree = "<group>"; };
 		8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Mixing.swift"; sourceTree = "<group>"; };
+		8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingMutation.swift; sourceTree = "<group>"; };
+		8AF34C732342CBC2000B211D /* UpdateBackingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingInput.swift; sourceTree = "<group>"; };
+		8AF34C752342D1D2000B211D /* UpdateBackingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingInputTests.swift; sourceTree = "<group>"; };
+		8AF34C772342D6A5000B211D /* Encodable+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+Dictionary.swift"; sourceTree = "<group>"; };
+		8AF34C792342D864000B211D /* Encodable+DictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+DictionaryTests.swift"; sourceTree = "<group>"; };
+		8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingEnvelope.swift; sourceTree = "<group>"; };
+		8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingEnvelopeTests.swift; sourceTree = "<group>"; };
+		8AF34C8323440327000B211D /* ApplePayParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayParams.swift; sourceTree = "<group>"; };
+		8AF34C8523440565000B211D /* ApplePayParamsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayParamsTests.swift; sourceTree = "<group>"; };
 		8AF91CDC22EF5AF7005F9C90 /* Feature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+Constructor.swift"; sourceTree = "<group>"; };
 		8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+ConstructorTests.swift"; sourceTree = "<group>"; };
@@ -2662,12 +2680,13 @@
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
-				77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */,
 				D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */,
-				D79CF32B219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift */,
+				77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */,
 				D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */,
+				D79CF32B219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift */,
 				D085100F219500F200BC418B /* PaymentSourceDeleteMutation.swift */,
 				D08CD1F821910DF5009F89F0 /* UnwatchProjectMutation.swift */,
+				8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */,
 				D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */,
 				D77743E2217A2D67008D679F /* UpdateUserProfileMutation .swift */,
 				D6B686EA2191FEEE005F5DA7 /* UserSendEmailVerificationMutation.swift */,
@@ -3753,6 +3772,8 @@
 		D01587691EEB2ED6006E7684 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8AF34C772342D6A5000B211D /* Encodable+Dictionary.swift */,
+				8AF34C792342D864000B211D /* Encodable+DictionaryTests.swift */,
 				D015876A1EEB2ED6006E7684 /* NSURLSession.swift */,
 			);
 			path = extensions;
@@ -3831,7 +3852,6 @@
 				77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
 				D01587961EEB2ED6006E7684 /* ItemTests.swift */,
-				D01587971EEB2ED6006E7684 /* lenses */,
 				D01587CB1EEB2ED7006E7684 /* Location.swift */,
 				D67B6CD5221F468100B63A6B /* Location+Argo.swift */,
 				D01587CC1EEB2ED7006E7684 /* LocationTests.swift */,
@@ -3871,8 +3891,9 @@
 				D01587EB1EEB2ED7006E7684 /* SubmitApplePayEnvelopeTests.swift */,
 				D01587EC1EEB2ED7006E7684 /* SurveyResponse.swift */,
 				D01587ED1EEB2ED7006E7684 /* SurveyResponseTests.swift */,
-				D01587EE1EEB2ED7006E7684 /* templates */,
 				D015881A1EEB2ED7006E7684 /* Update.swift */,
+				8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */,
+				8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */,
 				D015881B1EEB2ED7006E7684 /* UpdateDraft.swift */,
 				D015881C1EEB2ED7006E7684 /* UpdateDraftTests.swift */,
 				D015881D1EEB2ED7006E7684 /* UpdatePledgeEnvelope.swift */,
@@ -3887,6 +3908,8 @@
 				7798B5622174F494008BC50D /* UserEnvelope.swift */,
 				D01588241EEB2ED7006E7684 /* UserTests.swift */,
 				D01588251EEB2ED7006E7684 /* VoidEnvelope.swift */,
+				D01587971EEB2ED6006E7684 /* lenses */,
+				D01587EE1EEB2ED7006E7684 /* templates */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -4033,17 +4056,21 @@
 		D6ED1B3C216D617E007F7547 /* inputs */ = {
 			isa = PBXGroup;
 			children = (
+				8AF34C8323440327000B211D /* ApplePayParams.swift */,
+				8AF34C8523440565000B211D /* ApplePayParamsTests.swift */,
 				D777442E217A3382008D679F /* ChangeCurrencyInput.swift */,
-				77950F0B231EBC4200308331 /* CreateApplePayBackingInput.swift */,
-				77950F0D231EC12700308331 /* CreateApplePayBackingInputTests.swift */,
-				D79CF32D219CE51A00ECB73A /* CreatePaymentSourceInput.swift */,
 				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
 				77E44B7321823A56006446B8 /* ChangePasswordInput.swift */,
+				77950F0B231EBC4200308331 /* CreateApplePayBackingInput.swift */,
+				77950F0D231EC12700308331 /* CreateApplePayBackingInputTests.swift */,
 				D755ECA42315E6E10096F189 /* CreateBackingInput.swift */,
 				D755ECAC23216C0D0096F189 /* CreateBackingInputTests.swift */,
 				D75DACA7221DC4340027F478 /* CreatePasswordInput.swift */,
+				D79CF32D219CE51A00ECB73A /* CreatePaymentSourceInput.swift */,
 				D6B686E82191FE5E005F5DA7 /* EmptyInput.swift */,
 				D08510112195015F00BC418B /* PaymentSourceDeleteInput.swift */,
+				8AF34C732342CBC2000B211D /* UpdateBackingInput.swift */,
+				8AF34C752342D1D2000B211D /* UpdateBackingInputTests.swift */,
 				D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */,
 			);
 			path = inputs;
@@ -5407,6 +5434,7 @@
 				D0158A111EEB30A2006E7684 /* ConfigTemplates.swift in Sources */,
 				D015885D1EEB2ED7006E7684 /* CommentsEnvelope.swift in Sources */,
 				D79CF32C219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift in Sources */,
+				8AF34C8423440327000B211D /* ApplePayParams.swift in Sources */,
 				D0158A151EEB30A2006E7684 /* FriendStatsEnvelopeTemplates.swift in Sources */,
 				D01589111EEB2ED7006E7684 /* PushEnvelope.swift in Sources */,
 				D01589971EEB2ED7006E7684 /* VoidEnvelope.swift in Sources */,
@@ -5568,9 +5596,11 @@
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				D0158A271EEB30A2006E7684 /* ShippingRuleTemplates.swift in Sources */,
 				D6B9F90A22035840003282A5 /* Author.swift in Sources */,
+				8AF34C782342D6A5000B211D /* Encodable+Dictionary.swift in Sources */,
 				77E44B7421823A56006446B8 /* ChangePasswordInput.swift in Sources */,
 				D08C71DC22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift in Sources */,
 				D01588891EEB2ED7006E7684 /* CheckoutEnvelopeLenses.swift in Sources */,
+				8AF34C742342CBC2000B211D /* UpdateBackingInput.swift in Sources */,
 				D0158A2E1EEB30A2006E7684 /* User.AvatarTemplates.swift in Sources */,
 				D01588571EEB2ED7006E7684 /* CheckoutEnvelope.swift in Sources */,
 				77950F0C231EBC4200308331 /* CreateApplePayBackingInput.swift in Sources */,
@@ -5585,6 +5615,7 @@
 				D01589011EEB2ED7006E7684 /* Project.Video.swift in Sources */,
 				D0E78C3622A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift in Sources */,
 				D0158A1A1EEB30A2006E7684 /* Project.PhotoTemplates.swift in Sources */,
+				8AF34C722342CBAD000B211D /* UpdateBackingMutation.swift in Sources */,
 				D01588B51EEB2ED7006E7684 /* ProjectNotificationLenses.swift in Sources */,
 				D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */,
 				D79440572203A63300D0A747 /* CreatePaymentSourceEnvelope.swift in Sources */,
@@ -5604,6 +5635,7 @@
 				D015886B1EEB2ED7006E7684 /* DiscoveryParams.swift in Sources */,
 				D755ECAB232005A70096F189 /* Checkout.swift in Sources */,
 				D01588BF1EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift in Sources */,
+				8AF34C802343C41C000B211D /* UpdateBackingEnvelope.swift in Sources */,
 				D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5621,6 +5653,7 @@
 				D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */,
 				D0D10C1C1EEB4550005EBAD0 /* UpdateDraftTests.swift in Sources */,
 				D0D10C0D1EEB4550005EBAD0 /* FriendStatsEnvelopeTests.swift in Sources */,
+				8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */,
 				77DB532A2215D0AA0078991C /* GraphUserCreditCardTests.swift in Sources */,
 				77950F0E231EC12700308331 /* CreateApplePayBackingInputTests.swift in Sources */,
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
@@ -5631,11 +5664,14 @@
 				D0D10C091EEB4550005EBAD0 /* CreatePledgeEnvelopeTests.swift in Sources */,
 				D0D10C081EEB4550005EBAD0 /* ConfigTests.swift in Sources */,
 				D015899E1EEB2ED7006E7684 /* ServiceTests.swift in Sources */,
+				8AF34C7A2342D864000B211D /* Encodable+DictionaryTests.swift in Sources */,
 				D0D10C0C1EEB4550005EBAD0 /* FindFriendsEnvelopeTests.swift in Sources */,
 				D0D10C141EEB4550005EBAD0 /* Project.VideoTests.swift in Sources */,
 				D0D10C181EEB4550005EBAD0 /* RewardsItemTests.swift in Sources */,
+				8AF34C7F2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift in Sources */,
 				D0D10C131EEB4550005EBAD0 /* Project.PhotoTests.swift in Sources */,
 				D0D10C071EEB4550005EBAD0 /* CommentTests.swift in Sources */,
+				8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */,
 				D0D10C191EEB4550005EBAD0 /* RewardTests.swift in Sources */,
 				D0D10C101EEB4550005EBAD0 /* MessageTests.swift in Sources */,
 				D0D10C151EEB4550005EBAD0 /* ProjectStatsEnvelopeTests.swift in Sources */,
