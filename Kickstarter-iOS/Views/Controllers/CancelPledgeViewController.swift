@@ -155,7 +155,7 @@ final class CancelPledgeViewController: UIViewController {
 
   private func contentInsetsFor(traitCollection: UITraitCollection) -> UIEdgeInsets {
     return traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      ? .init(top: 0) : .init(top: self.view.frame.size.height / 4)
+      ? .zero : .init(top: self.view.frame.height / 4)
   }
 
   // MARK: - Accessors
@@ -175,7 +175,6 @@ private let cancellationDisclaimerLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ .ksr_caption1()
     |> \.textColor .~ UIColor.ksr_text_navy_600
-    |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
     |> \.textAlignment .~ NSTextAlignment.center
     |> \.numberOfLines .~ 0
 }
@@ -189,7 +188,6 @@ private let cancellationReasonTextFieldStyle: TextFieldStyle = { textField in
 
 private let cancellationDetailsTextLabelStyle: LabelStyle = { label in
   label
-    |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
     |> \.textAlignment .~ NSTextAlignment.center
     |> \.numberOfLines .~ 0
 }
