@@ -165,7 +165,9 @@ public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
   <> UILabel.lens.lineBreakMode .~ .byWordWrapping
   <> UILabel.lens.numberOfLines .~ 0
-  <> UILabel.lens.text %~ { _ in Strings.Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news() }
+  <> UILabel.lens.text %~ { _ in
+    Strings.Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news()
+}
 
 public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.textAlignment .~ .center
