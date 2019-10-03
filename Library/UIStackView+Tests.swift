@@ -16,4 +16,16 @@ final class UIStackViewTests: XCTestCase {
     XCTAssertEqual(secondView, stackView.arrangedSubviews[1])
     XCTAssertEqual(thirdView, stackView.arrangedSubviews[2])
   }
+
+  func testSetCustomSpacing() {
+    let afterView = UIView(frame: .zero)
+    let stackView = UIStackView(frame: .zero)
+
+    stackView.addArrangedSubview(afterView)
+
+    _ = (afterView, stackView)
+      |> ksr_setCustomSpacing(10)
+
+    XCTAssertEqual(10, stackView.customSpacing(after: afterView))
+  }
 }
