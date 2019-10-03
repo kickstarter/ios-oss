@@ -40,32 +40,50 @@ final class CancelPledgeViewModelTests: TestCase {
     self.cancellationDetailsAttributedTextString
       .assertValues([cancellationString])
 
-    XCTAssertEqual(self.cancellationDetailsAttributedTextAttributedString.values
-      .compactMap { $0.attribute(.font,
-                                 at: pledgeAmountRange.location,
-                                 effectiveRange: &pledgeAmountRange) } as? [UIFont],
-                   [boldFontAttribute])
-    XCTAssertEqual(self.cancellationDetailsAttributedTextAttributedString.values
-      .compactMap { $0.attribute(.font,
-                                 at: projectNameRange.location,
-                                 effectiveRange: &projectNameRange) } as? [UIFont],
-                   [boldFontAttribute])
+    XCTAssertEqual(
+      self.cancellationDetailsAttributedTextAttributedString.values
+        .compactMap { $0.attribute(
+          .font,
+          at: pledgeAmountRange.location,
+          effectiveRange: &pledgeAmountRange
+        ) } as? [UIFont],
+      [boldFontAttribute]
+    )
+    XCTAssertEqual(
+      self.cancellationDetailsAttributedTextAttributedString.values
+        .compactMap { $0.attribute(
+          .font,
+          at: projectNameRange.location,
+          effectiveRange: &projectNameRange
+        ) } as? [UIFont],
+      [boldFontAttribute]
+    )
 
     self.vm.inputs.traitCollectionDidChange()
 
     self.cancellationDetailsAttributedTextString
-      .assertValues([cancellationString,
-                     cancellationString])
-    XCTAssertEqual(self.cancellationDetailsAttributedTextAttributedString.values
-      .compactMap { $0.attribute(.font,
-                                 at: pledgeAmountRange.location,
-                                 effectiveRange: &pledgeAmountRange) } as? [UIFont],
-                   [boldFontAttribute, boldFontAttribute])
-    XCTAssertEqual(self.cancellationDetailsAttributedTextAttributedString.values
-      .compactMap { $0.attribute(.font,
-                                 at: projectNameRange.location,
-                                 effectiveRange: &projectNameRange) } as? [UIFont],
-                   [boldFontAttribute, boldFontAttribute])
+      .assertValues([
+        cancellationString,
+        cancellationString
+      ])
+    XCTAssertEqual(
+      self.cancellationDetailsAttributedTextAttributedString.values
+        .compactMap { $0.attribute(
+          .font,
+          at: pledgeAmountRange.location,
+          effectiveRange: &pledgeAmountRange
+        ) } as? [UIFont],
+      [boldFontAttribute, boldFontAttribute]
+    )
+    XCTAssertEqual(
+      self.cancellationDetailsAttributedTextAttributedString.values
+        .compactMap { $0.attribute(
+          .font,
+          at: projectNameRange.location,
+          effectiveRange: &projectNameRange
+        ) } as? [UIFont],
+      [boldFontAttribute, boldFontAttribute]
+    )
   }
 
   func testGoBackButtonTapped() {

@@ -79,7 +79,7 @@ private func cancellationDetailsAttributedText(with amount: String, projectName:
     .Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name(
       amount: amount,
       project_name: projectName
-  )
+    )
   let attributedString: NSMutableAttributedString = NSMutableAttributedString.init(string: fullString)
   let regularFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_callout()]
   let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_callout().bolded]
