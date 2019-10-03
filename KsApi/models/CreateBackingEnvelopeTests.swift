@@ -3,24 +3,29 @@ import XCTest
 
 final class CreateBackingEnvelopeTests: XCTestCase {
   func testCreateBackingEnvelopeDecoding() {
-    let jsonString =
-      """
-        {
-          "createBacking": {
-            "checkout": {
-                "state": "VERIFYING"
-            }
+    let jsonString = """
+    {
+      "createBacking": {
+        "checkout": {
+          "state": "VERIFYING",
+          "backing": {
+            "requiresAction": false,
+            "clientSecret": "super-secret"
           }
         }
-      """
+      }
+    }
+    """
 
-    let data = jsonString.data(using: .utf8)
+    let data = Data(jsonString.utf8)
 
     do {
-      let envelope = try JSONDecoder().decode(CreateBackingEnvelope.self, from: data!)
+      let envelope = try JSONDecoder().decode(CreateBackingEnvelope.self, from: data)
       XCTAssertEqual(envelope.createBacking.checkout.state, .verifying)
+      XCTAssertEqual(envelope.createBacking.checkout.backing.requiresAction, false)
+      XCTAssertEqual(envelope.createBacking.checkout.backing.clientSecret, "super-secret")
     } catch {
-      XCTFail("CreateBackingEnvelope should be decoded!")
+      XCTFail("\(error)")
     }
   }
 }
