@@ -408,6 +408,7 @@
 "Reward_Surveys.zero" = "%{reward_survey_count} Reward Surveys";
 "Reward_delivered" = "Reward delivered?";
 "Reward_estimated_for_delivery_in_date" = "<b>Reward</b> estimated for delivery in %{delivery_date}";
+"Reward_received" = "Reward received";
 "Reward_selected" = "Reward selected";
 "Reward_surveys" = "Reward surveys";
 "Rewards_count_rewards.few" = "%{rewards_count} rewards";

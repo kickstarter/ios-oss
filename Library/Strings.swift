@@ -6732,6 +6732,23 @@ daring ideas."
     )
   }
   /**
+   "Reward received"
+
+   - **en**: "Reward received"
+   - **de**: "Reward received"
+   - **es**: "Reward received"
+   - **fr**: "Récompense reçue"
+   - **ja**: "Reward received"
+  */
+  public static func Reward_received() -> String {
+    return localizedString(
+      key: "Reward_received",
+      defaultValue: "Reward received",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Reward selected"
 
    - **en**: "Reward selected"

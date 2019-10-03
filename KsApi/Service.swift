@@ -492,6 +492,10 @@ public struct Service: ServiceType {
     return request(.unfollowFriend(userId: id))
   }
 
+  public func updateBacking(input: UpdateBackingInput) -> SignalProducer<UpdateBackingEnvelope, GraphError> {
+    return applyMutation(mutation: UpdateBackingMutation(input: input))
+  }
+
   public func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)
     -> SignalProducer<UpdateDraft, ErrorEnvelope> {
     return request(.updateUpdateDraft(draft, title: title, body: body, isPublic: isPublic))

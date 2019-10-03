@@ -408,6 +408,7 @@
 "Reward_Surveys.zero" = "%{reward_survey_count} Befragungen";
 "Reward_delivered" = "Belohnung versandt?";
 "Reward_estimated_for_delivery_in_date" = "Voraussichtliche Lieferung der <b>Belohnung</b> im %{delivery_date}";
+"Reward_received" = "Reward received";
 "Reward_selected" = "Ausgewählte Belohnung";
 "Reward_surveys" = "Befragungen";
 "Rewards_count_rewards.few" = "%{rewards_count} Belohnungen";
