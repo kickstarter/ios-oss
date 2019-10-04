@@ -155,11 +155,8 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       minValue
     )
     .map { project, min in
-      localizedString(
-        key: "The_minimum_pledge_is",
-        defaultValue: "The minimum pledge is %{min_pledge}.",
-        count: nil,
-        substitutions: ["min_pledge": Format.currency(min, country: project.country, omitCurrencyCode: false)]
+      Strings.The_minimum_pledge_is(
+        min_pledge: Format.currency(min, country: project.country, omitCurrencyCode: false)
       )
     }
 
