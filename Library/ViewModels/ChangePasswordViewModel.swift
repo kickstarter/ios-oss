@@ -69,7 +69,7 @@ public class ChangePasswordViewModel: ChangePasswordViewModelType,
 
     let autoSaveSignal = self.saveButtonIsEnabled
       .takeWhen(self.confirmNewPasswordDoneEditingProperty.signal)
-      .filter { isTrue($0) }
+      .filter(isTrue)
       .ignoreValues()
 
     let triggerSaveAction = Signal.merge(autoSaveSignal, self.saveButtonTappedProperty.signal)
