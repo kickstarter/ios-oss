@@ -1074,15 +1074,5 @@ final class PledgeViewModelTests: TestCase {
 
     self.confirmButtonHidden.assertValues([false])
     self.confirmButtonEnabled.assertValues([false, true, false, true, false])
-
-    self.vm.inputs.creditCardSelected(with: "another-card")
-
-    self.confirmButtonHidden.assertValues([false])
-    self.confirmButtonEnabled.assertValues([false, true, false, true, false, true])
-
-    self.vm.inputs.creditCardSelected(with: GraphUserCreditCard.amex.id)
-
-    self.confirmButtonHidden.assertValues([false])
-    self.confirmButtonEnabled.assertValues([false, true, false, true, false, true, false])
   }
 }
