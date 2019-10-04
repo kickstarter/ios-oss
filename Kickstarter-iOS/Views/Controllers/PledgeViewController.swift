@@ -270,10 +270,16 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       }
 
     self.viewModel.outputs.notifyDelegateUpdatePledgeDidSucceed
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] in
         guard let self = self else { return }
         self.delegate?.pledgeViewControllerDidUpdatePledge(self)
+      }
+
+    self.viewModel.outputs.popViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.navigationController?.popViewController(animated: true)
       }
 
     Keyboard.change

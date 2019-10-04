@@ -82,6 +82,7 @@ public protocol PledgeViewModelOutputs {
   var goToThanks: Signal<Project, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceed: Signal<(), Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
+  var popViewController: Signal<(), Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var title: Signal<String, Never> { get }
@@ -352,13 +353,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       [amountChanged, shippingRuleChanged].contains(true)
     }
 
-    self.confirmButtonEnabled = Signal.combineLatest(
-      valuesChanged,
-      self.pledgeAmountDataSignal.map(second)
-    )
-    .map { $0 && $1 }
-    .skipRepeats()
-
     self.title = context.map { $0.title }
 
     // MARK: Update Backing
@@ -383,6 +377,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.notifyDelegateUpdatePledgeDidSucceed = updateBackingEvent.values().ignoreValues()
     self.updatePledgeFailedWithError = updateBackingEvent.errors()
       .map { $0.localizedDescription }
+
+    self.popViewController = self.notifyDelegateUpdatePledgeDidSucceed
+
+    let valuesChangedAndValid = Signal.combineLatest(
+      valuesChanged,
+      self.pledgeAmountDataSignal.map(second)
+    )
+    .map { $0 && $1 }
+    .skipRepeats()
+
+    self.confirmButtonEnabled = Signal.merge(
+      valuesChangedAndValid,
+      self.confirmButtonTappedSignal.signal.mapConst(false),
+      updateBackingEvent.filter { $0.isTerminating }.mapConst(true)
+    )
   }
 
   // MARK: - Inputs
@@ -484,6 +493,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let goToThanks: Signal<Project, Never>
   public let notifyDelegateUpdatePledgeDidSucceed: Signal<(), Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public let popViewController: Signal<(), Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let title: Signal<String, Never>

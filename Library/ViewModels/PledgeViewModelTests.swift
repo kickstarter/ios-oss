@@ -42,11 +42,14 @@ final class PledgeViewModelTests: TestCase {
 
   private let goToThanks = TestObserver<Project, Never>()
 
+  private let notifyDelegateUpdatePledgeDidSucceed = TestObserver<(), Never>()
+
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
   private let sectionSeparatorsHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
   private let title = TestObserver<String, Never>()
   private let updatePledgeButtonEnabled = TestObserver<Bool, Never>()
+  private let updatePledgeFailedWithError = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -95,6 +98,9 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.outputs.goToThanks.observe(self.goToThanks.observer)
 
+    self.vm.outputs.notifyDelegateUpdatePledgeDidSucceed
+      .observe(self.notifyDelegateUpdatePledgeDidSucceed.observer)
+
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
 
     self.vm.outputs.updatePledgeButtonEnabled.observe(self.updatePledgeButtonEnabled.observer)
@@ -102,6 +108,8 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
 
     self.vm.outputs.title.observe(self.title.observer)
+
+    self.vm.outputs.updatePledgeFailedWithError.observe(self.updatePledgeFailedWithError.observer)
   }
 
   func testPledgeContext_LoggedIn() {
@@ -1022,6 +1030,114 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToThanks.assertDidNotEmitValue()
       self.createBackingError.assertValues(["Something went wrong."])
+    }
+  }
+
+  func testUpdateBacking_Success() {
+    let reward = Reward.postcards
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.status .~ .errored
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          state: .successful,
+          backing: .init(
+            requiresAction: false,
+            clientSecret: "client-secret"
+          )
+        )
+      )
+    )
+
+    let mockService = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.confirmButtonEnabled.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: true))
+
+      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.confirmButtonEnabled.assertValues([true])
+
+      self.vm.inputs.confirmButtonTapped()
+
+      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.confirmButtonEnabled.assertValues([true, false])
+
+      self.scheduler.run()
+
+      self.notifyDelegateUpdatePledgeDidSucceed.assertValueCount(1)
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.confirmButtonEnabled.assertValues([true, false, true])
+    }
+  }
+
+  func testUpdateBacking_Failure() {
+    let reward = Reward.postcards
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.status .~ .errored
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    let mockService = MockService(
+      updateBackingResult: .failure(.invalidInput)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.confirmButtonEnabled.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: true))
+
+      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.confirmButtonEnabled.assertValues([true])
+
+      self.vm.inputs.confirmButtonTapped()
+
+      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.confirmButtonEnabled.assertValues([true, false])
+
+      self.scheduler.run()
+
+      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertValueCount(1)
+      self.confirmButtonEnabled.assertValues([true, false, true])
     }
   }
 
