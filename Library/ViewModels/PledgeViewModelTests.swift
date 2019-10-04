@@ -1133,7 +1133,9 @@ final class PledgeViewModelTests: TestCase {
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.confirmButtonEnabled.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 10.0, min: 25.0, max: 10_000.0, isValid: true)
+      )
 
       self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
@@ -1181,7 +1183,9 @@ final class PledgeViewModelTests: TestCase {
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.confirmButtonEnabled.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 10.0, min: 25.0, max: 10_000.0, isValid: true)
+      )
 
       self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
@@ -1226,17 +1230,23 @@ final class PledgeViewModelTests: TestCase {
     self.confirmButtonHidden.assertValues([false])
     self.confirmButtonEnabled.assertDidNotEmitValue()
 
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (690, true))
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
+    )
 
     self.confirmButtonHidden.assertValues([false])
     self.confirmButtonEnabled.assertValues([false])
 
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (550, true))
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
+    )
 
     self.confirmButtonHidden.assertValues([false])
     self.confirmButtonEnabled.assertValues([false, true])
 
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (690, true))
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
+    )
 
     self.confirmButtonHidden.assertValues([false])
     self.confirmButtonEnabled.assertValues([false, true, false])

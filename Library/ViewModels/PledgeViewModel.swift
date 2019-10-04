@@ -364,7 +364,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let amountChanged = Signal.combineLatest(
       project.map { $0.personalization.backing?.pledgeAmount },
-      self.pledgeAmountDataSignal.map(first)
+      self.pledgeAmountDataSignal.map { $0.0 }
     )
     .map(!=)
 
@@ -415,7 +415,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let valuesChangedAndValid = Signal.combineLatest(
       valuesChanged,
-      self.pledgeAmountDataSignal.map(second)
+      self.pledgeAmountDataSignal.map { $0.3 }
     )
     .map { $0 && $1 }
     .skipRepeats()
