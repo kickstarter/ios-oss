@@ -60,6 +60,7 @@ extension Backing: Argo.Decodable {
   }
 }
 
+#if DEBUG
 /*
  Since staging is not returning all the values for Payment Source, the Backing deserialization is failing
  on that environment. This is a workaround to allow us to test on Staging and should be deleted once the
@@ -79,6 +80,7 @@ private func tryDecodePaymentSource(_ json: JSON?) -> Decoded<GraphUserCreditCar
     return .success(nil)
   }
 }
+#endif
 
 extension Backing: EncodableType {
   public func encode() -> [String: Any] {
