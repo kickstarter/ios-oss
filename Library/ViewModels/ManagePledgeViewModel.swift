@@ -22,12 +22,14 @@ public protocol ManagePledgeViewModelInputs {
 public protocol ManagePledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
+  var configureRewardReceivedWithProject: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<Reward, Never> { get }
   var goToCancelPledge: Signal<(Project, Backing), Never> { get }
   var goToChangePaymentMethod: Signal<Void, Never> { get }
   var goToContactCreator: Signal<Void, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
+  var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var showSuccessBannerWithMessage: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
@@ -44,6 +46,11 @@ public final class ManagePledgeViewModel:
     let projectAndReward = self.projectAndRewardSignal
       .takeWhen(self.viewDidLoadSignal.ignoreValues())
 
+    let project = projectAndReward.map(first)
+    let backing = project
+      .map { $0.personalization.backing }
+      .skipNil()
+
     self.title = projectAndReward
       .map(first)
       .map(navigationBarTitle(with:))
@@ -56,13 +63,10 @@ public final class ManagePledgeViewModel:
     self.configurePledgeSummaryView = projectAndReward
       .map(first)
 
+    self.configureRewardReceivedWithProject = project
+
     self.configureRewardSummaryView = projectAndReward
       .map(second)
-
-    let project = projectAndReward.map(first)
-    let backing = project
-      .map { $0.personalization.backing }
-      .skipNil()
 
     self.showActionSheetMenuWithOptions = project
       .takeWhen(self.menuButtonTappedSignal)
@@ -94,6 +98,9 @@ public final class ManagePledgeViewModel:
     self.goToChangePaymentMethod = self.menuOptionSelectedSignal
       .filter { $0 == .changePaymentMethod }
       .ignoreValues()
+
+    self.rewardReceivedViewControllerViewIsHidden = projectAndReward
+      .map { project, reward in reward.isNoReward || project.personalization.backing?.status != .collected }
 
     self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeSignal.mapConst(
       Strings.Got_it_your_changes_have_been_saved()
@@ -129,12 +136,14 @@ public final class ManagePledgeViewModel:
 
   public let configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
+  public let configureRewardReceivedWithProject: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<Reward, Never>
   public let goToCancelPledge: Signal<(Project, Backing), Never>
   public let goToChangePaymentMethod: Signal<Void, Never>
   public let goToContactCreator: Signal<Void, Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
+  public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>
   public let title: Signal<String, Never>
