@@ -47,6 +47,8 @@ final class PledgeViewModelTests: TestCase {
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
   private let sectionSeparatorsHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
+  private let showApplePayAlertMessage = TestObserver<String, Never>()
+  private let showApplePayAlertTitle = TestObserver<String, Never>()
   private let title = TestObserver<String, Never>()
   private let updatePledgeButtonEnabled = TestObserver<Bool, Never>()
   private let updatePledgeFailedWithError = TestObserver<String, Never>()
@@ -106,6 +108,8 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.updatePledgeButtonEnabled.observe(self.updatePledgeButtonEnabled.observer)
     self.vm.outputs.sectionSeparatorsHidden.observe(self.sectionSeparatorsHidden.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
+    self.vm.outputs.showApplePayAlert.map(second).observe(self.showApplePayAlertMessage.observer)
+    self.vm.outputs.showApplePayAlert.map(first).observe(self.showApplePayAlertTitle.observer)
 
     self.vm.outputs.title.observe(self.title.observer)
 
@@ -448,24 +452,24 @@ final class PledgeViewModelTests: TestCase {
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
 
-      let amount1 = 66.0
+      let data1 = (amount: 66.0, min: 10.0, max: 10_000.0, isValid: true)
 
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: amount1, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data1)
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, amount1])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, data1.amount])
       self.configureSummaryCellWithDataProject.assertValues([project, project])
 
-      let amount2 = 99.0
+      let data2 = (amount: 99.0, min: 10.0, max: 10_000.0, isValid: true)
 
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: amount2, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data2)
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, amount1, amount2])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, data1.amount, data2.amount])
       self.configureSummaryCellWithDataProject.assertValues([project, project, project])
     }
   }
@@ -541,15 +545,15 @@ final class PledgeViewModelTests: TestCase {
       ])
       self.configureSummaryCellWithDataProject.assertValues([project, project])
 
-      let amount1 = 200.0
+      let data1 = (amount: 200.0, min: 10.0, max: 10_000.0, isValid: true)
 
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: amount1, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data1)
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.configureSummaryCellWithDataPledgeTotal.assertValues(
-        [reward.minimum, reward.minimum + shippingRule1.cost, shippingRule1.cost + amount1]
+        [reward.minimum, reward.minimum + shippingRule1.cost, shippingRule1.cost + data1.amount]
       )
       self.configureSummaryCellWithDataProject.assertValues([project, project, project])
 
@@ -565,15 +569,15 @@ final class PledgeViewModelTests: TestCase {
         [
           reward.minimum,
           reward.minimum + shippingRule1.cost,
-          shippingRule1.cost + amount1,
-          shippingRule2.cost + amount1
+          shippingRule1.cost + data1.amount,
+          shippingRule2.cost + data1.amount
         ]
       )
       self.configureSummaryCellWithDataProject.assertValues([project, project, project, project])
 
-      let amount2 = 1_999.0
+      let data2 = (amount: 1_999.0, min: 10.0, max: 10_000.0, isValid: true)
 
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: amount2, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data2)
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
@@ -582,9 +586,9 @@ final class PledgeViewModelTests: TestCase {
         [
           reward.minimum,
           reward.minimum + shippingRule1.cost,
-          shippingRule1.cost + amount1,
-          shippingRule2.cost + amount1,
-          shippingRule2.cost + amount2
+          shippingRule1.cost + data1.amount,
+          shippingRule2.cost + data1.amount,
+          shippingRule2.cost + data2.amount
         ]
       )
       self.configureSummaryCellWithDataProject.assertValues([project, project, project, project, project])
@@ -627,8 +631,10 @@ final class PledgeViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
+    let pledgeAmountData = (amount: 99.0, min: 5.0, max: 10_000.0, isValid: true)
 
     self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -652,8 +658,10 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.minimum .~ 25
       |> Reward.lens.shipping.enabled .~ true
     let shippingRule = ShippingRule.template
+    let pledgeAmountData = (amount: 99.0, min: 25.0, max: 10_000.0, isValid: true)
 
     self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -673,14 +681,58 @@ final class PledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
+  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_AboveMax() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 25
+    let pledgeAmountData = (amount: 20_000.0, min: 25.0, max: 10_000.0, isValid: false)
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+    self.vm.inputs.viewDidLoad()
+
+    self.showApplePayAlertMessage.assertDidNotEmitValue()
+    self.showApplePayAlertTitle.assertDidNotEmitValue()
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.showApplePayAlertMessage.assertValues(
+      ["Please enter a pledge amount between US$ 25 and US$ 10,000."]
+    )
+    self.showApplePayAlertTitle.assertValues(["Almost there!"])
+  }
+
+  func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_BellowMin() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 25
+    let pledgeAmountData = (amount: 10.0, min: 25.0, max: 10_000.0, isValid: false)
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+    self.vm.inputs.viewDidLoad()
+
+    self.showApplePayAlertMessage.assertDidNotEmitValue()
+    self.showApplePayAlertTitle.assertDidNotEmitValue()
+
+    self.vm.inputs.applePayButtonTapped()
+
+    self.showApplePayAlertMessage.assertValues(
+      ["Please enter a pledge amount between US$ 25 and US$ 10,000."]
+    )
+    self.showApplePayAlertTitle.assertValues(["Almost there!"])
+  }
+
   func testPaymentAuthorizationViewControllerDidFinish_WithoutCompletingTransaction() {
     let project = Project.template
     let reward = Reward.template
       |> Reward.lens.minimum .~ 25
       |> Reward.lens.shipping.enabled .~ true
     let shippingRule = ShippingRule.template
+    let pledgeAmountData = (amount: 99.0, min: 25.0, max: 10_000.0, isValid: true)
 
     self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.shippingRuleSelected(shippingRule)
@@ -957,13 +1009,17 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.updatePledgeButtonEnabled.assertDidNotEmitValue()
 
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: true))
+      let data1 = (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data1)
       self.updatePledgeButtonEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
       self.updatePledgeButtonEnabled.assertValues([true])
 
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: false))
+      let data2 = (amount: 5.0, min: 10.0, max: 10_000.0, isValid: false)
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data2)
       self.updatePledgeButtonEnabled.assertValues([true, false])
     }
   }
@@ -986,7 +1042,9 @@ final class PledgeViewModelTests: TestCase {
       self.createBackingError.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
 
       self.updatePledgeButtonEnabled.assertValues([true])
 
@@ -1017,7 +1075,9 @@ final class PledgeViewModelTests: TestCase {
       self.createBackingError.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (amount: 25, isValid: true))
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
 
       self.updatePledgeButtonEnabled.assertValues([true])
 

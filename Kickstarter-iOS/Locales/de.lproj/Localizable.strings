@@ -487,6 +487,7 @@
 "The_live_stream_was_interrupted" = "Live-Stream wurde unterbrochen";
 "The_live_stream_will_start_soon" = "Live-Stream started in Kürze";
 "The_live_stream_will_start_time" = "Dieser Live-Stream started in %{time}.";
+"The_minimum_pledge_is" = "The minimum pledge is %{min_pledge}.";
 "The_replay_will_start_soon" = "Wiedergabe started in Kürze";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "Hol dir den Zeitgeist direkt in deine Inbox: neue Projekte und Stories, die in aller Munde sind.";
 "There_was_a_problem_with_this_payment" = "Es ist ein Problem bei der Zahlung aufgetreten.";

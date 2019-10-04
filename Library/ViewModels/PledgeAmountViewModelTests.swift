@@ -8,12 +8,16 @@ internal final class PledgeAmountViewModelTests: TestCase {
   private let vm: PledgeAmountViewModelType = PledgeAmountViewModel()
 
   private let amountIsValid = TestObserver<Bool, Never>()
+  private let amountMax = TestObserver<Double, Never>()
+  private let amountMin = TestObserver<Double, Never>()
   private let amountValue = TestObserver<Double, Never>()
   private let currency = TestObserver<String, Never>()
   private let doneButtonIsEnabled = TestObserver<Bool, Never>()
   private let generateSelectionFeedback = TestObserver<Void, Never>()
   private let generateNotificationWarningFeedback = TestObserver<Void, Never>()
   private let labelTextColor = TestObserver<UIColor, Never>()
+  private let minPledgeAmountLabelIsHidden = TestObserver<Bool, Never>()
+  private let minPledgeAmountLabelText = TestObserver<String, Never>()
   private let stepperMaxValue = TestObserver<Double, Never>()
   private let stepperMinValue = TestObserver<Double, Never>()
   private let stepperStepValue = TestObserver<Double, Never>()
@@ -25,8 +29,10 @@ internal final class PledgeAmountViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.amount.map(second).observe(self.amountIsValid.observer)
-    self.vm.outputs.amount.map(first).observe(self.amountValue.observer)
+    self.vm.outputs.amount.map { $0.isValid }.observe(self.amountIsValid.observer)
+    self.vm.outputs.amount.map { $0.max }.observe(self.amountMax.observer)
+    self.vm.outputs.amount.map { $0.min }.observe(self.amountMin.observer)
+    self.vm.outputs.amount.map { $0.amount }.observe(self.amountValue.observer)
     self.vm.outputs.currency.observe(self.currency.observer)
     self.vm.outputs.doneButtonIsEnabled.observe(self.doneButtonIsEnabled.observer)
     self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
@@ -34,6 +40,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
       self.generateNotificationWarningFeedback.observer
     )
     self.vm.outputs.labelTextColor.observe(self.labelTextColor.observer)
+    self.vm.outputs.minPledgeAmountLabelIsHidden.observe(self.minPledgeAmountLabelIsHidden.observer)
+    self.vm.outputs.minPledgeAmountLabelText.observe(self.minPledgeAmountLabelText.observer)
     self.vm.outputs.stepperMaxValue.observe(self.stepperMaxValue.observer)
     self.vm.outputs.stepperMinValue.observe(self.stepperMinValue.observer)
     self.vm.outputs.stepperStepValue.observe(self.stepperStepValue.observer)
@@ -57,6 +65,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: Reward.postcards)
 
     self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([6])
+    self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([690])
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
@@ -70,6 +80,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: Reward.noReward)
 
     self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([1])
+    self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([1])
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
@@ -86,6 +98,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: Reward.noReward)
 
     self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([10])
+    self.amountMax.assertValues([200_000])
     self.amountValue.assertValues([10])
     self.currency.assertValues(["MX$"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
@@ -105,6 +119,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: Reward.noReward)
 
     self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([1])
+    self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([1])
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
@@ -118,6 +134,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
     self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([10])
+    self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([10])
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
@@ -137,6 +155,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward)
 
     self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([200])
+    self.amountMax.assertValues([1_200_000])
     self.amountValue.assertValues([200])
     self.currency.assertValues(["¥"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
@@ -741,6 +761,20 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.labelTextColor.assertValues([green, red, green, red, green])
   }
 
+  func testMinPledgeAmountLabelIsHidden() {
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+    self.minPledgeAmountLabelIsHidden.assertValues([false])
+
+    self.vm.inputs.configureWith(project: .template, reward: Reward.noReward)
+    self.minPledgeAmountLabelIsHidden.assertValues([false, true])
+  }
+
+  func testMinPledgeAmountLabelText() {
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+
+    self.minPledgeAmountLabelText.assertValues(["The minimum pledge is US$ 10."])
+  }
+
   func testStepperValueChangesWithTextFieldInput() {
     let maxValue = PledgeAmountStepperConstants.max
 
@@ -773,22 +807,32 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
     self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([10])
+    self.amountMax.assertValues([10_000])
     self.amountValue.assertValue(10)
 
     self.vm.inputs.textFieldValueChanged("11")
     self.amountIsValid.assertValues([true, true])
+    self.amountMin.assertValues([10, 10])
+    self.amountMax.assertValues([10_000, 10_000])
     self.amountValue.assertValues([10, 11])
 
     self.vm.inputs.textFieldValueChanged("")
     self.amountIsValid.assertValues([true, true, false])
+    self.amountMin.assertValues([10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 11, 0])
 
     self.vm.inputs.textFieldValueChanged("5")
     self.amountIsValid.assertValues([true, true, false, false])
+    self.amountMin.assertValues([10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 11, 0, 5])
 
     self.vm.inputs.textFieldValueChanged(nil)
     self.amountIsValid.assertValues([true, true, false, false, false])
+    self.amountMin.assertValues([10, 10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 11, 0, 5, 0])
   }
 
@@ -798,36 +842,50 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: .template, reward: .template)
     self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([10])
+    self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
 
     self.vm.inputs.textFieldDidEndEditing(nil)
     self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([10])
+    self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
 
     self.vm.inputs.textFieldDidEndEditing("16")
     self.amountIsValid.assertValues([true, true])
+    self.amountMin.assertValues([10, 10])
+    self.amountMax.assertValues([10_000, 10_000])
     self.amountValue.assertValues([10, 16])
     self.textFieldValue.assertValues(["10", "16"])
 
     self.vm.inputs.textFieldDidEndEditing(String(maxValue))
     self.amountIsValid.assertValues([true, true, false])
+    self.amountMin.assertValues([10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 16, maxValue])
     self.textFieldValue.assertValues(["10", "16", maxValueFormatted])
 
     self.vm.inputs.textFieldDidEndEditing("0")
     self.amountIsValid.assertValues([true, true, false, false])
+    self.amountMin.assertValues([10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 16, maxValue, 0])
     self.textFieldValue.assertValues(["10", "16", maxValueFormatted, "0"])
 
     self.vm.inputs.textFieldDidEndEditing("17")
     self.amountIsValid.assertValues([true, true, false, false, true])
+    self.amountMin.assertValues([10, 10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 16, maxValue, 0, 17])
     self.textFieldValue.assertValues(["10", "16", maxValueFormatted, "0", "17"])
 
     self.vm.inputs.textFieldDidEndEditing("")
     self.amountIsValid.assertValues([true, true, false, false, true])
+    self.amountMin.assertValues([10, 10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 16, maxValue, 0, 17])
     self.textFieldValue.assertValues(["10", "16", maxValueFormatted, "0", "17"])
   }
@@ -864,6 +922,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
     self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([10])
+    self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([10])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
@@ -872,6 +932,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged("10")
     self.amountIsValid.assertValues([true, true])
+    self.amountMin.assertValues([10, 10])
+    self.amountMax.assertValues([10_000, 10_000])
     self.amountValue.assertValues([10, 10])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
@@ -880,6 +942,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged("10.")
     self.amountIsValid.assertValues([true, true, true])
+    self.amountMin.assertValues([10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
@@ -888,6 +952,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged("10.0")
     self.amountIsValid.assertValues([true, true, true, true])
+    self.amountMin.assertValues([10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10, 10])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
@@ -896,6 +962,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged("10.00")
     self.amountIsValid.assertValues([true, true, true, true, true])
+    self.amountMin.assertValues([10, 10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10, 10, 10])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
@@ -904,6 +972,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged("10.01")
     self.amountIsValid.assertValues([true, true, true, true, true, true])
+    self.amountMin.assertValues([10, 10, 10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
@@ -912,6 +982,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged("10.010")
     self.amountIsValid.assertValues([true, true, true, true, true, true, true])
+    self.amountMin.assertValues([10, 10, 10, 10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
@@ -920,6 +992,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged("10.0100")
     self.amountIsValid.assertValues([true, true, true, true, true, true, true, true])
+    self.amountMin.assertValues([10, 10, 10, 10, 10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
@@ -928,6 +1002,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged("10.019")
     self.amountIsValid.assertValues([true, true, true, true, true, true, true, true, true])
+    self.amountMin.assertValues([10, 10, 10, 10, 10, 10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01, 10.02])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
@@ -936,6 +1012,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged("10.0194444444")
     self.amountIsValid.assertValues([true, true, true, true, true, true, true, true, true, true])
+    self.amountMin.assertValues([10, 10, 10, 10, 10, 10, 10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01, 10.02, 10.02])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
@@ -944,6 +1022,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged("9.999")
     self.amountIsValid.assertValues([true, true, true, true, true, true, true, true, true, true, false])
+    self.amountMin.assertValues([10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01, 10.02, 10.02, 10])
     self.doneButtonIsEnabled.assertValues([true, false])
     self.labelTextColor.assertValues([green, red])
@@ -952,6 +1032,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.textFieldValueChanged("9.99")
     self.amountIsValid.assertValues([true, true, true, true, true, true, true, true, true, true, false, false])
+    self.amountMin.assertValues([10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10])
+    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01, 10.02, 10.02, 10, 9.99])
     self.doneButtonIsEnabled.assertValues([true, false])
     self.labelTextColor.assertValues([green, red])
