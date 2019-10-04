@@ -294,7 +294,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeForControllerAction()
       .observeValues { [weak self] title, message in
         self?.presentApplePayInvalidAmountAlert(title: title, message: message)
-    }
+      }
   }
 
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PaymentAuthorizationData) {
