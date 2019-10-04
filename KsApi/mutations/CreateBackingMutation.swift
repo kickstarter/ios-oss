@@ -10,11 +10,15 @@ public struct CreateBackingMutation<T: GraphMutationInput>: GraphMutation {
   public var description: String {
     return """
     mutation createBacking($input: CreateBackingInput!) {
-    createBacking(input: $input) {
-    checkout {
-      state
-    }
-      clientMutationId
+      createBacking(input: $input) {
+        clientMutationId
+        checkout {
+          state
+          backing {
+            requiresAction
+            clientSecret
+          }
+        }
       }
     }
     """
