@@ -7941,6 +7941,23 @@ catch your eye?"
     )
   }
   /**
+   "The minimum pledge is %{min_pledge}."
+
+   - **en**: "The minimum pledge is %{min_pledge}."
+   - **de**: "The minimum pledge is %{min_pledge}."
+   - **es**: "The minimum pledge is %{min_pledge}."
+   - **fr**: "The minimum pledge is %{min_pledge}."
+   - **ja**: "The minimum pledge is %{min_pledge}."
+  */
+  public static func The_minimum_pledge_is(min_pledge: String) -> String {
+    return localizedString(
+      key: "The_minimum_pledge_is",
+      defaultValue: "The minimum pledge is %{min_pledge}.",
+      count: nil,
+      substitutions: ["min_pledge": min_pledge]
+    )
+  }
+  /**
    "The replay will start soon"
 
    - **en**: "The replay will start soon"
