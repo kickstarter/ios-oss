@@ -65,7 +65,6 @@ internal final class AddNewCardViewModelTests: TestCase {
     ) {
       self.vm.inputs.configure(with: .settings, project: nil)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: .settings, project: nil)
       self.saveButtonIsEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.cardholderNameChanged("Native Squad")
@@ -95,12 +94,11 @@ internal final class AddNewCardViewModelTests: TestCase {
     ) {
       self.vm.inputs.configure(with: .settings, project: nil)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: .pledge, project: Project.template)
 
       self.vm.inputs.cardholderNameChanged("Native Squad")
       self.vm.inputs.cardholderNameTextFieldReturn()
       self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
-      self.vm.inputs.creditCardChanged(cardDetails: ("3782 822463 10005", 11, 99, "123", .visa))
+      self.vm.inputs.creditCardChanged(cardDetails: ("3782 822463 10005", 11, 99, "123", .amex))
 
       self.vm.inputs.paymentInfo(isValid: true)
       self.vm.inputs.zipcodeChanged(zipcode: "123")
@@ -121,7 +119,7 @@ internal final class AddNewCardViewModelTests: TestCase {
 
   func testAddCardFailure_InvalidToken() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configure(with: .pledge, project: Project.template)
+    self.vm.inputs.configure(with: .settings, project: nil)
     self.vm.inputs.cardholderNameChanged("Native Squad")
     self.vm.inputs.cardholderNameTextFieldReturn()
     self.paymentDetailsBecomeFirstResponder.assertDidEmitValue()
@@ -149,7 +147,6 @@ internal final class AddNewCardViewModelTests: TestCase {
     withEnvironment(apiService: MockService(addNewCreditCardResult: .failure(.emptyResponse(nil)))) {
       self.vm.inputs.configure(with: .settings, project: nil)
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: .pledge, project: Project.template)
       self.vm.inputs.cardholderNameChanged("Native Squad")
       self.vm.inputs.cardholderNameTextFieldReturn()
       self.paymentDetailsBecomeFirstResponder
@@ -180,7 +177,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.saveButtonIsEnabled.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configure(with: .pledge, project: Project.template)
+    self.vm.inputs.configure(with: .settings, project: nil)
 
     self.cardholderNameBecomeFirstResponder
       .assertValueCount(1, "Cardholder name field is first responder when view loads.")
@@ -189,6 +186,7 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.cardholderNameChanged("")
     self.vm.inputs.paymentInfo(isValid: false)
     self.vm.inputs.zipcodeChanged(zipcode: "")
+    self.saveButtonIsEnabled.assertDidNotEmitValue()
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
     self.vm.inputs.cardholderNameTextFieldReturn()
@@ -196,6 +194,7 @@ internal final class AddNewCardViewModelTests: TestCase {
       .assertValueCount(1, "Does not emit again.")
     self.paymentDetailsBecomeFirstResponder
       .assertValueCount(1, "First responder after editing cardholder name.")
+    self.saveButtonIsEnabled.assertDidNotEmitValue()
 
     self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123", .visa))
     self.saveButtonIsEnabled.assertValues([false], "Disabled form is incomplete")
@@ -209,7 +208,7 @@ internal final class AddNewCardViewModelTests: TestCase {
   func testSaveButtonEnabled() {
     self.saveButtonIsEnabled.assertDidNotEmitValue()
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configure(with: .pledge, project: Project.template)
+    self.vm.inputs.configure(with: .settings, project: nil)
 
     self.vm.inputs.cardholderNameChanged("")
     self.saveButtonIsEnabled.assertDidNotEmitValue()
@@ -220,12 +219,19 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.inputs.zipcodeChanged(zipcode: "")
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
-    self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123", .visa))
+    self.vm.inputs.creditCardChanged(cardDetails: ("6200 0000 0000 0005", 11, 99, "123", .unionPay))
     self.saveButtonIsEnabled.assertValues([false], "Disabled form is incomplete")
+    self.vm.inputs.paymentInfo(isValid: false)
+    self.vm.inputs.zipcodeChanged(zipcode: "123")
+
+    self.saveButtonIsEnabled.assertValues([false], "Enabled when form is valid.")
+
+    self.vm.inputs.cardholderNameChanged("Native Squad")
+    self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123", .visa))
     self.vm.inputs.paymentInfo(isValid: true)
     self.vm.inputs.zipcodeChanged(zipcode: "123")
 
-    self.saveButtonIsEnabled.assertValues([false, true], "Enabled when form is valid.")
+    self.saveButtonIsEnabled.assertValues([false, true], "Disabled if card brand is invalid")
   }
 
   func testSetPublishableKey() {
@@ -264,7 +270,7 @@ internal final class AddNewCardViewModelTests: TestCase {
 
   func testPaymentDetails() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configure(with: .pledge, project: Project.template)
+    self.vm.inputs.configure(with: .settings, project: nil)
 
     self.vm.inputs.cardholderNameChanged("Native Squad")
     self.vm.inputs.creditCardChanged(cardDetails: ("4242 4242 4242 4242", 11, 99, "123", .visa))
@@ -426,5 +432,31 @@ internal final class AddNewCardViewModelTests: TestCase {
         ["You can’t use this credit card to back a project from Hastings, UK."],
         "Card is unsupported"
       )
+  }
+
+  func testUnsupportedCardBrandsError_withUnionPay() {
+    let project = Project.cosmicSurgery
+      |> Project.lens.availableCardTypes .~ [
+        "AMEX",
+        "MASTERCARD",
+        "VISA",
+        "UNION_PAY"
+    ]
+
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configure(with: .pledge, project: project)
+
+    self.creditCardValidationErrorContainerHidden
+      .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
+
+    self.vm.inputs.creditCardChanged(cardDetails: ("6200", nil, nil, nil, .unionPay))
+
+    self.creditCardValidationErrorContainerHidden
+      .assertValues([true, false], "Unsupported card message hides with a valid card brand")
+    self.unsupportedCardBrandErrorText
+      .assertValues(
+        ["We don't accept this card type. Please try again with another one."],
+        "Card is unsupported"
+    )
   }
 }

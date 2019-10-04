@@ -87,9 +87,9 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       .map(second)
 
     let cardBrandIsValid = Signal.combineLatest(
-      cardBrand,
-      project
-    ).map { cardBrand, project in
+      project,
+      cardBrand
+    ).map { project, cardBrand in
       cardBrandIsSupported(project: project, cardBrand: cardBrand)
     }
 
@@ -102,11 +102,13 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
         brandValid || cardNumber.count < 2
       }
 
-    self.unsupportedCardBrandErrorText = Signal.combineLatest(cardBrandIsValid, project.skipNil())
-      .map { _, project in
+    let invalidCardBrand = cardBrandIsValid.filter(isFalse)
+
+    self.unsupportedCardBrandErrorText = Signal.combineLatest(invalidCardBrand, project, cardBrand)
+      .map { _, project, cardBrand in
+        cardBrand != .unionPay  ?
         Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-          project_country: project.location.displayableName
-        )
+          project_country: project?.location.displayableName ?? "") : Strings.Unsupported_card_type()
       }
 
     self.creditCardValidationErrorContainerHidden = Signal.merge(
@@ -314,6 +316,10 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 }
 
 private func cardBrandIsSupported(project: Project?, cardBrand: GraphUserCreditCard.CreditCardType) -> Bool {
+  if cardBrand == .unionPay {
+    return false
+  }
+
   guard let project = project else { return true }
 
   guard let availableCardTypes = project.availableCardTypes else {
