@@ -55,7 +55,7 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
 
     let triggerSaveAction = self.saveButtonEnabledProperty.signal
       .takeWhen(self.dismissKeyboard)
-      .filter { isTrue($0) }
+      .filter(isTrue)
       .ignoreValues()
 
     let changeEmailEvent = Signal.combineLatest(
