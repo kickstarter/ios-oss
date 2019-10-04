@@ -47,7 +47,7 @@ extension Backing: Argo.Decodable {
     let tmp2 = tmp1
       <*> json <|? "location_id"
       <*> json <|? "location_name"
-      <*> (json <| "payment_source" >>- tryDecodePaymentSource)
+      <*> (json <|? "payment_source" >>- tryDecodePaymentSource)
       <*> json <| "pledged_at"
       <*> json <| "project_country"
       <*> json <| "project_id"
