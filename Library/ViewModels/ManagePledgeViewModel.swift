@@ -15,6 +15,7 @@ public protocol ManagePledgeViewModelInputs {
   func configureWith(_ project: Project, reward: Reward)
   func menuButtonTapped()
   func menuOptionSelected(with action: ManagePledgeAlertAction)
+  func pledgeViewControllerDidUpdatePledge()
   func viewDidLoad()
 }
 
@@ -27,8 +28,8 @@ public protocol ManagePledgeViewModelOutputs {
   var goToContactCreator: Signal<Void, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
-
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
+  var showSuccessBannerWithMessage: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
 }
 
@@ -93,6 +94,10 @@ public final class ManagePledgeViewModel:
     self.goToChangePaymentMethod = self.menuOptionSelectedSignal
       .filter { $0 == .changePaymentMethod }
       .ignoreValues()
+
+    self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeSignal.mapConst(
+      Strings.Got_it_your_changes_have_been_saved()
+    )
   }
 
   private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
@@ -111,6 +116,12 @@ public final class ManagePledgeViewModel:
     self.menuOptionSelectedObserver.send(value: action)
   }
 
+  private let (pledgeViewControllerDidUpdatePledgeSignal, pledgeViewControllerDidUpdatePledgeObserver)
+    = Signal<(), Never>.pipe()
+  public func pledgeViewControllerDidUpdatePledge() {
+    self.pledgeViewControllerDidUpdatePledgeObserver.send(value: ())
+  }
+
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
   public func viewDidLoad() {
     self.viewDidLoadObserver.send(value: ())
@@ -125,6 +136,7 @@ public final class ManagePledgeViewModel:
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
+  public let showSuccessBannerWithMessage: Signal<String, Never>
   public let title: Signal<String, Never>
 
   public var inputs: ManagePledgeViewModelInputs { return self }

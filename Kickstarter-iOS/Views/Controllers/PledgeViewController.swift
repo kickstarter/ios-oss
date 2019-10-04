@@ -4,6 +4,10 @@ import Prelude
 import Stripe
 import UIKit
 
+protocol PledgeViewControllerDelegate: AnyObject {
+  func pledgeViewControllerDidUpdatePledge(_ viewController: PledgeViewController)
+}
+
 final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
@@ -12,6 +16,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   private lazy var confirmationSectionViews = {
     [self.confirmationLabel, self.confirmButton]
   }()
+
+  public weak var delegate: PledgeViewControllerDelegate?
 
   private lazy var descriptionSectionSeparator: UIView = {
     UIView(frame: .zero)
@@ -110,6 +116,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.view.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(PledgeViewController.dismissKeyboard))
+    )
+
+    self.confirmButton.addTarget(
+      self,
+      action: #selector(PledgeViewController.confirmButtonTapped),
+      for: .touchUpInside
     )
 
     self.configureChildViewControllers()
@@ -257,6 +269,13 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.goToThanks(project: project)
       }
 
+    self.viewModel.outputs.notifyDelegateUpdatePledgeDidSucceed
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.pledgeViewControllerDidUpdatePledge(self)
+      }
+
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
@@ -296,6 +315,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
+
+    self.viewModel.outputs.updatePledgeFailedWithError
+      .observeForUI()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
+      }
   }
 
   private func goToPaymentAuthorization(_ paymentAuthorizationData: PaymentAuthorizationData) {
@@ -322,6 +347,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   }
 
   // MARK: - Actions
+
+  @objc private func confirmButtonTapped() {
+    self.viewModel.inputs.confirmButtonTapped()
+  }
 
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
