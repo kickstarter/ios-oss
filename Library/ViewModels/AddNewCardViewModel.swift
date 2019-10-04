@@ -109,9 +109,10 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
     self.unsupportedCardBrandErrorText = Signal.combineLatest(invalidCardBrand, project, intent)
       .map { _, project, intent in
-        intent == .pledge  ?
-        Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-          project_country: project?.location.displayableName ?? "") : Strings.Unsupported_card_type()
+        intent == .pledge ?
+          Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
+            project_country: project?.location.displayableName ?? ""
+          ) : Strings.Unsupported_card_type()
       }
 
     self.creditCardValidationErrorContainerHidden = Signal.merge(
@@ -319,7 +320,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 }
 
 private func cardBrandIsSupported(project: Project?, cardBrand: GraphUserCreditCard.CreditCardType) -> Bool {
-
   let supportedCardBrands: [GraphUserCreditCard.CreditCardType] = [
     .amex,
     .diners,

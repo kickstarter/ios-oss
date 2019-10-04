@@ -449,6 +449,6 @@ internal final class AddNewCardViewModelTests: TestCase {
       .assertValues(
         ["We don't accept this card type. Please try again with another one."],
         "Card is unsupported"
-    )
+      )
   }
 }
