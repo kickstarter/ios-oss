@@ -434,22 +434,14 @@ internal final class AddNewCardViewModelTests: TestCase {
       )
   }
 
-  func testUnsupportedCardBrandsError_withUnionPay() {
-    let project = Project.cosmicSurgery
-      |> Project.lens.availableCardTypes .~ [
-        "AMEX",
-        "MASTERCARD",
-        "VISA",
-        "UNION_PAY"
-    ]
-
+  func testUnsupportedCardBrandsError_fromSettings() {
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configure(with: .pledge, project: project)
+    self.vm.inputs.configure(with: .settings, project: nil)
 
     self.creditCardValidationErrorContainerHidden
       .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
 
-    self.vm.inputs.creditCardChanged(cardDetails: ("6200", nil, nil, nil, .unionPay))
+    self.vm.inputs.creditCardChanged(cardDetails: ("6200", nil, nil, nil, .generic))
 
     self.creditCardValidationErrorContainerHidden
       .assertValues([true, false], "Unsupported card message hides with a valid card brand")

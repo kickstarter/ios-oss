@@ -104,9 +104,12 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
     let invalidCardBrand = cardBrandIsValid.filter(isFalse)
 
-    self.unsupportedCardBrandErrorText = Signal.combineLatest(invalidCardBrand, project, cardBrand)
-      .map { _, project, cardBrand in
-        cardBrand != .unionPay  ?
+    let intent = self.addNewCardIntentAndProjectProperty.signal.skipNil()
+      .map(first)
+
+    self.unsupportedCardBrandErrorText = Signal.combineLatest(invalidCardBrand, project, intent)
+      .map { _, project, intent in
+        intent == .pledge  ?
         Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
           project_country: project?.location.displayableName ?? "") : Strings.Unsupported_card_type()
       }
@@ -316,11 +319,20 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 }
 
 private func cardBrandIsSupported(project: Project?, cardBrand: GraphUserCreditCard.CreditCardType) -> Bool {
-  if cardBrand == .unionPay {
-    return false
-  }
 
-  guard let project = project else { return true }
+  let supportedCardBrands: [GraphUserCreditCard.CreditCardType] = [
+    .amex,
+    .diners,
+    .discover,
+    .jcb,
+    .mastercard,
+    .unionPay,
+    .visa
+  ]
+
+  guard let project = project else {
+    return supportedCardBrands.contains(cardBrand)
+  }
 
   guard let availableCardTypes = project.availableCardTypes else {
     return true
