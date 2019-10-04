@@ -19,10 +19,12 @@ final class PledgeAmountViewController: UIViewController {
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountInputView: AmountInputView = { AmountInputView(frame: .zero) }()
+  private lazy var minPledgeAmountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var horizontalSpacer: UIView = { UIView(frame: .zero) }()
   private lazy var stepper: UIStepper = { UIStepper(frame: .zero) }()
+  private lazy var verticalSpacer: UIView = { UIView(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -36,7 +38,12 @@ final class PledgeAmountViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleLabel, self.adaptableStackView, UIView(frame: .zero)], self.rootStackView)
+    _ = ([
+      self.titleLabel,
+      self.adaptableStackView,
+      self.minPledgeAmountLabel,
+      self.verticalSpacer
+    ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.stepper, self.horizontalSpacer, self.amountInputView], self.adaptableStackView)
@@ -91,6 +98,9 @@ final class PledgeAmountViewController: UIViewController {
 
     _ = self.stepper
       |> stepperStyle
+
+    _ = self.minPledgeAmountLabel
+      |> minPledgeAmountLabelStyle
   }
 
   // MARK: - View model
@@ -104,6 +114,8 @@ final class PledgeAmountViewController: UIViewController {
     self.amountInputView.textField.rac.isFirstResponder = self.viewModel.outputs.textFieldIsFirstResponder
     self.amountInputView.textField.rac.text = self.viewModel.outputs.textFieldValue
     self.amountInputView.textField.rac.textColor = self.viewModel.outputs.textFieldTextColor
+    self.minPledgeAmountLabel.rac.hidden = self.viewModel.outputs.minPledgeAmountLabelIsHidden
+    self.minPledgeAmountLabel.rac.text = self.viewModel.outputs.minPledgeAmountLabelText
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
     self.stepper.rac.stepValue = self.viewModel.outputs.stepperStepValue
@@ -181,4 +193,11 @@ private func stepperStyle(_ stepper: UIStepper) -> UIStepper {
     <> UIStepper.lens.incrementImage(for: .normal) .~ image(named: "stepper-increment-normal")
     <> UIStepper.lens.incrementImage(for: .disabled) .~ image(named: "stepper-increment-disabled")
     <> UIStepper.lens.incrementImage(for: .highlighted) .~ image(named: "stepper-increment-highlighted")
+}
+
+private let minPledgeAmountLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_caption1()
+    |> \.numberOfLines .~ 0
+    |> \.textColor .~ UIColor.ksr_text_navy_600
 }
