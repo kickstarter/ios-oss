@@ -229,7 +229,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let showApplePayAlert = pledgeAmountIsValid
       .takeWhen(self.applePayButtonTappedSignal)
-      .filter { isFalse($0) }
+      .filter(isFalse)
 
     self.goToApplePayPaymentAuthorization = paymentAuthorizationData
       .takeWhen(goToApplePayPaymentAuthorization)
