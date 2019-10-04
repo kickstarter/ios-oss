@@ -29,10 +29,10 @@ internal final class PledgeAmountViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.amount.map { $0.3 }.observe(self.amountIsValid.observer)
-    self.vm.outputs.amount.map { $0.2 }.observe(self.amountMax.observer)
-    self.vm.outputs.amount.map { $0.1 }.observe(self.amountMin.observer)
-    self.vm.outputs.amount.map { $0.0 }.observe(self.amountValue.observer)
+    self.vm.outputs.amount.map { $0.isValid }.observe(self.amountIsValid.observer)
+    self.vm.outputs.amount.map { $0.max }.observe(self.amountMax.observer)
+    self.vm.outputs.amount.map { $0.min }.observe(self.amountMin.observer)
+    self.vm.outputs.amount.map { $0.amount }.observe(self.amountValue.observer)
     self.vm.outputs.currency.observe(self.currency.observer)
     self.vm.outputs.doneButtonIsEnabled.observe(self.doneButtonIsEnabled.observer)
     self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)

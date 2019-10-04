@@ -18,7 +18,7 @@ public protocol PledgeAmountViewModelInputs {
 }
 
 public protocol PledgeAmountViewModelOutputs {
-  var amount: Signal<(Double, Double, Double, Bool), Never> { get }
+  var amount: Signal<PledgeAmountData, Never> { get }
   var currency: Signal<String, Never> { get }
   var doneButtonIsEnabled: Signal<Bool, Never> { get }
   var generateSelectionFeedback: Signal<Void, Never> { get }
@@ -203,7 +203,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.textFieldValueProperty.value = value
   }
 
-  public let amount: Signal<(Double, Double, Double, Bool), Never>
+  public let amount: Signal<PledgeAmountData, Never>
   public let currency: Signal<String, Never>
   public let doneButtonIsEnabled: Signal<Bool, Never>
   public let generateSelectionFeedback: Signal<Void, Never>
