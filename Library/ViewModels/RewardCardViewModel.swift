@@ -83,7 +83,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       .map(formattedAmountForRewardOrBacking(project:rewardOrBacking:))
 
     self.descriptionLabelText = projectAndReward
-      .map(rewardDescription(project:reward:))
+      .map(localizedDescription(project:reward:))
 
     self.rewardTitleLabelHidden = reward
       .map { $0.title == nil && !$0.isNoReward }
@@ -181,7 +181,7 @@ private func backingReward(fromProject project: Project) -> Reward? {
     .coalesceWith(.noReward)
 }
 
-private func rewardDescription(project: Project, reward: Reward) -> String {
+private func localizedDescription(project: Project, reward: Reward) -> String {
   guard project.personalization.isBacking == true else {
     return reward.isNoReward ?
       Strings.Back_it_because_you_believe_in_it() :

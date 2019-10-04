@@ -114,9 +114,7 @@ final class RewardCardViewModelTests: TestCase {
     )
 
     self.rewardTitleLabelHidden.assertValues([false])
-    self.rewardTitleLabelText.assertValues([
-      "You pledged without a reward"
-    ])
+    self.rewardTitleLabelText.assertValues(["You pledged without a reward"])
   }
 
   // MARK: - Reward Minimum
