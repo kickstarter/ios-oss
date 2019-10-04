@@ -23,7 +23,7 @@ final class BackingTests: XCTestCase {
       "project_id": 1,
       "sequence": 1,
       "status": "pledged"
-      ])
+    ])
 
     XCTAssertNil(backing.error)
     XCTAssertEqual(1.0, backing.value?.amount)
@@ -58,7 +58,7 @@ final class BackingTests: XCTestCase {
       "project_id": 1,
       "sequence": 1,
       "status": "pledged"
-      ])
+    ])
 
     XCTAssertNil(backing.error)
     XCTAssertEqual(1.0, backing.value?.amount)
