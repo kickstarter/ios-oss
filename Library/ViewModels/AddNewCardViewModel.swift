@@ -89,9 +89,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let cardBrandIsValid = Signal.combineLatest(
       project,
       cardBrand
-    ).map { project, cardBrand in
-      cardBrandIsSupported(project: project, cardBrand: cardBrand)
-    }
+      ).map(cardBrandIsSupported(project:cardBrand:))
 
     let cardBrandValidAndCardNumberValid = Signal
       .combineLatest(
@@ -104,7 +102,11 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
     let invalidCardBrand = cardBrandIsValid.filter(isFalse)
 
-    let intent = self.addNewCardIntentAndProjectProperty.signal.skipNil()
+    let intent = Signal.combineLatest(
+      self.addNewCardIntentAndProjectProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+      .map(first)
       .map(first)
 
     self.unsupportedCardBrandErrorText = Signal.combineLatest(invalidCardBrand, project, intent)
@@ -154,12 +156,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.environmentType.stripePublishableKey }
 
-    self.rememberThisCardToggleViewControllerIsOn = Signal.combineLatest(
-      self.addNewCardIntentAndProjectProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal
-    )
-    .map(first)
-    .map { $0.0 == .settings }
+    self.rememberThisCardToggleViewControllerIsOn = intent.map { $0 == .settings }
 
     let rememberThisCard = Signal.merge(
       self.rememberThisCardToggleViewControllerIsOn,
@@ -205,11 +202,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       self.addNewCardFailure.mapConst(false)
     )
 
-    self.rememberThisCardToggleViewControllerContainerIsHidden = Signal.combineLatest(
-      self.addNewCardIntentAndProjectProperty.signal.skipNil().map { $0.0 == .settings },
-      self.viewDidLoadProperty.signal
-    )
-    .map(first)
+    self.rememberThisCardToggleViewControllerContainerIsHidden = intent.map { $0 == .settings }
 
     // Koala
     self.viewWillAppearProperty.signal
@@ -330,12 +323,8 @@ private func cardBrandIsSupported(project: Project?, cardBrand: GraphUserCreditC
     .visa
   ]
 
-  guard let project = project else {
+  guard let availableCardTypes = project?.availableCardTypes else {
     return supportedCardBrands.contains(cardBrand)
-  }
-
-  guard let availableCardTypes = project.availableCardTypes else {
-    return true
   }
 
   let availableCreditCardTypes = availableCardTypes
