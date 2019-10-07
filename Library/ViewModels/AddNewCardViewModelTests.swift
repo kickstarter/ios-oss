@@ -355,7 +355,7 @@ internal final class AddNewCardViewModelTests: TestCase {
       .assertValues(
         ["You can’t use this credit card to back a project from Brooklyn, NY."],
         "Card is unsupported"
-    )
+      )
   }
 
   func testUnsupportedCardMessage_showsWithInvalidCardBrand_AndExistingCardNumber_withSettingsIntent() {
@@ -373,7 +373,7 @@ internal final class AddNewCardViewModelTests: TestCase {
       .assertValues(
         ["We don't accept this card type. Please try again with another one."],
         "Card is unsupported"
-    )
+      )
   }
 
   func testUnsupportedCardMessage_hidesWithValidCardBrand_AndExistingCardNumber_withPledgeIntent() {
