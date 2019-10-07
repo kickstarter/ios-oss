@@ -110,6 +110,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let refTag = initialData.map { $0.2 }
     let context = initialData.map { $0.3 }
 
+    let backing = project.map { $0.personalization.backing }.skipNil()
+
     self.descriptionViewHidden = context.map { $0.isUpdate }
     self.sectionSeparatorsHidden = context.map { $0.isUpdate }
 
@@ -363,7 +365,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.goToThanks = Signal.merge(applePayTransactionCompleted, createBackingTransactionSuccess)
 
     let amountChanged = Signal.combineLatest(
-      project.map { $0.personalization.backing?.pledgeAmount },
+      backing.map { $0.pledgeAmount },
       self.pledgeAmountDataSignal.map { $0.0 }
     )
     .map(!=)
@@ -371,7 +373,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let shippingRuleChanged = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
       Signal.combineLatest(
-        project.map { $0.personalization.backing?.locationId },
+        backing.map { $0.locationId },
         self.shippingRuleSelectedSignal.map { $0.location.id }
       )
       .map(!=)
@@ -379,10 +381,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let valuesChanged = Signal.combineLatest(
       amountChanged,
-      shippingRuleChanged,
-      self.viewDidLoadProperty.signal
+      shippingRuleChanged
     )
-    .map { amountChanged, shippingRuleChanged, _ -> Bool in
+    .map { amountChanged, shippingRuleChanged -> Bool in
       [amountChanged, shippingRuleChanged].contains(true)
     }
 
@@ -391,7 +392,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     // MARK: Update Backing
 
     let updateBackingData = Signal.combineLatest(
-      project.map { $0.personalization.backing }.skipNil(),
+      backing,
       reward,
       pledgeAmount.wrapInOptional(),
       selectedShippingRule

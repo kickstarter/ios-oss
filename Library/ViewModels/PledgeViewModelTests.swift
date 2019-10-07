@@ -1102,7 +1102,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
-          |> Backing.lens.status .~ .errored
+          |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
@@ -1134,7 +1134,7 @@ final class PledgeViewModelTests: TestCase {
       self.confirmButtonEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-        with: (amount: 10.0, min: 25.0, max: 10_000.0, isValid: true)
+        with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
       )
 
       self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
@@ -1164,7 +1164,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
-          |> Backing.lens.status .~ .errored
+          |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
@@ -1184,7 +1184,7 @@ final class PledgeViewModelTests: TestCase {
       self.confirmButtonEnabled.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-        with: (amount: 10.0, min: 25.0, max: 10_000.0, isValid: true)
+        with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
       )
 
       self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
@@ -1214,7 +1214,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
-          |> Backing.lens.status .~ .errored
+          |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
@@ -1234,31 +1234,33 @@ final class PledgeViewModelTests: TestCase {
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.confirmButtonHidden.assertValues([false])
-    self.confirmButtonEnabled.assertValues([false])
+    self.confirmButtonHidden.assertValues([false], "Amount unchanged")
+    self.confirmButtonEnabled.assertValues([false], "Amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
     )
 
     self.confirmButtonHidden.assertValues([false])
-    self.confirmButtonEnabled.assertValues([false, true])
+    self.confirmButtonEnabled.assertValues([false, true], "Amount changed")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
     self.confirmButtonHidden.assertValues([false])
-    self.confirmButtonEnabled.assertValues([false, true, false])
+    self.confirmButtonEnabled.assertValues([false, true, false], "Amount unchanged")
 
     self.vm.inputs.shippingRuleSelected(.template)
 
     self.confirmButtonHidden.assertValues([false])
-    self.confirmButtonEnabled.assertValues([false, true, false, true])
+    self.confirmButtonEnabled.assertValues([false, true, false, true], "Shipping rule changed")
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
     self.confirmButtonHidden.assertValues([false])
-    self.confirmButtonEnabled.assertValues([false, true, false, true, false])
+    self.confirmButtonEnabled.assertValues(
+      [false, true, false, true, false], "Amount and shipping rule unchanged"
+    )
   }
 }
