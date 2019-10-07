@@ -28,8 +28,8 @@ final class ManagePledgeRewardView: UIView {
 
   // MARK: - Configuration
 
-  public func configure(with value: (Project, Either<Reward, Backing>), context: RewardCardViewContext) {
-    self.rewardView.configure(with: value, context: context)
+  public func configure(with value: (Project, Either<Reward, Backing>)) {
+    self.rewardView.configure(with: value, context: .pledgeView)
   }
 
   private func configureViews() {
