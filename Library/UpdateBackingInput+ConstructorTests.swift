@@ -15,7 +15,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
     XCTAssertEqual(input.amount, "105.00")
     XCTAssertNil(input.applePay)
     XCTAssertEqual(input.id, "QmFja2luZy0x")
-    XCTAssertEqual(input.locationId, "TG9jYXRpb24tNDI=")
+    XCTAssertEqual(input.locationId, "42")
     XCTAssertNil(input.paymentSourceId)
     XCTAssertEqual(input.rewardId, "UmV3YXJkLTE=")
   }

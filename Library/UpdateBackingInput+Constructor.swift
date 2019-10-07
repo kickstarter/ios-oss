@@ -9,7 +9,7 @@ extension UpdateBackingInput {
       pledgeAmountString(withAmount: pledgeAmount, shippingRule: updateBackingData.shippingRule)
     }
     let backingId: String = updateBackingData.backing.graphID
-    let locationId: String? = updateBackingData.shippingRule.flatMap { $0.location.graphID }
+    let locationId: String? = updateBackingData.shippingRule.flatMap { "\($0.location.id)" }
     let rewardId: String? = updateBackingData.reward.graphID
 
     return UpdateBackingInput(
