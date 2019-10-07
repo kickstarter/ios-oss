@@ -113,7 +113,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     let context = self.projectAndRewardOrBackingProperty.signal
       .skipNil()
-      .map { $0.2 }
+      .map(third)
 
     self.items = reward
       .map { reward in
