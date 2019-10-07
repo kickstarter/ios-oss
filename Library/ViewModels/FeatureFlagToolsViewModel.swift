@@ -48,6 +48,7 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
     }
 
     self.reloadWithData = features
+      .map { features in features.sorted { $0.feature.description < $1.feature.description } }
 
     self.updateConfigWithFeatures = features
       .takePairWhen(self.setFeatureEnabledAtIndexProperty.signal
