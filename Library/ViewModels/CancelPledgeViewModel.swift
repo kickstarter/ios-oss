@@ -4,14 +4,20 @@ import Prelude
 import ReactiveSwift
 
 public protocol CancelPledgeViewModelInputs {
+  func cancelPledgeButtonTapped()
   func configure(with project: Project, backing: Backing)
   func goBackButtonTapped()
+  func textFieldDidEndEditing(with text: String?)
+  func textFieldShouldReturn()
   func traitCollectionDidChange()
   func viewDidLoad()
 }
 
 public protocol CancelPledgeViewModelOutputs {
   var cancellationDetailsAttributedText: Signal<NSAttributedString, Never> { get }
+  var cancelPledgeError: Signal<String, Never> { get }
+  var dismissKeyboard: Signal<Void, Never> { get }
+  var notifyDelegateCancelPledgeSuccess: Signal<String, Never> { get }
   var popCancelPledgeViewController: Signal<Void, Never> { get }
 }
 
@@ -29,6 +35,9 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
     )
     .map(first)
 
+    let backing = initialData
+      .map(second)
+
     self.cancellationDetailsAttributedText = Signal.merge(
       initialData,
       initialData.takeWhen(self.traitCollectionDidChangeProperty.signal)
@@ -44,6 +53,32 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
     .map(createCancellationDetailsAttributedText(with:projectName:))
 
     self.popCancelPledgeViewController = self.goBackButtonTappedProperty.signal
+
+    self.dismissKeyboard = self.textFieldShouldReturnProperty.signal
+
+    let cancellationNote = Signal.merge(self.viewDidLoadProperty.signal.mapConst(nil),
+                                        self.textFieldDidEndEditingTextProperty.signal)
+
+    let cancelPledgeEvent = Signal.combineLatest(backing.map { $0.graphID },
+                                                 cancellationNote)
+      .map(CancelBackingInput.init(backingId:cancellationReason:))
+      .switchMap { input in
+        AppEnvironment.current.apiService.cancelBacking(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    self.notifyDelegateCancelPledgeSuccess = cancelPledgeEvent.values()
+      .map { _ in Strings.Youve_canceled_your_pledge() }
+
+    self.cancelPledgeError = cancelPledgeEvent
+      .errors()
+      .map { $0.localizedDescription }
+  }
+
+  private let cancelPledgeButtonTappedProperty = MutableProperty(())
+  public func cancelPledgeButtonTapped() {
+    self.cancelPledgeButtonTappedProperty.value = ()
   }
 
   private let configureWithProjectAndBackingProperty = MutableProperty<(Project, Backing)?>(nil)
@@ -54,6 +89,16 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
   private let goBackButtonTappedProperty = MutableProperty(())
   public func goBackButtonTapped() {
     self.goBackButtonTappedProperty.value = ()
+  }
+
+  private let textFieldDidEndEditingTextProperty = MutableProperty<String?>(nil)
+  public func textFieldDidEndEditing(with text: String?) {
+    self.textFieldDidEndEditingTextProperty.value = text
+  }
+
+  private let textFieldShouldReturnProperty = MutableProperty(())
+  public func textFieldShouldReturn() {
+    self.textFieldShouldReturnProperty.value = ()
   }
 
   private let traitCollectionDidChangeProperty = MutableProperty(())
@@ -67,6 +112,9 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
   }
 
   public let cancellationDetailsAttributedText: Signal<NSAttributedString, Never>
+  public let cancelPledgeError: Signal<String, Never>
+  public let dismissKeyboard: Signal<Void, Never>
+  public let notifyDelegateCancelPledgeSuccess: Signal<String, Never>
   public let popCancelPledgeViewController: Signal<Void, Never>
 
   public var inputs: CancelPledgeViewModelInputs { return self }

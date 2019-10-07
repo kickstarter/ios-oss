@@ -123,6 +123,24 @@ final class CancelPledgeViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.dismissKeyboard
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.view.endEditing(true)
+    }
+
+    self.viewModel.outputs.cancelPledgeError
+      .observeForUI()
+      .observeValues { [weak self] errorMessage in
+        // TODO:
+    }
+
+    self.viewModel.outputs.notifyDelegateCancelPledgeSuccess
+      .observeForControllerAction()
+      .observeValues { [weak self] confirmationMessage in
+        // TODO
+    }
+
     self.viewModel.outputs.popCancelPledgeViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -161,11 +179,23 @@ final class CancelPledgeViewController: UIViewController {
   // MARK: - Accessors
 
   @objc private func dismissKeyboard() {
-    self.view.endEditing(true)
+    self.viewModel.inputs.textFieldShouldReturn()
   }
 
   @objc private func goBackButtonTapped() {
     self.viewModel.inputs.goBackButtonTapped()
+  }
+}
+
+extension CancelPledgeViewController: UITextFieldDelegate {
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    self.viewModel.inputs.textFieldDidEndEditing(with: textField.text)
+  }
+
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    self.viewModel.inputs.textFieldShouldReturn()
+
+    return true
   }
 }
 
