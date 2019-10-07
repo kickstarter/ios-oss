@@ -322,11 +322,22 @@ internal final class AddNewCardViewModelTests: TestCase {
     }
   }
 
-  func testUnsupportedCardMessage_HiddenOnViewDidLoad() {
+  func testUnsupportedCardMessage_HiddenOnViewDidLoad_withPledgeIntent() {
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configure(with: .pledge, project: Project.template)
 
     self.creditCardValidationErrorContainerHidden
       .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
+    self.unsupportedCardBrandErrorText.assertDidNotEmitValue()
+  }
+
+  func testUnsupportedCardMessage_HiddenOnViewDidLoad_withSettingsIntent() {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configure(with: .settings, project: nil)
+
+    self.creditCardValidationErrorContainerHidden
+      .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
+    self.unsupportedCardBrandErrorText.assertDidNotEmitValue()
   }
 
   func testUnsupportedCardMessage_showsWithInvalidCardBrand_AndExistingCardNumber_withPledgeIntent() {
@@ -344,7 +355,25 @@ internal final class AddNewCardViewModelTests: TestCase {
       .assertValues(
         ["You can’t use this credit card to back a project from Brooklyn, NY."],
         "Card is unsupported"
-      )
+    )
+  }
+
+  func testUnsupportedCardMessage_showsWithInvalidCardBrand_AndExistingCardNumber_withSettingsIntent() {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configure(with: .settings, project: nil)
+
+    self.creditCardValidationErrorContainerHidden
+      .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
+
+    self.vm.inputs.creditCardChanged(cardDetails: ("123", nil, nil, nil, .generic))
+
+    self.creditCardValidationErrorContainerHidden
+      .assertValues([true, false], "Unsupported card message shows")
+    self.unsupportedCardBrandErrorText
+      .assertValues(
+        ["We don't accept this card type. Please try again with another one."],
+        "Card is unsupported"
+    )
   }
 
   func testUnsupportedCardMessage_hidesWithValidCardBrand_AndExistingCardNumber_withPledgeIntent() {
@@ -360,6 +389,35 @@ internal final class AddNewCardViewModelTests: TestCase {
 
     self.creditCardValidationErrorContainerHidden
       .assertValues([true, true], "Unsupported card message hides with a valid card brand")
+  }
+
+  func testUnsupportedCardMessage_hidesWithValidCardBrand_AndExistingCardNumber_withSettingsIntent() {
+    let project = Project.template
+      |> Project.lens.location .~ .australia
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configure(with: .settings, project: nil)
+
+    self.creditCardValidationErrorContainerHidden
+      .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
+
+    self.vm.inputs.creditCardChanged(cardDetails: ("424", nil, nil, nil, .visa))
+
+    self.creditCardValidationErrorContainerHidden
+      .assertValues([true, true], "Unsupported card message hides with a valid card brand")
+  }
+
+  func testUnsupportedCardMessage_hidesWithEmptyOrInvalidCardNumber_withPledgeIntent() {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.configure(with: .pledge, project: Project.template)
+
+    self.creditCardValidationErrorContainerHidden
+      .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
+
+    self.vm.inputs.creditCardChanged(cardDetails: ("1", nil, nil, nil, .generic))
+
+    self.creditCardValidationErrorContainerHidden
+      .assertValues([true, true], "Unsupported card message stays hidden when the card number is < 2 digits")
+    self.unsupportedCardBrandErrorText.assertValueCount(1)
   }
 
   func testUnsupportedCardMessage_hidesWithEmptyOrInvalidCardNumber_withSettingsIntent() {
@@ -432,24 +490,6 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.unsupportedCardBrandErrorText
       .assertValues(
         ["You can’t use this credit card to back a project from Hastings, UK."],
-        "Card is unsupported"
-      )
-  }
-
-  func testUnsupportedCardBrandsError_fromSettings() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.configure(with: .settings, project: nil)
-
-    self.creditCardValidationErrorContainerHidden
-      .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
-
-    self.vm.inputs.creditCardChanged(cardDetails: ("6200", nil, nil, nil, .generic))
-
-    self.creditCardValidationErrorContainerHidden
-      .assertValues([true, false], "Unsupported card message shows with an invalid card brand")
-    self.unsupportedCardBrandErrorText
-      .assertValues(
-        ["We don't accept this card type. Please try again with another one."],
         "Card is unsupported"
       )
   }
