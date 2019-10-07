@@ -329,7 +329,7 @@ internal final class AddNewCardViewModelTests: TestCase {
       .assertValues([true], "Unsupported card message is hidden on viewDidLoad")
   }
 
-  func testUnsupportedCardMessage_showsWithInvalidCardBrand_AndExistingCardNumber() {
+  func testUnsupportedCardMessage_showsWithInvalidCardBrand_AndExistingCardNumber_withPledgeIntent() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configure(with: .pledge, project: Project.template)
 
@@ -347,7 +347,7 @@ internal final class AddNewCardViewModelTests: TestCase {
       )
   }
 
-  func testUnsupportedCardMessage_hidesWithValidCardBrand_AndExistingCardNumber() {
+  func testUnsupportedCardMessage_hidesWithValidCardBrand_AndExistingCardNumber_withPledgeIntent() {
     let project = Project.template
       |> Project.lens.location .~ .australia
     self.vm.inputs.viewDidLoad()
