@@ -208,6 +208,8 @@ public final class ProjectPamphletViewController: UIViewController {
 
   private func goToManageViewPledge(project: Project, reward: Reward, refTag _: RefTag?) {
     let vc = ManagePledgeViewController.instantiate()
+      |> \.delegate .~ self
+
     vc.configureWith(project: project, reward: reward)
 
     let nc = RewardPledgeNavigationController(rootViewController: vc)
@@ -262,11 +264,15 @@ public final class ProjectPamphletViewController: UIViewController {
   }
 }
 
+// MARK: - PledgeCTAContainerViewDelegate
+
 extension ProjectPamphletViewController: PledgeCTAContainerViewDelegate {
   func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
     self.viewModel.inputs.pledgeCTAButtonTapped(with: state)
   }
 }
+
+// MARK: - ProjectPamphletContentViewControllerDelegate
 
 extension ProjectPamphletViewController: ProjectPamphletContentViewControllerDelegate {
   public func projectPamphletContent(
@@ -291,6 +297,8 @@ extension ProjectPamphletViewController: ProjectPamphletContentViewControllerDel
   }
 }
 
+// MARK: - VideoViewControllerDelegate
+
 extension ProjectPamphletViewController: VideoViewControllerDelegate {
   public func videoViewControllerDidFinish(_: VideoViewController) {
     self.navBarController.projectVideoDidFinish()
@@ -300,6 +308,19 @@ extension ProjectPamphletViewController: VideoViewControllerDelegate {
     self.navBarController.projectVideoDidStart()
   }
 }
+
+// MARK: - ManagePledgeViewControllerDelegate
+
+extension ProjectPamphletViewController: ManagePledgeViewControllerDelegate {
+  func managePledgeViewController(_ viewController: ManagePledgeViewController,
+                                  shouldDismissAndShowSuccessBannerWith message: String) {
+    self.dismiss(animated: true, completion: nil)
+
+    // TODO: add message banner presentation
+  }
+}
+
+// MARK: - ProjectNavBarViewControllerDelegate
 
 extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
   public func projectNavBarControllerDidTapTitle(_: ProjectNavBarViewController) {

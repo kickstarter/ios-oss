@@ -61,6 +61,7 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
 
     let cancelPledgeEvent = Signal.combineLatest(backing.map { $0.graphID },
                                                  cancellationNote)
+      .takeWhen(self.cancelPledgeButtonTappedProperty.signal)
       .map(CancelBackingInput.init(backingId:cancellationReason:))
       .switchMap { input in
         AppEnvironment.current.apiService.cancelBacking(input: input)

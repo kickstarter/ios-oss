@@ -3,10 +3,16 @@ import Library
 import Prelude
 import UIKit
 
-final class ManagePledgeViewController: UIViewController {
-  // MARK: - Properties
+protocol ManagePledgeViewControllerDelegate: AnyObject {
+  func managePledgeViewController(_ viewController: ManagePledgeViewController,
+                                  shouldDismissAndShowSuccessBannerWith message: String)
+}
 
+final class ManagePledgeViewController: UIViewController {
+  weak var delegate: ManagePledgeViewControllerDelegate?
   private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
+
+  // MARK: - Properties
 
   private lazy var closeButton: UIBarButtonItem = {
     UIBarButtonItem(
@@ -271,6 +277,17 @@ final class ManagePledgeViewController: UIViewController {
 
   private func goToContactCreator() {
     // TODO:
+  }
+}
+
+// MARK: CancelPledgeViewControllerDelegate
+
+extension ManagePledgeViewController: CancelPledgeViewControllerDelegate {
+  func cancelPledgeViewController(_ viewController: CancelPledgeViewController,
+                                  didCancelPledgeWith message: String) {
+    // TODO: move to view model
+    self.delegate?.managePledgeViewController(self,
+                                              shouldDismissAndShowSuccessBannerWith: message)
   }
 }
 

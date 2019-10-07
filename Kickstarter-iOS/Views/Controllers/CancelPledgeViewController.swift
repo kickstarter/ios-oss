@@ -4,7 +4,13 @@ import Library
 import Prelude
 import UIKit
 
+protocol CancelPledgeViewControllerDelegate: AnyObject {
+  func cancelPledgeViewController(_ viewController: CancelPledgeViewController,
+                                  didCancelPledgeWith message: String)
+}
+
 final class CancelPledgeViewController: UIViewController {
+  weak var delegate: CancelPledgeViewControllerDelegate?
   private let viewModel: CancelPledgeViewModelType = CancelPledgeViewModel()
 
   // MARK: - Properties
@@ -15,7 +21,10 @@ final class CancelPledgeViewController: UIViewController {
 
   private lazy var cancellationDetailsTextLabel = { UILabel(frame: .zero) }()
   private lazy var cancellationReasonDisclaimerLabel = { UILabel(frame: .zero) }()
-  private lazy var cancellationReasonTextField = { UITextField(frame: .zero) }()
+  private lazy var cancellationReasonTextField = {
+    UITextField(frame: .zero)
+      |> \.delegate .~ self
+  }()
   private lazy var goBackButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -67,6 +76,10 @@ final class CancelPledgeViewController: UIViewController {
       self, action: #selector(CancelPledgeViewController.goBackButtonTapped),
       for: .touchUpInside
     )
+
+    self.cancelButton.addTarget(
+      self, action: #selector(CancelPledgeViewController.cancelPledgeButtonTapped),
+      for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -129,16 +142,12 @@ final class CancelPledgeViewController: UIViewController {
         self?.view.endEditing(true)
     }
 
-    self.viewModel.outputs.cancelPledgeError
-      .observeForUI()
-      .observeValues { [weak self] errorMessage in
-        // TODO:
-    }
-
     self.viewModel.outputs.notifyDelegateCancelPledgeSuccess
       .observeForControllerAction()
       .observeValues { [weak self] confirmationMessage in
-        // TODO
+        guard let self = self else { return }
+
+        self.delegate?.cancelPledgeViewController(self, didCancelPledgeWith: confirmationMessage)
     }
 
     self.viewModel.outputs.popCancelPledgeViewController
@@ -155,7 +164,8 @@ final class CancelPledgeViewController: UIViewController {
       .observeValues { [weak self] change in
         guard let self = self else { return }
 
-        self.scrollView.handleKeyboardVisibilityDidChange(change, insets: self.scrollView.contentInset)
+        self.scrollView
+          .handleKeyboardVisibilityDidChange(change, insets: .init(top: self.scrollView.contentInset.top))
       }
   }
 
@@ -184,6 +194,10 @@ final class CancelPledgeViewController: UIViewController {
 
   @objc private func goBackButtonTapped() {
     self.viewModel.inputs.goBackButtonTapped()
+  }
+
+  @objc private func cancelPledgeButtonTapped() {
+    self.viewModel.inputs.cancelPledgeButtonTapped()
   }
 }
 
