@@ -24,10 +24,6 @@ final class ManagePledgeViewController: UIViewController {
     )
   }()
 
-  private lazy var navigationBarShadowImage: UIImage? = {
-    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
-  }()
-
   private lazy var paymentMethodSectionSeparator: UIView = {
     UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
