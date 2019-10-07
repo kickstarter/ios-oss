@@ -89,7 +89,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let cardBrandIsValid = Signal.combineLatest(
       project,
       cardBrand
-      ).map(cardBrandIsSupported(project:cardBrand:))
+    ).map(cardBrandIsSupported(project:cardBrand:))
 
     let cardBrandValidAndCardNumberValid = Signal
       .combineLatest(
@@ -106,8 +106,8 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       self.addNewCardIntentAndProjectProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
-      .map(first)
-      .map(first)
+    .map(first)
+    .map(first)
 
     self.unsupportedCardBrandErrorText = Signal.combineLatest(invalidCardBrand, project, intent)
       .map { _, project, intent in
