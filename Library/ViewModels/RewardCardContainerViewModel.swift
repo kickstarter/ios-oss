@@ -121,13 +121,13 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
 
   switch (projectBackingState, isBackingThisReward, isRewardAvailable) {
   case (.backedError, false, true):
-    return Strings.Select_this_reward_instead()
+    return Strings.Select()
   case (.backedError, true, _):
     return Strings.Fix_your_payment_method()
   case (.backed(.live), false, true):
-    return Strings.Select_this_reward_instead()
+    return Strings.Select()
   case (.backed(.live), true, _):
-    return Strings.Manage_your_pledge()
+    return Strings.Selected()
   case (.nonBacked(.live), _, true):
     return Strings.Select()
   case (.backed(.nonLive), true, _):
