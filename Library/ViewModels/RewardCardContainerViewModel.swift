@@ -151,7 +151,7 @@ private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleTyp
     }
   case .backed(.live):
     if isBackingThisReward {
-      return .blue
+      return .black
     }
   case .nonBacked(.live):
     return .green
@@ -171,7 +171,7 @@ private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {
   let isAvailable = rewardIsAvailable(reward: reward)
   let isBacking = userIsBacking(reward: reward, inProject: project)
 
-  return (project.state == .live && isAvailable) || isBacking
+  return (project.state == .live && isAvailable && !isBacking) || (project.state != .live && isBacking)
 }
 
 private func rewardIsAvailable(reward: Reward) -> Bool {
