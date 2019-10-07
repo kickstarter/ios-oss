@@ -38,7 +38,6 @@ public final class RewardCardView: UIView {
         sectionInset: UIEdgeInsets(topBottom: Styles.grid(1))
       )
     )
-      |> \.backgroundColor .~ self.backgroundColor
       |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
       |> \.dataSource .~ self.pillDataSource
       |> \.delegate .~ self
@@ -136,6 +135,9 @@ public final class RewardCardView: UIView {
     _ = self.minimumPriceConversionLabel
       |> baseRewardLabelStyle
       |> minimumPriceConversionLabelStyle
+
+    _ = self.pillCollectionView
+      |> \.backgroundColor .~ self.backgroundColor
 
     _ = self.stateImageViewContainer
       |> stateImageViewContainerStyle
@@ -275,14 +277,11 @@ public final class RewardCardView: UIView {
     self.setNeedsLayout()
   }
 
-  fileprivate func load(items: ([String], UIColor)) {
-    let includedItems = items.0
-    let separatorBackgroundColor = items.1
-
+  fileprivate func load(items: (includedItems: [String], separatorBackgroundColor: UIColor)) {
     _ = self.includedItemsStackView.subviews
       ||> { $0.removeFromSuperview() }
 
-    let includedItemViews = includedItems.map { item -> UIView in
+    let includedItemViews = items.includedItems.map { item -> UIView in
       let label = UILabel()
         |> baseRewardLabelStyle
         |> sectionBodyLabelStyle
@@ -294,7 +293,7 @@ public final class RewardCardView: UIView {
     let separatedItemViews = includedItemViews.dropLast().map { view -> [UIView] in
       let separator = UIView()
         |> separatorStyle
-        |> \.backgroundColor .~ separatorBackgroundColor
+        |> \.backgroundColor .~ items.separatorBackgroundColor
       separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
       return [view, separator]
