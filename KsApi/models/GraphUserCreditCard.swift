@@ -9,7 +9,7 @@ public struct GraphUserCreditCard: Swift.Decodable {
     public var expirationDate: String
     public var id: String
     public var lastFour: String
-    public let paymentType: String?
+    public let paymentType: PaymentType?
     public let state: String?
     public var type: CreditCardType?
 
@@ -25,6 +25,11 @@ public struct GraphUserCreditCard: Swift.Decodable {
         return "icon--\(type.rawValue.lowercased())"
       }
     }
+  }
+
+  public enum PaymentType: String, Swift.Decodable, CaseIterable {
+    case card = "CREDIT_CARD"
+    case applePay = "APPLE_PAY"
   }
 
   public enum CreditCardType: String, Swift.Decodable, CaseIterable {
@@ -75,6 +80,8 @@ extension GraphUserCreditCard.CreditCard: Argo.Decodable {
 }
 
 extension GraphUserCreditCard.CreditCardType: Argo.Decodable {}
+
+extension GraphUserCreditCard.PaymentType: Argo.Decodable {}
 
 private func intToString(_ input: Int) -> Decoded<String> {
   return .success(Data("User-\(input)".utf8).base64EncodedString())
