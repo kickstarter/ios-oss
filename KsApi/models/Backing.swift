@@ -47,7 +47,7 @@ extension Backing: Argo.Decodable {
     let tmp2 = tmp1
       <*> json <|? "location_id"
       <*> json <|? "location_name"
-      <*> json <|? "payment_source"
+      <*> (json <|? "payment_source" >>- tryDecodePaymentSource)
       <*> json <| "pledged_at"
       <*> json <| "project_country"
       <*> json <| "project_id"
@@ -57,6 +57,27 @@ extension Backing: Argo.Decodable {
       <*> json <| "sequence"
       <*> json <|? "shipping_amount"
       <*> json <| "status"
+  }
+}
+
+#warning("Function tryDecodePaymentSource(_:) should be deleted once the data is being returned normally.")
+/*
+ Since staging is not returning all the values for Payment Source, the Backing deserialization is failing
+ on that environment. This is a workaround to allow us to test on Staging and should be deleted once the
+ data is being returned normally.
+ */
+private func tryDecodePaymentSource(_ json: JSON?) -> Decoded<GraphUserCreditCard.CreditCard?> {
+  guard let json = json else {
+    return .success(nil)
+  }
+
+  let value = GraphUserCreditCard.CreditCard.decode(json)
+
+  switch value {
+  case let .success(value):
+    return .success(value)
+  case .failure:
+    return .success(nil)
   }
 }
 
