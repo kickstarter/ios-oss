@@ -115,6 +115,15 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         Strings.login_tout_back_intent_traditional_login_button()
       }
 
+    _ = self.fbDisclaimerStackView
+      |> baseStackViewStyle
+      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
+
+    _ = self.getNotifiedLabel
+      |> baseLabelStyle
+      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 12)
+      |> UILabel.lens.text %~ { _ in Strings.Get_notified_when_your_friends_back_and_launch_projects() }
+
     _ = self.rootStackView
       |> baseStackViewStyle
       |> loginRootStackViewStyle
@@ -262,13 +271,16 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.loginContextStackView, self.fbLoginStackView, self.emailLoginStackView], self.rootStackView)
+    _ = ([self.loginContextStackView, self.fbLoginStackView, self.fbDisclaimerStackView, self.emailLoginStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.bringCreativeProjectsToLifeLabel, self.contextLabel], self.loginContextStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.fbLoginButton, self.facebookDisclaimerLabel], self.fbLoginStackView)
+    _ = ([self.getNotifiedLabel, self.facebookDisclaimerLabel], self.fbDisclaimerStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.fbLoginButton, self.fbDisclaimerStackView], self.fbLoginStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.signupButton, self.loginButton, self.disclaimerButton], self.emailLoginStackView)
