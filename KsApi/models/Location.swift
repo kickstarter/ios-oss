@@ -31,9 +31,3 @@ extension Location: Equatable {}
 public func == (lhs: Location, rhs: Location) -> Bool {
   return lhs.id == rhs.id
 }
-
-extension Location: GraphIDBridging {
-  public static var modelName: String {
-    return "Location"
-  }
-}

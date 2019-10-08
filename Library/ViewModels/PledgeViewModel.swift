@@ -366,7 +366,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let amountChanged = Signal.combineLatest(
       backing.map { $0.pledgeAmount },
-      self.pledgeAmountDataSignal.map { $0.0 }
+      self.pledgeAmountDataSignal.map { $0.amount }
     )
     .map(!=)
 
@@ -383,9 +383,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       amountChanged,
       shippingRuleChanged
     )
-    .map { amountChanged, shippingRuleChanged -> Bool in
-      [amountChanged, shippingRuleChanged].contains(true)
-    }
+    .map { $0 || $1 }
 
     self.title = context.map { $0.title }
 
@@ -417,7 +415,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let valuesChangedAndValid = Signal.combineLatest(
       valuesChanged,
-      self.pledgeAmountDataSignal.map { $0.3 }
+      self.pledgeAmountDataSignal.map { $0.isValid }
     )
     .map { $0 && $1 }
     .skipRepeats()
