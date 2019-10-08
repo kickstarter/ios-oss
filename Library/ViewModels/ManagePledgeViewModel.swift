@@ -13,6 +13,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
 
 public protocol ManagePledgeViewModelInputs {
   func configureWith(_ project: Project, reward: Reward)
+  func cancelPledgeDidFinish(with message: String)
   func menuButtonTapped()
   func menuOptionSelected(with action: ManagePledgeAlertAction)
   func viewDidLoad()
@@ -28,6 +29,7 @@ public protocol ManagePledgeViewModelOutputs {
   var goToContactCreator: Signal<Void, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
+  var notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var title: Signal<String, Never> { get }
@@ -97,6 +99,8 @@ public final class ManagePledgeViewModel:
       .filter { $0 == .changePaymentMethod }
       .ignoreValues()
 
+    self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+      = self.cancelPledgeDidFinishWithMessageProperty.signal.skipNil()
     self.rewardReceivedViewControllerViewIsHidden = projectAndReward
       .map { project, reward in reward.isNoReward || project.personalization.backing?.status != .collected }
   }
@@ -104,6 +108,11 @@ public final class ManagePledgeViewModel:
   private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
   public func configureWith(_ project: Project, reward: Reward) {
     self.projectAndRewardObserver.send(value: (project, reward))
+  }
+
+  private let cancelPledgeDidFinishWithMessageProperty = MutableProperty<String?>(nil)
+  public func cancelPledgeDidFinish(with message: String) {
+    self.cancelPledgeDidFinishWithMessageProperty.value = message
   }
 
   private let (menuButtonTappedSignal, menuButtonTappedObserver) = Signal<Void, Never>.pipe()
@@ -131,6 +140,7 @@ public final class ManagePledgeViewModel:
   public let goToContactCreator: Signal<Void, Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
+  public let notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let title: Signal<String, Never>

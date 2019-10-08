@@ -15,6 +15,7 @@ public protocol CancelPledgeViewModelInputs {
 
 public protocol CancelPledgeViewModelOutputs {
   var cancellationDetailsAttributedText: Signal<NSAttributedString, Never> { get }
+  var cancelPledgeButtonEnabled: Signal<Bool, Never> { get }
   var cancelPledgeError: Signal<String, Never> { get }
   var dismissKeyboard: Signal<Void, Never> { get }
   var notifyDelegateCancelPledgeSuccess: Signal<String, Never> { get }
@@ -59,9 +60,11 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
     let cancellationNote = Signal.merge(self.viewDidLoadProperty.signal.mapConst(nil),
                                         self.textFieldDidEndEditingTextProperty.signal)
 
-    let cancelPledgeEvent = Signal.combineLatest(backing.map { $0.graphID },
-                                                 cancellationNote)
+    let cancelPledgeSubmit = Signal.combineLatest(backing.map { $0.graphID },
+                                            cancellationNote)
       .takeWhen(self.cancelPledgeButtonTappedProperty.signal)
+
+    let cancelPledgeEvent = cancelPledgeSubmit
       .map(CancelBackingInput.init(backingId:cancellationReason:))
       .switchMap { input in
         AppEnvironment.current.apiService.cancelBacking(input: input)
@@ -75,6 +78,12 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
     self.cancelPledgeError = cancelPledgeEvent
       .errors()
       .map { $0.localizedDescription }
+
+    self.cancelPledgeButtonEnabled = Signal.merge(
+      initialData.mapConst(true),
+      cancelPledgeSubmit.mapConst(false),
+      cancelPledgeEvent.map { $0.isTerminating }.mapConst(true)
+      )
   }
 
   private let cancelPledgeButtonTappedProperty = MutableProperty(())
@@ -113,6 +122,7 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
   }
 
   public let cancellationDetailsAttributedText: Signal<NSAttributedString, Never>
+  public let cancelPledgeButtonEnabled: Signal<Bool, Never>
   public let cancelPledgeError: Signal<String, Never>
   public let dismissKeyboard: Signal<Void, Never>
   public let notifyDelegateCancelPledgeSuccess: Signal<String, Never>

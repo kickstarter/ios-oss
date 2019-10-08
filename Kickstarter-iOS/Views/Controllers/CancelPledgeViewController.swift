@@ -158,6 +158,7 @@ final class CancelPledgeViewController: UIViewController {
 
     self.cancellationDetailsTextLabel.rac.attributedText = self.viewModel.outputs
       .cancellationDetailsAttributedText
+    self.cancelButton.rac.enabled = self.viewModel.outputs.cancelPledgeButtonEnabled
 
     Keyboard.change
       .observeForUI()

@@ -14,6 +14,9 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call after the view loads and passes the initial TopConstraint constant.
   func initial(topConstraint: CGFloat)
 
+  /// Call when the ManagePledgeViewController finished with a confirmation message
+  func managePledgeViewControllerFinished(with message: String)
+
   /// Call when the pledge CTA button is tapped
   func pledgeCTAButtonTapped(with state: PledgeStateCTAType)
 
@@ -36,6 +39,8 @@ public protocol ProjectPamphletViewModelOutputs {
 
   /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
   var configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never> { get }
+
+  var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
 
   var goToDeprecatedManagePledge: Signal<PledgeData, Never> { get }
 
@@ -158,6 +163,9 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .takePairWhen(self.willTransitionToCollectionProperty.signal.skipNil())
       .map(layoutConstraintConstant(initialTopConstraint:traitCollection:))
 
+    self.dismissManagePledgeAndShowMessageBannerWithMessage
+      = self.managePledgeViewControllerFinishedWithMessageProperty.signal.skipNil()
+
     let cookieRefTag = freshProjectAndRefTag
       .map { project, refTag in
         cookieRefTagFor(project: project) ?? refTag
@@ -186,14 +194,19 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
   }
 
-  private let pledgeCTAButtonTappedProperty = MutableProperty<PledgeStateCTAType?>(nil)
-  public func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
-    self.pledgeCTAButtonTappedProperty.value = state
-  }
-
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
   public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
     self.configDataProperty.value = (projectOrParam, refTag)
+  }
+
+  private let managePledgeViewControllerFinishedWithMessageProperty = MutableProperty<String?>(nil)
+  public func managePledgeViewControllerFinished(with message: String) {
+    self.managePledgeViewControllerFinishedWithMessageProperty.value = message
+  }
+
+  private let pledgeCTAButtonTappedProperty = MutableProperty<PledgeStateCTAType?>(nil)
+  public func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
+    self.pledgeCTAButtonTappedProperty.value = state
   }
 
   private let pledgeRetryButtonTappedProperty = MutableProperty(())
@@ -229,6 +242,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never>
+  public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToDeprecatedManagePledge: Signal<PledgeData, Never>
   public let goToDeprecatedViewBacking: Signal<BackingData, Never>
   public let goToManageViewPledge: Signal<PledgeData, Never>

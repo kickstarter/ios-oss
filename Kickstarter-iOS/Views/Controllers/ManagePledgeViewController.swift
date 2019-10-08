@@ -162,6 +162,14 @@ final class ManagePledgeViewController: UIViewController {
       .observeValues { [weak self] project, backing in
         self?.goToCancelPledge(project: project, backing: backing)
       }
+
+    self.viewModel.outputs.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+      .observeForUI()
+      .observeValues { [weak self] message in
+        guard let self = self else { return }
+        self.delegate?.managePledgeViewController(self,
+                                                  shouldDismissAndShowSuccessBannerWith: message)
+    }
   }
 
   // MARK: - Configuration
@@ -285,9 +293,7 @@ final class ManagePledgeViewController: UIViewController {
 extension ManagePledgeViewController: CancelPledgeViewControllerDelegate {
   func cancelPledgeViewController(_ viewController: CancelPledgeViewController,
                                   didCancelPledgeWith message: String) {
-    // TODO: move to view model
-    self.delegate?.managePledgeViewController(self,
-                                              shouldDismissAndShowSuccessBannerWith: message)
+    self.viewModel.inputs.cancelPledgeDidFinish(with: message)
   }
 }
 

@@ -16,10 +16,11 @@ public protocol ProjectPamphletViewControllerDelegate: AnyObject {
   )
 }
 
-public final class ProjectPamphletViewController: UIViewController {
+public final class ProjectPamphletViewController: UIViewController, MessageBannerViewControllerPresenting {
   internal weak var delegate: ProjectPamphletViewControllerDelegate?
   fileprivate let viewModel: ProjectPamphletViewModelType = ProjectPamphletViewModel()
 
+  internal var messageBannerViewController: MessageBannerViewController?
   fileprivate var navBarController: ProjectNavBarViewController!
   fileprivate var contentController: ProjectPamphletContentViewController!
 
@@ -57,6 +58,8 @@ public final class ProjectPamphletViewController: UIViewController {
     self.pledgeCTAContainerView.delegate = self
 
     self.viewModel.inputs.initial(topConstraint: self.initialTopConstraint)
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -183,6 +186,12 @@ public final class ProjectPamphletViewController: UIViewController {
       .observeValues { [weak self] value in
         self?.pledgeCTAContainerView.configureWith(value: value)
       }
+
+    self.viewModel.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
+      .observeForControllerAction()
+      .observeValues { [weak self] message in
+        self?.messageBannerViewController?.showBanner(with: .success, message: message)
+    }
   }
 
   public override func willTransition(
@@ -314,9 +323,7 @@ extension ProjectPamphletViewController: VideoViewControllerDelegate {
 extension ProjectPamphletViewController: ManagePledgeViewControllerDelegate {
   func managePledgeViewController(_ viewController: ManagePledgeViewController,
                                   shouldDismissAndShowSuccessBannerWith message: String) {
-    self.dismiss(animated: true, completion: nil)
-
-    // TODO: add message banner presentation
+    self.viewModel.inputs.managePledgeViewControllerFinished(with: message)
   }
 }
 
