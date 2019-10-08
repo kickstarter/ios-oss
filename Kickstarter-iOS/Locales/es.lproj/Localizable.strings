@@ -89,6 +89,7 @@
 "Continue" = "Continuar";
 "Continue_to_payment" = "Continuar a pago";
 "Continue_to_update_pledge" = "Continuar a Actualizar contribución";
+"Continue_with_Facebook" = "Continuar con Facebook";
 "Couldnt_add_attachment" = "No se pudo añadir el anexo";
 "Couldnt_open_live_stream_Try_again_later" = "No se pudo abrir este live stream, por favor inténtalo de nuevo más tarde.";
 "Couldnt_remove_attachment" = "No se pudo remover el anexo";
@@ -213,6 +214,7 @@
 "Games_newsletter" = "Suscríbete para recibir, cada dos semanas, una combinación de nuevos proyectos y actualizaciones sobre todo lo relacionado a juegos, seleccionados exclusivamente para ti por el equipo de Juegos de Kickstarter.";
 "Get_notified_about_new_messages" = "¿Deseas recibir notificaciones sobre nuevos mensajes?";
 "Get_notified_about_this_creators_live_streams" = "Recibe notificaciones sobre los Live Streams de este creador";
+"Get_notified_when_your_friends_back_and_launch_projects" = "Get notified when your friends back and launch projects";
 "Get_reminded_about_this_project" = "¿Deseas recibir recordatorios sobre este proyecto?";
 "Go_to_project_page" = "Ir a la página de proyecto";
 "Got_it" = "¡Listo!";
@@ -543,6 +545,7 @@
 "Websites" = "Sitios web";
 "Welcome_to_our_library_Peruse_the_stacks_with_us" = "Bienvenidos a nuestra biblioteca. Descubre montones de libros con nosotros.";
 "Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password" = "Te pediremos que inicies sesión de nuevo en la aplicación de Kickstarter una vez que hayas cambiado tu contraseña.";
+"Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Te recordaremos 48 horas antes de que finalice este proyecto y recibirás un recordatorio sobre todos los proyectos que guardes de aquí en adelante. Para ver todo lo que has guardado, visita tu perfil.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";

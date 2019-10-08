@@ -89,6 +89,7 @@
 "Continue" = "続行する";
 "Continue_to_payment" = "支払いを続ける";
 "Continue_to_update_pledge" = "プレッジをアップデート";
+"Continue_with_Facebook" = "Facebook で続行する";
 "Couldnt_add_attachment" = "添付ファイルを追加できませんでした";
 "Couldnt_open_live_stream_Try_again_later" = "ライブ配信を開けませんでした。後ほどお試しください。";
 "Couldnt_remove_attachment" = "添付ファイルを削除できませんでした";
@@ -213,6 +214,7 @@
 "Games_newsletter" = "Kickstarter の「ゲーム」チーム選りすぐりの、ゲームに関するあらゆる新プロジェクトや更新情報を毎月2回お届けするニュースレターに登録しましょう。";
 "Get_notified_about_new_messages" = "新規メッセージについて通知の受信を希望しますか？";
 "Get_notified_about_this_creators_live_streams" = "このクリエイターのライブ配信通知を受け取る";
+"Get_notified_when_your_friends_back_and_launch_projects" = "Get notified when your friends back and launch projects";
 "Get_reminded_about_this_project" = "このプロジェクトについてリマインダーを希望しますか？";
 "Go_to_project_page" = "プロジェクトページを見る";
 "Got_it" = "完了";
@@ -543,6 +545,7 @@
 "Websites" = "ウェブサイト";
 "Welcome_to_our_library_Peruse_the_stacks_with_us" = "Kickstarter ライブラリーへようこそ。色んなストーリーを一緒に読み漁ろう！";
 "Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password" = "パスワードを変更したら、Kickstarter アプリにもう一度サインインし直すように促されます。";
+"Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "終了48時間前に通知が届きます。保存アイテムをみるにはプロフィールをご覧ください。";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "フォローがオンになっていると、他の人のアクティビティをフォローすることができ、また、他の人もあなたのアクティビティをフォローすることができます。このようなデータを永久に削除するためにはフォローをオフにしてください。";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "プロジェクトを保存し、終了の48時間前にリマインドする。";

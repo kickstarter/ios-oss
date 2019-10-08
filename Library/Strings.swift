@@ -1504,6 +1504,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Continue with Facebook"
+
+   - **en**: "Continue with Facebook"
+   - **de**: "Weiter mit Facebook"
+   - **es**: "Continuar con Facebook"
+   - **fr**: "Continuer avec Facebook"
+   - **ja**: "Facebook で続行する"
+  */
+  public static func Continue_with_Facebook() -> String {
+    return localizedString(
+      key: "Continue_with_Facebook",
+      defaultValue: "Continue with Facebook",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Couldn't add attachment"
 
    - **en**: "Couldn't add attachment"
@@ -3539,6 +3556,23 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Get_notified_about_this_creators_live_streams",
       defaultValue: "Get notified about this creator’s live streams",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Get notified when your friends back and launch projects"
+
+   - **en**: "Get notified when your friends back and launch projects"
+   - **de**: "Get notified when your friends back and launch projects"
+   - **es**: "Get notified when your friends back and launch projects"
+   - **fr**: "Get notified when your friends back and launch projects"
+   - **ja**: "Get notified when your friends back and launch projects"
+  */
+  public static func Get_notified_when_your_friends_back_and_launch_projects() -> String {
+    return localizedString(
+      key: "Get_notified_when_your_friends_back_and_launch_projects",
+      defaultValue: "Get notified when your friends back and launch projects",
       count: nil,
       substitutions: [:]
     )
