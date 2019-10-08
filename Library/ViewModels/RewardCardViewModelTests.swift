@@ -92,7 +92,7 @@ final class RewardCardViewModelTests: TestCase {
     )
 
     self.rewardTitleLabelHidden.assertValues([false])
-    self.rewardTitleLabelText.assertValues(["Make a pledge without a reward"])
+    self.rewardTitleLabelText.assertValues(["Pledge without a reward"])
   }
 
   func testTitleLabel_BackedNoReward() {
@@ -114,9 +114,7 @@ final class RewardCardViewModelTests: TestCase {
     )
 
     self.rewardTitleLabelHidden.assertValues([false])
-    self.rewardTitleLabelText.assertValues([
-      "Thank you for supporting this project."
-    ])
+    self.rewardTitleLabelText.assertValues(["You pledged without a reward"])
   }
 
   // MARK: - Reward Minimum
@@ -303,7 +301,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
-    self.descriptionLabelText.assertValues(["Pledge any amount to help bring this project to life."])
+    self.descriptionLabelText.assertValues(["Back it because you believe in it."])
   }
 
   // MARK: - Conversion Label

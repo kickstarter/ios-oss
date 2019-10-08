@@ -133,6 +133,9 @@ final class ManagePledgeViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.rewardReceivedViewController.view.rac.hidden =
+      self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
+
     self.viewModel.outputs.title
       .observeForUI()
       .observeValues { [weak self] title in
@@ -151,6 +154,12 @@ final class ManagePledgeViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] project in
         self?.pledgeSummaryView.configureWith(project)
+      }
+
+    self.viewModel.outputs.configureRewardReceivedWithProject
+      .observeForControllerAction()
+      .observeValues { [weak self] project in
+        self?.rewardReceivedViewController.configureWith(project: project)
       }
 
     self.viewModel.outputs.configureRewardSummaryView

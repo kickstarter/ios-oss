@@ -54,6 +54,7 @@
 "Bookmarks" = "ブックマーク";
 "Bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "プレッジをすることにより、Kickstarter の <a href=\"%{terms_of_use_link}\">利用規約</a>、<a href=\"%{privacy_policy_link}\">プライバシーポリシー</a>、<a href=\"%{cookie_policy_link}\">Cookie ポリシー</a>に同意したとみなされます。";
+"By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use.";
 "CVC" = "CVC";
 "Cancel" = "キャンセル";
 "Cancel_pledge" = "プレッジを取り消す";
@@ -378,6 +379,7 @@
 "Read_more_about_the_campaign" = "キャンペーンの詳細をみる";
 "Read_more_about_the_campaign_arrow" = "キャンペーンの詳細をみる  →";
 "Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "通知を有効にして、このプロジェクトやその他の保存済みプロジェクトが終了する48時間前にリマインダーを受け取ります。";
+"Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news" = "Receive a weekly mix of handpicked projects, plus occasional Kickstarter news.";
 "Receive_project_updates_and_more" = "通知を有効にして、プロジェクトの更新情報等を受け取ります。";
 "Receive_project_updates_messages_and_more" = "通知を有効にして、プロジェクトの更新情報、メッセージ等を受け取ります。";
 "Recent_live_stream" = "最近のライブ配信";
@@ -406,6 +408,7 @@
 "Reward_Surveys.zero" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_delivered" = "リワードを受け取りましたか？";
 "Reward_estimated_for_delivery_in_date" = "<b>リワード</b>の配達予定日は%{delivery_date}";
+"Reward_received" = "Reward received";
 "Reward_selected" = "選択中のリワード";
 "Reward_surveys" = "リワードのサーベイ";
 "Rewards_count_rewards.few" = "%{rewards_count} 種類のリワード";
@@ -456,6 +459,7 @@
 "Show_me_projects" = "プロジェクトを表示";
 "Show_password" = "パスワードを表示する";
 "Shows_list_of_subcategories" = "サブカテゴリーリストを見せる。";
+"Sign_up" = "サインアップ。";
 "Sign_up_newsletter" = "Projects We Love に登録して、私たち Kickstarter チームが選別した注目プロジェクトに関する情報を週に1度受け取りましょう。";
 "Signs_up_with_Email" = "Eメールでサインアップする。";
 "Something_catch_your_eye" = "何か目にとまるものはありましたか？";
@@ -486,6 +490,7 @@
 "The_live_stream_was_interrupted" = "ライブ配信が中断されました";
 "The_live_stream_will_start_soon" = "ライブ配信が開始します";
 "The_live_stream_will_start_time" = "%{time} にライブ配信が開始されます。";
+"The_minimum_pledge_is" = "The minimum pledge is %{min_pledge}.";
 "The_replay_will_start_soon" = "リプレイが始まります";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "気になる話題や最新プロジェクトなど、この時代を特徴づける思想「ツァイトガイスト」をいち早くお届けします。";
 "There_was_a_problem_with_this_payment" = "支払いに問題があります。";

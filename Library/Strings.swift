@@ -903,6 +903,23 @@ contributeurs"
     )
   }
   /**
+   "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use."
+
+   - **en**: "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use."
+   - **de**: "Bei Registrierung stimmst du unseren Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu. Unsere Richtlinien erläutern, wie wir deine Daten zur Bereitstellung, Verbesserung und Promotion unserer Services und unserer Webseite nutzen."
+   - **es**: "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use."
+   - **fr**: "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use."
+   - **ja**: "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use."
+  */
+  public static func By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy() -> String {
+    return localizedString(
+      key: "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy",
+      defaultValue: "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "CVC"
 
    - **en**: "CVC"
@@ -6290,6 +6307,23 @@ daring ideas."
     )
   }
   /**
+   "Receive a weekly mix of handpicked projects, plus occasional Kickstarter news."
+
+   - **en**: "Receive a weekly mix of handpicked projects, plus occasional Kickstarter news."
+   - **de**: "Du erhältst unseren wöchentlichen Mix handverlesener Projekte plus gelegentliche Nachrichten von Kickstarter."
+   - **es**: "Recibe una combinación semanal de proyectos seleccionados exclusivamente para ti, además de noticias ocasionales de Kickstarter."
+   - **fr**: "Receive a weekly mix of handpicked projects, plus occasional Kickstarter news."
+   - **ja**: "Receive a weekly mix of handpicked projects, plus occasional Kickstarter news."
+  */
+  public static func Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news() -> String {
+    return localizedString(
+      key: "Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news",
+      defaultValue: "Receive a weekly mix of handpicked projects, plus occasional Kickstarter news.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Receive project updates and more by enabling notifications."
 
    - **en**: "Receive project updates and more by enabling notifications."
@@ -6695,6 +6729,23 @@ daring ideas."
       defaultValue: "<b>Reward</b> estimated for delivery in %{delivery_date}",
       count: nil,
       substitutions: ["delivery_date": delivery_date]
+    )
+  }
+  /**
+   "Reward received"
+
+   - **en**: "Reward received"
+   - **de**: "Reward received"
+   - **es**: "Reward received"
+   - **fr**: "Récompense reçue"
+   - **ja**: "Reward received"
+  */
+  public static func Reward_received() -> String {
+    return localizedString(
+      key: "Reward_received",
+      defaultValue: "Reward received",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -7412,6 +7463,23 @@ daring ideas."
     )
   }
   /**
+   "Sign up"
+
+   - **en**: "Sign up"
+   - **de**: "Registrieren"
+   - **es**: "Registrarse"
+   - **fr**: "Inscription"
+   - **ja**: "サインアップ。"
+  */
+  public static func Sign_up() -> String {
+    return localizedString(
+      key: "Sign_up",
+      defaultValue: "Sign up",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team."
 
    - **en**: "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team."
@@ -7921,6 +7989,23 @@ catch your eye?"
       defaultValue: "The live stream will start %{time}.",
       count: nil,
       substitutions: ["time": time]
+    )
+  }
+  /**
+   "The minimum pledge is %{min_pledge}."
+
+   - **en**: "The minimum pledge is %{min_pledge}."
+   - **de**: "The minimum pledge is %{min_pledge}."
+   - **es**: "The minimum pledge is %{min_pledge}."
+   - **fr**: "The minimum pledge is %{min_pledge}."
+   - **ja**: "The minimum pledge is %{min_pledge}."
+  */
+  public static func The_minimum_pledge_is(min_pledge: String) -> String {
+    return localizedString(
+      key: "The_minimum_pledge_is",
+      defaultValue: "The minimum pledge is %{min_pledge}.",
+      count: nil,
+      substitutions: ["min_pledge": min_pledge]
     )
   }
   /**

@@ -103,7 +103,7 @@ public final class RewardCardView: UIView {
     _ = self.includedItemsStackView
       |> includedItemsStackViewStyle
 
-    _ = self.includedItemsTitleLabel
+    _ = (self.includedItemsTitleLabel, self.backgroundColor)
       |> baseRewardLabelStyle
       |> sectionTitleLabelStyle
 
@@ -112,27 +112,29 @@ public final class RewardCardView: UIView {
 
     _ = self.includedItemsStackView.subviews
       .dropFirst()
-      .compactMap { $0 as? UILabel }
+      .compactMap { [weak self] in
+        ($0, self?.backgroundColor) as? (UILabel, UIColor)
+      }
       ||> baseRewardLabelStyle
       ||> sectionBodyLabelStyle
 
-    _ = self.descriptionLabel
+    _ = (self.descriptionLabel, self.backgroundColor)
       |> baseRewardLabelStyle
       |> sectionBodyLabelStyle
 
-    _ = self.estimatedDeliveryDateLabel
+    _ = (self.estimatedDeliveryDateLabel, self.backgroundColor)
       |> baseRewardLabelStyle
       |> sectionBodyLabelStyle
 
-    _ = self.rewardTitleLabel
+    _ = (self.rewardTitleLabel, self.backgroundColor)
       |> baseRewardLabelStyle
       |> rewardTitleLabelStyle
 
-    _ = self.minimumPriceLabel
+    _ = (self.minimumPriceLabel, self.backgroundColor)
       |> baseRewardLabelStyle
       |> minimumPriceLabelStyle
 
-    _ = self.minimumPriceConversionLabel
+    _ = (self.minimumPriceConversionLabel, self.backgroundColor)
       |> baseRewardLabelStyle
       |> minimumPriceConversionLabelStyle
 
@@ -282,7 +284,7 @@ public final class RewardCardView: UIView {
       ||> { $0.removeFromSuperview() }
 
     let includedItemViews = items.includedItems.map { item -> UIView in
-      let label = UILabel()
+      let label = (UILabel(), self.backgroundColor)
         |> baseRewardLabelStyle
         |> sectionBodyLabelStyle
         |> \.text .~ item
@@ -323,11 +325,12 @@ public final class RewardCardView: UIView {
 
 // MARK: - Styles
 
-private let baseRewardLabelStyle: LabelStyle = { label in
+private let baseRewardLabelStyle: (UILabel, UIColor?) -> UILabel = { label, backgroundColor in
   label
     |> \.numberOfLines .~ 0
     |> \.textAlignment .~ .left
     |> \.lineBreakMode .~ .byWordWrapping
+    |> \.backgroundColor .~ backgroundColor
 }
 
 private let baseStackViewStyle: StackViewStyle = { stackView in
