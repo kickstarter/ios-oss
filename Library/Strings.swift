@@ -433,6 +433,23 @@ public enum Strings {
     )
   }
   /**
+   "Almost there!"
+
+   - **en**: "Almost there!"
+   - **de**: "Fast geschafft!"
+   - **es**: "Cerca de la meta!"
+   - **fr**: "Vous y êtes presque!"
+   - **ja**: "もう少しです!"
+  */
+  public static func Almost_there() -> String {
+    return localizedString(
+      key: "Almost_there",
+      defaultValue: "Almost there!",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Amount: %{amount}, previous amount: %{previous_amount}"
 
    - **en**: "Amount: %{amount}, previous amount: %{previous_amount}"
@@ -5587,6 +5604,23 @@ n'ont rien soutenu."
       defaultValue: "Payment methods",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Please enter a pledge amount between %{min} and %{max}."
+
+   - **en**: "Please enter a pledge amount between %{min} and %{max}."
+   - **de**: "Bitte gebe einen Betrag zwischen %{min} und %{max} ein."
+   - **es**: "Por favor ingresa un monto de contribución entre %{min} y %{max}."
+   - **fr**: "Please enter a pledge amount between %{min} and %{max}."
+   - **ja**: "%{min} から %{max} までのプレッジ額を入力してください。"
+  */
+  public static func Please_enter_a_pledge_amount_between_min_and_max(min: String, max: String) -> String {
+    return localizedString(
+      key: "Please_enter_a_pledge_amount_between_min_and_max",
+      defaultValue: "Please enter a pledge amount between %{min} and %{max}.",
+      count: nil,
+      substitutions: ["min": min, "max": max]
     )
   }
   /**

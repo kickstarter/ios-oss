@@ -23,6 +23,7 @@
 "All_Theater_Projects" = "All Theater Projects";
 "All_category_name_Projects" = "All %{category_name} Projects";
 "All_gone" = "All gone";
+"Almost_there" = "Almost there!";
 "Amount_previous_amount" = "Amount: %{amount}, previous amount: %{previous_amount}";
 "Amount_reward" = "Amount: %{amount}, %{reward}";
 "Amounts_shown" = "The amounts shown are an approximate conversion. If the project is successful, your pledge will be collected in the native currency of the project, which is also displayed.";
@@ -337,6 +338,7 @@
 "Payment_method" = "Payment method";
 "Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
 "Payment_methods" = "Payment methods";
+"Please_enter_a_pledge_amount_between_min_and_max" = "Please enter a pledge amount between %{min} and %{max}.";
 "Please_enter_an_amount_of_amount_or_less" = "Please enter an amount of %{amount} or less.";
 "Please_enter_an_amount_of_amount_or_more" = "Please enter an amount of %{amount} or more.";
 "Please_log_in_or_sign_up_to_back_this_project" = "Please log in or sign up to back this project.";
