@@ -30,6 +30,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }()
 
   private lazy var fbLoginStackView = { UIStackView(frame: .zero) }()
+  private lazy var fbDisclaimerStackView = { UIStackView(frame: .zero) }()
+  private lazy var getNotifiedLabel = { UILabel(frame: .zero) }()
   private let helpViewModel = HelpViewModel()
   private lazy var loginButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
