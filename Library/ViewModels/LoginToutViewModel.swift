@@ -96,7 +96,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     self.facebookButtonTitleText = intent.map { (intent: LoginIntent) -> String in
       intent == .backProject ? Strings.Continue_with_Facebook()
-                             : Strings.login_tout_back_intent_traditional_login_button()
+        : Strings.login_tout_back_intent_traditional_login_button()
     }
 
     let isLoading: MutableProperty<Bool> = MutableProperty(false)

@@ -253,7 +253,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
     self.fbLoginButton.rac.title = self.viewModel.outputs.facebookButtonTitleText
 
-
     self.viewModel.outputs.headlineLabelHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
@@ -273,7 +272,10 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.loginContextStackView, self.fbLoginStackView, self.fbDisclaimerStackView, self.emailLoginStackView], self.rootStackView)
+    _ = ([
+      self.loginContextStackView, self.fbLoginStackView, self.fbDisclaimerStackView,
+      self.emailLoginStackView
+    ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.bringCreativeProjectsToLifeLabel, self.contextLabel], self.loginContextStackView)
