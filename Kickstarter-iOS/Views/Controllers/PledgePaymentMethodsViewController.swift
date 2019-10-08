@@ -135,7 +135,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         guard let self = self else { return }
-
         self.delegate?.pledgePaymentMethodsViewControllerDidTapApplePayButton(self)
       }
 
@@ -159,6 +158,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] card in
         self?.updateSelectedCard(to: card)
+      }
+
+    self.viewModel.outputs.goToAddCardScreen
+      .observeForUI()
+      .observeValues { [weak self] intent, project in
+        self?.goToAddNewCard(intent: intent, project: project)
       }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
@@ -192,6 +197,16 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   // MARK: - Functions
+
+  private func goToAddNewCard(intent: AddNewCardIntent, project: Project) {
+    let addNewCardViewController = AddNewCardViewController.instantiate()
+      |> \.delegate .~ self
+    addNewCardViewController.configure(with: intent, project: project)
+    let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
+    let offset = navigationController.navigationBar.bounds.height
+
+    self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
+  }
 
   private func reloadPaymentMethods(with cards: [GraphUserCreditCard.CreditCard]) {
     self.cardsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
@@ -261,13 +276,7 @@ extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
 
 extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
   func pledgeAddNewCardView(_: PledgeAddNewCardView, didTapAddNewCardWith intent: AddNewCardIntent) {
-    let addNewCardViewController = AddNewCardViewController.instantiate()
-      |> \.delegate .~ self
-    addNewCardViewController.configure(with: intent)
-    let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
-    let offset = navigationController.navigationBar.bounds.height
-
-    self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
+    self.viewModel.inputs.addNewCardTapped(with: intent)
   }
 }
 

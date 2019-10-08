@@ -27,16 +27,6 @@ internal final class AddNewCardViewController: UIViewController,
   @IBOutlet private var stackView: UIStackView!
   @IBOutlet private var zipcodeView: SettingsFormFieldView!
 
-  private let supportedCardBrands: [STPCardBrand] = [
-    .amex,
-    .dinersClub,
-    .discover,
-    .JCB,
-    .masterCard,
-    .unionPay,
-    .visa
-  ]
-
   private var saveButtonView: LoadingBarButtonItemView!
 
   internal var messageBannerViewController: MessageBannerViewController?
@@ -47,8 +37,8 @@ internal final class AddNewCardViewController: UIViewController,
     return Storyboard.Settings.instantiate(AddNewCardViewController.self)
   }
 
-  func configure(with intent: AddNewCardIntent) {
-    self.viewModel.inputs.configure(with: intent)
+  func configure(with intent: AddNewCardIntent, project: Project? = nil) {
+    self.viewModel.inputs.configure(with: intent, project: project)
   }
 
   override func viewDidLoad() {
@@ -127,7 +117,6 @@ internal final class AddNewCardViewController: UIViewController,
     _ = self.creditCardValidationErrorLabel
       |> settingsDescriptionLabelStyle
       |> \.textColor .~ .ksr_red_400
-      |> \.text %~ { _ in Strings.Unsupported_card_type() }
 
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
@@ -157,6 +146,7 @@ internal final class AddNewCardViewController: UIViewController,
 
   override func bindViewModel() {
     super.bindViewModel()
+    self.creditCardValidationErrorLabel.rac.text = self.viewModel.outputs.unsupportedCardBrandErrorText
 
     self.rememberThisCardToggleViewControllerContainer.rac.hidden =
       self.viewModel.outputs.rememberThisCardToggleViewControllerContainerIsHidden
@@ -333,10 +323,6 @@ internal final class AddNewCardViewController: UIViewController,
     }
   }
 
-  private func cardBrandIsSupported(brand: STPCardBrand, supportedCardBrands _: [STPCardBrand]) -> Bool {
-    return self.supportedCardBrands.contains(brand)
-  }
-
   private func dismissKeyboard() {
     [self.cardholderNameTextField, self.creditCardTextField, self.zipcodeView.textField]
       .forEach { $0?.resignFirstResponder() }
@@ -382,14 +368,11 @@ extension AddNewCardViewController {
       return
     }
 
-    let cardBrand = STPCardValidator.brand(forNumber: cardnumber)
-    let isValid = self.cardBrandIsSupported(brand: cardBrand, supportedCardBrands: self.supportedCardBrands)
-
-    self.viewModel.inputs.cardBrand(isValid: isValid)
+    let stpCardBrand = STPCardValidator.brand(forNumber: cardnumber)
 
     self.viewModel.inputs.creditCardChanged(cardDetails: (
       cardnumber, textField.expirationMonth,
-      textField.expirationYear, textField.cvc
+      textField.expirationYear, textField.cvc, stpCardBrand.creditCardType
     ))
   }
 
