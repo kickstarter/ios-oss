@@ -15,10 +15,9 @@ final class CancelPledgeViewController: UIViewController {
 
   // MARK: - Properties
 
-  private lazy var cancelButton = { UIButton(type: .custom)
+  private lazy var cancelPledgeButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
   private lazy var cancellationDetailsTextLabel = { UILabel(frame: .zero) }()
   private lazy var cancellationReasonDisclaimerLabel = { UILabel(frame: .zero) }()
   private lazy var cancellationReasonTextField = {
@@ -52,7 +51,7 @@ final class CancelPledgeViewController: UIViewController {
       self.cancellationDetailsTextLabel,
       self.cancellationReasonTextField,
       self.cancellationReasonDisclaimerLabel,
-      self.cancelButton,
+      self.cancelPledgeButton,
       self.goBackButton
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -77,7 +76,7 @@ final class CancelPledgeViewController: UIViewController {
       for: .touchUpInside
     )
 
-    self.cancelButton.addTarget(
+    self.cancelPledgeButton.addTarget(
       self, action: #selector(CancelPledgeViewController.cancelPledgeButtonTapped),
       for: .touchUpInside)
 
@@ -124,7 +123,7 @@ final class CancelPledgeViewController: UIViewController {
       |> cancellationDisclaimerLabelStyle
       |> \.text %~ { _ in Strings.We_wont_share_this_with_the_creator() }
 
-    _ = self.cancelButton
+    _ = self.cancelPledgeButton
       |> redButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Yes_cancel_it() }
 
@@ -158,7 +157,7 @@ final class CancelPledgeViewController: UIViewController {
 
     self.cancellationDetailsTextLabel.rac.attributedText = self.viewModel.outputs
       .cancellationDetailsAttributedText
-    self.cancelButton.rac.enabled = self.viewModel.outputs.cancelPledgeButtonEnabled
+    self.cancelPledgeButton.rac.enabled = self.viewModel.outputs.cancelPledgeButtonEnabled
 
     Keyboard.change
       .observeForUI()
@@ -175,10 +174,10 @@ final class CancelPledgeViewController: UIViewController {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.cancelButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
+      self.cancelPledgeButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.goBackButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.cancellationReasonTextField.heightAnchor
-        .constraint(greaterThanOrEqualTo: self.cancelButton.heightAnchor)
+        .constraint(greaterThanOrEqualTo: self.cancelPledgeButton.heightAnchor)
     ])
   }
 
