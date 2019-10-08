@@ -5,18 +5,20 @@ import ReactiveSwift
 
 public typealias Month = UInt
 public typealias Year = UInt
-public typealias CardDetails = (cardNumber: String, expMonth: Month?, expYear: Year?, cvc: String?)
+public typealias CardDetails = (
+  cardNumber: String, expMonth: Month?, expYear: Year?, cvc: String?,
+  cardBrand: GraphUserCreditCard.CreditCardType?
+)
 public typealias PaymentDetails = (
   cardholderName: String, cardNumber: String, expMonth: Month, expYear: Year,
   cvc: String, postalCode: String
 )
 
 public protocol AddNewCardViewModelInputs {
-  func cardBrand(isValid: Bool)
   func cardholderNameChanged(_ cardholderName: String?)
   func cardholderNameTextFieldReturn()
   func creditCardChanged(cardDetails: CardDetails)
-  func configure(with intent: AddNewCardIntent)
+  func configure(with intent: AddNewCardIntent, project: Project?)
   func paymentCardTextFieldDidEndEditing()
   func paymentInfo(isValid: Bool)
   func rememberThisCardToggleChanged(to value: Bool)
@@ -42,6 +44,7 @@ public protocol AddNewCardViewModelOutputs {
   var rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var setStripePublishableKey: Signal<String, Never> { get }
+  var unsupportedCardBrandErrorText: Signal<String, Never> { get }
   var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
 }
 
@@ -65,6 +68,10 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
         return (cardDetails.cardNumber, expMonth, expYear, cvc)
       }
 
+    let cardBrand = self.creditCardChangedProperty.signal
+      .skipNil()
+      .map { $0.cardBrand }.skipNil()
+
     let cardNumber = self.creditCardChangedProperty.signal
       .skipNil()
       .map { $0.cardNumber }
@@ -76,14 +83,38 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let zipcode = self.zipcodeProperty.signal.skipNil()
     let zipcodeIsValid: Signal<Bool, Never> = zipcode.map { !$0.isEmpty }
 
+    let project = self.addNewCardIntentAndProjectProperty.signal.skipNil()
+      .map(second)
+
+    let cardBrandIsValid = Signal.combineLatest(
+      project,
+      cardBrand
+    ).map(cardBrandIsSupported(project:cardBrand:))
+
     let cardBrandValidAndCardNumberValid = Signal
       .combineLatest(
-        self.cardBrandIsValidProperty.signal,
+        cardBrandIsValid,
         cardNumber
       )
       .map { (brandValid, cardNumber) -> Bool in
-        // If card number is insufficiently long, always return "valid card brand" behaviour
         brandValid || cardNumber.count < 2
+      }
+
+    let invalidCardBrand = cardBrandIsValid.filter(isFalse)
+
+    let intent = Signal.combineLatest(
+      self.addNewCardIntentAndProjectProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
+    .map(first)
+
+    self.unsupportedCardBrandErrorText = Signal.combineLatest(invalidCardBrand, project, intent)
+      .map { _, project, intent in
+        intent == .pledge ?
+          Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
+            project_country: project?.location.displayableName ?? ""
+          ) : Strings.Unsupported_card_type()
       }
 
     self.creditCardValidationErrorContainerHidden = Signal.merge(
@@ -94,7 +125,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.saveButtonIsEnabled = Signal.combineLatest(
       cardholderName.map { !$0.isEmpty },
       self.paymentInfoIsValidProperty.signal,
-      self.cardBrandIsValidProperty.signal,
+      cardBrandIsValid,
       zipcodeIsValid
     ).map { cardholderNameFieldNotEmpty, creditCardIsValid, cardBrandIsValid, zipcodeIsValid in
       cardholderNameFieldNotEmpty && creditCardIsValid && cardBrandIsValid && zipcodeIsValid
@@ -125,12 +156,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.setStripePublishableKey = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.environmentType.stripePublishableKey }
 
-    self.rememberThisCardToggleViewControllerIsOn = Signal.combineLatest(
-      self.addNewCardIntentProperty.signal,
-      self.viewDidLoadProperty.signal
-    )
-    .map(first)
-    .map { $0 == .settings }
+    self.rememberThisCardToggleViewControllerIsOn = intent.map { $0 == .settings }
 
     let rememberThisCard = Signal.merge(
       self.rememberThisCardToggleViewControllerIsOn,
@@ -176,11 +202,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       self.addNewCardFailure.mapConst(false)
     )
 
-    self.rememberThisCardToggleViewControllerContainerIsHidden = Signal.combineLatest(
-      self.addNewCardIntentProperty.signal.map { $0 == .settings },
-      self.viewDidLoadProperty.signal
-    )
-    .map(first)
+    self.rememberThisCardToggleViewControllerContainerIsHidden = intent.map { $0 == .settings }
 
     // Koala
     self.viewWillAppearProperty.signal
@@ -199,11 +221,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
       }
   }
 
-  private let cardBrandIsValidProperty = MutableProperty<Bool>(true)
-  public func cardBrand(isValid: Bool) {
-    self.cardBrandIsValidProperty.value = isValid
-  }
-
   private let cardholderNameChangedProperty = MutableProperty<String?>(nil)
   public func cardholderNameChanged(_ cardholderName: String?) {
     self.cardholderNameChangedProperty.value = cardholderName
@@ -219,9 +236,9 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.creditCardChangedProperty.value = cardDetails
   }
 
-  private let addNewCardIntentProperty = MutableProperty<AddNewCardIntent?>(nil)
-  public func configure(with intent: AddNewCardIntent) {
-    self.addNewCardIntentProperty.value = intent
+  private let addNewCardIntentAndProjectProperty = MutableProperty<(AddNewCardIntent, Project?)?>(nil)
+  public func configure(with intent: AddNewCardIntent, project: Project?) {
+    self.addNewCardIntentAndProjectProperty.value = (intent, project)
   }
 
   private let paymentCardTextFieldDidEndEditingProperty = MutableProperty(())
@@ -288,8 +305,30 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let rememberThisCardToggleViewControllerIsOn: Signal<Bool, Never>
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
+  public let unsupportedCardBrandErrorText: Signal<String, Never>
   public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }
+}
+
+private func cardBrandIsSupported(project: Project?, cardBrand: GraphUserCreditCard.CreditCardType) -> Bool {
+  let supportedCardBrands: [GraphUserCreditCard.CreditCardType] = [
+    .amex,
+    .diners,
+    .discover,
+    .jcb,
+    .mastercard,
+    .unionPay,
+    .visa
+  ]
+
+  guard let availableCardTypes = project?.availableCardTypes else {
+    return supportedCardBrands.contains(cardBrand)
+  }
+
+  let availableCreditCardTypes = availableCardTypes
+    .compactMap { GraphUserCreditCard.CreditCardType(rawValue: $0) }
+
+  return availableCreditCardTypes.contains(cardBrand)
 }
