@@ -100,3 +100,9 @@ extension Backing {
     return (pledgeAmount as NSDecimalNumber).doubleValue
   }
 }
+
+extension Backing: GraphIDBridging {
+  public static var modelName: String {
+    return "Backing"
+  }
+}
