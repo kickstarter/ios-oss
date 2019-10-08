@@ -15,6 +15,7 @@ public protocol ManagePledgeViewModelInputs {
   func configureWith(_ project: Project, reward: Reward)
   func menuButtonTapped()
   func menuOptionSelected(with action: ManagePledgeAlertAction)
+  func pledgeViewControllerDidUpdatePledgeWithMessage(_ message: String)
   func viewDidLoad()
 }
 
@@ -30,6 +31,7 @@ public protocol ManagePledgeViewModelOutputs {
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
+  var showSuccessBannerWithMessage: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
 }
 
@@ -99,6 +101,8 @@ public final class ManagePledgeViewModel:
 
     self.rewardReceivedViewControllerViewIsHidden = projectAndReward
       .map { project, reward in reward.isNoReward || project.personalization.backing?.status != .collected }
+
+    self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeWithMessageSignal
   }
 
   private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
@@ -117,6 +121,14 @@ public final class ManagePledgeViewModel:
     self.menuOptionSelectedObserver.send(value: action)
   }
 
+  private let (
+    pledgeViewControllerDidUpdatePledgeWithMessageSignal,
+    pledgeViewControllerDidUpdatePledgeWithMessageObserver
+  ) = Signal<String, Never>.pipe()
+  public func pledgeViewControllerDidUpdatePledgeWithMessage(_ message: String) {
+    self.pledgeViewControllerDidUpdatePledgeWithMessageObserver.send(value: message)
+  }
+
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
   public func viewDidLoad() {
     self.viewDidLoadObserver.send(value: ())
@@ -133,6 +145,7 @@ public final class ManagePledgeViewModel:
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
+  public let showSuccessBannerWithMessage: Signal<String, Never>
   public let title: Signal<String, Never>
 
   public var inputs: ManagePledgeViewModelInputs { return self }
