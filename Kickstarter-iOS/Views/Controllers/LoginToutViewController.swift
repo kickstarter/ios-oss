@@ -103,7 +103,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> baseControllerStyle()
 
     _ = self.fbLoginButton
-      |> fbLoginButtonStyle
+      |> facebookButtonStyle
 
     _ = self.disclaimerButton
       |> multiLineButtonStyle
@@ -240,6 +240,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     self.contextLabel.rac.text = self.viewModel.outputs.logInContextText
     self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
+    self.fbLoginButton.rac.title = self.viewModel.outputs.facebookButtonTitleText
+
 
     self.viewModel.outputs.headlineLabelHidden
       .observeForUI()

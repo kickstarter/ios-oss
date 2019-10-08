@@ -43,6 +43,9 @@ public protocol LoginToutViewModelOutputs {
   /// Emits when the controller should be dismissed.
   var dismissViewController: Signal<(), Never> { get }
 
+  /// Emits string for facebook button title text.
+  var facebookButtonTitleText: Signal<String, Never> { get }
+
   /// Emits if label should be hidden.
   var headlineLabelHidden: Signal<Bool, Never> { get }
 
@@ -89,6 +92,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     self.headlineLabelHidden = intent.map { (intent: LoginIntent) -> Bool in
       intent != LoginIntent.generic && intent != LoginIntent.discoveryOnboarding
+    }
+
+    self.facebookButtonTitleText = intent.map { (intent: LoginIntent) -> String in
+      intent == .backProject ? Strings.Continue_with_Facebook()
+                             : Strings.login_tout_back_intent_traditional_login_button()
     }
 
     let isLoading: MutableProperty<Bool> = MutableProperty(false)
@@ -233,6 +241,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   }
 
   public let dismissViewController: Signal<(), Never>
+  public let facebookButtonTitleText: Signal<String, Never>
   public let headlineLabelHidden: Signal<Bool, Never>
   public let startLogin: Signal<(), Never>
   public let startSignup: Signal<(), Never>
