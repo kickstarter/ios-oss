@@ -17,6 +17,7 @@ final class RewardCardViewModelTests: TestCase {
   private let estimatedDeliveryDateLabelHidden = TestObserver<Bool, Never>()
   private let estimatedDeliveryDateLabelText = TestObserver<String, Never>()
   private let includedItemsStackViewHidden = TestObserver<Bool, Never>()
+  private let includedItemsTitleLabelTextColor = TestObserver<UIColor, Never>()
   private let items = TestObserver<[String], Never>()
   private let pillCollectionViewHidden = TestObserver<Bool, Never>()
   private let reloadPills = TestObserver<[String], Never>()
@@ -39,6 +40,7 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.outputs.estimatedDeliveryDateLabelHidden.observe(self.estimatedDeliveryDateLabelHidden.observer)
     self.vm.outputs.estimatedDeliveryDateLabelText.observe(self.estimatedDeliveryDateLabelText.observer)
     self.vm.outputs.includedItemsStackViewHidden.observe(self.includedItemsStackViewHidden.observer)
+    self.vm.outputs.includedItemsTitleLabelTextColor.observe(self.includedItemsTitleLabelTextColor.observer)
     self.vm.outputs.items.map(first).observe(self.items.observer)
     self.vm.outputs.pillCollectionViewHidden.observe(self.pillCollectionViewHidden.observer)
     self.vm.outputs.reloadPills.observe(self.reloadPills.observer)
@@ -282,6 +284,27 @@ final class RewardCardViewModelTests: TestCase {
     )
 
     self.includedItemsStackViewHidden.assertValues([true])
+  }
+
+  func testIncludedItemsTitleLabelTextColor() {
+    self.vm.inputs.configureWith(
+      project: .template,
+      rewardOrBacking: .left(.template |> Reward.lens.rewardsItems .~ []), context: .rewardsCollectionView
+    )
+
+    self.includedItemsTitleLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
+
+    self.vm.inputs.configureWith(
+      project: .template,
+      rewardOrBacking: .left(.template |> Reward.lens.rewardsItems .~ []), context: .pledgeView
+    )
+
+    self.includedItemsTitleLabelTextColor.assertValues(
+      [
+        UIColor.ksr_text_dark_grey_500,
+        UIColor.ksr_text_dark_grey_400
+      ]
+    )
   }
 
   // MARK: Description Label

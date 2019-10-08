@@ -161,7 +161,7 @@ public final class RewardCardView: UIView {
     self.pillCollectionView.rac.hidden = self.viewModel.outputs.pillCollectionViewHidden
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.rewardTitleLabelHidden
     self.rewardTitleLabel.rac.text = self.viewModel.outputs.rewardTitleLabelText
-    self.includedItemsTitleLabel.rac.textColor = self.viewModel.outputs.sectionTitleLabelTextColor
+    self.includedItemsTitleLabel.rac.textColor = self.viewModel.outputs.includedItemsTitleLabelTextColor
 
     self.viewModel.outputs.stateIconImageName
       .observeForUI()

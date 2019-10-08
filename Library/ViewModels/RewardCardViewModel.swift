@@ -24,6 +24,7 @@ public protocol RewardCardViewModelOutputs {
   var estimatedDeliveryDateLabelHidden: Signal<Bool, Never> { get }
   var estimatedDeliveryDateLabelText: Signal<String, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
+  var includedItemsTitleLabelTextColor: Signal<UIColor, Never> { get }
   var items: Signal<([String], UIColor), Never> { get }
   var pillCollectionViewHidden: Signal<Bool, Never> { get }
   var reloadPills: Signal<[String], Never> { get }
@@ -31,7 +32,6 @@ public protocol RewardCardViewModelOutputs {
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
   var rewardTitleLabelText: Signal<String, Never> { get }
-  var sectionTitleLabelTextColor: Signal<UIColor, Never> { get }
   var stateIconImageName: Signal<String, Never> { get }
   var stateIconImageTintColor: Signal<UIColor, Never> { get }
   var stateIconImageViewContainerBackgroundColor: Signal<UIColor, Never> { get }
@@ -129,7 +129,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
         return (items, separatorsColor)
       }
 
-    self.sectionTitleLabelTextColor = context
+    self.includedItemsTitleLabelTextColor = context
       .map(titleLabelTextColor(for:))
 
     self.reloadPills = projectAndReward.map(pillStrings(project:reward:))
@@ -180,13 +180,13 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let estimatedDeliveryDateLabelText: Signal<String, Never>
   public let items: Signal<([String], UIColor), Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
+  public let includedItemsTitleLabelTextColor: Signal<UIColor, Never>
   public let pillCollectionViewHidden: Signal<Bool, Never>
   public let reloadPills: Signal<[String], Never>
   public let rewardMinimumLabelText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>
   public let rewardTitleLabelText: Signal<String, Never>
-  public let sectionTitleLabelTextColor: Signal<UIColor, Never>
   public let stateIconImageName: Signal<String, Never>
   public let stateIconImageTintColor: Signal<UIColor, Never>
   public let stateIconImageViewContainerBackgroundColor: Signal<UIColor, Never>
