@@ -4296,7 +4296,7 @@
 				};
 			};
 			buildConfigurationList = A7E06C741C5A6EB300EBDCC2 /* Build configuration list for PBXProject "Kickstarter" */;
-			compatibilityVersion = "Xcode 10.0";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
