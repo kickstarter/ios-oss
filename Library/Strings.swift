@@ -8933,6 +8933,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+
+   - **en**: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+   - **de**: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+   - **es**: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+   - **fr**: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+   - **ja**: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+  */
+  public static func Well_import_your_name_and_profile_photo_and_access_your_friend_list() -> String {
+    return localizedString(
+      key: "Well_import_your_name_and_profile_photo_and_access_your_friend_list",
+      defaultValue: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile."
 
    - **en**: "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile."
