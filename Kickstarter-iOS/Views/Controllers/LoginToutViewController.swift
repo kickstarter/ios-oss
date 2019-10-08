@@ -123,7 +123,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     _ = self.getNotifiedLabel
       |> baseLabelStyle
-      |> UILabel.lens.font .~ UIFont.ksr_headline(size: 12)
+      |> UILabel.lens.font %~~ { _, label in
+      label.traitCollection.isRegularRegular ? .ksr_headline(size: 15.0) : .ksr_headline(size: 12.0)
+      }
       |> UILabel.lens.text %~ { _ in Strings.Get_notified_when_your_friends_back_and_launch_projects() }
 
     _ = self.rootStackView
