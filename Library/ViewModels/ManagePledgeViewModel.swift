@@ -15,7 +15,7 @@ public protocol ManagePledgeViewModelInputs {
   func configureWith(_ project: Project, reward: Reward)
   func menuButtonTapped()
   func menuOptionSelected(with action: ManagePledgeAlertAction)
-  func pledgeViewControllerDidUpdatePledge()
+  func pledgeViewControllerDidUpdatePledgeWithMessage(_ message: String)
   func viewDidLoad()
 }
 
@@ -102,9 +102,7 @@ public final class ManagePledgeViewModel:
     self.rewardReceivedViewControllerViewIsHidden = projectAndReward
       .map { project, reward in reward.isNoReward || project.personalization.backing?.status != .collected }
 
-    self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeSignal.mapConst(
-      Strings.Got_it_your_changes_have_been_saved()
-    )
+    self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeWithMessageSignal
   }
 
   private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
@@ -123,10 +121,12 @@ public final class ManagePledgeViewModel:
     self.menuOptionSelectedObserver.send(value: action)
   }
 
-  private let (pledgeViewControllerDidUpdatePledgeSignal, pledgeViewControllerDidUpdatePledgeObserver)
-    = Signal<(), Never>.pipe()
-  public func pledgeViewControllerDidUpdatePledge() {
-    self.pledgeViewControllerDidUpdatePledgeObserver.send(value: ())
+  private let (
+    pledgeViewControllerDidUpdatePledgeWithMessageSignal,
+    pledgeViewControllerDidUpdatePledgeWithMessageObserver
+  ) = Signal<String, Never>.pipe()
+  public func pledgeViewControllerDidUpdatePledgeWithMessage(_ message: String) {
+    self.pledgeViewControllerDidUpdatePledgeWithMessageObserver.send(value: message)
   }
 
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()

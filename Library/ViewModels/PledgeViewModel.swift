@@ -80,7 +80,7 @@ public protocol PledgeViewModelOutputs {
   var descriptionViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<Project, Never> { get }
-  var notifyDelegateUpdatePledgeDidSucceed: Signal<(), Never> { get }
+  var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var popViewController: Signal<(), Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
@@ -408,11 +408,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           .materialize()
       }
 
-    self.notifyDelegateUpdatePledgeDidSucceed = updateBackingEvent.values().ignoreValues()
+    self.notifyDelegateUpdatePledgeDidSucceedWithMessage = updateBackingEvent.values()
+      .mapConst(Strings.Got_it_your_changes_have_been_saved())
     self.updatePledgeFailedWithError = updateBackingEvent.errors()
       .map { $0.localizedDescription }
 
-    self.popViewController = self.notifyDelegateUpdatePledgeDidSucceed
+    self.popViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
 
     let valuesChangedAndValid = Signal.combineLatest(
       valuesChanged,
@@ -525,7 +526,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let createBackingError: Signal<String, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<Project, Never>
-  public let notifyDelegateUpdatePledgeDidSucceed: Signal<(), Never>
+  public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let popViewController: Signal<(), Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>

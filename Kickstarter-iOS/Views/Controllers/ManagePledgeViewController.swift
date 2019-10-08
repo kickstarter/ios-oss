@@ -290,8 +290,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 // MARK: - PledgeViewControllerDelegate
 
 extension ManagePledgeViewController: PledgeViewControllerDelegate {
-  func pledgeViewControllerDidUpdatePledge(_: PledgeViewController) {
-    self.viewModel.inputs.pledgeViewControllerDidUpdatePledge()
+  func pledgeViewControllerDidUpdatePledge(_: PledgeViewController, message: String) {
+    self.viewModel.inputs.pledgeViewControllerDidUpdatePledgeWithMessage(message)
   }
 }
 

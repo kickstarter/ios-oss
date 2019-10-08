@@ -366,7 +366,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     self.showSuccessBannerWithMessage.assertDidNotEmitValue()
 
-    self.vm.inputs.pledgeViewControllerDidUpdatePledge()
+    self.vm.inputs.pledgeViewControllerDidUpdatePledgeWithMessage("Got it! Your changes have been saved.")
 
     self.showSuccessBannerWithMessage.assertValues(["Got it! Your changes have been saved."])
   }

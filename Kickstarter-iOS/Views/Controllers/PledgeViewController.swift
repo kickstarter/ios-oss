@@ -5,7 +5,7 @@ import Stripe
 import UIKit
 
 protocol PledgeViewControllerDelegate: AnyObject {
-  func pledgeViewControllerDidUpdatePledge(_ viewController: PledgeViewController)
+  func pledgeViewControllerDidUpdatePledge(_ viewController: PledgeViewController, message: String)
 }
 
 final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
@@ -269,11 +269,11 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.goToThanks(project: project)
       }
 
-    self.viewModel.outputs.notifyDelegateUpdatePledgeDidSucceed
+    self.viewModel.outputs.notifyDelegateUpdatePledgeDidSucceedWithMessage
       .observeForUI()
-      .observeValues { [weak self] in
+      .observeValues { [weak self] message in
         guard let self = self else { return }
-        self.delegate?.pledgeViewControllerDidUpdatePledge(self)
+        self.delegate?.pledgeViewControllerDidUpdatePledge(self, message: message)
       }
 
     self.viewModel.outputs.popViewController

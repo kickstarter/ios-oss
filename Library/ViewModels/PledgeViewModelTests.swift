@@ -42,7 +42,7 @@ final class PledgeViewModelTests: TestCase {
 
   private let goToThanks = TestObserver<Project, Never>()
 
-  private let notifyDelegateUpdatePledgeDidSucceed = TestObserver<(), Never>()
+  private let notifyDelegateUpdatePledgeDidSucceedWithMessage = TestObserver<String, Never>()
 
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
   private let sectionSeparatorsHidden = TestObserver<Bool, Never>()
@@ -100,8 +100,8 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.outputs.goToThanks.observe(self.goToThanks.observer)
 
-    self.vm.outputs.notifyDelegateUpdatePledgeDidSucceed
-      .observe(self.notifyDelegateUpdatePledgeDidSucceed.observer)
+    self.vm.outputs.notifyDelegateUpdatePledgeDidSucceedWithMessage
+      .observe(self.notifyDelegateUpdatePledgeDidSucceedWithMessage.observer)
 
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
 
@@ -1129,7 +1129,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
       self.vm.inputs.viewDidLoad()
 
-      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.confirmButtonEnabled.assertDidNotEmitValue()
 
@@ -1137,19 +1137,21 @@ final class PledgeViewModelTests: TestCase {
         with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
       )
 
-      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.confirmButtonEnabled.assertValues([true])
 
       self.vm.inputs.confirmButtonTapped()
 
-      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.confirmButtonEnabled.assertValues([true, false])
 
       self.scheduler.run()
 
-      self.notifyDelegateUpdatePledgeDidSucceed.assertValueCount(1)
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
+        "Got it! Your changes have been saved."
+      ])
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.confirmButtonEnabled.assertValues([true, false, true])
     }
@@ -1179,7 +1181,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
       self.vm.inputs.viewDidLoad()
 
-      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.confirmButtonEnabled.assertDidNotEmitValue()
 
@@ -1187,19 +1189,19 @@ final class PledgeViewModelTests: TestCase {
         with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
       )
 
-      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.confirmButtonEnabled.assertValues([true])
 
       self.vm.inputs.confirmButtonTapped()
 
-      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.confirmButtonEnabled.assertValues([true, false])
 
       self.scheduler.run()
 
-      self.notifyDelegateUpdatePledgeDidSucceed.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertValueCount(1)
       self.confirmButtonEnabled.assertValues([true, false, true])
     }
