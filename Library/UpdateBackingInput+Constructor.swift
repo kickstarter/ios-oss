@@ -23,7 +23,7 @@ extension UpdateBackingInput {
   }
 }
 
-func pledgeAmountString(withAmount amount: Double, shippingRule: ShippingRule?) -> String {
+private func pledgeAmountString(withAmount amount: Double, shippingRule: ShippingRule?) -> String {
   let pledgeAmountDecimal = Decimal(amount)
   var shippingAmountDecimal: Decimal = Decimal()
 

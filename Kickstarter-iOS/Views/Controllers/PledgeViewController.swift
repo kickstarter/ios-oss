@@ -323,7 +323,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       }
 
     self.viewModel.outputs.updatePledgeFailedWithError
-      .observeForUI()
+      .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }

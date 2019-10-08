@@ -162,7 +162,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       }
 
     self.viewModel.outputs.showSuccessBannerWithMessage
-      .observeForUI()
+      .observeForControllerAction()
       .observeValues { [weak self] message in
         guard let self = self else { return }
 
