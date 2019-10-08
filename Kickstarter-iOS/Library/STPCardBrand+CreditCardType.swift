@@ -12,6 +12,8 @@ extension STPCardBrand {
     case .unionPay: return .unionPay
     case .unknown: return .generic
     case .visa: return .visa
+    @unknown default:
+      return .generic
     }
   }
 }
