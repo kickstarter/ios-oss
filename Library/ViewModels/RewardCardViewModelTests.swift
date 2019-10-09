@@ -17,6 +17,7 @@ final class RewardCardViewModelTests: TestCase {
   private let estimatedDeliveryDateLabelHidden = TestObserver<Bool, Never>()
   private let estimatedDeliveryDateLabelText = TestObserver<String, Never>()
   private let includedItemsStackViewHidden = TestObserver<Bool, Never>()
+  private let includedItemsTitleLabelTextColor = TestObserver<UIColor, Never>()
   private let items = TestObserver<[String], Never>()
   private let pillCollectionViewHidden = TestObserver<Bool, Never>()
   private let reloadPills = TestObserver<[String], Never>()
@@ -35,7 +36,8 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.outputs.estimatedDeliveryDateLabelHidden.observe(self.estimatedDeliveryDateLabelHidden.observer)
     self.vm.outputs.estimatedDeliveryDateLabelText.observe(self.estimatedDeliveryDateLabelText.observer)
     self.vm.outputs.includedItemsStackViewHidden.observe(self.includedItemsStackViewHidden.observer)
-    self.vm.outputs.items.observe(self.items.observer)
+    self.vm.outputs.includedItemsTitleLabelTextColor.observe(self.includedItemsTitleLabelTextColor.observer)
+    self.vm.outputs.items.map(first).observe(self.items.observer)
     self.vm.outputs.pillCollectionViewHidden.observe(self.pillCollectionViewHidden.observer)
     self.vm.outputs.reloadPills.observe(self.reloadPills.observer)
     self.vm.outputs.rewardMinimumLabelText.observe(self.rewardMinimumLabelText.observer)
@@ -53,7 +55,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(
       project: .template,
-      rewardOrBacking: .left(reward)
+      rewardOrBacking: .left(reward), context: .pledgeView
     )
 
     self.rewardTitleLabelHidden.assertValues([false])
@@ -67,7 +69,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(
       project: .template,
-      rewardOrBacking: .left(reward)
+      rewardOrBacking: .left(reward), context: .pledgeView
     )
 
     self.rewardTitleLabelHidden.assertValues([true])
@@ -79,7 +81,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(
       project: .template,
-      rewardOrBacking: .left(reward)
+      rewardOrBacking: .left(reward), context: .pledgeView
     )
 
     self.rewardTitleLabelHidden.assertValues([false])
@@ -101,7 +103,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(
       project: project,
-      rewardOrBacking: .left(reward)
+      rewardOrBacking: .left(reward), context: .pledgeView
     )
 
     self.rewardTitleLabelHidden.assertValues([false])
@@ -116,7 +118,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.rewardMinimumLabelText.assertValues(
         ["$1,000"],
@@ -131,7 +133,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "MX") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.rewardMinimumLabelText.assertValues(
         ["US$ 1,000"],
@@ -149,7 +151,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.rewardMinimumLabelText.assertValues(
         ["£1,000"],
@@ -167,7 +169,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "MX") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.rewardMinimumLabelText.assertValues(
         ["£1,000"],
@@ -182,7 +184,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = Reward.noReward
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.rewardMinimumLabelText.assertValues(
         ["$1"],
@@ -197,7 +199,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = Reward.noReward
 
     withEnvironment(countryCode: "MX") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.rewardMinimumLabelText.assertValues(
         ["US$ 1"],
@@ -212,7 +214,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = Reward.noReward
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.rewardMinimumLabelText.assertValues(
         ["MX$ 10"],
@@ -230,7 +232,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = Reward.noReward
 
     withEnvironment(countryCode: "CA") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.rewardMinimumLabelText.assertValues(
         ["MX$ 10"],
@@ -260,7 +262,7 @@ final class RewardCardViewModelTests: TestCase {
           )
       ]
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.items.assertValues([["The thing", "(1,000) The other thing"]])
     self.includedItemsStackViewHidden.assertValues([false])
@@ -269,10 +271,31 @@ final class RewardCardViewModelTests: TestCase {
   func testItemsContainerHidden_WithNoItems() {
     self.vm.inputs.configureWith(
       project: .template,
-      rewardOrBacking: .left(.template |> Reward.lens.rewardsItems .~ [])
+      rewardOrBacking: .left(.template |> Reward.lens.rewardsItems .~ []), context: .pledgeView
     )
 
     self.includedItemsStackViewHidden.assertValues([true])
+  }
+
+  func testIncludedItemsTitleLabelTextColor() {
+    self.vm.inputs.configureWith(
+      project: .template,
+      rewardOrBacking: .left(.template |> Reward.lens.rewardsItems .~ []), context: .rewardsCollectionView
+    )
+
+    self.includedItemsTitleLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
+
+    self.vm.inputs.configureWith(
+      project: .template,
+      rewardOrBacking: .left(.template |> Reward.lens.rewardsItems .~ []), context: .pledgeView
+    )
+
+    self.includedItemsTitleLabelTextColor.assertValues(
+      [
+        UIColor.ksr_text_dark_grey_500,
+        UIColor.ksr_text_dark_grey_400
+      ]
+    )
   }
 
   // MARK: Description Label
@@ -281,7 +304,7 @@ final class RewardCardViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.template
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.descriptionLabelText.assertValues([reward.description])
   }
@@ -290,7 +313,7 @@ final class RewardCardViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.noReward
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.descriptionLabelText.assertValues(["Back it because you believe in it."])
   }
@@ -305,7 +328,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.convertedMinimum .~ 1_000
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [true],
@@ -326,7 +349,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Backing.lens.reward .~ reward
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [true],
@@ -344,7 +367,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.convertedMinimum .~ 2
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [false],
@@ -369,7 +392,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Backing.lens.reward .~ reward
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [false],
@@ -390,7 +413,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.convertedMinimum .~ 2
 
     withEnvironment(countryCode: "MX") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [false],
@@ -416,7 +439,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Backing.lens.reward .~ reward
 
     withEnvironment(countryCode: "MX") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [false],
@@ -435,7 +458,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.convertedMinimum .~ 1
 
     withEnvironment(countryCode: "XX") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [true],
@@ -456,7 +479,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Backing.lens.reward .~ reward
 
     withEnvironment(countryCode: "XX") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [true],
@@ -474,7 +497,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.convertedMinimum .~ 2
 
     withEnvironment(countryCode: "XX") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [false],
@@ -497,7 +520,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Backing.lens.reward .~ reward
 
     withEnvironment(countryCode: "XX") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [false],
@@ -517,7 +540,7 @@ final class RewardCardViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(currency: "MXN"), countryCode: "MX"
     ) {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [false],
@@ -539,7 +562,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Backing.lens.reward .~ reward
 
     withEnvironment(apiService: MockService(currency: "MXN"), countryCode: "MX") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [false],
@@ -557,7 +580,7 @@ final class RewardCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.convertedMinimum .~ 1_000
 
     withEnvironment(countryCode: "GB") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [true],
@@ -579,7 +602,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Backing.lens.reward .~ reward
 
     withEnvironment(countryCode: "GB") {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing))
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .right(backing), context: .pledgeView)
 
       self.conversionLabelHidden.assertValues(
         [true],
@@ -592,7 +615,7 @@ final class RewardCardViewModelTests: TestCase {
   // MARK: - Card View
 
   func testRewardCardTapped() {
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template), context: .pledgeView)
 
     self.vm.inputs.rewardCardTapped()
 
@@ -605,7 +628,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.minimum .~ 1_000
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.cardUserInteractionIsEnabled.assertValues([true])
   }
@@ -616,7 +639,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ 10
       |> Reward.lens.minimum .~ 1_000
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.cardUserInteractionIsEnabled.assertValues([true])
   }
@@ -627,7 +650,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ 0
       |> Reward.lens.minimum .~ 1_000
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.cardUserInteractionIsEnabled.assertValues([false])
   }
@@ -642,7 +665,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.limit .~ 100
       |> Reward.lens.remaining .~ 25
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -659,7 +682,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.backersCount .~ 25
       |> Reward.lens.remaining .~ 25
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -675,7 +698,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.backersCount .~ 25
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -693,7 +716,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -713,7 +736,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -733,7 +756,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ 75
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -758,7 +781,7 @@ final class RewardCardViewModelTests: TestCase {
           |> Reward.Shipping.lens.type .~ .anywhere
       )
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -784,7 +807,7 @@ final class RewardCardViewModelTests: TestCase {
           |> Reward.Shipping.lens.location .~ .init(id: 123, localizedName: "United States")
       )
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -809,7 +832,7 @@ final class RewardCardViewModelTests: TestCase {
           |> Reward.Shipping.lens.type .~ .multipleLocations
       )
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -837,7 +860,7 @@ final class RewardCardViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.state .~ .live
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -865,7 +888,7 @@ final class RewardCardViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.state .~ .live
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -893,7 +916,7 @@ final class RewardCardViewModelTests: TestCase {
           |> Reward.Shipping.lens.type .~ .anywhere
       )
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
@@ -914,7 +937,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ 75
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
@@ -930,7 +953,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ 0
       |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
@@ -945,7 +968,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Reward.lens.backersCount .~ nil
       |> Reward.lens.endsAt .~ nil
 
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
@@ -963,7 +986,7 @@ final class RewardCardViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.state .~ .live
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([["50 left of 100"]])
@@ -981,7 +1004,7 @@ final class RewardCardViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.state .~ .successful
 
-    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward), context: .pledgeView)
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([["50 backers"]])
