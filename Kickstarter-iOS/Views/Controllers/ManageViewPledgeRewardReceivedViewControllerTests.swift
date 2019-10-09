@@ -21,7 +21,7 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
 
   func testView_Toggle_Off() {
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
-    combos([Language.en], devices).forEach { language, device in
+    combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let controller = ManageViewPledgeRewardReceivedViewController.instantiate()
         controller.configureWith(project: .template)
@@ -39,7 +39,7 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
 
   func testView_Toggle_On() {
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
-    combos([Language.en], devices).forEach { language, device in
+    combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let project = Project.template
           |> Project.lens.personalization .. Project.Personalization.lens.backing .~ .template

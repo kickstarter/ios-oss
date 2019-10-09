@@ -410,7 +410,7 @@
 "Reward_Surveys.zero" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_delivered" = "リワードを受け取りましたか？";
 "Reward_estimated_for_delivery_in_date" = "<b>リワード</b>の配達予定日は%{delivery_date}";
-"Reward_received" = "Reward received";
+"Reward_received" = "リワードを受け取りました";
 "Reward_selected" = "選択中のリワード";
 "Reward_surveys" = "リワードのサーベイ";
 "Rewards_count_rewards.few" = "%{rewards_count} 種類のリワード";
