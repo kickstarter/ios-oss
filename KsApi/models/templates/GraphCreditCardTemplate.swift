@@ -91,8 +91,7 @@ extension GraphUserCreditCard {
       GraphUserCreditCard.jcb,
       GraphUserCreditCard.discover,
       GraphUserCreditCard.generic,
-      GraphUserCreditCard.unionPay,
-      GraphUserCreditCard.applePay
+      GraphUserCreditCard.unionPay
     ])
   )
 

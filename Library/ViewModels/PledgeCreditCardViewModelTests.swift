@@ -139,10 +139,10 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: GraphUserCreditCard.applePay)
 
     self.cardImage.assertValue(UIImage(named: "icon--apple_pay"))
-    self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
+    self.cardNumberTextShortStyle.assertLastValue("Ending in 8882")
     self.expirationDateText.assertValue("Expires 01/2024")
-    self.selectButtonIsSelected.assertValues([true])
-    self.selectButtonTitle.assertValues(["Selected"])
+    self.selectButtonIsSelected.assertDidNotEmitValue()
+    self.selectButtonTitle.assertDidNotEmitValue()
   }
 
   func testCardConfiguredAsSelected() {
