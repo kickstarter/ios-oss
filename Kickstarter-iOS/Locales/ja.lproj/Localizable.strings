@@ -492,7 +492,7 @@
 "The_live_stream_was_interrupted" = "ライブ配信が中断されました";
 "The_live_stream_will_start_soon" = "ライブ配信が開始します";
 "The_live_stream_will_start_time" = "%{time} にライブ配信が開始されます。";
-"The_minimum_pledge_is" = "The minimum pledge is %{min_pledge}.";
+"The_minimum_pledge_is" = "最低プレッジ額は %{min_pledge} です。";
 "The_replay_will_start_soon" = "リプレイが始まります";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "気になる話題や最新プロジェクトなど、この時代を特徴づける思想「ツァイトガイスト」をいち早くお届けします。";
 "There_was_a_problem_with_this_payment" = "支払いに問題があります。";

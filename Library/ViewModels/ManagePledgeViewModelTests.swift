@@ -11,7 +11,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
   private let configurePaymentMethodView = TestObserver<GraphUserCreditCard.CreditCard, Never>()
   private let configurePledgeSummaryView = TestObserver<Project, Never>()
-  private let configureRewardSummaryView = TestObserver<Reward, Never>()
+  private let configureRewardSummaryViewProject = TestObserver<Project, Never>()
+  private let configureRewardSummaryViewReward = TestObserver<Reward, Never>()
   private let goToCancelPledgeProject = TestObserver<Project, Never>()
   private let goToCancelPledgeBacking = TestObserver<Backing, Never>()
   private let goToChangePaymentMethod = TestObserver<Void, Never>()
@@ -31,8 +32,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
       .observe(self.configurePaymentMethodView.observer)
     self.vm.outputs.configurePledgeSummaryView
       .observe(self.configurePledgeSummaryView.observer)
-    self.vm.outputs.configureRewardSummaryView
-      .observe(self.configureRewardSummaryView.observer)
+    self.vm.outputs.configureRewardSummaryView.map(first)
+      .observe(self.configureRewardSummaryViewProject.observer)
+    self.vm.outputs.configureRewardSummaryView.map(second).map { Either.left($0) }.skipNil()
+      .observe(self.configureRewardSummaryViewReward.observer)
+
     self.vm.outputs.goToCancelPledge.map(first).observe(self.goToCancelPledgeProject.observer)
     self.vm.outputs.goToCancelPledge.map(second).observe(self.goToCancelPledgeBacking.observer)
     self.vm.outputs.goToChangePaymentMethod.observe(self.goToChangePaymentMethod.observer)
@@ -97,14 +101,17 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testConfigureRewardSummaryViewController() {
-    self.configureRewardSummaryView.assertDidNotEmitValue()
+    self.configureRewardSummaryViewProject.assertDidNotEmitValue()
+    self.configureRewardSummaryViewReward.assertDidNotEmitValue()
 
     let reward = Reward.template
-    self.vm.inputs.configureWith(.template, reward: reward)
+    let project = Project.template
+    self.vm.inputs.configureWith(project, reward: reward)
 
     self.vm.inputs.viewDidLoad()
 
-    self.configureRewardSummaryView.assertValue(reward)
+    self.configureRewardSummaryViewProject.assertValue(project)
+    self.configureRewardSummaryViewReward.assertValue(reward)
   }
 
   func testMenuButtonTapped_WhenProject_IsLive() {
