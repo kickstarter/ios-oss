@@ -47,11 +47,13 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
       return features
     }
 
-    self.reloadWithData = features
+    let sortedFeatures = features
+      .map { features in features.sorted { $0.feature.description < $1.feature.description } }
 
-    self.updateConfigWithFeatures = features
-      .takePairWhen(self.setFeatureEnabledAtIndexProperty.signal
-        .skipNil())
+    self.reloadWithData = sortedFeatures
+
+    self.updateConfigWithFeatures = sortedFeatures
+      .takePairWhen(self.setFeatureEnabledAtIndexProperty.signal.skipNil())
       .map(unpack)
       .map { features, index, enabled -> Features? in
         let featureEnabledPair = features[index]
