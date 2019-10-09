@@ -13,6 +13,8 @@ public protocol PledgeCreditCardViewModelInputs {
 
   /// Call with the currently selected card.
   func setSelectedCard(_ creditCard: GraphUserCreditCard.CreditCard)
+
+  func setDisabledCard(_ creditCard: GraphUserCreditCard.CreditCard)
 }
 
 public protocol PledgeCreditCardViewModelOutputs {
@@ -36,6 +38,8 @@ public protocol PledgeCreditCardViewModelOutputs {
 
   /// Emits the button title.
   var selectButtonTitle: Signal<String, Never> { get }
+
+  var disableButton: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeCreditCardViewModelType {
@@ -44,10 +48,11 @@ public protocol PledgeCreditCardViewModelType {
 }
 
 public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
-  PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
+PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
   public init() {
     let creditCard = self.creditCardProperty.signal.skipNil()
     let selectedCard = self.selectedCardProperty.signal.skipNil()
+    let disabledCard = self.disabledCardProperty.signal.skipNil()
 
     self.cardImage = creditCard
       .map(cardImageForCard)
@@ -70,6 +75,8 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       selectedCard
     )
 
+//    let cardAvailable = creditCard.map { cardAvailable(card: $0) }
+
     let cardConfiguredAsSelected = cardAndSelectedCard.filter(==).ignoreValues()
       .take(until: self.selectButtonTappedProperty.signal)
 
@@ -83,6 +90,8 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
 
     self.selectButtonIsSelected = cardAndSelectedCard
       .map(==)
+
+    self.disableButton = disabledCard.map { $0 }.mapConst(false)
   }
 
   fileprivate let creditCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
@@ -93,6 +102,11 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   private let selectedCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
   public func setSelectedCard(_ creditCard: GraphUserCreditCard.CreditCard) {
     self.selectedCardProperty.value = creditCard
+  }
+
+  private let disabledCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
+  public func setDisabledCard(_ creditCard: GraphUserCreditCard.CreditCard) {
+    self.disabledCardProperty.value = creditCard
   }
 
   fileprivate let selectButtonTappedProperty = MutableProperty(())
@@ -108,6 +122,8 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   public let selectButtonIsSelected: Signal<Bool, Never>
   public let selectButtonTitle: Signal<String, Never>
 
+  public let disableButton: Signal<Bool, Never>
+
   public var inputs: PledgeCreditCardViewModelInputs { return self }
   public var outputs: PledgeCreditCardViewModelOutputs { return self }
 }
@@ -115,3 +131,8 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
 private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage? {
   return image(named: card.imageName)
 }
+
+//private func cardAvailable(card: GraphUserCreditCard.CreditCard) -> Bool {
+//
+//
+//}

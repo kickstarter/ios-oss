@@ -25,7 +25,7 @@ public protocol PledgePaymentMethodsViewModelOutputs {
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var notifyDelegatePledgeButtonTapped: Signal<Void, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
-  var reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never> { get }
+  var reloadPaymentMethods: Signal<([GraphUserCreditCard.CreditCard], Project), Never> { get }
   var updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never> { get }
 }
 
@@ -41,6 +41,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       self.viewDidLoadProperty.signal,
       self.configureWithValueProperty.signal.skipNil()
     ).map(second)
+
+    let project = configureWithValue.map { $0.project }
 
     let storedCardsEvent = configureWithValue
       .switchMap { _ in
@@ -65,11 +67,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .values()
       .map { $0.me.storedCards.nodes }
 
-    self.reloadPaymentMethods = Signal.merge(
+      let card = Signal.merge(
       storedCards,
       self.newCreditCardProperty.signal.skipNil().map { card in [card] }
     )
     .scan([]) { current, new in new + current }
+
+    self.reloadPaymentMethods = Signal.combineLatest(card, project)
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
     self.notifyDelegatePledgeButtonTapped = self.pledgeButtonTappedSignal
@@ -81,12 +85,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.notifyDelegateCreditCardSelected = self.creditCardSelectedSignal
       .skipRepeats()
 
-    self.updateSelectedCreditCard = self.reloadPaymentMethods
+    self.updateSelectedCreditCard = card
       .takePairWhen(self.creditCardSelectedSignal)
       .map { cards, id in cards.filter { $0.id == id }.first }
       .skipNil()
 
-    let project = configureWithValue.map { $0.project }
 
     self.goToAddCardScreen = Signal.combineLatest(self.addNewCardIntentProperty.signal.skipNil(), project)
   }
@@ -138,7 +141,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let notifyDelegatePledgeButtonTapped: Signal<Void, Never>
   public let pledgeButtonEnabled: Signal<Bool, Never>
-  public let reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
+  public let reloadPaymentMethods: Signal<([GraphUserCreditCard.CreditCard], Project), Never>
   public let updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never>
 
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }

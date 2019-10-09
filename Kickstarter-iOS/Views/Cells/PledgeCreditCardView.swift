@@ -110,6 +110,7 @@ final class PledgeCreditCardView: UIView {
 
     self.selectButton.rac.title = self.viewModel.outputs.selectButtonTitle
     self.selectButton.rac.selected = self.viewModel.outputs.selectButtonIsSelected
+    self.selectButton.rac.enabled = self.viewModel.outputs.disableButton
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
 
@@ -136,6 +137,10 @@ final class PledgeCreditCardView: UIView {
 
   func setSelectedCard(_ card: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.setSelectedCard(card)
+  }
+
+  func setDisabledCard(_ card: GraphUserCreditCard.CreditCard) {
+    self.viewModel.inputs.setDisabledCard(card)
   }
 
   @objc func selectButtonTapped() {
