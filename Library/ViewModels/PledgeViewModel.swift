@@ -58,8 +58,9 @@ public protocol PledgeViewModelOutputs {
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var showApplePayAlert: Signal<(String, String), Never> { get }
-  var submitButtonTitle: Signal<String, Never> { get }
   var submitButtonEnabled: Signal<Bool, Never> { get }
+  var submitButtonHidden: Signal<Bool, Never> { get }
+  var submitButtonTitle: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
   var updatePledgeFailedWithError: Signal<String, Never> { get }
 }
@@ -131,6 +132,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.continueViewHidden = Signal
       .combineLatest(isLoggedIn, context)
       .map { $0 || $1.continueViewHidden }
+
+    self.submitButtonHidden = self.continueViewHidden.negate()
 
     self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
       .map { !$0 || $1.paymentMethodsViewHidden }
@@ -510,8 +513,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let showApplePayAlert: Signal<(String, String), Never>
-  public let submitButtonTitle: Signal<String, Never>
   public let submitButtonEnabled: Signal<Bool, Never>
+  public let submitButtonHidden: Signal<Bool, Never>
+  public let submitButtonTitle: Signal<String, Never>
   public let title: Signal<String, Never>
   public let updatePledgeFailedWithError: Signal<String, Never>
 

@@ -34,10 +34,13 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_UpdateContext() {
+    let reward = Reward.template
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: .template, reward: .template, refTag: nil, context: .update)
+        controller.configureWith(project: .template, reward: reward, refTag: nil, context: .update)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.run()

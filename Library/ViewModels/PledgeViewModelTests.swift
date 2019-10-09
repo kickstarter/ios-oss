@@ -48,6 +48,7 @@ final class PledgeViewModelTests: TestCase {
   private let showApplePayAlertMessage = TestObserver<String, Never>()
   private let showApplePayAlertTitle = TestObserver<String, Never>()
   private let submitButtonEnabled = TestObserver<Bool, Never>()
+  private let submitButtonHidden = TestObserver<Bool, Never>()
   private let submitButtonTitle = TestObserver<String, Never>()
   private let title = TestObserver<String, Never>()
   private let updatePledgeFailedWithError = TestObserver<String, Never>()
@@ -76,6 +77,7 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.configureStripeIntegrationPublishableKey.observer)
 
     self.vm.outputs.submitButtonEnabled.observe(self.submitButtonEnabled.observer)
+    self.vm.outputs.submitButtonHidden.observe(self.submitButtonHidden.observer)
     self.vm.outputs.submitButtonTitle.observe(self.submitButtonTitle.observer)
     self.vm.outputs.confirmationLabelAttributedText.observe(self.confirmationLabelAttributedText.observer)
     self.vm.outputs.confirmationLabelHidden.observe(self.confirmationLabelHidden.observer)
@@ -142,6 +144,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
       self.sectionSeparatorsHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
@@ -178,6 +181,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([false])
+      self.submitButtonHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([true])
       self.sectionSeparatorsHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
@@ -214,6 +218,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([true])
       self.sectionSeparatorsHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
@@ -250,6 +255,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([true])
       self.sectionSeparatorsHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
@@ -274,6 +280,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([false])
+      self.submitButtonHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
@@ -297,6 +304,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([false])
+      self.submitButtonHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
 
@@ -321,6 +329,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([true])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
@@ -344,6 +353,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
@@ -367,6 +377,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
@@ -399,6 +410,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
@@ -444,6 +456,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
 
@@ -488,6 +501,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([false])
+      self.submitButtonHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
 
@@ -523,6 +537,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
       self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
 
@@ -907,6 +922,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureSummaryCellWithDataProject.assertValues([project])
 
       self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([true])
 
