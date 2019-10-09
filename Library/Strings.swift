@@ -6735,10 +6735,10 @@ daring ideas."
    "Reward received"
 
    - **en**: "Reward received"
-   - **de**: "Reward received"
-   - **es**: "Reward received"
+   - **de**: "Belohnung erhalten"
+   - **es**: "Recompensa recibida"
    - **fr**: "Récompense reçue"
-   - **ja**: "Reward received"
+   - **ja**: "リワードを受け取りました"
   */
   public static func Reward_received() -> String {
     return localizedString(
