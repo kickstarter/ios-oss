@@ -4,8 +4,10 @@ import Prelude
 import UIKit
 
 protocol ManagePledgeViewControllerDelegate: AnyObject {
-  func managePledgeViewController(_ viewController: ManagePledgeViewController,
-                                  shouldDismissAndShowSuccessBannerWith message: String)
+  func managePledgeViewController(
+    _ viewController: ManagePledgeViewController,
+    shouldDismissAndShowSuccessBannerWith message: String
+  )
 }
 
 final class ManagePledgeViewController: UIViewController {
@@ -167,9 +169,11 @@ final class ManagePledgeViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] message in
         guard let self = self else { return }
-        self.delegate?.managePledgeViewController(self,
-                                                  shouldDismissAndShowSuccessBannerWith: message)
-    }
+        self.delegate?.managePledgeViewController(
+          self,
+          shouldDismissAndShowSuccessBannerWith: message
+        )
+      }
   }
 
   // MARK: - Configuration
@@ -292,8 +296,10 @@ final class ManagePledgeViewController: UIViewController {
 // MARK: CancelPledgeViewControllerDelegate
 
 extension ManagePledgeViewController: CancelPledgeViewControllerDelegate {
-  func cancelPledgeViewController(_ viewController: CancelPledgeViewController,
-                                  didCancelPledgeWith message: String) {
+  func cancelPledgeViewController(
+    _: CancelPledgeViewController,
+    didCancelPledgeWith message: String
+  ) {
     self.viewModel.inputs.cancelPledgeDidFinish(with: message)
   }
 }

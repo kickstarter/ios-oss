@@ -131,14 +131,17 @@ final class CancelPledgeViewModelTests: TestCase {
 
       self.vm.inputs.cancelPledgeButtonTapped()
 
-      self.cancelPledgeButtonEnabled.assertValues([true, false],
-                                                  "Cancel button disabled when request in flight")
+      self.cancelPledgeButtonEnabled.assertValues(
+        [true, false],
+        "Cancel button disabled when request in flight"
+      )
 
       self.scheduler.run()
 
-      self.cancelPledgeButtonEnabled.assertValues([true, false, true],
-                                                  "Cancel button enabled when request completes")
-
+      self.cancelPledgeButtonEnabled.assertValues(
+        [true, false, true],
+        "Cancel button enabled when request completes"
+      )
     }
   }
 
@@ -173,18 +176,22 @@ final class CancelPledgeViewModelTests: TestCase {
 
       self.notifyDelegateCancelPledgeSuccess.assertValues([
         "You\'ve canceled your pledge.",
-        "You\'ve canceled your pledge."])
+        "You\'ve canceled your pledge."
+      ])
       self.cancelPledgeError.assertDidNotEmitValue()
     }
   }
 
   func testCancelPledge_Error() {
-    let mockService = MockService(cancelBackingResult:
-      .init(failure:
+    let mockService = MockService(
+      cancelBackingResult:
+      .init(
+        failure:
         .decodeError(
           .init(message: "You can't cancel your pledge right now.")
         )
-      ))
+      )
+    )
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.configure(with: .template, backing: .template)

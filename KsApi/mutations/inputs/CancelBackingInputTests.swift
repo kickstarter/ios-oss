@@ -21,4 +21,3 @@ final class CancelBackingInputTests: XCTestCase {
     XCTAssertNil(inputDictionary["note"])
   }
 }
-

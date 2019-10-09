@@ -57,12 +57,16 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
 
     self.dismissKeyboard = self.textFieldShouldReturnProperty.signal
 
-    let cancellationNote = Signal.merge(self.viewDidLoadProperty.signal.mapConst(nil),
-                                        self.textFieldDidEndEditingTextProperty.signal)
+    let cancellationNote = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(nil),
+      self.textFieldDidEndEditingTextProperty.signal
+    )
 
-    let cancelPledgeSubmit = Signal.combineLatest(backing.map { $0.graphID },
-                                            cancellationNote)
-      .takeWhen(self.cancelPledgeButtonTappedProperty.signal)
+    let cancelPledgeSubmit = Signal.combineLatest(
+      backing.map { $0.graphID },
+      cancellationNote
+    )
+    .takeWhen(self.cancelPledgeButtonTappedProperty.signal)
 
     let cancelPledgeEvent = cancelPledgeSubmit
       .map(CancelBackingInput.init(backingId:cancellationReason:))
@@ -83,8 +87,8 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
       initialData.mapConst(true),
       cancelPledgeSubmit.mapConst(false),
       cancelPledgeEvent.map { $0.isTerminating }.mapConst(true)
-      )
-      .skipRepeats()
+    )
+    .skipRepeats()
   }
 
   private let cancelPledgeButtonTappedProperty = MutableProperty(())

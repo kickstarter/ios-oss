@@ -80,7 +80,7 @@ public struct Service: ServiceType {
 
   public func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-      return applyMutation(mutation: CancelBackingMutation(input: input))
+    return applyMutation(mutation: CancelBackingMutation(input: input))
   }
 
   public func changeEmail(input: ChangeEmailInput) ->

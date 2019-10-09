@@ -5,8 +5,10 @@ import Prelude
 import UIKit
 
 protocol CancelPledgeViewControllerDelegate: AnyObject {
-  func cancelPledgeViewController(_ viewController: CancelPledgeViewController,
-                                  didCancelPledgeWith message: String)
+  func cancelPledgeViewController(
+    _ viewController: CancelPledgeViewController,
+    didCancelPledgeWith message: String
+  )
 }
 
 final class CancelPledgeViewController: UIViewController {
@@ -18,12 +20,14 @@ final class CancelPledgeViewController: UIViewController {
   private lazy var cancelPledgeButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var cancellationDetailsTextLabel = { UILabel(frame: .zero) }()
   private lazy var cancellationReasonDisclaimerLabel = { UILabel(frame: .zero) }()
   private lazy var cancellationReasonTextField = {
     UITextField(frame: .zero)
       |> \.delegate .~ self
   }()
+
   private lazy var goBackButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -78,7 +82,8 @@ final class CancelPledgeViewController: UIViewController {
 
     self.cancelPledgeButton.addTarget(
       self, action: #selector(CancelPledgeViewController.cancelPledgeButtonTapped),
-      for: .touchUpInside)
+      for: .touchUpInside
+    )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -139,7 +144,7 @@ final class CancelPledgeViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.view.endEditing(true)
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateCancelPledgeSuccess
       .observeForControllerAction()
@@ -147,7 +152,7 @@ final class CancelPledgeViewController: UIViewController {
         guard let self = self else { return }
 
         self.delegate?.cancelPledgeViewController(self, didCancelPledgeWith: confirmationMessage)
-    }
+      }
 
     self.viewModel.outputs.popCancelPledgeViewController
       .observeForControllerAction()
@@ -206,7 +211,7 @@ extension CancelPledgeViewController: UITextFieldDelegate {
     self.viewModel.inputs.textFieldDidEndEditing(with: textField.text)
   }
 
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+  func textFieldShouldReturn(_: UITextField) -> Bool {
     self.viewModel.inputs.textFieldShouldReturn()
 
     return true

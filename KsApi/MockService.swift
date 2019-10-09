@@ -505,9 +505,9 @@
       return producer(for: self.addNewCreditCardResult)
     }
 
-    public func cancelBacking(input: CancelBackingInput)
+    public func cancelBacking(input _: CancelBackingInput)
       -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
-        return producer(for: self.cancelBackingResult)
+      return producer(for: self.cancelBackingResult)
     }
 
     internal func changeEmail(input _: ChangeEmailInput) ->

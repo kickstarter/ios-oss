@@ -193,7 +193,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
         self?.dismiss(animated: true, completion: {
           self?.messageBannerViewController?.showBanner(with: .success, message: message)
         })
-    }
+      }
   }
 
   public override func willTransition(
@@ -323,8 +323,10 @@ extension ProjectPamphletViewController: VideoViewControllerDelegate {
 // MARK: - ManagePledgeViewControllerDelegate
 
 extension ProjectPamphletViewController: ManagePledgeViewControllerDelegate {
-  func managePledgeViewController(_ viewController: ManagePledgeViewController,
-                                  shouldDismissAndShowSuccessBannerWith message: String) {
+  func managePledgeViewController(
+    _: ManagePledgeViewController,
+    shouldDismissAndShowSuccessBannerWith message: String
+  ) {
     self.viewModel.inputs.managePledgeViewControllerFinished(with: message)
   }
 }
