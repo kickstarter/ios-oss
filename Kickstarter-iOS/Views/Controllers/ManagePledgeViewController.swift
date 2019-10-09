@@ -9,8 +9,8 @@ protocol ManagePledgeViewControllerDelegate: AnyObject {
     shouldDismissAndShowSuccessBannerWith message: String
   )
 }
-final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
 
+final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   weak var delegate: ManagePledgeViewControllerDelegate?
   private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
 

@@ -91,12 +91,6 @@ extension Backing: EncodableType {
 
 extension Backing.Status: Argo.Decodable {}
 
-extension Backing: GraphIDBridging {
-  public static var modelName: String {
-    return "Backing"
-  }
-}
-
 extension Backing {
   /// Returns the pledge amount subtracting the shipping amount
   public var pledgeAmount: Double {
