@@ -338,7 +338,7 @@
 "Payment_method" = "Moyen de paiement ";
 "Payment_method_was_successfully_charged" = "Le moyen de paiement a bien été débité.";
 "Payment_methods" = "Moyens de paiement ";
-"Please_enter_a_pledge_amount_between_min_and_max" = "Please enter a pledge amount between %{min} and %{max}.";
+"Please_enter_a_pledge_amount_between_min_and_max" = "Veuillez saisir un engagement entre %{min} et %{max}.";
 "Please_enter_an_amount_of_amount_or_less" = "Veuillez saisir un montant de %{amount} ou moins.";
 "Please_enter_an_amount_of_amount_or_more" = "Veuillez saisir un montant de %{amount} ou plus.";
 "Please_log_in_or_sign_up_to_back_this_project" = "Veuillez vous connecter ou vous inscrire pour soutenir ce projet.";

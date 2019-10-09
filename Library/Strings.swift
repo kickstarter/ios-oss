@@ -5612,7 +5612,7 @@ n'ont rien soutenu."
    - **en**: "Please enter a pledge amount between %{min} and %{max}."
    - **de**: "Bitte gebe einen Betrag zwischen %{min} und %{max} ein."
    - **es**: "Por favor ingresa un monto de contribución entre %{min} y %{max}."
-   - **fr**: "Please enter a pledge amount between %{min} and %{max}."
+   - **fr**: "Veuillez saisir un engagement entre %{min} et %{max}."
    - **ja**: "%{min} から %{max} までのプレッジ額を入力してください。"
   */
   public static func Please_enter_a_pledge_amount_between_min_and_max(min: String, max: String) -> String {
