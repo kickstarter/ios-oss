@@ -22,10 +22,6 @@ public protocol RewardCardViewModelOutputs {
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
   var rewardTitleLabelText: Signal<String, Never> { get }
-  var stateIconImageName: Signal<String, Never> { get }
-  var stateIconImageTintColor: Signal<UIColor, Never> { get }
-  var stateIconImageViewContainerBackgroundColor: Signal<UIColor, Never> { get }
-  var stateIconImageViewContainerHidden: Signal<Bool, Never> { get }
 }
 
 public protocol RewardCardViewModelType {
@@ -111,16 +107,6 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.reloadPills = projectAndReward.map(pillStrings(project:reward:))
     self.pillCollectionViewHidden = self.reloadPills.map { $0.isEmpty }
 
-    let stateIconImageName = projectAndReward.map(stateIconImageName(project:reward:))
-    let stateIconImageColor = projectAndReward.map(stateIconImageColor(project:reward:))
-
-    self.stateIconImageName = stateIconImageName.skipNil()
-    self.stateIconImageTintColor = stateIconImageColor.skipNil()
-    self.stateIconImageViewContainerBackgroundColor = stateIconImageColor
-      .skipNil()
-      .map { $0.withAlphaComponent(0.06) }
-    self.stateIconImageViewContainerHidden = stateIconImageName.map(isNil)
-
     self.rewardSelected = reward
       .takeWhen(self.rewardCardTappedProperty.signal)
       .map { $0.id }
@@ -155,10 +141,6 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>
   public let rewardTitleLabelText: Signal<String, Never>
-  public let stateIconImageName: Signal<String, Never>
-  public let stateIconImageTintColor: Signal<UIColor, Never>
-  public let stateIconImageViewContainerBackgroundColor: Signal<UIColor, Never>
-  public let stateIconImageViewContainerHidden: Signal<Bool, Never>
 
   public var inputs: RewardCardViewModelInputs { return self }
   public var outputs: RewardCardViewModelOutputs { return self }
@@ -282,23 +264,6 @@ private func shippingSummaryString(project: Project, reward: Reward) -> String? 
   }
 
   return nil
-}
-
-private func stateIconImageColor(project: Project, reward: Reward) -> UIColor? {
-  guard userIsBacking(reward: reward, inProject: project) else { return nil }
-
-  if project.state == .live {
-    return project.personalization.backing?.status == .errored ? .ksr_apricot_500 : .ksr_blue_500
-  }
-
-  return .ksr_soft_black
-}
-
-private func stateIconImageName(project: Project, reward: Reward) -> String? {
-  guard userIsBacking(reward: reward, inProject: project) else { return nil }
-
-  // NB: Revert `nil` back to "icon--alert" when we're handling error state
-  return project.personalization.backing?.status == .errored ? nil : "checkmark-reward"
 }
 
 private func estimatedDeliveryText(with reward: Reward) -> String? {
