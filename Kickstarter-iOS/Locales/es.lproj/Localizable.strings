@@ -54,6 +54,7 @@
 "Bookmarks" = "Marcadores";
 "Bring_creative_projects_to_life" = "Dale vida a proyectos creativos.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Al contribuir, aceptas las <a href=\"%{terms_of_use_link}\">Condiciones de uso</a>, <a href=\"%{privacy_policy_link}\">Política de privacidad</a> y <a href=\"%{cookie_policy_link}\">Política de cookies</a> de Kickstarter.";
+"By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use.";
 "CVC" = "CVC";
 "Cancel" = "Cancelar";
 "Cancel_pledge" = "Cancelar contribución";
@@ -378,6 +379,7 @@
 "Read_more_about_the_campaign" = "Leer más sobre la campaña";
 "Read_more_about_the_campaign_arrow" = "Leer más sobre esta campaña  →";
 "Receive_a_reminder_forty_eight_hours_before_this_project_ends" = "Recibe un recordatorio 48 horas antes de que este o cualquier otro proyecto guardado finalice habilitando las notificaciones.";
+"Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news" = "Recibe una combinación semanal de proyectos seleccionados exclusivamente para ti, además de noticias ocasionales de Kickstarter.";
 "Receive_project_updates_and_more" = "Recibe actualizaciones de proyectos y más habilitando las notificaciones.";
 "Receive_project_updates_messages_and_more" = "Recibe actualizaciones de proyectos, mensajes y más habilitando las notificaciones.";
 "Recent_live_stream" = "Live-Stream reciente";
@@ -406,7 +408,7 @@
 "Reward_Surveys.zero" = "%{reward_survey_count} cuestionarios";
 "Reward_delivered" = "¿Recompensa entregada?";
 "Reward_estimated_for_delivery_in_date" = "<b>Recompensa</b> estimada para entregarse en %{delivery_date}";
-"Reward_received" = "Reward received";
+"Reward_received" = "Recompensa recibida";
 "Reward_selected" = "Recompensa seleccionada";
 "Reward_surveys" = "Cuestionarios sobre recompensas";
 "Rewards_count_rewards.few" = "%{rewards_count} recompensas";
@@ -457,6 +459,7 @@
 "Show_me_projects" = "Múestrame proyectos";
 "Show_password" = "Mostrar contraseña";
 "Shows_list_of_subcategories" = "Mostrar lista de subcategorías.";
+"Sign_up" = "Registrarse";
 "Sign_up_newsletter" = "Suscríbete a Nuestros favoritos para recibir una combinación semanal de proyectos destacados, seleccionados por el equipo de Kickstarter.";
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";

@@ -14,10 +14,12 @@ public protocol PledgePaymentMethodsViewModelInputs {
   func updatePledgeButtonEnabled(isEnabled: Bool)
   func addNewCardViewControllerDidAdd(newCard card: GraphUserCreditCard.CreditCard)
   func viewDidLoad()
+  func addNewCardTapped(with intent: AddNewCardIntent)
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
   var applePayButtonHidden: Signal<Bool, Never> { get }
+  var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
   var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
@@ -83,6 +85,10 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .takePairWhen(self.creditCardSelectedSignal)
       .map { cards, id in cards.filter { $0.id == id }.first }
       .skipNil()
+
+    let project = configureWithValue.map { $0.project }
+
+    self.goToAddCardScreen = Signal.combineLatest(self.addNewCardIntentProperty.signal.skipNil(), project)
   }
 
   private let applePayButtonTappedProperty = MutableProperty(())
@@ -115,22 +121,28 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.newCreditCardProperty.value = card
   }
 
+  private let addNewCardIntentProperty = MutableProperty<AddNewCardIntent?>(nil)
+  public func addNewCardTapped(with intent: AddNewCardIntent) {
+    self.addNewCardIntentProperty.value = intent
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  public var inputs: PledgePaymentMethodsViewModelInputs { return self }
-  public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
-
   public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
   public let applePayButtonHidden: Signal<Bool, Never>
+  public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
   public let notifyDelegateCreditCardSelected: Signal<String, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let notifyDelegatePledgeButtonTapped: Signal<Void, Never>
   public let pledgeButtonEnabled: Signal<Bool, Never>
   public let reloadPaymentMethods: Signal<[GraphUserCreditCard.CreditCard], Never>
   public let updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never>
+
+  public var inputs: PledgePaymentMethodsViewModelInputs { return self }
+  public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
 }
 
 private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {
