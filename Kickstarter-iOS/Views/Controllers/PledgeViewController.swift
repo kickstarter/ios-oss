@@ -11,10 +11,9 @@ protocol PledgeViewControllerDelegate: AnyObject {
 final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
-  private lazy var confirmButton: UIButton = { UIButton(type: .custom) }()
   private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmationSectionViews = {
-    [self.confirmationLabel, self.confirmButton]
+    [self.confirmationLabel, self.submitButton]
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?
@@ -75,6 +74,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> \.delegate .~ self
   }()
 
+  private lazy var submitButton: UIButton = { UIButton(type: .custom) }()
+
   private lazy var summarySectionViews = {
     [self.summarySectionSeparator, self.summaryViewController.view]
   }()
@@ -118,9 +119,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       UITapGestureRecognizer(target: self, action: #selector(PledgeViewController.dismissKeyboard))
     )
 
-    self.confirmButton.addTarget(
+    self.submitButton.addTarget(
       self,
-      action: #selector(PledgeViewController.confirmButtonTapped),
+      action: #selector(PledgeViewController.submitButtonTapped),
       for: .touchUpInside
     )
 
@@ -176,7 +177,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
-      self.confirmButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      self.submitButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
     self.sectionSeparatorViews.forEach { view in
@@ -204,9 +205,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
 
-    _ = self.confirmButton
+    _ = self.submitButton
       |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Confirm() }
 
     _ = self.confirmationLabel
       |> \.numberOfLines .~ 0
@@ -247,12 +247,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
-      }
-
-    self.viewModel.outputs.updatePledgeButtonEnabled
-      .observeForUI()
-      .observeValues { [weak self] isEnabled in
-        self?.paymentMethodsViewController.updatePledgeButton(isEnabled)
       }
 
     self.viewModel.outputs.goToApplePayPaymentAuthorization
@@ -299,8 +293,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.continueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
 
-    self.confirmButton.rac.enabled = self.viewModel.outputs.confirmButtonEnabled
-    self.confirmButton.rac.hidden = self.viewModel.outputs.confirmButtonHidden
+    self.submitButton.rac.enabled = self.viewModel.outputs.submitButtonEnabled
+    self.submitButton.rac.title = self.viewModel.outputs.submitButtonTitle
     self.confirmationLabel.rac.hidden = self.viewModel.outputs.confirmationLabelHidden
 
     self.confirmationLabel.rac.attributedText = self.viewModel.outputs.confirmationLabelAttributedText
@@ -364,8 +358,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   // MARK: - Actions
 
-  @objc private func confirmButtonTapped() {
-    self.viewModel.inputs.confirmButtonTapped()
+  @objc private func submitButtonTapped() {
+    self.viewModel.inputs.submitButtonTapped()
   }
 
   @objc private func dismissKeyboard() {

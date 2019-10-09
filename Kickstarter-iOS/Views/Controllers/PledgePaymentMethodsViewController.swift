@@ -25,10 +25,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
-  private lazy var pledgeButton: UIButton = { UIButton.init(type: .custom) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
-  private lazy var scrollViewContainer: UIView = { UIView(frame: .zero) }()
   private lazy var spacer: UIView = { UIView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel = PledgePaymentMethodsViewModel()
@@ -45,7 +43,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   private func configureSubviews() {
-    _ = (self.scrollView, self.scrollViewContainer)
+    _ = (self.scrollView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
@@ -53,10 +51,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = (
-      [self.applePayButton, self.spacer, self.titleLabel, self.scrollViewContainer, self.pledgeButton],
-      self.rootStackView
-    )
+    _ = ([self.applePayButton, self.spacer, self.titleLabel, self.scrollView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
@@ -68,19 +63,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
       action: #selector(PledgePaymentMethodsViewController.applePayButtonTapped),
       for: .touchUpInside
     )
-
-    self.pledgeButton.addTarget(
-      self,
-      action: #selector(PledgePaymentMethodsViewController.pledgeButtonTapped),
-      for: .touchUpInside
-    )
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.cardsStackView.heightAnchor.constraint(equalTo: self.scrollViewContainer.heightAnchor),
-      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
-      self.pledgeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      self.scrollView.heightAnchor.constraint(equalTo: self.cardsStackView.heightAnchor),
+      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
   }
 
@@ -96,10 +84,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     _ = self.applePayButton
       |> applePayButtonStyle
-
-    _ = self.pledgeButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Pledge() }
 
     _ = self.scrollView
       |> checkoutBackgroundStyle
@@ -146,14 +130,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
         self.delegate?.pledgePaymentMethodsViewController(self, didSelectCreditCard: paymentSourceId)
       }
 
-    self.viewModel.outputs.notifyDelegatePledgeButtonTapped
-      .observeForUI()
-      .observeValues { [weak self] in
-        guard let self = self else { return }
-
-        self.delegate?.pledgePaymentMethodsViewControllerDidTapPledgeButton(self)
-      }
-
     self.viewModel.outputs.updateSelectedCreditCard
       .observeForUI()
       .observeValues { [weak self] card in
@@ -167,7 +143,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
       }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
-    self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
   }
 
   // MARK: - Configuration
@@ -182,18 +157,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.viewModel.inputs.configureWith(pledgePaymentMethodsValue)
   }
 
-  // MARK: - Accessors
+  // MARK: - Actions
 
   @objc private func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
-  }
-
-  @objc private func pledgeButtonTapped() {
-    self.viewModel.inputs.pledgeButtonTapped()
-  }
-
-  func updatePledgeButton(_ enabled: Bool) {
-    self.viewModel.inputs.updatePledgeButtonEnabled(isEnabled: enabled)
   }
 
   // MARK: - Functions
