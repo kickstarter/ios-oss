@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class ManagePledgeViewController: UIViewController {
+final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
   private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
@@ -25,6 +25,8 @@ final class ManagePledgeViewController: UIViewController {
       action: #selector(ManagePledgeViewController.menuButtonTapped)
     )
   }()
+
+  internal var messageBannerViewController: MessageBannerViewController?
 
   private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
 
@@ -54,6 +56,8 @@ final class ManagePledgeViewController: UIViewController {
     _ = self.navigationItem
       ?|> \.leftBarButtonItem .~ self.closeButton
       ?|> \.rightBarButtonItem .~ self.menuButton
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.configureViews()
     self.setupConstraints()
@@ -156,6 +160,14 @@ final class ManagePledgeViewController: UIViewController {
       .observeValues { [weak self] project, backing in
         self?.goToCancelPledge(project: project, backing: backing)
       }
+
+    self.viewModel.outputs.showSuccessBannerWithMessage
+      .observeForControllerAction()
+      .observeValues { [weak self] message in
+        guard let self = self else { return }
+
+        self.messageBannerViewController?.showBanner(with: .success, message: message)
+      }
   }
 
   // MARK: - Configuration
@@ -254,6 +266,7 @@ final class ManagePledgeViewController: UIViewController {
   private func goToUpdatePledge(project: Project, reward: Reward) {
     let vc = PledgeViewController.instantiate()
     vc.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+    vc.delegate = self
 
     self.show(vc, sender: nil)
   }
@@ -271,6 +284,14 @@ final class ManagePledgeViewController: UIViewController {
 
   private func goToContactCreator() {
     // TODO:
+  }
+}
+
+// MARK: - PledgeViewControllerDelegate
+
+extension ManagePledgeViewController: PledgeViewControllerDelegate {
+  func pledgeViewControllerDidUpdatePledge(_: PledgeViewController, message: String) {
+    self.viewModel.inputs.pledgeViewControllerDidUpdatePledgeWithMessage(message)
   }
 }
 
