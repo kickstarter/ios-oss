@@ -310,9 +310,9 @@ private let minimumPriceConversionLabelStyle: LabelStyle = { label in
 
 private let pillCollectionViewStyle: (UICollectionView, UIColor?)
   -> UICollectionView = { collectionView, backgroundColor in
-  collectionView
-    |> \.backgroundColor .~ backgroundColor
-}
+    collectionView
+      |> \.backgroundColor .~ backgroundColor
+  }
 
 private let priceStackViewStyle: StackViewStyle = { stackView in
   stackView
