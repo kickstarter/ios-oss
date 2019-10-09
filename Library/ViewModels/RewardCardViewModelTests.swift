@@ -24,10 +24,6 @@ final class RewardCardViewModelTests: TestCase {
   private let rewardSelected = TestObserver<Int, Never>()
   private let rewardTitleLabelHidden = TestObserver<Bool, Never>()
   private let rewardTitleLabelText = TestObserver<String, Never>()
-  private let stateIconImageName = TestObserver<String, Never>()
-  private let stateIconImageTintColor = TestObserver<UIColor, Never>()
-  private let stateIconImageViewContainerBackgroundColor = TestObserver<UIColor, Never>()
-  private let stateIconImageViewContainerHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -46,11 +42,6 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.outputs.rewardSelected.observe(self.rewardSelected.observer)
     self.vm.outputs.rewardTitleLabelHidden.observe(self.rewardTitleLabelHidden.observer)
     self.vm.outputs.rewardTitleLabelText.observe(self.rewardTitleLabelText.observer)
-    self.vm.outputs.stateIconImageName.observe(self.stateIconImageName.observer)
-    self.vm.outputs.stateIconImageTintColor.observe(self.stateIconImageTintColor.observer)
-    self.vm.outputs.stateIconImageViewContainerBackgroundColor
-      .observe(self.stateIconImageViewContainerBackgroundColor.observer)
-    self.vm.outputs.stateIconImageViewContainerHidden.observe(self.stateIconImageViewContainerHidden.observer)
   }
 
   // MARK: - Reward Title
@@ -994,125 +985,5 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([["50 backers"]])
-  }
-
-  // MARK: - State Icon Image
-
-  func testStateIconImage_BackedReward() {
-    self.stateIconImageName.assertValueCount(0)
-    self.stateIconImageTintColor.assertValueCount(0)
-    self.stateIconImageViewContainerBackgroundColor.assertValueCount(0)
-    self.stateIconImageViewContainerHidden.assertValueCount(0)
-
-    let reward = Reward.postcards
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-          |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
-      )
-
-    self.vm.inputs.configureWith(
-      project: project,
-      rewardOrBacking: .left(reward)
-    )
-
-    self.stateIconImageName.assertValues(["checkmark-reward"])
-    self.stateIconImageTintColor.assertValues([.ksr_blue_500])
-    self.stateIconImageViewContainerBackgroundColor.assertValues(
-      [UIColor.ksr_blue_500.withAlphaComponent(0.06)]
-    )
-    self.stateIconImageViewContainerHidden.assertValues([false])
-  }
-
-  func testStateIconImage_BackedOtherReward() {
-    self.stateIconImageName.assertValueCount(0)
-    self.stateIconImageTintColor.assertValueCount(0)
-    self.stateIconImageViewContainerBackgroundColor.assertValueCount(0)
-    self.stateIconImageViewContainerHidden.assertValueCount(0)
-
-    let reward = Reward.postcards
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ Reward.otherReward
-          |> Backing.lens.rewardId .~ Reward.otherReward.id
-          |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
-      )
-
-    self.vm.inputs.configureWith(
-      project: project,
-      rewardOrBacking: .left(reward)
-    )
-
-    self.stateIconImageName.assertValues([])
-    self.stateIconImageTintColor.assertValues([])
-    self.stateIconImageViewContainerBackgroundColor.assertValues([])
-    self.stateIconImageViewContainerHidden.assertValues([true])
-  }
-
-  func testStateIconImage_BackedRewardErrored() {
-    self.stateIconImageName.assertValueCount(0)
-    self.stateIconImageTintColor.assertValueCount(0)
-    self.stateIconImageViewContainerBackgroundColor.assertValueCount(0)
-    self.stateIconImageViewContainerHidden.assertValueCount(0)
-
-    let reward = Reward.postcards
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.status .~ .errored
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-          |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
-      )
-
-    self.vm.inputs.configureWith(
-      project: project,
-      rewardOrBacking: .left(reward)
-    )
-
-    self.stateIconImageName.assertDidNotEmitValue()
-    self.stateIconImageTintColor.assertValues([.ksr_apricot_500])
-    self.stateIconImageViewContainerBackgroundColor.assertValues(
-      [UIColor.ksr_apricot_500.withAlphaComponent(0.06)]
-    )
-    self.stateIconImageViewContainerHidden.assertValues([true])
-  }
-
-  func testStateIconImage_NonBacked() {
-    self.stateIconImageName.assertValueCount(0)
-    self.stateIconImageTintColor.assertValueCount(0)
-    self.stateIconImageViewContainerBackgroundColor.assertValueCount(0)
-    self.stateIconImageViewContainerHidden.assertValueCount(0)
-
-    let reward = Reward.postcards
-
-    let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ false
-
-    self.vm.inputs.configureWith(
-      project: project,
-      rewardOrBacking: .left(reward)
-    )
-
-    self.stateIconImageName.assertValues([])
-    self.stateIconImageTintColor.assertValues([])
-    self.stateIconImageViewContainerBackgroundColor.assertValues([])
-    self.stateIconImageViewContainerHidden.assertValues([true])
   }
 }

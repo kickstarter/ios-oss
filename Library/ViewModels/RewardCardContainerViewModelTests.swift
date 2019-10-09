@@ -105,18 +105,18 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
     self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
-    self.pledgeButtonStyleType.assertValues([.blue, .blue, .blue, .blue, .blue, .blue, .blue, .blue])
-    self.pledgeButtonEnabled.assertValues([true, true, true, true, true, true, true, true])
+    self.pledgeButtonStyleType.assertValues([.black, .black, .black, .black, .black, .black, .black, .black])
+    self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "Manage your pledge",
-      "Manage your pledge",
-      "Manage your pledge",
-      "Manage your pledge",
-      "Manage your pledge",
-      "Manage your pledge",
-      "Manage your pledge",
-      "Manage your pledge"
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected"
     ])
   }
 
@@ -161,14 +161,14 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "Select this reward instead",
-      "Select this reward instead",
-      "Select this reward instead",
-      "Select this reward instead",
+      "Select",
+      "Select",
+      "Select",
+      "Select",
       "No longer available",
       "No longer available",
       "No longer available",
-      "Select this reward instead"
+      "Select"
     ])
   }
 
@@ -441,15 +441,15 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonTitleText.assertValueCount(rewards.count)
 
     self.gradientViewHidden.assertValues([false, false, false, false, false])
-    self.pledgeButtonStyleType.assertValues([.blue, .blue, .blue, .blue, .blue])
-    self.pledgeButtonEnabled.assertValues([true, true, true, true, true])
+    self.pledgeButtonStyleType.assertValues([.black, .black, .black, .black, .black])
+    self.pledgeButtonEnabled.assertValues([false, false, false, false, false])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "Manage your pledge",
-      "Manage your pledge",
-      "Manage your pledge",
-      "Manage your pledge",
-      "Manage your pledge"
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected"
     ])
   }
 
