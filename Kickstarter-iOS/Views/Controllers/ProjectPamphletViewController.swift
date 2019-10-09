@@ -190,7 +190,9 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     self.viewModel.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
       .observeForControllerAction()
       .observeValues { [weak self] message in
-        self?.messageBannerViewController?.showBanner(with: .success, message: message)
+        self?.dismiss(animated: true, completion: {
+          self?.messageBannerViewController?.showBanner(with: .success, message: message)
+        })
     }
   }
 

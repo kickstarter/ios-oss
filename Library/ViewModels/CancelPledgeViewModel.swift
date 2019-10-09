@@ -84,6 +84,7 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
       cancelPledgeSubmit.mapConst(false),
       cancelPledgeEvent.map { $0.isTerminating }.mapConst(true)
       )
+      .skipRepeats()
   }
 
   private let cancelPledgeButtonTappedProperty = MutableProperty(())

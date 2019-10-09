@@ -274,6 +274,7 @@ final class ManagePledgeViewController: UIViewController {
 
   private func goToCancelPledge(project: Project, backing: Backing) {
     let cancelPledgeViewController = CancelPledgeViewController.instantiate()
+      |> \.delegate .~ self
     cancelPledgeViewController.configure(with: project, backing: backing)
 
     self.navigationController?.pushViewController(cancelPledgeViewController, animated: true)
