@@ -135,6 +135,16 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.expirationDateText.assertValue("Expires 01/2024")
   }
 
+  func testApplePay() {
+    self.vm.inputs.configureWith(value: GraphUserCreditCard.applePay)
+
+    self.cardImage.assertValue(UIImage(named: "icon--apple_pay"))
+    self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
+    self.expirationDateText.assertValue("Expires 01/2024")
+    self.selectButtonIsSelected.assertValues([true])
+    self.selectButtonTitle.assertValues(["Selected"])
+  }
+
   func testCardConfiguredAsSelected() {
     let card = GraphUserCreditCard.amex
       |> \.id .~ "123"
