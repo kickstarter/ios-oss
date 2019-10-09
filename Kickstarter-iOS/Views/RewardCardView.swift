@@ -51,15 +51,6 @@ public final class RewardCardView: UIView {
   }()
 
   private let rewardTitleLabel = UILabel(frame: .zero)
-  private let stateImageView: UIImageView = {
-    UIImageView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private let stateImageViewContainer: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
 
   private let titleStackView = UIStackView(frame: .zero)
 
@@ -140,9 +131,6 @@ public final class RewardCardView: UIView {
       |> baseRewardLabelStyle
       |> minimumPriceConversionLabelStyle
 
-    _ = self.stateImageViewContainer
-      |> stateImageViewContainerStyle
-
     _ = self.titleStackView
       |> titleStackViewStyle
   }
@@ -160,24 +148,6 @@ public final class RewardCardView: UIView {
     self.pillCollectionView.rac.hidden = self.viewModel.outputs.pillCollectionViewHidden
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.rewardTitleLabelHidden
     self.rewardTitleLabel.rac.text = self.viewModel.outputs.rewardTitleLabelText
-
-    self.viewModel.outputs.stateIconImageName
-      .observeForUI()
-      .observeValues { [weak self] imageName in
-        self?.stateImageView.image = image(named: imageName)
-      }
-
-    self.stateImageView.rac.tintColor = self.viewModel.outputs.stateIconImageTintColor
-    self.stateImageViewContainer.rac.backgroundColor = self.viewModel.outputs
-      .stateIconImageViewContainerBackgroundColor
-    self.stateImageViewContainer.rac.hidden = self.viewModel.outputs
-      .stateIconImageViewContainerHidden
-
-    self.viewModel.outputs.stateIconImageName
-      .observeForUI()
-      .observeValues { [weak self] imageName in
-        self?.stateImageView.image = image(named: imageName)
-      }
 
     self.viewModel.outputs.items
       .observeForUI()
@@ -234,10 +204,7 @@ public final class RewardCardView: UIView {
     _ = ([self.descriptionLabel], self.descriptionStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.stateImageView, self.stateImageViewContainer)
-      |> ksr_addSubviewToParent()
-
-    _ = ([self.priceStackView, self.stateImageViewContainer], self.titleStackView)
+    _ = ([self.priceStackView], self.titleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.pillCollectionView.register(PillCell.self)
@@ -247,26 +214,13 @@ public final class RewardCardView: UIView {
   }
 
   private func setupConstraints() {
-    let stateImageViewContainerWidthConstraint = self.stateImageViewContainer.widthAnchor
-      .constraint(equalToConstant: Styles.grid(5))
-      |> \.priority .~ .defaultHigh
-
-    let imageViewContraints = [
-      self.stateImageView.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
-      self.stateImageView.heightAnchor.constraint(equalTo: self.stateImageView.widthAnchor),
-      self.stateImageView.centerXAnchor.constraint(equalTo: self.stateImageViewContainer.centerXAnchor),
-      self.stateImageView.centerYAnchor.constraint(equalTo: self.stateImageViewContainer.centerYAnchor),
-      stateImageViewContainerWidthConstraint,
-      self.stateImageViewContainer.heightAnchor.constraint(equalTo: self.stateImageViewContainer.widthAnchor)
-    ]
-
     let pillCollectionViewConstraints = [
       self.pillCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor),
       self.pillCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor),
       self.pillCollectionViewHeightConstraint
     ]
 
-    NSLayoutConstraint.activate(imageViewContraints + pillCollectionViewConstraints)
+    NSLayoutConstraint.activate(pillCollectionViewConstraints)
   }
 
   private func updateCollectionViewConstraints() {
@@ -380,11 +334,6 @@ private let sectionBodyLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ UIFont.ksr_body()
-}
-
-private let stateImageViewContainerStyle: ViewStyle = { view in
-  view
-    |> \.layer.cornerRadius .~ 15
 }
 
 private let titleStackViewStyle: StackViewStyle = { stackView in

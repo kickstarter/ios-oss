@@ -6735,10 +6735,10 @@ daring ideas."
    "Reward received"
 
    - **en**: "Reward received"
-   - **de**: "Reward received"
-   - **es**: "Reward received"
+   - **de**: "Belohnung erhalten"
+   - **es**: "Recompensa recibida"
    - **fr**: "Récompense reçue"
-   - **ja**: "Reward received"
+   - **ja**: "リワードを受け取りました"
   */
   public static func Reward_received() -> String {
     return localizedString(
@@ -7995,10 +7995,10 @@ catch your eye?"
    "The minimum pledge is %{min_pledge}."
 
    - **en**: "The minimum pledge is %{min_pledge}."
-   - **de**: "The minimum pledge is %{min_pledge}."
-   - **es**: "The minimum pledge is %{min_pledge}."
-   - **fr**: "The minimum pledge is %{min_pledge}."
-   - **ja**: "The minimum pledge is %{min_pledge}."
+   - **de**: "Mindestfinanzierungsbeitrag ist %{min_pledge}."
+   - **es**: "La contribución mínima es %{min_pledge}."
+   - **fr**: "L'engagement minimum est de %{min_pledge}."
+   - **ja**: "最低プレッジ額は %{min_pledge} です。"
   */
   public static func The_minimum_pledge_is(min_pledge: String) -> String {
     return localizedString(
