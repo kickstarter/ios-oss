@@ -55,6 +55,9 @@ public final class RewardCardContainerView: UIView {
       |> roundedStyle(cornerRadius: Styles.grid(3))
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
+    _ = self.rewardCardView
+      |> checkoutWhiteBackgroundStyle
+
     _ = self.gradientView
       |> \.backgroundColor .~ .clear
       |> \.startPoint .~ .zero
@@ -108,7 +111,7 @@ public final class RewardCardContainerView: UIView {
 
   internal func configure(with value: (project: Project, reward: Either<Reward, Backing>)) {
     self.viewModel.inputs.configureWith(project: value.project, rewardOrBacking: value.reward)
-    self.rewardCardView.configure(with: value)
+    self.rewardCardView.configure(with: value, context: RewardCardViewContext.rewardsCollectionView)
   }
 
   // MARK: - Private Helpers

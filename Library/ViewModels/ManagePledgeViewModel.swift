@@ -23,7 +23,7 @@ public protocol ManagePledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardReceivedWithProject: Signal<Project, Never> { get }
-  var configureRewardSummaryView: Signal<Reward, Never> { get }
+  var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
   var goToCancelPledge: Signal<(Project, Backing), Never> { get }
   var goToChangePaymentMethod: Signal<Void, Never> { get }
   var goToContactCreator: Signal<Void, Never> { get }
@@ -66,7 +66,7 @@ public final class ManagePledgeViewModel:
     self.configureRewardReceivedWithProject = project
 
     self.configureRewardSummaryView = projectAndReward
-      .map(second)
+      .map { project, reward in (project, .left(reward)) }
 
     self.showActionSheetMenuWithOptions = project
       .takeWhen(self.menuButtonTappedSignal)
@@ -137,7 +137,7 @@ public final class ManagePledgeViewModel:
   public let configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
   public let configureRewardReceivedWithProject: Signal<Project, Never>
-  public let configureRewardSummaryView: Signal<Reward, Never>
+  public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
   public let goToCancelPledge: Signal<(Project, Backing), Never>
   public let goToChangePaymentMethod: Signal<Void, Never>
   public let goToContactCreator: Signal<Void, Never>
