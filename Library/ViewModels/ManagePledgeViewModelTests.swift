@@ -22,6 +22,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let goToUpdatePledgeReward = TestObserver<Reward, Never>()
   private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
+  private let showSuccessBannerWithMessage = TestObserver<String, Never>()
   private let title = TestObserver<String, Never>()
 
   override func setUp() {
@@ -47,6 +48,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.rewardReceivedViewControllerViewIsHidden.observer
     )
     self.vm.outputs.showActionSheetMenuWithOptions.observe(self.showActionSheetMenuWithOptions.observer)
+    self.vm.outputs.showSuccessBannerWithMessage.observe(self.showSuccessBannerWithMessage.observer)
   }
 
   func testNavigationBarTitle_LiveProject() {
@@ -361,5 +363,18 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testPledgeViewControllerDidUpdatePledge() {
+    self.showSuccessBannerWithMessage.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(.template, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.showSuccessBannerWithMessage.assertDidNotEmitValue()
+
+    self.vm.inputs.pledgeViewControllerDidUpdatePledgeWithMessage("Got it! Your changes have been saved.")
+
+    self.showSuccessBannerWithMessage.assertValues(["Got it! Your changes have been saved."])
   }
 }

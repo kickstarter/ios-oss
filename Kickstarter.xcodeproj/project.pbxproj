@@ -326,6 +326,8 @@
 		8A8099FD22E2172D00373E66 /* UISpringTimingParameters+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */; };
 		8A8099FF22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */; };
 		8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */; };
+		8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D86523466EB9005860C6 /* UpdateBackingInput+Constructor.swift */; };
+		8AE8D86823466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */; };
 		8AF34C722342CBAD000B211D /* UpdateBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */; };
 		8AF34C742342CBC2000B211D /* UpdateBackingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C732342CBC2000B211D /* UpdateBackingInput.swift */; };
 		8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C752342D1D2000B211D /* UpdateBackingInputTests.swift */; };
@@ -1704,6 +1706,8 @@
 		8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISpringTimingParameters+Convenience.swift"; sourceTree = "<group>"; };
 		8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDescriptionViewControllerTests.swift; sourceTree = "<group>"; };
 		8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Mixing.swift"; sourceTree = "<group>"; };
+		8AE8D86523466EB9005860C6 /* UpdateBackingInput+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateBackingInput+Constructor.swift"; sourceTree = "<group>"; };
+		8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateBackingInput+ConstructorTests.swift"; sourceTree = "<group>"; };
 		8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingMutation.swift; sourceTree = "<group>"; };
 		8AF34C732342CBC2000B211D /* UpdateBackingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingInput.swift; sourceTree = "<group>"; };
 		8AF34C752342D1D2000B211D /* UpdateBackingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingInputTests.swift; sourceTree = "<group>"; };
@@ -3128,10 +3132,10 @@
 				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
 				77BC00F1232BE49E00808E75 /* CreateApplePayBackingInput+Constructor.swift */,
 				77BC00F3232BE52C00808E75 /* CreateApplePayBackingInputConstructorTests.swift */,
+				77AA2B3C233D10D3008BBCB8 /* CreateBackingConstructorTests.swift */,
+				77AA2B39233C09F5008BBCB8 /* CreateBackingInput+Constructor.swift */,
 				8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */,
 				8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */,
-				77AA2B39233C09F5008BBCB8 /* CreateBackingInput+Constructor.swift */,
-				77AA2B3C233D10D3008BBCB8 /* CreateBackingConstructorTests.swift */,
 				D6534D3922E7878D00E9D279 /* CreditCard+Utils.swift */,
 				D612A21822F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift */,
 				D798A6AD21656D970053D097 /* Currency.swift */,
@@ -3270,6 +3274,8 @@
 				370BE71522541C8100B44DB2 /* UIViewController+URL.swift */,
 				370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */,
 				A75C811B1D210C4700B5AD03 /* UpdateActivityItemProvider.swift */,
+				8AE8D86523466EB9005860C6 /* UpdateBackingInput+Constructor.swift */,
+				8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */,
 				D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */,
 				A734A2661D21A1790080BBD5 /* WKNavigationActionData.swift */,
 				A7C725851C85D36D005A016B /* DataSource */,
@@ -4840,6 +4846,7 @@
 				A78537E21CB5422100385B73 /* UIScreenType.swift in Sources */,
 				A7B11A771D79F03300A5036E /* PKPaymentRequest.swift in Sources */,
 				598D96C21D429756003F3F66 /* ActivitySampleStyles.swift in Sources */,
+				8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */,
 				59B0E07E1D147F340081D2DC /* DashboardStyles.swift in Sources */,
 				0169F8C11D6CA27500C8D5C5 /* RootCategory.swift in Sources */,
 				D04AAC21218BB70D00CF713E /* ChangePasswordViewModel.swift in Sources */,
@@ -5046,6 +5053,7 @@
 				A7ED1FAD1E831C5C00BFFA01 /* DeprecatedCheckoutViewModelTests.swift in Sources */,
 				3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */,
 				D6B4D9BF209B88F3002C7B68 /* PushNotificationdialogTests.swift in Sources */,
+				8AE8D86823466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift in Sources */,
 				D04AACAD218BB72100CF713E /* SettingsNotificationPickerViewModelTests.swift in Sources */,
 				A7ED1FBF1E831C5C00BFFA01 /* SortPagerViewModelTests.swift in Sources */,
 				D6AE53161FD1E05E00BEC788 /* String+Base64Tests.swift in Sources */,
