@@ -485,6 +485,5 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.inputs.loginIntent(.loginTab)
     self.vm.inputs.viewWillAppear()
     self.facebookButtonTitleText.assertValues(["Continue with Facebook", "Log in"])
-
   }
 }
