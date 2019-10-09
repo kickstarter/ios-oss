@@ -78,12 +78,12 @@ final class FeatureFlagToolsViewModelTests: TestCase {
   func testUpdateFeatureFlagEnabledValue() {
     let originalFeatures = [
       Feature.nativeCheckoutPledgeView.rawValue: true,
-      Feature.nativeCheckout.rawValue: true,
+      Feature.nativeCheckout.rawValue: true
     ]
 
     let expectedFeatures = [
       Feature.nativeCheckout.rawValue: true,
-      Feature.nativeCheckoutPledgeView.rawValue: false,
+      Feature.nativeCheckoutPledgeView.rawValue: false
     ]
 
     let mockConfig = Config.template
