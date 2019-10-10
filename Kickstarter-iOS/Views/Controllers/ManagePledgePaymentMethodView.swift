@@ -104,9 +104,6 @@ final class ManagePledgePaymentMethodView: UIView {
     NSLayoutConstraint.activate([
       self.paymentMethodImageView.widthAnchor.constraint(
         equalToConstant: CheckoutConstants.PaymentSource.ImageView.width
-      ),
-      self.paymentMethodImageView.heightAnchor.constraint(
-        equalToConstant: CheckoutConstants.PaymentSource.ImageView.height
       )
     ])
   }
