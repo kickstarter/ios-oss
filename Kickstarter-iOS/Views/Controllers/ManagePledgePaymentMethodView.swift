@@ -57,7 +57,7 @@ final class ManagePledgePaymentMethodView: UIView {
     super.bindStyles()
 
     _ = self.paymentMethodImageView
-      |> paymentMethodImageViewStyle
+      |> cardImageViewStyle
 
     _ = self.cardLabelsStackView
       |> verticalStackViewStyle
@@ -133,9 +133,4 @@ private let lastFourDigitsLabelStyle: LabelStyle = { label in
 private let paymentMethodAdaptableStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.spacing .~ Styles.grid(2)
-}
-
-private let paymentMethodImageViewStyle: ImageViewStyle = { imageView in
-  imageView
-    |> \.contentMode .~ .scaleAspectFill
 }
