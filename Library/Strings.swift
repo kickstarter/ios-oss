@@ -8000,9 +8000,9 @@ catch your eye?"
    - **fr**: "L'engagement minimum est de %{min_pledge}."
    - **ja**: "最低プレッジ額は %{min_pledge} です。"
   */
-  public static func The_minimum_pledge_is(min_pledge: String) -> String {
+  public static func The_minimum_pledge_is_min_pledge(min_pledge: String) -> String {
     return localizedString(
-      key: "The_minimum_pledge_is",
+      key: "The_minimum_pledge_is_min_pledge",
       defaultValue: "The minimum pledge is %{min_pledge}.",
       count: nil,
       substitutions: ["min_pledge": min_pledge]
