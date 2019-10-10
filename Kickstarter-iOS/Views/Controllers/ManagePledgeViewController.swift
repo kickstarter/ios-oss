@@ -36,14 +36,45 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   internal var messageBannerViewController: MessageBannerViewController?
 
-  private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
+  private lazy var paymentMethodSectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var paymentMethodView: ManagePledgePaymentMethodView = {
     ManagePledgePaymentMethodView(frame: .zero)
   }()
 
+  private lazy var paymentMethodViews = {
+    [self.paymentMethodView, self.paymentMethodSectionSeparator]
+  }()
+
+  private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
+
+  private lazy var pledgeSummarySectionViews = {
+    [self.pledgeSummaryView, self.pledgeSummarySectionSeparator]
+  }()
+
+  private lazy var pledgeSummarySectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var rewardView: ManagePledgeRewardView = {
+    ManagePledgeRewardView(frame: .zero)
+  }()
+
   private lazy var rewardReceivedViewController: ManageViewPledgeRewardReceivedViewController = {
     ManageViewPledgeRewardReceivedViewController.instantiate()
+  }()
+
+  private lazy var rewardSectionSeparator: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var rewardSectionViews = {
+    [self.rewardView, self.rewardSectionSeparator]
   }()
 
   private lazy var rootScrollView: UIScrollView = {
@@ -55,6 +86,19 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
+  private lazy var sectionSeparatorViews = {
+    [self.pledgeSummarySectionSeparator, self.paymentMethodSectionSeparator, self.rewardSectionSeparator]
+  }()
+
+  private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
+
+  static func instantiate(with project: Project, reward: Reward) -> ManagePledgeViewController {
+    let manageViewPledgeVC = ManagePledgeViewController.instantiate()
+    manageViewPledgeVC.viewModel.inputs.configureWith(project, reward: reward)
+
+    return manageViewPledgeVC
+  }
 
   // MARK: - Lifecycle
 
@@ -93,6 +137,9 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     _ = self.rootStackView
       |> checkoutRootStackViewStyle
+
+    _ = self.sectionSeparatorViews
+      ||> separatorStyleDark
   }
 
   // MARK: - View model
@@ -131,7 +178,9 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.configureRewardSummaryView
       .observeForUI()
-      .observeValues { _ in }
+      .observeValues { [weak self] in
+        self?.rewardView.configure(with: $0)
+      }
 
     self.viewModel.outputs.showActionSheetMenuWithOptions
       .observeForControllerAction()
@@ -198,6 +247,13 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
+
+    self.sectionSeparatorViews.forEach { view in
+      _ = view.heightAnchor.constraint(equalToConstant: 1)
+        |> \.isActive .~ true
+
+      view.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
   }
 
   // MARK: Functions
@@ -211,17 +267,19 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.pledgeSummaryView, self.paymentMethodView], self.rootStackView)
+    let childViews: [UIView] = [
+      self.pledgeSummarySectionViews,
+      self.paymentMethodViews,
+      self.rewardSectionViews,
+      [self.rewardReceivedViewController.view]
+    ]
+    .flatMap { $0 }
+
+    _ = (childViews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    [self.rewardReceivedViewController].forEach { viewController in
-      self.addChild(viewController)
-
-      _ = ([viewController.view], self.rootStackView)
-        |> ksr_addArrangedSubviewsToStackView()
-
-      viewController.didMove(toParent: self)
-    }
+    self.addChild(self.rewardReceivedViewController)
+    self.rewardReceivedViewController.didMove(toParent: self)
   }
 
   // MARK: Actions
