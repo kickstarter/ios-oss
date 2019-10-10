@@ -51,8 +51,6 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_ChangePaymentMethodContext() {
-    self.recordMode = true
-
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
 
