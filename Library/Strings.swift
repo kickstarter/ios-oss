@@ -3565,9 +3565,9 @@ Haz clic para volver a intentarlo."
 
    - **en**: "Get notified when your friends back and launch projects"
    - **de**: "Get notified when your friends back and launch projects"
-   - **es**: "Get notified when your friends back and launch projects"
-   - **fr**: "Get notified when your friends back and launch projects"
-   - **ja**: "Get notified when your friends back and launch projects"
+   - **es**: "Recibe notificaciones cuando tus amigos patrocinan o publican un proyecto"
+   - **fr**: "Des notifications lorsque vous amis lancent et soutiennent des projets"
+   - **ja**: "友達がプロジェクトをバックしたりローンチしたりした際に通知を受け取りましょう。"
   */
   public static func Get_notified_when_your_friends_back_and_launch_projects() -> String {
     return localizedString(
