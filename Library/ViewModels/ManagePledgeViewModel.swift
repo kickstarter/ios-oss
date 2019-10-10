@@ -31,6 +31,7 @@ public protocol ManagePledgeViewModelOutputs {
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
+  var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showSuccessBannerWithMessage: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
 }
@@ -90,6 +91,7 @@ public final class ManagePledgeViewModel:
 
     self.goToCancelPledge = Signal.combineLatest(project, backing)
       .takeWhen(cancelPledgeSelected)
+      .filter { _, backing in backing.cancelable }
 
     self.goToContactCreator = self.menuOptionSelectedSignal
       .filter { $0 == .contactCreator }
@@ -103,6 +105,15 @@ public final class ManagePledgeViewModel:
       .map { project, reward in reward.isNoReward || project.personalization.backing?.status != .collected }
 
     self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeWithMessageSignal
+
+    let cancelBackingDisallowed = backing
+      .map { $0.cancelable }
+      .filter(isFalse)
+
+    self.showErrorBannerWithMessage = cancelBackingDisallowed
+      .takeWhen(cancelPledgeSelected)
+      // swiftlint:disable:next line_length
+      .map { _ in Strings.We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours() }
   }
 
   private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
@@ -146,6 +157,7 @@ public final class ManagePledgeViewModel:
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>
+  public let showErrorBannerWithMessage: Signal<String, Never>
   public let title: Signal<String, Never>
 
   public var inputs: ManagePledgeViewModelInputs { return self }

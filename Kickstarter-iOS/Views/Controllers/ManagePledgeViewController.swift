@@ -215,6 +215,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
         self.messageBannerViewController?.showBanner(with: .success, message: message)
       }
+
+    self.viewModel.outputs.showErrorBannerWithMessage
+      .observeForControllerAction()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
+    }
   }
 
   // MARK: - Configuration
