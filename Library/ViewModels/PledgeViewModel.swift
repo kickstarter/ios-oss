@@ -403,7 +403,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
     .filter(isTrue)
 
-    let paymentMethodChanged = Signal.merge(
+    let paymentMethodChangedAndValid = Signal.merge(
       notChangingPaymentMethod.mapConst(false),
       Signal.combineLatest(
         project,
@@ -416,7 +416,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let valuesChangedAndValid = Signal.combineLatest(
       amountChangedAndValid,
       shippingRuleChangedAndValid,
-      paymentMethodChanged,
+      paymentMethodChangedAndValid,
       context
     )
     .map(allValuesChangedAndValid)
@@ -614,11 +614,15 @@ private func paymentMethodValid(
   paymentSourceId: String,
   context: PledgeViewContext
 ) -> Bool {
-  guard let backing = project.personalization.backing, context.isUpdating else {
+  guard
+    let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id,
+    context.isUpdating
+  else {
     return true
   }
 
-  return backing.paymentSource?.id != paymentSourceId
+  #warning("decompose(id: backedPaymentSourceId) should no be necessary here, remove once resolved.")
+  return decompose(id: backedPaymentSourceId) != Int(paymentSourceId)
 }
 
 private func allValuesChangedAndValid(
