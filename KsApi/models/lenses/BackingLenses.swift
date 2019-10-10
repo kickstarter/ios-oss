@@ -114,7 +114,7 @@ extension Backing {
         sequence: $1.sequence,
         shippingAmount: $1.shippingAmount,
         status: $1.status
-        ) }
+      ) }
     )
 
     public static let id = Lens<Backing, Int>(
