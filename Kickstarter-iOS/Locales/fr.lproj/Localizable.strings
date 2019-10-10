@@ -23,6 +23,7 @@
 "All_Theater_Projects" = "Tous les projets de la catégorie Théâtre";
 "All_category_name_Projects" = "Tous les projets de la catégorie %{category_name}";
 "All_gone" = "Épuisé";
+"Almost_there" = "Vous y êtes presque!";
 "Amount_previous_amount" = "Montant : %{amount}, montant précédant : %{previous_amount}";
 "Amount_reward" = "Montant : %{amount}, %{reward}";
 "Amounts_shown" = "Les montants qui s'affichent représentent une conversion approximative. Si le projet est intégralement financé, votre contribution sera débitée dans la devise d'origine du projet, également affichée.";
@@ -339,6 +340,7 @@
 "Payment_method" = "Moyen de paiement ";
 "Payment_method_was_successfully_charged" = "Le moyen de paiement a bien été débité.";
 "Payment_methods" = "Moyens de paiement ";
+"Please_enter_a_pledge_amount_between_min_and_max" = "Veuillez saisir un engagement entre %{min} et %{max}.";
 "Please_enter_an_amount_of_amount_or_less" = "Veuillez saisir un montant de %{amount} ou moins.";
 "Please_enter_an_amount_of_amount_or_more" = "Veuillez saisir un montant de %{amount} ou plus.";
 "Please_log_in_or_sign_up_to_back_this_project" = "Veuillez vous connecter ou vous inscrire pour soutenir ce projet.";
