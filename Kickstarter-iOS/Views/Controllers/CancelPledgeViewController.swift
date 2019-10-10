@@ -7,7 +7,7 @@ import UIKit
 protocol CancelPledgeViewControllerDelegate: AnyObject {
   func cancelPledgeViewController(
     _ viewController: CancelPledgeViewController,
-    didCancelPledgeWith message: String
+    didCancelPledgeWithMessage message: String
   )
 }
 
@@ -72,7 +72,7 @@ final class CancelPledgeViewController: UIViewController {
     self.setupConstraints()
 
     self.view.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(CancelPledgeViewController.dismissKeyboard))
+      UITapGestureRecognizer(target: self, action: #selector(CancelPledgeViewController.viewTapped))
     )
 
     self.goBackButton.addTarget(
@@ -151,7 +151,7 @@ final class CancelPledgeViewController: UIViewController {
       .observeValues { [weak self] confirmationMessage in
         guard let self = self else { return }
 
-        self.delegate?.cancelPledgeViewController(self, didCancelPledgeWith: confirmationMessage)
+        self.delegate?.cancelPledgeViewController(self, didCancelPledgeWithMessage: confirmationMessage)
       }
 
     self.viewModel.outputs.popCancelPledgeViewController
@@ -193,8 +193,8 @@ final class CancelPledgeViewController: UIViewController {
 
   // MARK: - Accessors
 
-  @objc private func dismissKeyboard() {
-    self.viewModel.inputs.textFieldShouldReturn()
+  @objc private func viewTapped() {
+    self.viewModel.inputs.viewTapped()
   }
 
   @objc private func goBackButtonTapped() {

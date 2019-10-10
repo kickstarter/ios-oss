@@ -325,7 +325,7 @@ extension ProjectPamphletViewController: VideoViewControllerDelegate {
 extension ProjectPamphletViewController: ManagePledgeViewControllerDelegate {
   func managePledgeViewController(
     _: ManagePledgeViewController,
-    shouldDismissAndShowSuccessBannerWith message: String
+    shouldDismissAndShowSuccessBannerWithMessage message: String
   ) {
     self.viewModel.inputs.managePledgeViewControllerFinished(with: message)
   }

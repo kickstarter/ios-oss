@@ -6,7 +6,7 @@ import UIKit
 protocol ManagePledgeViewControllerDelegate: AnyObject {
   func managePledgeViewController(
     _ viewController: ManagePledgeViewController,
-    shouldDismissAndShowSuccessBannerWith message: String
+    shouldDismissAndShowSuccessBannerWithMessage message: String
   )
 }
 
@@ -222,7 +222,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         guard let self = self else { return }
         self.delegate?.managePledgeViewController(
           self,
-          shouldDismissAndShowSuccessBannerWith: message
+          shouldDismissAndShowSuccessBannerWithMessage: message
         )
       }
 
@@ -367,7 +367,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 extension ManagePledgeViewController: CancelPledgeViewControllerDelegate {
   func cancelPledgeViewController(
     _: CancelPledgeViewController,
-    didCancelPledgeWith message: String
+    didCancelPledgeWithMessage message: String
   ) {
     self.viewModel.inputs.cancelPledgeDidFinish(with: message)
   }

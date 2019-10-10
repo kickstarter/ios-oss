@@ -11,6 +11,7 @@ public protocol CancelPledgeViewModelInputs {
   func textFieldShouldReturn()
   func traitCollectionDidChange()
   func viewDidLoad()
+  func viewTapped()
 }
 
 public protocol CancelPledgeViewModelOutputs {
@@ -55,7 +56,10 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
 
     self.popCancelPledgeViewController = self.goBackButtonTappedProperty.signal
 
-    self.dismissKeyboard = self.textFieldShouldReturnProperty.signal
+    self.dismissKeyboard = Signal.merge(
+      self.textFieldShouldReturnProperty.signal,
+      self.viewTappedProperty.signal
+    )
 
     let cancellationNote = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(nil),
@@ -124,6 +128,11 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let viewTappedProperty = MutableProperty(())
+  public func viewTapped() {
+    self.viewTappedProperty.value = ()
   }
 
   public let cancellationDetailsAttributedText: Signal<NSAttributedString, Never>

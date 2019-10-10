@@ -116,6 +116,17 @@ final class CancelPledgeViewModelTests: TestCase {
     self.dismissKeyboard.assertValueCount(1)
   }
 
+  func testViewTapped() {
+    self.vm.inputs.configure(with: .template, backing: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.dismissKeyboard.assertDidNotEmitValue()
+
+    self.vm.inputs.viewTapped()
+
+    self.dismissKeyboard.assertValueCount(1)
+  }
+
   func testCancelPledgeButtonEnabled() {
     let mockService = MockService(cancelBackingResult: .init(success: .init()))
 
