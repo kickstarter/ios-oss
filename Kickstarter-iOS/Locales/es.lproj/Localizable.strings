@@ -492,7 +492,7 @@
 "The_live_stream_was_interrupted" = "Transmisión en vivo fue interrumpida";
 "The_live_stream_will_start_soon" = "Transmisión en vivo comienza en breve";
 "The_live_stream_will_start_time" = "Live-Stream comienza en %{time}.";
-"The_minimum_pledge_is" = "The minimum pledge is %{min_pledge}.";
+"The_minimum_pledge_is_min_pledge" = "La contribución mínima es %{min_pledge}.";
 "The_replay_will_start_soon" = "Repetición comienza en breve";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "Recibe la actualidad en tu correo electrónico a través de nuevos proyectos e historias interesantes.";
 "There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";

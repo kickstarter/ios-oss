@@ -492,7 +492,7 @@
 "The_live_stream_was_interrupted" = "Diffusion en direct interrompue";
 "The_live_stream_will_start_soon" = "La diffusion en direct va bientôt commencer";
 "The_live_stream_will_start_time" = "La diffusion en direct commence dans %{time}.";
-"The_minimum_pledge_is" = "The minimum pledge is %{min_pledge}.";
+"The_minimum_pledge_is_min_pledge" = "L'engagement minimum est de %{min_pledge}.";
 "The_replay_will_start_soon" = "La rediffusion sera bientôt disponible";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "Nouveaux projets et témoignages qui illustrent l'esprit du temps s'invitent dans votre boîte de réception.";
 "There_was_a_problem_with_this_payment" = "Un problème s'est produit lors de ce règlement.";

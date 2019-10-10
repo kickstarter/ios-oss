@@ -492,7 +492,7 @@
 "The_live_stream_was_interrupted" = "The live stream was interrupted";
 "The_live_stream_will_start_soon" = "The live stream will start soon";
 "The_live_stream_will_start_time" = "The live stream will start %{time}.";
-"The_minimum_pledge_is" = "The minimum pledge is %{min_pledge}.";
+"The_minimum_pledge_is_min_pledge" = "The minimum pledge is %{min_pledge}.";
 "The_replay_will_start_soon" = "The replay will start soon";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories.";
 "There_was_a_problem_with_this_payment" = "There was a problem with this payment.";
