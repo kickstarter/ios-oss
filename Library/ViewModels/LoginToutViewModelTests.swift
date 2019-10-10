@@ -13,6 +13,7 @@ final class LoginToutViewModelTests: TestCase {
 
   fileprivate let attemptFacebookLogin = TestObserver<(), Never>()
   fileprivate let dismissViewController = TestObserver<(), Never>()
+  fileprivate let facebookButtonTitleText = TestObserver<String, Never>()
   fileprivate let headlineLabelHidden = TestObserver<Bool, Never>()
   fileprivate let isLoading = TestObserver<Bool, Never>()
   fileprivate let logInContextText = TestObserver<String, Never>()
@@ -29,6 +30,7 @@ final class LoginToutViewModelTests: TestCase {
 
     self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
+    self.vm.outputs.facebookButtonTitleText.observe(self.facebookButtonTitleText.observer)
     self.vm.outputs.headlineLabelHidden.observe(self.headlineLabelHidden.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
@@ -472,5 +474,16 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.inputs.userSessionStarted()
 
     self.dismissViewController.assertValueCount(1)
+  }
+
+  func testFacebookButtonTitle() {
+    self.vm.inputs.loginIntent(.backProject)
+    self.vm.inputs.viewWillAppear()
+
+    self.facebookButtonTitleText.assertValues(["Continue with Facebook"])
+
+    self.vm.inputs.loginIntent(.loginTab)
+    self.vm.inputs.viewWillAppear()
+    self.facebookButtonTitleText.assertValues(["Continue with Facebook", "Log in with Facebook"])
   }
 }
