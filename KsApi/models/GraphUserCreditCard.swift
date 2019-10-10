@@ -28,8 +28,8 @@ public struct GraphUserCreditCard: Swift.Decodable {
   }
 
   public enum PaymentType: String, Swift.Decodable, CaseIterable {
-    case card = "CREDIT_CARD"
     case applePay = "APPLE_PAY"
+    case card = "CREDIT_CARD"
   }
 
   public enum CreditCardType: String, Swift.Decodable, CaseIterable {
