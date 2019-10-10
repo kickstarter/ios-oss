@@ -91,8 +91,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     [self.pledgeSummarySectionSeparator, self.paymentMethodSectionSeparator, self.rewardSectionSeparator]
   }()
 
-  private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
-
   static func instantiate(with project: Project, reward: Reward) -> ManagePledgeViewController {
     let manageViewPledgeVC = ManagePledgeViewController.instantiate()
     manageViewPledgeVC.viewModel.inputs.configureWith(project, reward: reward)
