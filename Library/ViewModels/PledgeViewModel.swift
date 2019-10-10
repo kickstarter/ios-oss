@@ -353,8 +353,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
     .map { $0 as UpdateBackingData }
 
+    let updateButtonTapped = Signal.combineLatest(
+      self.submitButtonTappedSignal,
+      context
+    )
+    .filter { _, context in context.isUpdating }
+    .ignoreValues()
+
     let updateBackingEvent = updateBackingData
-      .takeWhen(self.submitButtonTappedSignal)
+      .takeWhen(updateButtonTapped)
       .map(UpdateBackingInput.input(from:))
       .switchMap { input in
         AppEnvironment.current.apiService.updateBacking(input: input)
