@@ -36,7 +36,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let configureWithValue = Signal.combineLatest(
       self.viewDidLoadProperty.signal,
       self.configureWithValueProperty.signal.skipNil()
-    ).map(second)
+    )
+    .map(second)
 
     let storedCardsEvent = configureWithValue
       .switchMap { _ in

@@ -1361,4 +1361,81 @@ final class PledgeViewModelTests: TestCase {
 
     self.submitButtonEnabled.assertValues([false, false, true, false], "Amount unchanged")
   }
+
+  func testChangingPaymentMethodConfirmButtonEnabled_ShippingEnabled() {
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.submitButtonTitle.assertDidNotEmitValue()
+    self.submitButtonEnabled.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+    self.vm.inputs.viewDidLoad()
+
+    self.submitButtonTitle.assertValues(["Confirm"])
+    self.submitButtonEnabled.assertValues([false])
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
+    )
+
+    self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
+
+    self.submitButtonEnabled.assertValues([false, false], "Shipping rule and amount unchanged")
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
+    )
+
+    self.submitButtonEnabled.assertValues([false, false, false], "Amount unchanged")
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
+    )
+
+    self.submitButtonEnabled.assertValues([false, false, false, true], "Amount changed")
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
+    )
+
+    self.submitButtonEnabled.assertValues([false, false, false, true, false], "Amount unchanged")
+
+    self.vm.inputs.shippingRuleSelected(.template)
+
+    self.submitButtonEnabled.assertValues([false, false, false, true, false, true], "Shipping rule changed")
+
+    self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
+
+    self.submitButtonEnabled.assertValues(
+      [false, false, false, true, false, true, false], "Amount and shipping rule unchanged"
+    )
+
+    self.vm.inputs.creditCardSelected(with: "another-card")
+
+    self.submitButtonEnabled.assertValues(
+      [false, false, false, true, false, true, false, true],
+      "Payment method changed"
+    )
+
+    self.vm.inputs.creditCardSelected(with: GraphUserCreditCard.amex.id)
+
+    self.submitButtonEnabled.assertValues(
+      [false, false, false, true, false, true, false, true, false],
+      "Payment method unchanged"
+    )
+  }
 }
