@@ -14,7 +14,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let configureRewardSummaryView = TestObserver<Reward, Never>()
   private let goToCancelPledgeProject = TestObserver<Project, Never>()
   private let goToCancelPledgeBacking = TestObserver<Backing, Never>()
-  private let goToChangePaymentMethod = TestObserver<Void, Never>()
+  private let goToChangePaymentMethodProject = TestObserver<Project, Never>()
+  private let goToChangePaymentMethodReward = TestObserver<Reward, Never>()
   private let goToContactCreator = TestObserver<Void, Never>()
   private let goToRewards = TestObserver<Project, Never>()
   private let goToUpdatePledgeProject = TestObserver<Project, Never>()
@@ -35,7 +36,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       .observe(self.configureRewardSummaryView.observer)
     self.vm.outputs.goToCancelPledge.map(first).observe(self.goToCancelPledgeProject.observer)
     self.vm.outputs.goToCancelPledge.map(second).observe(self.goToCancelPledgeBacking.observer)
-    self.vm.outputs.goToChangePaymentMethod.observe(self.goToChangePaymentMethod.observer)
+    self.vm.outputs.goToChangePaymentMethod.map(first).observe(self.goToChangePaymentMethodProject.observer)
+    self.vm.outputs.goToChangePaymentMethod.map(second).observe(self.goToChangePaymentMethodReward.observer)
     self.vm.outputs.goToContactCreator.observe(self.goToContactCreator.observer)
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
     self.vm.outputs.goToUpdatePledge.map(first).observe(self.goToUpdatePledgeProject.observer)
@@ -153,15 +155,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testGoToChangePaymentMethod() {
-    self.vm.inputs.configureWith(Project.template, reward: .template)
+    let project = Project.template
+    let reward = Reward.template
+
+    self.vm.inputs.configureWith(project, reward: reward)
     self.vm.inputs.viewDidLoad()
 
-    self.goToChangePaymentMethod.assertDidNotEmitValue()
+    self.goToChangePaymentMethodProject.assertDidNotEmitValue()
 
     self.vm.inputs.menuButtonTapped()
     self.vm.inputs.menuOptionSelected(with: .changePaymentMethod)
 
-    self.goToChangePaymentMethod.assertValueCount(1)
+    self.goToChangePaymentMethodProject.assertValues([project])
+    self.goToChangePaymentMethodReward.assertValues([reward])
   }
 
   func testGoToContactCreator() {

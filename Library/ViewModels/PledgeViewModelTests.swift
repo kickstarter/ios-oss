@@ -43,6 +43,8 @@ final class PledgeViewModelTests: TestCase {
   private let notifyDelegateUpdatePledgeDidSucceedWithMessage = TestObserver<String, Never>()
 
   private let paymentMethodsViewHidden = TestObserver<Bool, Never>()
+  private let pledgeAmountViewHidden = TestObserver<Bool, Never>()
+  private let pledgeAmountSummaryViewHidden = TestObserver<Bool, Never>()
   private let sectionSeparatorsHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
   private let showApplePayAlertMessage = TestObserver<String, Never>()
@@ -105,6 +107,8 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.notifyDelegateUpdatePledgeDidSucceedWithMessage.observer)
 
     self.vm.outputs.paymentMethodsViewHidden.observe(self.paymentMethodsViewHidden.observer)
+    self.vm.outputs.pledgeAmountViewHidden.observe(self.pledgeAmountViewHidden.observer)
+    self.vm.outputs.pledgeAmountSummaryViewHidden.observe(self.pledgeAmountSummaryViewHidden.observer)
 
     self.vm.outputs.sectionSeparatorsHidden.observe(self.sectionSeparatorsHidden.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
@@ -146,6 +150,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.sectionSeparatorsHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
@@ -183,6 +189,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([false])
       self.submitButtonHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([true])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.sectionSeparatorsHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
@@ -190,7 +198,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testUpdateContext_LoggedIn() {
+  func testUpdateContext() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
     withEnvironment(apiService: mockService, currentUser: .template) {
@@ -220,6 +228,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([true])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.sectionSeparatorsHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
@@ -227,27 +237,29 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testUpdateContext_LoggedOut() {
+  func testChangePaymentMethodContext() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
-    withEnvironment(apiService: mockService, currentUser: nil) {
+    withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: .projectPage, context: .changePaymentMethod
+      )
       self.vm.inputs.viewDidLoad()
 
-      self.title.assertValues(["Update pledge"])
+      self.title.assertValues(["Change payment method"])
 
-      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
-      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
 
-      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
-      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
       self.submitButtonTitle.assertValues(["Confirm"])
-      self.confirmationLabelHidden.assertValues([false])
+      self.confirmationLabelHidden.assertValues([true])
 
       self.descriptionViewHidden.assertValues([true])
 
@@ -256,9 +268,11 @@ final class PledgeViewModelTests: TestCase {
 
       self.continueViewHidden.assertValues([true])
       self.submitButtonHidden.assertValues([false])
-      self.paymentMethodsViewHidden.assertValues([true])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([true])
+      self.pledgeAmountSummaryViewHidden.assertValues([false])
       self.sectionSeparatorsHidden.assertValues([true])
-      self.shippingLocationViewHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([true])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
     }
@@ -282,6 +296,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([false])
       self.submitButtonHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([true])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
@@ -306,6 +322,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([false])
       self.submitButtonHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([true])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
 
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
@@ -331,6 +349,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
@@ -355,6 +375,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
@@ -379,6 +401,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
@@ -412,6 +436,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
@@ -458,6 +484,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
 
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
@@ -503,6 +531,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([false])
       self.submitButtonHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([true])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
 
       withEnvironment(currentUser: user) {
@@ -539,6 +569,8 @@ final class PledgeViewModelTests: TestCase {
       self.continueViewHidden.assertValues([true])
       self.submitButtonHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
 
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
@@ -1036,21 +1068,23 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.creditCardSelected(with: "123")
 
-      self.submitButtonEnabled.assertValues([false, false])
+      self.submitButtonEnabled.assertValues([false])
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
         with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
       )
 
-      self.submitButtonEnabled.assertValues([false, false, true])
+      self.submitButtonEnabled.assertValues([false, true])
 
-      self.vm.inputs.pledgeButtonTapped()
+      self.vm.inputs.submitButtonTapped()
 
+      self.submitButtonEnabled.assertValues([false, true, false])
       self.goToThanks.assertDidNotEmitValue()
       self.createBackingError.assertDidNotEmitValue()
 
       self.scheduler.run()
 
+      self.submitButtonEnabled.assertValues([false, true, false, true])
       self.goToThanks.assertValues([.template])
       self.createBackingError.assertDidNotEmitValue()
     }
@@ -1072,21 +1106,23 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.creditCardSelected(with: "123")
 
-      self.submitButtonEnabled.assertValues([false, false])
+      self.submitButtonEnabled.assertValues([false])
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
         with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
       )
 
-      self.submitButtonEnabled.assertValues([false, false, true])
+      self.submitButtonEnabled.assertValues([false, true])
 
-      self.vm.inputs.pledgeButtonTapped()
+      self.vm.inputs.submitButtonTapped()
 
+      self.submitButtonEnabled.assertValues([false, true, false])
       self.goToThanks.assertDidNotEmitValue()
       self.createBackingError.assertDidNotEmitValue()
 
       self.scheduler.run()
 
+      self.submitButtonEnabled.assertValues([false, true, false, true])
       self.goToThanks.assertDidNotEmitValue()
       self.createBackingError.assertValues(["Something went wrong."])
     }
@@ -1131,7 +1167,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
         with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
@@ -1139,19 +1175,19 @@ final class PledgeViewModelTests: TestCase {
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
 
       self.vm.inputs.shippingRuleSelected(.template)
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([true])
+      self.submitButtonEnabled.assertValues([false, true])
 
       self.vm.inputs.submitButtonTapped()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([true, false])
+      self.submitButtonEnabled.assertValues([false, true, false])
 
       self.scheduler.run()
 
@@ -1159,7 +1195,7 @@ final class PledgeViewModelTests: TestCase {
         "Got it! Your changes have been saved."
       ])
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([true, false, true])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
     }
   }
 
@@ -1190,7 +1226,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
         with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
@@ -1198,25 +1234,25 @@ final class PledgeViewModelTests: TestCase {
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
 
       self.vm.inputs.shippingRuleSelected(.template)
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([true])
+      self.submitButtonEnabled.assertValues([false, true])
 
       self.vm.inputs.submitButtonTapped()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([true, false])
+      self.submitButtonEnabled.assertValues([false, true, false])
 
       self.scheduler.run()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertValueCount(1)
-      self.submitButtonEnabled.assertValues([true, false, true])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
     }
   }
 
@@ -1244,50 +1280,42 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.submitButtonTitle.assertValues(["Confirm"])
-    self.submitButtonEnabled.assertDidNotEmitValue()
-
-    self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
-
-    self.submitButtonEnabled.assertValues([false], "Shipping rule unchanged")
+    self.submitButtonEnabled.assertValues([false])
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false], "Amount unchanged")
+    self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
+
+    self.submitButtonEnabled.assertValues([false, false], "Shipping rule and amount unchanged")
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
+    )
+
+    self.submitButtonEnabled.assertValues([false, false, false], "Amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, true], "Amount changed")
+    self.submitButtonEnabled.assertValues([false, false, false, true], "Amount changed")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, true, false], "Amount unchanged")
+    self.submitButtonEnabled.assertValues([false, false, false, true, false], "Amount unchanged")
 
     self.vm.inputs.shippingRuleSelected(.template)
 
-    self.submitButtonEnabled.assertValues([false, false, true, false, true], "Shipping rule changed")
+    self.submitButtonEnabled.assertValues([false, false, false, true, false, true], "Shipping rule changed")
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
     self.submitButtonEnabled.assertValues(
-      [false, false, true, false, true, false], "Amount and shipping rule unchanged"
-    )
-
-    self.vm.inputs.creditCardSelected(with: "another-card")
-
-    self.submitButtonEnabled.assertValues(
-      [false, false, true, false, true, false, true], "Payment method changed"
-    )
-
-    self.vm.inputs.creditCardSelected(with: GraphUserCreditCard.amex.id)
-
-    self.submitButtonEnabled.assertValues(
-      [false, false, true, false, true, false, true, false], "Payment method unchanged"
+      [false, false, false, true, false, true, false], "Amount and shipping rule unchanged"
     )
   }
 
@@ -1314,13 +1342,11 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
     self.vm.inputs.viewDidLoad()
 
-    self.submitButtonTitle.assertValues(["Confirm"])
-    self.submitButtonEnabled.assertValues([false])
-
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 700, min: 25.0, max: 10_000.0, isValid: true)
     )
 
+    self.submitButtonTitle.assertValues(["Confirm"])
     self.submitButtonEnabled.assertValues([false, false], "Amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
@@ -1334,23 +1360,5 @@ final class PledgeViewModelTests: TestCase {
     )
 
     self.submitButtonEnabled.assertValues([false, false, true, false], "Amount unchanged")
-
-    self.vm.inputs.shippingRuleSelected(.template)
-
-    self.submitButtonEnabled.assertValues([false, false, true, false, false], "Shipping rule changed")
-
-    self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
-
-    self.submitButtonEnabled.assertValues(
-      [false, false, true, false, false, false], "Amount and shipping rule unchanged"
-    )
-
-    self.vm.inputs.creditCardSelected(with: "another-card")
-
-    self.submitButtonEnabled.assertValues([false, false, true, false, false, false, true])
-
-    self.vm.inputs.creditCardSelected(with: GraphUserCreditCard.amex.id)
-
-    self.submitButtonEnabled.assertValues([false, false, true, false, false, false, true, false])
   }
 }

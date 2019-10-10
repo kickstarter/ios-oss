@@ -59,6 +59,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   internal var messageBannerViewController: MessageBannerViewController?
 
+  private lazy var pledgeAmountSummaryViewController: PledgeAmountSummaryViewController = {
+    PledgeAmountSummaryViewController.instantiate()
+  }()
+
   private lazy var paymentMethodsSectionViews = {
     [self.paymentMethodsViewController.view]
   }()
@@ -77,7 +81,11 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   private lazy var submitButton: UIButton = { UIButton(type: .custom) }()
 
   private lazy var summarySectionViews = {
-    [self.summarySectionSeparator, self.summaryViewController.view]
+    [
+      self.summarySectionSeparator,
+      self.pledgeAmountSummaryViewController.view,
+      self.summaryViewController.view
+    ]
   }()
 
   private lazy var summaryViewController = {
@@ -147,6 +155,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     let childViewControllers = [
       self.descriptionViewController,
       self.pledgeAmountViewController,
+      self.pledgeAmountSummaryViewController,
       self.shippingLocationViewController,
       self.summaryViewController,
       self.continueViewController,
@@ -230,6 +239,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeValues { [weak self] data in
         self?.descriptionViewController.configureWith(value: data)
         self?.pledgeAmountViewController.configureWith(value: data)
+        self?.pledgeAmountSummaryViewController.configureWith(data.project)
         self?.shippingLocationViewController.configureWith(value: data)
       }
 
@@ -292,6 +302,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       = self.viewModel.outputs.shippingLocationViewHidden
     self.continueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
+    self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
+    self.pledgeAmountSummaryViewController.view.rac.hidden
+      = self.viewModel.outputs.pledgeAmountSummaryViewHidden
 
     self.submitButton.rac.enabled = self.viewModel.outputs.submitButtonEnabled
     self.submitButton.rac.hidden = self.viewModel.outputs.submitButtonHidden
@@ -479,10 +492,6 @@ extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
     didSelectCreditCard paymentSourceId: String
   ) {
     self.viewModel.inputs.creditCardSelected(with: paymentSourceId)
-  }
-
-  func pledgePaymentMethodsViewControllerDidTapPledgeButton(_: PledgePaymentMethodsViewController) {
-    self.viewModel.inputs.pledgeButtonTapped()
   }
 }
 

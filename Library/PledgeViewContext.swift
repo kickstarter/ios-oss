@@ -47,10 +47,31 @@ public enum PledgeViewContext {
     }
   }
 
+  var pledgeAmountViewHidden: Bool {
+    switch self {
+    case .pledge, .update: return false
+    case .changePaymentMethod: return true
+    }
+  }
+
+  var pledgeAmountSummaryViewHidden: Bool {
+    switch self {
+    case .changePaymentMethod: return false
+    case .pledge, .update: return true
+    }
+  }
+
   var sectionSeparatorsHidden: Bool {
     switch self {
     case .pledge: return false
     case .update, .changePaymentMethod: return true
+    }
+  }
+
+  var shippingLocationViewHidden: Bool {
+    switch self {
+    case .pledge, .update: return false
+    case .changePaymentMethod: return true
     }
   }
 

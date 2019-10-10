@@ -12,10 +12,6 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
     _ viewController: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSourceId: String
   )
-
-  func pledgePaymentMethodsViewControllerDidTapPledgeButton(
-    _ viewController: PledgePaymentMethodsViewController
-  )
 }
 
 final class PledgePaymentMethodsViewController: UIViewController {
