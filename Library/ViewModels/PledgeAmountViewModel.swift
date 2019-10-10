@@ -155,7 +155,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       minValue
     )
     .map { project, min in
-      Strings.The_minimum_pledge_is(
+      Strings.The_minimum_pledge_is_min_pledge(
         min_pledge: Format.currency(min, country: project.country, omitCurrencyCode: false)
       )
     }

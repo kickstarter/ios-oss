@@ -23,6 +23,7 @@
 "All_Theater_Projects" = "Todos los proyectos de la categoría Teatro";
 "All_category_name_Projects" = "Todos los proyectos de la categoría %{category_name}";
 "All_gone" = "¡Recompensas agotadas!";
+"Almost_there" = "Cerca de la meta!";
 "Amount_previous_amount" = "Monto actual: %{amount}, monto previo: %{previous_amount}";
 "Amount_reward" = "Monto: %{amount}, %{reward}";
 "Amounts_shown" = "Los montos mostrados son una conversión aproximada. Si el proyecto tiene éxito, tu contribución se recaudará en la moneda nativa del proyecto, que también se mostrará.";
@@ -337,6 +338,7 @@
 "Payment_method" = "Método de pago";
 "Payment_method_was_successfully_charged" = "Cargo efectuado a método de pago indicado.";
 "Payment_methods" = "Métodos de pago";
+"Please_enter_a_pledge_amount_between_min_and_max" = "Por favor ingresa un monto de contribución entre %{min} y %{max}.";
 "Please_enter_an_amount_of_amount_or_less" = "Ingresa un monto de contribución de %{amount} o menor.";
 "Please_enter_an_amount_of_amount_or_more" = "Ingresa un monto de contribución de %{amount} o más.";
 "Please_log_in_or_sign_up_to_back_this_project" = "Por favor inicia sesión o regístrate para patrocinar este proyecto.";
@@ -490,7 +492,7 @@
 "The_live_stream_was_interrupted" = "Transmisión en vivo fue interrumpida";
 "The_live_stream_will_start_soon" = "Transmisión en vivo comienza en breve";
 "The_live_stream_will_start_time" = "Live-Stream comienza en %{time}.";
-"The_minimum_pledge_is" = "La contribución mínima es %{min_pledge}.";
+"The_minimum_pledge_is_min_pledge" = "La contribución mínima es %{min_pledge}.";
 "The_replay_will_start_soon" = "Repetición comienza en breve";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "Recibe la actualidad en tu correo electrónico a través de nuevos proyectos e historias interesantes.";
 "There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";

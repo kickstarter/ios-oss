@@ -23,6 +23,7 @@
 "All_Theater_Projects" = "全ての演劇プロジェクト";
 "All_category_name_Projects" = "%{category_name} の全プロジェクト";
 "All_gone" = "終了";
+"Almost_there" = "もう少しです!";
 "Amount_previous_amount" = "金額: %{amount}, 以前の金額: %{previous_amount}";
 "Amount_reward" = "金額：%{amount}、%{reward}";
 "Amounts_shown" = "表示されている金額は、おおよその換算金額ですのでご注意ください。プロジェクトが成功した場合、プレッジはプロジェクトをローンチした国の通貨で集められ、その換算額も表示されます。";
@@ -337,6 +338,7 @@
 "Payment_method" = "支払方法";
 "Payment_method_was_successfully_charged" = "支払い方法が登録されました。";
 "Payment_methods" = "お支払い方法";
+"Please_enter_a_pledge_amount_between_min_and_max" = "%{min} から %{max} までのプレッジ額を入力してください。";
 "Please_enter_an_amount_of_amount_or_less" = "%{amount} 以下の金額を入力してくだささい。";
 "Please_enter_an_amount_of_amount_or_more" = "%{amount} 以上の金額を入力してください。";
 "Please_log_in_or_sign_up_to_back_this_project" = "このプロジェクトにバックするにはログインまたはサインアップをお願いします";
@@ -490,7 +492,7 @@
 "The_live_stream_was_interrupted" = "ライブ配信が中断されました";
 "The_live_stream_will_start_soon" = "ライブ配信が開始します";
 "The_live_stream_will_start_time" = "%{time} にライブ配信が開始されます。";
-"The_minimum_pledge_is" = "最低プレッジ額は %{min_pledge} です。";
+"The_minimum_pledge_is_min_pledge" = "最低プレッジ額は %{min_pledge} です。";
 "The_replay_will_start_soon" = "リプレイが始まります";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "気になる話題や最新プロジェクトなど、この時代を特徴づける思想「ツァイトガイスト」をいち早くお届けします。";
 "There_was_a_problem_with_this_payment" = "支払いに問題があります。";
