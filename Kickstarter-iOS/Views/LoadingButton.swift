@@ -12,8 +12,8 @@ final class LoadingButton: UIButton {
 
   public var isLoading: Bool = false {
     didSet {
-      if self.isLoading == oldValue { return }
-
+      guard self.isLoading != oldValue else { return }
+      
       if self.isLoading {
         self.startLoading()
       } else {
@@ -25,7 +25,7 @@ final class LoadingButton: UIButton {
     }
   }
 
-  private var originalTitle: String?
+  private var originalTitles: [UInt: String] = [:]
 
   // MARK: - Lifecycle
 
@@ -37,42 +37,62 @@ final class LoadingButton: UIButton {
     self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
   }
 
-  required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+  required init?(coder _: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
   override func setTitle(_ title: String?, for state: UIControl.State) {
-    // Only allow setting new title if the button is not in a loading state
-    guard !self.isLoading else { return }
+    // Do not allow changing the title while the activity indicator is animating
+    guard !self.activityIndicator.isAnimating else { return }
 
     super.setTitle(title, for: state)
-  }
-
-  // MARK: - Titles
-
-  private func removeTitle() {
-    _ = self
-      |> \.originalTitle .~ self.title(for: .normal)
-
-    _ = self.titleLabel
-      ?|> \.text .~ nil
-  }
-
-  private func restoreTitle() {
-    _ = self.titleLabel
-      ?|> \.text .~ self.originalTitle
-
-    _ = self
-      |> \.originalTitle .~ nil
   }
 
   // MARK: - Loading
 
   private func startLoading() {
     self.removeTitle()
+
     self.activityIndicator.startAnimating()
   }
 
   private func stopLoading() {
     self.activityIndicator.stopAnimating()
+
     self.restoreTitle()
+  }
+
+  // MARK: - Titles
+
+  private func removeTitle() {
+    let disabledState = UIControl.State.disabled
+    let highlightedState = UIControl.State.highlighted
+    let normalState = UIControl.State.normal
+    let selectedState = UIControl.State.selected
+
+    self.originalTitles[disabledState.rawValue] = self.title(for: disabledState)
+    self.originalTitles[highlightedState.rawValue] = self.title(for: highlightedState)
+    self.originalTitles[normalState.rawValue] = self.title(for: normalState)
+    self.originalTitles[selectedState.rawValue] = self.title(for: selectedState)
+
+    self.setTitle(nil, for: disabledState)
+    self.setTitle(nil, for: highlightedState)
+    self.setTitle(nil, for: normalState)
+    self.setTitle(nil, for: selectedState)
+  }
+
+  private func restoreTitle() {
+    let disabledState = UIControl.State.disabled
+    let highlightedState = UIControl.State.highlighted
+    let normalState = UIControl.State.normal
+    let selectedState = UIControl.State.selected
+
+    self.setTitle(self.originalTitles[disabledState.rawValue], for: disabledState)
+    self.setTitle(self.originalTitles[highlightedState.rawValue], for: highlightedState)
+    self.setTitle(self.originalTitles[normalState.rawValue], for: normalState)
+    self.setTitle(self.originalTitles[selectedState.rawValue], for: selectedState)
+
+    self.originalTitles[disabledState.rawValue] = nil
+    self.originalTitles[highlightedState.rawValue] = nil
+    self.originalTitles[normalState.rawValue] = nil
+    self.originalTitles[selectedState.rawValue] = nil
   }
 }
