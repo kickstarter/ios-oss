@@ -93,18 +93,21 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     }
 
     self.goToPledge = goToPledge
-      .filter { project, reward, _, context in
-        featureNativeCheckoutPledgeViewIsEnabled() &&
-        !userIsBacking(reward: reward, inProject: project) &&
-        context == .pledge
-      }.map { $0.0 }
+      .filter { $0.1 == .pledge }
+      .map(first)
+      .filter { project, reward, _ in
+        featureNativeCheckoutPledgeViewIsEnabled() && !userIsBacking(reward: reward, inProject: project)
+      }
 
     self.goToUpdatePledge = goToPledge
+      .filter { $0.1 == .managePledge }
+      .map(first)
       .filter { project, reward, _ in
-        featureNativeCheckoutPledgeViewIsEnabled() && userIsBacking(reward: reward, inProject: project)
+        featureNativeCheckoutPledgeViewIsEnabled() && !userIsBacking(reward: reward, inProject: project)
       }
 
     self.goToDeprecatedPledge = goToPledge
+      .map(first)
       .filter { _ in
         !featureNativeCheckoutPledgeViewIsEnabled()
       }

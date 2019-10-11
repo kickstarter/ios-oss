@@ -151,8 +151,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     self.viewModel.outputs.goToUpdatePledge
       .observeForControllerAction()
-      .observeValues { _ in
-        print("Go to UpdatePledge")
+      .observeValues { [weak self] project, reward, refTag in
+        self?.goToUpdatePledge(project: project, reward: reward, refTag: refTag)
     }
 
     self.viewModel.outputs.goToDeprecatedPledge
@@ -256,6 +256,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
       )
 
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
+  }
+
+  private func goToUpdatePledge(project: Project, reward: Reward, refTag: RefTag?) {
+    // TODO:
   }
 
   // MARK: - Actions
