@@ -101,6 +101,7 @@ final class PledgeCreditCardView: UIView {
 
     _ = self.selectButton
       |> blackButtonStyle
+      |> UIButton.lens.title(for: .disabled) %~  { _ in Strings.Not_available() }
   }
 
   // MARK: - View model

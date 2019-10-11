@@ -75,8 +75,6 @@ PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
       selectedCard
     )
 
-//    let cardAvailable = creditCard.map { cardAvailable(card: $0) }
-
     let cardConfiguredAsSelected = cardAndSelectedCard.filter(==).ignoreValues()
       .take(until: self.selectButtonTappedProperty.signal)
 
@@ -131,8 +129,3 @@ PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
 private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage? {
   return image(named: card.imageName)
 }
-
-//private func cardAvailable(card: GraphUserCreditCard.CreditCard) -> Bool {
-//
-//
-//}

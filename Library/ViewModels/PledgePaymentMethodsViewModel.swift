@@ -25,7 +25,7 @@ public protocol PledgePaymentMethodsViewModelOutputs {
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var notifyDelegatePledgeButtonTapped: Signal<Void, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
-  var reloadPaymentMethods: Signal<([GraphUserCreditCard.CreditCard], Project), Never> { get }
+  var reloadPaymentMethods: Signal<([GraphUserCreditCard.CreditCard], [String]), Never> { get }
   var updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never> { get }
 }
 
@@ -43,6 +43,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     ).map(second)
 
     let project = configureWithValue.map { $0.project }
+
+    let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
 
     let storedCardsEvent = configureWithValue
       .switchMap { _ in
@@ -73,7 +75,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
     .scan([]) { current, new in new + current }
 
-    self.reloadPaymentMethods = Signal.combineLatest(card, project)
+    self.reloadPaymentMethods = Signal.combineLatest(card, availableCardTypes)
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
     self.notifyDelegatePledgeButtonTapped = self.pledgeButtonTappedSignal
@@ -89,7 +91,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .takePairWhen(self.creditCardSelectedSignal)
       .map { cards, id in cards.filter { $0.id == id }.first }
       .skipNil()
-
 
     self.goToAddCardScreen = Signal.combineLatest(self.addNewCardIntentProperty.signal.skipNil(), project)
   }
@@ -141,7 +142,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let notifyDelegatePledgeButtonTapped: Signal<Void, Never>
   public let pledgeButtonEnabled: Signal<Bool, Never>
-  public let reloadPaymentMethods: Signal<([GraphUserCreditCard.CreditCard], Project), Never>
+  public let reloadPaymentMethods: Signal<([GraphUserCreditCard.CreditCard], [String]), Never>
   public let updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never>
 
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }

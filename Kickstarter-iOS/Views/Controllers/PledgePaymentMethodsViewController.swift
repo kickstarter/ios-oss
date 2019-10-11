@@ -118,10 +118,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
-      .observeValues { [weak self] cards, project in // CHANGE TO BOOL EVENTUALLY
+      .observeValues { [weak self] cards, availableCardTypes in
         guard let self = self else { return }
         self.scrollView.setContentOffset(.zero, animated: false)
-        self.reloadPaymentMethods(with: cards, project: project)
+        self.reloadPaymentMethods(with: cards, availableCardTypes: availableCardTypes)
       }
 
     self.viewModel.outputs.notifyDelegateLoadPaymentMethodsError
@@ -207,10 +207,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
   }
 
-  private func reloadPaymentMethods(with cards: [GraphUserCreditCard.CreditCard], project: Project) {
+  private func reloadPaymentMethods(with cards: [GraphUserCreditCard.CreditCard],
+                                    availableCardTypes: [String]) {
     self.cardsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-    let cardViews = self.newCardViews(with: cards, project: project)
+    let cardViews = self.newCardViews(with: cards, availableCardTypes: availableCardTypes)
 
     let addNewCardView: PledgeAddNewCardView = PledgeAddNewCardView(frame: .zero)
       |> \.delegate .~ self
@@ -226,10 +227,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   private func newCardViews(
-    with cards: [GraphUserCreditCard.CreditCard], project: Project
+    with cards: [GraphUserCreditCard.CreditCard], availableCardTypes: [String]
   ) -> [UIView] {
-
-
     let selectedCard = cards.first
 
     return cards.map { card -> PledgeCreditCardView in
@@ -238,10 +237,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
       cardView.configureWith(value: card)
 
-      let isAvailableCardType = project.availableCardTypes?.contains(card.type!.rawValue)
+      guard let cardBrand = card.type?.rawValue else { return cardView }
 
+      let isAvailableCardType = availableCardTypes.contains(cardBrand)
 
-      if selectedCard != nil && isAvailableCardType!  {
+      if selectedCard != nil && isAvailableCardType  {
         cardView.setSelectedCard(selectedCard!)
       } else if isAvailableCardType == false {
         cardView.setDisabledCard(card)
