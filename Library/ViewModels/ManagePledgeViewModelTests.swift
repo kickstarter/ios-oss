@@ -21,6 +21,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let goToRewards = TestObserver<Project, Never>()
   private let goToUpdatePledgeProject = TestObserver<Project, Never>()
   private let goToUpdatePledgeReward = TestObserver<Reward, Never>()
+  private let notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+    = TestObserver<String, Never>()
   private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
   private let showSuccessBannerWithMessage = TestObserver<String, Never>()
@@ -46,6 +48,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
     self.vm.outputs.goToUpdatePledge.map(first).observe(self.goToUpdatePledgeProject.observer)
     self.vm.outputs.goToUpdatePledge.map(second).observe(self.goToUpdatePledgeReward.observer)
+    self.vm.outputs.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+      .observe(self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage.observer)
     self.vm.outputs.rewardReceivedViewControllerViewIsHidden.observe(
       self.rewardReceivedViewControllerViewIsHidden.observer
     )
@@ -169,6 +173,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToChangePaymentMethodProject.assertDidNotEmitValue()
+    self.goToChangePaymentMethodReward.assertDidNotEmitValue()
 
     self.vm.inputs.menuButtonTapped()
     self.vm.inputs.menuOptionSelected(with: .changePaymentMethod)
@@ -369,6 +374,18 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testCancelPledgeDidFinish() {
+    self.vm.inputs.configureWith(Project.template, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage.assertDidNotEmitValue()
+
+    self.vm.inputs.cancelPledgeDidFinish(with: "You cancelled your pledge.")
+
+    self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+      .assertValues(["You cancelled your pledge."])
   }
 
   func testPledgeViewControllerDidUpdatePledge() {

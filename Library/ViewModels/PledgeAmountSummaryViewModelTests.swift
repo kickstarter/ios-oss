@@ -59,22 +59,11 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
     self.shippingLocationStackViewIsHidden.assertValue(false)
   }
 
-  func testShippingLocationStackViewIsHidden_isTrue_WithNoReward() {
-    let backing = .template
-      |> Backing.lens.reward .~ Reward.noReward
-    let project = Project.template
-      |> \.personalization.backing .~ backing
-
-    self.vm.inputs.configureWith(project)
-    self.vm.inputs.viewDidLoad()
-
-    self.shippingLocationStackViewIsHidden.assertValue(true)
-  }
-
-  func testShippingLocationStackViewIsHidden_isTrue_WithNoShippableRewards() {
+  func testShippingLocationStackViewIsHidden_isTrue_WhenLocationIdIsNil() {
     let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.enabled .~ true
     let backing = .template
+      |> Backing.lens.locationId .~ nil
       |> Backing.lens.reward .~ reward
     let project = Project.template
       |> \.personalization.backing .~ backing
@@ -85,26 +74,11 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
     self.shippingLocationStackViewIsHidden.assertValue(true)
   }
 
-  func testShippingLocationStackViewIsHidden_isTrue_WhenLocationNameIsNil() {
+  func testShippingLocationStackViewIsHidden_isFalse_WhenLocationIdIsNotNil() {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
     let backing = .template
-      |> Backing.lens.locationName .~ nil
-      |> Backing.lens.reward .~ reward
-    let project = Project.template
-      |> \.personalization.backing .~ backing
-
-    self.vm.inputs.configureWith(project)
-    self.vm.inputs.viewDidLoad()
-
-    self.shippingLocationStackViewIsHidden.assertValue(true)
-  }
-
-  func testShippingLocationStackViewIsHidden_isFalse_WhenLocationNameIsNotNil() {
-    let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
-    let backing = .template
-      |> Backing.lens.locationName .~ "Brazil"
+      |> Backing.lens.locationId .~ 123
       |> Backing.lens.reward .~ reward
     let project = Project.template
       |> \.personalization.backing .~ backing
