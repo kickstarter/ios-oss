@@ -227,6 +227,9 @@
 		776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */; };
 		77752F5E219B39EA00E7DA7D /* SettingsAccountWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */; };
 		77752F97219B3D7300E7DA7D /* SettingsAccountWarningCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */; };
+		77776BC6234BA6B700A42388 /* CancelBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77776BC5234BA6B700A42388 /* CancelBackingMutation.swift */; };
+		77776BC8234BA76400A42388 /* CancelBackingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77776BC7234BA76400A42388 /* CancelBackingInput.swift */; };
+		77776BCA234BA88F00A42388 /* CancelBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77776BC9234BA88F00A42388 /* CancelBackingInputTests.swift */; };
 		777B88E522BD911F0027640F /* CategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */; };
 		777C67BB220A0FA5009F8D42 /* SettingsTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */; };
 		777C67F4220A22FD009F8D42 /* SettingsTableViewHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 777C67F3220A22FD009F8D42 /* SettingsTableViewHeader.xib */; };
@@ -1615,6 +1618,9 @@
 		776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewController.swift; sourceTree = "<group>"; };
 		77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountWarningCell.swift; sourceTree = "<group>"; };
 		77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsAccountWarningCell.xib; sourceTree = "<group>"; };
+		77776BC5234BA6B700A42388 /* CancelBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBackingMutation.swift; sourceTree = "<group>"; };
+		77776BC7234BA76400A42388 /* CancelBackingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBackingInput.swift; sourceTree = "<group>"; };
+		77776BC9234BA88F00A42388 /* CancelBackingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBackingInputTests.swift; sourceTree = "<group>"; };
 		777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewHeader.swift; sourceTree = "<group>"; };
 		777C67F3220A22FD009F8D42 /* SettingsTableViewHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewHeader.xib; sourceTree = "<group>"; };
 		778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSourceTests.swift; sourceTree = "<group>"; };
@@ -2697,6 +2703,7 @@
 		775DFADB2162A56D00620CED /* mutations */ = {
 			isa = PBXGroup;
 			children = (
+				77776BC5234BA6B700A42388 /* CancelBackingMutation.swift */,
 				D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */,
 				77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */,
 				D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */,
@@ -4087,6 +4094,8 @@
 			children = (
 				8AF34C8323440327000B211D /* ApplePayParams.swift */,
 				8AF34C8523440565000B211D /* ApplePayParamsTests.swift */,
+				77776BC7234BA76400A42388 /* CancelBackingInput.swift */,
+				77776BC9234BA88F00A42388 /* CancelBackingInputTests.swift */,
 				D777442E217A3382008D679F /* ChangeCurrencyInput.swift */,
 				D6ED1B3A216D525B007F7547 /* ChangeEmailInput.swift */,
 				77E44B7321823A56006446B8 /* ChangePasswordInput.swift */,
@@ -5551,6 +5560,7 @@
 				D01589151EEB2ED7006E7684 /* Reward.swift in Sources */,
 				D015891F1EEB2ED7006E7684 /* ShippingRulesEnvelope.swift in Sources */,
 				D01588831EEB2ED7006E7684 /* BackingLenses.swift in Sources */,
+				77776BC6234BA6B700A42388 /* CancelBackingMutation.swift in Sources */,
 				D01588C51EEB2ED7006E7684 /* Reward.ShippingLenses.swift in Sources */,
 				7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */,
 				D01588D51EEB2ED7006E7684 /* UpdateDraftLenses.swift in Sources */,
@@ -5623,6 +5633,7 @@
 				D0158A1C1EEB30A2006E7684 /* ProjectNotificationTemplates.swift in Sources */,
 				D01588F91EEB2ED7006E7684 /* Project.Country.swift in Sources */,
 				D01588311EEB2ED7006E7684 /* OauthToken.swift in Sources */,
+				77776BC8234BA76400A42388 /* CancelBackingInput.swift in Sources */,
 				D62B1477221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift in Sources */,
 				D0158A261EEB30A2006E7684 /* ShippingRulesEnvelopeTemplates.swift in Sources */,
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
@@ -5684,6 +5695,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0D10C0A1EEB4550005EBAD0 /* DiscoveryParamsTests.swift in Sources */,
+				77776BCA234BA88F00A42388 /* CancelBackingInputTests.swift in Sources */,
 				7798B56821750368008BC50D /* UserQueriesTests.swift in Sources */,
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
 				D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */,

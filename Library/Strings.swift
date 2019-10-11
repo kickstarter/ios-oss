@@ -1521,6 +1521,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Continue with Facebook"
+
+   - **en**: "Continue with Facebook"
+   - **de**: "Weiter mit Facebook"
+   - **es**: "Continuar con Facebook"
+   - **fr**: "Continuer avec Facebook"
+   - **ja**: "Facebook で続行する"
+  */
+  public static func Continue_with_Facebook() -> String {
+    return localizedString(
+      key: "Continue_with_Facebook",
+      defaultValue: "Continue with Facebook",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Couldn't add attachment"
 
    - **en**: "Couldn't add attachment"
@@ -3556,6 +3573,23 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Get_notified_about_this_creators_live_streams",
       defaultValue: "Get notified about this creator’s live streams",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Get notified when your friends back and launch projects"
+
+   - **en**: "Get notified when your friends back and launch projects"
+   - **de**: "Get notified when your friends back and launch projects"
+   - **es**: "Recibe notificaciones cuando tus amigos patrocinan o publican un proyecto"
+   - **fr**: "Des notifications lorsque vous amis lancent et soutiennent des projets"
+   - **ja**: "友達がプロジェクトをバックしたりローンチしたりした際に通知を受け取りましょう。"
+  */
+  public static func Get_notified_when_your_friends_back_and_launch_projects() -> String {
+    return localizedString(
+      key: "Get_notified_when_your_friends_back_and_launch_projects",
+      defaultValue: "Get notified when your friends back and launch projects",
       count: nil,
       substitutions: [:]
     )
@@ -8928,6 +8962,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password",
       defaultValue: "We'll ask you to sign back into the Kickstarter app once you've changed your password.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+
+   - **en**: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+   - **de**: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+   - **es**: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+   - **fr**: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+   - **ja**: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
+  */
+  public static func Well_import_your_name_and_profile_photo_and_access_your_friend_list() -> String {
+    return localizedString(
+      key: "Well_import_your_name_and_profile_photo_and_access_your_friend_list",
+      defaultValue: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission.",
       count: nil,
       substitutions: [:]
     )

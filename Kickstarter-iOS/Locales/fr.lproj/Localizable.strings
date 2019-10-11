@@ -90,6 +90,7 @@
 "Continue" = "Continuer";
 "Continue_to_payment" = "Continuer vers le paiement";
 "Continue_to_update_pledge" = "Continuer la modification de mon engagement";
+"Continue_with_Facebook" = "Continuer avec Facebook";
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
 "Couldnt_open_live_stream_Try_again_later" = "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard.";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";
@@ -214,6 +215,7 @@
 "Games_newsletter" = "Un mix de nouveaux projets et d'actus sur le thème des jeux, soigneusement sélectionné par l'équipe Jeux de Kickstarter.";
 "Get_notified_about_new_messages" = "Envie d'être informé des messages entrants ?";
 "Get_notified_about_this_creators_live_streams" = "Envoyez-moi des notifications au sujet des diffusions en direct de ce créateur.";
+"Get_notified_when_your_friends_back_and_launch_projects" = "Des notifications lorsque vous amis lancent et soutiennent des projets";
 "Get_reminded_about_this_project" = "Envie de recevoir un rappel à propos de ce projet ?";
 "Go_to_project_page" = "Accéder à la page de projet";
 "Got_it" = "Super.";
@@ -545,6 +547,7 @@
 "Websites" = "Sites Web";
 "Welcome_to_our_library_Peruse_the_stacks_with_us" = "Bienvenue dans notre bibliothèque. Flânons ensemble parmi ses rayons.";
 "Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password" = "Une fois votre mot de passe changé, vous serez invité à vous reconnecter à l'application Kickstarter.";
+"Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Nous vous enverrons un rappel 48 heures avant la fin de cette campagne. Vous recevrez aussi des rappels pour tous les projets que vous avez enregistré. Ceux-ci sont tous accessibles depuis votre profil.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Lorsque les fonctionnalités de suivi sont activées, vous pouvez vous abonner aux activités des autres, qui pourront à leur tour s'abonner aux vôtres. Pour supprimer définitivement ces données, il vous suffit de désactiver les fonctionnalités de suivi.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Pour chaque projet que vous enregistrez, nous vous enverrons un rappel 48 heures avant la fin de sa campagne.";
