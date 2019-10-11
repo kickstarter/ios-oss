@@ -63,4 +63,28 @@ final class PledgeViewControllerTests: TestCase {
       }
     }
   }
+
+  func testView_PledgeButtonIsLoading() {
+    [Device.phone4_7inch, Device.pad].forEach { device in
+      withEnvironment(currentUser: .template) {
+        let controller = PledgeViewController.instantiate()
+
+        controller.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        parent.view.frame.size.height = device == .pad ? 1_024 : 800
+
+        self.scheduler.run()
+
+        withEnvironment(apiDelayInterval: TestCase.interval) {
+          controller.pledgePaymentMethodsViewControllerDidTapPledgeButton(
+            PledgePaymentMethodsViewController.instantiate()
+          )
+
+          FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
+        }
+      }
+    }
+  }
 }
