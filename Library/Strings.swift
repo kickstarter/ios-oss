@@ -1005,6 +1005,23 @@ contributeurs"
     )
   }
   /**
+   "Cancellation reason"
+
+   - **en**: "Cancellation reason"
+   - **de**: "Grund der Annullierung"
+   - **es**: "Motivo de cancelación"
+   - **fr**: "Motif d'annulation"
+   - **ja**: "Motivo de cancelación"
+  */
+  public static func Cancellation_reason() -> String {
+    return localizedString(
+      key: "Cancellation_reason",
+      defaultValue: "Cancellation reason",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Card ending in %{last_four}"
 
    - **en**: "Card ending in %{last_four}"
