@@ -314,6 +314,18 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
           |> \.title %~ { _ in title }
       }
 
+    self.viewModel.outputs.confirmButtonIsLoading
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        self?.confirmButton.isLoading = isLoading
+    }
+
+    self.viewModel.outputs.pledgeButtonIsLoading
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        self?.paymentMethodsViewController.pledgeButton.isLoading = isLoading
+    }
+
     // MARK: Errors
 
     self.viewModel.outputs.createBackingError

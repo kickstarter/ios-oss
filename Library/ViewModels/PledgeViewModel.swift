@@ -73,6 +73,7 @@ public protocol PledgeViewModelOutputs {
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
   var confirmButtonEnabled: Signal<Bool, Never> { get }
   var confirmButtonHidden: Signal<Bool, Never> { get }
+  var confirmButtonIsLoading: Signal<Bool, Never> { get }
   var confirmationLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var confirmationLabelHidden: Signal<Bool, Never> { get }
   var continueViewHidden: Signal<Bool, Never> { get }
@@ -82,6 +83,7 @@ public protocol PledgeViewModelOutputs {
   var goToThanks: Signal<Project, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
+  var pledgeButtonIsLoading: Signal<Bool, Never> { get }
   var popViewController: Signal<(), Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
@@ -425,6 +427,16 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.confirmButtonTappedSignal.signal.mapConst(false),
       updateBackingEvent.filter { $0.isTerminating }.mapConst(true)
     )
+
+    self.pledgeButtonIsLoading = Signal.merge(
+      self.pledgeButtonTappedSignal.signal.mapConst(true),
+      createBackingEvent.filter { $0.isTerminating }.mapConst(false)
+    )
+
+    self.confirmButtonIsLoading = Signal.merge(
+      self.confirmButtonTappedSignal.signal.mapConst(true),
+      updateBackingEvent.filter { $0.isTerminating }.mapConst(false)
+    )
   }
 
   // MARK: - Inputs
@@ -517,6 +529,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
   public let confirmButtonEnabled: Signal<Bool, Never>
   public let confirmButtonHidden: Signal<Bool, Never>
+  public let confirmButtonIsLoading: Signal<Bool, Never>
   public let confirmationLabelAttributedText: Signal<NSAttributedString, Never>
   public let confirmationLabelHidden: Signal<Bool, Never>
   public let continueViewHidden: Signal<Bool, Never>
@@ -526,6 +539,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let goToThanks: Signal<Project, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
+  public let pledgeButtonIsLoading: Signal<Bool, Never>
   public let popViewController: Signal<(), Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
