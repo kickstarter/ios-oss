@@ -44,6 +44,10 @@ public protocol ServiceType {
   func addVideo(file fileURL: URL, toDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Video, ErrorEnvelope>
 
+  /// Cancels a backing
+  func cancelBacking(input: CancelBackingInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+
   func changeEmail(input: ChangeEmailInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 

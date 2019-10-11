@@ -3,7 +3,17 @@ import Library
 import Prelude
 import UIKit
 
+protocol ManagePledgeViewControllerDelegate: AnyObject {
+  func managePledgeViewController(
+    _ viewController: ManagePledgeViewController,
+    shouldDismissAndShowSuccessBannerWithMessage message: String
+  )
+}
+
 final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
+  weak var delegate: ManagePledgeViewControllerDelegate?
+  private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
+
   // MARK: - Properties
 
   private lazy var closeButton: UIBarButtonItem = {
@@ -80,8 +90,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   private lazy var sectionSeparatorViews = {
     [self.pledgeSummarySectionSeparator, self.paymentMethodSectionSeparator, self.rewardSectionSeparator]
   }()
-
-  private let viewModel: ManagePledgeViewModelType = ManagePledgeViewModel()
 
   static func instantiate(with project: Project, reward: Reward) -> ManagePledgeViewController {
     let manageViewPledgeVC = ManagePledgeViewController.instantiate()
@@ -206,6 +214,16 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       .observeForControllerAction()
       .observeValues { [weak self] project, backing in
         self?.goToCancelPledge(project: project, backing: backing)
+      }
+
+    self.viewModel.outputs.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+      .observeForUI()
+      .observeValues { [weak self] message in
+        guard let self = self else { return }
+        self.delegate?.managePledgeViewController(
+          self,
+          shouldDismissAndShowSuccessBannerWithMessage: message
+        )
       }
 
     self.viewModel.outputs.showSuccessBannerWithMessage
@@ -335,6 +353,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private func goToCancelPledge(project: Project, backing: Backing) {
     let cancelPledgeViewController = CancelPledgeViewController.instantiate()
+      |> \.delegate .~ self
     cancelPledgeViewController.configure(with: project, backing: backing)
 
     self.navigationController?.pushViewController(cancelPledgeViewController, animated: true)
@@ -346,6 +365,17 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private func goToContactCreator() {
     // TODO:
+  }
+}
+
+// MARK: CancelPledgeViewControllerDelegate
+
+extension ManagePledgeViewController: CancelPledgeViewControllerDelegate {
+  func cancelPledgeViewController(
+    _: CancelPledgeViewController,
+    didCancelPledgeWithMessage message: String
+  ) {
+    self.viewModel.inputs.cancelPledgeDidFinish(with: message)
   }
 }
 

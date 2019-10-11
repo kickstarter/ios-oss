@@ -78,6 +78,11 @@ public struct Service: ServiceType {
     return request(Route.addVideo(fileUrl: fileURL, toDraft: draft))
   }
 
+  public func cancelBacking(input: CancelBackingInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    return applyMutation(mutation: CancelBackingMutation(input: input))
+  }
+
   public func changeEmail(input: ChangeEmailInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
     return applyMutation(mutation: UpdateUserAccountMutation(input: input))
