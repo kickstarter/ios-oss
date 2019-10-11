@@ -266,7 +266,10 @@ public final class RewardCardView: UIView {
 
   // MARK: - Configuration
 
-  internal func configure(with value: (Project, Either<Reward, Backing>), context: RewardsCollectionViewContext) {
+  internal func configure(
+    with value: (Project, Either<Reward, Backing>),
+    context: RewardsCollectionViewContext
+  ) {
     self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1, context: context)
   }
 
