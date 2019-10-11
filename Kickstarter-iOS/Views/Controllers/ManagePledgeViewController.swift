@@ -314,7 +314,11 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   // MARK: - Functions
 
   private func goToRewards(_ project: Project) {
-    let rewardsVC = RewardsCollectionViewController.instantiate(with: project, refTag: nil)
+    let rewardsVC = RewardsCollectionViewController.instantiate(
+      with: project,
+      refTag: nil,
+      context: .managePledge
+    )
 
     self.navigationController?.pushViewController(rewardsVC, animated: true)
   }

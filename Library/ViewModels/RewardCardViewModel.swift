@@ -2,16 +2,16 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public enum RewardCardViewContext {
-  case pledgeView
-  case rewardsCollectionView
+public enum RewardsCollectionViewContext {
+  case managePledge
+  case pledge
 }
 
 public protocol RewardCardViewModelInputs {
   func configureWith(
     project: Project,
     rewardOrBacking: Either<Reward, Backing>,
-    context: RewardCardViewContext
+    context: RewardsCollectionViewContext
   )
   func rewardCardTapped()
 }
@@ -142,11 +142,11 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   }
 
   private let projectAndRewardOrBackingProperty =
-    MutableProperty<(Project, Either<Reward, Backing>, RewardCardViewContext)?>(nil)
+    MutableProperty<(Project, Either<Reward, Backing>, RewardsCollectionViewContext)?>(nil)
   public func configureWith(
     project: Project,
     rewardOrBacking: Either<Reward, Backing>,
-    context: RewardCardViewContext
+    context: RewardsCollectionViewContext
   ) {
     self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking, context)
   }
@@ -308,10 +308,10 @@ private func estimatedDeliveryText(with reward: Reward) -> String? {
   }
 }
 
-private func titleLabelTextColor(for context: RewardCardViewContext) -> UIColor {
-  return context == .rewardsCollectionView ? UIColor.ksr_text_dark_grey_500 : UIColor.ksr_text_dark_grey_400
+private func titleLabelTextColor(for context: RewardsCollectionViewContext) -> UIColor {
+  return context == .pledge ? UIColor.ksr_text_dark_grey_500 : UIColor.ksr_text_dark_grey_400
 }
 
-private func separatorColor(for context: RewardCardViewContext) -> UIColor {
-  return context == .rewardsCollectionView ? UIColor.ksr_grey_400 : UIColor.ksr_grey_500
+private func separatorColor(for context: RewardsCollectionViewContext) -> UIColor {
+  return context == .pledge ? UIColor.ksr_grey_400 : UIColor.ksr_grey_500
 }

@@ -312,7 +312,7 @@ private func rewardsCollectionViewController(
   refTag: RefTag?
 ) -> UINavigationController {
   let rewardsCollectionViewController = RewardsCollectionViewController
-    .instantiate(with: project, refTag: refTag)
+    .instantiate(with: project, refTag: refTag, context: .pledge)
 
   let navigationController = RewardPledgeNavigationController(
     rootViewController: rewardsCollectionViewController
