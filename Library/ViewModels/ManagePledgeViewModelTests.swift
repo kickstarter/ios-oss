@@ -173,6 +173,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToChangePaymentMethodProject.assertDidNotEmitValue()
+    self.goToChangePaymentMethodReward.assertDidNotEmitValue()
 
     self.vm.inputs.menuButtonTapped()
     self.vm.inputs.menuOptionSelected(with: .changePaymentMethod)

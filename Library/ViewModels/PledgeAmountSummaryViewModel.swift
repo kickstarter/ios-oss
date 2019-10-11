@@ -48,7 +48,7 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
     self.shippingAmountText = project
       .combineLatest(with: shippingAmount)
       .map { project, shippingAmount in
-        shippingValue(with: project, with: shippingAmount)
+        shippingValue(with: project, shippingAmount: shippingAmount)
       }
       .skipNil()
 
@@ -57,8 +57,7 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
       .skipNil()
       .map { Strings.Shipping_to_country(country: $0) }
 
-    self.shippingLocationStackViewIsHidden = project
-      .map(shouldHideShippingLocationStackView)
+    self.shippingLocationStackViewIsHidden = backing.map { $0.locationId }.map(isNil)
   }
 
   private let (projectSignal, projectObserver) = Signal<Project, Never>.pipe()
@@ -78,18 +77,6 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
 
   public var inputs: PledgeAmountSummaryViewModelInputs { return self }
   public var outputs: PledgeAmountSummaryViewModelOutputs { return self }
-}
-
-private func shouldHideShippingLocationStackView(_ project: Project) -> Bool {
-  guard let backing = project.personalization.backing,
-    let _ = backing.locationName else {
-    return true
-  }
-  if let reward = backing.reward {
-    return !reward.shipping.enabled || reward.isNoReward
-  }
-
-  return false
 }
 
 private func formattedPledgeDate(_ backing: Backing) -> String {
@@ -113,12 +100,12 @@ private func attributedCurrency(with project: Project, amount: Double) -> NSAttr
   return attributedCurrency
 }
 
-private func shippingValue(with project: Project, with shippingRuleCost: Double) -> NSAttributedString? {
+private func shippingValue(with project: Project, shippingAmount: Double) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
     let attributedCurrency = Format.attributedCurrency(
-      shippingRuleCost,
+      shippingAmount,
       country: project.country,
       omitCurrencyCode: project.stats.omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,
