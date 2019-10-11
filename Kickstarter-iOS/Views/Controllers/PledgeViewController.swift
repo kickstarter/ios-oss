@@ -318,13 +318,13 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeForUI()
       .observeValues { [weak self] isLoading in
         self?.confirmButton.isLoading = isLoading
-    }
+      }
 
     self.viewModel.outputs.pledgeButtonIsLoading
       .observeForUI()
       .observeValues { [weak self] isLoading in
         self?.paymentMethodsViewController.pledgeButton.isLoading = isLoading
-    }
+      }
 
     // MARK: Errors
 
