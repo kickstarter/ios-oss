@@ -20,6 +20,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var flashScrollIndicators: Signal<Void, Never> { get }
   var goToDeprecatedPledge: Signal<PledgeData, Never> { get }
   var goToPledge: Signal<PledgeData, Never> { get }
+  var goToUpdatePledge: Signal<PledgeData, Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
@@ -47,8 +48,10 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     let rewards = project
       .map { $0.rewards }
 
-    self.title = configData
+    let context = configData
       .map(third)
+
+    self.title = context
       .takeWhen(self.viewDidLoadProperty.signal.ignoreValues())
       .map(title(for:))
 
@@ -74,23 +77,31 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     let refTag = configData
       .map(second)
 
-    let goToPledge = Signal.combineLatest(
+    let goToPledge: Signal<(PledgeData, RewardsCollectionViewContext), Never> = Signal.combineLatest(
       project,
       selectedRewardFromId,
-      refTag
+      refTag,
+      context
     )
     .filter { arg in
-      let (project, _, _) = arg
+      let (project, _, _, _) = arg
 
       return project.state == .live
     }
-    .map { project, reward, refTag in
-      PledgeData(project: project, reward: reward, refTag: refTag)
+    .map { project, reward, refTag, context in
+      (PledgeData(project: project, reward: reward, refTag: refTag), context)
     }
 
     self.goToPledge = goToPledge
+      .filter { project, reward, _, context in
+        featureNativeCheckoutPledgeViewIsEnabled() &&
+        !userIsBacking(reward: reward, inProject: project) &&
+        context == .pledge
+      }.map { $0.0 }
+
+    self.goToUpdatePledge = goToPledge
       .filter { project, reward, _ in
-        featureNativeCheckoutPledgeViewIsEnabled() && !userIsBacking(reward: reward, inProject: project)
+        featureNativeCheckoutPledgeViewIsEnabled() && userIsBacking(reward: reward, inProject: project)
       }
 
     self.goToDeprecatedPledge = goToPledge
@@ -150,6 +161,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToDeprecatedPledge: Signal<PledgeData, Never>
   public let goToPledge: Signal<PledgeData, Never>
+  public let goToUpdatePledge: Signal<PledgeData, Never>
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
