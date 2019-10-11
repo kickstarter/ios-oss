@@ -266,15 +266,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
     .map { project, min, max in
       (
-        localizedString(key: "Almost_there", defaultValue: "Almost there!"),
-        localizedString(
-          key: "Please_enter_a_pledge_amount_between_min_and_max",
-          defaultValue: "Please enter a pledge amount between %{min} and %{max}.",
-          count: nil,
-          substitutions: [
-            "min": "\(Format.currency(min, country: project.country, omitCurrencyCode: false))",
-            "max": "\(Format.currency(max, country: project.country, omitCurrencyCode: false))"
-          ]
+        Strings.Almost_there(),
+        Strings.Please_enter_a_pledge_amount_between_min_and_max(
+          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
+          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
         )
       )
     }

@@ -23,6 +23,7 @@
 "All_Theater_Projects" = "All Theater Projects";
 "All_category_name_Projects" = "All %{category_name} Projects";
 "All_gone" = "All gone";
+"Almost_there" = "Almost there!";
 "Amount_previous_amount" = "Amount: %{amount}, previous amount: %{previous_amount}";
 "Amount_reward" = "Amount: %{amount}, %{reward}";
 "Amounts_shown" = "The amounts shown are an approximate conversion. If the project is successful, your pledge will be collected in the native currency of the project, which is also displayed.";
@@ -89,6 +90,7 @@
 "Continue" = "Continue";
 "Continue_to_payment" = "Continue to payment";
 "Continue_to_update_pledge" = "Continue to update pledge";
+"Continue_with_Facebook" = "Continue with Facebook";
 "Couldnt_add_attachment" = "Couldn't add attachment";
 "Couldnt_open_live_stream_Try_again_later" = "Couldn‘t open live stream. Try again later.";
 "Couldnt_remove_attachment" = "Couldn't remove attachment";
@@ -213,6 +215,7 @@
 "Games_newsletter" = "Sign up to receive a biweekly mix of new projects and updates on all things games, handpicked by Kickstarter's Games team.";
 "Get_notified_about_new_messages" = "Get notified about new messages?";
 "Get_notified_about_this_creators_live_streams" = "Get notified about this creator’s live streams";
+"Get_notified_when_your_friends_back_and_launch_projects" = "Get notified when your friends back and launch projects";
 "Get_reminded_about_this_project" = "Get reminded about this project?";
 "Go_to_project_page" = "Go to project page";
 "Got_it" = "Got it";
@@ -337,6 +340,7 @@
 "Payment_method" = "Payment method";
 "Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
 "Payment_methods" = "Payment methods";
+"Please_enter_a_pledge_amount_between_min_and_max" = "Please enter a pledge amount between %{min} and %{max}.";
 "Please_enter_an_amount_of_amount_or_less" = "Please enter an amount of %{amount} or less.";
 "Please_enter_an_amount_of_amount_or_more" = "Please enter an amount of %{amount} or more.";
 "Please_log_in_or_sign_up_to_back_this_project" = "Please log in or sign up to back this project.";
@@ -543,6 +547,7 @@
 "Websites" = "Websites";
 "Welcome_to_our_library_Peruse_the_stacks_with_us" = "Welcome to our library. Peruse the stacks with us.";
 "Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password" = "We'll ask you to sign back into the Kickstarter app once you've changed your password.";
+"Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "When you save a project we’ll send you a reminder 48 hours before it ends";
