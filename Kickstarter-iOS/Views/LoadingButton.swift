@@ -37,7 +37,13 @@ final class LoadingButton: UIButton {
     self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
   }
 
-  required init?(coder _: NSCoder) { fatalError("init(coder:) has not been implemented") }
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+
+    self.addSubview(self.activityIndicator)
+    self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+    self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+  }
 
   override func setTitle(_ title: String?, for state: UIControl.State) {
     // Do not allow changing the title while the activity indicator is animating
