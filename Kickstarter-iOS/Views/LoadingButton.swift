@@ -14,7 +14,7 @@ final class LoadingButton: UIButton {
   public var isLoading: Bool = false {
     didSet {
       guard self.isLoading != oldValue else { return }
-      
+
       if self.isLoading {
         self.startLoading()
       } else {
