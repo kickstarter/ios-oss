@@ -49,7 +49,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     [self.paymentMethodView, self.paymentMethodSectionSeparator]
   }()
 
-  private lazy var pledgeSummaryViewController: ManagePledgeSummaryViewController = { ManagePledgeSummaryViewController.instantiate()
+  private lazy var pledgeSummaryViewController: ManagePledgeSummaryViewController = {
+    ManagePledgeSummaryViewController.instantiate()
   }()
 
   private lazy var pledgeSummarySectionViews = {
