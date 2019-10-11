@@ -1,3 +1,4 @@
+import Library
 import Prelude
 import UIKit
 
@@ -83,6 +84,11 @@ final class LoadingButton: UIButton {
     self.setTitle(nil, for: highlightedState)
     self.setTitle(nil, for: normalState)
     self.setTitle(nil, for: selectedState)
+
+    _ = self
+      |> \.accessibilityLabel %~ { _ in Strings.Loading() }
+
+    UIAccessibility.post(notification: .layoutChanged, argument: self)
   }
 
   private func restoreTitle() {
@@ -100,5 +106,10 @@ final class LoadingButton: UIButton {
     self.originalTitles[highlightedState.rawValue] = nil
     self.originalTitles[normalState.rawValue] = nil
     self.originalTitles[selectedState.rawValue] = nil
+
+    _ = self
+      |> \.accessibilityLabel .~ nil
+
+    UIAccessibility.post(notification: .layoutChanged, argument: self)
   }
 }
