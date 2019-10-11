@@ -148,7 +148,7 @@ final class CancelPledgeViewController: UIViewController, MessageBannerViewContr
       .observeForUI()
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
-    }
+      }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
