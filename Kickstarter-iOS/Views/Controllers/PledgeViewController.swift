@@ -11,7 +11,7 @@ protocol PledgeViewControllerDelegate: AnyObject {
 final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
-  private lazy var confirmButton: UIButton = { UIButton(type: .custom) }()
+  private lazy var confirmButton: LoadingButton = { LoadingButton(type: .custom) }()
   private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmationSectionViews = {
     [self.confirmationLabel, self.confirmButton]
