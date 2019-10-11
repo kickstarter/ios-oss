@@ -14,10 +14,10 @@ extension UpdateBackingInput {
 
     return UpdateBackingInput(
       amount: pledgeAmount,
-      applePay: nil,
+      applePay: updateBackingData.applePayParams,
       id: backingId,
       locationId: locationId,
-      paymentSourceId: nil,
+      paymentSourceId: updateBackingData.paymentSourceId,
       rewardId: rewardId
     )
   }
