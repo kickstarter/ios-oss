@@ -4,18 +4,30 @@ import Library
 import Prelude
 import UIKit
 
+protocol CancelPledgeViewControllerDelegate: AnyObject {
+  func cancelPledgeViewController(
+    _ viewController: CancelPledgeViewController,
+    didCancelPledgeWithMessage message: String
+  )
+}
+
 final class CancelPledgeViewController: UIViewController {
+  weak var delegate: CancelPledgeViewControllerDelegate?
   private let viewModel: CancelPledgeViewModelType = CancelPledgeViewModel()
 
   // MARK: - Properties
 
-  private lazy var cancelButton = { UIButton(type: .custom)
+  private lazy var cancelPledgeButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var cancellationDetailsTextLabel = { UILabel(frame: .zero) }()
   private lazy var cancellationReasonDisclaimerLabel = { UILabel(frame: .zero) }()
-  private lazy var cancellationReasonTextField = { UITextField(frame: .zero) }()
+  private lazy var cancellationReasonTextField = {
+    UITextField(frame: .zero)
+      |> \.delegate .~ self
+  }()
+
   private lazy var goBackButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -43,7 +55,7 @@ final class CancelPledgeViewController: UIViewController {
       self.cancellationDetailsTextLabel,
       self.cancellationReasonTextField,
       self.cancellationReasonDisclaimerLabel,
-      self.cancelButton,
+      self.cancelPledgeButton,
       self.goBackButton
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -60,11 +72,16 @@ final class CancelPledgeViewController: UIViewController {
     self.setupConstraints()
 
     self.view.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(CancelPledgeViewController.dismissKeyboard))
+      UITapGestureRecognizer(target: self, action: #selector(CancelPledgeViewController.viewTapped))
     )
 
     self.goBackButton.addTarget(
       self, action: #selector(CancelPledgeViewController.goBackButtonTapped),
+      for: .touchUpInside
+    )
+
+    self.cancelPledgeButton.addTarget(
+      self, action: #selector(CancelPledgeViewController.cancelPledgeButtonTapped),
       for: .touchUpInside
     )
 
@@ -111,7 +128,7 @@ final class CancelPledgeViewController: UIViewController {
       |> cancellationDisclaimerLabelStyle
       |> \.text %~ { _ in Strings.We_wont_share_this_with_the_creator() }
 
-    _ = self.cancelButton
+    _ = self.cancelPledgeButton
       |> redButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Yes_cancel_it() }
 
@@ -123,6 +140,20 @@ final class CancelPledgeViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.dismissKeyboard
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.view.endEditing(true)
+      }
+
+    self.viewModel.outputs.notifyDelegateCancelPledgeSuccess
+      .observeForControllerAction()
+      .observeValues { [weak self] confirmationMessage in
+        guard let self = self else { return }
+
+        self.delegate?.cancelPledgeViewController(self, didCancelPledgeWithMessage: confirmationMessage)
+      }
+
     self.viewModel.outputs.popCancelPledgeViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -131,13 +162,15 @@ final class CancelPledgeViewController: UIViewController {
 
     self.cancellationDetailsTextLabel.rac.attributedText = self.viewModel.outputs
       .cancellationDetailsAttributedText
+    self.cancelPledgeButton.rac.enabled = self.viewModel.outputs.cancelPledgeButtonEnabled
 
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in
         guard let self = self else { return }
 
-        self.scrollView.handleKeyboardVisibilityDidChange(change, insets: self.scrollView.contentInset)
+        self.scrollView
+          .handleKeyboardVisibilityDidChange(change, insets: .init(top: self.scrollView.contentInset.top))
       }
   }
 
@@ -146,10 +179,10 @@ final class CancelPledgeViewController: UIViewController {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.cancelButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
+      self.cancelPledgeButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.goBackButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.cancellationReasonTextField.heightAnchor
-        .constraint(greaterThanOrEqualTo: self.cancelButton.heightAnchor)
+        .constraint(greaterThanOrEqualTo: self.cancelPledgeButton.heightAnchor)
     ])
   }
 
@@ -160,12 +193,28 @@ final class CancelPledgeViewController: UIViewController {
 
   // MARK: - Accessors
 
-  @objc private func dismissKeyboard() {
-    self.view.endEditing(true)
+  @objc private func viewTapped() {
+    self.viewModel.inputs.viewTapped()
   }
 
   @objc private func goBackButtonTapped() {
     self.viewModel.inputs.goBackButtonTapped()
+  }
+
+  @objc private func cancelPledgeButtonTapped() {
+    self.viewModel.inputs.cancelPledgeButtonTapped()
+  }
+}
+
+extension CancelPledgeViewController: UITextFieldDelegate {
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    self.viewModel.inputs.textFieldDidEndEditing(with: textField.text)
+  }
+
+  func textFieldShouldReturn(_: UITextField) -> Bool {
+    self.viewModel.inputs.textFieldShouldReturn()
+
+    return true
   }
 }
 

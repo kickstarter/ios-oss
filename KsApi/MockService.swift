@@ -13,6 +13,8 @@
 
     fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>?
 
+    fileprivate let cancelBackingResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>?
+
     fileprivate let changeCurrencyResponse: GraphMutationEmptyResponseEnvelope?
     fileprivate let changeCurrencyError: GraphError?
 
@@ -195,6 +197,7 @@
       currency: String = "USD",
       buildVersion: String = "1",
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
+      cancelBackingResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>? = nil,
       changeEmailError: GraphError? = nil,
       changeEmailResponse: UserEnvelope<UserEmailFields>? = UserEnvelope<UserEmailFields>(
         me: .template
@@ -301,6 +304,8 @@
       self.buildVersion = buildVersion
 
       self.addNewCreditCardResult = addNewCreditCardResult
+
+      self.cancelBackingResult = cancelBackingResult
 
       self.changeCurrencyResponse = changeCurrencyResponse
       self.changeCurrencyError = changeCurrencyError
@@ -498,6 +503,11 @@
     public func addNewCreditCard(input _: CreatePaymentSourceInput)
       -> SignalProducer<CreatePaymentSourceEnvelope, GraphError> {
       return producer(for: self.addNewCreditCardResult)
+    }
+
+    public func cancelBacking(input _: CancelBackingInput)
+      -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      return producer(for: self.cancelBackingResult)
     }
 
     internal func changeEmail(input _: ChangeEmailInput) ->
