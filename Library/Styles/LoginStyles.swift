@@ -42,7 +42,7 @@ public let fbDisclaimerTextStyle = UILabel.lens.font %~~ { _, label in
   <> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
   <> UILabel.lens.textAlignment .~ .center
   <> UILabel.lens.text %~ { _ in
-    Strings.Facebook_login_disclaimer_update()
+    Strings.Well_import_your_name_and_profile_photo_and_access_your_friend_list()
   }
 
 public let emailFieldStyle = formFieldStyle
