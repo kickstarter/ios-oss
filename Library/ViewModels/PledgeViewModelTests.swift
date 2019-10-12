@@ -1353,7 +1353,9 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.shippingRuleSelected(.template)
 
-    self.submitButtonEnabled.assertValues([false, false, false, false, true, false, true], "Shipping rule changed")
+    self.submitButtonEnabled.assertValues(
+      [false, false, false, false, true, false, true], "Shipping rule changed"
+    )
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
@@ -1500,7 +1502,9 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.shippingRuleSelected(.template)
 
-    self.submitButtonEnabled.assertValues([false, false, false, false, true, false, true], "Shipping rule changed")
+    self.submitButtonEnabled.assertValues(
+      [false, false, false, false, true, false, true], "Shipping rule changed"
+    )
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
