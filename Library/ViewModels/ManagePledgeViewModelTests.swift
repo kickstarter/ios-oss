@@ -25,6 +25,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     = TestObserver<String, Never>()
   private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
+  private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let showSuccessBannerWithMessage = TestObserver<String, Never>()
   private let title = TestObserver<String, Never>()
 
@@ -54,6 +55,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.rewardReceivedViewControllerViewIsHidden.observer
     )
     self.vm.outputs.showActionSheetMenuWithOptions.observe(self.showActionSheetMenuWithOptions.observer)
+    self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
     self.vm.outputs.showSuccessBannerWithMessage.observe(self.showSuccessBannerWithMessage.observer)
   }
 
@@ -163,6 +165,29 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     self.goToCancelPledgeProject.assertValues([project])
     self.goToCancelPledgeBacking.assertValues([Backing.template])
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
+  }
+
+  func testBackingNotCancellable() {
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ (Backing.template |> Backing.lens.cancelable .~ false)
+
+    self.vm.inputs.configureWith(project, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    self.goToCancelPledgeProject.assertDidNotEmitValue()
+    self.goToCancelPledgeBacking.assertDidNotEmitValue()
+
+    self.vm.inputs.menuButtonTapped()
+    self.vm.inputs.menuOptionSelected(with: .cancelPledge)
+
+    self.goToCancelPledgeProject.assertDidNotEmitValue()
+    self.goToCancelPledgeBacking.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertValues([
+      // swiftlint:disable:next line_length
+      "We don’t allow cancelations that will cause a project to fall short of its goal within the last 24 hours."
+    ])
   }
 
   func testGoToChangePaymentMethod() {

@@ -6,6 +6,7 @@ extension Backing {
     backer: .template,
     backerId: 1,
     backerCompleted: true,
+    cancelable: true,
     id: 1,
     locationId: 1,
     locationName: "United States",
