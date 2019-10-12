@@ -32,6 +32,7 @@ internal final class ActivityTests: XCTestCase {
       "backing": [
         "amount": 1.0,
         "backer_id": 1,
+        "cancelable": true,
         "id": 1,
         "location_id": 1,
         "pledged_at": 1_000,
