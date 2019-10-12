@@ -50,4 +50,20 @@ final class PledgeViewContextTests: TestCase {
     XCTAssertEqual(context.submitButtonTitle, "Confirm")
     XCTAssertEqual(context.title, "Change payment method")
   }
+
+  func testUpdateReward() {
+    let context = PledgeViewContext.updateReward
+
+    XCTAssertTrue(context.confirmationLabelHidden)
+    XCTAssertTrue(context.continueViewHidden)
+    XCTAssertFalse(context.descriptionViewHidden)
+    XCTAssertTrue(context.isUpdating)
+    XCTAssertFalse(context.isCreating)
+    XCTAssertFalse(context.paymentMethodsViewHidden)
+    XCTAssertFalse(context.pledgeAmountViewHidden)
+    XCTAssertTrue(context.pledgeAmountSummaryViewHidden)
+    XCTAssertFalse(context.sectionSeparatorsHidden)
+    XCTAssertEqual(context.submitButtonTitle, "Confirm")
+    XCTAssertEqual(context.title, "Update pledge")
+  }
 }

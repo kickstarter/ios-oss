@@ -1175,19 +1175,19 @@ final class PledgeViewModelTests: TestCase {
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false])
+      self.submitButtonEnabled.assertValues([false, true])
 
       self.vm.inputs.shippingRuleSelected(.template)
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false, true])
+      self.submitButtonEnabled.assertValues([false, true, true])
 
       self.vm.inputs.submitButtonTapped()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false, true, false])
+      self.submitButtonEnabled.assertValues([false, true, true, false])
 
       self.scheduler.run()
 
@@ -1195,7 +1195,7 @@ final class PledgeViewModelTests: TestCase {
         "Got it! Your changes have been saved."
       ])
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.submitButtonEnabled.assertValues([false, true, true, false, true])
     }
   }
 
@@ -1234,25 +1234,25 @@ final class PledgeViewModelTests: TestCase {
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false])
+      self.submitButtonEnabled.assertValues([false, true])
 
       self.vm.inputs.shippingRuleSelected(.template)
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false, true])
+      self.submitButtonEnabled.assertValues([false, true, true])
 
       self.vm.inputs.submitButtonTapped()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false, true, false])
+      self.submitButtonEnabled.assertValues([false, true, true, false])
 
       self.scheduler.run()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertValueCount(1)
-      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.submitButtonEnabled.assertValues([false, true, true, false, true])
     }
   }
 
@@ -1286,36 +1286,38 @@ final class PledgeViewModelTests: TestCase {
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
+    self.submitButtonEnabled.assertValues([false, false], "Amount unchanged")
+
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
-    self.submitButtonEnabled.assertValues([false, false], "Shipping rule and amount unchanged")
+    self.submitButtonEnabled.assertValues([false, false, false], "Shipping rule and amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false], "Amount unchanged")
+    self.submitButtonEnabled.assertValues([false, false, false, false], "Amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false, true], "Amount changed")
+    self.submitButtonEnabled.assertValues([false, false, false, false, true], "Amount changed")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false, true, false], "Amount unchanged")
+    self.submitButtonEnabled.assertValues([false, false, false, false, true, false], "Amount unchanged")
 
     self.vm.inputs.shippingRuleSelected(.template)
 
-    self.submitButtonEnabled.assertValues([false, false, false, true, false, true], "Shipping rule changed")
+    self.submitButtonEnabled.assertValues([false, false, false, false, true, false, true], "Shipping rule changed")
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
     self.submitButtonEnabled.assertValues(
-      [false, false, false, true, false, true, false], "Amount and shipping rule unchanged"
+      [false, false, false, false, true, false, true, false], "Amount and shipping rule unchanged"
     )
   }
 
@@ -1392,42 +1394,44 @@ final class PledgeViewModelTests: TestCase {
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
+    self.submitButtonEnabled.assertValues([false, false], "Amount unchanged")
+
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
-    self.submitButtonEnabled.assertValues([false, false], "Shipping rule and amount unchanged")
+    self.submitButtonEnabled.assertValues([false, false, false], "Shipping rule and amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false], "Amount unchanged")
+    self.submitButtonEnabled.assertValues([false, false, false, false], "Amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false, true], "Amount changed")
+    self.submitButtonEnabled.assertValues([false, false, false, false, true], "Amount changed")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false, true, false], "Amount unchanged")
+    self.submitButtonEnabled.assertValues([false, false, false, false, true, false], "Amount unchanged")
 
     self.vm.inputs.shippingRuleSelected(.template)
 
-    self.submitButtonEnabled.assertValues([false, false, false, true, false, true], "Shipping rule changed")
+    self.submitButtonEnabled.assertValues([false, false, false, false, true, false, true], "Shipping rule changed")
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
     self.submitButtonEnabled.assertValues(
-      [false, false, false, true, false, true, false], "Amount and shipping rule unchanged"
+      [false, false, false, false, true, false, true, false], "Amount and shipping rule unchanged"
     )
 
     self.vm.inputs.creditCardSelected(with: "12345")
 
     self.submitButtonEnabled.assertValues(
-      [false, false, false, true, false, true, false, true],
+      [false, false, false, false, true, false, true, false, true],
       "Payment method changed"
     )
 
@@ -1437,7 +1441,7 @@ final class PledgeViewModelTests: TestCase {
     )
 
     self.submitButtonEnabled.assertValues(
-      [false, false, false, true, false, true, false, true, false],
+      [false, false, false, false, true, false, true, false, true, false],
       "Payment method unchanged"
     )
   }

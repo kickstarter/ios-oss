@@ -137,8 +137,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     self.viewModel.outputs.goToPledge
       .observeForControllerAction()
-      .observeValues { [weak self] project, reward, refTag in
-        self?.goToPledge(project: project, reward: reward, refTag: refTag)
+      .observeValues { [weak self] data, context in
+        self?.goToPledge(project: data.project, reward: data.reward, refTag: data.refTag, context: context)
       }
 
     self.viewModel.outputs.goToDeprecatedPledge
@@ -228,9 +228,9 @@ final class RewardsCollectionViewController: UICollectionViewController {
       ?|> \.isActive .~ !isHidden
   }
 
-  private func goToPledge(project: Project, reward: Reward, refTag: RefTag?) {
+  private func goToPledge(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext) {
     let pledgeViewController = PledgeViewController.instantiate()
-    pledgeViewController.configureWith(project: project, reward: reward, refTag: refTag, context: .pledge)
+    pledgeViewController.configureWith(project: project, reward: reward, refTag: refTag, context: context)
 
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
   }
