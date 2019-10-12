@@ -713,5 +713,5 @@ private func allValuesChangedAndValid(
     return amountValid || shippingRuleValid || paymentSourceValid
   }
 
-  return amountValid && shippingRuleValid && paymentSourceValid
+  return amountValid && shippingRuleValid
 }
