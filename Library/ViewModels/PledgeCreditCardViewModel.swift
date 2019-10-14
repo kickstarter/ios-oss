@@ -117,7 +117,7 @@ private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage
   case .card?:
     return image(named: card.imageName)
   case .applePay?:
-    return image(named: "icon--apple_pay")
+    return image(named: "icon--apple-pay")
   case .none:
     return nil
   }
