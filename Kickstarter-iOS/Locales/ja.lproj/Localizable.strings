@@ -61,6 +61,7 @@
 "Cancel_pledge" = "プレッジを取り消す";
 "Cancel_your_pledge" = "プレッジを取り消す";
 "Cancellation_reason" = "Motivo de cancelación";
+"Cancellation_reason" = "Cancellation reason";
 "Card_ending_in_last_four" = "下4桁が %{last_four} のカード";
 "Card_number" = "カード番号";
 "Cardholder_name" = "カード名義";

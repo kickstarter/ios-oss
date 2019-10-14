@@ -1011,7 +1011,7 @@ contributeurs"
    - **de**: "Grund der Annullierung"
    - **es**: "Motivo de cancelación"
    - **fr**: "Motif d'annulation"
-   - **ja**: "Motivo de cancelación"
+   - **ja**: "Cancellation reason"
   */
   public static func Cancellation_reason() -> String {
     return localizedString(
