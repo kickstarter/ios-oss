@@ -7,6 +7,7 @@ final class BackingTests: XCTestCase {
     let backing = Backing.decodeJSONDictionary([
       "amount": 1.0,
       "backer_id": 1,
+      "cancelable": true,
       "id": 1,
       "location_id": 1,
       "location_name": "United States",
@@ -28,6 +29,7 @@ final class BackingTests: XCTestCase {
     XCTAssertNil(backing.error)
     XCTAssertEqual(1.0, backing.value?.amount)
     XCTAssertEqual(1, backing.value?.backerId)
+    XCTAssertEqual(true, backing.value?.cancelable)
     XCTAssertEqual(1, backing.value?.id)
     XCTAssertEqual("2019-09-23", backing.value?.paymentSource?.expirationDate)
     // id is converted to a base64 encoded string to keep graphQL compatibility (used in other API calls).
@@ -49,6 +51,7 @@ final class BackingTests: XCTestCase {
     let backing = Backing.decodeJSONDictionary([
       "amount": 1.0,
       "backer_id": 1,
+      "cancelable": true,
       "id": 1,
       "location_id": 1,
       "location_name": "United States",

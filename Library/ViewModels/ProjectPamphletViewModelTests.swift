@@ -16,6 +16,7 @@ final class ProjectPamphletViewModelTests: TestCase {
   private let configureChildViewControllersWithRefTag = TestObserver<RefTag?, Never>()
   private let configurePledgeCTAViewProject = TestObserver<Either<Project, ErrorEnvelope>, Never>()
   private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
+  private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
   private let goToDeprecatedManagePledgeProject = TestObserver<Project, Never>()
   private let goToDeprecatedManagePledgeRefTag = TestObserver<RefTag?, Never>()
   private let goToDeprecatedManagePledgeReward = TestObserver<Reward, Never>()
@@ -41,6 +42,8 @@ final class ProjectPamphletViewModelTests: TestCase {
       .observe(self.configureChildViewControllersWithRefTag.observer)
     self.vm.outputs.configurePledgeCTAView.map(first).observe(self.configurePledgeCTAViewProject.observer)
     self.vm.outputs.configurePledgeCTAView.map(second).observe(self.configurePledgeCTAViewIsLoading.observer)
+    self.vm.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
+      .observe(self.dismissManagePledgeAndShowMessageBannerWithMessage.observer)
     self.vm.outputs.goToDeprecatedManagePledge.map { $0.project }
       .observe(self.goToDeprecatedManagePledgeProject.observer)
     self.vm.outputs.goToDeprecatedManagePledge.map { $0.reward }
@@ -868,6 +871,17 @@ final class ProjectPamphletViewModelTests: TestCase {
         client.events
       )
     }
+  }
+
+  func testManagePledgeViewControllerFinished() {
+    self.vm.inputs.configureWith(projectOrParam: .left(Project.template), refTag: .discovery)
+    self.vm.inputs.viewDidLoad()
+
+    self.dismissManagePledgeAndShowMessageBannerWithMessage.assertDidNotEmitValue()
+
+    self.vm.inputs.managePledgeViewControllerFinished(with: "Your changes have been saved")
+
+    self.dismissManagePledgeAndShowMessageBannerWithMessage.assertValues(["Your changes have been saved"])
   }
 
   // MARK: - Functions
