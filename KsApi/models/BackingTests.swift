@@ -15,7 +15,7 @@ final class BackingTests: XCTestCase {
         "expiration_date": "2019-09-23",
         "id": 20,
         "last_four": "1234",
-        "payment_type": "APPLE_PAY",
+        "payment_type": "CREDIT_CARD",
         "state": "ACTIVE",
         "type": "VISA"
       ],
@@ -35,7 +35,7 @@ final class BackingTests: XCTestCase {
     // id is converted to a base64 encoded string to keep graphQL compatibility (used in other API calls).
     XCTAssertEqual("VXNlci0yMA==", backing.value?.paymentSource?.id)
     XCTAssertEqual("1234", backing.value?.paymentSource?.lastFour)
-    XCTAssertEqual("APPLE_PAY", backing.value?.paymentSource?.paymentType?.rawValue)
+    XCTAssertEqual("CREDIT_CARD", backing.value?.paymentSource?.paymentType?.rawValue)
     XCTAssertEqual("ACTIVE", backing.value?.paymentSource?.state)
     XCTAssertEqual(GraphUserCreditCard.CreditCardType.visa, backing.value?.paymentSource?.type)
     XCTAssertEqual(1, backing.value?.locationId)
