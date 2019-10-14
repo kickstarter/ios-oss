@@ -147,7 +147,8 @@ private let amountLabelStyle: LabelStyle = { label in
 
 private let backerInfoStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.axis .~ .vertical
+    |> verticalStackViewStyle
+    |> \.spacing .~ Styles.grid(1)
 }
 
 private let backerNumberLabelStyle: LabelStyle = { label in
