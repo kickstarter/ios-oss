@@ -23,6 +23,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var cardsRestrictionStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var cardRestrictionLabel: UILabel = { UILabel(frame: .zero) }()
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
   private lazy var pledgeButton: UIButton = { UIButton.init(type: .custom) }()
@@ -231,23 +233,45 @@ final class PledgePaymentMethodsViewController: UIViewController {
   ) -> [UIView] {
     let selectedCard = cards.first
 
-    return cards.map { card -> PledgeCreditCardView in
+    return cards.map { card -> UIStackView in
       let cardView = PledgeCreditCardView(frame: .zero)
         |> \.delegate .~ self
 
+      let stackView = UIStackView(frame: .zero)
+        |> \.axis .~ .vertical
+        |> \.spacing .~ Styles.grid(2)
+
+      let label = UILabel(frame: .zero)
+        |> \.numberOfLines .~ 0
+        |> \.font .~ UIFont.ksr_caption1().bolded
+        |> \.textColor .~ .ksr_text_dark_grey_500
+        |> \.textAlignment .~ NSTextAlignment.center
+        |> \.text %~ { _ in
+          Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
+            project_country: "Bronx") }
+
       cardView.configureWith(value: card)
 
-      guard let cardBrand = card.type?.rawValue else { return cardView }
-
+      guard let cardBrand = card.type?.rawValue else { return stackView }
       let isAvailableCardType = availableCardTypes.contains(cardBrand)
 
       if selectedCard != nil && isAvailableCardType  {
         cardView.setSelectedCard(selectedCard!)
+
+        _ = ([cardView], stackView)
+          |> ksr_addArrangedSubviewsToStackView()
+        _ = ([label], stackView)
+          |> ksr_addArrangedSubviewsToStackView()
+
       } else if isAvailableCardType == false {
         cardView.setDisabledCard(card)
+        _ = ([cardView], stackView)
+          |> ksr_addArrangedSubviewsToStackView()
+        _ = ([label], stackView)
+          |> ksr_addArrangedSubviewsToStackView()
       }
 
-      return cardView
+      return stackView
     }
   }
 
