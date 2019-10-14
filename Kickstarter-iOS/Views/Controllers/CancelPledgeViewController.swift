@@ -125,8 +125,8 @@ final class CancelPledgeViewController: UIViewController, MessageBannerViewContr
 
     _ = self.cancellationReasonTextField
       |> cancellationReasonTextFieldStyle
-      |> UITextField.lens.accessibilityLabel %~ { _ in Strings.Cancellation_reason() }
-      |> UITextField.lens.placeholder %~ { _ in Strings.Tell_us_why_optional() }
+      |> \.accessibilityLabel %~ { _ in Strings.Cancellation_reason() }
+      |> \.placeholder %~ { _ in Strings.Tell_us_why_optional() }
 
     _ = self.cancellationReasonDisclaimerLabel
       |> cancellationDisclaimerLabelStyle
