@@ -110,12 +110,12 @@ final class ManagePledgePaymentMethodView: UIView {
 }
 
 // MARK: - Styles
+
 private let cardLabelsStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> verticalStackViewStyle
     |> \.spacing .~ Styles.grid(1)
 }
-
 
 private let expirationDateLabelStyle: LabelStyle = { label in
   label
