@@ -56,11 +56,8 @@ final class ManagePledgePaymentMethodView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.paymentMethodImageView
-      |> cardImageViewStyle
-
     _ = self.cardLabelsStackView
-      |> verticalStackViewStyle
+      |> cardLabelsStackViewStyle
 
     _ = self.expirationDateLabel
       |> expirationDateLabelStyle
@@ -73,6 +70,9 @@ final class ManagePledgePaymentMethodView: UIView {
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
       |> paymentMethodAdaptableStackViewStyle
+
+    _ = self.paymentMethodImageView
+      |> cardImageViewStyle
 
     _ = self.rootStackView
       |> checkoutCardStackViewStyle
@@ -110,6 +110,12 @@ final class ManagePledgePaymentMethodView: UIView {
 }
 
 // MARK: - Styles
+private let cardLabelsStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> verticalStackViewStyle
+    |> \.spacing .~ Styles.grid(1)
+}
+
 
 private let expirationDateLabelStyle: LabelStyle = { label in
   label
