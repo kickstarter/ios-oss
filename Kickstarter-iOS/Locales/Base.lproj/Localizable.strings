@@ -60,6 +60,7 @@
 "Cancel" = "Cancel";
 "Cancel_pledge" = "Cancel pledge";
 "Cancel_your_pledge" = "Cancel your pledge";
+"Cancellation_reason" = "Cancellation reason";
 "Card_ending_in_last_four" = "Card ending in %{last_four}";
 "Card_number" = "Card number";
 "Cardholder_name" = "Cardholder name";

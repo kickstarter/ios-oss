@@ -25,7 +25,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var spacer: UIView = { UIView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
-  private let viewModel = PledgePaymentMethodsViewModel()
+  private let viewModel: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
 
   // MARK: - Lifecycle
 
@@ -233,7 +233,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
 extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
   func pledgeCreditCardViewSelected(_: PledgeCreditCardView, paymentSourceId: String) {
-    self.viewModel.creditCardSelected(paymentSourceId: paymentSourceId)
+    self.viewModel.inputs.creditCardSelected(paymentSourceId: paymentSourceId)
   }
 }
 
