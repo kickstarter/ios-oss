@@ -1096,6 +1096,8 @@
 		D643E7C82346426E00C02C15 /* ManagePledgeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FF23200FD3002A6507 /* ManagePledgeViewControllerTests.swift */; };
 		D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */; };
 		D64DDCDD235616B500DE0EA9 /* ManagePledgePaymentMethodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DDCDC235616B500DE0EA9 /* ManagePledgePaymentMethodViewModel.swift */; };
+		D64DDCDF235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DDCDE235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift */; };
+		D64DDCE123564D3700DE0EA9 /* PaymentSourceTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64DDCE023564D3700DE0EA9 /* PaymentSourceTemplates.swift */; };
 		D6508F6C2049C83C002DCC01 /* UIStackView+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */; };
 		D6534D3822E784B500E9D279 /* PledgeCreditCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6534D3722E784B500E9D279 /* PledgeCreditCardView.swift */; };
 		D6534D3A22E7878D00E9D279 /* CreditCard+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6534D3922E7878D00E9D279 /* CreditCard+Utils.swift */; };
@@ -2409,6 +2411,8 @@
 		D63BBD3A2180BEA4007E01F0 /* PaymentMethodsFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PaymentMethodsFooterView.xib; sourceTree = "<group>"; };
 		D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectActivityItemProviderTests.swift; sourceTree = "<group>"; };
 		D64DDCDC235616B500DE0EA9 /* ManagePledgePaymentMethodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgePaymentMethodViewModel.swift; sourceTree = "<group>"; };
+		D64DDCDE235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgePaymentMethodViewModelTests.swift; sourceTree = "<group>"; };
+		D64DDCE023564D3700DE0EA9 /* PaymentSourceTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSourceTemplates.swift; sourceTree = "<group>"; };
 		D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+BackgroundColor.swift"; sourceTree = "<group>"; };
 		D6534D3722E784B500E9D279 /* PledgeCreditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCreditCardView.swift; sourceTree = "<group>"; };
 		D6534D3922E7878D00E9D279 /* CreditCard+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreditCard+Utils.swift"; sourceTree = "<group>"; };
@@ -3610,6 +3614,8 @@
 				A7ED1F761E831C5C00BFFA01 /* LoginToutViewModelTests.swift */,
 				A7698B291D00602800953FD3 /* LoginViewModel.swift */,
 				A7ED1F931E831C5C00BFFA01 /* LoginViewModelTests.swift */,
+				D64DDCDC235616B500DE0EA9 /* ManagePledgePaymentMethodViewModel.swift */,
+				D64DDCDE235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift */,
 				D65BF350232FE88300B15B25 /* ManagePledgeSummaryViewModel.swift */,
 				D65BF352233023E400B15B25 /* ManagePledgeSummaryViewModelTests.swift */,
 				D67DF563232ABB950051D207 /* ManagePledgeViewModel.swift */,
@@ -3759,7 +3765,6 @@
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
-				D64DDCDC235616B500DE0EA9 /* ManagePledgePaymentMethodViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -4049,6 +4054,7 @@
 				D01588181EEB2ED7006E7684 /* User.StatsTemplates.swift */,
 				D770DDE7217D729300B5319A /* UserCurrencyTemplates.swift */,
 				D01588191EEB2ED7006E7684 /* UserTemplates.swift */,
+				D64DDCE023564D3700DE0EA9 /* PaymentSourceTemplates.swift */,
 			);
 			path = templates;
 			sourceTree = "<group>";
@@ -5077,6 +5083,7 @@
 				77BC00F4232BE52C00808E75 /* CreateApplePayBackingInputConstructorTests.swift in Sources */,
 				A7ED1F371E830FDC00BFFA01 /* String+WhitespaceTests.swift in Sources */,
 				A7ED1FC31E831C5C00BFFA01 /* ProfileViewModelTests.swift in Sources */,
+				D64DDCDF235648C200DE0EA9 /* ManagePledgePaymentMethodViewModelTests.swift in Sources */,
 				A7ED20011E831C5C00BFFA01 /* SignupViewModelTests.swift in Sources */,
 				A7ED1FF71E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift in Sources */,
 				778CCCDA2285BF8900FB8D35 /* UIView+AutoLayoutTests.swift in Sources */,
@@ -5607,6 +5614,7 @@
 				D01588411EEB2ED7006E7684 /* AccessTokenEnvelope.swift in Sources */,
 				D01588BD1EEB2ED7006E7684 /* ProjectStatsEnvelope.RewardDistributionLenses.swift in Sources */,
 				D01588611EEB2ED7006E7684 /* Config.swift in Sources */,
+				D64DDCE123564D3700DE0EA9 /* PaymentSourceTemplates.swift in Sources */,
 				D002CAE5218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift in Sources */,
 				D0158A1C1EEB30A2006E7684 /* ProjectNotificationTemplates.swift in Sources */,
 				D01588F91EEB2ED7006E7684 /* Project.Country.swift in Sources */,

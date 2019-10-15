@@ -33,7 +33,7 @@ final class BackingTests: XCTestCase {
     XCTAssertEqual(1, backing.value?.id)
     XCTAssertEqual("2019-09-23", backing.value?.paymentSource?.expirationDate)
     // id is converted to a base64 encoded string to keep graphQL compatibility (used in other API calls).
-    XCTAssertEqual("VXNlci0yMA==", backing.value?.paymentSource?.id)
+    XCTAssertEqual("20", backing.value?.paymentSource?.id)
     XCTAssertEqual("1234", backing.value?.paymentSource?.lastFour)
     XCTAssertEqual("CREDIT_CARD", backing.value?.paymentSource?.paymentType?.rawValue)
     XCTAssertEqual("ACTIVE", backing.value?.paymentSource?.state)

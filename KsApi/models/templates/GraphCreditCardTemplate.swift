@@ -57,13 +57,6 @@ extension GraphUserCreditCard {
     type: .unionPay
   )
 
-  public static let applePay = GraphUserCreditCard.CreditCard(
-    expirationDate: "2024-01-12",
-    id: "6",
-    lastFour: "8882",
-    type: nil
-  )
-
   public static let template = GraphUserCreditCard(
     storedCards: CreditCardConnection(nodes: [
       GraphUserCreditCard.amex,

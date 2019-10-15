@@ -130,6 +130,11 @@ extension Backing.Status: Argo.Decodable {}
 
 extension Backing.PaymentType: Argo.Decodable {}
 
+extension Backing.PaymentSource: Equatable {}
+public func == (lhs: Backing.PaymentSource, rhs: Backing.PaymentSource) -> Bool {
+  return lhs.id == rhs.id
+}
+
 extension Backing {
   /// Returns the pledge amount subtracting the shipping amount
   public var pledgeAmount: Double {

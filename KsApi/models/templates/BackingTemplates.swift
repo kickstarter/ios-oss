@@ -21,15 +21,3 @@ extension Backing {
     status: .pledged
   )
 }
-
-
-extension Backing.PaymentSource {
-  internal static let template = Backing.PaymentSource(
-    expirationDate: "2019-10-14",
-    id: "1",
-    lastFour: "1234",
-    paymentType: .creditCard,
-    state: "",
-    type: .visa
-  )
-}
