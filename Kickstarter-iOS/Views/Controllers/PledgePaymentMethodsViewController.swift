@@ -246,8 +246,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   private func newCardViews(with cardValues: CardViewValues) -> [UIView] {
     let selectedCard = cardValues.cards.first
+    let cards = cardValues.cards
+    let availableCardTypes = cardValues.availableCardTypes
 
-    return cardValues.cards.map { card -> UIStackView in
+    return cards.map { card -> UIStackView in
       let cardView = PledgeCreditCardView(frame: .zero)
         |> \.delegate .~ self
 
@@ -263,16 +265,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
         |> \.spacing .~ Styles.grid(2)
 
       guard let cardBrand = card.type?.rawValue else { return stackView }
-      let isAvailableCardType = cardValues.availableCardTypes.contains(cardBrand)
+      let isAvailableCardType = availableCardTypes.contains(cardBrand)
 
       if selectedCard != nil && isAvailableCardType  {
         cardView.setSelectedCard(selectedCard!)
         let spacer = UIView.init(frame: .zero)
-
         _ = ([cardView, spacer], stackView)
           |> ksr_addArrangedSubviewsToStackView()
       } else if isAvailableCardType == false {
-
         let label = UILabel(frame: .zero)
           |> cardRestrictionLabelStyle
           |> \.text %~ { _ in
