@@ -29,9 +29,8 @@ public protocol ManagePledgePaymentMethodViewModelType {
 }
 
 public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethodViewModelInputs,
-ManagePledgePaymentMethodViewModelOutputs, ManagePledgePaymentMethodViewModelType {
+  ManagePledgePaymentMethodViewModelOutputs, ManagePledgePaymentMethodViewModelType {
   public init() {
-
     self.cardImage = self.paymentSourceSignal
       .map(cardImage(for:))
 
@@ -40,7 +39,7 @@ ManagePledgePaymentMethodViewModelOutputs, ManagePledgePaymentMethodViewModelTyp
         [$0.type?.description, Strings.Card_ending_in_last_four(last_four: $0.lastFour ?? .init())]
           .compact()
           .joined(separator: ", ")
-    }
+      }
 
     self.cardNumberTextShortStyle = self.paymentSourceSignal
       .map { $0.lastFour }
@@ -93,8 +92,8 @@ private func toDate(dateString: String) -> Date {
     from: dateString,
     dateFormat: "yyyy-MM",
     timeZone: UTCTimeZone
-    ) else {
-      fatalError("Unable to parse date format")
+  ) else {
+    fatalError("Unable to parse date format")
   }
 
   return date
