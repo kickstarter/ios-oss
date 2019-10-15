@@ -10,7 +10,7 @@ extension Backing {
     id: 1,
     locationId: 1,
     locationName: "United States",
-    paymentSource: GraphUserCreditCard.visa,
+    paymentSource: .template,
     pledgedAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,
     projectCountry: "US",
     projectId: 1,
@@ -19,5 +19,17 @@ extension Backing {
     sequence: 10,
     shippingAmount: 2,
     status: .pledged
+  )
+}
+
+
+extension Backing.PaymentSource {
+  internal static let template = Backing.PaymentSource(
+    expirationDate: "2019-10-14",
+    id: "1",
+    lastFour: "1234",
+    paymentType: .creditCard,
+    state: "",
+    type: .visa
   )
 }

@@ -11,7 +11,7 @@ public struct Backing {
   public let id: Int
   public let locationId: Int?
   public let locationName: String?
-  public let paymentSource: GraphUserCreditCard.CreditCard?
+  public let paymentSource: PaymentSource?
   public let pledgedAt: TimeInterval
   public let projectCountry: String
   public let projectId: Int
@@ -20,6 +20,29 @@ public struct Backing {
   public let sequence: Int
   public let shippingAmount: Int?
   public let status: Status
+
+  public struct PaymentSource {
+    public let expirationDate: String?
+    public let id: String?
+    public let lastFour: String?
+    public let paymentType: PaymentType?
+    public let state: String
+    public let type: GraphUserCreditCard.CreditCardType?
+
+    public var imageName: String {
+      switch self.type {
+      case nil, .some(.generic):
+        return "icon--generic"
+      case let .some(type):
+        return "icon--\(type.rawValue.lowercased())"
+      }
+    }
+  }
+
+  public enum PaymentType: String {
+    case applePay = "APPLE_PAY"
+    case creditCard = "CREDIT_CARD"
+  }
 
   public enum Status: String {
     case canceled
@@ -68,12 +91,12 @@ extension Backing: Argo.Decodable {
  on that environment. This is a workaround to allow us to test on Staging and should be deleted once the
  data is being returned normally.
  */
-private func tryDecodePaymentSource(_ json: JSON?) -> Decoded<GraphUserCreditCard.CreditCard?> {
+private func tryDecodePaymentSource(_ json: JSON?) -> Decoded<Backing.PaymentSource?> {
   guard let json = json else {
     return .success(nil)
   }
 
-  let value = GraphUserCreditCard.CreditCard.decode(json)
+  let value = Backing.PaymentSource.decode(json)
 
   switch value {
   case let .success(value):
@@ -91,7 +114,21 @@ extension Backing: EncodableType {
   }
 }
 
+extension Backing.PaymentSource: Argo.Decodable {
+  public static func decode(_ json: JSON) -> Decoded<Backing.PaymentSource?> {
+    return curry(Backing.PaymentSource.init)
+      <^> json <|? "expiration_date"
+      <*> (json <|? "id" <|> (json <| "id" >>- intToString))
+      <*> json <|? "last_four"
+      <*> json <|? "payment_type"
+      <*> json <| "state"
+      <*> json <|? "type"
+  }
+}
+
 extension Backing.Status: Argo.Decodable {}
+
+extension Backing.PaymentType: Argo.Decodable {}
 
 extension Backing {
   /// Returns the pledge amount subtracting the shipping amount
@@ -107,4 +144,8 @@ extension Backing: GraphIDBridging {
   public static var modelName: String {
     return "Backing"
   }
+}
+
+private func intToString(_ input: Int) -> Decoded<String?> {
+  return .success(String(input))
 }
