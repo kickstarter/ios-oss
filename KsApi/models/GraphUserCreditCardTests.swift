@@ -155,7 +155,7 @@ final class GraphUserCreditCardTests: XCTestCase {
     XCTAssertEqual("2019-09-23", card.value?.expirationDate)
     XCTAssertEqual("VXNlci0yMA==", card.value?.id)
     XCTAssertEqual("1234", card.value?.lastFour)
-    XCTAssertEqual("CREDIT_CARD", card.value?.paymentType)
+    XCTAssertEqual("CREDIT_CARD", card.value?.paymentType?.rawValue)
     XCTAssertEqual("ACTIVE", card.value?.state)
     XCTAssertEqual(GraphUserCreditCard.CreditCardType.visa, card.value?.type)
   }
