@@ -923,12 +923,12 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToThanks.assertDidNotEmitValue()
 
-      self.scheduler.run()
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
-      self.goToThanks.assertDidNotEmitValue("Signal waits for Apple Pay sheet to dismiss")
+      self.goToThanks.assertDidNotEmitValue("Signal waits for Create Backing to complete")
       self.createBackingError.assertDidNotEmitValue()
 
-      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+      self.scheduler.run()
 
       self.goToThanks.assertValues([project])
       self.createBackingError.assertDidNotEmitValue()
@@ -973,9 +973,11 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToThanks.assertDidNotEmitValue()
 
-      self.scheduler.run()
-
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
 
       self.goToThanks.assertValues([project])
       self.createBackingError.assertDidNotEmitValue()
@@ -1522,15 +1524,15 @@ final class PledgeViewModelTests: TestCase {
       self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
-      self.scheduler.run()
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false, true])
+      self.submitButtonEnabled.assertValues([false])
       self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
-      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+      self.scheduler.run()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
         "Got it! Your changes have been saved."
