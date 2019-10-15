@@ -365,9 +365,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .filter { _, context in context.isUpdating }
     .ignoreValues()
 
-    let updateBackingEvent = updateBackingData
-      .takeWhen(Signal.merge(updateButtonTapped, willUpdateApplePayBacking.ignoreValues()))
-      .map(UpdateBackingInput.input(from:))
+    let updateBackingDataAndIsApplePay = updateBackingData.takePairWhen(
+      Signal.merge(
+        updateButtonTapped.mapConst(false),
+        willUpdateApplePayBacking.ignoreValues().mapConst(true)
+      )
+    )
+
+    let updateBackingEvent = updateBackingDataAndIsApplePay
+      .map(UpdateBackingInput.input(from:isApplePay:))
       .switchMap { input in
         AppEnvironment.current.apiService.updateBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -439,11 +445,20 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.paymentAuthorizationDidFinishSignal
     )
 
+    let createApplePayBackingCompleted = Signal.combineLatest(
+      createApplePayBackingEvent
+        .filter { $0.isTerminating }
+        .ignoreValues(),
+      createPaymentAuthorizationDidFinishSignal
+    )
+
     let createApplePayBackingEventSuccess = createApplePayBackingEvent.values()
+
     let createApplePayBackingEventErrors = createApplePayBackingEvent.errors()
       .map { $0.localizedDescription }
+
     let createApplePayBackingError = createApplePayBackingEventErrors
-      .takeWhen(createPaymentAuthorizationDidFinishSignal)
+      .takeWhen(createApplePayBackingCompleted)
 
     self.createBackingError = Signal.merge(
       createApplePayBackingError,
@@ -451,7 +466,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
 
     let applePayTransactionCompleted = Signal.combineLatest(project, createApplePayBackingEventSuccess)
-      .takeWhen(createPaymentAuthorizationDidFinishSignal)
+      .takeWhen(createApplePayBackingCompleted)
       .map(first)
 
     self.confirmationLabelAttributedText = Signal.merge(
@@ -472,6 +487,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.paymentAuthorizationDidFinishSignal
     )
 
+    let updateApplePayBackingCompleted = Signal.combineLatest(
+      updateBackingEvent
+        .filter { $0.isTerminating }
+        .ignoreValues(),
+      updatePaymentAuthorizationDidFinishSignal
+    )
+
     let updateBackingEventErrors = Signal.zip(
       updateBackingEvent.errors(),
       self.submitButtonTappedSignal
@@ -479,12 +501,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map(first)
 
     let updateApplePayBackingSuccess = updateBackingEvent.values()
-      .takeWhen(updatePaymentAuthorizationDidFinishSignal)
+      .takeWhen(updateApplePayBackingCompleted)
+
     let updateApplePayBackingError = updateBackingEvent.errors()
-      .takeWhen(updatePaymentAuthorizationDidFinishSignal)
+      .takeWhen(updateApplePayBackingCompleted)
 
     let updateBackingDidCompleteApplePay = updateApplePayBackingSuccess
       .ignoreValues()
+
     let updateBackingDidComplete = Signal.zip(
       self.submitButtonTappedSignal,
       updateBackingEvent.values()
