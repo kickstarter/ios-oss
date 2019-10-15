@@ -140,8 +140,8 @@ final class PledgeCreditCardView: UIView {
     self.viewModel.inputs.setSelectedCard(card)
   }
 
-  func setDisabledCard(_ card: GraphUserCreditCard.CreditCard) {
-    self.viewModel.inputs.setDisabledCard(card)
+  func setDisabledCard(_ disabled: Bool) {
+    self.viewModel.inputs.setDisabledCard(disabled)
   }
 
   @objc func selectButtonTapped() {

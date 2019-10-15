@@ -14,7 +14,8 @@ public protocol PledgeCreditCardViewModelInputs {
   /// Call with the currently selected card.
   func setSelectedCard(_ creditCard: GraphUserCreditCard.CreditCard)
 
-  func setDisabledCard(_ creditCard: GraphUserCreditCard.CreditCard)
+  /// Call with disabled card.
+  func setDisabledCard(_ disabled: Bool)
 }
 
 public protocol PledgeCreditCardViewModelOutputs {
@@ -27,6 +28,9 @@ public protocol PledgeCreditCardViewModelOutputs {
   /// Emits a formatted string containing the card's last four digits with the format: Ending in 8844.
   var cardNumberTextShortStyle: Signal<String, Never> { get }
 
+  /// Emits whether or not the button is enabled.
+  var disableButton: Signal<Bool, Never> { get }
+
   /// Emits the formatted card's expirationdate.
   var expirationDateText: Signal<String, Never> { get }
 
@@ -38,8 +42,6 @@ public protocol PledgeCreditCardViewModelOutputs {
 
   /// Emits the button title.
   var selectButtonTitle: Signal<String, Never> { get }
-
-  var disableButton: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeCreditCardViewModelType {
@@ -52,7 +54,6 @@ PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
   public init() {
     let creditCard = self.creditCardProperty.signal.skipNil()
     let selectedCard = self.selectedCardProperty.signal.skipNil()
-    let disabledCard = self.disabledCardProperty.signal.skipNil()
 
     self.cardImage = creditCard
       .map(cardImageForCard)
@@ -89,7 +90,7 @@ PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
     self.selectButtonIsSelected = cardAndSelectedCard
       .map(==)
 
-    self.disableButton = disabledCard.map { $0 }.mapConst(false)
+    self.disableButton = self.disabledCardProperty.signal.skipNil()
   }
 
   fileprivate let creditCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
@@ -102,9 +103,9 @@ PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
     self.selectedCardProperty.value = creditCard
   }
 
-  private let disabledCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
-  public func setDisabledCard(_ creditCard: GraphUserCreditCard.CreditCard) {
-    self.disabledCardProperty.value = creditCard
+  private let disabledCardProperty = MutableProperty<Bool?>(nil)
+  public func setDisabledCard(_ disabled: Bool) {
+    self.disabledCardProperty.value = disabled
   }
 
   fileprivate let selectButtonTappedProperty = MutableProperty(())
