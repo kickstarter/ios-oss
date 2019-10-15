@@ -39,8 +39,8 @@ public let apricotButtonStyle = baseButtonStyle
 public let redButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ UIColor.white
   <> UIButton.lens.backgroundColor(for: .normal) .~ UIColor.ksr_red_400
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_red_400.mixLighter(0.1)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_dark_grey_400
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_red_400.mixDarker(0.12)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_red_400.mixLighter(0.36)
 
 // MARK: - Black
 

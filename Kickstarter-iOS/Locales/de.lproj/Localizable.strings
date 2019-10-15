@@ -60,6 +60,7 @@
 "Cancel" = "Abbrechen";
 "Cancel_pledge" = "Beitrag zurückziehen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
+"Cancellation_reason" = "Grund der Annullierung";
 "Card_ending_in_last_four" = "Kartennummer endet auf %{last_four}";
 "Card_number" = "Kartennummer";
 "Cardholder_name" = "Name des Karteninhabers";
