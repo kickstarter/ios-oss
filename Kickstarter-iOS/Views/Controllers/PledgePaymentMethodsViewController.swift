@@ -120,10 +120,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
-      .observeValues { [weak self] cards, availableCardTypes in
+      .observeValues { [weak self] cardValues in
         guard let self = self else { return }
         self.scrollView.setContentOffset(.zero, animated: false)
-        self.reloadPaymentMethods(with: cards, availableCardTypes: availableCardTypes)
+        self.reloadPaymentMethods(with: cardValues)
       }
 
     self.viewModel.outputs.notifyDelegateLoadPaymentMethodsError
@@ -209,62 +209,78 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
   }
 
-  private func reloadPaymentMethods(with cards: [GraphUserCreditCard.CreditCard],
-                                    availableCardTypes: [String]) {
+  private func reloadPaymentMethods(with cardValues: CardViewValues) {
     self.cardsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-    let cardViews = self.newCardViews(with: cards, availableCardTypes: availableCardTypes)
+    let cardViews = self.newCardViews(with: cardValues)
 
     let addNewCardView: PledgeAddNewCardView = PledgeAddNewCardView(frame: .zero)
       |> \.delegate .~ self
 
-    _ = (cardViews + [addNewCardView], self.cardsStackView)
+    NSLayoutConstraint.activate([
+      addNewCardView.heightAnchor.constraint(greaterThanOrEqualToConstant:
+        CheckoutConstants.CreditCardView.height)
+      ])
+
+    let spacer = UIView.init(frame: .zero)
+    let addNewCardStackView = UIStackView.init(frame: .zero)
+      |> verticalStackViewStyle
+
+    _ = ([addNewCardView, spacer], addNewCardStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (cardViews + [addNewCardStackView], self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func updateSelectedCard(to card: GraphUserCreditCard.CreditCard) {
-    self.cardsStackView.arrangedSubviews
-      .compactMap { $0 as? PledgeCreditCardView }
-      .forEach { $0.setSelectedCard(card) }
+   let stackViews = self.cardsStackView.subviews
+      .compactMap { $0 as? UIStackView }
+
+    for cardStackView in stackViews {
+      cardStackView.arrangedSubviews
+        .compactMap { $0 as? PledgeCreditCardView }
+        .forEach { $0.setSelectedCard(card) }
+    }
   }
 
-  private func newCardViews(
-    with cards: [GraphUserCreditCard.CreditCard], availableCardTypes: [String]
-  ) -> [UIView] {
-    let selectedCard = cards.first
+  private func newCardViews(with cardValues: CardViewValues) -> [UIView] {
+    let selectedCard = cardValues.cards.first
 
-    return cards.map { card -> UIStackView in
+    return cardValues.cards.map { card -> UIStackView in
       let cardView = PledgeCreditCardView(frame: .zero)
         |> \.delegate .~ self
+
+      NSLayoutConstraint.activate([
+        cardView.heightAnchor.constraint(greaterThanOrEqualToConstant:
+          CheckoutConstants.CreditCardView.height)
+      ])
+
+      cardView.configureWith(value: card)
 
       let stackView = UIStackView(frame: .zero)
         |> \.axis .~ .vertical
         |> \.spacing .~ Styles.grid(2)
 
-      let label = UILabel(frame: .zero)
-        |> \.numberOfLines .~ 0
-        |> \.font .~ UIFont.ksr_caption1().bolded
-        |> \.textColor .~ .ksr_text_dark_grey_500
-        |> \.textAlignment .~ NSTextAlignment.center
-        |> \.text %~ { _ in
-          Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-            project_country: "Bronx") }
-
-      cardView.configureWith(value: card)
-
       guard let cardBrand = card.type?.rawValue else { return stackView }
-      let isAvailableCardType = availableCardTypes.contains(cardBrand)
+      let isAvailableCardType = cardValues.availableCardTypes.contains(cardBrand)
 
       if selectedCard != nil && isAvailableCardType  {
         cardView.setSelectedCard(selectedCard!)
+        let spacer = UIView.init(frame: .zero)
 
-        _ = ([cardView], stackView)
+        _ = ([cardView, spacer], stackView)
           |> ksr_addArrangedSubviewsToStackView()
-        _ = ([label], stackView)
-          |> ksr_addArrangedSubviewsToStackView()
-
       } else if isAvailableCardType == false {
+
+        let label = UILabel(frame: .zero)
+          |> cardRestrictionLabelStyle
+          |> \.text %~ { _ in
+            Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
+              project_country: cardValues.projectCountry) }
+
         cardView.setDisabledCard(card)
+
         _ = ([cardView], stackView)
           |> ksr_addArrangedSubviewsToStackView()
         _ = ([label], stackView)
@@ -295,6 +311,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.textColor .~ UIColor.ksr_text_dark_grey_500
       |> \.font .~ UIFont.ksr_caption1()
       |> \.textAlignment .~ .center
+  }
+
+  private let cardRestrictionLabelStyle: LabelStyle = { label in
+    label
+      |> \.numberOfLines .~ 0
+      |> \.font .~ UIFont.ksr_caption1().bolded
+      |> \.textColor .~ .ksr_text_dark_grey_500
+      |> \.textAlignment .~ NSTextAlignment.center
   }
 }
 

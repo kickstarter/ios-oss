@@ -5,6 +5,8 @@ import ReactiveSwift
 import UIKit
 
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
+public typealias CardViewValues = (
+  cards: [GraphUserCreditCard.CreditCard], availableCardTypes: [String], projectCountry: String)
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func applePayButtonTapped()
@@ -25,7 +27,7 @@ public protocol PledgePaymentMethodsViewModelOutputs {
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var notifyDelegatePledgeButtonTapped: Signal<Void, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
-  var reloadPaymentMethods: Signal<([GraphUserCreditCard.CreditCard], [String]), Never> { get }
+  var reloadPaymentMethods: Signal<CardViewValues, Never> { get }
   var updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never> { get }
 }
 
@@ -75,7 +77,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
     .scan([]) { current, new in new + current }
 
-    self.reloadPaymentMethods = Signal.combineLatest(card, availableCardTypes)
+    let cardValues = Signal.combineLatest(
+      card,
+      availableCardTypes,
+      project.map { $0.location.displayableName }
+      ).map { $0 as CardViewValues }
+
+    self.reloadPaymentMethods = cardValues
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
     self.notifyDelegatePledgeButtonTapped = self.pledgeButtonTappedSignal
@@ -142,7 +150,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let notifyDelegatePledgeButtonTapped: Signal<Void, Never>
   public let pledgeButtonEnabled: Signal<Bool, Never>
-  public let reloadPaymentMethods: Signal<([GraphUserCreditCard.CreditCard], [String]), Never>
+  public let reloadPaymentMethods: Signal<CardViewValues, Never>
   public let updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never>
 
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }
