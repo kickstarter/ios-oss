@@ -10,26 +10,19 @@ extension CreateBackingInput {
     refTag: RefTag?,
     paymentSourceId: String
   ) -> CreateBackingInput {
-    let pledgeAmountDecimal = Decimal(pledgeAmount)
-    var shippingAmountDecimal: Decimal = Decimal()
-    var shippingLocationId: String?
 
-    if let shippingRule = selectedShippingRule, shippingRule.cost > 0 {
-      shippingAmountDecimal = Decimal(shippingRule.cost)
-      shippingLocationId = String(shippingRule.location.id)
-    }
-
-    let pledgeTotal = NSDecimalNumber(decimal: pledgeAmountDecimal + shippingAmountDecimal)
-    let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal.doubleValue)
-
-    let rewardId = reward == Reward.noReward ? nil : reward.graphID
+    let pledgeParams
+      = formattedPledgeParameters(from: project,
+                                  reward: reward,
+                                  pledgeAmount: pledgeAmount,
+                                  selectedShippingRule: selectedShippingRule)
 
     return CreateBackingInput(
-      amount: formattedPledgeTotal,
-      locationId: shippingLocationId,
+      amount: pledgeParams.pledgeTotal,
+      locationId: pledgeParams.locationId,
       paymentSourceId: paymentSourceId,
-      projectId: project.graphID,
-      rewardId: rewardId,
+      projectId: pledgeParams.projectId,
+      rewardId: pledgeParams.rewardId,
       refParam: refTag?.description
     )
   }
