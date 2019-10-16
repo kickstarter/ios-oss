@@ -49,10 +49,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     [self.paymentMethodView, self.paymentMethodSectionSeparator]
   }()
 
-  private lazy var pledgeSummaryView: ManagePledgeSummaryView = { ManagePledgeSummaryView(frame: .zero) }()
+  private lazy var pledgeSummaryViewController: ManagePledgeSummaryViewController = {
+    ManagePledgeSummaryViewController.instantiate()
+  }()
 
   private lazy var pledgeSummarySectionViews = {
-    [self.pledgeSummaryView, self.pledgeSummarySectionSeparator]
+    [self.pledgeSummaryViewController.view, self.pledgeSummarySectionSeparator]
   }()
 
   private lazy var pledgeSummarySectionSeparator: UIView = {
@@ -165,7 +167,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.viewModel.outputs.configurePledgeSummaryView
       .observeForUI()
       .observeValues { [weak self] project in
-        self?.pledgeSummaryView.configureWith(project)
+        self?.pledgeSummaryViewController.configureWith(project)
       }
 
     self.viewModel.outputs.configureRewardReceivedWithProject
@@ -200,8 +202,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.goToChangePaymentMethod
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToChangePaymentMethod()
+      .observeValues { [weak self] project, reward in
+        self?.goToChangePaymentMethod(project: project, reward: reward)
       }
 
     self.viewModel.outputs.goToContactCreator
@@ -278,12 +280,19 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       [self.rewardReceivedViewController.view]
     ]
     .flatMap { $0 }
+    .compact()
 
     _ = (childViews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.addChild(self.rewardReceivedViewController)
-    self.rewardReceivedViewController.didMove(toParent: self)
+    [
+      self.rewardReceivedViewController,
+      self.pledgeSummaryViewController
+    ]
+    .forEach { viewController in
+      self.addChild(viewController)
+      viewController.didMove(toParent: self)
+    }
   }
 
   // MARK: Actions
@@ -359,8 +368,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.navigationController?.pushViewController(cancelPledgeViewController, animated: true)
   }
 
-  private func goToChangePaymentMethod() {
-    // TODO:
+  private func goToChangePaymentMethod(project: Project, reward: Reward) {
+    let vc = PledgeViewController.instantiate()
+    vc.configureWith(project: project, reward: reward, refTag: nil, context: .changePaymentMethod)
+    vc.delegate = self
+
+    self.show(vc, sender: nil)
   }
 
   private func goToContactCreator() {

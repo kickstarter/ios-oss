@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ApplePayParams: Encodable {
+public struct ApplePayParams: Encodable, Equatable {
   let paymentInstrumentName: String
   let paymentNetwork: String
   let transactionIdentifier: String
