@@ -25,7 +25,7 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
   public init() {
     let project = Signal.combineLatest(
       self.projectSignal,
-      self.viewDidLoadProperty.signal
+      self.viewDidLoadSignal
     )
     .map(first)
 
@@ -56,9 +56,9 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     self.projectObserver.send(value: project)
   }
 
-  private let viewDidLoadProperty = MutableProperty(())
+  private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
   public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
+    self.viewDidLoadObserver.send(value: ())
   }
 
   public let backerNumberText: Signal<String, Never>
