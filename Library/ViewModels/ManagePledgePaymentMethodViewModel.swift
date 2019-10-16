@@ -34,16 +34,25 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
     self.cardImage = self.paymentSourceSignal
       .map(cardImage(for:))
 
-    self.cardNumberAccessibilityLabel = self.paymentSourceSignal
+    let type = self.paymentSourceSignal
+      .map { $0.type }
+      .skipNil()
+
+    let lastFour = self.paymentSourceSignal
+      .map { $0.lastFour }
+      .skipNil()
+
+    self.cardNumberAccessibilityLabel = Signal.combineLatest(
+        type,
+        lastFour
+      )
       .map {
-        [$0.type?.description, Strings.Card_ending_in_last_four(last_four: $0.lastFour ?? .init())]
+        [$0.0.description, Strings.Card_ending_in_last_four(last_four: $0.1)]
           .compact()
           .joined(separator: ", ")
       }
 
-    self.cardNumberTextShortStyle = self.paymentSourceSignal
-      .map { $0.lastFour }
-      .skipNil()
+    self.cardNumberTextShortStyle = lastFour
       .map { Strings.Ending_in_last_four(last_four: $0) }
 
     self.expirationDateText = self.paymentSourceSignal
