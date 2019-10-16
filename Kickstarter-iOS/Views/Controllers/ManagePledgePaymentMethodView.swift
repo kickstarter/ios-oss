@@ -6,11 +6,11 @@ import UIKit
 final class ManagePledgePaymentMethodView: UIView {
   // MARK: - Properties
 
-  private lazy var cardImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var cardLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var lastFourDigitsLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var paymentMethodAdaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var paymentMethodImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -40,7 +40,7 @@ final class ManagePledgePaymentMethodView: UIView {
     _ = ([self.lastFourDigitsLabel, self.expirationDateLabel], self.cardLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.cardImageView, self.cardLabelsStackView], self.paymentMethodAdaptableStackView)
+    _ = ([self.paymentMethodImageView, self.cardLabelsStackView], self.paymentMethodAdaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.titleLabel, self.paymentMethodAdaptableStackView], self.rootStackView)
@@ -56,11 +56,8 @@ final class ManagePledgePaymentMethodView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.cardImageView
-      |> cardImageViewStyle
-
     _ = self.cardLabelsStackView
-      |> verticalStackViewStyle
+      |> cardLabelsStackViewStyle
 
     _ = self.expirationDateLabel
       |> expirationDateLabelStyle
@@ -73,6 +70,9 @@ final class ManagePledgePaymentMethodView: UIView {
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
       |> paymentMethodAdaptableStackViewStyle
+
+    _ = self.paymentMethodImageView
+      |> cardImageViewStyle
 
     _ = self.rootStackView
       |> checkoutCardStackViewStyle
@@ -93,7 +93,7 @@ final class ManagePledgePaymentMethodView: UIView {
     self.viewModel.outputs.cardImage
       .observeForUI()
       .observeValues { [weak self] image in
-        _ = self?.cardImageView
+        _ = self?.paymentMethodImageView
           ?|> \.image .~ image
       }
   }
@@ -102,7 +102,7 @@ final class ManagePledgePaymentMethodView: UIView {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.cardImageView.widthAnchor.constraint(
+      self.paymentMethodImageView.widthAnchor.constraint(
         equalToConstant: CheckoutConstants.PaymentSource.ImageView.width
       )
     ])
@@ -110,6 +110,12 @@ final class ManagePledgePaymentMethodView: UIView {
 }
 
 // MARK: - Styles
+
+private let cardLabelsStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> verticalStackViewStyle
+    |> \.spacing .~ Styles.grid(1)
+}
 
 private let expirationDateLabelStyle: LabelStyle = { label in
   label
