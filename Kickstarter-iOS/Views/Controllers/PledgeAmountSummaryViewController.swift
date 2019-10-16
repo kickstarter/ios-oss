@@ -36,18 +36,16 @@ final class PledgeAmountSummaryViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
+    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+
     _ = self.pledgeAmountStackView
-      |> checkoutAdaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
+      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
     _ = self.shippingLocationStackView
-      |> checkoutAdaptableStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
+      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
 
     _ = self.pledgeLabel
       |> pledgeLabelStyle
@@ -82,6 +80,9 @@ final class PledgeAmountSummaryViewController: UIViewController {
 
     _ = ([self.pledgeLabel, self.pledgeAmountLabel], self.pledgeAmountStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.pledgeAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
+    self.shippingAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
 
     _ = ([self.shippingLocationLabel, self.shippingAmountLabel], self.shippingLocationStackView)
       |> ksr_addArrangedSubviewsToStackView()
