@@ -96,6 +96,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
     _ = self.cardsStackView
       |> self.cardsStackViewStyle
 
+    _ = self.cardsRestrictionStackView
+      |> \.axis .~ .horizontal
+      |> \.spacing .~ Styles.grid(2)
+
     _ = self.applePayButton
       |> applePayButtonStyle
 
@@ -238,9 +242,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .compactMap { $0 as? UIStackView }
 
     for cardStackView in stackViews {
-      cardStackView.arrangedSubviews
-        .compactMap { $0 as? PledgeCreditCardView }
-        .forEach { $0.setSelectedCard(card) }
+      let nestedStackViews = cardStackView.subviews.compactMap { $0 as? UIStackView }
+      for nestedStackView in nestedStackViews {
+        nestedStackView.arrangedSubviews
+          .compactMap { $0 as? PledgeCreditCardView }
+          .forEach { $0.setSelectedCard(card) }
+      }
     }
   }
 
@@ -258,40 +265,55 @@ final class PledgePaymentMethodsViewController: UIViewController {
           CheckoutConstants.CreditCardView.height)
       ])
 
-      cardView.configureWith(value: card)
+     cardView.configureWith(value: card)
 
-      let stackView = UIStackView(frame: .zero)
-        |> \.axis .~ .vertical
-        |> \.spacing .~ Styles.grid(2)
-
-      guard let cardBrand = card.type?.rawValue else { return stackView }
+      guard let cardBrand = card.type?.rawValue else { return self.cardsRestrictionStackView }
       let isAvailableCardType = availableCardTypes.contains(cardBrand)
 
       if let selectedCard = selectedCard {
-        if isAvailableCardType  {
-          cardView.setSelectedCard(selectedCard)
-
-          let spacer = UIView.init(frame: .zero)
-
-          _ = ([cardView, spacer], stackView)
-            |> ksr_addArrangedSubviewsToStackView()
+        if isAvailableCardType {
+          newCardViews(cardView: cardView, selectedCard)
         } else if !isAvailableCardType {
-            let label = UILabel(frame: .zero)
-              |> cardRestrictionLabelStyle
-              |> \.text %~ { _ in
-                Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-                  project_country: cardValues.projectCountry) }
-
-            cardView.setDisabledCard(false)
-
-            _ = ([cardView], stackView)
-              |> ksr_addArrangedSubviewsToStackView()
-            _ = ([label], stackView)
-              |> ksr_addArrangedSubviewsToStackView()
+          newCardViews(cardView: cardView, cardValues.projectCountry)
         }
       }
-      return stackView
+      return self.cardsRestrictionStackView
     }
+  }
+
+  private func newCardViews(cardView: PledgeCreditCardView, _ selectedCard: GraphUserCreditCard.CreditCard)  {
+    let stackView = UIStackView.init(frame: .zero)
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(2)
+
+      cardView.setSelectedCard(selectedCard)
+      let spacer = UIView.init(frame: .zero)
+
+      _ = ([cardView, spacer], stackView)
+        |> ksr_addArrangedSubviewsToStackView()
+      _ = ([stackView], cardsRestrictionStackView)
+        |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  private func newCardViews(cardView: PledgeCreditCardView, _ restrictedProjectCountry: String) {
+    let stackView = UIStackView.init(frame: .zero)
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(2)
+
+    let label = UILabel(frame: .zero)
+      |> cardRestrictionLabelStyle
+      |> \.text %~ { _ in
+        Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
+          project_country: restrictedProjectCountry) }
+
+    cardView.setDisabledCard(false)
+
+    _ = ([cardView], stackView)
+      |> ksr_addArrangedSubviewsToStackView()
+    _ = ([label], stackView)
+      |> ksr_addArrangedSubviewsToStackView()
+    _ = ([stackView], cardsRestrictionStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   // MARK: - Styles
