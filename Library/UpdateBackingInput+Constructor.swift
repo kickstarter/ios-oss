@@ -3,7 +3,8 @@ import KsApi
 
 extension UpdateBackingInput {
   internal static func input(
-    from updateBackingData: UpdateBackingData
+    from updateBackingData: UpdateBackingData,
+    isApplePay: Bool
   ) -> UpdateBackingInput {
     let pledgeAmount: String? = updateBackingData.pledgeAmount.flatMap { pledgeAmount in
       pledgeAmountString(withAmount: pledgeAmount, shippingRule: updateBackingData.shippingRule)
@@ -14,10 +15,10 @@ extension UpdateBackingInput {
 
     return UpdateBackingInput(
       amount: pledgeAmount,
-      applePay: nil,
+      applePay: isApplePay ? updateBackingData.applePayParams : nil,
       id: backingId,
       locationId: locationId,
-      paymentSourceId: nil,
+      paymentSourceId: isApplePay ? nil : updateBackingData.paymentSourceId,
       rewardId: rewardId
     )
   }

@@ -200,8 +200,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.goToChangePaymentMethod
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToChangePaymentMethod()
+      .observeValues { [weak self] project, reward in
+        self?.goToChangePaymentMethod(project: project, reward: reward)
       }
 
     self.viewModel.outputs.goToContactCreator
@@ -359,8 +359,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.navigationController?.pushViewController(cancelPledgeViewController, animated: true)
   }
 
-  private func goToChangePaymentMethod() {
-    // TODO:
+  private func goToChangePaymentMethod(project: Project, reward: Reward) {
+    let vc = PledgeViewController.instantiate()
+    vc.configureWith(project: project, reward: reward, refTag: nil, context: .changePaymentMethod)
+    vc.delegate = self
+
+    self.show(vc, sender: nil)
   }
 
   private func goToContactCreator() {
