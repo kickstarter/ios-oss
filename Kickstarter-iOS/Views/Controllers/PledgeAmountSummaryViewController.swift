@@ -81,6 +81,9 @@ final class PledgeAmountSummaryViewController: UIViewController {
     _ = ([self.pledgeLabel, self.pledgeAmountLabel], self.pledgeAmountStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    self.pledgeAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
+    self.shippingAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
+
     _ = ([self.shippingLocationLabel, self.shippingAmountLabel], self.shippingLocationStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
