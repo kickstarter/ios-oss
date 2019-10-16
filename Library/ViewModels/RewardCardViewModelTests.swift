@@ -615,7 +615,9 @@ final class RewardCardViewModelTests: TestCase {
   // MARK: - Card View
 
   func testRewardCardTapped() {
-    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template), context: .managePledge)
+    self.vm.inputs.configureWith(project: .template,
+                                 rewardOrBacking: .left(.template),
+                                 context: .managePledge)
 
     self.vm.inputs.rewardCardTapped()
 
