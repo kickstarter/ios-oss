@@ -139,26 +139,10 @@ private let backingDateLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 0
 }
 
-private let pledgeLabelStyle: LabelStyle = { label in
-  label
-    |> \.textColor .~ UIColor.ksr_dark_grey_500
-    |> \.font .~ UIFont.ksr_subhead().bolded
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.text %~ { _ in Strings.Pledge() }
-}
-
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> checkoutStackViewStyle
     |> \.spacing .~ Styles.grid(3)
-}
-
-private let shippingLocationLabelStyle: LabelStyle = { label in
-  label
-    |> \.textColor .~ UIColor.ksr_dark_grey_500
-    |> \.font .~ UIFont.ksr_subhead().bolded
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.numberOfLines .~ 0
 }
 
 private let totalLabelStyle: LabelStyle = { label in
