@@ -23,10 +23,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var cardsRestrictionStackView: UIStackView = { UIStackView(frame: .zero) }()
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
   private lazy var pledgeButton: UIButton = { UIButton.init(type: .custom) }()
+  private lazy var pledgeCardStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var scrollViewContainer: UIView = { UIView(frame: .zero) }()
@@ -95,7 +95,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
     _ = self.cardsStackView
       |> self.cardsStackViewStyle
 
-    _ = self.cardsRestrictionStackView
+    _ = self.pledgeCardStackView
       |> \.axis .~ .horizontal
       |> \.spacing .~ Styles.grid(2)
 
@@ -237,11 +237,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   private func updateSelectedCard(to card: GraphUserCreditCard.CreditCard) {
-    let stackViews = self.cardsRestrictionStackView.subviews
+    let stackViews = self.pledgeCardStackView.subviews
         .compactMap { $0 as? UIStackView }
 
-    for cardStackView in stackViews {
-      cardStackView.arrangedSubviews
+    for pledgeCardStackView in stackViews {
+      pledgeCardStackView.arrangedSubviews
         .compactMap { $0 as? PledgeCreditCardView }
         .forEach { $0.setSelectedCard(card) }
     }
@@ -263,7 +263,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
      cardView.configureWith(value: card)
 
-      guard let cardBrand = card.type?.rawValue else { return self.cardsRestrictionStackView }
+      guard let cardBrand = card.type?.rawValue else { return self.pledgeCardStackView }
       let isAvailableCardType = availableCardTypes.contains(cardBrand)
 
       if let selectedCard = selectedCard {
@@ -273,7 +273,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
           newCardViews(cardView: cardView, cardValues.projectCountry)
         }
       }
-      return self.cardsRestrictionStackView
+      return self.pledgeCardStackView
     }
   }
 
@@ -287,7 +287,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
       _ = ([cardView, spacer], stackView)
         |> ksr_addArrangedSubviewsToStackView()
-      _ = ([stackView], cardsRestrictionStackView)
+      _ = ([stackView], pledgeCardStackView)
         |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -308,7 +308,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addArrangedSubviewsToStackView()
     _ = ([label], stackView)
       |> ksr_addArrangedSubviewsToStackView()
-    _ = ([stackView], cardsRestrictionStackView)
+    _ = ([stackView], pledgeCardStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
