@@ -13,6 +13,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
 
 public protocol ManagePledgeViewModelInputs {
   func configureWith(_ project: Project, reward: Reward)
+  func cancelPledgeDidFinish(with message: String)
   func menuButtonTapped()
   func menuOptionSelected(with action: ManagePledgeAlertAction)
   func pledgeViewControllerDidUpdatePledgeWithMessage(_ message: String)
@@ -23,14 +24,16 @@ public protocol ManagePledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardReceivedWithProject: Signal<Project, Never> { get }
-  var configureRewardSummaryView: Signal<Reward, Never> { get }
+  var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
   var goToCancelPledge: Signal<(Project, Backing), Never> { get }
-  var goToChangePaymentMethod: Signal<Void, Never> { get }
+  var goToChangePaymentMethod: Signal<(Project, Reward), Never> { get }
   var goToContactCreator: Signal<Void, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
+  var notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
+  var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showSuccessBannerWithMessage: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
 }
@@ -66,7 +69,7 @@ public final class ManagePledgeViewModel:
     self.configureRewardReceivedWithProject = project
 
     self.configureRewardSummaryView = projectAndReward
-      .map(second)
+      .map { project, reward in (project, .left(reward)) }
 
     self.showActionSheetMenuWithOptions = project
       .takeWhen(self.menuButtonTappedSignal)
@@ -90,24 +93,40 @@ public final class ManagePledgeViewModel:
 
     self.goToCancelPledge = Signal.combineLatest(project, backing)
       .takeWhen(cancelPledgeSelected)
+      .filter { _, backing in backing.cancelable }
 
     self.goToContactCreator = self.menuOptionSelectedSignal
       .filter { $0 == .contactCreator }
       .ignoreValues()
 
-    self.goToChangePaymentMethod = self.menuOptionSelectedSignal
-      .filter { $0 == .changePaymentMethod }
-      .ignoreValues()
+    self.goToChangePaymentMethod = projectAndReward
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .changePaymentMethod })
 
+    self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+      = self.cancelPledgeDidFinishWithMessageProperty.signal.skipNil()
     self.rewardReceivedViewControllerViewIsHidden = projectAndReward
       .map { project, reward in reward.isNoReward || project.personalization.backing?.status != .collected }
 
     self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeWithMessageSignal
+
+    let cancelBackingDisallowed = backing
+      .map { $0.cancelable }
+      .filter(isFalse)
+
+    self.showErrorBannerWithMessage = cancelBackingDisallowed
+      .takeWhen(cancelPledgeSelected)
+      // swiftlint:disable:next line_length
+      .map { _ in Strings.We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours() }
   }
 
   private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
   public func configureWith(_ project: Project, reward: Reward) {
     self.projectAndRewardObserver.send(value: (project, reward))
+  }
+
+  private let cancelPledgeDidFinishWithMessageProperty = MutableProperty<String?>(nil)
+  public func cancelPledgeDidFinish(with message: String) {
+    self.cancelPledgeDidFinishWithMessageProperty.value = message
   }
 
   private let (menuButtonTappedSignal, menuButtonTappedObserver) = Signal<Void, Never>.pipe()
@@ -137,15 +156,17 @@ public final class ManagePledgeViewModel:
   public let configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
   public let configureRewardReceivedWithProject: Signal<Project, Never>
-  public let configureRewardSummaryView: Signal<Reward, Never>
+  public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
   public let goToCancelPledge: Signal<(Project, Backing), Never>
-  public let goToChangePaymentMethod: Signal<Void, Never>
+  public let goToChangePaymentMethod: Signal<(Project, Reward), Never>
   public let goToContactCreator: Signal<Void, Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
+  public let notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>
+  public let showErrorBannerWithMessage: Signal<String, Never>
   public let title: Signal<String, Never>
 
   public var inputs: ManagePledgeViewModelInputs { return self }

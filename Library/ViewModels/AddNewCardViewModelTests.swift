@@ -392,8 +392,6 @@ internal final class AddNewCardViewModelTests: TestCase {
   }
 
   func testUnsupportedCardMessage_hidesWithValidCardBrand_AndExistingCardNumber_withSettingsIntent() {
-    let project = Project.template
-      |> Project.lens.location .~ .australia
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configure(with: .settings, project: nil)
 

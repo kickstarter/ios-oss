@@ -20,7 +20,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let reloadPaymentMethodsCards = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
   private let reloadPaymentMethodsAvailableCardTypes = TestObserver<[String], Never>()
   private let reloadPaymentMethodsProjectCountry = TestObserver<String, Never>()
-
   private let updateSelectedCreditCard = TestObserver<GraphUserCreditCard.CreditCard, Never>()
 
   override func setUp() {
@@ -43,6 +42,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.reloadPaymentMethodsAvailableCardTypes.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.projectCountry }
       .observe(self.reloadPaymentMethodsProjectCountry.observer)
+
 
     self.vm.outputs.updateSelectedCreditCard.observe(self.updateSelectedCreditCard.observer)
   }
@@ -292,40 +292,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.inputs.creditCardSelected(paymentSourceId: "abc")
 
     self.notifyDelegateCreditCardSelected.assertValues(["123", "abc"])
-  }
-
-  func testPledgeButtonEnabled() {
-    self.vm.inputs.configureWith((User.template, Project.template, true))
-    self.vm.inputs.viewDidLoad()
-
-    self.pledgeButtonEnabled.assertValues([false], "Defaults to false")
-
-    self.vm.inputs.updatePledgeButtonEnabled(isEnabled: true)
-
-    self.pledgeButtonEnabled.assertValues([false, true])
-
-    self.vm.inputs.updatePledgeButtonEnabled(isEnabled: true)
-
-    self.pledgeButtonEnabled.assertValues([false, true], "Skips repeats")
-
-    self.vm.inputs.updatePledgeButtonEnabled(isEnabled: false)
-
-    self.pledgeButtonEnabled.assertValues([false, true, false])
-  }
-
-  func testPledgeButtonTapped() {
-    self.vm.inputs.configureWith((User.template, Project.template, true))
-    self.vm.inputs.viewDidLoad()
-
-    self.notifyDelegatePledgeButtonTapped.assertDidNotEmitValue()
-
-    self.vm.inputs.pledgeButtonTapped()
-
-    self.notifyDelegatePledgeButtonTapped.assertValueCount(1)
-
-    self.vm.inputs.pledgeButtonTapped()
-
-    self.notifyDelegatePledgeButtonTapped.assertValueCount(2)
   }
 
   func testGoToAddNewCard() {

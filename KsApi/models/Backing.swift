@@ -7,6 +7,7 @@ public struct Backing {
   public let backer: User?
   public let backerId: Int
   public let backerCompleted: Bool?
+  public let cancelable: Bool
   public let id: Int
   public let locationId: Int?
   public let locationName: String?
@@ -43,6 +44,7 @@ extension Backing: Argo.Decodable {
       <*> json <|? "backer"
       <*> json <| "backer_id"
       <*> json <|? "backer_completed_at"
+      <*> json <| "cancelable"
       <*> json <| "id"
     let tmp2 = tmp1
       <*> json <|? "location_id"

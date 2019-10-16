@@ -11,16 +11,21 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
   private let configurePaymentMethodView = TestObserver<GraphUserCreditCard.CreditCard, Never>()
   private let configurePledgeSummaryView = TestObserver<Project, Never>()
-  private let configureRewardSummaryView = TestObserver<Reward, Never>()
+  private let configureRewardSummaryViewProject = TestObserver<Project, Never>()
+  private let configureRewardSummaryViewReward = TestObserver<Reward, Never>()
   private let goToCancelPledgeProject = TestObserver<Project, Never>()
   private let goToCancelPledgeBacking = TestObserver<Backing, Never>()
-  private let goToChangePaymentMethod = TestObserver<Void, Never>()
+  private let goToChangePaymentMethodProject = TestObserver<Project, Never>()
+  private let goToChangePaymentMethodReward = TestObserver<Reward, Never>()
   private let goToContactCreator = TestObserver<Void, Never>()
   private let goToRewards = TestObserver<Project, Never>()
   private let goToUpdatePledgeProject = TestObserver<Project, Never>()
   private let goToUpdatePledgeReward = TestObserver<Reward, Never>()
+  private let notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+    = TestObserver<String, Never>()
   private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
+  private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let showSuccessBannerWithMessage = TestObserver<String, Never>()
   private let title = TestObserver<String, Never>()
 
@@ -31,19 +36,26 @@ internal final class ManagePledgeViewModelTests: TestCase {
       .observe(self.configurePaymentMethodView.observer)
     self.vm.outputs.configurePledgeSummaryView
       .observe(self.configurePledgeSummaryView.observer)
-    self.vm.outputs.configureRewardSummaryView
-      .observe(self.configureRewardSummaryView.observer)
+    self.vm.outputs.configureRewardSummaryView.map(first)
+      .observe(self.configureRewardSummaryViewProject.observer)
+    self.vm.outputs.configureRewardSummaryView.map(second).map { Either.left($0) }.skipNil()
+      .observe(self.configureRewardSummaryViewReward.observer)
+
     self.vm.outputs.goToCancelPledge.map(first).observe(self.goToCancelPledgeProject.observer)
     self.vm.outputs.goToCancelPledge.map(second).observe(self.goToCancelPledgeBacking.observer)
-    self.vm.outputs.goToChangePaymentMethod.observe(self.goToChangePaymentMethod.observer)
+    self.vm.outputs.goToChangePaymentMethod.map(first).observe(self.goToChangePaymentMethodProject.observer)
+    self.vm.outputs.goToChangePaymentMethod.map(second).observe(self.goToChangePaymentMethodReward.observer)
     self.vm.outputs.goToContactCreator.observe(self.goToContactCreator.observer)
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
     self.vm.outputs.goToUpdatePledge.map(first).observe(self.goToUpdatePledgeProject.observer)
     self.vm.outputs.goToUpdatePledge.map(second).observe(self.goToUpdatePledgeReward.observer)
+    self.vm.outputs.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+      .observe(self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage.observer)
     self.vm.outputs.rewardReceivedViewControllerViewIsHidden.observe(
       self.rewardReceivedViewControllerViewIsHidden.observer
     )
     self.vm.outputs.showActionSheetMenuWithOptions.observe(self.showActionSheetMenuWithOptions.observer)
+    self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
     self.vm.outputs.showSuccessBannerWithMessage.observe(self.showSuccessBannerWithMessage.observer)
   }
 
@@ -97,14 +109,17 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testConfigureRewardSummaryViewController() {
-    self.configureRewardSummaryView.assertDidNotEmitValue()
+    self.configureRewardSummaryViewProject.assertDidNotEmitValue()
+    self.configureRewardSummaryViewReward.assertDidNotEmitValue()
 
     let reward = Reward.template
-    self.vm.inputs.configureWith(.template, reward: reward)
+    let project = Project.template
+    self.vm.inputs.configureWith(project, reward: reward)
 
     self.vm.inputs.viewDidLoad()
 
-    self.configureRewardSummaryView.assertValue(reward)
+    self.configureRewardSummaryViewProject.assertValue(project)
+    self.configureRewardSummaryViewReward.assertValue(reward)
   }
 
   func testMenuButtonTapped_WhenProject_IsLive() {
@@ -150,18 +165,46 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     self.goToCancelPledgeProject.assertValues([project])
     self.goToCancelPledgeBacking.assertValues([Backing.template])
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
+  }
+
+  func testBackingNotCancellable() {
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ (Backing.template |> Backing.lens.cancelable .~ false)
+
+    self.vm.inputs.configureWith(project, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    self.goToCancelPledgeProject.assertDidNotEmitValue()
+    self.goToCancelPledgeBacking.assertDidNotEmitValue()
+
+    self.vm.inputs.menuButtonTapped()
+    self.vm.inputs.menuOptionSelected(with: .cancelPledge)
+
+    self.goToCancelPledgeProject.assertDidNotEmitValue()
+    self.goToCancelPledgeBacking.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertValues([
+      // swiftlint:disable:next line_length
+      "We don’t allow cancelations that will cause a project to fall short of its goal within the last 24 hours."
+    ])
   }
 
   func testGoToChangePaymentMethod() {
-    self.vm.inputs.configureWith(Project.template, reward: .template)
+    let project = Project.template
+    let reward = Reward.template
+
+    self.vm.inputs.configureWith(project, reward: reward)
     self.vm.inputs.viewDidLoad()
 
-    self.goToChangePaymentMethod.assertDidNotEmitValue()
+    self.goToChangePaymentMethodProject.assertDidNotEmitValue()
+    self.goToChangePaymentMethodReward.assertDidNotEmitValue()
 
     self.vm.inputs.menuButtonTapped()
     self.vm.inputs.menuOptionSelected(with: .changePaymentMethod)
 
-    self.goToChangePaymentMethod.assertValueCount(1)
+    self.goToChangePaymentMethodProject.assertValues([project])
+    self.goToChangePaymentMethodReward.assertValues([reward])
   }
 
   func testGoToContactCreator() {
@@ -356,6 +399,18 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+  }
+
+  func testCancelPledgeDidFinish() {
+    self.vm.inputs.configureWith(Project.template, reward: .template)
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage.assertDidNotEmitValue()
+
+    self.vm.inputs.cancelPledgeDidFinish(with: "You cancelled your pledge.")
+
+    self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+      .assertValues(["You cancelled your pledge."])
   }
 
   func testPledgeViewControllerDidUpdatePledge() {
