@@ -63,7 +63,7 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
-          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.shippingAmount .~ 5
           |> Backing.lens.amount .~ 700
       )
 
