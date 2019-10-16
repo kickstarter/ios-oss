@@ -9,7 +9,7 @@ github "Alamofire/AlamofireImage" "8e635e6151212f8871a321bbdd980af7c31af73b"
 github "AgileBits/onepassword-extension" == 1.8.4
 github "facebook/facebook-objc-sdk" == 5.0.2
 github "ReactiveCocoa/ReactiveSwift" == 6.0.0
-github "stripe/stripe-ios" == 13.2.0
+github "stripe/stripe-ios" == 18.0.0
 github "uber/ios-snapshot-test-case" == 4.0.0
 github "thoughtbot/Argo" "39f06f089d25c111444e5a85eef64586e54756ac"
 github "thoughtbot/Curry" "b6bf27ec9d711f607a8c7da9ca69ee9eaa201a22"
