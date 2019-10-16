@@ -8,7 +8,7 @@ import XCTest
 final class ManagePledgePaymentMethodViewModelTests: TestCase {
   internal let vm: ManagePledgePaymentMethodViewModelType = ManagePledgePaymentMethodViewModel()
 
-  private let cardImage = TestObserver<UIImage?, Never>()
+  private let cardImage = TestObserver<String, Never>()
   private let cardNumberAccessibilityLabel = TestObserver<String, Never>()
   private let cardNumberTextShortStyle = TestObserver<String, Never>()
   private let expirationDateText = TestObserver<String, Never>()
@@ -25,7 +25,7 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
   func testPaymentSourceInfo() {
     self.vm.inputs.configureWith(value: Backing.PaymentSource.template)
 
-    self.cardImage.assertLastValue(UIImage(named: "icon--visa"))
+    self.cardImage.assertLastValue("icon--visa")
     self.cardNumberAccessibilityLabel.assertLastValue("Visa, Card ending in 1111")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1111")
     self.expirationDateText.assertLastValue("Expires 09/2019")
@@ -34,7 +34,7 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
   func testApplePay() {
     self.vm.inputs.configureWith(value: Backing.PaymentSource.applePay)
 
-    self.cardImage.assertValue(UIImage(named: "icon--apple-pay"))
+    self.cardImage.assertValue("icon--apple-pay")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1111")
     self.expirationDateText.assertValue("Expires 10/2019")
   }

@@ -11,7 +11,7 @@ public protocol ManagePledgePaymentMethodViewModelInputs {
 
 public protocol ManagePledgePaymentMethodViewModelOutputs {
   /// Emits the card's image.
-  var cardImage: Signal<UIImage?, Never> { get }
+  var cardImage: Signal<String, Never> { get }
 
   /// Emits a formatted accessibility string containing the card type, number and last four digits
   var cardNumberAccessibilityLabel: Signal<String, Never> { get }
@@ -32,7 +32,8 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
   ManagePledgePaymentMethodViewModelOutputs, ManagePledgePaymentMethodViewModelType {
   public init() {
     self.cardImage = self.paymentSourceSignal
-      .map(cardImage(for:))
+      .map(imageName(for:))
+      .skipNil()
 
     let type = self.paymentSourceSignal
       .map { $0.type }
@@ -68,7 +69,7 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
     self.paymentSourceObserver.send(value: value)
   }
 
-  public let cardImage: Signal<UIImage?, Never>
+  public let cardImage: Signal<String, Never>
   public let cardNumberAccessibilityLabel: Signal<String, Never>
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
@@ -77,12 +78,12 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
   public var outputs: ManagePledgePaymentMethodViewModelOutputs { return self }
 }
 
-private func cardImage(for paymentSource: Backing.PaymentSource) -> UIImage? {
+private func imageName(for paymentSource: Backing.PaymentSource) -> String? {
   switch paymentSource.paymentType {
   case .creditCard?:
-    return image(named: paymentSource.imageName)
+    return paymentSource.imageName
   case .applePay?:
-    return image(named: "icon--apple-pay")
+    return "icon--apple-pay"
   case .none:
     return nil
   }

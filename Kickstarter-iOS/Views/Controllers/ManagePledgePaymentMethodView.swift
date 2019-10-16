@@ -92,9 +92,9 @@ final class ManagePledgePaymentMethodView: UIView {
 
     self.viewModel.outputs.cardImage
       .observeForUI()
-      .observeValues { [weak self] image in
+      .observeValues { [weak self] imageName in
         _ = self?.paymentMethodImageView
-          ?|> \.image .~ image
+          ?|> \.image .~ image(named: imageName)
       }
   }
 
