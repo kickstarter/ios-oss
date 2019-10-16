@@ -24,7 +24,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var cardsRestrictionStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var cardRestrictionLabel: UILabel = { UILabel(frame: .zero) }()
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
   private lazy var pledgeButton: UIButton = { UIButton.init(type: .custom) }()
@@ -238,16 +237,13 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   private func updateSelectedCard(to card: GraphUserCreditCard.CreditCard) {
-   let stackViews = self.cardsStackView.subviews
-      .compactMap { $0 as? UIStackView }
+    let stackViews = self.cardsRestrictionStackView.subviews
+        .compactMap { $0 as? UIStackView }
 
     for cardStackView in stackViews {
-      let nestedStackViews = cardStackView.subviews.compactMap { $0 as? UIStackView }
-      for nestedStackView in nestedStackViews {
-        nestedStackView.arrangedSubviews
-          .compactMap { $0 as? PledgeCreditCardView }
-          .forEach { $0.setSelectedCard(card) }
-      }
+      cardStackView.arrangedSubviews
+        .compactMap { $0 as? PledgeCreditCardView }
+        .forEach { $0.setSelectedCard(card) }
     }
   }
 
