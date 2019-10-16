@@ -277,7 +277,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
     }
   }
 
-  private func availableCard(_ cardView: PledgeCreditCardView, with selectedCard: GraphUserCreditCard.CreditCard)  {
+  private func availableCard(_ cardView: PledgeCreditCardView,
+                             with selectedCard: GraphUserCreditCard.CreditCard)  {
     let stackView = UIStackView.init(frame: .zero)
       |> \.axis .~ .vertical
       |> \.spacing .~ Styles.grid(2)
