@@ -16,7 +16,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
   private let notifyDelegatePledgeButtonTapped = TestObserver<Void, Never>()
   private let pledgeButtonEnabled = TestObserver<Bool, Never>()
-  private let reloadPaymentMethods = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
+
+  private let reloadPaymentMethodsCards = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
+  private let reloadPaymentMethodsAvailableCardTypes = TestObserver<[String], Never>()
+  private let reloadPaymentMethodsProjectCountry = TestObserver<String, Never>()
+
   private let updateSelectedCreditCard = TestObserver<GraphUserCreditCard.CreditCard, Never>()
 
   override func setUp() {
@@ -32,7 +36,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
     self.vm.outputs.notifyDelegatePledgeButtonTapped.observe(self.notifyDelegatePledgeButtonTapped.observer)
     self.vm.outputs.pledgeButtonEnabled.observe(self.pledgeButtonEnabled.observer)
-    self.vm.outputs.reloadPaymentMethods.observe(self.reloadPaymentMethods.observer)
+
+    self.vm.outputs.reloadPaymentMethods.map { $0.cards }.observe(self.reloadPaymentMethodsCards.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.availableCardTypes }.observe(self.reloadPaymentMethodsAvailableCardTypes.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.projectCountry }.observe(self.reloadPaymentMethodsProjectCountry.observer)
+
+
+
     self.vm.outputs.updateSelectedCreditCard.observe(self.updateSelectedCreditCard.observer)
   }
 
@@ -40,21 +50,28 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
     let userCreditCard = GraphUserCreditCard.amex
+    let availableCards = ["AMEX", "MASTERCARD", "VISA", "DISCOVER", "JCB", "DINERS", "UNION_PAY"]
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, false))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
 
-      self.reloadPaymentMethods.assertValue(response.me.storedCards.nodes)
+      self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([availableCards])
+      self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY"])
       self.vm.inputs.addNewCardViewControllerDidAdd(newCard: userCreditCard)
 
-      self.reloadPaymentMethods.assertValues(
+      self.reloadPaymentMethodsCards.assertValues(
         [response.me.storedCards.nodes, [userCreditCard] + response.me.storedCards.nodes]
       )
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([availableCards, availableCards])
+      self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY", "Brooklyn, NY"])
     }
   }
 
@@ -64,21 +81,28 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
     let userCreditCard = GraphUserCreditCard.amex
+    let availableCards = ["AMEX", "MASTERCARD", "VISA", "DISCOVER", "JCB", "DINERS", "UNION_PAY"]
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, false))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
 
-      self.reloadPaymentMethods.assertValue(response.me.storedCards.nodes)
+      self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([availableCards])
+      self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY"])
       self.vm.inputs.addNewCardViewControllerDidAdd(newCard: userCreditCard)
 
-      self.reloadPaymentMethods.assertValues(
+      self.reloadPaymentMethodsCards.assertValues(
         [response.me.storedCards.nodes, [userCreditCard] + response.me.storedCards.nodes]
       )
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([availableCards, availableCards])
+      self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY", "Brooklyn, NY"])
 
       self.vm.inputs.creditCardSelected(paymentSourceId: userCreditCard.id)
 
@@ -89,9 +113,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   func testReloadPaymentMethods_LoggedIn_ApplePayCapable_isFalse() {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let availableCards = ["AMEX", "MASTERCARD", "VISA", "DISCOVER", "JCB", "DINERS", "UNION_PAY"]
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.applePayButtonHidden.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, false))
@@ -100,16 +127,22 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.applePayButtonHidden.assertValues([true])
-      self.reloadPaymentMethods.assertValue(response.me.storedCards.nodes)
+      self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([availableCards])
+      self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY"])
     }
   }
 
   func testReloadPaymentMethods_LoggedIn_ApplePayCapable_isTrue() {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let availableCards = ["AMEX", "MASTERCARD", "VISA", "DISCOVER", "JCB", "DINERS", "UNION_PAY"]
+
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.applePayButtonHidden.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, true))
@@ -118,7 +151,9 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.applePayButtonHidden.assertValues([false])
-      self.reloadPaymentMethods.assertValue(response.me.storedCards.nodes)
+      self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([availableCards])
+      self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY"])
     }
   }
 
@@ -127,19 +162,25 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(fetchGraphCreditCardsError: GraphError.decodeError(error))
 
     withEnvironment(apiService: apiService, currentUser: User.template) {
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.applePayButtonHidden.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, false))
       self.vm.inputs.viewDidLoad()
 
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
 
       self.scheduler.run()
 
       self.applePayButtonHidden.assertValues([true])
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertValue("Something went wrong")
     }
   }
@@ -149,19 +190,25 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(fetchGraphCreditCardsError: GraphError.decodeError(error))
 
     withEnvironment(apiService: apiService, currentUser: User.template) {
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.applePayButtonHidden.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, true))
       self.vm.inputs.viewDidLoad()
 
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
 
       self.scheduler.run()
 
       self.applePayButtonHidden.assertValues([false])
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertValue("Something went wrong")
     }
   }
@@ -173,13 +220,17 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     withEnvironment(apiService: mockService, currentUser: nil) {
       self.vm.inputs.viewDidLoad()
 
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.applePayButtonHidden.assertDidNotEmitValue()
 
       self.scheduler.run()
 
       self.applePayButtonHidden.assertDidNotEmitValue()
-      self.reloadPaymentMethods.assertDidNotEmitValue()
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
     }
   }

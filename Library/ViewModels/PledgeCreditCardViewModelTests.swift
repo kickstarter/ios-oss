@@ -11,6 +11,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
   private let cardImage = TestObserver<UIImage?, Never>()
   private let cardNumberAccessibilityLabel = TestObserver<String, Never>()
   private let cardNumberTextShortStyle = TestObserver<String, Never>()
+  private let disableButton = TestObserver<Bool, Never>()
   private let expirationDateText = TestObserver<String, Never>()
   private let notifyDelegateOfCardSelected = TestObserver<String, Never>()
   private let selectButtonIsSelected = TestObserver<Bool, Never>()
@@ -22,6 +23,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.vm.outputs.cardImage.observe(self.cardImage.observer)
     self.vm.outputs.cardNumberAccessibilityLabel.observe(self.cardNumberAccessibilityLabel.observer)
     self.vm.outputs.cardNumberTextShortStyle.observe(self.cardNumberTextShortStyle.observer)
+    self.vm.outputs.disableButton.observe(self.disableButton.observer)
     self.vm.outputs.expirationDateText.observe(self.expirationDateText.observer)
     self.vm.outputs.notifyDelegateOfCardSelected.observe(self.notifyDelegateOfCardSelected.observer)
     self.vm.outputs.selectButtonIsSelected.observe(self.selectButtonIsSelected.observer)
@@ -114,6 +116,23 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.expirationDateText.assertValue("Expires 01/2024")
     self.selectButtonIsSelected.assertValues([true])
     self.selectButtonTitle.assertValues(["Selected"])
+  }
+
+  func testDisableCard() {
+    self.cardImage.assertValues([])
+    self.cardNumberTextShortStyle.assertValues([])
+    self.expirationDateText.assertValues([])
+    self.disableButton.assertValues([])
+    self.selectButtonTitle.assertValues([])
+
+    self.vm.inputs.configureWith(value: GraphUserCreditCard.generic)
+    self.vm.inputs.setDisabledCard(false)
+
+    self.cardImage.assertValue(UIImage(named: "icon--generic"))
+    self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
+    self.expirationDateText.assertValue("Expires 01/2024")
+    self.disableButton.assertValues([false])
+    self.selectButtonTitle.assertDidNotEmitValue()
   }
 
   func testCardInfoForUnsupportedCards() {

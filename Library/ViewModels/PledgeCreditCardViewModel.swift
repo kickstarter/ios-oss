@@ -11,11 +11,11 @@ public protocol PledgeCreditCardViewModelInputs {
   /// Call when the "select" button is tapped.
   func selectButtonTapped()
 
-  /// Call with the currently selected card.
-  func setSelectedCard(_ creditCard: GraphUserCreditCard.CreditCard)
-
   /// Call with disabled card.
   func setDisabledCard(_ disabled: Bool)
+
+  /// Call with the currently selected card.
+  func setSelectedCard(_ creditCard: GraphUserCreditCard.CreditCard)
 }
 
 public protocol PledgeCreditCardViewModelOutputs {
@@ -116,12 +116,11 @@ PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
   public let cardImage: Signal<UIImage?, Never>
   public let cardNumberAccessibilityLabel: Signal<String, Never>
   public let cardNumberTextShortStyle: Signal<String, Never>
+  public let disableButton: Signal<Bool, Never>
   public let expirationDateText: Signal<String, Never>
   public let notifyDelegateOfCardSelected: Signal<String, Never>
   public let selectButtonIsSelected: Signal<Bool, Never>
   public let selectButtonTitle: Signal<String, Never>
-
-  public let disableButton: Signal<Bool, Never>
 
   public var inputs: PledgeCreditCardViewModelInputs { return self }
   public var outputs: PledgeCreditCardViewModelOutputs { return self }
