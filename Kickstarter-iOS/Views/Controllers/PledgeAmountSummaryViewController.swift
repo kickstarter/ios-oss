@@ -27,7 +27,6 @@ final class PledgeAmountSummaryViewController: UIViewController {
     super.viewDidLoad()
 
     self.configureSubviews()
-    self.bindViewModel()
 
     self.viewModel.inputs.viewDidLoad()
   }
