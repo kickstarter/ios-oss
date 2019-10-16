@@ -1615,7 +1615,9 @@ final class PledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertValues([
+        "Something went wrong."
+      ])
       self.submitButtonEnabled.assertValues([false, true])
       self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
