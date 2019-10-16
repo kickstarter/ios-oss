@@ -37,11 +37,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.notifyDelegatePledgeButtonTapped.observe(self.notifyDelegatePledgeButtonTapped.observer)
     self.vm.outputs.pledgeButtonEnabled.observe(self.pledgeButtonEnabled.observer)
 
-    self.vm.outputs.reloadPaymentMethods.map { $0.cards }.observe(self.reloadPaymentMethodsCards.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.availableCardTypes }.observe(self.reloadPaymentMethodsAvailableCardTypes.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.projectCountry }.observe(self.reloadPaymentMethodsProjectCountry.observer)
-
-
+    self.vm.outputs.reloadPaymentMethods.map { $0.cards }
+      .observe(self.reloadPaymentMethodsCards.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.availableCardTypes }
+      .observe(self.reloadPaymentMethodsAvailableCardTypes.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.projectCountry }
+      .observe(self.reloadPaymentMethodsProjectCountry.observer)
 
     self.vm.outputs.updateSelectedCreditCard.observe(self.updateSelectedCreditCard.observer)
   }
