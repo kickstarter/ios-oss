@@ -268,16 +268,16 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
       if let selectedCard = selectedCard {
         if isAvailableCardType {
-          newCardViews(cardView: cardView, selectedCard)
+          availableCard(cardView, with: selectedCard)
         } else if !isAvailableCardType {
-          newCardViews(cardView: cardView, cardValues.projectCountry)
+          unavailable(cardView: cardView, with: cardValues.projectCountry)
         }
       }
       return self.pledgeCardStackView
     }
   }
 
-  private func newCardViews(cardView: PledgeCreditCardView, _ selectedCard: GraphUserCreditCard.CreditCard)  {
+  private func availableCard(_ cardView: PledgeCreditCardView, with selectedCard: GraphUserCreditCard.CreditCard)  {
     let stackView = UIStackView.init(frame: .zero)
       |> \.axis .~ .vertical
       |> \.spacing .~ Styles.grid(2)
@@ -291,7 +291,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
         |> ksr_addArrangedSubviewsToStackView()
   }
 
-  private func newCardViews(cardView: PledgeCreditCardView, _ restrictedProjectCountry: String) {
+  private func unavailable(cardView: PledgeCreditCardView, with restrictedProjectCountry: String) {
     let stackView = UIStackView.init(frame: .zero)
       |> \.axis .~ .vertical
       |> \.spacing .~ Styles.grid(2)
