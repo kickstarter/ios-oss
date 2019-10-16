@@ -12,8 +12,7 @@ extension CreateApplePayBackingInput {
     refTag: RefTag?
   ) -> CreateApplePayBackingInput {
     let pledgeParams
-      = formattedPledgeParameters(from: project,
-                                  reward: reward,
+      = formattedPledgeParameters(from: reward,
                                   pledgeAmount: pledgeAmount,
                                   selectedShippingRule: selectedShippingRule)
 
@@ -22,7 +21,7 @@ extension CreateApplePayBackingInput {
       locationId: pledgeParams.locationId,
       paymentInstrumentName: pkPaymentData.displayName,
       paymentNetwork: pkPaymentData.network,
-      projectId: pledgeParams.projectId,
+      projectId: project.graphID,
       refParam: refTag?.description,
       rewardId: pledgeParams.rewardId,
       stripeToken: stripeToken,

@@ -217,12 +217,11 @@ internal func classNameWithoutModule(_ class: AnyClass) -> String {
     .joined(separator: ".")
 }
 
-typealias FormattedPledgeParameters = (pledgeTotal: String, projectId: String, rewardId: String?, locationId: String?)
+typealias FormattedPledgeParameters = (pledgeTotal: String, rewardId: String?, locationId: String?)
 
-internal func formattedPledgeParameters(from project: Project,
-                                  reward: Reward,
-                                  pledgeAmount: Double,
-                                  selectedShippingRule: ShippingRule?) -> FormattedPledgeParameters {
+internal func formattedPledgeParameters(from reward: Reward,
+                                        pledgeAmount: Double,
+                                        selectedShippingRule: ShippingRule?) -> FormattedPledgeParameters {
   let pledgeAmountDecimal = Decimal(pledgeAmount)
   var shippingAmountDecimal: Decimal = Decimal()
   var shippingLocationId: String?
@@ -237,6 +236,6 @@ internal func formattedPledgeParameters(from project: Project,
 
   let rewardId = reward == Reward.noReward ? nil : reward.graphID
 
-  return (formattedPledgeTotal, project.graphID, rewardId, shippingLocationId)
+  return (formattedPledgeTotal, rewardId, shippingLocationId)
 }
 

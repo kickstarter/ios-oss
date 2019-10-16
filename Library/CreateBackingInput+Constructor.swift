@@ -12,8 +12,7 @@ extension CreateBackingInput {
   ) -> CreateBackingInput {
 
     let pledgeParams
-      = formattedPledgeParameters(from: project,
-                                  reward: reward,
+      = formattedPledgeParameters(from: reward,
                                   pledgeAmount: pledgeAmount,
                                   selectedShippingRule: selectedShippingRule)
 
@@ -21,7 +20,7 @@ extension CreateBackingInput {
       amount: pledgeParams.pledgeTotal,
       locationId: pledgeParams.locationId,
       paymentSourceId: paymentSourceId,
-      projectId: pledgeParams.projectId,
+      projectId: project.graphID,
       rewardId: pledgeParams.rewardId,
       refParam: refTag?.description
     )
