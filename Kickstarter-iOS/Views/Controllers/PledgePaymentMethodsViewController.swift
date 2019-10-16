@@ -348,7 +348,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.numberOfLines .~ 0
       |> \.font .~ UIFont.ksr_caption1().bolded
       |> \.textColor .~ .ksr_text_dark_grey_500
-      |> \.textAlignment .~ NSTextAlignment.center
+      |> \.textAlignment .~ .center
   }
 }
 
