@@ -6,7 +6,8 @@ import UIKit
 
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
 public typealias CardViewValues = (
-  cards: [GraphUserCreditCard.CreditCard], availableCardTypes: [String], projectCountry: String)
+  cards: [GraphUserCreditCard.CreditCard], availableCardTypes: [String], projectCountry: String
+)
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func applePayButtonTapped()
@@ -71,7 +72,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .values()
       .map { $0.me.storedCards.nodes }
 
-      let card = Signal.merge(
+    let card = Signal.merge(
       storedCards,
       self.newCreditCardProperty.signal.skipNil().map { card in [card] }
     )
@@ -81,7 +82,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       card,
       availableCardTypes,
       project.map { $0.location.displayableName }
-      ).map { $0 as CardViewValues }
+    ).map { $0 as CardViewValues }
 
     self.reloadPaymentMethods = cardValues
 

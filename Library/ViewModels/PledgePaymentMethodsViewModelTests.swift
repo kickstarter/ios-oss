@@ -139,7 +139,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
     let availableCards = ["AMEX", "MASTERCARD", "VISA", "DISCOVER", "JCB", "DINERS", "UNION_PAY"]
 
-
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()

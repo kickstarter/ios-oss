@@ -50,7 +50,7 @@ public protocol PledgeCreditCardViewModelType {
 }
 
 public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
-PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
+  PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
   public init() {
     let creditCard = self.creditCardProperty.signal.skipNil()
     let selectedCard = self.selectedCardProperty.signal.skipNil()
