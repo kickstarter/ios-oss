@@ -22,6 +22,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var goToPledge: Signal<PledgeData, Never> { get }
   var goToUpdatePledge: Signal<PledgeData, Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
+  var backedRewardIndexPath: Signal<IndexPath, Never> { get }
   var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   var title: Signal<String, Never> { get }
@@ -59,6 +60,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .map { project, rewards in
         rewards.map { (project, Either<Reward, Backing>.left($0)) }
       }
+
+    self.backedRewardIndexPath = Signal.combineLatest(project, rewards)
+      .takeWhen(self.viewDidAppearProperty.signal.ignoreValues())
+      .map(backedReward(_:rewards:))
+      .skipNil()
 
     self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
       .map { $0.count }
@@ -160,6 +166,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.viewWillAppearProperty.value = ()
   }
 
+  public let backedRewardIndexPath: Signal<IndexPath, Never>
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToDeprecatedPledge: Signal<PledgeData, Never>
@@ -181,4 +188,13 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
 private func title(for context: RewardsCollectionViewContext) -> String {
   return context == .pledge ? Strings.Back_this_project() : Strings.Choose_another_reward()
+}
+
+private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {
+  if let reward = rewards.first(where: { userIsBacking(reward: $0, inProject: project) }) {
+    return rewards
+      .firstIndex(where: { $0.id == reward.id })
+      .flatMap({ IndexPath(row: $0, section: 0) })
+  }
+  return nil
 }
