@@ -47,7 +47,9 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
       .map { Strings.Ending_in_last_four(last_four: $0) }
 
     self.expirationDateText = self.paymentSourceSignal
-      .map { String($0.expirationDate?.dropLast(3) ?? "") }
+      .map { $0.expirationDate }
+      .skipNil()
+      .map { String($0.dropLast(3)) }
       .map(formatted(dateString:))
       .map { Strings.Credit_card_expiration(expiration_date: $0) }
   }
