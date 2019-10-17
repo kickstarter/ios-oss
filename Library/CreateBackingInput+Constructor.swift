@@ -10,11 +10,12 @@ extension CreateBackingInput {
     refTag: RefTag?,
     paymentSourceId: String
   ) -> CreateBackingInput {
-
     let pledgeParams
-      = formattedPledgeParameters(from: reward,
-                                  pledgeAmount: pledgeAmount,
-                                  selectedShippingRule: selectedShippingRule)
+      = formattedPledgeParameters(
+        from: reward,
+        pledgeAmount: pledgeAmount,
+        selectedShippingRule: selectedShippingRule
+      )
 
     return CreateBackingInput(
       amount: pledgeParams.pledgeTotal,

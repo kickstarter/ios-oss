@@ -12,9 +12,11 @@ extension CreateApplePayBackingInput {
     refTag: RefTag?
   ) -> CreateApplePayBackingInput {
     let pledgeParams
-      = formattedPledgeParameters(from: reward,
-                                  pledgeAmount: pledgeAmount,
-                                  selectedShippingRule: selectedShippingRule)
+      = formattedPledgeParameters(
+        from: reward,
+        pledgeAmount: pledgeAmount,
+        selectedShippingRule: selectedShippingRule
+      )
 
     return CreateApplePayBackingInput(
       amount: pledgeParams.pledgeTotal,

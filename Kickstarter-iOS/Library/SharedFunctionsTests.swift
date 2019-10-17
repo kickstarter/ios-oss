@@ -1,8 +1,8 @@
 @testable import Kickstarter_Framework
-@testable import Library
 @testable import KsApi
-import XCTest
+@testable import Library
 import Prelude
+import XCTest
 
 internal final class SharedFunctionsTests: XCTestCase {
   func testGenerateImpactFeedback() {
@@ -64,9 +64,11 @@ internal final class SharedFunctionsTests: XCTestCase {
       |> ShippingRule.lens.cost .~ 3
       |> ShippingRule.lens.location .~ (Location.template |> Location.lens.id .~ 123)
 
-    let params = formattedPledgeParameters(from: reward,
-                                           pledgeAmount: 10,
-                                           selectedShippingRule: selectedShippingRule)
+    let params = formattedPledgeParameters(
+      from: reward,
+      pledgeAmount: 10,
+      selectedShippingRule: selectedShippingRule
+    )
 
     XCTAssertEqual(params.rewardId, "UmV3YXJkLTE=")
     XCTAssertEqual(params.pledgeTotal, "13.00")
@@ -76,9 +78,11 @@ internal final class SharedFunctionsTests: XCTestCase {
   func testFormattedPledgeParameters_NoShipping_NoReward() {
     let reward = Reward.noReward
 
-    let params = formattedPledgeParameters(from: reward,
-                                           pledgeAmount: 10,
-                                           selectedShippingRule: nil)
+    let params = formattedPledgeParameters(
+      from: reward,
+      pledgeAmount: 10,
+      selectedShippingRule: nil
+    )
 
     XCTAssertNil(params.rewardId)
     XCTAssertEqual(params.pledgeTotal, "10.00")

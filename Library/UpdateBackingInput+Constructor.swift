@@ -8,10 +8,11 @@ extension UpdateBackingInput {
   ) -> UpdateBackingInput {
     let backingId = updateBackingData.backing.graphID
     let (pledgeTotal, rewardId, locationId) =
-      formattedPledgeParameters(from: updateBackingData.reward,
-                                pledgeAmount: updateBackingData.pledgeAmount,
-                                selectedShippingRule: updateBackingData.shippingRule)
-
+      formattedPledgeParameters(
+        from: updateBackingData.reward,
+        pledgeAmount: updateBackingData.pledgeAmount,
+        selectedShippingRule: updateBackingData.shippingRule
+      )
 
     return UpdateBackingInput(
       amount: pledgeTotal,
