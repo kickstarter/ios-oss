@@ -60,6 +60,7 @@
 "Cancel" = "Annuler";
 "Cancel_pledge" = "Annuler mon engagement";
 "Cancel_your_pledge" = "Annuler mon engagement";
+"Cancellation_reason" = "Motif d'annulation";
 "Card_ending_in_last_four" = "Numéro de carte se terminant par : %{last_four}";
 "Card_number" = "N° de carte";
 "Cardholder_name" = "Nom du titulaire";

@@ -113,5 +113,12 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
 }
 
 private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage? {
-  return image(named: card.imageName)
+  switch card.paymentType {
+  case .creditCard?:
+    return image(named: card.imageName)
+  case .applePay?:
+    return image(named: "icon--apple-pay")
+  case .none:
+    return nil
+  }
 }
