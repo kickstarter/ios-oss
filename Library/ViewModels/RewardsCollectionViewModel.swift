@@ -5,8 +5,13 @@ import ReactiveSwift
 
 public typealias PledgeData = (project: Project, reward: Reward, refTag: RefTag?)
 
+public enum RewardsCollectionViewContext {
+  case createPledge
+  case managePledge
+}
+
 public protocol RewardsCollectionViewModelInputs {
-  func configure(with project: Project, refTag: RefTag?)
+  func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext)
   func rewardCellShouldShowDividerLine(_ show: Bool)
   func rewardSelected(with rewardId: Int)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
@@ -23,6 +28,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
+  var title: Signal<String, Never> { get }
   func selectedReward() -> Reward?
 }
 
@@ -45,6 +51,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     let rewards = project
       .map { $0.rewards }
+
+    self.title = configData
+      .map(third)
+      .takeWhen(self.viewDidLoadProperty.signal.ignoreValues())
+      .map(title(for:))
 
     self.reloadDataWithValues = Signal.combineLatest(project, rewards)
       .map { project, rewards in
@@ -108,9 +119,9 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     )
   }
 
-  private let configDataProperty = MutableProperty<(Project, RefTag?)?>(nil)
-  public func configure(with project: Project, refTag: RefTag?) {
-    self.configDataProperty.value = (project, refTag)
+  private let configDataProperty = MutableProperty<(Project, RefTag?, RewardsCollectionViewContext)?>(nil)
+  public func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext) {
+    self.configDataProperty.value = (project, refTag, context)
   }
 
   private let rewardCellShouldShowDividerLineProperty = MutableProperty<Bool>(false)
@@ -150,6 +161,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
+  public let title: Signal<String, Never>
 
   private let selectedRewardProperty = MutableProperty<Reward?>(nil)
   public func selectedReward() -> Reward? {
@@ -158,4 +170,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
   public var inputs: RewardsCollectionViewModelInputs { return self }
   public var outputs: RewardsCollectionViewModelOutputs { return self }
+}
+
+private func title(for context: RewardsCollectionViewContext) -> String {
+  return context == .createPledge ? Strings.Back_this_project() : Strings.Choose_another_reward()
 }
