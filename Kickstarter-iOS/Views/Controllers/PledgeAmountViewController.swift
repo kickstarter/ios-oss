@@ -118,7 +118,6 @@ final class PledgeAmountViewController: UIViewController {
     self.minPledgeAmountLabel.rac.text = self.viewModel.outputs.minPledgeAmountLabelText
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
-    self.stepper.rac.stepValue = self.viewModel.outputs.stepperStepValue
     self.stepper.rac.value = self.viewModel.outputs.stepperValue
 
     self.viewModel.outputs.generateSelectionFeedback
@@ -186,6 +185,7 @@ extension PledgeAmountViewController: UITextFieldDelegate {
 
 private func stepperStyle(_ stepper: UIStepper) -> UIStepper {
   return stepper
+    |> \.stepValue .~ 1.0
     |> \.tintColor .~ UIColor.clear
     <> UIStepper.lens.decrementImage(for: .normal) .~ image(named: "stepper-decrement-normal")
     <> UIStepper.lens.decrementImage(for: .disabled) .~ image(named: "stepper-decrement-disabled")
