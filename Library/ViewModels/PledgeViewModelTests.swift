@@ -1267,7 +1267,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
@@ -1330,7 +1330,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
@@ -1482,7 +1482,7 @@ final class PledgeViewModelTests: TestCase {
         |> Project.lens.personalization.isBacking .~ true
         |> Project.lens.personalization.backing .~ (
           .template
-            |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+            |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
             |> Backing.lens.status .~ .pledged
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
@@ -1627,7 +1627,7 @@ final class PledgeViewModelTests: TestCase {
         |> Project.lens.personalization.isBacking .~ true
         |> Project.lens.personalization.backing .~ (
           .template
-            |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+            |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
             |> Backing.lens.status .~ .pledged
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
@@ -1736,7 +1736,7 @@ final class PledgeViewModelTests: TestCase {
         |> Project.lens.personalization.isBacking .~ true
         |> Project.lens.personalization.backing .~ (
           .template
-            |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+            |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
             |> Backing.lens.status .~ .pledged
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
