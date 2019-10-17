@@ -24,6 +24,7 @@ final class PledgeViewModelTests: TestCase {
   private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
 
   private let confirmationLabelAttributedText = TestObserver<NSAttributedString, Never>()
+  private let confirmationLabelText = TestObserver<String, Never>()
   private let confirmationLabelHidden = TestObserver<Bool, Never>()
 
   private let continueViewHidden = TestObserver<Bool, Never>()
@@ -82,6 +83,8 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.submitButtonHidden.observe(self.submitButtonHidden.observer)
     self.vm.outputs.submitButtonTitle.observe(self.submitButtonTitle.observer)
     self.vm.outputs.confirmationLabelAttributedText.observe(self.confirmationLabelAttributedText.observer)
+    self.vm.outputs.confirmationLabelAttributedText.map { $0.string }
+      .observe(self.confirmationLabelText.observer)
     self.vm.outputs.confirmationLabelHidden.observe(self.confirmationLabelHidden.observer)
 
     self.vm.outputs.continueViewHidden.observe(self.continueViewHidden.observer)
@@ -234,6 +237,51 @@ final class PledgeViewModelTests: TestCase {
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryCellWithDataProject.assertValues([project])
+    }
+  }
+
+  func testUpdateContext_ConfirmationLabel() {
+    let dateComponents = DateComponents()
+      |> \.month .~ 11
+      |> \.day .~ 1
+      |> \.year .~ 2019
+      |> \.timeZone .~ TimeZone.init(secondsFromGMT: 0)
+
+    let calendar = Calendar(identifier: .gregorian)
+      |> \.timeZone .~ TimeZone.init(secondsFromGMT: 0)!
+
+    withEnvironment(calendar: calendar, locale: Locale(identifier: "en")) {
+      let date = AppEnvironment.current.calendar.date(from: dateComponents)
+
+      let project = Project.template
+      |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      self.confirmationLabelHidden.assertValues([false])
+      self.confirmationLabelAttributedText.assertDidNotEmitValue()
+
+      scheduler.advance(by: .milliseconds(10))
+
+      self.confirmationLabelAttributedText.assertValueCount(1)
+      self.confirmationLabelText.assertValues([
+        "If the project reaches its funding goal, you will be charged on November 1, 2019."
+        ])
+
+      self.vm.inputs.traitCollectionDidChange()
+      self.vm.inputs.traitCollectionDidChange()
+
+      self.confirmationLabelAttributedText.assertValueCount(1, "Debounces signals")
+
+      scheduler.advance(by: .milliseconds(10))
+
+      self.confirmationLabelAttributedText.assertValueCount(2)
+      self.confirmationLabelText.assertValues([
+        "If the project reaches its funding goal, you will be charged on November 1, 2019.",
+        "If the project reaches its funding goal, you will be charged on November 1, 2019."])
     }
   }
 
