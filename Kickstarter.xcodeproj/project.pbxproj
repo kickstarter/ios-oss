@@ -86,6 +86,8 @@
 		370ACB00225D337900C8745F /* PledgeAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370ACAFF225D337900C8745F /* PledgeAmountViewController.swift */; };
 		370BE71622541C8100B44DB2 /* UIViewController+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370BE71522541C8100B44DB2 /* UIViewController+URL.swift */; };
 		370C8B64234FCC6F00DE75DD /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370C8B63234FCC6F00DE75DD /* LoadingButton.swift */; };
+		370C8B6623590CA500DE75DD /* LoadingButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370C8B6523590CA500DE75DD /* LoadingButtonViewModel.swift */; };
+		370C8B6823590CC200DE75DD /* LoadingButtonViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370C8B6723590CC200DE75DD /* LoadingButtonViewModelTests.swift */; };
 		370F527A2254267900F159B9 /* UIApplicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52792254267900F159B9 /* UIApplicationType.swift */; };
 		370F52B3225426C700F159B9 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F52B2225426C700F159B9 /* UIApplication.swift */; };
 		37280272226F880100E0ACBB /* CheckoutStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37280250226F878300E0ACBB /* CheckoutStyles.swift */; };
@@ -1469,6 +1471,8 @@
 		370BE71522541C8100B44DB2 /* UIViewController+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+URL.swift"; sourceTree = "<group>"; };
 		370BE74E22541C8F00B44DB2 /* UIViewController+URLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+URLTests.swift"; sourceTree = "<group>"; };
 		370C8B63234FCC6F00DE75DD /* LoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
+		370C8B6523590CA500DE75DD /* LoadingButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButtonViewModel.swift; sourceTree = "<group>"; };
+		370C8B6723590CC200DE75DD /* LoadingButtonViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButtonViewModelTests.swift; sourceTree = "<group>"; };
 		370F52792254267900F159B9 /* UIApplicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationType.swift; sourceTree = "<group>"; };
 		370F52B2225426C700F159B9 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		37280250226F878300E0ACBB /* CheckoutStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutStyles.swift; sourceTree = "<group>"; };
@@ -3607,6 +3611,8 @@
 				A7ED1F8E1E831C5C00BFFA01 /* HelpViewModelTests.swift */,
 				D04AAC18218BB70B00CF713E /* LoadingBarButtonItemViewModel.swift */,
 				D04AAC14218BB70A00CF713E /* LoadingBarButtonItemViewModelTests.swift */,
+				370C8B6523590CA500DE75DD /* LoadingButtonViewModel.swift */,
+				370C8B6723590CC200DE75DD /* LoadingButtonViewModelTests.swift */,
 				A7F4419A1D005A9400FE6FC5 /* LoginToutViewModel.swift */,
 				A7ED1F761E831C5C00BFFA01 /* LoginToutViewModelTests.swift */,
 				A7698B291D00602800953FD3 /* LoginViewModel.swift */,
@@ -4734,6 +4740,7 @@
 				A7F441C51D005A9400FE6FC5 /* LoginToutViewModel.swift in Sources */,
 				D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */,
 				A75C811E1D210C4700B5AD03 /* ProjectActivityItemProvider.swift in Sources */,
+				370C8B6623590CA500DE75DD /* LoadingButtonViewModel.swift in Sources */,
 				D79F0F7321067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift in Sources */,
 				D04AAC29218BB70D00CF713E /* BetaToolsViewModel.swift in Sources */,
 				D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */,
@@ -5077,6 +5084,7 @@
 				A7ED1F371E830FDC00BFFA01 /* String+WhitespaceTests.swift in Sources */,
 				A7ED1FC31E831C5C00BFFA01 /* ProfileViewModelTests.swift in Sources */,
 				A7ED20011E831C5C00BFFA01 /* SignupViewModelTests.swift in Sources */,
+				370C8B6823590CC200DE75DD /* LoadingButtonViewModelTests.swift in Sources */,
 				A7ED1FF71E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift in Sources */,
 				778CCCDA2285BF8900FB8D35 /* UIView+AutoLayoutTests.swift in Sources */,
 				373AB25F222A0DAC00769FC2 /* PasswordValidationTests.swift in Sources */,

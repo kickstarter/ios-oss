@@ -5,6 +5,8 @@ import UIKit
 final class LoadingButton: UIButton {
   // MARK: - Properties
 
+  private let viewModel: LoadingButtonViewModelType = LoadingButtonViewModel()
+
   private lazy var activityIndicator: UIActivityIndicatorView = {
     UIActivityIndicatorView(style: .white)
       |> \.hidesWhenStopped .~ true
@@ -13,16 +15,7 @@ final class LoadingButton: UIButton {
 
   public var isLoading: Bool = false {
     didSet {
-      guard self.isLoading != oldValue else { return }
-
-      if self.isLoading {
-        self.startLoading()
-      } else {
-        self.stopLoading()
-      }
-
-      _ = self
-        |> \.isUserInteractionEnabled .~ !self.isLoading
+      self.viewModel.inputs.isLoading(self.isLoading)
     }
   }
 
@@ -33,17 +26,15 @@ final class LoadingButton: UIButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.addSubview(self.activityIndicator)
-    self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-    self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+    self.configureViews()
+    self.bindViewModel()
   }
 
   required init?(coder: NSCoder) {
     super.init(coder: coder)
 
-    self.addSubview(self.activityIndicator)
-    self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-    self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+    self.configureViews()
+    self.bindViewModel()
   }
 
   override func setTitle(_ title: String?, for state: UIControl.State) {
@@ -51,6 +42,39 @@ final class LoadingButton: UIButton {
     guard !self.activityIndicator.isAnimating else { return }
 
     super.setTitle(title, for: state)
+  }
+
+  // MARK: - Configuration
+
+  private func configureViews() {
+    self.addSubview(self.activityIndicator)
+    self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+    self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+  }
+
+  // MARK: - View model
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.isUserInteractionEnabled
+      .observeForUI()
+      .observeValues { [weak self] isUserInteractionEnabled in
+        _ = self
+          ?|> \.isUserInteractionEnabled .~ isUserInteractionEnabled
+      }
+
+    self.viewModel.outputs.startLoading
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.startLoading()
+      }
+
+    self.viewModel.outputs.stopLoading
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.stopLoading()
+      }
   }
 
   // MARK: - Loading
