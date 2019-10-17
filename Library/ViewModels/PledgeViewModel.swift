@@ -434,7 +434,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map(allValuesChangedAndValid)
 
     self.submitButtonEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
+      self.viewDidLoadProperty.signal.mapConst(false)
+        .take(until: valuesChangedAndValid.ignoreValues()),
       valuesChangedAndValid,
       self.submitButtonTappedSignal.signal.mapConst(false),
       createBackingEvent.filter { $0.isTerminating }.mapConst(true),

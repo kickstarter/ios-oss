@@ -252,11 +252,11 @@ final class PledgeViewModelTests: TestCase {
 
       self.title.assertValues(["Update pledge"])
 
-      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
-      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
 
-      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
-      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
 
       self.submitButtonTitle.assertValues(["Confirm"])
       self.confirmationLabelHidden.assertValues([true])
@@ -268,7 +268,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.continueViewHidden.assertValues([true])
       self.submitButtonHidden.assertValues([false])
-      self.paymentMethodsViewHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.sectionSeparatorsHidden.assertValues([false])
