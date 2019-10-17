@@ -244,7 +244,7 @@ final class PledgeViewModelTests: TestCase {
     let dateComponents = DateComponents()
       |> \.month .~ 11
       |> \.day .~ 1
-      |> \.year .~ 2019
+      |> \.year .~ 2_019
       |> \.timeZone .~ TimeZone.init(secondsFromGMT: 0)
 
     let calendar = Calendar(identifier: .gregorian)
@@ -254,7 +254,7 @@ final class PledgeViewModelTests: TestCase {
       let date = AppEnvironment.current.calendar.date(from: dateComponents)
 
       let project = Project.template
-      |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
+        |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
@@ -269,7 +269,7 @@ final class PledgeViewModelTests: TestCase {
       self.confirmationLabelAttributedText.assertValueCount(1)
       self.confirmationLabelText.assertValues([
         "If the project reaches its funding goal, you will be charged on November 1, 2019."
-        ])
+      ])
 
       self.vm.inputs.traitCollectionDidChange()
       self.vm.inputs.traitCollectionDidChange()
@@ -281,7 +281,8 @@ final class PledgeViewModelTests: TestCase {
       self.confirmationLabelAttributedText.assertValueCount(2)
       self.confirmationLabelText.assertValues([
         "If the project reaches its funding goal, you will be charged on November 1, 2019.",
-        "If the project reaches its funding goal, you will be charged on November 1, 2019."])
+        "If the project reaches its funding goal, you will be charged on November 1, 2019."
+      ])
     }
   }
 
