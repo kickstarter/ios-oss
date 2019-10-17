@@ -187,7 +187,7 @@ private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {
   if let reward = rewards.first(where: { userIsBacking(reward: $0, inProject: project) }) {
     return rewards
       .firstIndex(where: { $0.id == reward.id })
-      .flatMap({ IndexPath(row: $0, section: 0) })
+      .flatMap { IndexPath(row: $0, section: 0) }
   }
   return nil
 }

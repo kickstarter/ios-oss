@@ -137,7 +137,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeValues { [weak self] title in
         _ = self
           ?|> \.title .~ title
-    }
+      }
 
     self.viewModel.outputs.reloadDataWithValues
       .observeForUI()
@@ -150,7 +150,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
       .observeForUI()
       .observeValues { [weak self] indexPath in
         self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-    }
+      }
 
     self.viewModel.outputs.goToPledge
       .observeForControllerAction()
