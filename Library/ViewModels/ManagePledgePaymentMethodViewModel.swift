@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import UIKit
 
 public protocol ManagePledgePaymentMethodViewModelInputs {
   /// Call to configure payment method section with payment source values.
@@ -44,14 +43,14 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
       .skipNil()
 
     self.cardNumberAccessibilityLabel = Signal.combineLatest(
-        type,
-        lastFour
-      )
-      .map {
-        [$0.0.description, Strings.Card_ending_in_last_four(last_four: $0.1)]
-          .compact()
-          .joined(separator: ", ")
-      }
+      type,
+      lastFour
+    )
+    .map {
+      [$0.0.description, Strings.Card_ending_in_last_four(last_four: $0.1)]
+        .compact()
+        .joined(separator: ", ")
+    }
 
     self.cardNumberTextShortStyle = lastFour
       .map { Strings.Ending_in_last_four(last_four: $0) }
@@ -80,12 +79,10 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
 
 private func imageName(for paymentSource: Backing.PaymentSource) -> String? {
   switch paymentSource.paymentType {
-  case .creditCard?:
+  case .creditCard:
     return paymentSource.imageName
-  case .applePay?:
+  case .applePay:
     return "icon--apple-pay"
-  case .none:
-    return nil
   }
 }
 

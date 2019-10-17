@@ -25,7 +25,7 @@ public struct Backing {
     public let expirationDate: String?
     public let id: String?
     public let lastFour: String?
-    public let paymentType: PaymentType?
+    public let paymentType: PaymentType
     public let state: String
     public let type: GraphUserCreditCard.CreditCardType?
 
@@ -120,7 +120,7 @@ extension Backing.PaymentSource: Argo.Decodable {
       <^> json <|? "expiration_date"
       <*> (json <|? "id" <|> (json <| "id" >>- intToString))
       <*> json <|? "last_four"
-      <*> json <|? "payment_type"
+      <*> json <| "payment_type"
       <*> json <| "state"
       <*> json <|? "type"
   }
