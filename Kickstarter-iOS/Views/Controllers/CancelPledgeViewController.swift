@@ -11,7 +11,7 @@ protocol CancelPledgeViewControllerDelegate: AnyObject {
   )
 }
 
-final class CancelPledgeViewController: UIViewController {
+final class CancelPledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   weak var delegate: CancelPledgeViewControllerDelegate?
   private let viewModel: CancelPledgeViewModelType = CancelPledgeViewModel()
 
@@ -32,6 +32,7 @@ final class CancelPledgeViewController: UIViewController {
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  internal var messageBannerViewController: MessageBannerViewController?
   private lazy var rootStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView = { UIScrollView(frame: .zero) }()
 
@@ -85,6 +86,8 @@ final class CancelPledgeViewController: UIViewController {
       for: .touchUpInside
     )
 
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -122,7 +125,8 @@ final class CancelPledgeViewController: UIViewController {
 
     _ = self.cancellationReasonTextField
       |> cancellationReasonTextFieldStyle
-      |> UITextField.lens.placeholder %~ { _ in Strings.Tell_us_why_optional() }
+      |> \.accessibilityLabel %~ { _ in Strings.Cancellation_reason() }
+      |> \.placeholder %~ { _ in Strings.Tell_us_why_optional() }
 
     _ = self.cancellationReasonDisclaimerLabel
       |> cancellationDisclaimerLabelStyle
@@ -139,6 +143,12 @@ final class CancelPledgeViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.cancelPledgeError
+      .observeForUI()
+      .observeValues { [weak self] errorMessage in
+        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
+      }
 
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()

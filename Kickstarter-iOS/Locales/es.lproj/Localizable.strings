@@ -60,6 +60,7 @@
 "Cancel" = "Cancelar";
 "Cancel_pledge" = "Cancelar contribución";
 "Cancel_your_pledge" = "Cancela tu contribución";
+"Cancellation_reason" = "Motivo de cancelación";
 "Card_ending_in_last_four" = "Tarjeta que termina en %{last_four}";
 "Card_number" = "Número de tarjeta";
 "Cardholder_name" = "Nombre del titular de la tarjeta";
