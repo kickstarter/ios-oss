@@ -146,6 +146,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self?.collectionView.reloadData()
       }
 
+    self.viewModel.outputs.backedRewardIndexPath
+      .observeForUI()
+      .observeValues { [weak self] indexPath in
+        self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+
     self.viewModel.outputs.goToPledge
       .observeForControllerAction()
       .observeValues { [weak self] data, context in

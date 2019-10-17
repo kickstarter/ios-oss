@@ -9,6 +9,7 @@ import XCTest
 final class RewardsCollectionViewModelTests: TestCase {
   private let vm: RewardsCollectionViewModelType = RewardsCollectionViewModel()
 
+  private let backedRewardIndexPath = TestObserver<IndexPath, Never>()
   private let configureRewardsCollectionViewFooterWithCount = TestObserver<Int, Never>()
   private let flashScrollIndicators = TestObserver<Void, Never>()
   private let goToDeprecatedPledgeProject = TestObserver<Project, Never>()
@@ -28,6 +29,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.backedRewardIndexPath.observe(self.backedRewardIndexPath.observer)
     self.vm.outputs.configureRewardsCollectionViewFooterWithCount
       .observe(self.configureRewardsCollectionViewFooterWithCount.observer)
     self.vm.outputs.flashScrollIndicators.observe(self.flashScrollIndicators.observer)
@@ -369,5 +371,30 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.title.assertValue("Choose another reward")
+  }
+
+  func testBackedRewardIndexPath() {
+    let rewards = [
+      .template
+        |> Reward.lens.id .~ 20,
+      .template
+        |> Reward.lens.id .~ 1,
+      .template
+        |> Reward.lens.id .~ 2
+    ]
+
+    let backing = Backing.template
+      |> Backing.lens.rewardId .~ 2
+
+    let project = Project.template
+      |> Project.lens.rewards .~ rewards
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ true
+
+    self.vm.inputs.configure(with: project, refTag: .activity, context: .managePledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.backedRewardIndexPath.assertDidNotEmitValue()
   }
 }
