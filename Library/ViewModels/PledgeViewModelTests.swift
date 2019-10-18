@@ -1051,10 +1051,14 @@ final class PledgeViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.showErrorBannerWithMessage.assertDidNotEmitValue("Signal waits for the Apple Pay sheet to be dismissed")
+      self.showErrorBannerWithMessage.assertDidNotEmitValue(
+        "Signal waits for the Apple Pay sheet to be dismissed"
+      )
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
-      self.showErrorBannerWithMessage.assertValues(["The operation couldn’t be completed. (KsApi.GraphError error 5.)"])
+      self.showErrorBannerWithMessage.assertValues([
+        "The operation couldn’t be completed. (KsApi.GraphError error 5.)"
+      ])
       self.goToThanks.assertDidNotEmitValue()
     }
   }
@@ -1140,7 +1144,9 @@ final class PledgeViewModelTests: TestCase {
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false, true])
       self.goToThanks.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertValues(["The operation couldn’t be completed. (KsApi.GraphError error 5.)"])
+      self.showErrorBannerWithMessage.assertValues(
+        ["The operation couldn’t be completed. (KsApi.GraphError error 5.)"]
+      )
     }
   }
 
