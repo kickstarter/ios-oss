@@ -99,10 +99,10 @@ final class LoadingButton: UIButton {
     states.compactMap { state -> (String, UIControl.State)? in
       guard let title = self.title(for: state) else { return nil }
       return (title, state)
-      }
-      .forEach { title, state in
-        self.originalTitles[state.rawValue] = title
-        self.setTitle(nil, for: state)
+    }
+    .forEach { title, state in
+      self.originalTitles[state.rawValue] = title
+      self.setTitle(nil, for: state)
     }
 
     _ = self
@@ -117,10 +117,10 @@ final class LoadingButton: UIButton {
     states.compactMap { state -> (String, UIControl.State)? in
       guard let title = self.title(for: state) else { return nil }
       return (title, state)
-      }
-      .forEach { title, state in
-        self.originalTitles[state.rawValue] = nil
-        self.setTitle(title, for: state)
+    }
+    .forEach { title, state in
+      self.originalTitles[state.rawValue] = nil
+      self.setTitle(title, for: state)
     }
 
     _ = self
