@@ -90,7 +90,7 @@ final class ManagePledgePaymentMethodView: UIView {
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourDigitsLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
 
-    self.viewModel.outputs.cardImage
+    self.viewModel.outputs.cardImageName
       .observeForUI()
       .observeValues { [weak self] imageName in
         _ = self?.paymentMethodImageView

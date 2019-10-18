@@ -10,7 +10,7 @@ public protocol ManagePledgePaymentMethodViewModelInputs {
 
 public protocol ManagePledgePaymentMethodViewModelOutputs {
   /// Emits the card's image.
-  var cardImage: Signal<String, Never> { get }
+  var cardImageName: Signal<String, Never> { get }
 
   /// Emits a formatted accessibility string containing the card type, number and last four digits
   var cardNumberAccessibilityLabel: Signal<String, Never> { get }
@@ -30,7 +30,7 @@ public protocol ManagePledgePaymentMethodViewModelType {
 public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethodViewModelInputs,
   ManagePledgePaymentMethodViewModelOutputs, ManagePledgePaymentMethodViewModelType {
   public init() {
-    self.cardImage = self.paymentSourceSignal
+    self.cardImageName = self.paymentSourceSignal
       .map(imageName(for:))
       .skipNil()
 
@@ -68,7 +68,7 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
     self.paymentSourceObserver.send(value: value)
   }
 
-  public let cardImage: Signal<String, Never>
+  public let cardImageName: Signal<String, Never>
   public let cardNumberAccessibilityLabel: Signal<String, Never>
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>

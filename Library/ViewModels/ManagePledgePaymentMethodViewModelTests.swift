@@ -8,7 +8,7 @@ import XCTest
 final class ManagePledgePaymentMethodViewModelTests: TestCase {
   internal let vm: ManagePledgePaymentMethodViewModelType = ManagePledgePaymentMethodViewModel()
 
-  private let cardImage = TestObserver<String, Never>()
+  private let cardImageName = TestObserver<String, Never>()
   private let cardNumberAccessibilityLabel = TestObserver<String, Never>()
   private let cardNumberTextShortStyle = TestObserver<String, Never>()
   private let expirationDateText = TestObserver<String, Never>()
@@ -16,7 +16,7 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.cardImage.observe(self.cardImage.observer)
+    self.vm.outputs.cardImageName.observe(self.cardImageName.observer)
     self.vm.outputs.cardNumberAccessibilityLabel.observe(self.cardNumberAccessibilityLabel.observer)
     self.vm.outputs.cardNumberTextShortStyle.observe(self.cardNumberTextShortStyle.observer)
     self.vm.outputs.expirationDateText.observe(self.expirationDateText.observer)
@@ -25,7 +25,7 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
   func testPaymentSourceInfo() {
     self.vm.inputs.configureWith(value: Backing.PaymentSource.template)
 
-    self.cardImage.assertLastValue("icon--visa")
+    self.cardImageName.assertLastValue("icon--visa")
     self.cardNumberAccessibilityLabel.assertLastValue("Visa, Card ending in 1111")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1111")
     self.expirationDateText.assertLastValue("Expires 09/2019")
@@ -34,7 +34,7 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
   func testApplePay() {
     self.vm.inputs.configureWith(value: Backing.PaymentSource.applePay)
 
-    self.cardImage.assertValue("icon--apple-pay")
+    self.cardImageName.assertValue("icon--apple-pay")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1111")
     self.expirationDateText.assertValue("Expires 10/2019")
   }
