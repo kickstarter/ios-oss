@@ -81,6 +81,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.outputs.submitButtonEnabled.observe(self.submitButtonEnabled.observer)
     self.vm.outputs.submitButtonHidden.observe(self.submitButtonHidden.observer)
+    self.vm.outputs.submitButtonIsLoading.observe(self.submitButtonIsLoading.observer)
     self.vm.outputs.submitButtonTitle.observe(self.submitButtonTitle.observer)
     self.vm.outputs.confirmationLabelAttributedText.observe(self.confirmationLabelAttributedText.observer)
     self.vm.outputs.confirmationLabelHidden.observe(self.confirmationLabelHidden.observer)
@@ -1082,12 +1083,14 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.submitButtonTapped()
 
       self.submitButtonEnabled.assertValues([false, true, false])
+      self.submitButtonIsLoading.assertValues([true])
       self.goToThanks.assertDidNotEmitValue()
       self.createBackingError.assertDidNotEmitValue()
 
       self.scheduler.run()
 
       self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.submitButtonIsLoading.assertValues([true, false])
       self.goToThanks.assertValues([.template])
       self.createBackingError.assertDidNotEmitValue()
     }
@@ -1120,12 +1123,14 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.submitButtonTapped()
 
       self.submitButtonEnabled.assertValues([false, true, false])
+      self.submitButtonIsLoading.assertValues([true])
       self.goToThanks.assertDidNotEmitValue()
       self.createBackingError.assertDidNotEmitValue()
 
       self.scheduler.run()
 
       self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.submitButtonIsLoading.assertValues([true, false])
       self.goToThanks.assertDidNotEmitValue()
       self.createBackingError.assertValues(["Something went wrong."])
     }
@@ -1191,6 +1196,7 @@ final class PledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false])
+      self.submitButtonIsLoading.assertValues([true])
 
       self.scheduler.run()
 
@@ -1199,6 +1205,7 @@ final class PledgeViewModelTests: TestCase {
       ])
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.submitButtonIsLoading.assertValues([true, false])
     }
   }
 
@@ -1250,12 +1257,14 @@ final class PledgeViewModelTests: TestCase {
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false])
+      self.submitButtonIsLoading.assertValues([true])
 
       self.scheduler.run()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.updatePledgeFailedWithError.assertValueCount(1)
       self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.submitButtonIsLoading.assertValues([true, false])
     }
   }
 
