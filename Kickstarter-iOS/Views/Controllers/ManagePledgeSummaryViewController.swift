@@ -21,12 +21,12 @@ final class ManagePledgeSummaryViewController: UIViewController {
   private lazy var totalAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var totalLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private let viewModel = ManagePledgeSummaryViewModel()
+  private let viewModel: ManagePledgeSummaryViewModelType = ManagePledgeSummaryViewModel()
 
   // MARK: - Lifecycle
 
   public func configureWith(_ project: Project) {
-    self.viewModel.configureWith(project)
+    self.viewModel.inputs.configureWith(project)
   }
 
   override func viewDidLoad() {
