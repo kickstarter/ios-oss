@@ -1996,7 +1996,7 @@ public final class Koala {
     props["client_type"] = "native"
     props["device_format"] = self.deviceFormat
     props["client_platform"] = self.clientPlatform
-    props["cellular_connection"] = CTTelephonyNetworkInfo().currentRadioAccessTechnology
+    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
     props["wifi_connection"] = Reachability.current == .wifi
 
     if let loggedInUser = self.loggedInUser {

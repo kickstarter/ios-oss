@@ -93,10 +93,15 @@ public final class KoalaTrackingClient: TrackingClientType {
 
   fileprivate func save() {
     self.queue.async {
-      guard !self.buffer.isEmpty, let file = self.fileName() else { return }
+      guard !self.buffer.isEmpty, let file = self.fileName(), let url = URL(string: file) else { return }
 
-      NSKeyedArchiver.archiveRootObject(self.buffer, toFile: file)
-
+      do {
+        let data = try NSKeyedArchiver.archivedData(withRootObject: self.buffer, requiringSecureCoding: false)
+        try data.write(to: url)
+        print("🐨🔵 koala.plist successfully saved.")
+      } catch {
+        print("🐨🔴 Failed to save koala.plist.")
+      }
       self.buffer.removeAll()
     }
   }
@@ -105,7 +110,10 @@ public final class KoalaTrackingClient: TrackingClientType {
     self.queue.async {
       guard
         let file = self.fileName(), FileManager.default.fileExists(atPath: file),
-        let buffer = NSKeyedUnarchiver.unarchiveObject(withFile: file) as? [[String: Any]]
+        let url = URL(string: file),
+        // swiftlint:disable line_length
+        let buffer = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(Data(contentsOf: url)) as? [[String: Any]]
+        // swiftlint:enable line_length
       else { return }
 
       self.buffer = buffer + self.buffer
