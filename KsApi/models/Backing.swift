@@ -118,7 +118,7 @@ extension Backing.PaymentSource: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Backing.PaymentSource?> {
     return curry(Backing.PaymentSource.init)
       <^> json <|? "expiration_date"
-      <*> (json <|? "id" <|> (json <| "id" >>- intToString))
+      <*> json <|? "id"
       <*> json <|? "last_four"
       <*> json <| "payment_type"
       <*> json <| "state"
@@ -149,8 +149,4 @@ extension Backing: GraphIDBridging {
   public static var modelName: String {
     return "Backing"
   }
-}
-
-private func intToString(_ input: Int) -> Decoded<String?> {
-  return .success(String(input))
 }
