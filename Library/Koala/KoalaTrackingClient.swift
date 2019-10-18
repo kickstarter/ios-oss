@@ -113,7 +113,7 @@ public final class KoalaTrackingClient: TrackingClientType {
         let url = URL(string: file),
         // swiftlint:disable line_length
         let buffer = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(Data(contentsOf: url)) as? [[String: Any]]
-        // swiftlint:enable line_length
+      // swiftlint:enable line_length
       else { return }
 
       self.buffer = buffer + self.buffer
