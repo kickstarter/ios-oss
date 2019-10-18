@@ -99,15 +99,25 @@ final class LoadingButton: UIButton {
     let normalState = UIControl.State.normal
     let selectedState = UIControl.State.selected
 
-    self.originalTitles[disabledState.rawValue] = self.title(for: disabledState)
-    self.originalTitles[highlightedState.rawValue] = self.title(for: highlightedState)
-    self.originalTitles[normalState.rawValue] = self.title(for: normalState)
-    self.originalTitles[selectedState.rawValue] = self.title(for: selectedState)
+    if let disabledTitle = self.title(for: disabledState) {
+      self.originalTitles[disabledState.rawValue] = disabledTitle
+      self.setTitle(nil, for: disabledState)
+    }
 
-    self.setTitle(nil, for: disabledState)
-    self.setTitle(nil, for: highlightedState)
-    self.setTitle(nil, for: normalState)
-    self.setTitle(nil, for: selectedState)
+    if let highlightedTitle = self.title(for: highlightedState) {
+      self.originalTitles[highlightedState.rawValue] = highlightedTitle
+      self.setTitle(nil, for: highlightedState)
+    }
+
+    if let normalTitle = self.title(for: normalState) {
+      self.originalTitles[normalState.rawValue] = normalTitle
+      self.setTitle(nil, for: normalState)
+    }
+
+    if let selectedTitle = self.title(for: selectedState) {
+      self.originalTitles[selectedState.rawValue] = selectedTitle
+      self.setTitle(nil, for: selectedState)
+    }
 
     _ = self
       |> \.accessibilityLabel %~ { _ in Strings.Loading() }
@@ -121,15 +131,25 @@ final class LoadingButton: UIButton {
     let normalState = UIControl.State.normal
     let selectedState = UIControl.State.selected
 
-    self.setTitle(self.originalTitles[disabledState.rawValue], for: disabledState)
-    self.setTitle(self.originalTitles[highlightedState.rawValue], for: highlightedState)
-    self.setTitle(self.originalTitles[normalState.rawValue], for: normalState)
-    self.setTitle(self.originalTitles[selectedState.rawValue], for: selectedState)
+    if let disabledTitle = self.originalTitles[disabledState.rawValue] {
+      self.setTitle(disabledTitle, for: disabledState)
+      self.originalTitles[disabledState.rawValue] = nil
+    }
 
-    self.originalTitles[disabledState.rawValue] = nil
-    self.originalTitles[highlightedState.rawValue] = nil
-    self.originalTitles[normalState.rawValue] = nil
-    self.originalTitles[selectedState.rawValue] = nil
+    if let highlightedTitle = self.originalTitles[highlightedState.rawValue] {
+      self.setTitle(highlightedTitle, for: highlightedState)
+      self.originalTitles[highlightedState.rawValue] = nil
+    }
+
+    if let normalTitle = self.originalTitles[normalState.rawValue] {
+      self.setTitle(normalTitle, for: normalState)
+      self.originalTitles[normalState.rawValue] = nil
+    }
+
+    if let selectedTitle = self.originalTitles[selectedState.rawValue] {
+      self.setTitle(selectedTitle, for: selectedState)
+      self.originalTitles[selectedState.rawValue] = nil
+    }
 
     _ = self
       |> \.accessibilityLabel .~ nil
