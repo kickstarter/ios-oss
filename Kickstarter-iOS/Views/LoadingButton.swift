@@ -94,29 +94,15 @@ final class LoadingButton: UIButton {
   // MARK: - Titles
 
   private func removeTitle() {
-    let disabledState = UIControl.State.disabled
-    let highlightedState = UIControl.State.highlighted
-    let normalState = UIControl.State.normal
-    let selectedState = UIControl.State.selected
+    let states: [UIControl.State] = [.disabled, .highlighted, .normal, .selected]
 
-    if let disabledTitle = self.title(for: disabledState) {
-      self.originalTitles[disabledState.rawValue] = disabledTitle
-      self.setTitle(nil, for: disabledState)
-    }
-
-    if let highlightedTitle = self.title(for: highlightedState) {
-      self.originalTitles[highlightedState.rawValue] = highlightedTitle
-      self.setTitle(nil, for: highlightedState)
-    }
-
-    if let normalTitle = self.title(for: normalState) {
-      self.originalTitles[normalState.rawValue] = normalTitle
-      self.setTitle(nil, for: normalState)
-    }
-
-    if let selectedTitle = self.title(for: selectedState) {
-      self.originalTitles[selectedState.rawValue] = selectedTitle
-      self.setTitle(nil, for: selectedState)
+    states.compactMap { state -> (String, UIControl.State)? in
+      guard let title = self.title(for: state) else { return nil }
+      return (title, state)
+      }
+      .forEach { title, state in
+        self.originalTitles[state.rawValue] = title
+        self.setTitle(nil, for: state)
     }
 
     _ = self
@@ -126,29 +112,15 @@ final class LoadingButton: UIButton {
   }
 
   private func restoreTitle() {
-    let disabledState = UIControl.State.disabled
-    let highlightedState = UIControl.State.highlighted
-    let normalState = UIControl.State.normal
-    let selectedState = UIControl.State.selected
+    let states: [UIControl.State] = [.disabled, .highlighted, .normal, .selected]
 
-    if let disabledTitle = self.originalTitles[disabledState.rawValue] {
-      self.setTitle(disabledTitle, for: disabledState)
-      self.originalTitles[disabledState.rawValue] = nil
-    }
-
-    if let highlightedTitle = self.originalTitles[highlightedState.rawValue] {
-      self.setTitle(highlightedTitle, for: highlightedState)
-      self.originalTitles[highlightedState.rawValue] = nil
-    }
-
-    if let normalTitle = self.originalTitles[normalState.rawValue] {
-      self.setTitle(normalTitle, for: normalState)
-      self.originalTitles[normalState.rawValue] = nil
-    }
-
-    if let selectedTitle = self.originalTitles[selectedState.rawValue] {
-      self.setTitle(selectedTitle, for: selectedState)
-      self.originalTitles[selectedState.rawValue] = nil
+    states.compactMap { state -> (String, UIControl.State)? in
+      guard let title = self.title(for: state) else { return nil }
+      return (title, state)
+      }
+      .forEach { title, state in
+        self.originalTitles[state.rawValue] = nil
+        self.setTitle(title, for: state)
     }
 
     _ = self
