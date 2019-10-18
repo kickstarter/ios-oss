@@ -157,10 +157,7 @@ internal func is1PasswordButtonHidden(_ isHidden: Bool) -> Bool {
 }
 
 public func ksr_is1PasswordSupported() -> Bool {
-  if #available(iOS 12.0, *) {
-    return false
-  }
-  return true
+  return false
 }
 
 public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User, Never> {
