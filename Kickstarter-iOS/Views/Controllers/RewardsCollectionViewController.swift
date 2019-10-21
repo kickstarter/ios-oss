@@ -32,7 +32,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
   private var collectionViewBottomConstraintSuperview: NSLayoutConstraint?
   private var collectionViewBottomConstraintFooterView: NSLayoutConstraint?
 
-  private let viewModel = RewardsCollectionViewModel()
+  private let viewModel: RewardsCollectionViewModelType = RewardsCollectionViewModel()
 
   static func instantiate(with project: Project, refTag: RefTag?) -> RewardsCollectionViewController {
     let rewardsCollectionVC = RewardsCollectionViewController()

@@ -43,6 +43,7 @@ final class PledgeViewControllerTests: TestCase {
         controller.configureWith(project: .template, reward: reward, refTag: nil, context: .update)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
+        self.scheduler.advance(by: .milliseconds(10))
         self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")

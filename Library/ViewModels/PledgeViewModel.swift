@@ -63,6 +63,7 @@ public protocol PledgeViewModelOutputs {
   var showApplePayAlert: Signal<(String, String), Never> { get }
   var submitButtonEnabled: Signal<Bool, Never> { get }
   var submitButtonHidden: Signal<Bool, Never> { get }
+  var submitButtonIsLoading: Signal<Bool, Never> { get }
   var submitButtonTitle: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
   var updatePledgeFailedWithError: Signal<String, Never> { get }
@@ -138,6 +139,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       project,
       project.takeWhen(self.traitCollectionDidChangeSignal)
     )
+    .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
     .map(attributedConfirmationString(with:))
     .skipNil()
 
@@ -449,6 +451,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       updateBackingEvent.filter { $0.isTerminating }.mapConst(true)
     )
 
+    let createButtonIsLoading = Signal.merge(
+      createButtonTapped.mapConst(true),
+      createBackingEvent.filter { $0.isTerminating }.mapConst(false)
+    )
+
+    let updateButtonIsLoading = Signal.merge(
+      updateButtonTapped.mapConst(true),
+      updateBackingEvent.filter { $0.isTerminating }.mapConst(false)
+    )
+
+    self.submitButtonIsLoading = Signal.merge(
+      createButtonIsLoading,
+      updateButtonIsLoading
+    )
+
     // MARK: - Success/Failure Create
 
     let createPaymentAuthorizationDidFinishSignal = willCreateApplePayBacking
@@ -639,6 +656,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let showApplePayAlert: Signal<(String, String), Never>
   public let submitButtonEnabled: Signal<Bool, Never>
   public let submitButtonHidden: Signal<Bool, Never>
+  public let submitButtonIsLoading: Signal<Bool, Never>
   public let submitButtonTitle: Signal<String, Never>
   public let title: Signal<String, Never>
   public let updatePledgeFailedWithError: Signal<String, Never>
