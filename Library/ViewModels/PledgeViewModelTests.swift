@@ -1477,7 +1477,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.paymentSource .~ .template
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ Reward.otherReward
           |> Backing.lens.rewardId .~ Reward.otherReward.id
