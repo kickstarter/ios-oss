@@ -139,6 +139,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       project,
       project.takeWhen(self.traitCollectionDidChangeSignal)
     )
+    .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
     .map(attributedConfirmationString(with:))
     .skipNil()
 
