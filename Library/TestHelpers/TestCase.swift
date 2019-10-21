@@ -79,6 +79,6 @@ internal func preferredSimulatorCheck() {
   let modelKey = "SIMULATOR_MODEL_IDENTIFIER"
 
   guard #available(*, iOS 12.0), supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
-      fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 12")
+    fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 12")
   }
 }
