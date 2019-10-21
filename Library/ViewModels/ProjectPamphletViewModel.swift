@@ -46,7 +46,7 @@ public protocol ProjectPamphletViewModelOutputs {
 
   var goToDeprecatedViewBacking: Signal<BackingData, Never> { get }
 
-  var goToManageViewPledge: Signal<PledgeData, Never> { get }
+  var goToManageViewPledge: Signal<Project, Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
@@ -99,13 +99,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     let goToManagePledge = ctaButtonTapped
       .filter { canShowManageViewPledgeScreen($0.0, state: $0.2) }
-      .map { (project, refTag, _) -> PledgeData in
-        PledgeData(
-          project: project,
-          reward: reward(from: project.personalization.backing, inProject: project),
-          refTag: refTag
-        )
-      }
+      .map(first)
 
     self.goToManageViewPledge = goToManagePledge
       .filter { _ in featureNativeCheckoutPledgeViewIsEnabled() }
@@ -245,7 +239,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToDeprecatedManagePledge: Signal<PledgeData, Never>
   public let goToDeprecatedViewBacking: Signal<BackingData, Never>
-  public let goToManageViewPledge: Signal<PledgeData, Never>
+  public let goToManageViewPledge: Signal<Project, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
@@ -338,12 +332,6 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   }
 
   return projectProducer
-}
-
-private func reward(from backing: Backing?, inProject project: Project) -> Reward {
-  return backing?.reward
-    ?? project.rewards.filter { $0.id == backing?.rewardId }.first
-    ?? Reward.noReward
 }
 
 private func canShowRewardsScreen(_: Project, state: PledgeStateCTAType?) -> Bool {
