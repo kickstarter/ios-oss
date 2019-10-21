@@ -100,7 +100,7 @@ public final class KoalaTrackingClient: TrackingClientType {
         let data = try NSKeyedArchiver.archivedData(withRootObject: self.buffer, requiringSecureCoding: false)
         try data.write(to: url)
         print("🐨🔵 koala.plist successfully saved.")
-      } catch (let error) {
+      } catch {
         print("🐨🔴 Failed to save koala.plist: \(error)")
       }
       self.buffer.removeAll()
