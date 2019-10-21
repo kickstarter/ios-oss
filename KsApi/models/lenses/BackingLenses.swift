@@ -163,7 +163,7 @@ extension Backing {
       ) }
     )
 
-    public static let paymentSource = Lens<Backing, GraphUserCreditCard.CreditCard?>(
+    public static let paymentSource = Lens<Backing, Backing.PaymentSource?>(
       view: { $0.paymentSource },
       set: { Backing(
         amount: $1.amount,
