@@ -550,7 +550,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.notifyDelegateUpdatePledgeDidSucceedWithMessage = updateBackingCompletionEvents
       .mapConst(Strings.Got_it_your_changes_have_been_saved())
 
-    self.showErrorBannerWithMessage = Signal<Error, Never>.merge(
+    self.showErrorBannerWithMessage = Signal.merge(
       deprecatedCreateApplePayBackingCompletedError.map { $0 as Error },
       createUpdateApplePayBackingError,
       createUpdateBackingError,
