@@ -17,7 +17,7 @@ final class PledgeSummaryViewController: UIViewController {
 
   private lazy var termsTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
-  private let viewModel = PledgeSummaryViewModel()
+  private let viewModel: PledgeSummaryViewModelType = PledgeSummaryViewModel()
 
   // MARK: - Lifecycle
 

@@ -26,7 +26,7 @@ public protocol RewardsCollectionViewModelOutputs {
   func selectedReward() -> Reward?
 }
 
-protocol RewardsCollectionViewModelType {
+public protocol RewardsCollectionViewModelType {
   var inputs: RewardsCollectionViewModelInputs { get }
   var outputs: RewardsCollectionViewModelOutputs { get }
 }
