@@ -1,5 +1,7 @@
 @testable import Kickstarter_Framework
+@testable import KsApi
 @testable import Library
+import Prelude
 import XCTest
 
 internal final class SharedFunctionsTests: XCTestCase {
@@ -54,5 +56,36 @@ internal final class SharedFunctionsTests: XCTestCase {
     XCTAssertTrue(mockAppEnvironment.logoutWasCalled)
     XCTAssertTrue(mockPushNotificationDialog.resetAllContextsWasCalled)
     XCTAssertTrue(mockViewController.dismissAnimatedWasCalled)
+  }
+
+  func testFormattedPledgeParameters_WithShipping() {
+    let reward = Reward.template
+    let selectedShippingRule = ShippingRule.template
+      |> ShippingRule.lens.cost .~ 3
+      |> ShippingRule.lens.location .~ (Location.template |> Location.lens.id .~ 123)
+
+    let params = sanitizedPledgeParameters(
+      from: reward,
+      pledgeAmount: 10,
+      selectedShippingRule: selectedShippingRule
+    )
+
+    XCTAssertEqual(params.rewardId, "UmV3YXJkLTE=")
+    XCTAssertEqual(params.pledgeTotal, "13.00")
+    XCTAssertEqual(params.locationId, "123")
+  }
+
+  func testFormattedPledgeParameters_NoShipping_NoReward() {
+    let reward = Reward.noReward
+
+    let params = sanitizedPledgeParameters(
+      from: reward,
+      pledgeAmount: 10,
+      selectedShippingRule: nil
+    )
+
+    XCTAssertNil(params.rewardId)
+    XCTAssertEqual(params.pledgeTotal, "10.00")
+    XCTAssertNil(params.locationId)
   }
 }
