@@ -190,16 +190,15 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   private func newCardViews(with cardValues: CardViewValues) -> [UIView] {
-    let selectedCard = cardValues.cards.first
-    let cards = cardValues.cards
-    let availableCardTypes = cardValues.availableCardTypes
+    let selectedCard = cardValues.cardAndIsAvailableCardType.first?.0
+    let cards = cardValues.cardAndIsAvailableCardType
 
-    return cards.map { card -> PledgeCreditCardView in
+    return cards.map { cardAndAvailableType -> PledgeCreditCardView in
       let cardView = PledgeCreditCardView(frame: .zero)
         |> \.delegate .~ self
 
-      guard let cardBrand = card.type?.rawValue else { return cardView }
-      let isAvailableCardType = availableCardTypes.contains(cardBrand)
+      let card = cardAndAvailableType.0
+      let isAvailableCardType = cardAndAvailableType.1
 
       if let selectedCard = selectedCard {
         if isAvailableCardType {

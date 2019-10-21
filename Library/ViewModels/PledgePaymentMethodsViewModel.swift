@@ -6,7 +6,7 @@ import UIKit
 
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
 public typealias CardViewValues = (
-  cards: [GraphUserCreditCard.CreditCard], availableCardTypes: [String], projectCountry: String
+  cardAndIsAvailableCardType: [(GraphUserCreditCard.CreditCard, Bool)], projectCountry: String
 )
 
 public protocol PledgePaymentMethodsViewModelInputs {
@@ -69,11 +69,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
     .scan([]) { current, new in new + current }
 
+    let availableCardType = Signal.combineLatest(card, availableCardTypes)
+      .map { cardTypeAvailable(cards: $0, availableCardTypes: $1) }
+
     let cardValues = Signal.combineLatest(
-      card,
-      availableCardTypes,
+      availableCardType,
       project.map { $0.location.displayableName }
-    ).map { $0 as CardViewValues }
+      ).map { CardViewValues(cardAndIsAvailableCardType: $0, projectCountry: $1) }
 
     self.reloadPaymentMethods = cardValues
 
@@ -135,6 +137,17 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }
   public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
+}
+
+private func cardTypeAvailable(cards: [GraphUserCreditCard.CreditCard], availableCardTypes: [String]) -> [(GraphUserCreditCard.CreditCard, Bool)] {
+  var arr: [(GraphUserCreditCard.CreditCard, Bool)] = []
+  cards.forEach { card in
+    guard let cardBrand = card.type?.rawValue else { return }
+    let isAvailableCardType = availableCardTypes.contains(cardBrand)
+    arr.append((card, isAvailableCardType))
+  }
+
+  return arr
 }
 
 private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {
