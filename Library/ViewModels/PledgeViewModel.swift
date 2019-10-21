@@ -471,7 +471,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let paymentAuthorizationDidFinish = didInitiateApplePayBacking
       .takeWhen(self.paymentAuthorizationDidFinishSignal)
 
-    let updateCreateApplePayBackingCompleted = Signal.combineLatest(
+    let createOrUpdateApplePayBackingCompleted = Signal.combineLatest(
       Signal.merge(
         updateBackingEvent.filter { $0.isTerminating }.ignoreValues(),
         createBackingEvent.filter { $0.isTerminating }.ignoreValues()
@@ -479,27 +479,27 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       paymentAuthorizationDidFinish
     )
 
-    let updateCreateBackingEventValues = Signal.merge(
+    let createOrUpdateBackingEventValues = Signal.merge(
       createBackingEvent.values().map { $0 as StripeSCARequiring },
       updateBackingEvent.values().map { $0 as StripeSCARequiring }
     )
 
-    let updateCreateBackingEventValuesNoSCA = updateCreateBackingEventValues
+    let createOrUpdateBackingEventValuesNoSCA = createOrUpdateBackingEventValues
       .filter(requiresSCA >>> isFalse)
 
-    let updateCreateBackingDidCompleteNoSCA = submitButtonTapped
-      .takeWhen(updateCreateBackingEventValuesNoSCA)
+    let createOrUpdateBackingDidCompleteNoSCA = submitButtonTapped
+      .takeWhen(createOrUpdateBackingEventValuesNoSCA)
       .filter(isTrue)
       .ignoreValues()
 
-    let updateCreateBackingEventValuesRequiresSCA = updateCreateBackingEventValues
+    let createOrUpdateBackingEventValuesRequiresSCA = createOrUpdateBackingEventValues
       .filter(requiresSCA)
 
-    self.beginSCAFlowWithClientSecret = updateCreateBackingEventValuesRequiresSCA.map { $0.clientSecret }
+    self.beginSCAFlowWithClientSecret = createOrUpdateBackingEventValuesRequiresSCA.map { $0.clientSecret }
       .skipNil()
 
-    let didCompleteApplePayBacking = updateCreateBackingEventValues
-      .takeWhen(updateCreateApplePayBackingCompleted)
+    let didCompleteApplePayBacking = createOrUpdateBackingEventValues
+      .takeWhen(createOrUpdateApplePayBackingCompleted)
 
     let creatingContext = context.filter { $0.isCreating }
 
@@ -518,7 +518,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         .combineLatest(with: deprecatedCreateApplePayBackingCompleted)
         .ignoreValues(),
       didCompleteApplePayBacking.combineLatest(with: willCreateApplePayBacking).ignoreValues(),
-      updateCreateBackingDidCompleteNoSCA.combineLatest(with: creatingContext).ignoreValues(),
+      createOrUpdateBackingDidCompleteNoSCA.combineLatest(with: creatingContext).ignoreValues(),
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
 
@@ -530,7 +530,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       updateBackingEvent.errors().map { $0 as Error }
     )
 
-    let createUpdateApplePayBackingError = updateCreateApplePayBackingCompleted
+    let createUpdateApplePayBackingError = createOrUpdateApplePayBackingCompleted
       .withLatest(from: createUpdateBackingEventErrors)
       .map(second)
 
@@ -543,7 +543,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let updateBackingCompletionEvents = Signal.merge(
       didCompleteApplePayBacking.combineLatest(with: willUpdateApplePayBacking).ignoreValues(),
-      updateCreateBackingDidCompleteNoSCA.combineLatest(with: updatingContext).ignoreValues(),
+      createOrUpdateBackingDidCompleteNoSCA.combineLatest(with: updatingContext).ignoreValues(),
       scaFlowCompletedWithSuccess.combineLatest(with: updatingContext).ignoreValues()
     )
 
