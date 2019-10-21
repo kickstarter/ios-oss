@@ -8,15 +8,16 @@ protocol PledgeAddNewCardViewDelegate: AnyObject {
 }
 
 final class PledgeAddNewCardView: UIView {
-
   private lazy var addNewCardButton: UIButton = {
     UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var addNewCardImageView: UIImageView = {
     UIImageView(image: UIImage.init(named: "icon--add"))
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var addNewCardImageViewContainer = { UIView(frame: .zero) }()
   private lazy var cardView: UIView = { UIView(frame: .zero) }()
   private lazy var containerStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -119,8 +120,10 @@ final class PledgeAddNewCardView: UIView {
         .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
       self.addNewCardImageView.widthAnchor
         .constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width),
-      self.cardView.heightAnchor.constraint(greaterThanOrEqualToConstant:
-        CheckoutConstants.CreditCardView.height)
+      self.cardView.heightAnchor.constraint(
+        greaterThanOrEqualToConstant:
+        CheckoutConstants.CreditCardView.height
+      )
     ])
   }
 

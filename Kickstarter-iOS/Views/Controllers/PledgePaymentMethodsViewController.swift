@@ -206,8 +206,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
           cardView.configureWith(value: (card: card, isEnabled: true, projectCountry: nil))
           cardView.setSelectedCard(selectedCard)
         } else if !isAvailableCardType {
-          cardView.configureWith(value: (card: card, isEnabled: false,
-                                         projectCountry: cardValues.projectCountry))
+          cardView.configureWith(value: (
+            card: card, isEnabled: false,
+            projectCountry: cardValues.projectCountry
+          ))
         }
       }
       return cardView

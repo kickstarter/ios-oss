@@ -4,7 +4,10 @@ import ReactiveExtensions
 import ReactiveSwift
 import UIKit
 
-public typealias PledgeCreditCardValue = (card: GraphUserCreditCard.CreditCard, isEnabled: Bool, projectCountry: String?)
+public typealias PledgeCreditCardValue = (
+  card: GraphUserCreditCard.CreditCard,
+  isEnabled: Bool, projectCountry: String?
+)
 
 public protocol PledgeCreditCardViewModelInputs {
   /// Call to configure cell with card and selected card values.
@@ -104,8 +107,9 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
     self.unavailableCardLabelHidden = cardTypeIsAvailable
     self.unavailableCardText = self.creditCardProperty.signal.skipNil()
       .map { Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-        project_country: $0.projectCountry ?? "")
-    }
+        project_country: $0.projectCountry ?? ""
+      )
+      }
   }
 
   fileprivate let creditCardProperty = MutableProperty<PledgeCreditCardValue?>(nil)
