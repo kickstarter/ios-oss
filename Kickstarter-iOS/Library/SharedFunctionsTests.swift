@@ -64,7 +64,7 @@ internal final class SharedFunctionsTests: XCTestCase {
       |> ShippingRule.lens.cost .~ 3
       |> ShippingRule.lens.location .~ (Location.template |> Location.lens.id .~ 123)
 
-    let params = formattedPledgeParameters(
+    let params = sanitizedPledgeParameters(
       from: reward,
       pledgeAmount: 10,
       selectedShippingRule: selectedShippingRule
@@ -78,7 +78,7 @@ internal final class SharedFunctionsTests: XCTestCase {
   func testFormattedPledgeParameters_NoShipping_NoReward() {
     let reward = Reward.noReward
 
-    let params = formattedPledgeParameters(
+    let params = sanitizedPledgeParameters(
       from: reward,
       pledgeAmount: 10,
       selectedShippingRule: nil

@@ -7,8 +7,7 @@ extension UpdateBackingInput {
     isApplePay: Bool
   ) -> UpdateBackingInput {
     let backingId = updateBackingData.backing.graphID
-    let (pledgeTotal, rewardId, locationId) =
-      formattedPledgeParameters(
+    let (pledgeTotal, rewardId, locationId) = sanitizedPledgeParameters(
         from: updateBackingData.reward,
         pledgeAmount: updateBackingData.pledgeAmount,
         selectedShippingRule: updateBackingData.shippingRule

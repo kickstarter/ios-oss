@@ -217,13 +217,13 @@ internal func classNameWithoutModule(_ class: AnyClass) -> String {
     .joined(separator: ".")
 }
 
-typealias FormattedPledgeParameters = (pledgeTotal: String, rewardId: String?, locationId: String?)
+typealias SanitizedPledgeParams = (pledgeTotal: String, rewardId: String?, locationId: String?)
 
-internal func formattedPledgeParameters(
+internal func sanitizedPledgeParameters(
   from reward: Reward,
   pledgeAmount: Double,
   selectedShippingRule: ShippingRule?
-) -> FormattedPledgeParameters {
+) -> SanitizedPledgeParams {
   let pledgeAmountDecimal = Decimal(pledgeAmount)
   var shippingAmountDecimal: Decimal = Decimal()
   var shippingLocationId: String?
