@@ -397,28 +397,19 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let amountChangedAndValid = Signal.combineLatest(
       project,
+      reward,
       self.pledgeAmountDataSignal,
       context
     )
     .map(amountValid)
 
-    let newPledgeNoShipping = Signal.combineLatest(
-      reward.map { $0.shipping.enabled },
-      context.map { $0.isCreating }
+    let shippingRuleChangedAndValid = Signal.combineLatest(
+      project,
+      reward,
+      selectedShippingRule,
+      context
     )
-    .filter(first >>> isFalse)
-    .map { !$0 && $1 }
-
-    let shippingRuleChangedAndValid = Signal.merge(
-      newPledgeNoShipping,
-      Signal.combineLatest(
-        project,
-        reward,
-        self.shippingRuleSelectedSignal,
-        context
-      )
-      .map(shippingRuleValid)
-    )
+    .map(shippingRuleValid)
 
     let notChangingPaymentMethod = context.map { context in
       context.isUpdating && context != .changePaymentMethod
@@ -429,6 +420,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       notChangingPaymentMethod.mapConst(false),
       Signal.combineLatest(
         project,
+        reward,
         self.creditCardSelectedSignal,
         context
       )
@@ -444,7 +436,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map(allValuesChangedAndValid)
 
     self.submitButtonEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
+      self.viewDidLoadProperty.signal.mapConst(false)
+        .take(until: valuesChangedAndValid.ignoreValues()),
       valuesChangedAndValid,
       self.submitButtonTappedSignal.signal.mapConst(false),
       createBackingEvent.filter { $0.isTerminating }.mapConst(true),
@@ -705,10 +698,15 @@ private func attributedConfirmationString(with project: Project) -> NSAttributed
 
 private func amountValid(
   project: Project,
+  reward: Reward,
   pledgeAmountData: PledgeAmountData,
   context: PledgeViewContext
 ) -> Bool {
-  guard let backing = project.personalization.backing, context.isUpdating else {
+  guard
+    let backing = project.personalization.backing,
+    context.isUpdating,
+    userIsBacking(reward: reward, inProject: project)
+  else {
     return pledgeAmountData.isValid
   }
 
@@ -721,7 +719,7 @@ private func shippingRuleValid(
   shippingRule: ShippingRule?,
   context: PledgeViewContext
 ) -> Bool {
-  if context.isCreating {
+  if context.isCreating || context == .updateReward {
     return !reward.shipping.enabled || shippingRule != nil
   }
 
@@ -738,12 +736,14 @@ private func shippingRuleValid(
 
 private func paymentMethodValid(
   project: Project,
+  reward: Reward,
   paymentSourceId: String,
   context: PledgeViewContext
 ) -> Bool {
   guard
     let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id,
-    context.isUpdating
+    context.isUpdating,
+    userIsBacking(reward: reward, inProject: project)
   else {
     return true
   }
@@ -758,9 +758,9 @@ private func allValuesChangedAndValid(
   paymentSourceValid: Bool,
   context: PledgeViewContext
 ) -> Bool {
-  if context.isUpdating {
+  if context.isUpdating, context != .updateReward {
     return amountValid || shippingRuleValid || paymentSourceValid
   }
 
-  return amountValid && shippingRuleValid && paymentSourceValid
+  return amountValid && shippingRuleValid
 }
