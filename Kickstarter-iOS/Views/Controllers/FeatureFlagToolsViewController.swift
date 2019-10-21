@@ -9,7 +9,7 @@ final class FeatureFlagToolsViewController: UITableViewController {
 
   private var features = [(Feature, Bool)]()
   private let reuseId = "FeatureFlagTools.TableViewCell"
-  private let viewModel = FeatureFlagToolsViewModel()
+  private let viewModel: FeatureFlagToolsViewModelType = FeatureFlagToolsViewModel()
 
   static func instantiate() -> FeatureFlagToolsViewController {
     return FeatureFlagToolsViewController(style: .plain)
