@@ -8,16 +8,19 @@ protocol PledgeAddNewCardViewDelegate: AnyObject {
 }
 
 final class PledgeAddNewCardView: UIView {
-  private lazy var addNewCardImageView: UIImageView = {
-    UIImageView(image: UIImage.init(named: "icon--add"))
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
 
-  private lazy var addNewCardImageViewContainer = { UIView(frame: .zero) }()
   private lazy var addNewCardButton: UIButton = {
     UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+  private lazy var addNewCardImageView: UIImageView = {
+    UIImageView(image: UIImage.init(named: "icon--add"))
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+  private lazy var addNewCardImageViewContainer = { UIView(frame: .zero) }()
+  private lazy var cardView: UIView = { UIView(frame: .zero) }()
+  private lazy var containerStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var spacer: UIView = { UIView(frame: .zero) }()
 
   weak var delegate: PledgeAddNewCardViewDelegate?
 
@@ -43,8 +46,14 @@ final class PledgeAddNewCardView: UIView {
     super.bindStyles()
 
     _ = self
-      |> pledgeCardViewStyle
       |> \.accessibilityElements .~ [self.addNewCardButton]
+
+    _ = self.cardView
+      |> pledgeCardViewStyle
+
+    _ = self.containerStackView
+      |> verticalStackViewStyle
+      |> \.spacing .~ Styles.grid(2)
 
     _ = self.rootStackView
       |> checkoutCardStackViewStyle
@@ -72,7 +81,14 @@ final class PledgeAddNewCardView: UIView {
   // MARK: Functions
 
   private func configureViews() {
-    _ = (self.rootStackView, self)
+    _ = ([self.cardView, self.spacer], self.containerStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.containerStackView, self)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = (self.rootStackView, self.cardView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
@@ -102,7 +118,9 @@ final class PledgeAddNewCardView: UIView {
       self.addNewCardButton.heightAnchor
         .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
       self.addNewCardImageView.widthAnchor
-        .constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width)
+        .constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width),
+      self.cardView.heightAnchor.constraint(greaterThanOrEqualToConstant:
+        CheckoutConstants.CreditCardView.height)
     ])
   }
 

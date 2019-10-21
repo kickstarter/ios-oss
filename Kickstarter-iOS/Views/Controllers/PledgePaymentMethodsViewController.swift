@@ -21,8 +21,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
-  private lazy var pledgeButton: UIButton = { UIButton.init(type: .custom) }()
-  private lazy var pledgeCardStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var spacer: UIView = { UIView(frame: .zero) }()
@@ -79,10 +77,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     _ = self.cardsStackView
       |> self.cardsStackViewStyle
-
-    _ = self.pledgeCardStackView
-      |> \.axis .~ .horizontal
-      |> \.spacing .~ Styles.grid(2)
 
     _ = self.applePayButton
       |> applePayButtonStyle
@@ -185,112 +179,46 @@ final class PledgePaymentMethodsViewController: UIViewController {
     let addNewCardView: PledgeAddNewCardView = PledgeAddNewCardView(frame: .zero)
       |> \.delegate .~ self
 
-    NSLayoutConstraint.activate([
-      addNewCardView.heightAnchor.constraint(
-        greaterThanOrEqualToConstant:
-        CheckoutConstants.CreditCardView.height
-      )
-    ])
-
-    let spacer = UIView.init(frame: .zero)
-    let addNewCardStackView = UIStackView.init(frame: .zero)
-      |> verticalStackViewStyle
-
-    _ = ([addNewCardView, spacer], addNewCardStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = (cardViews + [addNewCardStackView], self.cardsStackView)
+    _ = (cardViews + [addNewCardView], self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func updateSelectedCard(to card: GraphUserCreditCard.CreditCard) {
-    let stackViews = self.pledgeCardStackView.subviews
-      .compactMap { $0 as? UIStackView }
-
-    for pledgeCardStackView in stackViews {
-      pledgeCardStackView.arrangedSubviews
-        .compactMap { $0 as? PledgeCreditCardView }
-        .forEach { $0.setSelectedCard(card) }
-    }
+    self.cardsStackView.arrangedSubviews
+      .compactMap { $0 as? PledgeCreditCardView }
+      .forEach { $0.setSelectedCard(card) }
   }
 
-  private func newCardViews(with cardValues: CardViewValues) -> [UIStackView] {
+  private func newCardViews(with cardValues: CardViewValues) -> [UIView] {
     let selectedCard = cardValues.cards.first
     let cards = cardValues.cards
     let availableCardTypes = cardValues.availableCardTypes
 
-    return cards.map { card -> UIStackView in
+    return cards.map { card -> PledgeCreditCardView in
       let cardView = PledgeCreditCardView(frame: .zero)
         |> \.delegate .~ self
 
-      NSLayoutConstraint.activate([
-        cardView.heightAnchor.constraint(
-          greaterThanOrEqualToConstant:
-          CheckoutConstants.CreditCardView.height
-        )
-      ])
-
-      cardView.configureWith(value: card)
-
-      guard let cardBrand = card.type?.rawValue else { return self.pledgeCardStackView }
+      guard let cardBrand = card.type?.rawValue else { return cardView }
       let isAvailableCardType = availableCardTypes.contains(cardBrand)
 
       if let selectedCard = selectedCard {
         if isAvailableCardType {
-          availableCard(cardView, with: selectedCard)
+          cardView.configureWith(value: (card: card, isEnabled: true, projectCountry: nil))
+          cardView.setSelectedCard(selectedCard)
         } else if !isAvailableCardType {
-          unavailable(cardView: cardView, with: cardValues.projectCountry)
+          cardView.configureWith(value: (card: card, isEnabled: false,
+                                         projectCountry: cardValues.projectCountry))
         }
       }
-      return self.pledgeCardStackView
+      return cardView
     }
-  }
-
-  private func availableCard(
-    _ cardView: PledgeCreditCardView,
-    with selectedCard: GraphUserCreditCard.CreditCard
-  ) {
-    let stackView = UIStackView.init(frame: .zero)
-      |> \.axis .~ .vertical
-      |> \.spacing .~ Styles.grid(2)
-
-    cardView.setSelectedCard(selectedCard)
-    let spacer = UIView.init(frame: .zero)
-
-    _ = ([cardView, spacer], stackView)
-      |> ksr_addArrangedSubviewsToStackView()
-    _ = ([stackView], self.pledgeCardStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-  }
-
-  private func unavailable(cardView: PledgeCreditCardView, with restrictedProjectCountry: String) {
-    let stackView = UIStackView.init(frame: .zero)
-      |> \.axis .~ .vertical
-      |> \.spacing .~ Styles.grid(2)
-
-    let label = UILabel(frame: .zero)
-      |> self.cardRestrictionLabelStyle
-      |> \.text %~ { _ in
-        Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-          project_country: restrictedProjectCountry
-        )
-      }
-
-    cardView.setDisabledCard(false)
-
-    _ = ([cardView], stackView)
-      |> ksr_addArrangedSubviewsToStackView()
-    _ = ([label], stackView)
-      |> ksr_addArrangedSubviewsToStackView()
-    _ = ([stackView], self.pledgeCardStackView)
-      |> ksr_addArrangedSubviewsToStackView()
   }
 
   // MARK: - Styles
 
   private let cardsStackViewStyle: StackViewStyle = { stackView in
     stackView
-      |> \.spacing .~ Styles.grid(2)
+      |> \.spacing .~ Styles.grid(0)
   }
 
   private let rootStackViewStyle: StackViewStyle = { stackView in

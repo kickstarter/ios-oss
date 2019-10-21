@@ -33,7 +33,7 @@ final class ManagePledgePaymentMethodView: UIView {
   // MARK: - Configuration
 
   public func configure(with card: GraphUserCreditCard.CreditCard) {
-    self.viewModel.inputs.configureWith(value: card)
+    self.viewModel.inputs.configureWith(value:(card: card, isEnabled: true, projectCountry: nil))
   }
 
   private func configureViews() {

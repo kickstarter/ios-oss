@@ -14,6 +14,8 @@ final class PledgeCreditCardView: UIView {
   // MARK: - Properties
 
   private let adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let cardView: UIView = { UIView(frame: .zero) }()
+  private let containerStackView: UIStackView = { UIStackView(frame: .zero) }()
   weak var delegate: PledgeCreditCardViewDelegate?
   private let expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let imageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -21,6 +23,8 @@ final class PledgeCreditCardView: UIView {
   private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let selectButton: UIButton = { UIButton(type: .custom) }()
+  private lazy var spacer: UIView = { UIView(frame: .zero) }()
+  private let unavailableCardTypeLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel: PledgeCreditCardViewModelType = PledgeCreditCardViewModel()
 
   // MARK: - Lifecycle
@@ -43,6 +47,13 @@ final class PledgeCreditCardView: UIView {
     _ = self
       |> \.accessibilityElements .~ self.subviews
 
+    _ = ([self.cardView, self.unavailableCardTypeLabel, self.spacer], self.containerStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.containerStackView, self)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
     _ = ([self.lastFourLabel, self.expirationDateLabel], self.labelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -52,7 +63,7 @@ final class PledgeCreditCardView: UIView {
     _ = ([self.adaptableStackView, self.selectButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.rootStackView, self)
+    _ = (self.rootStackView, self.cardView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
@@ -66,7 +77,10 @@ final class PledgeCreditCardView: UIView {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalToConstant: CheckoutConstants.PaymentSource.Card.width),
       self.selectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
-      self.imageView.widthAnchor.constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width)
+      self.imageView.widthAnchor.constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width),
+      self.cardView.heightAnchor.constraint(greaterThanOrEqualToConstant:
+        CheckoutConstants.CreditCardView.height
+      )
     ])
   }
 
@@ -75,8 +89,18 @@ final class PledgeCreditCardView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
+    _ = self.cardView
       |> pledgeCardViewStyle
+
+    _ = self.containerStackView
+      |> verticalStackViewStyle
+      |> \.spacing .~ Styles.grid(2)
+
+    _ = self.unavailableCardTypeLabel
+      |> \.numberOfLines .~ 0
+      |> \.font .~ UIFont.ksr_caption1().bolded
+      |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+      |> \.textAlignment .~ .center
 
     _ = self.imageView
       |> cardImageViewStyle
@@ -110,9 +134,12 @@ final class PledgeCreditCardView: UIView {
 
     self.selectButton.rac.title = self.viewModel.outputs.selectButtonTitle
     self.selectButton.rac.selected = self.viewModel.outputs.selectButtonIsSelected
-    self.selectButton.rac.enabled = self.viewModel.outputs.disableButton
+    self.selectButton.rac.enabled = self.viewModel.outputs.selectButtonEnabled
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
+    self.unavailableCardTypeLabel.rac.hidden = self.viewModel.outputs.unavailableCardLabelHidden
+    self.unavailableCardTypeLabel.rac.text = self.viewModel.outputs.unavailableCardText
+    self.spacer.rac.hidden = self.viewModel.outputs.spacerIsHidden
 
     self.viewModel.outputs.cardImage
       .observeForUI()
@@ -129,7 +156,7 @@ final class PledgeCreditCardView: UIView {
       }
   }
 
-  func configureWith(value: GraphUserCreditCard.CreditCard) {
+  func configureWith(value: PledgeCreditCardValue) {
     self.viewModel.inputs.configureWith(value: value)
   }
 
@@ -137,10 +164,6 @@ final class PledgeCreditCardView: UIView {
 
   func setSelectedCard(_ card: GraphUserCreditCard.CreditCard) {
     self.viewModel.inputs.setSelectedCard(card)
-  }
-
-  func setDisabledCard(_ disabled: Bool) {
-    self.viewModel.inputs.setDisabledCard(disabled)
   }
 
   @objc func selectButtonTapped() {
