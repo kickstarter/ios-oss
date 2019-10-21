@@ -60,9 +60,14 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     let minValue = minAndMax
       .map(first)
 
+    let shippingCost = Signal.merge(
+      self.projectAndRewardProperty.signal.mapConst(0),
+      self.shippingCostProperty.signal
+    )
+
     let maxValue = minAndMax
       .map(second)
-      .combineLatest(with: self.shippingCostProperty.signal)
+      .combineLatest(with: shippingCost)
       .map { max, shippingCost in max - shippingCost }
 
     let textFieldInputValue = self.textFieldDidEndEditingProperty.signal

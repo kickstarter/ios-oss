@@ -73,6 +73,16 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.textFieldValue.assertValues(["690"])
   }
 
+  func testAmountMax_WhenShippingCostUpdates() {
+    self.vm.inputs.configureWith(project: .template, reward: Reward.postcards)
+
+    self.amountMax.assertValues([10_000])
+
+    self.vm.inputs.updateMaximumPledgeAmount(with: 20)
+
+    self.amountMax.assertValues([10_000, 9_980])
+  }
+
   func testAmountCurrencyAndStepper_NoReward() {
     self.vm.inputs.configureWith(project: .template, reward: Reward.noReward)
 
@@ -156,6 +166,27 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([200])
     self.textFieldValue.assertValues(["200"])
+  }
+
+  func testDoneButtonIsEnabled_WithMaxAmount_WhenShippingCostUpdates() {
+    
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+
+    self.amountMax.assertValues([10_000])
+
+    self.vm.inputs.textFieldDidEndEditing("10000")
+
+    self.doneButtonIsEnabled.assertValues([true])
+
+    self.vm.inputs.updateMaximumPledgeAmount(with: 10)
+
+    self.amountMax.assertValues([10_000, 10_000, 9_990])
+    self.doneButtonIsEnabled.assertValues([true, false])
+
+    self.vm.inputs.updateMaximumPledgeAmount(with: 0)
+
+    self.amountMax.assertValues([10_000, 10_000, 9_990, 10_000])
+    self.doneButtonIsEnabled.assertValues([true, false, true])
   }
 
   func testDoneButtonIsEnabled_Stepper_NoReward() {
@@ -751,6 +782,24 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.stepperValueChanged(1)
     self.labelTextColor.assertValues([green, red, green, red, green])
+  }
+
+  func testLabelTextColor_WhenShippingCostUpdates() {
+    let green = UIColor.ksr_green_500
+    let red = UIColor.ksr_red_400
+
+    self.vm.inputs.configureWith(project: .template, reward: .template)
+
+    self.labelTextColor.assertValues([green])
+
+    self.vm.inputs.stepperValueChanged(10_000)
+    self.labelTextColor.assertValues([green])
+
+    self.vm.inputs.updateMaximumPledgeAmount(with: 30)
+    self.labelTextColor.assertValues([green, red])
+
+    self.vm.inputs.stepperValueChanged(9_970)
+    self.labelTextColor.assertValues([green, red, green])
   }
 
   func testMinPledgeAmountLabelIsHidden() {
