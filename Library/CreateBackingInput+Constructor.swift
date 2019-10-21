@@ -11,10 +11,10 @@ extension CreateBackingInput {
     paymentSourceId: String
   ) -> CreateBackingInput {
     let pledgeParams = sanitizedPledgeParameters(
-        from: reward,
-        pledgeAmount: pledgeAmount,
-        selectedShippingRule: selectedShippingRule
-      )
+      from: reward,
+      pledgeAmount: pledgeAmount,
+      selectedShippingRule: selectedShippingRule
+    )
 
     return CreateBackingInput(
       amount: pledgeParams.pledgeTotal,
