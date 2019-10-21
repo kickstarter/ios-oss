@@ -1488,23 +1488,61 @@ final class PledgeViewModelTests: TestCase {
     self.submitButtonTitle.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .updateReward)
-    self.vm.inputs.viewDidLoad()
-
-    self.submitButtonTitle.assertValues(["Confirm"])
-    self.submitButtonEnabled.assertValues([false])
-
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-      with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          state: .successful,
+          backing: .init(
+            requiresAction: false,
+            clientSecret: "client-secret"
+          )
+        )
+      )
     )
 
-    self.submitButtonEnabled.assertValues([false, false], "Amount unchanged")
-
-    self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
-
-    self.submitButtonEnabled.assertValues(
-      [false, false, true], "Shipping rule and amount unchanged, button enabled due to different reward"
+    let mockService = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
     )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .updateReward)
+      self.vm.inputs.viewDidLoad()
+
+      self.submitButtonTitle.assertValues(["Confirm"])
+      self.submitButtonEnabled.assertValues([false])
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
+      )
+
+      self.submitButtonEnabled.assertValues([false, false], "Amount unchanged")
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+
+      self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
+
+      self.submitButtonEnabled.assertValues(
+        [false, false, true], "Shipping rule and amount unchanged, button enabled due to different reward"
+      )
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.submitButtonEnabled.assertValues([false, false, true, false])
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.submitButtonEnabled.assertValues([false, false, true, false, true])
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
+        "Got it! Your changes have been saved."
+      ])
+      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+    }
   }
 
   func testChangingPaymentMethodSubmitButtonEnabled_ShippingEnabled() {
