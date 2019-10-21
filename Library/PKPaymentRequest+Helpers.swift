@@ -44,7 +44,7 @@ extension PKPaymentRequest {
       )
     )
 
-    if let selectedShippingRule = selectedShippingRule, selectedShippingRule.cost != 0.0 {
+    if let selectedShippingRule = selectedShippingRule {
       paymentSummaryItems.append(
         PKPaymentSummaryItem(
           label: Strings.Shipping(),
