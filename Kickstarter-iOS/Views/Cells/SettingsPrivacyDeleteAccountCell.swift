@@ -10,7 +10,7 @@ internal protocol SettingsPrivacyDeleteAccountCellDelegate: AnyObject {
 }
 
 internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel = SettingsDeleteAccountCellViewModel()
+  fileprivate let viewModel: SettingsDeleteAccountCellViewModelType = SettingsDeleteAccountCellViewModel()
   internal weak var delegate: SettingsPrivacyDeleteAccountCellDelegate?
 
   @IBOutlet fileprivate var deleteAccountButton: UIButton!
