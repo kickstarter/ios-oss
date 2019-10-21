@@ -13,7 +13,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
   internal weak var delegate: RewardCellDelegate?
-  private let viewModel = RewardCellViewModel()
+  private let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
   internal let rewardCardContainerView = RewardCardContainerView(frame: .zero)
   private lazy var scrollView = {

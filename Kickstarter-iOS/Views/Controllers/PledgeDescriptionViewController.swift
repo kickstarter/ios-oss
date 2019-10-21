@@ -49,7 +49,7 @@ final class PledgeDescriptionViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel = PledgeDescriptionViewModel()
+  private let viewModel: PledgeDescriptionViewModelType = PledgeDescriptionViewModel()
 
   // MARK: - Lifecycle
 
