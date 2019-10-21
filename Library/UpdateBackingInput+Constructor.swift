@@ -6,15 +6,15 @@ extension UpdateBackingInput {
     from updateBackingData: UpdateBackingData,
     isApplePay: Bool
   ) -> UpdateBackingInput {
-    let pledgeAmount: String? = updateBackingData.pledgeAmount.flatMap { pledgeAmount in
-      pledgeAmountString(withAmount: pledgeAmount, shippingRule: updateBackingData.shippingRule)
-    }
-    let backingId: String = updateBackingData.backing.graphID
-    let locationId: String? = updateBackingData.shippingRule.flatMap { "\($0.location.id)" }
-    let rewardId: String? = updateBackingData.reward.graphID
+    let backingId = updateBackingData.backing.graphID
+    let (pledgeTotal, rewardId, locationId) = sanitizedPledgeParameters(
+      from: updateBackingData.reward,
+      pledgeAmount: updateBackingData.pledgeAmount,
+      selectedShippingRule: updateBackingData.shippingRule
+    )
 
     return UpdateBackingInput(
-      amount: pledgeAmount,
+      amount: pledgeTotal,
       applePay: isApplePay ? updateBackingData.applePayParams : nil,
       id: backingId,
       locationId: locationId,
@@ -22,18 +22,4 @@ extension UpdateBackingInput {
       rewardId: rewardId
     )
   }
-}
-
-private func pledgeAmountString(withAmount amount: Double, shippingRule: ShippingRule?) -> String {
-  let pledgeAmountDecimal = Decimal(amount)
-  var shippingAmountDecimal: Decimal = Decimal()
-
-  if let shippingRule = shippingRule, shippingRule.cost > 0 {
-    shippingAmountDecimal = Decimal(shippingRule.cost)
-  }
-
-  let pledgeTotal = NSDecimalNumber(decimal: pledgeAmountDecimal + shippingAmountDecimal)
-  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal.doubleValue)
-
-  return formattedPledgeTotal
 }

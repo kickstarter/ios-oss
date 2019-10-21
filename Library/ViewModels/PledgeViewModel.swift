@@ -12,7 +12,7 @@ public typealias CreateBackingData = (
 public typealias UpdateBackingData = (
   backing: Backing,
   reward: Reward,
-  pledgeAmount: Double?,
+  pledgeAmount: Double,
   shippingRule: ShippingRule?,
   paymentSourceId: String?,
   applePayParams: ApplePayParams?
@@ -355,7 +355,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let updateBackingData = Signal.combineLatest(
       backing,
       reward,
-      pledgeAmount.wrapInOptional(),
+      pledgeAmount,
       selectedShippingRule,
       selectedPaymentSourceId,
       applePayParamsData
