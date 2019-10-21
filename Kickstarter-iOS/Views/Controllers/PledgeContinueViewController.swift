@@ -6,7 +6,7 @@ final class PledgeContinueViewController: UIViewController {
   // MARK: - Properties
 
   private let continueButton = UIButton(type: .custom)
-  private let viewModel = PledgeContinueViewModel()
+  private let viewModel: PledgeContinueViewModelType = PledgeContinueViewModel()
 
   // MARK: - Lifecycle
 
