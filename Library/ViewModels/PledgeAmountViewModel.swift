@@ -15,6 +15,7 @@ public protocol PledgeAmountViewModelInputs {
   func stepperValueChanged(_ value: Double)
   func textFieldDidEndEditing(_ value: String?)
   func textFieldValueChanged(_ value: String?)
+  func updateMaximumPledgeAmount(with shippingCost: Double)
 }
 
 public protocol PledgeAmountViewModelOutputs {
@@ -61,6 +62,8 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     let maxValue = minAndMax
       .map(second)
+      .combineLatest(with: self.shippingCostProperty.signal)
+      .map { max, shippingCost in max - shippingCost }
 
     let textFieldInputValue = self.textFieldDidEndEditingProperty.signal
       .skipNil()
@@ -195,6 +198,11 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
   private let textFieldValueProperty = MutableProperty<String?>(nil)
   public func textFieldValueChanged(_ value: String?) {
     self.textFieldValueProperty.value = value
+  }
+
+  private let shippingCostProperty = MutableProperty<Double>(0)
+  public func updateMaximumPledgeAmount(with shippingCost: Double) {
+    self.shippingCostProperty.value = shippingCost
   }
 
   public let amount: Signal<PledgeAmountData, Never>

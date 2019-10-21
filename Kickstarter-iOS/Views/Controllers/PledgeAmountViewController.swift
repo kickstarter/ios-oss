@@ -156,6 +156,10 @@ final class PledgeAmountViewController: UIViewController {
   @objc func textFieldDidChange(_ textField: UITextField) {
     self.viewModel.inputs.textFieldValueChanged(textField.text)
   }
+
+  func updateMaximumPledgeAmount(with shippingCost: Double) {
+    self.viewModel.inputs.updateMaximumPledgeAmount(with: shippingCost)
+  }
 }
 
 extension PledgeAmountViewController: UITextFieldDelegate {

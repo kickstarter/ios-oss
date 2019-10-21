@@ -66,6 +66,7 @@ public protocol PledgeViewModelOutputs {
   var submitButtonIsLoading: Signal<Bool, Never> { get }
   var submitButtonTitle: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
+  var updateMaximumPledgeAmount: Signal<Double, Never> { get }
   var updatePledgeFailedWithError: Signal<String, Never> { get }
 }
 
@@ -110,6 +111,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let shippingCost = Signal.merge(shippingAmount, initialShippingAmount)
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost).map(+)
+
+    self.updateMaximumPledgeAmount = shippingCost
 
     self.configureWithData = initialData.map { (project: $0.0, reward: $0.1) }
 
@@ -659,6 +662,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let submitButtonIsLoading: Signal<Bool, Never>
   public let submitButtonTitle: Signal<String, Never>
   public let title: Signal<String, Never>
+  public let updateMaximumPledgeAmount: Signal<Double, Never>
   public let updatePledgeFailedWithError: Signal<String, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
