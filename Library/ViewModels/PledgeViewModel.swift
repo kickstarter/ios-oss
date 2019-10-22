@@ -12,7 +12,7 @@ public typealias CreateBackingData = (
 public typealias UpdateBackingData = (
   backing: Backing,
   reward: Reward,
-  pledgeAmount: Double?,
+  pledgeAmount: Double,
   shippingRule: ShippingRule?,
   paymentSourceId: String?,
   applePayParams: ApplePayParams?
@@ -65,6 +65,7 @@ public protocol PledgeViewModelOutputs {
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var submitButtonEnabled: Signal<Bool, Never> { get }
   var submitButtonHidden: Signal<Bool, Never> { get }
+  var submitButtonIsLoading: Signal<Bool, Never> { get }
   var submitButtonTitle: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
 }
@@ -139,6 +140,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       project,
       project.takeWhen(self.traitCollectionDidChangeSignal)
     )
+    .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
     .map(attributedConfirmationString(with:))
     .skipNil()
 
@@ -350,7 +352,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let updateBackingData = Signal.combineLatest(
       backing,
       reward,
-      pledgeAmount.wrapInOptional(),
+      pledgeAmount,
       selectedShippingRule,
       selectedPaymentSourceId,
       applePayParamsData
@@ -392,28 +394,19 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let amountChangedAndValid = Signal.combineLatest(
       project,
+      reward,
       self.pledgeAmountDataSignal,
       context
     )
     .map(amountValid)
 
-    let newPledgeNoShipping = Signal.combineLatest(
-      reward.map { $0.shipping.enabled },
-      context.map { $0.isCreating }
+    let shippingRuleChangedAndValid = Signal.combineLatest(
+      project,
+      reward,
+      selectedShippingRule,
+      context
     )
-    .filter(first >>> isFalse)
-    .map { !$0 && $1 }
-
-    let shippingRuleChangedAndValid = Signal.merge(
-      newPledgeNoShipping,
-      Signal.combineLatest(
-        project,
-        reward,
-        self.shippingRuleSelectedSignal,
-        context
-      )
-      .map(shippingRuleValid)
-    )
+    .map(shippingRuleValid)
 
     let notChangingPaymentMethod = context.map { context in
       context.isUpdating && context != .changePaymentMethod
@@ -424,6 +417,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       notChangingPaymentMethod.mapConst(false),
       Signal.combineLatest(
         project,
+        reward,
         self.creditCardSelectedSignal,
         context
       )
@@ -439,11 +433,28 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map(allValuesChangedAndValid)
 
     self.submitButtonEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(false),
+      self.viewDidLoadProperty.signal.mapConst(false)
+        .take(until: valuesChangedAndValid.ignoreValues()),
       valuesChangedAndValid,
       self.submitButtonTappedSignal.signal.mapConst(false),
       createBackingEvent.filter { $0.isTerminating }.mapConst(true),
       updateBackingEvent.filter { $0.isTerminating }.mapConst(true)
+    )
+    .skipRepeats()
+
+    let createButtonIsLoading = Signal.merge(
+      createButtonTapped.mapConst(true),
+      createBackingEvent.filter { $0.isTerminating }.mapConst(false)
+    )
+
+    let updateButtonIsLoading = Signal.merge(
+      updateButtonTapped.mapConst(true),
+      updateBackingEvent.filter { $0.isTerminating }.mapConst(false)
+    )
+
+    self.submitButtonIsLoading = Signal.merge(
+      createButtonIsLoading,
+      updateButtonIsLoading
     )
 
     let submitButtonTapped = Signal.merge(
@@ -671,6 +682,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let showApplePayAlert: Signal<(String, String), Never>
   public let submitButtonEnabled: Signal<Bool, Never>
   public let submitButtonHidden: Signal<Bool, Never>
+  public let submitButtonIsLoading: Signal<Bool, Never>
   public let submitButtonTitle: Signal<String, Never>
   public let title: Signal<String, Never>
 
@@ -724,10 +736,15 @@ private func attributedConfirmationString(with project: Project) -> NSAttributed
 
 private func amountValid(
   project: Project,
+  reward: Reward,
   pledgeAmountData: PledgeAmountData,
   context: PledgeViewContext
 ) -> Bool {
-  guard let backing = project.personalization.backing, context.isUpdating else {
+  guard
+    let backing = project.personalization.backing,
+    context.isUpdating,
+    userIsBacking(reward: reward, inProject: project)
+  else {
     return pledgeAmountData.isValid
   }
 
@@ -740,7 +757,7 @@ private func shippingRuleValid(
   shippingRule: ShippingRule?,
   context: PledgeViewContext
 ) -> Bool {
-  if context.isCreating {
+  if context.isCreating || context == .updateReward {
     return !reward.shipping.enabled || shippingRule != nil
   }
 
@@ -757,12 +774,14 @@ private func shippingRuleValid(
 
 private func paymentMethodValid(
   project: Project,
+  reward: Reward,
   paymentSourceId: String,
   context: PledgeViewContext
 ) -> Bool {
   guard
     let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id,
-    context.isUpdating
+    context.isUpdating,
+    userIsBacking(reward: reward, inProject: project)
   else {
     return true
   }
@@ -777,9 +796,9 @@ private func allValuesChangedAndValid(
   paymentSourceValid: Bool,
   context: PledgeViewContext
 ) -> Bool {
-  if context.isUpdating {
+  if context.isUpdating, context != .updateReward {
     return amountValid || shippingRuleValid || paymentSourceValid
   }
 
-  return amountValid && shippingRuleValid && paymentSourceValid
+  return amountValid && shippingRuleValid
 }

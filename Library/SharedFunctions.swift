@@ -216,3 +216,27 @@ internal func classNameWithoutModule(_ class: AnyClass) -> String {
     .dropFirst()
     .joined(separator: ".")
 }
+
+typealias SanitizedPledgeParams = (pledgeTotal: String, rewardId: String?, locationId: String?)
+
+internal func sanitizedPledgeParameters(
+  from reward: Reward,
+  pledgeAmount: Double,
+  selectedShippingRule: ShippingRule?
+) -> SanitizedPledgeParams {
+  let pledgeAmountDecimal = Decimal(pledgeAmount)
+  var shippingAmountDecimal: Decimal = Decimal()
+  var shippingLocationId: String?
+
+  if let shippingRule = selectedShippingRule {
+    shippingAmountDecimal = Decimal(shippingRule.cost)
+    shippingLocationId = String(shippingRule.location.id)
+  }
+
+  let pledgeTotal = NSDecimalNumber(decimal: pledgeAmountDecimal + shippingAmountDecimal)
+  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal.doubleValue)
+
+  let rewardId = reward == Reward.noReward ? nil : reward.graphID
+
+  return (formattedPledgeTotal, rewardId, shippingLocationId)
+}

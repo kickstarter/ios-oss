@@ -6,7 +6,7 @@ import ReactiveSwift
 import UIKit
 
 internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel = SettingsRecommendationsCellViewModel()
+  fileprivate let viewModel: SettingsRecommendationsCellViewModelType = SettingsRecommendationsCellViewModel()
 
   @IBOutlet fileprivate var recommendationsLabel: UILabel!
   @IBOutlet fileprivate var recommendationsSwitch: UISwitch!

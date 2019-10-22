@@ -11,28 +11,21 @@ extension CreateApplePayBackingInput {
     stripeToken: String,
     refTag: RefTag?
   ) -> CreateApplePayBackingInput {
-    let pledgeAmountDecimal = Decimal(pledgeAmount)
-    var shippingAmountDecimal: Decimal = Decimal()
-    var shippingLocationId: String?
-
-    if let shippingRule = selectedShippingRule, shippingRule.cost > 0 {
-      shippingAmountDecimal = Decimal(shippingRule.cost)
-      shippingLocationId = String(shippingRule.location.id)
-    }
-
-    let pledgeTotal = NSDecimalNumber(decimal: pledgeAmountDecimal + shippingAmountDecimal)
-    let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal.doubleValue)
-
-    let rewardId = reward == Reward.noReward ? nil : reward.graphID
+    let pledgeParams
+      = sanitizedPledgeParameters(
+        from: reward,
+        pledgeAmount: pledgeAmount,
+        selectedShippingRule: selectedShippingRule
+      )
 
     return CreateApplePayBackingInput(
-      amount: formattedPledgeTotal,
-      locationId: shippingLocationId,
+      amount: pledgeParams.pledgeTotal,
+      locationId: pledgeParams.locationId,
       paymentInstrumentName: pkPaymentData.displayName,
       paymentNetwork: pkPaymentData.network,
       projectId: project.graphID,
       refParam: refTag?.description,
-      rewardId: rewardId,
+      rewardId: pledgeParams.rewardId,
       stripeToken: stripeToken,
       transactionIdentifier: pkPaymentData.transactionIdentifier
     )

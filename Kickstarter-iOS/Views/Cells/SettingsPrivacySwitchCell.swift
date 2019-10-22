@@ -16,7 +16,7 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
   @IBOutlet fileprivate var switchButton: UISwitch!
   @IBOutlet fileprivate var separatorViews: [UIView]!
 
-  private let viewModel = SettingsPrivacySwitchCellViewModel()
+  private let viewModel: SettingsPrivacySwitchCellViewModelType = SettingsPrivacySwitchCellViewModel()
 
   weak var delegate: SettingsPrivacySwitchCellDelegate?
 
@@ -28,7 +28,7 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
   }
 
   func configureWith(value: SettingsPrivacySwitchCellValue) {
-    self.viewModel.configure(with: value.user)
+    self.viewModel.inputs.configure(with: value.user)
 
     _ = self.titleLabel
       |> \.text .~ value.cellType.title
@@ -69,9 +69,9 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.switchButton.rac.on = self.viewModel.privacySwitchIsOn
+    self.switchButton.rac.on = self.viewModel.outputs.privacySwitchIsOn
 
-    self.viewModel.privacySwitchToggledOn
+    self.viewModel.outputs.privacySwitchToggledOn
       .observeForControllerAction()
       .observeValues { [weak self] privacyEnabled in
         guard let self = self else { return }
@@ -81,6 +81,6 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
   }
 
   @IBAction func switchToggled(_ sender: UISwitch) {
-    self.viewModel.switchToggled(on: sender.isOn)
+    self.viewModel.inputs.switchToggled(on: sender.isOn)
   }
 }

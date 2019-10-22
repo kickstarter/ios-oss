@@ -78,7 +78,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> \.delegate .~ self
   }()
 
-  private lazy var submitButton: UIButton = { UIButton(type: .custom) }()
+  private lazy var submitButton: LoadingButton = { LoadingButton(type: .custom) }()
 
   private lazy var summarySectionViews = {
     [
@@ -326,6 +326,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
         _ = self
           |> \.title %~ { _ in title }
+      }
+
+    self.viewModel.outputs.submitButtonIsLoading
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        self?.submitButton.isLoading = isLoading
       }
 
     // MARK: Errors
