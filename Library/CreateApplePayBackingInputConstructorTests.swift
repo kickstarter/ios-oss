@@ -5,7 +5,7 @@ import Prelude
 import XCTest
 
 final class CreateApplePayBackingInputConstructorTests: XCTestCase {
-  func testCreateApplePayBackingInput_NoShipping() {
+  func testCreateApplePayBackingInput_NoShipping_NoReward() {
     let project = Project.template
     let reward = Reward.noReward
 
@@ -34,7 +34,7 @@ final class CreateApplePayBackingInputConstructorTests: XCTestCase {
     XCTAssertEqual(input.refParam, "project_page")
   }
 
-  func testCreateApplePayBackingInput_WithShipping() {
+  func testCreateApplePayBackingInput_WithShipping_WithReward() {
     let project = Project.template
     let reward = Reward.template
     let shippingRule = ShippingRule.template

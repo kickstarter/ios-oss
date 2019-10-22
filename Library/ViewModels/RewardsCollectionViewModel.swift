@@ -33,7 +33,7 @@ public protocol RewardsCollectionViewModelOutputs {
   func selectedReward() -> Reward?
 }
 
-protocol RewardsCollectionViewModelType {
+public protocol RewardsCollectionViewModelType {
   var inputs: RewardsCollectionViewModelInputs { get }
   var outputs: RewardsCollectionViewModelOutputs { get }
 }
@@ -56,7 +56,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.title = configData
       .map(third)
       .takeWhen(self.viewDidLoadProperty.signal.ignoreValues())
-      .map(title(for:))
+      .map(titleForContext)
 
     self.reloadDataWithValues = Signal.combineLatest(project, rewards)
       .map { project, rewards in
@@ -179,7 +179,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public var outputs: RewardsCollectionViewModelOutputs { return self }
 }
 
-private func title(for context: RewardsCollectionViewContext) -> String {
+private func titleForContext(_ context: RewardsCollectionViewContext) -> String {
   return context == .createPledge ? Strings.Back_this_project() : Strings.Choose_another_reward()
 }
 

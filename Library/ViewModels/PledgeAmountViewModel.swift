@@ -28,7 +28,6 @@ public protocol PledgeAmountViewModelOutputs {
   var minPledgeAmountLabelText: Signal<String, Never> { get }
   var stepperMaxValue: Signal<Double, Never> { get }
   var stepperMinValue: Signal<Double, Never> { get }
-  var stepperStepValue: Signal<Double, Never> { get }
   var stepperValue: Signal<Double, Never> { get }
   var textFieldIsFirstResponder: Signal<Bool, Never> { get }
   var textFieldTextColor: Signal<UIColor?, Never> { get }
@@ -160,8 +159,6 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       )
     }
 
-    self.stepperStepValue = minValue
-
     self.stepperValue = Signal.merge(
       minValue,
       self.amount.map { $0.0 }
@@ -210,7 +207,6 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
   public let minPledgeAmountLabelText: Signal<String, Never>
   public let stepperMaxValue: Signal<Double, Never>
   public let stepperMinValue: Signal<Double, Never>
-  public let stepperStepValue: Signal<Double, Never>
   public let stepperValue: Signal<Double, Never>
   public let textFieldTextColor: Signal<UIColor?, Never>
   public let textFieldIsFirstResponder: Signal<Bool, Never>

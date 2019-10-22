@@ -646,6 +646,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
             "type": PKPaymentSummaryItemType.final.rawValue
           ],
           [
+            "label": "Shipping",
+            "amount": NSDecimalNumber(value: shippingRule.cost),
+            "type": PKPaymentSummaryItemType.final.rawValue
+          ],
+          [
             "label": "Kickstarter (if funded)",
             "amount": NSDecimalNumber(value: reward.minimum),
             "type": PKPaymentSummaryItemType.final.rawValue
