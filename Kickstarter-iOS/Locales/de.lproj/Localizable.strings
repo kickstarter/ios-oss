@@ -230,6 +230,7 @@
 "How_backers_found_your_project" = "Wie Unterstützer dein Projekt gefunden haben";
 "Id_just_like_to_support_the_project" = "Ich möchte das Projekt einfach nur unterstützen.";
 "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Wenn das Projekt erfolgreich finanziert wird, wird deine Karte am <b>%{project_deadline}</b> belastet.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "Wenn dieses Projekt das Finanzierungsziel erreicht, wird deine Karte am <b>%{project_deadline}</b> mit <b>%{total}</b> belastet.";
 "If_you_turn_following_off" = "Wenn du diese Funktion abwählst, kannst du niemandem mehr folgen und es wird dir auch niemand folgen können. Dein Profil wird den Leuten, denen du gefolgt bist, nicht mehr angezeigt. Dies kann nicht rückgängig gemacht werden.";
 "If_your_profile_is_private" = "Wenn dein Profil privat ist, sind dein Namen und dein Profilbild für Andere sichtbar.";
 "If_your_profile_is_public" = "Wenn dein Profil nicht privat ist, sind außerdem die Projekte, die du unterstützt hast, dein Standort, deine Biografie und deine Websites für Andere sichtbar.";
