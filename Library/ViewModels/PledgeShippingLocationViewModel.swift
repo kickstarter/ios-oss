@@ -163,13 +163,8 @@ private func shippingValue(of project: Project, with shippingRuleCost: Double) -
 private func determineShippingRule(with project: Project, shippingRules: [ShippingRule]) -> ShippingRule? {
   guard
     let backing = project.personalization.backing,
-    let selectedRule = shippingRules.filter({ $0.location.id == backing.locationId }).first,
-    locationId(selectedRule.location.id, isValidIn: shippingRules)
+    let selectedRule = shippingRules.filter({ $0.location.id == backing.locationId }).first
   else { return defaultShippingRule(fromShippingRules: shippingRules) }
 
   return selectedRule
-}
-
-private func locationId(_ locationId: Int, isValidIn shippingRules: [ShippingRule]) -> Bool {
-  return shippingRules.map { $0.location.id }.contains(locationId)
 }
