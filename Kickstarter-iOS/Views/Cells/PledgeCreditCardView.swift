@@ -125,7 +125,8 @@ final class PledgeCreditCardView: UIView {
       |> checkoutCardStackViewStyle
 
     _ = self.selectButton
-      |> selectButtonStyle
+      |> blackButtonStyle
+      |> UIButton.lens.title(for: .disabled) %~ { _ in Strings.Not_available() }
   }
 
   // MARK: - View model
@@ -197,17 +198,4 @@ private let labelsStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
     |> \.spacing .~ Styles.gridHalf(1)
-}
-
-private let selectButtonStyle: ButtonStyle = { button in
-  button
-    |> baseButtonStyle
-    |> UIButton.lens.titleColor(for: .normal) .~ .white
-    |> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_soft_black
-    |> UIButton.lens.titleColor(for: .highlighted) .~ .white
-    |> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_soft_black.mixDarker(0.66)
-    |> UIButton.lens.title(for: .disabled) %~ { _ in Strings.Not_available() }
-    |> UIButton.lens.backgroundColor(for: .disabled) .~ .ksr_grey_500
-    |> UIButton.lens.titleColor(for: .disabled) .~ .ksr_text_dark_grey_500
-    |> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_soft_black.mixLighter(0.46)
 }
