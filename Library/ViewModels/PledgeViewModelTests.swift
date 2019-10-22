@@ -1155,7 +1155,7 @@ final class PledgeViewModelTests: TestCase {
 
   func testCreateBacking_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(state: .verifying, backing: .init(requiresAction: false, clientSecret: nil))
+      checkout: Checkout(state: .verifying, backing: .init(clientSecret: nil, requiresAction: false))
     )
     let mockService = MockService(
       createBackingResult:
@@ -1245,7 +1245,7 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        state: .verifying, backing: .init(requiresAction: true, clientSecret: "client-secret")
+        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
     )
     let mockService = MockService(
@@ -1313,7 +1313,7 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Failed() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        state: .verifying, backing: .init(requiresAction: true, clientSecret: "client-secret")
+        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
     )
     let mockService = MockService(
@@ -1383,7 +1383,7 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Canceled() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        state: .verifying, backing: .init(requiresAction: true, clientSecret: "client-secret")
+        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
     )
     let mockService = MockService(
@@ -1470,8 +1470,8 @@ final class PledgeViewModelTests: TestCase {
         checkout: .init(
           state: .successful,
           backing: .init(
-            requiresAction: false,
-            clientSecret: "client-secret"
+            clientSecret: "client-secret",
+            requiresAction: false
           )
         )
       )
@@ -1612,8 +1612,8 @@ final class PledgeViewModelTests: TestCase {
         checkout: .init(
           state: .successful,
           backing: .init(
-            requiresAction: true,
-            clientSecret: "client-secret"
+            clientSecret: "client-secret",
+            requiresAction: true
           )
         )
       )
@@ -1698,8 +1698,8 @@ final class PledgeViewModelTests: TestCase {
         checkout: .init(
           state: .successful,
           backing: .init(
-            requiresAction: true,
-            clientSecret: "client-secret"
+            clientSecret: "client-secret",
+            requiresAction: true
           )
         )
       )
@@ -1784,8 +1784,8 @@ final class PledgeViewModelTests: TestCase {
         checkout: .init(
           state: .successful,
           backing: .init(
-            requiresAction: true,
-            clientSecret: "client-secret"
+            clientSecret: "client-secret",
+            requiresAction: true
           )
         )
       )
@@ -1968,8 +1968,8 @@ final class PledgeViewModelTests: TestCase {
         checkout: .init(
           state: .successful,
           backing: .init(
-            requiresAction: false,
-            clientSecret: "client-secret"
+            clientSecret: "client-secret",
+            requiresAction: false
           )
         )
       )
@@ -2107,8 +2107,8 @@ final class PledgeViewModelTests: TestCase {
         checkout: .init(
           state: .successful,
           backing: .init(
-            requiresAction: false,
-            clientSecret: "client-secret"
+            clientSecret: "client-secret",
+            requiresAction: false
           )
         )
       )
@@ -2252,8 +2252,8 @@ final class PledgeViewModelTests: TestCase {
         checkout: .init(
           state: .successful,
           backing: .init(
-            requiresAction: false,
-            clientSecret: "client-secret"
+            clientSecret: "client-secret",
+            requiresAction: false
           )
         )
       )
