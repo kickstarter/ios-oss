@@ -2,8 +2,8 @@ import Foundation
 import KsApi
 
 public protocol StripeSCARequiring {
-  var requiresSCAFlow: Bool { get }
   var clientSecret: String? { get }
+  var requiresSCAFlow: Bool { get }
 }
 
 extension UpdateBackingEnvelope: StripeSCARequiring {
@@ -27,9 +27,9 @@ extension CreateBackingEnvelope: StripeSCARequiring {
 }
 
 public enum StripePaymentHandlerActionStatus {
-  case succeeded
   case canceled
   case failed
+  case succeeded
 }
 
 public protocol StripePaymentHandlerActionStatusType {

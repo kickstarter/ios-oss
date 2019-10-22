@@ -12,7 +12,7 @@ public struct Checkout: Decodable {
   }
 
   public struct Backing: Decodable {
-    public let requiresAction: Bool
     public let clientSecret: String?
+    public let requiresAction: Bool
   }
 }
