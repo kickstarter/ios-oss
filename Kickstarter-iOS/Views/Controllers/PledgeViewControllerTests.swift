@@ -43,6 +43,7 @@ final class PledgeViewControllerTests: TestCase {
         controller.configureWith(project: .template, reward: reward, refTag: nil, context: .update)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
+        self.scheduler.advance(by: .milliseconds(10))
         self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
@@ -59,7 +60,7 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id

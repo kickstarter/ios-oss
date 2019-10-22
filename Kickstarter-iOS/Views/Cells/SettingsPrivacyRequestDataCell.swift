@@ -11,7 +11,7 @@ internal protocol SettingsRequestDataCellDelegate: AnyObject {
 }
 
 internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel = SettingsRequestDataCellViewModel()
+  fileprivate let viewModel: SettingsRequestDataCellViewModelType = SettingsRequestDataCellViewModel()
   internal weak var delegate: SettingsRequestDataCellDelegate?
 
   @IBOutlet fileprivate var containerView: UIView!
