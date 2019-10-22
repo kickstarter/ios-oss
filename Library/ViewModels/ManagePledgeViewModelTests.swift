@@ -490,7 +490,10 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       self.showSuccessBannerWithMessage.assertValues(["Got it! Your changes have been saved."])
-      self.configurePaymentMethodView.assertValues([GraphUserCreditCard.visa, GraphUserCreditCard.visa])
+      self.configurePaymentMethodView.assertValues([
+        Backing.PaymentSource.template,
+        Backing.PaymentSource.template
+      ])
       self.configurePledgeSummaryView.assertValues([project, updatedProject])
       self.configureRewardSummaryViewProject.assertValues([project, updatedProject])
       self.configureRewardSummaryViewReward.assertValues([.template, .template])

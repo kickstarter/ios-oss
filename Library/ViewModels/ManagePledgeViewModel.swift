@@ -55,7 +55,7 @@ public final class ManagePledgeViewModel:
         AppEnvironment.current.apiService.fetchProject(param: Param.id(project.id))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
-      }.logEvents(identifier: "***refreshProject**")
+      }
 
     let project = Signal.merge(initialProject, refreshProjectEvent.values())
     let backing = project

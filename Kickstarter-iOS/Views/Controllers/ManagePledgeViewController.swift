@@ -160,7 +160,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.viewModel.outputs.configurePledgeSummaryView
       .observeForUI()
       .observeValues { [weak self] project in
-        print("**Backing: \(project.personalization.backing)")
         self?.pledgeSummaryViewController.configureWith(project)
       }
 
