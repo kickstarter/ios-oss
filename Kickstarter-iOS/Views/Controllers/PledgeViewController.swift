@@ -390,7 +390,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   }
 }
 
-// MARK: STPAuthenticationContext
+// MARK: - STPAuthenticationContext
 
 extension PledgeViewController: STPAuthenticationContext {
   func authenticationPresentingViewController() -> UIViewController {
