@@ -6,7 +6,7 @@ import UIKit
 
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
 public typealias CardViewValues = (
-  cardAndIsAvailableCardType: [(GraphUserCreditCard.CreditCard, Bool)], projectCountry: String
+  cardAndIsAvailableCardType: [(cards: GraphUserCreditCard.CreditCard, cardTypeIsAvailable: Bool)], projectCountry: String
 )
 
 public protocol PledgePaymentMethodsViewModelInputs {
@@ -139,15 +139,17 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
 }
 
-private func cardTypeAvailable(cards: [GraphUserCreditCard.CreditCard], availableCardTypes: [String]) -> [(GraphUserCreditCard.CreditCard, Bool)] {
-  var arr: [(GraphUserCreditCard.CreditCard, Bool)] = []
+private func cardTypeAvailable(cards: [GraphUserCreditCard.CreditCard], availableCardTypes: [String])
+  -> [(cards: GraphUserCreditCard.CreditCard, cardTypeIsAvailable: Bool)] {
+  var cardsWithIsAvailableCardType: [(GraphUserCreditCard.CreditCard, Bool)] = []
+
   cards.forEach { card in
     guard let cardBrand = card.type?.rawValue else { return }
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
-    arr.append((card, isAvailableCardType))
+    cardsWithIsAvailableCardType.append((card, isAvailableCardType))
   }
 
-  return arr
+  return cardsWithIsAvailableCardType
 }
 
 private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {
