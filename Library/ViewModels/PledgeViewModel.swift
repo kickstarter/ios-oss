@@ -60,7 +60,7 @@ public protocol PledgeViewModelOutputs {
   var popViewController: Signal<(), Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
-  var showApplePayAlert: Signal<(String, String), Never> { get }
+  var showMaximumPledgeAmountAlert: Signal<(String, String), Never> { get }
   var submitButtonEnabled: Signal<Bool, Never> { get }
   var submitButtonHidden: Signal<Bool, Never> { get }
   var submitButtonIsLoading: Signal<Bool, Never> { get }
@@ -158,6 +158,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let pledgeAmountIsValid = self.pledgeAmountDataSignal
       .map { $0.isValid }
 
+    pledgeAmountIsValid.observeValues { v in
+      print(v)
+    }
+
     self.shippingLocationViewHidden = reward
       .map { $0.shipping.enabled }
       .negate()
@@ -250,22 +254,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.goToApplePayPaymentAuthorization = paymentAuthorizationData
       .takeWhen(goToApplePayPaymentAuthorization)
-
-    self.showApplePayAlert = Signal.combineLatest(
-      project,
-      self.pledgeAmountDataSignal
-    )
-    .takeWhen(showApplePayAlert)
-    .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
-    .map { project, min, max in
-      (
-        Strings.Almost_there(),
-        Strings.Please_enter_a_pledge_amount_between_min_and_max(
-          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
-          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
-        )
-      )
-    }
 
     let pkPaymentData = self.pkPaymentSignal
       .map { pkPayment -> PKPaymentData? in
@@ -422,6 +410,27 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       )
       .map(shippingRuleValid)
     )
+
+    let amountIsNoLongerValid = pledgeAmountIsValid
+      .takeWhen(shippingRuleChangedAndValid.ignoreValues())
+      .filter(isFalse)
+      .debounce(1, on: AppEnvironment.current.scheduler)
+
+    self.showMaximumPledgeAmountAlert = Signal.combineLatest(
+      project,
+      self.pledgeAmountDataSignal
+      )
+      .takeWhen(Signal.merge(showApplePayAlert, amountIsNoLongerValid))
+      .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
+      .map { project, min, max in
+        (
+          Strings.Almost_there(),
+          Strings.Please_enter_a_pledge_amount_between_min_and_max(
+            min: Format.currency(min, country: project.country, omitCurrencyCode: false),
+            max: Format.currency(max, country: project.country, omitCurrencyCode: false)
+          )
+        )
+    }
 
     let notChangingPaymentMethod = context.map { context in
       context.isUpdating && context != .changePaymentMethod
@@ -656,7 +665,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let popViewController: Signal<(), Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
-  public let showApplePayAlert: Signal<(String, String), Never>
+  public let showMaximumPledgeAmountAlert: Signal<(String, String), Never>
   public let submitButtonEnabled: Signal<Bool, Never>
   public let submitButtonHidden: Signal<Bool, Never>
   public let submitButtonIsLoading: Signal<Bool, Never>

@@ -48,8 +48,8 @@ final class PledgeViewModelTests: TestCase {
   private let pledgeAmountSummaryViewHidden = TestObserver<Bool, Never>()
   private let sectionSeparatorsHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
-  private let showApplePayAlertMessage = TestObserver<String, Never>()
-  private let showApplePayAlertTitle = TestObserver<String, Never>()
+  private let showMaximumPledgeAmountAlertMessage = TestObserver<String, Never>()
+  private let showMaximumPledgeAmountAlertTitle = TestObserver<String, Never>()
   private let submitButtonEnabled = TestObserver<Bool, Never>()
   private let submitButtonHidden = TestObserver<Bool, Never>()
   private let submitButtonIsLoading = TestObserver<Bool, Never>()
@@ -117,8 +117,10 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.outputs.sectionSeparatorsHidden.observe(self.sectionSeparatorsHidden.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
-    self.vm.outputs.showApplePayAlert.map(second).observe(self.showApplePayAlertMessage.observer)
-    self.vm.outputs.showApplePayAlert.map(first).observe(self.showApplePayAlertTitle.observer)
+    self.vm.outputs.showMaximumPledgeAmountErrorMessage.map(second)
+      .observe(self.showApplePayAlertMessage.observer)
+    self.vm.outputs.showMaximumPledgeAmountErrorMessage.map(first)
+      .observe(self.showApplePayAlertTitle.observer)
 
     self.vm.outputs.title.observe(self.title.observer)
 
@@ -787,15 +789,15 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
-    self.showApplePayAlertMessage.assertDidNotEmitValue()
-    self.showApplePayAlertTitle.assertDidNotEmitValue()
+    self.showMaximumPledgeAmountAlertMessage.assertDidNotEmitValue()
+    self.showMaximumPledgeAmountAlertTitle.assertDidNotEmitValue()
 
     self.vm.inputs.applePayButtonTapped()
 
-    self.showApplePayAlertMessage.assertValues(
+    self.showMaximumPledgeAmountAlertMessage.assertValues(
       ["Please enter a pledge amount between US$ 25 and US$ 10,000."]
     )
-    self.showApplePayAlertTitle.assertValues(["Almost there!"])
+    self.showMaximumPledgeAmountAlertTitle.assertValues(["Almost there!"])
   }
 
   func testShowApplePayAlert_WhenApplePayButtonTapped_PledgeInputAmount_BellowMin() {
@@ -808,15 +810,15 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
-    self.showApplePayAlertMessage.assertDidNotEmitValue()
-    self.showApplePayAlertTitle.assertDidNotEmitValue()
+    self.showMaximumPledgeAmountAlertMessage.assertDidNotEmitValue()
+    self.showMaximumPledgeAmountAlertTitle.assertDidNotEmitValue()
 
     self.vm.inputs.applePayButtonTapped()
 
-    self.showApplePayAlertMessage.assertValues(
+    self.showMaximumPledgeAmountAlertMessage.assertValues(
       ["Please enter a pledge amount between US$ 25 and US$ 10,000."]
     )
-    self.showApplePayAlertTitle.assertValues(["Almost there!"])
+    self.showMaximumPledgeAmountAlertTitle.assertValues(["Almost there!"])
   }
 
   func testPaymentAuthorizationViewControllerDidFinish_WithoutCompletingTransaction() {

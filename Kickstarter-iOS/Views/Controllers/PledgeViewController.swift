@@ -348,10 +348,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
 
-    self.viewModel.outputs.showApplePayAlert
+    self.viewModel.outputs.showMaximumPledgeAmountAlert
       .observeForControllerAction()
       .observeValues { [weak self] title, message in
-        self?.presentApplePayInvalidAmountAlert(title: title, message: message)
+        self?.presentMaximumPledgeAmountAlert(title: title, message: message)
       }
   }
 
@@ -378,7 +378,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 
-  private func presentApplePayInvalidAmountAlert(title: String, message: String) {
+  private func presentMaximumPledgeAmountAlert(title: String, message: String) {
     self.present(UIAlertController.alert(title, message: message), animated: true)
   }
 
@@ -448,6 +448,12 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
     didSelect shippingRule: ShippingRule
   ) {
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
+  }
+
+  func pledgeShippingLocationViewControllerDidDisappear(
+    _ viewController: PledgeShippingLocationViewController
+  ) {
+
   }
 }
 
