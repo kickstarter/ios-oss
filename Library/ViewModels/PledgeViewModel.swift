@@ -535,18 +535,19 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.goToThanks = project.takeWhen(createBackingCompletionEvents)
 
-    let createUpdateBackingEventErrors = Signal.merge(
-      deprecatedCreateApplePayBackingEvent.errors().map { $0 as Error },
-      createBackingEvent.errors().map { $0 as Error },
-      updateBackingEvent.errors().map { $0 as Error }
+    let createOrUpdateBackingEventErrors = Signal.merge(
+      deprecatedCreateApplePayBackingCompletedError,
+      createBackingEvent.errors(),
+      updateBackingEvent.errors()
     )
+    .map { $0 as Error }
 
-    let createUpdateApplePayBackingError = createOrUpdateApplePayBackingCompleted
-      .withLatest(from: createUpdateBackingEventErrors)
+    let createOrUpdateApplePayBackingError = createOrUpdateApplePayBackingCompleted
+      .withLatest(from: createOrUpdateBackingEventErrors)
       .map(second)
 
-    let createUpdateBackingError = submitButtonTapped
-      .takePairWhen(createUpdateBackingEventErrors)
+    let createOrUpdateBackingError = submitButtonTapped
+      .takePairWhen(createOrUpdateBackingEventErrors)
       .filter(first >>> isTrue)
       .map(second)
 
@@ -563,8 +564,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.showErrorBannerWithMessage = Signal.merge(
       deprecatedCreateApplePayBackingCompletedError.map { $0 as Error },
-      createUpdateApplePayBackingError,
-      createUpdateBackingError,
+      createOrUpdateApplePayBackingError,
+      createOrUpdateBackingError,
       scaFlowCompletedWithError
     )
     .map { $0.localizedDescription }
