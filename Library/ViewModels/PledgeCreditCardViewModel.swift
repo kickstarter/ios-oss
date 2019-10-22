@@ -63,9 +63,9 @@ public protocol PledgeCreditCardViewModelType {
 public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
   public init() {
-    let creditCard = self.creditCardProperty.signal.skipNil().map(first)
+    let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map(first)
     let selectedCard = self.selectedCardProperty.signal.skipNil()
-    let cardTypeIsAvailable = self.creditCardProperty.signal.skipNil().map(second)
+    let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map(second)
 
     self.cardImage = creditCard
       .map(cardImageForCard)
@@ -105,16 +105,16 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
     self.spacerIsHidden = cardTypeIsAvailable.negate()
     self.selectButtonEnabled = cardTypeIsAvailable
     self.unavailableCardLabelHidden = cardTypeIsAvailable
-    self.unavailableCardText = self.creditCardProperty.signal.skipNil()
+    self.unavailableCardText = self.pledgeCreditCardValueProperty.signal.skipNil()
       .map { Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
         project_country: $0.projectCountry ?? ""
       )
       }
   }
 
-  fileprivate let creditCardProperty = MutableProperty<PledgeCreditCardValue?>(nil)
+  fileprivate let pledgeCreditCardValueProperty = MutableProperty<PledgeCreditCardValue?>(nil)
   public func configureWith(value: PledgeCreditCardValue) {
-    self.creditCardProperty.value = value
+    self.pledgeCreditCardValueProperty.value = value
   }
 
   private let selectedCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
