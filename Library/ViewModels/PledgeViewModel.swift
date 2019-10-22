@@ -540,7 +540,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       createBackingEvent.errors(),
       updateBackingEvent.errors()
     )
-    .map { $0 as Error }
 
     let createOrUpdateApplePayBackingError = createOrUpdateApplePayBackingCompleted
       .withLatest(from: createOrUpdateBackingEventErrors)
@@ -562,13 +561,19 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.notifyDelegateUpdatePledgeDidSucceedWithMessage = updateBackingCompletionEvents
       .mapConst(Strings.Got_it_your_changes_have_been_saved())
 
-    self.showErrorBannerWithMessage = Signal.merge(
-      deprecatedCreateApplePayBackingCompletedError.map { $0 as Error },
+    let graphErrors = Signal.merge(
+      deprecatedCreateApplePayBackingCompletedError,
       createOrUpdateApplePayBackingError,
-      createOrUpdateBackingError,
-      scaFlowCompletedWithError
+      createOrUpdateBackingError
     )
     .map { $0.localizedDescription }
+
+    let scaErrors = scaFlowCompletedWithError.map { $0.localizedDescription }
+
+    self.showErrorBannerWithMessage = Signal.merge(
+      graphErrors,
+      scaErrors
+    )
 
     self.popViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
 

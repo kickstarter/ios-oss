@@ -1148,9 +1148,7 @@ final class PledgeViewModelTests: TestCase {
       )
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
-      self.showErrorBannerWithMessage.assertValues([
-        "The operation couldn’t be completed. (KsApi.GraphError error 5.)"
-      ])
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.goToThanks.assertDidNotEmitValue()
     }
   }
@@ -1240,9 +1238,7 @@ final class PledgeViewModelTests: TestCase {
       self.submitButtonEnabled.assertValues([false, true, false, true])
       self.submitButtonIsLoading.assertValues([true, false])
       self.goToThanks.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertValues(
-        ["The operation couldn’t be completed. (KsApi.GraphError error 5.)"]
-      )
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
     }
   }
 
@@ -2497,9 +2493,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertValues([
-        "The operation couldn’t be completed. (KsApi.GraphError error 5.)"
-      ])
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true])
       self.goToThanks.assertDidNotEmitValue()
     }
