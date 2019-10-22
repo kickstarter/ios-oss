@@ -135,13 +135,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
     .skipNil()
 
-    self.confirmationLabelAttributedText = Signal.merge(
+    let projects = Signal.merge(
       project,
       project.takeWhen(self.traitCollectionDidChangeSignal)
     )
-    .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
-    .map(attributedConfirmationString(with:))
-    .skipNil()
+
+    self.confirmationLabelAttributedText = Signal.combineLatest(projects, pledgeTotal)
+      .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
+      .map(attributedConfirmationString(with:pledgeTotal:))
+      .skipNil()
 
     self.continueViewHidden = Signal
       .combineLatest(isLoggedIn, context)
@@ -658,13 +660,24 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public var outputs: PledgeViewModelOutputs { return self }
 }
 
-private func attributedConfirmationString(with project: Project) -> NSAttributedString? {
-  let string = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
-    project_deadline: Format.date(
-      secondsInUTC: project.dates.deadline,
-      template: "MMMM d, yyyy"
+private func attributedConfirmationString(with project: Project, pledgeTotal: Double) -> NSAttributedString? {
+  var string = ""
+  if project.stats.currentCurrency == project.stats.currency {
+    string = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
+      project_deadline: Format.date(
+        secondsInUTC: project.dates.deadline,
+        template: "MMMM d, yyyy"
+      )
     )
-  )
+  } else {
+    string = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
+      total: Format.currency(pledgeTotal, country: project.country),
+      project_deadline: Format.date(
+        secondsInUTC: project.dates.deadline,
+        template: "MMMM d, yyyy"
+      )
+    )
+  }
 
   guard let attributedString = try? NSMutableAttributedString(
     data: Data(string.utf8),
