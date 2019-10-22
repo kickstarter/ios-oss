@@ -61,7 +61,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
-        [true, true, true, true, true, true, false, true]])
+        [true, true, true, true, true, true, false, true]
+      ])
       self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY"])
       self.vm.inputs.addNewCardViewControllerDidAdd(newCard: userCreditCard)
 
@@ -70,7 +71,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       )
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
         [true, true, true, true, true, true, false, true],
-        [true, true, true, true, true, true, true, false, true]])
+        [true, true, true, true, true, true, true, false, true]
+      ])
       self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY", "Brooklyn, NY"])
     }
   }
@@ -94,7 +96,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
-        [true, true, true, true, true, true, false, true]])
+        [true, true, true, true, true, true, false, true]
+      ])
       self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY"])
       self.vm.inputs.addNewCardViewControllerDidAdd(newCard: userCreditCard)
 
@@ -103,7 +106,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       )
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
         [true, true, true, true, true, true, false, true],
-        [true, true, true, true, true, true, true, false, true,]])
+        [true, true, true, true, true, true, true, false, true]
+      ])
       self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY", "Brooklyn, NY"])
 
       self.vm.inputs.creditCardSelected(paymentSourceId: userCreditCard.id)
@@ -130,7 +134,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.applePayButtonHidden.assertValues([true])
       self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
-        [true, true, true, true, true, true, false, true]])
+        [true, true, true, true, true, true, false, true]
+      ])
       self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY"])
     }
   }
@@ -153,7 +158,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.applePayButtonHidden.assertValues([false])
       self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
-        [true, true, true, true, true, true, false, true]])
+        [true, true, true, true, true, true, false, true]
+      ])
       self.reloadPaymentMethodsProjectCountry.assertValues(["Brooklyn, NY"])
     }
   }
