@@ -6,7 +6,8 @@ import UIKit
 
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
 public typealias CardViewValues = (
-  cardAndIsAvailableCardType: [(cards: GraphUserCreditCard.CreditCard, cardTypeIsAvailable: Bool)], projectCountry: String
+  cardAndIsAvailableCardType: [(cards: GraphUserCreditCard.CreditCard, cardTypeIsAvailable: Bool)],
+  projectCountry: String
 )
 
 public protocol PledgePaymentMethodsViewModelInputs {
@@ -75,7 +76,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let cardValues = Signal.combineLatest(
       availableCardType,
       project.map { $0.location.displayableName }
-      ).map { CardViewValues(cardAndIsAvailableCardType: $0, projectCountry: $1) }
+    ).map { CardViewValues(cardAndIsAvailableCardType: $0, projectCountry: $1) }
 
     self.reloadPaymentMethods = cardValues
 
