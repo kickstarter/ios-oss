@@ -14,8 +14,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
   private let notifyDelegateCreditCardSelected = TestObserver<String, Never>()
   private let notifyDelegateLoadPaymentMethodsError = TestObserver<String, Never>()
-  private let notifyDelegatePledgeButtonTapped = TestObserver<Void, Never>()
-  private let pledgeButtonEnabled = TestObserver<Bool, Never>()
 
   private let reloadPaymentMethodsCards = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
   private let reloadPaymentMethodsAvailableCardTypes = TestObserver<[Bool], Never>()
@@ -34,7 +32,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateLoadPaymentMethodsError
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
 
-    self.vm.outputs.reloadPaymentMethods.map { $0.cardAndIsAvailableCardType.map { $0.cards } }
+    self.vm.outputs.reloadPaymentMethods.map { $0.cardAndIsAvailableCardType.map { $0.card } }
       .observe(self.reloadPaymentMethodsCards.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.cardAndIsAvailableCardType.map { $0.cardTypeIsAvailable } }
       .observe(self.reloadPaymentMethodsAvailableCardTypes.observer)

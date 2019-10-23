@@ -13,7 +13,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
   private let cardNumberTextShortStyle = TestObserver<String, Never>()
   private let expirationDateText = TestObserver<String, Never>()
   private let notifyDelegateOfCardSelected = TestObserver<String, Never>()
-  private let selectButtonEnable = TestObserver<Bool, Never>()
+  private let selectButtonEnabled = TestObserver<Bool, Never>()
   private let selectButtonIsSelected = TestObserver<Bool, Never>()
   private let selectButtonTitle = TestObserver<String, Never>()
   private let spacerIsHidden = TestObserver<Bool, Never>()
@@ -28,7 +28,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.vm.outputs.cardNumberTextShortStyle.observe(self.cardNumberTextShortStyle.observer)
     self.vm.outputs.expirationDateText.observe(self.expirationDateText.observer)
     self.vm.outputs.notifyDelegateOfCardSelected.observe(self.notifyDelegateOfCardSelected.observer)
-    self.vm.outputs.selectButtonEnabled.observe(self.selectButtonEnable.observer) //
+    self.vm.outputs.selectButtonEnabled.observe(self.selectButtonEnabled.observer) //
     self.vm.outputs.selectButtonIsSelected.observe(self.selectButtonIsSelected.observer)
     self.vm.outputs.selectButtonTitle.observe(self.selectButtonTitle.observer)
     self.vm.outputs.spacerIsHidden.observe(self.spacerIsHidden.observer) //

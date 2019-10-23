@@ -6,7 +6,7 @@ import UIKit
 
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
 public typealias CardViewValues = (
-  cardAndIsAvailableCardType: [(cards: GraphUserCreditCard.CreditCard, cardTypeIsAvailable: Bool)],
+  cardAndIsAvailableCardType: [(card: GraphUserCreditCard.CreditCard, cardTypeIsAvailable: Bool)],
   projectCountry: String
 )
 
@@ -64,17 +64,17 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .values()
       .map { $0.me.storedCards.nodes }
 
-    let card = Signal.merge(
+    let cards = Signal.merge(
       storedCards,
       self.newCreditCardProperty.signal.skipNil().map { card in [card] }
     )
     .scan([]) { current, new in new + current }
 
-    let availableCardType = Signal.combineLatest(card, availableCardTypes)
-      .map { cardTypeAvailable(cards: $0, availableCardTypes: $1) }
+    let cardsAndAvailable = Signal.combineLatest(cards, availableCardTypes)
+      .map(cardTypeAvailable(cards:availableCardTypes:))
 
     let cardValues = Signal.combineLatest(
-      availableCardType,
+      cardsAndAvailable,
       project.map { $0.location.displayableName }
     ).map { CardViewValues(cardAndIsAvailableCardType: $0, projectCountry: $1) }
 
@@ -89,7 +89,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.notifyDelegateCreditCardSelected = self.creditCardSelectedSignal
       .skipRepeats()
 
-    self.updateSelectedCreditCard = card
+    self.updateSelectedCreditCard = cards
       .takePairWhen(self.creditCardSelectedSignal)
       .map { cards, id in cards.filter { $0.id == id }.first }
       .skipNil()
@@ -141,7 +141,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 }
 
 private func cardTypeAvailable(cards: [GraphUserCreditCard.CreditCard], availableCardTypes: [String])
-  -> [(cards: GraphUserCreditCard.CreditCard, cardTypeIsAvailable: Bool)] {
+  -> [(card: GraphUserCreditCard.CreditCard, cardTypeIsAvailable: Bool)] {
   var cardsWithIsAvailableCardType: [(GraphUserCreditCard.CreditCard, Bool)] = []
 
   cards.forEach { card in

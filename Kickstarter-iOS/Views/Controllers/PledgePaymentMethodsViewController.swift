@@ -190,27 +190,24 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   private func newCardViews(with cardValues: CardViewValues) -> [UIView] {
-    let selectedCard = cardValues.cardAndIsAvailableCardType.first?.cards
+    let selectedCard = cardValues.cardAndIsAvailableCardType.first?.card
     let cardsAndCardTypeAvailable = cardValues.cardAndIsAvailableCardType
 
     return cardsAndCardTypeAvailable.map { cardAndAvailableType -> PledgeCreditCardView in
+      let card = cardAndAvailableType.card
+      let isAvailableCardType = cardAndAvailableType.cardTypeIsAvailable
+      let projectCountry = cardValues.projectCountry
+
       let cardView = PledgeCreditCardView(frame: .zero)
         |> \.delegate .~ self
 
-      let card = cardAndAvailableType.cards
-      let isAvailableCardType = cardAndAvailableType.cardTypeIsAvailable
+      cardView.configureWith(value: (card: card, isEnabled:
+        isAvailableCardType, projectCountry: projectCountry))
 
       if let selectedCard = selectedCard {
-        if isAvailableCardType {
-          cardView.configureWith(value: (card: card, isEnabled: isAvailableCardType, projectCountry: nil))
-          cardView.setSelectedCard(selectedCard)
-        } else if !isAvailableCardType {
-          cardView.configureWith(value: (
-            card: card, isEnabled: isAvailableCardType,
-            projectCountry: cardValues.projectCountry
-          ))
-        }
+        cardView.setSelectedCard(selectedCard)
       }
+
       return cardView
     }
   }
@@ -234,14 +231,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> \.text %~ { _ in Strings.Other_payment_methods() }
       |> \.textColor .~ UIColor.ksr_text_dark_grey_500
       |> \.font .~ UIFont.ksr_caption1()
-      |> \.textAlignment .~ .center
-  }
-
-  private let cardRestrictionLabelStyle: LabelStyle = { label in
-    label
-      |> \.numberOfLines .~ 0
-      |> \.font .~ UIFont.ksr_caption1().bolded
-      |> \.textColor .~ .ksr_text_dark_grey_500
       |> \.textAlignment .~ .center
   }
 }
