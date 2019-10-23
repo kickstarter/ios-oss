@@ -109,7 +109,8 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
     self.unavailableCardText = self.pledgeCreditCardValueProperty.signal.skipNil()
       .filter { $0.isEnabled == false }
       .map { Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-        project_country: $0.projectCountry) }
+        project_country: $0.projectCountry
+      ) }
   }
 
   fileprivate let pledgeCreditCardValueProperty = MutableProperty<PledgeCreditCardValue?>(nil)

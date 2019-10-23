@@ -201,8 +201,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
       let cardView = PledgeCreditCardView(frame: .zero)
         |> \.delegate .~ self
 
-      cardView.configureWith(value: (card: card, isEnabled:
-        isAvailableCardType, projectCountry: projectCountry))
+      cardView.configureWith(value: (
+        card: card, isEnabled:
+        isAvailableCardType, projectCountry: projectCountry
+      ))
 
       if let selectedCard = selectedCard {
         cardView.setSelectedCard(selectedCard)
