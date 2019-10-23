@@ -41,7 +41,6 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
       |> Project.lens.country .~ .us
 
-
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgeViewController.instantiate()
@@ -63,7 +62,6 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.stats.currency .~ Currency.HKD.rawValue
       |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
       |> Project.lens.country .~ .hk
-
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {

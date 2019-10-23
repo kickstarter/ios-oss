@@ -322,7 +322,7 @@ final class PledgeViewModelTests: TestCase {
       self.confirmationLabelAttributedText.assertValueCount(1)
       self.confirmationLabelText.assertValues([
         "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019."
-        ])
+      ])
 
       self.vm.inputs.traitCollectionDidChange()
       self.vm.inputs.traitCollectionDidChange()
@@ -335,7 +335,7 @@ final class PledgeViewModelTests: TestCase {
       self.confirmationLabelText.assertValues([
         "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019.",
         "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019."
-        ])
+      ])
     }
   }
 
