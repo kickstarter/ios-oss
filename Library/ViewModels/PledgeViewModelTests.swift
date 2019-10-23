@@ -1444,7 +1444,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
-    self.submitButtonEnabled.assertValues([false, true, false, true, false], "Shipping rule changed")
+    self.submitButtonEnabled.assertValues([false, true, false, true, false], "Shipping rule unchanged")
   }
 
   func testUpdatingSubmitButtonEnabled_NoShipping() {
@@ -2049,7 +2049,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testApplePayBackingFails_ThenSucceeds_SignalsDoNotOverlap() {
+  func testApplePayBackingFails_ThenSucceeds_SignalsDoNotOverlap_UpdateContext() {
     let mockService1 = MockService(
       updateBackingResult: .failure(.invalidInput)
     )
@@ -2282,7 +2282,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testApplePayBackingFails_ThenStoredCardSucceeds_SignalsDoNotOverlap() {
+  func testApplePayBackingFails_ThenStoredCardSucceeds_SignalsDoNotOverlap_UpdateContext() {
     let mockService1 = MockService(
       updateBackingResult: .failure(.invalidInput)
     )
@@ -2474,7 +2474,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testStoredCardFails_ThenApplePaySucceeds_SignalsDoNotOverlap() {
+  func testStoredCardFails_ThenApplePaySucceeds_SignalsDoNotOverlap_UpdateContext() {
     let mockService1 = MockService(
       updateBackingResult: .failure(.invalidInput)
     )
@@ -2655,7 +2655,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testStoredCardFails_ThenApplePayFails_SignalsDoNotOverlap() {
+  func testStoredCardFails_ThenApplePayFails_SignalsDoNotOverlap_UpdateContext() {
     let mockService = MockService(
       updateBackingResult: .failure(.invalidInput)
     )
