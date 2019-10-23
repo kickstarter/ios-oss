@@ -62,7 +62,14 @@ public final class ManagePledgeViewModel:
       .map { $0.personalization.backing }
       .skipNil()
     let projectAndReward = project
-      .map { project in (project, reward(from: project.personalization.backing, inProject: project)) }
+      .filterMap { project in
+        guard let backing = project.personalization.backing else {
+          return nil
+        }
+
+        return (project, backing)
+      }
+      .map { project, backing in (project, reward(from: backing, inProject: project)) }
 
     self.title = project.map(navigationBarTitle(with:))
 

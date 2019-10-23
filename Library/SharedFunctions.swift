@@ -30,9 +30,9 @@ internal func userIsBacking(reward: Reward, inProject project: Project) -> Bool 
  - returns: A reward
  */
 
-internal func reward(from backing: Backing?, inProject project: Project) -> Reward {
-  return backing?.reward
-    ?? project.rewards.filter { $0.id == backing?.rewardId }.first
+internal func reward(from backing: Backing, inProject project: Project) -> Reward {
+  return backing.reward
+    ?? project.rewards.filter { $0.id == backing.rewardId }.first
     ?? Reward.noReward
 }
 
