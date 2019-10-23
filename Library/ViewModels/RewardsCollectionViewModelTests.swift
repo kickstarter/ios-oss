@@ -374,17 +374,24 @@ final class RewardsCollectionViewModelTests: TestCase {
   }
 
   func testBackedRewardIndexPath() {
+    let backedReward = Reward.template
+      |> Reward.lens.id .~ 5
+
     let rewards = [
-      .template
-        |> Reward.lens.id .~ 20,
       .template
         |> Reward.lens.id .~ 1,
       .template
-        |> Reward.lens.id .~ 2
+        |> Reward.lens.id .~ 2,
+      .template
+        |> Reward.lens.id .~ 3,
+      .template
+        |> Reward.lens.id .~ 4,
+      backedReward
     ]
 
     let backing = Backing.template
-      |> Backing.lens.rewardId .~ 2
+      |> Backing.lens.reward .~ backedReward
+      |> Backing.lens.rewardId .~ 5
 
     let project = Project.template
       |> Project.lens.rewards .~ rewards
@@ -396,5 +403,11 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.backedRewardIndexPath.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLayoutSubviews()
+
+    let indexPath = IndexPath(row: 4, section: 0)
+
+    self.backedRewardIndexPath.assertValue(indexPath)
   }
 }
