@@ -103,6 +103,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     if itemSize != layout.itemSize {
       layout.invalidateLayout()
+    } else {
+      self.viewModel.inputs.viewDidLayoutSubviews()
     }
   }
 
@@ -149,7 +151,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.viewModel.outputs.backedRewardIndexPath
       .observeForUI()
       .observeValues { [weak self] indexPath in
-        self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
       }
 
     self.viewModel.outputs.goToPledge

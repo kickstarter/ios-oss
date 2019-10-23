@@ -16,6 +16,7 @@ public protocol RewardsCollectionViewModelInputs {
   func rewardSelected(with rewardId: Int)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
   func viewDidAppear()
+  func viewDidLayoutSubviews()
   func viewDidLoad()
   func viewWillAppear()
 }
@@ -55,18 +56,20 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     self.title = configData
       .map(third)
-      .takeWhen(self.viewDidLoadProperty.signal.ignoreValues())
+      .combineLatest(with: self.viewDidLoadProperty.signal.ignoreValues())
+      .map(first)
       .map(titleForContext)
+
+    self.backedRewardIndexPath = Signal.combineLatest(project, rewards)
+      .takeWhen(self.viewDidLayoutSubviewsProperty.signal.ignoreValues())
+      .map(backedReward(_:rewards:))
+      .skipNil()
+      .take(first: 1)
 
     self.reloadDataWithValues = Signal.combineLatest(project, rewards)
       .map { project, rewards in
         rewards.map { (project, Either<Reward, Backing>.left($0)) }
       }
-
-    self.backedRewardIndexPath = Signal.combineLatest(project, rewards)
-      .takeWhen(self.viewDidAppearProperty.signal.ignoreValues())
-      .map(backedReward(_:rewards:))
-      .skipNil()
 
     self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
       .map { $0.count }
@@ -148,6 +151,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   private let viewDidAppearProperty = MutableProperty(())
   public func viewDidAppear() {
     self.viewDidAppearProperty.value = ()
+  }
+
+  private let viewDidLayoutSubviewsProperty = MutableProperty(())
+  public func viewDidLayoutSubviews() {
+    self.viewDidLayoutSubviewsProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty(())
