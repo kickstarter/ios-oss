@@ -2,7 +2,7 @@ import Argo
 import Curry
 import Runes
 
-public struct GraphUserCreditCard: Swift.Decodable, Equatable {
+public struct GraphUserCreditCard: Swift.Decodable {
   public var storedCards: CreditCardConnection
 
   public struct CreditCard: Swift.Decodable, Equatable {

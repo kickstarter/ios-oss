@@ -6,7 +6,7 @@ import UIKit
 
 public typealias PledgeCreditCardValue = (
   card: GraphUserCreditCard.CreditCard,
-  isEnabled: Bool, projectCountry: String?
+  isEnabled: Bool, projectCountry: String
 )
 
 public protocol PledgeCreditCardViewModelInputs {
@@ -105,11 +105,11 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
     self.spacerIsHidden = cardTypeIsAvailable.negate()
     self.selectButtonEnabled = cardTypeIsAvailable
     self.unavailableCardLabelHidden = cardTypeIsAvailable
+
     self.unavailableCardText = self.pledgeCreditCardValueProperty.signal.skipNil()
+      .filter { $0.isEnabled == false }
       .map { Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-        project_country: $0.projectCountry ?? ""
-      )
-      }
+        project_country: $0.projectCountry) }
   }
 
   fileprivate let pledgeCreditCardValueProperty = MutableProperty<PledgeCreditCardValue?>(nil)

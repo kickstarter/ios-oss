@@ -43,6 +43,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.cardNumberAccessibilityLabel.assertLastValue("Amex, Card ending in 8882")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 8882")
     self.expirationDateText.assertLastValue("Expires 01/2024")
+    self.selectButtonEnabled.assertValues([true])
     self.selectButtonIsSelected.assertValues([])
     self.selectButtonTitle.assertValues([])
 
@@ -52,6 +53,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.cardNumberAccessibilityLabel.assertLastValue("Discover, Card ending in 4242")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 4242")
     self.expirationDateText.assertLastValue("Expires 03/2022")
+    self.selectButtonEnabled.assertValues([true, true])
     self.selectButtonIsSelected.assertValues([])
     self.selectButtonTitle.assertValues([])
 
@@ -68,6 +70,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.cardNumberAccessibilityLabel.assertLastValue("Mastercard, Card ending in 0000")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 0000")
     self.expirationDateText.assertLastValue("Expires 10/2018")
+    self.selectButtonEnabled.assertValues([true, true, true, true])
     self.selectButtonIsSelected.assertValues([])
     self.selectButtonTitle.assertValues([])
 
@@ -77,6 +80,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.cardNumberAccessibilityLabel.assertLastValue("Visa, Card ending in 1111")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1111")
     self.expirationDateText.assertLastValue("Expires 09/2019")
+    self.selectButtonEnabled.assertValues([true, true, true, true, true])
     self.selectButtonIsSelected.assertValues([])
     self.selectButtonTitle.assertValues([])
 
@@ -86,6 +90,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.cardNumberAccessibilityLabel.assertLastValue("Diners, Card ending in 1212")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1212")
     self.expirationDateText.assertLastValue("Expires 09/2022")
+    self.selectButtonEnabled.assertValues([true, true, true, true, true, true])
     self.selectButtonIsSelected.assertValues([])
     self.selectButtonTitle.assertValues([])
   }
@@ -94,6 +99,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.cardImage.assertValues([])
     self.cardNumberTextShortStyle.assertValues([])
     self.expirationDateText.assertValues([])
+    self.selectButtonEnabled.assertValues([])
     self.selectButtonIsSelected.assertValues([])
     self.selectButtonTitle.assertValues([])
 
@@ -103,6 +109,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.cardImage.assertValue(UIImage(named: "icon--generic"))
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
     self.expirationDateText.assertValue("Expires 01/2024")
+    self.selectButtonEnabled.assertValues([true])
     self.selectButtonIsSelected.assertValues([false])
     self.selectButtonTitle.assertValues(["Select"])
   }
@@ -124,11 +131,38 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonTitle.assertValues(["Selected"])
   }
 
-  func testDisableCard() {
+  func testUnavailableCard() {
+    self.cardImage.assertValues([])
+    self.cardNumberTextShortStyle.assertValues([])
+    self.expirationDateText.assertValues([])
+    self.selectButtonIsSelected.assertValues([])
+    self.selectButtonTitle.assertValues([])
+    self.selectButtonEnabled.assertValues([])
+    self.unavailableCardText.assertValues([])
+    self.unavailableCardLabelHidden.assertValues([])
+    self.spacerIsHidden.assertValues([])
+
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, false, "Brooklyn, NY"))
+
+    self.cardImage.assertValue(UIImage(named: "icon--generic"))
+    self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
+    self.expirationDateText.assertValue("Expires 01/2024")
+    self.selectButtonIsSelected.assertDidNotEmitValue()
+    self.selectButtonTitle.assertDidNotEmitValue()
+    self.selectButtonEnabled.assertValues([false])
+    self.unavailableCardText.assertValues(
+      ["You can’t use this credit card to back a project from Brooklyn, NY."])
+    self.unavailableCardLabelHidden.assertValues([false])
+    self.spacerIsHidden.assertValues([true])
+  }
+
+  func testSpacerIsHidden() {
     self.cardImage.assertValues([])
     self.cardNumberTextShortStyle.assertValues([])
     self.expirationDateText.assertValues([])
     self.selectButtonTitle.assertValues([])
+    self.selectButtonEnabled.assertValues([])
+    self.spacerIsHidden.assertValues([])
 
     self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, false, "Brooklyn, NY"))
 
@@ -136,6 +170,8 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
     self.expirationDateText.assertValue("Expires 01/2024")
     self.selectButtonTitle.assertDidNotEmitValue()
+    self.selectButtonEnabled.assertValues([false])
+    self.spacerIsHidden.assertValues([true])
   }
 
   func testCardInfoForUnsupportedCards() {
