@@ -482,7 +482,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let paymentAuthorizationDidFinish = didInitiateApplePayBacking
       .takeWhen(self.paymentAuthorizationDidFinishSignal)
 
-    let createOrUpdateApplePayBackingCompleted = Signal.combineLatest(
+    let createOrUpdateApplePayBackingCompleted = Signal.zip(
+      didInitiateApplePayBacking,
       Signal.merge(
         updateBackingEvent.filter { $0.isTerminating }.ignoreValues(),
         createBackingEvent.filter { $0.isTerminating }.ignoreValues()
@@ -495,7 +496,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       updateBackingEvent.values().map { $0 as StripeSCARequiring }
     )
 
-    let createOrUpdateBackingEventValuesNoSCA = createOrUpdateBackingEventValues
+    let valuesOrNil = Signal.merge(
+      createOrUpdateBackingEventValues.wrapInOptional(),
+      submitButtonTapped.mapConst(nil) // clears errors from any previously interrupted flow
+    )
+
+    let createOrUpdateBackingEventValuesNoSCA = valuesOrNil
+      .skipNil()
       .filter(requiresSCA >>> isFalse)
 
     let createOrUpdateBackingDidCompleteNoSCA = submitButtonTapped
@@ -503,14 +510,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .filter(isTrue)
       .ignoreValues()
 
-    let createOrUpdateBackingEventValuesRequiresSCA = createOrUpdateBackingEventValues
+    let createOrUpdateBackingEventValuesRequiresSCA = valuesOrNil
+      .skipNil()
       .filter(requiresSCA)
 
-    self.beginSCAFlowWithClientSecret = createOrUpdateBackingEventValuesRequiresSCA.map { $0.clientSecret }
+    self.beginSCAFlowWithClientSecret = createOrUpdateBackingEventValuesRequiresSCA
+      .map { $0.clientSecret }
       .skipNil()
 
-    let didCompleteApplePayBacking = createOrUpdateBackingEventValues
+    let didCompleteApplePayBacking = valuesOrNil
       .takeWhen(createOrUpdateApplePayBackingCompleted)
+      .skipNil()
 
     let creatingContext = context.filter { $0.isCreating }
 
@@ -536,17 +546,22 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.goToThanks = project.takeWhen(createBackingCompletionEvents)
 
     let createOrUpdateBackingEventErrors = Signal.merge(
-      deprecatedCreateApplePayBackingCompletedError,
       createBackingEvent.errors(),
       updateBackingEvent.errors()
     )
 
+    let errorsOrNil = Signal.merge(
+      createOrUpdateBackingEventErrors.wrapInOptional(),
+      submitButtonTapped.mapConst(nil) // clears errors from any previously interrupted flow
+    )
+
     let createOrUpdateApplePayBackingError = createOrUpdateApplePayBackingCompleted
-      .withLatest(from: createOrUpdateBackingEventErrors)
+      .withLatest(from: errorsOrNil)
       .map(second)
+      .skipNil()
 
     let createOrUpdateBackingError = submitButtonTapped
-      .takePairWhen(createOrUpdateBackingEventErrors)
+      .takePairWhen(errorsOrNil.skipNil())
       .filter(first >>> isTrue)
       .map(second)
 
