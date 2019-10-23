@@ -457,7 +457,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       updateButtonIsLoading
     )
 
-    let submitButtonTapped = Signal.merge(
+    let isCreateOrUpdateBacking = Signal.merge(
       self.submitButtonTappedSignal.mapConst(true),
       Signal.merge(willUpdateApplePayBacking, willCreateApplePayBacking).mapConst(false)
     )
@@ -498,14 +498,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let valuesOrNil = Signal.merge(
       createOrUpdateBackingEventValues.wrapInOptional(),
-      submitButtonTapped.mapConst(nil) // clears errors from any previously interrupted flow
+      isCreateOrUpdateBacking.mapConst(nil)
     )
 
     let createOrUpdateBackingEventValuesNoSCA = valuesOrNil
       .skipNil()
       .filter(requiresSCA >>> isFalse)
 
-    let createOrUpdateBackingDidCompleteNoSCA = submitButtonTapped
+    let createOrUpdateBackingDidCompleteNoSCA = isCreateOrUpdateBacking
       .takeWhen(createOrUpdateBackingEventValuesNoSCA)
       .filter(isTrue)
       .ignoreValues()
@@ -552,7 +552,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let errorsOrNil = Signal.merge(
       createOrUpdateBackingEventErrors.wrapInOptional(),
-      submitButtonTapped.mapConst(nil) // clears errors from any previously interrupted flow
+      isCreateOrUpdateBacking.mapConst(nil)
     )
 
     let createOrUpdateApplePayBackingError = createOrUpdateApplePayBackingCompleted
@@ -560,7 +560,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(second)
       .skipNil()
 
-    let createOrUpdateBackingError = submitButtonTapped
+    let createOrUpdateBackingError = isCreateOrUpdateBacking
       .takePairWhen(errorsOrNil.skipNil())
       .filter(first >>> isTrue)
       .map(second)
