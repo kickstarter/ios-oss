@@ -135,12 +135,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
     .skipNil()
 
-    let projects = Signal.merge(
+    let initialProjectAndProject = Signal.merge(
       project,
       project.takeWhen(self.traitCollectionDidChangeSignal)
     )
 
-    self.confirmationLabelAttributedText = Signal.combineLatest(projects, pledgeTotal)
+    self.confirmationLabelAttributedText = Signal.combineLatest(initialProjectAndProject, pledgeTotal)
       .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
       .map(attributedConfirmationString(with:pledgeTotal:))
       .skipNil()
