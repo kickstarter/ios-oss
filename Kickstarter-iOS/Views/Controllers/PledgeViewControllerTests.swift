@@ -36,11 +36,39 @@ final class PledgeViewControllerTests: TestCase {
   func testView_UpdateContext() {
     let reward = Reward.template
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+    let project = Project.template
+      |> Project.lens.stats.currency .~ Currency.USD.rawValue
+      |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
+      |> Project.lens.country .~ .us
+
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: .template, reward: reward, refTag: nil, context: .update)
+        controller.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        self.scheduler.advance(by: .milliseconds(10))
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testView_UpdateContext_withConversionLabel() {
+    let reward = Reward.template
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+    let project = Project.template
+      |> Project.lens.stats.currency .~ Currency.HKD.rawValue
+      |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
+      |> Project.lens.country .~ .hk
+
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
+      withEnvironment(language: language) {
+        let controller = PledgeViewController.instantiate()
+        controller.configureWith(project: project, reward: reward, refTag: nil, context: .update)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.advance(by: .milliseconds(10))
