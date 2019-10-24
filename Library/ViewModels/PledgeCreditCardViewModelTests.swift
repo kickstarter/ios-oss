@@ -131,6 +131,26 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonTitle.assertValues(["Selected"])
   }
 
+  func testCardIsSelectedAndDisabled() {
+    self.cardImage.assertValues([])
+    self.cardNumberTextShortStyle.assertValues([])
+    self.expirationDateText.assertValues([])
+    self.selectButtonIsSelected.assertValues([])
+    self.selectButtonTitle.assertValues([])
+    self.selectButtonEnabled.assertValues([])
+
+
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, false, "Brooklyn, NY"))
+    self.vm.inputs.setSelectedCard(GraphUserCreditCard.generic)
+
+    self.cardImage.assertValue(UIImage(named: "icon--generic"))
+    self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
+    self.expirationDateText.assertValue("Expires 01/2024")
+    self.selectButtonIsSelected.assertValues([false])
+    self.selectButtonTitle.assertDidNotEmitValue()
+    self.selectButtonEnabled.assertValues([false])
+  }
+
   func testUnavailableCard() {
     self.cardImage.assertValues([])
     self.cardNumberTextShortStyle.assertValues([])
