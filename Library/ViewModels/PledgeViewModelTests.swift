@@ -1637,10 +1637,7 @@ final class PledgeViewModelTests: TestCase {
       "Payment method changed"
     )
 
-    #warning("This fixes tests for now, remove once we've fixed the issue with GraphUserCreditCard ID")
-    self.vm.inputs.creditCardSelected(
-      with: Data("Card-\(GraphUserCreditCard.amex.id)".utf8).base64EncodedString()
-    )
+    self.vm.inputs.creditCardSelected(with: Backing.PaymentSource.template.id ?? "")
 
     self.submitButtonEnabled.assertValues(
       [false, true, false, true, false, true, false],

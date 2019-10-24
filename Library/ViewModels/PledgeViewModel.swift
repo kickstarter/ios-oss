@@ -807,8 +807,7 @@ private func paymentMethodValid(
     return true
   }
 
-  #warning("decompose(id: backedPaymentSourceId) should no be necessary here, remove once resolved.")
-  return decompose(id: backedPaymentSourceId) != Int(paymentSourceId)
+  return backedPaymentSourceId != paymentSourceId
 }
 
 private func allValuesChangedAndValid(
