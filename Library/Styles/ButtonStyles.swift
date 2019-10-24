@@ -46,8 +46,9 @@ public let redButtonStyle = baseButtonStyle
 
 public let blackButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_soft_black
   <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_grey_600
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_soft_black
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_soft_black.mixDarker(0.66)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_soft_black.mixLighter(0.36)
   <> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_soft_black.mixLighter(0.46)
