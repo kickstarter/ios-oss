@@ -720,48 +720,42 @@ private func requiresSCA(_ envelope: StripeSCARequiring) -> Bool {
 }
 
 private func attributedConfirmationString(with project: Project, pledgeTotal: Double) -> NSAttributedString? {
-  var string = ""
+  var fullString = ""
+  let date = Format.date(
+    secondsInUTC: project.dates.deadline,
+    template: "MMMM d, yyyy"
+  )
+  let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
+
   if project.stats.currentCurrency == project.stats.currency {
-    string = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
-      project_deadline: Format.date(
-        secondsInUTC: project.dates.deadline,
-        template: "MMMM d, yyyy"
-      )
+    fullString = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
+    project_deadline: date
     )
   } else {
-    string = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
-      total: Format.currency(pledgeTotal, country: project.country),
-      project_deadline: Format.date(
-        secondsInUTC: project.dates.deadline,
-        template: "MMMM d, yyyy"
-      )
+    fullString = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
+      total: pledgeTotal,
+      project_deadline: date
     )
   }
 
-  guard let attributedString = try? NSMutableAttributedString(
-    data: Data(string.utf8),
-    options: [
-      .documentType: NSAttributedString.DocumentType.html,
-      .characterEncoding: String.Encoding.utf8.rawValue
-    ],
-    documentAttributes: nil
-  ) else { return nil }
+  let attributedString: NSMutableAttributedString = NSMutableAttributedString.init(string: fullString)
+  let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
+  let rangePledgeTotal: NSRange = (fullString as NSString).localizedStandardRange(of: pledgeTotal)
+  let rangeProjectDeadline: NSRange = (fullString as NSString).localizedStandardRange(of: date)
 
   let paragraphStyle = NSMutableParagraphStyle()
   paragraphStyle.alignment = .center
 
-  let attributes: String.Attributes = [
-    .paragraphStyle: paragraphStyle
+  let regularFontAttribute = [
+    NSAttributedString.Key.paragraphStyle: paragraphStyle,
+    NSAttributedString.Key.font: UIFont.ksr_caption1(),
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_500
   ]
+  let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_caption1().bolded]
 
-  let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
-
-  attributedString.addAttributes(attributes, range: fullRange)
-
-  attributedString.setFontKeepingTraits(
-    to: UIFont.ksr_caption1(),
-    color: UIColor.ksr_text_dark_grey_500
-  )
+  attributedString.addAttributes(regularFontAttribute, range: fullRange)
+  attributedString.addAttributes(boldFontAttribute, range: rangePledgeTotal)
+  attributedString.addAttributes(boldFontAttribute, range: rangeProjectDeadline)
 
   return attributedString
 }
