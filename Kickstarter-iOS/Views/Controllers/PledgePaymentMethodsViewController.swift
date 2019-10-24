@@ -98,10 +98,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
-      .observeValues { [weak self] cards in
+      .observeValues { [weak self] cardValues in
         guard let self = self else { return }
         self.scrollView.setContentOffset(.zero, animated: false)
-        self.reloadPaymentMethods(with: cards)
+        self.reloadPaymentMethods(with: cardValues)
       }
 
     self.viewModel.outputs.notifyDelegateLoadPaymentMethodsError
@@ -171,10 +171,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
     self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
   }
 
-  private func reloadPaymentMethods(with cards: [GraphUserCreditCard.CreditCard]) {
+  private func reloadPaymentMethods(with cardValues: CardViewValues) {
     self.cardsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-    let cardViews = self.newCardViews(with: cards)
+    let cardViews = self.newCardViews(with: cardValues)
 
     let addNewCardView: PledgeAddNewCardView = PledgeAddNewCardView(frame: .zero)
       |> \.delegate .~ self
@@ -189,16 +189,22 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .forEach { $0.setSelectedCard(card) }
   }
 
-  private func newCardViews(
-    with cards: [GraphUserCreditCard.CreditCard]
-  ) -> [UIView] {
-    let selectedCard = cards.first
+  private func newCardViews(with cardValues: CardViewValues) -> [UIView] {
+    let selectedCard = cardValues.cardAndIsAvailableCardType.first?.card
+    let cardsAndCardTypeAvailable = cardValues.cardAndIsAvailableCardType
 
-    return cards.map { card -> PledgeCreditCardView in
+    return cardsAndCardTypeAvailable.map { cardAndAvailableType -> PledgeCreditCardView in
+      let card = cardAndAvailableType.card
+      let isAvailableCardType = cardAndAvailableType.cardTypeIsAvailable
+      let projectCountry = cardValues.projectCountry
+
       let cardView = PledgeCreditCardView(frame: .zero)
         |> \.delegate .~ self
 
-      cardView.configureWith(value: card)
+      cardView.configureWith(value: (
+        card: card, isEnabled:
+        isAvailableCardType, projectCountry: projectCountry
+      ))
 
       if let selectedCard = selectedCard {
         cardView.setSelectedCard(selectedCard)
@@ -212,7 +218,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   private let cardsStackViewStyle: StackViewStyle = { stackView in
     stackView
-      |> \.spacing .~ Styles.grid(2)
+      |> \.spacing .~ Styles.grid(0)
   }
 
   private let rootStackViewStyle: StackViewStyle = { stackView in

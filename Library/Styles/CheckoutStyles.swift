@@ -26,6 +26,10 @@ public enum ButtonStyleType: Equatable {
 // MARK: - Constants
 
 public enum CheckoutConstants {
+  public enum CreditCardView {
+    public static let height: CGFloat = 143
+  }
+
   public enum RewardCard {
     public enum Layout {
       public static let width: CGFloat = 294
