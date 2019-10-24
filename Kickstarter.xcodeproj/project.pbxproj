@@ -336,7 +336,10 @@
 		8A8099FA22E2159300373E66 /* RewardPledgeTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099F922E2159300373E66 /* RewardPledgeTransitionAnimator.swift */; };
 		8A8099FD22E2172D00373E66 /* UISpringTimingParameters+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */; };
 		8A8099FF22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */; };
+		8AA5B060235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */; };
 		8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */; };
+		8AD48633235939AF00A1463E /* StripeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD48632235939AF00A1463E /* StripeTypes.swift */; };
+		8AD486352359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */; };
 		8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D86523466EB9005860C6 /* UpdateBackingInput+Constructor.swift */; };
 		8AE8D86823466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */; };
 		8AF34C722342CBAD000B211D /* UpdateBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */; };
@@ -1730,7 +1733,10 @@
 		8A8099F922E2159300373E66 /* RewardPledgeTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardPledgeTransitionAnimator.swift; sourceTree = "<group>"; };
 		8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISpringTimingParameters+Convenience.swift"; sourceTree = "<group>"; };
 		8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDescriptionViewControllerTests.swift; sourceTree = "<group>"; };
+		8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift"; sourceTree = "<group>"; };
 		8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Mixing.swift"; sourceTree = "<group>"; };
+		8AD48632235939AF00A1463E /* StripeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeTypes.swift; sourceTree = "<group>"; };
+		8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatus.swift"; sourceTree = "<group>"; };
 		8AE8D86523466EB9005860C6 /* UpdateBackingInput+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateBackingInput+Constructor.swift"; sourceTree = "<group>"; };
 		8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateBackingInput+ConstructorTests.swift"; sourceTree = "<group>"; };
 		8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingMutation.swift; sourceTree = "<group>"; };
@@ -2696,6 +2702,8 @@
 				D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */,
 				379CFFEE2242DAC300F6F0C2 /* Storyboard.swift */,
 				D7B468EF23469F98003D5A51 /* STPCardBrand+CreditCardType.swift */,
+				8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */,
+				8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */,
 				37096C3322BC24DD003D1F40 /* UIFeedbackGeneratorType.swift */,
 				379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */,
 				7720BA6C22DE79260071FDA1 /* UIViewController+Presentation.swift */,
@@ -3053,12 +3061,6 @@
 				018F1F821C8E182200643DAA /* LoginViewController.swift */,
 				A7ED202D1E8323E900BFFA01 /* LoginViewControllerTests.swift */,
 				D65BF34E232C1A1C00B15B25 /* ManagePledgeSummaryViewController.swift */,
-				D65BF3542334050100B15B25 /* ManagePledgePaymentMethodView.swift */,
-				D65BF34E232C1A1C00B15B25 /* ManagePledgeSummaryView.swift */,
-				D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */,
-				37CA16AC23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift */,
-				37CA16AE2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift */,
-				D61440FF23200FD3002A6507 /* ManageViewPledgeViewControllerTests.swift */,
 				D61F38ED233D0DAE00C8972B /* ManagePledgeRewardView.swift */,
 				37CA16AC23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift */,
 				37CA16AE2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift */,
@@ -3277,6 +3279,7 @@
 				8016BFE71D0F582D00067956 /* String+Whitespace.swift */,
 				A7ED1F221E830FDC00BFFA01 /* String+WhitespaceTests.swift */,
 				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
+				8AD48632235939AF00A1463E /* StripeTypes.swift */,
 				0156B4181D10B419000C4252 /* UIAlertController.swift */,
 				D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */,
 				370F52B2225426C700F159B9 /* UIApplication.swift */,
@@ -4721,6 +4724,7 @@
 				A7F441C71D005A9400FE6FC5 /* MessageCellViewModel.swift in Sources */,
 				59673CBF1D50EE9B0035AFD9 /* VideoViewModel.swift in Sources */,
 				9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */,
+				8AD48633235939AF00A1463E /* StripeTypes.swift in Sources */,
 				A72E75971CC313A400983066 /* ValueCell.swift in Sources */,
 				7705563B22BC03A600DCB062 /* TableViewStyles.swift in Sources */,
 				D6534D3A22E7878D00E9D279 /* CreditCard+Utils.swift in Sources */,
@@ -5025,7 +5029,6 @@
 				374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */,
 				A7ED1FC51E831C5C00BFFA01 /* CommentsEmptyStateCellViewModelTests.swift in Sources */,
 				A7ED1F391E830FDC00BFFA01 /* UILabel+IBClearTests.swift in Sources */,
-				D614410023200FD3002A6507 /* ManageViewPledgeViewControllerTests.swift in Sources */,
 				8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */,
 				3706408422A8A68600889CBD /* PledgeAmountViewModelTests.swift in Sources */,
 				D79CF40521B0840E00ECB73A /* AddNewCardViewModelTests.swift in Sources */,
@@ -5345,6 +5348,7 @@
 				9D14FF8E1D133351005F4ABB /* ProjectActivityEmptyStateCell.swift in Sources */,
 				3742037322DEB67A007AA86E /* PillCollectionViewDataSource.swift in Sources */,
 				017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */,
+				8AD486352359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift in Sources */,
 				014D625B1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift in Sources */,
 				A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */,
 				597073B21D07281800B00444 /* ProjectNotificationCell.swift in Sources */,
@@ -5469,6 +5473,7 @@
 				A7ED20121E83229E00BFFA01 /* CommentsDataSourceTests.swift in Sources */,
 				778215EB20F79FA300F3D09F /* HelpDataSourceTests.swift in Sources */,
 				37CA16AF2330038E006044F9 /* ManageViewPledgeRewardReceivedViewControllerTests.swift in Sources */,
+				8AA5B060235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift in Sources */,
 				A7ED20641E83256700BFFA01 /* RootViewModelTests.swift in Sources */,
 				A7ED204B1E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */,
 				A7ED204F1E8323E900BFFA01 /* CommentsViewControllerTests.swift in Sources */,
