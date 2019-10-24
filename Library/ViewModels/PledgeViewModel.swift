@@ -726,7 +726,8 @@ private func attributedConfirmationString(with project: Project, pledgeTotal: Do
       project_deadline: Format.date(
         secondsInUTC: project.dates.deadline,
         template: "MMMM d, yyyy"
-      ))
+      )
+    )
   } else {
     string = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
       total: Format.currency(pledgeTotal, country: project.country),
