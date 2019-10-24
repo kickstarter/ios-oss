@@ -46,7 +46,7 @@ public protocol ProjectPamphletViewModelOutputs {
 
   var goToDeprecatedViewBacking: Signal<BackingData, Never> { get }
 
-  var goToManageViewPledge: Signal<Project, Never> { get }
+  var goToManagePledge: Signal<Project, Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
@@ -134,7 +134,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(shouldGoToRewards)
 
-    self.goToManageViewPledge = projectAndBacking
+    self.goToManagePledge = projectAndBacking
       .takeWhen(shouldGoToManagePledge)
       .map(first)
 
@@ -262,7 +262,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToDeprecatedManagePledge: Signal<PledgeData, Never>
   public let goToDeprecatedViewBacking: Signal<BackingData, Never>
-  public let goToManageViewPledge: Signal<Project, Never>
+  public let goToManagePledge: Signal<Project, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>

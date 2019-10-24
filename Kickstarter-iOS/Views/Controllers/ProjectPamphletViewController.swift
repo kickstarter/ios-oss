@@ -138,7 +138,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
         self?.goToRewards(project: project, refTag: refTag)
       }
 
-    self.viewModel.outputs.goToManageViewPledge
+    self.viewModel.outputs.goToManagePledge
       .observeForControllerAction()
       .observeValues { [weak self] project in
         self?.goToManageViewPledge(project: project)

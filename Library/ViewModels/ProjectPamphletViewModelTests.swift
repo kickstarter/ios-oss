@@ -48,7 +48,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       .observe(self.goToDeprecatedManagePledgeReward.observer)
     self.vm.outputs.goToDeprecatedManagePledge.map { $0.refTag }
       .observe(self.goToDeprecatedManagePledgeRefTag.observer)
-    self.vm.outputs.goToManageViewPledge.observe(self.goToManageViewPledge.observer)
+    self.vm.outputs.goToManagePledge.observe(self.goToManageViewPledge.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.goToDeprecatedViewBacking.map(first)

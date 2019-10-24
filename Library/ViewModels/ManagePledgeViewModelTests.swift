@@ -271,11 +271,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Backing.lens.reward .~ Reward.noReward
 
     let project = Project.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in
-        var updatedRewards = rewards
-        updatedRewards[0] = Reward.noReward
-        return updatedRewards
-      }
+      |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
     self.vm.inputs.configureWith(project)
@@ -290,11 +286,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Backing.lens.reward .~ Reward.noReward
 
     let project = Project.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in
-        var updatedRewards = rewards
-        updatedRewards[0] = Reward.noReward
-        return updatedRewards
-      }
+      |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
     self.vm.inputs.configureWith(project)
@@ -309,11 +301,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Backing.lens.status .~ .dropped
 
     let project = Project.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in
-        var updatedRewards = rewards
-        updatedRewards[0] = Reward.noReward
-        return updatedRewards
-      }
+      |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
     self.vm.inputs.configureWith(project)
@@ -328,11 +316,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Backing.lens.status .~ .errored
 
     let project = Project.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in
-        var updatedRewards = rewards
-        updatedRewards[0] = Reward.noReward
-        return updatedRewards
-      }
+      |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
     self.vm.inputs.configureWith(project)
@@ -347,11 +331,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Backing.lens.status .~ .pledged
 
     let project = Project.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in
-        var updatedRewards = rewards
-        updatedRewards[0] = Reward.noReward
-        return updatedRewards
-      }
+      |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
     self.vm.inputs.configureWith(project)
