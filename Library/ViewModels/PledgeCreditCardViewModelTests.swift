@@ -28,12 +28,12 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.vm.outputs.cardNumberTextShortStyle.observe(self.cardNumberTextShortStyle.observer)
     self.vm.outputs.expirationDateText.observe(self.expirationDateText.observer)
     self.vm.outputs.notifyDelegateOfCardSelected.observe(self.notifyDelegateOfCardSelected.observer)
-    self.vm.outputs.selectButtonEnabled.observe(self.selectButtonEnabled.observer) //
+    self.vm.outputs.selectButtonEnabled.observe(self.selectButtonEnabled.observer)
     self.vm.outputs.selectButtonIsSelected.observe(self.selectButtonIsSelected.observer)
     self.vm.outputs.selectButtonTitle.observe(self.selectButtonTitle.observer)
-    self.vm.outputs.spacerIsHidden.observe(self.spacerIsHidden.observer) //
-    self.vm.outputs.unavailableCardLabelHidden.observe(self.unavailableCardLabelHidden.observer) //
-    self.vm.outputs.unavailableCardText.observe(self.unavailableCardText.observer) //
+    self.vm.outputs.spacerIsHidden.observe(self.spacerIsHidden.observer)
+    self.vm.outputs.unavailableCardLabelHidden.observe(self.unavailableCardLabelHidden.observer)
+    self.vm.outputs.unavailableCardText.observe(self.unavailableCardText.observer)
   }
 
   func testCardInfoForSupportedCards() {

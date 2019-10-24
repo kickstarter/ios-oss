@@ -99,8 +99,11 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       .map(==)
       .map { $0 ? Strings.Selected() : Strings.Select() }
 
-    self.selectButtonIsSelected = cardAndSelectedCard
+    let cardIsSelected = cardAndSelectedCard
       .map(==)
+
+    self.selectButtonIsSelected = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
+      .map { $0 && $1 }
 
     self.spacerIsHidden = cardTypeIsAvailable.negate()
     self.selectButtonEnabled = cardTypeIsAvailable
