@@ -162,7 +162,9 @@ private func formattedPledge(amount: Double, project: Project) -> String {
   let numberOfDecimalPlaces = amount.truncatingRemainder(dividingBy: 1) == 0 ? 0 : 2
   let formattedAmount = String(format: "%.\(numberOfDecimalPlaces)f", amount)
 
-  return Format.formattedCurrency(formattedAmount,
-                                  country: project.country,
-                                  omitCurrencyCode: project.stats.omitUSCurrencyCode)
+  return Format.formattedCurrency(
+    formattedAmount,
+    country: project.country,
+    omitCurrencyCode: project.stats.omitUSCurrencyCode
+  )
 }
