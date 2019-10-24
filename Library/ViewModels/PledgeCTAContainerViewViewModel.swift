@@ -148,10 +148,7 @@ private func subtitle(project: Project, pledgeState: PledgeStateCTAType) -> Stri
 
   if pledgeState == .fix { return pledgeState.subtitleLabel ?? "" }
 
-  let amount = formattedAmountForRewardOrBacking(
-    project: project,
-    rewardOrBacking: .right(backing)
-  )
+  let amount = formattedPledge(amount: backing.amount, project: project)
 
   let reward = backing.reward
     ?? project.rewards.filter { $0.id == backing.rewardId }.first
@@ -159,4 +156,13 @@ private func subtitle(project: Project, pledgeState: PledgeStateCTAType) -> Stri
 
   guard let rewardTitle = reward.title else { return "\(amount)" }
   return "\(amount) • \(rewardTitle)"
+}
+
+private func formattedPledge(amount: Double, project: Project) -> String {
+  let numberOfDecimalPlaces = amount.truncatingRemainder(dividingBy: 1) == 0 ? 0 : 2
+  let formattedAmount = String(format: "%.\(numberOfDecimalPlaces)f", amount)
+
+  return Format.formattedCurrency(formattedAmount,
+                                  country: project.country,
+                                  omitCurrencyCode: project.stats.omitUSCurrencyCode)
 }

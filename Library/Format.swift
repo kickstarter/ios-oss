@@ -66,7 +66,6 @@ public enum Format {
 
     return formatter.string(for: amount) ?? String(format: "%.2f", amount)
   }
-
   /**
    Formats an int with currency symbol into a string.
 
