@@ -139,7 +139,6 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonTitle.assertValues([])
     self.selectButtonEnabled.assertValues([])
 
-
     self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, false, "Brooklyn, NY"))
     self.vm.inputs.setSelectedCard(GraphUserCreditCard.generic)
 
