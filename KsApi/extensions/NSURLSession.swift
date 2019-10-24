@@ -12,6 +12,7 @@ private func parseJSONData(_ data: Data) -> Any? {
 private let scheduler = QueueScheduler(qos: .background, name: "com.kickstarter.ksapi", targeting: nil)
 
 internal extension URLSession {
+  // Wrap an URLSession producer with Graph error envelope logic.
   func rac_graphDataResponse(_ request: URLRequest)
     -> SignalProducer<Data, GraphError> {
     let producer = self.reactive.data(with: request)
@@ -26,13 +27,13 @@ internal extension URLSession {
           (200..<300).contains(response.statusCode),
           let headers = response.allHeaderFields as? [String: String],
           let contentType = headers["Content-Type"], contentType.hasPrefix("application/json")
-        else {
-          print("🔴 [KsApi] Failure \(self.sanitized(request))")
+          else {
+            print("🔴 [KsApi] Failure \(self.sanitized(request))")
 
-          return SignalProducer(
-            error:
-            .jsonDecodingError(responseString: String(data: data, encoding: .utf8), error: nil)
-          )
+            return SignalProducer(
+              error:
+              .jsonDecodingError(responseString: String(data: data, encoding: .utf8), error: nil)
+            )
         }
 
         // Decode errors if any
