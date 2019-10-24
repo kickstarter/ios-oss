@@ -22,9 +22,7 @@ final class ProjectPamphletViewModelTests: TestCase {
   private let goToDeprecatedManagePledgeReward = TestObserver<Reward, Never>()
   private let goToDeprecatedViewBackingProject = TestObserver<Project, Never>()
   private let goToDeprecatedViewBackingUser = TestObserver<User?, Never>()
-  private let goToManageViewPledgeProject = TestObserver<Project, Never>()
-  private let goToManageViewPledgeRefTag = TestObserver<RefTag?, Never>()
-  private let goToManageViewPledgeReward = TestObserver<Reward, Never>()
+  private let goToManageViewPledge = TestObserver<Project, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let setNavigationBarHidden = TestObserver<Bool, Never>()
@@ -50,9 +48,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       .observe(self.goToDeprecatedManagePledgeReward.observer)
     self.vm.outputs.goToDeprecatedManagePledge.map { $0.refTag }
       .observe(self.goToDeprecatedManagePledgeRefTag.observer)
-    self.vm.outputs.goToManageViewPledge.map { $0.project }.observe(self.goToManageViewPledgeProject.observer)
-    self.vm.outputs.goToManageViewPledge.map { $0.reward }.observe(self.goToManageViewPledgeReward.observer)
-    self.vm.outputs.goToManageViewPledge.map { $0.refTag }.observe(self.goToManageViewPledgeRefTag.observer)
+    self.vm.outputs.goToManagePledge.observe(self.goToManageViewPledge.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.goToDeprecatedViewBacking.map(first)
@@ -427,15 +423,11 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configureInitialState(.left(project))
 
-      self.goToManageViewPledgeRefTag.assertDidNotEmitValue()
-      self.goToManageViewPledgeReward.assertDidNotEmitValue()
-      self.goToManageViewPledgeProject.assertDidNotEmitValue()
+      self.goToManageViewPledge.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
-      self.goToManageViewPledgeProject.assertValues([project])
-      self.goToManageViewPledgeReward.assertValues([project.rewards[0]])
-      self.goToManageViewPledgeRefTag.assertValues([.discovery])
+      self.goToManageViewPledge.assertValues([project])
 
       self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
       self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
@@ -472,9 +464,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.goToDeprecatedManagePledgeReward.assertValues([project.rewards[0]])
       self.goToDeprecatedManagePledgeRefTag.assertValues([.discovery])
 
-      self.goToManageViewPledgeRefTag.assertDidNotEmitValue()
-      self.goToManageViewPledgeReward.assertDidNotEmitValue()
-      self.goToManageViewPledgeProject.assertDidNotEmitValue()
+      self.goToManageViewPledge.assertDidNotEmitValue()
 
       self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
       self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
@@ -499,15 +489,11 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configureInitialState(.left(project))
 
-      self.goToManageViewPledgeProject.assertDidNotEmitValue()
-      self.goToManageViewPledgeReward.assertDidNotEmitValue()
-      self.goToManageViewPledgeRefTag.assertDidNotEmitValue()
+      self.goToManageViewPledge.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
 
-      self.goToManageViewPledgeProject.assertValues([project])
-      self.goToManageViewPledgeReward.assertValues([project.rewards[0]])
-      self.goToManageViewPledgeRefTag.assertValues([.discovery])
+      self.goToManageViewPledge.assertValues([project])
 
       self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
       self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
@@ -548,9 +534,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.goToDeprecatedManagePledgeReward.assertDidNotEmitValue()
       self.goToDeprecatedManagePledgeRefTag.assertDidNotEmitValue()
 
-      self.goToManageViewPledgeRefTag.assertDidNotEmitValue()
-      self.goToManageViewPledgeReward.assertDidNotEmitValue()
-      self.goToManageViewPledgeProject.assertDidNotEmitValue()
+      self.goToManageViewPledge.assertDidNotEmitValue()
     }
   }
 
