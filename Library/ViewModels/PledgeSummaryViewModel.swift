@@ -42,7 +42,8 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
           country: currentCountry,
           omitCurrencyCode: project.stats.omitUSCurrencyCode,
           roundingMode: .halfUp,
-          maximumFractionDigits: 2
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 2
         )
       }
       .map { Strings.About_reward_amount(reward_amount: $0) }
