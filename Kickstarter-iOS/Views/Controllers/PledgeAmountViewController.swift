@@ -19,6 +19,7 @@ final class PledgeAmountViewController: UIViewController {
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountInputView: AmountInputView = { AmountInputView(frame: .zero) }()
+  private lazy var maxPledgeAmountErrorLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var minPledgeAmountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -40,8 +41,9 @@ final class PledgeAmountViewController: UIViewController {
 
     _ = ([
       self.titleLabel,
-      self.adaptableStackView,
       self.minPledgeAmountLabel,
+      self.adaptableStackView,
+      self.maxPledgeAmountErrorLabel,
       self.verticalSpacer
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -101,6 +103,10 @@ final class PledgeAmountViewController: UIViewController {
 
     _ = self.minPledgeAmountLabel
       |> minPledgeAmountLabelStyle
+
+    _ = self.maxPledgeAmountErrorLabel
+      |> maxPledgeAmountErrorLabelStyle
+      |> \.text %~ { _ in Strings.Your_pledge_amount() }
   }
 
   // MARK: - View model
@@ -204,4 +210,11 @@ private let minPledgeAmountLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_caption1()
     |> \.numberOfLines .~ 0
     |> \.textColor .~ UIColor.ksr_text_navy_600
+}
+
+private let maxPledgeAmountErrorLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_caption1()
+    |> \.numberOfLines .~ 0
+    |> \.textColor .~ UIColor.ksr_red_400
 }
