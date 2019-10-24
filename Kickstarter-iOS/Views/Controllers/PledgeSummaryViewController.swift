@@ -171,13 +171,13 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
 private let totalStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> verticalStackViewStyle
-    |> \.spacing .~ Styles.gridHalf(1)
+    |> \.spacing .~ Styles.gridHalf(3)
     |> \.alignment .~ UIStackView.Alignment.trailing
 }
 
 private let totalConversionLabelStyle: LabelStyle = { label in
   label
-    |> \.font .~ .ksr_caption1()
+    |> \.font .~ .ksr_footnote()
     |> \.textColor .~ .ksr_text_dark_grey_500
 }
 

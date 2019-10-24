@@ -36,11 +36,13 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
       .map { project, total in
         let convertedTotal = total * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
         let currentCountry = project.stats.currentCountry ?? Project.Country.us
-        
+
         return Format.currency(
           convertedTotal,
           country: currentCountry,
-          omitCurrencyCode: project.stats.omitUSCurrencyCode
+          omitCurrencyCode: project.stats.omitUSCurrencyCode,
+          roundingMode: .halfUp,
+          maximumFractionDigits: 2
         )
       }
       .map { Strings.About_reward_amount(reward_amount: $0) }
