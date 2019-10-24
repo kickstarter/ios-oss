@@ -3816,9 +3816,9 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
-   "If the project reaches its funding goal, you will be charged on <b>%{project_deadline}</b>."
+   "If the project reaches its funding goal, you will be charged on %{project_deadline}."
 
-   - **en**: "If the project reaches its funding goal, you will be charged on <b>%{project_deadline}</b>."
+   - **en**: "If the project reaches its funding goal, you will be charged on %{project_deadline}."
    - **de**: "Wenn das Projekt erfolgreich finanziert wird, wird deine Karte am <b>%{project_deadline}</b> belastet."
    - **es**: "Si el proyecto alcanza su meta de financiamiento, se te cobrará el <b>%{project_deadline}</b>."
    - **fr**: "Si l'objectif de financement est atteint, vous serez débité le <b>%{project_deadline}</b>."
@@ -3827,15 +3827,15 @@ Haz clic para volver a intentarlo."
   public static func If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(project_deadline: String) -> String {
     return localizedString(
       key: "If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline",
-      defaultValue: "If the project reaches its funding goal, you will be charged on <b>%{project_deadline}</b>.",
+      defaultValue: "If the project reaches its funding goal, you will be charged on %{project_deadline}.",
       count: nil,
       substitutions: ["project_deadline": project_deadline]
     )
   }
   /**
-   "If the project reaches its funding goal, you will be charged <b>%{total}</b> on <b>%{project_deadline}</b>."
+   "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}."
 
-   - **en**: "If the project reaches its funding goal, you will be charged <b>%{total}</b> on <b>%{project_deadline}</b>."
+   - **en**: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}."
    - **de**: "Wenn dieses Projekt das Finanzierungsziel erreicht, wird deine Karte am <b>%{project_deadline}</b> mit <b>%{total}</b> belastet."
    - **es**: "Si el proyecto alcanza su meta de financiamiento, se te cobrará el monto de <b>%{total}</b> el <b>%{project_deadline}</b>."
    - **fr**: "Si l'objectif de financement est atteint, vous serez débité de <b>%{total}</b> le <b>%{project_deadline}</b>."
@@ -3844,7 +3844,7 @@ Haz clic para volver a intentarlo."
   public static func If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(total: String, project_deadline: String) -> String {
     return localizedString(
       key: "If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline",
-      defaultValue: "If the project reaches its funding goal, you will be charged <b>%{total}</b> on <b>%{project_deadline}</b>.",
+      defaultValue: "If the project reaches its funding goal, you will be charged %{total} on %{project_deadline}.",
       count: nil,
       substitutions: ["total": total, "project_deadline": project_deadline]
     )
