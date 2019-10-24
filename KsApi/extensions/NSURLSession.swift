@@ -12,6 +12,43 @@ private func parseJSONData(_ data: Data) -> Any? {
 private let scheduler = QueueScheduler(qos: .background, name: "com.kickstarter.ksapi", targeting: nil)
 
 internal extension URLSession {
+  func rac_graphDataResponse(_ request: URLRequest)
+    -> SignalProducer<Data, GraphError> {
+    let producer = self.reactive.data(with: request)
+
+    return producer
+      .start(on: scheduler)
+      .flatMapError { error in .init(error: GraphError.requestError(error, nil)) }
+      .flatMap(.concat) { data, response -> SignalProducer<Data, GraphError> in
+        guard let response = response as? HTTPURLResponse else { fatalError() }
+
+        guard
+          (200..<300).contains(response.statusCode),
+          let headers = response.allHeaderFields as? [String: String],
+          let contentType = headers["Content-Type"], contentType.hasPrefix("application/json")
+        else {
+          print("🔴 [KsApi] Failure \(self.sanitized(request))")
+
+          return SignalProducer(
+            error:
+            .jsonDecodingError(responseString: String(data: data, encoding: .utf8), error: nil)
+          )
+        }
+
+        // Decode errors if any
+        let decodedErrors = try? JSONDecoder().decode(GraphResponseErrors.self, from: data)
+
+        if let error = decodedErrors?.errors?.first {
+          print("🔴 [KsApi] Failure - Graph Error: \(error.message)")
+
+          return .init(error: .decodeError(error))
+        } else {
+          print("🔵 [KsApi] Success \(self.sanitized(request))")
+          return SignalProducer(value: data)
+        }
+      }
+  }
+
   // Wrap an URLSession producer with error envelope logic.
   func rac_dataResponse(_ request: URLRequest, uploading file: (url: URL, name: String)? = nil)
     -> SignalProducer<Data, ErrorEnvelope> {

@@ -43,45 +43,23 @@ extension Service {
       .map { json in decode(json) as M? }
   }
 
-  private func performRequest<A: Swift.Decodable>(request: URLRequest) -> SignalProducer<A, GraphError> {
-    return SignalProducer<A, GraphError> { observer, disposable in
-      let task = URLSession.shared.dataTask(with: request) { data, response, error in
-        if let error = error {
-          observer.send(error: .requestError(error, response))
-          print("🔴 [KsApi] Failure - Request error: \(error.localizedDescription)")
-        }
-
-        guard let data = data else {
-          print("🔴 [KsApi] Failure - Empty response")
-          observer.send(error: .emptyResponse(response))
-          return
-        }
-
+  private func decodeGraphModel<T: Swift.Decodable>(_ jsonData: Data) -> SignalProducer<T, GraphError> {
+    return SignalProducer(value: jsonData)
+      .flatMap { data -> SignalProducer<T, GraphError> in
         do {
-          let decodedObject = try JSONDecoder().decode(GraphResponse<A>.self, from: data)
-          if let errors = decodedObject.errors, let error = errors.first {
-            observer.send(error: .decodeError(error))
-            print("🔴 [KsApi] Failure - Error: \(error.message)")
-          } else if let value = decodedObject.data {
-            print("🔵 [KsApi] Success")
-            observer.send(value: value)
-          }
+          let decodedObject = try JSONDecoder().decode(GraphResponse<T>.self, from: data)
+
+          print("🔵 [KsApi] Successfully Decoded Data")
+
+          return .init(value: decodedObject.data)
         } catch {
-          print("🔴 [KsApi] Failure - JSON decoding error: \(error.localizedDescription)")
-          observer.send(error: .jsonDecodingError(
+          print("🔴 [KsApi] Failure - Decoding error: \(error.localizedDescription)")
+          return .init(error: .jsonDecodingError(
             responseString: String(data: data, encoding: .utf8),
             error: error
           ))
         }
-        observer.sendCompleted()
       }
-
-      disposable.observeEnded {
-        task.cancel()
-      }
-
-      task.resume()
-    }
   }
 
   // MARK: - Public Request Functions
@@ -95,7 +73,8 @@ extension Service {
     )
 
     print("⚪️ [KsApi] Starting query:\n \(queryString)")
-    return self.performRequest(request: request)
+    return Service.session.rac_graphDataResponse(request)
+      .flatMap(self.decodeGraphModel)
   }
 
   func applyMutation<A: Swift.Decodable, B: GraphMutation>(mutation: B) -> SignalProducer<A, GraphError> {
@@ -108,7 +87,8 @@ extension Service {
       print("⚪️ [KsApi] Starting mutation:\n \(mutation.description)")
       print("⚪️ [KsApi] Input:\n \(mutation.input.toInputDictionary())")
 
-      return self.performRequest(request: request)
+      return Service.session.rac_graphDataResponse(request)
+        .flatMap(self.decodeGraphModel)
     } catch {
       return SignalProducer(error: .invalidInput)
     }

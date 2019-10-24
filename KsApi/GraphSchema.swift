@@ -3,7 +3,10 @@ import Prelude
 // MARK: - Graph Response
 
 public struct GraphResponse<T: Decodable>: Decodable {
-  let data: T?
+  let data: T
+}
+
+public struct GraphResponseErrors: Decodable {
   let errors: [GraphResponseError]?
 }
 
