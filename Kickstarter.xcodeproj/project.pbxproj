@@ -337,6 +337,11 @@
 		8A8099FD22E2172D00373E66 /* UISpringTimingParameters+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */; };
 		8A8099FF22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */; };
 		8AA5B060235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */; };
+		8AA5B063235E254C0022F5F0 /* AppCenterDistributeResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */; };
+		8AA5B068235E25820022F5F0 /* AppCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B064235E25820022F5F0 /* AppCenter.framework */; };
+		8AA5B069235E25820022F5F0 /* AppCenterDistribute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B065235E25820022F5F0 /* AppCenterDistribute.framework */; };
+		8AA5B06A235E25820022F5F0 /* AppCenterCrashes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B066235E25820022F5F0 /* AppCenterCrashes.framework */; };
+		8AA5B06B235E25820022F5F0 /* AppCenterAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B067235E25820022F5F0 /* AppCenterAnalytics.framework */; };
 		8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */; };
 		8AD48633235939AF00A1463E /* StripeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD48632235939AF00A1463E /* StripeTypes.swift */; };
 		8AD486352359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */; };
@@ -955,8 +960,6 @@
 		D04AACAE218BB72100CF713E /* SettingsPrivacySwitchCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC0C218BB70900CF713E /* SettingsPrivacySwitchCellViewModelTests.swift */; };
 		D04AACAF218BB72100CF713E /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC09218BB70800CF713E /* SettingsViewModelTests.swift */; };
 		D04F48D41E0313FB00EDC98A /* ActivityProjectStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */; };
-		D0544664229C7E8400A3CC66 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D054464F229C7E8300A3CC66 /* HockeySDKResources.bundle */; };
-		D0544670229C7E8400A3CC66 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0544663229C7E8400A3CC66 /* HockeySDK.framework */; };
 		D05DFC44227A578C006F3B68 /* KickstarterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05DFC43227A578C006F3B68 /* KickstarterUITests.swift */; };
 		D05DFC4D227A5842006F3B68 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F461E831BA200BFFA01 /* TestCase.swift */; };
 		D05DFC4E227A5861006F3B68 /* MockBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F451E831BA200BFFA01 /* MockBundle.swift */; };
@@ -1734,6 +1737,11 @@
 		8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISpringTimingParameters+Convenience.swift"; sourceTree = "<group>"; };
 		8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDescriptionViewControllerTests.swift; sourceTree = "<group>"; };
 		8AA5B05F235A08060022F5F0 /* STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatusTests.swift"; sourceTree = "<group>"; };
+		8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = AppCenterDistributeResources.bundle; path = Carthage/Build/iOS/AppCenterDistribute.framework/AppCenterDistributeResources.bundle; sourceTree = "<group>"; };
+		8AA5B064235E25820022F5F0 /* AppCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenter.framework; path = Carthage/Build/iOS/AppCenter.framework; sourceTree = "<group>"; };
+		8AA5B065235E25820022F5F0 /* AppCenterDistribute.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterDistribute.framework; path = Carthage/Build/iOS/AppCenterDistribute.framework; sourceTree = "<group>"; };
+		8AA5B066235E25820022F5F0 /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterCrashes.framework; path = Carthage/Build/iOS/AppCenterCrashes.framework; sourceTree = "<group>"; };
+		8AA5B067235E25820022F5F0 /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterAnalytics.framework; path = Carthage/Build/iOS/AppCenterAnalytics.framework; sourceTree = "<group>"; };
 		8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Mixing.swift"; sourceTree = "<group>"; };
 		8AD48632235939AF00A1463E /* StripeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeTypes.swift; sourceTree = "<group>"; };
 		8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatus.swift"; sourceTree = "<group>"; };
@@ -2365,8 +2373,6 @@
 		D04AAC1B218BB70C00CF713E /* MessageBannerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBannerViewModel.swift; sourceTree = "<group>"; };
 		D04AAC1C218BB70C00CF713E /* SettingsPrivacySwitchCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCellViewModel.swift; sourceTree = "<group>"; };
 		D04AAC1D218BB70C00CF713E /* SettingsAccountPickerCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAccountPickerCellViewModel.swift; sourceTree = "<group>"; };
-		D054464F229C7E8300A3CC66 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
-		D0544663229C7E8400A3CC66 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		D05DFC41227A578B006F3B68 /* KickstarterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KickstarterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D05DFC43227A578C006F3B68 /* KickstarterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KickstarterUITests.swift; sourceTree = "<group>"; };
 		D05DFC45227A578C006F3B68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2629,12 +2635,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AA5B068235E25820022F5F0 /* AppCenter.framework in Frameworks */,
+				8AA5B06B235E25820022F5F0 /* AppCenterAnalytics.framework in Frameworks */,
+				8AA5B06A235E25820022F5F0 /* AppCenterCrashes.framework in Frameworks */,
+				8AA5B069235E25820022F5F0 /* AppCenterDistribute.framework in Frameworks */,
 				D0D58D872257FAE000532AC1 /* Argo.framework in Frameworks */,
 				770E46252114E15D00396D46 /* Crashlytics.framework in Frameworks */,
 				D0D58D902257FAE000532AC1 /* Curry.framework in Frameworks */,
 				D0B7124622AEEDBC00317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68A822AF104B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
-				D0544670229C7E8400A3CC66 /* HockeySDK.framework in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 				D0D58D8A2257FAE000532AC1 /* OnePasswordExtension.framework in Frameworks */,
@@ -3411,8 +3420,13 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
+				8AA5B064235E25820022F5F0 /* AppCenter.framework */,
+				8AA5B067235E25820022F5F0 /* AppCenterAnalytics.framework */,
+				8AA5B066235E25820022F5F0 /* AppCenterCrashes.framework */,
+				8AA5B065235E25820022F5F0 /* AppCenterDistribute.framework */,
 				D0D58D7A2257FADE00532AC1 /* Argo.framework */,
 				770E45ED2114E15D00396D46 /* Crashlytics.framework */,
 				D0D58D832257FAE000532AC1 /* Curry.framework */,
@@ -3427,7 +3441,6 @@
 				D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */,
 				D0D58D842257FAE000532AC1 /* Runes.framework */,
 				D09362A8225D693000E1411A /* Stripe.framework */,
-				D054464E229C7E8300A3CC66 /* HockeySDK */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -4092,16 +4105,6 @@
 			path = templates;
 			sourceTree = "<group>";
 		};
-		D054464E229C7E8300A3CC66 /* HockeySDK */ = {
-			isa = PBXGroup;
-			children = (
-				D054464F229C7E8300A3CC66 /* HockeySDKResources.bundle */,
-				D0544663229C7E8400A3CC66 /* HockeySDK.framework */,
-			);
-			name = HockeySDK;
-			path = Frameworks/HockeySDK;
-			sourceTree = "<group>";
-		};
 		D05DFC42227A578C006F3B68 /* KickstarterUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -4499,9 +4502,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D50E9471D2EDBE50096DAEC /* Assets.xcassets in Resources */,
-				D0544664229C7E8400A3CC66 /* HockeySDKResources.bundle in Resources */,
 				01F219561DC12BF7005DD2E4 /* LaunchScreen.storyboard in Resources */,
 				A73924051D27247E004524C3 /* Main.storyboard in Resources */,
+				8AA5B063235E254C0022F5F0 /* AppCenterDistributeResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5847,7 +5850,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		A745D1D41CAAD0A400C12802 /* Hockey Beta */ = {
+		A745D1D41CAAD0A400C12802 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 802800571C88F64D00141235 /* Base.xcconfig */;
 			buildSettings = {
@@ -5886,7 +5889,6 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Fabric",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -5898,7 +5900,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-D HOCKEY";
+				OTHER_SWIFT_FLAGS = "-D APPCENTER";
 				PRODUCT_NAME = Kickstarter;
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
@@ -5908,9 +5910,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Hockey Beta";
+			name = "AppCenter Beta";
 		};
-		A745D1D51CAAD0A400C12802 /* Hockey Beta */ = {
+		A745D1D51CAAD0A400C12802 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
@@ -5931,9 +5933,9 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.kickstarter.kickstarter.beta";
 				SDKROOT = iphoneos;
 			};
-			name = "Hockey Beta";
+			name = "AppCenter Beta";
 		};
-		A745D1D61CAAD0A400C12802 /* Hockey Beta */ = {
+		A745D1D61CAAD0A400C12802 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -5949,9 +5951,9 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Hockey Beta";
+			name = "AppCenter Beta";
 		};
-		A745D1D71CAAD0A400C12802 /* Hockey Beta */ = {
+		A745D1D71CAAD0A400C12802 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CURRENT_PROJECT_VERSION = 1;
@@ -5975,9 +5977,9 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Hockey Beta";
+			name = "AppCenter Beta";
 		};
-		A745D1D81CAAD0A400C12802 /* Hockey Beta */ = {
+		A745D1D81CAAD0A400C12802 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -5994,9 +5996,9 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Hockey Beta";
+			name = "AppCenter Beta";
 		};
-		A745D1D91CAAD0A400C12802 /* Hockey Beta */ = {
+		A745D1D91CAAD0A400C12802 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CURRENT_PROJECT_VERSION = 1;
@@ -6025,7 +6027,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Hockey Beta";
+			name = "AppCenter Beta";
 		};
 		A755114D1C8642B3005355CF /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -6300,7 +6302,6 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Fabric",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -6370,7 +6371,6 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Fabric",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -6460,7 +6460,7 @@
 			};
 			name = Release;
 		};
-		D01587641EEB2DE4006E7684 /* Hockey Beta */ = {
+		D01587641EEB2DE4006E7684 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
@@ -6491,7 +6491,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Hockey Beta";
+			name = "AppCenter Beta";
 		};
 		D01587661EEB2DE4006E7684 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -6543,7 +6543,7 @@
 			};
 			name = Release;
 		};
-		D01587681EEB2DE4006E7684 /* Hockey Beta */ = {
+		D01587681EEB2DE4006E7684 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -6567,7 +6567,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Hockey Beta";
+			name = "AppCenter Beta";
 		};
 		D05DFC48227A578C006F3B68 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -6631,7 +6631,7 @@
 			};
 			name = Release;
 		};
-		D05DFC4A227A578C006F3B68 /* Hockey Beta */ = {
+		D05DFC4A227A578C006F3B68 /* AppCenter Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
@@ -6660,9 +6660,9 @@
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = "Kickstarter-iOS";
 			};
-			name = "Hockey Beta";
+			name = "AppCenter Beta";
 		};
-		D05DFC4B227A578C006F3B68 /* Hockey Alpha */ = {
+		D05DFC4B227A578C006F3B68 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
@@ -6691,9 +6691,9 @@
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = "Kickstarter-iOS";
 			};
-			name = "Hockey Alpha";
+			name = "AppCenter Alpha";
 		};
-		D083B1031F27EF0400BEC742 /* Hockey Alpha */ = {
+		D083B1031F27EF0400BEC742 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 802800571C88F64D00141235 /* Base.xcconfig */;
 			buildSettings = {
@@ -6732,7 +6732,6 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/Fabric",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Frameworks/HockeySDK",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -6744,7 +6743,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_SWIFT_FLAGS = "-D HOCKEY";
+				OTHER_SWIFT_FLAGS = "-D APPCENTER";
 				PRODUCT_NAME = Kickstarter;
 				SDKROOT = iphoneos;
 				STRIP_BITCODE_FROM_COPIED_FILES = NO;
@@ -6754,9 +6753,9 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Hockey Alpha";
+			name = "AppCenter Alpha";
 		};
-		D083B1041F27EF0400BEC742 /* Hockey Alpha */ = {
+		D083B1041F27EF0400BEC742 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
@@ -6777,9 +6776,9 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match InHouse com.kickstarter.kickstarter.kickalpha";
 				SDKROOT = iphoneos;
 			};
-			name = "Hockey Alpha";
+			name = "AppCenter Alpha";
 		};
-		D083B1051F27EF0400BEC742 /* Hockey Alpha */ = {
+		D083B1051F27EF0400BEC742 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CURRENT_PROJECT_VERSION = 1;
@@ -6803,9 +6802,9 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Hockey Alpha";
+			name = "AppCenter Alpha";
 		};
-		D083B1061F27EF0400BEC742 /* Hockey Alpha */ = {
+		D083B1061F27EF0400BEC742 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -6822,9 +6821,9 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Hockey Alpha";
+			name = "AppCenter Alpha";
 		};
-		D083B1071F27EF0400BEC742 /* Hockey Alpha */ = {
+		D083B1071F27EF0400BEC742 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CURRENT_PROJECT_VERSION = 1;
@@ -6853,9 +6852,9 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Hockey Alpha";
+			name = "AppCenter Alpha";
 		};
-		D083B1081F27EF0400BEC742 /* Hockey Alpha */ = {
+		D083B1081F27EF0400BEC742 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -6871,9 +6870,9 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Hockey Alpha";
+			name = "AppCenter Alpha";
 		};
-		D083B1091F27EF0400BEC742 /* Hockey Alpha */ = {
+		D083B1091F27EF0400BEC742 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
@@ -6904,9 +6903,9 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = "Hockey Alpha";
+			name = "AppCenter Alpha";
 		};
-		D083B10A1F27EF0400BEC742 /* Hockey Alpha */ = {
+		D083B10A1F27EF0400BEC742 /* AppCenter Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -6930,7 +6929,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Hockey Alpha";
+			name = "AppCenter Alpha";
 		};
 /* End XCBuildConfiguration section */
 
@@ -6940,8 +6939,8 @@
 			buildConfigurations = (
 				A755114D1C8642B3005355CF /* Debug */,
 				A755114E1C8642B3005355CF /* Release */,
-				A745D1D71CAAD0A400C12802 /* Hockey Beta */,
-				D083B1051F27EF0400BEC742 /* Hockey Alpha */,
+				A745D1D71CAAD0A400C12802 /* AppCenter Beta */,
+				D083B1051F27EF0400BEC742 /* AppCenter Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -6951,8 +6950,8 @@
 			buildConfigurations = (
 				A755114F1C8642B3005355CF /* Debug */,
 				A75511501C8642B3005355CF /* Release */,
-				A745D1D81CAAD0A400C12802 /* Hockey Beta */,
-				D083B1061F27EF0400BEC742 /* Hockey Alpha */,
+				A745D1D81CAAD0A400C12802 /* AppCenter Beta */,
+				D083B1061F27EF0400BEC742 /* AppCenter Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -6962,8 +6961,8 @@
 			buildConfigurations = (
 				A7C795A71C873A870081977F /* Debug */,
 				A7C795A81C873A870081977F /* Release */,
-				A745D1D91CAAD0A400C12802 /* Hockey Beta */,
-				D083B1071F27EF0400BEC742 /* Hockey Alpha */,
+				A745D1D91CAAD0A400C12802 /* AppCenter Beta */,
+				D083B1071F27EF0400BEC742 /* AppCenter Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -6973,8 +6972,8 @@
 			buildConfigurations = (
 				A7D1F9621C850B7C000D41D5 /* Debug */,
 				A7D1F9631C850B7C000D41D5 /* Release */,
-				A745D1D51CAAD0A400C12802 /* Hockey Beta */,
-				D083B1041F27EF0400BEC742 /* Hockey Alpha */,
+				A745D1D51CAAD0A400C12802 /* AppCenter Beta */,
+				D083B1041F27EF0400BEC742 /* AppCenter Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -6984,8 +6983,8 @@
 			buildConfigurations = (
 				A7D1F9651C850B7C000D41D5 /* Debug */,
 				A7D1F9661C850B7C000D41D5 /* Release */,
-				A745D1D61CAAD0A400C12802 /* Hockey Beta */,
-				D083B1081F27EF0400BEC742 /* Hockey Alpha */,
+				A745D1D61CAAD0A400C12802 /* AppCenter Beta */,
+				D083B1081F27EF0400BEC742 /* AppCenter Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -6995,8 +6994,8 @@
 			buildConfigurations = (
 				A7E06C9C1C5A6EB300EBDCC2 /* Debug */,
 				A7E06C9D1C5A6EB300EBDCC2 /* Release */,
-				A745D1D41CAAD0A400C12802 /* Hockey Beta */,
-				D083B1031F27EF0400BEC742 /* Hockey Alpha */,
+				A745D1D41CAAD0A400C12802 /* AppCenter Beta */,
+				D083B1031F27EF0400BEC742 /* AppCenter Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -7006,8 +7005,8 @@
 			buildConfigurations = (
 				D01587621EEB2DE4006E7684 /* Debug */,
 				D01587631EEB2DE4006E7684 /* Release */,
-				D01587641EEB2DE4006E7684 /* Hockey Beta */,
-				D083B1091F27EF0400BEC742 /* Hockey Alpha */,
+				D01587641EEB2DE4006E7684 /* AppCenter Beta */,
+				D083B1091F27EF0400BEC742 /* AppCenter Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -7017,8 +7016,8 @@
 			buildConfigurations = (
 				D01587661EEB2DE4006E7684 /* Debug */,
 				D01587671EEB2DE4006E7684 /* Release */,
-				D01587681EEB2DE4006E7684 /* Hockey Beta */,
-				D083B10A1F27EF0400BEC742 /* Hockey Alpha */,
+				D01587681EEB2DE4006E7684 /* AppCenter Beta */,
+				D083B10A1F27EF0400BEC742 /* AppCenter Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -7028,8 +7027,8 @@
 			buildConfigurations = (
 				D05DFC48227A578C006F3B68 /* Debug */,
 				D05DFC49227A578C006F3B68 /* Release */,
-				D05DFC4A227A578C006F3B68 /* Hockey Beta */,
-				D05DFC4B227A578C006F3B68 /* Hockey Alpha */,
+				D05DFC4A227A578C006F3B68 /* AppCenter Beta */,
+				D05DFC4B227A578C006F3B68 /* AppCenter Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

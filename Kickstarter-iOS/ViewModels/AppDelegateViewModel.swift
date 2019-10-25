@@ -5,19 +5,10 @@ import Prelude
 import ReactiveSwift
 import UserNotifications
 
-public struct HockeyConfigData {
-  public let appIdentifier: String
-  public let disableUpdates: Bool
+public struct AppCenterConfigData: Equatable {
+  public let appSecret: String
   public let userId: String
   public let userName: String
-}
-
-extension HockeyConfigData: Equatable {}
-public func == (lhs: HockeyConfigData, rhs: HockeyConfigData) -> Bool {
-  return lhs.appIdentifier == rhs.appIdentifier
-    && lhs.disableUpdates == rhs.disableUpdates
-    && lhs.userId == rhs.userId
-    && lhs.userName == rhs.userName
 }
 
 public enum NotificationAuthorizationStatus {
@@ -91,11 +82,11 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits the application icon badge number
   var applicationIconBadgeNumber: Signal<Int, Never> { get }
 
+  /// Emits an app secret that should be used to configure AppCenter.
+  var configureAppCenterWithData: Signal<AppCenterConfigData, Never> { get }
+
   /// Emits when the application should configure Fabric
   var configureFabric: Signal<(), Never> { get }
-
-  /// Emits an app identifier that should be used to configure the hockey app manager.
-  var configureHockey: Signal<HockeyConfigData, Never> { get }
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
@@ -500,7 +491,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
-    self.configureHockey = Signal.merge(
+    self.configureAppCenterWithData = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal
@@ -508,11 +499,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     .filter { !AppEnvironment.current.mainBundle.isDebug }
     .map { _ in
       let mainBundle = AppEnvironment.current.mainBundle
-      let hockeyAppId = mainBundle.hockeyAppId ?? KsApi.Secrets.HockeyAppId.production
+      let appCenterAppSecret = mainBundle.appCenterAppSecret ?? KsApi.Secrets.AppCenter.production
 
-      return HockeyConfigData(
-        appIdentifier: hockeyAppId,
-        disableUpdates: mainBundle.isRelease,
+      return AppCenterConfigData(
+        appSecret: appCenterAppSecret,
         userId: (AppEnvironment.current.currentUser?.id).map(String.init) ?? "0",
         userName: AppEnvironment.current.currentUser?.name ?? "anonymous"
       )
@@ -713,8 +703,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   }
 
   public let applicationIconBadgeNumber: Signal<Int, Never>
+  public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFabric: Signal<(), Never>
-  public let configureHockey: Signal<HockeyConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
