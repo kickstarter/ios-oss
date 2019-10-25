@@ -81,11 +81,11 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .map(rounded)
 
     let initialValue = Signal.combineLatest(
-      project
-        .map { $0.personalization.backing?.pledgeAmount },
+      project.map { $0.personalization.backing },
+      reward,
       minValue
     )
-    .map { backedAmount, minValue in backedAmount ?? minValue }
+    .map(initialPledgeAmount)
 
     let stepperValue = Signal.merge(
       initialValue,
@@ -261,4 +261,10 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 //  rounded(1.123456789) => 1.12
 private func rounded(_ value: Double) -> Double {
   return round(value * 100) / 100
+}
+
+private func initialPledgeAmount(from backing: Backing?, reward: Reward, minValue: Double) -> Double {
+  guard let backing = backing, reward.id == backing.rewardId else { return minValue }
+
+  return backing.pledgeAmount
 }

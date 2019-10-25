@@ -14,7 +14,7 @@ final class ManagePledgePaymentMethodView: UIView {
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private let viewModel: PledgeCreditCardViewModelType = PledgeCreditCardViewModel()
+  private let viewModel: ManagePledgePaymentMethodViewModelType = ManagePledgePaymentMethodViewModel()
 
   // MARK: - Lifecycle
 
@@ -32,7 +32,7 @@ final class ManagePledgePaymentMethodView: UIView {
 
   // MARK: - Configuration
 
-  public func configure(with card: GraphUserCreditCard.CreditCard) {
+  public func configure(with card: Backing.PaymentSource) {
     self.viewModel.inputs.configureWith(value: card)
   }
 
@@ -90,11 +90,11 @@ final class ManagePledgePaymentMethodView: UIView {
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.lastFourDigitsLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
 
-    self.viewModel.outputs.cardImage
+    self.viewModel.outputs.cardImageName
       .observeForUI()
-      .observeValues { [weak self] image in
+      .observeValues { [weak self] imageName in
         _ = self?.paymentMethodImageView
-          ?|> \.image .~ image
+          ?|> \.image .~ image(named: imageName)
       }
   }
 

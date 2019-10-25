@@ -227,6 +227,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.beginSCAFlowWithClientSecret
+      .observeForUI()
+      .observeValues { [weak self] secret in
+        self?.beginSCAFlow(withClientSecret: secret)
+      }
+
     self.viewModel.outputs.configureStripeIntegration
       .observeForUI()
       .observeValues { merchantIdentifier, publishableKey in
@@ -336,13 +342,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     // MARK: Errors
 
-    self.viewModel.outputs.createBackingError
-      .observeForUI()
-      .observeValues { [weak self] errorMessage in
-        self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
-      }
-
-    self.viewModel.outputs.updatePledgeFailedWithError
+    self.viewModel.outputs.showErrorBannerWithMessage
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
@@ -351,7 +351,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.viewModel.outputs.showApplePayAlert
       .observeForControllerAction()
       .observeValues { [weak self] title, message in
-        self?.presentMaximumPledgeAmountAlert(title: title, message: message)
+        self?.presentApplePayInvalidAmountAlert(title: title, message: message)
       }
   }
 
@@ -378,7 +378,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 
-  private func presentMaximumPledgeAmountAlert(title: String, message: String) {
+  private func presentApplePayInvalidAmountAlert(title: String, message: String) {
     self.present(UIAlertController.alert(title, message: message), animated: true)
   }
 
@@ -390,6 +390,23 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
+  }
+
+  private func beginSCAFlow(withClientSecret secret: String) {
+    STPPaymentHandler.shared().confirmSetupIntent(
+      withParams: .init(clientSecret: secret),
+      authenticationContext: self
+    ) { [weak self] status, _, error in
+      self?.viewModel.inputs.scaFlowCompleted(with: status, error: error)
+    }
+  }
+}
+
+// MARK: - STPAuthenticationContext
+
+extension PledgeViewController: STPAuthenticationContext {
+  func authenticationPresentingViewController() -> UIViewController {
+    return self
   }
 }
 

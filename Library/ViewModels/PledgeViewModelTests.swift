@@ -8,8 +8,14 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
+private struct MockStripePaymentHandlerActionStatus: StripePaymentHandlerActionStatusType {
+  let status: StripePaymentHandlerActionStatus
+}
+
 final class PledgeViewModelTests: TestCase {
   private let vm: PledgeViewModelType = PledgeViewModel()
+
+  private let beginSCAFlowWithClientSecret = TestObserver<String, Never>()
 
   private let configurePaymentMethodsViewControllerWithUser = TestObserver<User, Never>()
   private let configurePaymentMethodsViewControllerWithProject = TestObserver<Project, Never>()
@@ -31,8 +37,6 @@ final class PledgeViewModelTests: TestCase {
 
   private let descriptionViewHidden = TestObserver<Bool, Never>()
 
-  private let createBackingError = TestObserver<String, Never>()
-
   private let goToApplePayPaymentAuthorizationProject = TestObserver<Project, Never>()
   private let goToApplePayPaymentAuthorizationReward = TestObserver<Reward, Never>()
   private let goToApplePayPaymentAuthorizationPledgeAmount = TestObserver<Double, Never>()
@@ -50,15 +54,17 @@ final class PledgeViewModelTests: TestCase {
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
   private let showApplePayAlertMessage = TestObserver<String, Never>()
   private let showApplePayAlertTitle = TestObserver<String, Never>()
+  private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let submitButtonEnabled = TestObserver<Bool, Never>()
   private let submitButtonHidden = TestObserver<Bool, Never>()
   private let submitButtonIsLoading = TestObserver<Bool, Never>()
   private let submitButtonTitle = TestObserver<String, Never>()
   private let title = TestObserver<String, Never>()
-  private let updatePledgeFailedWithError = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
+
+    self.vm.outputs.beginSCAFlowWithClientSecret.observe(self.beginSCAFlowWithClientSecret.observer)
 
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map(first)
       .observe(self.configurePaymentMethodsViewControllerWithUser.observer)
@@ -91,8 +97,6 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.outputs.continueViewHidden.observe(self.continueViewHidden.observer)
 
-    self.vm.outputs.createBackingError.observe(self.createBackingError.observer)
-
     self.vm.outputs.descriptionViewHidden.observe(self.descriptionViewHidden.observer)
 
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.project }
@@ -119,9 +123,10 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
     self.vm.outputs.showApplePayAlert.map(second).observe(self.showApplePayAlertMessage.observer)
     self.vm.outputs.showApplePayAlert.map(first).observe(self.showApplePayAlertTitle.observer)
-    self.vm.outputs.title.observe(self.title.observer)
 
-    self.vm.outputs.updatePledgeFailedWithError.observe(self.updatePledgeFailedWithError.observer)
+    self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
+
+    self.vm.outputs.title.observe(self.title.observer)
   }
 
   func testPledgeContext_LoggedIn() {
@@ -284,6 +289,47 @@ final class PledgeViewModelTests: TestCase {
         "If the project reaches its funding goal, you will be charged on November 1, 2019.",
         "If the project reaches its funding goal, you will be charged on November 1, 2019."
       ])
+    }
+  }
+
+  func testUpdateRewardContext() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.template
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: .projectPage, context: .updateReward
+      )
+      self.vm.inputs.viewDidLoad()
+
+      self.title.assertValues(["Update pledge"])
+
+      self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
+      self.configurePaymentMethodsViewControllerWithProject.assertDidNotEmitValue()
+
+      self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
+      self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
+
+      self.submitButtonTitle.assertValues(["Confirm"])
+      self.confirmationLabelHidden.assertValues([true])
+
+      self.descriptionViewHidden.assertValues([false])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([true])
+      self.pledgeAmountViewHidden.assertValues([false])
+      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.sectionSeparatorsHidden.assertValues([false])
+      self.shippingLocationViewHidden.assertValues([false])
+      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryCellWithDataProject.assertValues([project])
     }
   }
 
@@ -732,6 +778,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
@@ -740,6 +787,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.applePayButtonTapped()
 
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationProject.assertValues([project])
     self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
     self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
@@ -759,6 +807,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
@@ -769,6 +818,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.applePayButtonTapped()
 
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationProject.assertValues([project])
     self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
     self.goToApplePayPaymentAuthorizationShippingRule.assertValues([shippingRule])
@@ -834,6 +884,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.applePayButtonTapped()
 
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationProject.assertValues([project])
     self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
     self.goToApplePayPaymentAuthorizationShippingRule.assertValues([shippingRule])
@@ -843,7 +894,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
     self.goToThanks.assertDidNotEmitValue()
-    self.createBackingError.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
   }
 
   func testStripeTokenCreated_ReturnsStatusFailure_WhenPKPaymentData_IsNil() {
@@ -976,12 +1027,12 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
       self.goToThanks.assertDidNotEmitValue("Signal waits for Create Backing to complete")
-      self.createBackingError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
 
       self.goToThanks.assertValues([project])
-      self.createBackingError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
     }
   }
 
@@ -1030,7 +1081,7 @@ final class PledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       self.goToThanks.assertValues([project])
-      self.createBackingError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
     }
   }
 
@@ -1060,7 +1111,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
       self.goToThanks.assertDidNotEmitValue()
-      self.createBackingError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
     }
   }
 
@@ -1089,21 +1140,23 @@ final class PledgeViewModelTests: TestCase {
       )
 
       self.goToThanks.assertDidNotEmitValue()
-      self.createBackingError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
 
-      self.createBackingError.assertDidNotEmitValue("Signal waits for the Apple Pay sheet to be dismissed")
+      self.showErrorBannerWithMessage.assertDidNotEmitValue(
+        "Signal waits for the Apple Pay sheet to be dismissed"
+      )
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
-      self.createBackingError.assertValues(["Something went wrong."])
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.goToThanks.assertDidNotEmitValue()
     }
   }
 
-  func testCreateBacking() {
+  func testCreateBacking_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(state: .verifying, backing: .init(requiresAction: false, clientSecret: nil))
+      checkout: Checkout(state: .verifying, backing: .init(clientSecret: nil, requiresAction: false))
     )
     let mockService = MockService(
       createBackingResult:
@@ -1114,9 +1167,10 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
       self.goToThanks.assertDidNotEmitValue()
-      self.createBackingError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
 
@@ -1130,17 +1184,19 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.submitButtonTapped()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false])
       self.submitButtonIsLoading.assertValues([true])
       self.goToThanks.assertDidNotEmitValue()
-      self.createBackingError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false, true])
       self.submitButtonIsLoading.assertValues([true, false])
       self.goToThanks.assertValues([.template])
-      self.createBackingError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
     }
   }
 
@@ -1154,9 +1210,10 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
       self.goToThanks.assertDidNotEmitValue()
-      self.createBackingError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
 
@@ -1170,17 +1227,19 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.submitButtonTapped()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false])
       self.submitButtonIsLoading.assertValues([true])
       self.goToThanks.assertDidNotEmitValue()
-      self.createBackingError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false, true])
       self.submitButtonIsLoading.assertValues([true, false])
       self.goToThanks.assertDidNotEmitValue()
-      self.createBackingError.assertValues(["Something went wrong."])
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
     }
   }
 
@@ -1193,7 +1252,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
@@ -1206,8 +1265,8 @@ final class PledgeViewModelTests: TestCase {
         checkout: .init(
           state: .successful,
           backing: .init(
-            requiresAction: false,
-            clientSecret: "client-secret"
+            clientSecret: "client-secret",
+            requiresAction: false
           )
         )
       )
@@ -1221,39 +1280,44 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
       self.vm.inputs.viewDidLoad()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
         with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
       )
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
 
       self.vm.inputs.shippingRuleSelected(.template)
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
 
       self.vm.inputs.submitButtonTapped()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false, true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonIsLoading.assertValues([true])
+      self.submitButtonEnabled.assertValues([false, true, false])
 
       self.scheduler.run()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
         "Got it! Your changes have been saved."
       ])
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonIsLoading.assertValues([true, false])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
     }
   }
 
@@ -1266,7 +1330,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
@@ -1282,37 +1346,42 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
       self.vm.inputs.viewDidLoad()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
         with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
       )
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
 
       self.vm.inputs.shippingRuleSelected(.template)
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
 
       self.vm.inputs.submitButtonTapped()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
-      self.submitButtonEnabled.assertValues([false, true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonIsLoading.assertValues([true])
+      self.submitButtonEnabled.assertValues([false, true, false])
 
       self.scheduler.run()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertValueCount(1)
-      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.showErrorBannerWithMessage.assertValueCount(1)
       self.submitButtonIsLoading.assertValues([true, false])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
     }
   }
 
@@ -1325,7 +1394,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
@@ -1346,37 +1415,37 @@ final class PledgeViewModelTests: TestCase {
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
+    self.submitButtonEnabled.assertValues([false], "Amount unchanged")
+
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
-    self.submitButtonEnabled.assertValues([false, false], "Shipping rule and amount unchanged")
+    self.submitButtonEnabled.assertValues([false], "Shipping rule and amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false], "Amount unchanged")
+    self.submitButtonEnabled.assertValues([false], "Amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false, true], "Amount changed")
+    self.submitButtonEnabled.assertValues([false, true], "Amount changed")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false, true, false], "Amount unchanged")
+    self.submitButtonEnabled.assertValues([false, true, false], "Amount unchanged")
 
     self.vm.inputs.shippingRuleSelected(.template)
 
-    self.submitButtonEnabled.assertValues([false, false, false, true, false, true], "Shipping rule changed")
+    self.submitButtonEnabled.assertValues([false, true, false, true], "Shipping rule changed")
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
-    self.submitButtonEnabled.assertValues(
-      [false, false, false, true, false, true, false], "Amount and shipping rule unchanged"
-    )
+    self.submitButtonEnabled.assertValues([false, true, false, true, false], "Shipping rule unchanged")
   }
 
   func testUpdatingSubmitButtonEnabled_NoShipping() {
@@ -1388,7 +1457,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
@@ -1407,19 +1476,96 @@ final class PledgeViewModelTests: TestCase {
     )
 
     self.submitButtonTitle.assertValues(["Confirm"])
-    self.submitButtonEnabled.assertValues([false, false], "Amount unchanged")
+    self.submitButtonEnabled.assertValues([false], "Amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, true], "Amount changed")
+    self.submitButtonEnabled.assertValues([false, true], "Amount changed")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 700, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, true, false], "Amount unchanged")
+    self.submitButtonEnabled.assertValues([false, true, false], "Amount unchanged")
+  }
+
+  func testUpdatingRewardSubmitButtonEnabled_ShippingEnabled() {
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ Reward.otherReward
+          |> Backing.lens.rewardId .~ Reward.otherReward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.submitButtonTitle.assertDidNotEmitValue()
+    self.submitButtonEnabled.assertDidNotEmitValue()
+
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          state: .successful,
+          backing: .init(
+            clientSecret: "client-secret",
+            requiresAction: false
+          )
+        )
+      )
+    )
+
+    let mockService = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .updateReward)
+      self.vm.inputs.viewDidLoad()
+
+      self.submitButtonTitle.assertValues(["Confirm"])
+      self.submitButtonEnabled.assertValues([false])
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
+      )
+
+      self.submitButtonEnabled.assertValues([false], "Amount unchanged")
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
+
+      self.submitButtonEnabled.assertValues(
+        [false, true], "Shipping rule and amount unchanged, button enabled due to different reward"
+      )
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.submitButtonEnabled.assertValues([false, true, false])
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
+        "Got it! Your changes have been saved."
+      ])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    }
   }
 
   func testChangingPaymentMethodSubmitButtonEnabled_ShippingEnabled() {
@@ -1431,7 +1577,7 @@ final class PledgeViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
@@ -1454,40 +1600,41 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
-    self.submitButtonEnabled.assertValues([false, false], "Shipping rule and amount unchanged")
+    self.submitButtonEnabled.assertValues([false], "Shipping rule and amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false], "Amount unchanged")
+    self.submitButtonEnabled.assertValues([false], "Amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false, true], "Amount changed")
+    self.submitButtonEnabled.assertValues([false, true], "Amount changed")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.submitButtonEnabled.assertValues([false, false, false, true, false], "Amount unchanged")
+    self.submitButtonEnabled.assertValues([false, true, false], "Amount unchanged")
 
     self.vm.inputs.shippingRuleSelected(.template)
 
-    self.submitButtonEnabled.assertValues([false, false, false, true, false, true], "Shipping rule changed")
+    self.submitButtonEnabled.assertValues([false, true, false, true], "Shipping rule changed")
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
     self.submitButtonEnabled.assertValues(
-      [false, false, false, true, false, true, false], "Amount and shipping rule unchanged"
+      [false, true, false, true, false],
+      "Amount and shipping rule unchanged"
     )
 
     self.vm.inputs.creditCardSelected(with: "12345")
 
     self.submitButtonEnabled.assertValues(
-      [false, false, false, true, false, true, false, true],
+      [false, true, false, true, false, true],
       "Payment method changed"
     )
 
@@ -1497,7 +1644,7 @@ final class PledgeViewModelTests: TestCase {
     )
 
     self.submitButtonEnabled.assertValues(
-      [false, false, false, true, false, true, false, true, false],
+      [false, true, false, true, false, true, false],
       "Payment method unchanged"
     )
   }
@@ -1508,8 +1655,8 @@ final class PledgeViewModelTests: TestCase {
         checkout: .init(
           state: .successful,
           backing: .init(
-            requiresAction: false,
-            clientSecret: "client-secret"
+            clientSecret: "client-secret",
+            requiresAction: false
           )
         )
       )
@@ -1525,10 +1672,10 @@ final class PledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-    self.updatePledgeFailedWithError.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.createBackingError.assertDidNotEmitValue()
     self.goToThanks.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService) {
@@ -1540,7 +1687,7 @@ final class PledgeViewModelTests: TestCase {
         |> Project.lens.personalization.isBacking .~ true
         |> Project.lens.personalization.backing .~ (
           .template
-            |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+            |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
             |> Backing.lens.status .~ .pledged
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
@@ -1562,10 +1709,10 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
@@ -1576,10 +1723,10 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
@@ -1592,10 +1739,10 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       XCTAssertEqual(
@@ -1609,10 +1756,10 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
@@ -1623,10 +1770,10 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       self.scheduler.run()
@@ -1637,12 +1784,12 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
         "Got it! Your changes have been saved."
       ])
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
     }
   }
@@ -1653,8 +1800,8 @@ final class PledgeViewModelTests: TestCase {
         checkout: .init(
           state: .successful,
           backing: .init(
-            requiresAction: false,
-            clientSecret: "client-secret"
+            clientSecret: "client-secret",
+            requiresAction: false
           )
         )
       )
@@ -1670,10 +1817,10 @@ final class PledgeViewModelTests: TestCase {
     self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-    self.updatePledgeFailedWithError.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.createBackingError.assertDidNotEmitValue()
     self.goToThanks.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService) {
@@ -1685,7 +1832,7 @@ final class PledgeViewModelTests: TestCase {
         |> Project.lens.personalization.isBacking .~ true
         |> Project.lens.personalization.backing .~ (
           .template
-            |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+            |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
             |> Backing.lens.status .~ .pledged
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
@@ -1707,10 +1854,10 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
@@ -1721,10 +1868,10 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       XCTAssertEqual(
@@ -1738,10 +1885,10 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       self.scheduler.run()
@@ -1752,10 +1899,10 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
@@ -1766,10 +1913,10 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
     }
   }
@@ -1779,10 +1926,15 @@ final class PledgeViewModelTests: TestCase {
       updateBackingResult: .failure(.invalidInput)
     )
 
+    self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
     self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-    self.updatePledgeFailedWithError.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.createBackingError.assertDidNotEmitValue()
     self.goToThanks.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService) {
@@ -1794,7 +1946,7 @@ final class PledgeViewModelTests: TestCase {
         |> Project.lens.personalization.isBacking .~ true
         |> Project.lens.personalization.backing .~ (
           .template
-            |> Backing.lens.paymentSource .~ GraphUserCreditCard.amex
+            |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
             |> Backing.lens.status .~ .pledged
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
@@ -1807,28 +1959,48 @@ final class PledgeViewModelTests: TestCase {
       )
       self.vm.inputs.viewDidLoad()
 
+      let pledgeAmountData = (amount: 99.0, min: 5.0, max: 10_000.0, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
 
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
       )
 
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       XCTAssertEqual(
@@ -1836,29 +2008,1268 @@ final class PledgeViewModelTests: TestCase {
         self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
       )
 
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       self.scheduler.run()
 
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.createBackingError.assertDidNotEmitValue()
       self.goToThanks.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
-      self.updatePledgeFailedWithError.assertValues([
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+    }
+  }
+
+  func testApplePayBackingFails_ThenSucceeds_SignalsDoNotOverlap_UpdateContext() {
+    let mockService1 = MockService(
+      updateBackingResult: .failure(.invalidInput)
+    )
+
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+    self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    self.submitButtonEnabled.assertDidNotEmitValue()
+    self.goToThanks.assertDidNotEmitValue()
+
+    withEnvironment(apiService: mockService1) {
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: .projectPage, context: .update
+      )
+      self.vm.inputs.viewDidLoad()
+
+      let pledgeAmountData = (amount: 99.0, min: 5.0, max: 10_000.0, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+    }
+
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          state: .successful,
+          backing: .init(
+            clientSecret: "client-secret",
+            requiresAction: false
+          )
+        )
+      )
+    )
+
+    let mockService2 = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService2) {
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99, 99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
+        Secrets.ApplePay.merchantIdentifier,
+        Secrets.ApplePay.merchantIdentifier
+      ])
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99, 99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
+        Secrets.ApplePay.merchantIdentifier,
+        Secrets.ApplePay.merchantIdentifier
+      ])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99, 99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
+        Secrets.ApplePay.merchantIdentifier,
+        Secrets.ApplePay.merchantIdentifier
+      ])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99, 99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
+        Secrets.ApplePay.merchantIdentifier,
+        Secrets.ApplePay.merchantIdentifier
+      ])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99, 99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
+        Secrets.ApplePay.merchantIdentifier,
+        Secrets.ApplePay.merchantIdentifier
+      ])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
+        "Got it! Your changes have been saved."
+      ])
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+    }
+  }
+
+  func testApplePayBackingFails_ThenStoredCardSucceeds_SignalsDoNotOverlap_UpdateContext() {
+    let mockService1 = MockService(
+      updateBackingResult: .failure(.invalidInput)
+    )
+
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+    self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    self.submitButtonEnabled.assertDidNotEmitValue()
+    self.goToThanks.assertDidNotEmitValue()
+
+    withEnvironment(apiService: mockService1) {
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: .projectPage, context: .update
+      )
+      self.vm.inputs.viewDidLoad()
+
+      let pledgeAmountData = (amount: 99.0, min: 5.0, max: 10_000.0, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+    }
+
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          state: .successful,
+          backing: .init(
+            clientSecret: "client-secret",
+            requiresAction: false
+          )
+        )
+      )
+    )
+
+    let mockService2 = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService2) {
+      self.vm.inputs.creditCardSelected(with: "123")
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
+        "Got it! Your changes have been saved."
+      ])
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+    }
+  }
+
+  func testStoredCardFails_ThenApplePaySucceeds_SignalsDoNotOverlap_UpdateContext() {
+    let mockService1 = MockService(
+      updateBackingResult: .failure(.invalidInput)
+    )
+
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+    self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    self.submitButtonEnabled.assertDidNotEmitValue()
+    self.goToThanks.assertDidNotEmitValue()
+
+    withEnvironment(apiService: mockService1) {
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: .projectPage, context: .update
+      )
+      self.vm.inputs.viewDidLoad()
+
+      let pledgeAmountData = (amount: 99.0, min: 5.0, max: 10_000.0, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.vm.inputs.creditCardSelected(with: "123")
+
+      self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true, false])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+    }
+
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          state: .successful,
+          backing: .init(
+            clientSecret: "client-secret",
+            requiresAction: false
+          )
+        )
+      )
+    )
+
+    let mockService2 = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService2) {
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
+        "Got it! Your changes have been saved."
+      ])
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+    }
+  }
+
+  func testStoredCardFails_ThenApplePayFails_SignalsDoNotOverlap_UpdateContext() {
+    let mockService = MockService(
+      updateBackingResult: .failure(.invalidInput)
+    )
+
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+    self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    self.submitButtonEnabled.assertDidNotEmitValue()
+    self.goToThanks.assertDidNotEmitValue()
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: .projectPage, context: .update
+      )
+      self.vm.inputs.viewDidLoad()
+
+      let pledgeAmountData = (amount: 99.0, min: 5.0, max: 10_000.0, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.vm.inputs.creditCardSelected(with: "123")
+
+      self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true, false])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.goToApplePayPaymentAuthorizationProject.assertValues([project])
+      self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
+      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues([
+        "Something went wrong.",
         "Something went wrong."
       ])
-      self.submitButtonEnabled.assertValues([false, true])
-      self.createBackingError.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true, false, true])
       self.goToThanks.assertDidNotEmitValue()
+    }
+  }
+
+  func testCreateBacking_RequiresSCA_Success() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(
+        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
+      )
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+    self.submitButtonEnabled.assertDidNotEmitValue()
+    self.goToThanks.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+    let project = Project.template
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: .template, refTag: .activity, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.creditCardSelected(with: "123")
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true, false])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.scaFlowCompleted(
+        with: MockStripePaymentHandlerActionStatus(status: .succeeded), error: nil
+      )
+
+      self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertValues([project])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    }
+  }
+
+  func testCreateBacking_RequiresSCA_Failed() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(
+        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
+      )
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+    self.submitButtonEnabled.assertDidNotEmitValue()
+    self.goToThanks.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+    let project = Project.template
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: .template, refTag: .activity, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.creditCardSelected(with: "123")
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true, false])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.scaFlowCompleted(
+        with: MockStripePaymentHandlerActionStatus(status: .failed), error: GraphError.invalidInput
+      )
+
+      self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(
+        ["The operation couldn’t be completed. (KsApi.GraphError error 5.)"]
+      )
+    }
+  }
+
+  func testCreateBacking_RequiresSCA_Canceled() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(
+        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
+      )
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+    self.submitButtonEnabled.assertDidNotEmitValue()
+    self.goToThanks.assertDidNotEmitValue()
+    self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+    let project = Project.template
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: .template, refTag: .activity, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.creditCardSelected(with: "123")
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true, false])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.scaFlowCompleted(
+        with: MockStripePaymentHandlerActionStatus(status: .canceled), error: nil
+      )
+
+      self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    }
+  }
+
+  func testUpdateBacking_RequiresSCA_Success() {
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          state: .successful,
+          backing: .init(
+            clientSecret: "client-secret",
+            requiresAction: true
+          )
+        )
+      )
+    )
+
+    let mockService = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
+      )
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+
+      self.vm.inputs.shippingRuleSelected(.template)
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true, false])
+
+      self.scheduler.run()
+
+      self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.scaFlowCompleted(
+        with: MockStripePaymentHandlerActionStatus(status: .succeeded), error: nil
+      )
+
+      self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
+        "Got it! Your changes have been saved."
+      ])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    }
+  }
+
+  func testUpdateBacking_RequiresSCA_Failed() {
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          state: .successful,
+          backing: .init(
+            clientSecret: "client-secret",
+            requiresAction: true
+          )
+        )
+      )
+    )
+
+    let mockService = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
+      )
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+
+      self.vm.inputs.shippingRuleSelected(.template)
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true, false])
+
+      self.scheduler.run()
+
+      self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.scaFlowCompleted(
+        with: MockStripePaymentHandlerActionStatus(status: .failed), error: GraphError.invalidInput
+      )
+
+      self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues(
+        ["The operation couldn’t be completed. (KsApi.GraphError error 5.)"]
+      )
+    }
+  }
+
+  func testUpdateBacking_RequiresSCA_Canceled() {
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          state: .successful,
+          backing: .init(
+            clientSecret: "client-secret",
+            requiresAction: true
+          )
+        )
+      )
+    )
+
+    let mockService = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false])
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
+      )
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+
+      self.vm.inputs.shippingRuleSelected(.template)
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true])
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.submitButtonEnabled.assertValues([false, true, false])
+
+      self.scheduler.run()
+
+      self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
+      self.submitButtonEnabled.assertValues([false, true, false, true])
+      self.goToThanks.assertDidNotEmitValue()
+      self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
     }
   }
 }

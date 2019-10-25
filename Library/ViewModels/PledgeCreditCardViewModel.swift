@@ -4,9 +4,14 @@ import ReactiveExtensions
 import ReactiveSwift
 import UIKit
 
+public typealias PledgeCreditCardValue = (
+  card: GraphUserCreditCard.CreditCard,
+  isEnabled: Bool, projectCountry: String
+)
+
 public protocol PledgeCreditCardViewModelInputs {
   /// Call to configure cell with card and selected card values.
-  func configureWith(value: GraphUserCreditCard.CreditCard)
+  func configureWith(value: PledgeCreditCardValue)
 
   /// Call when the "select" button is tapped.
   func selectButtonTapped()
@@ -31,11 +36,23 @@ public protocol PledgeCreditCardViewModelOutputs {
   /// Emits the paymentSourceId of the current card.
   var notifyDelegateOfCardSelected: Signal<String, Never> { get }
 
+  /// Emits whether or not the button is enabled.
+  var selectButtonEnabled: Signal<Bool, Never> { get }
+
   /// Emits whether or not the button is selected.
   var selectButtonIsSelected: Signal<Bool, Never> { get }
 
   /// Emits the button title.
   var selectButtonTitle: Signal<String, Never> { get }
+
+  /// Emits a whether or not the spacer view should be hidden
+  var spacerIsHidden: Signal<Bool, Never> { get }
+
+  /// Emits whether or not the unavailable card type label should be hidden.
+  var unavailableCardLabelHidden: Signal<Bool, Never> { get }
+
+  /// Emits a string explaining why card type is unavailable.
+  var unavailableCardText: Signal<String, Never> { get }
 }
 
 public protocol PledgeCreditCardViewModelType {
@@ -46,8 +63,9 @@ public protocol PledgeCreditCardViewModelType {
 public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
   public init() {
-    let creditCard = self.creditCardProperty.signal.skipNil()
+    let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map(first)
     let selectedCard = self.selectedCardProperty.signal.skipNil()
+    let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map(second)
 
     self.cardImage = creditCard
       .map(cardImageForCard)
@@ -77,17 +95,31 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       .takeWhen(Signal.merge(cardConfiguredAsSelected, self.selectButtonTappedProperty.signal))
       .map { $0.id }
 
-    self.selectButtonTitle = cardAndSelectedCard
+    let cardIsSelected = cardAndSelectedCard
       .map(==)
+
+    self.selectButtonIsSelected = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
+      .map { $0 && $1 }
+
+    self.selectButtonTitle = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
+      .filter { $1 == true }
+      .map { $0 && $1 }
       .map { $0 ? Strings.Selected() : Strings.Select() }
 
-    self.selectButtonIsSelected = cardAndSelectedCard
-      .map(==)
+    self.spacerIsHidden = cardTypeIsAvailable.negate()
+    self.selectButtonEnabled = cardTypeIsAvailable
+    self.unavailableCardLabelHidden = cardTypeIsAvailable
+
+    self.unavailableCardText = self.pledgeCreditCardValueProperty.signal.skipNil()
+      .filter { $0.isEnabled == false }
+      .map { Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
+        project_country: $0.projectCountry
+      ) }
   }
 
-  fileprivate let creditCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
-  public func configureWith(value: GraphUserCreditCard.CreditCard) {
-    self.creditCardProperty.value = value
+  fileprivate let pledgeCreditCardValueProperty = MutableProperty<PledgeCreditCardValue?>(nil)
+  public func configureWith(value: PledgeCreditCardValue) {
+    self.pledgeCreditCardValueProperty.value = value
   }
 
   private let selectedCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
@@ -105,20 +137,17 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
   public let notifyDelegateOfCardSelected: Signal<String, Never>
+  public let selectButtonEnabled: Signal<Bool, Never>
   public let selectButtonIsSelected: Signal<Bool, Never>
   public let selectButtonTitle: Signal<String, Never>
+  public let spacerIsHidden: Signal<Bool, Never>
+  public let unavailableCardLabelHidden: Signal<Bool, Never>
+  public let unavailableCardText: Signal<String, Never>
 
   public var inputs: PledgeCreditCardViewModelInputs { return self }
   public var outputs: PledgeCreditCardViewModelOutputs { return self }
 }
 
 private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage? {
-  switch card.paymentType {
-  case .creditCard?:
-    return image(named: card.imageName)
-  case .applePay?:
-    return image(named: "icon--apple-pay")
-  case .none:
-    return nil
-  }
+  return image(named: card.imageName)
 }
