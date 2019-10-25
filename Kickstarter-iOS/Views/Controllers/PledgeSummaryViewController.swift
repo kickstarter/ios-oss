@@ -169,9 +169,13 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
 }
 
 private let totalConversionLabelStyle: LabelStyle = { label in
-  label
+  _ = label
     |> \.font .~ .ksr_footnote()
     |> \.textColor .~ .ksr_text_dark_grey_500
+
+  _ = label |> checkoutBackgroundStyle
+
+  return label
 }
 
 private func totalStackViewStyle(_ isAccessibilityCategory: Bool) -> StackViewStyle {
