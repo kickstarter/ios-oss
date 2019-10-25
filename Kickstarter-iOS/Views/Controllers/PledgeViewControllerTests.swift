@@ -140,7 +140,7 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 5
           |> Backing.lens.amount .~ 700
-    )
+      )
 
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let apiService = MockService(fetchGraphCreditCardsResponse: response)

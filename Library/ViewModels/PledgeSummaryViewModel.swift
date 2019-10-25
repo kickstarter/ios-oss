@@ -1,7 +1,7 @@
 import Foundation
+import KsApi
 import Prelude
 import ReactiveSwift
-import KsApi
 
 public protocol PledgeSummaryViewModelInputs {
   func tapped(_ url: URL)
@@ -23,9 +23,11 @@ public protocol PledgeSummaryViewModelType {
 public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
   PledgeSummaryViewModelInputs, PledgeSummaryViewModelOutputs {
   public init() {
-    let initialData = Signal.combineLatest(self.configureWithProjectAndTotalProperty.signal.skipNil(),
-                                           self.viewDidLoadProperty.signal)
-      .map(first)
+    let initialData = Signal.combineLatest(
+      self.configureWithProjectAndTotalProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
 
     self.amountLabelAttributedText = initialData
       .map(attributedCurrency(with:total:))
