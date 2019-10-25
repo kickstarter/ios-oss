@@ -411,16 +411,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(shippingRuleValid)
     )
 
-    let amountIsNoLongerValid = pledgeAmountIsValid
-      .takeWhen(shippingRuleChangedAndValid.ignoreValues())
-      .filter(isFalse)
-      .debounce(1, on: AppEnvironment.current.scheduler)
-
     self.showMaximumPledgeAmountAlert = Signal.combineLatest(
       project,
       self.pledgeAmountDataSignal
       )
-      .takeWhen(Signal.merge(showApplePayAlert, amountIsNoLongerValid))
+      .takeWhen(Signal.merge(showApplePayAlert))
       .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
       .map { project, min, max in
         (

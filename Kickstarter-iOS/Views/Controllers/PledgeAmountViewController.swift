@@ -106,7 +106,6 @@ final class PledgeAmountViewController: UIViewController {
 
     _ = self.maxPledgeAmountErrorLabel
       |> maxPledgeAmountErrorLabelStyle
-      |> \.text %~ { _ in Strings.Your_pledge_amount() }
   }
 
   // MARK: - View model
@@ -120,6 +119,8 @@ final class PledgeAmountViewController: UIViewController {
     self.amountInputView.textField.rac.isFirstResponder = self.viewModel.outputs.textFieldIsFirstResponder
     self.amountInputView.textField.rac.text = self.viewModel.outputs.textFieldValue
     self.amountInputView.textField.rac.textColor = self.viewModel.outputs.textFieldTextColor
+    self.maxPledgeAmountErrorLabel.rac.hidden = self.viewModel.outputs.maxPledgeAmountErrorLabelIsHidden
+    self.maxPledgeAmountErrorLabel.rac.text = self.viewModel.outputs.maxPledgeAmountErrorLabelText
     self.minPledgeAmountLabel.rac.hidden = self.viewModel.outputs.minPledgeAmountLabelIsHidden
     self.minPledgeAmountLabel.rac.text = self.viewModel.outputs.minPledgeAmountLabelText
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue

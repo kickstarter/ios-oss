@@ -25,6 +25,8 @@ public protocol PledgeAmountViewModelOutputs {
   var generateSelectionFeedback: Signal<Void, Never> { get }
   var generateNotificationWarningFeedback: Signal<Void, Never> { get }
   var labelTextColor: Signal<UIColor, Never> { get }
+  var maxPledgeAmountErrorLabelIsHidden: Signal<Bool, Never> { get }
+  var maxPledgeAmountErrorLabelText: Signal<String, Never> { get }
   var minPledgeAmountLabelIsHidden: Signal<Bool, Never> { get }
   var minPledgeAmountLabelText: Signal<String, Never> { get }
   var stepperMaxValue: Signal<Double, Never> { get }
@@ -68,7 +70,9 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     let maxValue = minAndMax
       .map(second)
       .combineLatest(with: shippingCost)
-      .map { max, shippingCost in max - shippingCost }
+      .map { max, shippingCost in
+        max - shippingCost
+    }
 
     let textFieldInputValue = self.textFieldDidEndEditingProperty.signal
       .skipNil()
@@ -143,8 +147,25 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
         (rounded(value), min, max, min <= value && value <= max)
       }
 
+    self.maxPledgeAmountErrorLabelIsHidden = updatedValue
+      .map { _, max, value in value <= max }
+
     let isValueValid = self.amount
       .map { $0.3 }
+      .skipRepeats()
+
+    self.maxPledgeAmountErrorLabelText = updatedValue
+      .map { ($0.0, $0.1) }
+      .combineLatest(with: project)
+      .map(unpack)
+      .map { min, max, project in
+        (
+          Strings.Please_enter_a_pledge_amount_between_min_and_max(
+            min: Format.currency(min, country: project.country, omitCurrencyCode: false),
+            max: Format.currency(max, country: project.country, omitCurrencyCode: false)
+          )
+        )
+      }
       .skipRepeats()
 
     self.doneButtonIsEnabled = isValueValid
@@ -216,6 +237,8 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
   public let generateSelectionFeedback: Signal<Void, Never>
   public let generateNotificationWarningFeedback: Signal<Void, Never>
   public let labelTextColor: Signal<UIColor, Never>
+  public let maxPledgeAmountErrorLabelIsHidden: Signal<Bool, Never>
+  public let maxPledgeAmountErrorLabelText: Signal<String, Never>
   public let minPledgeAmountLabelIsHidden: Signal<Bool, Never>
   public let minPledgeAmountLabelText: Signal<String, Never>
   public let stepperMaxValue: Signal<Double, Never>

@@ -117,10 +117,6 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.outputs.sectionSeparatorsHidden.observe(self.sectionSeparatorsHidden.observer)
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
-    self.vm.outputs.showMaximumPledgeAmountErrorMessage.map(second)
-      .observe(self.showApplePayAlertMessage.observer)
-    self.vm.outputs.showMaximumPledgeAmountErrorMessage.map(first)
-      .observe(self.showApplePayAlertTitle.observer)
 
     self.vm.outputs.title.observe(self.title.observer)
 
