@@ -30,24 +30,37 @@ internal extension URLSession {
           else {
             print("🔴 [KsApi] Failure \(self.sanitized(request))")
 
+            if let graphError = self.decodeGraphErrors(from: data) {
+              return .init(error: graphError)
+            }
+
+            // TODO: come up with a better error here
             return SignalProducer(
               error:
               .jsonDecodingError(responseString: String(data: data, encoding: .utf8), error: nil)
             )
         }
 
-        // Decode errors if any
-        let decodedErrors = try? JSONDecoder().decode(GraphResponseErrors.self, from: data)
-
-        if let error = decodedErrors?.errors?.first {
-          print("🔴 [KsApi] Failure - Graph Error: \(error.message)")
-
-          return .init(error: .decodeError(error))
-        } else {
-          print("🔵 [KsApi] Success \(self.sanitized(request))")
-          return SignalProducer(value: data)
+        if let graphError = self.decodeGraphErrors(from: data) {
+          return .init(error: graphError)
         }
+
+        print("🔵 [KsApi] Success \(self.sanitized(request))")
+        return SignalProducer(value: data)
       }
+  }
+
+  private func decodeGraphErrors(from data: Data) -> GraphError? {
+    // Decode errors if any
+    let decodedErrors = try? JSONDecoder().decode(GraphResponseErrors.self, from: data)
+
+    if let error = decodedErrors?.errors?.first {
+      print("🔴 [KsApi] Failure - Graph Error: \(error.message)")
+
+      return .decodeError(error)
+    }
+
+    return nil
   }
 
   // Wrap an URLSession producer with error envelope logic.
