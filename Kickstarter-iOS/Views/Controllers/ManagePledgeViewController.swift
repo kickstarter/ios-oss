@@ -93,13 +93,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     [self.pledgeSummarySectionSeparator, self.paymentMethodSectionSeparator, self.rewardSectionSeparator]
   }()
 
-  static func instantiate(with project: Project, reward: Reward) -> ManagePledgeViewController {
-    let manageViewPledgeVC = ManagePledgeViewController.instantiate()
-    manageViewPledgeVC.viewModel.inputs.configureWith(project, reward: reward)
-
-    return manageViewPledgeVC
-  }
-
   // MARK: - Lifecycle
 
   override func viewDidLoad() {
@@ -245,8 +238,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   // MARK: - Configuration
 
-  func configureWith(project: Project, reward: Reward) {
-    self.viewModel.inputs.configureWith(project, reward: reward)
+  func configureWith(project: Project) {
+    self.viewModel.inputs.configureWith(project)
   }
 
   private func setupConstraints() {

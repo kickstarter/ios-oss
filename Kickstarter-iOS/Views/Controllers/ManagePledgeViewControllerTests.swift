@@ -30,7 +30,7 @@ final class ManagePledgeViewControllerTests: TestCase {
           |> Project.lens.personalization.backing .~ backing
 
         let controller = ManagePledgeViewController.instantiate()
-        controller.configureWith(project: backedProject, reward: Reward.template)
+        controller.configureWith(project: backedProject)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_200
 

@@ -54,6 +54,26 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.stackViewIsHidden.assertValues([false])
   }
 
+  func testPledgeCTA_BackerWithDecimalAmount_LiveProject() {
+    let reward = .template
+      |> Reward.lens.title .~ "Magic Lamp"
+    let backing = .template
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.amount .~ 10.50
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.stats.currentCurrency .~ "USD"
+
+    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.buttonStyleType.assertValues([ButtonStyleType.blue])
+    self.buttonTitleText.assertValues([Strings.Manage()])
+    self.titleText.assertValues([Strings.Youre_a_backer()])
+    self.subtitleText.assertValues(["$10.50 • Magic Lamp"])
+    self.spacerIsHidden.assertValues([false])
+    self.stackViewIsHidden.assertValues([false])
+  }
+
   func testPledgeCTA_Backer_NonLiveProject() {
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
