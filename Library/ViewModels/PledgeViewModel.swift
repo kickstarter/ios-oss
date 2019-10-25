@@ -732,7 +732,8 @@ private func attributedConfirmationString(with project: Project, pledgeTotal: Do
     project_deadline: date
     )
   } else {
-    fullString = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
+    fullString =
+      Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
       total: pledgeTotal,
       project_deadline: date
     )
