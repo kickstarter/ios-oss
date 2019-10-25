@@ -72,7 +72,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .combineLatest(with: shippingCost)
       .map { max, shippingCost in
         max - shippingCost
-    }
+      }
 
     let textFieldInputValue = self.textFieldDidEndEditingProperty.signal
       .skipNil()
@@ -159,11 +159,10 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .combineLatest(with: project)
       .map(unpack)
       .map { min, max, project in
-        (
-          Strings.Please_enter_a_pledge_amount_between_min_and_max(
-            min: Format.currency(min, country: project.country, omitCurrencyCode: false),
-            max: Format.currency(max, country: project.country, omitCurrencyCode: false)
-          )
+
+        Strings.Please_enter_a_pledge_amount_between_min_and_max(
+          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
+          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
         )
       }
       .skipRepeats()

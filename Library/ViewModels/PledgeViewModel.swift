@@ -414,17 +414,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.showMaximumPledgeAmountAlert = Signal.combineLatest(
       project,
       self.pledgeAmountDataSignal
-      )
-      .takeWhen(Signal.merge(showApplePayAlert))
-      .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
-      .map { project, min, max in
-        (
-          Strings.Almost_there(),
-          Strings.Please_enter_a_pledge_amount_between_min_and_max(
-            min: Format.currency(min, country: project.country, omitCurrencyCode: false),
-            max: Format.currency(max, country: project.country, omitCurrencyCode: false)
-          )
+    )
+    .takeWhen(Signal.merge(showApplePayAlert))
+    .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
+    .map { project, min, max in
+      (
+        Strings.Almost_there(),
+        Strings.Please_enter_a_pledge_amount_between_min_and_max(
+          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
+          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
         )
+      )
     }
 
     let notChangingPaymentMethod = context.map { context in

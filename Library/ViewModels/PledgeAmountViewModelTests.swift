@@ -177,7 +177,6 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testDoneButtonIsEnabled_WithMaxAmount_WhenShippingCostUpdates() {
-    
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
     self.amountMax.assertValues([10_000])
@@ -830,7 +829,6 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testMaxPledgeAmountErrorLabelText() {
-
     let project = Project.template
     let reward = Reward.template
       |> Reward.lens.minimum .~ 25

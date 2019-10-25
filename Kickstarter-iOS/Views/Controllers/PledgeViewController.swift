@@ -247,7 +247,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeForUI()
       .observeValues { [weak self] in
         self?.pledgeAmountViewController.updateMaximumPledgeAmount(with: $0)
-    }
+      }
 
     self.viewModel.outputs.configureSummaryViewControllerWithData
       .observeForUI()
@@ -451,10 +451,8 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
   }
 
   func pledgeShippingLocationViewControllerDidDisappear(
-    _ viewController: PledgeShippingLocationViewController
-  ) {
-
-  }
+    _: PledgeShippingLocationViewController
+  ) {}
 }
 
 // MARK: - RewardPledgeTransitionAnimatorDelegate
