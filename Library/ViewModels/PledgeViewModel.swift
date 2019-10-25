@@ -60,7 +60,7 @@ public protocol PledgeViewModelOutputs {
   var popViewController: Signal<(), Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
-  var showMaximumPledgeAmountAlert: Signal<(String, String), Never> { get }
+  var showApplePayAlert: Signal<(String, String), Never> { get }
   var submitButtonEnabled: Signal<Bool, Never> { get }
   var submitButtonHidden: Signal<Bool, Never> { get }
   var submitButtonIsLoading: Signal<Bool, Never> { get }
@@ -411,7 +411,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(shippingRuleValid)
     )
 
-    self.showMaximumPledgeAmountAlert = Signal.combineLatest(
+    self.showApplePayAlert = Signal.combineLatest(
       project,
       self.pledgeAmountDataSignal
     )
@@ -660,7 +660,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let popViewController: Signal<(), Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
-  public let showMaximumPledgeAmountAlert: Signal<(String, String), Never>
+  public let showApplePayAlert: Signal<(String, String), Never>
   public let submitButtonEnabled: Signal<Bool, Never>
   public let submitButtonHidden: Signal<Bool, Never>
   public let submitButtonIsLoading: Signal<Bool, Never>

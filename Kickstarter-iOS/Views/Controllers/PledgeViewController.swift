@@ -245,8 +245,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.viewModel.outputs.updateMaximumPledgeAmount
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.pledgeAmountViewController.updateMaximumPledgeAmount(with: $0)
+      .observeValues { [weak self] shippingCost in
+        self?.pledgeAmountViewController.updateMaximumPledgeAmount(with: shippingCost)
       }
 
     self.viewModel.outputs.configureSummaryViewControllerWithData
@@ -348,7 +348,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
 
-    self.viewModel.outputs.showMaximumPledgeAmountAlert
+    self.viewModel.outputs.showApplePayAlert
       .observeForControllerAction()
       .observeValues { [weak self] title, message in
         self?.presentMaximumPledgeAmountAlert(title: title, message: message)
@@ -449,10 +449,6 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
   ) {
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
-
-  func pledgeShippingLocationViewControllerDidDisappear(
-    _: PledgeShippingLocationViewController
-  ) {}
 }
 
 // MARK: - RewardPledgeTransitionAnimatorDelegate

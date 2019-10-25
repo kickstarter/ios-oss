@@ -8,10 +8,6 @@ protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
     _ viewController: PledgeShippingLocationViewController,
     didSelect shippingRule: ShippingRule
   )
-
-  func pledgeShippingLocationViewControllerDidDisappear(
-    _ viewController: PledgeShippingLocationViewController
-  )
 }
 
 final class PledgeShippingLocationViewController: UIViewController {
