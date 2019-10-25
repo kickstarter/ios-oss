@@ -158,27 +158,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     }
   }
 
-  func testView_TextColorIsRedWhenAboveMaximumPledgeAmount() {
-    let project = Project.template
-      |> (Project.lens.country .. Project.Country.lens.maxPledge) .~ 10_000
-
-    let stepper = UIStepper(frame: .zero)
-      |> \.maximumValue .~ PledgeAmountStepperConstants.max
-      |> \.value .~ 10_001
-
-    [Device.phone4_7inch, Device.pad].forEach { device in
-      let controller = PledgeAmountViewController.instantiate()
-      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-      parent.view.frame.size.height = 100
-
-      controller.configureWith(value: (project: project, reward: .template))
-      controller.stepperValueChanged(stepper)
-
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
-    }
-  }
-
-  func testView_ErrorMessageAppearsWhenAboveMaximumPledgeAmount() {
+  func testView_ErrorMessageAppears_And_TextColorIsRedWhenAboveMaximumPledgeAmount() {
     let project = Project.template
       |> (Project.lens.country .. Project.Country.lens.maxPledge) .~ 10_000
 
