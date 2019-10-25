@@ -201,8 +201,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.goToContactCreator
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.goToContactCreator()
+      .observeValues { [weak self] messageSubject, context in
+        self?.goToContactCreator(messageSubject: messageSubject, context: context)
       }
 
     self.viewModel.outputs.goToCancelPledge
@@ -369,8 +369,18 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.show(vc, sender: nil)
   }
 
-  private func goToContactCreator() {
-    // TODO:
+
+
+  private func goToContactCreator(
+    messageSubject: MessageSubject,
+    context: Koala.MessageDialogContext
+  ) {
+    let vc = MessageDialogViewController.configuredWith(messageSubject: messageSubject, context: context)
+    let nav = UINavigationController(rootViewController: vc)
+    nav.modalPresentationStyle = .formSheet
+    vc.delegate = self
+    self.present(nav, animated: true, completion: nil)
+
   }
 }
 
@@ -413,4 +423,12 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.distribution .~ UIStackView.Distribution.fill
     |> \.alignment .~ UIStackView.Alignment.fill
     |> \.spacing .~ Styles.grid(4)
+}
+
+extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
+  internal func messageDialogWantsDismissal(_ dialog: MessageDialogViewController) {
+    dialog.dismiss(animated: true, completion: nil)
+  }
+
+  internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
 }
