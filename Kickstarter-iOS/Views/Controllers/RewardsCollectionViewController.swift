@@ -34,9 +34,13 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
   private let viewModel: RewardsCollectionViewModelType = RewardsCollectionViewModel()
 
-  static func instantiate(with project: Project, refTag: RefTag?) -> RewardsCollectionViewController {
+  static func instantiate(
+    with project: Project,
+    refTag: RefTag?,
+    context: RewardsCollectionViewContext
+  ) -> RewardsCollectionViewController {
     let rewardsCollectionVC = RewardsCollectionViewController()
-    rewardsCollectionVC.viewModel.inputs.configure(with: project, refTag: refTag)
+    rewardsCollectionVC.viewModel.inputs.configure(with: project, refTag: refTag, context: context)
 
     return rewardsCollectionVC
   }
@@ -99,6 +103,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     if itemSize != layout.itemSize {
       layout.invalidateLayout()
+    } else {
+      self.viewModel.inputs.viewDidLayoutSubviews()
     }
   }
 
@@ -128,11 +134,24 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.title
+      .observeForUI()
+      .observeValues { [weak self] title in
+        _ = self
+          ?|> \.title .~ title
+      }
+
     self.viewModel.outputs.reloadDataWithValues
       .observeForUI()
       .observeValues { [weak self] values in
         self?.dataSource.load(values)
         self?.collectionView.reloadData()
+      }
+
+    self.viewModel.outputs.scrollToBackedRewardIndexPath
+      .observeForUI()
+      .observeValues { [weak self] indexPath in
+        self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
       }
 
     self.viewModel.outputs.goToPledge
