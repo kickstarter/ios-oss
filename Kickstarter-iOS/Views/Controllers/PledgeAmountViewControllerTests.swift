@@ -10,7 +10,7 @@ final class PledgeAmountViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
-  }
+    }
 
   override func tearDown() {
     AppEnvironment.popEnvironment()
