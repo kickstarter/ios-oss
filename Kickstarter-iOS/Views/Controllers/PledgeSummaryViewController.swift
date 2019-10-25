@@ -49,7 +49,7 @@ final class PledgeSummaryViewController: UIViewController {
       |> adaptableStackViewStyle
 
     _ = self.totalStackView
-      |> totalStackViewStyle
+      |> totalStackViewStyle(self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
 
     _ = self.titleLabel
       |> titleLabelStyle
@@ -168,17 +168,20 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
   return label
 }
 
-private let totalStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> verticalStackViewStyle
-    |> \.spacing .~ Styles.gridHalf(3)
-    |> \.alignment .~ UIStackView.Alignment.trailing
-}
-
 private let totalConversionLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ .ksr_footnote()
     |> \.textColor .~ .ksr_text_dark_grey_500
+}
+
+private func totalStackViewStyle(_ isAccessibilityCategory: Bool) -> StackViewStyle {
+  return { stackView in
+    stackView
+      |> verticalStackViewStyle
+      |> \.spacing .~ Styles.gridHalf(3)
+      |> \.alignment .~
+      (isAccessibilityCategory ? UIStackView.Alignment.leading : UIStackView.Alignment.trailing)
+  }
 }
 
 private func attributedTermsText() -> NSAttributedString? {
