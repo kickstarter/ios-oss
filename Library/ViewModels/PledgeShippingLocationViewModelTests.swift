@@ -208,4 +208,48 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.shippingRulesError.assertDidNotEmitValue()
     }
   }
+
+  func testShippingLocationFromBackingIsDefault_NewRewardDoesNotHaveSelectedRule() {
+    let shippingRulesWithoutCanada = shippingRules.filter { $0.location != .canada }
+
+    let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRulesWithoutCanada))
+
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.postcards
+          |> Backing.lens.rewardId .~ Reward.postcards.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+          |> Backing.lens.locationId .~ Location.canada.id
+          |> Backing.lens.locationName .~ Location.canada.name
+      )
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+
+    withEnvironment(apiService: mockService, countryCode: "US") {
+      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.viewDidLoad()
+
+      self.amountText.assertValues(["+$0.00"])
+      self.isLoading.assertValues([true])
+      self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
+      self.shippingLocationButtonTitle.assertValues([])
+
+      self.scheduler.advance()
+
+      guard let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn }) else {
+        XCTFail("Default shipping rule should exist")
+        return
+      }
+
+      self.amountText.assertValues(["+$0.00", "+$5.00"])
+      self.isLoading.assertValues([true, false])
+      self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule])
+      self.shippingLocationButtonTitle.assertValues(["Brooklyn, NY"])
+      self.shippingRulesError.assertDidNotEmitValue()
+    }
+  }
 }

@@ -12,7 +12,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
 }
 
 public protocol ManagePledgeViewModelInputs {
-  func configureWith(_ project: Project, reward: Reward)
+  func configureWith(_ project: Project)
   func cancelPledgeDidFinish(with message: String)
   func menuButtonTapped()
   func menuOptionSelected(with action: ManagePledgeAlertAction)
@@ -21,7 +21,7 @@ public protocol ManagePledgeViewModelInputs {
 }
 
 public protocol ManagePledgeViewModelOutputs {
-  var configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never> { get }
+  var configurePaymentMethodView: Signal<Backing.PaymentSource, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardReceivedWithProject: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
@@ -46,26 +46,38 @@ public protocol ManagePledgeViewModelType {
 public final class ManagePledgeViewModel:
   ManagePledgeViewModelType, ManagePledgeViewModelInputs, ManagePledgeViewModelOutputs {
   public init() {
-    let projectAndReward = self.projectAndRewardSignal
-      .takeWhen(self.viewDidLoadSignal.ignoreValues())
+    let initialProject = Signal.combineLatest(self.configureWithProjectSignal, self.viewDidLoadSignal)
+      .map(first)
 
-    let project = projectAndReward.map(first)
+    let refreshProjectEvent = initialProject
+      .takeWhen(self.pledgeViewControllerDidUpdatePledgeWithMessageSignal)
+      .switchMap { project in
+        AppEnvironment.current.apiService.fetchProject(param: Param.id(project.id))
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    let project = Signal.merge(initialProject, refreshProjectEvent.values())
     let backing = project
       .map { $0.personalization.backing }
       .skipNil()
+    let projectAndReward = project
+      .filterMap { project in
+        guard let backing = project.personalization.backing else {
+          return nil
+        }
 
-    self.title = projectAndReward
-      .map(first)
-      .map(navigationBarTitle(with:))
+        return (project, backing)
+      }
+      .map { project, backing in (project, reward(from: backing, inProject: project)) }
 
-    self.configurePaymentMethodView = projectAndReward
-      .map(first)
-      .map { $0.personalization.backing?.paymentSource }
+    self.title = project.map(navigationBarTitle(with:))
+
+    self.configurePaymentMethodView = backing
+      .map { $0.paymentSource }
       .skipNil()
 
-    self.configurePledgeSummaryView = projectAndReward
-      .map(first)
-
+    self.configurePledgeSummaryView = project
     self.configureRewardReceivedWithProject = project
 
     self.configureRewardSummaryView = projectAndReward
@@ -119,9 +131,9 @@ public final class ManagePledgeViewModel:
       .map { _ in Strings.We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours() }
   }
 
-  private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
-  public func configureWith(_ project: Project, reward: Reward) {
-    self.projectAndRewardObserver.send(value: (project, reward))
+  private let (configureWithProjectSignal, configureWithProjectObserver) = Signal<Project, Never>.pipe()
+  public func configureWith(_ project: Project) {
+    self.configureWithProjectObserver.send(value: project)
   }
 
   private let cancelPledgeDidFinishWithMessageProperty = MutableProperty<String?>(nil)
@@ -153,7 +165,7 @@ public final class ManagePledgeViewModel:
     self.viewDidLoadObserver.send(value: ())
   }
 
-  public let configurePaymentMethodView: Signal<GraphUserCreditCard.CreditCard, Never>
+  public let configurePaymentMethodView: Signal<Backing.PaymentSource, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
   public let configureRewardReceivedWithProject: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>

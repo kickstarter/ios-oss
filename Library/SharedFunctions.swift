@@ -22,6 +22,21 @@ internal func userIsBacking(reward: Reward, inProject project: Project) -> Bool 
 }
 
 /**
+ Returns a reward from a backing in a given project
+
+ - parameter backing: A backing
+ - parameter project: A project
+
+ - returns: A reward
+ */
+
+internal func reward(from backing: Backing, inProject project: Project) -> Reward {
+  return backing.reward
+    ?? project.rewards.filter { $0.id == backing.rewardId }.first
+    ?? Reward.noReward
+}
+
+/**
  Computes the pledge context (i.e. new pledge, managing reward, changing reward) from a project and reward.
 
  - parameter project: A project.
@@ -212,4 +227,28 @@ internal func classNameWithoutModule(_ class: AnyClass) -> String {
     .components(separatedBy: ".")
     .dropFirst()
     .joined(separator: ".")
+}
+
+typealias SanitizedPledgeParams = (pledgeTotal: String, rewardId: String?, locationId: String?)
+
+internal func sanitizedPledgeParameters(
+  from reward: Reward,
+  pledgeAmount: Double,
+  selectedShippingRule: ShippingRule?
+) -> SanitizedPledgeParams {
+  let pledgeAmountDecimal = Decimal(pledgeAmount)
+  var shippingAmountDecimal: Decimal = Decimal()
+  var shippingLocationId: String?
+
+  if let shippingRule = selectedShippingRule {
+    shippingAmountDecimal = Decimal(shippingRule.cost)
+    shippingLocationId = String(shippingRule.location.id)
+  }
+
+  let pledgeTotal = NSDecimalNumber(decimal: pledgeAmountDecimal + shippingAmountDecimal)
+  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal.doubleValue)
+
+  let rewardId = reward == Reward.noReward ? nil : reward.graphID
+
+  return (formattedPledgeTotal, rewardId, shippingLocationId)
 }

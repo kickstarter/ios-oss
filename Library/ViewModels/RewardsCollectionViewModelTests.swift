@@ -17,6 +17,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let goToPledgeProject = TestObserver<Project, Never>()
   private let goToPledgeRefTag = TestObserver<RefTag?, Never>()
   private let goToPledgeReward = TestObserver<Reward, Never>()
+  private let goToPledgeContext = TestObserver<PledgeViewContext, Never>()
   private let navigationBarShadowImageHidden = TestObserver<Bool, Never>()
   private let reloadDataWithValues = TestObserver<[(Project, Either<Reward, Backing>)], Never>()
   private let reloadDataWithValuesProject = TestObserver<[Project], Never>()
@@ -32,9 +33,10 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.goToDeprecatedPledge.map { $0.project }.observe(self.goToDeprecatedPledgeProject.observer)
     self.vm.outputs.goToDeprecatedPledge.map { $0.reward }.observe(self.goToDeprecatedPledgeReward.observer)
     self.vm.outputs.goToDeprecatedPledge.map { $0.refTag }.observe(self.goToDeprecatedPledgeRefTag.observer)
-    self.vm.outputs.goToPledge.map { $0.project }.observe(self.goToPledgeProject.observer)
-    self.vm.outputs.goToPledge.map { $0.reward }.observe(self.goToPledgeReward.observer)
-    self.vm.outputs.goToPledge.map { $0.refTag }.observe(self.goToPledgeRefTag.observer)
+    self.vm.outputs.goToPledge.map(first).map { $0.project }.observe(self.goToPledgeProject.observer)
+    self.vm.outputs.goToPledge.map(first).map { $0.reward }.observe(self.goToPledgeReward.observer)
+    self.vm.outputs.goToPledge.map(first).map { $0.refTag }.observe(self.goToPledgeRefTag.observer)
+    self.vm.outputs.goToPledge.map(second).observe(self.goToPledgeContext.observer)
     self.vm.outputs.navigationBarShadowImageHidden.observe(self.navigationBarShadowImageHidden.observer)
     self.vm.outputs.reloadDataWithValues.observe(self.reloadDataWithValues.observer)
     self.vm.outputs.reloadDataWithValues.map { $0.map { $0.0 } }
@@ -78,6 +80,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.goToDeprecatedPledgeRefTag.assertDidNotEmitValue()
       self.goToPledgeProject.assertDidNotEmitValue()
       self.goToPledgeReward.assertDidNotEmitValue()
+      self.goToPledgeContext.assertDidNotEmitValue()
       self.goToPledgeRefTag.assertDidNotEmitValue()
       XCTAssertNil(self.vm.outputs.selectedReward())
 
@@ -88,6 +91,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.goToDeprecatedPledgeRefTag.assertDidNotEmitValue()
       self.goToPledgeProject.assertValues([project])
       self.goToPledgeReward.assertValues([project.rewards[0]])
+      self.goToPledgeContext.assertValues([.pledge])
       self.goToPledgeRefTag.assertValues([.activity])
       XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[0])
 
@@ -101,6 +105,54 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.goToDeprecatedPledgeRefTag.assertDidNotEmitValue()
       self.goToPledgeProject.assertValues([project, project])
       self.goToPledgeReward.assertValues([project.rewards[0], project.rewards[endIndex - 1]])
+      self.goToPledgeContext.assertValues([.pledge, .pledge])
+      self.goToPledgeRefTag.assertValues([.activity, .activity])
+      XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[endIndex - 1])
+    }
+  }
+
+  func testGoToUpdatePledge() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
+
+    withEnvironment(config: config) {
+      let project = Project.cosmicSurgery
+      let firstRewardId = project.rewards.first!.id
+
+      self.vm.inputs.configure(with: project, refTag: .activity)
+      self.vm.inputs.viewDidLoad()
+
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeReward.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeRefTag.assertDidNotEmitValue()
+      self.goToPledgeProject.assertDidNotEmitValue()
+      self.goToPledgeReward.assertDidNotEmitValue()
+      self.goToPledgeContext.assertDidNotEmitValue()
+      self.goToPledgeRefTag.assertDidNotEmitValue()
+      XCTAssertNil(self.vm.outputs.selectedReward())
+
+      self.vm.inputs.rewardSelected(with: firstRewardId)
+
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeReward.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeRefTag.assertDidNotEmitValue()
+      self.goToPledgeProject.assertValues([project])
+      self.goToPledgeReward.assertValues([project.rewards[0]])
+      self.goToPledgeContext.assertValues([.pledge])
+      self.goToPledgeRefTag.assertValues([.activity])
+      XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[0])
+
+      let lastCardRewardId = project.rewards.last!.id
+      let endIndex = project.rewards.endIndex
+
+      self.vm.inputs.rewardSelected(with: lastCardRewardId)
+
+      self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeReward.assertDidNotEmitValue()
+      self.goToDeprecatedPledgeRefTag.assertDidNotEmitValue()
+      self.goToPledgeProject.assertValues([project, project])
+      self.goToPledgeReward.assertValues([project.rewards[0], project.rewards[endIndex - 1]])
+      self.goToPledgeContext.assertValues([.pledge, .pledge])
       self.goToPledgeRefTag.assertValues([.activity, .activity])
       XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[endIndex - 1])
     }
@@ -118,6 +170,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.goToDeprecatedPledgeRefTag.assertDidNotEmitValue()
     self.goToPledgeProject.assertDidNotEmitValue()
     self.goToPledgeReward.assertDidNotEmitValue()
+    self.goToPledgeContext.assertDidNotEmitValue()
     self.goToPledgeRefTag.assertDidNotEmitValue()
     XCTAssertNil(self.vm.outputs.selectedReward())
 
@@ -128,6 +181,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.goToDeprecatedPledgeRefTag.assertValues([.activity])
     self.goToPledgeProject.assertDidNotEmitValue()
     self.goToPledgeReward.assertDidNotEmitValue()
+    self.goToPledgeContext.assertDidNotEmitValue()
     self.goToPledgeRefTag.assertDidNotEmitValue()
     XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[0])
 
@@ -141,6 +195,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.goToDeprecatedPledgeRefTag.assertValues([.activity, .activity])
     self.goToPledgeProject.assertDidNotEmitValue()
     self.goToPledgeReward.assertDidNotEmitValue()
+    self.goToPledgeContext.assertDidNotEmitValue()
     self.goToPledgeRefTag.assertDidNotEmitValue()
     XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[endIndex - 1])
   }
