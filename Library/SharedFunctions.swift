@@ -22,6 +22,21 @@ internal func userIsBacking(reward: Reward, inProject project: Project) -> Bool 
 }
 
 /**
+ Returns a reward from a backing in a given project
+
+ - parameter backing: A backing
+ - parameter project: A project
+
+ - returns: A reward
+ */
+
+internal func reward(from backing: Backing, inProject project: Project) -> Reward {
+  return backing.reward
+    ?? project.rewards.filter { $0.id == backing.rewardId }.first
+    ?? Reward.noReward
+}
+
+/**
  Computes the pledge context (i.e. new pledge, managing reward, changing reward) from a project and reward.
 
  - parameter project: A project.
