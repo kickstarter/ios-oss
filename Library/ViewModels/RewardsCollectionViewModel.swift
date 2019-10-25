@@ -31,7 +31,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   var scrollToBackedRewardIndexPath: Signal<IndexPath, Never> { get }
   var title: Signal<String, Never> { get }
-  
+
   func selectedReward() -> Reward?
 }
 
@@ -41,13 +41,13 @@ public protocol RewardsCollectionViewModelType {
 }
 
 public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
-RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
+  RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-      )
-      .map(first)
+    )
+    .map(first)
 
     let project = configData
       .map(first)
@@ -70,7 +70,7 @@ RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
     self.reloadDataWithValues = Signal.combineLatest(project, rewards)
       .map { project, rewards in
         rewards.map { (project, Either<Reward, Backing>.left($0)) }
-    }
+      }
 
     self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
       .map { $0.count }
@@ -93,14 +93,14 @@ RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
       project,
       selectedRewardFromId,
       refTag
-      )
-      .filter { arg in
-        let (project, _, _) = arg
+    )
+    .filter { arg in
+      let (project, _, _) = arg
 
-        return project.state == .live
-      }
-      .map { project, reward, refTag in
-        PledgeData(project: project, reward: reward, refTag: refTag)
+      return project.state == .live
+    }
+    .map { project, reward, refTag in
+      PledgeData(project: project, reward: reward, refTag: refTag)
     }
 
     self.goToPledge = goToPledge
@@ -109,12 +109,12 @@ RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
       }
       .map { data in
         (data, data.project.personalization.backing == nil ? .pledge : .updateReward)
-    }
+      }
 
     self.goToDeprecatedPledge = goToPledge
       .filter { _ in
         !featureNativeCheckoutPledgeViewIsEnabled()
-    }
+      }
 
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()
