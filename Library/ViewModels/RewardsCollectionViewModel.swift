@@ -41,13 +41,13 @@ public protocol RewardsCollectionViewModelType {
 }
 
 public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
-  RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
+RewardsCollectionViewModelInputs, RewardsCollectionViewModelOutputs {
   public init() {
     let configData = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
-    )
-    .map(first)
+      )
+      .map(first)
 
     let project = configData
       .map(first)
@@ -70,7 +70,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.reloadDataWithValues = Signal.combineLatest(project, rewards)
       .map { project, rewards in
         rewards.map { (project, Either<Reward, Backing>.left($0)) }
-      }
+    }
 
     self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
       .map { $0.count }
@@ -93,14 +93,14 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       project,
       selectedRewardFromId,
       refTag
-    )
-    .filter { arg in
-      let (project, _, _) = arg
+      )
+      .filter { arg in
+        let (project, _, _) = arg
 
-      return project.state == .live
-    }
-    .map { project, reward, refTag in
-      PledgeData(project: project, reward: reward, refTag: refTag)
+        return project.state == .live
+      }
+      .map { project, reward, refTag in
+        PledgeData(project: project, reward: reward, refTag: refTag)
     }
 
     self.goToPledge = goToPledge
@@ -109,12 +109,12 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       }
       .map { data in
         (data, data.project.personalization.backing == nil ? .pledge : .updateReward)
-      }
+    }
 
     self.goToDeprecatedPledge = goToPledge
       .filter { _ in
         !featureNativeCheckoutPledgeViewIsEnabled()
-      }
+    }
 
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()
@@ -193,10 +193,12 @@ private func titleForContext(_ context: RewardsCollectionViewContext) -> String 
 }
 
 private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {
-  if let reward = rewards.first(where: { userIsBacking(reward: $0, inProject: project) }) {
-    return rewards
-      .firstIndex(where: { $0.id == reward.id })
-      .flatMap { IndexPath(row: $0, section: 0) }
+  guard let backing = project.personalization.backing else {
+    return nil
   }
-  return nil
+
+  let backedReward = reward(from: backing, inProject: project)
+  return rewards
+    .firstIndex(where: { $0.id == backedReward.id })
+    .flatMap { IndexPath(row: $0, section: 0) }
 }
