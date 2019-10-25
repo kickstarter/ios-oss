@@ -109,7 +109,7 @@ public final class ManagePledgeViewModel:
 
     self.goToContactCreator = project
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
-      .map { project in (MessageSubject.project(project), .backerModal)}
+      .map { project in (MessageSubject.project(project), .backerModal) }
 
     self.goToChangePaymentMethod = projectAndReward
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .changePaymentMethod })

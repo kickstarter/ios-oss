@@ -369,8 +369,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.show(vc, sender: nil)
   }
 
-
-
   private func goToContactCreator(
     messageSubject: MessageSubject,
     context: Koala.MessageDialogContext
@@ -380,7 +378,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     nav.modalPresentationStyle = .formSheet
     vc.delegate = self
     self.present(nav, animated: true, completion: nil)
-
   }
 }
 

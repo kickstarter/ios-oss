@@ -229,7 +229,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testGoToContactCreator() {
     let project = Project.template
       |> Project.lens.personalization.backing .~ Backing.template
-    
+
     self.vm.inputs.configureWith(project)
     self.vm.inputs.viewDidLoad()
 
