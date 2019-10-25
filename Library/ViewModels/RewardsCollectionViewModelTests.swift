@@ -9,7 +9,6 @@ import XCTest
 final class RewardsCollectionViewModelTests: TestCase {
   private let vm: RewardsCollectionViewModelType = RewardsCollectionViewModel()
 
-  private let backedRewardIndexPath = TestObserver<IndexPath, Never>()
   private let configureRewardsCollectionViewFooterWithCount = TestObserver<Int, Never>()
   private let flashScrollIndicators = TestObserver<Void, Never>()
   private let goToDeprecatedPledgeProject = TestObserver<Project, Never>()
@@ -24,12 +23,12 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let reloadDataWithValuesProject = TestObserver<[Project], Never>()
   private let reloadDataWithValuesRewardOrBacking = TestObserver<[Either<Reward, Backing>], Never>()
   private let rewardsCollectionViewFooterIsHidden = TestObserver<Bool, Never>()
+  private let scrollToBackedRewardIndexPath = TestObserver<IndexPath, Never>()
   private let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.backedRewardIndexPath.observe(self.backedRewardIndexPath.observer)
     self.vm.outputs.configureRewardsCollectionViewFooterWithCount
       .observe(self.configureRewardsCollectionViewFooterWithCount.observer)
     self.vm.outputs.flashScrollIndicators.observe(self.flashScrollIndicators.observer)
@@ -48,6 +47,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       .observe(self.reloadDataWithValuesRewardOrBacking.observer)
     self.vm.outputs.rewardsCollectionViewFooterIsHidden
       .observe(self.rewardsCollectionViewFooterIsHidden.observer)
+    self.vm.outputs.scrollToBackedRewardIndexPath.observe(self.scrollToBackedRewardIndexPath.observer)
     self.vm.outputs.title.observe(self.title.observer)
   }
 
@@ -402,12 +402,12 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.configure(with: project, refTag: .activity, context: .managePledge)
     self.vm.inputs.viewDidLoad()
 
-    self.backedRewardIndexPath.assertDidNotEmitValue()
+    self.scrollToBackedRewardIndexPath.assertDidNotEmitValue()
 
     self.vm.inputs.viewDidLayoutSubviews()
 
     let indexPath = IndexPath(row: 4, section: 0)
 
-    self.backedRewardIndexPath.assertValue(indexPath)
+    self.scrollToBackedRewardIndexPath.assertValue(indexPath)
   }
 }

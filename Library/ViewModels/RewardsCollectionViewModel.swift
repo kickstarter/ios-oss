@@ -22,7 +22,6 @@ public protocol RewardsCollectionViewModelInputs {
 }
 
 public protocol RewardsCollectionViewModelOutputs {
-  var backedRewardIndexPath: Signal<IndexPath, Never> { get }
   var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
   var goToDeprecatedPledge: Signal<PledgeData, Never> { get }
@@ -30,7 +29,9 @@ public protocol RewardsCollectionViewModelOutputs {
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
+  var scrollToBackedRewardIndexPath: Signal<IndexPath, Never> { get }
   var title: Signal<String, Never> { get }
+  
   func selectedReward() -> Reward?
 }
 
@@ -60,7 +61,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .map(first)
       .map(titleForContext)
 
-    self.backedRewardIndexPath = Signal.combineLatest(project, rewards)
+    self.scrollToBackedRewardIndexPath = Signal.combineLatest(project, rewards)
       .takeWhen(self.viewDidLayoutSubviewsProperty.signal.ignoreValues())
       .map(backedReward(_:rewards:))
       .skipNil()
@@ -168,7 +169,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.viewWillAppearProperty.value = ()
   }
 
-  public let backedRewardIndexPath: Signal<IndexPath, Never>
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToDeprecatedPledge: Signal<PledgeData, Never>
@@ -176,6 +176,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
+  public let scrollToBackedRewardIndexPath: Signal<IndexPath, Never>
   public let title: Signal<String, Never>
 
   private let selectedRewardProperty = MutableProperty<Reward?>(nil)
