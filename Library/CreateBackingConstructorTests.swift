@@ -5,48 +5,70 @@ import Prelude
 import XCTest
 
 final class CreateBackingInputConstructorTests: XCTestCase {
-  func testCreateBackingInput_NoShipping() {
+  func testCreateBackingInput_NoShipping_NotApplePay() {
     let project = Project.template
     let reward = Reward.noReward
 
-    let input = CreateBackingInput.input(
-      from: project,
-      reward: reward,
-      pledgeAmount: 10,
-      selectedShippingRule: nil,
-      refTag: RefTag.projectPage,
-      paymentSourceId: "123"
+    let applePayParams = ApplePayParams(
+      paymentInstrumentName: "paymentInstrumentName",
+      paymentNetwork: "paymentNetwork",
+      transactionIdentifier: "transactionIdentifier",
+      token: "token"
     )
 
+    let data: CreateBackingData = (
+      project: project,
+      reward: reward,
+      pledgeAmount: 10,
+      shippingRule: nil,
+      paymentSourceId: GraphUserCreditCard.amex.id,
+      applePayParams: applePayParams,
+      refTag: RefTag.projectPage
+    )
+
+    let input = CreateBackingInput.input(from: data, isApplePay: false)
+
     XCTAssertEqual(input.amount, "10.00")
+    XCTAssertNil(input.applePay)
     XCTAssertNil(input.locationId)
     XCTAssertEqual(input.projectId, project.graphID)
-    XCTAssertNil(input.rewardId)
+    XCTAssertEqual(input.rewardId, "UmV3YXJkLTA=")
+    XCTAssertEqual(input.paymentSourceId, "6")
     XCTAssertEqual(input.refParam, "project_page")
-    XCTAssertEqual(input.paymentSourceId, "123")
   }
 
-  func testCreateBackingInput_WithShipping_RefTagNil() {
+  func testCreateBackingInput_WithShipping_RefTagNil_IsApplePay() {
     let project = Project.template
     let reward = Reward.template
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.location .. Location.lens.id .~ 1
       |> ShippingRule.lens.cost .~ 5
 
-    let input = CreateBackingInput.input(
-      from: project,
-      reward: reward,
-      pledgeAmount: 10,
-      selectedShippingRule: shippingRule,
-      refTag: nil,
-      paymentSourceId: "123"
+    let applePayParams = ApplePayParams(
+      paymentInstrumentName: "paymentInstrumentName",
+      paymentNetwork: "paymentNetwork",
+      transactionIdentifier: "transactionIdentifier",
+      token: "token"
     )
 
+    let data: CreateBackingData = (
+      project: project,
+      reward: reward,
+      pledgeAmount: 10,
+      shippingRule: shippingRule,
+      paymentSourceId: "123",
+      applePayParams: applePayParams,
+      refTag: nil
+    )
+
+    let input = CreateBackingInput.input(from: data, isApplePay: true)
+
     XCTAssertEqual(input.amount, "15.00")
+    XCTAssertEqual(input.applePay, applePayParams)
     XCTAssertEqual(input.locationId, "1")
     XCTAssertEqual(input.projectId, project.graphID)
     XCTAssertEqual(input.rewardId, reward.graphID)
-    XCTAssertEqual(input.paymentSourceId, "123")
+    XCTAssertNil(input.paymentSourceId)
     XCTAssertNil(input.refParam)
   }
 }
