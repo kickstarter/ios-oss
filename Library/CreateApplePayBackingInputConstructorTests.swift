@@ -28,7 +28,7 @@ final class CreateApplePayBackingInputConstructorTests: XCTestCase {
     XCTAssertEqual(input.paymentInstrumentName, "Visa 123")
     XCTAssertEqual(input.paymentNetwork, "Visa")
     XCTAssertEqual(input.projectId, project.graphID)
-    XCTAssertNil(input.rewardId)
+    XCTAssertEqual(input.rewardId, "UmV3YXJkLTA=")
     XCTAssertEqual(input.stripeToken, "stripe-token")
     XCTAssertEqual(input.transactionIdentifier, "12345")
     XCTAssertEqual(input.refParam, "project_page")

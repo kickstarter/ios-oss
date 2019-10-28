@@ -84,7 +84,7 @@ internal final class SharedFunctionsTests: XCTestCase {
       selectedShippingRule: nil
     )
 
-    XCTAssertNil(params.rewardId)
+    XCTAssertEqual(params.rewardId, "UmV3YXJkLTA=")
     XCTAssertEqual(params.pledgeTotal, "10.00")
     XCTAssertNil(params.locationId)
   }
