@@ -158,7 +158,7 @@ final class PledgeCreditCardView: UIView {
       }
   }
 
-  func configureWith(value: PledgeCreditCardValue) {
+  func configureWith(value: PledgeCreditCardViewData) {
     self.viewModel.inputs.configureWith(value: value)
   }
 
