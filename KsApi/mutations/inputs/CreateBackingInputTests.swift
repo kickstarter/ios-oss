@@ -57,7 +57,7 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(input["refParam"] as? String, "activity")
   }
 
-  func testCreateBackingInputDictionary_TestNilLocationAndReward() {
+  func testCreateBackingInputDictionary_Location_IsNil() {
     let createBackingInput = CreateBackingInput(
       amount: "200.00",
       applePay: .init(
