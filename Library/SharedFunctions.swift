@@ -251,7 +251,7 @@ internal func sanitizedPledgeParameters(
   let pledgeTotal = NSDecimalNumber(decimal: pledgeAmountDecimal + shippingAmountDecimal)
   let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal.doubleValue)
 
-  let rewardId = reward == Reward.noReward ? nil : reward.graphID
+  let rewardId = reward.graphID
 
   return (formattedPledgeTotal, rewardId, shippingLocationId)
 }
