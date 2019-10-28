@@ -31,6 +31,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
+        		<string>appcenter-$(APPCENTER_$(APPCENTER_SCHEME_NAME)_API_TOKEN)</string>
 				<string>fb69103156693</string>
 			</array>
 		</dict>
@@ -46,7 +47,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>9999</string>
+	<string>15722965</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
