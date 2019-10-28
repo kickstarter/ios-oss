@@ -21,7 +21,7 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     XCTAssertEqual(input.amount, "10.00")
     XCTAssertNil(input.locationId)
     XCTAssertEqual(input.projectId, project.graphID)
-    XCTAssertNil(input.rewardId)
+    XCTAssertEqual(input.rewardId, "UmV3YXJkLTA=")
     XCTAssertEqual(input.refParam, "project_page")
     XCTAssertEqual(input.paymentSourceId, "123")
   }
