@@ -27,7 +27,7 @@ public protocol ManagePledgeViewModelOutputs {
   var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
   var goToCancelPledge: Signal<(Project, Backing), Never> { get }
   var goToChangePaymentMethod: Signal<(Project, Reward), Never> { get }
-  var goToContactCreator: Signal<Void, Never> { get }
+  var goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
   var notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never> { get }
@@ -107,9 +107,9 @@ public final class ManagePledgeViewModel:
       .takeWhen(cancelPledgeSelected)
       .filter { _, backing in backing.cancelable }
 
-    self.goToContactCreator = self.menuOptionSelectedSignal
-      .filter { $0 == .contactCreator }
-      .ignoreValues()
+    self.goToContactCreator = project
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
+      .map { project in (MessageSubject.project(project), .backerModal) }
 
     self.goToChangePaymentMethod = projectAndReward
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .changePaymentMethod })
@@ -171,7 +171,7 @@ public final class ManagePledgeViewModel:
   public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
   public let goToCancelPledge: Signal<(Project, Backing), Never>
   public let goToChangePaymentMethod: Signal<(Project, Reward), Never>
-  public let goToContactCreator: Signal<Void, Never>
+  public let goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
   public let notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never>
