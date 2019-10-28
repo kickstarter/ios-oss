@@ -98,14 +98,14 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
     )
     .skipRepeats()
 
-    //Tracking
+    // Tracking
     projectAndBacking
       .takeWhen(self.cancelPledgeButtonTappedProperty.signal)
       .observeValues { AppEnvironment.current.koala.trackCancelPledgeButtonClicked(
         project: $0,
         backing: $1
       )
-    }
+      }
   }
 
   private let cancelPledgeButtonTappedProperty = MutableProperty(())
