@@ -10,7 +10,7 @@ extension UpdateBackingInput {
     let (pledgeTotal, rewardId, locationId) = sanitizedPledgeParameters(
       from: updateBackingData.reward,
       pledgeAmount: updateBackingData.pledgeAmount,
-      selectedShippingRule: updateBackingData.shippingRule
+      shippingRule: updateBackingData.shippingRule
     )
 
     return UpdateBackingInput(

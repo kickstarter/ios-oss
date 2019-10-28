@@ -1001,8 +1001,16 @@ final class PledgeViewModelTests: TestCase {
     )
   }
 
-  func testGoToThanks() {
-    withEnvironment(apiService: MockService()) {
+  func testApplePay_GoToThanks() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(state: .successful, backing: .init(clientSecret: nil, requiresAction: false))
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template
       let reward = Reward.noReward
         |> Reward.lens.minimum .~ 5
@@ -1038,7 +1046,15 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testApplePay_GoToThanks_WhenRefTag_IsNil() {
-    withEnvironment(apiService: MockService(), currentUser: .template) {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(state: .successful, backing: .init(clientSecret: nil, requiresAction: false))
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template
       let reward = Reward.noReward
         |> Reward.lens.minimum .~ 5
@@ -1117,7 +1133,7 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testCreateApplePayBackingError() {
-    let mockService = MockService(createApplePayBackingError: GraphError.invalidInput)
+    let mockService = MockService(createBackingResult: .failure(.invalidInput))
 
     withEnvironment(apiService: mockService) {
       let project = Project.template
