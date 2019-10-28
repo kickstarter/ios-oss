@@ -5,12 +5,18 @@ import ReactiveSwift
 
 public typealias PledgeData = (project: Project, reward: Reward, refTag: RefTag?)
 
+public enum RewardsCollectionViewContext {
+  case createPledge
+  case managePledge
+}
+
 public protocol RewardsCollectionViewModelInputs {
-  func configure(with project: Project, refTag: RefTag?)
+  func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext)
   func rewardCellShouldShowDividerLine(_ show: Bool)
   func rewardSelected(with rewardId: Int)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
   func viewDidAppear()
+  func viewDidLayoutSubviews()
   func viewDidLoad()
   func viewWillAppear()
 }
@@ -23,6 +29,9 @@ public protocol RewardsCollectionViewModelOutputs {
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
+  var scrollToBackedRewardIndexPath: Signal<IndexPath, Never> { get }
+  var title: Signal<String, Never> { get }
+
   func selectedReward() -> Reward?
 }
 
@@ -45,6 +54,18 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     let rewards = project
       .map { $0.rewards }
+
+    self.title = configData
+      .map(third)
+      .combineLatest(with: self.viewDidLoadProperty.signal.ignoreValues())
+      .map(first)
+      .map(titleForContext)
+
+    self.scrollToBackedRewardIndexPath = Signal.combineLatest(project, rewards)
+      .takeWhen(self.viewDidLayoutSubviewsProperty.signal.ignoreValues())
+      .map(backedReward(_:rewards:))
+      .skipNil()
+      .take(first: 1)
 
     self.reloadDataWithValues = Signal.combineLatest(project, rewards)
       .map { project, rewards in
@@ -108,9 +129,9 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     )
   }
 
-  private let configDataProperty = MutableProperty<(Project, RefTag?)?>(nil)
-  public func configure(with project: Project, refTag: RefTag?) {
-    self.configDataProperty.value = (project, refTag)
+  private let configDataProperty = MutableProperty<(Project, RefTag?, RewardsCollectionViewContext)?>(nil)
+  public func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext) {
+    self.configDataProperty.value = (project, refTag, context)
   }
 
   private let rewardCellShouldShowDividerLineProperty = MutableProperty<Bool>(false)
@@ -133,6 +154,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     self.viewDidAppearProperty.value = ()
   }
 
+  private let viewDidLayoutSubviewsProperty = MutableProperty(())
+  public func viewDidLayoutSubviews() {
+    self.viewDidLayoutSubviewsProperty.value = ()
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -150,6 +176,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
+  public let scrollToBackedRewardIndexPath: Signal<IndexPath, Never>
+  public let title: Signal<String, Never>
 
   private let selectedRewardProperty = MutableProperty<Reward?>(nil)
   public func selectedReward() -> Reward? {
@@ -158,4 +186,19 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
   public var inputs: RewardsCollectionViewModelInputs { return self }
   public var outputs: RewardsCollectionViewModelOutputs { return self }
+}
+
+private func titleForContext(_ context: RewardsCollectionViewContext) -> String {
+  return context == .createPledge ? Strings.Back_this_project() : Strings.Choose_another_reward()
+}
+
+private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {
+  guard let backing = project.personalization.backing else {
+    return nil
+  }
+
+  let backedReward = reward(from: backing, inProject: project)
+  return rewards
+    .firstIndex(where: { $0.id == backedReward.id })
+    .flatMap { IndexPath(row: $0, section: 0) }
 }

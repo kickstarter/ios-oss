@@ -138,12 +138,10 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
         self?.goToRewards(project: project, refTag: refTag)
       }
 
-    self.viewModel.outputs.goToManageViewPledge
+    self.viewModel.outputs.goToManagePledge
       .observeForControllerAction()
-      .observeValues { [weak self] params in
-        let (project, reward, refTag) = params
-
-        self?.goToManageViewPledge(project: project, reward: reward, refTag: refTag)
+      .observeValues { [weak self] project in
+        self?.goToManageViewPledge(project: project)
       }
 
     self.viewModel.outputs.goToDeprecatedViewBacking
@@ -217,11 +215,10 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     self.present(vc, animated: true)
   }
 
-  private func goToManageViewPledge(project: Project, reward: Reward, refTag _: RefTag?) {
+  private func goToManageViewPledge(project: Project) {
     let vc = ManagePledgeViewController.instantiate()
       |> \.delegate .~ self
-
-    vc.configureWith(project: project, reward: reward)
+    vc.configureWith(project: project)
 
     let nc = RewardPledgeNavigationController(rootViewController: vc)
 
@@ -344,7 +341,7 @@ private func rewardsCollectionViewController(
   refTag: RefTag?
 ) -> UINavigationController {
   let rewardsCollectionViewController = RewardsCollectionViewController
-    .instantiate(with: project, refTag: refTag)
+    .instantiate(with: project, refTag: refTag, context: .createPledge)
 
   let navigationController = RewardPledgeNavigationController(
     rootViewController: rewardsCollectionViewController
