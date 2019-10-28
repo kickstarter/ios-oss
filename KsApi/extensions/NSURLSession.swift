@@ -19,7 +19,11 @@ internal extension URLSession {
 
     return producer
       .start(on: scheduler)
-      .flatMapError { error in .init(error: GraphError.requestError(error, nil)) }
+      .flatMapError { error -> SignalProducer<(Data, URLResponse), GraphError> in
+        print("🔴 [KsApi] Request Error \(error.localizedDescription)")
+
+        return .init(error: GraphError.requestError(error, nil))
+      }
       .flatMap(.concat) { data, response -> SignalProducer<Data, GraphError> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
 
