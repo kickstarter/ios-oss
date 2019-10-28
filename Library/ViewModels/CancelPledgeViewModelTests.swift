@@ -222,4 +222,19 @@ final class CancelPledgeViewModelTests: TestCase {
       self.cancelPledgeError.assertValues(["You can't cancel your pledge right now."])
     }
   }
+
+  func testTrackingEvents() {
+    let mockService = MockService(cancelBackingResult: .init(success: .init()))
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configure(with: .template, backing: .template)
+      self.vm.inputs.viewDidLoad()
+
+      self.cancelPledgeButtonEnabled.assertValues([true])
+
+      self.vm.inputs.cancelPledgeButtonTapped()
+
+      XCTAssertEqual(["Cancel Pledge Button Clicked"], self.trackingClient.events)
+    }
+  }
 }

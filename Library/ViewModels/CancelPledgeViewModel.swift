@@ -37,8 +37,12 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
     )
     .map(first)
 
+    let project = initialData
+      .map(first)
     let backing = initialData
       .map(second)
+
+    let projectAndBacking = Signal.combineLatest(project, backing)
 
     self.cancellationDetailsAttributedText = Signal.merge(
       initialData,
@@ -93,6 +97,15 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
       cancelPledgeEvent.map { $0.isTerminating }.mapConst(true)
     )
     .skipRepeats()
+
+    //Tracking
+    projectAndBacking
+      .takeWhen(self.cancelPledgeButtonTappedProperty.signal)
+      .observeValues { AppEnvironment.current.koala.trackCancelPledgeButtonClicked(
+        project: $0,
+        backing: $1
+      )
+    }
   }
 
   private let cancelPledgeButtonTappedProperty = MutableProperty(())
