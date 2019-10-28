@@ -230,8 +230,8 @@
 "Home" = "ホーム";
 "How_backers_found_your_project" = "バッカ―があなたのプロジェクトを見つけた経緯";
 "Id_just_like_to_support_the_project" = "プロジェクトをサポートしたい";
-"If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、<b>%{project_deadline}</b> に請求されます。";
-"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、<b>%{project_deadline}</b> に <b>%{total}</b> の請求が行われます。";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に請求されます。";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} に %{total} の請求が行われます。";
 "If_you_turn_following_off" = "フォローをオフにすると、あなたは誰もフォローすることができなくなり、また他の人があなたをフォローすることもできなくなります。また、既存のフォロワーとのつながりも絶たれます。この操作は後から元に戻すことはできませんのでご注意ください。";
 "If_your_profile_is_private" = "プロフィールがプライベート (非公開) 設定の場合、あなたの名前と写真が表示されます。";
 "If_your_profile_is_public" = "プロフィールがプライベート (非公開) 設定でない場合は、過去にあなたがバックしたプロジェクトや、あなたの地域情報、あなたの自己紹介欄とウェブサイトも表示されます。";
