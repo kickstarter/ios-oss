@@ -12,7 +12,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
 }
 
 public protocol ManagePledgeViewModelInputs {
-  func configureWith(_ project: Project, reward: Reward)
+  func configureWith(_ project: Project)
   func cancelPledgeDidFinish(with message: String)
   func menuButtonTapped()
   func menuOptionSelected(with action: ManagePledgeAlertAction)
@@ -27,7 +27,7 @@ public protocol ManagePledgeViewModelOutputs {
   var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
   var goToCancelPledge: Signal<(Project, Backing), Never> { get }
   var goToChangePaymentMethod: Signal<(Project, Reward), Never> { get }
-  var goToContactCreator: Signal<Void, Never> { get }
+  var goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
   var notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never> { get }
@@ -46,26 +46,38 @@ public protocol ManagePledgeViewModelType {
 public final class ManagePledgeViewModel:
   ManagePledgeViewModelType, ManagePledgeViewModelInputs, ManagePledgeViewModelOutputs {
   public init() {
-    let projectAndReward = self.projectAndRewardSignal
-      .takeWhen(self.viewDidLoadSignal.ignoreValues())
+    let initialProject = Signal.combineLatest(self.configureWithProjectSignal, self.viewDidLoadSignal)
+      .map(first)
 
-    let project = projectAndReward.map(first)
+    let refreshProjectEvent = initialProject
+      .takeWhen(self.pledgeViewControllerDidUpdatePledgeWithMessageSignal)
+      .switchMap { project in
+        AppEnvironment.current.apiService.fetchProject(param: Param.id(project.id))
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    let project = Signal.merge(initialProject, refreshProjectEvent.values())
     let backing = project
       .map { $0.personalization.backing }
       .skipNil()
+    let projectAndReward = project
+      .filterMap { project in
+        guard let backing = project.personalization.backing else {
+          return nil
+        }
 
-    self.title = projectAndReward
-      .map(first)
-      .map(navigationBarTitle(with:))
+        return (project, backing)
+      }
+      .map { project, backing in (project, reward(from: backing, inProject: project)) }
 
-    self.configurePaymentMethodView = projectAndReward
-      .map(first)
-      .map { $0.personalization.backing?.paymentSource }
+    self.title = project.map(navigationBarTitle(with:))
+
+    self.configurePaymentMethodView = backing
+      .map { $0.paymentSource }
       .skipNil()
 
-    self.configurePledgeSummaryView = projectAndReward
-      .map(first)
-
+    self.configurePledgeSummaryView = project
     self.configureRewardReceivedWithProject = project
 
     self.configureRewardSummaryView = projectAndReward
@@ -95,9 +107,9 @@ public final class ManagePledgeViewModel:
       .takeWhen(cancelPledgeSelected)
       .filter { _, backing in backing.cancelable }
 
-    self.goToContactCreator = self.menuOptionSelectedSignal
-      .filter { $0 == .contactCreator }
-      .ignoreValues()
+    self.goToContactCreator = project
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
+      .map { project in (MessageSubject.project(project), .backerModal) }
 
     self.goToChangePaymentMethod = projectAndReward
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .changePaymentMethod })
@@ -119,9 +131,9 @@ public final class ManagePledgeViewModel:
       .map { _ in Strings.We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours() }
   }
 
-  private let (projectAndRewardSignal, projectAndRewardObserver) = Signal<(Project, Reward), Never>.pipe()
-  public func configureWith(_ project: Project, reward: Reward) {
-    self.projectAndRewardObserver.send(value: (project, reward))
+  private let (configureWithProjectSignal, configureWithProjectObserver) = Signal<Project, Never>.pipe()
+  public func configureWith(_ project: Project) {
+    self.configureWithProjectObserver.send(value: project)
   }
 
   private let cancelPledgeDidFinishWithMessageProperty = MutableProperty<String?>(nil)
@@ -159,7 +171,7 @@ public final class ManagePledgeViewModel:
   public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
   public let goToCancelPledge: Signal<(Project, Backing), Never>
   public let goToChangePaymentMethod: Signal<(Project, Reward), Never>
-  public let goToContactCreator: Signal<Void, Never>
+  public let goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
   public let notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never>
