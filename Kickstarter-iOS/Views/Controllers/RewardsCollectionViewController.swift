@@ -352,7 +352,6 @@ extension RewardsCollectionViewController: RewardPledgeTransitionAnimatorDelegat
 
 private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICollectionView in
   collectionView
-    |> \.clipsToBounds .~ false
     |> \.allowsSelection .~ true
     |> \.showsHorizontalScrollIndicator .~ true
 }
