@@ -16,9 +16,9 @@ public struct CreateBackingInput: GraphMutationInput, Encodable {
    - parameter applePay: The optional ApplePayParams.
    - parameter locationId: The optional ID of the ShippingRule's Location.
    - parameter paymentSourceId: The optional ID of the PaymentSource.
-   - parameter projectId: The ID of the Project.
+   - parameter projectId: The GraphID of the Project.
    - parameter refParam: The optional RefParam.
-   - parameter rewardId: The ID of the Reward.
+   - parameter rewardId: The GraphID of the Reward.
    */
   public init(
     amount: String,
