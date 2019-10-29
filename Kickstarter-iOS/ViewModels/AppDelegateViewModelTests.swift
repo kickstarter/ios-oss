@@ -222,19 +222,12 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureAppCenterWithData.assertValues([
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.production,
-          userId: "0",
-          userName: "anonymous"
-        )
-      ])
+      self.configureAppCenterWithData.assertValues([])
     }
   }
 
   func testConfigureAppCenter_ProductionApp_LoggedIn() {
     let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
-    let currentUser = User.template
 
     withEnvironment(currentUser: .template, mainBundle: bundle) {
       vm.inputs.applicationDidFinishLaunching(
@@ -242,19 +235,12 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureAppCenterWithData.assertValues([
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.production,
-          userId: String(currentUser.id),
-          userName: currentUser.name
-        )
-      ])
+      self.configureAppCenterWithData.assertValues([])
     }
   }
 
   func testConfigureAppCenter_SessionChanges() {
     let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
-    let currentUser = User.template
 
     withEnvironment(mainBundle: bundle) {
       vm.inputs.applicationDidFinishLaunching(
@@ -262,50 +248,17 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureAppCenterWithData.assertValues([
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.production,
-          userId: "0",
-          userName: "anonymous"
-        )
-      ])
+      self.configureAppCenterWithData.assertValues([])
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
       self.vm.inputs.userSessionStarted()
 
-      self.configureAppCenterWithData.assertValues([
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.production,
-          userId: "0",
-          userName: "anonymous"
-        ),
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.production,
-          userId: String(currentUser.id),
-          userName: currentUser.name
-        )
-      ])
+      self.configureAppCenterWithData.assertValues([])
 
       AppEnvironment.logout()
       self.vm.inputs.userSessionStarted()
 
-      self.configureAppCenterWithData.assertValues([
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.production,
-          userId: "0",
-          userName: "anonymous"
-        ),
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.production,
-          userId: String(currentUser.id),
-          userName: currentUser.name
-        ),
-        AppCenterConfigData(
-          appSecret: KsApi.Secrets.AppCenter.production,
-          userId: "0",
-          userName: "anonymous"
-        )
-      ])
+      self.configureAppCenterWithData.assertValues([])
     }
   }
 

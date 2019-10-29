@@ -23,8 +23,6 @@ extension NSBundleType {
     }
 
     switch bundleId {
-    case .release:
-      return KsApi.Secrets.AppCenter.production
     case .beta:
       return KsApi.Secrets.AppCenter.beta
     case .alpha:

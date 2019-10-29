@@ -77,7 +77,6 @@ platform :ios do
   desc "Upload Beta to AppCenterApp"
   lane :beta_appcenter do
     upload_appcenter(
-      api_token: ENV["APPCENTER_BETA_API_TOKEN"],
       app_name: "KickBeta",
       ipa: "#{gym_dir}/KickBeta.ipa",
       dsym: "#{gym_dir}/KickBeta.app.dSYM.zip"
@@ -112,11 +111,10 @@ platform :ios do
 
   ### PRODUCTION
 
-  lane :itunes_match_gym_deliver_appcenter do
+  lane :itunes_match_gym_deliver do
     match_all
     itunes_gym
     itunes_deliver
-    itunes_appcenter
   end
 
   desc "Build Production"
@@ -125,16 +123,6 @@ platform :ios do
       output_name: "Kickstarter",
       export_method: "app-store",
       configuration: "Release"
-    )
-  end
-
-  desc "Upload Production to AppCenterApp"
-  lane :itunes_appcenter do
-    upload_appcenter(
-      api_token: ENV["APPCENTER_RELEASE_API_TOKEN"],
-      app_name: "Kickstarter",
-      ipa: "#{gym_dir}/Kickstarter.ipa",
-      dsym: "#{gym_dir}/Kickstarter.app.dSYM.zip"
     )
   end
 
@@ -184,7 +172,6 @@ platform :ios do
   desc "Upload Alpha to AppCenterApp"
   lane :alpha_appcenter do
     upload_appcenter(
-      api_token: ENV["APPCENTER_ALPHA_API_TOKEN"],
       app_name: "KickAlpha",
       ipa: "#{gym_dir}/KickAlpha.ipa",
       dsym: "#{gym_dir}/KickAlpha.app.dSYM.zip"
@@ -246,7 +233,7 @@ platform :ios do
   private_lane :upload_appcenter do |options|
     notes = changelog
     appcenter_upload(
-      api_token: options[:api_token],
+      api_token: ENV["APPCENTER_API_TOKEN"],
       owner_name: ENV["APPCENTER_OWNER_NAME"],
       app_name: options[:app_name],
       ipa: options[:ipa],

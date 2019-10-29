@@ -496,10 +496,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       self.userSessionStartedProperty.signal,
       self.userSessionEndedProperty.signal
     )
-    .filter { !AppEnvironment.current.mainBundle.isDebug }
-    .map { _ in
-      let mainBundle = AppEnvironment.current.mainBundle
-      let appCenterAppSecret = mainBundle.appCenterAppSecret ?? KsApi.Secrets.AppCenter.production
+    .filter { !AppEnvironment.current.mainBundle.isDebug && !AppEnvironment.current.mainBundle.isRelease }
+    .map { _ -> AppCenterConfigData? in
+      guard let appCenterAppSecret = AppEnvironment.current.mainBundle.appCenterAppSecret else { return nil }
 
       return AppCenterConfigData(
         appSecret: appCenterAppSecret,
@@ -507,6 +506,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         userName: AppEnvironment.current.currentUser?.name ?? "anonymous"
       )
     }
+    .skipNil()
 
     self.setApplicationShortcutItems = currentUserEvent
       .values()
