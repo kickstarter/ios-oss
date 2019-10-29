@@ -6,7 +6,7 @@ public struct GraphResponse<T: Decodable>: Decodable {
   let data: T
 }
 
-public struct GraphResponseErrors: Decodable {
+public struct GraphResponseErrorEnvelope: Decodable {
   let errors: [GraphResponseError]?
 }
 
