@@ -17,6 +17,8 @@ final class PledgeSummaryViewController: UIViewController {
 
   private lazy var termsTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var totalConversionLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var totalStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let viewModel: PledgeSummaryViewModelType = PledgeSummaryViewModel()
 
   // MARK: - Lifecycle
@@ -25,6 +27,8 @@ final class PledgeSummaryViewController: UIViewController {
     super.viewDidLoad()
 
     self.configureSubviews()
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   // MARK: - Styles
@@ -44,6 +48,9 @@ final class PledgeSummaryViewController: UIViewController {
       )
       |> adaptableStackViewStyle
 
+    _ = self.totalStackView
+      |> totalStackViewStyle(self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
+
     _ = self.titleLabel
       |> titleLabelStyle
 
@@ -52,6 +59,9 @@ final class PledgeSummaryViewController: UIViewController {
 
     _ = self.amountLabel
       |> amountLabelStyle
+
+    _ = self.totalConversionLabel
+      |> totalConversionLabelStyle
   }
 
   private func configureSubviews() {
@@ -62,7 +72,10 @@ final class PledgeSummaryViewController: UIViewController {
     _ = ([self.titleLabel, self.adaptableStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.termsTextView, self.amountLabel], self.adaptableStackView)
+    _ = ([self.termsTextView, self.totalStackView], self.adaptableStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.amountLabel, self.totalConversionLabel], self.totalStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -76,13 +89,15 @@ final class PledgeSummaryViewController: UIViewController {
       .observeValues { [weak self] helpType in
         self?.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
       }
+
+    self.amountLabel.rac.attributedText = self.viewModel.outputs.amountLabelAttributedText
+    self.totalConversionLabel.rac.text = self.viewModel.outputs.totalConversionLabelText
   }
 
   // MARK: - Configuration
 
-  internal func configureWith(value: PledgeSummaryCellData) {
-    _ = self.amountLabel
-      |> \.attributedText .~ attributedCurrency(with: value)
+  internal func configureWith(_ project: Project, total: Double) {
+    self.viewModel.inputs.configureWith(project, total: total)
   }
 }
 
@@ -153,6 +168,26 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
   return label
 }
 
+private let totalConversionLabelStyle: LabelStyle = { label in
+  _ = label
+    |> \.font .~ .ksr_footnote()
+    |> \.textColor .~ .ksr_text_dark_grey_500
+
+  _ = label |> checkoutBackgroundStyle
+
+  return label
+}
+
+private func totalStackViewStyle(_ isAccessibilityCategory: Bool) -> StackViewStyle {
+  return { stackView in
+    stackView
+      |> verticalStackViewStyle
+      |> \.spacing .~ Styles.gridHalf(3)
+      |> \.alignment .~
+      (isAccessibilityCategory ? UIStackView.Alignment.leading : UIStackView.Alignment.trailing)
+  }
+}
+
 private func attributedTermsText() -> NSAttributedString? {
   let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
 
@@ -169,23 +204,4 @@ private func attributedTermsText() -> NSAttributedString? {
   )
 
   return checkoutAttributedLink(with: string)
-}
-
-private func attributedCurrency(with data: PledgeSummaryCellData) -> NSAttributedString? {
-  let defaultAttributes = checkoutCurrencyDefaultAttributes()
-    .withAllValuesFrom([.foregroundColor: UIColor.ksr_green_500])
-  let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
-  guard
-    let attributedCurrency = Format.attributedCurrency(
-      data.total,
-      country: data.project.country,
-      omitCurrencyCode: data.project.stats.omitUSCurrencyCode,
-      defaultAttributes: defaultAttributes,
-      superscriptAttributes: superscriptAttributes
-    ) else { return nil }
-
-  let combinedAttributes = defaultAttributes
-    .withAllValuesFrom(superscriptAttributes)
-
-  return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }
