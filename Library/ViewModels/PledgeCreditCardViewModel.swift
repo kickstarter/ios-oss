@@ -4,14 +4,15 @@ import ReactiveExtensions
 import ReactiveSwift
 import UIKit
 
-public typealias PledgeCreditCardValue = (
+public typealias PledgeCreditCardViewData = (
   card: GraphUserCreditCard.CreditCard,
-  isEnabled: Bool, projectCountry: String
+  isEnabled: Bool,
+  projectCountry: String
 )
 
 public protocol PledgeCreditCardViewModelInputs {
   /// Call to configure cell with card and selected card values.
-  func configureWith(value: PledgeCreditCardValue)
+  func configureWith(value: PledgeCreditCardViewData)
 
   /// Call when the "select" button is tapped.
   func selectButtonTapped()
@@ -117,8 +118,8 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       ) }
   }
 
-  fileprivate let pledgeCreditCardValueProperty = MutableProperty<PledgeCreditCardValue?>(nil)
-  public func configureWith(value: PledgeCreditCardValue) {
+  fileprivate let pledgeCreditCardValueProperty = MutableProperty<PledgeCreditCardViewData?>(nil)
+  public func configureWith(value: PledgeCreditCardViewData) {
     self.pledgeCreditCardValueProperty.value = value
   }
 
