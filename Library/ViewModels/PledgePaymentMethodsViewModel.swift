@@ -5,10 +5,6 @@ import ReactiveSwift
 import UIKit
 
 public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
-public typealias CardViewValues = (
-  cardAndIsAvailableCardType: [(card: GraphUserCreditCard.CreditCard, cardTypeIsAvailable: Bool)],
-  projectCountry: String
-)
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func applePayButtonTapped()
@@ -25,7 +21,8 @@ public protocol PledgePaymentMethodsViewModelOutputs {
   var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
-  var reloadPaymentMethods: Signal<CardViewValues, Never> { get }
+  var reloadPaymentMethodsAndSelectCard:
+    Signal<([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?), Never> { get }
   var updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never> { get }
 }
 
@@ -60,9 +57,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .map(showApplePayButton(for:applePayCapable:))
       .negate()
 
-    let storedCards = storedCardsEvent
-      .values()
-      .map { $0.me.storedCards.nodes }
+    let storedCardsValues = storedCardsEvent.values().map { $0.me.storedCards.nodes }
+    let backing = configureWithValue.map { $0.project.personalization.backing }
+
+    let storedCards = Signal.combineLatest(storedCardsValues, backing)
+      .map(cards(_:orderedBy:))
 
     let cards = Signal.merge(
       storedCards,
@@ -70,15 +69,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
     .scan([]) { current, new in new + current }
 
-    let cardsAndAvailable = Signal.combineLatest(cards, availableCardTypes)
-      .map(cardTypeAvailable(cards:availableCardTypes:))
-
-    let cardValues = Signal.combineLatest(
-      cardsAndAvailable,
-      project.map { $0.location.displayableName }
-    ).map { CardViewValues(cardAndIsAvailableCardType: $0, projectCountry: $1) }
-
-    self.reloadPaymentMethods = cardValues
+    self.reloadPaymentMethodsAndSelectCard = Signal.combineLatest(cards, availableCardTypes, project)
+      .map(pledgeCreditCardViewData(with:availableCardTypes:project:))
+      .map { pledgeCreditCardViewData in
+        (pledgeCreditCardViewData, pledgeCreditCardViewData.first?.card)
+      }
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
 
@@ -132,7 +127,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
   public let notifyDelegateCreditCardSelected: Signal<String, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
-  public let reloadPaymentMethods: Signal<CardViewValues, Never>
+  public let reloadPaymentMethodsAndSelectCard:
+    Signal<([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?), Never>
 
   public let updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never>
 
@@ -140,20 +136,28 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
 }
 
-private func cardTypeAvailable(cards: [GraphUserCreditCard.CreditCard], availableCardTypes: [String])
-  -> [(card: GraphUserCreditCard.CreditCard, cardTypeIsAvailable: Bool)] {
-  var cardsWithIsAvailableCardType: [(GraphUserCreditCard.CreditCard, Bool)] = []
+private func pledgeCreditCardViewData(
+  with cards: [GraphUserCreditCard.CreditCard],
+  availableCardTypes: [String],
+  project: Project
+) -> [PledgeCreditCardViewData] {
+  return cards.compactMap { card -> PledgeCreditCardViewData? in
+    guard let cardBrand = card.type?.rawValue else { return nil }
 
-  cards.forEach { card in
-    guard let cardBrand = card.type?.rawValue else { return }
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
-    cardsWithIsAvailableCardType.append((card, isAvailableCardType))
-  }
 
-  return cardsWithIsAvailableCardType
+    return (card, isAvailableCardType, project.location.displayableName)
+  }
 }
 
 private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {
   return applePayCapable &&
     AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
+}
+
+private func cards(
+  _ cards: [GraphUserCreditCard.CreditCard],
+  orderedBy backing: Backing?
+) -> [GraphUserCreditCard.CreditCard] {
+  return cards.sorted { card1, _ in card1.id == backing?.paymentSource?.id }
 }
