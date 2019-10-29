@@ -18,7 +18,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let goToCancelPledgeBacking = TestObserver<Backing, Never>()
   private let goToChangePaymentMethodProject = TestObserver<Project, Never>()
   private let goToChangePaymentMethodReward = TestObserver<Reward, Never>()
-  private let goToContactCreator = TestObserver<Void, Never>()
+  private let goToContactCreatorSubject = TestObserver<MessageSubject, Never>()
+  private let goToContactCreatorContext = TestObserver<Koala.MessageDialogContext, Never>()
   private let goToRewards = TestObserver<Project, Never>()
   private let goToUpdatePledgeProject = TestObserver<Project, Never>()
   private let goToUpdatePledgeReward = TestObserver<Reward, Never>()
@@ -48,7 +49,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.goToCancelPledge.map(second).observe(self.goToCancelPledgeBacking.observer)
     self.vm.outputs.goToChangePaymentMethod.map(first).observe(self.goToChangePaymentMethodProject.observer)
     self.vm.outputs.goToChangePaymentMethod.map(second).observe(self.goToChangePaymentMethodReward.observer)
-    self.vm.outputs.goToContactCreator.observe(self.goToContactCreator.observer)
+    self.vm.outputs.goToContactCreator.map(first).observe(self.goToContactCreatorSubject.observer)
+    self.vm.outputs.goToContactCreator.map(second).observe(self.goToContactCreatorContext.observer)
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
     self.vm.outputs.goToUpdatePledge.map(first).observe(self.goToUpdatePledgeProject.observer)
     self.vm.outputs.goToUpdatePledge.map(second).observe(self.goToUpdatePledgeReward.observer)
@@ -225,15 +227,20 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testGoToContactCreator() {
-    self.vm.inputs.configureWith(Project.template)
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ Backing.template
+
+    self.vm.inputs.configureWith(project)
     self.vm.inputs.viewDidLoad()
 
-    self.goToContactCreator.assertDidNotEmitValue()
+    self.goToContactCreatorSubject.assertDidNotEmitValue()
+    self.goToContactCreatorContext.assertDidNotEmitValue()
 
     self.vm.inputs.menuButtonTapped()
     self.vm.inputs.menuOptionSelected(with: .contactCreator)
 
-    self.goToContactCreator.assertValueCount(1)
+    self.goToContactCreatorSubject.assertValues([.project(project)])
+    self.goToContactCreatorContext.assertValues([.backerModal])
   }
 
   func testGoToRewards() {
