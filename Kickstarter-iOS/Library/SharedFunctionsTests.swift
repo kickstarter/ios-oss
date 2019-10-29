@@ -67,7 +67,7 @@ internal final class SharedFunctionsTests: XCTestCase {
     let params = sanitizedPledgeParameters(
       from: reward,
       pledgeAmount: 10,
-      selectedShippingRule: selectedShippingRule
+      shippingRule: selectedShippingRule
     )
 
     XCTAssertEqual(params.rewardId, "UmV3YXJkLTE=")
@@ -81,10 +81,10 @@ internal final class SharedFunctionsTests: XCTestCase {
     let params = sanitizedPledgeParameters(
       from: reward,
       pledgeAmount: 10,
-      selectedShippingRule: nil
+      shippingRule: nil
     )
 
-    XCTAssertNil(params.rewardId)
+    XCTAssertEqual(params.rewardId, "UmV3YXJkLTA=")
     XCTAssertEqual(params.pledgeTotal, "10.00")
     XCTAssertNil(params.locationId)
   }

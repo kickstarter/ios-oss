@@ -3,26 +3,23 @@ import KsApi
 
 extension CreateBackingInput {
   internal static func input(
-    from project: Project,
-    reward: Reward,
-    pledgeAmount: Double,
-    selectedShippingRule: ShippingRule?,
-    refTag: RefTag?,
-    paymentSourceId: String
+    from createBackingData: CreateBackingData,
+    isApplePay: Bool
   ) -> CreateBackingInput {
     let pledgeParams = sanitizedPledgeParameters(
-      from: reward,
-      pledgeAmount: pledgeAmount,
-      selectedShippingRule: selectedShippingRule
+      from: createBackingData.reward,
+      pledgeAmount: createBackingData.pledgeAmount,
+      shippingRule: createBackingData.shippingRule
     )
 
     return CreateBackingInput(
       amount: pledgeParams.pledgeTotal,
+      applePay: isApplePay ? createBackingData.applePayParams : nil,
       locationId: pledgeParams.locationId,
-      paymentSourceId: paymentSourceId,
-      projectId: project.graphID,
-      rewardId: pledgeParams.rewardId,
-      refParam: refTag?.description
+      paymentSourceId: isApplePay ? nil : createBackingData.paymentSourceId,
+      projectId: createBackingData.project.graphID,
+      refParam: createBackingData.refTag?.description,
+      rewardId: pledgeParams.rewardId
     )
   }
 }
