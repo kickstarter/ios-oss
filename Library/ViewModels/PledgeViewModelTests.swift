@@ -300,10 +300,10 @@ final class PledgeViewModelTests: TestCase {
       |> \.month .~ 11
       |> \.day .~ 1
       |> \.year .~ 2_019
-      |> \.timeZone .~ TimeZone.init(secondsFromGMT: 0)
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
 
     let calendar = Calendar(identifier: .gregorian)
-      |> \.timeZone .~ TimeZone.init(secondsFromGMT: 0)!
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)!
 
     withEnvironment(calendar: calendar, locale: Locale(identifier: "en")) {
       let date = AppEnvironment.current.calendar.date(from: dateComponents)
