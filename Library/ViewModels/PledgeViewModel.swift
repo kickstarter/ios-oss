@@ -95,6 +95,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let context = initialData.map { $0.3 }
 
     let backing = project.map { $0.personalization.backing }.skipNil()
+    let projectAndBacking = Signal.combineLatest(project, backing)
 
     self.confirmationLabelHidden = context.map { $0.confirmationLabelHidden }
     self.descriptionViewHidden = context.map { $0.descriptionViewHidden }
@@ -542,6 +543,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.submitButtonTitle = context.map { $0.submitButtonTitle }
     self.title = context.map { $0.title }
+
+    // Tracking
+    projectAndBacking
+      .takeWhen(submitButtonTappedSignal)
+      .observeValues { AppEnvironment.current.koala.trackUpdatePledgeButtonClicked(
+        project: $0,
+        backing: $1
+        )
+    }
   }
 
   // MARK: - Inputs

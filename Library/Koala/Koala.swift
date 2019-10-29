@@ -606,6 +606,13 @@ public final class Koala {
     self.track(event: "Cancel Pledge Button Clicked", properties: props)
   }
 
+  public func trackUpdatePledgeButtonClicked(project: Project, backing: Backing) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["pledge_total": backing.amount])
+
+    self.track(event: "Update Pledge Button Clicked", properties: props)
+  }
+
   public func trackSelectRewardButtonClicked(
     project: Project,
     reward: Reward?,
