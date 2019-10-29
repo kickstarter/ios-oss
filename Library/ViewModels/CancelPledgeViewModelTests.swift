@@ -230,7 +230,7 @@ final class CancelPledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: .template, backing: .template)
       self.vm.inputs.viewDidLoad()
 
-      self.cancelPledgeButtonEnabled.assertValues([true])
+      XCTAssertEqual([], self.trackingClient.events)
 
       self.vm.inputs.cancelPledgeButtonTapped()
 
