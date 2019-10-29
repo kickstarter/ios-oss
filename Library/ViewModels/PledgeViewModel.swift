@@ -60,6 +60,7 @@ public protocol PledgeViewModelOutputs {
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
   var popViewController: Signal<(), Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
+  var selectedShippingAmountChanged: Signal<Double, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var showApplePayAlert: Signal<(String, String), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
@@ -68,7 +69,6 @@ public protocol PledgeViewModelOutputs {
   var submitButtonIsLoading: Signal<Bool, Never> { get }
   var submitButtonTitle: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
-  var updateMaximumPledgeAmount: Signal<Double, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -113,7 +113,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost).map(+)
 
-    self.updateMaximumPledgeAmount = shippingCost
+    self.selectedShippingAmountChanged = shippingCost
 
     self.configureWithData = initialData.map { (project: $0.0, reward: $0.1) }
 
@@ -399,7 +399,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       project,
       self.pledgeAmountDataSignal
     )
-    .takeWhen(Signal.merge(showApplePayAlert))
+    .takeWhen(showApplePayAlert)
     .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
     .map { project, min, max in
       (
@@ -701,6 +701,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popViewController: Signal<(), Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
+  public let selectedShippingAmountChanged: Signal<Double, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showApplePayAlert: Signal<(String, String), Never>
@@ -709,7 +710,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let submitButtonIsLoading: Signal<Bool, Never>
   public let submitButtonTitle: Signal<String, Never>
   public let title: Signal<String, Never>
-  public let updateMaximumPledgeAmount: Signal<Double, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }

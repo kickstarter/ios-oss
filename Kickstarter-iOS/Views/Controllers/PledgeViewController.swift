@@ -249,10 +249,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.shippingLocationViewController.configureWith(value: data)
       }
 
-    self.viewModel.outputs.updateMaximumPledgeAmount
+    self.viewModel.outputs.selectedShippingAmountChanged
       .observeForUI()
-      .observeValues { [weak self] shippingCost in
-        self?.pledgeAmountViewController.updateMaximumPledgeAmount(with: shippingCost)
+      .observeValues { [weak self] amount in
+        self?.pledgeAmountViewController.selectedShippingAmountChanged(to: amount)
       }
 
     self.viewModel.outputs.configureSummaryViewControllerWithData

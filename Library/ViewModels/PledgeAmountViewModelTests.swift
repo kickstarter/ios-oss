@@ -81,12 +81,12 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.textFieldValue.assertValues(["690"])
   }
 
-  func testAmountMax_WhenShippingCostUpdates() {
+  func testAmountMax_WhenShippingAmountUpdates() {
     self.vm.inputs.configureWith(project: .template, reward: Reward.postcards)
 
     self.amountMax.assertValues([10_000])
 
-    self.vm.inputs.updateMaximumPledgeAmount(with: 20)
+    self.vm.inputs.selectedShippingAmountChanged(to: 20)
 
     self.amountMax.assertValues([10_000, 9_980])
   }
@@ -203,7 +203,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.textFieldValue.assertValues(["200"])
   }
 
-  func testDoneButtonIsEnabled_WithMaxAmount_WhenShippingCostUpdates() {
+  func testDoneButtonIsEnabled_WithMaxAmount_WhenShippingAmountUpdates() {
     self.vm.inputs.configureWith(project: .template, reward: .template)
 
     self.amountMax.assertValues([10_000])
@@ -212,12 +212,12 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.updateMaximumPledgeAmount(with: 10)
+    self.vm.inputs.selectedShippingAmountChanged(to: 10)
 
     self.amountMax.assertValues([10_000, 10_000, 9_990])
     self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.updateMaximumPledgeAmount(with: 0)
+    self.vm.inputs.selectedShippingAmountChanged(to: 0)
 
     self.amountMax.assertValues([10_000, 10_000, 9_990, 10_000])
     self.doneButtonIsEnabled.assertValues([true, false, true])
@@ -818,7 +818,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.labelTextColor.assertValues([green, red, green, red, green])
   }
 
-  func testLabelTextColor_WhenShippingCostUpdates() {
+  func testLabelTextColor_WhenShippingAmountUpdates() {
     let green = UIColor.ksr_green_500
     let red = UIColor.ksr_red_400
 
@@ -829,7 +829,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.stepperValueChanged(10_000)
     self.labelTextColor.assertValues([green])
 
-    self.vm.inputs.updateMaximumPledgeAmount(with: 30)
+    self.vm.inputs.selectedShippingAmountChanged(to: 30)
     self.labelTextColor.assertValues([green, red])
 
     self.vm.inputs.stepperValueChanged(9_970)
@@ -850,8 +850,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.stepperValueChanged(10_000)
     self.maxPledgeAmountErrorLabelIsHidden.assertValues([true, false, true])
 
-    let shippingCost = 30.0
-    self.vm.inputs.updateMaximumPledgeAmount(with: shippingCost)
+    let shippingAmount = 30.0
+    self.vm.inputs.selectedShippingAmountChanged(to: shippingAmount)
     self.maxPledgeAmountErrorLabelIsHidden.assertValues([true, false, true, false])
   }
 
@@ -867,7 +867,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       "Please enter a pledge amount between US$ 25 and US$ 10,000."
     ])
 
-    self.vm.inputs.updateMaximumPledgeAmount(with: 30.0)
+    self.vm.inputs.selectedShippingAmountChanged(to: 30.0)
 
     self.maxPledgeAmountErrorLabelText.assertValues([
       "Please enter a pledge amount between US$ 25 and US$ 10,000.",
