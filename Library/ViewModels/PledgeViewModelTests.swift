@@ -1050,8 +1050,16 @@ final class PledgeViewModelTests: TestCase {
     )
   }
 
-  func testGoToThanks() {
-    withEnvironment(apiService: MockService()) {
+  func testApplePay_GoToThanks() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(state: .successful, backing: .init(clientSecret: nil, requiresAction: false))
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template
       let reward = Reward.noReward
         |> Reward.lens.minimum .~ 5
@@ -1087,7 +1095,15 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testApplePay_GoToThanks_WhenRefTag_IsNil() {
-    withEnvironment(apiService: MockService(), currentUser: .template) {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(state: .successful, backing: .init(clientSecret: nil, requiresAction: false))
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template
       let reward = Reward.noReward
         |> Reward.lens.minimum .~ 5
@@ -1166,7 +1182,7 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testCreateApplePayBackingError() {
-    let mockService = MockService(createApplePayBackingError: GraphError.invalidInput)
+    let mockService = MockService(createBackingResult: .failure(.invalidInput))
 
     withEnvironment(apiService: mockService) {
       let project = Project.template
@@ -1688,10 +1704,7 @@ final class PledgeViewModelTests: TestCase {
       "Payment method changed"
     )
 
-    #warning("This fixes tests for now, remove once we've fixed the issue with GraphUserCreditCard ID")
-    self.vm.inputs.creditCardSelected(
-      with: Data("Card-\(GraphUserCreditCard.amex.id)".utf8).base64EncodedString()
-    )
+    self.vm.inputs.creditCardSelected(with: Backing.PaymentSource.template.id ?? "")
 
     self.submitButtonEnabled.assertValues(
       [false, true, false, true, false, true, false],
