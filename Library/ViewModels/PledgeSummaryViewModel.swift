@@ -4,8 +4,8 @@ import Prelude
 import ReactiveSwift
 
 public protocol PledgeSummaryViewModelInputs {
-  func tapped(_ url: URL)
   func configureWith(_ project: Project, total: Double)
+  func tapped(_ url: URL)
   func viewDidLoad()
 }
 

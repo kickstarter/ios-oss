@@ -7,9 +7,9 @@ import XCTest
 internal final class PledgeSummaryViewModelTests: TestCase {
   private let vm: PledgeSummaryViewModelType = PledgeSummaryViewModel()
 
-  private let notifyDelegateOpenHelpType = TestObserver<HelpType, Never>()
   private let amountLabelAttributedText = TestObserver<NSAttributedString, Never>()
   private let amountLabelText = TestObserver<String, Never>()
+  private let notifyDelegateOpenHelpType = TestObserver<HelpType, Never>()
   private let totalConversionLabelText = TestObserver<String, Never>()
 
   override func setUp() {
