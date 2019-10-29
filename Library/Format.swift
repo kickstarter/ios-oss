@@ -96,12 +96,18 @@ public enum Format {
     _ amount: Double,
     country: Project.Country,
     omitCurrencyCode: Bool = true,
+    roundingMode: NumberFormatter.RoundingMode = .down,
+    maximumFractionDigits: Int = 0,
+    minimumFractionDigits: Int = 0,
     env: Environment = AppEnvironment.current
   ) -> String {
     return Format.formattedCurrency(
       amount,
       country: country,
       omitCurrencyCode: omitCurrencyCode,
+      roundingMode: roundingMode,
+      maximumFractionDigits: maximumFractionDigits,
+      minimumFractionDigits: minimumFractionDigits,
       env: env
     )
   }
@@ -110,6 +116,9 @@ public enum Format {
     _ amount: Any,
     country: Project.Country,
     omitCurrencyCode: Bool = true,
+    roundingMode: NumberFormatter.RoundingMode = .down,
+    maximumFractionDigits: Int = 0,
+    minimumFractionDigits: Int = 0,
     env: Environment = AppEnvironment.current
   ) -> String {
     let symbol = currencySymbol(
@@ -120,6 +129,9 @@ public enum Format {
 
     let formatter = NumberFormatterConfig.cachedFormatter(
       forConfig: .defaultCurrencyConfig
+        |> NumberFormatterConfig.lens.roundingMode .~ roundingMode
+        |> NumberFormatterConfig.lens.maximumFractionDigits .~ maximumFractionDigits
+        |> NumberFormatterConfig.lens.minimumFractionDigits .~ minimumFractionDigits
         |> NumberFormatterConfig.lens.locale .~ env.locale
         |> NumberFormatterConfig.lens.currencySymbol .~ symbol
     )

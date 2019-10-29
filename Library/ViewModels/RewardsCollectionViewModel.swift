@@ -94,11 +94,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       selectedRewardFromId,
       refTag
     )
-    .filter { arg in
-      let (project, _, _) = arg
-
-      return project.state == .live
-    }
+    .filter { project, _, _ in project.state == .live }
     .map { project, reward, refTag in
       PledgeData(project: project, reward: reward, refTag: refTag)
     }
