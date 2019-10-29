@@ -252,7 +252,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.viewModel.outputs.configureSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] project, pledgeTotal in
-        self?.summaryViewController.configureWith(value: (project, pledgeTotal))
+        self?.summaryViewController.configureWith(project, total: pledgeTotal)
       }
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
       .observeForUI()
@@ -286,10 +286,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self.delegate?.pledgeViewControllerDidUpdatePledge(self, message: message)
       }
 
-    self.viewModel.outputs.popViewController
+    self.viewModel.outputs.popToRootViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.navigationController?.popViewController(animated: true)
+        self?.navigationController?.popToRootViewController(animated: true)
       }
 
     Keyboard.change

@@ -340,13 +340,15 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   // MARK: - Functions
 
   private func goToRewards(_ project: Project) {
-    let rewardsVC = RewardsCollectionViewController.instantiate(
+    let vc = RewardsCollectionViewController.instantiate(
       with: project,
       refTag: nil,
       context: .managePledge
     )
 
-    self.navigationController?.pushViewController(rewardsVC, animated: true)
+    vc.pledgeViewDelegate = self
+
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToUpdatePledge(project: Project, reward: Reward) {
@@ -354,7 +356,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     vc.configureWith(project: project, reward: reward, refTag: nil, context: .update)
     vc.delegate = self
 
-    self.show(vc, sender: nil)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToCancelPledge(project: Project, backing: Backing) {
@@ -370,7 +372,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     vc.configureWith(project: project, reward: reward, refTag: nil, context: .changePaymentMethod)
     vc.delegate = self
 
-    self.show(vc, sender: nil)
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToContactCreator(
