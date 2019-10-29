@@ -150,7 +150,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
       self.submitButtonTitle.assertValues(["Pledge"])
-      self.confirmationLabelHidden.assertValues([true])
+      self.confirmationLabelHidden.assertValues([false])
 
       self.descriptionViewHidden.assertValues([false])
 
@@ -189,7 +189,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
       self.submitButtonTitle.assertValues(["Pledge"])
-      self.confirmationLabelHidden.assertValues([true])
+      self.confirmationLabelHidden.assertValues([false])
 
       self.descriptionViewHidden.assertValues([false])
 

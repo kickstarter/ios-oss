@@ -5,7 +5,7 @@ final class PledgeViewContextTests: TestCase {
   func testPledge() {
     let context = PledgeViewContext.pledge
 
-    XCTAssertTrue(context.confirmationLabelHidden)
+    XCTAssertFalse(context.confirmationLabelHidden)
     XCTAssertFalse(context.continueViewHidden)
     XCTAssertFalse(context.descriptionViewHidden)
     XCTAssertFalse(context.isUpdating)
