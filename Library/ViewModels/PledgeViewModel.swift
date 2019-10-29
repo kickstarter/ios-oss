@@ -69,7 +69,6 @@ public protocol PledgeViewModelOutputs {
   var submitButtonTitle: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
   var updateMaximumPledgeAmount: Signal<Double, Never> { get }
-  var updatePledgeFailedWithError: Signal<String, Never> { get }
 }
 
 public protocol PledgeViewModelType {
@@ -159,10 +158,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let pledgeAmountIsValid = self.pledgeAmountDataSignal
       .map { $0.isValid }
-
-    pledgeAmountIsValid.observeValues { v in
-      print(v)
-    }
 
     self.shippingLocationViewHidden = reward
       .map { $0.shipping.enabled }
@@ -583,8 +578,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.notifyDelegateUpdatePledgeDidSucceedWithMessage = updateBackingCompletionEvents
       .mapConst(Strings.Got_it_your_changes_have_been_saved())
-    self.updatePledgeFailedWithError = updateBackingEvent.errors()
-      .map { $0.localizedDescription }
 
     let graphErrors = Signal.merge(
       deprecatedCreateApplePayBackingCompletedError,
@@ -717,7 +710,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let submitButtonTitle: Signal<String, Never>
   public let title: Signal<String, Never>
   public let updateMaximumPledgeAmount: Signal<Double, Never>
-  public let updatePledgeFailedWithError: Signal<String, Never>
 
   public var inputs: PledgeViewModelInputs { return self }
   public var outputs: PledgeViewModelOutputs { return self }
