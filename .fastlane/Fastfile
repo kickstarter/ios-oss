@@ -74,7 +74,7 @@ platform :ios do
     )
   end
 
-  desc "Upload Beta to AppCenterApp"
+  desc "Upload Beta to AppCenter"
   lane :beta_appcenter do
     upload_appcenter(
       app_name: "KickBeta",
@@ -90,7 +90,7 @@ platform :ios do
         "beta",
         get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
         get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
-        "AppCenterApp"
+        "AppCenter"
       )
     )
   end
@@ -169,7 +169,7 @@ platform :ios do
     )
   end
 
-  desc "Upload Alpha to AppCenterApp"
+  desc "Upload Alpha to AppCenter"
   lane :alpha_appcenter do
     upload_appcenter(
       app_name: "KickAlpha",
@@ -185,7 +185,7 @@ platform :ios do
         "alpha",
         get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
         get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
-        "AppCenterApp"
+        "AppCenter"
       )
     )
   end
