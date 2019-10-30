@@ -3386,7 +3386,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.shippingAmount .~ 10
           |> Backing.lens.amount .~ 700
-    )
+      )
 
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(

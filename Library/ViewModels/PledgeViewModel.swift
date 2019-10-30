@@ -546,12 +546,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // Tracking
     projectAndBacking
-      .takeWhen(submitButtonTappedSignal)
+      .takeWhen(self.submitButtonTappedSignal)
       .observeValues { AppEnvironment.current.koala.trackUpdatePledgeButtonClicked(
         project: $0,
         backing: $1
-        )
-    }
+      )
+      }
   }
 
   // MARK: - Inputs
