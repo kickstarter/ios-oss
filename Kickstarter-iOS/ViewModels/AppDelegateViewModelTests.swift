@@ -14,8 +14,8 @@ final class AppDelegateViewModelTests: TestCase {
   let vm: AppDelegateViewModelType = AppDelegateViewModel()
 
   fileprivate let applicationIconBadgeNumber = TestObserver<Int, Never>()
+  fileprivate let configureAppCenterWithData = TestObserver<AppCenterConfigData, Never>()
   fileprivate let configureFabric = TestObserver<(), Never>()
-  fileprivate let configureHockey = TestObserver<HockeyConfigData, Never>()
   fileprivate let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
   private let findRedirectUrl = TestObserver<URL, Never>()
   fileprivate let forceLogout = TestObserver<(), Never>()
@@ -41,8 +41,8 @@ final class AppDelegateViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.applicationIconBadgeNumber.observe(self.applicationIconBadgeNumber.observer)
+    self.vm.outputs.configureAppCenterWithData.observe(self.configureAppCenterWithData.observer)
     self.vm.outputs.configureFabric.observe(self.configureFabric.observer)
-    self.vm.outputs.configureHockey.observe(self.configureHockey.observer)
     self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
@@ -119,7 +119,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.configureFabric.assertValueCount(1)
   }
 
-  func testConfigureHockey_AlphaApp_LoggedOut() {
+  func testConfigureAppCenter_AlphaApp_LoggedOut() {
     let alphaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue, lang: "en")
 
     withEnvironment(mainBundle: alphaBundle) {
@@ -128,10 +128,9 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureHockey.assertValues([
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.alpha,
-          disableUpdates: false,
+      self.configureAppCenterWithData.assertValues([
+        AppCenterConfigData(
+          appSecret: KsApi.Secrets.AppCenter.alpha,
           userId: "0",
           userName: "anonymous"
         )
@@ -139,7 +138,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testConfigureHockey_AlphaApp_LoggedIn() {
+  func testConfigureAppCenter_AlphaApp_LoggedIn() {
     let alphaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue, lang: "en")
     let currentUser = User.template
 
@@ -152,10 +151,9 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureHockey.assertValues([
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.alpha,
-          disableUpdates: false,
+      self.configureAppCenterWithData.assertValues([
+        AppCenterConfigData(
+          appSecret: KsApi.Secrets.AppCenter.alpha,
           userId: String(currentUser.id),
           userName: currentUser.name
         )
@@ -163,7 +161,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testConfigureHockey_DebugApp() {
+  func testConfigureAppCenter_DebugApp() {
     let debugBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.debug.rawValue, lang: "en")
 
     withEnvironment(mainBundle: debugBundle) {
@@ -172,11 +170,11 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureHockey.assertDidNotEmitValue()
+      self.configureAppCenterWithData.assertDidNotEmitValue()
     }
   }
 
-  func testConfigureHockey_BetaApp_LoggedOut() {
+  func testConfigureAppCenter_BetaApp_LoggedOut() {
     let betaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue, lang: "en")
 
     withEnvironment(mainBundle: betaBundle) {
@@ -185,10 +183,9 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureHockey.assertValues([
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.beta,
-          disableUpdates: false,
+      self.configureAppCenterWithData.assertValues([
+        AppCenterConfigData(
+          appSecret: KsApi.Secrets.AppCenter.beta,
           userId: "0",
           userName: "anonymous"
         )
@@ -196,7 +193,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testConfigureHockey_BetaApp_LoggedIn() {
+  func testConfigureAppCenter_BetaApp_LoggedIn() {
     let currentUser = User.template
     withEnvironment(
       currentUser: .template,
@@ -207,10 +204,9 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureHockey.assertValues([
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.beta,
-          disableUpdates: false,
+      self.configureAppCenterWithData.assertValues([
+        AppCenterConfigData(
+          appSecret: KsApi.Secrets.AppCenter.beta,
           userId: String(currentUser.id),
           userName: currentUser.name
         )
@@ -218,7 +214,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testConfigureHockey_ProductionApp_LoggedOut() {
+  func testConfigureAppCenter_ProductionApp_LoggedOut() {
     let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
     withEnvironment(mainBundle: bundle) {
       vm.inputs.applicationDidFinishLaunching(
@@ -226,20 +222,12 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureHockey.assertValues([
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.production,
-          disableUpdates: true,
-          userId: "0",
-          userName: "anonymous"
-        )
-      ])
+      self.configureAppCenterWithData.assertValues([])
     }
   }
 
-  func testConfigureHockey_ProductionApp_LoggedIn() {
+  func testConfigureAppCenter_ProductionApp_LoggedIn() {
     let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
-    let currentUser = User.template
 
     withEnvironment(currentUser: .template, mainBundle: bundle) {
       vm.inputs.applicationDidFinishLaunching(
@@ -247,20 +235,12 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureHockey.assertValues([
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.production,
-          disableUpdates: true,
-          userId: String(currentUser.id),
-          userName: currentUser.name
-        )
-      ])
+      self.configureAppCenterWithData.assertValues([])
     }
   }
 
-  func testConfigureHockey_SessionChanges() {
+  func testConfigureAppCenter_SessionChanges() {
     let bundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.release.rawValue, lang: "en")
-    let currentUser = User.template
 
     withEnvironment(mainBundle: bundle) {
       vm.inputs.applicationDidFinishLaunching(
@@ -268,56 +248,17 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.configureHockey.assertValues([
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.production,
-          disableUpdates: true,
-          userId: "0",
-          userName: "anonymous"
-        )
-      ])
+      self.configureAppCenterWithData.assertValues([])
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
       self.vm.inputs.userSessionStarted()
 
-      self.configureHockey.assertValues([
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.production,
-          disableUpdates: true,
-          userId: "0",
-          userName: "anonymous"
-        ),
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.production,
-          disableUpdates: true,
-          userId: String(currentUser.id),
-          userName: currentUser.name
-        )
-      ])
+      self.configureAppCenterWithData.assertValues([])
 
       AppEnvironment.logout()
       self.vm.inputs.userSessionStarted()
 
-      self.configureHockey.assertValues([
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.production,
-          disableUpdates: true,
-          userId: "0",
-          userName: "anonymous"
-        ),
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.production,
-          disableUpdates: true,
-          userId: String(currentUser.id),
-          userName: currentUser.name
-        ),
-        HockeyConfigData(
-          appIdentifier: KsApi.Secrets.HockeyAppId.production,
-          disableUpdates: true,
-          userId: "0",
-          userName: "anonymous"
-        )
-      ])
+      self.configureAppCenterWithData.assertValues([])
     }
   }
 

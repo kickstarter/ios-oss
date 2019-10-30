@@ -3,8 +3,6 @@ version: 2
 xcode_version: &xcode_version 10.3.0
 iphone_name: &iphone_name iPhone 8
 fabric_sdk_version: &fabric_sdk_version 3.10.5
-hockey_sdk_version: &hockey_sdk_version 5.1.4
-store_hockey_sdk_version: &store_hockey_sdk_version echo "$HOCKEY_SDK_VERSION" > hockey_version.txt
 store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
 preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (12.4) [" || true
 
@@ -19,7 +17,6 @@ base_job: &base_job
     LC_ALL: en_US.UTF-8
     LANG: en_US.UTF-8
     FABRIC_SDK_VERSION: *fabric_sdk_version
-    HOCKEY_SDK_VERSION: *hockey_sdk_version
     IPHONE_NAME: *iphone_name
     XCODE_VERSION: *xcode_version
 
@@ -43,15 +40,6 @@ jobs:
           name: Restore Fabric SDK
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
-          name: Store Hockey SDK Version
-          command: *store_hockey_sdk_version
-
-      - restore_cache:
-          name: Restore Hockey SDK
-          keys:
-            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -83,12 +71,6 @@ jobs:
           key: fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
           paths:
             - "Frameworks/Fabric"
-
-      - save_cache:
-          name: Cache Hockey SDK
-          key: hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
-          paths:
-            - "Frameworks/HockeySDK"
 
       - restore_cache:
           name: Restore Bundler
@@ -131,15 +113,6 @@ jobs:
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
-          name: Store Hockey SDK Version
-          command: *store_hockey_sdk_version
-
-      - restore_cache:
-          name: Restore Hockey SDK
-          keys:
-            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -189,15 +162,6 @@ jobs:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
-          name: Store Hockey SDK Version
-          command: *store_hockey_sdk_version
-
-      - restore_cache:
-          name: Restore Hockey SDK
-          keys:
-            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
@@ -241,15 +205,6 @@ jobs:
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
-          name: Store Hockey SDK Version
-          command: *store_hockey_sdk_version
-
-      - restore_cache:
-          name: Restore Hockey SDK
-          keys:
-            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -297,15 +252,6 @@ jobs:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
-          name: Store Hockey SDK Version
-          command: *store_hockey_sdk_version
-
-      - restore_cache:
-          name: Restore Hockey SDK
-          keys:
-            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
@@ -347,7 +293,7 @@ jobs:
           name: Deploy Beta
           command: make beta
 
-  # Hockey and S3 bucket beta
+  # AppCenter and S3 bucket beta
   beta:
     <<: *base_job
     steps:
@@ -368,15 +314,6 @@ jobs:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
-          name: Store Hockey SDK Version
-          command: *store_hockey_sdk_version
-
-      - restore_cache:
-          name: Restore Hockey SDK
-          keys:
-            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
@@ -409,7 +346,7 @@ jobs:
 
       - run:
           name: Fastlane
-          command: bundle exec fastlane beta_match_gym_hockey_s3 --verbose
+          command: bundle exec fastlane beta_match_gym_appcenter_s3 --verbose
           no_output_timeout: "30m" # 30 minutes
 
       - run:
@@ -422,7 +359,7 @@ jobs:
       - store_artifacts:
           path: output
 
-  # Hockey Alpha
+  # AppCenter Alpha
   alpha:
     <<: *base_job
     steps:
@@ -443,15 +380,6 @@ jobs:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
-          name: Store Hockey SDK Version
-          command: *store_hockey_sdk_version
-
-      - restore_cache:
-          name: Restore Hockey SDK
-          keys:
-            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
@@ -484,7 +412,7 @@ jobs:
 
       - run:
           name: Fastlane
-          command: bundle exec fastlane alpha_match_gym_hockey --verbose
+          command: bundle exec fastlane alpha_match_gym_appcenter --verbose
           no_output_timeout: "30m" # 30 minutes
 
       - store_artifacts:
@@ -511,15 +439,6 @@ jobs:
       - restore_cache:
           keys:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
-          name: Store Hockey SDK Version
-          command: *store_hockey_sdk_version
-
-      - restore_cache:
-          name: Restore Hockey SDK
-          keys:
-            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -572,15 +491,6 @@ jobs:
             - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
-          name: Store Hockey SDK Version
-          command: *store_hockey_sdk_version
-
-      - restore_cache:
-          name: Restore Hockey SDK
-          keys:
-            - hockey-sdk-cache-v1-{{ checksum "hockey_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
@@ -613,7 +523,7 @@ jobs:
 
       - run:
           name: Fastlane
-          command: bundle exec fastlane itunes_match_gym_deliver_hockey --verbose
+          command: bundle exec fastlane itunes_match_gym_deliver_appcenter --verbose
           no_output_timeout: "30m" # 30 minutes
 
       - store_artifacts:

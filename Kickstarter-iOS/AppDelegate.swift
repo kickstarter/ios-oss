@@ -1,8 +1,11 @@
+import AppCenter
+import AppCenterAnalytics
+import AppCenterCrashes
+import AppCenterDistribute
 import Crashlytics
 import Fabric
 import FBSDKCoreKit
 import Foundation
-import HockeySDK
 #if DEBUG
   @testable import KsApi
 #else
@@ -144,22 +147,28 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
 
-    self.viewModel.outputs.configureHockey
+    self.viewModel.outputs.configureAppCenterWithData
       .observeForUI()
-      .observeValues { [weak self] data in
-        guard let _self = self else { return }
-        let manager = BITHockeyManager.shared()
-        manager.delegate = _self
-        manager.configure(withIdentifier: data.appIdentifier)
-        manager.crashManager.crashManagerStatus = .disabled
-        manager.isUpdateManagerDisabled = data.disableUpdates
-        manager.userID = data.userId
-        manager.userName = data.userName
-        manager.start()
-        manager.authenticator.authenticateInstallation()
+      .observeValues { data in
+        let customProperties = MSCustomProperties()
+        customProperties.setString(data.userName, forKey: "userName")
+
+        MSAppCenter.setUserId(data.userId)
+        MSAppCenter.setCustomProperties(customProperties)
+
+        MSCrashes.setDelegate(self)
+
+        MSAppCenter.start(
+          data.appSecret,
+          withServices: [
+            MSAnalytics.self,
+            MSCrashes.self,
+            MSDistribute.self
+          ]
+        )
       }
 
-    #if RELEASE || HOCKEY
+    #if RELEASE || APPCENTER
       self.viewModel.outputs.configureFabric
         .observeForUI()
         .observeValues {
@@ -327,11 +336,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 }
 
-extension AppDelegate: BITHockeyManagerDelegate {
-  func crashManagerDidFinishSendingCrashReport(_: BITCrashManager!) {
+// MARK: - MSCrashesDelegate
+
+extension AppDelegate: MSCrashesDelegate {
+  func crashes(_: MSCrashes!, didSucceedSending _: MSErrorReport!) {
     self.viewModel.inputs.crashManagerDidFinishSendingCrashReport()
   }
 }
+
+// MARK: - URLSessionTaskDelegate
 
 extension AppDelegate: URLSessionTaskDelegate {
   public func urlSession(
