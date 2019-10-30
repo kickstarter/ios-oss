@@ -115,7 +115,7 @@ final class LoadingButton: UIButton {
     let states: [UIControl.State] = [.disabled, .highlighted, .normal, .selected]
 
     states.compactMap { state -> (String, UIControl.State)? in
-      guard let title = self.title(for: state) else { return nil }
+      guard let title = self.originalTitles[state.rawValue] else { return nil }
       return (title, state)
     }
     .forEach { title, state in
