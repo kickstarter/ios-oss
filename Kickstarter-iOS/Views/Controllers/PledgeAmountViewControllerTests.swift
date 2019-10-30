@@ -158,7 +158,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     }
   }
 
-  func testView_TextColorIsRedWhenAboveMaximumPledgeAmount() {
+  func testView_ErrorMessageAppears_And_TextColorIsRedWhenAboveMaximumPledgeAmount() {
     let project = Project.template
       |> (Project.lens.country .. Project.Country.lens.maxPledge) .~ 10_000
 
