@@ -60,12 +60,12 @@ public protocol PledgeViewModelOutputs {
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<Project, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
+  var notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
   var popToRootViewController: Signal<(), Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
-  var selectedShippingAmountChanged: Signal<Double, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var showApplePayAlert: Signal<(String, String), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
@@ -118,7 +118,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost).map(+)
 
-    self.selectedShippingAmountChanged = shippingCost
+    self.notifyPledgeAmountViewControllerShippingAmountChanged = shippingCost
 
     self.configureWithData = initialData.map { (project: $0.0, reward: $0.1) }
 
@@ -644,12 +644,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<Project, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
+  public let notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
-  public let selectedShippingAmountChanged: Signal<Double, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showApplePayAlert: Signal<(String, String), Never>
