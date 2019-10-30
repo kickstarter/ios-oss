@@ -144,8 +144,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let projectAndPledgeTotal = Signal.merge(
       project,
       project.takeWhen(self.traitCollectionDidChangeSignal)
-      )
-      .combineLatest(with: pledgeTotal)
+    )
+    .combineLatest(with: pledgeTotal)
 
     self.confirmationLabelAttributedText = projectAndPledgeTotal
       .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
