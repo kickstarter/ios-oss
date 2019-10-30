@@ -249,6 +249,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.shippingLocationViewController.configureWith(value: data)
       }
 
+    self.viewModel.outputs.notifyPledgeAmountViewControllerShippingAmountChanged
+      .observeForUI()
+      .observeValues { [weak self] amount in
+        self?.pledgeAmountViewController.selectedShippingAmountChanged(to: amount)
+      }
+
     self.viewModel.outputs.configureSummaryViewControllerWithData
       .observeForUI()
       .observeValues { [weak self] project, pledgeTotal in
