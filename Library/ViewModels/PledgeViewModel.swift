@@ -60,6 +60,7 @@ public protocol PledgeViewModelOutputs {
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<Project, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
+  var notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
@@ -116,6 +117,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let shippingCost = Signal.merge(shippingAmount, initialShippingAmount)
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost).map(+)
+
+    self.notifyPledgeAmountViewControllerShippingAmountChanged = shippingCost
 
     self.configureWithData = initialData.map { (project: $0.0, reward: $0.1) }
 
@@ -221,22 +224,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.goToApplePayPaymentAuthorization = paymentAuthorizationData
       .takeWhen(goToApplePayPaymentAuthorization)
-
-    self.showApplePayAlert = Signal.combineLatest(
-      project,
-      self.pledgeAmountDataSignal
-    )
-    .takeWhen(showApplePayAlert)
-    .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
-    .map { project, min, max in
-      (
-        Strings.Almost_there(),
-        Strings.Please_enter_a_pledge_amount_between_min_and_max(
-          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
-          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
-        )
-      )
-    }
 
     let pkPaymentData = self.pkPaymentSignal
       .map { pkPayment -> PKPaymentData? in
@@ -396,6 +383,22 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       context
     )
     .map(shippingRuleValid)
+
+    self.showApplePayAlert = Signal.combineLatest(
+      project,
+      self.pledgeAmountDataSignal
+    )
+    .takeWhen(showApplePayAlert)
+    .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
+    .map { project, min, max in
+      (
+        Strings.Almost_there(),
+        Strings.Please_enter_a_pledge_amount_between_min_and_max(
+          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
+          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
+        )
+      )
+    }
 
     let notChangingPaymentMethod = context.map { context in
       context.isUpdating && context != .changePaymentMethod
@@ -644,6 +647,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<Project, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
+  public let notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>

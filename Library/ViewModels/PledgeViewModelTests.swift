@@ -125,6 +125,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
     self.vm.outputs.showApplePayAlert.map(second).observe(self.showApplePayAlertMessage.observer)
     self.vm.outputs.showApplePayAlert.map(first).observe(self.showApplePayAlertTitle.observer)
+
     self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
 
     self.vm.outputs.title.observe(self.title.observer)
