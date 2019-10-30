@@ -144,13 +144,16 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
     .skipNil()
 
-    self.confirmationLabelAttributedText = Signal.merge(
+    let projectAndPledgeTotal = Signal.merge(
       project,
       project.takeWhen(self.traitCollectionDidChangeSignal)
     )
-    .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
-    .map(attributedConfirmationString(with:))
-    .skipNil()
+    .combineLatest(with: pledgeTotal)
+
+    self.confirmationLabelAttributedText = projectAndPledgeTotal
+      .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
+      .map(attributedConfirmationString(with:pledgeTotal:))
+      .skipNil()
 
     self.continueViewHidden = Signal
       .combineLatest(isLoggedIn, context)
@@ -669,38 +672,45 @@ private func requiresSCA(_ envelope: StripeSCARequiring) -> Bool {
   return envelope.requiresSCAFlow
 }
 
-private func attributedConfirmationString(with project: Project) -> NSAttributedString? {
-  let string = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
-    project_deadline: Format.date(
-      secondsInUTC: project.dates.deadline,
-      template: "MMMM d, yyyy"
+private func confirmationString(from project: Project, pledgeTotal: String, date: String)
+  -> String {
+  if project.stats.currentCurrency == project.stats.currency {
+    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
+      project_deadline: date
     )
-  )
+  } else {
+    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
+      total: pledgeTotal,
+      project_deadline: date
+    )
+  }
+}
 
-  guard let attributedString = try? NSMutableAttributedString(
-    data: Data(string.utf8),
-    options: [
-      .documentType: NSAttributedString.DocumentType.html,
-      .characterEncoding: String.Encoding.utf8.rawValue
-    ],
-    documentAttributes: nil
-  ) else { return nil }
+private func attributedConfirmationString(with project: Project, pledgeTotal: Double)
+  -> NSAttributedString? {
+  let date = Format.date(secondsInUTC: project.dates.deadline, template: "MMMM d, yyyy")
+  let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
+
+  let fullString = confirmationString(from: project, pledgeTotal: pledgeTotal, date: date)
+
+  let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: fullString)
+  let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
+  let rangePledgeTotal: NSRange = (fullString as NSString).localizedStandardRange(of: pledgeTotal)
+  let rangeProjectDeadline: NSRange = (fullString as NSString).localizedStandardRange(of: date)
 
   let paragraphStyle = NSMutableParagraphStyle()
   paragraphStyle.alignment = .center
 
-  let attributes: String.Attributes = [
-    .paragraphStyle: paragraphStyle
+  let regularFontAttribute = [
+    NSAttributedString.Key.paragraphStyle: paragraphStyle,
+    NSAttributedString.Key.font: UIFont.ksr_caption1(),
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_500
   ]
+  let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_caption1().bolded]
 
-  let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
-
-  attributedString.addAttributes(attributes, range: fullRange)
-
-  attributedString.setFontKeepingTraits(
-    to: UIFont.ksr_caption1(),
-    color: UIColor.ksr_text_dark_grey_500
-  )
+  attributedString.addAttributes(regularFontAttribute, range: fullRange)
+  attributedString.addAttributes(boldFontAttribute, range: rangePledgeTotal)
+  attributedString.addAttributes(boldFontAttribute, range: rangeProjectDeadline)
 
   return attributedString
 }
