@@ -8,8 +8,8 @@ public enum PledgeViewContext {
 
   var confirmationLabelHidden: Bool {
     switch self {
-    case .pledge, .changePaymentMethod, .updateReward: return true
-    case .update: return false
+    case .changePaymentMethod, .updateReward: return true
+    case .pledge, .update: return false
     }
   }
 
