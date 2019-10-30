@@ -149,8 +149,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.confirmationLabelAttributedText = projectAndPledgeTotal
       .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
-      .map(projectCurrencyDifferent(with:pledgeTotal:))
-      .map(attributedConfirmationString(with:pledgeTotal:date:))
+      .map(attributedConfirmationString(with:pledgeTotal:))
       .skipNil()
 
     self.continueViewHidden = Signal
@@ -669,32 +668,30 @@ private func requiresSCA(_ envelope: StripeSCARequiring) -> Bool {
   return envelope.requiresSCAFlow
 }
 
-private func projectCurrencyDifferent(with project: Project, pledgeTotal: Double) -> (String, String?, String) {
-  let date = Format.date(
-    secondsInUTC: project.dates.deadline,
-    template: "MMMM d, yyyy"
-  )
-  let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
-
+private func confirmationString(from project: Project, pledgeTotal: String, date: String)
+  -> String {
   if project.stats.currentCurrency == project.stats.currency {
-     return (Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
+    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
       project_deadline: date
-    ), nil, date)
+    )
   } else {
-    return
-      (Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
-        total: pledgeTotal,
-        project_deadline: date
-    ), pledgeTotal, date)
+    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
+      total: pledgeTotal,
+      project_deadline: date
+    )
   }
 }
 
-private func attributedConfirmationString(with fullString: String, pledgeTotal: String?, date: String)
+private func attributedConfirmationString(with project: Project, pledgeTotal: Double)
   -> NSAttributedString? {
+  let date = Format.date(secondsInUTC: project.dates.deadline, template: "MMMM d, yyyy")
+  let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
+
+  let fullString = confirmationString(from: project, pledgeTotal: pledgeTotal, date: date)
 
   let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: fullString)
   let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
-    let rangePledgeTotal: NSRange = (fullString as NSString).localizedStandardRange(of: pledgeTotal ?? "")
+  let rangePledgeTotal: NSRange = (fullString as NSString).localizedStandardRange(of: pledgeTotal)
   let rangeProjectDeadline: NSRange = (fullString as NSString).localizedStandardRange(of: date)
 
   let paragraphStyle = NSMutableParagraphStyle()
