@@ -164,6 +164,8 @@ final class PledgeAmountViewController: UIViewController {
     self.viewModel.inputs.textFieldValueChanged(textField.text)
   }
 
+  // MARK: - Accessors
+
   func selectedShippingAmountChanged(to amount: Double) {
     self.viewModel.inputs.selectedShippingAmountChanged(to: amount)
   }
