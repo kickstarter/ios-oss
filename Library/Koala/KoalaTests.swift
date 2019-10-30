@@ -581,4 +581,16 @@ final class KoalaTests: TestCase {
     )
     XCTAssertEqual(["Cancel Pledge Button Clicked"], client.events)
   }
+
+  func testTrackUpdatePledgeButtonClicked() {
+    let client = MockTrackingClient()
+    let loggedInUser = User.template
+
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackUpdatePledgeButtonClicked(
+      project: .template,
+      backing: .template
+    )
+  }
 }

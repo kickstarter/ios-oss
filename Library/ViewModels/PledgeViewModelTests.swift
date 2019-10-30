@@ -3375,4 +3375,44 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
     }
   }
+
+  func testTrackingEvents() {
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+    )
+
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          state: .successful,
+          backing: .init(
+            clientSecret: "client-secret",
+            requiresAction: true
+          )
+        )
+      )
+    )
+
+    let mockService = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, reward: .template, refTag: nil, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.vm.inputs.submitButtonTapped()
+
+      XCTAssertEqual(["Update Pledge Button Clicked"], self.trackingClient.events)
+    }
+  }
 }
