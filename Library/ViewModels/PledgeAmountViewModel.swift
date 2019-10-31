@@ -14,6 +14,7 @@ public enum PledgeAmountStepperConstants {
 public protocol PledgeAmountViewModelInputs {
   func configureWith(project: Project, reward: Reward)
   func doneButtonTapped()
+  func selectedShippingAmountChanged(to amount: Double)
   func stepperValueChanged(_ value: Double)
   func textFieldDidEndEditing(_ value: String?)
   func textFieldValueChanged(_ value: String?)
@@ -25,6 +26,8 @@ public protocol PledgeAmountViewModelOutputs {
   var generateSelectionFeedback: Signal<Void, Never> { get }
   var generateNotificationWarningFeedback: Signal<Void, Never> { get }
   var labelTextColor: Signal<UIColor, Never> { get }
+  var maxPledgeAmountErrorLabelIsHidden: Signal<Bool, Never> { get }
+  var maxPledgeAmountErrorLabelText: Signal<String, Never> { get }
   var minPledgeAmountLabelIsHidden: Signal<Bool, Never> { get }
   var minPledgeAmountLabelText: Signal<String, Never> { get }
   var notifyDelegateAmountUpdated: Signal<PledgeAmountData, Never> { get }
@@ -61,8 +64,15 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     let minValue = minAndMax
       .map(first)
 
+    let shippingAmount = Signal.merge(
+      self.projectAndRewardProperty.signal.mapConst(0),
+      self.selectedShippingAmountChangedProperty.signal
+    )
+
     let maxValue = minAndMax
       .map(second)
+      .combineLatest(with: shippingAmount)
+      .map(-)
 
     let textFieldInputValue = self.textFieldDidEndEditingProperty.signal
       .skipNil()
@@ -137,8 +147,24 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
         (rounded(value), min, max, min <= value && value <= max)
       }
 
+    self.maxPledgeAmountErrorLabelIsHidden = updatedValue
+      .map { _, max, value in value <= max }
+
     let isValueValid = self.notifyDelegateAmountUpdated
       .map { $0.3 }
+      .skipRepeats()
+
+    self.maxPledgeAmountErrorLabelText = updatedValue
+      .map { ($0.0, $0.1) }
+      .combineLatest(with: project)
+      .map(unpack)
+      .map { min, max, project in
+
+        Strings.Please_enter_a_pledge_amount_between_min_and_max(
+          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
+          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
+        )
+      }
       .skipRepeats()
 
     self.doneButtonIsEnabled = isValueValid
@@ -195,14 +221,21 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.textFieldValueProperty.value = value
   }
 
-  public let notifyDelegateAmountUpdated: Signal<PledgeAmountData, Never>
+  private let selectedShippingAmountChangedProperty = MutableProperty<Double>(0)
+  public func selectedShippingAmountChanged(to amount: Double) {
+    self.selectedShippingAmountChangedProperty.value = amount
+  }
+
   public let currency: Signal<String, Never>
   public let doneButtonIsEnabled: Signal<Bool, Never>
   public let generateSelectionFeedback: Signal<Void, Never>
   public let generateNotificationWarningFeedback: Signal<Void, Never>
   public let labelTextColor: Signal<UIColor, Never>
+  public let maxPledgeAmountErrorLabelIsHidden: Signal<Bool, Never>
+  public let maxPledgeAmountErrorLabelText: Signal<String, Never>
   public let minPledgeAmountLabelIsHidden: Signal<Bool, Never>
   public let minPledgeAmountLabelText: Signal<String, Never>
+  public let notifyDelegateAmountUpdated: Signal<PledgeAmountData, Never>
   public let stepperMaxValue: Signal<Double, Never>
   public let stepperMinValue: Signal<Double, Never>
   public let stepperValue: Signal<Double, Never>

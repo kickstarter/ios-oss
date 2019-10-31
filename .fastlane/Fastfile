@@ -58,10 +58,10 @@ platform :ios do
 
   ### BETA
 
-  lane :beta_match_gym_hockey_s3 do
+  lane :beta_match_gym_appcenter_s3 do
     match_all
     beta_gym
-    beta_hockey
+    beta_appcenter
     beta_s3
   end
 
@@ -70,15 +70,16 @@ platform :ios do
     build_the_app(
       output_name: "KickBeta",
       export_method: "enterprise",
-      configuration: "Hockey Beta"
+      configuration: "AppCenter Beta"
     )
   end
 
-  desc "Upload Beta to HockeyApp"
-  lane :beta_hockey do
-    upload_hockey(
+  desc "Upload Beta to AppCenter"
+  lane :beta_appcenter do
+    upload_appcenter(
+      app_name: "KickBeta",
       ipa: "#{gym_dir}/KickBeta.ipa",
-      public_identifier: ENV["HOCKEY_BETA_APP_ID"]
+      dsym: "#{gym_dir}/KickBeta.app.dSYM.zip"
     )
 
     upload_dsyms(dsym: "#{gym_dir}/KickBeta.app.dSYM.zip")
@@ -89,7 +90,7 @@ platform :ios do
         "beta",
         get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
         get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
-        "HockeyApp"
+        "AppCenter"
       )
     )
   end
@@ -110,11 +111,10 @@ platform :ios do
 
   ### PRODUCTION
 
-  lane :itunes_match_gym_deliver_hockey do
+  lane :itunes_match_gym_deliver do
     match_all
     itunes_gym
     itunes_deliver
-    itunes_hockey
   end
 
   desc "Build Production"
@@ -123,14 +123,6 @@ platform :ios do
       output_name: "Kickstarter",
       export_method: "app-store",
       configuration: "Release"
-    )
-  end
-
-  desc "Upload Production to HockeyApp"
-  lane :itunes_hockey do
-    upload_hockey(
-      ipa: "#{gym_dir}/Kickstarter.ipa",
-      public_identifier: ENV["HOCKEY_RELEASE_APP_ID"]
     )
   end
 
@@ -162,10 +154,10 @@ platform :ios do
   end
 
   ### ALPHA
-  lane :alpha_match_gym_hockey do
+  lane :alpha_match_gym_appcenter do
     match_all
     alpha_gym
-    alpha_hockey
+    alpha_appcenter
   end
 
   desc "Build Alpha"
@@ -173,15 +165,16 @@ platform :ios do
     build_the_app(
       output_name: "KickAlpha",
       export_method: "enterprise",
-      configuration: "Hockey Alpha"
+      configuration: "AppCenter Alpha"
     )
   end
 
-  desc "Upload Alpha to HockeyApp"
-  lane :alpha_hockey do
-    upload_hockey(
+  desc "Upload Alpha to AppCenter"
+  lane :alpha_appcenter do
+    upload_appcenter(
+      app_name: "KickAlpha",
       ipa: "#{gym_dir}/KickAlpha.ipa",
-      public_identifier: ENV["HOCKEY_ALPHA_APP_ID"]
+      dsym: "#{gym_dir}/KickAlpha.app.dSYM.zip"
     )
 
     upload_dsyms(dsym: "#{gym_dir}/KickAlpha.app.dSYM.zip")
@@ -192,7 +185,7 @@ platform :ios do
         "alpha",
         get_version_number(xcodeproj: "Kickstarter.xcodeproj", target: "Kickstarter-iOS"),
         get_build_number(xcodeproj: "Kickstarter.xcodeproj"),
-        "HockeyApp"
+        "AppCenter"
       )
     )
   end
@@ -237,18 +230,15 @@ platform :ios do
     )
   end
 
-  private_lane :upload_hockey do |options|
+  private_lane :upload_appcenter do |options|
     notes = changelog
-    hockey(
-      api_token: ENV["HOCKEY_APP_TOKEN"],
+    appcenter_upload(
+      api_token: ENV["APPCENTER_API_TOKEN"],
+      owner_name: ENV["APPCENTER_OWNER_NAME"],
+      app_name: options[:app_name],
       ipa: options[:ipa],
-      public_identifier: options[:public_identifier],
-      repository_url: ENV["CIRCLE_REPOSITORY_URL"],
-      build_server_url: ENV["CIRCLE_BUILD_URL"],
-      commit_sha: ENV["CIRCLE_SHA1"],
-      notes: notes,
-      bypass_cdn: true,
-      notify: "1"
+      dsym: options[:dsym],
+      notify_testers: true
     )
   end
 

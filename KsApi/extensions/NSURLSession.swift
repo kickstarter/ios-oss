@@ -12,6 +12,67 @@ private func parseJSONData(_ data: Data) -> Any? {
 private let scheduler = QueueScheduler(qos: .background, name: "com.kickstarter.ksapi", targeting: nil)
 
 internal extension URLSession {
+  // Wrap an URLSession producer with Graph error envelope logic.
+  func rac_graphDataResponse(_ request: URLRequest)
+    -> SignalProducer<Data, GraphError> {
+    let producer = self.reactive.data(with: request)
+
+    return producer
+      .start(on: scheduler)
+      .flatMapError { error -> SignalProducer<(Data, URLResponse), GraphError> in
+        print("🔴 [KsApi] Request Error \(error.localizedDescription)")
+
+        return .init(error: GraphError.requestError(error, nil))
+      }
+      .flatMap(.concat) { data, response -> SignalProducer<Data, GraphError> in
+        guard let response = response as? HTTPURLResponse else { fatalError() }
+
+        guard self.isValidResponse(response: response) else {
+          print("🔴 [KsApi] HTTP Failure \(self.sanitized(request))")
+
+          return self.decodeGraphErrors(from: data)
+            .flatMap { data in
+              SignalProducer<Data, GraphError>(
+                error: .jsonDecodingError(
+                  responseString: String(data: data, encoding: .utf8),
+                  error: nil
+                )
+              )
+            }
+        }
+
+        print("🔵 [KsApi] HTTP Success \(self.sanitized(request))")
+
+        return self.decodeGraphErrors(from: data)
+          .flatMap { data in
+            SignalProducer<Data, GraphError>(value: data)
+          }
+      }
+  }
+
+  private func decodeGraphErrors(from data: Data) -> SignalProducer<Data, GraphError> {
+    // Decode errors if any
+    let decodedErrorEnvelope = try? JSONDecoder().decode(GraphResponseErrorEnvelope.self, from: data)
+
+    guard let error = decodedErrorEnvelope?.errors?.first else {
+      return .init(value: data)
+    }
+
+    print("🔴 [KsApi] Graph Error \(error.message)")
+
+    return .init(error: GraphError.decodeError(error))
+  }
+
+  private func isValidResponse(response: HTTPURLResponse) -> Bool {
+    guard (200..<300).contains(response.statusCode),
+      let headers = response.allHeaderFields as? [String: String],
+      let contentType = headers["Content-Type"], contentType.hasPrefix("application/json") else {
+      return false
+    }
+
+    return true
+  }
+
   // Wrap an URLSession producer with error envelope logic.
   func rac_dataResponse(_ request: URLRequest, uploading file: (url: URL, name: String)? = nil)
     -> SignalProducer<Data, ErrorEnvelope> {
@@ -26,11 +87,7 @@ internal extension URLSession {
       .flatMap(.concat) { data, response -> SignalProducer<Data, ErrorEnvelope> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
 
-        guard
-          (200..<300).contains(response.statusCode),
-          let headers = response.allHeaderFields as? [String: String],
-          let contentType = headers["Content-Type"], contentType.hasPrefix("application/json")
-        else {
+        guard self.isValidResponse(response: response) else {
           if let json = parseJSONData(data) {
             switch decode(json) as Decoded<ErrorEnvelope> {
             case let .success(envelope):
