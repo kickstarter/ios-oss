@@ -3348,6 +3348,36 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  func testTrackingEvents_UpdatePaymentMethod() {
+    let updateBackingEnvelope = UpdateBackingEnvelope(
+      updateBacking: .init(
+        checkout: .init(
+          state: .successful,
+          backing: .init(
+            clientSecret: "client-secret",
+            requiresAction: true
+          )
+        )
+      )
+    )
+
+    let mockService = MockService(
+      updateBackingResult: .success(updateBackingEnvelope)
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: .template, reward: .template,
+                                   refTag: nil, context: .changePaymentMethod)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.vm.inputs.submitButtonTapped()
+
+      XCTAssertEqual(["Update Payment Method Button Clicked"], self.trackingClient.events)
+    }
+  }
+
   func testUpdateBacking_RequiresSCA_Canceled() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
