@@ -3349,33 +3349,15 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testTrackingEvents_UpdatePaymentMethod() {
-    let updateBackingEnvelope = UpdateBackingEnvelope(
-      updateBacking: .init(
-        checkout: .init(
-          state: .successful,
-          backing: .init(
-            clientSecret: "client-secret",
-            requiresAction: true
-          )
-        )
-      )
-    )
+    self.vm.inputs.configureWith(project: .template, reward: .template,
+                                 refTag: nil, context: .changePaymentMethod)
+    self.vm.inputs.viewDidLoad()
 
-    let mockService = MockService(
-      updateBackingResult: .success(updateBackingEnvelope)
-    )
+    XCTAssertEqual([], self.trackingClient.events)
 
-    withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: .template, reward: .template,
-                                   refTag: nil, context: .changePaymentMethod)
-      self.vm.inputs.viewDidLoad()
+    self.vm.inputs.submitButtonTapped()
 
-      XCTAssertEqual([], self.trackingClient.events)
-
-      self.vm.inputs.submitButtonTapped()
-
-      XCTAssertEqual(["Update Payment Method Button Clicked"], self.trackingClient.events)
-    }
+    XCTAssertEqual(["Update Payment Method Button Clicked"], self.trackingClient.events)
   }
 
   func testUpdateBacking_RequiresSCA_Canceled() {
