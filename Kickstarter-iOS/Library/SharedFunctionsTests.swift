@@ -152,7 +152,7 @@ internal final class SharedFunctionsTests: XCTestCase {
       |> Backing.lens.rewardId .~ nil
 
     let project = Project.template
-      |> Project.lens.rewards .~ [] //
+      |> Project.lens.rewards .~ []
       |> Project.lens.personalization.backing .~ backing
 
     XCTAssertEqual(
@@ -161,7 +161,7 @@ internal final class SharedFunctionsTests: XCTestCase {
         from: backing,
         inProject: project
       ),
-      "Worst case, no rewards present, no rewardId, no reward defaults to our local Reward.noReward"
+      "Worst case when there are no rewards in the project, default to our local Reward.noReward"
     )
   }
 }
