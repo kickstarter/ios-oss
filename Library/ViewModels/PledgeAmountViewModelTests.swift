@@ -123,7 +123,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.reward .~ Reward.noReward
+          |> Backing.lens.reward .~ nil
           |> Backing.lens.rewardId .~ nil
           |> Backing.lens.shippingAmount .~ 0
           |> Backing.lens.amount .~ 5
