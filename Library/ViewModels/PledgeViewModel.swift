@@ -96,7 +96,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let context = initialData.map { $0.3 }
 
     let backing = project.map { $0.personalization.backing }.skipNil()
-    let projectAndBacking = Signal.combineLatest(project, backing)
 
     self.confirmationLabelHidden = context.map { $0.confirmationLabelHidden }
     self.descriptionViewHidden = context.map { $0.descriptionViewHidden }

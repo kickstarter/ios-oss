@@ -3428,43 +3428,39 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testTrackingEvents() {
-    let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
-          |> Backing.lens.status .~ .pledged
-          |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
-      )
+  func testTrackingEvents_ContextIsUpdate() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .update)
+    self.vm.inputs.viewDidLoad()
 
-    let updateBackingEnvelope = UpdateBackingEnvelope(
-      updateBacking: .init(
-        checkout: .init(
-          state: .successful,
-          backing: .init(
-            clientSecret: "client-secret",
-            requiresAction: true
-          )
-        )
-      )
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.submitButtonTapped()
+
+    XCTAssertEqual(["Update Pledge Button Clicked"], self.trackingClient.events)
+  }
+
+  func testTrackingEvents_ContextIsUpdateReward() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .updateReward)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.submitButtonTapped()
+
+    XCTAssertEqual(["Update Pledge Button Clicked"], self.trackingClient.events)
+  }
+
+  func testTrackingEvents_DoesNotEmit_ContextIsChangePaymentMethod() {
+    self.vm.inputs.configureWith(
+      project: .template, reward: .template, refTag: nil,
+      context: .changePaymentMethod
     )
+    self.vm.inputs.viewDidLoad()
 
-    let mockService = MockService(
-      updateBackingResult: .success(updateBackingEnvelope)
-    )
+    XCTAssertEqual([], self.trackingClient.events)
 
-    withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: .template, refTag: nil, context: .update)
-      self.vm.inputs.viewDidLoad()
+    self.vm.inputs.submitButtonTapped()
 
-      XCTAssertEqual([], self.trackingClient.events)
-
-      self.vm.inputs.submitButtonTapped()
-
-      XCTAssertEqual(["Update Pledge Button Clicked"], self.trackingClient.events)
-    }
+    XCTAssertEqual([], self.trackingClient.events)
   }
 }
