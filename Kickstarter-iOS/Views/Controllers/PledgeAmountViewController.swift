@@ -19,6 +19,7 @@ final class PledgeAmountViewController: UIViewController {
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountInputView: AmountInputView = { AmountInputView(frame: .zero) }()
+  private lazy var maxPledgeAmountErrorLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var minPledgeAmountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -40,8 +41,9 @@ final class PledgeAmountViewController: UIViewController {
 
     _ = ([
       self.titleLabel,
-      self.adaptableStackView,
       self.minPledgeAmountLabel,
+      self.adaptableStackView,
+      self.maxPledgeAmountErrorLabel,
       self.verticalSpacer
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -101,6 +103,9 @@ final class PledgeAmountViewController: UIViewController {
 
     _ = self.minPledgeAmountLabel
       |> minPledgeAmountLabelStyle
+
+    _ = self.maxPledgeAmountErrorLabel
+      |> maxPledgeAmountErrorLabelStyle
   }
 
   // MARK: - View model
@@ -114,6 +119,8 @@ final class PledgeAmountViewController: UIViewController {
     self.amountInputView.textField.rac.isFirstResponder = self.viewModel.outputs.textFieldIsFirstResponder
     self.amountInputView.textField.rac.text = self.viewModel.outputs.textFieldValue
     self.amountInputView.textField.rac.textColor = self.viewModel.outputs.textFieldTextColor
+    self.maxPledgeAmountErrorLabel.rac.hidden = self.viewModel.outputs.maxPledgeAmountErrorLabelIsHidden
+    self.maxPledgeAmountErrorLabel.rac.text = self.viewModel.outputs.maxPledgeAmountErrorLabelText
     self.minPledgeAmountLabel.rac.hidden = self.viewModel.outputs.minPledgeAmountLabelIsHidden
     self.minPledgeAmountLabel.rac.text = self.viewModel.outputs.minPledgeAmountLabelText
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
@@ -155,6 +162,12 @@ final class PledgeAmountViewController: UIViewController {
 
   @objc func textFieldDidChange(_ textField: UITextField) {
     self.viewModel.inputs.textFieldValueChanged(textField.text)
+  }
+
+  // MARK: - Accessors
+
+  func selectedShippingAmountChanged(to amount: Double) {
+    self.viewModel.inputs.selectedShippingAmountChanged(to: amount)
   }
 }
 
@@ -200,4 +213,11 @@ private let minPledgeAmountLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_caption1()
     |> \.numberOfLines .~ 0
     |> \.textColor .~ UIColor.ksr_text_navy_600
+}
+
+private let maxPledgeAmountErrorLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_caption1()
+    |> \.numberOfLines .~ 0
+    |> \.textColor .~ UIColor.ksr_red_400
 }

@@ -125,6 +125,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
     self.vm.outputs.showApplePayAlert.map(second).observe(self.showApplePayAlertMessage.observer)
     self.vm.outputs.showApplePayAlert.map(first).observe(self.showApplePayAlertTitle.observer)
+
     self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
 
     self.vm.outputs.title.observe(self.title.observer)
@@ -150,7 +151,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
       self.submitButtonTitle.assertValues(["Pledge"])
-      self.confirmationLabelHidden.assertValues([true])
+      self.confirmationLabelHidden.assertValues([false])
 
       self.descriptionViewHidden.assertValues([false])
 
@@ -189,7 +190,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
       self.submitButtonTitle.assertValues(["Pledge"])
-      self.confirmationLabelHidden.assertValues([true])
+      self.confirmationLabelHidden.assertValues([false])
 
       self.descriptionViewHidden.assertValues([false])
 
@@ -262,6 +263,8 @@ final class PledgeViewModelTests: TestCase {
 
       let project = Project.template
         |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
+        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
+        |> Project.lens.stats.currency .~ Currency.USD.rawValue
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
@@ -289,6 +292,55 @@ final class PledgeViewModelTests: TestCase {
       self.confirmationLabelText.assertValues([
         "If the project reaches its funding goal, you will be charged on November 1, 2019.",
         "If the project reaches its funding goal, you will be charged on November 1, 2019."
+      ])
+    }
+  }
+
+  func testUpdateContext_ConfirmationLabelShowsTotalAmount() {
+    let dateComponents = DateComponents()
+      |> \.month .~ 11
+      |> \.day .~ 1
+      |> \.year .~ 2_019
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+
+    let calendar = Calendar(identifier: .gregorian)
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)!
+
+    withEnvironment(calendar: calendar, locale: Locale(identifier: "en")) {
+      let date = AppEnvironment.current.calendar.date(from: dateComponents)
+
+      let project = Project.template
+        |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
+        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
+        |> Project.lens.stats.currency .~ Currency.HKD.rawValue
+        |> Project.lens.country .~ .hk
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
+      self.vm.inputs.viewDidLoad()
+
+      self.confirmationLabelHidden.assertValues([false])
+      self.confirmationLabelAttributedText.assertDidNotEmitValue()
+
+      scheduler.advance(by: .milliseconds(10))
+
+      self.confirmationLabelAttributedText.assertValueCount(1)
+      self.confirmationLabelText.assertValues([
+        "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019."
+      ])
+
+      self.vm.inputs.traitCollectionDidChange()
+      self.vm.inputs.traitCollectionDidChange()
+
+      self.confirmationLabelAttributedText.assertValueCount(1, "Debounces signals")
+
+      scheduler.advance(by: .milliseconds(10))
+
+      self.confirmationLabelAttributedText.assertValueCount(2)
+      self.confirmationLabelText.assertValues([
+        "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019.",
+        "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019."
       ])
     }
   }

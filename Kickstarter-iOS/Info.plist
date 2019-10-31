@@ -31,6 +31,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>appcenter-$(APPCENTER_$(APPCENTER_SCHEME_NAME)_APP_SECRET)</string>
 				<string>fb69103156693</string>
 			</array>
 		</dict>
