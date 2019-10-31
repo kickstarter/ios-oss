@@ -3348,20 +3348,6 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testTrackingEvents_UpdatePaymentMethod() {
-    self.vm.inputs.configureWith(
-      project: .template, reward: .template,
-      refTag: nil, context: .changePaymentMethod
-    )
-    self.vm.inputs.viewDidLoad()
-
-    XCTAssertEqual([], self.trackingClient.events)
-
-    self.vm.inputs.submitButtonTapped()
-
-    XCTAssertEqual(["Update Payment Method Button Clicked"], self.trackingClient.events)
-  }
-
   func testUpdateBacking_RequiresSCA_Canceled() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
@@ -3440,6 +3426,20 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
     }
+  }
+
+  func testTrackingEvents_UpdatePaymentMethod() {
+    self.vm.inputs.configureWith(
+      project: .template, reward: .template,
+      refTag: nil, context: .changePaymentMethod
+    )
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.submitButtonTapped()
+
+    XCTAssertEqual(["Update Payment Method Button Clicked"], self.trackingClient.events)
   }
 
   func testTrackingEvents_ContextIsUpdate() {
