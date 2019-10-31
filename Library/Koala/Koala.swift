@@ -613,7 +613,6 @@ public final class Koala {
     self.track(event: "Update Payment Method Button Clicked", properties: props)
   }
 
-
   public func trackSelectRewardButtonClicked(
     project: Project,
     reward: Reward?,

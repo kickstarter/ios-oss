@@ -550,7 +550,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.title = context.map { $0.title }
     let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)
 
-    //Tracking
+    // Tracking
     contextAndProjectAndPledgeAmount
       .filter { $0.0 == .changePaymentMethod }
       .takeWhen(updateButtonTapped)

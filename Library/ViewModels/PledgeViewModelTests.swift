@@ -3349,8 +3349,10 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testTrackingEvents_UpdatePaymentMethod() {
-    self.vm.inputs.configureWith(project: .template, reward: .template,
-                                 refTag: nil, context: .changePaymentMethod)
+    self.vm.inputs.configureWith(
+      project: .template, reward: .template,
+      refTag: nil, context: .changePaymentMethod
+    )
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual([], self.trackingClient.events)
