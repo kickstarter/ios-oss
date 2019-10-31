@@ -128,6 +128,27 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.configureRewardSummaryViewReward.assertValue(Reward.template)
   }
 
+  func testConfigureRewardSummaryViewController_NoReward() {
+    let backing = Backing.template
+      |> Backing.lens.reward .~ nil
+      |> Backing.lens.rewardId .~ nil
+      |> Backing.lens.amount .~ 10
+    let noReward = Reward.noReward
+      |> Reward.lens.minimum .~ 10
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.rewards .~ [
+        noReward,
+        Reward.template
+      ]
+
+    self.vm.inputs.configureWith(project)
+    self.vm.inputs.viewDidLoad()
+
+    self.configureRewardSummaryViewProject.assertValue(project)
+    self.configureRewardSummaryViewReward.assertValue(noReward)
+  }
+
   func testConfigureRewardReceived() {
     self.configureRewardReceivedWithProject.assertDidNotEmitValue()
 
