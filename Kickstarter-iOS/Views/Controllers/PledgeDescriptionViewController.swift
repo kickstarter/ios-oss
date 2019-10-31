@@ -174,6 +174,8 @@ final class PledgeDescriptionViewController: UIViewController {
   }
 
   private func sizeAndTransformRewardCardView() {
+    guard !self.view.isHidden else { return }
+
     self.rewardCardContainerView.layoutIfNeeded()
 
     let cardContainerViewSize = self.rewardCardContainerView.bounds.size
