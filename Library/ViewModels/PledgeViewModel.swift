@@ -546,7 +546,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // Tracking
     Signal.combineLatest(project, pledgeAmount)
-      .takeWhen(self.submitButtonTappedSignal)
+      .takeWhen(updateButtonTapped)
       .observeValues { AppEnvironment.current.koala.trackUpdatePledgeButtonClicked(
         project: $0,
         pledgeAmount: $1
