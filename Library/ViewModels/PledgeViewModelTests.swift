@@ -676,7 +676,8 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum, data1.amount, data2.amount])
+      self.configureSummaryViewControllerWithDataPledgeTotal
+        .assertValues([reward.minimum, data1.amount, data2.amount])
       self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
     }
   }
@@ -804,7 +805,8 @@ final class PledgeViewModelTests: TestCase {
           shippingRule2.cost + data2.amount
         ]
       )
-      self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project, project, project])
+      self.configureSummaryViewControllerWithDataProject
+        .assertValues([project, project, project, project, project])
     }
   }
 
