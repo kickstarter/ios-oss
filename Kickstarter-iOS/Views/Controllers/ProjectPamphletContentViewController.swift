@@ -110,6 +110,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       cell.delegate = self
     } else if let cell = cell as? DeprecatedRewardCell {
       cell.delegate = self
+    } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
+      cell.delegate = self
     }
   }
 
@@ -242,5 +244,14 @@ extension ProjectPamphletContentViewController: DeprecatedRewardCellDelegate {
     cell.contentView.setNeedsUpdateConstraints()
     self.tableView.beginUpdates()
     self.tableView.endUpdates()
+  }
+}
+
+extension ProjectPamphletContentViewController: ProjectPamphletCreatorHeaderCellDelegate {
+  internal func projectPamphletCreatorHeaderCellDidTapButton(
+    _ cell: ProjectPamphletCreatorHeaderCell,
+    project: Project
+  ) {
+    print("Button tapped")
   }
 }

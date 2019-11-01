@@ -10,7 +10,10 @@ private enum Layout {
 }
 
 protocol ProjectPamphletCreatorHeaderCellDelegate: class {
-  func projectPamphletCreatorHeaderCellDidTapButton(_ cell: ProjectPamphletCreatorHeaderCell)
+  func projectPamphletCreatorHeaderCellDidTapButton(
+    _ cell: ProjectPamphletCreatorHeaderCell,
+    project: Project
+  )
 }
 
 final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
@@ -22,7 +25,7 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
   private let viewModel: ProjectPamphletCreatorHeaderCellViewModelType =
     ProjectPamphletCreatorHeaderCellViewModel()
 
-  weak var delegate: ProjectPamphletCreatorHeaderCellDelegate?
+  internal weak var delegate: ProjectPamphletCreatorHeaderCellDelegate?
 
   // MARK: Lifecycle
 
@@ -50,6 +53,10 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+
+    self.viewProgressButton.addTarget(
+      self, action: #selector(self.viewProgressButtonTapped), for: .touchUpInside
+    )
   }
 
   private func setupConstraints() {
@@ -64,6 +71,14 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
     super.bindViewModel()
     self.launchDateLabel.rac.attributedText = self.viewModel.outputs.launchDateLabelAttributedText
     self.viewProgressButton.rac.title = self.viewModel.outputs.buttonTitle
+
+    self.viewModel.outputs.notifyDelegateViewProgressButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+
+        self.delegate?.projectPamphletCreatorHeaderCellDidTapButton(self, project: $0)
+    }
   }
 
   // MARK: - Styles
@@ -87,6 +102,12 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
       |> viewProgressButtonStyle
       self.viewProgressButton.setTitle("View progress", for: .normal)
   }
+
+  // MARK: - Actions
+
+  @objc private func viewProgressButtonTapped() {
+    self.viewModel.inputs.viewProgressButtonTapped()
+  }
 }
 
 // MARK: Styles
@@ -100,6 +121,7 @@ private let projectCreationInfoLabelStyle: LabelStyle = { label in
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: 0)
 }
 
 private let viewStyle: ViewStyle = { view in

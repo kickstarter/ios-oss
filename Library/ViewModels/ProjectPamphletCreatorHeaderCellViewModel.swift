@@ -5,11 +5,13 @@ import UIKit
 
 public protocol ProjectPamphletCreatorHeaderCellViewModelInputs {
   func configure(with project: Project)
+  func viewProgressButtonTapped()
 }
 
 public protocol ProjectPamphletCreatorHeaderCellViewModelOutputs {
   var buttonTitle: Signal<String, Never> { get }
   var launchDateLabelAttributedText: Signal<NSAttributedString, Never> { get }
+  var notifyDelegateViewProgressButtonTapped: Signal<Project, Never> { get }
 }
 
 public protocol ProjectPamphletCreatorHeaderCellViewModelType {
@@ -27,6 +29,9 @@ ProjectPamphletCreatorHeaderCellViewModelInputs, ProjectPamphletCreatorHeaderCel
     self.launchDateLabelAttributedText = self.projectSignal
       .map(attributedLaunchDateString(with:))
       .skipNil()
+
+    self.notifyDelegateViewProgressButtonTapped = self.projectSignal
+      .takeWhen(self.viewProgressButtonTappedSignal.ignoreValues())
   }
 
   private let (projectSignal, projectObserver) = Signal<Project, Never>.pipe()
@@ -34,8 +39,15 @@ ProjectPamphletCreatorHeaderCellViewModelInputs, ProjectPamphletCreatorHeaderCel
     self.projectObserver.send(value: project)
   }
 
+  private let (viewProgressButtonTappedSignal, viewProgressButtonTappedObserver) =
+    Signal<Void, Never>.pipe()
+  public func viewProgressButtonTapped() {
+    self.viewProgressButtonTappedObserver.send(value: ())
+  }
+
   public let buttonTitle: Signal<String, Never>
   public let launchDateLabelAttributedText: Signal<NSAttributedString, Never>
+  public let notifyDelegateViewProgressButtonTapped: Signal<Project, Never>
 
   public var inputs: ProjectPamphletCreatorHeaderCellViewModelInputs { return self }
   public var outputs: ProjectPamphletCreatorHeaderCellViewModelOutputs { return self }

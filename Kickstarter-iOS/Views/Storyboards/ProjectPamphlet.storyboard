@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tIm-aj-d8Q">
-                                <rect key="frame" x="0.0" y="55" width="400" height="1343"/>
+                                <rect key="frame" x="0.0" y="55" width="400" height="1346"/>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                 <connections>
                                     <segue destination="8BT-Sh-bBd" kind="embed" id="C2u-Fy-leY"/>
@@ -38,11 +38,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="bdk-Xa-fm9" secondAttribute="trailing" id="3Dg-lk-oRa"/>
-                            <constraint firstAttribute="bottom" secondItem="tIm-aj-d8Q" secondAttribute="bottom" constant="2" id="8FY-Rt-Ar2"/>
+                            <constraint firstAttribute="bottom" secondItem="tIm-aj-d8Q" secondAttribute="bottom" constant="-1" id="8FY-Rt-Ar2"/>
                             <constraint firstItem="tIm-aj-d8Q" firstAttribute="leading" secondItem="Bfz-Sg-Kdb" secondAttribute="leading" id="HU6-02-QPk"/>
-                            <constraint firstItem="tIm-aj-d8Q" firstAttribute="top" secondItem="bdk-Xa-fm9" secondAttribute="bottom" id="Oxn-rD-YWt"/>
                             <constraint firstItem="bdk-Xa-fm9" firstAttribute="leading" secondItem="Y4L-8W-arN" secondAttribute="leading" id="eEt-q9-Snv"/>
                             <constraint firstItem="Bfz-Sg-Kdb" firstAttribute="trailing" secondItem="tIm-aj-d8Q" secondAttribute="trailing" id="qTt-pv-zBK"/>
+                            <constraint firstItem="tIm-aj-d8Q" firstAttribute="top" secondItem="bdk-Xa-fm9" secondAttribute="bottom" id="qe4-oC-Yow"/>
                             <constraint firstItem="bdk-Xa-fm9" firstAttribute="top" secondItem="Y4L-8W-arN" secondAttribute="top" id="qnD-sd-f2N"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Bfz-Sg-Kdb"/>
