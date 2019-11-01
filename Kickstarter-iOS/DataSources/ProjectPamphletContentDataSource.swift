@@ -35,6 +35,12 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   internal func load(project: Project, visible: Bool = false) {
     self.clearValues()
 
+    self.set(
+      values: [project],
+      cellClass: ProjectPamphletCreatorHeaderCell.self,
+      inSection: Section.main.rawValue
+    )
+
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
 
     let values: [ProjectPamphletSubpage] = [
@@ -138,6 +144,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as DeprecatedRewardCell, value as (Project, Either<Reward, Backing>)):
+      cell.configureWith(value: value)
+    case let (cell as ProjectPamphletCreatorHeaderCell, value as Project):
       cell.configureWith(value: value)
     case let (cell as ProjectPamphletMainCell, value as Project):
       cell.configureWith(value: value)
