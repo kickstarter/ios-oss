@@ -53,6 +53,9 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> viewStyle
+
     _ = self.projectCreationInfoLabel
       |> projectCreationInfoLabelStyle
 
@@ -74,10 +77,18 @@ private let projectCreationInfoLabelStyle: LabelStyle = { label in
   label
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0
+    |> \.text %~ { _ in "You launched this project on January 2, 2018" }
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
+}
+
+private let viewStyle: ViewStyle = { view in
+  view
+    |> \.layer.borderWidth .~ 2.0
+    |> \.backgroundColor .~ UIColor.ksr_grey_100
+    |> \.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
 }
 
 private let viewProgressButtonStyle: ButtonStyle = { button in

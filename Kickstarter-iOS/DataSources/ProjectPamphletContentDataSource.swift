@@ -4,6 +4,7 @@ import Prelude
 
 internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   internal enum Section: Int {
+    case viewProgress
     case main
     case subpages
     case pledgeTitle
@@ -38,7 +39,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     self.set(
       values: [project],
       cellClass: ProjectPamphletCreatorHeaderCell.self,
-      inSection: Section.main.rawValue
+      inSection: Section.viewProgress.rawValue
     )
 
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
