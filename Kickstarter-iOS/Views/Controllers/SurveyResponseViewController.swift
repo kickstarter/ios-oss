@@ -2,13 +2,14 @@ import KsApi
 import Library
 import Prelude
 import UIKit
+import WebKit
 
 internal protocol SurveyResponseViewControllerDelegate: AnyObject {
   /// Called when the delegate should notify the parent that self was dismissed.
   func surveyResponseViewControllerDismissed()
 }
 
-internal final class SurveyResponseViewController: DeprecatedWebViewController {
+internal final class SurveyResponseViewController: WebViewController {
   internal weak var delegate: SurveyResponseViewControllerDelegate?
   fileprivate let viewModel: SurveyResponseViewModelType = SurveyResponseViewModel()
 
@@ -60,7 +61,7 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
     self.viewModel.outputs.webViewLoadRequest
       .observeForControllerAction()
       .observeValues { [weak self] request in
-        self?.webView.loadRequest(request)
+        self?.webView.load(request)
       }
   }
 
@@ -88,11 +89,14 @@ internal final class SurveyResponseViewController: DeprecatedWebViewController {
   }
 
   internal func webView(
-    _: UIWebView,
-    shouldStartLoadWith request: URLRequest,
-    navigationType: UIWebView.NavigationType
-  ) -> Bool {
-    let result = self.viewModel.inputs.shouldStartLoad(withRequest: request, navigationType: navigationType)
-    return result
+    _: WKWebView,
+    decidePolicyFor navigationAction: WKNavigationAction,
+    decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+  ) {
+    decisionHandler(
+      self.viewModel.inputs.decidePolicyFor(
+        navigationAction: WKNavigationActionData(navigationAction: navigationAction)
+      )
+    )
   }
 }

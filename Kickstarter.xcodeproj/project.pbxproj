@@ -3062,7 +3062,6 @@
 				018F1F821C8E182200643DAA /* LoginViewController.swift */,
 				A7ED202D1E8323E900BFFA01 /* LoginViewControllerTests.swift */,
 				D65BF3542334050100B15B25 /* ManagePledgePaymentMethodView.swift */,
-				D65BF34E232C1A1C00B15B25 /* ManagePledgeSummaryViewController.swift */,
 				D61F38ED233D0DAE00C8972B /* ManagePledgeRewardView.swift */,
 				D65BF34E232C1A1C00B15B25 /* ManagePledgeSummaryViewController.swift */,
 				D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */,
