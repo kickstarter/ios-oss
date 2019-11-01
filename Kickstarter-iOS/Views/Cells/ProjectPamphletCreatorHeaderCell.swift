@@ -3,6 +3,12 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum Button {
+    static let height: CGFloat = 48
+  }
+}
+
 protocol ProjectPamphletCreatorHeaderCellDelegate: class {
   func projectPamphletCreatorHeaderCellDidTapButton(_ cell: ProjectPamphletCreatorHeaderCell)
 }
@@ -10,9 +16,11 @@ protocol ProjectPamphletCreatorHeaderCellDelegate: class {
 final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
   // MARK: Properties
 
-  private let projectCreationInfoLabel: UILabel = { UILabel(frame: .zero) }()
+  private let launchDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let viewProgressButton: UIButton = { UIButton(frame: .zero) }()
+  private let viewModel: ProjectPamphletCreatorHeaderCellViewModelType =
+    ProjectPamphletCreatorHeaderCellViewModel()
 
   weak var delegate: ProjectPamphletCreatorHeaderCellDelegate?
 
@@ -22,7 +30,7 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     self.configureViews()
     self.setupConstraints()
-    self.bindStyles()
+    self.bindViewModel()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -32,11 +40,11 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
   // MARK: Configuration
 
   internal func configureWith(value project: Project) {
-    print(project)
+    self.viewModel.inputs.configure(with: project)
   }
 
   private func configureViews() {
-    _ = ([self.projectCreationInfoLabel, self.viewProgressButton], self.rootStackView)
+    _ = ([self.launchDateLabel, self.viewProgressButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.contentView)
@@ -46,9 +54,19 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.viewProgressButton.heightAnchor.constraint(equalToConstant: 50)
+      self.viewProgressButton.heightAnchor.constraint(equalToConstant: Layout.Button.height)
     ])
   }
+
+  // MARK: - View model
+
+  override func bindViewModel() {
+    super.bindViewModel()
+    self.launchDateLabel.rac.attributedText = self.viewModel.outputs.launchDateLabelAttributedText
+    self.viewProgressButton.rac.title = self.viewModel.outputs.buttonTitle
+  }
+
+  // MARK: - Styles
 
   override func bindStyles() {
     super.bindStyles()
@@ -56,7 +74,7 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
     _ = self
       |> viewStyle
 
-    _ = self.projectCreationInfoLabel
+    _ = self.launchDateLabel
       |> projectCreationInfoLabelStyle
 
     _ = self.rootStackView
