@@ -552,6 +552,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // Tracking
     contextAndProjectAndPledgeAmount
+      .filter { $0.0 == .changePaymentMethod }
+      .takeWhen(updateButtonTapped)
+      .observeValues { AppEnvironment.current.koala.trackUpdatePaymentMethodButton(
+        project: $1,
+        pledgeAmount: $2
+      )
+      }
+
+    contextAndProjectAndPledgeAmount
       .filter { $0.0 != .changePaymentMethod }
       .takeWhen(updateButtonTapped)
       .observeValues { AppEnvironment.current.koala.trackUpdatePledgeButtonClicked(
