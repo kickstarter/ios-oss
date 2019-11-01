@@ -23,6 +23,8 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let reloadDataWithValuesProject = TestObserver<[Project], Never>()
   private let reloadDataWithValuesRewardOrBacking = TestObserver<[Either<Reward, Backing>], Never>()
   private let rewardsCollectionViewFooterIsHidden = TestObserver<Bool, Never>()
+  private let scrollToBackedRewardIndexPath = TestObserver<IndexPath, Never>()
+  private let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
@@ -45,13 +47,15 @@ final class RewardsCollectionViewModelTests: TestCase {
       .observe(self.reloadDataWithValuesRewardOrBacking.observer)
     self.vm.outputs.rewardsCollectionViewFooterIsHidden
       .observe(self.rewardsCollectionViewFooterIsHidden.observer)
+    self.vm.outputs.scrollToBackedRewardIndexPath.observe(self.scrollToBackedRewardIndexPath.observer)
+    self.vm.outputs.title.observe(self.title.observer)
   }
 
   func testConfigureWithProject() {
     let project = Project.cosmicSurgery
     let rewardsCount = project.rewards.count
 
-    self.vm.inputs.configure(with: project, refTag: RefTag.category)
+    self.vm.inputs.configure(with: project, refTag: RefTag.category, context: .createPledge)
 
     self.reloadDataWithValues.assertDidNotEmitValue()
 
@@ -72,7 +76,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let project = Project.cosmicSurgery
       let firstRewardId = project.rewards.first!.id
 
-      self.vm.inputs.configure(with: project, refTag: .activity)
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
       self.vm.inputs.viewDidLoad()
 
       self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
@@ -119,7 +123,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       let project = Project.cosmicSurgery
       let firstRewardId = project.rewards.first!.id
 
-      self.vm.inputs.configure(with: project, refTag: .activity)
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .managePledge)
       self.vm.inputs.viewDidLoad()
 
       self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
@@ -162,7 +166,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     let project = Project.cosmicSurgery
     let firstRewardId = project.rewards.first!.id
 
-    self.vm.inputs.configure(with: project, refTag: .activity)
+    self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
     self.vm.inputs.viewDidLoad()
 
     self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
@@ -201,7 +205,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   }
 
   func testRewardsCollectionViewFooterViewIsHidden() {
-    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity)
+    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity, context: .createPledge)
     self.vm.inputs.viewDidLoad()
 
     self.rewardsCollectionViewFooterIsHidden.assertDidNotEmitValue()
@@ -223,14 +227,14 @@ final class RewardsCollectionViewModelTests: TestCase {
   }
 
   func testConfigureRewardsCollectionViewFooterWithCount() {
-    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity)
+    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity, context: .createPledge)
     self.vm.inputs.viewDidLoad()
 
     self.configureRewardsCollectionViewFooterWithCount.assertValues([Project.cosmicSurgery.rewards.count])
   }
 
   func testFlashScrollIndicators() {
-    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity)
+    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity, context: .createPledge)
     self.vm.inputs.viewDidLoad()
 
     self.flashScrollIndicators.assertDidNotEmitValue()
@@ -241,7 +245,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   }
 
   func testNavigationBarShadowImageHidden() {
-    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity)
+    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity, context: .createPledge)
     self.vm.inputs.viewDidLoad()
 
     self.navigationBarShadowImageHidden.assertDidNotEmitValue()
@@ -275,7 +279,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.goToPledgeProject.assertDidNotEmitValue()
       self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
 
-      self.vm.inputs.configure(with: project, refTag: nil)
+      self.vm.inputs.configure(with: project, refTag: nil, context: .createPledge)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
@@ -304,7 +308,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.goToPledgeProject.assertDidNotEmitValue()
       self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
 
-      self.vm.inputs.configure(with: project, refTag: nil)
+      self.vm.inputs.configure(with: project, refTag: nil, context: .createPledge)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
@@ -338,7 +342,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.goToPledgeProject.assertDidNotEmitValue()
       self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
 
-      self.vm.inputs.configure(with: project, refTag: nil)
+      self.vm.inputs.configure(with: project, refTag: nil, context: .createPledge)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
@@ -353,5 +357,57 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.goToPledgeProject.assertDidNotEmitValue()
       self.goToDeprecatedPledgeProject.assertDidNotEmitValue()
     }
+  }
+
+  func testTitle_CreatePledgeContext() {
+    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity, context: .createPledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.title.assertValue("Back this project")
+  }
+
+  func testTitle_ManagePledgeContext() {
+    self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity, context: .managePledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.title.assertValue("Choose another reward")
+  }
+
+  func testBackedRewardIndexPath() {
+    let backedReward = Reward.template
+      |> Reward.lens.id .~ 5
+
+    let rewards = [
+      .template
+        |> Reward.lens.id .~ 1,
+      .template
+        |> Reward.lens.id .~ 2,
+      .template
+        |> Reward.lens.id .~ 3,
+      .template
+        |> Reward.lens.id .~ 4,
+      backedReward
+    ]
+
+    let backing = Backing.template
+      |> Backing.lens.reward .~ backedReward
+      |> Backing.lens.rewardId .~ 5
+
+    let project = Project.template
+      |> Project.lens.rewards .~ rewards
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.personalization.isBacking .~ true
+
+    self.vm.inputs.configure(with: project, refTag: .activity, context: .managePledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.scrollToBackedRewardIndexPath.assertDidNotEmitValue()
+
+    self.vm.inputs.viewDidLayoutSubviews()
+
+    let indexPath = IndexPath(row: 4, section: 0)
+
+    self.scrollToBackedRewardIndexPath.assertValue(indexPath)
   }
 }

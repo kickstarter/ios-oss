@@ -6,8 +6,13 @@ import ReactiveSwift
 
 public typealias StripeConfigurationData = (merchantIdentifier: String, publishableKey: String)
 public typealias CreateBackingData = (
-  project: Project, reward: Reward, pledgeAmount: Double,
-  selectedShippingRule: ShippingRule?, refTag: RefTag?
+  project: Project,
+  reward: Reward,
+  pledgeAmount: Double,
+  shippingRule: ShippingRule?,
+  paymentSourceId: String?,
+  applePayParams: ApplePayParams?,
+  refTag: RefTag?
 )
 public typealias UpdateBackingData = (
   backing: Backing,
@@ -55,10 +60,11 @@ public protocol PledgeViewModelOutputs {
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<Project, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
+  var notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
-  var popViewController: Signal<(), Never> { get }
+  var popToRootViewController: Signal<(), Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var showApplePayAlert: Signal<(String, String), Never> { get }
@@ -112,6 +118,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost).map(+)
 
+    self.notifyPledgeAmountViewControllerShippingAmountChanged = shippingCost
+
     self.configureWithData = initialData.map { (project: $0.0, reward: $0.1) }
 
     self.configureSummaryViewControllerWithData = project
@@ -136,13 +144,16 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
     .skipNil()
 
-    self.confirmationLabelAttributedText = Signal.merge(
+    let projectAndPledgeTotal = Signal.merge(
       project,
       project.takeWhen(self.traitCollectionDidChangeSignal)
     )
-    .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
-    .map(attributedConfirmationString(with:))
-    .skipNil()
+    .combineLatest(with: pledgeTotal)
+
+    self.confirmationLabelAttributedText = projectAndPledgeTotal
+      .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
+      .map(attributedConfirmationString(with:pledgeTotal:))
+      .skipNil()
 
     self.continueViewHidden = Signal
       .combineLatest(isLoggedIn, context)
@@ -185,51 +196,20 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.creditCardSelectedSignal.wrapInOptional()
     )
 
-    let createBackingData = Signal.combineLatest(
+    // MARK: - Apple Pay
+
+    let paymentAuthorizationData = Signal.combineLatest(
       project,
       reward,
       pledgeAmount,
-      selectedShippingRule,
-      refTag
+      selectedShippingRule
     )
-    .map { $0 as CreateBackingData }
-
-    // MARK: - Create Backing
-
-    let createButtonTapped = Signal.combineLatest(
-      self.submitButtonTappedSignal,
-      context
-    )
-    .filter { _, context in context.isCreating }
-    .ignoreValues()
-
-    let createBackingEvent = Signal.combineLatest(createBackingData, self.creditCardSelectedSignal)
-      .takeWhen(createButtonTapped)
-      .map { backingData, paymentSourceId in
-        (
-          backingData.project,
-          backingData.reward,
-          backingData.pledgeAmount,
-          backingData.selectedShippingRule,
-          backingData.refTag,
-          paymentSourceId
-        )
-      }
-      .map(CreateBackingInput.input(from:reward:pledgeAmount:selectedShippingRule:refTag:paymentSourceId:))
-      .switchMap { input in
-        AppEnvironment.current.apiService.createBacking(input: input)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
-
-    // MARK: - Apple Pay
-
-    let paymentAuthorizationData = createBackingData.map {
+    .map { project, reward, pledgeAmount, shippingRule in
       (
-        $0.project,
-        $0.reward,
-        $0.pledgeAmount,
-        $0.selectedShippingRule,
+        project,
+        reward,
+        pledgeAmount,
+        shippingRule,
         PKPaymentAuthorizationViewController.merchantIdentifier
       ) as PaymentAuthorizationData
     }
@@ -244,22 +224,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.goToApplePayPaymentAuthorization = paymentAuthorizationData
       .takeWhen(goToApplePayPaymentAuthorization)
-
-    self.showApplePayAlert = Signal.combineLatest(
-      project,
-      self.pledgeAmountDataSignal
-    )
-    .takeWhen(showApplePayAlert)
-    .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
-    .map { project, min, max in
-      (
-        Strings.Almost_there(),
-        Strings.Please_enter_a_pledge_amount_between_min_and_max(
-          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
-          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
-        )
-      )
-    }
 
     let pkPaymentData = self.pkPaymentSignal
       .map { pkPayment -> PKPaymentData? in
@@ -298,36 +262,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map { $1.isCreating }
     .filter(isTrue)
 
-    let createApplePayBackingData = Signal.combineLatest(
-      createBackingData,
-      pkPaymentData.skipNil(),
-      self.stripeTokenSignal.skipNil()
-    )
-    .takeWhen(willCreateApplePayBacking)
-    .map { backingData, paymentData, stripeToken
-      -> (Project, Reward, Double, ShippingRule?, PKPaymentData, String, RefTag?) in
-      (
-        backingData.project,
-        backingData.reward,
-        backingData.pledgeAmount,
-        backingData.selectedShippingRule,
-        paymentData,
-        stripeToken,
-        backingData.refTag
-      )
-    }
-
-    let deprecatedCreateApplePayBackingEvent = createApplePayBackingData.map(
-      CreateApplePayBackingInput.input(
-        from:reward:pledgeAmount:selectedShippingRule:pkPaymentData:stripeToken:refTag:
-      )
-    )
-    .switchMap { input in
-      AppEnvironment.current.apiService.createApplePayBacking(input: input)
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .materialize()
-    }
-
     // MARK: - Update Apple Pay Backing
 
     let applePayParams = Signal.combineLatest(
@@ -349,6 +283,44 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       applePayParams.wrapInOptional()
     )
 
+    // MARK: - Create Backing
+
+    let createBackingData = Signal.combineLatest(
+      project,
+      reward,
+      pledgeAmount,
+      selectedShippingRule,
+      selectedPaymentSourceId,
+      applePayParamsData,
+      refTag
+    )
+    .map { $0 as CreateBackingData }
+
+    let createButtonTapped = Signal.combineLatest(
+      self.submitButtonTappedSignal,
+      context
+    )
+    .filter { _, context in context.isCreating }
+    .ignoreValues()
+
+    let createBackingDataAndIsApplePay = createBackingData.takePairWhen(
+      Signal.merge(
+        createButtonTapped.mapConst(false),
+        willCreateApplePayBacking
+      )
+    )
+
+    let createBackingEvents = createBackingDataAndIsApplePay
+      .map(CreateBackingInput.input(from:isApplePay:))
+      .switchMap { input in
+        AppEnvironment.current.apiService.createBacking(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { $0 as StripeSCARequiring }
+          .materialize()
+      }
+
+    // MARK: - Update Backing
+
     let updateBackingData = Signal.combineLatest(
       backing,
       reward,
@@ -358,8 +330,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       applePayParamsData
     )
     .map { $0 as UpdateBackingData }
-
-    // MARK: - Update Backing
 
     let willUpdateApplePayBacking = Signal.combineLatest(
       applePayStatusSuccess,
@@ -382,13 +352,19 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       )
     )
 
-    let updateBackingEvent = updateBackingDataAndIsApplePay
+    let updateBackingEvents = updateBackingDataAndIsApplePay
       .map(UpdateBackingInput.input(from:isApplePay:))
       .switchMap { input in
         AppEnvironment.current.apiService.updateBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { $0 as StripeSCARequiring }
           .materialize()
       }
+
+    let createOrUpdateEvent = Signal.merge(
+      createBackingEvents,
+      updateBackingEvents
+    )
 
     // MARK: - Form Validation
 
@@ -407,6 +383,22 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       context
     )
     .map(shippingRuleValid)
+
+    self.showApplePayAlert = Signal.combineLatest(
+      project,
+      self.pledgeAmountDataSignal
+    )
+    .takeWhen(showApplePayAlert)
+    .map { project, pledgeAmountData in (project, pledgeAmountData.min, pledgeAmountData.max) }
+    .map { project, min, max in
+      (
+        Strings.Almost_there(),
+        Strings.Please_enter_a_pledge_amount_between_min_and_max(
+          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
+          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
+        )
+      )
+    }
 
     let notChangingPaymentMethod = context.map { context in
       context.isUpdating && context != .changePaymentMethod
@@ -437,24 +429,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         .take(until: valuesChangedAndValid.ignoreValues()),
       valuesChangedAndValid,
       self.submitButtonTappedSignal.signal.mapConst(false),
-      createBackingEvent.filter { $0.isTerminating }.mapConst(true),
-      updateBackingEvent.filter { $0.isTerminating }.mapConst(true)
+      createOrUpdateEvent.filter { $0.isTerminating }.mapConst(true)
     )
     .skipRepeats()
 
-    let createButtonIsLoading = Signal.merge(
-      createButtonTapped.mapConst(true),
-      createBackingEvent.filter { $0.isTerminating }.mapConst(false)
-    )
-
-    let updateButtonIsLoading = Signal.merge(
-      updateButtonTapped.mapConst(true),
-      updateBackingEvent.filter { $0.isTerminating }.mapConst(false)
-    )
-
     self.submitButtonIsLoading = Signal.merge(
-      createButtonIsLoading,
-      updateButtonIsLoading
+      self.submitButtonTappedSignal.mapConst(true),
+      createOrUpdateEvent.filter { $0.isTerminating }.mapConst(false)
     )
 
     let isCreateOrUpdateBacking = Signal.merge(
@@ -484,20 +465,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let createOrUpdateApplePayBackingCompleted = Signal.zip(
       didInitiateApplePayBacking,
-      Signal.merge(
-        updateBackingEvent.filter { $0.isTerminating }.ignoreValues(),
-        createBackingEvent.filter { $0.isTerminating }.ignoreValues()
-      ),
+      createOrUpdateEvent.filter { $0.isTerminating }.ignoreValues(),
       paymentAuthorizationDidFinish
     )
 
-    let createOrUpdateBackingEventValues = Signal.merge(
-      createBackingEvent.values().map { $0 as StripeSCARequiring },
-      updateBackingEvent.values().map { $0 as StripeSCARequiring }
-    )
-
     let valuesOrNil = Signal.merge(
-      createOrUpdateBackingEventValues.wrapInOptional(),
+      createOrUpdateEvent.values().wrapInOptional(),
       isCreateOrUpdateBacking.mapConst(nil)
     )
 
@@ -524,20 +497,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let creatingContext = context.filter { $0.isCreating }
 
-    #warning("To be removed once new CreateBacking is implemented to handle Apple Pay")
-    let deprecatedCreateApplePayBackingCompleted = Signal.combineLatest(
-      deprecatedCreateApplePayBackingEvent.filter { $0.isTerminating }.ignoreValues(),
-      paymentAuthorizationDidFinish
-    )
-
-    let deprecatedCreateApplePayBackingCompletedError = deprecatedCreateApplePayBackingCompleted
-      .withLatest(from: deprecatedCreateApplePayBackingEvent.errors())
-      .map(second)
-
     let createBackingCompletionEvents = Signal.merge(
-      deprecatedCreateApplePayBackingEvent.values()
-        .combineLatest(with: deprecatedCreateApplePayBackingCompleted)
-        .ignoreValues(),
       didCompleteApplePayBacking.combineLatest(with: willCreateApplePayBacking).ignoreValues(),
       createOrUpdateBackingDidCompleteNoSCA.combineLatest(with: creatingContext).ignoreValues(),
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
@@ -545,13 +505,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.goToThanks = project.takeWhen(createBackingCompletionEvents)
 
-    let createOrUpdateBackingEventErrors = Signal.merge(
-      createBackingEvent.errors(),
-      updateBackingEvent.errors()
-    )
-
     let errorsOrNil = Signal.merge(
-      createOrUpdateBackingEventErrors.wrapInOptional(),
+      createOrUpdateEvent.errors().wrapInOptional(),
       isCreateOrUpdateBacking.mapConst(nil)
     )
 
@@ -577,7 +532,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .mapConst(Strings.Got_it_your_changes_have_been_saved())
 
     let graphErrors = Signal.merge(
-      deprecatedCreateApplePayBackingCompletedError,
       createOrUpdateApplePayBackingError,
       createOrUpdateBackingError
     )
@@ -590,10 +544,30 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       scaErrors
     )
 
-    self.popViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
+    self.popToRootViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
 
     self.submitButtonTitle = context.map { $0.submitButtonTitle }
     self.title = context.map { $0.title }
+    let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)
+
+    // Tracking
+    contextAndProjectAndPledgeAmount
+      .filter { $0.0 == .changePaymentMethod }
+      .takeWhen(updateButtonTapped)
+      .observeValues { AppEnvironment.current.koala.trackUpdatePaymentMethodButton(
+        project: $1,
+        pledgeAmount: $2
+      )
+      }
+
+    contextAndProjectAndPledgeAmount
+      .filter { $0.0 != .changePaymentMethod }
+      .takeWhen(updateButtonTapped)
+      .observeValues { AppEnvironment.current.koala.trackUpdatePledgeButtonClicked(
+        project: $1,
+        pledgeAmount: $2
+      )
+      }
   }
 
   // MARK: - Inputs
@@ -693,10 +667,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<Project, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
+  public let notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
-  public let popViewController: Signal<(), Never>
+  public let popToRootViewController: Signal<(), Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
@@ -717,38 +692,45 @@ private func requiresSCA(_ envelope: StripeSCARequiring) -> Bool {
   return envelope.requiresSCAFlow
 }
 
-private func attributedConfirmationString(with project: Project) -> NSAttributedString? {
-  let string = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
-    project_deadline: Format.date(
-      secondsInUTC: project.dates.deadline,
-      template: "MMMM d, yyyy"
+private func confirmationString(from project: Project, pledgeTotal: String, date: String)
+  -> String {
+  if project.stats.currentCurrency == project.stats.currency {
+    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
+      project_deadline: date
     )
-  )
+  } else {
+    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
+      total: pledgeTotal,
+      project_deadline: date
+    )
+  }
+}
 
-  guard let attributedString = try? NSMutableAttributedString(
-    data: Data(string.utf8),
-    options: [
-      .documentType: NSAttributedString.DocumentType.html,
-      .characterEncoding: String.Encoding.utf8.rawValue
-    ],
-    documentAttributes: nil
-  ) else { return nil }
+private func attributedConfirmationString(with project: Project, pledgeTotal: Double)
+  -> NSAttributedString? {
+  let date = Format.date(secondsInUTC: project.dates.deadline, template: "MMMM d, yyyy")
+  let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
+
+  let fullString = confirmationString(from: project, pledgeTotal: pledgeTotal, date: date)
+
+  let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: fullString)
+  let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
+  let rangePledgeTotal: NSRange = (fullString as NSString).localizedStandardRange(of: pledgeTotal)
+  let rangeProjectDeadline: NSRange = (fullString as NSString).localizedStandardRange(of: date)
 
   let paragraphStyle = NSMutableParagraphStyle()
   paragraphStyle.alignment = .center
 
-  let attributes: String.Attributes = [
-    .paragraphStyle: paragraphStyle
+  let regularFontAttribute = [
+    NSAttributedString.Key.paragraphStyle: paragraphStyle,
+    NSAttributedString.Key.font: UIFont.ksr_caption1(),
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_500
   ]
+  let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_caption1().bolded]
 
-  let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
-
-  attributedString.addAttributes(attributes, range: fullRange)
-
-  attributedString.setFontKeepingTraits(
-    to: UIFont.ksr_caption1(),
-    color: UIColor.ksr_text_dark_grey_500
-  )
+  attributedString.addAttributes(regularFontAttribute, range: fullRange)
+  attributedString.addAttributes(boldFontAttribute, range: rangePledgeTotal)
+  attributedString.addAttributes(boldFontAttribute, range: rangeProjectDeadline)
 
   return attributedString
 }
@@ -807,8 +789,7 @@ private func paymentMethodValid(
     return true
   }
 
-  #warning("decompose(id: backedPaymentSourceId) should no be necessary here, remove once resolved.")
-  return decompose(id: backedPaymentSourceId) != Int(paymentSourceId)
+  return backedPaymentSourceId != paymentSourceId
 }
 
 private func allValuesChangedAndValid(

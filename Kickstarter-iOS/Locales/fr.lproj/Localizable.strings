@@ -229,7 +229,8 @@
 "Home" = "Accueil";
 "How_backers_found_your_project" = "Comment les contributeurs ont découvert votre projet";
 "Id_just_like_to_support_the_project" = "Je souhaite simplement soutenir le projet.";
-"If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Si l'objectif de financement est atteint, vous serez débité le <b>%{project_deadline}</b>.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline" = "Si l'objectif de financement est atteint, vous serez débité le %{project_deadline}.";
+"If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline" = "Si l'objectif de financement est atteint, vous serez débité de %{total} le %{project_deadline}.";
 "If_you_turn_following_off" = "Si vous désactivez les fonctionnalités de suivi, vous ne pourrez pas vous abonner aux activités des autres et plus personne ne pourra suivre les vôtres. Votre profil sera déconnecté de tous vos abonnés. Cette action ne pourra pas être annulée.";
 "If_your_profile_is_private" = "Si votre profil est privé, seuls votre nom et votre photo seront visibles.";
 "If_your_profile_is_public" = "Si votre profil n'est pas privé, les projets que vous avez soutenus, votre bio, votre emplacement géographique et vos sites Web seront également visibles.";

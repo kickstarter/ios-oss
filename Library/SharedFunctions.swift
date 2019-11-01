@@ -229,18 +229,18 @@ internal func classNameWithoutModule(_ class: AnyClass) -> String {
     .joined(separator: ".")
 }
 
-typealias SanitizedPledgeParams = (pledgeTotal: String, rewardId: String?, locationId: String?)
+typealias SanitizedPledgeParams = (pledgeTotal: String, rewardId: String, locationId: String?)
 
 internal func sanitizedPledgeParameters(
   from reward: Reward,
   pledgeAmount: Double,
-  selectedShippingRule: ShippingRule?
+  shippingRule: ShippingRule?
 ) -> SanitizedPledgeParams {
   let pledgeAmountDecimal = Decimal(pledgeAmount)
   var shippingAmountDecimal: Decimal = Decimal()
   var shippingLocationId: String?
 
-  if let shippingRule = selectedShippingRule {
+  if let shippingRule = shippingRule {
     shippingAmountDecimal = Decimal(shippingRule.cost)
     shippingLocationId = String(shippingRule.location.id)
   }
@@ -248,7 +248,7 @@ internal func sanitizedPledgeParameters(
   let pledgeTotal = NSDecimalNumber(decimal: pledgeAmountDecimal + shippingAmountDecimal)
   let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal.doubleValue)
 
-  let rewardId = reward == Reward.noReward ? nil : reward.graphID
+  let rewardId = reward.graphID
 
   return (formattedPledgeTotal, rewardId, shippingLocationId)
 }

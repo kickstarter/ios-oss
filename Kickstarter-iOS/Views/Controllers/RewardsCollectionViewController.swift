@@ -6,7 +6,14 @@ import Prelude
 final class RewardsCollectionViewController: UICollectionViewController {
   // MARK: - Properties
 
+  private var collectionViewBottomConstraintSuperview: NSLayoutConstraint?
+  private var collectionViewBottomConstraintFooterView: NSLayoutConstraint?
+
   private let dataSource = RewardsCollectionViewDataSource()
+
+  private var flowLayout: UICollectionViewFlowLayout? {
+    return self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout
+  }
 
   private let layout: UICollectionViewFlowLayout = {
     UICollectionViewFlowLayout()
@@ -16,49 +23,32 @@ final class RewardsCollectionViewController: UICollectionViewController {
       |> \.scrollDirection .~ .horizontal
   }()
 
-  private var flowLayout: UICollectionViewFlowLayout? {
-    return self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout
-  }
+  private lazy var navigationBarShadowImage: UIImage? = {
+    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
+  }()
+
+  public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
 
   private lazy var rewardsCollectionFooterView: RewardsCollectionViewFooter = {
     RewardsCollectionViewFooter(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var navigationBarShadowImage: UIImage? = {
-    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
-  }()
-
-  private var collectionViewBottomConstraintSuperview: NSLayoutConstraint?
-  private var collectionViewBottomConstraintFooterView: NSLayoutConstraint?
-
   private let viewModel: RewardsCollectionViewModelType = RewardsCollectionViewModel()
 
-  static func instantiate(with project: Project, refTag: RefTag?) -> RewardsCollectionViewController {
+  static func instantiate(
+    with project: Project,
+    refTag: RefTag?,
+    context: RewardsCollectionViewContext
+  ) -> RewardsCollectionViewController {
     let rewardsCollectionVC = RewardsCollectionViewController()
-    rewardsCollectionVC.viewModel.inputs.configure(with: project, refTag: refTag)
+    rewardsCollectionVC.viewModel.inputs.configure(with: project, refTag: refTag, context: context)
 
     return rewardsCollectionVC
   }
 
   init() {
     super.init(collectionViewLayout: self.layout)
-
-    let closeButton = UIBarButtonItem(
-      image: UIImage(named: "icon--cross"),
-      style: .plain,
-      target: self,
-      action: #selector(RewardsCollectionViewController.closeButtonTapped)
-    )
-
-    _ = closeButton
-      |> \.width .~ Styles.minTouchSize.width
-      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
-
-    _ = self
-      |> \.title %~ { _ in Strings.Back_this_project() }
-
-    self.navigationItem.setLeftBarButton(closeButton, animated: false)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -99,6 +89,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     if itemSize != layout.itemSize {
       layout.invalidateLayout()
+    } else {
+      self.viewModel.inputs.viewDidLayoutSubviews()
     }
   }
 
@@ -128,11 +120,24 @@ final class RewardsCollectionViewController: UICollectionViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.title
+      .observeForUI()
+      .observeValues { [weak self] title in
+        _ = self
+          ?|> \.title .~ title
+      }
+
     self.viewModel.outputs.reloadDataWithValues
       .observeForUI()
       .observeValues { [weak self] values in
         self?.dataSource.load(values)
         self?.collectionView.reloadData()
+      }
+
+    self.viewModel.outputs.scrollToBackedRewardIndexPath
+      .observeForUI()
+      .observeValues { [weak self] indexPath in
+        self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
       }
 
     self.viewModel.outputs.goToPledge
@@ -230,6 +235,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
   private func goToPledge(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext) {
     let pledgeViewController = PledgeViewController.instantiate()
+    pledgeViewController.delegate = self.pledgeViewDelegate
     pledgeViewController.configureWith(project: project, reward: reward, refTag: refTag, context: context)
 
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
@@ -346,7 +352,6 @@ extension RewardsCollectionViewController: RewardPledgeTransitionAnimatorDelegat
 
 private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICollectionView in
   collectionView
-    |> \.clipsToBounds .~ false
     |> \.allowsSelection .~ true
     |> \.showsHorizontalScrollIndicator .~ true
 }
