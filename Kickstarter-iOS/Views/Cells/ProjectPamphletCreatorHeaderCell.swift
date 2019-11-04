@@ -102,7 +102,6 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
 
     _ = self.viewProgressButton
       |> viewProgressButtonStyle
-      self.viewProgressButton.setTitle("View progress", for: .normal)
   }
 
   // MARK: - Actions
@@ -118,7 +117,6 @@ private let projectCreationInfoLabelStyle: LabelStyle = { label in
   label
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0
-    |> \.text %~ { _ in "You launched this project on January 2, 2018" }
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in

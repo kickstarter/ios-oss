@@ -221,7 +221,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     }
   }
 
-
   func testFailedProject() {
     let project = self.cosmicSurgery
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)

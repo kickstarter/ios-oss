@@ -36,11 +36,13 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   internal func load(project: Project, visible: Bool = false) {
     self.clearValues()
 
-    self.set(
-      values: [project],
-      cellClass: ProjectPamphletCreatorHeaderCell.self,
-      inSection: Section.viewProgress.rawValue
-    )
+    if currentUserIsCreator(of: project) {
+      self.set(
+        values: [project],
+        cellClass: ProjectPamphletCreatorHeaderCell.self,
+        inSection: Section.viewProgress.rawValue
+      )
+    }
 
     self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
 
