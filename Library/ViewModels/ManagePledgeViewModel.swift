@@ -129,6 +129,11 @@ public final class ManagePledgeViewModel:
       .takeWhen(cancelPledgeSelected)
       // swiftlint:disable:next line_length
       .map { _ in Strings.We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours() }
+
+    // Tracking
+    project
+      .takeWhen(self.goToUpdatePledge)
+      .observeValues { AppEnvironment.current.koala.trackManagePledgeOptionClicked(project: $0, managePledgeMenuCTA: .updatePledge) }
   }
 
   private let (configureWithProjectSignal, configureWithProjectObserver) = Signal<Project, Never>.pipe()
