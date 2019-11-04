@@ -115,7 +115,7 @@ private func backingReward(fromProject project: Project) -> Reward? {
 }
 
 private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
-  guard !currentUserIsCreator(of: project) else { return nil }
+  if currentUserIsCreator(of: project) { return nil }
 
   let projectBackingState = RewardCellProjectBackingStateType.state(with: project)
   let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
@@ -143,7 +143,7 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
 }
 
 private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleType {
-  guard !currentUserIsCreator(of: project) else { return .none }
+  if currentUserIsCreator(of: project) { return .none }
 
   let projectBackingState = RewardCellProjectBackingStateType.state(with: project)
   let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
@@ -172,7 +172,7 @@ private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleTyp
 }
 
 private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {
-  guard !currentUserIsCreator(of: project) else { return false }
+  if currentUserIsCreator(of: project) { return false }
 
   let isAvailable = rewardIsAvailable(reward: reward)
   let isBacking = userIsBacking(reward: reward, inProject: project)
