@@ -54,13 +54,13 @@ ProjectPamphletCreatorHeaderCellViewModelInputs, ProjectPamphletCreatorHeaderCel
 }
 
 private func title(for project: Project) -> String {
-  return project.state == .live ? "View progress" : "View dashboard"
+  return project.state == .live ? Strings.View_progress() : Strings.View_dashboard()
 }
 
 private func attributedLaunchDateString(with project: Project)
   -> NSAttributedString? {
     let date = Format.date(secondsInUTC: project.dates.launchedAt, dateStyle: .long, timeStyle: .none)
-    let fullString = "You launched this project on \(date)."
+    let fullString = Strings.You_launched_this_project_on_launch_date(launch_date: date)
 
     let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: fullString)
     let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
