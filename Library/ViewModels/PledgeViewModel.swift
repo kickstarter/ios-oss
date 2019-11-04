@@ -575,6 +575,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .observeValues { _, project, _ in
         AppEnvironment.current.koala.trackPledgeScreenViewed(project: project)
     }
+
+    contextAndProjectAndPledgeAmount
+      .takeWhen(createButtonTapped)
+      .observeValues { _, project, pledgeAmount in AppEnvironment.current.koala.trackPledgeButtonClicked(
+        project: project,
+        pledgeAmount: pledgeAmount
+      )
+      }
   }
 
   // MARK: - Inputs
