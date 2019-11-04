@@ -203,7 +203,9 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
       self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
-      self.pledgeButtonStyleType.assertValues([.green, .green, .green, .green, .green, .green, .green, .green])
+      self.pledgeButtonStyleType.assertValues(
+        [.green, .green, .green, .green, .green, .green, .green, .green]
+      )
       self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
       self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
       self.pledgeButtonTitleText.assertValues([
