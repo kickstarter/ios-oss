@@ -373,6 +373,70 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.title.assertValue("Choose another reward")
   }
 
+  func testTitle_CreatePledgeContext_IsCreator() {
+    let creator = User.template
+      |> User.lens.id .~ 5
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ creator
+
+    withEnvironment(currentUser: creator) {
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.title.assertValue("View your rewards")
+    }
+  }
+
+  func testTitle_CreatePledgeContext_IsNotCreator() {
+    let user = User.template
+      |> User.lens.id .~ 5
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ (
+        .template |> User.lens.id .~ 10
+      )
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.title.assertValue("Back this project")
+    }
+  }
+
+  func testTitle_ManagePledgeContext_IsCreator() {
+    let creator = User.template
+      |> User.lens.id .~ 5
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ creator
+
+    withEnvironment(currentUser: creator) {
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .managePledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.title.assertValue("View your rewards")
+    }
+  }
+
+  func testTitle_ManagePledgeContext_IsNotCreator() {
+    let user = User.template
+      |> User.lens.id .~ 5
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ (
+        .template |> User.lens.id .~ 10
+      )
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .managePledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.title.assertValue("Choose another reward")
+    }
+  }
+
   func testBackedRewardIndexPath() {
     let backedReward = Reward.template
       |> Reward.lens.id .~ 5

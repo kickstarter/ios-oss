@@ -30,10 +30,10 @@ internal final class PledgeAmountViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.amount.map { $0.isValid }.observe(self.amountIsValid.observer)
-    self.vm.outputs.amount.map { $0.max }.observe(self.amountMax.observer)
-    self.vm.outputs.amount.map { $0.min }.observe(self.amountMin.observer)
-    self.vm.outputs.amount.map { $0.amount }.observe(self.amountValue.observer)
+    self.vm.outputs.notifyDelegateAmountUpdated.map { $0.isValid }.observe(self.amountIsValid.observer)
+    self.vm.outputs.notifyDelegateAmountUpdated.map { $0.max }.observe(self.amountMax.observer)
+    self.vm.outputs.notifyDelegateAmountUpdated.map { $0.min }.observe(self.amountMin.observer)
+    self.vm.outputs.notifyDelegateAmountUpdated.map { $0.amount }.observe(self.amountValue.observer)
     self.vm.outputs.currency.observe(self.currency.observer)
     self.vm.outputs.doneButtonIsEnabled.observe(self.doneButtonIsEnabled.observer)
     self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
@@ -77,7 +77,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.currency.assertValues(["$"])
     self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
-    self.stepperValue.assertValues([6, 690])
+    self.stepperValue.assertValues([690])
     self.textFieldValue.assertValues(["690"])
   }
 
@@ -116,6 +116,33 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([60])
     self.textFieldValue.assertValues(["60"])
+  }
+
+  func testAmountCurrencyAndStepper_FromBacking_NoReward() {
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ nil
+          |> Backing.lens.rewardId .~ nil
+          |> Backing.lens.shippingAmount .~ 0
+          |> Backing.lens.amount .~ 5
+      )
+
+    let noReward = Reward.noReward
+      |> Reward.lens.minimum .~ 1
+
+    self.vm.inputs.configureWith(project: project, reward: noReward)
+
+    self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([1])
+    self.amountMax.assertValues([10_000])
+    self.amountValue.assertValues([5])
+    self.currency.assertValues(["$"])
+    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
+    self.stepperValue.assertValues([5])
+    self.textFieldValue.assertValues(["5"])
   }
 
   func testAmountCurrencyAndStepper_NoReward() {

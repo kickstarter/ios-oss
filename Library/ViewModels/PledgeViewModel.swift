@@ -27,7 +27,6 @@ public typealias PaymentAuthorizationData = (
   selectedShippingRule: ShippingRule?, merchantIdentifier: String
 )
 public typealias PKPaymentData = (displayName: String, network: String, transactionIdentifier: String)
-public typealias PledgeAmountData = (amount: Double, min: Double, max: Double, isValid: Bool)
 
 public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
