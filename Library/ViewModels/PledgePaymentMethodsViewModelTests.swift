@@ -4,6 +4,7 @@ import Foundation
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
+import XCTest
 
 final class PledgePaymentMethodsViewModelTests: TestCase {
   private let vm: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
@@ -420,5 +421,19 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.inputs.addNewCardTapped(with: .pledge)
     self.goToAddCardIntent.assertValues([.pledge])
     self.goToProject.assertValues([project])
+  }
+
+  func testTrackingEvents() {
+    let project = Project.template
+
+    self.vm.inputs.configureWith((User.template, project, true))
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.addNewCardTapped(with: .pledge)
+    self.goToAddCardIntent.assertValues([.pledge])
+
+    XCTAssertEqual(["Add New Card Button Clicked"], self.trackingClient.events)
   }
 }

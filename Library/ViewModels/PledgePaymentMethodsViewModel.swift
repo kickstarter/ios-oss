@@ -90,6 +90,18 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .skipNil()
 
     self.goToAddCardScreen = Signal.combineLatest(self.addNewCardIntentProperty.signal.skipNil(), project)
+
+    let projectAndBacking = Signal.combineLatest(project, backing)
+
+    // Tracking
+    projectAndBacking
+      .takeWhen(self.goToAddCardScreen)
+      .observeValues {
+        AppEnvironment.current.koala.trackAddNewCardButtonClicked(
+          project: $0, pledgeAmount: $1?.amount ?? 0.0
+        )
+    }
+
   }
 
   private let applePayButtonTappedProperty = MutableProperty(())
