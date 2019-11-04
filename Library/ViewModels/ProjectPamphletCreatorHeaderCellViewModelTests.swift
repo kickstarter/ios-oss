@@ -5,7 +5,6 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 
 final class ProjectPamphletCreatorHeaderCellViewModelTests: TestCase {
-
   private let vm: ProjectPamphletCreatorHeaderCellViewModelType = ProjectPamphletCreatorHeaderCellViewModel()
 
   private let buttonTitle = TestObserver<String, Never>()
@@ -66,4 +65,3 @@ final class ProjectPamphletCreatorHeaderCellViewModelTests: TestCase {
     self.notifyDelegateViewProgressButtonTapped.assertValue(project)
   }
 }
-

@@ -37,7 +37,7 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
     self.bindViewModel()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -80,7 +80,7 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
         guard let self = self else { return }
 
         self.delegate?.projectPamphletCreatorHeaderCellDidTapButton(self, project: $0)
-    }
+      }
   }
 
   // MARK: - Styles

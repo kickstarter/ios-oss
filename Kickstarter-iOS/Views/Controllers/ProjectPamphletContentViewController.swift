@@ -249,8 +249,8 @@ extension ProjectPamphletContentViewController: DeprecatedRewardCellDelegate {
 
 extension ProjectPamphletContentViewController: ProjectPamphletCreatorHeaderCellDelegate {
   internal func projectPamphletCreatorHeaderCellDidTapButton(
-    _ cell: ProjectPamphletCreatorHeaderCell,
-    project: Project
+    _: ProjectPamphletCreatorHeaderCell,
+    project _: Project
   ) {
     print("Button tapped")
   }
