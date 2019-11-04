@@ -6,6 +6,7 @@ import UIKit
 private enum Layout {
   enum Button {
     static let height: CGFloat = 48
+    static let width: CGFloat = 152
   }
 }
 
@@ -61,7 +62,8 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.viewProgressButton.heightAnchor.constraint(equalToConstant: Layout.Button.height)
+      self.viewProgressButton.heightAnchor.constraint(equalToConstant: Layout.Button.height),
+      self.viewProgressButton.widthAnchor.constraint(equalToConstant: Layout.Button.width)
     ])
   }
 

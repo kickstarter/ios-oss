@@ -59,8 +59,8 @@ private func title(for project: Project) -> String {
 
 private func attributedLaunchDateString(with project: Project)
   -> NSAttributedString? {
-    let date = Format.date(secondsInUTC: project.dates.launchedAt, dateStyle: .medium, timeStyle: .none)
-    let fullString = "You launched this project on \(date)"
+    let date = Format.date(secondsInUTC: project.dates.launchedAt, dateStyle: .long, timeStyle: .none)
+    let fullString = "You launched this project on \(date)."
 
     let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: fullString)
     let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
