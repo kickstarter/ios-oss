@@ -27,7 +27,6 @@ public typealias PaymentAuthorizationData = (
   selectedShippingRule: ShippingRule?, merchantIdentifier: String
 )
 public typealias PKPaymentData = (displayName: String, network: String, transactionIdentifier: String)
-public typealias PledgeAmountData = (amount: Double, min: Double, max: Double, isValid: Bool)
 
 public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
@@ -551,6 +550,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)
 
     // Tracking
+    contextAndProjectAndPledgeAmount
+      .filter { $0.0 == .changePaymentMethod }
+      .takeWhen(updateButtonTapped)
+      .observeValues { AppEnvironment.current.koala.trackUpdatePaymentMethodButton(
+        project: $1,
+        pledgeAmount: $2
+      )
+      }
+
     contextAndProjectAndPledgeAmount
       .filter { $0.0 != .changePaymentMethod }
       .takeWhen(updateButtonTapped)
