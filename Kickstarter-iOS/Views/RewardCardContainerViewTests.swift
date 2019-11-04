@@ -69,8 +69,11 @@ final class RewardCardContainerViewTests: TestCase {
   }
 
   func testLive_NonBackedProject_LoggedIn() {
+    let nonCreator = User.template
+      |> User.lens.id .~ 5
+
     combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
+      withEnvironment(currentUser: nonCreator, language: language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -92,7 +95,7 @@ final class RewardCardContainerViewTests: TestCase {
 
   func testLive_NonBackedProject_LoggedOut() {
     combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
-      withEnvironment(language: language) {
+      withEnvironment(currentUser: nil, language: language) {
         let (rewardDescription, reward) = rewardTuple
 
         let project = Project.cosmicSurgery
@@ -246,6 +249,56 @@ final class RewardCardContainerViewTests: TestCase {
               |> Backing.lens.amount .~ 700
               |> Backing.lens.status .~ .errored
           )
+
+        let vc = rewardCardInViewController(
+          language: language,
+          device: device,
+          project: project,
+          reward: reward
+        )
+
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testLive_IsCreator() {
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ user
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
+
+    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
+      withEnvironment(currentUser: user, language: language) {
+        let (rewardDescription, reward) = rewardTuple
+
+        let vc = rewardCardInViewController(
+          language: language,
+          device: device,
+          project: project,
+          reward: reward
+        )
+
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testNonLive_IsCreator() {
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ user
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
+
+    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
+      withEnvironment(currentUser: user, language: language) {
+        let (rewardDescription, reward) = rewardTuple
 
         let vc = rewardCardInViewController(
           language: language,

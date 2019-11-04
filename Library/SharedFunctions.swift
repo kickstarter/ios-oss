@@ -22,6 +22,19 @@ internal func userIsBacking(reward: Reward, inProject project: Project) -> Bool 
 }
 
 /**
+ Determines if the current user is the creator for a given project.
+
+ - parameter project: A project.
+
+ - returns: A boolean.
+ */
+internal func currentUserIsCreator(of project: Project) -> Bool {
+  guard let user = AppEnvironment.current.currentUser else { return false }
+
+  return project.creator.id == user.id
+}
+
+/**
  Returns a reward from a backing in a given project
 
  - parameter backing: A backing
