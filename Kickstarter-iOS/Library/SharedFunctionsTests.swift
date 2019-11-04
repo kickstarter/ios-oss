@@ -139,4 +139,30 @@ internal final class SharedFunctionsTests: XCTestCase {
 
     XCTAssertEqual(Reward.noReward, reward(from: backing, inProject: project))
   }
+
+  func testIsCurrentUserCreatorOfProject_IsCreator() {
+    let creator = User.template
+      |> User.lens.id .~ 5
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ creator
+
+    withEnvironment(currentUser: creator) {
+      XCTAssertTrue(currentUserIsCreator(of: project))
+    }
+  }
+
+  func testIsCurrentUserCreatorOfProject_IsNotCreator() {
+    let user = User.template
+      |> User.lens.id .~ 5
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ (
+        .template |> User.lens.id .~ 10
+      )
+
+    withEnvironment(currentUser: user) {
+      XCTAssertFalse(currentUserIsCreator(of: project))
+    }
+  }
 }

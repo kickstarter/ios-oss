@@ -23,8 +23,8 @@ final class PledgeViewModelTests: TestCase {
   private let configureStripeIntegrationMerchantId = TestObserver<String, Never>()
   private let configureStripeIntegrationPublishableKey = TestObserver<String, Never>()
 
-  private let configureSummaryCellWithDataPledgeTotal = TestObserver<Double, Never>()
-  private let configureSummaryCellWithDataProject = TestObserver<Project, Never>()
+  private let configureSummaryViewControllerWithDataPledgeTotal = TestObserver<Double, Never>()
+  private let configureSummaryViewControllerWithDataProject = TestObserver<Project, Never>()
 
   private let configureWithPledgeViewDataProject = TestObserver<Project, Never>()
   private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
@@ -73,9 +73,9 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.configurePaymentMethodsViewControllerWithProject.observer)
 
     self.vm.outputs.configureSummaryViewControllerWithData.map(second)
-      .observe(self.configureSummaryCellWithDataPledgeTotal.observer)
+      .observe(self.configureSummaryViewControllerWithDataPledgeTotal.observer)
     self.vm.outputs.configureSummaryViewControllerWithData.map(first)
-      .observe(self.configureSummaryCellWithDataProject.observer)
+      .observe(self.configureSummaryViewControllerWithDataProject.observer)
 
     self.vm.outputs.configureWithData.map { $0.project }
       .observe(self.configureWithPledgeViewDataProject.observer)
@@ -165,8 +165,8 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.sectionSeparatorsHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
     }
   }
 
@@ -204,8 +204,8 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.sectionSeparatorsHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
     }
   }
 
@@ -243,8 +243,8 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.sectionSeparatorsHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
     }
   }
 
@@ -381,8 +381,8 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.sectionSeparatorsHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
     }
   }
 
@@ -390,12 +390,20 @@ final class PledgeViewModelTests: TestCase {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
     withEnvironment(apiService: mockService, currentUser: .template) {
+      let shippingRule = ShippingRule.template
+        |> ShippingRule.lens.id .~ 123
+        |> ShippingRule.lens.cost .~ 10
+      let backing = Backing.template
+        |> Backing.lens.amount .~ 100
+        |> Backing.lens.locationId .~ 123
       let project = Project.template
+        |> Project.lens.personalization.backing .~ backing
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.minimum .~ 10.00
 
       self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: .projectPage, context: .changePaymentMethod
+        project: project, reward: reward, refTag: nil, context: .changePaymentMethod
       )
       self.vm.inputs.viewDidLoad()
 
@@ -403,6 +411,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10.00])
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
@@ -422,8 +432,69 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountSummaryViewHidden.assertValues([false])
       self.sectionSeparatorsHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+
+      let pledgeAmountData: PledgeAmountData = (amount: 90, min: 10.00, max: 10_000, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
+
+      self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90, 100])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
+    }
+  }
+
+  func testChangePaymentMethodContext_NoReward() {
+    let backing = Backing.template
+      |> Backing.lens.amount .~ 10
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ backing
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 1.0
+
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: nil, context: .changePaymentMethod
+      )
+      self.vm.inputs.viewDidLoad()
+
+      self.title.assertValues(["Change payment method"])
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([1])
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+
+      self.submitButtonTitle.assertValues(["Confirm"])
+      self.confirmationLabelHidden.assertValues([true])
+
+      self.descriptionViewHidden.assertValues([true])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([true])
+      self.pledgeAmountSummaryViewHidden.assertValues([false])
+      self.sectionSeparatorsHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([true])
+
+      let pledgeAmountData: PledgeAmountData = (amount: 10.0, min: 1.0, max: 10_000, isValid: true)
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([1, 10])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
     }
   }
 
@@ -448,8 +519,8 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
     }
   }
 
@@ -475,8 +546,8 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
     }
   }
 
@@ -501,8 +572,8 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
     }
   }
 
@@ -527,8 +598,8 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
     }
   }
 
@@ -553,17 +624,17 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
 
       let defaultShippingRule = ShippingRule.template
         |> ShippingRule.lens.cost .~ 5
 
       self.vm.inputs.shippingRuleSelected(defaultShippingRule)
 
-      self.configureSummaryCellWithDataPledgeTotal
+      self.configureSummaryViewControllerWithDataPledgeTotal
         .assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
-      self.configureSummaryCellWithDataProject.assertValues([project, project])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
     }
   }
 
@@ -588,17 +659,17 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
 
       let defaultShippingRule = ShippingRule.template
         |> ShippingRule.lens.cost .~ 5
 
       self.vm.inputs.shippingRuleSelected(defaultShippingRule)
 
-      self.configureSummaryCellWithDataPledgeTotal
+      self.configureSummaryViewControllerWithDataPledgeTotal
         .assertValues([reward.minimum, reward.minimum + defaultShippingRule.cost])
-      self.configureSummaryCellWithDataProject.assertValues([project, project])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
 
       let selectedShippingRule = ShippingRule.template
         |> ShippingRule.lens.cost .~ 5
@@ -606,12 +677,12 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleSelected(selectedShippingRule)
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([
         reward.minimum,
         reward.minimum + defaultShippingRule.cost,
         reward.minimum + selectedShippingRule.cost
       ])
-      self.configureSummaryCellWithDataProject.assertValues([project, project, project])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
     }
   }
 
@@ -637,8 +708,8 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
 
       let data1 = (amount: 66.0, min: 10.0, max: 10_000.0, isValid: true)
 
@@ -647,8 +718,8 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, data1.amount])
-      self.configureSummaryCellWithDataProject.assertValues([project, project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum, data1.amount])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
 
       let data2 = (amount: 99.0, min: 10.0, max: 10_000.0, isValid: true)
 
@@ -657,8 +728,9 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum, data1.amount, data2.amount])
-      self.configureSummaryCellWithDataProject.assertValues([project, project, project])
+      self.configureSummaryViewControllerWithDataPledgeTotal
+        .assertValues([reward.minimum, data1.amount, data2.amount])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
     }
   }
 
@@ -722,8 +794,8 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountSummaryViewHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([false])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
 
       let shippingRule1 = ShippingRule.template
         |> ShippingRule.lens.cost .~ 20.0
@@ -733,11 +805,11 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([
         reward.minimum,
         reward.minimum + shippingRule1.cost
       ])
-      self.configureSummaryCellWithDataProject.assertValues([project, project])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
 
       let data1 = (amount: 200.0, min: 10.0, max: 10_000.0, isValid: true)
 
@@ -746,10 +818,10 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues(
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues(
         [reward.minimum, reward.minimum + shippingRule1.cost, shippingRule1.cost + data1.amount]
       )
-      self.configureSummaryCellWithDataProject.assertValues([project, project, project])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
 
       let shippingRule2 = ShippingRule.template
         |> ShippingRule.lens.cost .~ 123.0
@@ -759,7 +831,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues(
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues(
         [
           reward.minimum,
           reward.minimum + shippingRule1.cost,
@@ -767,7 +839,7 @@ final class PledgeViewModelTests: TestCase {
           shippingRule2.cost + data1.amount
         ]
       )
-      self.configureSummaryCellWithDataProject.assertValues([project, project, project, project])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project, project])
 
       let data2 = (amount: 1_999.0, min: 10.0, max: 10_000.0, isValid: true)
 
@@ -776,7 +848,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues(
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues(
         [
           reward.minimum,
           reward.minimum + shippingRule1.cost,
@@ -785,7 +857,8 @@ final class PledgeViewModelTests: TestCase {
           shippingRule2.cost + data2.amount
         ]
       )
-      self.configureSummaryCellWithDataProject.assertValues([project, project, project, project, project])
+      self.configureSummaryViewControllerWithDataProject
+        .assertValues([project, project, project, project, project])
     }
   }
 
@@ -1120,8 +1193,8 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.configureSummaryCellWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryCellWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
 
       self.continueViewHidden.assertValues([true])
       self.submitButtonHidden.assertValues([false])
@@ -1730,7 +1803,7 @@ final class PledgeViewModelTests: TestCase {
     )
   }
 
-  func testUpdateApplePayBacking_Success() {
+  func testChangePaymentMethod_ApplePay_Success() {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
@@ -1882,7 +1955,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testUpdateApplePayBacking_StripeTokenFailure() {
+  func testChangePaymentMethod_ApplePay_StripeTokenFailure() {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
@@ -2015,7 +2088,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testUpdateApplePayBacking_Failure() {
+  func testChangePaymentMethod_ApplePay_Failure() {
     let mockService = MockService(
       updateBackingResult: .failure(.invalidInput)
     )

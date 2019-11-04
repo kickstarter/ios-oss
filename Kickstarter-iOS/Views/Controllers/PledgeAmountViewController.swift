@@ -135,7 +135,7 @@ final class PledgeAmountViewController: UIViewController {
       .observeForUI()
       .observeValues { generateNotificationWarningFeedback() }
 
-    self.viewModel.outputs.amount
+    self.viewModel.outputs.notifyDelegateAmountUpdated
       .observeForUI()
       .observeValues { [weak self] data in
         guard let self = self else { return }
