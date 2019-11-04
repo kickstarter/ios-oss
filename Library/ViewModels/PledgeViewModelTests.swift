@@ -3500,4 +3500,40 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
     }
   }
+
+  func testTrackingEvents_UpdatePaymentMethod() {
+    self.vm.inputs.configureWith(
+      project: .template, reward: .template,
+      refTag: nil, context: .changePaymentMethod
+    )
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.submitButtonTapped()
+
+    XCTAssertEqual(["Update Payment Method Button Clicked"], self.trackingClient.events)
+  }
+
+  func testTrackingEvents_ContextIsUpdate() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .update)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.submitButtonTapped()
+
+    XCTAssertEqual(["Update Pledge Button Clicked"], self.trackingClient.events)
+  }
+
+  func testTrackingEvents_ContextIsUpdateReward() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .updateReward)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.submitButtonTapped()
+
+    XCTAssertEqual(["Update Pledge Button Clicked"], self.trackingClient.events)
+  }
 }
