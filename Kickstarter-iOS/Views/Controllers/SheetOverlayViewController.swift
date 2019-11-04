@@ -85,7 +85,7 @@ final class SheetOverlayViewController: UIViewController {
 
     self.topAnchorConstraint = childView.topAnchor.constraint(
       equalTo: self.view.topAnchor,
-      constant: self.offset
+      constant: offset
     ) |> \.isActive .~ true
   }
 }
