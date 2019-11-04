@@ -574,7 +574,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .takeWhen(self.viewDidLoadProperty.signal)
       .observeValues { _, project, _ in
         AppEnvironment.current.koala.trackPledgeScreenViewed(project: project)
-    }
+      }
 
     contextAndProjectAndPledgeAmount
       .takeWhen(createButtonTapped)

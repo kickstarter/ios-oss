@@ -100,7 +100,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         AppEnvironment.current.koala.trackAddNewCardButtonClicked(
           project: $0, pledgeAmount: $1?.amount ?? 0.0
         )
-    }
+      }
   }
 
   private let applePayButtonTappedProperty = MutableProperty(())
