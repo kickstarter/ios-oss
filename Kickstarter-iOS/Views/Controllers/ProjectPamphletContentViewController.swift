@@ -252,6 +252,6 @@ extension ProjectPamphletContentViewController: ProjectPamphletCreatorHeaderCell
     _: ProjectPamphletCreatorHeaderCell,
     project _: Project
   ) {
-    print("Button tapped")
+    // TODO:
   }
 }
