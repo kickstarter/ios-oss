@@ -639,6 +639,12 @@ public final class Koala {
     self.track(event: "Add New Card Button Clicked", properties: props)
   }
 
+  public func trackPledgeScreenViewed(project: Project) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+
+    self.track(event: "Pledge Screen Viewed", properties: props)
+  }
+
   public func trackCheckoutCancel(
     project: Project,
     reward: Reward,

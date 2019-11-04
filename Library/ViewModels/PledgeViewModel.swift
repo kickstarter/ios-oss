@@ -568,6 +568,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         pledgeAmount: $2
       )
       }
+
+    contextAndProjectAndPledgeAmount
+      .filter { $0.0 == .pledge }
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .observeValues { _, project, _ in
+        AppEnvironment.current.koala.trackPledgeScreenViewed(project: project)
+    }
   }
 
   // MARK: - Inputs

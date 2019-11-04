@@ -622,4 +622,13 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["Add New Card Button Clicked"], client.events)
     XCTAssertEqual(0.0, properties?["pledge_total"] as? Double)
   }
+
+  func testTrackPledgeScreenViewed() {
+    let client = MockTrackingClient()
+    let loggedInUser = User.template
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackPledgeScreenViewed(project: .template)
+    XCTAssertEqual(["Pledge Screen Viewed"], client.events)
+  }
 }
