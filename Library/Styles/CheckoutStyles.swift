@@ -81,6 +81,7 @@ public func checkoutCurrencySuperscriptAttributes() -> String.Attributes {
 public enum Layout {
   public enum Sheet {
     public static let offset: CGFloat = 222
+    public static let offsetCompact: CGFloat = 44
   }
 }
 
