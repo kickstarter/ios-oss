@@ -638,10 +638,8 @@ final class KoalaTests: TestCase {
     let loggedInUser = User.template
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackAddNewCardButtonClicked(project: .template, pledgeAmount: 0.0)
-    let properties = client.properties.last
+    koala.trackAddNewCardButtonClicked(project: .template)
 
     XCTAssertEqual(["Add New Card Button Clicked"], client.events)
-    XCTAssertEqual(0.0, properties?["pledge_total"] as? Double)
   }
 }
