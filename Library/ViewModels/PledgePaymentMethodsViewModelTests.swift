@@ -265,6 +265,55 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  func testReloadPaymentMethods_LoggedIn_ApplePayCapable_isTrue_BackedCardRemoved() {
+    let filteredCards = GraphUserCreditCard.template.storedCards.nodes
+      .filter { $0.id != GraphUserCreditCard.visa.id
+      }
+
+    let filteredTemplate = GraphUserCreditCard(
+      storedCards: GraphUserCreditCard.CreditCardConnection(nodes: filteredCards)
+    )
+
+    let response = UserEnvelope<GraphUserCreditCard>(me: filteredTemplate)
+    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.reward .~ Reward.postcards
+          |> Backing.lens.rewardId .~ Reward.postcards.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
+      self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
+      self.applePayButtonHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith((User.template, project, true))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      self.applePayButtonHidden.assertValues([false])
+      self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([
+        [true, true, true, true, true, false, true]
+      ])
+      self.reloadPaymentMethodsProjectCountry.assertValues([
+        (0...response.me.storedCards.nodes.count - 1).map { _ in "Hastings, UK" }
+      ], "One card is unavailable")
+      self.reloadPaymentMethodsSelectedCard.assertValues([nil], "No card selected")
+    }
+  }
+
   func testReloadPaymentMethods_Error_LoggedIn_ApplePayCapable_isFalse() {
     let error = GraphResponseError(message: "Something went wrong")
     let apiService = MockService(fetchGraphCreditCardsError: GraphError.decodeError(error))

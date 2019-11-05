@@ -70,10 +70,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     .scan([]) { current, new in new + current }
 
     self.reloadPaymentMethodsAndSelectCard = Signal.combineLatest(cards, availableCardTypes, project)
-      .map(pledgeCreditCardViewData(with:availableCardTypes:project:))
-      .map { pledgeCreditCardViewData in
-        (pledgeCreditCardViewData, pledgeCreditCardViewData.first?.card)
-      }
+      .map(pledgeCreditCardViewDataAndSelectedCard(with:availableCardTypes:project:))
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
 
@@ -136,18 +133,32 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
 }
 
-private func pledgeCreditCardViewData(
+private func pledgeCreditCardViewDataAndSelectedCard(
   with cards: [GraphUserCreditCard.CreditCard],
   availableCardTypes: [String],
   project: Project
-) -> [PledgeCreditCardViewData] {
-  return cards.compactMap { card -> PledgeCreditCardViewData? in
+) -> ([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?) {
+  let data = cards.compactMap { card -> PledgeCreditCardViewData? in
     guard let cardBrand = card.type?.rawValue else { return nil }
 
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
 
     return (card, isAvailableCardType, project.location.displayableName)
   }
+
+  guard let backing = project.personalization.backing else {
+    return (data, cards.first)
+  }
+
+  var backedCard: GraphUserCreditCard.CreditCard?
+
+  let cardIds = cards.map { $0.id }
+
+  if let cardId = backing.paymentSource?.id, cardIds.contains(cardId) {
+    backedCard = cards.first
+  }
+
+  return (data, backedCard)
 }
 
 private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {
