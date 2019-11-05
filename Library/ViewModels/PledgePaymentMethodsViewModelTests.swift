@@ -432,7 +432,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
 
     self.vm.inputs.addNewCardTapped(with: .pledge)
-    self.goToAddCardIntent.assertValues([.pledge])
 
     XCTAssertEqual(["Add New Card Button Clicked"], self.trackingClient.events)
   }
