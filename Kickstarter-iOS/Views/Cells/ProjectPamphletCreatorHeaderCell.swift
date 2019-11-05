@@ -11,9 +11,9 @@ private enum Layout {
 }
 
 protocol ProjectPamphletCreatorHeaderCellDelegate: class {
-  func projectPamphletCreatorHeaderCellDidTapButton(
+  func projectPamphletCreatorHeaderCell(
     _ cell: ProjectPamphletCreatorHeaderCell,
-    project: Project
+    didTapViewProgress project: Project
   )
 }
 
@@ -79,7 +79,7 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] in
         guard let self = self else { return }
 
-        self.delegate?.projectPamphletCreatorHeaderCellDidTapButton(self, project: $0)
+        self.delegate?.projectPamphletCreatorHeaderCell(self, didTapViewProgress: $0)
       }
   }
 

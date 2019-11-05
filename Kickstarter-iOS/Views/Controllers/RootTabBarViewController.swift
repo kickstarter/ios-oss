@@ -186,7 +186,8 @@ public final class RootTabBarViewController: UITabBarController {
   private func viewControllerAndParam<T, P>(with index: RootViewControllerIndex, param: P) -> (T, P)? {
     guard
       let vcs = self.viewControllers,
-      let vc = vcs[clamp(0, vcs.count - 1)(index)] as? T
+      let nav = vcs[clamp(0, vcs.count - 1)(index)] as? UINavigationController,
+      let vc = nav.children.first as? T
     else { return nil }
 
     return (vc, param)
