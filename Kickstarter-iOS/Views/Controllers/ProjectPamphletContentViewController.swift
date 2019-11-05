@@ -65,14 +65,14 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       .observeValues { [weak self] project, visible in
         self?.dataSource.load(project: project, visible: visible)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.loadMinimalProjectIntoDataSource
       .observeForUI()
       .observeValues { [weak self] project in
         self?.dataSource.loadMinimal(project: project)
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.goToBacking
       .observeForControllerAction()
@@ -90,13 +90,13 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] project, reward in
         self?.goToRewardPledge(project: project, reward: reward)
-    }
+      }
 
     self.viewModel.outputs.goToDashboard
       .observeForControllerAction()
-      .observeValues { [ weak self] param in
+      .observeValues { [weak self] param in
         self?.goToDashboard(param: param)
-    }
+      }
   }
 
   public override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -130,7 +130,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
         }, completion: { [weak self] _ in
           self?.dismiss(animated: true, completion: nil)
         })
-    }
+      }
   }
 
   fileprivate func goToRewardPledge(project: Project, reward: Reward) {
@@ -216,7 +216,7 @@ extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate 
   internal func projectPamphletMainCell(
     _: ProjectPamphletMainCell,
     goToCampaignForProject project: Project
-    ) {
+  ) {
     let vc = ProjectDescriptionViewController.configuredWith(project: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
@@ -224,7 +224,7 @@ extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate 
   internal func projectPamphletMainCell(
     _: ProjectPamphletMainCell,
     addChildController child: UIViewController
-    ) {
+  ) {
     self.addChild(child)
     child.beginAppearanceTransition(true, animated: false)
     child.didMove(toParent: self)
@@ -234,7 +234,7 @@ extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate 
   internal func projectPamphletMainCell(
     _: ProjectPamphletMainCell,
     goToCreatorForProject project: Project
-    ) {
+  ) {
     let vc = ProjectCreatorViewController.configuredWith(project: project)
 
     if self.traitCollection.userInterfaceIdiom == .pad {
@@ -267,9 +267,9 @@ extension ProjectPamphletContentViewController: DeprecatedRewardCellDelegate {
 
 extension ProjectPamphletContentViewController: ProjectPamphletCreatorHeaderCellDelegate {
   internal func projectPamphletCreatorHeaderCell(
-    _ cell: ProjectPamphletCreatorHeaderCell,
+    _: ProjectPamphletCreatorHeaderCell,
     didTapViewProgress project: Project
-    ) {
+  ) {
     self.viewModel.inputs.tappedViewProgress(of: project)
   }
 }
