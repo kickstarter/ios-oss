@@ -643,6 +643,7 @@ public final class Koala {
   public func trackManagePledgeOptionClicked(project: Project, managePledgeMenuCTA: ManagePledgeMenuCTAType) {
     let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["cta": managePledgeMenuCTA.trackingString])
+
     self.track(event: "Manage Pledge Option Clicked", properties: props)
   }
 
