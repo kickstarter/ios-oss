@@ -224,7 +224,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
 
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       _ = nc
-        |> \.modalPresentationStyle .~ .formSheet
+        |> \.modalPresentationStyle .~ .pageSheet
     }
 
     self.present(nc, animated: true)
