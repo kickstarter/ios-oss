@@ -143,7 +143,7 @@ public final class ManagePledgeViewModel:
       .takePairWhen(managePledgeMenuType)
       .observeValues {
         AppEnvironment.current.koala.trackManagePledgeOptionClicked(project: $0, managePledgeMenuCTA: $1)
-    }
+      }
   }
 
   private let (configureWithProjectSignal, configureWithProjectObserver) = Signal<Project, Never>.pipe()
