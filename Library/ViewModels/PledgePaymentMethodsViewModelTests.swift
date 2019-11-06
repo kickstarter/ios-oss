@@ -267,8 +267,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
   func testReloadPaymentMethods_LoggedIn_ApplePayCapable_isTrue_BackedCardRemoved() {
     let filteredCards = GraphUserCreditCard.template.storedCards.nodes
-      .filter { $0.id != GraphUserCreditCard.visa.id
-      }
+      .filter { $0.id != GraphUserCreditCard.visa.id }
 
     let filteredTemplate = GraphUserCreditCard(
       storedCards: GraphUserCreditCard.CreditCardConnection(nodes: filteredCards)

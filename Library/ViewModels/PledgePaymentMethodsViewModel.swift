@@ -150,13 +150,7 @@ private func pledgeCreditCardViewDataAndSelectedCard(
     return (data, cards.first)
   }
 
-  var backedCard: GraphUserCreditCard.CreditCard?
-
-  let cardIds = cards.map { $0.id }
-
-  if let cardId = backing.paymentSource?.id, cardIds.contains(cardId) {
-    backedCard = cards.first
-  }
+  let backedCard = cards.first(where: { $0.id == backing.paymentSource?.id })
 
   return (data, backedCard)
 }
