@@ -39,4 +39,13 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1111")
     self.expirationDateText.assertValue("Expires 10/2019")
   }
+
+  func testGooglePay() {
+    self.vm.inputs.configureWith(value: Backing.PaymentSource.googlePay)
+
+    self.cardImageName.assertValue("icon--google-pay")
+    self.cardNumberAccessibilityLabel.assertLastValue("Visa, Card ending in 4111")
+    self.cardNumberTextShortStyle.assertLastValue("Ending in 4111")
+    self.expirationDateText.assertValue("Expires 10/2019")
+  }
 }
