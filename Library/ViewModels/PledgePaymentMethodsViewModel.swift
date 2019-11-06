@@ -90,6 +90,17 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .skipNil()
 
     self.goToAddCardScreen = Signal.combineLatest(self.addNewCardIntentProperty.signal.skipNil(), project)
+
+    // Tracking
+
+    project
+      .filter { isCreatingPledge($0) }
+      .takeWhen(self.goToAddCardScreen)
+      .observeValues {
+        AppEnvironment.current.koala.trackAddNewCardButtonClicked(
+          project: $0
+        )
+      }
   }
 
   private let applePayButtonTappedProperty = MutableProperty(())
@@ -153,6 +164,12 @@ private func pledgeCreditCardViewData(
 private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {
   return applePayCapable &&
     AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
+}
+
+private func isCreatingPledge(_ project: Project) -> Bool {
+  guard let isBacking = project.personalization.isBacking else { return true }
+
+  return !isBacking
 }
 
 private func cards(
