@@ -95,7 +95,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
 
-    self.pledgeCTAContainerView.pledgeRetryButton.addTarget(
+    self.pledgeCTAContainerView.retryButton.addTarget(
       self, action: #selector(ProjectPamphletViewController.pledgeRetryButtonTapped), for: .touchUpInside
     )
 

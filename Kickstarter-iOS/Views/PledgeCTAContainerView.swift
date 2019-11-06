@@ -38,10 +38,13 @@ final class PledgeCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private(set) lazy var pledgeRetryButton: UIButton = {
+  private(set) lazy var retryButton: UIButton = {
     UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
+  private lazy var retryDescriptionLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var retryStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -87,8 +90,24 @@ final class PledgeCTAContainerView: UIView {
 
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
-    _ = self.pledgeRetryButton
-      |> pledgeRetryButtonStyle
+    _ = self.retryButton
+      |> retryButtonStyle
+      |> UIButton.lens.title(for: .normal) .~ "Retry"
+
+//    self.retryButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+    self.retryDescriptionLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+    _ = self.retryStackView
+      |> \.axis .~ .horizontal
+      |> \.alignment .~ .center
+      |> \.spacing .~ Styles.grid(3)
+
+    _ = self.retryDescriptionLabel
+      |> \.textAlignment .~ .left
+      |> \.font .~ .ksr_headline()
+      |> \.lineBreakMode .~ .byWordWrapping
+      |> \.numberOfLines .~ 0
+      |> \.text %~ { _ in Strings.Content_isnt_loading_right_now() }
 
     _ = self.titleAndSubtitleStackView
       |> titleAndSubtitleStackViewStyle
@@ -106,7 +125,7 @@ final class PledgeCTAContainerView: UIView {
       |> activityIndicatorStyle
   }
 
-  // MARK: - View model
+  // MARK: - View Model
 
   override func bindViewModel() {
     super.bindViewModel()
@@ -133,7 +152,7 @@ final class PledgeCTAContainerView: UIView {
     self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden
     self.pledgeCTAButton.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
     self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText
-    self.pledgeRetryButton.rac.hidden = self.viewModel.outputs.pledgeRetryButtonIsHidden
+    self.retryStackView.rac.hidden = self.viewModel.outputs.retryStackViewIsHidden
     self.spacer.rac.hidden = self.viewModel.outputs.spacerIsHidden
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleText
     self.titleAndSubtitleStackView.rac.hidden = self.viewModel.outputs.stackViewIsHidden
@@ -159,12 +178,20 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.titleLabel, self.subtitleLabel], self.titleAndSubtitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    let spacer = UIView()
+
+    _ = ([self.retryDescriptionLabel, spacer, self.retryButton], self.retryStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.retryStackView, self)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
     _ = (
       [
         self.titleAndSubtitleStackView,
         self.spacer,
         self.pledgeCTAButton,
-        self.pledgeRetryButton,
         self.activityIndicatorContainerView
       ],
       self.rootStackView
@@ -183,7 +210,7 @@ final class PledgeCTAContainerView: UIView {
       self.activityIndicatorContainerView.heightAnchor.constraint(equalToConstant: Layout.Button.minHeight),
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
-      self.pledgeRetryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight)
+      self.retryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight)
     ])
   }
 
@@ -242,16 +269,10 @@ private let titleLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 0
 }
 
-private let pledgeRetryButtonStyle: ButtonStyle = { button in
+private let retryButtonStyle: ButtonStyle = { button in
   button
-    |> baseButtonStyle
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_black
-    |> UIButton.lens.titleLabel.font .~ .ksr_caption1()
-    |> UIButton.lens.backgroundColor(for: .normal) .~ .clear
-    |> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: Styles.grid(3), bottom: 0, right: 0)
-    |> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.ksr_text_black.mixLighter(0.36)
-    |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(topBottom: Styles.gridHalf(1))
+    |> greyButtonStyle
+    |> UIButton.lens.imageEdgeInsets .~ .init(left: -Styles.grid(3))
     |> UIButton.lens.image(for: .normal) %~ { _ in image(named: "icon--refresh-small") }
     |> UIButton.lens.image(for: .highlighted) %~ { _ in image(named: "icon--refresh-small", alpha: 0.66) }
-    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Content_isnt_loading_right_now() }
 }
