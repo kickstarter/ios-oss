@@ -88,8 +88,8 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> viewStyle
+    _ = self.contentView
+      |> contentViewStyle
 
     _ = self.launchDateLabel
       |> projectCreationInfoLabelStyle
@@ -98,7 +98,6 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
-      |> rootStackViewStyle
 
     _ = self.viewProgressButton
       |> viewProgressButtonStyle
@@ -113,22 +112,20 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
 
 // MARK: Styles
 
-private let projectCreationInfoLabelStyle: LabelStyle = { label in
-  label
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.numberOfLines .~ 0
-}
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: 0)
-}
-
-private let viewStyle: ViewStyle = { view in
+private let contentViewStyle: ViewStyle = { view in
   view
     |> \.layer.borderWidth .~ 2.0
     |> \.backgroundColor .~ UIColor.ksr_grey_100
     |> \.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
+    |> \.layoutMargins %~~ { _, _ in
+      .init(topBottom: Styles.grid(3), leftRight: 0)
+    }
+}
+
+private let projectCreationInfoLabelStyle: LabelStyle = { label in
+  label
+    |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.numberOfLines .~ 0
 }
 
 private let viewProgressButtonStyle: ButtonStyle = { button in

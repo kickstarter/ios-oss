@@ -19,16 +19,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tIm-aj-d8Q">
-                                <rect key="frame" x="0.0" y="55" width="400" height="1346"/>
+                                <rect key="frame" x="0.0" y="44" width="400" height="1357"/>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                 <connections>
                                     <segue destination="8BT-Sh-bBd" kind="embed" id="C2u-Fy-leY"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bdk-Xa-fm9">
-                                <rect key="frame" x="0.0" y="0.0" width="400" height="55"/>
+                                <rect key="frame" x="0.0" y="0.0" width="400" height="44"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="55" id="Mpa-HP-9KU"/>
+                                    <constraint firstAttribute="height" constant="44" id="Mpa-HP-9KU"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="Tne-VL-OCU" kind="embed" id="Zw0-Ot-rWA"/>
@@ -62,29 +62,29 @@
             <objects>
                 <viewController storyboardIdentifier="ProjectNavBarViewController" id="Tne-VL-OCU" customClass="ProjectNavBarViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ed4-VA-c6v">
-                        <rect key="frame" x="0.0" y="0.0" width="400" height="55"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="44"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9W6-oq-vUw">
-                                <rect key="frame" x="0.0" y="0.0" width="400" height="55"/>
+                                <rect key="frame" x="0.0" y="0.0" width="400" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jxM-Ay-art">
                                 <rect key="frame" x="0.0" y="3" width="400" height="48"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOA-as-ZZE">
-                                        <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                                        <rect key="frame" x="0.0" y="-2" width="48" height="43"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="DOA-as-ZZE" secondAttribute="height" multiplier="1:1" id="MWQ-Ky-Rk8"/>
+                                            <constraint firstAttribute="width" secondItem="DOA-as-ZZE" secondAttribute="height" multiplier="1:1" constant="5" id="MWQ-Ky-Rk8"/>
                                         </constraints>
                                         <state key="normal" title="X">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Gb-Xw-vvb">
-                                        <rect key="frame" x="301" y="0.0" width="48" height="48"/>
+                                        <rect key="frame" x="301" y="-2" width="48" height="43"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="7Gb-Xw-vvb" secondAttribute="height" multiplier="1:1" id="cvL-lC-GgZ"/>
+                                            <constraint firstAttribute="width" secondItem="7Gb-Xw-vvb" secondAttribute="height" multiplier="1:1" constant="5" id="cvL-lC-GgZ"/>
                                         </constraints>
                                         <state key="normal" title="X">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -97,9 +97,9 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FYk-7e-N0e">
-                                        <rect key="frame" x="346" y="0.0" width="51" height="48"/>
+                                        <rect key="frame" x="346" y="-2" width="51" height="43"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="FYk-7e-N0e" secondAttribute="height" multiplier="1:1" constant="3" id="YXC-4r-gVQ"/>
+                                            <constraint firstAttribute="width" secondItem="FYk-7e-N0e" secondAttribute="height" multiplier="1:1" constant="8" id="YXC-4r-gVQ"/>
                                         </constraints>
                                         <state key="normal" title="X">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -110,17 +110,17 @@
                                 <constraints>
                                     <constraint firstItem="7Gb-Xw-vvb" firstAttribute="centerY" secondItem="FYk-7e-N0e" secondAttribute="centerY" id="5wf-Ej-y9f"/>
                                     <constraint firstItem="7Gb-Xw-vvb" firstAttribute="trailing" secondItem="FYk-7e-N0e" secondAttribute="leading" constant="3" id="7PD-HK-gXb"/>
-                                    <constraint firstItem="DOA-as-ZZE" firstAttribute="centerY" secondItem="jxM-Ay-art" secondAttribute="centerY" id="BC8-MC-vSz"/>
-                                    <constraint firstItem="7Gb-Xw-vvb" firstAttribute="height" secondItem="jxM-Ay-art" secondAttribute="height" id="Cpe-nZ-Yin"/>
+                                    <constraint firstItem="DOA-as-ZZE" firstAttribute="centerY" secondItem="jxM-Ay-art" secondAttribute="centerY" constant="-4.5" id="BC8-MC-vSz"/>
+                                    <constraint firstItem="7Gb-Xw-vvb" firstAttribute="height" secondItem="jxM-Ay-art" secondAttribute="height" constant="-5" id="Cpe-nZ-Yin"/>
                                     <constraint firstItem="F7o-wQ-ufD" firstAttribute="centerX" secondItem="jxM-Ay-art" secondAttribute="centerX" id="DIP-gY-GSb"/>
                                     <constraint firstItem="F7o-wQ-ufD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DOA-as-ZZE" secondAttribute="trailing" constant="12" id="GMr-tI-u8O"/>
                                     <constraint firstItem="F7o-wQ-ufD" firstAttribute="centerY" secondItem="jxM-Ay-art" secondAttribute="centerY" id="ORu-IN-zVe"/>
                                     <constraint firstAttribute="height" constant="48" id="Tw0-JE-1Da"/>
-                                    <constraint firstItem="DOA-as-ZZE" firstAttribute="height" secondItem="jxM-Ay-art" secondAttribute="height" id="XIg-eB-4VD"/>
-                                    <constraint firstItem="FYk-7e-N0e" firstAttribute="centerY" secondItem="jxM-Ay-art" secondAttribute="centerY" id="brP-dC-KeS"/>
+                                    <constraint firstItem="DOA-as-ZZE" firstAttribute="height" secondItem="jxM-Ay-art" secondAttribute="height" constant="-5" id="XIg-eB-4VD"/>
+                                    <constraint firstItem="FYk-7e-N0e" firstAttribute="centerY" secondItem="jxM-Ay-art" secondAttribute="centerY" constant="-4.5" id="brP-dC-KeS"/>
                                     <constraint firstItem="7Gb-Xw-vvb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="F7o-wQ-ufD" secondAttribute="trailing" constant="12" id="cTi-ZV-f9W"/>
                                     <constraint firstItem="DOA-as-ZZE" firstAttribute="leading" secondItem="jxM-Ay-art" secondAttribute="leadingMargin" constant="-8" id="ePl-XW-skR"/>
-                                    <constraint firstItem="FYk-7e-N0e" firstAttribute="height" secondItem="jxM-Ay-art" secondAttribute="height" id="fGf-sF-Mwx"/>
+                                    <constraint firstItem="FYk-7e-N0e" firstAttribute="height" secondItem="jxM-Ay-art" secondAttribute="height" constant="-5" id="fGf-sF-Mwx"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="FYk-7e-N0e" secondAttribute="trailing" constant="-5" id="xZo-4P-fXK"/>
                                 </constraints>
                             </view>
@@ -138,7 +138,7 @@
                         <viewLayoutGuide key="safeArea" id="826-Wi-ToO"/>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="400" height="55"/>
+                    <size key="freeformSize" width="400" height="44"/>
                     <connections>
                         <outlet property="backgroundView" destination="9W6-oq-vUw" id="r7i-Hq-Sm8"/>
                         <outlet property="closeButton" destination="DOA-as-ZZE" id="T57-LC-MEt"/>

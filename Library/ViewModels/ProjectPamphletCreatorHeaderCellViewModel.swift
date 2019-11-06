@@ -70,10 +70,10 @@ private func attributedLaunchDateString(with project: Project)
 
   let regularFontAttribute = [
     NSAttributedString.Key.paragraphStyle: paragraphStyle,
-    NSAttributedString.Key.font: UIFont.ksr_caption2(),
+    NSAttributedString.Key.font: UIFont.ksr_subhead(),
     NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
   ]
-  let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_caption1().bolded]
+  let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_subhead().bolded]
 
   attributedString.addAttributes(regularFontAttribute, range: fullRange)
   attributedString.addAttributes(boldFontAttribute, range: rangeDate)
