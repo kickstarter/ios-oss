@@ -117,9 +117,9 @@ private let contentViewStyle: ViewStyle = { view in
     |> \.layer.borderWidth .~ 2.0
     |> \.backgroundColor .~ UIColor.ksr_grey_100
     |> \.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
-    |> \.layoutMargins %~~ { _, cell in
+    |> \.layoutMargins %~~ { _, _ in
       .init(topBottom: Styles.grid(3), leftRight: 0)
-  }
+    }
 }
 
 private let projectCreationInfoLabelStyle: LabelStyle = { label in
