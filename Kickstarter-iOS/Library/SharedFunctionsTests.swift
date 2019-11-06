@@ -115,7 +115,24 @@ internal final class SharedFunctionsTests: XCTestCase {
     XCTAssertEqual(backedReward, reward(from: backing, inProject: project))
   }
 
-  func testRewardFromBackingWithProject_WhenRewardNotPresent() {
+  func testRewardFromBackingWithProject_WhenRewardNotPresent_NoRewardPresent() {
+    let backing = Backing.template
+      |> Backing.lens.reward .~ nil
+      |> Backing.lens.rewardId .~ 123
+    let noReward = Reward.noReward
+      |> Reward.lens.minimum .~ 10
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.rewards .~ [
+        noReward, // No Reward "reward" is available
+        Reward.template
+          |> Reward.lens.id .~ 456
+      ]
+
+    XCTAssertEqual(noReward, reward(from: backing, inProject: project))
+  }
+
+  func testRewardFromBackingWithProject_WhenRewardNotPresent_NoRewardNotPresent() {
     let backing = Backing.template
       |> Backing.lens.reward .~ nil
       |> Backing.lens.rewardId .~ 123
@@ -135,9 +152,17 @@ internal final class SharedFunctionsTests: XCTestCase {
       |> Backing.lens.rewardId .~ nil
 
     let project = Project.template
+      |> Project.lens.rewards .~ []
       |> Project.lens.personalization.backing .~ backing
 
-    XCTAssertEqual(Reward.noReward, reward(from: backing, inProject: project))
+    XCTAssertEqual(
+      Reward.noReward,
+      reward(
+        from: backing,
+        inProject: project
+      ),
+      "Worst case when there are no rewards in the project, default to our local Reward.noReward"
+    )
   }
 
   func testIsCurrentUserCreatorOfProject_IsCreator() {
