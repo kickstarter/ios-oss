@@ -46,12 +46,13 @@ final class ProjectPamphletCreatorHeaderCellViewModelTests: TestCase {
 
   func testLaunchDateLabelAttributedText() {
     let project = Project.template
+      |> \.dates.launchedAt .~ 1_573_080_368
 
     self.launchDateLabelAttributedText.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: project)
 
-    self.launchDateLabelAttributedText.assertValue("You launched this project on September 16, 2016.")
+    self.launchDateLabelAttributedText.assertValue("You launched this project on November 6, 2019.")
   }
 
   func testNotifyDelegateViewProgressButtonTapped() {
