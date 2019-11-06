@@ -13,6 +13,10 @@ private enum Layout {
     static let minWidth: CGFloat = 98.0
   }
 
+  enum RetryButton {
+    static let minWidth: CGFloat = 120.0
+  }
+
   enum ActivityIndicator {
     static let height: CGFloat = 30
   }
@@ -94,20 +98,11 @@ final class PledgeCTAContainerView: UIView {
       |> retryButtonStyle
       |> UIButton.lens.title(for: .normal) .~ "Retry"
 
-//    self.retryButton.setContentCompressionResistancePriority(.required, for: .horizontal)
-    self.retryDescriptionLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-
     _ = self.retryStackView
-      |> \.axis .~ .horizontal
-      |> \.alignment .~ .center
-      |> \.spacing .~ Styles.grid(3)
+      |> retryStackViewStyle
 
     _ = self.retryDescriptionLabel
-      |> \.textAlignment .~ .left
-      |> \.font .~ .ksr_headline()
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 0
-      |> \.text %~ { _ in Strings.Content_isnt_loading_right_now() }
+      |> retryDescriptionLabelStyle
 
     _ = self.titleAndSubtitleStackView
       |> titleAndSubtitleStackViewStyle
@@ -149,6 +144,12 @@ final class PledgeCTAContainerView: UIView {
         self?.animateView(self?.pledgeCTAButton, isHidden: isHidden)
       }
 
+    self.viewModel.outputs.retryStackViewIsHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        self?.updateRetryStackViewIsHidden(isHidden)
+    }
+
     self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden
     self.pledgeCTAButton.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
     self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText
@@ -178,14 +179,10 @@ final class PledgeCTAContainerView: UIView {
     _ = ([self.titleLabel, self.subtitleLabel], self.titleAndSubtitleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    let spacer = UIView()
-
-    _ = ([self.retryDescriptionLabel, spacer, self.retryButton], self.retryStackView)
+    _ = ([self.retryDescriptionLabel, self.retryButton], self.retryStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.retryStackView, self)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+    self.retryButton.setContentHuggingPriority(.required, for: .horizontal)
 
     _ = (
       [
@@ -210,8 +207,19 @@ final class PledgeCTAContainerView: UIView {
       self.activityIndicatorContainerView.heightAnchor.constraint(equalToConstant: Layout.Button.minHeight),
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
-      self.retryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight)
+      self.retryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
+      self.retryButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.RetryButton.minWidth)
     ])
+  }
+
+  private func updateRetryStackViewIsHidden(_ isHidden: Bool) {
+    if isHidden {
+      self.retryStackView.removeFromSuperview()
+    } else {
+      _ = (self.retryStackView, self)
+        |> ksr_addSubviewToParent()
+        |> ksr_constrainViewToEdgesInParent()
+    }
   }
 
   fileprivate func animateView(_ view: UIView?, isHidden: Bool) {
@@ -275,4 +283,22 @@ private let retryButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.imageEdgeInsets .~ .init(left: -Styles.grid(3))
     |> UIButton.lens.image(for: .normal) %~ { _ in image(named: "icon--refresh-small") }
     |> UIButton.lens.image(for: .highlighted) %~ { _ in image(named: "icon--refresh-small", alpha: 0.66) }
+}
+
+private let retryStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .horizontal
+    |> \.alignment .~ .center
+    |> \.spacing .~ Styles.grid(3)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
+}
+
+private let retryDescriptionLabelStyle: LabelStyle = { label in
+  label
+    |> \.textAlignment .~ .left
+    |> \.font .~ .ksr_headline()
+    |> \.lineBreakMode .~ .byWordWrapping
+    |> \.numberOfLines .~ 0
+    |> \.text %~ { _ in Strings.Content_isnt_loading_right_now() }
 }
