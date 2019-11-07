@@ -154,12 +154,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { project, pledgeTotal in
         attributedConfirmationString(
           with: project,
-          pledgeTotal: pledgeTotal,
-          font: UIFont.ksr_caption1(),
-          foregroundColor: UIColor.ksr_text_dark_grey_500
+          pledgeTotal: pledgeTotal
         )
       }
-      .skipNil()
 
     self.continueViewHidden = Signal
       .combineLatest(isLoggedIn, context)
@@ -712,6 +709,36 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
 private func requiresSCA(_ envelope: StripeSCARequiring) -> Bool {
   return envelope.requiresSCAFlow
+}
+
+private func attributedConfirmationString(with project: Project, pledgeTotal: Double) -> NSAttributedString {
+  let date = Format.date(secondsInUTC: project.dates.deadline, template: "MMMM d, yyyy")
+  let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
+
+  let font = UIFont.ksr_caption1()
+  let foregroundColor = UIColor.ksr_text_dark_grey_500
+
+  let paragraphStyle = NSMutableParagraphStyle()
+  paragraphStyle.alignment = .center
+
+  let attributes = [
+    NSAttributedString.Key.paragraphStyle: paragraphStyle
+  ]
+
+  if project.stats.currentCurrency == project.stats.currency {
+    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
+      project_deadline: date
+    )
+    .attributed(with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [date])
+  }
+
+  return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
+    total: pledgeTotal,
+    project_deadline: date
+  )
+  .attributed(
+    with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [pledgeTotal, date]
+  )
 }
 
 // MARK: - Validation Functions
