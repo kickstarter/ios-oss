@@ -322,6 +322,7 @@
 		8A4DDAB32373427000ADE31D /* PledgeStatusLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB22373427000ADE31D /* PledgeStatusLabelViewController.swift */; };
 		8A4DDAB52373429300ADE31D /* PledgeStatusLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */; };
 		8A4DDAB72373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */; };
+		8A4DDAB92374DF9F00ADE31D /* String+AttributedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB82374DF9F00ADE31D /* String+AttributedTests.swift */; };
 		8A73EACF2339528000FF9051 /* PledgeCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EACE2339528000FF9051 /* PledgeCreditCardViewModel.swift */; };
 		8A73EAD12339732900FF9051 /* PledgeCreditCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD02339732900FF9051 /* PledgeCreditCardViewModelTests.swift */; };
 		8A73EAD9233B00A500FF9051 /* NSMutableAttributedString+SetFontKeepingTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD8233B00A500FF9051 /* NSMutableAttributedString+SetFontKeepingTraits.swift */; };
@@ -1725,6 +1726,7 @@
 		8A4DDAB22373427000ADE31D /* PledgeStatusLabelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewController.swift; sourceTree = "<group>"; };
 		8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModel.swift; sourceTree = "<group>"; };
 		8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModelTests.swift; sourceTree = "<group>"; };
+		8A4DDAB82374DF9F00ADE31D /* String+AttributedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AttributedTests.swift"; sourceTree = "<group>"; };
 		8A73EACE2339528000FF9051 /* PledgeCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCreditCardViewModel.swift; sourceTree = "<group>"; };
 		8A73EAD02339732900FF9051 /* PledgeCreditCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCreditCardViewModelTests.swift; sourceTree = "<group>"; };
 		8A73EAD8233B00A500FF9051 /* NSMutableAttributedString+SetFontKeepingTraits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+SetFontKeepingTraits.swift"; sourceTree = "<group>"; };
@@ -3341,6 +3343,7 @@
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
+				8A4DDAB82374DF9F00ADE31D /* String+AttributedTests.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -5148,6 +5151,7 @@
 				A7ED1FD81E831C5C00BFFA01 /* DashboardRewardsCellViewModelTests.swift in Sources */,
 				D04AACA5218BB72100CF713E /* BetaToolsViewModelTests.swift in Sources */,
 				D64850551FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift in Sources */,
+				8A4DDAB92374DF9F00ADE31D /* String+AttributedTests.swift in Sources */,
 				D65BF353233023E500B15B25 /* ManagePledgeSummaryViewModelTests.swift in Sources */,
 				A7ED1FC71E831C5C00BFFA01 /* DashboardFundingCellViewModelTests.swift in Sources */,
 				A7ED1FD51E831C5C00BFFA01 /* FindFriendsStatsCellViewModelTests.swift in Sources */,
