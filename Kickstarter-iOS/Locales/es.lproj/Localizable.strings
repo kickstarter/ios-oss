@@ -533,6 +533,8 @@
 "Verification_email_sent" = "Te acabamos de enviar un correo electrónico de verificación. Haz clic en el enlace incluido y se verificará tu dirección.";
 "Video_disabled_until_the_internet_connection_improves" = "Video desactivado hasta se reestablezca la conexión de internet";
 "View" = "Ver";
+"View_dashboard" = "View dashboard";
+"View_progress" = "View progress";
 "View_project" = "Ver proyecto";
 "View_rewards" = "Ver recompensas";
 "View_your_pledge" = "Revisa tu contribución";
@@ -564,6 +566,7 @@
 "You_backed_this_project" = "Patrocinaste este proyecto.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "No puedes usar esta tarjeta de crédito para patrocinar un proyecto de %{project_country}.";
 "You_have_successfully_backed_project_html" = "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!";
+"You_launched_this_project_on_launch_date" = "You launched this project on %{launch_date}.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Debes contribuir, al menos, %{reward_minimum} para obtener esta recompensa.";
 "You_pledged_on_date" = "<b>Contribuiste</b> el %{pledge_date}";
 "You_pledged_without_a_reward" = "Contribuiste sin recompensa";

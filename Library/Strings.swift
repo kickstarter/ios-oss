@@ -8723,6 +8723,40 @@ catch your eye?"
     )
   }
   /**
+   "View dashboard"
+
+   - **en**: "View dashboard"
+   - **de**: "View dashboard"
+   - **es**: "View dashboard"
+   - **fr**: "View dashboard"
+   - **ja**: "View dashboard"
+  */
+  public static func View_dashboard() -> String {
+    return localizedString(
+      key: "View_dashboard",
+      defaultValue: "View dashboard",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "View progress"
+
+   - **en**: "View progress"
+   - **de**: "View progress"
+   - **es**: "View progress"
+   - **fr**: "View progress"
+   - **ja**: "View progress"
+  */
+  public static func View_progress() -> String {
+    return localizedString(
+      key: "View_progress",
+      defaultValue: "View progress",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "View project"
 
    - **en**: "View project"
@@ -9253,6 +9287,23 @@ Veuillez réessayer ultérieurement."
       defaultValue: "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!",
       count: nil,
       substitutions: ["project_name": project_name]
+    )
+  }
+  /**
+   "You launched this project on %{launch_date}."
+
+   - **en**: "You launched this project on %{launch_date}."
+   - **de**: "You launched this project on %{launch_date}."
+   - **es**: "You launched this project on %{launch_date}."
+   - **fr**: "You launched this project on %{launch_date}."
+   - **ja**: "You launched this project on %{launch_date}."
+  */
+  public static func You_launched_this_project_on_launch_date(launch_date: String) -> String {
+    return localizedString(
+      key: "You_launched_this_project_on_launch_date",
+      defaultValue: "You launched this project on %{launch_date}.",
+      count: nil,
+      substitutions: ["launch_date": launch_date]
     )
   }
   /**

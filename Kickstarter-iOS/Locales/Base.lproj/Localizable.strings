@@ -533,6 +533,8 @@
 "Verification_email_sent" = "We've just sent you a verification email. Click the link in it and your address will be verified.";
 "Video_disabled_until_the_internet_connection_improves" = "Video disabled until the internet connection improves";
 "View" = "View";
+"View_dashboard" = "View dashboard";
+"View_progress" = "View progress";
 "View_project" = "View project";
 "View_rewards" = "View rewards";
 "View_your_pledge" = "View your pledge";
@@ -564,6 +566,7 @@
 "You_backed_this_project" = "You backed this project.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "You can’t use this credit card to back a project from %{project_country}.";
 "You_have_successfully_backed_project_html" = "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!";
+"You_launched_this_project_on_launch_date" = "You launched this project on %{launch_date}.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "You need to pledge at least %{reward_minimum} for this reward.";
 "You_pledged_on_date" = "<b>You pledged</b> on %{pledge_date}";
 "You_pledged_without_a_reward" = "You pledged without a reward";

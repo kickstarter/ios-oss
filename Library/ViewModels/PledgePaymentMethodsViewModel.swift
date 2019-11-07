@@ -70,10 +70,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     .scan([]) { current, new in new + current }
 
     self.reloadPaymentMethodsAndSelectCard = Signal.combineLatest(cards, availableCardTypes, project)
-      .map(pledgeCreditCardViewData(with:availableCardTypes:project:))
-      .map { pledgeCreditCardViewData in
-        (pledgeCreditCardViewData, pledgeCreditCardViewData.first?.card)
-      }
+      .map(pledgeCreditCardViewDataAndSelectedCard(with:availableCardTypes:project:))
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
 
@@ -90,6 +87,17 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .skipNil()
 
     self.goToAddCardScreen = Signal.combineLatest(self.addNewCardIntentProperty.signal.skipNil(), project)
+
+    // Tracking
+
+    project
+      .filter { isCreatingPledge($0) }
+      .takeWhen(self.goToAddCardScreen)
+      .observeValues {
+        AppEnvironment.current.koala.trackAddNewCardButtonClicked(
+          project: $0
+        )
+      }
   }
 
   private let applePayButtonTappedProperty = MutableProperty(())
@@ -136,23 +144,37 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
 }
 
-private func pledgeCreditCardViewData(
+private func pledgeCreditCardViewDataAndSelectedCard(
   with cards: [GraphUserCreditCard.CreditCard],
   availableCardTypes: [String],
   project: Project
-) -> [PledgeCreditCardViewData] {
-  return cards.compactMap { card -> PledgeCreditCardViewData? in
+) -> ([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?) {
+  let data = cards.compactMap { card -> PledgeCreditCardViewData? in
     guard let cardBrand = card.type?.rawValue else { return nil }
 
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
 
     return (card, isAvailableCardType, project.location.displayableName)
   }
+
+  guard let backing = project.personalization.backing else {
+    return (data, cards.first)
+  }
+
+  let backedCard = cards.first(where: { $0.id == backing.paymentSource?.id })
+
+  return (data, backedCard)
 }
 
 private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {
   return applePayCapable &&
     AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
+}
+
+private func isCreatingPledge(_ project: Project) -> Bool {
+  guard let isBacking = project.personalization.isBacking else { return true }
+
+  return !isBacking
 }
 
 private func cards(
