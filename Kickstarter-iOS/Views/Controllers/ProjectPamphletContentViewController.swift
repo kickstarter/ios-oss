@@ -32,6 +32,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       action: #selector(ProjectPamphletContentViewController.scrollViewPanGestureRecognizerDidChange(_:))
     )
 
+    self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
     self.tableView.register(nib: .DeprecatedRewardCell)
 
     self.viewModel.inputs.viewDidLoad()
@@ -108,6 +109,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     if let cell = cell as? ProjectPamphletMainCell {
       cell.delegate = self
     } else if let cell = cell as? DeprecatedRewardCell {
+      cell.delegate = self
+    } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
       cell.delegate = self
     }
   }
@@ -241,5 +244,14 @@ extension ProjectPamphletContentViewController: DeprecatedRewardCellDelegate {
     cell.contentView.setNeedsUpdateConstraints()
     self.tableView.beginUpdates()
     self.tableView.endUpdates()
+  }
+}
+
+extension ProjectPamphletContentViewController: ProjectPamphletCreatorHeaderCellDelegate {
+  internal func projectPamphletCreatorHeaderCellDidTapButton(
+    _: ProjectPamphletCreatorHeaderCell,
+    project _: Project
+  ) {
+    // TODO:
   }
 }

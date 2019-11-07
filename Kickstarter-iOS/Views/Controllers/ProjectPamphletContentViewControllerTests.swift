@@ -185,6 +185,42 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     FBSnapshotVerifyView(vc.view, tolerance: 0.0001)
   }
 
+  func testCreator_LiveProject() {
+    let user = User.template
+    let project = self.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.creator .~ user
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
+      withEnvironment(currentUser: user, language: language, locale: .init(identifier: language.rawValue)) {
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testCreator_NonLiveProject() {
+    let user = User.template
+    let project = self.cosmicSurgery
+      |> Project.lens.state .~ .successful
+      |> Project.lens.creator .~ user
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
+      withEnvironment(currentUser: user, language: language, locale: .init(identifier: language.rawValue)) {
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   func testFailedProject() {
     let project = self.cosmicSurgery
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)

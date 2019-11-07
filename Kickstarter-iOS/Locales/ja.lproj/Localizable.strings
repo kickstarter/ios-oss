@@ -533,6 +533,8 @@
 "Verification_email_sent" = "認証メールを送信しました。メール内のリンクをクリックすればメールアドレスが認証済みとなります。";
 "Video_disabled_until_the_internet_connection_improves" = "インターネット通信状態が向上するまでビデオはご利用いいただけません。";
 "View" = "みる";
+"View_dashboard" = "View dashboard";
+"View_progress" = "View progress";
 "View_project" = "プロジェクトを見る";
 "View_rewards" = "リワードを見る";
 "View_your_pledge" = "プレッジをみる";
@@ -564,6 +566,7 @@
 "You_backed_this_project" = "バック済";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "%{project_country} のプロジェクトをバックするのにこのクレジットカードを利用することはできません。";
 "You_have_successfully_backed_project_html" = "<b>%{project_name}</b>へのバックが完了しました。このプロジェクトは、成功に一歩近づきました！ありがとうございます。";
+"You_launched_this_project_on_launch_date" = "You launched this project on %{launch_date}.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "このリワードには、最低%{reward_minimum}のプレッジが必要です。";
 "You_pledged_on_date" = "%{pledge_date} に<b>プレッジ</b>";
 "You_pledged_without_a_reward" = "リワードなしでプレッジしました";
