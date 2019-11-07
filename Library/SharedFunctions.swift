@@ -277,8 +277,7 @@ public func attributedConfirmationString(
   pledgeTotal: Double,
   font: UIFont,
   foregroundColor: UIColor
-)
-  -> NSAttributedString? {
+) -> NSAttributedString? {
   let date = Format.date(secondsInUTC: project.dates.deadline, template: "MMMM d, yyyy")
   let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
 
