@@ -169,7 +169,7 @@ private func attributedConfirmationString(with project: Project, pledgeTotal: Do
   let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
   let isCreator = currentUserIsCreator(of: project)
 
-  let font = UIFont.ksr_subhead(size: 14)
+  let font = UIFont.ksr_subhead()
   let foregroundColor = UIColor.ksr_text_black
 
   let paragraphStyle = NSMutableParagraphStyle()
