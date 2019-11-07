@@ -96,7 +96,7 @@ final class PledgeCTAContainerView: UIView {
 
     _ = self.retryButton
       |> greyButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Retry"
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Retry() }
 
     _ = self.retryStackView
       |> retryStackViewStyle
