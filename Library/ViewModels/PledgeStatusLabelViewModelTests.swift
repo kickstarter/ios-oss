@@ -131,7 +131,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.labelTextString.assertValues([
-        // TODO: should emit
+        "We can’t process your pledge. Please update your payment method."
       ])
     }
   }

@@ -85,7 +85,10 @@ private func backerStatusLabelText(with project: Project) -> NSAttributedString?
       defaultValue: "Your pledge was dropped because of payment errors."
     )
   case .errored:
-    return nil
+    string = localizedString(
+      key: "We_cant_process_your_pledge_Please_update_your_payment_method",
+      defaultValue: "We can’t process your pledge. Please update your payment method."
+    )
   case .pledged:
     return attributedConfirmationString(
       with: project,
