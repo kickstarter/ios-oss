@@ -116,7 +116,7 @@ private func statusLabelText(with project: Project) -> NSAttributedString? {
   case (.errored, true):
     string = localizedString(
       key: "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method",
-      defaultValue: "We can’t process this pledge because of a problem with the backer's payment method."
+      defaultValue: "We can’t process this pledge because of a problem with the backer’s payment method."
     )
   case (.pledged, true):
     return attributedConfirmationString(

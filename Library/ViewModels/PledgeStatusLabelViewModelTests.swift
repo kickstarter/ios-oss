@@ -380,7 +380,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.labelTextString.assertValues([
-        "We can’t process this pledge because of a problem with the backer's payment method."
+        "We can’t process this pledge because of a problem with the backer’s payment method."
       ])
     }
   }
