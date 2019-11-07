@@ -45,14 +45,27 @@ final class ProjectPamphletCreatorHeaderCellViewModelTests: TestCase {
   }
 
   func testLaunchDateLabelAttributedText() {
-    let project = Project.template
-      |> \.dates.launchedAt .~ 1_573_080_368
+    let dateComponents = DateComponents()
+      |> \.month .~ 11
+      |> \.day .~ 7
+      |> \.year .~ 2_019
+      |> \.timeZone .~ TimeZone.init(secondsFromGMT: 0)
 
-    self.launchDateLabelAttributedText.assertDidNotEmitValue()
+    let calendar = Calendar(identifier: .gregorian)
+      |> \.timeZone .~ TimeZone.init(secondsFromGMT: 0)!
 
-    self.vm.inputs.configure(with: project)
+    withEnvironment(calendar: calendar, locale: Locale(identifier: "en")) {
+      let date = AppEnvironment.current.calendar.date(from: dateComponents)
 
-    self.launchDateLabelAttributedText.assertValue("You launched this project on November 6, 2019.")
+      let project = Project.template
+        |> \.dates.launchedAt .~ date!.timeIntervalSince1970
+
+      self.launchDateLabelAttributedText.assertDidNotEmitValue()
+
+      self.vm.inputs.configure(with: project)
+
+      self.launchDateLabelAttributedText.assertValue("You launched this project on November 7, 2019.")
+    }
   }
 
   func testNotifyDelegateViewProgressButtonTapped() {
