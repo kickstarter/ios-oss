@@ -532,6 +532,8 @@
 "Verification_email_sent" = "Wir haben dir gerade eine Bestätigungs-E-Mail geschickt. Bitte klicke auf den Link in der E-Mail, um deine Adresse zu bestätigen.";
 "Video_disabled_until_the_internet_connection_improves" = "Video bis zur Wiederherstellung der Internetverbindung deaktiviert";
 "View" = "Anzeigen";
+"View_dashboard" = "View dashboard";
+"View_progress" = "View progress";
 "View_project" = "Projekt ansehen";
 "View_rewards" = "Belohnungen ansehen";
 "View_your_pledge" = "Deinen Finanzierungsbeitrag ansehen";
@@ -563,6 +565,7 @@
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "Diese Karte kann nicht verwendet werden, um ein Projekt aus dem folgenden Land zu unterstützen: %{project_country}.";
 "You_have_successfully_backed_project_html" = "Dank deiner Unterstützung ist <b>%{project_name}</b> seiner Verwirklichung einen Schritt näher. Sag es weiter!";
+"You_launched_this_project_on_launch_date" = "You launched this project on %{launch_date}.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Diese Belohnung hat einen Mindestfinanzierungsbeitrag von %{reward_minimum}.";
 "You_pledged_on_date" = "<b>Finanzierungsbeitrag geleistet</b> im %{pledge_date}";
 "You_pledged_without_a_reward" = "Unterstützt ohne Belohnung";

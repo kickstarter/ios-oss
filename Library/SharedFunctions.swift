@@ -28,7 +28,7 @@ internal func userIsBacking(reward: Reward, inProject project: Project) -> Bool 
 
  - returns: A boolean.
  */
-internal func currentUserIsCreator(of project: Project) -> Bool {
+public func currentUserIsCreator(of project: Project) -> Bool {
   guard let user = AppEnvironment.current.currentUser else { return false }
 
   return project.creator.id == user.id
