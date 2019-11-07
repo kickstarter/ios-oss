@@ -67,10 +67,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
 
     self.retryStackViewIsHidden = inError
-        .map(isFalse)
-        .takeWhen(updateButtonStates)
-        .merge(with: isLoading.filter(isTrue).mapConst(true))
-        .skipRepeats()
+      .map(isFalse)
+      .takeWhen(updateButtonStates)
+      .merge(with: isLoading.filter(isTrue).mapConst(true))
+      .skipRepeats()
 
     self.pledgeCTAButtonIsHidden = inError
       .map(isTrue)

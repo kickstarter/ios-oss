@@ -333,6 +333,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   }
 
   // MARK: - Native Checkout Enabled, Error fetching project
+
   func testProjectPamphletViewController_NativeCheckoutEnabled_ErrorFetchingProject() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
@@ -343,8 +344,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
         config: config,
         language: language
       ) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(self.project),
-                                                              refTag: nil)
+        let vc = ProjectPamphletViewController.configuredWith(
+          projectOrParam: .left(self.project),
+          refTag: nil
+        )
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
 

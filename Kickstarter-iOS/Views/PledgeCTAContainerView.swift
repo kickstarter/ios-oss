@@ -148,7 +148,7 @@ final class PledgeCTAContainerView: UIView {
       .observeForUI()
       .observeValues { [weak self] isHidden in
         self?.updateRetryStackViewIsHidden(isHidden)
-    }
+      }
 
     self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden
     self.pledgeCTAButton.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
