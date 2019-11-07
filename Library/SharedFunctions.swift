@@ -271,3 +271,49 @@ internal func sanitizedPledgeParameters(
 
   return (formattedPledgeTotal, rewardId, shippingLocationId)
 }
+
+public func attributedConfirmationString(
+  with project: Project,
+  pledgeTotal: Double,
+  font: UIFont,
+  foregroundColor: UIColor
+)
+  -> NSAttributedString? {
+  let date = Format.date(secondsInUTC: project.dates.deadline, template: "MMMM d, yyyy")
+  let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
+
+  let fullString: String
+
+  if project.stats.currentCurrency == project.stats.currency {
+    fullString = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
+      project_deadline: date
+    )
+  } else {
+    // swiftlint:disable:next line_length
+    fullString = Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
+      total: pledgeTotal,
+      project_deadline: date
+    )
+  }
+
+  let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: fullString)
+  let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
+  let rangePledgeTotal: NSRange = (fullString as NSString).localizedStandardRange(of: pledgeTotal)
+  let rangeProjectDeadline: NSRange = (fullString as NSString).localizedStandardRange(of: date)
+
+  let paragraphStyle = NSMutableParagraphStyle()
+  paragraphStyle.alignment = .center
+
+  let regularFontAttribute = [
+    NSAttributedString.Key.paragraphStyle: paragraphStyle,
+    NSAttributedString.Key.font: font,
+    NSAttributedString.Key.foregroundColor: foregroundColor
+  ]
+  let boldFontAttribute = [NSAttributedString.Key.font: font.bolded]
+
+  attributedString.addAttributes(regularFontAttribute, range: fullRange)
+  attributedString.addAttributes(boldFontAttribute, range: rangePledgeTotal)
+  attributedString.addAttributes(boldFontAttribute, range: rangeProjectDeadline)
+
+  return attributedString
+}

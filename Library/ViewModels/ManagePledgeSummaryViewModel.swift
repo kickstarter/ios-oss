@@ -12,6 +12,7 @@ public protocol ManagePledgeSummaryViewModelOutputs {
   var backerNumberText: Signal<String, Never> { get }
   var backingDateText: Signal<String, Never> { get }
   var configurePledgeAmountSummaryViewWithProject: Signal<Project, Never> { get }
+  var configurePledgeStatusLabelViewWithProject: Signal<Project, Never> { get }
   var totalAmountText: Signal<NSAttributedString, Never> { get }
 }
 
@@ -33,6 +34,7 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
       .map { $0.personalization.backing }
       .skipNil()
 
+    self.configurePledgeStatusLabelViewWithProject = project
     self.configurePledgeAmountSummaryViewWithProject = project
 
     let projectAndBacking = project
@@ -63,6 +65,7 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
 
   public let backerNumberText: Signal<String, Never>
   public let backingDateText: Signal<String, Never>
+  public let configurePledgeStatusLabelViewWithProject: Signal<Project, Never>
   public let configurePledgeAmountSummaryViewWithProject: Signal<Project, Never>
   public let totalAmountText: Signal<NSAttributedString, Never>
 

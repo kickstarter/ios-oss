@@ -190,4 +190,46 @@ internal final class SharedFunctionsTests: XCTestCase {
       XCTAssertFalse(currentUserIsCreator(of: project))
     }
   }
+
+  func testAttributedConfirmationString() {
+    let project = Project.template
+      |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
+      |> Project.lens.stats.currency .~ Currency.USD.rawValue
+      |> Project.lens.country .~ .us
+      |> Project.lens.state .~ .successful
+
+    let string = attributedConfirmationString(
+      with: project,
+      pledgeTotal: 50,
+      font: .ksr_body(),
+      foregroundColor: .ksr_text_black
+    )
+
+    XCTAssertEqual(
+      string?.string,
+      "If the project reaches its funding goal, you will be charged on October 16, 2016."
+    )
+  }
+
+  func testAttributedConfirmationString_OtherCurrency() {
+    withEnvironment(currentUser: .template, locale: Locale(identifier: "en")) {
+      let project = Project.template
+        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
+        |> Project.lens.stats.currency .~ Currency.HKD.rawValue
+        |> Project.lens.country .~ .hk
+        |> Project.lens.state .~ .successful
+
+      let string = attributedConfirmationString(
+        with: project,
+        pledgeTotal: 50,
+        font: .ksr_body(),
+        foregroundColor: .ksr_text_black
+      )
+
+      XCTAssertEqual(
+        string?.string,
+        "If the project reaches its funding goal, you will be charged HK$ 50 on October 16, 2016."
+      )
+    }
+  }
 }

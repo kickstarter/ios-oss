@@ -12,6 +12,10 @@ final class ManagePledgeSummaryViewController: UIViewController {
   private lazy var backerNumberLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var backingDateLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private lazy var pledgeStatusLabelViewController: PledgeStatusLabelViewController = {
+    PledgeStatusLabelViewController.instantiate()
+  }()
+
   private lazy var pledgeAmountSummaryViewController: PledgeAmountSummaryViewController = {
     PledgeAmountSummaryViewController.instantiate()
   }()
@@ -71,6 +75,12 @@ final class ManagePledgeSummaryViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.configurePledgeStatusLabelViewWithProject
+      .observeForUI()
+      .observeValues { [weak self] project in
+        self?.pledgeStatusLabelViewController.configure(with: project)
+      }
+
     self.viewModel.outputs.configurePledgeAmountSummaryViewWithProject
       .observeForUI()
       .observeValues { [weak self] project in
@@ -95,16 +105,28 @@ final class ManagePledgeSummaryViewController: UIViewController {
     _ = ([self.totalLabel, self.totalAmountLabel], self.totalAmountStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.addChild(self.pledgeAmountSummaryViewController)
+    [
+      self.pledgeStatusLabelViewController,
+      self.pledgeAmountSummaryViewController
+    ]
+    .forEach(self.addChild)
 
-    _ = ([
+    let arrangedSubviews = [
       self.backerInfoStackView,
+      self.pledgeStatusLabelViewController.view,
       self.pledgeAmountSummaryViewController.view,
       self.totalAmountStackView
-    ], self.rootStackView)
+    ]
+    .compact()
+
+    _ = (arrangedSubviews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.pledgeAmountSummaryViewController.didMove(toParent: self)
+    [
+      self.pledgeStatusLabelViewController,
+      self.pledgeAmountSummaryViewController
+    ]
+    .forEach { $0.didMove(toParent: self) }
   }
 }
 
