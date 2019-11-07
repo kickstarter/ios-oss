@@ -406,6 +406,7 @@
 "Request_my_data" = "Request my data";
 "Request_my_personal_data" = "Request my personal data";
 "Resend_verification_email" = "Re-send verification email";
+"Retry" = "Retry";
 "Reward_Surveys.few" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.many" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.one" = "Reward Survey";
