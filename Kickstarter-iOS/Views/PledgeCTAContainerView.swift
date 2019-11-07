@@ -95,7 +95,7 @@ final class PledgeCTAContainerView: UIView {
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
     _ = self.retryButton
-      |> retryButtonStyle
+      |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) .~ "Retry"
 
     _ = self.retryStackView
@@ -275,14 +275,6 @@ private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_callout().bolded
     |> \.numberOfLines .~ 0
-}
-
-private let retryButtonStyle: ButtonStyle = { button in
-  button
-    |> greyButtonStyle
-    |> UIButton.lens.imageEdgeInsets .~ .init(left: -Styles.grid(3))
-    |> UIButton.lens.image(for: .normal) %~ { _ in image(named: "icon--refresh-small") }
-    |> UIButton.lens.image(for: .highlighted) %~ { _ in image(named: "icon--refresh-small", alpha: 0.66) }
 }
 
 private let retryStackViewStyle: StackViewStyle = { stackView in

@@ -331,4 +331,31 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
     }
   }
+
+  // MARK: - Native Checkout Enabled, Error fetching project
+  func testProjectPamphletViewController_NativeCheckoutEnabled_ErrorFetchingProject() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(
+        apiService: MockService(fetchProjectError: .couldNotParseJSON),
+        config: config,
+        language: language
+      ) {
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(self.project),
+                                                              refTag: nil)
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+
+        if device == .pad {
+          parent.view.frame.size.height = 2_300
+        }
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
 }
