@@ -10,6 +10,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
   fileprivate let goToBacking = TestObserver<Project, Never>()
   fileprivate let goToComments = TestObserver<Project, Never>()
+  fileprivate let goToDashboard = TestObserver<Param, Never>()
   fileprivate let goToRewardPledgeProject = TestObserver<Project, Never>()
   fileprivate let goToRewardPledgeReward = TestObserver<Reward, Never>()
   fileprivate let goToUpdates = TestObserver<Project, Never>()
@@ -22,6 +23,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     self.vm.outputs.goToBacking.observe(self.goToBacking.observer)
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
+    self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToRewardPledge.map(first).observe(self.goToRewardPledgeProject.observer)
     self.vm.outputs.goToRewardPledge.map(second).observe(self.goToRewardPledgeReward.observer)
     self.vm.outputs.goToUpdates.observe(self.goToUpdates.observer)
@@ -58,6 +60,15 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.vm.inputs.tappedComments()
 
     self.goToComments.assertValues([project])
+  }
+
+  func testGoToDashboard() {
+    let project = Project.template
+    let param: Param = .id(project.id)
+
+    self.vm.inputs.tappedViewProgress(of: project)
+
+    self.goToDashboard.assertValue(param)
   }
 
   func testGoToRewardPledge_LiveProject_NoReward() {
