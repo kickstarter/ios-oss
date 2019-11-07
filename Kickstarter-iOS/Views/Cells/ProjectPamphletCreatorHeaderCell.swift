@@ -11,9 +11,9 @@ private enum Layout {
 }
 
 protocol ProjectPamphletCreatorHeaderCellDelegate: class {
-  func projectPamphletCreatorHeaderCell(
+  func projectPamphletCreatorHeaderCellDidTapViewProgress(
     _ cell: ProjectPamphletCreatorHeaderCell,
-    didTapViewProgress project: Project
+    with project: Project
   )
 }
 
@@ -76,10 +76,10 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegateViewProgressButtonTapped
       .observeForUI()
-      .observeValues { [weak self] in
+      .observeValues { [weak self] project in
         guard let self = self else { return }
 
-        self.delegate?.projectPamphletCreatorHeaderCell(self, didTapViewProgress: $0)
+        self.delegate?.projectPamphletCreatorHeaderCellDidTapViewProgress(self, with: project)
       }
   }
 
@@ -98,6 +98,7 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
       |> checkoutAdaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
+      |> rootStackViewStyle
 
     _ = self.viewProgressButton
       |> viewProgressButtonStyle
@@ -126,6 +127,11 @@ private let projectCreationInfoLabelStyle: LabelStyle = { label in
   label
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0
+}
+
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.spacing .~ Styles.grid(1)
 }
 
 private let viewProgressButtonStyle: ButtonStyle = { button in

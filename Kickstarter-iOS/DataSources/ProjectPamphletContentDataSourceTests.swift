@@ -17,7 +17,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
   }
 
   func testViewProgressSectionRows_UserIsCreatorOfProject() {
-    let viewProgressSection = ProjectPamphletContentDataSource.Section.viewProgress.rawValue
+    let viewProgressSection = ProjectPamphletContentDataSource.Section.creatorHeader.rawValue
 
     let user = User.template
     let project = Project.template
@@ -31,7 +31,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
   }
 
   func testViewProgressSectionRows_UserIsNotCreatorOfProject() {
-    let viewProgressSection = ProjectPamphletContentDataSource.Section.viewProgress.rawValue
+    let viewProgressSection = ProjectPamphletContentDataSource.Section.creatorHeader.rawValue
 
     let user = User.template
       |> \.id .~ 123

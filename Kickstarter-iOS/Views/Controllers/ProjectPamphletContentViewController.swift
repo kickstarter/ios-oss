@@ -266,9 +266,9 @@ extension ProjectPamphletContentViewController: DeprecatedRewardCellDelegate {
 }
 
 extension ProjectPamphletContentViewController: ProjectPamphletCreatorHeaderCellDelegate {
-  internal func projectPamphletCreatorHeaderCell(
-    _: ProjectPamphletCreatorHeaderCell,
-    didTapViewProgress project: Project
+  func projectPamphletCreatorHeaderCellDidTapViewProgress(
+    _ cell: ProjectPamphletCreatorHeaderCell,
+    with project: Project
   ) {
     self.viewModel.inputs.tappedViewProgress(of: project)
   }

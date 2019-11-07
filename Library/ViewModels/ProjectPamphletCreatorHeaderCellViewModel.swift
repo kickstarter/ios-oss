@@ -58,7 +58,12 @@ private func title(for project: Project) -> String {
 
 private func attributedLaunchDateString(with project: Project)
   -> NSAttributedString? {
-  let date = Format.date(secondsInUTC: project.dates.launchedAt, dateStyle: .long, timeStyle: .none)
+  let date = Format.date(
+    secondsInUTC: project.dates.launchedAt,
+    dateStyle: .long,
+    timeStyle: .none,
+    timeZone: UTCTimeZone
+  )
   let fullString = Strings.You_launched_this_project_on_launch_date(launch_date: date)
 
   let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: fullString)

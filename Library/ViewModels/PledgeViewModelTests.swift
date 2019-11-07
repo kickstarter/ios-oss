@@ -3536,4 +3536,25 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual(["Update Pledge Button Clicked"], self.trackingClient.events)
   }
+
+  func testTrackingEvents_PledgeScreenViewed() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
+
+    XCTAssertEqual([], self.trackingClient.events)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Pledge Screen Viewed"], self.trackingClient.events)
+  }
+
+  func testTrackingEvents_PledgeButtonClicked() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
+
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Pledge Screen Viewed"], self.trackingClient.events)
+
+    self.vm.inputs.submitButtonTapped()
+
+    XCTAssertEqual(["Pledge Screen Viewed", "Pledge Button Clicked"], self.trackingClient.events)
+  }
 }
