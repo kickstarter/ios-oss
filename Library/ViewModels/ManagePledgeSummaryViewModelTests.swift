@@ -9,6 +9,7 @@ import XCTest
 final class ManagePledgeSummaryViewModelTests: TestCase {
   private let vm = ManagePledgeSummaryViewModel()
 
+  private let backerImagePlaceholderImageName = TestObserver<String, Never>()
   private let backerImageURL = TestObserver<URL, Never>()
   private let backerNameLabelHidden = TestObserver<Bool, Never>()
   private let backerNameText = TestObserver<String, Never>()
@@ -19,7 +20,9 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.vm.outputs.backerImageURL.observe(self.backerImageURL.observer)
+    self.vm.outputs.backerImageURLAndPlaceholderImageName.map(second)
+      .observe(self.backerImagePlaceholderImageName.observer)
+    self.vm.outputs.backerImageURLAndPlaceholderImageName.map(first).observe(self.backerImageURL.observer)
     self.vm.outputs.backerNameLabelHidden.observe(self.backerNameLabelHidden.observer)
     self.vm.outputs.backerNameText.observe(self.backerNameText.observer)
     self.vm.outputs.backerNumberText.observe(self.backerNumberText.observer)
@@ -65,6 +68,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       self.backerNameText.assertValues(["Blob"])
       self.backerNameLabelHidden.assertValues([false])
       self.backerImageURL.assertValues([URL(string: "http://www.kickstarter.com/small.jpg")!])
+      self.backerImagePlaceholderImageName.assertValues(["avatar--placeholder"])
       self.circleAvatarViewHidden.assertValues([false])
     }
   }
@@ -85,6 +89,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       self.backerNameText.assertDidNotEmitValue()
       self.backerNameLabelHidden.assertValues([true])
       self.backerImageURL.assertDidNotEmitValue()
+      self.backerImagePlaceholderImageName.assertDidNotEmitValue()
       self.circleAvatarViewHidden.assertValues([true])
     }
   }

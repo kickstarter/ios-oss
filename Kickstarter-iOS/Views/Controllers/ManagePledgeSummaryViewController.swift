@@ -5,6 +5,10 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+private enum Layout {
+  static let avatarWidth: CGFloat = 54.0
+}
+
 final class ManagePledgeSummaryViewController: UIViewController {
   // MARK: - Properties
 
@@ -95,14 +99,15 @@ final class ManagePledgeSummaryViewController: UIViewController {
         self?.pledgeAmountSummaryViewController.configureWith(project)
       }
 
-    self.viewModel.outputs.backerImageURL
+    self.viewModel.outputs.backerImageURLAndPlaceholderImageName
       .observeForUI()
       .on(event: { [weak self] _ in
         self?.circleAvatarImageView.af_cancelImageRequest()
         self?.circleAvatarImageView.image = nil
       })
-      .observeValues { [weak self] url in
-        self?.circleAvatarImageView.ksr_setImageWithURL(url)
+      .observeValues { [weak self] url, placeholderImageName in
+        self?.circleAvatarImageView
+          .ksr_setImageWithURL(url, placeholderImage: UIImage(named: placeholderImageName))
       }
 
     self.backerNameLabel.rac.hidden = self.viewModel.outputs.backerNameLabelHidden
@@ -143,8 +148,8 @@ final class ManagePledgeSummaryViewController: UIViewController {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.circleAvatarImageView.heightAnchor.constraint(equalToConstant: 50),
-      self.circleAvatarImageView.widthAnchor.constraint(equalToConstant: 50)
+      self.circleAvatarImageView.widthAnchor.constraint(equalToConstant: Layout.avatarWidth),
+      self.circleAvatarImageView.heightAnchor.constraint(equalTo: self.circleAvatarImageView.widthAnchor)
       ])
   }
 }

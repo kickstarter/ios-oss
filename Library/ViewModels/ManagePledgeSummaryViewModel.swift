@@ -9,7 +9,7 @@ public protocol ManagePledgeSummaryViewModelInputs {
 }
 
 public protocol ManagePledgeSummaryViewModelOutputs {
-  var backerImageURL: Signal<URL, Never> { get }
+  var backerImageURLAndPlaceholderImageName: Signal<(URL, String), Never> { get }
   var backerNameText: Signal<String, Never> { get }
   var backerNameLabelHidden: Signal<Bool, Never> { get }
   var backerNumberText: Signal<String, Never> { get }
@@ -57,15 +57,15 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     let userBackingProject = userAndIsBackingProject
       .filter(second >>> isTrue)
       .map(first)
-      .logEvents(identifier: "**userBackingProject")
     
     self.backerNameText = userBackingProject
       .map(\.name)
 
-    self.backerImageURL = userBackingProject
+    self.backerImageURLAndPlaceholderImageName = userBackingProject
       .map(\.avatar.small)
       .map(URL.init)
       .skipNil()
+      .map { ($0, "avatar--placeholder") }
 
     self.backerNumberText = backing
       .map { Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence)) }
@@ -90,7 +90,7 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     self.viewDidLoadObserver.send(value: ())
   }
 
-  public let backerImageURL: Signal<URL, Never>
+  public let backerImageURLAndPlaceholderImageName: Signal<(URL, String), Never>
   public let backerNameText: Signal<String, Never>
   public let backerNameLabelHidden: Signal<Bool, Never>
   public let backerNumberText: Signal<String, Never>
