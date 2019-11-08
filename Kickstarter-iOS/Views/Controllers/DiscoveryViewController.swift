@@ -82,9 +82,7 @@ internal final class DiscoveryViewController: UIViewController {
     self.viewModel.outputs.navigateToSort
       .observeForControllerAction()
       .observeValues { [weak self] sort, direction in
-        guard let controller = self?.dataSource.controllerFor(sort: sort) else {
-          return
-        }
+        guard let controller = self?.dataSource.controllerFor(sort: sort) else { return }
 
         self?.pageViewController.ksr_setViewControllers(
           [controller], direction: direction, animated: true, completion: nil
