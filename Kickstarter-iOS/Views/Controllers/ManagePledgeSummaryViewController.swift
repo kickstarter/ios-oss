@@ -8,9 +8,15 @@ import UIKit
 final class ManagePledgeSummaryViewController: UIViewController {
   // MARK: - Properties
 
+  private lazy var backerInfoContainerStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var backerInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var backerNameLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var backerNumberLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var backingDateLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var circleAvatarImageView: CircleAvatarImageView = {
+    CircleAvatarImageView.init(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var pledgeAmountSummaryViewController: PledgeAmountSummaryViewController = {
     PledgeAmountSummaryViewController.instantiate()
@@ -33,6 +39,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
     super.viewDidLoad()
 
     self.configureViews()
+    self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -41,6 +48,17 @@ final class ManagePledgeSummaryViewController: UIViewController {
 
   override func bindStyles() {
     super.bindStyles()
+
+    _ = self.circleAvatarImageView
+      |> ignoresInvertColorsImageViewStyle
+
+    _ = self.backerInfoContainerStackView
+      |> checkoutAdaptableStackViewStyle(
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
+      |> backerInfoContainerStackViewStyle
+
+    _ = self.backerNameLabel
+      |> backerNameLabelStyle
 
     _ = self.backerInfoStackView
       |> backerInfoStackViewStyle
@@ -77,6 +95,17 @@ final class ManagePledgeSummaryViewController: UIViewController {
         self?.pledgeAmountSummaryViewController.configureWith(project)
       }
 
+    self.viewModel.outputs.backerImageURL
+      .observeForUI()
+      .on(event: { [weak self] _ in
+        self?.circleAvatarImageView.af_cancelImageRequest()
+        self?.circleAvatarImageView.image = nil
+      })
+      .observeValues { [weak self] url in
+        self?.circleAvatarImageView.ksr_setImageWithURL(url)
+      }
+
+    self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
     self.backerNumberLabel.rac.text = self.viewModel.outputs.backerNumberText
     self.backingDateLabel.rac.text = self.viewModel.outputs.backingDateText
     self.totalAmountLabel.rac.attributedText = self.viewModel.outputs.totalAmountText
@@ -89,7 +118,10 @@ final class ManagePledgeSummaryViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.backerNumberLabel, self.backingDateLabel], self.backerInfoStackView)
+    _ = ([self.circleAvatarImageView, self.backerInfoStackView], self.backerInfoContainerStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.backerNameLabel, self.backerNumberLabel, self.backingDateLabel], self.backerInfoStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.totalLabel, self.totalAmountLabel], self.totalAmountStackView)
@@ -98,13 +130,20 @@ final class ManagePledgeSummaryViewController: UIViewController {
     self.addChild(self.pledgeAmountSummaryViewController)
 
     _ = ([
-      self.backerInfoStackView,
+      self.backerInfoContainerStackView,
       self.pledgeAmountSummaryViewController.view,
       self.totalAmountStackView
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.pledgeAmountSummaryViewController.didMove(toParent: self)
+  }
+
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      self.circleAvatarImageView.heightAnchor.constraint(equalToConstant: 50),
+      self.circleAvatarImageView.widthAnchor.constraint(equalToConstant: 50)
+      ])
   }
 }
 
@@ -118,22 +157,34 @@ private let amountLabelStyle: LabelStyle = { label in
     |> \.minimumScaleFactor .~ 0.75
 }
 
+private let backerInfoContainerStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.spacing .~ Styles.grid(3)
+}
+
+private let backerNameLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ .ksr_headline()
+    |> \.lineBreakMode .~ .byWordWrapping
+    |> \.numberOfLines .~ 0
+}
+
 private let backerInfoStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> verticalStackViewStyle
-    |> \.spacing .~ Styles.grid(1)
+    |> \.spacing .~ Styles.gridHalf(1)
 }
 
 private let backerNumberLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ UIColor.ksr_soft_black
-    |> \.font .~ UIFont.ksr_subhead().bolded
+    |> \.font .~ UIFont.ksr_footnote()
     |> \.adjustsFontForContentSizeCategory .~ true
 }
 
 private let backingDateLabelStyle: LabelStyle = { label in
   label
-    |> \.font .~ UIFont.ksr_subhead()
+    |> \.font .~ UIFont.ksr_footnote()
     |> \.textColor .~ UIColor.ksr_dark_grey_500
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0
