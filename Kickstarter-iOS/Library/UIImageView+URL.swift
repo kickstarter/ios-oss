@@ -4,8 +4,10 @@ import ReactiveSwift
 import UIKit
 
 extension UIImageView {
-  public func ksr_setImageWithURL(_ url: URL,
-                                  placeholderImage: UIImage? = nil) {
+  public func ksr_setImageWithURL(
+    _ url: URL,
+    placeholderImage: UIImage? = nil
+  ) {
     self.af_setImage(
       withURL: url,
       placeholderImage: placeholderImage,

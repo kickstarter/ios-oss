@@ -150,7 +150,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
     NSLayoutConstraint.activate([
       self.circleAvatarImageView.widthAnchor.constraint(equalToConstant: Layout.avatarWidth),
       self.circleAvatarImageView.heightAnchor.constraint(equalTo: self.circleAvatarImageView.widthAnchor)
-      ])
+    ])
   }
 }
 

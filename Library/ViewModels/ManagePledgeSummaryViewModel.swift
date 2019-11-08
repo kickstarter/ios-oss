@@ -57,7 +57,7 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     let userBackingProject = userAndIsBackingProject
       .filter(second >>> isTrue)
       .map(first)
-    
+
     self.backerNameText = userBackingProject
       .map(\.name)
 

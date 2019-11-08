@@ -10,7 +10,7 @@ private enum Layout {
   }
 }
 
-protocol ProjectPamphletCreatorHeaderCellDelegate: class {
+protocol ProjectPamphletCreatorHeaderCellDelegate: AnyObject {
   func projectPamphletCreatorHeaderCellDidTapViewProgress(
     _ cell: ProjectPamphletCreatorHeaderCell,
     with project: Project
