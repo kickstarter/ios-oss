@@ -6766,6 +6766,23 @@ daring ideas."
     )
   }
   /**
+   "Retry"
+
+   - **en**: "Retry"
+   - **de**: "Erneut versuchen"
+   - **es**: "Volver a intentar"
+   - **fr**: "Réessayer"
+   - **ja**: "もう一度試す"
+  */
+  public static func Retry() -> String {
+    return localizedString(
+      key: "Retry",
+      defaultValue: "Retry",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{reward_survey_count} Reward Surveys"
 
    - **en**: "%{reward_survey_count} Reward Surveys"
