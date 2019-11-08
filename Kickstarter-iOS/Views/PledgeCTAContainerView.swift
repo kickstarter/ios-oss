@@ -144,12 +144,6 @@ final class PledgeCTAContainerView: UIView {
         self?.animateView(self?.pledgeCTAButton, isHidden: isHidden)
       }
 
-    self.viewModel.outputs.retryStackViewIsHidden
-      .observeForUI()
-      .observeValues { [weak self] isHidden in
-        self?.updateRetryStackViewIsHidden(isHidden)
-      }
-
     self.activityIndicatorContainerView.rac.hidden = self.viewModel.outputs.activityIndicatorIsHidden
     self.pledgeCTAButton.rac.hidden = self.viewModel.outputs.pledgeCTAButtonIsHidden
     self.pledgeCTAButton.rac.title = self.viewModel.outputs.buttonTitleText
@@ -186,6 +180,7 @@ final class PledgeCTAContainerView: UIView {
 
     _ = (
       [
+        self.retryStackView,
         self.titleAndSubtitleStackView,
         self.spacer,
         self.pledgeCTAButton,
@@ -210,16 +205,6 @@ final class PledgeCTAContainerView: UIView {
       self.retryButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.retryButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.RetryButton.minWidth)
     ])
-  }
-
-  private func updateRetryStackViewIsHidden(_ isHidden: Bool) {
-    if isHidden {
-      self.retryStackView.removeFromSuperview()
-    } else {
-      _ = (self.retryStackView, self)
-        |> ksr_addSubviewToParent()
-        |> ksr_constrainViewToEdgesInParent()
-    }
   }
 
   fileprivate func animateView(_ view: UIView?, isHidden: Bool) {
@@ -283,7 +268,6 @@ private let retryStackViewStyle: StackViewStyle = { stackView in
     |> \.alignment .~ .center
     |> \.spacing .~ Styles.grid(3)
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
 }
 
 private let retryDescriptionLabelStyle: LabelStyle = { label in
