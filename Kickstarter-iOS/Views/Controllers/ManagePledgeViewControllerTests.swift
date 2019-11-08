@@ -21,10 +21,15 @@ final class ManagePledgeViewControllerTests: TestCase {
 
   func testView() {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(language: language) {
+      let user = User.template
+        |> User.lens.id .~ 1
+        |> User.lens.avatar.small .~ ""
+
+      withEnvironment(currentUser: user, language: language) {
         let reward = Reward.template
           |> Reward.lens.shipping.enabled .~ true
         let backing = Backing.template
+
           |> Backing.lens.reward .~ reward
         let backedProject = Project.cosmicSurgery
           |> Project.lens.personalization.backing .~ backing
@@ -44,8 +49,11 @@ final class ManagePledgeViewControllerTests: TestCase {
   func testView_NoReward_ApplePay() {
     let language = Language.en
     let device = Device.phone4_7inch
+    let user = User.template
+      |> User.lens.id .~ 1
+      |> User.lens.avatar.small .~ ""
 
-    withEnvironment(language: language) {
+    withEnvironment(currentUser: user, language: language) {
       let reward = Reward.noReward
 
       let backing = Backing.template
@@ -76,8 +84,11 @@ final class ManagePledgeViewControllerTests: TestCase {
   func testView_GooglePay() {
     let language = Language.en
     let device = Device.phone4_7inch
+    let user = User.template
+      |> User.lens.id .~ 1
+      |> User.lens.avatar.small .~ ""
 
-    withEnvironment(language: language) {
+    withEnvironment(currentUser: user, language: language) {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 

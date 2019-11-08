@@ -10,7 +10,7 @@ public protocol ManagePledgeSummaryViewModelInputs {
 
 public protocol ManagePledgeSummaryViewModelOutputs {
   var backerImageURL: Signal<URL, Never> { get }
-  var backerName: Signal<String, Never> { get }
+  var backerNameText: Signal<String, Never> { get }
   var backerNameLabelHidden: Signal<Bool, Never> { get }
   var backerNumberText: Signal<String, Never> { get }
   var backingDateText: Signal<String, Never> { get }
@@ -42,8 +42,6 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     let projectAndBacking = project
       .zip(with: backing)
 
-    // TODO: how to guaratee that the current user is the backer? can we know that?
-    // If the current user is *not* the backer, how do we get the backer information?
     let userAndIsBackingProject = backing
       .filterMap { backing -> (User, Bool)? in
         guard let user = AppEnvironment.current.currentUser else {
@@ -59,8 +57,9 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     let userBackingProject = userAndIsBackingProject
       .filter(second >>> isTrue)
       .map(first)
+      .logEvents(identifier: "**userBackingProject")
     
-    self.backerName = userBackingProject
+    self.backerNameText = userBackingProject
       .map(\.name)
 
     self.backerImageURL = userBackingProject
@@ -92,7 +91,7 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
   }
 
   public let backerImageURL: Signal<URL, Never>
-  public let backerName: Signal<String, Never>
+  public let backerNameText: Signal<String, Never>
   public let backerNameLabelHidden: Signal<Bool, Never>
   public let backerNumberText: Signal<String, Never>
   public let backingDateText: Signal<String, Never>

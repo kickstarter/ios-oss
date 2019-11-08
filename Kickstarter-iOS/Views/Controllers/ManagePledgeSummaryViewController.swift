@@ -105,9 +105,11 @@ final class ManagePledgeSummaryViewController: UIViewController {
         self?.circleAvatarImageView.ksr_setImageWithURL(url)
       }
 
-    self.backerNameLabel.rac.text = self.viewModel.outputs.backerName
+    self.backerNameLabel.rac.hidden = self.viewModel.outputs.backerNameLabelHidden
+    self.backerNameLabel.rac.text = self.viewModel.outputs.backerNameText
     self.backerNumberLabel.rac.text = self.viewModel.outputs.backerNumberText
     self.backingDateLabel.rac.text = self.viewModel.outputs.backingDateText
+    self.circleAvatarImageView.rac.hidden = self.viewModel.outputs.circleAvatarViewHidden
     self.totalAmountLabel.rac.attributedText = self.viewModel.outputs.totalAmountText
   }
 
