@@ -186,7 +186,7 @@ public final class RootTabBarViewController: UITabBarController {
   private func viewControllerAndParam<T, P>(with index: RootViewControllerIndex, param: P) -> (T, P)? {
     guard let vcs = self.viewControllers else { return nil }
 
-    if shouldSwitchToDashboard(index),
+    if self.shouldSwitchToDashboard(index),
       let nav = vcs[clamp(0, vcs.count - 1)(index)] as? UINavigationController,
       let vc = nav.children.first as? T {
       return (vc, param)
