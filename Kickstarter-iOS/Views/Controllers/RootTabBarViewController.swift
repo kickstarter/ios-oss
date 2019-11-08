@@ -184,18 +184,13 @@ public final class RootTabBarViewController: UITabBarController {
   }
 
   private func viewControllerAndParam<T, P>(with index: RootViewControllerIndex, param: P) -> (T, P)? {
-    guard let vcs = self.viewControllers else { return nil }
-
-    if self.shouldSwitchToDashboard(index),
+    guard let vcs = self.viewControllers,
       let nav = vcs[clamp(0, vcs.count - 1)(index)] as? UINavigationController,
-      let vc = nav.children.first as? T {
-      return (vc, param)
+      let vc = nav.children.first as? T else {
+      return nil
     }
 
-    if let vc = vcs[clamp(0, vcs.count - 1)(index)] as? T {
-      return (vc, param)
-    }
-    return nil
+    return (vc, param)
   }
 
   public func switchToMessageThread(_ messageThread: MessageThread) {
@@ -298,10 +293,6 @@ public final class RootTabBarViewController: UITabBarController {
       }
     }
     return nil
-  }
-
-  private func shouldSwitchToDashboard(_ index: RootViewControllerIndex) -> Bool {
-    return index == 3
   }
 
   // MARK: - Accessors

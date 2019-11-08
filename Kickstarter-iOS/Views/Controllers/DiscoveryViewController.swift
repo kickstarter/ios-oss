@@ -83,7 +83,7 @@ internal final class DiscoveryViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] sort, direction in
         guard let controller = self?.dataSource.controllerFor(sort: sort) else {
-          fatalError("Controller not found for sort \(sort)")
+          return
         }
 
         self?.pageViewController.ksr_setViewControllers(
