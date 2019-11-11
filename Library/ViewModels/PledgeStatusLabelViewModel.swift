@@ -70,25 +70,13 @@ private func statusLabelText(with project: Project) -> NSAttributedString? {
 
   switch backing.status {
   case .canceled:
-    string = localizedString(
-      key: "You_canceled_your_pledge_for_this_project",
-      defaultValue: "You canceled your pledge for this project."
-    )
+    string = Strings.You_canceled_your_pledge_for_this_project()
   case .collected:
-    string = localizedString(
-      key: "We_collected_your_pledge_for_this_project",
-      defaultValue: "We collected your pledge for this project."
-    )
+    string = Strings.We_collected_your_pledge_for_this_project()
   case .dropped:
-    string = localizedString(
-      key: "Your_pledge_was_dropped_because_of_payment_errors",
-      defaultValue: "Your pledge was dropped because of payment errors."
-    )
+    string = Strings.Your_pledge_was_dropped_because_of_payment_errors()
   case .errored:
-    string = localizedString(
-      key: "We_cant_process_your_pledge_Please_update_your_payment_method",
-      defaultValue: "We can’t process your pledge. Please update your payment method."
-    )
+    string = Strings.We_cant_process_your_pledge_Please_update_your_payment_method()
   case .pledged:
     return attributedConfirmationString(
       with: project,
@@ -106,15 +94,9 @@ private func projectStatusLabelText(with project: Project) -> String? {
 
   switch project.state {
   case .canceled:
-    string = localizedString(
-      key: "The_creator_canceled_this_project_so_your_payment_method_was_never_charged",
-      defaultValue: "The creator canceled this project, so your payment method was never charged."
-    )
+    string = Strings.The_creator_canceled_this_project_so_your_payment_method_was_never_charged()
   case .failed:
-    string = localizedString(
-      key: "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged",
-      defaultValue: "This project didn’t reach its funding goal, so your payment method was never charged."
-    )
+    string = Strings.This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged()
   case .live, .purged, .started, .submitted, .suspended, .successful:
     return nil
   }
