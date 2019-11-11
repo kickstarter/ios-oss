@@ -3,7 +3,9 @@ import Prelude
 import ReactiveSwift
 
 public protocol RewardCardContainerViewModelInputs {
-  func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
+  func configureWith(project: Project,
+                     rewardOrBacking: Either<Reward, Backing>,
+                     context: RewardCardViewContext)
   func pledgeButtonTapped()
 }
 
@@ -26,7 +28,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
   RewardCardContainerViewModelInputs, RewardCardContainerViewModelOutputs {
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
-      self.projectAndRewardOrBackingProperty.signal.skipNil()
+      self.projectAndRewardOrBackingProperty.signal.skipNil().map { ($0.0, $0.1) }
 
     let project: Signal<Project, Never> = projectAndRewardOrBacking.map(first)
 
@@ -39,6 +41,8 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
       }
 
     let projectAndReward = Signal.zip(project, reward)
+
+    let context = self.projectAndRewardOrBackingProperty.signal.skipNil().map(third)
 
     self.currentRewardProperty <~ reward
 
@@ -53,7 +57,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.pledgeButtonEnabled = projectAndReward
       .map(pledgeButtonIsEnabled(project:reward:))
 
-    self.pledgeButtonHidden = pledgeButtonTitleText.map(isNil)
+    self.pledgeButtonHidden = Signal.merge(pledgeButtonTitleText.map(isNil), context.map { $0 == .pledgeView })
 
     self.gradientViewHidden = self.pledgeButtonHidden
 
@@ -75,9 +79,11 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
       }
   }
 
-  private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
-  public func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>) {
-    self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking)
+  private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>, RewardCardViewContext)?>(nil)
+  public func configureWith(project: Project,
+                            rewardOrBacking: Either<Reward, Backing>,
+                            context: RewardCardViewContext) {
+    self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking, context)
   }
 
   private let pledgeButtonTappedProperty = MutableProperty(())

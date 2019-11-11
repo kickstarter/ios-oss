@@ -230,7 +230,7 @@ final class PledgeDescriptionViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] data in
         guard let self = self else { return }
-        self.rewardCardContainerView.configure(with: data)
+        self.rewardCardContainerView.configure(with: data, context: .rewardsCollectionView)
       }
 
     self.viewModel.outputs.popViewController

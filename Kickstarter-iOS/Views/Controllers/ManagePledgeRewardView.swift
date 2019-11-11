@@ -6,8 +6,8 @@ import UIKit
 final class ManagePledgeRewardView: UIView {
   // MARK: - Properties
 
-  private lazy var rewardView: RewardCardView = {
-    RewardCardView(frame: .zero)
+  private lazy var rewardView: RewardCardContainerView = {
+    RewardCardContainerView(frame: .zero)
   }()
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
