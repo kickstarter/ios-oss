@@ -50,30 +50,29 @@ final class ManagePledgeViewControllerTests: TestCase {
     let device = Device.phone4_7inch
     let language = Language.en
 
-      let user = User.template
-        |> User.lens.id .~ 1
-        |> User.lens.avatar.small .~ ""
+    let user = User.template
+      |> User.lens.id .~ 1
+      |> User.lens.avatar.small .~ ""
 
-      withEnvironment(currentUser: user, language: language) {
-        let reward = Reward.template
-          |> Reward.lens.shipping.enabled .~ true
-        let backing = Backing.template
-          |> Backing.lens.backerId .~ 5
+    withEnvironment(currentUser: user, language: language) {
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+      let backing = Backing.template
+        |> Backing.lens.backerId .~ 5
 
-          |> Backing.lens.reward .~ reward
-        let backedProject = Project.cosmicSurgery
-          |> Project.lens.personalization.backing .~ backing
+        |> Backing.lens.reward .~ reward
+      let backedProject = Project.cosmicSurgery
+        |> Project.lens.personalization.backing .~ backing
 
-        let controller = ManagePledgeViewController.instantiate()
-        controller.configureWith(project: backedProject)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+      let controller = ManagePledgeViewController.instantiate()
+      controller.configureWith(project: backedProject)
+      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+      self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
-      }
+      FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+    }
   }
-
 
   func testView_NoReward_ApplePay() {
     let language = Language.en
