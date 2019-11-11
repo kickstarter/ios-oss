@@ -20,6 +20,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   private let reloadPaymentMethodsAvailableCardTypes = TestObserver<[Bool], Never>()
   private let reloadPaymentMethodsProjectCountry = TestObserver<[String], Never>()
   private let reloadPaymentMethodsSelectedCard = TestObserver<GraphUserCreditCard.CreditCard?, Never>()
+  private let storedPaymentMethodsTitleLabelHidden = TestObserver<Bool, Never>()
   private let updateSelectedCreditCard = TestObserver<GraphUserCreditCard.CreditCard, Never>()
 
   override func setUp() {
@@ -42,7 +43,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.reloadPaymentMethodsProjectCountry.observer)
     self.vm.outputs.reloadPaymentMethodsAndSelectCard.map(second)
       .observe(self.reloadPaymentMethodsSelectedCard.observer)
-
+    self.vm.outputs.storedPaymentMethodsTitleLabelHidden
+      .observe(self.storedPaymentMethodsTitleLabelHidden.observer)
     self.vm.outputs.updateSelectedCreditCard.observe(self.updateSelectedCreditCard.observer)
   }
 
@@ -442,6 +444,43 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.applePayButtonHidden.assertValues([false])
+    }
+  }
+
+  func testStoredCardsTitleLabel_ApplePayIncapable_IsHidden() {
+    self.vm.inputs.configureWith((User.template, Project.template, false))
+    self.vm.inputs.viewDidLoad()
+
+    self.storedPaymentMethodsTitleLabelHidden.assertValues([true])
+  }
+
+  func testStoredCardsTitleLabel_ApplePayCapable_UnsupportedCountry_IsHidden() {
+    let mockConfig = Config.template
+      |> \.applePayCountries .~ [
+        Project.Country.us.countryCode,
+    ]
+    let project = Project.template
+      |> \.country .~ .gb
+
+    withEnvironment(config: mockConfig) {
+      self.vm.inputs.configureWith((User.template, project, true))
+      self.vm.inputs.viewDidLoad()
+
+      self.storedPaymentMethodsTitleLabelHidden.assertValues([true])
+    }
+  }
+
+  func testStoredCardsTitleLabel_ApplePayCapable_IsNotHidden() {
+    let mockConfig = Config.template
+      |> \.applePayCountries .~ [
+        Project.Country.us.countryCode,
+    ]
+
+    withEnvironment(config: mockConfig) {
+      self.vm.inputs.configureWith((User.template, Project.template, true))
+      self.vm.inputs.viewDidLoad()
+
+      self.storedPaymentMethodsTitleLabelHidden.assertValues([false])
     }
   }
 

@@ -23,6 +23,7 @@ public protocol PledgePaymentMethodsViewModelOutputs {
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethodsAndSelectCard:
     Signal<([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?), Never> { get }
+  var storedPaymentMethodsTitleLabelHidden: Signal<Bool, Never> { get }
   var updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never> { get }
 }
 
@@ -56,6 +57,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .map { ($0.project, $0.applePayCapable) }
       .map(showApplePayButton(for:applePayCapable:))
       .negate()
+
+    self.storedPaymentMethodsTitleLabelHidden = self.applePayButtonHidden
 
     let storedCardsValues = storedCardsEvent.values().map { $0.me.storedCards.nodes }
     let backing = configureWithValue.map { $0.project.personalization.backing }
@@ -137,7 +140,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethodsAndSelectCard:
     Signal<([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?), Never>
-
+  public let storedPaymentMethodsTitleLabelHidden: Signal<Bool, Never>
   public let updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never>
 
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }
