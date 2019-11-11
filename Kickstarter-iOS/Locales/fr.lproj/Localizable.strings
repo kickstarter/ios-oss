@@ -539,6 +539,7 @@
 "View_rewards" = "Afficher les récompenses";
 "View_your_pledge" = "Afficher mon engagement";
 "View_your_reward" = "Afficher ma récompense";
+"View_your_rewards" = "Afficher mes récompenses";
 "Watch_live" = "Regarder en direct";
 "We_couldnt_find_anything_for_search_term" = "Pas de résultats pour « %{search_term} ».";
 "We_couldnt_process_your_pledge" = "Impossible de traiter votre engagement.";

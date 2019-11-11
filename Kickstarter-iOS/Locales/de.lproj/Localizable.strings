@@ -539,6 +539,7 @@
 "View_rewards" = "Belohnungen ansehen";
 "View_your_pledge" = "Deinen Finanzierungsbeitrag ansehen";
 "View_your_reward" = "Belohnung ansehen";
+"View_your_rewards" = "Deine Belohnungen ansehen";
 "Watch_live" = "Live ansehen";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
 "We_couldnt_process_your_pledge" = "Dein Finanzierungsbeitrag konnte nicht bearbeitet werden.";

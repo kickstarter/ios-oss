@@ -8825,6 +8825,23 @@ catch your eye?"
     )
   }
   /**
+   "View your rewards"
+
+   - **en**: "View your rewards"
+   - **de**: "Deine Belohnungen ansehen"
+   - **es**: "Ver tus recompensas"
+   - **fr**: "Afficher mes récompenses"
+   - **ja**: "View your rewards"
+  */
+  public static func View_your_rewards() -> String {
+    return localizedString(
+      key: "View_your_rewards",
+      defaultValue: "View your rewards",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Watch live"
 
    - **en**: "Watch live"
