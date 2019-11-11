@@ -567,7 +567,7 @@
 "You_backed_this_project" = "Vous avez soutenu ce projet.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "Impossible d'accepter cette carte pour soutenir un projet depuis le pays suivant : %{project_country}.";
 "You_have_successfully_backed_project_html" = "Vous vous êtes engagé à soutenir le projet <b>%{project_name}</b>. Ce projet se rapproche tout doucement de son objectif grâce à vous. Parlez-en à votre entourage !";
-"You_launched_this_project_on_launch_date" = "You launched this project on %{launch_date}.";
+"You_launched_this_project_on_launch_date" = "Vous avez lancé ce projet le %{launch_date}.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Vous devez vous engager à hauteur de %{reward_minimum} ou plus pour sélectionner cette récompense.";
 "You_pledged_on_date" = "<b>Votre engagement</b> du %{pledge_date}";
 "You_pledged_without_a_reward" = "Engagement sans récompense";
