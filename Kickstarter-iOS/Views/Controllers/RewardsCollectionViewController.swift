@@ -110,11 +110,11 @@ final class RewardsCollectionViewController: UICollectionViewController {
     super.bindStyles()
 
     _ = self.view
-      |> rewardsBackgroundStyle
+      |> checkoutBackgroundStyle
 
     _ = self.collectionView
       |> collectionViewStyle
-      |> rewardsBackgroundStyle
+      |> checkoutBackgroundStyle
   }
 
   override func bindViewModel() {

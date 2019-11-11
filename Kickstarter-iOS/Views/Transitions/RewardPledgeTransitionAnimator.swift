@@ -121,7 +121,8 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
 
     self.animator.addCompletion { _ in
       snapshotShadowContainerView.removeFromSuperview()
-
+      _ = fromView
+        |> \.alpha .~ 1.0
       toVC.endTransition(operation)
       fromDelegate.endTransition(operation)
       transitionContext.completeTransition(!transitionContext.transitionWasCancelled)

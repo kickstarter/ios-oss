@@ -24,7 +24,7 @@ final class RewardsCollectionViewFooter: UIView {
     super.bindStyles()
 
     _ = self
-      |> rewardsBackgroundStyle
+      |> checkoutBackgroundStyle
 
     _ = self.countLabel
       |> countLabelStyle
@@ -69,5 +69,5 @@ private let countLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_footnote()
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.textAlignment .~ .center
-    |> \.backgroundColor .~ UIColor.ksr_grey_400
+    |> \.backgroundColor .~ UIColor.ksr_grey_300
 }
