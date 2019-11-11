@@ -643,63 +643,46 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["Add New Card Button Clicked"], client.events)
   }
 
-  func testTrackManagePledgeOptionClicked_UpdatePledgeSelected() {
-    let client = MockTrackingClient()
-    let loggedInUser = User.template
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
-
-    koala.trackManagePledgeOptionClicked(project: .template, managePledgeMenuCTA: .updatePledge)
-
-    let properties = client.properties.last
-    XCTAssertEqual(["Manage Pledge Option Clicked"], client.events)
-    XCTAssertEqual("update_pledge", properties?["cta"] as? String)
-  }
-
-  func testTrackManagePledgeOptionClicked_ChangePaymentMethodSelected() {
-    let client = MockTrackingClient()
-    let loggedInUser = User.template
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
-
-    koala.trackManagePledgeOptionClicked(project: .template, managePledgeMenuCTA: .changePaymentMethod)
-
-    let properties = client.properties.last
-    XCTAssertEqual(["Manage Pledge Option Clicked"], client.events)
-    XCTAssertEqual("change_payment_method", properties?["cta"] as? String)
-  }
-
-  func testTrackManagePledgeOptionClicked_ChangeAnotherRewardSelected() {
-    let client = MockTrackingClient()
-    let loggedInUser = User.template
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
-
-    koala.trackManagePledgeOptionClicked(project: .template, managePledgeMenuCTA: .chooseAnotherReward)
-
-    let properties = client.properties.last
-    XCTAssertEqual(["Manage Pledge Option Clicked"], client.events)
-    XCTAssertEqual("choose_another_reward", properties?["cta"] as? String)
-  }
-
-  func testTrackManagePledgeOptionClicked_ContactCreatorSelected() {
-    let client = MockTrackingClient()
-    let loggedInUser = User.template
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
-
-    koala.trackManagePledgeOptionClicked(project: .template, managePledgeMenuCTA: .contactCreator)
-
-    let properties = client.properties.last
-    XCTAssertEqual(["Manage Pledge Option Clicked"], client.events)
-    XCTAssertEqual("contact_creator", properties?["cta"] as? String)
-  }
-
   func testTrackManagePledgeOptionClicked_CancelPledgeSelected() {
+    self.assertManagePledgeOptionClickedProperties(of: .cancelPledge, property: "cancel_pledge")
+  }
+
+  func testTrackManagaPledgeOptionClicked_ChangePaymentMethod() {
+    self.assertManagePledgeOptionClickedProperties(of: .changePaymentMethod,
+                                                   property: "change_payment_method")
+  }
+
+  func testTrackManagaPledgeOptionClicked_ChooseAnotherReward() {
+    self.assertManagePledgeOptionClickedProperties(of: .chooseAnotherReward,
+                                                   property: "choose_another_reward")
+  }
+
+  func testTrackManagaPledgeOptionClicked_ContactCreator() {
+    self.assertManagePledgeOptionClickedProperties(of: .contactCreator,
+                                                   property: "contact_creator")
+  }
+
+  func testTrackManagaPledgeOptionClicked_UpdatePledge() {
+    self.assertManagePledgeOptionClickedProperties(of: .updatePledge,
+                                                   property: "update_pledge")
+  }
+
+  func testTrackManagaPledgeOptionClicked_ViewRewards() {
+    self.assertManagePledgeOptionClickedProperties(of: .viewRewards,
+                                                   property: "view_rewards")
+  }
+
+  private func assertManagePledgeOptionClickedProperties(of type: Koala.ManagePledgeMenuCTAType,
+                                                         property: String) {
     let client = MockTrackingClient()
     let loggedInUser = User.template
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackManagePledgeOptionClicked(project: .template, managePledgeMenuCTA: .cancelPledge)
+    koala.trackManagePledgeOptionClicked(project: .template, managePledgeMenuCTA: type)
 
     let properties = client.properties.last
     XCTAssertEqual(["Manage Pledge Option Clicked"], client.events)
-    XCTAssertEqual("cancel_pledge", properties?["cta"] as? String)
+    XCTAssertEqual(property, properties?["cta"] as? String)
   }
 }
+

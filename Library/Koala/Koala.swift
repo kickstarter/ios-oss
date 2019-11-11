@@ -217,20 +217,20 @@ public final class Koala {
   }
 
   public enum ManagePledgeMenuCTAType {
-    case updatePledge
+    case cancelPledge
     case changePaymentMethod
     case chooseAnotherReward
-    case cancelPledge
     case contactCreator
+    case updatePledge
     case viewRewards
 
     var trackingString: String {
       switch self {
-      case .updatePledge: return "update_pledge"
+      case .cancelPledge: return "cancel_pledge"
       case .changePaymentMethod: return "change_payment_method"
       case .chooseAnotherReward: return "choose_another_reward"
-      case .cancelPledge: return "cancel_pledge"
       case .contactCreator: return "contact_creator"
+      case .updatePledge: return "update_pledge"
       case .viewRewards: return "view_rewards"
       }
     }
