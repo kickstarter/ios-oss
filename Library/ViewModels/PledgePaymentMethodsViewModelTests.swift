@@ -457,8 +457,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   func testStoredCardsTitleLabel_ApplePayCapable_UnsupportedCountry_IsHidden() {
     let mockConfig = Config.template
       |> \.applePayCountries .~ [
-        Project.Country.us.countryCode,
-    ]
+        Project.Country.us.countryCode
+      ]
     let project = Project.template
       |> \.country .~ .gb
 
@@ -473,8 +473,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   func testStoredCardsTitleLabel_ApplePayCapable_IsNotHidden() {
     let mockConfig = Config.template
       |> \.applePayCountries .~ [
-        Project.Country.us.countryCode,
-    ]
+        Project.Country.us.countryCode
+      ]
 
     withEnvironment(config: mockConfig) {
       self.vm.inputs.configureWith((User.template, Project.template, true))
