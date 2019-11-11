@@ -158,6 +158,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
 
 private let amountLabelStyle: LabelStyle = { label in
   label
+    |> checkoutLabelStyle
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.textAlignment .~ NSTextAlignment.right
     |> \.isAccessibilityElement .~ true
@@ -171,6 +172,7 @@ private let backerInfoContainerStackViewStyle: StackViewStyle = { stackView in
 
 private let backerNameLabelStyle: LabelStyle = { label in
   label
+    |> checkoutLabelStyle
     |> \.font .~ .ksr_headline()
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
@@ -184,6 +186,7 @@ private let backerInfoStackViewStyle: StackViewStyle = { stackView in
 
 private let backerNumberLabelStyle: LabelStyle = { label in
   label
+    |> checkoutLabelStyle
     |> \.textColor .~ UIColor.ksr_soft_black
     |> \.font .~ UIFont.ksr_footnote()
     |> \.adjustsFontForContentSizeCategory .~ true
@@ -191,6 +194,7 @@ private let backerNumberLabelStyle: LabelStyle = { label in
 
 private let backingDateLabelStyle: LabelStyle = { label in
   label
+    |> checkoutLabelStyle
     |> \.font .~ UIFont.ksr_footnote()
     |> \.textColor .~ UIColor.ksr_dark_grey_500
     |> \.adjustsFontForContentSizeCategory .~ true
@@ -205,7 +209,8 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
 
 private let totalLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ UIColor.black
+    |> checkoutLabelStyle
+    |> \.textColor .~ UIColor.ksr_soft_black
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.text %~ { _ in Strings.Total_amount() }
