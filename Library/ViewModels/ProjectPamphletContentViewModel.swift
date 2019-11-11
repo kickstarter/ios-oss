@@ -8,6 +8,7 @@ public protocol ProjectPamphletContentViewModelInputs {
   func tappedPledgeAnyAmount()
   func tapped(rewardOrBacking: Either<Reward, Backing>)
   func tappedUpdates()
+  func tappedViewProgress(of project: Project)
   func viewDidAppear(animated: Bool)
   func viewDidLoad()
   func viewWillAppear(animated: Bool)
@@ -16,6 +17,7 @@ public protocol ProjectPamphletContentViewModelInputs {
 public protocol ProjectPamphletContentViewModelOutputs {
   var goToBacking: Signal<Project, Never> { get }
   var goToComments: Signal<Project, Never> { get }
+  var goToDashboard: Signal<Param, Never> { get }
   var goToRewardPledge: Signal<(Project, Reward), Never> { get }
   var goToUpdates: Signal<Project, Never> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, Never> { get }
@@ -91,6 +93,10 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 
     self.goToUpdates = project
       .takeWhen(self.tappedUpdatesProperty.signal)
+
+    self.goToDashboard = self.tappedViewProgressProperty.signal
+      .skipNil()
+      .map { .id($0.id) }
   }
 
   fileprivate let configDataProperty = MutableProperty<Project?>(nil)
@@ -118,6 +124,11 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
     self.tappedUpdatesProperty.value = ()
   }
 
+  fileprivate let tappedViewProgressProperty = MutableProperty<Project?>(nil)
+  public func tappedViewProgress(of project: Project) {
+    self.tappedViewProgressProperty.value = project
+  }
+
   fileprivate let viewDidAppearAnimatedProperty = MutableProperty(false)
   public func viewDidAppear(animated: Bool) {
     self.viewDidAppearAnimatedProperty.value = animated
@@ -135,6 +146,7 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 
   public let goToBacking: Signal<Project, Never>
   public let goToComments: Signal<Project, Never>
+  public let goToDashboard: Signal<Param, Never>
   public let goToRewardPledge: Signal<(Project, Reward), Never>
   public let goToUpdates: Signal<Project, Never>
   public let loadMinimalProjectIntoDataSource: Signal<Project, Never>

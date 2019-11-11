@@ -95,7 +95,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
 
-    self.pledgeCTAContainerView.pledgeRetryButton.addTarget(
+    self.pledgeCTAContainerView.retryButton.addTarget(
       self, action: #selector(ProjectPamphletViewController.pledgeRetryButtonTapped), for: .touchUpInside
     )
 
@@ -257,12 +257,11 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   }
 
   private func updateContentInsets() {
-    let buttonSize = self.pledgeCTAContainerView.pledgeCTAButton.systemLayoutSizeFitting(
+    let ctaViewSize = self.pledgeCTAContainerView.systemLayoutSizeFitting(
       UIView.layoutFittingCompressedSize
     )
-    let bottomInset = buttonSize.height + 2 * self.pledgeCTAContainerViewMargins
 
-    self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: bottomInset)
+    self.contentController.additionalSafeAreaInsets = UIEdgeInsets(bottom: ctaViewSize.height)
   }
 
   // MARK: - Selectors

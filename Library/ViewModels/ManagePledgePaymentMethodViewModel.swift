@@ -83,6 +83,8 @@ private func imageName(for paymentSource: Backing.PaymentSource) -> String? {
     return paymentSource.imageName
   case .applePay:
     return "icon--apple-pay"
+  case .googlePay:
+    return "icon--google-pay"
   }
 }
 

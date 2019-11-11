@@ -32,6 +32,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       action: #selector(ProjectPamphletContentViewController.scrollViewPanGestureRecognizerDidChange(_:))
     )
 
+    self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
     self.tableView.register(nib: .DeprecatedRewardCell)
 
     self.viewModel.inputs.viewDidLoad()
@@ -90,6 +91,12 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       .observeValues { [weak self] project, reward in
         self?.goToRewardPledge(project: project, reward: reward)
       }
+
+    self.viewModel.outputs.goToDashboard
+      .observeForControllerAction()
+      .observeValues { [weak self] param in
+        self?.goToDashboard(param: param)
+      }
   }
 
   public override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -109,7 +116,21 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       cell.delegate = self
     } else if let cell = cell as? DeprecatedRewardCell {
       cell.delegate = self
+    } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
+      cell.delegate = self
     }
+  }
+
+  private func goToDashboard(param: Param) {
+    self.view.window?.rootViewController
+      .flatMap { $0 as? RootTabBarViewController }
+      .doIfSome { root in
+        UIView.transition(with: root.view, duration: 0.3, options: [.transitionCrossDissolve], animations: {
+          root.switchToDashboard(project: param)
+        }, completion: { [weak self] _ in
+          self?.dismiss(animated: true, completion: nil)
+        })
+      }
   }
 
   fileprivate func goToRewardPledge(project: Project, reward: Reward) {
@@ -241,5 +262,14 @@ extension ProjectPamphletContentViewController: DeprecatedRewardCellDelegate {
     cell.contentView.setNeedsUpdateConstraints()
     self.tableView.beginUpdates()
     self.tableView.endUpdates()
+  }
+}
+
+extension ProjectPamphletContentViewController: ProjectPamphletCreatorHeaderCellDelegate {
+  func projectPamphletCreatorHeaderCellDidTapViewProgress(
+    _: ProjectPamphletCreatorHeaderCell,
+    with project: Project
+  ) {
+    self.viewModel.inputs.tappedViewProgress(of: project)
   }
 }

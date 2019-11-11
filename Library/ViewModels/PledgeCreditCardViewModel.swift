@@ -96,16 +96,20 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       .takeWhen(Signal.merge(cardConfiguredAsSelected, self.selectButtonTappedProperty.signal))
       .map { $0.id }
 
-    let cardIsSelected = cardAndSelectedCard
-      .map(==)
+    let cardIsSelected = Signal.merge(
+      creditCard.mapConst(false),
+      cardAndSelectedCard.map(==)
+    )
 
     self.selectButtonIsSelected = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
       .map { $0 && $1 }
+      .skipRepeats()
 
     self.selectButtonTitle = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
       .filter { $1 == true }
       .map { $0 && $1 }
       .map { $0 ? Strings.Selected() : Strings.Select() }
+      .skipRepeats()
 
     self.spacerIsHidden = cardTypeIsAvailable.negate()
     self.selectButtonEnabled = cardTypeIsAvailable

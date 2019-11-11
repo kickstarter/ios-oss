@@ -42,6 +42,7 @@ public struct Backing {
   public enum PaymentType: String {
     case applePay = "APPLE_PAY"
     case creditCard = "CREDIT_CARD"
+    case googlePay = "ANDROID_PAY"
   }
 
   public enum Status: String {
