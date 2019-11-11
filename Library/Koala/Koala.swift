@@ -216,6 +216,26 @@ public final class Koala {
     }
   }
 
+  public enum ManagePledgeMenuCTAType {
+    case cancelPledge
+    case changePaymentMethod
+    case chooseAnotherReward
+    case contactCreator
+    case updatePledge
+    case viewRewards
+
+    var trackingString: String {
+      switch self {
+      case .cancelPledge: return "cancel_pledge"
+      case .changePaymentMethod: return "change_payment_method"
+      case .chooseAnotherReward: return "choose_another_reward"
+      case .contactCreator: return "contact_creator"
+      case .updatePledge: return "update_pledge"
+      case .viewRewards: return "view_rewards"
+      }
+    }
+  }
+
   /**
    Describes the buttons the user can click on in the reward pledge screen.
 
@@ -618,6 +638,13 @@ public final class Koala {
       .withAllValuesFrom(["pledge_total": pledgeAmount])
 
     self.track(event: "Update Pledge Button Clicked", properties: props)
+  }
+
+  public func trackManagePledgeOptionClicked(project: Project, managePledgeMenuCTA: ManagePledgeMenuCTAType) {
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(["cta": managePledgeMenuCTA.trackingString])
+
+    self.track(event: "Manage Pledge Option Clicked", properties: props)
   }
 
   public func trackSelectRewardButtonClicked(
