@@ -415,7 +415,6 @@ final class ProjectPamphletViewModelTests: TestCase {
         [.discovery, .discovery, .discovery],
         "Tapping 'View your rewards' emits the refTag"
       )
-
     }
   }
 
