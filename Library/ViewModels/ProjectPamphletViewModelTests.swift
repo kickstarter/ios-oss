@@ -404,6 +404,18 @@ final class ProjectPamphletViewModelTests: TestCase {
         [.discovery, .discovery],
         "Tapping 'View rewards' emits the refTag"
       )
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewYourRewards)
+
+      self.goToRewardsProject.assertValues(
+        [project, project, project],
+        "Tapping 'View your rewards' emits the project"
+      )
+      self.goToRewardsRefTag.assertValues(
+        [.discovery, .discovery, .discovery],
+        "Tapping 'View your rewards' emits the refTag"
+      )
+
     }
   }
 
