@@ -22,8 +22,9 @@ final class ManagePledgeSummaryViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var pledgeStatusLabelViewController: PledgeStatusLabelViewController = {
-    PledgeStatusLabelViewController.instantiate()
+  private lazy var pledgeStatusLabelView: PledgeStatusLabelView = {
+    PledgeStatusLabelView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var pledgeAmountSummaryViewController: PledgeAmountSummaryViewController = {
@@ -100,7 +101,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
     self.viewModel.outputs.configurePledgeStatusLabelViewWithProject
       .observeForUI()
       .observeValues { [weak self] project in
-        self?.pledgeStatusLabelViewController.configure(with: project)
+        self?.pledgeStatusLabelView.configure(with: project)
       }
 
     self.viewModel.outputs.backerImageURLAndPlaceholderImageName
@@ -138,15 +139,11 @@ final class ManagePledgeSummaryViewController: UIViewController {
     _ = ([self.totalLabel, self.totalAmountLabel], self.totalAmountStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    [
-      self.pledgeStatusLabelViewController,
-      self.pledgeAmountSummaryViewController
-    ]
-    .forEach(self.addChild)
+    self.addChild(self.pledgeAmountSummaryViewController)
 
     let arrangedSubviews = [
       self.backerInfoContainerStackView,
-      self.pledgeStatusLabelViewController.view,
+      self.pledgeStatusLabelView,
       self.pledgeAmountSummaryViewController.view,
       self.totalAmountStackView
     ]
@@ -155,11 +152,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
     _ = (arrangedSubviews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    [
-      self.pledgeStatusLabelViewController,
-      self.pledgeAmountSummaryViewController
-    ]
-    .forEach { $0.didMove(toParent: self) }
+    self.pledgeAmountSummaryViewController.didMove(toParent: self)
   }
 
   private func setupConstraints() {

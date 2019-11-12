@@ -27,7 +27,6 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         |> Project.lens.state .~ .canceled
 
       self.vm.inputs.configure(with: project)
-      self.vm.inputs.viewDidLoad()
 
       self.labelTextString.assertValues([
         "The creator canceled this project, so your payment method was never charged."
@@ -45,7 +44,6 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         |> Project.lens.state .~ .failed
 
       self.vm.inputs.configure(with: project)
-      self.vm.inputs.viewDidLoad()
 
       self.labelTextString.assertValues([
         "This project didn’t reach its funding goal, so your payment method was never charged."
@@ -55,8 +53,6 @@ final class PledgeStatusLabelViewModelTests: TestCase {
 
   func testProjectStatus_AllOtherStatuses() {
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.viewDidLoad()
-
       let statuses = Project.State.allCases
         .filter { ![.canceled, .failed].contains($0) }
 
@@ -90,7 +86,6 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         )
 
       self.vm.inputs.configure(with: project)
-      self.vm.inputs.viewDidLoad()
 
       self.labelTextString.assertValues([
         "You canceled your pledge for this project."
@@ -112,7 +107,6 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         )
 
       self.vm.inputs.configure(with: project)
-      self.vm.inputs.viewDidLoad()
 
       self.labelTextString.assertValues([
         "We collected your pledge for this project."
@@ -134,7 +128,6 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         )
 
       self.vm.inputs.configure(with: project)
-      self.vm.inputs.viewDidLoad()
 
       self.labelTextString.assertValues([
         "Your pledge was dropped because of payment errors."
@@ -156,7 +149,6 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         )
 
       self.vm.inputs.configure(with: project)
-      self.vm.inputs.viewDidLoad()
 
       self.labelTextString.assertValues([
         "We can’t process your pledge. Please update your payment method."
@@ -181,7 +173,6 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         )
 
       self.vm.inputs.configure(with: project)
-      self.vm.inputs.viewDidLoad()
 
       self.labelTextString.assertValues([
         "If the project reaches its funding goal, you will be charged on October 16, 2016."
@@ -206,7 +197,6 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         )
 
       self.vm.inputs.configure(with: project)
-      self.vm.inputs.viewDidLoad()
 
       self.labelTextString.assertValues([
         "If the project reaches its funding goal, you will be charged HK$ 10 on October 16, 2016."
@@ -232,7 +222,6 @@ final class PledgeStatusLabelViewModelTests: TestCase {
           )
 
         self.vm.inputs.configure(with: project)
-        self.vm.inputs.viewDidLoad()
       }
 
       self.labelTextString.assertValues([])

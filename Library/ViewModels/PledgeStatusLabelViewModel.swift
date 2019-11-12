@@ -5,7 +5,6 @@ import ReactiveSwift
 
 public protocol PledgeStatusLabelViewModelInputs {
   func configure(with project: Project)
-  func viewDidLoad()
 }
 
 public protocol PledgeStatusLabelViewModelOutputs {
@@ -20,11 +19,7 @@ public protocol PledgeStatusLabelViewModelType {
 public class PledgeStatusLabelViewModel: PledgeStatusLabelViewModelType,
   PledgeStatusLabelViewModelInputs, PledgeStatusLabelViewModelOutputs {
   public init() {
-    let project = Signal.combineLatest(
-      self.configureWithProjectStatusProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal
-    )
-    .map(first)
+    let project = self.configureWithProjectStatusProperty.signal.skipNil()
 
     self.labelText = project.map(statusLabelText(with:)).skipNil()
   }
@@ -32,11 +27,6 @@ public class PledgeStatusLabelViewModel: PledgeStatusLabelViewModelType,
   private let configureWithProjectStatusProperty = MutableProperty<Project?>(nil)
   public func configure(with project: Project) {
     self.configureWithProjectStatusProperty.value = project
-  }
-
-  private let viewDidLoadProperty = MutableProperty(())
-  public func viewDidLoad() {
-    self.viewDidLoadProperty.value = ()
   }
 
   public let labelText: Signal<NSAttributedString, Never>

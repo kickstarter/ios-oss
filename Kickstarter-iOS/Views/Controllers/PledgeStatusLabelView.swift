@@ -4,7 +4,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-final class PledgeStatusLabelViewController: UIViewController {
+final class PledgeStatusLabelView: UIView {
   // MARK: - Properties
 
   private lazy var containerView: UIView = { UIView(frame: .zero) }()
@@ -14,12 +14,15 @@ final class PledgeStatusLabelViewController: UIViewController {
 
   // MARK: - Lifecycle
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
 
+    self.bindViewModel()
     self.configureSubviews()
+  }
 
-    self.viewModel.inputs.viewDidLoad()
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Styles
@@ -35,7 +38,7 @@ final class PledgeStatusLabelViewController: UIViewController {
   }
 
   private func configureSubviews() {
-    _ = (self.containerView, self.view)
+    _ = (self.containerView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 

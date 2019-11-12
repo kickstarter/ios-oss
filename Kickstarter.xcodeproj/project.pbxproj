@@ -319,7 +319,7 @@
 		8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A297911234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift */; };
 		8A4503F4234BEDBD008309EC /* PledgeViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4503F3234BEDBD008309EC /* PledgeViewContext.swift */; };
 		8A4503F6234BEDD4008309EC /* PledgeViewContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */; };
-		8A4DDAB32373427000ADE31D /* PledgeStatusLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB22373427000ADE31D /* PledgeStatusLabelViewController.swift */; };
+		8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */; };
 		8A4DDAB52373429300ADE31D /* PledgeStatusLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */; };
 		8A4DDAB72373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */; };
 		8A4DDAB92374DF9F00ADE31D /* String+AttributedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB82374DF9F00ADE31D /* String+AttributedTests.swift */; };
@@ -1723,7 +1723,7 @@
 		8A297911234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		8A4503F3234BEDBD008309EC /* PledgeViewContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewContext.swift; sourceTree = "<group>"; };
 		8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewContextTests.swift; sourceTree = "<group>"; };
-		8A4DDAB22373427000ADE31D /* PledgeStatusLabelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewController.swift; sourceTree = "<group>"; };
+		8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelView.swift; sourceTree = "<group>"; };
 		8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModel.swift; sourceTree = "<group>"; };
 		8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModelTests.swift; sourceTree = "<group>"; };
 		8A4DDAB82374DF9F00ADE31D /* String+AttributedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AttributedTests.swift"; sourceTree = "<group>"; };
@@ -3101,7 +3101,7 @@
 				8A8099FE22E21F9700373E66 /* PledgeDescriptionViewControllerTests.swift */,
 				D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsViewController.swift */,
 				37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */,
-				8A4DDAB22373427000ADE31D /* PledgeStatusLabelViewController.swift */,
+				8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */,
 				D0237C1422BC2B640092C792 /* PledgeSummaryViewController.swift */,
 				37DEC2212257CB470051EF9B /* PledgeViewController.swift */,
 				37DEC2232257CB650051EF9B /* PledgeViewControllerTests.swift */,
@@ -5212,7 +5212,7 @@
 				A747A7DF1D454E8500AF199A /* ProjectPamphletContentViewController.swift in Sources */,
 				0157067D1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
-				8A4DDAB32373427000ADE31D /* PledgeStatusLabelViewController.swift in Sources */,
+				8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */,
 				D6AE3F9220EA977D00DB212F /* SettingsNotificationsViewController.swift in Sources */,
 				59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */,
 				8A8099F822E2156E00373E66 /* RewardPledgeNavigationController.swift in Sources */,
