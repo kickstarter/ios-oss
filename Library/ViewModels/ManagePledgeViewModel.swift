@@ -129,6 +129,16 @@ public final class ManagePledgeViewModel:
       .takeWhen(cancelPledgeSelected)
       // swiftlint:disable:next line_length
       .map { _ in Strings.We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours() }
+
+    let managePledgeMenuType: Signal<Koala.ManagePledgeMenuCTAType, Never> = self.menuOptionSelectedSignal
+      .map(managePledgeMenuCTAType(for:))
+
+    // Tracking
+    project
+      .takePairWhen(managePledgeMenuType)
+      .observeValues {
+        AppEnvironment.current.koala.trackManagePledgeOptionClicked(project: $0, managePledgeMenuCTA: $1)
+      }
   }
 
   private let (configureWithProjectSignal, configureWithProjectObserver) = Signal<Project, Never>.pipe()
@@ -189,4 +199,15 @@ public final class ManagePledgeViewModel:
 
 private func navigationBarTitle(with project: Project) -> String {
   return project.state == .live ? Strings.Manage_your_pledge() : Strings.Your_pledge()
+}
+
+private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAlertAction)
+  -> Koala.ManagePledgeMenuCTAType {
+  switch managePledgeAlertAction {
+  case .cancelPledge: return .cancelPledge
+  case .changePaymentMethod: return .changePaymentMethod
+  case .chooseAnotherReward: return .chooseAnotherReward
+  case .contactCreator: return .contactCreator
+  case .updatePledge: return .updatePledge
+  }
 }
