@@ -26,6 +26,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var spacer: UIView = { UIView(frame: .zero) }()
   private lazy var storedPaymentMethodsTitleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var topSectionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let viewModel: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
 
   // MARK: - Lifecycle
@@ -47,11 +48,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
     let topSectionViews = [
       self.applePayButton,
       self.spacer,
-      self.titleLabel
+      self.storedPaymentMethodsTitleLabel
     ]
 
-    let topSectionStackView = UIStackView(arrangedSubviews: topSectionViews)
-      |> topSectionStackViewStlye
+    let _ = (topSectionViews, topSectionStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.cardsStackView, self.scrollView)
       |> ksr_addSubviewToParent()
@@ -98,8 +99,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
     _ = self.rootStackView
       |> rootStackViewStyle
 
-    _ = self.titleLabel
-      |> titleLabelStyle
+    _ = self.topSectionStackView
+      |> topSectionStackViewStyle
+
+    _ = self.storedPaymentMethodsTitleLabel
+      |> storedPaymentMethodsTitleLabelStyle
   }
 
   // MARK: - View model
@@ -155,7 +159,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       }
 
     self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
-    self.storedPaymentMethodsTitleLabel.rac.hidden
+    self.topSectionStackView.rac.hidden
       = self.viewModel.outputs.storedPaymentMethodsTitleLabelHidden
   }
 
@@ -242,7 +246,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(3)
 }
 
-private let titleLabelStyle: LabelStyle = { label in
+private let storedPaymentMethodsTitleLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
     |> \.text %~ { _ in Strings.Other_payment_methods() }
@@ -251,7 +255,7 @@ private let titleLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ .center
 }
 
-private let topSectionStackViewStlye: StackViewStyle = { stackView in
+private let topSectionStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.spacing .~ Styles.grid(3)
