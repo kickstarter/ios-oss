@@ -105,6 +105,11 @@ public let checkoutBackgroundStyle: ViewStyle = { (view: UIView) in
     |> \.backgroundColor .~ UIColor.ksr_grey_300
 }
 
+public let checkoutLabelStyle: LabelStyle = { label in
+  label
+    |> \.backgroundColor .~ UIColor.ksr_grey_300
+}
+
 public let checkoutRoundedCornersStyle: ViewStyle = { (view: UIView) in
   view
     |> \.layer.cornerRadius .~ 6
