@@ -13,7 +13,8 @@ internal final class ProjectPamphletMinimalCell: UITableViewCell, ValueCell {
     self.projectNameLabel.text = project.name
 
     self.projectImageView.image = nil
-    URL(string: project.photo.full).doIfSome(self.projectImageView.ksr_setImageWithURL)
+    URL(string: project.photo.full)
+      .doIfSome { self.projectImageView.ksr_setImageWithURL($0) }
   }
 
   internal override func bindStyles() {
