@@ -41,7 +41,6 @@ public protocol PledgeViewModelInputs {
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
   func submitButtonTapped()
-  func traitCollectionDidChange()
   func userSessionStarted()
   func viewDidLoad()
 }
@@ -143,16 +142,16 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
     .skipNil()
 
-    let projectAndPledgeTotal = Signal.merge(
-      project,
-      project.takeWhen(self.traitCollectionDidChangeSignal)
-    )
-    .combineLatest(with: pledgeTotal)
+    let projectAndPledgeTotal = project
+      .combineLatest(with: pledgeTotal)
 
     self.confirmationLabelAttributedText = projectAndPledgeTotal
-      .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
-      .map(attributedConfirmationString(with:pledgeTotal:))
-      .skipNil()
+      .map { project, pledgeTotal in
+        attributedConfirmationString(
+          with: project,
+          pledgeTotal: pledgeTotal
+        )
+      }
 
     self.continueViewHidden = Signal
       .combineLatest(isLoggedIn, context)
@@ -554,19 +553,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     contextAndProjectAndPledgeAmount
       .filter { $0.0 == .changePaymentMethod }
       .takeWhen(updateButtonTapped)
-      .observeValues { AppEnvironment.current.koala.trackUpdatePaymentMethodButton(
-        project: $1,
-        pledgeAmount: $2
-      )
+      .observeValues {
+        AppEnvironment.current.koala.trackUpdatePaymentMethodButton(
+          project: $1,
+          pledgeAmount: $2
+        )
       }
 
     contextAndProjectAndPledgeAmount
       .filter { $0.0 != .changePaymentMethod }
       .takeWhen(updateButtonTapped)
-      .observeValues { AppEnvironment.current.koala.trackUpdatePledgeButtonClicked(
-        project: $1,
-        pledgeAmount: $2
-      )
+      .observeValues {
+        AppEnvironment.current.koala.trackUpdatePledgeButtonClicked(
+          project: $1,
+          pledgeAmount: $2
+        )
       }
 
     contextAndProjectAndPledgeAmount
@@ -578,10 +579,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     contextAndProjectAndPledgeAmount
       .takeWhen(createButtonTapped)
-      .observeValues { _, project, pledgeAmount in AppEnvironment.current.koala.trackPledgeButtonClicked(
-        project: project,
-        pledgeAmount: pledgeAmount
-      )
+      .observeValues { _, project, pledgeAmount in
+        AppEnvironment.current.koala.trackPledgeButtonClicked(
+          project: project,
+          pledgeAmount: pledgeAmount
+        )
       }
   }
 
@@ -653,11 +655,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     return self.createApplePayBackingStatusProperty.value
   }
 
-  private let (traitCollectionDidChangeSignal, traitCollectionDidChangeObserver) = Signal<(), Never>.pipe()
-  public func traitCollectionDidChange() {
-    self.traitCollectionDidChangeObserver.send(value: ())
-  }
-
   private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
   public func userSessionStarted() {
     self.userSessionStartedObserver.send(value: ())
@@ -707,47 +704,34 @@ private func requiresSCA(_ envelope: StripeSCARequiring) -> Bool {
   return envelope.requiresSCAFlow
 }
 
-private func confirmationString(from project: Project, pledgeTotal: String, date: String)
-  -> String {
-  if project.stats.currentCurrency == project.stats.currency {
-    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
-      project_deadline: date
-    )
-  } else {
-    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
-      total: pledgeTotal,
-      project_deadline: date
-    )
-  }
-}
-
-private func attributedConfirmationString(with project: Project, pledgeTotal: Double)
-  -> NSAttributedString? {
+private func attributedConfirmationString(with project: Project, pledgeTotal: Double) -> NSAttributedString {
   let date = Format.date(secondsInUTC: project.dates.deadline, template: "MMMM d, yyyy")
   let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
 
-  let fullString = confirmationString(from: project, pledgeTotal: pledgeTotal, date: date)
-
-  let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: fullString)
-  let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
-  let rangePledgeTotal: NSRange = (fullString as NSString).localizedStandardRange(of: pledgeTotal)
-  let rangeProjectDeadline: NSRange = (fullString as NSString).localizedStandardRange(of: date)
+  let font = UIFont.ksr_caption1()
+  let foregroundColor = UIColor.ksr_text_dark_grey_500
 
   let paragraphStyle = NSMutableParagraphStyle()
   paragraphStyle.alignment = .center
 
-  let regularFontAttribute = [
-    NSAttributedString.Key.paragraphStyle: paragraphStyle,
-    NSAttributedString.Key.font: UIFont.ksr_caption1(),
-    NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_500
+  let attributes = [
+    NSAttributedString.Key.paragraphStyle: paragraphStyle
   ]
-  let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_caption1().bolded]
 
-  attributedString.addAttributes(regularFontAttribute, range: fullRange)
-  attributedString.addAttributes(boldFontAttribute, range: rangePledgeTotal)
-  attributedString.addAttributes(boldFontAttribute, range: rangeProjectDeadline)
+  guard project.stats.needsConversion else {
+    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
+      project_deadline: date
+    )
+    .attributed(with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [date])
+  }
 
-  return attributedString
+  return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
+    total: pledgeTotal,
+    project_deadline: date
+  )
+  .attributed(
+    with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [pledgeTotal, date]
+  )
 }
 
 // MARK: - Validation Functions

@@ -40,7 +40,7 @@ public struct Project {
     public var hls: String?
   }
 
-  public enum State: String, Argo.Decodable {
+  public enum State: String, Argo.Decodable, CaseIterable {
     case canceled
     case failed
     case live

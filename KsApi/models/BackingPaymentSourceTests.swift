@@ -36,7 +36,7 @@ final class BackingPaymentSourceTests: XCTestCase {
     ]
 
     let paymentSource: Backing.PaymentSource? = Backing.PaymentSource
-      .decodeJSONDictionary(jsonDictionary).value ?? nil
+      .decodeJSONDictionary(jsonDictionary as [String: Any]).value ?? nil
 
     XCTAssertNil(paymentSource?.expirationDate)
     XCTAssertNil(paymentSource?.id)
@@ -99,7 +99,7 @@ final class BackingPaymentSourceTests: XCTestCase {
     ]
 
     let paymentSource: Backing.PaymentSource? = Backing.PaymentSource
-      .decodeJSONDictionary(jsonDictionary).value ?? nil
+      .decodeJSONDictionary(jsonDictionary as [String: Any]).value ?? nil
 
     XCTAssertNil(paymentSource)
   }

@@ -13,7 +13,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmationSectionViews = {
-    [self.confirmationLabel, self.submitButton]
+    [self.submitButton, self.confirmationLabel]
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?
@@ -137,12 +137,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    self.viewModel.inputs.traitCollectionDidChange()
   }
 
   deinit {
