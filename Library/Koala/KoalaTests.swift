@@ -545,6 +545,22 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
+  func testTrackPledgeCTAButtonClicked_ViewYourRewardsState() {
+    let client = MockTrackingClient()
+    let user = User.template |> \.id .~ 42
+    let project = Project.template
+      |> Project.lens.creator .~ user
+
+    let koala = Koala(client: client, loggedInUser: user)
+
+    koala.trackPledgeCTAButtonClicked(stateType: .viewYourRewards, project: project, screen: .projectPage)
+
+    let properties = client.properties.last
+
+    XCTAssertEqual(["View Your Rewards Button Clicked"], client.events)
+    XCTAssertEqual("Project page", properties?["screen"] as? String)
+  }
+
   func testTrackSelectRewardButtonClicked() {
     let client = MockTrackingClient()
     let reward = Reward.template
