@@ -122,7 +122,7 @@ public class RewardPledgePushTransitionAnimator: NSObject, UIViewControllerAnima
     self.animator.addCompletion { _ in
       snapshotShadowContainerView.removeFromSuperview()
       _ = fromView
-        |> \.alpha .~ 1.0
+        |> \.alpha .~ 1.0 // NB: This should be removed when we re-enable the pop transition
       toVC.endTransition(operation)
       fromDelegate.endTransition(operation)
       transitionContext.completeTransition(!transitionContext.transitionWasCancelled)

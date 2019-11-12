@@ -12,6 +12,7 @@ final class RewardPledgeNavigationController: UINavigationController {
       |> \.delegate .~ self
 
     _ = self.navigationBar
+      ?|> \.barTintColor .~ .ksr_grey_300
       ?|> \.isTranslucent .~ false
       ?|> \.shadowImage .~ UIImage()
   }
@@ -32,13 +33,5 @@ extension RewardPledgeNavigationController: UINavigationControllerDelegate {
     default:
       return nil
     }
-  }
-
-  func navigationController(
-    _: UINavigationController, willShow viewController: UIViewController, animated _: Bool
-  ) {
-    _ = self.navigationBar
-      ?|> \.barTintColor .~ .ksr_grey_300
-      ?|> \.shadowImage .~ UIImage()
   }
 }
