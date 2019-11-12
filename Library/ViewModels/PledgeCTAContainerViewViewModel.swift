@@ -132,6 +132,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
 private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
+    if currentUserIsCreator(of: project) {
+      return PledgeStateCTAType.viewYourRewards
+    }
+
     return project.state == .live ? PledgeStateCTAType.pledge : PledgeStateCTAType.viewRewards
   }
 

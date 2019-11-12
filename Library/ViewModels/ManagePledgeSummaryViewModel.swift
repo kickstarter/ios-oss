@@ -9,8 +9,12 @@ public protocol ManagePledgeSummaryViewModelInputs {
 }
 
 public protocol ManagePledgeSummaryViewModelOutputs {
+  var backerImageURLAndPlaceholderImageName: Signal<(URL, String), Never> { get }
+  var backerNameLabelHidden: Signal<Bool, Never> { get }
+  var backerNameText: Signal<String, Never> { get }
   var backerNumberText: Signal<String, Never> { get }
   var backingDateText: Signal<String, Never> { get }
+  var circleAvatarViewHidden: Signal<Bool, Never> { get }
   var configurePledgeAmountSummaryViewWithProject: Signal<Project, Never> { get }
   var totalAmountText: Signal<NSAttributedString, Never> { get }
 }
@@ -38,6 +42,31 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     let projectAndBacking = project
       .zip(with: backing)
 
+    let userAndIsBackingProject = backing
+      .filterMap { backing -> (User, Bool)? in
+        guard let user = AppEnvironment.current.currentUser else {
+          return nil
+        }
+
+        return (user, backing.backerId == user.id)
+      }
+
+    self.backerNameLabelHidden = userAndIsBackingProject.map(second).negate()
+    self.circleAvatarViewHidden = userAndIsBackingProject.map(second).negate()
+
+    let userBackingProject = userAndIsBackingProject
+      .filter(second >>> isTrue)
+      .map(first)
+
+    self.backerNameText = userBackingProject
+      .map(\.name)
+
+    self.backerImageURLAndPlaceholderImageName = userBackingProject
+      .map(\.avatar.small)
+      .map(URL.init)
+      .skipNil()
+      .map { ($0, "avatar--placeholder") }
+
     self.backerNumberText = backing
       .map { Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence)) }
 
@@ -61,8 +90,12 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     self.viewDidLoadObserver.send(value: ())
   }
 
+  public let backerImageURLAndPlaceholderImageName: Signal<(URL, String), Never>
+  public let backerNameLabelHidden: Signal<Bool, Never>
+  public let backerNameText: Signal<String, Never>
   public let backerNumberText: Signal<String, Never>
   public let backingDateText: Signal<String, Never>
+  public let circleAvatarViewHidden: Signal<Bool, Never>
   public let configurePledgeAmountSummaryViewWithProject: Signal<Project, Never>
   public let totalAmountText: Signal<NSAttributedString, Never>
 
