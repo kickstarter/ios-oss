@@ -541,6 +541,7 @@
 "View_rewards" = "Ver recompensas";
 "View_your_pledge" = "Revisa tu contribución";
 "View_your_reward" = "Mostrar recompensa";
+"View_your_rewards" = "Ver tus recompensas";
 "Watch_live" = "Ver en vivo";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "No podemos procesar la contribución. Por favor actualiza tu método de pago.";
 "We_collected_your_pledge_for_this_project" = "Hemos recolectado tu contribución a este proyecto.";
@@ -571,7 +572,7 @@
 "You_canceled_your_pledge_for_this_project" = "Has cancelado tu contribución a este proyecto.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "No puedes usar esta tarjeta de crédito para patrocinar un proyecto de %{project_country}.";
 "You_have_successfully_backed_project_html" = "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!";
-"You_launched_this_project_on_launch_date" = "You launched this project on %{launch_date}.";
+"You_launched_this_project_on_launch_date" = "Publicaste el proyecto el: %{launch_date}.";
 "You_need_to_pledge_at_least_reward_minimum_for_this_reward" = "Debes contribuir, al menos, %{reward_minimum} para obtener esta recompensa.";
 "You_pledged_on_date" = "<b>Contribuiste</b> el %{pledge_date}";
 "You_pledged_without_a_reward" = "Contribuiste sin recompensa";

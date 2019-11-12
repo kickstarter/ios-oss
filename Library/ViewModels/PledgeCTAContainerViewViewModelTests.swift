@@ -169,6 +169,36 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.stackViewIsHidden.assertValues([true])
   }
 
+  func testPledgeCTA_LiveProject_UserIsCreator() {
+    let user = User.template |> User.lens.id .~ 5
+    let project = Project.template
+      |> Project.lens.creator.id .~ 5
+      |> Project.lens.state .~ .live
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(value: (.left(project), false))
+      self.buttonStyleType.assertValues([ButtonStyleType.black])
+      self.buttonTitleText.assertValues(["View your rewards"])
+      self.spacerIsHidden.assertValues([true])
+      self.stackViewIsHidden.assertValues([true])
+    }
+  }
+
+  func testPledgeCTA_NonLiveProject_UserIsCreator() {
+    let user = User.template |> User.lens.id .~ 5
+    let project = Project.template
+      |> Project.lens.creator.id .~ 5
+      |> Project.lens.state .~ .successful
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(value: (.left(project), false))
+      self.buttonStyleType.assertValues([ButtonStyleType.black])
+      self.buttonTitleText.assertValues(["View your rewards"])
+      self.spacerIsHidden.assertValues([true])
+      self.stackViewIsHidden.assertValues([true])
+    }
+  }
+
   func testPledgeCTA_activityIndicator() {
     let project = Project.template
       |> Project.lens.state .~ .live
