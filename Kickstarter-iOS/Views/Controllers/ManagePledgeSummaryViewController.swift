@@ -161,7 +161,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
     ]
     .forEach { $0.didMove(toParent: self) }
   }
-  
+
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.circleAvatarImageView.widthAnchor.constraint(equalToConstant: Layout.avatarWidth),
