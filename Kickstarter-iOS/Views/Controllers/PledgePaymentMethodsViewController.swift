@@ -23,11 +23,9 @@ final class PledgePaymentMethodsViewController: UIViewController {
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var sectionTitleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var spacer: UIView = { UIView(frame: .zero) }()
   private lazy var storedPaymentMethodsTitleLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var topSectionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let viewModel: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
 
   // MARK: - Lifecycle
@@ -52,17 +50,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
       self.storedPaymentMethodsTitleLabel
     ]
 
-    let _ = (applePaySectionViews, applePaySectionStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    let _ = ([self.sectionTitleLabel, applePaySectionStackView], self.topSectionStackView)
+    _ = (applePaySectionViews, applePaySectionStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.cardsStackView, self.scrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([topSectionStackView, self.scrollView], self.rootStackView)
+    _ = ([applePaySectionStackView, self.scrollView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
@@ -104,18 +99,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> verticalStackViewStyle
       |> checkoutSubStackViewStyle
 
-    _ = self.topSectionStackView
-      |> topSectionStackViewStyle
-
     _ = self.applePaySectionStackView
       |> applePaySectionStackViewStyle
 
     _ = self.storedPaymentMethodsTitleLabel
       |> storedPaymentMethodsTitleLabelStyle
-
-    _ = self.sectionTitleLabel
-      |> checkoutTitleLabelStyle
-      |> \.text %~ { _ in Strings.Payment_method() }
   }
 
   // MARK: - View model
@@ -265,19 +253,12 @@ private let storedPaymentMethodsTitleLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ .center
 }
 
-private let topSectionStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> verticalStackViewStyle
-    |> checkoutSubStackViewStyle
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ .init(leftRight: Styles.grid(4))
-}
-
 private let applePaySectionStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> verticalStackViewStyle
     |> checkoutSubStackViewStyle
     |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ .init(leftRight: Styles.grid(4))
 }
 
 // MARK: - PledgeCreditCardViewDelegate
