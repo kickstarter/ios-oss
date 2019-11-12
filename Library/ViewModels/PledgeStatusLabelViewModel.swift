@@ -19,14 +19,14 @@ public protocol PledgeStatusLabelViewModelType {
 public class PledgeStatusLabelViewModel: PledgeStatusLabelViewModelType,
   PledgeStatusLabelViewModelInputs, PledgeStatusLabelViewModelOutputs {
   public init() {
-    let project = self.configureWithProjectStatusProperty.signal.skipNil()
+    let project = self.configureWithProjectProperty.signal.skipNil()
 
     self.labelText = project.map(statusLabelText(with:)).skipNil()
   }
 
-  private let configureWithProjectStatusProperty = MutableProperty<Project?>(nil)
+  private let configureWithProjectProperty = MutableProperty<Project?>(nil)
   public func configure(with project: Project) {
-    self.configureWithProjectStatusProperty.value = project
+    self.configureWithProjectProperty.value = project
   }
 
   public let labelText: Signal<NSAttributedString, Never>
