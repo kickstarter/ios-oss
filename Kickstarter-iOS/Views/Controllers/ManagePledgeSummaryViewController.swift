@@ -18,7 +18,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
   private lazy var backerNumberLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var backingDateLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var circleAvatarImageView: CircleAvatarImageView = {
-    CircleAvatarImageView.init(frame: .zero)
+    CircleAvatarImageView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 

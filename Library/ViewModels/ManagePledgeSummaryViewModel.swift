@@ -10,8 +10,8 @@ public protocol ManagePledgeSummaryViewModelInputs {
 
 public protocol ManagePledgeSummaryViewModelOutputs {
   var backerImageURLAndPlaceholderImageName: Signal<(URL, String), Never> { get }
-  var backerNameText: Signal<String, Never> { get }
   var backerNameLabelHidden: Signal<Bool, Never> { get }
+  var backerNameText: Signal<String, Never> { get }
   var backerNumberText: Signal<String, Never> { get }
   var backingDateText: Signal<String, Never> { get }
   var circleAvatarViewHidden: Signal<Bool, Never> { get }
@@ -91,8 +91,8 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
   }
 
   public let backerImageURLAndPlaceholderImageName: Signal<(URL, String), Never>
-  public let backerNameText: Signal<String, Never>
   public let backerNameLabelHidden: Signal<Bool, Never>
+  public let backerNameText: Signal<String, Never>
   public let backerNumberText: Signal<String, Never>
   public let backingDateText: Signal<String, Never>
   public let circleAvatarViewHidden: Signal<Bool, Never>
