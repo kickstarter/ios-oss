@@ -18,6 +18,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
+  private lazy var applePaySectionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
@@ -45,13 +46,16 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    let topSectionViews = [
+    let applePaySectionViews = [
       self.applePayButton,
       self.spacer,
       self.storedPaymentMethodsTitleLabel
     ]
 
-    let _ = (topSectionViews, topSectionStackView)
+    let _ = (applePaySectionViews, applePaySectionStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    let _ = ([self.sectionTitleLabel, applePaySectionStackView], self.topSectionStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.cardsStackView, self.scrollView)
@@ -97,13 +101,21 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> verticalStackViewStyle
+      |> checkoutSubStackViewStyle
 
     _ = self.topSectionStackView
       |> topSectionStackViewStyle
 
+    _ = self.applePaySectionStackView
+      |> applePaySectionStackViewStyle
+
     _ = self.storedPaymentMethodsTitleLabel
       |> storedPaymentMethodsTitleLabelStyle
+
+    _ = self.sectionTitleLabel
+      |> checkoutTitleLabelStyle
+      |> \.text %~ { _ in Strings.Payment_method() }
   }
 
   // MARK: - View model
@@ -158,9 +170,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
         self?.goToAddNewCard(intent: intent, project: project)
       }
 
-    self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
-    self.topSectionStackView.rac.hidden
-      = self.viewModel.outputs.storedPaymentMethodsTitleLabelHidden
+    self.applePaySectionStackView.rac.hidden = self.viewModel.outputs.applePayStackViewHidden
   }
 
   // MARK: - Configuration
@@ -257,10 +267,17 @@ private let storedPaymentMethodsTitleLabelStyle: LabelStyle = { label in
 
 private let topSectionStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.spacing .~ Styles.grid(3)
+    |> verticalStackViewStyle
+    |> checkoutSubStackViewStyle
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
+    |> \.layoutMargins .~ .init(leftRight: Styles.grid(4))
+}
+
+private let applePaySectionStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> verticalStackViewStyle
+    |> checkoutSubStackViewStyle
+    |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 
 // MARK: - PledgeCreditCardViewDelegate

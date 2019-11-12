@@ -16,14 +16,13 @@ public protocol PledgePaymentMethodsViewModelInputs {
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
-  var applePayButtonHidden: Signal<Bool, Never> { get }
+  var applePayStackViewHidden: Signal<Bool, Never> { get }
   var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
   var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
   var reloadPaymentMethodsAndSelectCard:
     Signal<([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?), Never> { get }
-  var storedPaymentMethodsTitleLabelHidden: Signal<Bool, Never> { get }
   var updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never> { get }
 }
 
@@ -53,12 +52,12 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           .materialize()
       }
 
-    self.applePayButtonHidden = configureWithValue
+    let applePayButtonHidden = configureWithValue
       .map { ($0.project, $0.applePayCapable) }
       .map(showApplePayButton(for:applePayCapable:))
       .negate()
 
-    self.storedPaymentMethodsTitleLabelHidden = self.applePayButtonHidden
+    self.applePayStackViewHidden = applePayButtonHidden
 
     let storedCardsValues = storedCardsEvent.values().map { $0.me.storedCards.nodes }
     let backing = configureWithValue.map { $0.project.personalization.backing }
@@ -133,14 +132,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.viewDidLoadProperty.value = ()
   }
 
-  public let applePayButtonHidden: Signal<Bool, Never>
+  public let applePayStackViewHidden: Signal<Bool, Never>
   public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
   public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
   public let notifyDelegateCreditCardSelected: Signal<String, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethodsAndSelectCard:
     Signal<([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?), Never>
-  public let storedPaymentMethodsTitleLabelHidden: Signal<Bool, Never>
   public let updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never>
 
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }
