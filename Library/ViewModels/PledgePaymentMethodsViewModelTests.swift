@@ -85,8 +85,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
         (0...response.me.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
       ], "New and available card added")
-      self.reloadPaymentMethodsSelectedCard.assertValues([response.me.storedCards.nodes.first,
-                                                          userCreditCard])
+      self.reloadPaymentMethodsSelectedCard.assertValues([
+        response.me.storedCards.nodes.first,
+        userCreditCard
+      ])
     }
   }
 
@@ -110,23 +112,27 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.reloadPaymentMethodsCards.assertValues([
-        [GraphUserCreditCard.visa,
-        GraphUserCreditCard.amex,
-        GraphUserCreditCard.masterCard,
-        GraphUserCreditCard.diners,
-        GraphUserCreditCard.jcb,
-        GraphUserCreditCard.discover,
-        GraphUserCreditCard.generic,
-        GraphUserCreditCard.unionPay
-        ]], "Card used for backing is first")
+        [
+          GraphUserCreditCard.visa,
+          GraphUserCreditCard.amex,
+          GraphUserCreditCard.masterCard,
+          GraphUserCreditCard.diners,
+          GraphUserCreditCard.jcb,
+          GraphUserCreditCard.discover,
+          GraphUserCreditCard.generic,
+          GraphUserCreditCard.unionPay
+        ]
+      ], "Card used for backing is first")
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
         [true, true, true, true, true, true, false, true]
-        ])
+      ])
       self.reloadPaymentMethodsProjectCountry.assertValues([
         (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
-        ], "One card is unavailable")
-      self.reloadPaymentMethodsSelectedCard.assertValues([GraphUserCreditCard.visa],
-                                                         "Card used for backing is selected")
+      ], "One card is unavailable")
+      self.reloadPaymentMethodsSelectedCard.assertValues(
+        [GraphUserCreditCard.visa],
+        "Card used for backing is selected"
+      )
 
       let newCard = GraphUserCreditCard.visa
         |> \.id .~ "123"
@@ -135,37 +141,43 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.addNewCardViewControllerDidAdd(newCard: newCard)
 
       self.reloadPaymentMethodsCards.assertValues([
-        [GraphUserCreditCard.visa,
-         GraphUserCreditCard.amex,
-         GraphUserCreditCard.masterCard,
-         GraphUserCreditCard.diners,
-         GraphUserCreditCard.jcb,
-         GraphUserCreditCard.discover,
-         GraphUserCreditCard.generic,
-         GraphUserCreditCard.unionPay
+        [
+          GraphUserCreditCard.visa,
+          GraphUserCreditCard.amex,
+          GraphUserCreditCard.masterCard,
+          GraphUserCreditCard.diners,
+          GraphUserCreditCard.jcb,
+          GraphUserCreditCard.discover,
+          GraphUserCreditCard.generic,
+          GraphUserCreditCard.unionPay
         ],
-        [newCard,
-         GraphUserCreditCard.visa,
-         GraphUserCreditCard.amex,
-         GraphUserCreditCard.masterCard,
-         GraphUserCreditCard.diners,
-         GraphUserCreditCard.jcb,
-         GraphUserCreditCard.discover,
-         GraphUserCreditCard.generic,
-         GraphUserCreditCard.unionPay
+        [
+          newCard,
+          GraphUserCreditCard.visa,
+          GraphUserCreditCard.amex,
+          GraphUserCreditCard.masterCard,
+          GraphUserCreditCard.diners,
+          GraphUserCreditCard.jcb,
+          GraphUserCreditCard.discover,
+          GraphUserCreditCard.generic,
+          GraphUserCreditCard.unionPay
         ]
       ], "New card added is first")
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
         [true, true, true, true, true, true, false, true],
         [true, true, true, true, true, true, true, false, true]
-        ])
+      ])
       self.reloadPaymentMethodsProjectCountry.assertValues([
         (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
         (0...response.me.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
-        ], "One card is unavailable")
-      self.reloadPaymentMethodsSelectedCard.assertValues([GraphUserCreditCard.visa,
-                                                          newCard],
-                                                         "Newly added card is selected")
+      ], "One card is unavailable")
+      self.reloadPaymentMethodsSelectedCard.assertValues(
+        [
+          GraphUserCreditCard.visa,
+          newCard
+        ],
+        "Newly added card is selected"
+      )
     }
   }
 

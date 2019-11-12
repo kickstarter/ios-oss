@@ -72,8 +72,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       storedCards,
       newCard,
       availableCardTypes,
-      project)
-      .map(pledgeCreditCardViewDataAndSelectedCard(with:newAddedCard:availableCardTypes:project:))
+      project
+    )
+    .map(pledgeCreditCardViewDataAndSelectedCard(with:newAddedCard:availableCardTypes:project:))
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
 
