@@ -163,15 +163,18 @@ private func pledgeCreditCardViewDataAndSelectedCard(
     return (card, isAvailableCardType, project.location.displayableName)
   }
 
+  // If there is no backing, simply select the first card in the list
   guard let backing = project.personalization.backing else {
     return (data, allCards.first)
   }
 
-  if newAddedCard != nil {
-    return (data, allCards.first)
+  // If we're working with a backing, but we have a newly added card, select the newly added card
+  if let newCard = newAddedCard {
+    return (data, newCard)
   }
 
-  // New card hasn't been added, select the card the backing is associated with
+  /* If we're working with a backing, and a new card hasn't been added,
+   select the card the backing is associated with */
   let backedCard = allCards.first(where: { $0.id == backing.paymentSource?.id })
 
   return (data, backedCard)
