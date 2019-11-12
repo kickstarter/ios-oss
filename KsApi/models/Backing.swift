@@ -56,7 +56,7 @@ public struct Backing {
     }
   }
 
-  public enum Status: String {
+  public enum Status: String, CaseIterable {
     case canceled
     case collected
     case dropped
