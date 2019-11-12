@@ -13,7 +13,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmationSectionViews = {
-    [self.confirmationLabel, self.submitButton]
+    [self.submitButton, self.confirmationLabel]
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?

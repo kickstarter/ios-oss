@@ -272,25 +272,8 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.confirmationLabelHidden.assertValues([false])
-      self.confirmationLabelAttributedText.assertDidNotEmitValue()
-
-      scheduler.advance(by: .milliseconds(10))
-
       self.confirmationLabelAttributedText.assertValueCount(1)
       self.confirmationLabelText.assertValues([
-        "If the project reaches its funding goal, you will be charged on November 1, 2019."
-      ])
-
-      self.vm.inputs.traitCollectionDidChange()
-      self.vm.inputs.traitCollectionDidChange()
-
-      self.confirmationLabelAttributedText.assertValueCount(1, "Debounces signals")
-
-      scheduler.advance(by: .milliseconds(10))
-
-      self.confirmationLabelAttributedText.assertValueCount(2)
-      self.confirmationLabelText.assertValues([
-        "If the project reaches its funding goal, you will be charged on November 1, 2019.",
         "If the project reaches its funding goal, you will be charged on November 1, 2019."
       ])
     }
@@ -321,27 +304,12 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.confirmationLabelHidden.assertValues([false])
-      self.confirmationLabelAttributedText.assertDidNotEmitValue()
-
-      scheduler.advance(by: .milliseconds(10))
-
       self.confirmationLabelAttributedText.assertValueCount(1)
       self.confirmationLabelText.assertValues([
         "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019."
       ])
 
       self.vm.inputs.traitCollectionDidChange()
-      self.vm.inputs.traitCollectionDidChange()
-
-      self.confirmationLabelAttributedText.assertValueCount(1, "Debounces signals")
-
-      scheduler.advance(by: .milliseconds(10))
-
-      self.confirmationLabelAttributedText.assertValueCount(2)
-      self.confirmationLabelText.assertValues([
-        "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019.",
-        "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019."
-      ])
     }
   }
 

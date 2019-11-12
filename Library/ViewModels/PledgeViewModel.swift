@@ -150,7 +150,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .combineLatest(with: pledgeTotal)
 
     self.confirmationLabelAttributedText = projectAndPledgeTotal
-      .ksr_debounce(.milliseconds(10), on: AppEnvironment.current.scheduler)
       .map { project, pledgeTotal in
         attributedConfirmationString(
           with: project,
@@ -558,19 +557,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     contextAndProjectAndPledgeAmount
       .filter { $0.0 == .changePaymentMethod }
       .takeWhen(updateButtonTapped)
-      .observeValues { AppEnvironment.current.koala.trackUpdatePaymentMethodButton(
-        project: $1,
-        pledgeAmount: $2
-      )
+      .observeValues {
+        AppEnvironment.current.koala.trackUpdatePaymentMethodButton(
+          project: $1,
+          pledgeAmount: $2
+        )
       }
 
     contextAndProjectAndPledgeAmount
       .filter { $0.0 != .changePaymentMethod }
       .takeWhen(updateButtonTapped)
-      .observeValues { AppEnvironment.current.koala.trackUpdatePledgeButtonClicked(
-        project: $1,
-        pledgeAmount: $2
-      )
+      .observeValues {
+        AppEnvironment.current.koala.trackUpdatePledgeButtonClicked(
+          project: $1,
+          pledgeAmount: $2
+        )
       }
 
     contextAndProjectAndPledgeAmount
@@ -582,10 +583,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     contextAndProjectAndPledgeAmount
       .takeWhen(createButtonTapped)
-      .observeValues { _, project, pledgeAmount in AppEnvironment.current.koala.trackPledgeButtonClicked(
-        project: project,
-        pledgeAmount: pledgeAmount
-      )
+      .observeValues { _, project, pledgeAmount in
+        AppEnvironment.current.koala.trackPledgeButtonClicked(
+          project: project,
+          pledgeAmount: pledgeAmount
+        )
       }
   }
 
