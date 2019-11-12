@@ -22,6 +22,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var sectionTitleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var spacer: UIView = { UIView(frame: .zero) }()
   private lazy var storedPaymentMethodsTitleLabel: UILabel = { UILabel(frame: .zero) }()
@@ -48,7 +49,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_constrainViewToEdgesInParent()
 
     _ = (
-      [self.applePayButton, self.spacer, self.storedPaymentMethodsTitleLabel, self.scrollView],
+      [self.sectionTitleLabel,
+       self.applePayButton,
+       self.spacer,
+       self.storedPaymentMethodsTitleLabel,
+       self.scrollView],
       self.rootStackView
     )
       |> ksr_addArrangedSubviewsToStackView()
@@ -89,6 +94,10 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.sectionTitleLabel
+      |> checkoutTitleLabelStyle
+      |> \.text %~ { _ in Strings.Payment_method() }
 
     _ = self.storedPaymentMethodsTitleLabel
       |> storedPaymentMethodsTitleLabelStyle
