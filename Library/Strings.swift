@@ -8825,6 +8825,23 @@ catch your eye?"
     )
   }
   /**
+   "View your rewards"
+
+   - **en**: "View your rewards"
+   - **de**: "Deine Belohnungen ansehen"
+   - **es**: "Ver tus recompensas"
+   - **fr**: "Afficher mes récompenses"
+   - **ja**: "View your rewards"
+  */
+  public static func View_your_rewards() -> String {
+    return localizedString(
+      key: "View_your_rewards",
+      defaultValue: "View your rewards",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Watch live"
 
    - **en**: "Watch live"
@@ -9293,10 +9310,10 @@ Veuillez réessayer ultérieurement."
    "You launched this project on %{launch_date}."
 
    - **en**: "You launched this project on %{launch_date}."
-   - **de**: "You launched this project on %{launch_date}."
-   - **es**: "You launched this project on %{launch_date}."
-   - **fr**: "You launched this project on %{launch_date}."
-   - **ja**: "You launched this project on %{launch_date}."
+   - **de**: "Du hast dieses Projekt am %{launch_date} veröffentlicht."
+   - **es**: "Publicaste el proyecto el: %{launch_date}."
+   - **fr**: "Vous avez lancé ce projet le %{launch_date}."
+   - **ja**: "このプロジェクトを %{launch_date} にローンチしました。"
   */
   public static func You_launched_this_project_on_launch_date(launch_date: String) -> String {
     return localizedString(
