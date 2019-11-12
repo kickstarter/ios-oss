@@ -7,8 +7,8 @@ final class ManagePledgePaymentMethodView: UIView {
   // MARK: - Properties
 
   private lazy var cardLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var cardNumberLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var lastFourDigitsLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var paymentMethodAdaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var paymentMethodImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -37,7 +37,7 @@ final class ManagePledgePaymentMethodView: UIView {
   }
 
   private func configureViews() {
-    _ = ([self.lastFourDigitsLabel, self.expirationDateLabel], self.cardLabelsStackView)
+    _ = ([self.cardNumberLabel, self.expirationDateLabel], self.cardLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.paymentMethodImageView, self.cardLabelsStackView], self.paymentMethodAdaptableStackView)
@@ -55,14 +55,13 @@ final class ManagePledgePaymentMethodView: UIView {
 
   override func bindStyles() {
     super.bindStyles()
-
     _ = self.cardLabelsStackView
       |> cardLabelsStackViewStyle
 
     _ = self.expirationDateLabel
       |> expirationDateLabelStyle
 
-    _ = self.lastFourDigitsLabel
+    _ = self.cardNumberLabel
       |> lastFourDigitsLabelStyle
 
     _ = self.paymentMethodAdaptableStackView
@@ -88,7 +87,8 @@ final class ManagePledgePaymentMethodView: UIView {
     super.bindViewModel()
 
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
-    self.lastFourDigitsLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
+    self.cardNumberLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
+    self.cardNumberLabel.rac.accessibilityLabel = self.viewModel.outputs.cardNumberAccessibilityLabel
 
     self.viewModel.outputs.cardImageName
       .observeForUI()
