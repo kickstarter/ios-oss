@@ -616,6 +616,8 @@ public final class Koala {
       self.track(event: "View Your Pledge Button Clicked", properties: props)
     case .viewRewards:
       self.track(event: "View Rewards Button Clicked", properties: props)
+    case .viewYourRewards:
+      self.track(event: "View Your Rewards Button Clicked", properties: props)
     }
   }
 
