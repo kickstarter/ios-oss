@@ -44,18 +44,20 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
+    let topSectionViews = [
+      self.applePayButton,
+      self.spacer,
+      self.titleLabel
+    ]
+
+    let topSectionStackView = UIStackView(arrangedSubviews: topSectionViews)
+      |> topSectionStackViewStlye
+
     _ = (self.cardsStackView, self.scrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = (
-      [self.sectionTitleLabel,
-       self.applePayButton,
-       self.spacer,
-       self.storedPaymentMethodsTitleLabel,
-       self.scrollView],
-      self.rootStackView
-    )
+    _ = ([topSectionStackView, self.scrollView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
@@ -90,17 +92,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> applePayButtonStyle
 
     _ = self.scrollView
+      |> \.contentInset .~ .init(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
       |> checkoutBackgroundStyle
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
-    _ = self.sectionTitleLabel
-      |> checkoutTitleLabelStyle
-      |> \.text %~ { _ in Strings.Payment_method() }
-
-    _ = self.storedPaymentMethodsTitleLabel
-      |> storedPaymentMethodsTitleLabelStyle
+    _ = self.titleLabel
+      |> titleLabelStyle
   }
 
   // MARK: - View model
@@ -112,7 +111,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] cardValues, selectedCard in
         guard let self = self else { return }
-        self.scrollView.setContentOffset(.zero, animated: false)
+
+        self.scrollView.setContentOffset(
+          CGPoint(x: -CheckoutConstants.PledgeView.Inset.leftRight, y: 0),
+          animated: false
+        )
+
         self.reloadPaymentMethods(with: cardValues, andSelect: selectedCard)
       }
 
@@ -238,13 +242,21 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(3)
 }
 
-private let storedPaymentMethodsTitleLabelStyle: LabelStyle = { label in
+private let titleLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
     |> \.text %~ { _ in Strings.Other_payment_methods() }
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.font .~ UIFont.ksr_caption1()
     |> \.textAlignment .~ .center
+}
+
+private let topSectionStackViewStlye: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.spacing .~ Styles.grid(3)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
 }
 
 // MARK: - PledgeCreditCardViewDelegate
