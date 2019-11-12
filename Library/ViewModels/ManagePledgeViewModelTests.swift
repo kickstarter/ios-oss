@@ -488,4 +488,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.title.assertValueCount(2)
     }
   }
+
+  func testTrackingEvents() {
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ Backing.template
+
+    self.vm.inputs.configureWith(project)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.menuButtonTapped()
+    self.vm.inputs.menuOptionSelected(with: .updatePledge)
+
+    XCTAssertEqual(["Manage Pledge Option Clicked"], self.trackingClient.events)
+  }
 }
