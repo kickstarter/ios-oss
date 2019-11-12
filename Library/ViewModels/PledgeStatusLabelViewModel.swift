@@ -118,7 +118,7 @@ private func attributedConfirmationString(with project: Project, pledgeTotal: Do
     NSAttributedString.Key.paragraphStyle: paragraphStyle
   ]
 
-  if project.stats.currentCurrency == project.stats.currency {
+  guard project.stats.needsConversion else {
     return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
       project_deadline: date
     )

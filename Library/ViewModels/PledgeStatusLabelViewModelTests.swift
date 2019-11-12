@@ -232,6 +232,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
           )
 
         self.vm.inputs.configure(with: project)
+        self.vm.inputs.viewDidLoad()
       }
 
       self.labelTextString.assertValues([])
