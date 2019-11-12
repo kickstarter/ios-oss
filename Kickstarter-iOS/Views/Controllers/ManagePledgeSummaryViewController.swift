@@ -22,6 +22,11 @@ final class ManagePledgeSummaryViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var pledgeStatusLabelView: PledgeStatusLabelView = {
+    PledgeStatusLabelView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var pledgeAmountSummaryViewController: PledgeAmountSummaryViewController = {
     PledgeAmountSummaryViewController.instantiate()
   }()
@@ -93,10 +98,10 @@ final class ManagePledgeSummaryViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.configurePledgeAmountSummaryViewWithProject
+    self.viewModel.outputs.configurePledgeStatusLabelViewWithProject
       .observeForUI()
       .observeValues { [weak self] project in
-        self?.pledgeAmountSummaryViewController.configureWith(project)
+        self?.pledgeStatusLabelView.configure(with: project)
       }
 
     self.viewModel.outputs.backerImageURLAndPlaceholderImageName
@@ -136,11 +141,15 @@ final class ManagePledgeSummaryViewController: UIViewController {
 
     self.addChild(self.pledgeAmountSummaryViewController)
 
-    _ = ([
+    let arrangedSubviews = [
       self.backerInfoContainerStackView,
+      self.pledgeStatusLabelView,
       self.pledgeAmountSummaryViewController.view,
       self.totalAmountStackView
-    ], self.rootStackView)
+    ]
+    .compact()
+
+    _ = (arrangedSubviews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.pledgeAmountSummaryViewController.didMove(toParent: self)

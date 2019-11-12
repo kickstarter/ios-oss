@@ -492,6 +492,7 @@
 "Thank_you_for_supporting_this_project" = "Thank you for supporting this project.";
 "Thanks_for_being_part_of_all_the_joy" = "Thanks for being part of all the joy, hard work, and hope that’s gone into it—and cheers to what’s ahead.";
 "Thanks_for_bringing_this_project_one_step_closer_to_becoming_a_reality" = "Thanks for bringing this project one step closer to becoming a reality.";
+"The_creator_canceled_this_project_so_your_payment_method_was_never_charged" = "The creator canceled this project, so your payment method was never charged.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "The email associated with this Facebook account is already registered to another Kickstarter user.";
 "The_live_stream_failed_to_connect" = "The live stream failed to connect";
 "The_live_stream_was_interrupted" = "The live stream was interrupted";
@@ -503,6 +504,7 @@
 "There_was_a_problem_with_this_payment" = "There was a problem with this payment.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "This allows you to see project goal and pledge amounts in your preferred currency.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "This Facebook account is already linked to another Kickstarter user.";
+"This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "This project didn’t reach its funding goal, so your payment method was never charged.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "This project will only be funded on if at least %{amount} is pledged by %{date}.";
 "Time_left_left" = "%{time_left} left";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
@@ -541,6 +543,8 @@
 "View_your_reward" = "View your reward";
 "View_your_rewards" = "View your rewards";
 "Watch_live" = "Watch live";
+"We_cant_process_your_pledge_Please_update_your_payment_method" = "We can’t process your pledge. Please update your payment method.";
+"We_collected_your_pledge_for_this_project" = "We collected your pledge for this project.";
 "We_couldnt_find_anything_for_search_term" = "We couldn't find anything for “%{search_term}”.";
 "We_couldnt_process_your_pledge" = "We couldn't process your pledge.";
 "We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours" = "We don’t allow cancelations that will cause a project to fall short of its goal within the last 24 hours.";
@@ -565,6 +569,7 @@
 "Yes_turn_off" = "Yes, turn off";
 "You_Launched" = "You Launched!";
 "You_backed_this_project" = "You backed this project.";
+"You_canceled_your_pledge_for_this_project" = "You canceled your pledge for this project.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "You can’t use this credit card to back a project from %{project_country}.";
 "You_have_successfully_backed_project_html" = "You have successfully backed <b>%{project_name}</b>. This project is now one step closer to a reality, thanks to you. Spread the word!";
 "You_launched_this_project_on_launch_date" = "You launched this project on %{launch_date}.";
@@ -582,6 +587,7 @@
 "Your_pledge_amount" = "Your pledge amount";
 "Your_pledge_was_canceled_or_the_creator_canceled" = "Your pledge was canceled or the creator canceled the project before its deadline.";
 "Your_pledge_was_dropped" = "Your pledge was dropped.";
+"Your_pledge_was_dropped_because_of_payment_errors" = "Your pledge was dropped because of payment errors.";
 "Your_reward" = "Your reward";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Your reward</b> estimated for delivery in %{delivery_date}";
 "Your_shipping_destination" = "Your shipping destination";

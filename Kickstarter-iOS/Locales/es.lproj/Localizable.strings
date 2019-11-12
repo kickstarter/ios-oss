@@ -492,6 +492,7 @@
 "Thank_you_for_supporting_this_project" = "Gracias por apoyar este proyecto.";
 "Thanks_for_being_part_of_all_the_joy" = "Gracias por ser parte de toda la alegría, el arduo trabajo y las expectativas que esto ha generado. Brindemos por lo que está por venir.";
 "Thanks_for_bringing_this_project_one_step_closer_to_becoming_a_reality" = "Gracias por llevar este proyecto un paso más cerca de convertirse en realidad.";
+"The_creator_canceled_this_project_so_your_payment_method_was_never_charged" = "El creador canceló el proyecto, así que tu método de pago nunca recibió ningún cargo.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "Esta cuenta de correo electrónico ya está asociada a otro usuario de Kickstarter.";
 "The_live_stream_failed_to_connect" = "No se pudo conectar la transmisión en directo";
 "The_live_stream_was_interrupted" = "Transmisión en vivo fue interrumpida";
@@ -503,6 +504,7 @@
 "There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "Esto te permite ver la meta del proyecto y los montos de las contribuciones en la moneda de tu preferencia.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
+"This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "Este proyecto no alcanzó su meta de financiamiento, así que no se realizó ningún cargo a tu método de pago.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Este proyecto sólo será financiado si se contribuye al menos un monto de %{amount} antes del %{date}.";
 "Time_left_left" = "%{time_left} restantes";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Accede a tus categorías favoritas en el menú en la parte superior de la app.";
@@ -541,6 +543,8 @@
 "View_your_reward" = "Mostrar recompensa";
 "View_your_rewards" = "Ver tus recompensas";
 "Watch_live" = "Ver en vivo";
+"We_cant_process_your_pledge_Please_update_your_payment_method" = "No podemos procesar la contribución. Por favor actualiza tu método de pago.";
+"We_collected_your_pledge_for_this_project" = "Hemos recolectado tu contribución a este proyecto.";
 "We_couldnt_find_anything_for_search_term" = "La búsqueda \"%{search_term}\" no dio resultados.";
 "We_couldnt_process_your_pledge" = "No pudimos procesar tu contribución.";
 "We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours" = "No permitimos cancelaciones que ocasionen que un proyecto no alcance su meta en las últimas 24 horas.";
@@ -565,6 +569,7 @@
 "Yes_turn_off" = "Sí, desactivar";
 "You_Launched" = "¡Tu proyecto fue publicado!";
 "You_backed_this_project" = "Patrocinaste este proyecto.";
+"You_canceled_your_pledge_for_this_project" = "Has cancelado tu contribución a este proyecto.";
 "You_cant_use_this_credit_card_to_back_a_project_from_project_country" = "No puedes usar esta tarjeta de crédito para patrocinar un proyecto de %{project_country}.";
 "You_have_successfully_backed_project_html" = "Has patrocinado <b>%{project_name}</b> con éxito. Gracias a ti, este proyecto está ahora un paso más cerca de hacerse realidad. ¡Corre la voz!";
 "You_launched_this_project_on_launch_date" = "Publicaste el proyecto el: %{launch_date}.";
@@ -582,6 +587,7 @@
 "Your_pledge_amount" = "Monto de tu contribución:";
 "Your_pledge_was_canceled_or_the_creator_canceled" = "El patrocinador canceló la contribución o el creador canceló el proyecto antes de que éste llegara al plazo estipulado.";
 "Your_pledge_was_dropped" = "Tu Contribución fue descartada.";
+"Your_pledge_was_dropped_because_of_payment_errors" = "Tu contribución no pudo ser cobrada por un error en el método de pago.";
 "Your_reward" = "Tu recompensa";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Tu recompensa</b> estimada para entregarse en %{delivery_date}";
 "Your_shipping_destination" = "Tu destino de envío";
