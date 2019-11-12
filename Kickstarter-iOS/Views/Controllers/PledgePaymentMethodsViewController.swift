@@ -43,11 +43,20 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
+    let topSectionViews = [
+      self.applePayButton,
+      self.spacer,
+      self.titleLabel
+    ]
+
+    let topSectionStackView = UIStackView(arrangedSubviews: topSectionViews)
+      |> topSectionStackViewStlye
+
     _ = (self.cardsStackView, self.scrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.applePayButton, self.spacer, self.titleLabel, self.scrollView], self.rootStackView)
+    _ = ([topSectionStackView, self.scrollView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
@@ -76,19 +85,20 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.cardsStackView
-      |> self.cardsStackViewStyle
+      |> cardsStackViewStyle
 
     _ = self.applePayButton
       |> applePayButtonStyle
 
     _ = self.scrollView
+      |> \.contentInset .~ .init(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
       |> checkoutBackgroundStyle
 
     _ = self.rootStackView
-      |> self.rootStackViewStyle
+      |> rootStackViewStyle
 
     _ = self.titleLabel
-      |> self.titleLabelStyle
+      |> titleLabelStyle
   }
 
   // MARK: - View model
@@ -100,7 +110,12 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] cardValues, selectedCard in
         guard let self = self else { return }
-        self.scrollView.setContentOffset(.zero, animated: false)
+
+        self.scrollView.setContentOffset(
+          CGPoint(x: -CheckoutConstants.PledgeView.Inset.leftRight, y: 0),
+          animated: false
+        )
+
         self.reloadPaymentMethods(with: cardValues, andSelect: selectedCard)
       }
 
@@ -209,29 +224,39 @@ final class PledgePaymentMethodsViewController: UIViewController {
       return cardView
     }
   }
-
-  // MARK: - Styles
-
-  private let cardsStackViewStyle: StackViewStyle = { stackView in
-    stackView
-      |> \.spacing .~ Styles.grid(0)
-  }
-
-  private let rootStackViewStyle: StackViewStyle = { stackView in
-    stackView
-      |> verticalStackViewStyle
-      |> \.spacing .~ Styles.grid(3)
-  }
-
-  private let titleLabelStyle: LabelStyle = { label in
-    label
-      |> checkoutTitleLabelStyle
-      |> \.text %~ { _ in Strings.Other_payment_methods() }
-      |> \.textColor .~ UIColor.ksr_text_dark_grey_500
-      |> \.font .~ UIFont.ksr_caption1()
-      |> \.textAlignment .~ .center
-  }
 }
+
+// MARK: - Styles
+
+private let cardsStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.spacing .~ Styles.grid(0)
+}
+
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> verticalStackViewStyle
+    |> \.spacing .~ Styles.grid(3)
+}
+
+private let titleLabelStyle: LabelStyle = { label in
+  label
+    |> checkoutTitleLabelStyle
+    |> \.text %~ { _ in Strings.Other_payment_methods() }
+    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+    |> \.font .~ UIFont.ksr_caption1()
+    |> \.textAlignment .~ .center
+}
+
+private let topSectionStackViewStlye: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.spacing .~ Styles.grid(3)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
+}
+
+// MARK: - PledgeCreditCardViewDelegate
 
 extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
   func pledgeCreditCardViewSelected(_: PledgeCreditCardView, paymentSourceId: String) {
@@ -239,11 +264,15 @@ extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
   }
 }
 
+// MARK: - PledgeAddNewCardViewDelegate
+
 extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
   func pledgeAddNewCardView(_: PledgeAddNewCardView, didTapAddNewCardWith intent: AddNewCardIntent) {
     self.viewModel.inputs.addNewCardTapped(with: intent)
   }
 }
+
+// MARK: - AddNewCardViewControllerDelegate
 
 extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
   func addNewCardViewController(
