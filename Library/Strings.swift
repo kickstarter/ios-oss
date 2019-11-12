@@ -8026,6 +8026,23 @@ catch your eye?"
     )
   }
   /**
+   "The creator canceled this project, so your payment method was never charged."
+
+   - **en**: "The creator canceled this project, so your payment method was never charged."
+   - **de**: "The creator canceled this project, so your payment method was never charged."
+   - **es**: "The creator canceled this project, so your payment method was never charged."
+   - **fr**: "The creator canceled this project, so your payment method was never charged."
+   - **ja**: "The creator canceled this project, so your payment method was never charged."
+  */
+  public static func The_creator_canceled_this_project_so_your_payment_method_was_never_charged() -> String {
+    return localizedString(
+      key: "The_creator_canceled_this_project_so_your_payment_method_was_never_charged",
+      defaultValue: "The creator canceled this project, so your payment method was never charged.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "The email associated with this Facebook account is already registered to another Kickstarter user."
 
    - **en**: "The email associated with this Facebook account is already registered to another Kickstarter user."
@@ -8208,6 +8225,23 @@ catch your eye?"
     return localizedString(
       key: "This_facebook_account_is_already_linked_to_another_Kickstarter_user",
       defaultValue: "This Facebook account is already linked to another Kickstarter user.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "This project didn’t reach its funding goal, so your payment method was never charged."
+
+   - **en**: "This project didn’t reach its funding goal, so your payment method was never charged."
+   - **de**: "This project didn’t reach its funding goal, so your payment method was never charged."
+   - **es**: "This project didn’t reach its funding goal, so your payment method was never charged."
+   - **fr**: "This project didn’t reach its funding goal, so your payment method was never charged."
+   - **ja**: "This project didn’t reach its funding goal, so your payment method was never charged."
+  */
+  public static func This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged() -> String {
+    return localizedString(
+      key: "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged",
+      defaultValue: "This project didn’t reach its funding goal, so your payment method was never charged.",
       count: nil,
       substitutions: [:]
     )
@@ -8859,6 +8893,40 @@ catch your eye?"
     )
   }
   /**
+   "We can’t process your pledge. Please update your payment method."
+
+   - **en**: "We can’t process your pledge. Please update your payment method."
+   - **de**: "We can’t process your pledge. Please update your payment method."
+   - **es**: "We can’t process your pledge. Please update your payment method."
+   - **fr**: "We can’t process your pledge. Please update your payment method."
+   - **ja**: "We can’t process your pledge. Please update your payment method."
+  */
+  public static func We_cant_process_your_pledge_Please_update_your_payment_method() -> String {
+    return localizedString(
+      key: "We_cant_process_your_pledge_Please_update_your_payment_method",
+      defaultValue: "We can’t process your pledge. Please update your payment method.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "We collected your pledge for this project."
+
+   - **en**: "We collected your pledge for this project."
+   - **de**: "We collected your pledge for this project."
+   - **es**: "We collected your pledge for this project."
+   - **fr**: "We collected your pledge for this project."
+   - **ja**: "We collected your pledge for this project."
+  */
+  public static func We_collected_your_pledge_for_this_project() -> String {
+    return localizedString(
+      key: "We_collected_your_pledge_for_this_project",
+      defaultValue: "We collected your pledge for this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "We couldn't find anything for “%{search_term}”."
 
    - **en**: "We couldn't find anything for “%{search_term}”."
@@ -9273,6 +9341,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "You canceled your pledge for this project."
+
+   - **en**: "You canceled your pledge for this project."
+   - **de**: "You canceled your pledge for this project."
+   - **es**: "You canceled your pledge for this project."
+   - **fr**: "You canceled your pledge for this project."
+   - **ja**: "You canceled your pledge for this project."
+  */
+  public static func You_canceled_your_pledge_for_this_project() -> String {
+    return localizedString(
+      key: "You_canceled_your_pledge_for_this_project",
+      defaultValue: "You canceled your pledge for this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "You can’t use this credit card to back a project from %{project_country}."
 
    - **en**: "You can’t use this credit card to back a project from %{project_country}."
@@ -9557,6 +9642,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Your_pledge_was_dropped",
       defaultValue: "Your pledge was dropped.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your pledge was dropped because of payment errors."
+
+   - **en**: "Your pledge was dropped because of payment errors."
+   - **de**: "Your pledge was dropped because of payment errors."
+   - **es**: "Your pledge was dropped because of payment errors."
+   - **fr**: "Your pledge was dropped because of payment errors."
+   - **ja**: "Your pledge was dropped because of payment errors."
+  */
+  public static func Your_pledge_was_dropped_because_of_payment_errors() -> String {
+    return localizedString(
+      key: "Your_pledge_was_dropped_because_of_payment_errors",
+      defaultValue: "Your pledge was dropped because of payment errors.",
       count: nil,
       substitutions: [:]
     )
