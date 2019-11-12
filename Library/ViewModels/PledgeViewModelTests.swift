@@ -308,8 +308,6 @@ final class PledgeViewModelTests: TestCase {
       self.confirmationLabelText.assertValues([
         "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019."
       ])
-
-      self.vm.inputs.traitCollectionDidChange()
     }
   }
 

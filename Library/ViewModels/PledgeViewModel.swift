@@ -41,7 +41,6 @@ public protocol PledgeViewModelInputs {
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
   func submitButtonTapped()
-  func traitCollectionDidChange()
   func userSessionStarted()
   func viewDidLoad()
 }
@@ -143,11 +142,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
     .skipNil()
 
-    let projectAndPledgeTotal = Signal.merge(
-      project,
-      project.takeWhen(self.traitCollectionDidChangeSignal)
-    )
-    .combineLatest(with: pledgeTotal)
+    let projectAndPledgeTotal = project
+      .combineLatest(with: pledgeTotal)
 
     self.confirmationLabelAttributedText = projectAndPledgeTotal
       .map { project, pledgeTotal in
@@ -657,11 +653,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.stripeErrorObserver.send(value: error)
 
     return self.createApplePayBackingStatusProperty.value
-  }
-
-  private let (traitCollectionDidChangeSignal, traitCollectionDidChangeObserver) = Signal<(), Never>.pipe()
-  public func traitCollectionDidChange() {
-    self.traitCollectionDidChangeObserver.send(value: ())
   }
 
   private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()

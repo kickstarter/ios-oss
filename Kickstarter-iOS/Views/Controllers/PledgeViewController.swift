@@ -139,12 +139,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    self.viewModel.inputs.traitCollectionDidChange()
-  }
-
   deinit {
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
