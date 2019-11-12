@@ -30,6 +30,12 @@ public enum CheckoutConstants {
     public static let height: CGFloat = 143
   }
 
+  public enum PledgeView {
+    public enum Inset {
+      public static let leftRight: CGFloat = Styles.grid(4)
+    }
+  }
+
   public enum RewardCard {
     public enum Layout {
       public static let width: CGFloat = 294

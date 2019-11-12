@@ -156,13 +156,28 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.paymentMethodsViewController
     ]
 
-    let arrangedSubviews = [
+    let topSectionViews = [
       self.descriptionSectionViews,
       self.inputsSectionViews,
       self.summarySectionViews,
-      self.loginSectionViews,
+      self.loginSectionViews
+    ]
+    .flatMap { $0 }
+    .compact()
+
+    let topSectionStackView = UIStackView(arrangedSubviews: topSectionViews)
+      |> nestedStackViewStyle
+
+    let bottomSectionViews = [self.confirmationSectionViews]
+      .flatMap { $0 }
+
+    let bottomSectionStackView = UIStackView(arrangedSubviews: bottomSectionViews)
+      |> nestedStackViewStyle
+
+    let arrangedSubviews = [
+      [topSectionStackView],
       self.paymentMethodsSectionViews,
-      self.confirmationSectionViews
+      [bottomSectionStackView]
     ]
     .flatMap { $0 }
     .compact()
@@ -203,7 +218,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> rootScrollViewStyle
 
     _ = self.rootStackView
-      |> checkoutRootStackViewStyle
+      |> rootStackViewStyle
 
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
@@ -520,8 +535,20 @@ extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
 
 // MARK: - Styles
 
+private let nestedStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> checkoutRootStackViewStyle
+    |> \.layoutMargins .~ UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
+}
+
 private let rootScrollViewStyle: ScrollStyle = { scrollView in
   scrollView
     |> UIScrollView.lens.showsVerticalScrollIndicator .~ false
     |> \.alwaysBounceVertical .~ true
+}
+
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> checkoutRootStackViewStyle
+    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3))
 }
