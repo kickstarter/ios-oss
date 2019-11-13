@@ -63,21 +63,35 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let storedCards = Signal.combineLatest(storedCardsValues, backing)
       .map(cards(_:orderedBy:))
 
-    let newCard = Signal.merge(
-      configureWithValue.mapConst(nil),
-      self.newCreditCardProperty.signal
-    )
-    
-    let allCards = Signal.merge(
+    let initialCardData = Signal.combineLatest(
       storedCards,
-      newCard.skipNil()
-    ).scan([]) { current, new in new + current }
-
-    self.reloadPaymentMethodsAndSelectCard = Signal.combineLatest(
-      allCards,
-      newCard,
       availableCardTypes,
       project
+    ).map { ($0.0, $0.1, $0.2, false) }
+
+    let newCard = self.newCreditCardProperty.signal.skipNil()
+
+    let allCards = Signal.merge(
+      storedCards,
+      newCard.map { [$0] }
+    )
+    .scan([]) { current, new in new + current }
+
+    let allCardData = Signal.combineLatest(
+      allCards,
+      availableCardTypes,
+      project
+    )
+
+    let newCardAdded = allCardData
+      .takePairWhen(newCard)
+      .map { cardData, _ in
+        (cardData.0, cardData.1, cardData.2, true)
+      }
+
+    self.reloadPaymentMethodsAndSelectCard = Signal.merge(
+      initialCardData,
+      newCardAdded
     )
     .map(pledgeCreditCardViewDataAndSelectedCard)
 
@@ -90,7 +104,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.notifyDelegateCreditCardSelected = self.creditCardSelectedSignal
       .skipRepeats()
 
-    self.updateSelectedCreditCard = storedCards
+    self.updateSelectedCreditCard = allCards
       .takePairWhen(self.creditCardSelectedSignal)
       .map { cards, id in cards.filter { $0.id == id }.first }
       .skipNil()
@@ -155,9 +169,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
 private func pledgeCreditCardViewDataAndSelectedCard(
   with cards: [GraphUserCreditCard.CreditCard],
-  newAddedCard: GraphUserCreditCard.CreditCard?,
   availableCardTypes: [String],
-  project: Project
+  project: Project,
+  newCardAdded: Bool
 ) -> ([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?) {
   let data = cards.compactMap { card -> PledgeCreditCardViewData? in
     guard let cardBrand = card.type?.rawValue else { return nil }
@@ -173,8 +187,8 @@ private func pledgeCreditCardViewDataAndSelectedCard(
   }
 
   // If we're working with a backing, but we have a newly added card, select the newly added card.
-  if let newCard = newAddedCard {
-    return (data, newCard)
+  if newCardAdded {
+    return (data, cards.first)
   }
 
   /*
