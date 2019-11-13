@@ -102,7 +102,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] project in
         self?.pledgeAmountSummaryViewController.configureWith(project)
-    }
+      }
 
     self.viewModel.outputs.configurePledgeStatusLabelViewWithProject
       .observeForUI()
