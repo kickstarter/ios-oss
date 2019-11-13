@@ -63,14 +63,18 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let storedCards = Signal.combineLatest(storedCardsValues, backing)
       .map(cards(_:orderedBy:))
 
-    let cards = Signal.merge(
-      storedCards,
-      self.newCreditCardProperty.signal.skipNil().map { card in [card] }
+    let newCard = Signal.merge(
+      configureWithValue.mapConst(nil),
+      self.newCreditCardProperty.signal
     )
-    .scan([]) { current, new in new + current }
 
-    self.reloadPaymentMethodsAndSelectCard = Signal.combineLatest(cards, availableCardTypes, project)
-      .map(pledgeCreditCardViewDataAndSelectedCard(with:availableCardTypes:project:))
+    self.reloadPaymentMethodsAndSelectCard = Signal.combineLatest(
+      storedCards,
+      newCard,
+      availableCardTypes,
+      project
+    )
+    .map(pledgeCreditCardViewDataAndSelectedCard)
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
 
@@ -81,7 +85,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.notifyDelegateCreditCardSelected = self.creditCardSelectedSignal
       .skipRepeats()
 
-    self.updateSelectedCreditCard = cards
+    self.updateSelectedCreditCard = storedCards
       .takePairWhen(self.creditCardSelectedSignal)
       .map { cards, id in cards.filter { $0.id == id }.first }
       .skipNil()
@@ -146,10 +150,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
 private func pledgeCreditCardViewDataAndSelectedCard(
   with cards: [GraphUserCreditCard.CreditCard],
+  newAddedCard: GraphUserCreditCard.CreditCard?,
   availableCardTypes: [String],
   project: Project
 ) -> ([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?) {
-  let data = cards.compactMap { card -> PledgeCreditCardViewData? in
+  let allCards = ([newAddedCard] + cards).compact()
+
+  let data = allCards.compactMap { card -> PledgeCreditCardViewData? in
     guard let cardBrand = card.type?.rawValue else { return nil }
 
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
@@ -157,11 +164,21 @@ private func pledgeCreditCardViewDataAndSelectedCard(
     return (card, isAvailableCardType, project.location.displayableName)
   }
 
+  // If there is no backing, simply select the first card in the list.
   guard let backing = project.personalization.backing else {
-    return (data, cards.first)
+    return (data, allCards.first)
   }
 
-  let backedCard = cards.first(where: { $0.id == backing.paymentSource?.id })
+  // If we're working with a backing, but we have a newly added card, select the newly added card.
+  if let newCard = newAddedCard {
+    return (data, newCard)
+  }
+
+  /*
+   If we're working with a backing, and a new card hasn't been added,
+   select the card that the backing is associated with.
+   */
+  let backedCard = allCards.first(where: { $0.id == backing.paymentSource?.id })
 
   return (data, backedCard)
 }

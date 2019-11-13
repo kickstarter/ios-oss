@@ -22,12 +22,12 @@ public struct Backing {
   public let status: Status
 
   public struct PaymentSource {
-    public let expirationDate: String?
-    public let id: String?
-    public let lastFour: String?
-    public let paymentType: PaymentType
-    public let state: String
-    public let type: GraphUserCreditCard.CreditCardType?
+    public var expirationDate: String?
+    public var id: String?
+    public var lastFour: String?
+    public var paymentType: PaymentType
+    public var state: String
+    public var type: GraphUserCreditCard.CreditCardType?
 
     public var imageName: String {
       switch self.type {
