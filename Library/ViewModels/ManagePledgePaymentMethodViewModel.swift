@@ -34,7 +34,10 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
       .map(imageName(for:))
       .skipNil()
 
-    let type = self.paymentSourceSignal
+    let paymentType = self.paymentSourceSignal
+      .map { $0.paymentType }
+
+    let cardType = self.paymentSourceSignal
       .map { $0.type }
       .skipNil()
 
@@ -43,11 +46,12 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
       .skipNil()
 
     self.cardNumberAccessibilityLabel = Signal.combineLatest(
-      type,
+      paymentType,
+      cardType,
       lastFour
     )
     .map {
-      [$0.0.description, Strings.Card_ending_in_last_four(last_four: $0.1)]
+      [$0.0.accessibilityLabel, $0.1.description, Strings.Card_ending_in_last_four(last_four: $0.2)]
         .compact()
         .joined(separator: ", ")
     }
