@@ -96,7 +96,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
 
     _ = self.contentView
       |> contentViewStyle
-      |> rewardsBackgroundStyle
+      |> checkoutBackgroundStyle
 
     _ = self.scrollView
       |> scrollViewStyle
