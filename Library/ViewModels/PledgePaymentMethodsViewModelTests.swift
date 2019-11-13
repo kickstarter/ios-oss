@@ -267,6 +267,34 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.updateSelectedCreditCard.assertValues([userCreditCard])
     }
   }
+  
+  func testUpdateSelectedCard_NewCardAdded() {
+    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let userCreditCard = GraphUserCreditCard.amex
+      |> \.id .~ "10"
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.configureWith((User.template, Project.template, false))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      self.updateSelectedCreditCard.assertDidNotEmitValue()
+            
+      self.vm.inputs.addNewCardViewControllerDidAdd(newCard: userCreditCard)
+
+      self.updateSelectedCreditCard.assertDidNotEmitValue()
+
+      self.vm.inputs.creditCardSelected(paymentSourceId: GraphUserCreditCard.template.nodes.first.id)
+
+      self.updateSelectedCreditCard.assertValues([GraphUserCreditCard.template.nodes.first])
+      
+      self.vm.inputs.creditCardSelected(paymentSourceId: userCreditCard.id)
+      
+      self.updateSelectedCreditCard.assertValues([GraphUserCreditCard.template.nodes.first, "10"])
+    }
+  }
 
   func testReloadPaymentMethods_NoStoredCards() {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.emptyTemplate)

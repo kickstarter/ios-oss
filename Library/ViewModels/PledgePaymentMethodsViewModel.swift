@@ -67,9 +67,14 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       configureWithValue.mapConst(nil),
       self.newCreditCardProperty.signal
     )
+    
+    let allCards = Signal.merge(
+      storedCards,
+      newCard.skipNil()
+    ).scan([]) { current, new in new + current }
 
     self.reloadPaymentMethodsAndSelectCard = Signal.combineLatest(
-      storedCards,
+      allCards,
       newCard,
       availableCardTypes,
       project
@@ -154,9 +159,7 @@ private func pledgeCreditCardViewDataAndSelectedCard(
   availableCardTypes: [String],
   project: Project
 ) -> ([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?) {
-  let allCards = ([newAddedCard] + cards).compact()
-
-  let data = allCards.compactMap { card -> PledgeCreditCardViewData? in
+  let data = cards.compactMap { card -> PledgeCreditCardViewData? in
     guard let cardBrand = card.type?.rawValue else { return nil }
 
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
@@ -166,7 +169,7 @@ private func pledgeCreditCardViewDataAndSelectedCard(
 
   // If there is no backing, simply select the first card in the list.
   guard let backing = project.personalization.backing else {
-    return (data, allCards.first)
+    return (data, cards.first)
   }
 
   // If we're working with a backing, but we have a newly added card, select the newly added card.
@@ -178,7 +181,7 @@ private func pledgeCreditCardViewDataAndSelectedCard(
    If we're working with a backing, and a new card hasn't been added,
    select the card that the backing is associated with.
    */
-  let backedCard = allCards.first(where: { $0.id == backing.paymentSource?.id })
+  let backedCard = cards.first(where: { $0.id == backing.paymentSource?.id })
 
   return (data, backedCard)
 }
