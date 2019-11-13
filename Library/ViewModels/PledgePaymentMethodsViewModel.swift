@@ -68,7 +68,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       availableCardTypes,
       project
     )
-      .map { ($0.0, $0.1, $0.2, false) }
+    .map { ($0.0, $0.1, $0.2, false) }
 
     let newCard = self.newCreditCardProperty.signal.skipNil()
 
@@ -87,7 +87,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     let newCardAdded = allCardData
       .takePairWhen(newCard)
       .map { cardData, _ in (cardData.0, cardData.1, cardData.2, true) }
-
 
     self.reloadPaymentMethodsAndSelectCard = Signal.merge(
       initialCardData,
