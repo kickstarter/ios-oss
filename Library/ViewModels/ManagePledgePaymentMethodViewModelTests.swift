@@ -35,7 +35,7 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: Backing.PaymentSource.applePay)
 
     self.cardImageName.assertValue("icon--apple-pay")
-    self.cardNumberAccessibilityLabel.assertLastValue("Visa, Card ending in 1111")
+    self.cardNumberAccessibilityLabel.assertLastValue("Apple Pay, Visa, Card ending in 1111")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1111")
     self.expirationDateText.assertValue("Expires 10/2019")
   }
@@ -44,7 +44,7 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: Backing.PaymentSource.googlePay)
 
     self.cardImageName.assertValue("icon--google-pay")
-    self.cardNumberAccessibilityLabel.assertLastValue("Visa, Card ending in 4111")
+    self.cardNumberAccessibilityLabel.assertLastValue("Google Pay, Visa, Card ending in 4111")
     self.cardNumberTextShortStyle.assertLastValue("Ending in 4111")
     self.expirationDateText.assertValue("Expires 10/2019")
   }
