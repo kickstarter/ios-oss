@@ -9,7 +9,7 @@ import XCTest
 final class PledgePaymentMethodsViewModelTests: TestCase {
   private let vm: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
 
-  private let applePayButtonHidden = TestObserver<Bool, Never>()
+  private let applePayStackViewHidden = TestObserver<Bool, Never>()
   private let goToAddCardIntent = TestObserver<AddNewCardIntent, Never>()
   private let goToProject = TestObserver<Project, Never>()
   private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
@@ -24,7 +24,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.vm.outputs.applePayButtonHidden.observe(self.applePayButtonHidden.observer)
+    self.vm.outputs.applePayStackViewHidden.observe(self.applePayStackViewHidden.observer)
     self.vm.outputs.goToAddCardScreen.map(first).observe(self.goToAddCardIntent.observer)
     self.vm.outputs.goToAddCardScreen.map(second).observe(self.goToProject.observer)
     self.vm.outputs.notifyDelegateApplePayButtonTapped
@@ -42,7 +42,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.reloadPaymentMethodsProjectCountry.observer)
     self.vm.outputs.reloadPaymentMethodsAndSelectCard.map(second)
       .observe(self.reloadPaymentMethodsSelectedCard.observer)
-
     self.vm.outputs.updateSelectedCreditCard.observe(self.updateSelectedCreditCard.observer)
   }
 
@@ -191,7 +190,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
-      self.applePayButtonHidden.assertDidNotEmitValue()
+      self.applePayStackViewHidden.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, false))
@@ -199,7 +198,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.applePayButtonHidden.assertValues([true])
+      self.applePayStackViewHidden.assertValues([true])
       self.reloadPaymentMethodsCards.assertValues([[]])
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([[]])
       self.reloadPaymentMethodsProjectCountry.assertValues([[]])
@@ -276,7 +275,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
-      self.applePayButtonHidden.assertDidNotEmitValue()
+      self.applePayStackViewHidden.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, false))
@@ -284,7 +283,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.applePayButtonHidden.assertValues([true])
+      self.applePayStackViewHidden.assertValues([true])
       self.reloadPaymentMethodsCards.assertValues([[]])
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([[]])
       self.reloadPaymentMethodsProjectCountry.assertValues([[]])
@@ -300,7 +299,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
-      self.applePayButtonHidden.assertDidNotEmitValue()
+      self.applePayStackViewHidden.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, false))
@@ -308,7 +307,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.applePayButtonHidden.assertValues([true])
+      self.applePayStackViewHidden.assertValues([true])
       self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
         [true, true, true, true, true, true, false, true]
@@ -331,14 +330,14 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
-      self.applePayButtonHidden.assertDidNotEmitValue()
+      self.applePayStackViewHidden.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, true))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
 
-      self.applePayButtonHidden.assertValues([false])
+      self.applePayStackViewHidden.assertValues([false])
       self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
         [true, true, true, true, true, true, false, true]
@@ -381,14 +380,14 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
-      self.applePayButtonHidden.assertDidNotEmitValue()
+      self.applePayStackViewHidden.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, project, true))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
 
-      self.applePayButtonHidden.assertValues([false])
+      self.applePayStackViewHidden.assertValues([false])
       self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
         [true, true, true, true, true, false, true]
@@ -409,7 +408,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
-      self.applePayButtonHidden.assertDidNotEmitValue()
+      self.applePayStackViewHidden.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, false))
       self.vm.inputs.viewDidLoad()
@@ -419,11 +418,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
-      self.applePayButtonHidden.assertValues([true])
+      self.applePayStackViewHidden.assertValues([true])
 
       self.scheduler.run()
 
-      self.applePayButtonHidden.assertValues([true])
+      self.applePayStackViewHidden.assertValues([true])
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
@@ -441,7 +440,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
-      self.applePayButtonHidden.assertDidNotEmitValue()
+      self.applePayStackViewHidden.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith((User.template, Project.template, true))
       self.vm.inputs.viewDidLoad()
@@ -454,7 +453,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.applePayButtonHidden.assertValues([false])
+      self.applePayStackViewHidden.assertValues([false])
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
@@ -474,11 +473,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
-      self.applePayButtonHidden.assertDidNotEmitValue()
+      self.applePayStackViewHidden.assertDidNotEmitValue()
 
       self.scheduler.run()
 
-      self.applePayButtonHidden.assertDidNotEmitValue()
+      self.applePayStackViewHidden.assertDidNotEmitValue()
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
@@ -500,7 +499,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testApplePayButton_isHidden_applePayCapable_unsupportedProjectCountry() {
+  func testApplePayStackViewHidden_isHidden_applePayCapable_unsupportedProjectCountry() {
     let mockConfig = Config.template
       |> \.applePayCountries .~ [Project.Country.us.countryCode]
     let project = Project.template
@@ -510,11 +509,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.configureWith((User.template, project, true))
       self.vm.inputs.viewDidLoad()
 
-      self.applePayButtonHidden.assertValues([true])
+      self.applePayStackViewHidden.assertValues([true])
     }
   }
 
-  func testApplePayButton_isNotHidden_applePayCapable_supportedProjectCountry() {
+  func testApplePayViewHidden_isNotHidden_applePayCapable_supportedProjectCountry() {
     let mockConfig = Config.template
       |> \.applePayCountries .~ [
         Project.Country.us.countryCode,
@@ -527,7 +526,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.configureWith((User.template, project, true))
       self.vm.inputs.viewDidLoad()
 
-      self.applePayButtonHidden.assertValues([false])
+      self.applePayStackViewHidden.assertValues([false])
     }
   }
 

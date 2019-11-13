@@ -16,7 +16,7 @@ public protocol PledgePaymentMethodsViewModelInputs {
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
-  var applePayButtonHidden: Signal<Bool, Never> { get }
+  var applePayStackViewHidden: Signal<Bool, Never> { get }
   var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
   var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
@@ -52,7 +52,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           .materialize()
       }
 
-    self.applePayButtonHidden = configureWithValue
+    self.applePayStackViewHidden = configureWithValue
       .map { ($0.project, $0.applePayCapable) }
       .map(showApplePayButton(for:applePayCapable:))
       .negate()
@@ -134,14 +134,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.viewDidLoadProperty.value = ()
   }
 
-  public let applePayButtonHidden: Signal<Bool, Never>
+  public let applePayStackViewHidden: Signal<Bool, Never>
   public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
   public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
   public let notifyDelegateCreditCardSelected: Signal<String, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
   public let reloadPaymentMethodsAndSelectCard:
     Signal<([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?), Never>
-
   public let updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never>
 
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }
