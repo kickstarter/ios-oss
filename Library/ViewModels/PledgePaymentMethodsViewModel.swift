@@ -52,12 +52,10 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           .materialize()
       }
 
-    let applePayButtonHidden = configureWithValue
+    self.applePayStackViewHidden = configureWithValue
       .map { ($0.project, $0.applePayCapable) }
       .map(showApplePayButton(for:applePayCapable:))
       .negate()
-
-    self.applePayStackViewHidden = applePayButtonHidden
 
     let storedCardsValues = storedCardsEvent.values().map { $0.me.storedCards.nodes }
     let backing = configureWithValue.map { $0.project.personalization.backing }
