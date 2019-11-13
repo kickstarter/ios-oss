@@ -101,8 +101,10 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         |> \.id .~ "2" // Matches GraphUserCreditCard.visa template id
 
       let project = Project.template
-        |> Project.lens.personalization.backing .~ (Backing.template
-          |> Backing.lens.paymentSource .~ paymentSource)
+        |> Project.lens.personalization.backing .~ (
+          Backing.template
+            |> Backing.lens.paymentSource .~ paymentSource
+        )
 
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
 

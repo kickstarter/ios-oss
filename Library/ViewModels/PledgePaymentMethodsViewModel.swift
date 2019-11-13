@@ -74,7 +74,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       availableCardTypes,
       project
     )
-    .map(pledgeCreditCardViewDataAndSelectedCard(with:newAddedCard:availableCardTypes:project:))
+    .map(pledgeCreditCardViewDataAndSelectedCard)
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
 
@@ -154,7 +154,7 @@ private func pledgeCreditCardViewDataAndSelectedCard(
   availableCardTypes: [String],
   project: Project
 ) -> ([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?) {
-  let allCards = ([newAddedCard] + cards).compactMap { $0 }
+  let allCards = ([newAddedCard] + cards).compact()
 
   let data = allCards.compactMap { card -> PledgeCreditCardViewData? in
     guard let cardBrand = card.type?.rawValue else { return nil }
@@ -164,18 +164,20 @@ private func pledgeCreditCardViewDataAndSelectedCard(
     return (card, isAvailableCardType, project.location.displayableName)
   }
 
-  // If there is no backing, simply select the first card in the list
+  // If there is no backing, simply select the first card in the list.
   guard let backing = project.personalization.backing else {
     return (data, allCards.first)
   }
 
-  // If we're working with a backing, but we have a newly added card, select the newly added card
+  // If we're working with a backing, but we have a newly added card, select the newly added card.
   if let newCard = newAddedCard {
     return (data, newCard)
   }
 
-  /* If we're working with a backing, and a new card hasn't been added,
-   select the card the backing is associated with */
+  /*
+   If we're working with a backing, and a new card hasn't been added,
+   select the card that the backing is associated with.
+   */
   let backedCard = allCards.first(where: { $0.id == backing.paymentSource?.id })
 
   return (data, backedCard)
