@@ -50,7 +50,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   func testReloadPaymentMethods_NewCardAdded() {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
-    let userCreditCard = GraphUserCreditCard.amex
+    let userCreditCard = GraphUserCreditCard.visa |> \.id .~ "10"
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
@@ -74,7 +74,28 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.addNewCardViewControllerDidAdd(newCard: userCreditCard)
 
       self.reloadPaymentMethodsCards.assertValues(
-        [response.me.storedCards.nodes, [userCreditCard] + response.me.storedCards.nodes]
+        [
+          [
+            GraphUserCreditCard.amex,
+            GraphUserCreditCard.masterCard,
+            GraphUserCreditCard.visa,
+            GraphUserCreditCard.diners,
+            GraphUserCreditCard.jcb,
+            GraphUserCreditCard.discover,
+            GraphUserCreditCard.generic,
+            GraphUserCreditCard.unionPay
+          ], [
+            userCreditCard,
+            GraphUserCreditCard.amex,
+            GraphUserCreditCard.masterCard,
+            GraphUserCreditCard.visa,
+            GraphUserCreditCard.diners,
+            GraphUserCreditCard.jcb,
+            GraphUserCreditCard.discover,
+            GraphUserCreditCard.generic,
+            GraphUserCreditCard.unionPay
+          ]
+        ]
       )
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
         [true, true, true, true, true, true, false, true],
@@ -264,6 +285,45 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.creditCardSelected(paymentSourceId: userCreditCard.id)
 
       self.updateSelectedCreditCard.assertValues([userCreditCard])
+    }
+  }
+
+  func testUpdateSelectedCard_NewCardAdded() {
+    let cards = GraphUserCreditCard.withCards([GraphUserCreditCard.amex, GraphUserCreditCard.masterCard])
+    let response = UserEnvelope<GraphUserCreditCard>(me: cards)
+    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let userCreditCard = GraphUserCreditCard.visa
+      |> \.id .~ "10"
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.configureWith((User.template, Project.template, false))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      self.updateSelectedCreditCard.assertDidNotEmitValue()
+      self.reloadPaymentMethodsSelectedCard
+        .assertValues([GraphUserCreditCard.amex], "First card is selected")
+
+      self.vm.inputs.addNewCardViewControllerDidAdd(newCard: userCreditCard)
+
+      self.reloadPaymentMethodsSelectedCard
+        .assertValues([GraphUserCreditCard.amex, userCreditCard], "New card selected")
+      self.updateSelectedCreditCard.assertDidNotEmitValue()
+
+      self.vm.inputs.creditCardSelected(paymentSourceId: "1") // Mastercard selected
+
+      self.updateSelectedCreditCard.assertValues(
+        [GraphUserCreditCard.masterCard],
+        "Correct card is selected"
+      )
+
+      self.vm.inputs.creditCardSelected(paymentSourceId: userCreditCard.id)
+
+      self.updateSelectedCreditCard.assertValues(
+        [GraphUserCreditCard.masterCard, userCreditCard],
+        "Correct card is selected"
+      )
     }
   }
 
