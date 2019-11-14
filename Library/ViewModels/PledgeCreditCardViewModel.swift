@@ -7,7 +7,8 @@ import UIKit
 public typealias PledgeCreditCardViewData = (
   card: GraphUserCreditCard.CreditCard,
   isEnabled: Bool,
-  projectCountry: String
+  projectCountry: String,
+  needsSpacer: Bool
 )
 
 public protocol PledgeCreditCardViewModelInputs {
@@ -64,9 +65,9 @@ public protocol PledgeCreditCardViewModelType {
 public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
   public init() {
-    let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map(first)
+    let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.card }
     let selectedCard = self.selectedCardProperty.signal.skipNil()
-    let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map(second)
+    let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isEnabled }
 
     self.cardImage = creditCard
       .map(cardImageForCard)
@@ -111,7 +112,9 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       .map { $0 ? Strings.Selected() : Strings.Select() }
       .skipRepeats()
 
-    self.spacerIsHidden = cardTypeIsAvailable.negate()
+    self.spacerIsHidden = self.pledgeCreditCardValueProperty.signal
+      .skipNil()
+      .map { $0.needsSpacer }
     self.selectButtonEnabled = cardTypeIsAvailable
     self.unavailableCardLabelHidden = cardTypeIsAvailable
 
