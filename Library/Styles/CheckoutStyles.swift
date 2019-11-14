@@ -30,6 +30,12 @@ public enum CheckoutConstants {
     public static let height: CGFloat = 143
   }
 
+  public enum PledgeView {
+    public enum Inset {
+      public static let leftRight: CGFloat = Styles.grid(4)
+    }
+  }
+
   public enum RewardCard {
     public enum Layout {
       public static let width: CGFloat = 294
@@ -102,6 +108,11 @@ public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> 
 
 public let checkoutBackgroundStyle: ViewStyle = { (view: UIView) in
   view
+    |> \.backgroundColor .~ UIColor.ksr_grey_300
+}
+
+public let checkoutLabelStyle: LabelStyle = { label in
+  label
     |> \.backgroundColor .~ UIColor.ksr_grey_300
 }
 
@@ -203,11 +214,6 @@ public let rewardCardShadowStyle: ViewStyle = { (view: UIView) in
   view
     |> dropShadowStyleMedium()
     |> \.layer.shouldRasterize .~ false
-}
-
-public let rewardsBackgroundStyle: ViewStyle = { (view: UIView) in
-  view
-    |> \.backgroundColor .~ UIColor.ksr_grey_400
 }
 
 public let cardImageViewStyle: ImageViewStyle = { imageView in

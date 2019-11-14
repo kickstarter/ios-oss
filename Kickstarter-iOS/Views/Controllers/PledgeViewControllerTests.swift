@@ -20,17 +20,22 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_NeedsConversion_IsFalse() {
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(language: language) {
-        let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+      .forEach { language, device, currentUser in
+        withEnvironment(currentUser: currentUser, language: language) {
+          let controller = PledgeViewController.instantiate()
+          controller.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+          self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+          let loggedIn = currentUser != nil
+          let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
+          if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+        }
       }
-    }
   }
 
   func testView_NeedsConversion_IsTrue() {
@@ -38,17 +43,22 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(language: language) {
-        let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+      .forEach { language, device, currentUser in
+        withEnvironment(currentUser: currentUser, language: language) {
+          let controller = PledgeViewController.instantiate()
+          controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+          self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+          let loggedIn = currentUser != nil
+          let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
+          if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+        }
       }
-    }
   }
 
   func testView_UpdateContext_NeedsConversion_IsFalse() {
@@ -60,12 +70,11 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.country .~ .us
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(language: language) {
+      withEnvironment(currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
         controller.configureWith(project: project, reward: reward, refTag: nil, context: .update)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.advance(by: .milliseconds(10))
         self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
@@ -82,12 +91,11 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.country .~ .hk
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(language: language) {
+      withEnvironment(currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
         controller.configureWith(project: project, reward: reward, refTag: nil, context: .update)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.advance(by: .milliseconds(10))
         self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
@@ -103,12 +111,11 @@ final class PledgeViewControllerTests: TestCase {
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(language: language) {
+      withEnvironment(currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
         controller.configureWith(project: project, reward: reward, refTag: nil, context: .update)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.advance(by: .milliseconds(10))
         self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
@@ -190,16 +197,21 @@ final class PledgeViewControllerTests: TestCase {
     let reward = Reward.template
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(language: language) {
-        let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: .template, reward: reward, refTag: nil, context: .pledge)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+      .forEach { language, device, currentUser in
+        withEnvironment(language: language) {
+          let controller = PledgeViewController.instantiate()
+          controller.configureWith(project: .template, reward: reward, refTag: nil, context: .pledge)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+          self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+          let loggedIn = currentUser != nil
+          let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
+          if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+        }
       }
-    }
   }
 }
