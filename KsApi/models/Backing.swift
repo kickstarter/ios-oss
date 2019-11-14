@@ -22,12 +22,12 @@ public struct Backing {
   public let status: Status
 
   public struct PaymentSource {
-    public let expirationDate: String?
-    public let id: String?
-    public let lastFour: String?
-    public let paymentType: PaymentType
-    public let state: String
-    public let type: GraphUserCreditCard.CreditCardType?
+    public var expirationDate: String?
+    public var id: String?
+    public var lastFour: String?
+    public var paymentType: PaymentType
+    public var state: String
+    public var type: GraphUserCreditCard.CreditCardType?
 
     public var imageName: String {
       switch self.type {
@@ -42,9 +42,21 @@ public struct Backing {
   public enum PaymentType: String {
     case applePay = "APPLE_PAY"
     case creditCard = "CREDIT_CARD"
+    case googlePay = "ANDROID_PAY"
+
+    public var accessibilityLabel: String? {
+      switch self {
+      case .applePay:
+        return "Apple Pay"
+      case .googlePay:
+        return "Google Pay"
+      case .creditCard:
+        return nil
+      }
+    }
   }
 
-  public enum Status: String {
+  public enum Status: String, CaseIterable {
     case canceled
     case collected
     case dropped

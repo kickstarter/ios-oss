@@ -12,9 +12,9 @@ final class RewardPledgeNavigationController: UINavigationController {
       |> \.delegate .~ self
 
     _ = self.navigationBar
+      ?|> \.barTintColor .~ .ksr_grey_300
       ?|> \.isTranslucent .~ false
-
-    self.navigationBar.shadowImage = UIImage()
+      ?|> \.shadowImage .~ UIImage()
   }
 }
 
@@ -29,23 +29,9 @@ extension RewardPledgeNavigationController: UINavigationControllerDelegate {
     case (.push, is RewardPledgeTransitionAnimatorDelegate, is PledgeViewController):
       return RewardPledgePushTransitionAnimator()
     case (.pop, is PledgeViewController, is RewardPledgeTransitionAnimatorDelegate):
-      return RewardPledgePopTransitionAnimator()
+      return nil
     default:
       return nil
     }
-  }
-
-  func navigationController(
-    _: UINavigationController, willShow viewController: UIViewController, animated _: Bool
-  ) {
-    let barTintColor: UIColor
-
-    if viewController is RewardsCollectionViewController {
-      barTintColor = .ksr_grey_400
-    } else {
-      barTintColor = .ksr_grey_300
-    }
-
-    _ = self.navigationBar ?|> \.barTintColor .~ barTintColor
   }
 }

@@ -36,4 +36,12 @@ extension Backing.PaymentSource {
     state: "",
     type: GraphUserCreditCard.CreditCardType.visa
   )
+
+  internal static let googlePay = Backing.PaymentSource(
+    expirationDate: "2019-10-31",
+    id: "123",
+    lastFour: "4111",
+    paymentType: .googlePay,
+    state: "ACTIVE", type: .visa
+  )
 }

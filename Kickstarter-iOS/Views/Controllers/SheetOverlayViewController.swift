@@ -13,6 +13,7 @@ final class SheetOverlayViewController: UIViewController {
   private let childViewController: UIViewController
   private let offset: CGFloat
   private let transitionAnimator = SheetOverlayTransitionAnimator()
+  private var topAnchorConstraint: NSLayoutConstraint?
 
   init(child: UIViewController, offset: CGFloat = 45.0) {
     self.childViewController = child
@@ -47,6 +48,21 @@ final class SheetOverlayViewController: UIViewController {
       |> \.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
   }
 
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    if self.traitCollection.isVerticallyCompact {
+      let childVC = self.childViewController as? UINavigationController
+      let offsetCompact = childVC?.navigationBar.bounds.height ?? Layout.Sheet.offsetCompact
+
+      _ = self.topAnchorConstraint
+        ?|> \.constant .~ offsetCompact
+    } else {
+      _ = self.topAnchorConstraint
+        ?|> \.constant .~ self.offset
+    }
+  }
+
   private func configure(childView: UIView, offset: CGFloat) {
     _ = (childView, self.view)
       |> ksr_addSubviewToParent()
@@ -64,12 +80,13 @@ final class SheetOverlayViewController: UIViewController {
     NSLayoutConstraint.activate([
       childView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
       childView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      childView.widthAnchor.constraint(equalToConstant: portraitWidth),
-      childView.topAnchor.constraint(
-        equalTo: self.view.topAnchor,
-        constant: offset
-      )
+      childView.widthAnchor.constraint(equalToConstant: portraitWidth)
     ])
+
+    self.topAnchorConstraint = childView.topAnchor.constraint(
+      equalTo: self.view.topAnchor,
+      constant: offset
+    ) |> \.isActive .~ true
   }
 }
 

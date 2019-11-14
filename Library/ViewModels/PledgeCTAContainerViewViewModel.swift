@@ -14,7 +14,7 @@ public protocol PledgeCTAContainerViewViewModelOutputs {
   var buttonTitleText: Signal<String, Never> { get }
   var notifyDelegateCTATapped: Signal<PledgeStateCTAType, Never> { get }
   var pledgeCTAButtonIsHidden: Signal<Bool, Never> { get }
-  var pledgeRetryButtonIsHidden: Signal<Bool, Never> { get }
+  var retryStackViewIsHidden: Signal<Bool, Never> { get }
   var spacerIsHidden: Signal<Bool, Never> { get }
   var stackViewIsHidden: Signal<Bool, Never> { get }
   var subtitleText: Signal<String, Never> { get }
@@ -66,7 +66,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     self.notifyDelegateCTATapped = pledgeState
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
 
-    self.pledgeRetryButtonIsHidden = inError
+    self.retryStackViewIsHidden = inError
       .map(isFalse)
       .takeWhen(updateButtonStates)
       .merge(with: isLoading.filter(isTrue).mapConst(true))
@@ -84,6 +84,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     self.spacerIsHidden = stackViewAndSpacerAreHidden
     self.stackViewIsHidden = stackViewAndSpacerAreHidden
     self.titleText = pledgeState.map { $0.titleLabel }.skipNil()
+
     self.subtitleText = Signal.combineLatest(project, pledgeState)
       .map(subtitle(project:pledgeState:))
 
@@ -120,7 +121,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   public let buttonTitleText: Signal<String, Never>
   public let notifyDelegateCTATapped: Signal<PledgeStateCTAType, Never>
   public let pledgeCTAButtonIsHidden: Signal<Bool, Never>
-  public let pledgeRetryButtonIsHidden: Signal<Bool, Never>
+  public let retryStackViewIsHidden: Signal<Bool, Never>
   public let spacerIsHidden: Signal<Bool, Never>
   public let stackViewIsHidden: Signal<Bool, Never>
   public let subtitleText: Signal<String, Never>
@@ -131,6 +132,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
 private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
+    if currentUserIsCreator(of: project) {
+      return PledgeStateCTAType.viewYourRewards
+    }
+
     return project.state == .live ? PledgeStateCTAType.pledge : PledgeStateCTAType.viewRewards
   }
 

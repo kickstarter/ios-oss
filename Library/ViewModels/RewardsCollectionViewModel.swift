@@ -56,7 +56,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       .map { $0.rewards }
 
     self.title = configData
-      .map(third)
+      .map { project, _, context in (context, project) }
       .combineLatest(with: self.viewDidLoadProperty.signal.ignoreValues())
       .map(first)
       .map(titleForContext)
@@ -184,7 +184,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public var outputs: RewardsCollectionViewModelOutputs { return self }
 }
 
-private func titleForContext(_ context: RewardsCollectionViewContext) -> String {
+private func titleForContext(_ context: RewardsCollectionViewContext, project: Project) -> String {
+  if currentUserIsCreator(of: project) {
+    return localizedString(key: "View_your_rewards", defaultValue: "View your rewards")
+  }
+
   return context == .createPledge ? Strings.Back_this_project() : Strings.Choose_another_reward()
 }
 

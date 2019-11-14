@@ -16,6 +16,34 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     XCTAssertTrue(self.dataSource.indexPathIsPledgeAnyAmountCell(.init(row: 0, section: section)))
   }
 
+  func testViewProgressSectionRows_UserIsCreatorOfProject() {
+    let viewProgressSection = ProjectPamphletContentDataSource.Section.creatorHeader.rawValue
+
+    let user = User.template
+    let project = Project.template
+      |> Project.lens.creator .~ user
+
+    withEnvironment(currentUser: user) {
+      self.dataSource.load(project: project)
+
+      XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: viewProgressSection))
+    }
+  }
+
+  func testViewProgressSectionRows_UserIsNotCreatorOfProject() {
+    let viewProgressSection = ProjectPamphletContentDataSource.Section.creatorHeader.rawValue
+
+    let user = User.template
+      |> \.id .~ 123
+    let project = Project.template
+
+    withEnvironment(currentUser: user) {
+      self.dataSource.load(project: project)
+
+      XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: viewProgressSection))
+    }
+  }
+
   func testAvailableRewardsSection_ShowsCorrectValues() {
     let availableSection = ProjectPamphletContentDataSource.Section.availableRewards.rawValue
     let unavailableSection = ProjectPamphletContentDataSource.Section.unavailableRewards.rawValue
@@ -61,7 +89,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
 
       dataSource.load(project: project)
 
-      XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     }
   }
 
@@ -107,7 +135,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
 
       dataSource.load(project: project)
 
-      XCTAssertEqual(7, self.dataSource.numberOfSections(in: self.tableView))
+      XCTAssertEqual(8, self.dataSource.numberOfSections(in: self.tableView))
       XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: availableSection))
       XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: unavailableSection))
     }

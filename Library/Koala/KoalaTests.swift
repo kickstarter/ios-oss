@@ -545,6 +545,22 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
+  func testTrackPledgeCTAButtonClicked_ViewYourRewardsState() {
+    let client = MockTrackingClient()
+    let user = User.template |> \.id .~ 42
+    let project = Project.template
+      |> Project.lens.creator .~ user
+
+    let koala = Koala(client: client, loggedInUser: user)
+
+    koala.trackPledgeCTAButtonClicked(stateType: .viewYourRewards, project: project, screen: .projectPage)
+
+    let properties = client.properties.last
+
+    XCTAssertEqual(["View Your Rewards Button Clicked"], client.events)
+    XCTAssertEqual("Project page", properties?["screen"] as? String)
+  }
+
   func testTrackSelectRewardButtonClicked() {
     let client = MockTrackingClient()
     let reward = Reward.template
@@ -609,5 +625,91 @@ final class KoalaTests: TestCase {
 
     XCTAssertEqual(["Update Pledge Button Clicked"], client.events)
     XCTAssertEqual(50.00, properties?["pledge_total"] as? Double)
+  }
+
+  func testTrackPledgeScreenViewed() {
+    let client = MockTrackingClient()
+    let loggedInUser = User.template
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackPledgeScreenViewed(project: .template)
+    XCTAssertEqual(["Pledge Screen Viewed"], client.events)
+  }
+
+  func testTrackPledgeButtonClicked() {
+    let client = MockTrackingClient()
+    let loggedInUser = User.template
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackPledgeButtonClicked(project: .template, pledgeAmount: 30.00)
+
+    let properties = client.properties.last
+
+    XCTAssertEqual(["Pledge Button Clicked"], client.events)
+    XCTAssertEqual(30.00, properties?["pledge_total"] as? Double)
+  }
+
+  func testTrackAddNewCardButtonClicked() {
+    let client = MockTrackingClient()
+    let loggedInUser = User.template
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackAddNewCardButtonClicked(project: .template)
+
+    XCTAssertEqual(["Add New Card Button Clicked"], client.events)
+  }
+
+  func testTrackManagePledgeOptionClicked_CancelPledgeSelected() {
+    self.assertManagePledgeOptionClickedProperties(of: .cancelPledge, property: "cancel_pledge")
+  }
+
+  func testTrackManagaPledgeOptionClicked_ChangePaymentMethod() {
+    self.assertManagePledgeOptionClickedProperties(
+      of: .changePaymentMethod,
+      property: "change_payment_method"
+    )
+  }
+
+  func testTrackManagaPledgeOptionClicked_ChooseAnotherReward() {
+    self.assertManagePledgeOptionClickedProperties(
+      of: .chooseAnotherReward,
+      property: "choose_another_reward"
+    )
+  }
+
+  func testTrackManagaPledgeOptionClicked_ContactCreator() {
+    self.assertManagePledgeOptionClickedProperties(
+      of: .contactCreator,
+      property: "contact_creator"
+    )
+  }
+
+  func testTrackManagaPledgeOptionClicked_UpdatePledge() {
+    self.assertManagePledgeOptionClickedProperties(
+      of: .updatePledge,
+      property: "update_pledge"
+    )
+  }
+
+  func testTrackManagaPledgeOptionClicked_ViewRewards() {
+    self.assertManagePledgeOptionClickedProperties(
+      of: .viewRewards,
+      property: "view_rewards"
+    )
+  }
+
+  private func assertManagePledgeOptionClickedProperties(
+    of type: Koala.ManagePledgeMenuCTAType,
+    property: String
+  ) {
+    let client = MockTrackingClient()
+    let loggedInUser = User.template
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
+
+    koala.trackManagePledgeOptionClicked(project: .template, managePledgeMenuCTA: type)
+
+    let properties = client.properties.last
+    XCTAssertEqual(["Manage Pledge Option Clicked"], client.events)
+    XCTAssertEqual(property, properties?["cta"] as? String)
   }
 }

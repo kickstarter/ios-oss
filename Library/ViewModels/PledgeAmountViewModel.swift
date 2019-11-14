@@ -4,6 +4,8 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+public typealias PledgeAmountData = (amount: Double, min: Double, max: Double, isValid: Bool)
+
 public enum PledgeAmountStepperConstants {
   static let min: Double = 0
   static let max: Double = 1_000_000_000
@@ -19,7 +21,6 @@ public protocol PledgeAmountViewModelInputs {
 }
 
 public protocol PledgeAmountViewModelOutputs {
-  var amount: Signal<PledgeAmountData, Never> { get }
   var currency: Signal<String, Never> { get }
   var doneButtonIsEnabled: Signal<Bool, Never> { get }
   var generateSelectionFeedback: Signal<Void, Never> { get }
@@ -29,6 +30,7 @@ public protocol PledgeAmountViewModelOutputs {
   var maxPledgeAmountErrorLabelText: Signal<String, Never> { get }
   var minPledgeAmountLabelIsHidden: Signal<Bool, Never> { get }
   var minPledgeAmountLabelText: Signal<String, Never> { get }
+  var notifyDelegateAmountUpdated: Signal<PledgeAmountData, Never> { get }
   var stepperMaxValue: Signal<Double, Never> { get }
   var stepperMinValue: Signal<Double, Never> { get }
   var stepperValue: Signal<Double, Never> { get }
@@ -79,7 +81,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .map(rounded)
 
     let initialValue = Signal.combineLatest(
-      project.map { $0.personalization.backing },
+      project,
       reward,
       minValue
     )
@@ -140,7 +142,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       )
     )
 
-    self.amount = updatedValue
+    self.notifyDelegateAmountUpdated = updatedValue
       .map { min, max, value in
         (rounded(value), min, max, min <= value && value <= max)
       }
@@ -148,7 +150,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.maxPledgeAmountErrorLabelIsHidden = updatedValue
       .map { _, max, value in value <= max }
 
-    let isValueValid = self.amount
+    let isValueValid = self.notifyDelegateAmountUpdated
       .map { $0.3 }
       .skipRepeats()
 
@@ -185,11 +187,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       )
     }
 
-    self.stepperValue = Signal.merge(
-      minValue,
-      self.amount.map { $0.0 }
-    )
-    .skipRepeats()
+    self.stepperValue = self.notifyDelegateAmountUpdated.map { $0.0 }.skipRepeats()
 
     self.textFieldIsFirstResponder = self.doneButtonTappedProperty.signal
       .mapConst(false)
@@ -228,7 +226,6 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.selectedShippingAmountChangedProperty.value = amount
   }
 
-  public let amount: Signal<PledgeAmountData, Never>
   public let currency: Signal<String, Never>
   public let doneButtonIsEnabled: Signal<Bool, Never>
   public let generateSelectionFeedback: Signal<Void, Never>
@@ -238,6 +235,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
   public let maxPledgeAmountErrorLabelText: Signal<String, Never>
   public let minPledgeAmountLabelIsHidden: Signal<Bool, Never>
   public let minPledgeAmountLabelText: Signal<String, Never>
+  public let notifyDelegateAmountUpdated: Signal<PledgeAmountData, Never>
   public let stepperMaxValue: Signal<Double, Never>
   public let stepperMinValue: Signal<Double, Never>
   public let stepperValue: Signal<Double, Never>
@@ -261,8 +259,9 @@ private func rounded(_ value: Double) -> Double {
   return round(value * 100) / 100
 }
 
-private func initialPledgeAmount(from backing: Backing?, reward: Reward, minValue: Double) -> Double {
-  guard let backing = backing, reward.id == backing.rewardId else { return minValue }
+private func initialPledgeAmount(from project: Project, reward: Reward, minValue: Double) -> Double {
+  guard userIsBacking(reward: reward, inProject: project),
+    let backing = project.personalization.backing else { return minValue }
 
   return backing.pledgeAmount
 }
