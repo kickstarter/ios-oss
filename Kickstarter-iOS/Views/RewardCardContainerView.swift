@@ -109,8 +109,10 @@ public final class RewardCardContainerView: UIView {
       }
   }
 
-  internal func configure(with value: (project: Project, reward: Either<Reward, Backing>), context: RewardCardViewContext) {
-    self.viewModel.inputs.configureWith(project: value.project, rewardOrBacking: value.reward, context: context)
+  internal func configure(with value: (project: Project, reward: Either<Reward, Backing>),
+                          context: RewardCardViewContext) {
+    self.viewModel.inputs.configureWith(project: value.project, rewardOrBacking: value.reward,
+                                        context: context)
     self.rewardCardView.configure(with: value, context: RewardCardViewContext.rewardsCollectionView)
   }
 

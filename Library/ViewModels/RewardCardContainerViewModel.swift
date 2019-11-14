@@ -57,7 +57,11 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.pledgeButtonEnabled = projectAndReward
       .map(pledgeButtonIsEnabled(project:reward:))
 
-    self.pledgeButtonHidden = Signal.merge(pledgeButtonTitleText.map(isNil), context.map { $0 == .pledgeView })
+    let hidePledgeButton = context
+      .filter { $0 == .pledgeView }
+      .mapConst(true)
+
+    self.pledgeButtonHidden = Signal.merge(hidePledgeButton, pledgeButtonTitleText.map(isNil))
 
     self.gradientViewHidden = self.pledgeButtonHidden
 

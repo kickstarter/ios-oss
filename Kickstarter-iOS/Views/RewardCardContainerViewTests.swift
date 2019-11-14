@@ -8,7 +8,6 @@ import UIKit
 final class RewardCardContainerViewTests: TestCase {
   override func setUp() {
     super.setUp()
-
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
   }
 
@@ -323,7 +322,7 @@ private func rewardCardInViewController(
 ) -> UIViewController {
   let view = RewardCardContainerView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  view.configure(with: (project: project, reward: .init(left: reward)))
+  view.configure(with: (project: project, reward: .init(left: reward)), context: .rewardsCollectionView)
 
   let controller = UIViewController(nibName: nil, bundle: nil)
   let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
