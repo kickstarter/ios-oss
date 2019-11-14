@@ -3,9 +3,11 @@ import Prelude
 import ReactiveSwift
 
 public protocol RewardCardContainerViewModelInputs {
-  func configureWith(project: Project,
-                     rewardOrBacking: Either<Reward, Backing>,
-                     context: RewardCardViewContext)
+  func configureWith(
+    project: Project,
+    rewardOrBacking: Either<Reward, Backing>,
+    context: RewardCardViewContext
+  )
   func pledgeButtonTapped()
 }
 
@@ -85,9 +87,11 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
 
   private let projectAndRewardOrBackingProperty =
     MutableProperty<(Project, Either<Reward, Backing>, RewardCardViewContext)?>(nil)
-  public func configureWith(project: Project,
-                            rewardOrBacking: Either<Reward, Backing>,
-                            context: RewardCardViewContext) {
+  public func configureWith(
+    project: Project,
+    rewardOrBacking: Either<Reward, Backing>,
+    context: RewardCardViewContext
+  ) {
     self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking, context)
   }
 
