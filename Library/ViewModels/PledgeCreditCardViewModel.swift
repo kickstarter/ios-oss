@@ -115,6 +115,7 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
     self.spacerIsHidden = self.pledgeCreditCardValueProperty.signal
       .skipNil()
       .map { $0.needsSpacer }
+      .negate()
     self.selectButtonEnabled = cardTypeIsAvailable
     self.unavailableCardLabelHidden = cardTypeIsAvailable
 
