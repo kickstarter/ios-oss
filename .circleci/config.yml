@@ -523,7 +523,7 @@ jobs:
 
       - run:
           name: Fastlane
-          command: bundle exec fastlane itunes_match_gym_deliver_appcenter --verbose
+          command: bundle exec fastlane itunes_match_gym_deliver --verbose
           no_output_timeout: "30m" # 30 minutes
 
       - store_artifacts:
