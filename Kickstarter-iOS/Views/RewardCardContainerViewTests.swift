@@ -8,6 +8,7 @@ import UIKit
 final class RewardCardContainerViewTests: TestCase {
   override func setUp() {
     super.setUp()
+
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
   }
 
