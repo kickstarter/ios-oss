@@ -14,7 +14,7 @@ final class PledgeAddNewCardView: UIView {
   }()
 
   private lazy var addNewCardImageView: UIImageView = {
-    UIImageView(image: UIImage.init(named: "icon--add"))
+    UIImageView()
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -61,6 +61,9 @@ final class PledgeAddNewCardView: UIView {
 
     _ = self.addNewCardImageView
       |> cardImageViewStyle
+      |> \.image .~ image(named: "icon--add",
+                          inBundle: Bundle.framework,
+                          compatibleWithTraitCollection: nil)
 
     _ = self.addNewCardButton
       |> cardSelectButtonStyle
