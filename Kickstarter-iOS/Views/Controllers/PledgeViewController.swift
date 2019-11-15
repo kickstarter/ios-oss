@@ -186,7 +186,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.rootStackView.addArrangedSubview(view)
     }
 
-    self.rootStackView.setCustomSpacing(Styles.grid(2), after: self.paymentMethodsViewController.view)
+    _ = (self.paymentMethodsViewController.view, self.rootStackView)
+      |> ksr_setCustomSpacing(Styles.grid(2))
 
     childViewControllers.forEach { viewController in
       self.addChild(viewController)

@@ -14,8 +14,12 @@ final class PledgeCreditCardView: UIView {
   // MARK: - Properties
 
   private let adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let bottomLayoutGuide = UILayoutGuide()
   private let cardView: UIView = { UIView(frame: .zero) }()
-  private let containerStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let containerStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
   weak var delegate: PledgeCreditCardViewDelegate?
   private let expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let imageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -23,7 +27,6 @@ final class PledgeCreditCardView: UIView {
   private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let selectButton: UIButton = { UIButton(type: .custom) }()
-  private lazy var spacer: UIView = { UIView(frame: .zero) }()
   private let unavailableCardTypeLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel: PledgeCreditCardViewModelType = PledgeCreditCardViewModel()
 
@@ -47,12 +50,11 @@ final class PledgeCreditCardView: UIView {
     _ = self
       |> \.accessibilityElements .~ self.subviews
 
-    _ = ([self.cardView, self.unavailableCardTypeLabel, self.spacer], self.containerStackView)
+    _ = ([self.cardView, self.unavailableCardTypeLabel], self.containerStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.containerStackView, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
 
     _ = ([self.lastFourLabel, self.expirationDateLabel], self.labelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -66,6 +68,8 @@ final class PledgeCreditCardView: UIView {
     _ = (self.rootStackView, self.cardView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+
+    self.addLayoutGuide(bottomLayoutGuide)
 
     self.selectButton.addTarget(
       self, action: #selector(PledgeCreditCardView.selectButtonTapped),
@@ -83,6 +87,18 @@ final class PledgeCreditCardView: UIView {
         CheckoutConstants.CreditCardView.height
       )
     ])
+
+    let margins = self.layoutMarginsGuide
+
+    NSLayoutConstraint.activate([
+      self.containerStackView.leftAnchor.constraint(equalTo: margins.leftAnchor),
+      self.containerStackView.rightAnchor.constraint(equalTo: margins.rightAnchor),
+      self.containerStackView.topAnchor.constraint(equalTo: margins.topAnchor),
+      self.containerStackView.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomLayoutGuide.topAnchor),
+      self.bottomLayoutGuide.leftAnchor.constraint(equalTo: margins.leftAnchor),
+      self.bottomLayoutGuide.rightAnchor.constraint(equalTo: margins.rightAnchor),
+      self.bottomLayoutGuide.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
+      ])
   }
 
   // MARK: - Styles
@@ -141,7 +157,6 @@ final class PledgeCreditCardView: UIView {
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
     self.unavailableCardTypeLabel.rac.hidden = self.viewModel.outputs.unavailableCardLabelHidden
     self.unavailableCardTypeLabel.rac.text = self.viewModel.outputs.unavailableCardText
-    self.spacer.rac.hidden = self.viewModel.outputs.spacerIsHidden
 
     self.viewModel.outputs.cardImage
       .observeForUI()

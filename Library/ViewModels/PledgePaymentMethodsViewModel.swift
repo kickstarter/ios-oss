@@ -171,18 +171,12 @@ private func pledgeCreditCardViewDataAndSelectedCard(
   project: Project,
   newCardAdded: Bool
 ) -> ([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?) {
-  var cardAvailability = [Bool]()
   let data = cards.compactMap { card -> PledgeCreditCardViewData? in
     guard let cardBrand = card.type?.rawValue else { return nil }
 
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
 
-    cardAvailability.append(isAvailableCardType)
-
-    // If the card is available, but we have an unavailable card in the list, show a spacer
-    let needsSpacer = cardAvailability.contains(false) && isAvailableCardType
-
-    return (card, isAvailableCardType, project.location.displayableName, needsSpacer)
+    return (card, isAvailableCardType, project.location.displayableName)
   }
 
   // If there is no backing, simply select the first card in the list.
