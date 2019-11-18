@@ -111,7 +111,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
 
-    self.stepperMinValue = minValue.mapConst(PledgeAmountStepperConstants.min)
+    self.stepperMinValue = reward.map(\.minimum)
     self.stepperMaxValue = minValue.mapConst(PledgeAmountStepperConstants.max)
 
     let stepperValueChanged = Signal.combineLatest(
