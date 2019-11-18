@@ -75,8 +75,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
       }
   }
 
-  private let projectAndRewardOrBackingProperty =
-    MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
+  private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
   public func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>) {
     self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking)
   }
