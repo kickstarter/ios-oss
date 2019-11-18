@@ -70,7 +70,8 @@ final class PledgeCreditCardView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    self.addLayoutGuide(self.bottomLayoutGuide)
+    _ = (self.bottomLayoutGuide, self)
+      |> ksr_addLayoutGuideToView()
 
     self.selectButton.addTarget(
       self, action: #selector(PledgeCreditCardView.selectButtonTapped),

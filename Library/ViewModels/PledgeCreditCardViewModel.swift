@@ -61,9 +61,9 @@ public protocol PledgeCreditCardViewModelType {
 public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
   public init() {
-    let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.card }
+    let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map(first)
     let selectedCard = self.selectedCardProperty.signal.skipNil()
-    let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isEnabled }
+    let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map(second)
 
     self.cardImage = creditCard
       .map(cardImageForCard)
