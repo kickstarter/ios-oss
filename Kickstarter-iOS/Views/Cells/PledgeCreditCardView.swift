@@ -80,7 +80,7 @@ final class PledgeCreditCardView: UIView {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.rootStackView.widthAnchor.constraint(equalToConstant: CheckoutConstants.PaymentSource.Card.width),
-      self.selectButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+      self.selectButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.imageView.widthAnchor.constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width),
       self.cardView.heightAnchor.constraint(
         greaterThanOrEqualToConstant:

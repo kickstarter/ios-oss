@@ -120,7 +120,7 @@ final class PledgeAddNewCardView: UIView {
       self.addNewCardImageView.bottomAnchor
         .constraint(equalTo: self.addNewCardImageViewContainer.bottomAnchor),
       self.addNewCardButton.heightAnchor
-        .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+        .constraint(equalToConstant: Styles.minTouchSize.height),
       self.addNewCardImageView.widthAnchor
         .constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width),
       self.cardView.heightAnchor.constraint(
