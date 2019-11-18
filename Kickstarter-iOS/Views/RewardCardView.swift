@@ -74,9 +74,6 @@ public final class RewardCardView: UIView {
   public override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> \.backgroundColor .~ .clear
-
     _ = [
       self.baseStackView,
       self.priceStackView,
@@ -97,7 +94,7 @@ public final class RewardCardView: UIView {
     _ = self.includedItemsStackView
       |> includedItemsStackViewStyle
 
-    _ = (self.includedItemsTitleLabel, self.backgroundColor)
+    _ = self.includedItemsTitleLabel
       |> baseRewardLabelStyle
       |> sectionTitleLabelStyle
 
@@ -107,28 +104,28 @@ public final class RewardCardView: UIView {
     _ = self.includedItemsStackView.subviews
       .dropFirst()
       .compactMap { [weak self] in
-        ($0, self?.backgroundColor) as? (UILabel, UIColor)
+        $0 as? UILabel
       }
       ||> baseRewardLabelStyle
       ||> sectionBodyLabelStyle
 
-    _ = (self.descriptionLabel, self.backgroundColor)
+    _ = self.descriptionLabel
       |> baseRewardLabelStyle
       |> sectionBodyLabelStyle
 
-    _ = (self.estimatedDeliveryDateLabel, self.backgroundColor)
+    _ = self.estimatedDeliveryDateLabel
       |> baseRewardLabelStyle
       |> sectionBodyLabelStyle
 
-    _ = (self.rewardTitleLabel, self.backgroundColor)
+    _ = self.rewardTitleLabel
       |> baseRewardLabelStyle
       |> rewardTitleLabelStyle
 
-    _ = (self.minimumPriceLabel, self.backgroundColor)
+    _ = self.minimumPriceLabel
       |> baseRewardLabelStyle
       |> minimumPriceLabelStyle
 
-    _ = (self.minimumPriceConversionLabel, self.backgroundColor)
+    _ = self.minimumPriceConversionLabel
       |> baseRewardLabelStyle
       |> minimumPriceConversionLabelStyle
 
@@ -241,7 +238,7 @@ public final class RewardCardView: UIView {
       ||> { $0.removeFromSuperview() }
 
     let includedItemViews = items.includedItems.map { item -> UIView in
-      let label = (UILabel(), self.backgroundColor)
+      let label = UILabel()
         |> baseRewardLabelStyle
         |> sectionBodyLabelStyle
         |> \.text .~ item
@@ -282,12 +279,11 @@ public final class RewardCardView: UIView {
 
 // MARK: - Styles
 
-private let baseRewardLabelStyle: (UILabel, UIColor?) -> UILabel = { label, backgroundColor in
+private let baseRewardLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 0
     |> \.textAlignment .~ .left
     |> \.lineBreakMode .~ .byWordWrapping
-    |> \.backgroundColor .~ backgroundColor
 }
 
 private let baseStackViewStyle: StackViewStyle = { stackView in
