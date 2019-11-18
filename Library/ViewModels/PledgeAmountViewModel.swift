@@ -7,7 +7,6 @@ import ReactiveSwift
 public typealias PledgeAmountData = (amount: Double, min: Double, max: Double, isValid: Bool)
 
 public enum PledgeAmountStepperConstants {
-  static let min: Double = 0
   static let max: Double = 1_000_000_000
 }
 

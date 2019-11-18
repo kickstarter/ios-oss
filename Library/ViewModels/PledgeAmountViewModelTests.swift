@@ -149,31 +149,35 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testAmountCurrencyAndStepper_NoReward() {
-    self.vm.inputs.configureWith(project: .template, reward: Reward.noReward)
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 1
+    self.vm.inputs.configureWith(project: .template, reward: reward)
 
     self.amountIsValid.assertValues([true])
     self.amountMin.assertValues([1])
     self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([1])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMinValue.assertValue(1)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([1])
     self.textFieldValue.assertValues(["1"])
   }
 
   func testAmountCurrencyAndStepper_Country_HasMinMax_NoReward() {
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 1
     let project = Project.template
       |> Project.lens.country .~ Project.Country.mx
 
-    self.vm.inputs.configureWith(project: project, reward: Reward.noReward)
+    self.vm.inputs.configureWith(project: project, reward: reward)
 
     self.amountIsValid.assertValues([true])
     self.amountMin.assertValues([10])
     self.amountMax.assertValues([200_000])
     self.amountValue.assertValues([10])
     self.currency.assertValues(["MX$"])
-    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMinValue.assertValue(1)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
@@ -186,14 +190,17 @@ internal final class PledgeAmountViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.country .~ country
 
-    self.vm.inputs.configureWith(project: project, reward: Reward.noReward)
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 1
+
+    self.vm.inputs.configureWith(project: project, reward: reward)
 
     self.amountIsValid.assertValues([true])
     self.amountMin.assertValues([1])
     self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([1])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMinValue.assertValue(1)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([1])
     self.textFieldValue.assertValues(["1"])
