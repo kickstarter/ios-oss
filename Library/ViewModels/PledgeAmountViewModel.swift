@@ -159,7 +159,8 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .combineLatest(with: project)
       .map(unpack)
       .map { _, max, project in
-        Strings.The_maximum_pledge_is_max_pledge(max_pledge:
+        Strings.The_maximum_pledge_is_max_pledge(
+          max_pledge:
           Format.currency(max, country: project.country, omitCurrencyCode: false)
         )
       }
