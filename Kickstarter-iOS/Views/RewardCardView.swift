@@ -233,11 +233,11 @@ public final class RewardCardView: UIView {
     self.setNeedsLayout()
   }
 
-  fileprivate func load(items: (includedItems: [String], separatorBackgroundColor: UIColor)) {
+  fileprivate func load(items: [String]) {
     _ = self.includedItemsStackView.subviews
       ||> { $0.removeFromSuperview() }
 
-    let includedItemViews = items.includedItems.map { item -> UIView in
+    let includedItemViews = items.map { item -> UIView in
       let label = UILabel()
         |> baseRewardLabelStyle
         |> sectionBodyLabelStyle
@@ -249,7 +249,6 @@ public final class RewardCardView: UIView {
     let separatedItemViews = includedItemViews.dropLast().map { view -> [UIView] in
       let separator = UIView()
         |> separatorStyle
-        |> \.backgroundColor .~ items.separatorBackgroundColor
       separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
       return [view, separator]
@@ -266,8 +265,8 @@ public final class RewardCardView: UIView {
 
   // MARK: - Configuration
 
-  internal func configure(with value: (Project, Either<Reward, Backing>), context: RewardCardViewContext) {
-    self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1, context: context)
+  internal func configure(with value: (Project, Either<Reward, Backing>)) {
+    self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
   }
 
   // MARK: - Selectors

@@ -30,7 +30,7 @@ final class ManagePledgeRewardView: UIView {
   // MARK: - Configuration
 
   public func configure(with value: (Project, Either<Reward, Backing>)) {
-    self.rewardView.configure(with: value, context: .pledgeView)
+    self.rewardView.configure(with: value)
   }
 
   private func configureViews() {
