@@ -181,7 +181,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       .observeForUI()
       .observeValues { [weak self] in
         self?.rootScrollView.refreshControl?.endRefreshing()
-    }
+      }
 
     self.viewModel.outputs.showActionSheetMenuWithOptions
       .observeForControllerAction()
@@ -298,9 +298,11 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       viewController.didMove(toParent: self)
     }
 
-    self.refreshControl.addTarget(self,
-                                  action: #selector(ManagePledgeViewController.handleRefreshControl),
-                                  for: .valueChanged)
+    self.refreshControl.addTarget(
+      self,
+      action: #selector(ManagePledgeViewController.handleRefreshControl),
+      for: .valueChanged
+    )
   }
 
   // MARK: Actions
