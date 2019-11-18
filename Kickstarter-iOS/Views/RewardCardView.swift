@@ -100,6 +100,7 @@ public final class RewardCardView: UIView {
 
     _ = self.includedItemsTitleLabel
       |> \.text %~ { _ in Strings.project_view_pledge_includes() }
+      |> \.textColor .~ UIColor.ksr_text_dark_grey_500
 
     _ = self.includedItemsStackView.subviews
       .dropFirst()
