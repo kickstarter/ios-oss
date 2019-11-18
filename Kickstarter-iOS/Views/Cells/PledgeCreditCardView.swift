@@ -20,6 +20,7 @@ final class PledgeCreditCardView: UIView {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   weak var delegate: PledgeCreditCardViewDelegate?
   private let expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let imageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -69,7 +70,7 @@ final class PledgeCreditCardView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    self.addLayoutGuide(bottomLayoutGuide)
+    self.addLayoutGuide(self.bottomLayoutGuide)
 
     self.selectButton.addTarget(
       self, action: #selector(PledgeCreditCardView.selectButtonTapped),
@@ -98,7 +99,7 @@ final class PledgeCreditCardView: UIView {
       self.bottomLayoutGuide.leftAnchor.constraint(equalTo: margins.leftAnchor),
       self.bottomLayoutGuide.rightAnchor.constraint(equalTo: margins.rightAnchor),
       self.bottomLayoutGuide.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
-      ])
+    ])
   }
 
   // MARK: - Styles

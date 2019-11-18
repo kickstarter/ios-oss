@@ -61,9 +61,11 @@ final class PledgeAddNewCardView: UIView {
 
     _ = self.addNewCardImageView
       |> cardImageViewStyle
-      |> \.image .~ image(named: "icon--add",
-                          inBundle: Bundle.framework,
-                          compatibleWithTraitCollection: nil)
+      |> \.image .~ image(
+        named: "icon--add",
+        inBundle: Bundle.framework,
+        compatibleWithTraitCollection: nil
+      )
 
     _ = self.addNewCardButton
       |> cardSelectButtonStyle
