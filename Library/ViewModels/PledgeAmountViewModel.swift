@@ -158,11 +158,9 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .map { ($0.0, $0.1) }
       .combineLatest(with: project)
       .map(unpack)
-      .map { min, max, project in
-
-        Strings.Please_enter_a_pledge_amount_between_min_and_max(
-          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
-          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
+      .map { _, max, project in
+        Strings.The_maximum_pledge_is_max_pledge(max_pledge:
+          Format.currency(max, country: project.country, omitCurrencyCode: false)
         )
       }
       .skipRepeats()
