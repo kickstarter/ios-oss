@@ -74,6 +74,9 @@ public final class RewardCardView: UIView {
   public override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> \.backgroundColor .~ .clear
+
     _ = [
       self.baseStackView,
       self.priceStackView,

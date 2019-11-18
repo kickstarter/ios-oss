@@ -87,10 +87,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700
         )
 
-      self.vm.inputs.configureWith(
-        project: project, rewardOrBacking: .init(reward),
-        context: .rewardsCollectionView
-      )
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
       let emissionCount = index + 1
 
@@ -142,10 +139,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700
         )
 
-      self.vm.inputs.configureWith(
-        project: project, rewardOrBacking: .init(reward),
-        context: .rewardsCollectionView
-      )
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
       let emissionCount = index + 1
 
@@ -191,10 +185,7 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.state .~ .live
           |> Project.lens.personalization.isBacking .~ false
 
-        self.vm.inputs.configureWith(
-          project: project, rewardOrBacking: .init(reward),
-          context: .rewardsCollectionView
-        )
+        self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
         let emissionCount = index + 1
 
@@ -244,10 +235,7 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.personalization.isBacking .~ nil
           |> Project.lens.personalization.backing .~ nil
 
-        self.vm.inputs.configureWith(
-          project: project, rewardOrBacking: .init(reward),
-          context: .rewardsCollectionView
-        )
+        self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
         let emissionCount = index + 1
 
@@ -302,10 +290,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700
         )
 
-      self.vm.inputs.configureWith(
-        project: project, rewardOrBacking: .init(reward),
-        context: .rewardsCollectionView
-      )
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
       let emissionCount = index + 1
 
@@ -357,10 +342,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700
         )
 
-      self.vm.inputs.configureWith(
-        project: project, rewardOrBacking: .init(reward),
-        context: .rewardsCollectionView
-      )
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
       let emissionCount = index + 1
 
@@ -396,10 +378,7 @@ final class RewardCardContainerViewModelTests: TestCase {
         |> Project.lens.state .~ .successful
         |> Project.lens.personalization.isBacking .~ false
 
-      self.vm.inputs.configureWith(
-        project: project, rewardOrBacking: .init(reward),
-        context: .rewardsCollectionView
-      )
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
       let emissionCount = index + 1
 
@@ -421,37 +400,6 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
     self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil])
-  }
-
-  func testLive_BackedProject_InPledgeView() {
-    let reward = self.availableLimitedTimebasedReward
-    let project = Project.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-          |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
-      )
-
-    self.gradientViewHidden.assertDidNotEmitValue()
-    self.pledgeButtonStyleType.assertDidNotEmitValue()
-    self.pledgeButtonEnabled.assertDidNotEmitValue()
-    self.pledgeButtonHidden.assertDidNotEmitValue()
-    self.pledgeButtonTitleText.assertDidNotEmitValue()
-
-    self.vm.inputs.configureWith(
-      project: project, rewardOrBacking: .init(reward),
-      context: .pledgeView
-    )
-
-    self.gradientViewHidden.assertValues([false, true])
-    self.pledgeButtonStyleType.assertValues([.black])
-    self.pledgeButtonEnabled.assertValues([false])
-    self.pledgeButtonHidden.assertValues([false, true])
-    self.pledgeButtonTitleText.assertValues(["Selected"])
   }
 
   func testLive_BackedProject_BackedReward_Errored() {
@@ -483,10 +431,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.status .~ .errored
         )
 
-      self.vm.inputs.configureWith(
-        project: project, rewardOrBacking: .init(reward),
-        context: .rewardsCollectionView
-      )
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
       let emissionCount = index + 1
 
@@ -545,10 +490,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.status .~ .errored
         )
 
-      self.vm.inputs.configureWith(
-        project: project, rewardOrBacking: .init(reward),
-        context: .rewardsCollectionView
-      )
+      self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
       let emissionCount = index + 1
 
@@ -594,10 +536,7 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.state .~ .live
           |> Project.lens.personalization.isBacking .~ false
 
-        self.vm.inputs.configureWith(
-          project: project, rewardOrBacking: .init(reward),
-          context: .rewardsCollectionView
-        )
+        self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
         let emissionCount = index + 1
 
@@ -641,10 +580,7 @@ final class RewardCardContainerViewModelTests: TestCase {
           |> Project.lens.state .~ .successful
           |> Project.lens.personalization.isBacking .~ false
 
-        self.vm.inputs.configureWith(
-          project: project, rewardOrBacking: .init(reward),
-          context: .rewardsCollectionView
-        )
+        self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
 
         let emissionCount = index + 1
 
@@ -672,10 +608,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   }
 
   func testPledgeButtonTapped() {
-    self.vm.inputs.configureWith(
-      project: .template, rewardOrBacking: .left(.template),
-      context: .rewardsCollectionView
-    )
+    self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
 
     self.vm.inputs.pledgeButtonTapped()
 
@@ -688,10 +621,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     withEnvironment(apiService: MockService(), koala: Koala(client: client)) {
       XCTAssertEqual([], client.events)
 
-      self.vm.inputs.configureWith(
-        project: .template, rewardOrBacking: .left(.template),
-        context: .rewardsCollectionView
-      )
+      self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
 
       self.vm.inputs.pledgeButtonTapped()
 

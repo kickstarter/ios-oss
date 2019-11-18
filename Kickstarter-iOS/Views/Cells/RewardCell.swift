@@ -103,7 +103,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   }
 
   internal func configureWith(value: (project: Project, reward: Either<Reward, Backing>)) {
-    self.rewardCardContainerView.configure(with: value, context: .rewardsCollectionView)
+    self.rewardCardContainerView.configure(with: value)
   }
 
   override func prepareForReuse() {

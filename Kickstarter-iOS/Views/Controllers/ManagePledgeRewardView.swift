@@ -6,12 +6,13 @@ import UIKit
 final class ManagePledgeRewardView: UIView {
   // MARK: - Properties
 
-  private lazy var rewardView: RewardCardContainerView = {
-    RewardCardContainerView(frame: .zero)
+  private lazy var rewardView: RewardCardView = {
+    RewardCardView(frame: .zero)
   }()
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var backgroundView: UIView = { UIView(frame: .zero) }()
 
   // MARK: - Life cycle
 
@@ -33,7 +34,11 @@ final class ManagePledgeRewardView: UIView {
   }
 
   private func configureViews() {
-    _ = ([self.titleLabel, self.rewardView], self.rootStackView)
+    _ = (self.rewardView, self.backgroundView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.titleLabel, self.backgroundView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self)
@@ -46,8 +51,10 @@ final class ManagePledgeRewardView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.rewardView
-      |> checkoutBackgroundStyle
+    _ = self.backgroundView
+      |> checkoutWhiteBackgroundStyle
+      |> roundedStyle(cornerRadius: Styles.grid(3))
+      |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = self.rootStackView
       |> checkoutCardStackViewStyle
