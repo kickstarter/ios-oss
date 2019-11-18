@@ -59,7 +59,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
   func testAmountCurrencyAndStepper_FromBacking() {
     let reward = Reward.postcards
-     |> Reward.lens.minimum .~ 6
+      |> Reward.lens.minimum .~ 6
 
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
