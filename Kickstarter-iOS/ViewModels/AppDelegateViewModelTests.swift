@@ -1368,9 +1368,10 @@ final class AppDelegateViewModelTests: TestCase {
     )
     XCTAssertEqual(
       [
-        "api.kickstarter.com",
-        "www.kickstarter.com"
-      ],
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl.host
+      ]
+      .compact(),
       AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
     )
   }
@@ -1406,10 +1407,11 @@ final class AppDelegateViewModelTests: TestCase {
     )
     XCTAssertEqual(
       [
-        "api.kickstarter.com",
-        "api.kickstarter.com",
-        "www.kickstarter.com"
-      ],
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl.host
+      ]
+      .compact(),
       AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
     )
   }
@@ -1445,10 +1447,11 @@ final class AppDelegateViewModelTests: TestCase {
     )
     XCTAssertEqual(
       [
-        "api.kickstarter.com",
-        "api.kickstarter.com",
-        "www.kickstarter.com"
-      ],
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl.host
+      ]
+      .compact(),
       AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
     )
   }
@@ -1484,10 +1487,11 @@ final class AppDelegateViewModelTests: TestCase {
     )
     XCTAssertEqual(
       [
-        "api.kickstarter.com",
-        "api.kickstarter.com",
-        "www.kickstarter.com"
-      ],
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl.host
+      ]
+      .compact(),
       AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
     )
   }
