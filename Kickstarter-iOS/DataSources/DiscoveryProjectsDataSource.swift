@@ -10,6 +10,7 @@ struct DiscoveryProjectCellRowValue {
 internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case onboarding
+    case editorial
     case activitySample
     case projects
   }
@@ -45,6 +46,14 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     }
   }
 
+  func showEditorial() {
+    self.set(
+      values: [()],
+      cellClass: DiscoveryEditorialCell.self,
+      inSection: Section.editorial.rawValue
+    )
+  }
+
   func show(onboarding: Bool) {
     self.set(
       values: onboarding ? [()] : [],
@@ -76,6 +85,8 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     case let (cell as DiscoveryPostcardCell, value as DiscoveryProjectCellRowValue):
       cell.configureWith(value: value)
     case let (cell as DiscoveryOnboardingCell, value as Void):
+      cell.configureWith(value: value)
+    case let (cell as DiscoveryEditorialCell, value as Void):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
       return

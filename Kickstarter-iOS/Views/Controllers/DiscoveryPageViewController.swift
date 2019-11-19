@@ -26,6 +26,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
+    self.tableView.registerCellClass(DiscoveryEditorialCell.self)
 
     self.tableView.dataSource = self.dataSource
 
@@ -161,6 +162,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.showEditorialHeader
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dataSource.showEditorial()
+    }
+
     self.viewModel.outputs.setScrollsToTop
       .observeForUI()
       .observeValues { [weak self] in
@@ -215,6 +222,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
       cell.delegate = self
     } else if let cell = cell as? DiscoveryOnboardingCell, cell.delegate == nil {
       cell.delegate = self
+    } else if let cell = cell as? DiscoveryEditorialCell {
+      cell.delegate = self
     }
 
     self.viewModel.inputs.willDisplayRow(
@@ -232,6 +241,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let activity = self.dataSource.activityAtIndexPath(indexPath) {
       self.viewModel.inputs.tapped(activity: activity)
     }
+
+    //TODO
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
@@ -311,6 +322,8 @@ extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, Activi
   }
 }
 
+// MARK: - DiscoveryOnboardingCellDelegate
+
 extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
   internal func discoveryOnboardingTappedSignUpLoginButton() {
     let loginTout = LoginToutViewController.configuredWith(loginIntent: .discoveryOnboarding)
@@ -320,6 +333,16 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
     self.present(nav, animated: true, completion: nil)
   }
 }
+
+// MARK: - DiscoveryEditorialCellDelegate
+
+extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
+  func discoveryEditorialCellDidTapGoRewardlessButton(_ cell: DiscoveryEditorialCell) {
+
+  }
+}
+
+// MARK: - EmptyStatesViewControllerDelegate
 
 extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
   func emptyStatesViewController(

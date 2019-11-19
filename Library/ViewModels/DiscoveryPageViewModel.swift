@@ -81,6 +81,9 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits a bool to allow status bar tap to scroll the table view to the top.
   var setScrollsToTop: Signal<Bool, Never> { get }
 
+  /// Emits to show an editorial header
+  var showEditorialHeader: Signal<Void, Never> { get }
+
   /// Emits to show the empty state controller.
   var showEmptyState: Signal<EmptyState, Never> { get }
 
@@ -294,6 +297,12 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .observeValues {
         AppEnvironment.current.koala.trackDiscoveryPullToRefresh()
       }
+
+    self.showEditorialHeader = Signal.combineLatest(currentUser, self.sortProperty.signal.skipNil())
+      .map(second)
+      .filter { $0 == .magic }
+      .skipRepeats()
+      .ignoreValues()
   }
 
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
@@ -371,6 +380,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let projectsAreLoadingAnimated: Signal<(Bool, Bool), Never>
   public let setScrollsToTop: Signal<Bool, Never>
   public let scrollToProjectRow: Signal<Int, Never>
+  public let showEditorialHeader: Signal<Void, Never>
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
 
