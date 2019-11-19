@@ -558,8 +558,8 @@
 "We_couldnt_find_anything_for_search_term" = "Pas de résultats pour « %{search_term} ».";
 "We_couldnt_process_your_pledge" = "Impossible de traiter votre engagement.";
 "We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours" = "Les annulations qui empêcheraient le créateur d'atteindre son objectif de financement sont interdits dans les dernières 24 heures de la campagne.";
-"We_re_processing_this_pledge_pull_to_refresh" = "We're processing this pledge—pull to refresh.";
-"We_re_processing_your_pledge_pull_to_refresh" = "We're processing your pledge—pull to refresh.";
+"We_re_processing_this_pledge_pull_to_refresh" = "Cet engagement est en cours de traitement, veuillez tirer sur la page pour actualiser.";
+"We_re_processing_your_pledge_pull_to_refresh" = "Votre engagement est en cours de traitement, veuillez tirer sur la page pour actualiser.";
 "We_think_youll_like_these_too" = "D'autres projets qui pourraient vous plaire";
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "À l'interne, nous nous servons de vos activités pour vous faire des recommandations. Si vous ne souhaitez pas participer, nous vous invitons à désactiver vos recommandations.";
 "We_ve_been_unable_to_send_email" = "Échec de l'envoi. Veuillez vérifier l'orthographe de votre adresse e-mail.";

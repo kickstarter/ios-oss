@@ -558,8 +558,8 @@
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
 "We_couldnt_process_your_pledge" = "Dein Finanzierungsbeitrag konnte nicht bearbeitet werden.";
 "We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours" = "Es ist nicht gestattet, innerhalb der letzten 24 Stunden vor Beendigung eines Projekts einen Finanzierungsbeitrag zurückzuziehen, wenn dadurch das Finanzierungsziel nicht mehr erreicht werden würde.";
-"We_re_processing_this_pledge_pull_to_refresh" = "We're processing this pledge—pull to refresh.";
-"We_re_processing_your_pledge_pull_to_refresh" = "We're processing your pledge—pull to refresh.";
+"We_re_processing_this_pledge_pull_to_refresh" = "Der Finanzierungsbeitrag wird derzeit bearbeitet — zur Aktualisierung nach unten ziehen.";
+"We_re_processing_your_pledge_pull_to_refresh" = "Dein Finanzierungsbeitrag wird derzeit bearbeitet — zur Aktualisierung nach unten ziehen.";
 "We_think_youll_like_these_too" = "Wir denken, diese Projekte könnten dir auch gefallen";
 "We_use_your_activity_internally_to_make_recommendations_for_you" = "Deine Aktivitäten werden intern genutzt, um dir Empfehlungen zu unterbreiten. Um dies zu deaktivieren, wähle \"Empfehlungen\" einfach ab.";
 "We_ve_been_unable_to_send_email" = "Wir konnten keine E-Mails an diese Adresse senden. Bitte prüfe, ob sie richtig eingegeben wurde.";
