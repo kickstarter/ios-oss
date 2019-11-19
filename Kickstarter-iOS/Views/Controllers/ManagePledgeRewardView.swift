@@ -52,7 +52,7 @@ final class ManagePledgeRewardView: UIView {
     super.bindStyles()
 
     _ = self.backgroundView
-     |> backgroundViewStyle
+      |> backgroundViewStyle
 
     _ = self.rootStackView
       |> checkoutCardStackViewStyle
