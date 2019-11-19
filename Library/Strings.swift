@@ -9151,9 +9151,9 @@ catch your eye?"
    "We're processing this pledge—pull to refresh."
 
    - **en**: "We're processing this pledge—pull to refresh."
-   - **de**: "We're processing this pledge—pull to refresh."
-   - **es**: "We're processing this pledge—pull to refresh."
-   - **fr**: "We're processing this pledge—pull to refresh."
+   - **de**: "Der Finanzierungsbeitrag wird derzeit bearbeitet — zur Aktualisierung nach unten ziehen."
+   - **es**: "Estamos procesando la contribución, desliza para actualizar."
+   - **fr**: "Cet engagement est en cours de traitement, veuillez tirer sur la page pour actualiser."
    - **ja**: "We're processing this pledge—pull to refresh."
   */
   public static func We_re_processing_this_pledge_pull_to_refresh() -> String {
@@ -9168,9 +9168,9 @@ catch your eye?"
    "We're processing your pledge—pull to refresh."
 
    - **en**: "We're processing your pledge—pull to refresh."
-   - **de**: "We're processing your pledge—pull to refresh."
-   - **es**: "We're processing your pledge—pull to refresh."
-   - **fr**: "We're processing your pledge—pull to refresh."
+   - **de**: "Dein Finanzierungsbeitrag wird derzeit bearbeitet — zur Aktualisierung nach unten ziehen."
+   - **es**: "Estamos procesando tu actualización, desliza para actualizar."
+   - **fr**: "Votre engagement est en cours de traitement, veuillez tirer sur la page pour actualiser."
    - **ja**: "We're processing your pledge—pull to refresh."
   */
   public static func We_re_processing_your_pledge_pull_to_refresh() -> String {
