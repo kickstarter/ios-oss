@@ -1366,6 +1366,13 @@ final class AppDelegateViewModelTests: TestCase {
       ["DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF", "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"],
       AppEnvironment.current.cookieStorage.cookies!.map { $0.value }
     )
+    XCTAssertEqual(
+      [
+        "api.kickstarter.com",
+        "www.kickstarter.com"
+      ],
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
+    )
   }
 
   func testVisitorCookies_ApplicationWillEnterForeground() {
@@ -1396,6 +1403,14 @@ final class AppDelegateViewModelTests: TestCase {
         "existing-cookie-value"
       ],
       AppEnvironment.current.cookieStorage.cookies!.map { $0.value }.sorted()
+    )
+    XCTAssertEqual(
+      [
+        "api.kickstarter.com",
+        "api.kickstarter.com",
+        "www.kickstarter.com"
+      ],
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
     )
   }
 
@@ -1428,6 +1443,14 @@ final class AppDelegateViewModelTests: TestCase {
       ],
       AppEnvironment.current.cookieStorage.cookies!.map { $0.value }.sorted()
     )
+    XCTAssertEqual(
+      [
+        "api.kickstarter.com",
+        "api.kickstarter.com",
+        "www.kickstarter.com"
+      ],
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
+    )
   }
 
   func testVisitorCookies_UserSessionEnded() {
@@ -1458,6 +1481,14 @@ final class AppDelegateViewModelTests: TestCase {
         "existing-cookie-value"
       ],
       AppEnvironment.current.cookieStorage.cookies!.map { $0.value }.sorted()
+    )
+    XCTAssertEqual(
+      [
+        "api.kickstarter.com",
+        "api.kickstarter.com",
+        "www.kickstarter.com"
+      ],
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
     )
   }
 
