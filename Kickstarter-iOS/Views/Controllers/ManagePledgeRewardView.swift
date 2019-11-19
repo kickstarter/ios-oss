@@ -10,9 +10,9 @@ final class ManagePledgeRewardView: UIView {
     RewardCardView(frame: .zero)
   }()
 
+  private lazy var backgroundView: UIView = { UIView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var backgroundView: UIView = { UIView(frame: .zero) }()
 
   // MARK: - Life cycle
 
@@ -52,9 +52,7 @@ final class ManagePledgeRewardView: UIView {
     super.bindStyles()
 
     _ = self.backgroundView
-      |> checkoutWhiteBackgroundStyle
-      |> roundedStyle(cornerRadius: Styles.grid(3))
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+     |> backgroundViewStyle
 
     _ = self.rootStackView
       |> checkoutCardStackViewStyle
@@ -70,4 +68,11 @@ private let titleLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
     |> \.text %~ { _ in Strings.Selected_reward() }
+}
+
+private let backgroundViewStyle: ViewStyle = { (view: UIView) in
+  view
+    |> checkoutWhiteBackgroundStyle
+    |> roundedStyle(cornerRadius: Styles.grid(3))
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
 }
