@@ -13,6 +13,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let asyncReloadData = TestObserver<(), Never>()
   fileprivate let goToActivityProject = TestObserver<Project, Never>()
   fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, Never>()
+  fileprivate let goToEditorialProjectList = TestObserver<RefTag, Never>()
   fileprivate let goToPlaylist = TestObserver<[Project], Never>()
   fileprivate let goToPlaylistProject = TestObserver<Project, Never>()
   fileprivate let goToPlaylistRefTag = TestObserver<RefTag, Never>()
@@ -25,6 +26,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let projectsAreLoadingAnimated = TestObserver<(Bool, Bool), Never>()
   fileprivate let setScrollsToTop = TestObserver<Bool, Never>()
   private let scrollToProjectRow = TestObserver<Int, Never>()
+  fileprivate let showEditorialHeader = TestObserver<Void, Never>()
   fileprivate let showEmptyState = TestObserver<EmptyState, Never>()
   fileprivate let showOnboarding = TestObserver<Bool, Never>()
 
@@ -36,6 +38,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.hideEmptyState.observe(self.hideEmptyState.observer)
     self.vm.outputs.goToActivityProject.map(first).observe(self.goToActivityProject.observer)
     self.vm.outputs.goToActivityProject.map(second).observe(self.goToActivityProjectRefTag.observer)
+    self.vm.outputs.goToEditorialProjectList.observe(self.goToEditorialProjectList.observer)
     self.vm.outputs.goToProjectPlaylist.map(first).observe(self.goToPlaylistProject.observer)
     self.vm.outputs.goToProjectPlaylist.map(second).observe(self.goToPlaylist.observer)
     self.vm.outputs.goToProjectPlaylist.map(third).observe(self.goToPlaylistRefTag.observer)
@@ -44,6 +47,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.projectsLoaded.ignoreValues().observe(self.hasLoadedProjects.observer)
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
+    self.vm.outputs.showEditorialHeader.observe(self.showEditorialHeader.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
 
@@ -539,6 +543,35 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
+  func testShowEditorialHeader_LoggedOutOnMagic() {
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.selectedFilter(.defaults)
+
+    self.showEditorialHeader.assertValueCount(1)
+  }
+
+  func testShowEditorialHeader_LoggedOutOnNonMagic() {
+    self.vm.inputs.configureWith(sort: .popular)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.selectedFilter(.defaults)
+
+    self.showEditorialHeader.assertDidNotEmitValue()
+  }
+
+  func testShowEditorialHeader_LoggedIn() {
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.showOnboarding.assertValueCount(1)
+    }
+  }
+
   func testShowOnboarding_LoggedOutOnMagic() {
     self.vm.inputs.configureWith(sort: .magic)
     self.vm.inputs.viewWillAppear()
@@ -861,6 +894,33 @@ internal final class DiscoveryPageViewModelTests: TestCase {
           "Should animate if projects are loading after pulling to refresh."
         )
       }
+    }
+  }
+
+  func testGoToEditorialProjectList() {
+    let discoveryEnvelope = .template
+      |> DiscoveryEnvelope.lens.projects .~ (
+        (0...2).map { id in .template |> Project.lens.id .~ (100 + id) }
+    )
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.scheduler.advance()
+
+      self.showEditorialHeader.assertValueCount(1)
+      self.goToEditorialProjectList.assertDidNotEmitValue()
+
+      self.vm.inputs.discoveryEditorialCellTapped()
+
+      self.goToEditorialProjectList.assertValues([.editorial(.goRewardless)])
+
+      self.vm.inputs.discoveryEditorialCellTapped()
+
+      self.goToEditorialProjectList.assertValues([.editorial(.goRewardless), .editorial(.goRewardless)])
     }
   }
 }

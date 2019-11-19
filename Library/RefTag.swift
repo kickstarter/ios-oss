@@ -13,6 +13,7 @@ public enum RefTag {
   case dashboardActivity
   case discovery
   case discoveryWithSort(DiscoveryParams.Sort)
+  case editorial(RefTag.EditorialCollection)
   case messageThread
   case profile
   case profileBacked
@@ -32,6 +33,10 @@ public enum RefTag {
   case thanks
   case unrecognized(String)
   case update
+
+  public enum EditorialCollection {
+    case goRewardless
+  }
 
   /**
    Create a RefTag value from a code string. If a ref tag cannot be matched, an `.unrecognized` tag is
@@ -99,12 +104,12 @@ public enum RefTag {
     switch self {
     case .activity:
       return "activity"
+    case .activitySample:
+      return "discovery_activity_sample"
     case .category:
       return "category"
     case .categoryFeatured:
       return "category_featured"
-    case .activitySample:
-      return "discovery_activity_sample"
     case let .categoryWithSort(sort):
       return "category" + sortRefTagSuffix(sort)
     case .city:
@@ -117,6 +122,8 @@ public enum RefTag {
       return "discovery"
     case let .discoveryWithSort(sort):
       return "discovery" + sortRefTagSuffix(sort)
+    case let .editorial(collection):
+      return "editorial_\(collection.description)"
     case .messageThread:
       return "message_thread"
     case .profile:
@@ -160,10 +167,20 @@ public enum RefTag {
 }
 
 extension RefTag: Equatable {}
+extension RefTag.EditorialCollection: Equatable {}
 
 extension RefTag: CustomStringConvertible {
   public var description: String {
     return self.stringTag
+  }
+}
+
+extension RefTag.EditorialCollection: CustomStringConvertible {
+  public var description: String {
+    switch self {
+    case .goRewardless:
+      return "go_rewardless"
+    }
   }
 }
 

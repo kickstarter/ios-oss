@@ -205,6 +205,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
           discovery.setSortsEnabled(true)
         }
       }
+
+    self.viewModel.outputs.goToEditorialProjectList
+      .observeForControllerAction()
+      .observeValues { [weak self] refTag in
+        self?.goToEditorialProjectList(refTag: refTag)
+    }
   }
 
   internal override func tableView(
@@ -241,8 +247,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let activity = self.dataSource.activityAtIndexPath(indexPath) {
       self.viewModel.inputs.tapped(activity: activity)
     }
-
-    //TODO
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
@@ -265,6 +269,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
     }
 
     self.present(controller, animated: true, completion: nil)
+  }
+
+  fileprivate func goToEditorialProjectList(refTag: RefTag) {
+
+    // TODO:
   }
 
   fileprivate func goTo(project: Project, refTag: RefTag) {
@@ -337,8 +346,8 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
 // MARK: - DiscoveryEditorialCellDelegate
 
 extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
-  func discoveryEditorialCellDidTapGoRewardlessButton(_ cell: DiscoveryEditorialCell) {
-
+  func discoveryEditorialCellTapped(_ cell: DiscoveryEditorialCell) {
+    self.viewModel.inputs.discoveryEditorialCellTapped()
   }
 }
 

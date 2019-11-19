@@ -10,6 +10,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the current environment has changed
   func currentEnvironmentChanged(environment: EnvironmentType)
 
+  /// Call when the editioral cell is tapped
+  func discoveryEditorialCellTapped()
+
   /// Call when the user pulls tableView to refresh
   func pulledToRefresh()
 
@@ -60,6 +63,9 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits a project and ref tag that we should go to from the activity sample.
   var goToActivityProject: Signal<(Project, RefTag), Never> { get }
 
+  /// Emits a refTag for the editorial project list
+  var goToEditorialProjectList: Signal<RefTag, Never> { get }
+
   /// Emits a project, playlist, ref tag that we should go to from discovery.
   var goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never> { get }
 
@@ -109,7 +115,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let paramsChanged = Signal.combineLatest(
       self.sortProperty.signal.skipNil(),
-      self.selectedFilterProperty.signal.skipNil()
+      self.selectedFilterProperty.signal.skipNil() // DiscoveryParams
     )
     .map(DiscoveryParams.lens.sort.set)
 
@@ -303,11 +309,19 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .filter { $0 == .magic }
       .skipRepeats()
       .ignoreValues()
+
+    self.goToEditorialProjectList = self.discoveryEditorialCellTappedProperty.signal
+      .mapConst(RefTag.editorial(.goRewardless))
   }
 
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
   public func currentEnvironmentChanged(environment: EnvironmentType) {
     self.currentEnvironmentChangedProperty.value = environment
+  }
+
+  fileprivate let discoveryEditorialCellTappedProperty = MutableProperty(())
+  public func discoveryEditorialCellTapped() {
+    self.discoveryEditorialCellTappedProperty.value = ()
   }
 
   fileprivate let pulledToRefreshProperty = MutableProperty(())
@@ -373,6 +387,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
+  public let goToEditorialProjectList: Signal<RefTag, Never>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>
   public let goToProjectUpdate: Signal<(Project, Update), Never>
   public let hideEmptyState: Signal<Void, Never>

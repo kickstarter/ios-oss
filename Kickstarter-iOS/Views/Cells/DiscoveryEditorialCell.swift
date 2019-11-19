@@ -5,13 +5,14 @@ import UIKit
 import KsApi
 
 protocol DiscoveryEditorialCellDelegate: AnyObject {
-  func discoveryEditorialCellDidTapGoRewardlessButton(_ cell: DiscoveryEditorialCell)
+  func discoveryEditorialCellTapped(_ cell: DiscoveryEditorialCell)
 }
 
 final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
   weak var delegate: DiscoveryEditorialCellDelegate?
 
   private let containerView = UIView(frame: .zero)
+  private let editorialImageView = UIImageView(frame: .zero)
   private let editorialTitleLabel = UILabel(frame: .zero)
   private let editorialSubtitleLabel = UILabel(frame: .zero)
   private let rootStackView = UIStackView(frame: .zero)
@@ -31,9 +32,14 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> DiscoveryEditorialCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+        cell.traitCollection.isRegularRegular
+          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(30))
+          : .init(topBottom: Styles.grid(2), leftRight: layoutMargins.left)
+    }
 
     _ = self.containerView
-      |> \.backgroundColor .~ .ksr_violet_500
+      |> \.backgroundColor .~ .ksr_trust_700
       |> roundedStyle(cornerRadius: Styles.grid(2))
 
     _ = self.rootStackView
@@ -41,7 +47,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
     _ = self.editorialTitleLabel
       |> editorialLabelStyle
-      |> \.font .~ UIFont.ksr_title2()
+      |> \.font .~ UIFont.ksr_title2().bolded
       |> \.text .~ "Going rewardless is rewarding"
 
     _ = self.editorialSubtitleLabel
@@ -49,7 +55,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
       |> \.font .~ UIFont.ksr_subhead()
       |> \.text .~ "Find projects that speak to you"
   }
-  // TBD whether DiscoveryParams is what we need to pass here
+
   func configureWith(value: ()) {
     // TODO
   }
@@ -68,15 +74,17 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-//    let tapGestureRecognizer = UITapGestureRecognizer(target: self,
-//                                                      action: #selector(DiscoveryEditorialCell.goRewardlessButtonTapped))
+    let tapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                      action: #selector(DiscoveryEditorialCell
+                                                        .editorialCellTapped))
 
+    self.containerView.addGestureRecognizer(tapGestureRecognizer)
   }
 
   // MARK: - Accessors
 
-  @objc private func goRewardlessButtonTapped() {
-    self.delegate?.discoveryEditorialCellDidTapGoRewardlessButton(self)
+  @objc private func editorialCellTapped() {
+    self.delegate?.discoveryEditorialCellTapped(self)
   }
 }
 
