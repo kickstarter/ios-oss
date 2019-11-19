@@ -5,6 +5,32 @@ import Prelude
 import XCTest
 
 final class FeatureHelpersTests: TestCase {
+  // MARK: - goRewardless
+
+  func testFeatureGoRewardlessIsEnabled_isTrue() {
+    let config = Config.template
+      |> \.features .~ [Feature.goRewardless.rawValue: true]
+
+    withEnvironment(config: config) {
+      XCTAssertTrue(featureGoRewardlessIsEnabled())
+    }
+  }
+
+  func testFeatureGoRewardlessIsEnabled_isFalse() {
+    let config = Config.template
+      |> \.features .~ [Feature.goRewardless.rawValue: false]
+
+    withEnvironment(config: config) {
+      XCTAssertFalse(featureGoRewardlessIsEnabled())
+    }
+  }
+
+  func testFeatureGoRewardlessIsEnabled_isFalse_whenNil() {
+    withEnvironment(config: .template) {
+      XCTAssertFalse(featureGoRewardlessIsEnabled())
+    }
+  }
+
   // MARK: - nativeCheckout
 
   func testFeatureNativeCheckoutIsEnabled_isTrue() {
