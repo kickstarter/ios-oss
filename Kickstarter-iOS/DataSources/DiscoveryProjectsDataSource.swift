@@ -46,9 +46,9 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     }
   }
 
-  func showEditorial() {
+  func showEditorial(value: DiscoveryEditorialCellValue) {
     self.set(
-      values: [()],
+      values: [value],
       cellClass: DiscoveryEditorialCell.self,
       inSection: Section.editorial.rawValue
     )
@@ -86,7 +86,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as DiscoveryOnboardingCell, value as Void):
       cell.configureWith(value: value)
-    case let (cell as DiscoveryEditorialCell, value as Void):
+    case let (cell as DiscoveryEditorialCell, value as DiscoveryEditorialCellValue):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
       return

@@ -88,7 +88,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var setScrollsToTop: Signal<Bool, Never> { get }
 
   /// Emits to show an editorial header
-  var showEditorialHeader: Signal<Void, Never> { get }
+  var showEditorialHeader: Signal<DiscoveryEditorialCellValue, Never> { get }
 
   /// Emits to show the empty state controller.
   var showEmptyState: Signal<EmptyState, Never> { get }
@@ -308,7 +308,12 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map(second)
       .filter { $0 == .magic }
       .skipRepeats()
-      .ignoreValues()
+      .map { _ in
+        return DiscoveryEditorialCellValue(title: "Go rewardless",
+                                           subtitle: "find something great",
+                                           imageName: "",
+                                           tag: "250")
+    }
 
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedProperty.signal
       .mapConst(RefTag.editorial(.goRewardless))
@@ -395,7 +400,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let projectsAreLoadingAnimated: Signal<(Bool, Bool), Never>
   public let setScrollsToTop: Signal<Bool, Never>
   public let scrollToProjectRow: Signal<Int, Never>
-  public let showEditorialHeader: Signal<Void, Never>
+  public let showEditorialHeader: Signal<DiscoveryEditorialCellValue, Never>
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
 

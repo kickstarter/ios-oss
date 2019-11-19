@@ -164,8 +164,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.showEditorialHeader
       .observeForUI()
-      .observeValues { [weak self] in
-        self?.dataSource.showEditorial()
+      .observeValues { [weak self] value in
+        self?.dataSource.showEditorial(value: value)
     }
 
     self.viewModel.outputs.setScrollsToTop

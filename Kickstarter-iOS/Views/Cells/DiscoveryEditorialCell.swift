@@ -11,20 +11,41 @@ protocol DiscoveryEditorialCellDelegate: AnyObject {
 final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
   weak var delegate: DiscoveryEditorialCellDelegate?
 
+  // MARK: - Properties
+
   private let containerView = UIView(frame: .zero)
   private let editorialImageView = UIImageView(frame: .zero)
   private let editorialTitleLabel = UILabel(frame: .zero)
   private let editorialSubtitleLabel = UILabel(frame: .zero)
   private let rootStackView = UIStackView(frame: .zero)
 
+  private let viewModel: DiscoveryEditorialViewModelType = DiscoveryEditorialViewModel()
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
+    self.bindViewModel()
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.notifyDelegateViewTapped
+      .observeForUI()
+      .observeValues { [weak self] tag in
+        guard let self = self else { return }
+
+        // TODO pass tag
+        self.delegate?.discoveryEditorialCellTapped(self)
+    }
+
+    self.editorialTitleLabel.rac.text = self.viewModel.outputs.titleText
+    self.editorialSubtitleLabel.rac.text = self.viewModel.outputs.subtitleText
   }
 
   override func bindStyles() {
@@ -48,16 +69,14 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     _ = self.editorialTitleLabel
       |> editorialLabelStyle
       |> \.font .~ UIFont.ksr_title2().bolded
-      |> \.text .~ "Going rewardless is rewarding"
 
     _ = self.editorialSubtitleLabel
       |> editorialLabelStyle
       |> \.font .~ UIFont.ksr_subhead()
-      |> \.text .~ "Find projects that speak to you"
   }
 
-  func configureWith(value: ()) {
-    // TODO
+  func configureWith(value: DiscoveryEditorialCellValue) {
+    self.viewModel.inputs.configureWith(value)
   }
 
   // MARK: - Configuration
@@ -84,7 +103,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
   // MARK: - Accessors
 
   @objc private func editorialCellTapped() {
-    self.delegate?.discoveryEditorialCellTapped(self)
+    self.viewModel.inputs.editorialCellTapped()
   }
 }
 
