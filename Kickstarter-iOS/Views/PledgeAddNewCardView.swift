@@ -19,9 +19,12 @@ final class PledgeAddNewCardView: UIView {
   }()
 
   private lazy var addNewCardImageViewContainer = { UIView(frame: .zero) }()
+  private let bottomLayoutGuide = UILayoutGuide()
   private lazy var cardView: UIView = { UIView(frame: .zero) }()
-  private lazy var containerStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var spacer: UIView = { UIView(frame: .zero) }()
+  private lazy var containerStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   weak var delegate: PledgeAddNewCardViewDelegate?
 
@@ -87,12 +90,11 @@ final class PledgeAddNewCardView: UIView {
   // MARK: Functions
 
   private func configureViews() {
-    _ = ([self.cardView, self.spacer], self.containerStackView)
+    _ = ([self.cardView], self.containerStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.containerStackView, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
 
     _ = (self.rootStackView, self.cardView)
       |> ksr_addSubviewToParent()
@@ -103,6 +105,9 @@ final class PledgeAddNewCardView: UIView {
 
     _ = ([self.addNewCardImageViewContainer, self.addNewCardButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.bottomLayoutGuide, self)
+      |> ksr_addLayoutGuideToView()
 
     self.addNewCardButton.addTarget(
       self,
@@ -130,6 +135,18 @@ final class PledgeAddNewCardView: UIView {
         CheckoutConstants.CreditCardView.height
       )
     ])
+
+    let margins = self.layoutMarginsGuide
+
+    NSLayoutConstraint.activate([
+      self.containerStackView.leftAnchor.constraint(equalTo: margins.leftAnchor),
+      self.containerStackView.topAnchor.constraint(equalTo: margins.topAnchor),
+      self.containerStackView.rightAnchor.constraint(equalTo: margins.rightAnchor),
+      self.containerStackView.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomLayoutGuide.topAnchor),
+      self.bottomLayoutGuide.leftAnchor.constraint(equalTo: margins.leftAnchor),
+      self.bottomLayoutGuide.rightAnchor.constraint(equalTo: margins.rightAnchor),
+      self.bottomLayoutGuide.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
+      ])
   }
 
   // MARK: - Accessors
