@@ -5,7 +5,8 @@ import Prelude
 import UIKit
 
 protocol DiscoveryEditorialCellDelegate: AnyObject {
-  func discoveryEditorialCellTapped(_ cell: DiscoveryEditorialCell)
+  func discoveryEditorialCellTapped(_ cell: DiscoveryEditorialCell,
+                                    tag: String)
 }
 
 final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
@@ -37,11 +38,10 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegateViewTapped
       .observeForUI()
-      .observeValues { [weak self] _ in
+      .observeValues { [weak self] tag in
         guard let self = self else { return }
 
-        // TODO: pass tag
-        self.delegate?.discoveryEditorialCellTapped(self)
+        self.delegate?.discoveryEditorialCellTapped(self, tag: tag)
       }
 
     self.viewModel.outputs.imageName
@@ -139,7 +139,6 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
     |> \.spacing .~ Styles.grid(2)
-//    |> \.alignment .~ .leading
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets.init(
       top: Styles.grid(3), left: Styles.grid(3), bottom: 0,

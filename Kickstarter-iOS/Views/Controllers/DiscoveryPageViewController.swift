@@ -208,8 +208,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.goToEditorialProjectList
       .observeForControllerAction()
-      .observeValues { [weak self] refTag in
-        self?.goToEditorialProjectList(refTag: refTag)
+      .observeValues { [weak self] tag, refTag in
+        self?.goToEditorialProjectList(using: tag, refTag: refTag)
       }
   }
 
@@ -271,7 +271,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.present(controller, animated: true, completion: nil)
   }
 
-  fileprivate func goToEditorialProjectList(refTag _: RefTag) {
+  fileprivate func goToEditorialProjectList(using tag: String, refTag _: RefTag) {
     // TODO:
   }
 
@@ -345,8 +345,8 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
 // MARK: - DiscoveryEditorialCellDelegate
 
 extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
-  func discoveryEditorialCellTapped(_: DiscoveryEditorialCell) {
-    self.viewModel.inputs.discoveryEditorialCellTapped()
+  func discoveryEditorialCellTapped(_: DiscoveryEditorialCell, tag: String) {
+    self.viewModel.inputs.discoveryEditorialCellTapped(with: tag)
   }
 }
 
