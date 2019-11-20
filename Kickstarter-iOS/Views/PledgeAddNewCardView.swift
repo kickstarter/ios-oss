@@ -146,7 +146,7 @@ final class PledgeAddNewCardView: UIView {
       self.bottomLayoutGuide.leftAnchor.constraint(equalTo: margins.leftAnchor),
       self.bottomLayoutGuide.rightAnchor.constraint(equalTo: margins.rightAnchor),
       self.bottomLayoutGuide.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
-      ])
+    ])
   }
 
   // MARK: - Accessors
