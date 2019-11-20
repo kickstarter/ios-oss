@@ -34,10 +34,10 @@ public protocol ThanksViewModelOutputs {
   var dismissToRootViewController: Signal<(), Never> { get }
 
   /// Emits DiscoveryParams when should go to Discovery
-  var goToDiscovery: Signal<DiscoveryParams, Never> { get }
+  var goToBackedProject: Signal<Project, Never> { get }
 
   /// Emits project when should go to Project page
-  var goToProject: Signal<(Project, [Project], RefTag), Never> { get }
+  var goToRecommendedProject: Signal<(Project, [Project], RefTag), Never> { get }
 
   /// Emits when a user pledges a project for the first time.
   var postContextualNotification: Signal<(), Never> { get }
@@ -108,7 +108,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.dismissToRootViewController = self.closeButtonTappedProperty.signal
 
-    self.goToDiscovery = self.categoryCellTappedProperty.signal.skipNil()
+    self.goToBackedProject = self.categoryCellTappedProperty.signal.skipNil()
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
 
     let rootCategory: Signal<KsApi.Category, Never> = project
@@ -128,7 +128,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.showRecommendations = Signal.zip(projects, rootCategory)
 
-    self.goToProject = self.showRecommendations
+    self.goToRecommendedProject = self.showRecommendations
       .map(first)
       .takePairWhen(self.projectTappedProperty.signal.skipNil())
       .map { projects, project in (project, projects, RefTag.thanks) }
@@ -152,7 +152,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .observeValues { AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt = true }
 
     project
-      .takeWhen(self.goToDiscovery)
+      .takeWhen(self.goToBackedProject)
       .observeValues { project in
         AppEnvironment.current.koala.trackCheckoutFinishJumpToDiscovery(project: project)
       }
@@ -169,7 +169,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       }
 
     project
-      .takeWhen(self.goToProject)
+      .takeWhen(self.goToRecommendedProject)
       .observeValues { project in
         AppEnvironment.current.koala.trackCheckoutFinishJumpToProject(project: project)
       }
@@ -226,9 +226,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   // MARK: - ThanksViewModelOutputs
 
   public let dismissToRootViewController: Signal<(), Never>
-  public let goToDiscovery: Signal<DiscoveryParams, Never>
+  public let goToBackedProject: Signal<DiscoveryParams, Never>
   public let backedProjectText: Signal<NSAttributedString, Never>
-  public let goToProject: Signal<(Project, [Project], RefTag), Never>
+  public let goToRecommendedProject: Signal<(Project, [Project], RefTag), Never>
   public let postContextualNotification: Signal<(), Never>
   public let postUserUpdatedNotification: Signal<Notification, Never>
   public let showRatingAlert: Signal<(), Never>

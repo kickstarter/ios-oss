@@ -113,13 +113,13 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
         self?.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
       }
 
-    self.viewModel.outputs.goToDiscovery
+    self.viewModel.outputs.goToBackedProject
       .observeForControllerAction()
       .observeValues { [weak self] params in
         self?.goToDiscovery(params: params)
       }
 
-    self.viewModel.outputs.goToProject
+    self.viewModel.outputs.goToRecommendedProject
       .observeForControllerAction()
       .observeValues { [weak self] project, projects, refTag in
         self?.goToProject(project, projects: projects, refTag: refTag)
