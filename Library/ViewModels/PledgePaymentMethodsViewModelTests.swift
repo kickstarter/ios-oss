@@ -352,7 +352,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   }
 
   func testReloadPaymentMethods_FirstCardUnavailable() {
-    let cards = GraphUserCreditCard.withCards([GraphUserCreditCard.discover, GraphUserCreditCard.visa, GraphUserCreditCard.amex])
+    let cards = GraphUserCreditCard.withCards([
+      GraphUserCreditCard.discover,
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.amex
+    ])
     let response = UserEnvelope<GraphUserCreditCard>(me: cards)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
     let project = Project.template
@@ -368,7 +372,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.reloadPaymentMethodsCards.assertValues([[GraphUserCreditCard.discover, GraphUserCreditCard.visa, GraphUserCreditCard.amex]])
+      self.reloadPaymentMethodsCards.assertValues([
+        [
+          GraphUserCreditCard.discover,
+          GraphUserCreditCard.visa,
+          GraphUserCreditCard.amex
+        ]
+      ])
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([[false, true, true]])
       self.reloadPaymentMethodsSelectedCard.assertValues([nil], "No card to select")
     }
