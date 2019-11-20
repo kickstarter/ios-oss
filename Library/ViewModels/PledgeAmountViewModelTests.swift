@@ -901,14 +901,14 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.stepperValueChanged(10_100)
 
     self.maxPledgeAmountErrorLabelText.assertValues([
-      "Please enter a pledge amount between US$ 25 and US$ 10,000."
+      "The maximum pledge is US$ 10,000."
     ])
 
     self.vm.inputs.selectedShippingAmountChanged(to: 30.0)
 
     self.maxPledgeAmountErrorLabelText.assertValues([
-      "Please enter a pledge amount between US$ 25 and US$ 10,000.",
-      "Please enter a pledge amount between US$ 25 and US$ 9,970."
+      "The maximum pledge is US$ 10,000.",
+      "The maximum pledge is US$ 9,970."
     ])
   }
 

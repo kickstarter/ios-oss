@@ -157,14 +157,12 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .skipRepeats()
 
     self.maxPledgeAmountErrorLabelText = updatedValue
-      .map { ($0.0, $0.1) }
+      .map(second)
       .combineLatest(with: project)
-      .map(unpack)
-      .map { min, max, project in
-
-        Strings.Please_enter_a_pledge_amount_between_min_and_max(
-          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
-          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
+      .map { max, project in
+        Strings.The_maximum_pledge_is_max_pledge(
+          max_pledge:
+          Format.currency(max, country: project.country, omitCurrencyCode: false)
         )
       }
       .skipRepeats()
