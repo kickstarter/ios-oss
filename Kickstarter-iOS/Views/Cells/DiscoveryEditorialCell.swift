@@ -6,7 +6,8 @@ import UIKit
 
 protocol DiscoveryEditorialCellDelegate: AnyObject {
   func discoveryEditorialCellTapped(_ cell: DiscoveryEditorialCell,
-                                    tag: String)
+                                    tag: String,
+                                    refTag: RefTag)
 }
 
 final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
@@ -38,10 +39,10 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegateViewTapped
       .observeForUI()
-      .observeValues { [weak self] tag in
+      .observeValues { [weak self] tag, refTag in
         guard let self = self else { return }
 
-        self.delegate?.discoveryEditorialCellTapped(self, tag: tag)
+        self.delegate?.discoveryEditorialCellTapped(self, tag: tag, refTag: refTag)
       }
 
     self.viewModel.outputs.imageName

@@ -29,6 +29,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   private let scrollToProjectRow = TestObserver<Int, Never>()
   fileprivate let showEditorialHeader = TestObserver<Void, Never>()
   fileprivate let showEditorialHeaderImageName = TestObserver<String, Never>()
+  fileprivate let showEditorialHeaderRefTag = TestObserver<RefTag, Never>()
   fileprivate let showEditorialHeaderSubtitle = TestObserver<String, Never>()
   fileprivate let showEditorialHeaderTag = TestObserver<String, Never>()
   fileprivate let showEditorialHeaderTitle = TestObserver<String, Never>()
@@ -55,6 +56,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
     self.vm.outputs.showEditorialHeader.ignoreValues().observe(self.showEditorialHeader.observer)
+    self.vm.outputs.showEditorialHeader.map { $0.refTag }.observe(self.showEditorialHeaderRefTag.observer)
     self.vm.outputs.showEditorialHeader.map { $0.title }.observe(self.showEditorialHeaderTitle.observer)
     self.vm.outputs.showEditorialHeader.map { $0.subtitle }.observe(self.showEditorialHeaderSubtitle.observer)
     self.vm.outputs.showEditorialHeader.map { $0.imageName }
@@ -569,6 +571,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you."])
       self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
       self.showEditorialHeaderTag.assertValues(["250"])
+      self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless)])
     }
   }
 
@@ -601,6 +604,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you."])
       self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
       self.showEditorialHeaderTag.assertValues(["250"])
+      self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless)])
     }
   }
 

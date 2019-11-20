@@ -345,8 +345,8 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
 // MARK: - DiscoveryEditorialCellDelegate
 
 extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
-  func discoveryEditorialCellTapped(_: DiscoveryEditorialCell, tag: String) {
-    self.viewModel.inputs.discoveryEditorialCellTapped(with: tag)
+  func discoveryEditorialCellTapped(_: DiscoveryEditorialCell, tag: String, refTag: RefTag) {
+    self.viewModel.inputs.discoveryEditorialCellTapped(with: tag, refTag: refTag)
   }
 }
 

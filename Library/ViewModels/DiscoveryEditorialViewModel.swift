@@ -1,7 +1,8 @@
 import Foundation
 import ReactiveSwift
 
-public typealias DiscoveryEditorialCellValue = (title: String, subtitle: String, imageName: String, tag: String)
+public typealias DiscoveryEditorialCellValue = (title: String,
+  subtitle: String, imageName: String, tag: String, refTag: RefTag)
 
 public protocol DiscoveryEditorialViewModelInputs {
   func configureWith(_ value: DiscoveryEditorialCellValue)
@@ -12,7 +13,7 @@ public protocol DiscoveryEditorialViewModelOutputs {
   var imageName: Signal<String, Never> { get }
   var subtitleText: Signal<String, Never> { get }
   var titleText: Signal<String, Never> { get }
-  var notifyDelegateViewTapped: Signal<String, Never> { get }
+  var notifyDelegateViewTapped: Signal<(String, RefTag), Never> { get }
 }
 
 public protocol DiscoveryEditorialViewModelType {
@@ -31,7 +32,7 @@ public final class DiscoveryEditorialViewModel: DiscoveryEditorialViewModelType,
 
     self.notifyDelegateViewTapped = configureWithValue
       .takeWhen(self.editorialCellTappedSignal)
-      .map { $0.tag }
+      .map { ($0.tag, $0.refTag) }
   }
 
   private let configureWithValueProperty = MutableProperty<DiscoveryEditorialCellValue?>(nil)
@@ -47,7 +48,7 @@ public final class DiscoveryEditorialViewModel: DiscoveryEditorialViewModelType,
   public let imageName: Signal<String, Never>
   public let subtitleText: Signal<String, Never>
   public let titleText: Signal<String, Never>
-  public let notifyDelegateViewTapped: Signal<String, Never>
+  public let notifyDelegateViewTapped: Signal<(String, RefTag), Never>
 
   public var inputs: DiscoveryEditorialViewModelInputs { return self }
   public var outputs: DiscoveryEditorialViewModelOutputs { return self }

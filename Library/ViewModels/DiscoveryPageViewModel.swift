@@ -11,7 +11,7 @@ public protocol DiscoveryPageViewModelInputs {
   func currentEnvironmentChanged(environment: EnvironmentType)
 
   /// Call when the editioral cell is tapped
-  func discoveryEditorialCellTapped(with tag: String)
+  func discoveryEditorialCellTapped(with tag: String, refTag: RefTag)
 
   /// Call when the user pulls tableView to refresh
   func pulledToRefresh()
@@ -314,13 +314,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
           title: Strings.Back_it_because_you_believe_in_it(),
           subtitle: "Find projects that speak to you.",
           imageName: "go-rewardless-home",
-          tag: "250"
+          tag: "250",
+          refTag: RefTag.editorial(.goRewardless)
         )
       }
 
-    self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithTagProperty.signal
+    self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
-      .map { ($0, RefTag.editorial(.goRewardless)) }
   }
 
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
@@ -328,9 +328,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.currentEnvironmentChangedProperty.value = environment
   }
 
-  fileprivate let discoveryEditorialCellTappedWithTagProperty = MutableProperty<String?>(nil)
-  public func discoveryEditorialCellTapped(with tag: String) {
-    self.discoveryEditorialCellTappedWithTagProperty.value = tag
+  fileprivate let discoveryEditorialCellTappedWithValueProperty = MutableProperty<(String, RefTag)?>(nil)
+  public func discoveryEditorialCellTapped(with tag: String, refTag: RefTag) {
+    self.discoveryEditorialCellTappedWithValueProperty.value = (tag, refTag)
   }
 
   fileprivate let pulledToRefreshProperty = MutableProperty(())
