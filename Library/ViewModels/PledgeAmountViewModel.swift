@@ -110,7 +110,6 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
 
-
     let textFieldValue = self.textFieldValueProperty.signal
       .map { $0.coalesceWith("") }
       .map(Double.init)
@@ -127,7 +126,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.stepperMinValue = updatedValue
       .map { ($0.0, $0.2) }
-      .map(stepperMinValue(with:value:))
+      .map(self.stepperMinValue(with:value:))
 
     self.stepperMaxValue = minValue.mapConst(PledgeAmountStepperConstants.max)
 
