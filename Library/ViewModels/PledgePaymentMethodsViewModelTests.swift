@@ -351,6 +351,39 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  func testReloadPaymentMethods_FirstCardUnavailable() {
+    let cards = GraphUserCreditCard.withCards([
+      GraphUserCreditCard.discover,
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.amex
+    ])
+    let response = UserEnvelope<GraphUserCreditCard>(me: cards)
+    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let project = Project.template
+      |> \.availableCardTypes .~ ["AMEX", "VISA", "MASTERCARD"]
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith((User.template, project, false))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      self.reloadPaymentMethodsCards.assertValues([
+        [
+          GraphUserCreditCard.discover,
+          GraphUserCreditCard.visa,
+          GraphUserCreditCard.amex
+        ]
+      ])
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([[false, true, true]])
+      self.reloadPaymentMethodsSelectedCard.assertValues([nil], "No card to select")
+    }
+  }
+
   func testReloadPaymentMethods_LoggedIn_ApplePayCapable_isFalse() {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)

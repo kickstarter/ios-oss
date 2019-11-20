@@ -66,7 +66,8 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
         environmentFeatures?[featureEnabledPair.feature.rawValue] = enabled
 
         return environmentFeatures
-      }.skipNil()
+      }
+      .skipNil()
   }
 
   private let setFeatureEnabledAtIndexProperty = MutableProperty<(Int, Bool)?>(nil)
