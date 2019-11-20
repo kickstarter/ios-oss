@@ -10,6 +10,7 @@ final class ManagePledgeRewardView: UIView {
     RewardCardView(frame: .zero)
   }()
 
+  private lazy var backgroundView: UIView = { UIView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -29,11 +30,15 @@ final class ManagePledgeRewardView: UIView {
   // MARK: - Configuration
 
   public func configure(with value: (Project, Either<Reward, Backing>)) {
-    self.rewardView.configure(with: value, context: .pledgeView)
+    self.rewardView.configure(with: value)
   }
 
   private func configureViews() {
-    _ = ([self.titleLabel, self.rewardView], self.rootStackView)
+    _ = (self.rewardView, self.backgroundView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.titleLabel, self.backgroundView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self)
@@ -46,8 +51,8 @@ final class ManagePledgeRewardView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.rewardView
-      |> checkoutBackgroundStyle
+    _ = self.backgroundView
+      |> backgroundViewStyle
 
     _ = self.rootStackView
       |> checkoutCardStackViewStyle
@@ -63,4 +68,11 @@ private let titleLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
     |> \.text %~ { _ in Strings.Selected_reward() }
+}
+
+private let backgroundViewStyle: ViewStyle = { (view: UIView) in
+  view
+    |> checkoutWhiteBackgroundStyle
+    |> roundedStyle(cornerRadius: Styles.grid(3))
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
 }
