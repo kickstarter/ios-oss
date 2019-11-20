@@ -126,7 +126,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.stepperMinValue = updatedValue
       .map { ($0.0, $0.2) }
-      .map(self.stepperMinValue(with:value:))
+      .map(stepperMinValue(with:value:))
 
     self.stepperMaxValue = minValue.mapConst(PledgeAmountStepperConstants.max)
 
