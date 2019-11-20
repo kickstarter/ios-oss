@@ -27,6 +27,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let setScrollsToTop = TestObserver<Bool, Never>()
   private let scrollToProjectRow = TestObserver<Int, Never>()
   fileprivate let showEditorialHeader = TestObserver<Void, Never>()
+  fileprivate let showEditorialHeaderImageName = TestObserver<String, Never>()
+  fileprivate let showEditorialHeaderSubtitle = TestObserver<String, Never>()
+  fileprivate let showEditorialHeaderTag = TestObserver<String, Never>()
+  fileprivate let showEditorialHeaderTitle = TestObserver<String, Never>()
   fileprivate let showEmptyState = TestObserver<EmptyState, Never>()
   fileprivate let showOnboarding = TestObserver<Bool, Never>()
 
@@ -47,7 +51,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.projectsLoaded.ignoreValues().observe(self.hasLoadedProjects.observer)
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
-    self.vm.outputs.showEditorialHeader.observe(self.showEditorialHeader.observer)
+    self.vm.outputs.showEditorialHeader.ignoreValues().observe(self.showEditorialHeader.observer)
+    self.vm.outputs.showEditorialHeader.map { $0.title }.observe(self.showEditorialHeaderTitle.observer)
+    self.vm.outputs.showEditorialHeader.map { $0.subtitle }.observe(self.showEditorialHeaderSubtitle.observer)
+    self.vm.outputs.showEditorialHeader.map { $0.imageName }.observe(self.showEditorialHeaderImageName.observer)
+    self.vm.outputs.showEditorialHeader.map { $0.tag }.observe(self.showEditorialHeaderTag.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
 
@@ -549,7 +557,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
     self.vm.inputs.selectedFilter(.defaults)
 
-    self.showEditorialHeader.assertValueCount(1)
+    self.showEditorialHeaderTitle.assertValues(["Going rewardless is rewarding"])
+    self.showEditorialHeaderSubtitle.assertValues(["Do something good"])
+    self.showEditorialHeaderImageName.assertValues([""])
+    self.showEditorialHeaderTag.assertValues(["518"])
   }
 
   func testShowEditorialHeader_LoggedOutOnNonMagic() {
@@ -568,7 +579,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(.defaults)
 
-      self.showOnboarding.assertValueCount(1)
+      self.showEditorialHeader.assertValueCount(1)
+      self.showEditorialHeaderTitle.assertValues(["Going rewardless is rewarding"])
+      self.showEditorialHeaderSubtitle.assertValues(["Do something good"])
+      self.showEditorialHeaderImageName.assertValues([""])
+      self.showEditorialHeaderTag.assertValues(["518"])
     }
   }
 

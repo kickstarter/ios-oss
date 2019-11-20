@@ -25,7 +25,7 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
   func testEditorial() {
     let section = DiscoveryProjectsDataSource.Section.editorial.rawValue
 
-    self.dataSource.showEditorial()
+    self.dataSource.showEditorial(value: (title: "title", subtitle: "subtitle", imageName: "", tag: "123"))
 
     XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))

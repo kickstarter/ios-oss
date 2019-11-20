@@ -55,8 +55,8 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
       |> DiscoveryEditorialCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(2), leftRight: Styles.grid(30))
-          : .init(topBottom: Styles.grid(2), leftRight: layoutMargins.left)
+          ? .init(topBottom: Styles.grid(1), leftRight: Styles.grid(30))
+          : .init(topBottom: Styles.grid(1), leftRight: layoutMargins.left)
     }
 
     _ = self.containerView
