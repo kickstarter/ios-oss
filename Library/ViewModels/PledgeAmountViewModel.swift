@@ -110,7 +110,25 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
 
-    self.stepperMinValue = reward.map(\.minimum)
+
+    let textFieldValue = self.textFieldValueProperty.signal
+      .map { $0.coalesceWith("") }
+      .map(Double.init)
+      .map { $0.coalesceWith(0) }
+
+    let updatedValue = Signal.combineLatest(
+      minValue,
+      maxValue,
+      Signal.merge(
+        stepperValue,
+        textFieldValue.signal
+      )
+    )
+
+    self.stepperMinValue = updatedValue
+      .map { ($0.0, $0.2) }
+      .map(stepperMinValue(with:value:))
+
     self.stepperMaxValue = minValue.mapConst(PledgeAmountStepperConstants.max)
 
     let stepperValueChanged = Signal.combineLatest(
@@ -126,20 +144,6 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.generateNotificationWarningFeedback = stepperValueChanged
       .filter { min, max, value in value <= min || max <= value }
       .ignoreValues()
-
-    let textFieldValue = self.textFieldValueProperty.signal
-      .map { $0.coalesceWith("") }
-      .map(Double.init)
-      .map { $0.coalesceWith(0) }
-
-    let updatedValue = Signal.combineLatest(
-      minValue,
-      maxValue,
-      Signal.merge(
-        stepperValue,
-        textFieldValue.signal
-      )
-    )
 
     self.notifyDelegateAmountUpdated = updatedValue
       .map { min, max, value in
@@ -263,4 +267,11 @@ private func initialPledgeAmount(from project: Project, reward: Reward, minValue
     let backing = project.personalization.backing else { return minValue }
 
   return backing.pledgeAmount
+}
+
+private func stepperMinValue(with minimum: Double, value: Double) -> Double {
+  if value < minimum {
+    return value
+  }
+  return minimum
 }

@@ -177,7 +177,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.amountMax.assertValues([200_000])
     self.amountValue.assertValues([10])
     self.currency.assertValues(["MX$"])
-    self.stepperMinValue.assertValue(1)
+    self.stepperMinValue.assertValue(10)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
@@ -799,16 +799,16 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.generateSelectionFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(PledgeAmountStepperConstants.max)
-    self.generateSelectionFeedback.assertValueCount(1)
+    self.generateSelectionFeedback.assertValueCount(2)
 
     self.vm.inputs.stepperValueChanged(12)
-    self.generateSelectionFeedback.assertValueCount(2)
+    self.generateSelectionFeedback.assertValueCount(3)
 
     self.vm.inputs.stepperValueChanged(0)
-    self.generateSelectionFeedback.assertValueCount(2)
+    self.generateSelectionFeedback.assertValueCount(4)
 
     self.vm.inputs.stepperValueChanged(20)
-    self.generateSelectionFeedback.assertValueCount(3)
+    self.generateSelectionFeedback.assertValueCount(5)
   }
 
   func testGenerateNotificationWarningFeedback() {
@@ -822,13 +822,13 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.generateNotificationWarningFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(12)
-    self.generateNotificationWarningFeedback.assertValueCount(1)
+    self.generateNotificationWarningFeedback.assertValueCount(2)
 
     self.vm.inputs.stepperValueChanged(0)
-    self.generateNotificationWarningFeedback.assertValueCount(2)
+    self.generateNotificationWarningFeedback.assertValueCount(3)
 
     self.vm.inputs.stepperValueChanged(11)
-    self.generateNotificationWarningFeedback.assertValueCount(2)
+    self.generateNotificationWarningFeedback.assertValueCount(4)
   }
 
   func testLabelTextColor() {
