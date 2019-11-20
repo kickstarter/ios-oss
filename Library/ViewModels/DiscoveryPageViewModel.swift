@@ -309,9 +309,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .filter { $0 == .magic }
       .skipRepeats()
       .map { _ in
-        return DiscoveryEditorialCellValue(title: "Go rewardless",
-                                           subtitle: "find something great",
-                                           imageName: "",
+        return DiscoveryEditorialCellValue(title: Strings.Back_it_because_you_believe_in_it(),
+                                           subtitle: "Find projects that speak to you.",
+                                           imageName: "go-rewardless-home",
                                            tag: "250")
     }
 

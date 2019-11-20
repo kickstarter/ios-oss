@@ -44,6 +44,17 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
         self.delegate?.discoveryEditorialCellTapped(self)
     }
 
+    self.viewModel.outputs.imageName
+      .observeForUI()
+      .observeValues { [weak self] imageName in
+        guard let self = self else { return }
+
+        _ = self.editorialImageView
+          |> \.image %~ { _ in Library.image(named: imageName,
+                                             inBundle: Bundle.framework,
+                                             compatibleWithTraitCollection: nil) }
+    }
+
     self.editorialTitleLabel.rac.text = self.viewModel.outputs.titleText
     self.editorialSubtitleLabel.rac.text = self.viewModel.outputs.subtitleText
   }
@@ -55,8 +66,8 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
       |> DiscoveryEditorialCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(1), leftRight: Styles.grid(30))
-          : .init(topBottom: Styles.grid(1), leftRight: layoutMargins.left)
+          ? .init(top: Styles.grid(2), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
+          : .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0, right: Styles.grid(2))
     }
 
     _ = self.containerView
@@ -66,13 +77,16 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     _ = self.rootStackView
       |> rootStackViewStyle
 
+    _ = self.editorialImageView
+      |> UIImageView.lens.contentMode .~ .scaleAspectFill
+
     _ = self.editorialTitleLabel
       |> editorialLabelStyle
       |> \.font .~ UIFont.ksr_title2().bolded
 
     _ = self.editorialSubtitleLabel
       |> editorialLabelStyle
-      |> \.font .~ UIFont.ksr_subhead()
+      |> \.font .~ UIFont.ksr_callout()
   }
 
   func configureWith(value: DiscoveryEditorialCellValue) {
@@ -90,7 +104,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel], self.rootStackView)
+    _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel, self.editorialImageView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     let tapGestureRecognizer = UITapGestureRecognizer(target: self,
@@ -114,13 +128,15 @@ private let editorialLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
     |> \.textColor .~ .white
+    |> \.textAlignment .~ .left
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
-    |> \.spacing .~ Styles.grid(3)
-    |> \.alignment .~ .leading
+    |> \.spacing .~ Styles.grid(2)
+//    |> \.alignment .~ .leading
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ .init(all: Styles.grid(3))
+    |> \.layoutMargins .~ UIEdgeInsets.init(top: Styles.grid(3), left: Styles.grid(3), bottom: 0,
+                                            right: Styles.grid(3))
 }
