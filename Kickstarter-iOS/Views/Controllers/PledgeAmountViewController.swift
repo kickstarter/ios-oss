@@ -220,4 +220,5 @@ private let maxPledgeAmountErrorLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_caption1()
     |> \.numberOfLines .~ 0
     |> \.textColor .~ UIColor.ksr_red_400
+    |> \.textAlignment .~ .right
 }
