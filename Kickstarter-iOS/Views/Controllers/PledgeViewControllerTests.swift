@@ -27,9 +27,8 @@ final class PledgeViewControllerTests: TestCase {
     let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
     let project = Project.template
       |> \.availableCardTypes .~ [GraphUserCreditCard.CreditCardType.discover.rawValue]
-    let device = Device.phone4inch
 
-    Language.allLanguages.forEach { language in
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
         let controller = PledgeViewController.instantiate()
         controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
@@ -243,9 +242,8 @@ final class PledgeViewControllerTests: TestCase {
         (.template |> \.id .~ "123")
       )
       |> \.availableCardTypes .~ [GraphUserCreditCard.CreditCardType.discover.rawValue]
-    let device = Device.phone4_7inch
 
-    Language.allLanguages.forEach { language in
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
         let controller = PledgeViewController.instantiate()
         controller.configureWith(
