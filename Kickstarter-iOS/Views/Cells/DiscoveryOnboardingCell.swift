@@ -28,8 +28,10 @@ internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
       |> DiscoveryOnboardingCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
           ? UIEdgeInsets.init(top: Styles.grid(5), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
-          : UIEdgeInsets.init(top: Styles.grid(3), left: layoutMargins.left, bottom: 0,
-                              right: layoutMargins.left)
+          : UIEdgeInsets.init(
+            top: Styles.grid(3), left: layoutMargins.left, bottom: 0,
+            right: layoutMargins.left
+          )
       }
 
     _ = self.loginButton

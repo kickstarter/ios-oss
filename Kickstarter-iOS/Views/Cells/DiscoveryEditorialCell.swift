@@ -1,8 +1,8 @@
 import Foundation
+import KsApi
 import Library
 import Prelude
 import UIKit
-import KsApi
 
 protocol DiscoveryEditorialCellDelegate: AnyObject {
   func discoveryEditorialCellTapped(_ cell: DiscoveryEditorialCell)
@@ -28,7 +28,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     self.bindViewModel()
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -37,12 +37,12 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegateViewTapped
       .observeForUI()
-      .observeValues { [weak self] tag in
+      .observeValues { [weak self] _ in
         guard let self = self else { return }
 
-        // TODO pass tag
+        // TODO: pass tag
         self.delegate?.discoveryEditorialCellTapped(self)
-    }
+      }
 
     self.viewModel.outputs.imageName
       .observeForUI()
@@ -50,10 +50,12 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
         guard let self = self else { return }
 
         _ = self.editorialImageView
-          |> \.image %~ { _ in Library.image(named: imageName,
-                                             inBundle: Bundle.framework,
-                                             compatibleWithTraitCollection: nil) }
-    }
+          |> \.image %~ { _ in Library.image(
+            named: imageName,
+            inBundle: Bundle.framework,
+            compatibleWithTraitCollection: nil
+          ) }
+      }
 
     self.editorialTitleLabel.rac.text = self.viewModel.outputs.titleText
     self.editorialSubtitleLabel.rac.text = self.viewModel.outputs.subtitleText
@@ -64,11 +66,11 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> DiscoveryEditorialCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
+      |> DiscoveryEditorialCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(2), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
           : .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0, right: Styles.grid(2))
-    }
+      }
 
     _ = self.containerView
       |> \.backgroundColor .~ .ksr_trust_700
@@ -107,9 +109,11 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel, self.editorialImageView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                      action: #selector(DiscoveryEditorialCell
-                                                        .editorialCellTapped))
+    let tapGestureRecognizer = UITapGestureRecognizer(
+      target: self,
+      action: #selector(DiscoveryEditorialCell
+        .editorialCellTapped)
+    )
 
     self.containerView.addGestureRecognizer(tapGestureRecognizer)
   }
@@ -137,6 +141,8 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(2)
 //    |> \.alignment .~ .leading
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(top: Styles.grid(3), left: Styles.grid(3), bottom: 0,
-                                            right: Styles.grid(3))
+    |> \.layoutMargins .~ UIEdgeInsets.init(
+      top: Styles.grid(3), left: Styles.grid(3), bottom: 0,
+      right: Styles.grid(3)
+    )
 }

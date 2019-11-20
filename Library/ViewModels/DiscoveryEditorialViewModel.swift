@@ -20,9 +20,8 @@ public protocol DiscoveryEditorialViewModelType {
   var outputs: DiscoveryEditorialViewModelOutputs { get }
 }
 
-
 public final class DiscoveryEditorialViewModel: DiscoveryEditorialViewModelType,
-DiscoveryEditorialViewModelInputs, DiscoveryEditorialViewModelOutputs {
+  DiscoveryEditorialViewModelInputs, DiscoveryEditorialViewModelOutputs {
   public init() {
     let configureWithValue = self.configureWithValueProperty.signal.skipNil()
 

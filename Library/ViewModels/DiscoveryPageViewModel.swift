@@ -305,15 +305,18 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       }
 
     self.showEditorialHeader = Signal.combineLatest(currentUser, self.sortProperty.signal.skipNil())
+      .filter { _ in featureGoRewardlessIsEnabled() }
       .map(second)
       .filter { $0 == .magic }
       .skipRepeats()
       .map { _ in
-        return DiscoveryEditorialCellValue(title: Strings.Back_it_because_you_believe_in_it(),
-                                           subtitle: "Find projects that speak to you.",
-                                           imageName: "go-rewardless-home",
-                                           tag: "250")
-    }
+        DiscoveryEditorialCellValue(
+          title: Strings.Back_it_because_you_believe_in_it(),
+          subtitle: "Find projects that speak to you.",
+          imageName: "go-rewardless-home",
+          tag: "250"
+        )
+      }
 
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedProperty.signal
       .mapConst(RefTag.editorial(.goRewardless))

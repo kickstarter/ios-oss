@@ -551,29 +551,42 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
-  func testShowEditorialHeader_LoggedOutOnMagic() {
-    self.vm.inputs.configureWith(sort: .magic)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.viewDidAppear()
-    self.vm.inputs.selectedFilter(.defaults)
+  func testShowEditorialHeader_LoggedOutOnMagic_FeatureFlag_IsOn() {
+    let mockConfig = Config.template
+      |> \.features .~ [Feature.goRewardless.rawValue: true]
 
-    self.showEditorialHeaderTitle.assertValues(["Going rewardless is rewarding"])
-    self.showEditorialHeaderSubtitle.assertValues(["Do something good"])
-    self.showEditorialHeaderImageName.assertValues([""])
-    self.showEditorialHeaderTag.assertValues(["518"])
+    withEnvironment(config: mockConfig) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.showEditorialHeaderTitle.assertValues(["Going rewardless is rewarding"])
+      self.showEditorialHeaderSubtitle.assertValues(["Do something good"])
+      self.showEditorialHeaderImageName.assertValues([""])
+      self.showEditorialHeaderTag.assertValues(["518"])
+    }
   }
 
-  func testShowEditorialHeader_LoggedOutOnNonMagic() {
-    self.vm.inputs.configureWith(sort: .popular)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.viewDidAppear()
-    self.vm.inputs.selectedFilter(.defaults)
+  func testShowEditorialHeader_LoggedOutOnNonMagic_FeatureFlag_IsOn() {
+    let mockConfig = Config.template
+      |> \.features .~ [Feature.goRewardless.rawValue: true]
 
-    self.showEditorialHeader.assertDidNotEmitValue()
+    withEnvironment(config: mockConfig) {
+      self.vm.inputs.configureWith(sort: .popular)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.showEditorialHeader.assertDidNotEmitValue()
+    }
   }
 
-  func testShowEditorialHeader_LoggedIn() {
-    withEnvironment(currentUser: .template) {
+  func testShowEditorialHeader_LoggedIn_FeatureFlag_IsOn() {
+    let mockConfig = Config.template
+      |> \.features .~ [Feature.goRewardless.rawValue: true]
+
+    withEnvironment(config: mockConfig, currentUser: .template) {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
@@ -584,6 +597,20 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeaderSubtitle.assertValues(["Do something good"])
       self.showEditorialHeaderImageName.assertValues([""])
       self.showEditorialHeaderTag.assertValues(["518"])
+    }
+  }
+
+  func testShowEditorialHeader_FeatureFlag_IsOff() {
+    let mockConfig = Config.template
+      |> \.features .~ [Feature.goRewardless.rawValue: false]
+
+    withEnvironment(config: mockConfig) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.showEditorialHeader.assertDidNotEmitValue()
     }
   }
 
@@ -916,7 +943,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     let discoveryEnvelope = .template
       |> DiscoveryEnvelope.lens.projects .~ (
         (0...2).map { id in .template |> Project.lens.id .~ (100 + id) }
-    )
+      )
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope)) {
       self.vm.inputs.configureWith(sort: .magic)

@@ -170,6 +170,26 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
+  func testView_Editorial() {
+    let mockConfig = Config.template
+      |> \.features .~ [Feature.goRewardless.rawValue: true]
+
+    combos(Language.allLanguages, Device.allCases).forEach {
+      language, device in
+      withEnvironment(config: mockConfig, currentUser: nil, language: language) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        controller.change(filter: magicParams)
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.015
+        )
+      }
+    }
+  }
+
   fileprivate let anomalisaNoPhoto = .anomalisa
     |> Project.lens.id .~ 1_111
     |> Project.lens.photo.full .~ ""

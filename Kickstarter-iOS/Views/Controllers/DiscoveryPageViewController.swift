@@ -166,7 +166,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] value in
         self?.dataSource.showEditorial(value: value)
-    }
+      }
 
     self.viewModel.outputs.setScrollsToTop
       .observeForUI()
@@ -210,7 +210,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] refTag in
         self?.goToEditorialProjectList(refTag: refTag)
-    }
+      }
   }
 
   internal override func tableView(
@@ -271,8 +271,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.present(controller, animated: true, completion: nil)
   }
 
-  fileprivate func goToEditorialProjectList(refTag: RefTag) {
-
+  fileprivate func goToEditorialProjectList(refTag _: RefTag) {
     // TODO:
   }
 
@@ -346,7 +345,7 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
 // MARK: - DiscoveryEditorialCellDelegate
 
 extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
-  func discoveryEditorialCellTapped(_ cell: DiscoveryEditorialCell) {
+  func discoveryEditorialCellTapped(_: DiscoveryEditorialCell) {
     self.viewModel.inputs.discoveryEditorialCellTapped()
   }
 }
