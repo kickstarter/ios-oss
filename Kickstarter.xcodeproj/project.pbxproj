@@ -268,6 +268,7 @@
 		77BC00F82330236600808E75 /* RewardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BC00F72330236600808E75 /* RewardCellViewModelTests.swift */; };
 		77BF99B722652C9500513CE3 /* MultiLineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BF99B622652C9500513CE3 /* MultiLineButton.swift */; };
 		77BFA0402295764F0000A550 /* DeprecatedCheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDE1F731D5926D80092D9A5 /* DeprecatedCheckoutViewModel.swift */; };
+		77C25FBF2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C25FBE2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift */; };
 		77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */; };
 		77C5E252214182CA002E1670 /* SettingsPrivacySwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */; };
 		77C7B654226E0E54001101AC /* RewardsCollectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */; };
@@ -1672,6 +1673,7 @@
 		77BC00F523301BD300808E75 /* RewardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellViewModel.swift; sourceTree = "<group>"; };
 		77BC00F72330236600808E75 /* RewardCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellViewModelTests.swift; sourceTree = "<group>"; };
 		77BF99B622652C9500513CE3 /* MultiLineButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineButton.swift; sourceTree = "<group>"; };
+		77C25FBE2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEditorialViewModelTests.swift; sourceTree = "<group>"; };
 		77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsPrivacySwitchCell.xib; sourceTree = "<group>"; };
 		77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacySwitchCell.swift; sourceTree = "<group>"; };
 		77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsCollectionViewModelTests.swift; sourceTree = "<group>"; };
@@ -3631,6 +3633,7 @@
 				A78851901D6C900000617930 /* DeprecatedWebViewModel.swift */,
 				A7ED1F8D1E831C5C00BFFA01 /* DeprecatedWebViewModelTests.swift */,
 				773452FB2384AD9300E6B6A3 /* DiscoveryEditorialViewModel.swift */,
+				77C25FBE2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift */,
 				D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */,
 				A7ED1F821E831C5C00BFFA01 /* DiscoveryExpandableRowCellViewModelTests.swift */,
 				0169F9871D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift */,
@@ -5448,6 +5451,7 @@
 				77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */,
 				D60CAB922208A1B60083FA40 /* SelectCurrencyViewControllerTests.swift in Sources */,
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
+				77C25FBF2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift in Sources */,
 				A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */,
 				D6B6875221923BCF005F5DA7 /* ChangeEmailViewControllerTests.swift in Sources */,
 				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,

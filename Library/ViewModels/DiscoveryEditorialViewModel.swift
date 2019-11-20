@@ -11,9 +11,9 @@ public protocol DiscoveryEditorialViewModelInputs {
 
 public protocol DiscoveryEditorialViewModelOutputs {
   var imageName: Signal<String, Never> { get }
+  var notifyDelegateViewTapped: Signal<(String, RefTag), Never> { get }
   var subtitleText: Signal<String, Never> { get }
   var titleText: Signal<String, Never> { get }
-  var notifyDelegateViewTapped: Signal<(String, RefTag), Never> { get }
 }
 
 public protocol DiscoveryEditorialViewModelType {
