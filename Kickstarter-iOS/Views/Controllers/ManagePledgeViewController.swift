@@ -180,7 +180,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.viewModel.outputs.endRefreshing
       .observeForUI()
       .observeValues { [weak self] in
-        self?.rootScrollView.refreshControl?.endRefreshing()
+        self?.refreshControl.endRefreshing()
       }
 
     self.viewModel.outputs.showActionSheetMenuWithOptions
@@ -300,7 +300,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.refreshControl.addTarget(
       self,
-      action: #selector(ManagePledgeViewController.handleRefreshControl),
+      action: #selector(ManagePledgeViewController.beginRefresh),
       for: .valueChanged
     )
   }
@@ -311,7 +311,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.viewModel.inputs.menuButtonTapped()
   }
 
-  @objc private func handleRefreshControl() {
+  @objc private func beginRefresh() {
     self.viewModel.inputs.beginRefresh()
   }
 
