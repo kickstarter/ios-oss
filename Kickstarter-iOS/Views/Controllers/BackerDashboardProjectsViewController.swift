@@ -99,6 +99,7 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
 
     _ = self
       |> baseTableControllerStyle()
+      |> \.view.backgroundColor .~ .white
   }
 
   internal override func tableView(

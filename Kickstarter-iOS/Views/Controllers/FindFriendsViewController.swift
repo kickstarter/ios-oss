@@ -91,6 +91,7 @@ internal final class FindFriendsViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle()
+      |> \.view.backgroundColor .~ .white
       |> UIViewController.lens.title %~ { _ in Strings.Follow_friends() }
 
     _ = self.loadingIndicatorView

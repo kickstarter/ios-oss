@@ -30,7 +30,9 @@ internal final class MessageThreadsViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> baseTableControllerStyle()
+    _ = self
+      |> baseTableControllerStyle()
+      |> \.view.backgroundColor .~ .white
 
     _ = self.mailboxLabel
       |> UILabel.lens.font .~ UIFont.ksr_callout().bolded

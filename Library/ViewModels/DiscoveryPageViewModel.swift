@@ -16,8 +16,14 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the user pulls tableView to refresh
   func pulledToRefresh()
 
+  /// Call when the scrollViewDidScroll with the current contentOffset
+  func scrollViewDidScrollToContentOffset(_ contentOffset: CGPoint)
+
   /// Call when the filter is changed.
   func selectedFilter(_ params: DiscoveryParams)
+
+  /// Call with the preferred background color.
+  func setPreferredBackgroundColor(_ color: UIColor)
 
   /// Call when the user taps on the activity sample.
   func tapped(activity: Activity)
@@ -59,6 +65,9 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Hack to emit when we should asynchronously reload the table view's data to properly display postcards.
   /// Hopefully in the future we can remove this when we can resolve postcard display issues.
   var asyncReloadData: Signal<Void, Never> { get }
+
+  /// Emits the preferred background color.
+  var backgroundColor: Signal<UIColor, Never> { get }
 
   /// Emits a project and ref tag that we should go to from the activity sample.
   var goToActivityProject: Signal<(Project, RefTag), Never> { get }
@@ -230,6 +239,22 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
           .materialize()
       }
 
+    let preferredBackgroundColor = self.setPreferredBackgroundColorProperty.signal.skipNil()
+
+    let preferredBackgroundColorOrWhite = Signal.merge(
+      preferredBackgroundColor,
+      self.viewWillAppearProperty.signal.take(first: 1).mapConst(.white)
+        .take(until: preferredBackgroundColor.ignoreValues())
+    )
+
+    self.backgroundColor = Signal.combineLatest(
+      self.viewWillAppearProperty.signal.take(first: 1),
+      preferredBackgroundColorOrWhite,
+      self.scrollViewDidScrollToContentOffsetProperty.signal.skipNil()
+    )
+    .map { _, color, offset in offset.y > 0 ? .white : color }
+    .skipRepeats()
+
     let activitySampleTapped = self.tappedActivity.signal.skipNil()
       .filter { $0.category != .update }
       .map { $0.project }
@@ -338,6 +363,16 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.pulledToRefreshProperty.value = ()
   }
 
+  private let setPreferredBackgroundColorProperty = MutableProperty<UIColor?>(nil)
+  public func setPreferredBackgroundColor(_ color: UIColor) {
+    self.setPreferredBackgroundColorProperty.value = color
+  }
+
+  private let scrollViewDidScrollToContentOffsetProperty = MutableProperty<CGPoint?>(nil)
+  public func scrollViewDidScrollToContentOffset(_ contentOffset: CGPoint) {
+    self.scrollViewDidScrollToContentOffsetProperty.value = contentOffset
+  }
+
   fileprivate let sortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
   public func configureWith(sort: DiscoveryParams.Sort) {
     self.sortProperty.value = sort
@@ -395,6 +430,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
+  public let backgroundColor: Signal<UIColor, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
   public let goToEditorialProjectList: Signal<(String, RefTag), Never>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>

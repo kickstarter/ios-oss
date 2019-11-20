@@ -18,10 +18,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
     return vc
   }
 
-  internal func change(filter: DiscoveryParams) {
-    self.viewModel.inputs.selectedFilter(filter)
-  }
-
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -99,6 +95,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+      |> \.view.backgroundColor .~ .clear
   }
 
   internal override func bindViewModel() {
@@ -317,6 +314,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
     navigator.updatePlaylist(playlist)
   }
 
+  // MARK: - Accessors
+
+  internal func change(filter: DiscoveryParams) {
+    self.viewModel.inputs.selectedFilter(filter)
+  }
+
+  // MARK: - Actions
+
   @objc private func pulledToRefresh() {
     self.viewModel.inputs.pulledToRefresh()
   }
@@ -406,6 +411,14 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
 extension DiscoveryPageViewController: ProjectNavigatorDelegate {
   func transitionedToProject(at index: Int) {
     self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
+  }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension DiscoveryPageViewController {
+  override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    print("*** \(scrollView.contentOffset.y)")
   }
 }
 
