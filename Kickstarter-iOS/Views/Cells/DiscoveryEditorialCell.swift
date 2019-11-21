@@ -81,8 +81,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
       }
 
     _ = self.containerView
-      |> \.backgroundColor .~ .ksr_trust_700
-      |> roundedStyle(cornerRadius: Styles.grid(2))
+      |> containerViewStyle
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -150,6 +149,16 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 }
 
 // MARK: - Styles
+
+private let containerViewStyle: ViewStyle = { view in
+  view
+    |> roundedStyle(cornerRadius: Styles.grid(2))
+    |> \.backgroundColor .~ .ksr_trust_700
+    |> \.isAccessibilityElement .~ true
+    |> \.accessibilityTraits .~ [UIAccessibilityTraits.button]
+    |> \.accessibilityLabel %~ { _ in Strings.Back_it_because_you_believe_in_it() }
+    |> \.accessibilityHint %~ { _ in Strings.Find_projects_that_speak_to_you() }
+}
 
 private let editorialLabelStyle: LabelStyle = { label in
   label
