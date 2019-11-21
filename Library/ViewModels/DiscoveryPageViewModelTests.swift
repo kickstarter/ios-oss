@@ -955,8 +955,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     let mockConfig = Config.template
       |> \.features .~ [Feature.goRewardless.rawValue: true]
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope),
-                    config: mockConfig) {
+    withEnvironment(
+      apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope),
+      config: mockConfig
+    ) {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()

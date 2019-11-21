@@ -37,11 +37,13 @@ final class DiscoveryEditorialViewModelTests: TestCase {
     self.notifyDelegateViewTappedTag.assertDidNotEmitValue()
     self.notifyDelegateViewTappedRefTag.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith((title: "hello",
-                                  subtitle: "boop",
-                                  imageName: "image",
-                                  tag: "123", refTag:
-      RefTag.editorial(.goRewardless)))
+    self.vm.inputs.configureWith((
+      title: "hello",
+      subtitle: "boop",
+      imageName: "image",
+      tag: "123", refTag:
+      RefTag.editorial(.goRewardless)
+    ))
 
     self.imageName.assertValues(["image"])
     self.titleText.assertValues(["hello"])
@@ -51,11 +53,13 @@ final class DiscoveryEditorialViewModelTests: TestCase {
   }
 
   func testEditorialCellTapped() {
-    self.vm.inputs.configureWith((title: "hello",
-                                  subtitle: "boop",
-                                  imageName: "image",
-                                  tag: "123", refTag:
-      RefTag.editorial(.goRewardless)))
+    self.vm.inputs.configureWith((
+      title: "hello",
+      subtitle: "boop",
+      imageName: "image",
+      tag: "123", refTag:
+      RefTag.editorial(.goRewardless)
+    ))
 
     self.notifyDelegateViewTappedRefTag.assertDidNotEmitValue()
     self.notifyDelegateViewTappedTag.assertDidNotEmitValue()

@@ -184,7 +184,8 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         self.scheduler.run()
 
         FBSnapshotVerifyView(
-          parent.view, identifier: "lang_\(language)_device_\(device)")
+          parent.view, identifier: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }
@@ -204,7 +205,8 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         config: mockConfig,
         currentUser: .template,
         language: language,
-        userDefaults: MockKeyValueStore()) {
+        userDefaults: MockKeyValueStore()
+      ) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         controller.tableView.refreshControl = nil
@@ -212,7 +214,8 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         self.scheduler.run()
 
         FBSnapshotVerifyView(
-          parent.view, identifier: "lang_\(language)_device_\(device)")
+          parent.view, identifier: "lang_\(language)_device_\(device)"
+        )
       }
     }
   }

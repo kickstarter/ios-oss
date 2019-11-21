@@ -35,8 +35,10 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
     self.dataSource.showEditorial(value: editorialValue)
 
     XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section),
-                   "One only row is ever added")
+    XCTAssertEqual(
+      1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section),
+      "One only row is ever added"
+    )
   }
 
   func testActivitySample() {

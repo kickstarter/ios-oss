@@ -1,8 +1,10 @@
 import Foundation
 import ReactiveSwift
 
-public typealias DiscoveryEditorialCellValue = (title: String,
-  subtitle: String, imageName: String, tag: String, refTag: RefTag)
+public typealias DiscoveryEditorialCellValue = (
+  title: String,
+  subtitle: String, imageName: String, tag: String, refTag: RefTag
+)
 
 public protocol DiscoveryEditorialViewModelInputs {
   func configureWith(_ value: DiscoveryEditorialCellValue)

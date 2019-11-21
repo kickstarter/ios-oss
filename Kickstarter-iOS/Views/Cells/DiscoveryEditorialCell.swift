@@ -5,9 +5,11 @@ import Prelude
 import UIKit
 
 protocol DiscoveryEditorialCellDelegate: AnyObject {
-  func discoveryEditorialCellTapped(_ cell: DiscoveryEditorialCell,
-                                    tag: String,
-                                    refTag: RefTag)
+  func discoveryEditorialCellTapped(
+    _ cell: DiscoveryEditorialCell,
+    tag: String,
+    refTag: RefTag
+  )
 }
 
 final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
@@ -20,6 +22,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     UIImageView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let editorialTitleLabel = UILabel(frame: .zero)
   private let editorialSubtitleLabel = UILabel(frame: .zero)
   private let rootStackView = {
@@ -128,7 +131,6 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
   }
 
   private func setupConstraints() {
-
     NSLayoutConstraint.activate([
       self.rootStackView.leftAnchor.constraint(equalTo: self.containerView.leftAnchor),
       self.rootStackView.rightAnchor.constraint(equalTo: self.containerView.rightAnchor),
@@ -136,9 +138,11 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
       self.editorialImageView.leftAnchor.constraint(equalTo: self.containerView.leftAnchor),
       self.editorialImageView.rightAnchor.constraint(equalTo: self.containerView.rightAnchor),
       self.editorialImageView.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor),
-      self.editorialImageView.topAnchor.constraint(equalTo: self.rootStackView.bottomAnchor,
-                                                   constant: Styles.grid(1))
-      ])
+      self.editorialImageView.topAnchor.constraint(
+        equalTo: self.rootStackView.bottomAnchor,
+        constant: Styles.grid(1)
+      )
+    ])
   }
 
   // MARK: - Accessors
