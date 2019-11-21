@@ -21,7 +21,7 @@ public final class EditorialProjectsViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel: EditorialProjectViewModelType = EditorialProjectViewModel()
+  private let viewModel: EditorialProjectsViewModelType = EditorialProjectsViewModel()
 
   // MARK: - Lifecycle
 

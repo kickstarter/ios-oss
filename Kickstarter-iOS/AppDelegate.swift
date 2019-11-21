@@ -223,12 +223,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     UNUserNotificationCenter.current().delegate = self
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-      let vc = EditorialProjectsViewController.instantiate()
-
-      self.window?.rootViewController?.present(vc, animated: true)
-    }
-
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
 

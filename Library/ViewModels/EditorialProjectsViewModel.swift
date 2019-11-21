@@ -3,24 +3,24 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol EditorialProjectViewModelInputs {
+public protocol EditorialProjectsViewModelInputs {
   func closeButtonTapped()
   func configure(with tagId: DiscoveryParams.TagID)
   func viewDidLoad()
 }
 
-public protocol EditorialProjectViewModelOutputs {
+public protocol EditorialProjectsViewModelOutputs {
   var configureDiscoveryPageViewControllerWithParams: Signal<DiscoveryParams, Never> { get }
   var dismiss: Signal<(), Never> { get }
 }
 
-public protocol EditorialProjectViewModelType {
-  var inputs: EditorialProjectViewModelInputs { get }
-  var outputs: EditorialProjectViewModelOutputs { get }
+public protocol EditorialProjectsViewModelType {
+  var inputs: EditorialProjectsViewModelInputs { get }
+  var outputs: EditorialProjectsViewModelOutputs { get }
 }
 
-public class EditorialProjectViewModel: EditorialProjectViewModelType,
-  EditorialProjectViewModelInputs, EditorialProjectViewModelOutputs {
+public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
+  EditorialProjectsViewModelInputs, EditorialProjectsViewModelOutputs {
   public init() {
     let tagId = Signal.combineLatest(
       self.configureWithTagIdProperty.signal.skipNil(),
@@ -52,6 +52,6 @@ public class EditorialProjectViewModel: EditorialProjectViewModelType,
   public let configureDiscoveryPageViewControllerWithParams: Signal<DiscoveryParams, Never>
   public let dismiss: Signal<(), Never>
 
-  public var inputs: EditorialProjectViewModelInputs { return self }
-  public var outputs: EditorialProjectViewModelOutputs { return self }
+  public var inputs: EditorialProjectsViewModelInputs { return self }
+  public var outputs: EditorialProjectsViewModelOutputs { return self }
 }
