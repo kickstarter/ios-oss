@@ -5,6 +5,7 @@ import UIKit
 
 internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate var emptyStatesController: EmptyStatesViewController?
+  internal var preferredBackgroundColor: UIColor?
   fileprivate let dataSource = DiscoveryProjectsDataSource()
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
@@ -95,7 +96,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-      |> \.view.backgroundColor .~ .clear
+
+    if let preferredBackgroundColor = self.preferredBackgroundColor {
+      _ = self
+        |> \.view.backgroundColor .~ preferredBackgroundColor
+    }
   }
 
   internal override func bindViewModel() {
@@ -411,14 +416,6 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
 extension DiscoveryPageViewController: ProjectNavigatorDelegate {
   func transitionedToProject(at index: Int) {
     self.viewModel.inputs.transitionedToProject(at: index, outOf: self.dataSource.numberOfItems())
-  }
-}
-
-// MARK: - UIScrollViewDelegate
-
-extension DiscoveryPageViewController {
-  override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    print("*** \(scrollView.contentOffset.y)")
   }
 }
 

@@ -54,7 +54,6 @@ internal final class CommentsViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-      |> \.view.backgroundColor .~ .white
 
     _ = self.commentBarButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_comment() }

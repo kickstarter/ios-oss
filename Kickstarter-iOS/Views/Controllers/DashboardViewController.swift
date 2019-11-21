@@ -49,7 +49,6 @@ internal final class DashboardViewController: UITableViewController {
   override func bindStyles() {
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
-      |> UITableViewController.lens.view.backgroundColor .~ .white
 
     _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true

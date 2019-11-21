@@ -70,7 +70,6 @@ internal final class SearchViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 86)
-      |> \.view.backgroundColor .~ .white
 
     _ = [self.searchLoaderIndicator, self.popularLoaderIndicator]
       ||> baseActivityIndicatorStyle

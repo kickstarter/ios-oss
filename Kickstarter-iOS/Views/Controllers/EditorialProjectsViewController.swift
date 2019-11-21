@@ -13,6 +13,7 @@ public final class EditorialProjectsViewController: UIViewController {
 
   private lazy var discoveryPageViewController: DiscoveryPageViewController = {
     DiscoveryPageViewController.configuredWith(sort: .newest)
+      |> \.preferredBackgroundColor .~ .clear
   }()
 
   private lazy var headerView: UIView = {
@@ -30,14 +31,16 @@ public final class EditorialProjectsViewController: UIViewController {
     self.configureSubviews()
     self.setupConstraints()
 
-    let params = DiscoveryParams.defaults
-      |> DiscoveryParams.lens.tagId .~ .goRewardless
+    self.closeButton.addTarget(
+      self,
+      action: #selector(EditorialProjectsViewController.closeButtonTapped),
+      for: .touchUpInside
+    )
 
-    self.discoveryPageViewController.change(filter: params)
+    // Will be moved to be a testable output of VC that presents this one
+    self.viewModel.inputs.configure(with: .goRewardless)
 
-    self.discoveryPageViewController.tableView.contentInsetAdjustmentBehavior = .never
-//
-//    self.edgesForExtendedLayout = [.top]
+    self.viewModel.inputs.viewDidLoad()
   }
 
   public override func viewDidLayoutSubviews() {
@@ -45,24 +48,11 @@ public final class EditorialProjectsViewController: UIViewController {
 
     let currentTableViewInsets = self.discoveryPageViewController.tableView.contentInset
 
-    print("*** headerView height \(self.headerView.frame.size.height)")
-    print("*** discoveryPageViewController.view.safeAreaInsets.top \(discoveryPageViewController.view.safeAreaInsets.top)")
-    print("*** self.view.safeAreaInsets.top \(self.view.safeAreaInsets.top)")
-    print("*** adjustedContentInset \(self.discoveryPageViewController.tableView.adjustedContentInset.top)")
-
-    print("*** adjusting to: \(self.headerView.frame.height + self.view.safeAreaInsets.top)")
-
     self.discoveryPageViewController.tableView.contentInset = currentTableViewInsets
-      |> UIEdgeInsets.lens.top .~ (
-        self.headerView.frame.height + self.view.safeAreaInsets.top
-      )
-      |> UIEdgeInsets.lens.bottom .~ self.view.safeAreaInsets.bottom
+      |> UIEdgeInsets.lens.top .~ (self.headerView.frame.height - self.view.safeAreaInsets.top)
 
-//    self.discoveryPageViewController.tableView.scrollIndicatorInsets =
-//      self.discoveryPageViewController.tableView.contentInset
-
-//    print("*** discoveryPageViewController.view \(self.discoveryPageViewController.view)")
-//    print("*** view \(self.view)")
+    self.discoveryPageViewController.tableView.scrollIndicatorInsets =
+      self.discoveryPageViewController.tableView.contentInset
   }
 
   public override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -74,9 +64,8 @@ public final class EditorialProjectsViewController: UIViewController {
   public override func bindStyles() {
     super.bindStyles()
 
-//    self.view.backgroundColor = UIColor.hex(0x00007D)
-
-//    self.discoveryPageViewController.view.layoutMargins = .zero
+    _ = self.view
+      |> \.backgroundColor .~ UIColor.white
 
     _ = self.headerView
       |> \.backgroundColor .~ UIColor.hex(0x00007D)
@@ -95,6 +84,18 @@ public final class EditorialProjectsViewController: UIViewController {
 
   public override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.configureDiscoveryPageViewControllerWithParams
+      .observeForUI()
+      .observeValues { [weak self] params in
+        self?.discoveryPageViewController.change(filter: params)
+      }
+
+    self.viewModel.outputs.dismiss
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true)
+      }
   }
 
   // MARK: - Layout
@@ -117,7 +118,7 @@ public final class EditorialProjectsViewController: UIViewController {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.headerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-      self.headerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+      self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.headerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
       self.headerView.widthAnchor.constraint(equalTo: self.discoveryPageViewController.tableView.widthAnchor),
       self.closeButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -128,5 +129,11 @@ public final class EditorialProjectsViewController: UIViewController {
 
     // remove once header has content
     self.headerView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+  }
+
+  // MARK: - Actions
+
+  @objc private func closeButtonTapped() {
+    self.viewModel.inputs.closeButtonTapped()
   }
 }

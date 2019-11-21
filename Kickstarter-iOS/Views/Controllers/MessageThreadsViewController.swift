@@ -32,7 +32,6 @@ internal final class MessageThreadsViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle()
-      |> \.view.backgroundColor .~ .white
 
     _ = self.mailboxLabel
       |> UILabel.lens.font .~ UIFont.ksr_callout().bolded

@@ -53,7 +53,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 450)
-      |> \.view.backgroundColor .~ .white
       |> (UITableViewController.lens.tableView .. UITableView.lens.delaysContentTouches) .~ false
       |> (UITableViewController.lens.tableView .. UITableView.lens.canCancelContentTouches) .~ true
   }
