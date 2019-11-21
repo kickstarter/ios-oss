@@ -70,12 +70,13 @@ public final class EditorialProjectsViewController: UIViewController {
     _ = self.headerView
       |> \.backgroundColor .~ UIColor.hex(0x00007D)
 
-    _ = self.discoveryPageViewController.view
-      |> \.backgroundColor .~ .clear
-
     _ = self.closeButton
       |> UIButton.lens.title(for: .normal) .~ nil
       |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross", tintColor: .white)
+      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
+      |> UIButton.lens.accessibilityHint %~ { _ in
+        Strings.dashboard_switcher_accessibility_label_closes_list_of_projects()
+      }
 
     // TODO: Need accessibility label and hint for close button
   }
