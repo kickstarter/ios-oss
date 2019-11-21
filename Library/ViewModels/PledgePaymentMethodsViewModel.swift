@@ -53,8 +53,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
 
     self.applePayStackViewHidden = configureWithValue
-      .map { ($0.project, $0.applePayCapable) }
-      .map(showApplePayButton(for:applePayCapable:))
+      .map { showApplePayButton(for: $0.project) }
       .negate()
 
     let storedCardsValues = storedCardsEvent.values().map { $0.me.storedCards.nodes }
@@ -202,9 +201,8 @@ private func pledgeCreditCardViewDataAndSelectedCard(
   return (data, backedCard)
 }
 
-private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {
-  return applePayCapable &&
-    AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
+private func showApplePayButton(for project: Project) -> Bool {
+  return AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
 }
 
 private func isCreatingPledge(_ project: Project) -> Bool {
