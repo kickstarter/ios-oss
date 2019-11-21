@@ -68,7 +68,6 @@ internal final class LoginViewController: UIViewController {
       isAvailable: OnePasswordExtension.shared().isAppExtensionAvailable()
     )
 
-    self.viewModel.inputs.traitCollectionApplied()
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -79,7 +78,7 @@ internal final class LoginViewController: UIViewController {
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
-    self.viewModel.inputs.traitCollectionApplied()
+    self.viewModel.inputs.traitCollectionDidChange()
   }
 
   override func bindStyles() {

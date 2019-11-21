@@ -43,8 +43,8 @@ public protocol LoginViewModelInputs {
   /// Call when the view will appear.
   func viewWillAppear()
   
-  /// Call when a trait collection is applied.
-  func traitCollectionApplied()
+  /// Call when the trait collection did change.
+  func traitCollectionDidChange()
 }
 
 public protocol LoginViewModelOutputs {
@@ -174,10 +174,10 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     self.logIntoEnvironment
       .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
 
-    self.showHidePasswordButtonToggled = Signal.combineLatest(
+    self.showHidePasswordButtonToggled = Signal.merge(
       self.shouldShowPasswordProperty.signal,
-      self.traitCollectionAppliedProperty.signal
-      ).map { shouldShow, _ in shouldShow }
+      self.shouldShowPasswordProperty.signal.takeWhen(self.traitCollectionDidChangeProperty.signal)
+     )
 
     self.showError
       .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
@@ -253,9 +253,9 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     self.viewDidLoadProperty.value = ()
   }
   
-  fileprivate let traitCollectionAppliedProperty = MutableProperty(())
-  public func traitCollectionApplied() {
-    self.traitCollectionAppliedProperty.value = ()
+  fileprivate let traitCollectionDidChangeProperty = MutableProperty(())
+  public func traitCollectionDidChange() {
+    self.traitCollectionDidChangeProperty.value = ()
   }
 
   public let dismissKeyboard: Signal<(), Never>
