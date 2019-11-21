@@ -12,6 +12,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
 }
 
 public protocol ManagePledgeViewModelInputs {
+  func beginRefresh()
   func configureWith(_ project: Project)
   func cancelPledgeDidFinish(with message: String)
   func menuButtonTapped()
@@ -25,6 +26,7 @@ public protocol ManagePledgeViewModelOutputs {
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardReceivedWithProject: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
+  var endRefreshing: Signal<Void, Never> { get }
   var goToCancelPledge: Signal<(Project, Backing), Never> { get }
   var goToChangePaymentMethod: Signal<(Project, Reward), Never> { get }
   var goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
@@ -49,13 +51,22 @@ public final class ManagePledgeViewModel:
     let initialProject = Signal.combineLatest(self.configureWithProjectSignal, self.viewDidLoadSignal)
       .map(first)
 
+    let shouldBeginRefreshProject = Signal.merge(
+      self.pledgeViewControllerDidUpdatePledgeWithMessageSignal.ignoreValues(),
+      self.beginRefreshSignal
+    )
+
     let refreshProjectEvent = initialProject
-      .takeWhen(self.pledgeViewControllerDidUpdatePledgeWithMessageSignal)
+      .takeWhen(shouldBeginRefreshProject)
       .switchMap { project in
         AppEnvironment.current.apiService.fetchProject(param: Param.id(project.id))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
+
+    self.endRefreshing = refreshProjectEvent
+      .filter { $0.isTerminating }
+      .ignoreValues()
 
     let project = Signal.merge(initialProject, refreshProjectEvent.values())
     let backing = project
@@ -141,6 +152,11 @@ public final class ManagePledgeViewModel:
       }
   }
 
+  private let (beginRefreshSignal, beginRefreshObserver) = Signal<Void, Never>.pipe()
+  public func beginRefresh() {
+    self.beginRefreshObserver.send(value: ())
+  }
+
   private let (configureWithProjectSignal, configureWithProjectObserver) = Signal<Project, Never>.pipe()
   public func configureWith(_ project: Project) {
     self.configureWithProjectObserver.send(value: project)
@@ -179,6 +195,7 @@ public final class ManagePledgeViewModel:
   public let configurePledgeSummaryView: Signal<Project, Never>
   public let configureRewardReceivedWithProject: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
+  public let endRefreshing: Signal<Void, Never>
   public let goToCancelPledge: Signal<(Project, Backing), Never>
   public let goToChangePaymentMethod: Signal<(Project, Reward), Never>
   public let goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never>

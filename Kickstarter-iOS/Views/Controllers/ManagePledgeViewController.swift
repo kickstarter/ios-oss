@@ -62,6 +62,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
+
   private lazy var rewardView: ManagePledgeRewardView = {
     ManagePledgeRewardView(frame: .zero)
   }()
@@ -175,6 +177,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.rewardView.configure(with: $0)
       }
 
+    self.viewModel.outputs.endRefreshing
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.refreshControl.endRefreshing()
+      }
+
     self.viewModel.outputs.showActionSheetMenuWithOptions
       .observeForControllerAction()
       .observeValues { [weak self] options in
@@ -262,6 +270,9 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
+    _ = self.rootScrollView
+      |> \.refreshControl .~ self.refreshControl
+
     _ = (self.rootStackView, self.rootScrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
@@ -286,12 +297,22 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       self.addChild(viewController)
       viewController.didMove(toParent: self)
     }
+
+    self.refreshControl.addTarget(
+      self,
+      action: #selector(ManagePledgeViewController.beginRefresh),
+      for: .valueChanged
+    )
   }
 
   // MARK: Actions
 
   @objc private func menuButtonTapped() {
     self.viewModel.inputs.menuButtonTapped()
+  }
+
+  @objc private func beginRefresh() {
+    self.viewModel.inputs.beginRefresh()
   }
 
   private func showActionSheetMenuWithOptions(_ options: [ManagePledgeAlertAction]) {
