@@ -10,7 +10,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let vm: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
   fileprivate let activitiesForSample = TestObserver<[Activity], Never>()
-  fileprivate let backgroundColor = TestObserver<UIColor, Never>()
   fileprivate let asyncReloadData = TestObserver<(), Never>()
   fileprivate let goToActivityProject = TestObserver<Project, Never>()
   fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, Never>()
@@ -41,7 +40,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.activitiesForSample.observe(self.activitiesForSample.observer)
-    self.vm.outputs.backgroundColor.observe(self.backgroundColor.observer)
     self.vm.outputs.asyncReloadData.observe(self.asyncReloadData.observer)
     self.vm.outputs.hideEmptyState.observe(self.hideEmptyState.observer)
     self.vm.outputs.goToActivityProject.map(first).observe(self.goToActivityProject.observer)
