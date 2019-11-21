@@ -37,7 +37,7 @@ public struct DiscoveryParams {
   }
 
   public enum TagID: String, Argo.Decodable {
-    case goRewardless = "250"
+    case goRewardless = "518"
   }
 
   public static let defaults = DiscoveryParams(
