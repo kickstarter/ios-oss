@@ -128,7 +128,7 @@ public final class EditorialProjectsViewController: UIViewController {
     ])
 
     // remove once header has content
-    self.headerView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+    self.headerView.heightAnchor.constraint(equalToConstant: 300).isActive = true
   }
 
   // MARK: - Actions
