@@ -128,10 +128,17 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
     self.showRecommendations = Signal.zip(projects, rootCategory)
 
-    self.goToRecommendedProject = self.showRecommendations
+    let goToRecommendedProject = self.showRecommendations
       .map(first)
       .takePairWhen(self.projectTappedProperty.signal.skipNil())
       .map { projects, project in (project, projects, RefTag.thanks) }
+
+    let goToBackedProject = project
+      .combineLatest(with: projects)
+      .takeWhen(self.dismissToRootViewController.signal.ignoreValues())
+      .map { project, projects in (project, projects, RefTag.thanks) }
+
+    self.goToRecommendedProject = Signal.merge(goToRecommendedProject, goToBackedProject)
 
     self.updateUserInEnvironment = self.gamesNewsletterSignupButtonTappedProperty.signal
       .map { AppEnvironment.current.currentUser ?? nil }
