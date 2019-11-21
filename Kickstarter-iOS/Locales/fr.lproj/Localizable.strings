@@ -183,6 +183,7 @@
 "Filters_by_projects_with_upcoming_and_past_live_streams" = "Filtrage des projets ayant des diffusions en direct à venir et passées.";
 "Find_Facebook_Friends" = "Retrouver mes amis Facebook";
 "Find_and_follow_friends" = "Retrouver et suivre mes amis";
+"Find_projects_that_speak_to_you" = "Des projets qui vous parlent";
 "Find_projects_youll_love_and_help_bring" = "Découvrez de beaux projets et participez à la concrétisation d'idées créatives.";
 "Find_projects_youll_love_in_art_design_film" = "Découvrez des projets que vous allez adorer : art, design, cinéma, jeux, musique et plus encore. L'activité des projets que vous soutenez s'affichera ici.";
 "First_created" = "Premier projet créé";
@@ -511,6 +512,7 @@
 "There_was_a_problem_with_this_payment" = "Un problème s'est produit lors de ce règlement.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "L'objectif du projet et les montants des engagements s'afficheront ainsi dans la devise de votre choix.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Ce compte Facebook est déjà relié à un autre utilisateur Kickstarter.";
+"This_holiday_season_support_a_project_for_no_reward" = "Pour les fêtes, soutenez un projet simplement parce qu'il vous parle, sans choisir de récompense.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Cet engagement a été annulé en raison d'un échec de règlement.";
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "L'objectif de financement de ce projet n'a pas été atteint, donc votre moyen de paiement n'a pas été débité.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Ce projet ne sera financé que si au moins %{amount} sont engagés d'ici le %{date}.";
@@ -539,6 +541,7 @@
 "Upcoming_live_streams" = "Diffusions en direct à venir";
 "Upcoming_with_creator_name" = "<br/><b>%{creator_name}</b> bientôt en direct";
 "Update_pledge" = "Modifier mon engagement";
+"Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you" = "Hashtag #backeditbecause : en quoi les projets que vous soutenez sont-ils importants ?";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "Utilisez cette fonction pour garder une trace des récompenses que vous avez reçues.";
 "Verification_email_sent" = "Nous venons de vous envoyer un e-mail de vérification. Cliquez sur le lien qu'il contient pour vérifier votre adresse.";
 "Video_disabled_until_the_internet_connection_improves" = "Vidéo désactivée en attente d'une meilleure connexion Internet";

@@ -3034,6 +3034,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Find projects that speak to you ▶"
+
+   - **en**: "Find projects that speak to you ▶"
+   - **de**: "Finde Projekte, die dich ansprechen"
+   - **es**: "Descubre proyectos que te resulten interesantes"
+   - **fr**: "Des projets qui vous parlent"
+   - **ja**: "あなたの心に訴えかけるプロジェクトを見つけよう"
+  */
+  public static func Find_projects_that_speak_to_you() -> String {
+    return localizedString(
+      key: "Find_projects_that_speak_to_you",
+      defaultValue: "Find projects that speak to you ▶",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Find projects you’ll love and help bring creative ideas to life."
 
    - **en**: "Find projects you’ll love and help bring creative ideas to life."
@@ -8349,6 +8366,23 @@ catch your eye?"
     )
   }
   /**
+   "This holiday season, support a project for no reward, just because it speaks to you."
+
+   - **en**: "This holiday season, support a project for no reward, just because it speaks to you."
+   - **de**: "Weihnachten steht kurz vor der Tür - unterstütze ein Projekt ohne Belohnung. Einfach, weil es dich anspricht."
+   - **es**: "Esta temporada navideña, apoya un proyecto sin recompensa, simplemente porque te resulta interesante."
+   - **fr**: "Pour les fêtes, soutenez un projet simplement parce qu'il vous parle, sans choisir de récompense."
+   - **ja**: "このホリデーシーズンはぜひ、リワード無しでもあなたの心に訴えかけるようなプロジェクトをサポートしてください。"
+  */
+  public static func This_holiday_season_support_a_project_for_no_reward() -> String {
+    return localizedString(
+      key: "This_holiday_season_support_a_project_for_no_reward",
+      defaultValue: "This holiday season, support a project for no reward, just because it speaks to you.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "This pledge was dropped because of payment errors."
 
    - **en**: "This pledge was dropped because of payment errors."
@@ -8820,6 +8854,23 @@ catch your eye?"
     return localizedString(
       key: "Update_pledge",
       defaultValue: "Update pledge",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Use the hashtag #backeditbecause to share what projects you're supporting and why they're important to you."
+
+   - **en**: "Use the hashtag #backeditbecause to share what projects you're supporting and why they're important to you."
+   - **de**: "Teile unter dem Hashtag #backeditbecause die Projekte, die du unterstützt hast und warum sie für dich wichtig sind."
+   - **es**: "Usa el hashtag #backeditbecause para compartir qué proyectos apoyas y por qué son importantes para ti."
+   - **fr**: "Hashtag #backeditbecause : en quoi les projets que vous soutenez sont-ils importants ?"
+   - **ja**: "ハッシュタグ #backeditbecause を使って、あなたがサポートするプロジェクトをシェアし、そのプロジェクトがなぜあなたにとって重要なのか、その理由を伝えましょう。 "
+  */
+  public static func Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you() -> String {
+    return localizedString(
+      key: "Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you",
+      defaultValue: "Use the hashtag #backeditbecause to share what projects you're supporting and why they're important to you.",
       count: nil,
       substitutions: [:]
     )

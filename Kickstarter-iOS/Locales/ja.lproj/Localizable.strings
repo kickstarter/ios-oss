@@ -183,6 +183,7 @@
 "Filters_by_projects_with_upcoming_and_past_live_streams" = "近日公開予定、または過去のライブ配信含むプロジェクトに絞る";
 "Find_Facebook_Friends" = "Facebook の友達を見つける";
 "Find_and_follow_friends" = "友達を見つけてフォロー";
+"Find_projects_that_speak_to_you" = "あなたの心に訴えかけるプロジェクトを見つけよう";
 "Find_projects_youll_love_and_help_bring" = "お気に入りを見つけて、クリエイティブなプロジェクトに生命を吹き込もう。";
 "Find_projects_youll_love_in_art_design_film" = "お気に入りを見つけて、クリエイティブなプロジェクトに生命を吹き込もう。";
 "First_created" = "1つめのプロジェクト";
@@ -513,6 +514,7 @@
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "このFacebookアカウントはすでに他のKickstarterユーザーとつながっています";
 "This_pledge_was_dropped_because_of_payment_errors" = "This pledge was dropped because of payment errors.";
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "This project didn’t reach its funding goal, so your payment method was never charged.";
+"This_holiday_season_support_a_project_for_no_reward" = "このホリデーシーズンはぜひ、リワード無しでもあなたの心に訴えかけるようなプロジェクトをサポートしてください。";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "%{date} までに %{amount} 以上のプレッジが集まれば、このプロジェクトは資金を得ることができます。";
 "Time_left_left" = "あと%{time_left}";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "上部の「さがす」をタップし、お気に入りカテゴリにアクセス。";
@@ -539,6 +541,7 @@
 "Upcoming_live_streams" = "ライブ配信が開始します";
 "Upcoming_with_creator_name" = "<br/><b>%{creator_name}</b>が近日配信";
 "Update_pledge" = "プレッジをアップデートする";
+"Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you" = "ハッシュタグ #backeditbecause を使って、あなたがサポートするプロジェクトをシェアし、そのプロジェクトがなぜあなたにとって重要なのか、その理由を伝えましょう。 ";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "受け取ったリワードを確認するにはこちらをご利用ください。";
 "Verification_email_sent" = "認証メールを送信しました。メール内のリンクをクリックすればメールアドレスが認証済みとなります。";
 "Video_disabled_until_the_internet_connection_improves" = "インターネット通信状態が向上するまでビデオはご利用いいただけません。";
