@@ -12,7 +12,7 @@ public final class EditorialProjectsViewController: UIViewController {
   }()
 
   private lazy var discoveryPageViewController: DiscoveryPageViewController = {
-    DiscoveryPageViewController.configuredWith(sort: .newest)
+    DiscoveryPageViewController.configuredWith(sort: .magic)
       |> \.preferredBackgroundColor .~ .clear
   }()
 
