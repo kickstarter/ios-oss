@@ -126,7 +126,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.stepperMinValue = updatedValue
       .map { ($0.0, $0.2) }
-      .map(stepperMinValue(with:value:))
+      .map(min)
 
     self.stepperMaxValue = minValue.mapConst(PledgeAmountStepperConstants.max)
 
@@ -264,11 +264,4 @@ private func initialPledgeAmount(from project: Project, reward: Reward, minValue
     let backing = project.personalization.backing else { return minValue }
 
   return backing.pledgeAmount
-}
-
-private func stepperMinValue(with minimum: Double, value: Double) -> Double {
-  if value < minimum {
-    return value
-  }
-  return minimum
 }
