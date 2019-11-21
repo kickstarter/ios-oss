@@ -314,7 +314,6 @@ final class LoginViewModelTests: TestCase {
   func testShowPassword() {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.traitCollectionApplied()
     self.vm.inputs.showHidePasswordButtonTapped()
 
     self.showHidePassword.assertValue(true)
@@ -323,12 +322,22 @@ final class LoginViewModelTests: TestCase {
   func testHidePassword() {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.traitCollectionApplied()
     self.vm.inputs.showHidePasswordButtonTapped()
     self.showHidePassword.assertValue(true, "Password is shown")
 
     self.vm.inputs.showHidePasswordButtonTapped()
     self.showHidePassword.assertValueCount(2)
     self.showHidePassword.assertLastValue(false, "Password not shown")
+  }
+  
+  func testshowPasswordForTraitCollectionDidChange() {
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.showHidePasswordButtonTapped()
+    self.showHidePassword.assertValue(true, "Password is shown")
+    
+    self.vm.inputs.traitCollectionDidChange()
+    self.showHidePassword.assertValueCount(2)
+    self.showHidePassword.assertLastValue(true, "Password still shown")
   }
 }
