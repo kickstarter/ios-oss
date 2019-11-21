@@ -16,7 +16,6 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
   private let selectButtonEnabled = TestObserver<Bool, Never>()
   private let selectButtonIsSelected = TestObserver<Bool, Never>()
   private let selectButtonTitle = TestObserver<String, Never>()
-  private let spacerIsHidden = TestObserver<Bool, Never>()
   private let unavailableCardLabelHidden = TestObserver<Bool, Never>()
   private let unavailableCardText = TestObserver<String, Never>()
 
@@ -31,7 +30,6 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.vm.outputs.selectButtonEnabled.observe(self.selectButtonEnabled.observer)
     self.vm.outputs.selectButtonIsSelected.observe(self.selectButtonIsSelected.observer)
     self.vm.outputs.selectButtonTitle.observe(self.selectButtonTitle.observer)
-    self.vm.outputs.spacerIsHidden.observe(self.spacerIsHidden.observer)
     self.vm.outputs.unavailableCardLabelHidden.observe(self.unavailableCardLabelHidden.observer)
     self.vm.outputs.unavailableCardText.observe(self.unavailableCardText.observer)
   }
@@ -161,7 +159,6 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonEnabled.assertValues([])
     self.unavailableCardText.assertValues([])
     self.unavailableCardLabelHidden.assertValues([])
-    self.spacerIsHidden.assertValues([])
 
     self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, false, "Brooklyn, NY"))
 
@@ -174,25 +171,6 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.unavailableCardText.assertValues(
       ["You can’t use this credit card to back a project from Brooklyn, NY."])
     self.unavailableCardLabelHidden.assertValues([false])
-    self.spacerIsHidden.assertValues([true])
-  }
-
-  func testSpacerIsHidden() {
-    self.cardImage.assertValues([])
-    self.cardNumberTextShortStyle.assertValues([])
-    self.expirationDateText.assertValues([])
-    self.selectButtonTitle.assertValues([])
-    self.selectButtonEnabled.assertValues([])
-    self.spacerIsHidden.assertValues([])
-
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, false, "Brooklyn, NY"))
-
-    self.cardImage.assertValue(UIImage(named: "icon--generic"))
-    self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
-    self.expirationDateText.assertValue("Expires 01/2024")
-    self.selectButtonTitle.assertDidNotEmitValue()
-    self.selectButtonEnabled.assertValues([false])
-    self.spacerIsHidden.assertValues([true])
   }
 
   func testCardInfoForUnsupportedCards() {
