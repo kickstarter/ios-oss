@@ -27,9 +27,9 @@ public final class DiscoveryEditorialViewModel: DiscoveryEditorialViewModelType,
   public init() {
     let configureWithValue = self.configureWithValueProperty.signal.skipNil()
 
-    self.imageName = configureWithValue.map(\.imageName)
-    self.titleText = configureWithValue.map(\.title)
-    self.subtitleText = configureWithValue.map(\.subtitle)
+    self.imageName = configureWithValue.map { $0.imageName }
+    self.titleText = configureWithValue.map { $0.title }
+    self.subtitleText = configureWithValue.map { $0.subtitle }
 
     self.notifyDelegateViewTapped = configureWithValue
       .takeWhen(self.editorialCellTappedSignal)
