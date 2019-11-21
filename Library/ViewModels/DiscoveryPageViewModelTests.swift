@@ -568,7 +568,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.selectedFilter(.defaults)
 
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you."])
+      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
       self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
       self.showEditorialHeaderTag.assertValues(["250"])
       self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless)])
@@ -601,7 +601,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you."])
+      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
       self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
       self.showEditorialHeaderTag.assertValues(["250"])
       self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless)])
@@ -967,12 +967,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeader.assertValueCount(1)
       self.goToEditorialProjectListTag.assertDidNotEmitValue()
 
-      self.vm.inputs.discoveryEditorialCellTapped(with: "123")
+      self.vm.inputs.discoveryEditorialCellTapped(with: "123", refTag: RefTag.editorial(.goRewardless))
 
       self.goToEditorialProjectListTag.assertValues(["123"])
       self.goToEditorialProjectListRefTag.assertValues([.editorial(.goRewardless)])
 
-      self.vm.inputs.discoveryEditorialCellTapped(with: "321")
+      self.vm.inputs.discoveryEditorialCellTapped(with: "321", refTag: RefTag.editorial(.goRewardless))
 
       self.goToEditorialProjectListTag.assertValues(["123", "321"])
       self.goToEditorialProjectListRefTag.assertValues([.editorial(.goRewardless), .editorial(.goRewardless)])

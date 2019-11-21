@@ -115,7 +115,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let paramsChanged = Signal.combineLatest(
       self.sortProperty.signal.skipNil(),
-      self.selectedFilterProperty.signal.skipNil() // DiscoveryParams
+      self.selectedFilterProperty.signal.skipNil()
     )
     .map(DiscoveryParams.lens.sort.set)
 
@@ -312,7 +312,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .map { _ in
         DiscoveryEditorialCellValue(
           title: Strings.Back_it_because_you_believe_in_it(),
-          subtitle: "Find projects that speak to you.",
+          subtitle: Strings.Find_projects_that_speak_to_you(),
           imageName: "go-rewardless-home",
           tag: "250",
           refTag: RefTag.editorial(.goRewardless)

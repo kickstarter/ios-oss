@@ -170,7 +170,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
-  func testView_Editorial() {
+  func testView_Editorial_LoggedOut() {
     let mockConfig = Config.template
       |> \.features .~ [Feature.goRewardless.rawValue: true]
 
@@ -184,8 +184,35 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         self.scheduler.run()
 
         FBSnapshotVerifyView(
-          parent.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.015
-        )
+          parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testView_Editorial_WithActivity() {
+    let mockConfig = Config.template
+      |> \.features .~ [Feature.goRewardless.rawValue: true]
+    let backing = .template
+      |> Activity.lens.category .~ .backing
+      |> Activity.lens.id .~ 1_234
+      |> Activity.lens.project .~ self.cosmicSurgeryNoPhoto
+      |> Activity.lens.user .~ self.brandoNoAvatar
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(
+        apiService: MockService(fetchActivitiesResponse: [backing]),
+        config: mockConfig,
+        currentUser: .template,
+        language: language,
+        userDefaults: MockKeyValueStore()) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        controller.tableView.refreshControl = nil
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(
+          parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }

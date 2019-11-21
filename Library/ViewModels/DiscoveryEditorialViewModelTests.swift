@@ -46,8 +46,8 @@ final class DiscoveryEditorialViewModelTests: TestCase {
     self.imageName.assertValues(["image"])
     self.titleText.assertValues(["hello"])
     self.subtitleText.assertValues(["boop"])
-    self.notifyDelegateViewTappedTag.assertValues(["123"])
-    self.notifyDelegateViewTappedRefTag.assertValues([RefTag.editorial(.goRewardless)])
+    self.notifyDelegateViewTappedTag.assertDidNotEmitValue()
+    self.notifyDelegateViewTappedRefTag.assertDidNotEmitValue()
   }
 
   func testEditorialCellTapped() {

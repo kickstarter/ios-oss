@@ -16,10 +16,16 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private let containerView = UIView(frame: .zero)
-  private let editorialImageView = UIImageView(frame: .zero)
+  private let editorialImageView = {
+    UIImageView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
   private let editorialTitleLabel = UILabel(frame: .zero)
   private let editorialSubtitleLabel = UILabel(frame: .zero)
-  private let rootStackView = UIStackView(frame: .zero)
+  private let rootStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private let viewModel: DiscoveryEditorialViewModelType = DiscoveryEditorialViewModel()
 
@@ -27,6 +33,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
+    self.setupConstraints()
     self.bindViewModel()
   }
 
@@ -105,9 +112,11 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
     _ = (self.rootStackView, self.containerView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel, self.editorialImageView], self.rootStackView)
+    _ = (self.editorialImageView, self.containerView)
+      |> ksr_addSubviewToParent()
+
+    _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     let tapGestureRecognizer = UITapGestureRecognizer(
@@ -117,6 +126,20 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     )
 
     self.containerView.addGestureRecognizer(tapGestureRecognizer)
+  }
+
+  private func setupConstraints() {
+
+    NSLayoutConstraint.activate([
+      self.rootStackView.leftAnchor.constraint(equalTo: self.containerView.leftAnchor),
+      self.rootStackView.rightAnchor.constraint(equalTo: self.containerView.rightAnchor),
+      self.rootStackView.topAnchor.constraint(equalTo: self.containerView.topAnchor),
+      self.editorialImageView.leftAnchor.constraint(equalTo: self.containerView.leftAnchor),
+      self.editorialImageView.rightAnchor.constraint(equalTo: self.containerView.rightAnchor),
+      self.editorialImageView.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor),
+      self.editorialImageView.topAnchor.constraint(equalTo: self.rootStackView.bottomAnchor,
+                                                   constant: Styles.grid(1))
+      ])
   }
 
   // MARK: - Accessors
