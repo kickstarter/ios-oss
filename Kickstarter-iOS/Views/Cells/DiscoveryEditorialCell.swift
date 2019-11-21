@@ -123,8 +123,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
     let tapGestureRecognizer = UITapGestureRecognizer(
       target: self,
-      action: #selector(DiscoveryEditorialCell
-        .editorialCellTapped)
+      action: #selector(DiscoveryEditorialCell.editorialCellTapped)
     )
 
     self.containerView.addGestureRecognizer(tapGestureRecognizer)
@@ -178,7 +177,9 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(2)
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets.init(
-      top: Styles.grid(3), left: Styles.grid(3), bottom: 0,
+      top: Styles.grid(3),
+      left: Styles.grid(3),
+      bottom: 0,
       right: Styles.grid(3)
     )
 }
