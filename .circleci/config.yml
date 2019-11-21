@@ -92,7 +92,7 @@ jobs:
 
       - run:
           name: Danger
-          command: bundle exec danger --verbose
+          command: bin/danger.sh
 
   # Kickstarter tests
   kickstarter-tests:
