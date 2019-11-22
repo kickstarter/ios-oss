@@ -308,22 +308,29 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         AppEnvironment.current.koala.trackDiscoveryPullToRefresh()
       }
 
-    let sortAndFilterParams = Signal.combineLatest(
-      self.sortProperty.signal.skipNil(),
-      self.selectedFilterProperty.signal.skipNil().skipRepeats()
-    )
+    // MARK: - Editorial Header
 
-    let editorialHeaderShouldShow = sortAndFilterParams
+    let filtersUpdated = self.sortProperty.signal.skipNil()
+      .takePairWhen(self.selectedFilterProperty.signal.skipNil().skipRepeats())
+
+    let editorialHeaderShouldShow = filtersUpdated
+      .filter { sort, _ in
+        return sort == .magic
+      }
       .map { args -> Bool in
         let (sort, filterParams) = args
 
         return sort == .magic && filterParams == DiscoveryViewModel.initialParams()
       }
 
-    let updatedConfigEditorialValue = editorialHeaderShouldShow
-      .takeWhen(self.configUpdatedProperty.signal.skipNil())
+    let updatedConfig = self.configUpdatedProperty.signal.skipNil()
+      .logEvents(identifier: "***updated config***")
 
-    self.showEditorialHeader = Signal.merge(editorialHeaderShouldShow, updatedConfigEditorialValue)
+    let updatedFilters = editorialHeaderShouldShow.skip(first: 1) // skip the first emission to wait for the config to load
+    let updatedConfigAndEditorialValue = editorialHeaderShouldShow
+      .takeWhen(updatedConfig)
+
+    self.showEditorialHeader = Signal.merge(updatedConfigAndEditorialValue, updatedFilters)
       .map { shouldShow in (shouldShow, featureGoRewardlessIsEnabled()) }
       .map { shouldShow, isEnabled in
         guard shouldShow && isEnabled else {
@@ -337,7 +344,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
           tag: "250",
           refTag: RefTag.editorial(.goRewardless)
         )
-      }
+      }.logEvents(identifier: "***show editorial***")
 
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
