@@ -26,6 +26,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
+    self.tableView.registerCellClass(DiscoveryEditorialCell.self)
 
     self.tableView.dataSource = self.dataSource
 
@@ -161,6 +162,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.showEditorialHeader
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.dataSource.showEditorial(value: value)
+      }
+
     self.viewModel.outputs.setScrollsToTop
       .observeForUI()
       .observeValues { [weak self] in
@@ -198,6 +205,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
           discovery.setSortsEnabled(true)
         }
       }
+
+    self.viewModel.outputs.goToEditorialProjectList
+      .observeForControllerAction()
+      .observeValues { [weak self] tag, refTag in
+        self?.goToEditorialProjectList(using: tag, refTag: refTag)
+      }
   }
 
   internal override func tableView(
@@ -214,6 +227,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let cell = cell as? ActivitySampleProjectCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? DiscoveryOnboardingCell, cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? DiscoveryEditorialCell {
       cell.delegate = self
     }
 
@@ -254,6 +269,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
     }
 
     self.present(controller, animated: true, completion: nil)
+  }
+
+  fileprivate func goToEditorialProjectList(using tag: String, refTag _: RefTag) {
+    // TODO:
   }
 
   fileprivate func goTo(project: Project, refTag: RefTag) {
@@ -311,6 +330,8 @@ extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, Activi
   }
 }
 
+// MARK: - DiscoveryOnboardingCellDelegate
+
 extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
   internal func discoveryOnboardingTappedSignUpLoginButton() {
     let loginTout = LoginToutViewController.configuredWith(loginIntent: .discoveryOnboarding)
@@ -320,6 +341,16 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
     self.present(nav, animated: true, completion: nil)
   }
 }
+
+// MARK: - DiscoveryEditorialCellDelegate
+
+extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
+  func discoveryEditorialCellTapped(_: DiscoveryEditorialCell, tag: String, refTag: RefTag) {
+    self.viewModel.inputs.discoveryEditorialCellTapped(with: tag, refTag: refTag)
+  }
+}
+
+// MARK: - EmptyStatesViewControllerDelegate
 
 extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
   func emptyStatesViewController(

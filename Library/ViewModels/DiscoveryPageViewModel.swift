@@ -10,6 +10,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the current environment has changed
   func currentEnvironmentChanged(environment: EnvironmentType)
 
+  /// Call when the editioral cell is tapped
+  func discoveryEditorialCellTapped(with tag: String, refTag: RefTag)
+
   /// Call when the user pulls tableView to refresh
   func pulledToRefresh()
 
@@ -60,6 +63,9 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits a project and ref tag that we should go to from the activity sample.
   var goToActivityProject: Signal<(Project, RefTag), Never> { get }
 
+  /// Emits a refTag for the editorial project list
+  var goToEditorialProjectList: Signal<(String, RefTag), Never> { get }
+
   /// Emits a project, playlist, ref tag that we should go to from discovery.
   var goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never> { get }
 
@@ -80,6 +86,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits a bool to allow status bar tap to scroll the table view to the top.
   var setScrollsToTop: Signal<Bool, Never> { get }
+
+  /// Emits to show an editorial header
+  var showEditorialHeader: Signal<DiscoveryEditorialCellValue, Never> { get }
 
   /// Emits to show the empty state controller.
   var showEmptyState: Signal<EmptyState, Never> { get }
@@ -294,11 +303,34 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .observeValues {
         AppEnvironment.current.koala.trackDiscoveryPullToRefresh()
       }
+
+    self.showEditorialHeader = Signal.combineLatest(currentUser, self.sortProperty.signal.skipNil())
+      .filter { _ in featureGoRewardlessIsEnabled() }
+      .map(second)
+      .filter { $0 == .magic }
+      .skipRepeats()
+      .map { _ in
+        DiscoveryEditorialCellValue(
+          title: Strings.Back_it_because_you_believe_in_it(),
+          subtitle: Strings.Find_projects_that_speak_to_you(),
+          imageName: "go-rewardless-home",
+          tag: "250",
+          refTag: RefTag.editorial(.goRewardless)
+        )
+      }
+
+    self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
+      .skipNil()
   }
 
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
   public func currentEnvironmentChanged(environment: EnvironmentType) {
     self.currentEnvironmentChangedProperty.value = environment
+  }
+
+  fileprivate let discoveryEditorialCellTappedWithValueProperty = MutableProperty<(String, RefTag)?>(nil)
+  public func discoveryEditorialCellTapped(with tag: String, refTag: RefTag) {
+    self.discoveryEditorialCellTappedWithValueProperty.value = (tag, refTag)
   }
 
   fileprivate let pulledToRefreshProperty = MutableProperty(())
@@ -364,6 +396,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
+  public let goToEditorialProjectList: Signal<(String, RefTag), Never>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>
   public let goToProjectUpdate: Signal<(Project, Update), Never>
   public let hideEmptyState: Signal<Void, Never>
@@ -371,6 +404,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let projectsAreLoadingAnimated: Signal<(Bool, Bool), Never>
   public let setScrollsToTop: Signal<Bool, Never>
   public let scrollToProjectRow: Signal<Int, Never>
+  public let showEditorialHeader: Signal<DiscoveryEditorialCellValue, Never>
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
 

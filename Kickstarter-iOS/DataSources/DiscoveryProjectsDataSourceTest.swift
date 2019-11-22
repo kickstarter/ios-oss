@@ -22,6 +22,25 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
     XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
   }
 
+  func testEditorial() {
+    let section = DiscoveryProjectsDataSource.Section.editorial.rawValue
+
+    let editorialValue = (title: "title", subtitle: "subtitle", imageName: "", tag: "123", RefTag.activity)
+
+    self.dataSource.showEditorial(value: editorialValue)
+
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
+
+    self.dataSource.showEditorial(value: editorialValue)
+
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(
+      1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section),
+      "One only row is ever added"
+    )
+  }
+
   func testActivitySample() {
     let section = DiscoveryProjectsDataSource.Section.activitySample.rawValue
 
