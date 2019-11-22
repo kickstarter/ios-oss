@@ -1,3 +1,7 @@
 #!/bin/sh
 
-[ ! -z $DANGER_GITHUB_API_TOKEN ] && bundle exec danger --verbose || echo "Skipping Danger for External Contributor"
+if [ ! -z $DANGER_GITHUB_API_TOKEN ]; then
+  bundle exec danger --verbose;
+else
+  echo "Skipping Danger for External Contributor";
+fi
