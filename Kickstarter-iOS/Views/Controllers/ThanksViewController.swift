@@ -16,9 +16,9 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   @IBOutlet fileprivate var thankYouLabel: UILabel!
   @IBOutlet fileprivate var headerView: UIView!
 
-  fileprivate let viewModel: ThanksViewModelType = ThanksViewModel()
-  fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let dataSource = ThanksProjectsDataSource()
+  fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
+  fileprivate let viewModel: ThanksViewModelType = ThanksViewModel()
 
   internal static func configuredWith(project: Project) -> ThanksViewController {
     let vc = Storyboard.Thanks.instantiate(ThanksViewController.self)
@@ -113,7 +113,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
         self?.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
       }
 
-    self.viewModel.outputs.goToBackedProject
+    self.viewModel.outputs.goToDiscovery
       .observeForControllerAction()
       .observeValues { [weak self] params in
         self?.goToDiscovery(params: params)
@@ -207,7 +207,8 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       initialPlaylist: projects,
       navigatorDelegate: self
     )
-    self.present(vc, animated: true, completion: nil)
+
+    self.navigationController?.setViewControllers([vc], animated: false)
   }
 
   fileprivate func showRatingAlert() {

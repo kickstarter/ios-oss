@@ -171,7 +171,7 @@ public final class ProjectNavBarViewController: UIViewController {
     self.viewModel.outputs.dismissViewController
       .observeForUI()
       .observeValues { [weak self] in
-        self?.dismiss(animated: true, completion: nil)
+        self?.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
       }
 
     self.watchProjectViewModel.outputs.postNotificationWithProject
