@@ -180,8 +180,13 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        controller.change(filter: magicParams)
+        let defaultLoggedOutParams = DiscoveryParams.defaults
+          |> \.includePOTD .~ true
+
+        controller.change(filter: defaultLoggedOutParams)
         self.scheduler.run()
+
+        NotificationCenter.default.post(Notification(name: .ksr_configUpdated))
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(language)_device_\(device)"
@@ -212,6 +217,9 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         controller.tableView.refreshControl = nil
 
         self.scheduler.run()
+
+        controller.change(filter: DiscoveryParams.recommendedDefaults)
+        NotificationCenter.default.post(Notification(name: .ksr_configUpdated))
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(language)_device_\(device)"
