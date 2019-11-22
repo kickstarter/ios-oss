@@ -19,7 +19,6 @@ final class ThanksViewModelTests: TestCase {
   let showGamesNewsletterAlert = TestObserver<(), Never>()
   let showGamesNewsletterOptInAlert = TestObserver<String, Never>()
   let showRecommendations = TestObserver<[Project], Never>()
-  let dismissToRootViewController = TestObserver<(), Never>()
   let postContextualNotification = TestObserver<(), Never>()
   let postUserUpdatedNotification = TestObserver<Notification.Name, Never>()
   let updateUserInEnvironment = TestObserver<User, Never>()
@@ -29,9 +28,6 @@ final class ThanksViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
     self.vm.outputs.backedProjectText.map { $0.string }.observe(self.backedProjectText.observer)
-    self.vm.outputs.dismissToRootViewController.observe(self.dismissToRootViewController.observer)
-    self.vm.outputs.goToBackedProject.map { params in params.category ?? Category.filmAndVideo }
-      .observe(self.goToDiscovery.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToProjects.observer)
     self.vm.outputs.goToProject.map { $0.2 }.observe(self.goToRefTag.observer)
@@ -44,15 +40,6 @@ final class ThanksViewModelTests: TestCase {
     self.vm.outputs.showRecommendations.map { projects, _ in projects }
       .observe(self.showRecommendations.observer)
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
-  }
-
-  func testdismissToRootViewController() {
-    self.vm.inputs.project(.template)
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.closeButtonTapped()
-
-    self.dismissToRootViewController.assertValueCount(1)
   }
 
   func testGoToDiscovery() {

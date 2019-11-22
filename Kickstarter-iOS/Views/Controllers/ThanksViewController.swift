@@ -197,12 +197,9 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   fileprivate func goToProject(_ project: Project, projects: [Project], refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(
       project: project,
-      refTag: refTag,
-      initialPlaylist: projects,
-      navigatorDelegate: nil
+      refTag: refTag
     )
-
-    self.navigationController?.setViewControllers([vc], animated: false)
+    self.present(vc, animated: false)
   }
 
   fileprivate func showRatingAlert() {

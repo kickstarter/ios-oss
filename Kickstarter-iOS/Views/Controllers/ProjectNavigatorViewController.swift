@@ -102,7 +102,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     self.viewModel.outputs.dismissViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.dismiss(animated: true, completion: nil)
+        self?.view.window?.rootViewController?.dismiss(animated: true)
       }
 
     self.viewModel.outputs.finishInteractiveTransition
