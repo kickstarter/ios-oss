@@ -19,10 +19,38 @@ final class PledgeViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testView_NeedsConversion_IsFalse() {
+  func testView_PledgeContext_UnavailableStoredCards() {
+    let userEnvelope = UserEnvelope(me: GraphUserCreditCard.withCards([
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.masterCard
+    ]))
+    let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
+    let project = Project.template
+      |> \.availableCardTypes .~ [GraphUserCreditCard.CreditCardType.discover.rawValue]
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
+        let controller = PledgeViewController.instantiate()
+        controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_200
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testView_PledgeContext_NeedsConversion_IsFalse() {
+    let userEnvelope = UserEnvelope(me: GraphUserCreditCard.withCards([
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.masterCard
+    ]))
+    let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
       .forEach { language, device, currentUser in
-        withEnvironment(currentUser: currentUser, language: language) {
+        withEnvironment(apiService: mockService, currentUser: currentUser, language: language) {
           let controller = PledgeViewController.instantiate()
           controller.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -38,14 +66,19 @@ final class PledgeViewControllerTests: TestCase {
       }
   }
 
-  func testView_NeedsConversion_IsTrue() {
+  func testView_PledgeContext_NeedsConversion_IsTrue() {
+    let userEnvelope = UserEnvelope(me: GraphUserCreditCard.withCards([
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.masterCard
+    ]))
+    let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
     let project = Project.template
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
       .forEach { language, device, currentUser in
-        withEnvironment(currentUser: currentUser, language: language) {
+        withEnvironment(apiService: mockService, currentUser: currentUser, language: language) {
           let controller = PledgeViewController.instantiate()
           controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -124,9 +157,13 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_ChangePaymentMethodContext_NeedsConversion_IsTrue() {
+    let userEnvelope = UserEnvelope(me: GraphUserCreditCard.withCards([
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.masterCard
+    ]))
+    let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
-
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true
@@ -140,11 +177,8 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.amount .~ 700
       )
 
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
-    let apiService = MockService(fetchGraphCreditCardsResponse: response)
-
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(apiService: apiService, currentUser: .template, language: language) {
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
         controller.configureWith(
           project: project, reward: reward, refTag: nil, context: .changePaymentMethod
@@ -175,14 +209,48 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.amount .~ 700
       )
 
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
-    let apiService = MockService(fetchGraphCreditCardsResponse: response)
+    let userEnvelope = UserEnvelope(me: GraphUserCreditCard.withCards([
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.masterCard
+    ]))
+    let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
-      withEnvironment(apiService: apiService, currentUser: .template, language: language) {
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
         controller.configureWith(
           project: project, reward: reward, refTag: nil, context: .changePaymentMethod
+        )
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testView_ChangePaymentMethodContext_UnavailableStoredCards() {
+    let userEnvelope = UserEnvelope(me: GraphUserCreditCard.withCards([
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.masterCard
+    ]))
+    let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ (Backing.template
+        |> Backing.lens.paymentSource .~
+        (.template |> \.id .~ "123")
+      )
+      |> \.availableCardTypes .~ [GraphUserCreditCard.CreditCardType.discover.rawValue]
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
+        let controller = PledgeViewController.instantiate()
+        controller.configureWith(
+          project: project,
+          reward: .template,
+          refTag: nil,
+          context: .changePaymentMethod
         )
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 

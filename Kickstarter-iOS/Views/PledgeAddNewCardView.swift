@@ -14,14 +14,17 @@ final class PledgeAddNewCardView: UIView {
   }()
 
   private lazy var addNewCardImageView: UIImageView = {
-    UIImageView(image: UIImage.init(named: "icon--add"))
+    UIImageView()
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var addNewCardImageViewContainer = { UIView(frame: .zero) }()
+  private let bottomLayoutGuide = UILayoutGuide()
   private lazy var cardView: UIView = { UIView(frame: .zero) }()
-  private lazy var containerStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var spacer: UIView = { UIView(frame: .zero) }()
+  private lazy var containerStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   weak var delegate: PledgeAddNewCardViewDelegate?
 
@@ -61,6 +64,11 @@ final class PledgeAddNewCardView: UIView {
 
     _ = self.addNewCardImageView
       |> cardImageViewStyle
+      |> \.image .~ image(
+        named: "icon--add",
+        inBundle: Bundle.framework,
+        compatibleWithTraitCollection: nil
+      )
 
     _ = self.addNewCardButton
       |> cardSelectButtonStyle
@@ -82,12 +90,11 @@ final class PledgeAddNewCardView: UIView {
   // MARK: Functions
 
   private func configureViews() {
-    _ = ([self.cardView, self.spacer], self.containerStackView)
+    _ = ([self.cardView], self.containerStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.containerStackView, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
 
     _ = (self.rootStackView, self.cardView)
       |> ksr_addSubviewToParent()
@@ -98,6 +105,9 @@ final class PledgeAddNewCardView: UIView {
 
     _ = ([self.addNewCardImageViewContainer, self.addNewCardButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.bottomLayoutGuide, self)
+      |> ksr_addLayoutGuideToView()
 
     self.addNewCardButton.addTarget(
       self,
@@ -117,13 +127,25 @@ final class PledgeAddNewCardView: UIView {
       self.addNewCardImageView.bottomAnchor
         .constraint(equalTo: self.addNewCardImageViewContainer.bottomAnchor),
       self.addNewCardButton.heightAnchor
-        .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+        .constraint(equalToConstant: Styles.minTouchSize.height),
       self.addNewCardImageView.widthAnchor
         .constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width),
       self.cardView.heightAnchor.constraint(
         greaterThanOrEqualToConstant:
         CheckoutConstants.CreditCardView.height
       )
+    ])
+
+    let margins = self.layoutMarginsGuide
+
+    NSLayoutConstraint.activate([
+      self.containerStackView.leftAnchor.constraint(equalTo: margins.leftAnchor),
+      self.containerStackView.topAnchor.constraint(equalTo: margins.topAnchor),
+      self.containerStackView.rightAnchor.constraint(equalTo: margins.rightAnchor),
+      self.containerStackView.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomLayoutGuide.topAnchor),
+      self.bottomLayoutGuide.leftAnchor.constraint(equalTo: margins.leftAnchor),
+      self.bottomLayoutGuide.rightAnchor.constraint(equalTo: margins.rightAnchor),
+      self.bottomLayoutGuide.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
     ])
   }
 
