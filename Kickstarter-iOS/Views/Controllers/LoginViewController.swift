@@ -75,7 +75,7 @@ internal final class LoginViewController: UIViewController {
     super.viewWillAppear(animated)
     self.viewModel.inputs.viewWillAppear()
   }
-  
+
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     self.viewModel.inputs.traitCollectionDidChange()

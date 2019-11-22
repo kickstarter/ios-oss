@@ -42,7 +42,7 @@ public protocol LoginViewModelInputs {
 
   /// Call when the view will appear.
   func viewWillAppear()
-  
+
   /// Call when the trait collection did change.
   func traitCollectionDidChange()
 }
@@ -177,7 +177,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     self.showHidePasswordButtonToggled = Signal.merge(
       self.shouldShowPasswordProperty.signal,
       self.shouldShowPasswordProperty.signal.takeWhen(self.traitCollectionDidChangeProperty.signal)
-     )
+    )
 
     self.showError
       .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
@@ -252,7 +252,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  
+
   fileprivate let traitCollectionDidChangeProperty = MutableProperty(())
   public func traitCollectionDidChange() {
     self.traitCollectionDidChangeProperty.value = ()
