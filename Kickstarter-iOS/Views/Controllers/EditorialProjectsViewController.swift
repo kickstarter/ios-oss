@@ -37,9 +37,6 @@ public final class EditorialProjectsViewController: UIViewController {
       for: .touchUpInside
     )
 
-    // Will be moved to be a testable output of VC that presents this one
-    self.viewModel.inputs.configure(with: .goRewardless)
-
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -128,6 +125,12 @@ public final class EditorialProjectsViewController: UIViewController {
 
     // remove once header has content
     self.headerView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+  }
+
+  // MARK: - Accessors
+
+  func configure(with tagId: DiscoveryParams.TagID) {
+    self.viewModel.inputs.configure(with: tagId)
   }
 
   // MARK: - Actions

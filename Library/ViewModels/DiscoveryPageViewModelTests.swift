@@ -13,8 +13,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let asyncReloadData = TestObserver<(), Never>()
   fileprivate let goToActivityProject = TestObserver<Project, Never>()
   fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, Never>()
-  fileprivate let goToEditorialProjectListRefTag = TestObserver<RefTag, Never>()
-  fileprivate let goToEditorialProjectListTag = TestObserver<String, Never>()
+  fileprivate let goToEditorialProjectList = TestObserver<DiscoveryParams.TagID, Never>()
   fileprivate let goToPlaylist = TestObserver<[Project], Never>()
   fileprivate let goToPlaylistProject = TestObserver<Project, Never>()
   fileprivate let goToPlaylistRefTag = TestObserver<RefTag, Never>()
@@ -29,9 +28,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   private let scrollToProjectRow = TestObserver<Int, Never>()
   fileprivate let showEditorialHeader = TestObserver<Void, Never>()
   fileprivate let showEditorialHeaderImageName = TestObserver<String, Never>()
-  fileprivate let showEditorialHeaderRefTag = TestObserver<RefTag, Never>()
   fileprivate let showEditorialHeaderSubtitle = TestObserver<String, Never>()
-  fileprivate let showEditorialHeaderTag = TestObserver<String, Never>()
+  fileprivate let showEditorialHeaderTagId = TestObserver<DiscoveryParams.TagID, Never>()
   fileprivate let showEditorialHeaderTitle = TestObserver<String, Never>()
   fileprivate let showEmptyState = TestObserver<EmptyState, Never>()
   fileprivate let showOnboarding = TestObserver<Bool, Never>()
@@ -46,9 +44,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.hideEmptyState.observe(self.hideEmptyState.observer)
     self.vm.outputs.goToActivityProject.map(first).observe(self.goToActivityProject.observer)
     self.vm.outputs.goToActivityProject.map(second).observe(self.goToActivityProjectRefTag.observer)
-    self.vm.outputs.goToEditorialProjectList.map(first).observe(self.goToEditorialProjectListTag.observer)
-    self.vm.outputs.goToEditorialProjectList.map(second)
-      .observe(self.goToEditorialProjectListRefTag.observer)
+    self.vm.outputs.goToEditorialProjectList.observe(self.goToEditorialProjectList.observer)
     self.vm.outputs.goToProjectPlaylist.map(first).observe(self.goToPlaylistProject.observer)
     self.vm.outputs.goToProjectPlaylist.map(second).observe(self.goToPlaylist.observer)
     self.vm.outputs.goToProjectPlaylist.map(third).observe(self.goToPlaylistRefTag.observer)
@@ -58,12 +54,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
     self.vm.outputs.showEditorialHeader.ignoreValues().observe(self.showEditorialHeader.observer)
-    self.vm.outputs.showEditorialHeader.map { $0.refTag }.observe(self.showEditorialHeaderRefTag.observer)
     self.vm.outputs.showEditorialHeader.map { $0.title }.observe(self.showEditorialHeaderTitle.observer)
     self.vm.outputs.showEditorialHeader.map { $0.subtitle }.observe(self.showEditorialHeaderSubtitle.observer)
     self.vm.outputs.showEditorialHeader.map { $0.imageName }
       .observe(self.showEditorialHeaderImageName.observer)
-    self.vm.outputs.showEditorialHeader.map { $0.tag }.observe(self.showEditorialHeaderTag.observer)
+    self.vm.outputs.showEditorialHeader.map { $0.tagId }.observe(self.showEditorialHeaderTagId.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
 
@@ -574,8 +569,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
       self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
       self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
-      self.showEditorialHeaderTag.assertValues(["250"])
-      self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless)])
+      self.showEditorialHeaderTagId.assertValues([.goRewardless])
     }
   }
 
@@ -607,8 +601,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
       self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
       self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
-      self.showEditorialHeaderTag.assertValues(["250"])
-      self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless)])
+      self.showEditorialHeaderTagId.assertValues([.goRewardless])
     }
   }
 
@@ -971,17 +964,36 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.showEditorialHeader.assertValueCount(1)
-      self.goToEditorialProjectListTag.assertDidNotEmitValue()
+      self.goToEditorialProjectList.assertDidNotEmitValue()
 
-      self.vm.inputs.discoveryEditorialCellTapped(with: "123", refTag: RefTag.editorial(.goRewardless))
+      self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
 
-      self.goToEditorialProjectListTag.assertValues(["123"])
-      self.goToEditorialProjectListRefTag.assertValues([.editorial(.goRewardless)])
+      self.goToEditorialProjectList.assertValues([.goRewardless])
+    }
+  }
 
-      self.vm.inputs.discoveryEditorialCellTapped(with: "321", refTag: RefTag.editorial(.goRewardless))
+  func testGoToEditorialProject() {
+    let project = Project.template
+    let discoveryEnvelope = .template
+      |> DiscoveryEnvelope.lens.projects .~ (
+        (0...2).map { id in .template |> Project.lens.id .~ (100 + id) }
+      )
 
-      self.goToEditorialProjectListTag.assertValues(["123", "321"])
-      self.goToEditorialProjectListRefTag.assertValues([.editorial(.goRewardless), .editorial(.goRewardless)])
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.tagId .~ .goRewardless)
+      self.scheduler.advance()
+
+      self.vm.inputs.tapped(project: project)
+
+      self.goToPlaylist.assertValues([discoveryEnvelope.projects], "Project playlist emits.")
+      self.goToPlaylistProject.assertValues([project])
+      self.goToPlaylistRefTag.assertValues(
+        [.editorial(.goRewardless)],
+        "Go to the project with Go Rewardless Editorial ref tag."
+      )
     }
   }
 }

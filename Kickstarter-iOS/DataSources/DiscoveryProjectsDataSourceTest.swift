@@ -25,7 +25,9 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
   func testEditorial() {
     let section = DiscoveryProjectsDataSource.Section.editorial.rawValue
 
-    let editorialValue = (title: "title", subtitle: "subtitle", imageName: "", tag: "123", RefTag.activity)
+    let editorialValue: DiscoveryEditorialCellValue = (
+      title: "title", subtitle: "subtitle", imageName: "", tagId: .goRewardless
+    )
 
     self.dataSource.showEditorial(value: editorialValue)
 
