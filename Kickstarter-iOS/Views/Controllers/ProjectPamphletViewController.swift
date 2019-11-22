@@ -212,7 +212,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   private func goToRewards(project: Project, refTag: RefTag?) {
     let vc = rewardsCollectionViewController(project: project, refTag: refTag)
 
-    self.present(vc, animated: true)
+    self.navigationController?.present(vc, animated: true)
   }
 
   private func goToManageViewPledge(project: Project) {

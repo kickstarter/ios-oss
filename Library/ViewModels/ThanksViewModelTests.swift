@@ -32,9 +32,9 @@ final class ThanksViewModelTests: TestCase {
     self.vm.outputs.dismissToRootViewController.observe(self.dismissToRootViewController.observer)
     self.vm.outputs.goToBackedProject.map { params in params.category ?? Category.filmAndVideo }
       .observe(self.goToDiscovery.observer)
-    self.vm.outputs.goToRecommendedProject.map { $0.0 }.observe(self.goToProject.observer)
-    self.vm.outputs.goToRecommendedProject.map { $0.1 }.observe(self.goToProjects.observer)
-    self.vm.outputs.goToRecommendedProject.map { $0.2 }.observe(self.goToRefTag.observer)
+    self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
+    self.vm.outputs.goToProject.map { $0.1 }.observe(self.goToProjects.observer)
+    self.vm.outputs.goToProject.map { $0.2 }.observe(self.goToRefTag.observer)
     self.vm.outputs.postContextualNotification.observe(self.postContextualNotification.observer)
     self.vm.outputs.postUserUpdatedNotification.map { $0.name }
       .observe(self.postUserUpdatedNotification.observer)

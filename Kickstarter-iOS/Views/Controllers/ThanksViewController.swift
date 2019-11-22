@@ -107,19 +107,13 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
 
-    self.viewModel.outputs.dismissToRootViewController
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
-      }
-
     self.viewModel.outputs.goToDiscovery
       .observeForControllerAction()
       .observeValues { [weak self] params in
         self?.goToDiscovery(params: params)
       }
 
-    self.viewModel.outputs.goToRecommendedProject
+    self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, projects, refTag in
         self?.goToProject(project, projects: projects, refTag: refTag)
@@ -205,7 +199,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       project: project,
       refTag: refTag,
       initialPlaylist: projects,
-      navigatorDelegate: self
+      navigatorDelegate: nil
     )
 
     self.navigationController?.setViewControllers([vc], animated: false)
@@ -275,8 +269,4 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   @objc fileprivate func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
   }
-}
-
-extension ThanksViewController: ProjectNavigatorDelegate {
-  func transitionedToProject(at _: Int) {}
 }
