@@ -46,9 +46,15 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     }
   }
 
-  func showEditorial(value: DiscoveryEditorialCellValue) {
+  func showEditorial(value: DiscoveryEditorialCellValue?) {
+    guard let editorialValue = value else {
+      self.clearValues(section: Section.editorial.rawValue)
+
+      return
+    }
+
     self.set(
-      values: [value],
+      values: [editorialValue],
       cellClass: DiscoveryEditorialCell.self,
       inSection: Section.editorial.rawValue
     )

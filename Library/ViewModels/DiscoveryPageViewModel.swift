@@ -4,6 +4,9 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol DiscoveryPageViewModelInputs {
+  /// Call when the Config has been updated in the AppEnvironment
+  func configUpdated(config: Config?)
+
   /// Call with the sort provided to the view.
   func configureWith(sort: DiscoveryParams.Sort)
 
@@ -88,7 +91,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var setScrollsToTop: Signal<Bool, Never> { get }
 
   /// Emits to show an editorial header
-  var showEditorialHeader: Signal<DiscoveryEditorialCellValue, Never> { get }
+  var showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never> { get }
 
   /// Emits to show the empty state controller.
   var showEmptyState: Signal<EmptyState, Never> { get }
@@ -305,13 +308,29 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         AppEnvironment.current.koala.trackDiscoveryPullToRefresh()
       }
 
-    self.showEditorialHeader = Signal.combineLatest(currentUser, self.sortProperty.signal.skipNil())
-      .filter { _ in featureGoRewardlessIsEnabled() }
-      .map(second)
-      .filter { $0 == .magic }
-      .skipRepeats()
-      .map { _ in
-        DiscoveryEditorialCellValue(
+    let sortAndFilterParams = Signal.combineLatest(
+      self.sortProperty.signal.skipNil(),
+      self.selectedFilterProperty.signal.skipNil().skipRepeats()
+    )
+
+    let editorialHeaderShouldShow = sortAndFilterParams
+      .map { args -> Bool in
+        let (sort, filterParams) = args
+
+        return sort == .magic && filterParams == DiscoveryViewModel.initialParams()
+      }
+
+    let updatedConfigEditorialValue = editorialHeaderShouldShow
+      .takeWhen(self.configUpdatedProperty.signal.skipNil())
+
+    self.showEditorialHeader = Signal.merge(editorialHeaderShouldShow, updatedConfigEditorialValue)
+      .map { shouldShow in (shouldShow, featureGoRewardlessIsEnabled()) }
+      .map { shouldShow, isEnabled in
+        guard shouldShow && isEnabled else {
+          return nil
+        }
+
+        return DiscoveryEditorialCellValue(
           title: Strings.Back_it_because_you_believe_in_it(),
           subtitle: Strings.Find_projects_that_speak_to_you(),
           imageName: "go-rewardless-home",
@@ -322,6 +341,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
+  }
+
+  fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)
+  public func configUpdated(config: Config?) {
+    self.configUpdatedProperty.value = config
   }
 
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
@@ -405,7 +429,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let projectsAreLoadingAnimated: Signal<(Bool, Bool), Never>
   public let setScrollsToTop: Signal<Bool, Never>
   public let scrollToProjectRow: Signal<Int, Never>
-  public let showEditorialHeader: Signal<DiscoveryEditorialCellValue, Never>
+  public let showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never>
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
 

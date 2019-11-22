@@ -67,7 +67,7 @@ public protocol DiscoveryViewModelType {
 
 public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewModelInputs,
   DiscoveryViewModelOutputs {
-  private static func initialParams() -> DiscoveryParams {
+  internal static func initialParams() -> DiscoveryParams {
     guard AppEnvironment.current.currentUser?.optedOutOfRecommendations == .some(false) else {
       return DiscoveryParams.defaults
         |> DiscoveryParams.lens.includePOTD .~ true
