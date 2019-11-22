@@ -97,7 +97,7 @@ public final class ManagePledgeViewModel:
     self.showActionSheetMenuWithOptions = project
       .takeWhen(self.menuButtonTappedSignal)
       .map { project -> [ManagePledgeAlertAction] in
-        if project.state == .live && project.personalization.backing?.status != .preauth {
+        if project.state == .live, project.personalization.backing?.status != .preauth {
           return ManagePledgeAlertAction.allCases
         } else {
           return [.contactCreator]
