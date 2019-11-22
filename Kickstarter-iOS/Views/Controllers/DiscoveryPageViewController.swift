@@ -5,6 +5,7 @@ import UIKit
 
 internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate var emptyStatesController: EmptyStatesViewController?
+  internal var preferredBackgroundColor: UIColor?
   fileprivate let dataSource = DiscoveryProjectsDataSource()
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
@@ -16,10 +17,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)
     vc.viewModel.inputs.configureWith(sort: sort)
     return vc
-  }
-
-  internal func change(filter: DiscoveryParams) {
-    self.viewModel.inputs.selectedFilter(filter)
   }
 
   internal override func viewDidLoad() {
@@ -99,6 +96,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+
+    if let preferredBackgroundColor = self.preferredBackgroundColor {
+      _ = self
+        |> \.view.backgroundColor .~ preferredBackgroundColor
+    }
   }
 
   internal override func bindViewModel() {
@@ -316,6 +318,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
     guard let navigator = self.presentedViewController as? ProjectNavigatorViewController else { return }
     navigator.updatePlaylist(playlist)
   }
+
+  // MARK: - Accessors
+
+  internal func change(filter: DiscoveryParams) {
+    self.viewModel.inputs.selectedFilter(filter)
+  }
+
+  // MARK: - Actions
 
   @objc private func pulledToRefresh() {
     self.viewModel.inputs.pulledToRefresh()

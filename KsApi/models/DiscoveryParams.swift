@@ -21,6 +21,7 @@ public struct DiscoveryParams {
   public var staffPicks: Bool?
   public var starred: Bool?
   public var state: State?
+  public var tagId: TagID?
 
   public enum State: String, Argo.Decodable {
     case all
@@ -35,12 +36,16 @@ public struct DiscoveryParams {
     case popular = "popularity"
   }
 
+  public enum TagID: String, Argo.Decodable {
+    case goRewardless = "518"
+  }
+
   public static let defaults = DiscoveryParams(
     backed: nil, category: nil, collaborated: nil,
     created: nil, hasVideo: nil, includePOTD: nil,
     page: nil, perPage: nil, query: nil, recommended: nil,
     seed: nil, similarTo: nil, social: nil, sort: nil,
-    staffPicks: nil, starred: nil, state: nil
+    staffPicks: nil, starred: nil, state: nil, tagId: nil
   )
 
   public var queryParams: [String: String] {
@@ -61,6 +66,7 @@ public struct DiscoveryParams {
     params["starred"] = self.starred == true ? "1" : self.starred == false ? "-1" : nil
     params["state"] = self.state?.rawValue
     params["term"] = self.query
+    params["tag_id"] = self.tagId?.rawValue
 
     return params
   }
@@ -110,6 +116,7 @@ extension DiscoveryParams: Argo.Decodable {
       <*> ((json <|? "staff_picks" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "starred" >>- stringIntToBool) as Decoded<Bool?>)
       <*> json <|? "state"
+      <*> json <|? "tag_id"
   }
 }
 
