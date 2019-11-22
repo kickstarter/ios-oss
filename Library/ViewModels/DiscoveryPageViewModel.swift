@@ -315,7 +315,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let editorialHeaderShouldShow = filtersUpdated
       .filter { sort, _ in
-        return sort == .magic
+        sort == .magic
       }
       .map { args -> Bool in
         let (sort, filterParams) = args
@@ -333,7 +333,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.showEditorialHeader = Signal.merge(updatedConfigAndEditorialValue, updatedFilters)
       .map { shouldShow in (shouldShow, featureGoRewardlessIsEnabled()) }
       .map { shouldShow, isEnabled in
-        guard shouldShow && isEnabled else {
+        guard shouldShow, isEnabled else {
           return nil
         }
 

@@ -211,7 +211,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.postNotification = Signal.merge(
       currentUserUpdatedNotification,
-      configUpdatedNotification)
+      configUpdatedNotification
+    )
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
 

@@ -76,7 +76,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         AppEnvironment.updateConfig(config)
 
         self?.viewModel.inputs.didUpdateConfig(config)
-    }
+      }
 
     self.viewModel.outputs.postNotification
       .observeForUI()
