@@ -984,39 +984,4 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.goToEditorialProjectListRefTag.assertValues([.editorial(.goRewardless), .editorial(.goRewardless)])
     }
   }
-
-  func testBackgroundColor_NoPreferredColor() {
-    self.backgroundColor.assertDidNotEmitValue()
-
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.scrollViewDidScrollToContentOffset(.init(x: 0, y: 1))
-
-    self.backgroundColor.assertValues([.white])
-
-    self.vm.inputs.scrollViewDidScrollToContentOffset(.init(x: 0, y: -1))
-
-    self.backgroundColor.assertValues([.white])
-  }
-
-  func testBackgroundColor_PreferredColor() {
-    self.backgroundColor.assertDidNotEmitValue()
-
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.setPreferredBackgroundColor(.blue)
-    self.vm.inputs.scrollViewDidScrollToContentOffset(.init(x: 0, y: 1))
-
-    self.backgroundColor.assertValues([.white])
-
-    self.vm.inputs.scrollViewDidScrollToContentOffset(.init(x: 0, y: -1))
-
-    self.backgroundColor.assertValues([.white, .blue])
-
-    self.vm.inputs.scrollViewDidScrollToContentOffset(.init(x: 0, y: 1))
-
-    self.backgroundColor.assertValues([.white, .blue, .white])
-
-    self.vm.inputs.scrollViewDidScrollToContentOffset(.init(x: 0, y: -1))
-
-    self.backgroundColor.assertValues([.white, .blue, .white, .blue])
-  }
 }
