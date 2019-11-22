@@ -77,8 +77,6 @@ public final class EditorialProjectsViewController: UIViewController {
       |> UIButton.lens.accessibilityHint %~ { _ in
         Strings.dashboard_switcher_accessibility_label_closes_list_of_projects()
       }
-
-    // TODO: Need accessibility label and hint for close button
   }
 
   // MARK: - View model
