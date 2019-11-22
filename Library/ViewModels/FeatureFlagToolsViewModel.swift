@@ -6,6 +6,7 @@ import ReactiveSwift
 public typealias FeatureEnabled = (feature: Feature, isEnabled: Bool)
 
 public protocol FeatureFlagToolsViewModelOutputs {
+  var postNotification: Signal<Notification, Never> { get }
   var reloadWithData: Signal<[FeatureEnabled], Never> { get }
   var updateConfigWithFeatures: Signal<Features, Never> { get }
 }
@@ -68,6 +69,9 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
         return environmentFeatures
       }
       .skipNil()
+
+    self.postNotification = self.didUpdateConfigProperty.signal
+      .mapConst(Notification(name: .ksr_configUpdated, object: nil))
   }
 
   private let setFeatureEnabledAtIndexProperty = MutableProperty<(Int, Bool)?>(nil)
@@ -85,14 +89,10 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
     self.viewDidLoadProperty.value = ()
   }
 
+  public let postNotification: Signal<Notification, Never>
   public let reloadWithData: Signal<[FeatureEnabled], Never>
   public let updateConfigWithFeatures: Signal<Features, Never>
 
-  public var inputs: FeatureFlagToolsViewModelInputs {
-    return self
-  }
-
-  public var outputs: FeatureFlagToolsViewModelOutputs {
-    return self
-  }
+  public var inputs: FeatureFlagToolsViewModelInputs { return self }
+  public var outputs: FeatureFlagToolsViewModelOutputs { return self }
 }
