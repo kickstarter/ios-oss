@@ -72,10 +72,8 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
       return DiscoveryParams.defaults
         |> DiscoveryParams.lens.includePOTD .~ true
     }
-    return DiscoveryParams.defaults
-      |> DiscoveryParams.lens.includePOTD .~ true
-      |> DiscoveryParams.lens.backed .~ false
-      |> DiscoveryParams.lens.recommended .~ true
+
+    return DiscoveryParams.recommendedDefaults
   }
 
   public init() {
