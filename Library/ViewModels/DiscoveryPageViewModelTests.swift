@@ -60,7 +60,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.showEditorialHeader.observe(self.showEditorialHeader.observer)
     self.vm.outputs.showEditorialHeader.map { $0?.refTag }.observe(self.showEditorialHeaderRefTag.observer)
     self.vm.outputs.showEditorialHeader.map { $0?.title }.observe(self.showEditorialHeaderTitle.observer)
-    self.vm.outputs.showEditorialHeader.map { $0?.subtitle }.observe(self.showEditorialHeaderSubtitle.observer)
+    self.vm.outputs.showEditorialHeader.map { $0?.subtitle }
+      .observe(self.showEditorialHeaderSubtitle.observer)
     self.vm.outputs.showEditorialHeader.map { $0?.imageName }
       .observe(self.showEditorialHeaderImageName.observer)
     self.vm.outputs.showEditorialHeader.map { $0?.tag }.observe(self.showEditorialHeaderTag.observer)
