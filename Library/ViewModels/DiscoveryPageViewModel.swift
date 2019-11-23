@@ -200,7 +200,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       isRefreshing.map { ($0, true) },
       projectsLoadingNoRefresh.map { ($0, false) },
       self.viewWillAppearProperty.signal.take(first: 1).mapConst((true, false))
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .ksr_delay(.nanoseconds(0), on: AppEnvironment.current.scheduler)
     )
     .skipRepeats(==)
 

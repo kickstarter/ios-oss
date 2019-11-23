@@ -61,11 +61,13 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
         guard let self = self else { return }
 
         _ = self.editorialImageView
-          |> \.image %~ { _ in Library.image(
-            named: imageName,
-            inBundle: Bundle.framework,
-            compatibleWithTraitCollection: nil
-          ) }
+          |> \.image %~ { _ in
+            Library.image(
+              named: imageName,
+              inBundle: Bundle.framework,
+              compatibleWithTraitCollection: nil
+            )
+          }
       }
 
     self.editorialTitleLabel.rac.text = self.viewModel.outputs.titleText

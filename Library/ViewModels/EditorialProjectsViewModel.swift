@@ -12,6 +12,8 @@ public protocol EditorialProjectsViewModelInputs {
 public protocol EditorialProjectsViewModelOutputs {
   var configureDiscoveryPageViewControllerWithParams: Signal<DiscoveryParams, Never> { get }
   var dismiss: Signal<(), Never> { get }
+  var imageName: Signal<String, Never> { get }
+  var titleLabelText: Signal<String, Never> { get }
 }
 
 public protocol EditorialProjectsViewModelType {
@@ -30,6 +32,9 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
 
     self.configureDiscoveryPageViewControllerWithParams = tagId
       .map { tagId in DiscoveryParams.defaults |> DiscoveryParams.lens.tagId .~ tagId }
+
+    self.imageName = tagId.map(editorialImageName)
+    self.titleLabelText = tagId.map(editorialTitleLabelText)
 
     self.dismiss = self.closeButtonTappedProperty.signal
   }
@@ -51,7 +56,21 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
 
   public let configureDiscoveryPageViewControllerWithParams: Signal<DiscoveryParams, Never>
   public let dismiss: Signal<(), Never>
+  public let imageName: Signal<String, Never>
+  public let titleLabelText: Signal<String, Never>
 
   public var inputs: EditorialProjectsViewModelInputs { return self }
   public var outputs: EditorialProjectsViewModelOutputs { return self }
+}
+
+private func editorialImageName(for tagId: DiscoveryParams.TagID) -> String {
+  switch tagId {
+  case .goRewardless: return "go-rewardless-home"
+  }
+}
+
+private func editorialTitleLabelText(for tagId: DiscoveryParams.TagID) -> String {
+  switch tagId {
+  case .goRewardless: return Strings.This_holiday_season_support_a_project_for_no_reward()
+  }
 }
