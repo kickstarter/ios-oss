@@ -206,7 +206,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let configUpdatedNotification = self.didUpdateConfigProperty.signal
       .skipNil()
-      .skipRepeats()
       .mapConst(Notification(name: .ksr_configUpdated, object: nil))
 
     self.postNotification = Signal.merge(

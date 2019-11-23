@@ -709,6 +709,109 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
+  func testShowEditorialHeader_LoggedIn_OnMagic_ChangingFilters_FeatureFlag_IsOn() {
+    let mockConfig = Config.template
+      |> \.features .~ [Feature.goRewardless.rawValue: true]
+    let otherFilter = DiscoveryParams.defaults
+      |> \.category .~ Category.filmAndVideo
+    let defaultFilters = DiscoveryParams.recommendedDefaults
+
+    withEnvironment(config: mockConfig, currentUser: .template) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilters)
+
+      self.vm.inputs.configUpdated(config: mockConfig)
+
+      self.showEditorialHeader.assertValueCount(1)
+      self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
+      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
+      self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
+      self.showEditorialHeaderTag.assertValues(["250"])
+      self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless)])
+
+      self.vm.inputs.selectedFilter(otherFilter)
+
+      self.showEditorialHeader.assertValueCount(2)
+      self.showEditorialHeaderTitle.assertValues([
+        "Back it because you believe in it.",
+        nil])
+      self.showEditorialHeaderSubtitle.assertValues([
+        "Find projects that speak to you ▶",
+        nil])
+      self.showEditorialHeaderImageName.assertValues(["go-rewardless-home",
+                                                      nil])
+      self.showEditorialHeaderTag.assertValues(["250", nil])
+      self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless),
+                                                   nil])
+
+      self.vm.inputs.selectedFilter(defaultFilters)
+
+      self.showEditorialHeaderTitle.assertValues([
+        "Back it because you believe in it.",
+        nil,
+        "Back it because you believe in it."])
+      self.showEditorialHeaderSubtitle.assertValues([
+        "Find projects that speak to you ▶",
+        nil,
+        "Find projects that speak to you ▶"])
+      self.showEditorialHeaderImageName.assertValues(["go-rewardless-home",
+                                                      nil,
+                                                      "go-rewardless-home"])
+      self.showEditorialHeaderTag.assertValues(["250", nil, "250"])
+      self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless),
+                                                   nil,
+                                                   RefTag.editorial(.goRewardless)])
+    }
+  }
+
+  func testShowEditorialHeader_LoggedIn_OnMagic_DefaultFilts_FeatureFlag_IsToggled() {
+    let mockConfig = Config.template
+      |> \.features .~ [Feature.goRewardless.rawValue: true]
+    let defaultFilters = DiscoveryParams.recommendedDefaults
+
+    withEnvironment(config: mockConfig, currentUser: .template) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilters)
+
+      self.vm.inputs.configUpdated(config: mockConfig)
+
+      self.showEditorialHeader.assertValueCount(1)
+      self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
+      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
+      self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
+      self.showEditorialHeaderTag.assertValues(["250"])
+      self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless)])
+
+      let updatedConfig = Config.template
+        |> \.features .~ [Feature.goRewardless.rawValue: false]
+
+      withEnvironment(config: updatedConfig) {
+        self.vm.inputs.configUpdated(config: updatedConfig)
+
+        self.showEditorialHeader.assertValueCount(2)
+        self.showEditorialHeaderTitle.assertValues([
+          "Back it because you believe in it.",
+          nil])
+        self.showEditorialHeaderSubtitle.assertValues([
+          "Find projects that speak to you ▶",
+          nil])
+        self.showEditorialHeaderImageName.assertValues(["go-rewardless-home",
+                                                        nil])
+        self.showEditorialHeaderTag.assertValues(["250", nil])
+        self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless),
+                                                     nil])
+
+        self.vm.inputs.configUpdated(config: updatedConfig)
+
+        self.showEditorialHeader.assertValueCount(2, "Doesn't repeat if value is the same")
+      }
+    }
+  }
+
   func testShowEditorialHeader_LoggedIn_OnMagic_DefaultFilters_FeatureFlag_IsOff() {
     let mockConfig = Config.template
       |> \.features .~ [Feature.goRewardless.rawValue: false]
