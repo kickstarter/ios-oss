@@ -452,8 +452,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.updateConfigInEnvironment.assertValues([config1, config2, config3])
 
       self.vm.inputs.didUpdateConfig(config3)
-      self.postNotificationName.assertValues([.ksr_configUpdated, .ksr_configUpdated,.ksr_configUpdated])
-
+      self.postNotificationName.assertValues([.ksr_configUpdated, .ksr_configUpdated, .ksr_configUpdated])
     }
 
     let config4 = Config.template |> Config.lens.countryCode .~ "CA"
@@ -462,10 +461,12 @@ final class AppDelegateViewModelTests: TestCase {
       self.updateConfigInEnvironment.assertValues([config1, config2, config3, config4])
 
       self.vm.inputs.didUpdateConfig(config4)
-      self.postNotificationName.assertValues([.ksr_configUpdated,
-                                              .ksr_configUpdated,
-                                              .ksr_configUpdated,
-                                              .ksr_configUpdated])
+      self.postNotificationName.assertValues([
+        .ksr_configUpdated,
+        .ksr_configUpdated,
+        .ksr_configUpdated,
+        .ksr_configUpdated
+      ])
     }
   }
 

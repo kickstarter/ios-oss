@@ -127,7 +127,7 @@ final class FeatureFlagToolsViewModelTests: TestCase {
       |> \.features .~ [
         Feature.nativeCheckoutPledgeView.rawValue: true,
         Feature.nativeCheckout.rawValue: true
-    ]
+      ]
 
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()

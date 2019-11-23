@@ -736,33 +736,45 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeader.assertValueCount(2)
       self.showEditorialHeaderTitle.assertValues([
         "Back it because you believe in it.",
-        nil])
+        nil
+      ])
       self.showEditorialHeaderSubtitle.assertValues([
         "Find projects that speak to you ▶",
-        nil])
-      self.showEditorialHeaderImageName.assertValues(["go-rewardless-home",
-                                                      nil])
+        nil
+      ])
+      self.showEditorialHeaderImageName.assertValues([
+        "go-rewardless-home",
+        nil
+      ])
       self.showEditorialHeaderTag.assertValues(["250", nil])
-      self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless),
-                                                   nil])
+      self.showEditorialHeaderRefTag.assertValues([
+        RefTag.editorial(.goRewardless),
+        nil
+      ])
 
       self.vm.inputs.selectedFilter(defaultFilters)
 
       self.showEditorialHeaderTitle.assertValues([
         "Back it because you believe in it.",
         nil,
-        "Back it because you believe in it."])
+        "Back it because you believe in it."
+      ])
       self.showEditorialHeaderSubtitle.assertValues([
         "Find projects that speak to you ▶",
         nil,
-        "Find projects that speak to you ▶"])
-      self.showEditorialHeaderImageName.assertValues(["go-rewardless-home",
-                                                      nil,
-                                                      "go-rewardless-home"])
+        "Find projects that speak to you ▶"
+      ])
+      self.showEditorialHeaderImageName.assertValues([
+        "go-rewardless-home",
+        nil,
+        "go-rewardless-home"
+      ])
       self.showEditorialHeaderTag.assertValues(["250", nil, "250"])
-      self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless),
-                                                   nil,
-                                                   RefTag.editorial(.goRewardless)])
+      self.showEditorialHeaderRefTag.assertValues([
+        RefTag.editorial(.goRewardless),
+        nil,
+        RefTag.editorial(.goRewardless)
+      ])
     }
   }
 
@@ -795,15 +807,21 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         self.showEditorialHeader.assertValueCount(2)
         self.showEditorialHeaderTitle.assertValues([
           "Back it because you believe in it.",
-          nil])
+          nil
+        ])
         self.showEditorialHeaderSubtitle.assertValues([
           "Find projects that speak to you ▶",
-          nil])
-        self.showEditorialHeaderImageName.assertValues(["go-rewardless-home",
-                                                        nil])
+          nil
+        ])
+        self.showEditorialHeaderImageName.assertValues([
+          "go-rewardless-home",
+          nil
+        ])
         self.showEditorialHeaderTag.assertValues(["250", nil])
-        self.showEditorialHeaderRefTag.assertValues([RefTag.editorial(.goRewardless),
-                                                     nil])
+        self.showEditorialHeaderRefTag.assertValues([
+          RefTag.editorial(.goRewardless),
+          nil
+        ])
 
         self.vm.inputs.configUpdated(config: updatedConfig)
 

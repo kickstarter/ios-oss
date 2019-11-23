@@ -1,10 +1,6 @@
 import Foundation
 import ReactiveSwift
 
-//public typealias DiscoveryEditorialCellValue = (
-//  title: String, subtitle: String, imageName: String, tag: String, refTag: RefTag
-//)
-
 public struct DiscoveryEditorialCellValue: Equatable {
   public let title: String
   public let subtitle: String
