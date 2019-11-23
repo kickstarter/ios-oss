@@ -76,6 +76,11 @@ internal final class LoginViewController: UIViewController {
     self.viewModel.inputs.viewWillAppear()
   }
 
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.viewModel.inputs.traitCollectionDidChange()
+  }
+
   override func bindStyles() {
     _ = self |> loginControllerStyle
 
