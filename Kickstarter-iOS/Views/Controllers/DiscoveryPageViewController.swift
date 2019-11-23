@@ -109,13 +109,15 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.outputs.projectsAreLoadingAnimated
       .observeForUI()
       .observeValues { [weak self] isLoading, animated in
-        if isLoading {
-          UIView.perform(animated: true) {
-            self?.refreshControl?.beginRefreshing()
-          }
-        } else {
-          UIView.perform(animated: animated) {
-            self?.refreshControl?.endRefreshing()
+        DispatchQueue.main.async {
+          if isLoading {
+            UIView.perform(animated: true) {
+              self?.refreshControl?.beginRefreshing()
+            }
+          } else {
+            UIView.perform(animated: animated) {
+              self?.refreshControl?.endRefreshing()
+            }
           }
         }
       }

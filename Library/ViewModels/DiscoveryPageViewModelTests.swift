@@ -7,7 +7,7 @@ import UIKit
 import XCTest
 
 internal final class DiscoveryPageViewModelTests: TestCase {
-  fileprivate var vm: DiscoveryPageViewModelType!
+  fileprivate var vm: DiscoveryPageViewModelType = DiscoveryPageViewModel()
 
   fileprivate let activitiesForSample = TestObserver<[Activity], Never>()
   fileprivate let asyncReloadData = TestObserver<(), Never>()
@@ -38,8 +38,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   internal override func setUp() {
     super.setUp()
-
-    self.vm = DiscoveryPageViewModel()
 
     self.vm.outputs.activitiesForSample.observe(self.activitiesForSample.observer)
     self.vm.outputs.asyncReloadData.observe(self.asyncReloadData.observer)
@@ -92,8 +90,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.projectsAreLoading.assertValues([])
     self.vm.inputs.viewWillAppear()
-
-    self.scheduler.advance()
 
     self.projectsAreLoading.assertValues([true], "Projects start loading on viewWillAppear")
 

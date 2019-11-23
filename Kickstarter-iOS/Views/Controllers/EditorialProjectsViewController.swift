@@ -11,7 +11,7 @@ public final class EditorialProjectsViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var discoveryPageViewController: DiscoveryPageViewController = {
+  internal lazy var discoveryPageViewController: DiscoveryPageViewController = {
     DiscoveryPageViewController.configuredWith(sort: .magic)
       |> \.preferredBackgroundColor .~ .clear
   }()
