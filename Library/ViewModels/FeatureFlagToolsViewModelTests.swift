@@ -9,6 +9,7 @@ import XCTest
 final class FeatureFlagToolsViewModelTests: TestCase {
   private let vm: FeatureFlagToolsViewModelType = FeatureFlagToolsViewModel()
 
+  private let postNotificationName = TestObserver<Notification.Name, Never>()
   private let updateConfigWithFeatures = TestObserver<Features, Never>()
   private let reloadWithDataFeatures = TestObserver<[Feature], Never>()
   private let reloadWithDataEnabledValues = TestObserver<[Bool], Never>()
@@ -16,6 +17,7 @@ final class FeatureFlagToolsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.postNotification.map(\.name).observe(self.postNotificationName.observer)
     self.vm.outputs.updateConfigWithFeatures.observe(self.updateConfigWithFeatures.observer)
     self.vm.outputs.reloadWithData.map { $0.map { $0.0 } }.observe(self.reloadWithDataFeatures.observer)
     self.vm.outputs.reloadWithData.map { $0.map { $0.1 } }.observe(self.reloadWithDataEnabledValues.observer)
@@ -117,6 +119,34 @@ final class FeatureFlagToolsViewModelTests: TestCase {
         [Feature.nativeCheckout, Feature.nativeCheckoutPledgeView]
       ])
       self.reloadWithDataEnabledValues.assertValues([[true, true], [true, false]])
+    }
+  }
+
+  func testPostNotification() {
+    let mockConfig = Config.template
+      |> \.features .~ [
+        Feature.nativeCheckoutPledgeView.rawValue: true,
+        Feature.nativeCheckout.rawValue: true
+    ]
+
+    withEnvironment(config: mockConfig) {
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: false)
+
+      self.updateConfigWithFeatures.assertValueCount(1)
+
+      self.vm.inputs.didUpdateConfig()
+
+      self.postNotificationName.assertValues([.ksr_configUpdated])
+
+      self.vm.inputs.setFeatureAtIndexEnabled(index: 1, isEnabled: false)
+
+      self.updateConfigWithFeatures.assertValueCount(2)
+
+      self.vm.inputs.didUpdateConfig()
+
+      self.postNotificationName.assertValues([.ksr_configUpdated, .ksr_configUpdated])
     }
   }
 }

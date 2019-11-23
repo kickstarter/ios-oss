@@ -326,11 +326,14 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     let updatedConfig = self.configUpdatedProperty.signal.skipNil()
       .logEvents(identifier: "***updated config***")
 
-    let updatedFilters = editorialHeaderShouldShow.skip(first: 1) // skip the first emission to wait for the config to load
-    let updatedConfigAndEditorialValue = editorialHeaderShouldShow
-      .takeWhen(updatedConfig)
+//    let updatedFilters = editorialHeaderShouldShow.skip(first: 1) // skip the first emission to wait for the config to load
+//    let updatedConfigAndEditorialValue = editorialHeaderShouldShow
+//      .takeWhen(updatedConfig)
 
-    self.showEditorialHeader = Signal.merge(updatedConfigAndEditorialValue, updatedFilters)
+    let updateEditorialHeader = Signal.combineLatest(editorialHeaderShouldShow, updatedConfig)
+
+    self.showEditorialHeader = updateEditorialHeader
+      .map(first)
       .map { shouldShow in (shouldShow, featureGoRewardlessIsEnabled()) }
       .map { shouldShow, isEnabled in
         guard shouldShow, isEnabled else {
