@@ -50,6 +50,10 @@ public final class EditorialProjectsViewController: UIViewController {
       for: .touchUpInside
     )
 
+    self.discoveryPageViewController.contentOffsetChanged = { offset in
+      self.viewModel.inputs.contentOffsetChanged(to: offset)
+    }
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -68,7 +72,7 @@ public final class EditorialProjectsViewController: UIViewController {
   }
 
   public override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
+    return self.viewModel.outputs.preferredStatusBarStyle()
   }
 
   // MARK: - Styles
@@ -98,7 +102,6 @@ public final class EditorialProjectsViewController: UIViewController {
 
     _ = self.closeButton
       |> UIButton.lens.title(for: .normal) .~ nil
-      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross", tintColor: .white)
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in
         Strings.dashboard_switcher_accessibility_label_closes_list_of_projects()
@@ -135,6 +138,25 @@ public final class EditorialProjectsViewController: UIViewController {
               compatibleWithTraitCollection: nil
             )
           }
+      }
+
+    self.viewModel.outputs.closeButtonImageTintColor
+      .observeForUI()
+      .observeValues { [weak self] color in
+        _ = self?.closeButton
+          ?|> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross", tintColor: color)
+      }
+
+    self.viewModel.outputs.setNeedsStatusBarAppearanceUpdate
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.setNeedsStatusBarAppearanceUpdate()
+      }
+
+    self.viewModel.outputs.applyViewTransformsWithY
+      .observeForUI()
+      .observeValues { [weak self] y in
+        self?.applyViewTransforms(withY: y)
       }
 
     self.editorialTitleLabel.rac.text = self.viewModel.outputs.titleLabelText
@@ -216,6 +238,18 @@ public final class EditorialProjectsViewController: UIViewController {
 
   @objc private func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
+  }
+
+  private func applyViewTransforms(withY y: CGFloat) {
+    let normalizedY = abs(y) - self.headerView.frame.height
+
+    let imageViewScale = max(1, 1 + (normalizedY * 0.0025))
+    let labelScale = min(1.25, 1 + (normalizedY * 0.00015))
+    let labelAlpha = 1 - (-normalizedY * 0.005)
+
+    self.editorialImageView.transform = CGAffineTransform(scaleX: imageViewScale, y: imageViewScale)
+    self.editorialTitleLabel.transform = CGAffineTransform(scaleX: labelScale, y: labelScale)
+    self.editorialTitleLabel.alpha = labelAlpha
   }
 }
 

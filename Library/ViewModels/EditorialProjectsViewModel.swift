@@ -6,14 +6,19 @@ import ReactiveSwift
 public protocol EditorialProjectsViewModelInputs {
   func closeButtonTapped()
   func configure(with tagId: DiscoveryParams.TagID)
+  func contentOffsetChanged(to offset: CGPoint)
   func viewDidLoad()
 }
 
 public protocol EditorialProjectsViewModelOutputs {
+  var applyViewTransformsWithY: Signal<CGFloat, Never> { get }
   var configureDiscoveryPageViewControllerWithParams: Signal<DiscoveryParams, Never> { get }
+  var closeButtonImageTintColor: Signal<UIColor, Never> { get }
   var dismiss: Signal<(), Never> { get }
   var imageName: Signal<String, Never> { get }
+  func preferredStatusBarStyle() -> UIStatusBarStyle
   var titleLabelText: Signal<String, Never> { get }
+  var setNeedsStatusBarAppearanceUpdate: Signal<(), Never> { get }
 }
 
 public protocol EditorialProjectsViewModelType {
@@ -37,6 +42,20 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
     self.titleLabelText = tagId.map(editorialTitleLabelText)
 
     self.dismiss = self.closeButtonTappedProperty.signal
+
+    self.preferredStatusBarStyleProperty <~ self.contentOffsetChangedProperty.signal
+      .skipNil()
+      .map { offset in offset.y < 0 ? .lightContent : .default }
+      .skipRepeats()
+
+    self.closeButtonImageTintColor = self.preferredStatusBarStyleProperty.signal
+      .map { $0 == .lightContent ? .white : .ksr_soft_black }
+
+    self.setNeedsStatusBarAppearanceUpdate = self.preferredStatusBarStyleProperty.signal.ignoreValues()
+
+    self.applyViewTransformsWithY = self.contentOffsetChangedProperty.signal
+      .skipNil()
+      .map(\.y)
   }
 
   private let closeButtonTappedProperty = MutableProperty(())
@@ -49,15 +68,28 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
     self.configureWithTagIdProperty.value = tagId
   }
 
+  private let contentOffsetChangedProperty = MutableProperty<CGPoint?>(nil)
+  public func contentOffsetChanged(to offset: CGPoint) {
+    self.contentOffsetChangedProperty.value = offset
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
+  private var preferredStatusBarStyleProperty = MutableProperty<UIStatusBarStyle>(.lightContent)
+  public func preferredStatusBarStyle() -> UIStatusBarStyle {
+    return self.preferredStatusBarStyleProperty.value
+  }
+
+  public let applyViewTransformsWithY: Signal<CGFloat, Never>
   public let configureDiscoveryPageViewControllerWithParams: Signal<DiscoveryParams, Never>
+  public let closeButtonImageTintColor: Signal<UIColor, Never>
   public let dismiss: Signal<(), Never>
   public let imageName: Signal<String, Never>
   public let titleLabelText: Signal<String, Never>
+  public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
 
   public var inputs: EditorialProjectsViewModelInputs { return self }
   public var outputs: EditorialProjectsViewModelOutputs { return self }
