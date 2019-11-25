@@ -63,7 +63,7 @@ public protocol AppDelegateViewModelInputs {
   func didRegisterForRemoteNotifications(withDeviceTokenData data: Data)
 
   /// Call when the config has been updated the AppEnvironment
-  func didUpdateConfig(_ config: Config?)
+  func didUpdateConfig(_ config: Config)
 
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
@@ -665,7 +665,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   }
 
   fileprivate let didUpdateConfigProperty = MutableProperty<Config?>(nil)
-  public func didUpdateConfig(_ config: Config?) {
+  public func didUpdateConfig(_ config: Config) {
     self.didUpdateConfigProperty.value = config
   }
 

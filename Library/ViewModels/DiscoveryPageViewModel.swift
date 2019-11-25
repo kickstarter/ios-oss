@@ -317,10 +317,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .filter { sort, _ in
         sort == .magic
       }
-      .map { args -> Bool in
-        let (sort, filterParams) = args
-
-        return sort == .magic && filterParams == DiscoveryViewModel.initialParams()
+      .map { sort, filterParams -> Bool in
+        sort == .magic && filterParams == DiscoveryViewModel.initialParams()
       }
 
     let cachedFeatureFlagValue = self.sortProperty.signal.skipNil()

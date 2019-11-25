@@ -184,9 +184,10 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
           |> \.includePOTD .~ true
 
         controller.change(filter: defaultLoggedOutParams)
-        self.scheduler.run()
 
         NotificationCenter.default.post(Notification(name: .ksr_configUpdated))
+
+        self.scheduler.advance(by: .seconds(1))
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(language)_device_\(device)"
@@ -218,8 +219,11 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        controller.change(filter: DiscoveryParams.recommendedDefaults)
         NotificationCenter.default.post(Notification(name: .ksr_configUpdated))
+
+        self.scheduler.advance(by: .seconds(1))
+
+        controller.change(filter: DiscoveryParams.recommendedDefaults)
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(language)_device_\(device)"

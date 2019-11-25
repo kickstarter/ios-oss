@@ -80,6 +80,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
     self.currentEnvironmentChangedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.configUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
