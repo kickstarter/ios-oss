@@ -64,7 +64,6 @@ public protocol ThanksViewModelType {
 }
 
 public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, ThanksViewModelOutputs {
-
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
