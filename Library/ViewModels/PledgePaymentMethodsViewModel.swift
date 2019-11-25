@@ -4,7 +4,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
+public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayDevice: Bool)
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func applePayButtonTapped()
@@ -53,7 +53,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
 
     self.applePayStackViewHidden = configureWithValue
-      .map { showApplePayButton(for: $0.project) }
+      .map { ($0.project, $0.applePayDevice) }
+      .map(showApplePayButton(for:applePayDevice:))
       .negate()
 
     let storedCardsValues = storedCardsEvent.values().map { $0.me.storedCards.nodes }
@@ -201,8 +202,8 @@ private func pledgeCreditCardViewDataAndSelectedCard(
   return (data, backedCard)
 }
 
-private func showApplePayButton(for project: Project) -> Bool {
-  return AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
+private func showApplePayButton(for project: Project, applePayDevice: Bool) -> Bool {
+  return applePayDevice && AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
 }
 
 private func isCreatingPledge(_ project: Project) -> Bool {

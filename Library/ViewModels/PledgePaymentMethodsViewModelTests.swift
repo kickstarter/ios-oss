@@ -219,7 +219,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.applePayStackViewHidden.assertValues([false])
+      self.applePayStackViewHidden.assertValues([true])
       self.reloadPaymentMethodsCards.assertValues([[]])
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([[]])
       self.reloadPaymentMethodsProjectCountry.assertValues([[]])
@@ -343,7 +343,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.applePayStackViewHidden.assertValues([false])
+      self.applePayStackViewHidden.assertValues([true])
       self.reloadPaymentMethodsCards.assertValues([[]])
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([[]])
       self.reloadPaymentMethodsProjectCountry.assertValues([[]])
@@ -400,7 +400,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.applePayStackViewHidden.assertValues([false])
+      self.applePayStackViewHidden.assertValues([true])
       self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
         [true, true, true, true, true, true, false, true]
@@ -511,11 +511,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
-      self.applePayStackViewHidden.assertValues([false])
+      self.applePayStackViewHidden.assertValues([true])
 
       self.scheduler.run()
 
-      self.applePayStackViewHidden.assertValues([false])
+      self.applePayStackViewHidden.assertValues([true])
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
