@@ -172,7 +172,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .flatMap { $0 }
 
     let bottomSectionStackView = UIStackView(arrangedSubviews: bottomSectionViews)
-      |> nestedStackViewStyle
+      |> bottomStackViewStyle
 
     let arrangedSubviews = [
       [topSectionStackView],
@@ -185,6 +185,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     arrangedSubviews.forEach { view in
       self.rootStackView.addArrangedSubview(view)
     }
+
+    _ = (self.paymentMethodsViewController.view, self.rootStackView)
+      |> ksr_setCustomSpacing(Styles.grid(2))
 
     childViewControllers.forEach { viewController in
       self.addChild(viewController)
@@ -538,6 +541,14 @@ extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
 private let nestedStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> checkoutRootStackViewStyle
+    |> \.layoutMargins .~ UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
+}
+
+private let bottomStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> verticalStackViewStyle
+    |> \.spacing .~ Styles.grid(2)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
 }
 

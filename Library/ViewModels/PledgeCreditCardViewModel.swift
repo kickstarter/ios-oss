@@ -46,9 +46,6 @@ public protocol PledgeCreditCardViewModelOutputs {
   /// Emits the button title.
   var selectButtonTitle: Signal<String, Never> { get }
 
-  /// Emits a whether or not the spacer view should be hidden
-  var spacerIsHidden: Signal<Bool, Never> { get }
-
   /// Emits whether or not the unavailable card type label should be hidden.
   var unavailableCardLabelHidden: Signal<Bool, Never> { get }
 
@@ -111,7 +108,6 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       .map { $0 ? Strings.Selected() : Strings.Select() }
       .skipRepeats()
 
-    self.spacerIsHidden = cardTypeIsAvailable.negate()
     self.selectButtonEnabled = cardTypeIsAvailable
     self.unavailableCardLabelHidden = cardTypeIsAvailable
 
@@ -145,7 +141,6 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   public let selectButtonEnabled: Signal<Bool, Never>
   public let selectButtonIsSelected: Signal<Bool, Never>
   public let selectButtonTitle: Signal<String, Never>
-  public let spacerIsHidden: Signal<Bool, Never>
   public let unavailableCardLabelHidden: Signal<Bool, Never>
   public let unavailableCardText: Signal<String, Never>
 
