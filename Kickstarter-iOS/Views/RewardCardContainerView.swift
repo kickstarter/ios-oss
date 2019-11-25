@@ -11,9 +11,11 @@ public final class RewardCardContainerView: UIView {
     }
   }
 
+  private let viewModel: RewardCardContainerViewModelType = RewardCardContainerViewModel()
+
   // MARK: - Properties
 
-  private let viewModel: RewardCardContainerViewModelType = RewardCardContainerViewModel()
+  private lazy var baseGradientView = { GradientView(frame: .zero) }()
 
   let gradientView: GradientView = {
     GradientView(frame: .zero)
@@ -55,9 +57,6 @@ public final class RewardCardContainerView: UIView {
       |> roundedStyle(cornerRadius: Styles.grid(3))
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
-    _ = self.rewardCardView
-      |> checkoutWhiteBackgroundStyle
-
     _ = self.gradientView
       |> \.backgroundColor .~ .clear
       |> \.startPoint .~ .zero
@@ -88,6 +87,7 @@ public final class RewardCardContainerView: UIView {
     self.pledgeButton.rac.enabled = self.viewModel.outputs.pledgeButtonEnabled
     self.pledgeButton.rac.hidden = self.viewModel.outputs.pledgeButtonHidden
     self.gradientView.rac.hidden = self.viewModel.outputs.gradientViewHidden
+    self.rewardCardView.rac.backgroundColor = self.viewModel.outputs.rewardCardViewBackgroundColor
 
     self.viewModel.outputs.pledgeButtonHidden.observeValues { [weak self] hidden in
       guard let self = self else { return }
@@ -107,6 +107,16 @@ public final class RewardCardContainerView: UIView {
         _ = self?.pledgeButton
           ?|> styleType.style
       }
+
+    self.viewModel.outputs.configureNoRewardGradientView
+      .observeForUI()
+      .observeValues { [weak self] shouldConfigure in
+        if shouldConfigure {
+          self?.configureBaseGradientView()
+        } else {
+          self?.baseGradientView.removeFromSuperview()
+        }
+    }
   }
 
   internal func configure(with value: (project: Project, reward: Either<Reward, Backing>)) {
@@ -114,7 +124,7 @@ public final class RewardCardContainerView: UIView {
     self.rewardCardView.configure(with: value)
   }
 
-  // MARK: - Private Helpers
+  // MARK: - Functions
 
   private func configureViews() {
     _ = (self.rewardCardView, self)
@@ -156,6 +166,31 @@ public final class RewardCardContainerView: UIView {
     ]
     .flatMap { $0 }
     )
+  }
+
+  private func configureBaseGradientView() {
+    _ = baseGradientView
+      |> roundedStyle(cornerRadius: Styles.grid(3))
+      |> \.layer.borderColor .~ UIColor.white.cgColor
+      |> \.layer.borderWidth .~ 2
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.backgroundColor .~ UIColor.clear
+      |> \.startPoint .~ CGPoint.zero
+      |> \.endPoint .~ CGPoint(x: 0, y: 1)
+
+
+    let gradient: [(UIColor?, Float)] = [
+      (UIColor.hex(0xDBE7FF), 0.0),
+      (UIColor.hex(0xFFF2EC), 1)
+    ]
+
+    baseGradientView.setGradient(gradient)
+
+    _ = (baseGradientView, self)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    self.sendSubviewToBack(baseGradientView)
   }
 
   private func hiddenPledgeHiddenConstraints() -> [NSLayoutConstraint] {
