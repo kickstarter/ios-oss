@@ -203,7 +203,8 @@ private func pledgeCreditCardViewDataAndSelectedCard(
 }
 
 private func showApplePayButton(for project: Project, applePayDevice: Bool) -> Bool {
-  return applePayDevice && AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
+  return applePayDevice &&
+    AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
 }
 
 private func isCreatingPledge(_ project: Project) -> Bool {
