@@ -578,6 +578,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.configUpdated(config: mockConfig)
 
+      self.scheduler.advance(by: .seconds(1))
+
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
       self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
@@ -599,6 +601,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.configUpdated(config: mockConfig)
 
+      self.scheduler.advance(by: .seconds(1))
+
       self.showEditorialHeader.assertDidNotEmitValue()
     }
   }
@@ -616,6 +620,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.selectedFilter(otherFilter)
 
       self.vm.inputs.configUpdated(config: mockConfig)
+
+      self.scheduler.advance(by: .seconds(1))
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues([nil])
@@ -640,6 +646,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.configUpdated(config: mockConfig)
 
+      self.scheduler.advance(by: .seconds(1))
+
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues([nil])
       self.showEditorialHeaderSubtitle.assertValues([nil])
@@ -661,6 +669,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.selectedFilter(defaultFilters)
 
       self.vm.inputs.configUpdated(config: mockConfig)
+
+      self.scheduler.advance(by: .seconds(1))
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
@@ -701,6 +711,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.configUpdated(config: mockConfig)
 
+      self.scheduler.advance(by: .seconds(1))
+
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues([nil])
       self.showEditorialHeaderSubtitle.assertValues([nil])
@@ -724,6 +736,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.selectedFilter(defaultFilters)
 
       self.vm.inputs.configUpdated(config: mockConfig)
+
+      self.scheduler.advance(by: .seconds(1))
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
@@ -779,7 +793,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
-  func testShowEditorialHeader_LoggedIn_OnMagic_DefaultFilts_FeatureFlag_IsToggled() {
+  func testShowEditorialHeader_LoggedIn_OnMagic_DefaultFilters_FeatureFlag_IsToggled() {
     let mockConfig = Config.template
       |> \.features .~ [Feature.goRewardless.rawValue: true]
     let defaultFilters = DiscoveryParams.recommendedDefaults
@@ -791,6 +805,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.selectedFilter(defaultFilters)
 
       self.vm.inputs.configUpdated(config: mockConfig)
+
+      self.scheduler.advance(by: .seconds(1))
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
@@ -804,6 +820,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       withEnvironment(config: updatedConfig) {
         self.vm.inputs.configUpdated(config: updatedConfig)
+
+        self.scheduler.advance(by: .seconds(1))
 
         self.showEditorialHeader.assertValueCount(2)
         self.showEditorialHeaderTitle.assertValues([
@@ -842,6 +860,29 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.selectedFilter(DiscoveryParams.recommendedDefaults)
 
       self.vm.inputs.configUpdated(config: mockConfig)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.showEditorialHeader.assertValueCount(1)
+      self.showEditorialHeaderTitle.assertValues([nil])
+      self.showEditorialHeaderSubtitle.assertValues([nil])
+      self.showEditorialHeaderImageName.assertValues([nil])
+      self.showEditorialHeaderTag.assertValues([nil])
+      self.showEditorialHeaderRefTag.assertValues([nil])
+    }
+  }
+
+  func testShowEditorialHeader_LoggedIn_OnMagic_DefaultFilters_FeatureFlag_IsOn_UsesCachedConfig() {
+    let mockConfig = Config.template
+      |> \.features .~ [Feature.goRewardless.rawValue: false]
+
+    withEnvironment(config: mockConfig, currentUser: .template) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(DiscoveryParams.recommendedDefaults)
+
+      self.scheduler.advance(by: .seconds(1))
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues([nil])
@@ -1201,6 +1242,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.configUpdated(config: mockConfig)
 
       self.scheduler.advance()
+
+      self.scheduler.advance(by: .seconds(1))
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])

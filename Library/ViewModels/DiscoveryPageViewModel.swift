@@ -323,14 +323,17 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         return sort == .magic && filterParams == DiscoveryViewModel.initialParams()
       }
 
-    let updatedConfig = self.configUpdatedProperty.signal.skipNil()
-      .logEvents(identifier: "***updated config***")
+    let cachedFeatureFlagValue = self.sortProperty.signal.skipNil()
+      .map { _ in featureGoRewardlessIsEnabled() }
+    let updatedFeatureFlagValue = self.configUpdatedProperty.signal.skipNil()
+      .map { _ in featureGoRewardlessIsEnabled() }
 
-    let updateEditorialHeader = Signal.combineLatest(editorialHeaderShouldShow, updatedConfig)
+    let latestFeatureFlagValue = Signal.merge(cachedFeatureFlagValue, updatedFeatureFlagValue)
+      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+
+    let updateEditorialHeader = Signal.combineLatest(editorialHeaderShouldShow, latestFeatureFlagValue)
 
     self.showEditorialHeader = updateEditorialHeader
-      .map(first)
-      .map { shouldShow in (shouldShow, featureGoRewardlessIsEnabled()) }
       .map { shouldShow, isEnabled in
         guard shouldShow, isEnabled else {
           return nil
@@ -344,7 +347,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
           refTag: RefTag.editorial(.goRewardless)
         )
       }.skipRepeats()
-      .logEvents(identifier: "***show editorial***")
 
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
