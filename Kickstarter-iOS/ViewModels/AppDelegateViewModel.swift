@@ -190,13 +190,19 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { $0.ksrCode == .AccessTokenInvalid }
       .ignoreValues()
 
-    self.updateConfigInEnvironment = Signal.merge([
-      self.applicationWillEnterForegroundProperty.signal,
-      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.userSessionEndedProperty.signal,
-      self.userSessionStartedProperty.signal
-    ])
-      .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
+    self.updateConfigInEnvironment = Signal.merge(
+      [
+        self.applicationWillEnterForegroundProperty.signal,
+        self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+        self.userSessionEndedProperty.signal,
+        self.userSessionStartedProperty.signal
+      ]
+    )
+    .switchMap { _ -> SignalProducer<Config, Never> in
+      visitorCookies().forEach(AppEnvironment.current.cookieStorage.setCookie)
+
+      return AppEnvironment.current.apiService.fetchConfig().demoteErrors()
+    }
 
     self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(Notification(name: .ksr_userUpdated, object: nil))
@@ -547,12 +553,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.crashManagerDidFinishSendingCrashReportProperty.signal
       .observeValues { AppEnvironment.current.koala.trackCrashedApp() }
-
-    self.applicationLaunchOptionsProperty.signal
-      .take(first: 1)
-      .observeValues { _ in
-        visitorCookies().forEach(AppEnvironment.current.cookieStorage.setCookie)
-      }
 
     Signal.combineLatest(
       performShortcutItem.enumerated(),
