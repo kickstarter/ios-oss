@@ -194,7 +194,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     UIApplication.shared.open(url)
   }
 
-  fileprivate func goToProject(_ project: Project, projects: [Project], refTag: RefTag) {
+  fileprivate func goToProject(_ project: Project, projects _: [Project], refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(
       project: project,
       refTag: refTag
