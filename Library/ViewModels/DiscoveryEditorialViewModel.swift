@@ -1,12 +1,12 @@
 import Foundation
+import KsApi
 import ReactiveSwift
 
 public struct DiscoveryEditorialCellValue: Equatable {
   public let title: String
   public let subtitle: String
   public let imageName: String
-  public let tag: String
-  public let refTag: RefTag
+  public let tagId: DiscoveryParams.TagID
 }
 
 public protocol DiscoveryEditorialViewModelInputs {
@@ -16,7 +16,7 @@ public protocol DiscoveryEditorialViewModelInputs {
 
 public protocol DiscoveryEditorialViewModelOutputs {
   var imageName: Signal<String, Never> { get }
-  var notifyDelegateViewTapped: Signal<(String, RefTag), Never> { get }
+  var notifyDelegateViewTapped: Signal<DiscoveryParams.TagID, Never> { get }
   var subtitleText: Signal<String, Never> { get }
   var titleText: Signal<String, Never> { get }
 }
@@ -37,7 +37,7 @@ public final class DiscoveryEditorialViewModel: DiscoveryEditorialViewModelType,
 
     self.notifyDelegateViewTapped = configureWithValue
       .takeWhen(self.editorialCellTappedSignal)
-      .map { ($0.tag, $0.refTag) }
+      .map { $0.tagId }
   }
 
   private let configureWithValueProperty = MutableProperty<DiscoveryEditorialCellValue?>(nil)
@@ -53,7 +53,7 @@ public final class DiscoveryEditorialViewModel: DiscoveryEditorialViewModelType,
   public let imageName: Signal<String, Never>
   public let subtitleText: Signal<String, Never>
   public let titleText: Signal<String, Never>
-  public let notifyDelegateViewTapped: Signal<(String, RefTag), Never>
+  public let notifyDelegateViewTapped: Signal<DiscoveryParams.TagID, Never>
 
   public var inputs: DiscoveryEditorialViewModelInputs { return self }
   public var outputs: DiscoveryEditorialViewModelOutputs { return self }
