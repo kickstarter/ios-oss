@@ -991,7 +991,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.goToPlaylist.assertValues([discoveryEnvelope.projects], "Project playlist emits.")
       self.goToPlaylistProject.assertValues([project])
       self.goToPlaylistRefTag.assertValues(
-        [.editorial(.goRewardless)],
+        [.projectCollection(DiscoveryParams.TagID.goRewardless)],
         "Go to the project with Go Rewardless Editorial ref tag."
       )
     }

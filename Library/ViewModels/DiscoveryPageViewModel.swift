@@ -425,7 +425,7 @@ private func saveSeen(activities: [Activity]) {
 
 private func refTag(fromParams params: DiscoveryParams, project _: Project) -> RefTag {
   if params.tagId != nil, params.tagId == .goRewardless {
-    return .editorial(.goRewardless)
+    return .projectCollection(DiscoveryParams.TagID.goRewardless)
   }
 
   if params.category != nil {
