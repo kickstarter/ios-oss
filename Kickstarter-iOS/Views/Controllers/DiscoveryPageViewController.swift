@@ -11,7 +11,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   private var configUpdatedObserver: Any?
   private var currentEnvironmentChangedObserver: Any?
-public var contentOffsetChanged: ((CGPoint) -> ())?
+  public var contentOffsetChanged: ((CGPoint) -> ())?
   fileprivate let dataSource = DiscoveryProjectsDataSource()
   fileprivate var emptyStatesController: EmptyStatesViewController?
   internal var preferredBackgroundColor: UIColor?
