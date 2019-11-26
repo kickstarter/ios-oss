@@ -14,7 +14,7 @@ public protocol DiscoveryPageViewModelInputs {
   func currentEnvironmentChanged(environment: EnvironmentType)
 
   /// Call when the editioral cell is tapped
-  func discoveryEditorialCellTapped(with tag: String, refTag: RefTag)
+  func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID)
 
   /// Call when the user pulls tableView to refresh
   func pulledToRefresh()
@@ -67,7 +67,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var goToActivityProject: Signal<(Project, RefTag), Never> { get }
 
   /// Emits a refTag for the editorial project list
-  var goToEditorialProjectList: Signal<(String, RefTag), Never> { get }
+  var goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never> { get }
 
   /// Emits a project, playlist, ref tag that we should go to from discovery.
   var goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never> { get }
@@ -341,8 +341,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
           title: Strings.Back_it_because_you_believe_in_it(),
           subtitle: Strings.Find_projects_that_speak_to_you(),
           imageName: "go-rewardless-home",
-          tag: "250",
-          refTag: RefTag.editorial(.goRewardless)
+          tagId: .goRewardless
         )
       }.skipRepeats()
 
@@ -366,9 +365,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.currentEnvironmentChangedProperty.value = environment
   }
 
-  fileprivate let discoveryEditorialCellTappedWithValueProperty = MutableProperty<(String, RefTag)?>(nil)
-  public func discoveryEditorialCellTapped(with tag: String, refTag: RefTag) {
-    self.discoveryEditorialCellTappedWithValueProperty.value = (tag, refTag)
+  fileprivate let discoveryEditorialCellTappedWithValueProperty
+    = MutableProperty<DiscoveryParams.TagID?>(nil)
+  public func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID) {
+    self.discoveryEditorialCellTappedWithValueProperty.value = tagId
   }
 
   fileprivate let pulledToRefreshProperty = MutableProperty(())
@@ -434,7 +434,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
-  public let goToEditorialProjectList: Signal<(String, RefTag), Never>
+  public let goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>
   public let goToProjectUpdate: Signal<(Project, Update), Never>
   public let hideEmptyState: Signal<Void, Never>
@@ -461,6 +461,10 @@ private func saveSeen(activities: [Activity]) {
 }
 
 private func refTag(fromParams params: DiscoveryParams, project _: Project) -> RefTag {
+  if let tagId = params.tagId {
+    return .projectCollection(tagId)
+  }
+
   if params.category != nil {
     return .categoryWithSort(params.sort ?? .magic)
   } else if params.recommended == .some(true) {
