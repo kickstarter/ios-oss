@@ -350,8 +350,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
-      .observeValues { _, refTag in
-        AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: refTag)
+      .observeValues { tagId in
+        AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: RefTag.projectCollection(tagId))
       }
   }
 
