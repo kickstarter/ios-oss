@@ -597,7 +597,7 @@ public final class Koala {
 
   /**
    Call when the user taps the editorial header at the top of Discovery
- */
+   */
   public func trackEditorialHeaderTapped(refTag: RefTag) {
     self.track(event: "Editorial Card Clicked", properties: ["refTag": refTag.stringTag])
   }
@@ -2049,7 +2049,7 @@ public final class Koala {
     var props: [String: Any] = [:]
 
     let enabledFeatureFlags = self.config?.features
-      .filter { k, v in v == true }
+      .filter { _, v in v == true }
       .keys
       .sorted()
 

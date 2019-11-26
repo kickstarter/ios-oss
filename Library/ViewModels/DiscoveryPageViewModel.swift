@@ -353,7 +353,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .skipNil()
       .observeValues { _, refTag in
         AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: refTag)
-    }
+      }
   }
 
   fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)
