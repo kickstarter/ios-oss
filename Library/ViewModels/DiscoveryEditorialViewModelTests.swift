@@ -34,7 +34,7 @@ final class DiscoveryEditorialViewModelTests: TestCase {
     self.notifyDelegateViewTapped.assertDidNotEmitValue()
 
     self.vm.inputs.configureWith(
-      (
+      .init(
         title: "hello",
         subtitle: "boop",
         imageName: "image",
@@ -50,7 +50,7 @@ final class DiscoveryEditorialViewModelTests: TestCase {
 
   func testEditorialCellTapped() {
     self.vm.inputs.configureWith(
-      (
+      .init(
         title: "hello",
         subtitle: "boop",
         imageName: "image",
@@ -58,7 +58,6 @@ final class DiscoveryEditorialViewModelTests: TestCase {
       )
     )
 
-    self.notifyDelegateViewTapped.assertDidNotEmitValue()
     self.vm.inputs.editorialCellTapped()
     self.notifyDelegateViewTapped.assertValues([.goRewardless])
   }

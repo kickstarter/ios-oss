@@ -72,7 +72,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.updateConfigInEnvironment
       .observeForUI()
-      .observeValues { AppEnvironment.updateConfig($0) }
+      .observeValues { [weak self] config in
+        AppEnvironment.updateConfig(config)
+
+        self?.viewModel.inputs.didUpdateConfig(config)
+      }
 
     self.viewModel.outputs.postNotification
       .observeForUI()

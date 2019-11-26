@@ -2,9 +2,12 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public typealias DiscoveryEditorialCellValue = (
-  title: String, subtitle: String, imageName: String, tagId: DiscoveryParams.TagID
-)
+public struct DiscoveryEditorialCellValue: Equatable {
+  public let title: String
+  public let subtitle: String
+  public let imageName: String
+  public let tagId: DiscoveryParams.TagID
+}
 
 public protocol DiscoveryEditorialViewModelInputs {
   func configureWith(_ value: DiscoveryEditorialCellValue)
@@ -28,9 +31,9 @@ public final class DiscoveryEditorialViewModel: DiscoveryEditorialViewModelType,
   public init() {
     let configureWithValue = self.configureWithValueProperty.signal.skipNil()
 
-    self.imageName = configureWithValue.map { $0.imageName }
-    self.titleText = configureWithValue.map { $0.title }
-    self.subtitleText = configureWithValue.map { $0.subtitle }
+    self.imageName = configureWithValue.map(\.imageName)
+    self.titleText = configureWithValue.map(\.title)
+    self.subtitleText = configureWithValue.map(\.subtitle)
 
     self.notifyDelegateViewTapped = configureWithValue
       .takeWhen(self.editorialCellTappedSignal)
