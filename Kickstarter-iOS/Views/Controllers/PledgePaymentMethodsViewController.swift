@@ -167,7 +167,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
     let pledgePaymentMethodsValue = PledgePaymentMethodsValue(
       user: value.user,
       project: value.project,
-      applePayDevice: PKPaymentAuthorizationViewController.applePayDevice()
+      deviceIsApplePayCapable: PKPaymentAuthorizationViewController.applePayDevice()
     )
 
     self.viewModel.inputs.configureWith(pledgePaymentMethodsValue)
