@@ -122,14 +122,6 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
 
 // MARK: - Functions
 
-private func backingReward(fromProject project: Project) -> Reward? {
-  guard let backing = project.personalization.backing else {
-    return nil
-  }
-
-  return reward(from: backing, inProject: project)
-}
-
 private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
   if currentUserIsCreator(of: project) { return nil }
 
