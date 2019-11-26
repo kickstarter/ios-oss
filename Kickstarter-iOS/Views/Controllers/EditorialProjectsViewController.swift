@@ -63,7 +63,7 @@ public final class EditorialProjectsViewController: UIViewController {
     let currentTableViewInsets = self.discoveryPageViewController.tableView.contentInset
 
     self.discoveryPageViewController.tableView.contentInset = currentTableViewInsets
-      |> UIEdgeInsets.lens.top .~ self.headerView.frame.height
+      |> UIEdgeInsets.lens.top .~ (self.headerView.frame.height - self.view.safeAreaInsets.top)
 
     self.discoveryPageViewController.tableView.scrollIndicatorInsets =
       self.discoveryPageViewController.tableView.contentInset
@@ -154,7 +154,7 @@ public final class EditorialProjectsViewController: UIViewController {
       }
 
     self.viewModel.outputs.applyViewTransformsWithY
-      .observeForUI()
+      .observeForControllerAction()
       .observeValues { [weak self] y in
         self?.applyViewTransforms(withY: y)
       }
