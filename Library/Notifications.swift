@@ -5,6 +5,7 @@ public enum CurrentUserNotifications {
   public static let environmentChanged = "CurrentUserNotification.environmentChanged"
   public static let localePreferencesChanged = "CurrentUserNotification.localePreferencesChanged"
   public static let projectSaved = "CurrentUserNotifications.projectSaved"
+  public static let projectUpdated = "CurrentUserNotifications.projectUpdated"
   public static let recommendationsSettingChanged = "CurrentUserNotifications.recommendationsSettingChanged"
   public static let savedProjectEmptyStateTapped = "CurrentUserNotifications.savedProjectEmptyStateTapped"
   public static let sessionEnded = "CurrentUserNotifications.sessionEnded"
@@ -25,6 +26,7 @@ extension Notification.Name {
     CurrentUserNotifications.environmentChanged
   )
   public static let ksr_projectSaved = Notification.Name(rawValue: CurrentUserNotifications.projectSaved)
+  public static let ksr_projectUpdated = Notification.Name(rawValue: CurrentUserNotifications.projectUpdated)
   public static let ksr_recommendationsSettingChanged =
     Notification.Name(rawValue: CurrentUserNotifications.recommendationsSettingChanged)
   public static let ksr_savedProjectEmptyStateTapped =

@@ -18,6 +18,7 @@ public protocol CancelPledgeViewModelOutputs {
   var cancellationDetailsAttributedText: Signal<NSAttributedString, Never> { get }
   var cancelPledgeButtonEnabled: Signal<Bool, Never> { get }
   var cancelPledgeError: Signal<String, Never> { get }
+  var cancelPledgeProject: Signal<Project, Never> { get }
   var dismissKeyboard: Signal<Void, Never> { get }
   var notifyDelegateCancelPledgeSuccess: Signal<String, Never> { get }
   var popCancelPledgeViewController: Signal<Void, Never> { get }
@@ -87,6 +88,14 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
     self.notifyDelegateCancelPledgeSuccess = cancelPledgeEvent.values()
       .map { _ in Strings.Youve_canceled_your_pledge() }
 
+    let projectEvent = project
+      .switchMap {
+        AppEnvironment.current.apiService.fetchProject(param: .id($0.id))
+          .materialize()
+    }
+
+    self.cancelPledgeProject = projectEvent.values()
+
     self.cancelPledgeError = cancelPledgeEvent
       .errors()
       .map { $0.localizedDescription }
@@ -151,6 +160,7 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
   public let cancellationDetailsAttributedText: Signal<NSAttributedString, Never>
   public let cancelPledgeButtonEnabled: Signal<Bool, Never>
   public let cancelPledgeError: Signal<String, Never>
+  public let cancelPledgeProject: Signal<Project, Never>
   public let dismissKeyboard: Signal<Void, Never>
   public let notifyDelegateCancelPledgeSuccess: Signal<String, Never>
   public let popCancelPledgeViewController: Signal<Void, Never>

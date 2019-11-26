@@ -150,6 +150,16 @@ final class CancelPledgeViewController: UIViewController, MessageBannerViewContr
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
 
+    self.viewModel.outputs.cancelPledgeProject
+      .observeForUI()
+      .observeValues { project in
+        NotificationCenter.default.post(
+          name: Notification.Name.ksr_projectSaved,
+          object: nil,
+          userInfo: ["project": project]
+        )
+    }
+
     self.viewModel.outputs.dismissKeyboard
       .observeForControllerAction()
       .observeValues { [weak self] in

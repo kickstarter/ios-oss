@@ -293,7 +293,11 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeForControllerAction()
       .observeValues { [weak self] project in
         generateNotificationSuccessFeedback()
-
+        NotificationCenter.default.post(
+          name: Notification.Name.ksr_projectUpdated,
+          object: nil,
+          userInfo: ["project": project]
+        )
         self?.goToThanks(project: project)
       }
 

@@ -49,6 +49,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
   fileprivate weak var projectIsStaffPickView: DiscoveryProjectCategoryView!
 
   private var projectSavedObserver: Any?
+  private var projectUpdatedObserver: Any?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
 
@@ -93,6 +94,14 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
         )
       }
 
+    self.projectUpdatedObserver = NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_projectUpdated, object: nil, queue: nil) { [weak self]
+        notification in
+        self?.watchProjectViewModel.inputs.projectFromNotification(
+          project: notification.userInfo?["project"] as? Project
+        )
+    }
+
     self.watchProjectViewModel.inputs.awakeFromNib()
 
     super.awakeFromNib()
@@ -100,6 +109,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   deinit {
     self.projectSavedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.projectUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
     self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
