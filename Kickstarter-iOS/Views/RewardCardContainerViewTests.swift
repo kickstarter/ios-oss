@@ -321,10 +321,12 @@ final class RewardCardContainerViewTests: TestCase {
         let noReward = allRewards.filter { $0.1.isNoReward }.first!
         let (description, reward) = noReward
 
-        let vc = rewardCardInViewController(language: language,
-                                            device: device,
-                                            project: Project.template,
-                                            reward: reward)
+        let vc = rewardCardInViewController(
+          language: language,
+          device: device,
+          project: Project.template,
+          reward: reward
+        )
 
         FBSnapshotVerifyView(vc.view, identifier: "\(description)_lang_\(language)_device_\(device)")
       }
@@ -344,10 +346,12 @@ final class RewardCardContainerViewTests: TestCase {
           |> Project.lens.personalization.backing .~ (Backing.template
             |> Backing.lens.reward .~ reward)
 
-        let vc = rewardCardInViewController(language: language,
-                                            device: device,
-                                            project: project,
-                                            reward: reward)
+        let vc = rewardCardInViewController(
+          language: language,
+          device: device,
+          project: project,
+          reward: reward
+        )
 
         FBSnapshotVerifyView(vc.view, identifier: "\(description)_lang_\(language)_device_\(device)")
       }

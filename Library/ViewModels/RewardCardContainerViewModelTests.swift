@@ -137,7 +137,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       UIColor.white,
       UIColor.white,
       UIColor.white
-      ])
+    ])
   }
 
   func testLive_BackedProject_NonBackedReward() {
@@ -203,7 +203,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       UIColor.white,
       UIColor.white,
       UIColor.white
-      ])
+    ])
   }
 
   func testLive_NonBackedProject_LoggedIn() {
@@ -267,7 +267,7 @@ final class RewardCardContainerViewModelTests: TestCase {
         UIColor.white,
         UIColor.white,
         UIColor.white
-        ])
+      ])
     }
   }
 
@@ -333,7 +333,7 @@ final class RewardCardContainerViewModelTests: TestCase {
         UIColor.white,
         UIColor.white,
         UIColor.white
-        ])
+      ])
     }
   }
 
@@ -402,7 +402,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       UIColor.white,
       UIColor.white,
       UIColor.white
-      ])
+    ])
   }
 
   func testNonLive_BackedProject_NonBackedReward() {
@@ -461,7 +461,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       UIColor.white,
       UIColor.white,
       UIColor.white
-      ])
+    ])
   }
 
   func testNonLive_NonBackedProject() {
@@ -513,7 +513,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       UIColor.white,
       UIColor.white,
       UIColor.white
-      ])
+    ])
   }
 
   func testLive_BackedProject_BackedReward_Errored() {
@@ -584,8 +584,8 @@ final class RewardCardContainerViewModelTests: TestCase {
       UIColor.white,
       UIColor.white,
       UIColor.white,
-      UIColor.white,
-      ])
+      UIColor.white
+    ])
   }
 
   func testNonLive_BackedProject_BackedReward_Errored() {
@@ -656,8 +656,8 @@ final class RewardCardContainerViewModelTests: TestCase {
       UIColor.white,
       UIColor.white,
       UIColor.white,
-      UIColor.white,
-      ])
+      UIColor.white
+    ])
   }
 
   func testLive_IsCreator_LoggedIn() {
@@ -714,7 +714,7 @@ final class RewardCardContainerViewModelTests: TestCase {
         UIColor.white,
         UIColor.white,
         UIColor.white
-        ])
+      ])
     }
   }
 
@@ -774,7 +774,7 @@ final class RewardCardContainerViewModelTests: TestCase {
         UIColor.white,
         UIColor.white,
         UIColor.white
-        ])
+      ])
     }
   }
 

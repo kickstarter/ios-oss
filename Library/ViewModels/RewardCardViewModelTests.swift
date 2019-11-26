@@ -119,8 +119,10 @@ final class RewardCardViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(Reward.noReward))
 
       self.rewardTitleLabelHidden.assertValues([false])
-      self.rewardTitleLabelText.assertValues(["Back it because you believe in it."],
-                                             "Go rewardless copy treatment")
+      self.rewardTitleLabelText.assertValues(
+        ["Back it because you believe in it."],
+        "Go rewardless copy treatment"
+      )
     }
   }
 
@@ -339,7 +341,8 @@ final class RewardCardViewModelTests: TestCase {
 
       self.descriptionLabelText.assertValues(
         ["This holiday season, support a project for no reward, just because it speaks to you."],
-                                             "Go rewardless treatment")
+        "Go rewardless treatment"
+      )
     }
   }
 
@@ -356,7 +359,8 @@ final class RewardCardViewModelTests: TestCase {
 
       self.descriptionLabelText.assertValues(
         ["Thanks for bringing this project one step closer to becoming a reality."],
-                                             "No treatment")
+        "No treatment"
+      )
     }
   }
 
@@ -367,8 +371,10 @@ final class RewardCardViewModelTests: TestCase {
     withEnvironment(config: mockConfig) {
       self.vm.inputs.configureWith(project: Project.template, rewardOrBacking: .left(Reward.template))
 
-      self.descriptionLabelText.assertValues(["A cool thing"],
-                                             "No treatment")
+      self.descriptionLabelText.assertValues(
+        ["A cool thing"],
+        "No treatment"
+      )
     }
   }
 

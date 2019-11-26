@@ -196,8 +196,8 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
   guard project.personalization.isBacking == true else {
     if reward.isNoReward {
       return goRewardlessEnabled
-      ? Strings.Back_it_because_you_believe_in_it()
-      : Strings.Pledge_without_a_reward()
+        ? Strings.Back_it_because_you_believe_in_it()
+        : Strings.Pledge_without_a_reward()
     }
 
     return reward.title.coalesceWith("")

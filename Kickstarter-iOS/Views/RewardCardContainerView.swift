@@ -116,7 +116,7 @@ public final class RewardCardContainerView: UIView {
         } else {
           self?.baseGradientView.removeFromSuperview()
         }
-    }
+      }
   }
 
   internal func configure(with value: (project: Project, reward: Either<Reward, Backing>)) {
@@ -169,7 +169,7 @@ public final class RewardCardContainerView: UIView {
   }
 
   private func configureBaseGradientView() {
-    _ = baseGradientView
+    _ = self.baseGradientView
       |> roundedStyle(cornerRadius: Styles.grid(3))
       |> \.layer.borderColor .~ UIColor.white.cgColor
       |> \.layer.borderWidth .~ 2
@@ -178,7 +178,6 @@ public final class RewardCardContainerView: UIView {
       |> \.startPoint .~ CGPoint.zero
       |> \.endPoint .~ CGPoint(x: 0, y: 1)
 
-
     let gradient: [(UIColor?, Float)] = [
       (UIColor.hex(0xDBE7FF), 0.0),
       (UIColor.hex(0xFFF2EC), 1)
@@ -186,11 +185,11 @@ public final class RewardCardContainerView: UIView {
 
     baseGradientView.setGradient(gradient)
 
-    _ = (baseGradientView, self)
+    _ = (self.baseGradientView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.sendSubviewToBack(baseGradientView)
+    self.sendSubviewToBack(self.baseGradientView)
   }
 
   private func hiddenPledgeHiddenConstraints() -> [NSLayoutConstraint] {

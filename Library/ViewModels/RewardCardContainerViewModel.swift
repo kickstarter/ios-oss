@@ -53,7 +53,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.rewardCardViewBackgroundColor = reward
       .map { reward in
         if featureGoRewardlessIsEnabled() {
-          return  reward.isNoReward ? UIColor.clear : UIColor.white
+          return reward.isNoReward ? UIColor.clear : UIColor.white
         }
 
         return UIColor.white
