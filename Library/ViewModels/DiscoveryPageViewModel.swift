@@ -348,6 +348,12 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
+
+    self.discoveryEditorialCellTappedWithValueProperty.signal
+      .skipNil()
+      .observeValues { _, refTag in
+        AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: refTag)
+    }
   }
 
   fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)

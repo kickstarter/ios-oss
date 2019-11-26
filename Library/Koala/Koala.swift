@@ -491,7 +491,6 @@ public final class Koala {
    */
   public func trackDiscovery(params: DiscoveryParams, page: Int) {
     var props = properties(params: params).withAllValuesFrom(["page": page])
-    props["current_variants"] = AppEnvironment.current.config?.abExperimentsArray
 
     self.track(event: "Loaded Discovery Results", properties: props)
 
@@ -594,6 +593,13 @@ public final class Koala {
    */
   public func trackDiscoveryPullToRefresh() {
     self.track(event: "Triggered Refresh")
+  }
+
+  /**
+   Call when the user taps the editorial header at the top of Discovery
+ */
+  public func trackEditorialHeaderTapped(refTag: RefTag) {
+    self.track(event: "Editorial Card Clicked", properties: ["refTag": refTag.stringTag])
   }
 
   // MARK: - Checkout Events
@@ -1366,7 +1372,6 @@ public final class Koala {
     var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
     props["referrer_credit"] = cookieRefTag?.stringTag
-    props["current_variants"] = AppEnvironment.current.config?.abExperimentsArray
 
     // Deprecated event
     self.track(
@@ -2043,10 +2048,16 @@ public final class Koala {
   private func defaultProperties() -> [String: Any] {
     var props: [String: Any] = [:]
 
+    let enabledFeatureFlags = self.config?.features
+      .filter { k, v in v == true }
+      .keys
+      .sorted()
+
     props["manufacturer"] = "Apple"
     props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
-    props["current_variants"] = AppEnvironment.current.config?.abExperimentsArray
+    props["current_variants"] = self.config?.abExperimentsArray.sorted()
+    props["enabled_feature_flags"] = enabledFeatureFlags
     props["model"] = Koala.deviceModel
     props["distinct_id"] = self.distinctId
     props["device_fingerprint"] = self.distinctId

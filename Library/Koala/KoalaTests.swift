@@ -11,6 +11,16 @@ final class KoalaTests: TestCase {
     let config = Config.template
       |> Config.lens.countryCode .~ "GB"
       |> Config.lens.locale .~ "en"
+      |> Config.lens.abExperiments .~ [
+        "native_checkout": "experimental",
+        "other_experiment": "control"
+        ]
+      |> Config.lens.features .~ [
+        "ios_feature_something": false,
+        "ios_feature_checkout": true,
+        "ios_feature_go_rewardless": true
+
+    ]
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
     let koala = Koala(
@@ -36,6 +46,11 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(UInt(screen.bounds.width), properties?["screen_width"] as? UInt)
     XCTAssertEqual(UInt(screen.bounds.height), properties?["screen_height"] as? UInt)
 
+    XCTAssertEqual(["native_checkout[experimental]", "other_experiment[control]"],
+                   properties?["current_variants"] as? [String])
+    XCTAssertEqual(["ios_feature_checkout",
+                    "ios_feature_go_rewardless"],
+                   properties?["enabled_feature_flags"] as? [String])
     XCTAssertEqual("kickstarter_ios", properties?["mp_lib"] as? String)
     XCTAssertEqual("native", properties?["client_type"] as? String)
     XCTAssertEqual("phone", properties?["device_format"] as? String)

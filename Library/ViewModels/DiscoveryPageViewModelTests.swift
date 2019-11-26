@@ -1264,4 +1264,20 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.goToEditorialProjectListRefTag.assertValues([.editorial(.goRewardless), .editorial(.goRewardless)])
     }
   }
+
+  func testTrackEditorialHeaderTapped() {
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.discoveryEditorialCellTapped(with: "123", refTag: RefTag.editorial(.goRewardless))
+
+    XCTAssertEqual(["Editorial Card Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["editorial_go_rewardless"],
+                   self.trackingClient.properties(forKey: "refTag", as: String.self))
+
+    self.vm.inputs.discoveryEditorialCellTapped(with: "321", refTag: RefTag.editorial(.goRewardless))
+
+    XCTAssertEqual(["Editorial Card Clicked", "Editorial Card Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["editorial_go_rewardless", "editorial_go_rewardless"],
+                   self.trackingClient.properties(forKey: "refTag"))
+  }
 }
