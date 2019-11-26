@@ -172,7 +172,7 @@ private func localizedDescription(project: Project, reward: Reward) -> String {
     if reward.isNoReward {
       return goRewardlessEnabled
         ? Strings.This_holiday_season_support_a_project_for_no_reward()
-        : Strings.This_holiday_season_support_a_project_for_no_reward()
+        : Strings.Back_it_because_you_believe_in_it()
     }
 
     return reward.description
