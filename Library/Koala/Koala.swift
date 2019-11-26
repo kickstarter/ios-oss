@@ -2049,15 +2049,15 @@ public final class Koala {
     var props: [String: Any] = [:]
 
     let enabledFeatureFlags = self.config?.features
-      .filter { _, v in v == true }
+      .filter { key, value in key.starts(with: "ios_") && value }
       .keys
       .sorted()
 
     props["manufacturer"] = "Apple"
     props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
-    props["current_variants"] = self.config?.abExperimentsArray.sorted()
-    props["enabled_feature_flags"] = enabledFeatureFlags
+    props["current_variants"] = self.config?.abExperimentsArray.sorted() ?? []
+    props["enabled_feature_flags"] = enabledFeatureFlags ?? []
     props["model"] = Koala.deviceModel
     props["distinct_id"] = self.distinctId
     props["device_fingerprint"] = self.distinctId

@@ -16,6 +16,7 @@ final class KoalaTests: TestCase {
         "other_experiment": "control"
       ]
       |> Config.lens.features .~ [
+        "android_flag": true,
         "ios_feature_something": false,
         "ios_feature_checkout": true,
         "ios_feature_go_rewardless": true
