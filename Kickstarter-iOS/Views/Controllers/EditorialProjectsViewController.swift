@@ -50,9 +50,6 @@ public final class EditorialProjectsViewController: UIViewController {
       for: .touchUpInside
     )
 
-    // Will be moved to be a testable output of VC that presents this one
-    self.viewModel.inputs.configure(with: .goRewardless)
-
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -207,6 +204,12 @@ public final class EditorialProjectsViewController: UIViewController {
         constant: Styles.grid(6)
       )
     ])
+  }
+
+  // MARK: - Accessors
+
+  func configure(with tagId: DiscoveryParams.TagID) {
+    self.viewModel.inputs.configure(with: tagId)
   }
 
   // MARK: - Actions

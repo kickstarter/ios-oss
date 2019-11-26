@@ -432,24 +432,41 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
       self.updateConfigInEnvironment.assertValues([config1])
+
+      self.vm.inputs.didUpdateConfig(config1)
+      self.postNotificationName.assertValues([.ksr_configUpdated])
     }
 
     let config2 = Config.template |> Config.lens.countryCode .~ "GB"
     withEnvironment(apiService: MockService(fetchConfigResponse: config2)) {
       self.vm.inputs.applicationWillEnterForeground()
       self.updateConfigInEnvironment.assertValues([config1, config2])
+
+      self.vm.inputs.didUpdateConfig(config2)
+      self.postNotificationName.assertValues([.ksr_configUpdated, .ksr_configUpdated])
     }
 
     let config3 = Config.template |> Config.lens.countryCode .~ "CZ"
     withEnvironment(apiService: MockService(fetchConfigResponse: config3)) {
       self.vm.inputs.userSessionEnded()
       self.updateConfigInEnvironment.assertValues([config1, config2, config3])
+
+      self.vm.inputs.didUpdateConfig(config3)
+      self.postNotificationName.assertValues([.ksr_configUpdated, .ksr_configUpdated, .ksr_configUpdated])
     }
 
     let config4 = Config.template |> Config.lens.countryCode .~ "CA"
     withEnvironment(apiService: MockService(fetchConfigResponse: config4)) {
       self.vm.inputs.userSessionStarted()
       self.updateConfigInEnvironment.assertValues([config1, config2, config3, config4])
+
+      self.vm.inputs.didUpdateConfig(config4)
+      self.postNotificationName.assertValues([
+        .ksr_configUpdated,
+        .ksr_configUpdated,
+        .ksr_configUpdated,
+        .ksr_configUpdated
+      ])
     }
   }
 

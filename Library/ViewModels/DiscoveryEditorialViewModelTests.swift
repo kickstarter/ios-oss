@@ -10,8 +10,7 @@ final class DiscoveryEditorialViewModelTests: TestCase {
   private let vm: DiscoveryEditorialViewModelType = DiscoveryEditorialViewModel()
 
   private let imageName = TestObserver<String, Never>()
-  private let notifyDelegateViewTappedRefTag = TestObserver<RefTag, Never>()
-  private let notifyDelegateViewTappedTag = TestObserver<String, Never>()
+  private let notifyDelegateViewTapped = TestObserver<DiscoveryParams.TagID, Never>()
   private let subtitleText = TestObserver<String, Never>()
   private let titleText = TestObserver<String, Never>()
 
@@ -20,9 +19,7 @@ final class DiscoveryEditorialViewModelTests: TestCase {
 
     self.vm.outputs.imageName.observe(self.imageName.observer)
     self.vm.outputs.subtitleText.observe(self.subtitleText.observer)
-    self.vm.outputs.notifyDelegateViewTapped.map(first).observe(self.notifyDelegateViewTappedTag.observer)
-    self.vm.outputs.notifyDelegateViewTapped.map(second)
-      .observe(self.notifyDelegateViewTappedRefTag.observer)
+    self.vm.outputs.notifyDelegateViewTapped.observe(self.notifyDelegateViewTapped.observer)
     self.vm.outputs.titleText.observe(self.titleText.observer)
   }
 
@@ -34,39 +31,34 @@ final class DiscoveryEditorialViewModelTests: TestCase {
     self.imageName.assertDidNotEmitValue()
     self.titleText.assertDidNotEmitValue()
     self.subtitleText.assertDidNotEmitValue()
-    self.notifyDelegateViewTappedTag.assertDidNotEmitValue()
-    self.notifyDelegateViewTappedRefTag.assertDidNotEmitValue()
+    self.notifyDelegateViewTapped.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith((
-      title: "hello",
-      subtitle: "boop",
-      imageName: "image",
-      tag: "123", refTag:
-      RefTag.editorial(.goRewardless)
-    ))
+    self.vm.inputs.configureWith(
+      .init(
+        title: "hello",
+        subtitle: "boop",
+        imageName: "image",
+        tagId: .goRewardless
+      )
+    )
 
     self.imageName.assertValues(["image"])
     self.titleText.assertValues(["hello"])
     self.subtitleText.assertValues(["boop"])
-    self.notifyDelegateViewTappedTag.assertDidNotEmitValue()
-    self.notifyDelegateViewTappedRefTag.assertDidNotEmitValue()
+    self.notifyDelegateViewTapped.assertDidNotEmitValue()
   }
 
   func testEditorialCellTapped() {
-    self.vm.inputs.configureWith((
-      title: "hello",
-      subtitle: "boop",
-      imageName: "image",
-      tag: "123", refTag:
-      RefTag.editorial(.goRewardless)
-    ))
-
-    self.notifyDelegateViewTappedRefTag.assertDidNotEmitValue()
-    self.notifyDelegateViewTappedTag.assertDidNotEmitValue()
+    self.vm.inputs.configureWith(
+      .init(
+        title: "hello",
+        subtitle: "boop",
+        imageName: "image",
+        tagId: .goRewardless
+      )
+    )
 
     self.vm.inputs.editorialCellTapped()
-
-    self.notifyDelegateViewTappedRefTag.assertValues([RefTag.editorial(.goRewardless)])
-    self.notifyDelegateViewTappedTag.assertValues(["123"])
+    self.notifyDelegateViewTapped.assertValues([.goRewardless])
   }
 }

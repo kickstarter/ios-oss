@@ -13,11 +13,11 @@ public enum RefTag {
   case dashboardActivity
   case discovery
   case discoveryWithSort(DiscoveryParams.Sort)
-  case editorial(RefTag.EditorialCollection)
   case messageThread
   case profile
   case profileBacked
   case profileSaved
+  case projectCollection(DiscoveryParams.TagID)
   case projectPage
   case push
   case recommended
@@ -33,10 +33,6 @@ public enum RefTag {
   case thanks
   case unrecognized(String)
   case update
-
-  public enum EditorialCollection {
-    case goRewardless
-  }
 
   /**
    Create a RefTag value from a code string. If a ref tag cannot be matched, an `.unrecognized` tag is
@@ -122,14 +118,14 @@ public enum RefTag {
       return "discovery"
     case let .discoveryWithSort(sort):
       return "discovery" + sortRefTagSuffix(sort)
-    case let .editorial(collection):
-      return "editorial_\(collection.description)"
     case .messageThread:
       return "message_thread"
     case .profile:
       return "profile"
     case .profileBacked:
       return "profile_backed"
+    case let .projectCollection(tagId):
+      return "ios_project_collection_tag_\(tagId.rawValue)"
     case .profileSaved:
       return "profile_saved"
     case .projectPage:
@@ -167,20 +163,9 @@ public enum RefTag {
 }
 
 extension RefTag: Equatable {}
-extension RefTag.EditorialCollection: Equatable {}
-
 extension RefTag: CustomStringConvertible {
   public var description: String {
     return self.stringTag
-  }
-}
-
-extension RefTag.EditorialCollection: CustomStringConvertible {
-  public var description: String {
-    switch self {
-    case .goRewardless:
-      return "go_rewardless"
-    }
   }
 }
 
