@@ -46,9 +46,9 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     }
   }
 
-  func showEditorial(value: DiscoveryEditorialCellValue) {
+  func showEditorial(value: DiscoveryEditorialCellValue?) {
     self.set(
-      values: [value],
+      values: [value].compactMap { $0 },
       cellClass: DiscoveryEditorialCell.self,
       inSection: Section.editorial.rawValue
     )

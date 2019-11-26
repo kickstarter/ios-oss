@@ -48,6 +48,11 @@ public struct DiscoveryParams {
     staffPicks: nil, starred: nil, state: nil, tagId: nil
   )
 
+  public static let recommendedDefaults = DiscoveryParams.defaults
+    |> DiscoveryParams.lens.includePOTD .~ true
+    |> DiscoveryParams.lens.backed .~ false
+    |> DiscoveryParams.lens.recommended .~ true
+
   public var queryParams: [String: String] {
     var params: [String: String] = [:]
     params["backed"] = self.backed == true ? "1" : self.backed == false ? "-1" : nil

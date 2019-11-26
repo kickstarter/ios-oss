@@ -4,14 +4,18 @@ import Prelude
 import UIKit
 
 internal final class DiscoveryPageViewController: UITableViewController {
-  fileprivate var emptyStatesController: EmptyStatesViewController?
-  internal var preferredBackgroundColor: UIColor?
-  fileprivate let dataSource = DiscoveryProjectsDataSource()
-  private var sessionEndedObserver: Any?
-  private var sessionStartedObserver: Any?
-  private var currentEnvironmentChangedObserver: Any?
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
+
+  // MARK: - Properties
+
+  private var configUpdatedObserver: Any?
+  private var currentEnvironmentChangedObserver: Any?
+  fileprivate let dataSource = DiscoveryProjectsDataSource()
+  fileprivate var emptyStatesController: EmptyStatesViewController?
+  internal var preferredBackgroundColor: UIColor?
+  private var sessionEndedObserver: Any?
+  private var sessionStartedObserver: Any?
 
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)
@@ -53,6 +57,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
         )
       })
 
+    self.configUpdatedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_configUpdated, object: nil, queue: nil, using: { [weak self] _ in
+        self?.viewModel.inputs.configUpdated(config: AppEnvironment.current.config)
+      })
+
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: nil)
     self.emptyStatesController = emptyVC
     emptyVC.delegate = self
@@ -71,6 +80,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
     self.currentEnvironmentChangedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.configUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -168,6 +178,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] value in
         self?.dataSource.showEditorial(value: value)
+
+        self?.tableView.reloadData()
       }
 
     self.viewModel.outputs.setScrollsToTop
