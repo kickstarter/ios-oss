@@ -25,6 +25,7 @@ internal final class EditorialProjectsViewControllerTests: TestCase {
         let controller = EditorialProjectsViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
+        controller.configure(with: .goRewardless)
         controller.view.layoutIfNeeded()
         controller.discoveryPageViewController.tableView.layoutIfNeeded()
         controller.discoveryPageViewController.tableView.reloadData()
@@ -45,6 +46,7 @@ internal final class EditorialProjectsViewControllerTests: TestCase {
         let controller = EditorialProjectsViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
+        controller.configure(with: .goRewardless)
         controller.view.layoutIfNeeded()
         controller.discoveryPageViewController.tableView.layoutIfNeeded()
         controller.discoveryPageViewController.tableView.reloadData()
