@@ -222,10 +222,6 @@ private let headerViewStyle: ViewStyle = { view in
   view
     |> \.clipsToBounds .~ true
     |> \.backgroundColor .~ .ksr_trust_700
-    |> \.isAccessibilityElement .~ true
-    |> \.accessibilityTraits .~ [UIAccessibilityTraits.button]
-    |> \.accessibilityLabel %~ { _ in Strings.Back_it_because_you_believe_in_it() }
-    |> \.accessibilityHint %~ { _ in Strings.Find_projects_that_speak_to_you() }
 }
 
 private let editorialLabelStyle: LabelStyle = { label in
