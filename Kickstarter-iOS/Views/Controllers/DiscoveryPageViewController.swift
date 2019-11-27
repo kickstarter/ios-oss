@@ -101,6 +101,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.inputs.viewDidDisappear(animated: animated)
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -227,6 +233,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeValues { [weak self] tagId in
         self?.goToEditorialProjectList(using: tagId)
       }
+
+    self.viewModel.outputs.configureEditorialTableViewHeader
+      .observeForUI()
+      .observeValues { [weak self] title in
+        self?.configureHeaderView(with: title)
+    }
   }
 
   internal override func tableView(
@@ -263,6 +275,36 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let activity = self.dataSource.activityAtIndexPath(indexPath) {
       self.viewModel.inputs.tapped(activity: activity)
     }
+  }
+
+  // MARK: - Functions
+
+  private func configureHeaderView(with title: String) {
+    let label = UILabel(frame: .zero)
+      |> \.textColor .~ .ksr_trust_700
+      |> \.font .~ UIFont.ksr_subhead().bolded
+      |> \.textAlignment .~ .center
+      |> \.text .~ title
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+
+    let headerContainer = UIView(frame: .zero)
+      |> \.backgroundColor .~ .white
+
+    _ = (label, headerContainer)
+      |> ksr_addSubviewToParent()
+
+    self.tableView.tableHeaderView = headerContainer
+
+    _ = (label, headerContainer)
+      |> ksr_constrainViewToMarginsInParent()
+
+    let widthConstraint = label.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
+      |> \.priority .~ .defaultHigh
+
+    NSLayoutConstraint.activate([
+      widthConstraint,
+      label.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
+      ])
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
