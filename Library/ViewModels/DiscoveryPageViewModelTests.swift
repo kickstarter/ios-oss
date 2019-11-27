@@ -23,6 +23,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let hasLoadedProjects = TestObserver<(), Never>()
   fileprivate let hasRemovedProjects = TestObserver<Bool, Never>()
   fileprivate let hideEmptyState = TestObserver<(), Never>()
+  fileprivate let notifyDelegateContentOffsetChanged = TestObserver<CGPoint, Never>()
   fileprivate let projectsAreLoading = TestObserver<Bool, Never>()
   fileprivate let projectsAreLoadingAnimated = TestObserver<(Bool, Bool), Never>()
   fileprivate let setScrollsToTop = TestObserver<Bool, Never>()
@@ -50,6 +51,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.goToProjectPlaylist.map(second).observe(self.goToPlaylist.observer)
     self.vm.outputs.goToProjectPlaylist.map(third).observe(self.goToPlaylistRefTag.observer)
     self.vm.outputs.goToProjectUpdate.map { $0.1 }.observe(self.goToProjectUpdate.observer)
+    self.vm.outputs.notifyDelegateContentOffsetChanged
+      .observe(self.notifyDelegateContentOffsetChanged.observer)
     self.vm.outputs.projectsAreLoadingAnimated.observe(self.projectsAreLoadingAnimated.observer)
     self.vm.outputs.projectsLoaded.ignoreValues().observe(self.hasLoadedProjects.observer)
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
@@ -923,6 +926,21 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
+  func testShowOnboarding_LoggedOut_OnMagic_HasTagId() {
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    let params = DiscoveryParams.defaults
+      |> \.tagId .~ .goRewardless
+
+    self.vm.inputs.selectedFilter(params)
+
+    self.showOnboarding.assertValues([false])
+  }
+
+  // MARK: - Scroll to top
+
   func testScrollsToTop() {
     self.vm.inputs.configureWith(sort: .magic)
 
@@ -1286,6 +1304,60 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         [.projectCollection(DiscoveryParams.TagID.goRewardless)],
         "Go to the project with Go Rewardless Editorial ref tag."
       )
+    }
+  }
+
+  func testTrackEditorialHeaderTapped() {
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
+
+    XCTAssertEqual(["Editorial Card Clicked"], self.trackingClient.events)
+    XCTAssertEqual(
+      ["ios_project_collection_tag_518"],
+      self.trackingClient.properties(forKey: "refTag", as: String.self)
+    )
+
+    self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
+
+    XCTAssertEqual(["Editorial Card Clicked", "Editorial Card Clicked"], self.trackingClient.events)
+    XCTAssertEqual(
+      ["ios_project_collection_tag_518", "ios_project_collection_tag_518"],
+      self.trackingClient.properties(forKey: "refTag")
+    )
+  }
+
+  func testNotifyDelegateContentOffsetChanged() {
+    self.notifyDelegateContentOffsetChanged.assertDidNotEmitValue()
+
+    let discoveryEnvelope = .template
+      |> DiscoveryEnvelope.lens.projects .~ (
+        (0...2).map { id in .template |> Project.lens.id .~ (100 + id) }
+      )
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
+      self.vm.inputs.scrollViewDidScroll(toContentOffset: .init(x: 0, y: 100))
+
+      self.notifyDelegateContentOffsetChanged.assertValues(
+        [],
+        "Does not emit while projects are loading"
+      )
+
+      self.scheduler.advance()
+
+      self.notifyDelegateContentOffsetChanged.assertValues([.init(x: 0, y: 100)])
+
+      self.vm.inputs.scrollViewDidScroll(toContentOffset: .init(x: 0, y: 250))
+
+      self.notifyDelegateContentOffsetChanged.assertValues([
+        .init(x: 0, y: 100),
+        .init(x: 0, y: 250)
+      ])
     }
   }
 }

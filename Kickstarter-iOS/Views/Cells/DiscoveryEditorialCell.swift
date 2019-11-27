@@ -95,7 +95,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
     _ = self.editorialTitleLabel
       |> editorialLabelStyle
-      |> \.font .~ UIFont.ksr_title2().bolded
+      |> \.font .~ UIFont.ksr_title3().bolded
 
     _ = self.editorialSubtitleLabel
       |> editorialLabelStyle

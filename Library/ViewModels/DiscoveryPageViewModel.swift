@@ -19,6 +19,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the user pulls tableView to refresh
   func pulledToRefresh()
 
+  /// Call when the scrollViewDidScroll with its current contentOffset
+  func scrollViewDidScroll(toContentOffset offset: CGPoint)
+
   /// Call when the filter is changed.
   func selectedFilter(_ params: DiscoveryParams)
 
@@ -79,6 +82,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits when we should dismiss the empty state controller.
   var hideEmptyState: Signal<(), Never> { get }
+
+  /// Emits with the current contentOffset.
+  var notifyDelegateContentOffsetChanged: Signal<CGPoint, Never> { get }
 
   /// Emits a list of projects that should be shown, and the corresponding filter request params
   var projectsLoaded: Signal<([Project], DiscoveryParams?), Never> { get }
@@ -287,8 +293,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     )
     .skipRepeats(==)
 
-    self.showOnboarding = Signal.combineLatest(currentUser, self.sortProperty.signal.skipNil())
-      .map { $0 == nil && $1 == .magic }
+    self.showOnboarding = Signal.combineLatest(currentUser, paramsChanged)
+      .map { user, params in user == nil && params.sort == .magic && params.tagId == nil }
       .skipRepeats()
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
@@ -353,6 +359,19 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
+
+    self.discoveryEditorialCellTappedWithValueProperty.signal
+      .skipNil()
+      .observeValues { tagId in
+        AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: RefTag.projectCollection(tagId))
+      }
+
+    self.notifyDelegateContentOffsetChanged = Signal.combineLatest(
+      self.scrollViewDidScrollToContentOffsetProperty.signal.skipNil(),
+      self.projectsAreLoadingAnimated.map(first)
+    )
+    .filter(second >>> isFalse)
+    .map(first)
   }
 
   fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)
@@ -379,6 +398,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   fileprivate let sortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
   public func configureWith(sort: DiscoveryParams.Sort) {
     self.sortProperty.value = sort
+  }
+
+  private let scrollViewDidScrollToContentOffsetProperty = MutableProperty<CGPoint?>(nil)
+  public func scrollViewDidScroll(toContentOffset offset: CGPoint) {
+    self.scrollViewDidScrollToContentOffsetProperty.value = offset
   }
 
   fileprivate let selectedFilterProperty = MutableProperty<DiscoveryParams?>(nil)
@@ -439,6 +463,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>
   public let goToProjectUpdate: Signal<(Project, Update), Never>
   public let hideEmptyState: Signal<Void, Never>
+  public let notifyDelegateContentOffsetChanged: Signal<CGPoint, Never>
   public let projectsLoaded: Signal<([Project], DiscoveryParams?), Never>
   public let projectsAreLoadingAnimated: Signal<(Bool, Bool), Never>
   public let setScrollsToTop: Signal<Bool, Never>
