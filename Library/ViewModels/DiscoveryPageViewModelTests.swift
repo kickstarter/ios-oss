@@ -398,6 +398,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+
       self.scheduler.advance()
 
       self.activitiesForSample.assertValues([[activity1]], "Activity sample is shown.")
@@ -429,6 +431,24 @@ internal final class DiscoveryPageViewModelTests: TestCase {
           "New activity sample is shown."
         )
       }
+    }
+  }
+
+  func testShowActivitySample_HasTagId() {
+    let activity = .template
+      |> Activity.lens.id .~ 111
+
+    AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+
+    withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity])) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.tagId .~ .goRewardless)
+
+      self.scheduler.advance()
+
+      self.activitiesForSample.assertValues([], "No activities shown for editorial")
     }
   }
 

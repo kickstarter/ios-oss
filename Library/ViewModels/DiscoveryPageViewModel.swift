@@ -226,6 +226,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     )
 
     let fetchActivityEvent = self.viewDidAppearProperty.signal
+      .combineLatest(with: paramsChanged)
+      .filter { _, params in params.tagId == nil }
       .filter { _ in AppEnvironment.current.currentUser != nil }
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchActivities(count: 1)
