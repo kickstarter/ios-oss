@@ -601,7 +601,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
+      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▸"])
       self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
       self.showEditorialHeaderTagId.assertValues([.goRewardless])
     }
@@ -690,7 +690,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
+      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▸"])
       self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
       self.showEditorialHeaderTagId.assertValues([.goRewardless])
     }
@@ -755,7 +755,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
+      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▸"])
       self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
       self.showEditorialHeaderTagId.assertValues([.goRewardless])
 
@@ -767,7 +767,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         nil
       ])
       self.showEditorialHeaderSubtitle.assertValues([
-        "Find projects that speak to you ▶",
+        "Find projects that speak to you ▸",
         nil
       ])
       self.showEditorialHeaderImageName.assertValues([
@@ -784,9 +784,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Back it because you believe in it."
       ])
       self.showEditorialHeaderSubtitle.assertValues([
-        "Find projects that speak to you ▶",
+        "Find projects that speak to you ▸",
         nil,
-        "Find projects that speak to you ▶"
+        "Find projects that speak to you ▸"
       ])
       self.showEditorialHeaderImageName.assertValues([
         "go-rewardless-home",
@@ -814,7 +814,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
+      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▸"])
       self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
       self.showEditorialHeaderTagId.assertValues([.goRewardless])
 
@@ -832,7 +832,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
           nil
         ])
         self.showEditorialHeaderSubtitle.assertValues([
-          "Find projects that speak to you ▶",
+          "Find projects that speak to you ▸",
           nil
         ])
         self.showEditorialHeaderImageName.assertValues([
@@ -1251,7 +1251,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▶"])
+      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▸"])
       self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
       self.showEditorialHeaderTagId.assertValues([.goRewardless])
       self.goToEditorialProjectList.assertDidNotEmitValue()
