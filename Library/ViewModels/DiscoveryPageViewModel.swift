@@ -353,6 +353,12 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
 
+    self.discoveryEditorialCellTappedWithValueProperty.signal
+      .skipNil()
+      .observeValues { tagId in
+        AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: RefTag.projectCollection(tagId))
+      }
+
     self.notifyDelegateContentOffsetChanged = Signal.combineLatest(
       self.scrollViewDidScrollToContentOffsetProperty.signal.skipNil(),
       self.projectsAreLoadingAnimated.map(first)

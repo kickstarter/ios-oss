@@ -1262,6 +1262,26 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
+  func testTrackEditorialHeaderTapped() {
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
+
+    XCTAssertEqual(["Editorial Card Clicked"], self.trackingClient.events)
+    XCTAssertEqual(
+      ["ios_project_collection_tag_518"],
+      self.trackingClient.properties(forKey: "refTag", as: String.self)
+    )
+
+    self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
+
+    XCTAssertEqual(["Editorial Card Clicked", "Editorial Card Clicked"], self.trackingClient.events)
+    XCTAssertEqual(
+      ["ios_project_collection_tag_518", "ios_project_collection_tag_518"],
+      self.trackingClient.properties(forKey: "refTag")
+    )
+  }
+
   func testNotifyDelegateContentOffsetChanged() {
     self.notifyDelegateContentOffsetChanged.assertDidNotEmitValue()
 
