@@ -60,7 +60,7 @@ public final class EditorialProjectsViewController: UIViewController {
     let currentTableViewInsets = self.discoveryPageViewController.tableView.contentInset
 
     self.discoveryPageViewController.tableView.contentInset = currentTableViewInsets
-      |> UIEdgeInsets.lens.top .~ (self.headerView.frame.height - self.view.safeAreaInsets.top)
+      |> UIEdgeInsets.lens.top .~ self.headerView.frame.height
 
     self.discoveryPageViewController.tableView.scrollIndicatorInsets =
       self.discoveryPageViewController.tableView.contentInset
