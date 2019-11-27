@@ -56,7 +56,18 @@ final class EditorialProjectsViewModelTests: TestCase {
     self.vm.inputs.configure(with: .goRewardless)
     self.vm.inputs.viewDidLoad()
 
-    self.imageName.assertValues(["go-rewardless-home"])
+    self.imageName.assertValues(["go-rewardless-modal"])
+  }
+
+  func testImageName_GoRewardless_iPad() {
+    self.imageName.assertDidNotEmitValue()
+
+    withEnvironment(device: MockDevice(userInterfaceIdiom: .pad)) {
+      self.vm.inputs.configure(with: .goRewardless)
+      self.vm.inputs.viewDidLoad()
+
+      self.imageName.assertValues(["go-rewardless-modal-large"])
+    }
   }
 
   func testTitleLabel_GoRewardless() {
