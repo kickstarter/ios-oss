@@ -103,7 +103,11 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
 
 private func editorialImageName(for tagId: DiscoveryParams.TagID) -> String {
   switch tagId {
-  case .goRewardless: return "go-rewardless-home"
+  case .goRewardless:
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      return "go-rewardless-modal-large"
+    }
+    return "go-rewardless-modal"
   }
 }
 

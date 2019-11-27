@@ -95,7 +95,11 @@ public final class EditorialProjectsViewController: UIViewController {
 
     _ = self.editorialTitleLabel
       |> editorialLabelStyle
-      |> \.font .~ UIFont.ksr_title3().bolded
+      |> \.font %~~ { _, label in
+        label.traitCollection.isRegularRegular
+          ? UIFont.ksr_title3(size: 30).bolded
+          : UIFont.ksr_title3().bolded
+      }
 
     _ = self.closeButton
       |> UIButton.lens.title(for: .normal) .~ nil
