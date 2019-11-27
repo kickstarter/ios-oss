@@ -3,6 +3,13 @@ import Library
 import Prelude
 import UIKit
 
+protocol DiscoveryPageViewControllerDelegate: AnyObject {
+  func discoverPageViewController(
+    _ viewController: DiscoveryPageViewController,
+    contentOffsetDidChangeTo offset: CGPoint
+  )
+}
+
 internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
@@ -12,6 +19,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   private var configUpdatedObserver: Any?
   private var currentEnvironmentChangedObserver: Any?
   fileprivate let dataSource = DiscoveryProjectsDataSource()
+  public weak var delegate: DiscoveryPageViewControllerDelegate?
   fileprivate var emptyStatesController: EmptyStatesViewController?
   internal var preferredBackgroundColor: UIColor?
   private var sessionEndedObserver: Any?
@@ -227,6 +235,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeValues { [weak self] tagId in
         self?.goToEditorialProjectList(using: tagId)
       }
+
+    self.viewModel.outputs.notifyDelegateContentOffsetChanged
+      .observeForUI()
+      .observeValues { [weak self] offset in
+        guard let self = self else { return }
+
+        self.delegate?.discoverPageViewController(self, contentOffsetDidChangeTo: offset)
+      }
   }
 
   internal override func tableView(
@@ -345,6 +361,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   @objc private func pulledToRefresh() {
     self.viewModel.inputs.pulledToRefresh()
+  }
+
+  override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    self.viewModel.inputs.scrollViewDidScroll(toContentOffset: scrollView.contentOffset)
   }
 }
 

@@ -14,6 +14,7 @@ public final class EditorialProjectsViewController: UIViewController {
   internal lazy var discoveryPageViewController: DiscoveryPageViewController = {
     DiscoveryPageViewController.configuredWith(sort: .magic)
       |> \.preferredBackgroundColor .~ .clear
+      |> \.delegate .~ self
   }()
 
   private lazy var editorialImageView = {
@@ -68,7 +69,7 @@ public final class EditorialProjectsViewController: UIViewController {
   }
 
   public override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
+    return self.viewModel.outputs.preferredStatusBarStyle()
   }
 
   // MARK: - Styles
@@ -94,11 +95,15 @@ public final class EditorialProjectsViewController: UIViewController {
 
     _ = self.editorialTitleLabel
       |> editorialLabelStyle
-      |> \.font .~ UIFont.ksr_title3().bolded
+      |> \.font %~~ { _, label in
+        label.traitCollection.isRegularRegular
+          ? UIFont.ksr_title3(size: 30).bolded
+          : UIFont.ksr_title3().bolded
+      }
 
     _ = self.closeButton
       |> UIButton.lens.title(for: .normal) .~ nil
-      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross", tintColor: .white)
+      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in
         Strings.dashboard_switcher_accessibility_label_closes_list_of_projects()
@@ -137,7 +142,20 @@ public final class EditorialProjectsViewController: UIViewController {
           }
       }
 
+    self.viewModel.outputs.setNeedsStatusBarAppearanceUpdate
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.setNeedsStatusBarAppearanceUpdate()
+      }
+
+    self.viewModel.outputs.applyViewTransformsWithYOffset
+      .observeForControllerAction()
+      .observeValues { [weak self] y in
+        self?.applyViewTransforms(withYOffset: y)
+      }
+
     self.editorialTitleLabel.rac.text = self.viewModel.outputs.titleLabelText
+    self.closeButton.rac.tintColor = self.viewModel.outputs.closeButtonImageTintColor
   }
 
   // MARK: - Layout
@@ -216,6 +234,29 @@ public final class EditorialProjectsViewController: UIViewController {
 
   @objc private func closeButtonTapped() {
     self.viewModel.inputs.closeButtonTapped()
+  }
+
+  private func applyViewTransforms(withYOffset y: CGFloat) {
+    let normalizedY = abs(y) - self.headerView.frame.height
+
+    let imageViewScale = max(1, 1 + (normalizedY * 0.0025))
+    let labelScale = min(1.25, 1 + (normalizedY * 0.00015))
+    let labelAlpha = 1 - (-normalizedY * 0.005)
+
+    self.editorialImageView.transform = CGAffineTransform(scaleX: imageViewScale, y: imageViewScale)
+    self.editorialTitleLabel.transform = CGAffineTransform(scaleX: labelScale, y: labelScale)
+    self.editorialTitleLabel.alpha = labelAlpha
+  }
+}
+
+// MARK: - DiscoveryPageViewControllerDelegate
+
+extension EditorialProjectsViewController: DiscoveryPageViewControllerDelegate {
+  func discoverPageViewController(
+    _: DiscoveryPageViewController,
+    contentOffsetDidChangeTo offset: CGPoint
+  ) {
+    self.viewModel.inputs.discoveryPageViewControllerContentOffsetChanged(to: offset)
   }
 }
 
