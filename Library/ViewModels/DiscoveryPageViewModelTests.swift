@@ -893,6 +893,21 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
+  func testShowOnboarding_LoggedOut_OnMagic_HasTagId() {
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    let params = DiscoveryParams.defaults
+      |> \.tagId .~ .goRewardless
+
+    self.vm.inputs.selectedFilter(params)
+
+    self.showOnboarding.assertValues([false])
+  }
+
+  // MARK: - Scroll to top
+
   func testScrollsToTop() {
     self.vm.inputs.configureWith(sort: .magic)
 
