@@ -568,8 +568,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.vm.inputs.selectedFilter(params)
 
-    self.configureEditorialTableViewHeader.assertValues(["These projects could use your support."],
-                                                        "Table view header is shown")
+    self.configureEditorialTableViewHeader.assertValues(
+      ["These projects could use your support."],
+      "Table view header is shown"
+    )
   }
 
   func testConfigureEditorialTableViewHeader_NoTagId() {

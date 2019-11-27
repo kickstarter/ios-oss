@@ -120,7 +120,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
         |> \.view.backgroundColor .~ preferredBackgroundColor
     }
 
-    _ = headerLabel
+    _ = self.headerLabel
       |> headerLabelStyle
   }
 
@@ -243,7 +243,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] title in
         self?.configureHeaderView(with: title)
-    }
+      }
   }
 
   internal override func tableView(
@@ -290,11 +290,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
       |> \.accessibilityLabel .~ title
       |> \.accessibilityTraits .~ .header
       |> \.isAccessibilityElement .~ true
-      |> \.layoutMargins %~~ { _, view in
+      |> \.layoutMargins %~~ { _, _ in
         self.view.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(4), left: Styles.grid(30), bottom: Styles.grid(2), right: Styles.grid(30))
           : .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
-    }
+      }
 
     _ = self.headerLabel
       |> \.text .~ title
