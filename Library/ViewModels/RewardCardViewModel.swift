@@ -176,7 +176,8 @@ private func localizedDescription(project: Project, reward: Reward) -> String {
   }
 
   if reward.isNoReward {
-    return userIsBacking(reward: reward, inProject: project) ? Strings.Thanks_for_bringing_this_project_one_step_closer_to_becoming_a_reality()
+    return userIsBacking(reward: reward, inProject: project)
+      ? Strings.Thanks_for_bringing_this_project_one_step_closer_to_becoming_a_reality()
       : Strings.Back_it_because_you_believe_in_it()
   }
 
