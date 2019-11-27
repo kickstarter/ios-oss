@@ -18,7 +18,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   private var configUpdatedObserver: Any?
   private var currentEnvironmentChangedObserver: Any?
-  public var contentOffsetChanged: ((CGPoint) -> ())?
   fileprivate let dataSource = DiscoveryProjectsDataSource()
   public weak var delegate: DiscoveryPageViewControllerDelegate?
   fileprivate var emptyStatesController: EmptyStatesViewController?
