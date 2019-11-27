@@ -6,12 +6,12 @@ import ReactiveSwift
 public protocol EditorialProjectsViewModelInputs {
   func closeButtonTapped()
   func configure(with tagId: DiscoveryParams.TagID)
-  func contentOffsetChanged(to offset: CGPoint)
+  func discoveryPageViewControllerContentOffsetChanged(to offset: CGPoint)
   func viewDidLoad()
 }
 
 public protocol EditorialProjectsViewModelOutputs {
-  var applyViewTransformsWithY: Signal<CGFloat, Never> { get }
+  var applyViewTransformsWithYOffset: Signal<CGFloat, Never> { get }
   var configureDiscoveryPageViewControllerWithParams: Signal<DiscoveryParams, Never> { get }
   var closeButtonImageTintColor: Signal<UIColor, Never> { get }
   var dismiss: Signal<(), Never> { get }
@@ -43,17 +43,23 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
 
     self.dismiss = self.closeButtonTappedProperty.signal
 
-    self.preferredStatusBarStyleProperty <~ self.contentOffsetChangedProperty.signal
+    let needsLightTreatment = self.discoveryPageViewControllerContentOffsetChangedProperty.signal
       .skipNil()
-      .map { offset in offset.y < 0 ? .lightContent : .default }
+      .map { offset in offset.y < 0 }
+
+    self.preferredStatusBarStyleProperty <~ needsLightTreatment
+      .map { $0 ? .lightContent : .default }
       .skipRepeats()
 
-    self.closeButtonImageTintColor = self.preferredStatusBarStyleProperty.signal
-      .map { $0 == .lightContent ? .white : .ksr_soft_black }
+    self.closeButtonImageTintColor = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(.white),
+      needsLightTreatment.map { $0 ? .white : .ksr_soft_black }
+    )
+    .skipRepeats()
 
     self.setNeedsStatusBarAppearanceUpdate = self.preferredStatusBarStyleProperty.signal.ignoreValues()
 
-    self.applyViewTransformsWithY = self.contentOffsetChangedProperty.signal
+    self.applyViewTransformsWithYOffset = self.discoveryPageViewControllerContentOffsetChangedProperty.signal
       .skipNil()
       .map(\.y)
   }
@@ -68,9 +74,9 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
     self.configureWithTagIdProperty.value = tagId
   }
 
-  private let contentOffsetChangedProperty = MutableProperty<CGPoint?>(nil)
-  public func contentOffsetChanged(to offset: CGPoint) {
-    self.contentOffsetChangedProperty.value = offset
+  private let discoveryPageViewControllerContentOffsetChangedProperty = MutableProperty<CGPoint?>(nil)
+  public func discoveryPageViewControllerContentOffsetChanged(to offset: CGPoint) {
+    self.discoveryPageViewControllerContentOffsetChangedProperty.value = offset
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -83,7 +89,7 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
     return self.preferredStatusBarStyleProperty.value
   }
 
-  public let applyViewTransformsWithY: Signal<CGFloat, Never>
+  public let applyViewTransformsWithYOffset: Signal<CGFloat, Never>
   public let configureDiscoveryPageViewControllerWithParams: Signal<DiscoveryParams, Never>
   public let closeButtonImageTintColor: Signal<UIColor, Never>
   public let dismiss: Signal<(), Never>
@@ -97,7 +103,11 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
 
 private func editorialImageName(for tagId: DiscoveryParams.TagID) -> String {
   switch tagId {
-  case .goRewardless: return "go-rewardless-home"
+  case .goRewardless:
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      return "go-rewardless-modal-large"
+    }
+    return "go-rewardless-modal"
   }
 }
 

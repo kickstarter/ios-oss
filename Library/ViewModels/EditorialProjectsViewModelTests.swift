@@ -9,7 +9,7 @@ import XCTest
 final class EditorialProjectsViewModelTests: TestCase {
   private let vm: EditorialProjectsViewModelType = EditorialProjectsViewModel()
 
-  private let applyViewTransformsWithY = TestObserver<CGFloat, Never>()
+  private let applyViewTransformsWithYOffset = TestObserver<CGFloat, Never>()
   private let configureDiscoveryPageViewControllerWithParams = TestObserver<DiscoveryParams, Never>()
   private let closeButtonImageTintColor = TestObserver<UIColor, Never>()
   private let dismiss = TestObserver<(), Never>()
@@ -20,7 +20,7 @@ final class EditorialProjectsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.applyViewTransformsWithY.observe(self.applyViewTransformsWithY.observer)
+    self.vm.outputs.applyViewTransformsWithYOffset.observe(self.applyViewTransformsWithYOffset.observer)
     self.vm.outputs.configureDiscoveryPageViewControllerWithParams
       .observe(self.configureDiscoveryPageViewControllerWithParams.observer)
     self.vm.outputs.closeButtonImageTintColor.observe(self.closeButtonImageTintColor.observer)
@@ -56,7 +56,18 @@ final class EditorialProjectsViewModelTests: TestCase {
     self.vm.inputs.configure(with: .goRewardless)
     self.vm.inputs.viewDidLoad()
 
-    self.imageName.assertValues(["go-rewardless-home"])
+    self.imageName.assertValues(["go-rewardless-modal"])
+  }
+
+  func testImageName_GoRewardless_iPad() {
+    self.imageName.assertDidNotEmitValue()
+
+    withEnvironment(device: MockDevice(userInterfaceIdiom: .pad)) {
+      self.vm.inputs.configure(with: .goRewardless)
+      self.vm.inputs.viewDidLoad()
+
+      self.imageName.assertValues(["go-rewardless-modal-large"])
+    }
   }
 
   func testTitleLabel_GoRewardless() {
@@ -76,29 +87,29 @@ final class EditorialProjectsViewModelTests: TestCase {
     self.vm.inputs.configure(with: .goRewardless)
     self.vm.inputs.viewDidLoad()
 
-    self.closeButtonImageTintColor.assertDidNotEmitValue()
+    self.closeButtonImageTintColor.assertValues([.white])
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: -1))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: -1))
 
     self.closeButtonImageTintColor.assertValues([.white])
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 0))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 0))
 
     self.closeButtonImageTintColor.assertValues([.white, .ksr_soft_black])
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 1))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 1))
 
     self.closeButtonImageTintColor.assertValues([.white, .ksr_soft_black])
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 100))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 100))
 
     self.closeButtonImageTintColor.assertValues([.white, .ksr_soft_black])
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: -5))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: -5))
 
     self.closeButtonImageTintColor.assertValues([.white, .ksr_soft_black, .white])
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: -100))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: -100))
 
     self.closeButtonImageTintColor.assertValues([.white, .ksr_soft_black, .white])
   }
@@ -113,57 +124,57 @@ final class EditorialProjectsViewModelTests: TestCase {
     self.setNeedsStatusBarAppearanceUpdate.assertDidNotEmitValue()
     XCTAssertEqual(.lightContent, self.vm.outputs.preferredStatusBarStyle())
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: -1))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: -1))
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(1)
     XCTAssertEqual(.lightContent, self.vm.outputs.preferredStatusBarStyle())
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 0))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 0))
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(2)
     XCTAssertEqual(.default, self.vm.outputs.preferredStatusBarStyle())
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 1))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 1))
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(2)
     XCTAssertEqual(.default, self.vm.outputs.preferredStatusBarStyle())
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 100))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 100))
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(2)
     XCTAssertEqual(.default, self.vm.outputs.preferredStatusBarStyle())
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: -5))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: -5))
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(3)
     XCTAssertEqual(.lightContent, self.vm.outputs.preferredStatusBarStyle())
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: -100))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: -100))
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(3)
     XCTAssertEqual(.lightContent, self.vm.outputs.preferredStatusBarStyle())
   }
 
-  func testApplyViewTransformsWithY() {
-    self.applyViewTransformsWithY.assertDidNotEmitValue()
+  func testApplyViewTransformsWithYOffset() {
+    self.applyViewTransformsWithYOffset.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: .goRewardless)
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 100))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 100))
 
-    self.applyViewTransformsWithY.assertValues([100])
+    self.applyViewTransformsWithYOffset.assertValues([100])
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 250))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 250))
 
-    self.applyViewTransformsWithY.assertValues([100, 250])
+    self.applyViewTransformsWithYOffset.assertValues([100, 250])
 
-    self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 350))
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 350))
 
-    self.applyViewTransformsWithY.assertValues([100, 250, 350])
+    self.applyViewTransformsWithYOffset.assertValues([100, 250, 350])
 
-    self.vm.inputs.contentOffsetChanged(to: .zero)
+    self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .zero)
 
-    self.applyViewTransformsWithY.assertValues([100, 250, 350, 0])
+    self.applyViewTransformsWithYOffset.assertValues([100, 250, 350, 0])
   }
 }
