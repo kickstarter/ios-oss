@@ -21,6 +21,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate let dataSource = DiscoveryProjectsDataSource()
   public weak var delegate: DiscoveryPageViewControllerDelegate?
   fileprivate var emptyStatesController: EmptyStatesViewController?
+  private lazy var headerLabel = { UILabel(frame: .zero) }()
   internal var preferredBackgroundColor: UIColor?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
@@ -109,6 +110,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.inputs.viewDidDisappear(animated: animated)
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -119,6 +126,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
       _ = self
         |> \.view.backgroundColor .~ preferredBackgroundColor
     }
+
+    _ = self.headerLabel
+      |> headerLabelStyle
   }
 
   internal override func bindViewModel() {
@@ -243,6 +253,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
         self.delegate?.discoverPageViewController(self, contentOffsetDidChangeTo: offset)
       }
+
+    self.viewModel.outputs.configureEditorialTableViewHeader
+      .observeForUI()
+      .observeValues { [weak self] title in
+        self?.configureHeaderView(with: title)
+      }
   }
 
   internal override func tableView(
@@ -279,6 +295,37 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let activity = self.dataSource.activityAtIndexPath(indexPath) {
       self.viewModel.inputs.tapped(activity: activity)
     }
+  }
+
+  // MARK: - Functions
+
+  private func configureHeaderView(with title: String) {
+    let headerContainer = UIView(frame: .zero)
+      |> \.backgroundColor .~ .white
+      |> \.accessibilityLabel .~ title
+      |> \.accessibilityTraits .~ .header
+      |> \.isAccessibilityElement .~ true
+      |> \.layoutMargins %~~ { _, _ in
+        self.view.traitCollection.isRegularRegular
+          ? .init(top: Styles.grid(4), left: Styles.grid(30), bottom: Styles.grid(2), right: Styles.grid(30))
+          : .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+      }
+
+    _ = self.headerLabel
+      |> \.text .~ title
+
+    _ = (self.headerLabel, headerContainer)
+      |> ksr_addSubviewToParent()
+
+    self.tableView.tableHeaderView = headerContainer
+
+    _ = (self.headerLabel, headerContainer)
+      |> ksr_constrainViewToMarginsInParent()
+
+    let widthConstraint = self.headerLabel.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
+      |> \.priority .~ .defaultHigh
+
+    NSLayoutConstraint.activate([widthConstraint])
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
@@ -463,4 +510,16 @@ private extension UIView {
       UIView.performWithoutAnimation { closure() }
     }
   }
+}
+
+// MARK: - Styles
+
+private let headerLabelStyle: LabelStyle = { label in
+  label
+    |> \.textColor .~ UIColor.ksr_trust_700
+    |> \.font .~ UIFont.ksr_subhead().bolded
+    |> \.lineBreakMode .~ .byWordWrapping
+    |> \.numberOfLines .~ 0
+    |> \.textAlignment .~ .center
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }

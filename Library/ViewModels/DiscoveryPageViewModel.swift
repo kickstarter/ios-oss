@@ -66,6 +66,8 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Hopefully in the future we can remove this when we can resolve postcard display issues.
   var asyncReloadData: Signal<Void, Never> { get }
 
+  var configureEditorialTableViewHeader: Signal<String, Never> { get }
+
   /// Emits a project and ref tag that we should go to from the activity sample.
   var goToActivityProject: Signal<(Project, RefTag), Never> { get }
 
@@ -313,17 +315,22 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         AppEnvironment.current.koala.trackDiscoveryPullToRefresh()
       }
 
+    self.configureEditorialTableViewHeader = paramsChanged
+      .filter { $0.tagId == .goRewardless }
+      .map { _ in Strings.These_projects_could_use_your_support() }
+
     // MARK: - Editorial Header
 
     let filtersUpdated = self.sortProperty.signal.skipNil()
       .takePairWhen(self.selectedFilterProperty.signal.skipNil().skipRepeats())
 
     let editorialHeaderShouldShow = filtersUpdated
-      .filter { sort, _ in
-        sort == .magic
-      }
-      .map { sort, filterParams -> Bool in
-        sort == .magic && filterParams == DiscoveryViewModel.initialParams()
+      .filterMap { sort, filterParams -> Bool? in
+        if sort != .magic {
+          return nil
+        }
+
+        return sort == .magic && filterParams == DiscoveryViewModel.initialParams()
       }
 
     let cachedFeatureFlagValue = self.sortProperty.signal.skipNil()
@@ -450,6 +457,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
+  public let configureEditorialTableViewHeader: Signal<String, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
   public let goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>

@@ -102,7 +102,6 @@ public final class EditorialProjectsViewController: UIViewController {
       }
 
     _ = self.closeButton
-      |> UIButton.lens.title(for: .normal) .~ nil
       |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in
