@@ -14,6 +14,7 @@ public final class EditorialProjectsViewController: UIViewController {
   internal lazy var discoveryPageViewController: DiscoveryPageViewController = {
     DiscoveryPageViewController.configuredWith(sort: .magic)
       |> \.preferredBackgroundColor .~ .clear
+      |> \.delegate .~ self
   }()
 
   private lazy var editorialImageView = {
@@ -49,10 +50,6 @@ public final class EditorialProjectsViewController: UIViewController {
       action: #selector(EditorialProjectsViewController.closeButtonTapped),
       for: .touchUpInside
     )
-
-    self.discoveryPageViewController.contentOffsetChanged = { offset in
-      self.viewModel.inputs.contentOffsetChanged(to: offset)
-    }
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -245,6 +242,17 @@ public final class EditorialProjectsViewController: UIViewController {
     self.editorialImageView.transform = CGAffineTransform(scaleX: imageViewScale, y: imageViewScale)
     self.editorialTitleLabel.transform = CGAffineTransform(scaleX: labelScale, y: labelScale)
     self.editorialTitleLabel.alpha = labelAlpha
+  }
+}
+
+// MARK: - DiscoveryPageViewControllerDelegate
+
+extension EditorialProjectsViewController: DiscoveryPageViewControllerDelegate {
+  func discoverPageViewController(
+    _: DiscoveryPageViewController,
+    contentOffsetDidChangeTo offset: CGPoint
+  ) {
+    self.viewModel.inputs.discoveryPageViewControllerContentOffsetChanged(to: offset)
   }
 }
 

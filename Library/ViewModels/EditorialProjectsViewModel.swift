@@ -6,7 +6,7 @@ import ReactiveSwift
 public protocol EditorialProjectsViewModelInputs {
   func closeButtonTapped()
   func configure(with tagId: DiscoveryParams.TagID)
-  func contentOffsetChanged(to offset: CGPoint)
+  func discoveryPageViewControllerContentOffsetChanged(to offset: CGPoint)
   func viewDidLoad()
 }
 
@@ -43,7 +43,7 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
 
     self.dismiss = self.closeButtonTappedProperty.signal
 
-    let needsLightTreatment = self.contentOffsetChangedProperty.signal
+    let needsLightTreatment = self.discoveryPageViewControllerContentOffsetChangedProperty.signal
       .skipNil()
       .map { offset in offset.y < 0 }
 
@@ -51,13 +51,15 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
       .map { $0 ? .lightContent : .default }
       .skipRepeats()
 
-    self.closeButtonImageTintColor = needsLightTreatment
-      .map { $0 ? .white : .ksr_soft_black }
-      .skipRepeats()
+    self.closeButtonImageTintColor = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(.white),
+      needsLightTreatment.map { $0 ? .white : .ksr_soft_black }
+    )
+    .skipRepeats()
 
     self.setNeedsStatusBarAppearanceUpdate = self.preferredStatusBarStyleProperty.signal.ignoreValues()
 
-    self.applyViewTransformsWithYOffset = self.contentOffsetChangedProperty.signal
+    self.applyViewTransformsWithYOffset = self.discoveryPageViewControllerContentOffsetChangedProperty.signal
       .skipNil()
       .map(\.y)
   }
@@ -72,9 +74,9 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
     self.configureWithTagIdProperty.value = tagId
   }
 
-  private let contentOffsetChangedProperty = MutableProperty<CGPoint?>(nil)
-  public func contentOffsetChanged(to offset: CGPoint) {
-    self.contentOffsetChangedProperty.value = offset
+  private let discoveryPageViewControllerContentOffsetChangedProperty = MutableProperty<CGPoint?>(nil)
+  public func discoveryPageViewControllerContentOffsetChanged(to offset: CGPoint) {
+    self.discoveryPageViewControllerContentOffsetChangedProperty.value = offset
   }
 
   private let viewDidLoadProperty = MutableProperty(())
