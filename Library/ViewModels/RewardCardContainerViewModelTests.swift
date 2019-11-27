@@ -102,7 +102,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
-      self.configureNoRewardGradientView.assertDidNotEmitValue()
+      self.configureNoRewardGradientView.assertValueCount(emissionCount)
       self.rewardCardViewBackgroundColor.assertValueCount(emissionCount)
     }
 
@@ -111,7 +111,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
-    self.configureNoRewardGradientView.assertDidNotEmitValue()
+    self.configureNoRewardGradientView.assertValueCount(self.allRewards.count)
     self.rewardCardViewBackgroundColor.assertValueCount(self.allRewards.count)
 
     self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
@@ -128,6 +128,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       "Selected",
       "Selected"
     ])
+    self.configureNoRewardGradientView.assertValues([false, false, false, false, false, false, false, false])
     self.rewardCardViewBackgroundColor.assertValues([
       UIColor.white,
       UIColor.white,
@@ -170,6 +171,8 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
+      self.configureNoRewardGradientView.assertValueCount(emissionCount)
+      self.rewardCardViewBackgroundColor.assertValueCount(emissionCount)
     }
 
     self.gradientViewHidden.assertValueCount(self.allRewards.count)
@@ -177,7 +180,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
-    self.configureNoRewardGradientView.assertDidNotEmitValue()
+    self.configureNoRewardGradientView.assertValueCount(self.allRewards.count)
     self.rewardCardViewBackgroundColor.assertValueCount(self.allRewards.count)
 
     self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
@@ -194,6 +197,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       "No longer available",
       "Select"
     ])
+    self.configureNoRewardGradientView.assertValues([false, false, false, false, false, false, false, false])
     self.rewardCardViewBackgroundColor.assertValues([
       UIColor.white,
       UIColor.white,
@@ -230,7 +234,7 @@ final class RewardCardContainerViewModelTests: TestCase {
         self.pledgeButtonEnabled.assertValueCount(emissionCount)
         self.pledgeButtonHidden.assertValueCount(emissionCount)
         self.pledgeButtonTitleText.assertValueCount(emissionCount)
-        self.configureNoRewardGradientView.assertValueCount(0)
+        self.configureNoRewardGradientView.assertValueCount(emissionCount)
         self.rewardCardViewBackgroundColor.assertValueCount(emissionCount)
       }
 
@@ -239,7 +243,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
       self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
       self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
-      self.configureNoRewardGradientView.assertValueCount(0)
+      self.configureNoRewardGradientView.assertValueCount(self.allRewards.count)
       self.rewardCardViewBackgroundColor.assertValueCount(self.allRewards.count)
 
       self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
@@ -258,6 +262,8 @@ final class RewardCardContainerViewModelTests: TestCase {
         "No longer available",
         "Select"
       ])
+      self.configureNoRewardGradientView
+        .assertValues([false, false, false, false, false, false, false, false])
       self.rewardCardViewBackgroundColor.assertValues([
         UIColor.white,
         UIColor.white,
@@ -296,7 +302,7 @@ final class RewardCardContainerViewModelTests: TestCase {
         self.pledgeButtonEnabled.assertValueCount(emissionCount)
         self.pledgeButtonHidden.assertValueCount(emissionCount)
         self.pledgeButtonTitleText.assertValueCount(emissionCount)
-        self.configureNoRewardGradientView.assertValueCount(0)
+        self.configureNoRewardGradientView.assertValueCount(emissionCount)
         self.rewardCardViewBackgroundColor.assertValueCount(emissionCount)
       }
 
@@ -305,7 +311,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
       self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
       self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
-      self.configureNoRewardGradientView.assertValueCount(0)
+      self.configureNoRewardGradientView.assertValueCount(self.allRewards.count)
       self.rewardCardViewBackgroundColor.assertValueCount(self.allRewards.count)
 
       self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
@@ -324,6 +330,8 @@ final class RewardCardContainerViewModelTests: TestCase {
         "No longer available",
         "Select"
       ])
+      self.configureNoRewardGradientView
+        .assertValues([false, false, false, false, false, false, false, false])
       self.rewardCardViewBackgroundColor.assertValues([
         UIColor.white,
         UIColor.white,
@@ -367,7 +375,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
-      self.configureNoRewardGradientView.assertValueCount(0)
+      self.configureNoRewardGradientView.assertValueCount(emissionCount)
       self.rewardCardViewBackgroundColor.assertValueCount(emissionCount)
     }
 
@@ -376,7 +384,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
-    self.configureNoRewardGradientView.assertValueCount(0)
+    self.configureNoRewardGradientView.assertValueCount(self.allRewards.count)
     self.rewardCardViewBackgroundColor.assertValueCount(self.allRewards.count)
 
     self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
@@ -393,6 +401,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       "View your pledge",
       "View your pledge"
     ])
+    self.configureNoRewardGradientView.assertValues([false, false, false, false, false, false, false, false])
     self.rewardCardViewBackgroundColor.assertValues([
       UIColor.white,
       UIColor.white,
@@ -435,7 +444,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
-      self.configureNoRewardGradientView.assertValueCount(0)
+      self.configureNoRewardGradientView.assertValueCount(emissionCount)
       self.rewardCardViewBackgroundColor.assertValueCount(emissionCount)
     }
 
@@ -444,7 +453,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
-    self.configureNoRewardGradientView.assertValueCount(0)
+    self.configureNoRewardGradientView.assertValueCount(self.allRewards.count)
     self.rewardCardViewBackgroundColor.assertValueCount(self.allRewards.count)
 
     self.gradientViewHidden.assertValues([true, true, true, true, true, true, true, true])
@@ -452,6 +461,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
     self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil])
+    self.configureNoRewardGradientView.assertValues([false, false, false, false, false, false, false, false])
     self.rewardCardViewBackgroundColor.assertValues([
       UIColor.white,
       UIColor.white,
@@ -487,7 +497,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
-      self.configureNoRewardGradientView.assertValueCount(0)
+      self.configureNoRewardGradientView.assertValueCount(emissionCount)
       self.rewardCardViewBackgroundColor.assertValueCount(emissionCount)
     }
 
@@ -496,7 +506,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
-    self.configureNoRewardGradientView.assertValueCount(0)
+    self.configureNoRewardGradientView.assertValueCount(self.allRewards.count)
     self.rewardCardViewBackgroundColor.assertValueCount(self.allRewards.count)
 
     self.gradientViewHidden.assertValues([true, true, true, true, true, true, true, true])
@@ -504,6 +514,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
     self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil])
+    self.configureNoRewardGradientView.assertValues([false, false, false, false, false, false, false, false])
     self.rewardCardViewBackgroundColor.assertValues([
       UIColor.white,
       UIColor.white,
@@ -556,7 +567,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
-      self.configureNoRewardGradientView.assertValueCount(0)
+      self.configureNoRewardGradientView.assertValueCount(emissionCount)
       self.rewardCardViewBackgroundColor.assertValueCount(emissionCount)
     }
 
@@ -565,7 +576,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValueCount(rewards.count)
     self.pledgeButtonHidden.assertValueCount(rewards.count)
     self.pledgeButtonTitleText.assertValueCount(rewards.count)
-    self.configureNoRewardGradientView.assertValueCount(0)
+    self.configureNoRewardGradientView.assertValueCount(rewards.count)
     self.rewardCardViewBackgroundColor.assertValueCount(rewards.count)
 
     self.gradientViewHidden.assertValues([false, false, false, false, false])
@@ -579,6 +590,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       "Selected",
       "Selected"
     ])
+    self.configureNoRewardGradientView.assertValues([false, false, false, false, false])
     self.rewardCardViewBackgroundColor.assertValues([
       UIColor.white,
       UIColor.white,
@@ -628,7 +640,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValueCount(emissionCount)
       self.pledgeButtonHidden.assertValueCount(emissionCount)
       self.pledgeButtonTitleText.assertValueCount(emissionCount)
-      self.configureNoRewardGradientView.assertValueCount(0)
+      self.configureNoRewardGradientView.assertValueCount(emissionCount)
       self.rewardCardViewBackgroundColor.assertValueCount(emissionCount)
     }
 
@@ -637,7 +649,7 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonEnabled.assertValueCount(rewards.count)
     self.pledgeButtonHidden.assertValueCount(rewards.count)
     self.pledgeButtonTitleText.assertValueCount(rewards.count)
-    self.configureNoRewardGradientView.assertValueCount(0)
+    self.configureNoRewardGradientView.assertValueCount(rewards.count)
     self.rewardCardViewBackgroundColor.assertValueCount(rewards.count)
 
     self.gradientViewHidden.assertValues([false, false, false, false, false])
@@ -651,6 +663,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       "View your pledge",
       "View your pledge"
     ])
+    self.configureNoRewardGradientView.assertValues([false, false, false, false, false])
     self.rewardCardViewBackgroundColor.assertValues([
       UIColor.white,
       UIColor.white,
@@ -695,7 +708,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
       self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
       self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
-      self.configureNoRewardGradientView.assertDidNotEmitValue()
+      self.configureNoRewardGradientView.assertValueCount(self.allRewards.count)
       self.rewardCardViewBackgroundColor.assertValueCount(self.allRewards.count)
 
       self.gradientViewHidden.assertValues([true, true, true, true, true, true, true, true])
@@ -705,6 +718,8 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
       self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
       self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil])
+      self.configureNoRewardGradientView
+        .assertValues([false, false, false, false, false, false, false, false])
       self.rewardCardViewBackgroundColor.assertValues([
         UIColor.white,
         UIColor.white,
@@ -746,7 +761,7 @@ final class RewardCardContainerViewModelTests: TestCase {
         self.pledgeButtonEnabled.assertValueCount(emissionCount)
         self.pledgeButtonHidden.assertValueCount(emissionCount)
         self.pledgeButtonTitleText.assertValueCount(emissionCount)
-        self.configureNoRewardGradientView.assertDidNotEmitValue()
+        self.configureNoRewardGradientView.assertValueCount(emissionCount)
         self.rewardCardViewBackgroundColor.assertValueCount(emissionCount)
       }
 
@@ -755,7 +770,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValueCount(self.allRewards.count)
       self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
       self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
-      self.configureNoRewardGradientView.assertDidNotEmitValue()
+      self.configureNoRewardGradientView.assertValueCount(self.allRewards.count)
       self.rewardCardViewBackgroundColor.assertValueCount(self.allRewards.count)
 
       self.gradientViewHidden.assertValues([true, true, true, true, true, true, true, true])
@@ -765,6 +780,8 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
       self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
       self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil])
+      self.configureNoRewardGradientView
+        .assertValues([false, false, false, false, false, false, false, false])
       self.rewardCardViewBackgroundColor.assertValues([
         UIColor.white,
         UIColor.white,
@@ -830,12 +847,12 @@ final class RewardCardContainerViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(Reward.noReward))
 
-      self.configureNoRewardGradientView.assertDidNotEmitValue()
+      self.configureNoRewardGradientView.assertValues([false])
       self.rewardCardViewBackgroundColor.assertValues([.white])
 
       self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
 
-      self.configureNoRewardGradientView.assertDidNotEmitValue()
+      self.configureNoRewardGradientView.assertValues([false, false])
       self.rewardCardViewBackgroundColor.assertValues([.white, .white])
     }
   }

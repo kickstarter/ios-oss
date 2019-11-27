@@ -47,8 +47,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.currentRewardProperty <~ reward
 
     self.configureNoRewardGradientView = reward
-      .filter { _ in featureGoRewardlessIsEnabled() }
-      .map { $0.isNoReward }
+      .map { $0.isNoReward && featureGoRewardlessIsEnabled() }
 
     self.rewardCardViewBackgroundColor = reward
       .map { reward in

@@ -166,24 +166,17 @@ private func backingReward(fromProject project: Project) -> Reward? {
 }
 
 private func localizedDescription(project: Project, reward: Reward) -> String {
-  let goRewardlessEnabled = featureGoRewardlessIsEnabled()
+  if featureGoRewardlessIsEnabled()
+    && reward.isNoReward && !userIsBacking(reward: reward, inProject: project) {
+    return Strings.This_holiday_season_support_a_project_for_no_reward()
+  }
 
   guard project.personalization.isBacking == true else {
-    if reward.isNoReward {
-      return goRewardlessEnabled
-        ? Strings.This_holiday_season_support_a_project_for_no_reward()
-        : Strings.Back_it_because_you_believe_in_it()
-    }
-
-    return reward.description
+    return reward.isNoReward ? Strings.Back_it_because_you_believe_in_it() : reward.description
   }
 
   if reward.isNoReward {
-    if userIsBacking(reward: reward, inProject: project) {
-      return Strings.Thanks_for_bringing_this_project_one_step_closer_to_becoming_a_reality()
-    }
-
-    return goRewardlessEnabled ? Strings.This_holiday_season_support_a_project_for_no_reward()
+    return userIsBacking(reward: reward, inProject: project) ? Strings.Thanks_for_bringing_this_project_one_step_closer_to_becoming_a_reality()
       : Strings.Back_it_because_you_believe_in_it()
   }
 
@@ -191,26 +184,18 @@ private func localizedDescription(project: Project, reward: Reward) -> String {
 }
 
 private func rewardTitle(project: Project, reward: Reward) -> String {
-  let goRewardlessEnabled = featureGoRewardlessIsEnabled()
+  if featureGoRewardlessIsEnabled()
+    && reward.isNoReward && !userIsBacking(reward: reward, inProject: project) {
+    return Strings.Back_it_because_you_believe_in_it()
+  }
 
   guard project.personalization.isBacking == true else {
-    if reward.isNoReward {
-      return goRewardlessEnabled
-        ? Strings.Back_it_because_you_believe_in_it()
-        : Strings.Pledge_without_a_reward()
-    }
-
-    return reward.title.coalesceWith("")
+    return reward.isNoReward ? Strings.Pledge_without_a_reward() : reward.title.coalesceWith("")
   }
 
   if reward.isNoReward {
-    if userIsBacking(reward: reward, inProject: project) {
-      return Strings.You_pledged_without_a_reward()
-    }
-
-    return goRewardlessEnabled
-      ? Strings.Back_it_because_you_believe_in_it()
-      : Strings.Pledge_without_a_reward()
+    return userIsBacking(reward: reward, inProject: project)
+    ? Strings.You_pledged_without_a_reward() : Strings.Pledge_without_a_reward()
   }
 
   return reward.title.coalesceWith("")

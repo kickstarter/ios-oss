@@ -174,7 +174,6 @@ public final class RewardCardContainerView: UIView {
       |> \.layer.borderColor .~ UIColor.white.cgColor
       |> \.layer.borderWidth .~ 2
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.backgroundColor .~ UIColor.clear
       |> \.startPoint .~ CGPoint.zero
       |> \.endPoint .~ CGPoint(x: 0, y: 1)
 
