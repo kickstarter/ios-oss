@@ -511,9 +511,10 @@
 "The_replay_will_start_soon" = "Repetición comienza en breve";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "Recibe la actualidad en tu correo electrónico a través de nuevos proyectos e historias interesantes.";
 "There_was_a_problem_with_this_payment" = "Ocurrió un error con el pago.";
+"These_projects_could_use_your_support" = "A estos proyectos les vendría bien tu apoyo.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "Esto te permite ver la meta del proyecto y los montos de las contribuciones en la moneda de tu preferencia.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Esta cuenta de Facebook ya está asociada a otro usuario de Kickstarter.";
-"This_holiday_season_support_a_project_for_no_reward" = "Esta temporada navideña, apoya un proyecto sin recompensa, simplemente porque te resulta interesante.";
+"This_holiday_season_support_a_project_for_no_reward" = "Esta temporada de fiestas, apoya un proyecto sin recompensa, simplemente porque te resulta interesante.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Esta contribución no pudo ser cobrada por un error en el método de pago.";
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "Este proyecto no alcanzó su meta de financiamiento, así que no se realizó ningún cargo a tu método de pago.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Este proyecto sólo será financiado si se contribuye al menos un monto de %{amount} antes del %{date}.";

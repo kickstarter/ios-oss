@@ -3034,9 +3034,9 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
-   "Find projects that speak to you ▶"
+   "Find projects that speak to you ▸"
 
-   - **en**: "Find projects that speak to you ▶"
+   - **en**: "Find projects that speak to you ▸"
    - **de**: "Finde Projekte, die dich ansprechen"
    - **es**: "Descubre proyectos que te resulten interesantes"
    - **fr**: "Des projets qui vous parlent"
@@ -3045,7 +3045,7 @@ Haz clic para volver a intentarlo."
   public static func Find_projects_that_speak_to_you() -> String {
     return localizedString(
       key: "Find_projects_that_speak_to_you",
-      defaultValue: "Find projects that speak to you ▶",
+      defaultValue: "Find projects that speak to you ▸",
       count: nil,
       substitutions: [:]
     )
@@ -8327,6 +8327,23 @@ catch your eye?"
     return localizedString(
       key: "There_was_a_problem_with_this_payment",
       defaultValue: "There was a problem with this payment.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "These projects could use your support."
+
+   - **en**: "These projects could use your support."
+   - **de**: "Diese Projekte könnten mit deiner Unterstützung verwirklicht werden."
+   - **es**: "A estos proyectos les vendría bien tu apoyo."
+   - **fr**: "Ces créateurs ont besoin de vous."
+   - **ja**: "こちらのプロジェクト達があなたのサポートを待っています！"
+  */
+  public static func These_projects_could_use_your_support() -> String {
+    return localizedString(
+      key: "These_projects_could_use_your_support",
+      defaultValue: "These projects could use your support.",
       count: nil,
       substitutions: [:]
     )
