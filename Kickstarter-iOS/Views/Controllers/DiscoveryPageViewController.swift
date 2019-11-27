@@ -11,6 +11,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   private var configUpdatedObserver: Any?
   private var currentEnvironmentChangedObserver: Any?
+  public var contentOffsetChanged: ((CGPoint) -> ())?
   fileprivate let dataSource = DiscoveryProjectsDataSource()
   fileprivate var emptyStatesController: EmptyStatesViewController?
   internal var preferredBackgroundColor: UIColor?
@@ -387,6 +388,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   @objc private func pulledToRefresh() {
     self.viewModel.inputs.pulledToRefresh()
+  }
+
+  override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    self.contentOffsetChanged?(scrollView.contentOffset)
   }
 }
 
