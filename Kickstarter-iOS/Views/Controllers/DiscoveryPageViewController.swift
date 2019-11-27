@@ -284,12 +284,19 @@ internal final class DiscoveryPageViewController: UITableViewController {
     let label = UILabel(frame: .zero)
       |> \.textColor .~ .ksr_trust_700
       |> \.font .~ UIFont.ksr_subhead().bolded
+      |> \.lineBreakMode .~ .byWordWrapping
+      |> \.numberOfLines .~ 0
       |> \.textAlignment .~ .center
       |> \.text .~ title
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     let headerContainer = UIView(frame: .zero)
       |> \.backgroundColor .~ .white
+      |> \.layoutMargins %~~ { _, view in
+        self.view.traitCollection.isRegularRegular
+          ? .init(top: Styles.grid(2), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
+          : .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0, right: Styles.grid(2))
+    }
 
     _ = (label, headerContainer)
       |> ksr_addSubviewToParent()

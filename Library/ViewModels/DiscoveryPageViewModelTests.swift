@@ -11,6 +11,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   fileprivate let activitiesForSample = TestObserver<[Activity], Never>()
   fileprivate let asyncReloadData = TestObserver<(), Never>()
+  fileprivate let configureEditorialTableViewHeader = TestObserver<String, Never>()
   fileprivate let goToActivityProject = TestObserver<Project, Never>()
   fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, Never>()
   fileprivate let goToEditorialProjectList = TestObserver<DiscoveryParams.TagID, Never>()
@@ -39,6 +40,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.vm.outputs.activitiesForSample.observe(self.activitiesForSample.observer)
     self.vm.outputs.asyncReloadData.observe(self.asyncReloadData.observer)
+    self.vm.outputs.configureEditorialTableViewHeader
+      .observe(self.configureEditorialTableViewHeader.observer)
     self.vm.outputs.hideEmptyState.observe(self.hideEmptyState.observer)
     self.vm.outputs.goToActivityProject.map(first).observe(self.goToActivityProject.observer)
     self.vm.outputs.goToActivityProject.map(second).observe(self.goToActivityProjectRefTag.observer)
@@ -551,6 +554,31 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.hasAddedProjects.assertValues([true, true], "New projects added for logged in user.")
     }
+  }
+
+  func testConfigureEditorialTableViewHeader_TagId() {
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    let params = DiscoveryParams.defaults
+      |> \.tagId .~ .goRewardless
+
+    self.configureEditorialTableViewHeader.assertDidNotEmitValue()
+
+    self.vm.inputs.selectedFilter(params)
+
+    self.configureEditorialTableViewHeader.assertValues(["These projects could use your support."],
+                                                        "Table view header is shown")
+  }
+
+  func testConfigureEditorialTableViewHeader_NoTagId() {
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.selectedFilter(.defaults)
+
+    self.configureEditorialTableViewHeader.assertDidNotEmitValue()
   }
 
   // MARK: - Editorial Header

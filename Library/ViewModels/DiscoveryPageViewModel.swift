@@ -319,11 +319,12 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .takePairWhen(self.selectedFilterProperty.signal.skipNil().skipRepeats())
 
     let editorialHeaderShouldShow = filtersUpdated
-      .filter { sort, _ in
-        sort == .magic
-      }
-      .map { sort, filterParams -> Bool in
-        sort == .magic && filterParams == DiscoveryViewModel.initialParams()
+      .filterMap { sort, filterParams -> Bool? in
+        if sort != .magic {
+          return nil
+        }
+
+        return sort == .magic && filterParams == DiscoveryViewModel.initialParams()
       }
 
     let cachedFeatureFlagValue = self.sortProperty.signal.skipNil()
