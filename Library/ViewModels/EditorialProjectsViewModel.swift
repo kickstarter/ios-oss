@@ -11,7 +11,7 @@ public protocol EditorialProjectsViewModelInputs {
 }
 
 public protocol EditorialProjectsViewModelOutputs {
-  var applyViewTransformsWithY: Signal<CGFloat, Never> { get }
+  var applyViewTransformsWithYOffset: Signal<CGFloat, Never> { get }
   var configureDiscoveryPageViewControllerWithParams: Signal<DiscoveryParams, Never> { get }
   var closeButtonImageTintColor: Signal<UIColor, Never> { get }
   var dismiss: Signal<(), Never> { get }
@@ -43,17 +43,21 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
 
     self.dismiss = self.closeButtonTappedProperty.signal
 
-    self.preferredStatusBarStyleProperty <~ self.contentOffsetChangedProperty.signal
+    let needsLightTreatment = self.contentOffsetChangedProperty.signal
       .skipNil()
-      .map { offset in offset.y < 0 ? .lightContent : .default }
+      .map { offset in offset.y < 0 }
+
+    self.preferredStatusBarStyleProperty <~ needsLightTreatment
+      .map { $0 ? .lightContent : .default }
       .skipRepeats()
 
-    self.closeButtonImageTintColor = self.preferredStatusBarStyleProperty.signal
-      .map { $0 == .lightContent ? .white : .ksr_soft_black }
+    self.closeButtonImageTintColor = needsLightTreatment
+      .map { $0 ? .white : .ksr_soft_black }
+      .skipRepeats()
 
     self.setNeedsStatusBarAppearanceUpdate = self.preferredStatusBarStyleProperty.signal.ignoreValues()
 
-    self.applyViewTransformsWithY = self.contentOffsetChangedProperty.signal
+    self.applyViewTransformsWithYOffset = self.contentOffsetChangedProperty.signal
       .skipNil()
       .map(\.y)
   }
@@ -83,7 +87,7 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
     return self.preferredStatusBarStyleProperty.value
   }
 
-  public let applyViewTransformsWithY: Signal<CGFloat, Never>
+  public let applyViewTransformsWithYOffset: Signal<CGFloat, Never>
   public let configureDiscoveryPageViewControllerWithParams: Signal<DiscoveryParams, Never>
   public let closeButtonImageTintColor: Signal<UIColor, Never>
   public let dismiss: Signal<(), Never>

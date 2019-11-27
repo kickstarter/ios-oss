@@ -9,7 +9,7 @@ import XCTest
 final class EditorialProjectsViewModelTests: TestCase {
   private let vm: EditorialProjectsViewModelType = EditorialProjectsViewModel()
 
-  private let applyViewTransformsWithY = TestObserver<CGFloat, Never>()
+  private let applyViewTransformsWithYOffset = TestObserver<CGFloat, Never>()
   private let configureDiscoveryPageViewControllerWithParams = TestObserver<DiscoveryParams, Never>()
   private let closeButtonImageTintColor = TestObserver<UIColor, Never>()
   private let dismiss = TestObserver<(), Never>()
@@ -20,7 +20,7 @@ final class EditorialProjectsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.applyViewTransformsWithY.observe(self.applyViewTransformsWithY.observer)
+    self.vm.outputs.applyViewTransformsWithYOffset.observe(self.applyViewTransformsWithYOffset.observer)
     self.vm.outputs.configureDiscoveryPageViewControllerWithParams
       .observe(self.configureDiscoveryPageViewControllerWithParams.observer)
     self.vm.outputs.closeButtonImageTintColor.observe(self.closeButtonImageTintColor.observer)
@@ -144,26 +144,26 @@ final class EditorialProjectsViewModelTests: TestCase {
     XCTAssertEqual(.lightContent, self.vm.outputs.preferredStatusBarStyle())
   }
 
-  func testApplyViewTransformsWithY() {
-    self.applyViewTransformsWithY.assertDidNotEmitValue()
+  func testApplyViewTransformsWithYOffset() {
+    self.applyViewTransformsWithYOffset.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: .goRewardless)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 100))
 
-    self.applyViewTransformsWithY.assertValues([100])
+    self.applyViewTransformsWithYOffset.assertValues([100])
 
     self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 250))
 
-    self.applyViewTransformsWithY.assertValues([100, 250])
+    self.applyViewTransformsWithYOffset.assertValues([100, 250])
 
     self.vm.inputs.contentOffsetChanged(to: .init(x: 0, y: 350))
 
-    self.applyViewTransformsWithY.assertValues([100, 250, 350])
+    self.applyViewTransformsWithYOffset.assertValues([100, 250, 350])
 
     self.vm.inputs.contentOffsetChanged(to: .zero)
 
-    self.applyViewTransformsWithY.assertValues([100, 250, 350, 0])
+    self.applyViewTransformsWithYOffset.assertValues([100, 250, 350, 0])
   }
 }

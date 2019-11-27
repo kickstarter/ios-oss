@@ -63,7 +63,7 @@ public final class EditorialProjectsViewController: UIViewController {
     let currentTableViewInsets = self.discoveryPageViewController.tableView.contentInset
 
     self.discoveryPageViewController.tableView.contentInset = currentTableViewInsets
-      |> UIEdgeInsets.lens.top .~ (self.headerView.frame.height - self.view.safeAreaInsets.top)
+      |> UIEdgeInsets.lens.top .~ self.headerView.frame.height
 
     self.discoveryPageViewController.tableView.scrollIndicatorInsets =
       self.discoveryPageViewController.tableView.contentInset
@@ -102,6 +102,7 @@ public final class EditorialProjectsViewController: UIViewController {
 
     _ = self.closeButton
       |> UIButton.lens.title(for: .normal) .~ nil
+      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in
         Strings.dashboard_switcher_accessibility_label_closes_list_of_projects()
@@ -140,26 +141,20 @@ public final class EditorialProjectsViewController: UIViewController {
           }
       }
 
-    self.viewModel.outputs.closeButtonImageTintColor
-      .observeForUI()
-      .observeValues { [weak self] color in
-        _ = self?.closeButton
-          ?|> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross", tintColor: color)
-      }
-
     self.viewModel.outputs.setNeedsStatusBarAppearanceUpdate
       .observeForUI()
       .observeValues { [weak self] in
         self?.setNeedsStatusBarAppearanceUpdate()
       }
 
-    self.viewModel.outputs.applyViewTransformsWithY
+    self.viewModel.outputs.applyViewTransformsWithYOffset
       .observeForControllerAction()
       .observeValues { [weak self] y in
-        self?.applyViewTransforms(withY: y)
+        self?.applyViewTransforms(withYOffset: y)
       }
 
     self.editorialTitleLabel.rac.text = self.viewModel.outputs.titleLabelText
+    self.closeButton.rac.tintColor = self.viewModel.outputs.closeButtonImageTintColor
   }
 
   // MARK: - Layout
@@ -240,7 +235,7 @@ public final class EditorialProjectsViewController: UIViewController {
     self.viewModel.inputs.closeButtonTapped()
   }
 
-  private func applyViewTransforms(withY y: CGFloat) {
+  private func applyViewTransforms(withYOffset y: CGFloat) {
     let normalizedY = abs(y) - self.headerView.frame.height
 
     let imageViewScale = max(1, 1 + (normalizedY * 0.0025))
