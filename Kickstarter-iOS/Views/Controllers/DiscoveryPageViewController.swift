@@ -14,6 +14,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   public var contentOffsetChanged: ((CGPoint) -> ())?
   fileprivate let dataSource = DiscoveryProjectsDataSource()
   fileprivate var emptyStatesController: EmptyStatesViewController?
+  private lazy var headerLabel = { UILabel(frame: .zero) }()
   internal var preferredBackgroundColor: UIColor?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
@@ -118,6 +119,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
       _ = self
         |> \.view.backgroundColor .~ preferredBackgroundColor
     }
+
+    _ = headerLabel
+      |> headerLabelStyle
   }
 
   internal override func bindViewModel() {
@@ -281,38 +285,32 @@ internal final class DiscoveryPageViewController: UITableViewController {
   // MARK: - Functions
 
   private func configureHeaderView(with title: String) {
-    let label = UILabel(frame: .zero)
-      |> \.textColor .~ .ksr_trust_700
-      |> \.font .~ UIFont.ksr_subhead().bolded
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 0
-      |> \.textAlignment .~ .center
-      |> \.text .~ title
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-
     let headerContainer = UIView(frame: .zero)
       |> \.backgroundColor .~ .white
+      |> \.accessibilityLabel .~ title
+      |> \.accessibilityTraits .~ .header
+      |> \.isAccessibilityElement .~ true
       |> \.layoutMargins %~~ { _, view in
         self.view.traitCollection.isRegularRegular
-          ? .init(top: Styles.grid(2), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
-          : .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0, right: Styles.grid(2))
+          ? .init(top: Styles.grid(4), left: Styles.grid(30), bottom: Styles.grid(2), right: Styles.grid(30))
+          : .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
     }
 
-    _ = (label, headerContainer)
+    _ = self.headerLabel
+      |> \.text .~ title
+
+    _ = (self.headerLabel, headerContainer)
       |> ksr_addSubviewToParent()
 
     self.tableView.tableHeaderView = headerContainer
 
-    _ = (label, headerContainer)
+    _ = (self.headerLabel, headerContainer)
       |> ksr_constrainViewToMarginsInParent()
 
-    let widthConstraint = label.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
+    let widthConstraint = self.headerLabel.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
       |> \.priority .~ .defaultHigh
 
-    NSLayoutConstraint.activate([
-      widthConstraint,
-      label.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
-      ])
+    NSLayoutConstraint.activate([widthConstraint])
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
@@ -497,4 +495,16 @@ private extension UIView {
       UIView.performWithoutAnimation { closure() }
     }
   }
+}
+
+// MARK: - Styles
+
+private let headerLabelStyle: LabelStyle = { label in
+  label
+    |> \.textColor .~ UIColor.ksr_trust_700
+    |> \.font .~ UIFont.ksr_subhead().bolded
+    |> \.lineBreakMode .~ .byWordWrapping
+    |> \.numberOfLines .~ 0
+    |> \.textAlignment .~ .center
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
