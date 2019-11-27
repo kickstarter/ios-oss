@@ -291,8 +291,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     )
     .skipRepeats(==)
 
-    self.showOnboarding = Signal.combineLatest(currentUser, self.sortProperty.signal.skipNil())
-      .map { $0 == nil && $1 == .magic }
+    self.showOnboarding = Signal.combineLatest(currentUser, paramsChanged)
+      .map { user, params in user == nil && params.sort == .magic && params.tagId == nil }
       .skipRepeats()
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
