@@ -57,10 +57,20 @@ public final class EditorialProjectsViewController: UIViewController {
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
+    self.updateTableViewContentInset()
+  }
+
+  public override func viewSafeAreaInsetsDidChange() {
+    super.viewSafeAreaInsetsDidChange()
+
+    self.updateTableViewContentInset()
+  }
+
+  private func updateTableViewContentInset() {
     let currentTableViewInsets = self.discoveryPageViewController.tableView.contentInset
 
     self.discoveryPageViewController.tableView.contentInset = currentTableViewInsets
-      |> UIEdgeInsets.lens.top .~ self.headerView.frame.height
+      |> UIEdgeInsets.lens.top .~ (self.headerView.frame.height - self.view.safeAreaInsets.top)
 
     self.discoveryPageViewController.tableView.scrollIndicatorInsets =
       self.discoveryPageViewController.tableView.contentInset
