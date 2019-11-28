@@ -183,6 +183,7 @@
 "Filters_by_projects_with_upcoming_and_past_live_streams" = "Filters by projects with upcoming and past live streams.";
 "Find_Facebook_Friends" = "Find Facebook friends";
 "Find_and_follow_friends" = "Find and follow friends";
+"Find_projects_that_speak_to_you" = "Find projects that speak to you ▸";
 "Find_projects_youll_love_and_help_bring" = "Find projects you’ll love and help bring creative ideas to life.";
 "Find_projects_youll_love_in_art_design_film" = "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here.";
 "First_created" = "First created";
@@ -509,8 +510,10 @@
 "The_replay_will_start_soon" = "The replay will start soon";
 "The_zeitgeist_delivered_to_your_inbox_via_new" = "The zeitgeist delivered to your inbox, via new projects and buzzworthy stories.";
 "There_was_a_problem_with_this_payment" = "There was a problem with this payment.";
+"These_projects_could_use_your_support" = "These projects could use your support.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "This allows you to see project goal and pledge amounts in your preferred currency.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "This Facebook account is already linked to another Kickstarter user.";
+"This_holiday_season_support_a_project_for_no_reward" = "This holiday season, support a project for no reward, just because it speaks to you.";
 "This_pledge_was_dropped_because_of_payment_errors" = "This pledge was dropped because of payment errors.";
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "This project didn’t reach its funding goal, so your payment method was never charged.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "This project will only be funded on if at least %{amount} is pledged by %{date}.";
@@ -539,6 +542,7 @@
 "Upcoming_live_streams" = "Upcoming live streams";
 "Upcoming_with_creator_name" = "Upcoming with<br/><b>%{creator_name}</b>";
 "Update_pledge" = "Update pledge";
+"Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you" = "Use the hashtag #backeditbecause to share what projects you're supporting and why they're important to you.";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "Use this to keep track of which rewards you've received.";
 "Verification_email_sent" = "We've just sent you a verification email. Click the link in it and your address will be verified.";
 "Video_disabled_until_the_internet_connection_improves" = "Video disabled until the internet connection improves";

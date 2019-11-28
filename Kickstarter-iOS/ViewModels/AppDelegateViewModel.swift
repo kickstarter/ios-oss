@@ -62,6 +62,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the app delegate gets notice of a successful notification registration.
   func didRegisterForRemoteNotifications(withDeviceTokenData data: Data)
 
+  /// Call when the config has been updated the AppEnvironment
+  func didUpdateConfig(_ config: Config)
+
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
@@ -190,16 +193,31 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { $0.ksrCode == .AccessTokenInvalid }
       .ignoreValues()
 
-    self.updateConfigInEnvironment = Signal.merge([
-      self.applicationWillEnterForegroundProperty.signal,
-      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.userSessionEndedProperty.signal,
-      self.userSessionStartedProperty.signal
-    ])
-      .switchMap { AppEnvironment.current.apiService.fetchConfig().demoteErrors() }
+    self.updateConfigInEnvironment = Signal.merge(
+      [
+        self.applicationWillEnterForegroundProperty.signal,
+        self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+        self.userSessionEndedProperty.signal,
+        self.userSessionStartedProperty.signal
+      ]
+    )
+    .switchMap { _ -> SignalProducer<Config, Never> in
+      visitorCookies().forEach(AppEnvironment.current.cookieStorage.setCookie)
 
-    self.postNotification = self.currentUserUpdatedInEnvironmentProperty.signal
+      return AppEnvironment.current.apiService.fetchConfig().demoteErrors()
+    }
+
+    let currentUserUpdatedNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(Notification(name: .ksr_userUpdated, object: nil))
+
+    let configUpdatedNotification = self.didUpdateConfigProperty.signal
+      .skipNil()
+      .mapConst(Notification(name: .ksr_configUpdated, object: nil))
+
+    self.postNotification = Signal.merge(
+      currentUserUpdatedNotification,
+      configUpdatedNotification
+    )
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
 
@@ -548,12 +566,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.crashManagerDidFinishSendingCrashReportProperty.signal
       .observeValues { AppEnvironment.current.koala.trackCrashedApp() }
 
-    self.applicationLaunchOptionsProperty.signal
-      .take(first: 1)
-      .observeValues { _ in
-        visitorCookies().forEach(AppEnvironment.current.cookieStorage.setCookie)
-      }
-
     Signal.combineLatest(
       performShortcutItem.enumerated(),
       self.setApplicationShortcutItems
@@ -637,11 +649,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.currentUserUpdatedInEnvironmentProperty.value = ()
   }
 
-  fileprivate let configUpdatedInEnvironmentProperty = MutableProperty(())
-  public func configUpdatedInEnvironment() {
-    self.configUpdatedInEnvironmentProperty.value = ()
-  }
-
   fileprivate let remoteNotificationProperty = MutableProperty<[AnyHashable: Any]?>(nil)
   public func didReceive(remoteNotification notification: [AnyHashable: Any]) {
     self.remoteNotificationProperty.value = notification
@@ -655,6 +662,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let didAcceptReceivingRemoteNotificationsProperty = MutableProperty(())
   public func didAcceptReceivingRemoteNotifications() {
     self.didAcceptReceivingRemoteNotificationsProperty.value = ()
+  }
+
+  fileprivate let didUpdateConfigProperty = MutableProperty<Config?>(nil)
+  public func didUpdateConfig(_ config: Config) {
+    self.didUpdateConfigProperty.value = config
   }
 
   private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)

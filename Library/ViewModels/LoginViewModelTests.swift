@@ -329,4 +329,15 @@ final class LoginViewModelTests: TestCase {
     self.showHidePassword.assertValueCount(2)
     self.showHidePassword.assertLastValue(false, "Password not shown")
   }
+
+  func testShowPasswordForTraitCollectionDidChange() {
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.showHidePasswordButtonTapped()
+    self.showHidePassword.assertValue(true, "Password is shown")
+
+    self.vm.inputs.traitCollectionDidChange()
+    self.showHidePassword.assertValueCount(2)
+    self.showHidePassword.assertLastValue(true, "Password still shown")
+  }
 }

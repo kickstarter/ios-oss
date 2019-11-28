@@ -1,6 +1,10 @@
 import Foundation
 import KsApi
 
+public func featureGoRewardlessIsEnabled() -> Bool {
+  return Feature.goRewardless.isEnabled()
+}
+
 public func featureNativeCheckoutIsEnabled() -> Bool {
   return Feature.nativeCheckout.isEnabled()
 }

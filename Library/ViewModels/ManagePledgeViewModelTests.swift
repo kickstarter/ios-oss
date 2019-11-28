@@ -14,6 +14,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let configureRewardReceivedWithProject = TestObserver<Project, Never>()
   private let configureRewardSummaryViewProject = TestObserver<Project, Never>()
   private let configureRewardSummaryViewReward = TestObserver<Reward, Never>()
+  private let endRefreshing = TestObserver<Void, Never>()
   private let goToCancelPledgeProject = TestObserver<Project, Never>()
   private let goToCancelPledgeBacking = TestObserver<Backing, Never>()
   private let goToChangePaymentMethodProject = TestObserver<Project, Never>()
@@ -44,7 +45,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       .observe(self.configureRewardSummaryViewProject.observer)
     self.vm.outputs.configureRewardSummaryView.map(second).map { Either.left($0) }.skipNil()
       .observe(self.configureRewardSummaryViewReward.observer)
-
+    self.vm.outputs.endRefreshing.observe(self.endRefreshing.observer)
     self.vm.outputs.goToCancelPledge.map(first).observe(self.goToCancelPledgeProject.observer)
     self.vm.outputs.goToCancelPledge.map(second).observe(self.goToCancelPledgeBacking.observer)
     self.vm.outputs.goToChangePaymentMethod.map(first).observe(self.goToChangePaymentMethodProject.observer)
@@ -158,6 +159,24 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testMenuButtonTapped_WhenProject_IsNotLive() {
     let project = Project.template
       |> Project.lens.state .~ .successful
+
+    self.vm.inputs.configureWith(project)
+    self.vm.inputs.viewDidLoad()
+
+    self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+    self.vm.inputs.menuButtonTapped()
+
+    self.showActionSheetMenuWithOptions.assertValues([[.contactCreator]])
+  }
+
+  func testMenuButtonTapped_WhenProject_IsLive_BackingStatus_IsPreAuth() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .preauth
+
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ backing
 
     self.vm.inputs.configureWith(project)
     self.vm.inputs.viewDidLoad()
@@ -502,5 +521,41 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.inputs.menuOptionSelected(with: .updatePledge)
 
     XCTAssertEqual(["Manage Pledge Option Clicked"], self.trackingClient.events)
+  }
+
+  func testEndRefreshing() {
+    let project = Project.template |> Project.lens.personalization.backing .~ .template
+    let mockService = MockService(fetchProjectResponse: project)
+
+    withEnvironment(apiService: mockService) {
+      self.endRefreshing.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(.template)
+      self.vm.inputs.viewDidLoad()
+
+      self.endRefreshing.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeViewControllerDidUpdatePledgeWithMessage("Updated")
+
+      self.scheduler.run()
+
+      self.endRefreshing.assertValueCount(1, "End refreshing is called on success")
+
+      self.vm.inputs.beginRefresh()
+
+      self.scheduler.run()
+
+      self.endRefreshing.assertValueCount(2, "End refreshing is called on success")
+
+      let failureMockService = MockService(fetchProjectError: .couldNotParseJSON)
+
+      withEnvironment(apiService: failureMockService) {
+        self.vm.inputs.beginRefresh()
+
+        self.scheduler.run()
+
+        self.endRefreshing.assertValueCount(3, "End refreshing is called on error")
+      }
+    }
   }
 }

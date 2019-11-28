@@ -4,7 +4,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public typealias PledgePaymentMethodsValue = (user: User, project: Project, applePayCapable: Bool)
+public typealias PledgePaymentMethodsValue = (user: User, project: Project, deviceIsApplePayCapable: Bool)
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func applePayButtonTapped()
@@ -53,8 +53,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
 
     self.applePayStackViewHidden = configureWithValue
-      .map { ($0.project, $0.applePayCapable) }
-      .map(showApplePayButton(for:applePayCapable:))
+      .map { ($0.project, $0.deviceIsApplePayCapable) }
+      .map(showApplePayButton(for:applePayDevice:))
       .negate()
 
     let storedCardsValues = storedCardsEvent.values().map { $0.me.storedCards.nodes }
@@ -179,8 +179,12 @@ private func pledgeCreditCardViewDataAndSelectedCard(
     return (card, isAvailableCardType, project.location.displayableName)
   }
 
-  // If there is no backing, simply select the first card in the list.
+  // If there is no backing, simply select the first card in the list when it is an available card type.
   guard let backing = project.personalization.backing else {
+    guard let cardData = data.first, cardData.isEnabled else {
+      return (data, nil)
+    }
+
     return (data, cards.first)
   }
 
@@ -198,8 +202,8 @@ private func pledgeCreditCardViewDataAndSelectedCard(
   return (data, backedCard)
 }
 
-private func showApplePayButton(for project: Project, applePayCapable: Bool) -> Bool {
-  return applePayCapable &&
+private func showApplePayButton(for project: Project, applePayDevice: Bool) -> Bool {
+  return applePayDevice &&
     AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
 }
 

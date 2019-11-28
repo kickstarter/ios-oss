@@ -58,12 +58,15 @@ internal final class PledgeAmountViewModelTests: TestCase {
   }
 
   func testAmountCurrencyAndStepper_FromBacking() {
+    let reward = Reward.postcards
+      |> Reward.lens.minimum .~ 6
+
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ (
         .template
-          |> Backing.lens.reward .~ Reward.postcards
-          |> Backing.lens.rewardId .~ Reward.postcards.id
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
           |> Backing.lens.amount .~ 700
       )
@@ -75,7 +78,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([690])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMinValue.assertValue(6)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([690])
     self.textFieldValue.assertValues(["690"])
@@ -112,7 +115,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([60])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMinValue.assertValue(60)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([60])
     self.textFieldValue.assertValues(["60"])
@@ -139,38 +142,42 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([5])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMinValue.assertValue(1)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([5])
     self.textFieldValue.assertValues(["5"])
   }
 
   func testAmountCurrencyAndStepper_NoReward() {
-    self.vm.inputs.configureWith(project: .template, reward: Reward.noReward)
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 1
+    self.vm.inputs.configureWith(project: .template, reward: reward)
 
     self.amountIsValid.assertValues([true])
     self.amountMin.assertValues([1])
     self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([1])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMinValue.assertValue(1)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([1])
     self.textFieldValue.assertValues(["1"])
   }
 
   func testAmountCurrencyAndStepper_Country_HasMinMax_NoReward() {
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 1
     let project = Project.template
       |> Project.lens.country .~ Project.Country.mx
 
-    self.vm.inputs.configureWith(project: project, reward: Reward.noReward)
+    self.vm.inputs.configureWith(project: project, reward: reward)
 
     self.amountIsValid.assertValues([true])
     self.amountMin.assertValues([10])
     self.amountMax.assertValues([200_000])
     self.amountValue.assertValues([10])
     self.currency.assertValues(["MX$"])
-    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMinValue.assertValue(10)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
@@ -183,14 +190,17 @@ internal final class PledgeAmountViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.country .~ country
 
-    self.vm.inputs.configureWith(project: project, reward: Reward.noReward)
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 1
+
+    self.vm.inputs.configureWith(project: project, reward: reward)
 
     self.amountIsValid.assertValues([true])
     self.amountMin.assertValues([1])
     self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([1])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMinValue.assertValue(1)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([1])
     self.textFieldValue.assertValues(["1"])
@@ -204,7 +214,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.amountMax.assertValues([10_000])
     self.amountValue.assertValues([10])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMinValue.assertValue(10)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([10])
     self.textFieldValue.assertValues(["10"])
@@ -224,7 +234,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.amountMax.assertValues([1_200_000])
     self.amountValue.assertValues([200])
     self.currency.assertValues(["¥"])
-    self.stepperMinValue.assertValue(PledgeAmountStepperConstants.min)
+    self.stepperMinValue.assertValue(200)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
     self.stepperValue.assertValues([200])
     self.textFieldValue.assertValues(["200"])
@@ -789,16 +799,16 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.generateSelectionFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(PledgeAmountStepperConstants.max)
-    self.generateSelectionFeedback.assertValueCount(1)
+    self.generateSelectionFeedback.assertValueCount(2)
 
     self.vm.inputs.stepperValueChanged(12)
-    self.generateSelectionFeedback.assertValueCount(2)
+    self.generateSelectionFeedback.assertValueCount(3)
 
     self.vm.inputs.stepperValueChanged(0)
-    self.generateSelectionFeedback.assertValueCount(2)
+    self.generateSelectionFeedback.assertValueCount(4)
 
     self.vm.inputs.stepperValueChanged(20)
-    self.generateSelectionFeedback.assertValueCount(3)
+    self.generateSelectionFeedback.assertValueCount(5)
   }
 
   func testGenerateNotificationWarningFeedback() {
@@ -812,13 +822,13 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.generateNotificationWarningFeedback.assertValueCount(1)
 
     self.vm.inputs.stepperValueChanged(12)
-    self.generateNotificationWarningFeedback.assertValueCount(1)
+    self.generateNotificationWarningFeedback.assertValueCount(2)
 
     self.vm.inputs.stepperValueChanged(0)
-    self.generateNotificationWarningFeedback.assertValueCount(2)
+    self.generateNotificationWarningFeedback.assertValueCount(3)
 
     self.vm.inputs.stepperValueChanged(11)
-    self.generateNotificationWarningFeedback.assertValueCount(2)
+    self.generateNotificationWarningFeedback.assertValueCount(4)
   }
 
   func testLabelTextColor() {
@@ -891,14 +901,14 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.stepperValueChanged(10_100)
 
     self.maxPledgeAmountErrorLabelText.assertValues([
-      "Please enter a pledge amount between US$ 25 and US$ 10,000."
+      "The maximum pledge is US$ 10,000."
     ])
 
     self.vm.inputs.selectedShippingAmountChanged(to: 30.0)
 
     self.maxPledgeAmountErrorLabelText.assertValues([
-      "Please enter a pledge amount between US$ 25 and US$ 10,000.",
-      "Please enter a pledge amount between US$ 25 and US$ 9,970."
+      "The maximum pledge is US$ 10,000.",
+      "The maximum pledge is US$ 9,970."
     ])
   }
 

@@ -121,7 +121,7 @@ internal enum Route {
       return (.GET, url, [:], nil)
 
     case .config:
-      return (.GET, "/v1/app/ios/config", [:], nil)
+      return (.GET, "/v1/app/ios/config", ["no_cache": "\(Date().timeIntervalSince1970)"], nil)
 
     case let .createPledge(project, amount, reward, shippingLocation, tappedReward):
       let pledgeUrl = URL(string: project.urls.web.project)?

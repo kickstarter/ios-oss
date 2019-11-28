@@ -351,7 +351,40 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testReloadPaymentMethods_LoggedIn_ApplePayCapable_isFalse() {
+  func testReloadPaymentMethods_FirstCardUnavailable() {
+    let cards = GraphUserCreditCard.withCards([
+      GraphUserCreditCard.discover,
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.amex
+    ])
+    let response = UserEnvelope<GraphUserCreditCard>(me: cards)
+    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let project = Project.template
+      |> \.availableCardTypes .~ ["AMEX", "VISA", "MASTERCARD"]
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.reloadPaymentMethodsCards.assertDidNotEmitValue()
+      self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
+      self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith((User.template, project, false))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      self.reloadPaymentMethodsCards.assertValues([
+        [
+          GraphUserCreditCard.discover,
+          GraphUserCreditCard.visa,
+          GraphUserCreditCard.amex
+        ]
+      ])
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([[false, true, true]])
+      self.reloadPaymentMethodsSelectedCard.assertValues([nil], "No card to select")
+    }
+  }
+
+  func testReloadPaymentMethods_LoggedIn_DeviceIsApplePayCapable_isFalse() {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
 
@@ -381,7 +414,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testReloadPaymentMethods_LoggedIn_ApplePayCapable_isTrue() {
+  func testReloadPaymentMethods_LoggedIn_DeviceIsApplePayCapable_isTrue() {
     let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
 
@@ -411,7 +444,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testReloadPaymentMethods_LoggedIn_ApplePayCapable_isTrue_BackedCardRemoved() {
+  func testReloadPaymentMethods_LoggedIn_DeviceIsApplePayCapabl_isTrue_BackedCardRemoved() {
     let filteredCards = GraphUserCreditCard.template.storedCards.nodes
       .filter { $0.id != GraphUserCreditCard.visa.id }
 
@@ -459,7 +492,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testReloadPaymentMethods_Error_LoggedIn_ApplePayCapable_isFalse() {
+  func testReloadPaymentMethods_Error_LoggedIn_DeviceIsApplePayCapable_isFalse() {
     let error = GraphResponseError(message: "Something went wrong")
     let apiService = MockService(fetchGraphCreditCardsError: GraphError.decodeError(error))
 
@@ -491,7 +524,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testReloadPaymentMethods_Error_LoggedIn_ApplePayCapable_isTrue() {
+  func testReloadPaymentMethods_Error_LoggedIn_DeviceIsApplePayCapable_isTrue() {
     let error = GraphResponseError(message: "Something went wrong")
     let apiService = MockService(fetchGraphCreditCardsError: GraphError.decodeError(error))
 
@@ -559,7 +592,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testApplePayStackViewHidden_isHidden_applePayCapable_unsupportedProjectCountry() {
+  func testApplePayStackViewHidden_isHidden_DeviceIsApplePayCapable_unsupportedProjectCountry() {
     let mockConfig = Config.template
       |> \.applePayCountries .~ [Project.Country.us.countryCode]
     let project = Project.template
@@ -573,7 +606,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
-  func testApplePayViewHidden_isNotHidden_applePayCapable_supportedProjectCountry() {
+  func testApplePayViewHidden_isNotHidden_DeviceIsApplePayCapable_supportedProjectCountry() {
     let mockConfig = Config.template
       |> \.applePayCountries .~ [
         Project.Country.us.countryCode,

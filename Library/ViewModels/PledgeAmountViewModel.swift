@@ -7,7 +7,6 @@ import ReactiveSwift
 public typealias PledgeAmountData = (amount: Double, min: Double, max: Double, isValid: Bool)
 
 public enum PledgeAmountStepperConstants {
-  static let min: Double = 0
   static let max: Double = 1_000_000_000
 }
 
@@ -111,7 +110,24 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.currency = project
       .map { currencySymbol(forCountry: $0.country).trimmed() }
 
-    self.stepperMinValue = minValue.mapConst(PledgeAmountStepperConstants.min)
+    let textFieldValue = self.textFieldValueProperty.signal
+      .map { $0.coalesceWith("") }
+      .map(Double.init)
+      .map { $0.coalesceWith(0) }
+
+    let updatedValue = Signal.combineLatest(
+      minValue,
+      maxValue,
+      Signal.merge(
+        stepperValue,
+        textFieldValue.signal
+      )
+    )
+
+    self.stepperMinValue = updatedValue
+      .map { ($0.0, $0.2) }
+      .map(min)
+
     self.stepperMaxValue = minValue.mapConst(PledgeAmountStepperConstants.max)
 
     let stepperValueChanged = Signal.combineLatest(
@@ -128,20 +144,6 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .filter { min, max, value in value <= min || max <= value }
       .ignoreValues()
 
-    let textFieldValue = self.textFieldValueProperty.signal
-      .map { $0.coalesceWith("") }
-      .map(Double.init)
-      .map { $0.coalesceWith(0) }
-
-    let updatedValue = Signal.combineLatest(
-      minValue,
-      maxValue,
-      Signal.merge(
-        stepperValue,
-        textFieldValue.signal
-      )
-    )
-
     self.notifyDelegateAmountUpdated = updatedValue
       .map { min, max, value in
         (rounded(value), min, max, min <= value && value <= max)
@@ -155,14 +157,12 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .skipRepeats()
 
     self.maxPledgeAmountErrorLabelText = updatedValue
-      .map { ($0.0, $0.1) }
+      .map(second)
       .combineLatest(with: project)
-      .map(unpack)
-      .map { min, max, project in
-
-        Strings.Please_enter_a_pledge_amount_between_min_and_max(
-          min: Format.currency(min, country: project.country, omitCurrencyCode: false),
-          max: Format.currency(max, country: project.country, omitCurrencyCode: false)
+      .map { max, project in
+        Strings.The_maximum_pledge_is_max_pledge(
+          max_pledge:
+          Format.currency(max, country: project.country, omitCurrencyCode: false)
         )
       }
       .skipRepeats()

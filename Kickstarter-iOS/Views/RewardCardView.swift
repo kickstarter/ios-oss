@@ -94,38 +94,39 @@ public final class RewardCardView: UIView {
     _ = self.includedItemsStackView
       |> includedItemsStackViewStyle
 
-    _ = (self.includedItemsTitleLabel, self.backgroundColor)
+    _ = self.includedItemsTitleLabel
       |> baseRewardLabelStyle
       |> sectionTitleLabelStyle
 
     _ = self.includedItemsTitleLabel
       |> \.text %~ { _ in Strings.project_view_pledge_includes() }
+      |> \.textColor .~ UIColor.ksr_text_dark_grey_500
 
     _ = self.includedItemsStackView.subviews
       .dropFirst()
       .compactMap { [weak self] in
-        ($0, self?.backgroundColor) as? (UILabel, UIColor)
+        $0 as? UILabel
       }
       ||> baseRewardLabelStyle
       ||> sectionBodyLabelStyle
 
-    _ = (self.descriptionLabel, self.backgroundColor)
+    _ = self.descriptionLabel
       |> baseRewardLabelStyle
       |> sectionBodyLabelStyle
 
-    _ = (self.estimatedDeliveryDateLabel, self.backgroundColor)
+    _ = self.estimatedDeliveryDateLabel
       |> baseRewardLabelStyle
       |> sectionBodyLabelStyle
 
-    _ = (self.rewardTitleLabel, self.backgroundColor)
+    _ = self.rewardTitleLabel
       |> baseRewardLabelStyle
       |> rewardTitleLabelStyle
 
-    _ = (self.minimumPriceLabel, self.backgroundColor)
+    _ = self.minimumPriceLabel
       |> baseRewardLabelStyle
       |> minimumPriceLabelStyle
 
-    _ = (self.minimumPriceConversionLabel, self.backgroundColor)
+    _ = self.minimumPriceConversionLabel
       |> baseRewardLabelStyle
       |> minimumPriceConversionLabelStyle
 
@@ -149,7 +150,6 @@ public final class RewardCardView: UIView {
     self.pillCollectionView.rac.hidden = self.viewModel.outputs.pillCollectionViewHidden
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.rewardTitleLabelHidden
     self.rewardTitleLabel.rac.text = self.viewModel.outputs.rewardTitleLabelText
-    self.includedItemsTitleLabel.rac.textColor = self.viewModel.outputs.includedItemsTitleLabelTextColor
 
     self.viewModel.outputs.items
       .observeForUI()
@@ -233,12 +233,12 @@ public final class RewardCardView: UIView {
     self.setNeedsLayout()
   }
 
-  fileprivate func load(items: (includedItems: [String], separatorBackgroundColor: UIColor)) {
+  fileprivate func load(items: [String]) {
     _ = self.includedItemsStackView.subviews
       ||> { $0.removeFromSuperview() }
 
-    let includedItemViews = items.includedItems.map { item -> UIView in
-      let label = (UILabel(), self.backgroundColor)
+    let includedItemViews = items.map { item -> UIView in
+      let label = UILabel()
         |> baseRewardLabelStyle
         |> sectionBodyLabelStyle
         |> \.text .~ item
@@ -249,7 +249,6 @@ public final class RewardCardView: UIView {
     let separatedItemViews = includedItemViews.dropLast().map { view -> [UIView] in
       let separator = UIView()
         |> separatorStyle
-        |> \.backgroundColor .~ items.separatorBackgroundColor
       separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
       return [view, separator]
@@ -266,8 +265,8 @@ public final class RewardCardView: UIView {
 
   // MARK: - Configuration
 
-  internal func configure(with value: (Project, Either<Reward, Backing>), context: RewardCardViewContext) {
-    self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1, context: context)
+  internal func configure(with value: (Project, Either<Reward, Backing>)) {
+    self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
   }
 
   // MARK: - Selectors
@@ -279,12 +278,11 @@ public final class RewardCardView: UIView {
 
 // MARK: - Styles
 
-private let baseRewardLabelStyle: (UILabel, UIColor?) -> UILabel = { label, backgroundColor in
+private let baseRewardLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 0
     |> \.textAlignment .~ .left
     |> \.lineBreakMode .~ .byWordWrapping
-    |> \.backgroundColor .~ backgroundColor
 }
 
 private let baseStackViewStyle: StackViewStyle = { stackView in
