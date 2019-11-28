@@ -45,6 +45,10 @@ final class FeatureFlagToolsViewController: UITableViewController {
       .observeValues { [weak self] features in
         self?.updateConfig(with: features)
       }
+
+    self.viewModel.outputs.postNotification
+      .observeForUI()
+      .observeValues(NotificationCenter.default.post)
   }
 
   @objc private func switchTogged(_ switchControl: UISwitch) {

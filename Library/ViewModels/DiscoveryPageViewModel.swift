@@ -4,14 +4,23 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol DiscoveryPageViewModelInputs {
+  /// Call when the Config has been updated in the AppEnvironment
+  func configUpdated(config: Config?)
+
   /// Call with the sort provided to the view.
   func configureWith(sort: DiscoveryParams.Sort)
 
   /// Call when the current environment has changed
   func currentEnvironmentChanged(environment: EnvironmentType)
 
+  /// Call when the editioral cell is tapped
+  func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID)
+
   /// Call when the user pulls tableView to refresh
   func pulledToRefresh()
+
+  /// Call when the scrollViewDidScroll with its current contentOffset
+  func scrollViewDidScroll(toContentOffset offset: CGPoint)
 
   /// Call when the filter is changed.
   func selectedFilter(_ params: DiscoveryParams)
@@ -57,8 +66,13 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Hopefully in the future we can remove this when we can resolve postcard display issues.
   var asyncReloadData: Signal<Void, Never> { get }
 
+  var configureEditorialTableViewHeader: Signal<String, Never> { get }
+
   /// Emits a project and ref tag that we should go to from the activity sample.
   var goToActivityProject: Signal<(Project, RefTag), Never> { get }
+
+  /// Emits a refTag for the editorial project list
+  var goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never> { get }
 
   /// Emits a project, playlist, ref tag that we should go to from discovery.
   var goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never> { get }
@@ -68,6 +82,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits when we should dismiss the empty state controller.
   var hideEmptyState: Signal<(), Never> { get }
+
+  /// Emits with the current contentOffset.
+  var notifyDelegateContentOffsetChanged: Signal<CGPoint, Never> { get }
 
   /// Emits a list of projects that should be shown, and the corresponding filter request params
   var projectsLoaded: Signal<([Project], DiscoveryParams?), Never> { get }
@@ -80,6 +97,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits a bool to allow status bar tap to scroll the table view to the top.
   var setScrollsToTop: Signal<Bool, Never> { get }
+
+  /// Emits to show an editorial header
+  var showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never> { get }
 
   /// Emits to show the empty state controller.
   var showEmptyState: Signal<EmptyState, Never> { get }
@@ -273,8 +293,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     )
     .skipRepeats(==)
 
-    self.showOnboarding = Signal.combineLatest(currentUser, self.sortProperty.signal.skipNil())
-      .map { $0 == nil && $1 == .magic }
+    self.showOnboarding = Signal.combineLatest(currentUser, paramsChanged)
+      .map { user, params in user == nil && params.sort == .magic && params.tagId == nil }
       .skipRepeats()
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
@@ -294,11 +314,80 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .observeValues {
         AppEnvironment.current.koala.trackDiscoveryPullToRefresh()
       }
+
+    self.configureEditorialTableViewHeader = paramsChanged
+      .filter { $0.tagId == .goRewardless }
+      .map { _ in Strings.These_projects_could_use_your_support() }
+
+    // MARK: - Editorial Header
+
+    let filtersUpdated = self.sortProperty.signal.skipNil()
+      .takePairWhen(self.selectedFilterProperty.signal.skipNil().skipRepeats())
+
+    let editorialHeaderShouldShow = filtersUpdated
+      .filterMap { sort, filterParams -> Bool? in
+        if sort != .magic {
+          return nil
+        }
+
+        return sort == .magic && filterParams == DiscoveryViewModel.initialParams()
+      }
+
+    let cachedFeatureFlagValue = self.sortProperty.signal.skipNil()
+      .map { _ in featureGoRewardlessIsEnabled() }
+    let updatedFeatureFlagValue = self.configUpdatedProperty.signal.skipNil()
+      .map { _ in featureGoRewardlessIsEnabled() }
+
+    let latestFeatureFlagValue = Signal.merge(cachedFeatureFlagValue, updatedFeatureFlagValue)
+      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+
+    let updateEditorialHeader = Signal.combineLatest(editorialHeaderShouldShow, latestFeatureFlagValue)
+
+    self.showEditorialHeader = updateEditorialHeader
+      .map { shouldShow, isEnabled in
+        guard shouldShow, isEnabled else {
+          return nil
+        }
+
+        return DiscoveryEditorialCellValue(
+          title: Strings.Back_it_because_you_believe_in_it(),
+          subtitle: Strings.Find_projects_that_speak_to_you(),
+          imageName: "go-rewardless-home",
+          tagId: .goRewardless
+        )
+      }.skipRepeats()
+
+    self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
+      .skipNil()
+
+    self.discoveryEditorialCellTappedWithValueProperty.signal
+      .skipNil()
+      .observeValues { tagId in
+        AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: RefTag.projectCollection(tagId))
+      }
+
+    self.notifyDelegateContentOffsetChanged = Signal.combineLatest(
+      self.scrollViewDidScrollToContentOffsetProperty.signal.skipNil(),
+      self.projectsAreLoadingAnimated.map(first)
+    )
+    .filter(second >>> isFalse)
+    .map(first)
+  }
+
+  fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)
+  public func configUpdated(config: Config?) {
+    self.configUpdatedProperty.value = config
   }
 
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
   public func currentEnvironmentChanged(environment: EnvironmentType) {
     self.currentEnvironmentChangedProperty.value = environment
+  }
+
+  fileprivate let discoveryEditorialCellTappedWithValueProperty
+    = MutableProperty<DiscoveryParams.TagID?>(nil)
+  public func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID) {
+    self.discoveryEditorialCellTappedWithValueProperty.value = tagId
   }
 
   fileprivate let pulledToRefreshProperty = MutableProperty(())
@@ -309,6 +398,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   fileprivate let sortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
   public func configureWith(sort: DiscoveryParams.Sort) {
     self.sortProperty.value = sort
+  }
+
+  private let scrollViewDidScrollToContentOffsetProperty = MutableProperty<CGPoint?>(nil)
+  public func scrollViewDidScroll(toContentOffset offset: CGPoint) {
+    self.scrollViewDidScrollToContentOffsetProperty.value = offset
   }
 
   fileprivate let selectedFilterProperty = MutableProperty<DiscoveryParams?>(nil)
@@ -363,14 +457,18 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
+  public let configureEditorialTableViewHeader: Signal<String, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
+  public let goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>
   public let goToProjectUpdate: Signal<(Project, Update), Never>
   public let hideEmptyState: Signal<Void, Never>
+  public let notifyDelegateContentOffsetChanged: Signal<CGPoint, Never>
   public let projectsLoaded: Signal<([Project], DiscoveryParams?), Never>
   public let projectsAreLoadingAnimated: Signal<(Bool, Bool), Never>
   public let setScrollsToTop: Signal<Bool, Never>
   public let scrollToProjectRow: Signal<Int, Never>
+  public let showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never>
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
 
@@ -389,6 +487,10 @@ private func saveSeen(activities: [Activity]) {
 }
 
 private func refTag(fromParams params: DiscoveryParams, project _: Project) -> RefTag {
+  if let tagId = params.tagId {
+    return .projectCollection(tagId)
+  }
+
   if params.category != nil {
     return .categoryWithSort(params.sort ?? .magic)
   } else if params.recommended == .some(true) {

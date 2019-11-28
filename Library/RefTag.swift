@@ -17,6 +17,7 @@ public enum RefTag {
   case profile
   case profileBacked
   case profileSaved
+  case projectCollection(DiscoveryParams.TagID)
   case projectPage
   case push
   case recommended
@@ -99,12 +100,12 @@ public enum RefTag {
     switch self {
     case .activity:
       return "activity"
+    case .activitySample:
+      return "discovery_activity_sample"
     case .category:
       return "category"
     case .categoryFeatured:
       return "category_featured"
-    case .activitySample:
-      return "discovery_activity_sample"
     case let .categoryWithSort(sort):
       return "category" + sortRefTagSuffix(sort)
     case .city:
@@ -123,6 +124,8 @@ public enum RefTag {
       return "profile"
     case .profileBacked:
       return "profile_backed"
+    case let .projectCollection(tagId):
+      return "ios_project_collection_tag_\(tagId.rawValue)"
     case .profileSaved:
       return "profile_saved"
     case .projectPage:
@@ -160,7 +163,6 @@ public enum RefTag {
 }
 
 extension RefTag: Equatable {}
-
 extension RefTag: CustomStringConvertible {
   public var description: String {
     return self.stringTag
