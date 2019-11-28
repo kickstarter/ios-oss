@@ -84,7 +84,7 @@ public final class EditorialProjectsViewController: UIViewController {
       |> UIView.lens.layoutMargins %~~ { _, view in
         view.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(2), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
-          : .init(top: Styles.grid(2), left: Styles.grid(8), bottom: 0, right: Styles.grid(5))
+          : .init(top: Styles.grid(2), left: Styles.grid(7), bottom: 0, right: Styles.grid(6))
       }
 
     _ = self.headerView
@@ -202,7 +202,7 @@ public final class EditorialProjectsViewController: UIViewController {
       // editorialTitleLabel
       self.editorialTitleLabel.leftAnchor.constraint(equalTo: self.headerView.layoutMarginsGuide.leftAnchor),
       self.editorialTitleLabel.topAnchor
-        .constraint(equalTo: self.headerTopLayoutGuide.bottomAnchor, constant: Styles.grid(2)),
+        .constraint(equalTo: self.headerTopLayoutGuide.bottomAnchor, constant: Styles.gridHalf(3)),
       self.editorialTitleLabel.rightAnchor
         .constraint(equalTo: self.headerView.layoutMarginsGuide.rightAnchor),
       // closeButton
