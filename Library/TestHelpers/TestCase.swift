@@ -53,7 +53,6 @@ internal class TestCase: FBSnapshotTestCase {
       dateType: self.dateType,
       debounceInterval: .seconds(0),
       device: MockDevice(),
-      is1PasswordSupported: { true },
       isVoiceOverRunning: { false },
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,

@@ -216,18 +216,6 @@ final class SharedFunctionsTests: TestCase {
     }
   }
 
-  func testOnePasswordButtonIsHidden() {
-    withEnvironment(is1PasswordSupported: { true }) {
-      XCTAssertTrue(is1PasswordButtonHidden(true))
-      XCTAssertFalse(is1PasswordButtonHidden(false))
-    }
-
-    withEnvironment(is1PasswordSupported: { false }) {
-      XCTAssertTrue(is1PasswordButtonHidden(true))
-      XCTAssertTrue(is1PasswordButtonHidden(false))
-    }
-  }
-
   func testDefaultShippingRule_Empty() {
     XCTAssertEqual(nil, defaultShippingRule(fromShippingRules: []))
   }
