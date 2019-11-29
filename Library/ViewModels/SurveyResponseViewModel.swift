@@ -1,7 +1,6 @@
 import KsApi
 import ReactiveExtensions
 import ReactiveSwift
-import WebKit
 
 public protocol SurveyResponseViewModelInputs {
   /// Call when the alert OK button is tapped.
@@ -13,8 +12,8 @@ public protocol SurveyResponseViewModelInputs {
   /// Call to configure with a survey response.
   func configureWith(surveyResponse: SurveyResponse)
 
-  /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
-  func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy
+  /// Call when the webview decides whether to load a request.
+  func shouldStartLoad(withRequest request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -52,15 +51,13 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
       .skipNil()
 
-    let postRequest = self.policyForNavigationActionProperty.signal.skipNil()
-      .map { action in (action.request, action.navigationType) }
+    let postRequest = self.shouldStartLoadProperty.signal.skipNil()
       .filter { request, navigationType in
         isUnpreparedSurvey(request: request) && navigationType == .formSubmitted
       }
       .map { request, _ in request }
 
-    let redirectAfterPostRequest = self.policyForNavigationActionProperty.signal.skipNil()
-      .map { action in (action.request, action.navigationType) }
+    let redirectAfterPostRequest = self.shouldStartLoadProperty.signal.skipNil()
       .filter { request, navigationType in
         isUnpreparedSurvey(request: request) && navigationType == .other
       }
@@ -71,9 +68,8 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       self.closeButtonTappedProperty.signal
     )
 
-    self.goToProject = self.policyForNavigationActionProperty.signal.skipNil()
-      .map { action in action.request }
-      .map { request -> (Param, RefTag?)? in
+    self.goToProject = self.shouldStartLoadProperty.signal.skipNil()
+      .map { request, _ -> (Param, RefTag?)? in
         if case let (.project(param, .root, refTag))? = Navigation.match(request) {
           return (param, refTag)
         }
@@ -81,15 +77,14 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
       .skipNil()
 
-    self.policyDecisionProperty <~ self.policyForNavigationActionProperty.signal.skipNil()
-      .map { action in
-        if !AppEnvironment.current.apiService.isPrepared(request: action.request) {
+    self.shouldStartLoadResponseProperty <~ self.shouldStartLoadProperty.signal.skipNil()
+      .map { request, _ in
+        if !AppEnvironment.current.apiService.isPrepared(request: request) {
           return false
         }
 
-        return isSurvey(request: action.request)
+        return isSurvey(request: request)
       }
-      .map { $0 ? .allow : .cancel }
 
     self.showAlert = redirectAfterPostRequest
       .mapConst(Strings.Got_it_your_survey_response_has_been_submitted())
@@ -110,11 +105,14 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   fileprivate let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() { self.closeButtonTappedProperty.value = () }
 
-  fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
-  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.allow)
-  public func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy {
-    self.policyForNavigationActionProperty.value = navigationAction
-    return self.policyDecisionProperty.value
+  fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebView.NavigationType)?>(nil)
+  fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
+  public func shouldStartLoad(
+    withRequest request: URLRequest,
+    navigationType: UIWebView.NavigationType
+  ) -> Bool {
+    self.shouldStartLoadProperty.value = (request, navigationType)
+    return self.shouldStartLoadResponseProperty.value
   }
 
   fileprivate let surveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
