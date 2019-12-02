@@ -592,7 +592,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
   fileprivate func goToThanks(project: Project) {
     let thanksVC = ThanksViewController.configuredWith(project: project)
-    self.navigationController?.pushViewController(thanksVC, animated: true)
+    self.navigationController?.pushViewControllerModally(thanksVC)
   }
 
   fileprivate func load(items: [String]) {
