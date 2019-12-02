@@ -2,7 +2,7 @@ import UIKit
 
 public extension UINavigationController {
   func pushViewControllerModally(_ viewController: UIViewController) {
-    let transition:CATransition = CATransition()
+    let transition: CATransition = CATransition()
     transition.duration = 0.3
     transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
     transition.type = .moveIn
