@@ -1,6 +1,7 @@
 import Foundation
 
 public enum CurrentUserNotifications {
+  public static let configUpdated = "CurrentUserNotifications.configUpdated"
   public static let dataRequested = "CurrentUserNotifications.dataRequested"
   public static let environmentChanged = "CurrentUserNotification.environmentChanged"
   public static let localePreferencesChanged = "CurrentUserNotification.localePreferencesChanged"
@@ -19,6 +20,7 @@ public enum UserInfoKeys {
 }
 
 extension Notification.Name {
+  public static let ksr_configUpdated = Notification.Name(rawValue: CurrentUserNotifications.configUpdated)
   public static let ksr_dataRequested = Notification.Name(rawValue: CurrentUserNotifications.dataRequested)
   public static let ksr_environmentChanged = Notification.Name(
     rawValue:
