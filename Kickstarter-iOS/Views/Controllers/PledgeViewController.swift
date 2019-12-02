@@ -387,7 +387,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   private func goToThanks(project: Project) {
     let thanksVC = ThanksViewController.configuredWith(project: project)
-    self.navigationController?.pushViewControllerModally(thanksVC)
+    self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 
   private func presentApplePayInvalidAmountAlert(title: String, message: String) {

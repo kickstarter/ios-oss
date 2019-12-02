@@ -140,7 +140,7 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
 
   fileprivate func goToThanks(project: Project) {
     let thanksVC = ThanksViewController.configuredWith(project: project)
-    self.navigationController?.pushViewControllerModally(thanksVC)
+    self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 
   fileprivate func goToWebModal(request: URLRequest) {
