@@ -53,7 +53,6 @@ internal class TestCase: FBSnapshotTestCase {
       dateType: self.dateType,
       debounceInterval: .seconds(0),
       device: MockDevice(),
-      is1PasswordSupported: { true },
       isVoiceOverRunning: { false },
       koala: Koala(client: self.trackingClient, loggedInUser: nil),
       language: .en,
@@ -78,7 +77,7 @@ internal func preferredSimulatorCheck() {
   let supportedModels = ["iPhone10,1", "iPhone10,4"] // iPhone 8
   let modelKey = "SIMULATOR_MODEL_IDENTIFIER"
 
-  guard #available(iOS 12.0, *), supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
+  guard #available(*, iOS 12.0), supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
     fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 12")
   }
 }

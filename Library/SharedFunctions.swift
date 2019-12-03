@@ -182,18 +182,6 @@ public func countdownProducer(to date: Date)
   .map(formattedComponents(dateComponents:))
 }
 
-internal func is1PasswordButtonHidden(_ isHidden: Bool) -> Bool {
-  guard AppEnvironment.current.is1PasswordSupported() else { return true }
-  return isHidden
-}
-
-public func ksr_is1PasswordSupported() -> Bool {
-  if #available(iOS 12.0, *) {
-    return false
-  }
-  return true
-}
-
 public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User, Never> {
   return AppEnvironment.current.apiService.clearUserUnseenActivity(input: .init())
     .filter { _ in AppEnvironment.current.currentUser != nil }

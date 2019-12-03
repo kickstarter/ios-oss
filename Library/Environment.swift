@@ -58,9 +58,6 @@ public struct Environment {
   /// The environment variables
   public let environmentVariables: EnvironmentVariables
 
-  /// A function that returns whether 1Password extension is supported.
-  public let is1PasswordSupported: () -> Bool
-
   /// A function that returns whether VoiceOver mode is running.
   public let isVoiceOverRunning: () -> Bool
 
@@ -112,7 +109,6 @@ public struct Environment {
     debugData: DebugData? = nil,
     device: UIDeviceType = UIDevice.current,
     environmentVariables: EnvironmentVariables = EnvironmentVariables(),
-    is1PasswordSupported: @escaping () -> Bool = { ksr_is1PasswordSupported() },
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
     koala: Koala = Koala(client: KoalaTrackingClient()),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
@@ -140,7 +136,6 @@ public struct Environment {
     self.debugData = debugData
     self.device = device
     self.environmentVariables = environmentVariables
-    self.is1PasswordSupported = is1PasswordSupported
     self.isVoiceOverRunning = isVoiceOverRunning
     self.koala = koala
     self.language = language
