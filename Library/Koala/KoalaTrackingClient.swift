@@ -95,8 +95,14 @@ public final class KoalaTrackingClient: TrackingClientType {
     self.queue.async {
       guard !self.buffer.isEmpty, let file = self.fileName() else { return }
 
-      NSKeyedArchiver.archiveRootObject(self.buffer, toFile: file)
-
+      do {
+        let url = URL(fileURLWithPath: file)
+        let data = try NSKeyedArchiver.archivedData(withRootObject: self.buffer, requiringSecureCoding: false)
+        try data.write(to: url)
+        print("🐨🔵 koala.plist successfully saved.")
+      } catch {
+        print("🐨🔴 Failed to save koala.plist: \(error)")
+      }
       self.buffer.removeAll()
     }
   }
@@ -105,7 +111,9 @@ public final class KoalaTrackingClient: TrackingClientType {
     self.queue.async {
       guard
         let file = self.fileName(), FileManager.default.fileExists(atPath: file),
-        let buffer = NSKeyedUnarchiver.unarchiveObject(withFile: file) as? [[String: Any]]
+        let buffer = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(
+          Data(contentsOf: URL(fileURLWithPath: file))
+        ) as? [[String: Any]]
       else { return }
 
       self.buffer = buffer + self.buffer

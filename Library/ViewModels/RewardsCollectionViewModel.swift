@@ -186,7 +186,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
 private func titleForContext(_ context: RewardsCollectionViewContext, project: Project) -> String {
   if currentUserIsCreator(of: project) {
-    return localizedString(key: "View_your_rewards", defaultValue: "View your rewards")
+    return Strings.View_your_rewards()
+  }
+
+  guard project.state == .live else {
+    return Strings.View_rewards()
   }
 
   return context == .createPledge ? Strings.Back_this_project() : Strings.Choose_another_reward()

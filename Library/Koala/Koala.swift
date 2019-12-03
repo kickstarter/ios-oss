@@ -474,13 +474,6 @@ public final class Koala {
     self.track(event: "Opened Deep Link", properties: props)
   }
 
-  public func trackAttemptingOnePasswordLogin() {
-    // Deprecated event
-    self.track(event: "Attempting 1password Login", properties: deprecatedProps)
-
-    self.track(event: "Triggered 1Password")
-  }
-
   // MARK: - Discovery Events
 
   /**
@@ -802,18 +795,14 @@ public final class Koala {
     )
   }
 
-  public func trackLoginFormView(onePasswordIsAvailable: Bool) {
+  public func trackLoginFormView() {
     self.track(
       event: "User Login",
       properties: [
-        "1password_extension_available": onePasswordIsAvailable,
         Koala.DeprecatedKey: true
       ]
     )
-    self.track(
-      event: "Viewed Login",
-      properties: ["one_password_extension_available": onePasswordIsAvailable]
-    )
+    self.track(event: "Viewed Login")
   }
 
   public func trackLoginSuccess(authType: AuthType) {
@@ -2076,7 +2065,7 @@ public final class Koala {
     props["client_type"] = "native"
     props["device_format"] = self.deviceFormat
     props["client_platform"] = self.clientPlatform
-    props["cellular_connection"] = CTTelephonyNetworkInfo().currentRadioAccessTechnology
+    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
     props["wifi_connection"] = Reachability.current == .wifi
 
     if let loggedInUser = self.loggedInUser {
