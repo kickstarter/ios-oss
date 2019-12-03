@@ -4,9 +4,6 @@ import ReactiveSwift
 
 public protocol ChangeEmailViewModelInputs {
   func emailFieldTextDidChange(text: String?)
-  func onePasswordButtonTapped()
-  func onePasswordFound(password: String?)
-  func onePassword(isAvailable available: Bool)
   func passwordFieldTextDidChange(text: String?)
   func resendVerificationEmailButtonTapped()
   func saveButtonTapped()
@@ -25,10 +22,7 @@ public protocol ChangeEmailViewModelOutputs {
   var dismissKeyboard: Signal<Void, Never> { get }
   var emailText: Signal<String, Never> { get }
   var messageLabelViewHidden: Signal<Bool, Never> { get }
-  var onePasswordButtonIsHidden: Signal<Bool, Never> { get }
-  var onePasswordFindLoginForURLString: Signal<String, Never> { get }
   var passwordFieldBecomeFirstResponder: Signal<Void, Never> { get }
-  var passwordText: Signal<String, Never> { get }
   var resendVerificationEmailViewIsHidden: Signal<Bool, Never> { get }
   var resetFields: Signal<String, Never> { get }
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
@@ -140,17 +134,6 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
       .filter { $0 == .next }
       .ignoreValues()
 
-    self.onePasswordButtonIsHidden = self.onePasswordIsAvailableProperty.signal.map(negate)
-      .map(is1PasswordButtonHidden)
-
-    self.onePasswordIsAvailableProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable: $0) }
-
-    self.passwordText = self.prefillPasswordProperty.signal.skipNil().map { $0 }
-
-    self.onePasswordFindLoginForURLString = self.onePasswordButtonTappedProperty.signal
-      .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
-
     changeEmailEvent.values()
       .observeValues { _ in AppEnvironment.current.koala.trackChangeEmail() }
 
@@ -182,22 +165,6 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
   private let newEmailProperty = MutableProperty<String?>(nil)
   public func emailFieldTextDidChange(text: String?) {
     self.newEmailProperty.value = text
-  }
-
-  private let onePasswordIsAvailableProperty = MutableProperty(false)
-  public func onePassword(isAvailable available: Bool) {
-    self.onePasswordIsAvailableProperty.value = available
-  }
-
-  private let prefillPasswordProperty = MutableProperty<String?>(nil)
-  public func onePasswordFound(password: String?) {
-    self.prefillPasswordProperty.value = password
-    self.passwordProperty.value = password
-  }
-
-  private let onePasswordButtonTappedProperty = MutableProperty(())
-  public func onePasswordButtonTapped() {
-    self.onePasswordButtonTappedProperty.value = ()
   }
 
   private let passwordProperty = MutableProperty<String?>(nil)
@@ -243,10 +210,7 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
   public let dismissKeyboard: Signal<Void, Never>
   public let emailText: Signal<String, Never>
   public let messageLabelViewHidden: Signal<Bool, Never>
-  public let onePasswordButtonIsHidden: Signal<Bool, Never>
-  public let onePasswordFindLoginForURLString: Signal<String, Never>
   public let passwordFieldBecomeFirstResponder: Signal<Void, Never>
-  public let passwordText: Signal<String, Never>
   public let resendVerificationEmailViewIsHidden: Signal<Bool, Never>
   public let resetFields: Signal<String, Never>
   public let saveButtonIsEnabled: Signal<Bool, Never>
