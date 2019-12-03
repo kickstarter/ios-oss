@@ -19,7 +19,7 @@ private enum ShimmerConstants {
 private struct AssociatedKeys {
   static var isLoading = "isLoading"
   static var shimmersWhenLoading = "shimmersWhenLoading"
-  static var resetViewCorners = "resetViewCorners"
+  static var shimmerLayers = "shimmerLayers"
 }
 
 protocol ShimmerLoading: AnyObject {
@@ -63,6 +63,24 @@ extension ShimmerLoading where Self: UIView {
     }
   }
 
+  private var shimmerLayers: [CAGradientLayer] {
+    get {
+      guard
+        let value = objc_getAssociatedObject(self, &AssociatedKeys.shimmerLayers) as? [CAGradientLayer]
+      else { return [] }
+
+      return value
+    }
+    set(newValue) {
+      objc_setAssociatedObject(
+        self,
+        &AssociatedKeys.shimmerLayers,
+        newValue,
+        objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
+      )
+    }
+  }
+
   // MARK: - Accessors
 
   func startLoading() {
@@ -73,14 +91,18 @@ extension ShimmerLoading where Self: UIView {
     self.isLoading = false
   }
 
+  func layoutGradientLayers() {
+    self.shimmerLayers.forEach {
+      $0.frame = $0.superlayer?.bounds ?? .zero
+      $0.setNeedsLayout()
+    }
+  }
+
   // MARK: - Shimmer Animation
 
   private func updateAnimation() {
     guard self.isLoading else {
-      self.layer.sublayers?
-        .filter { $0.name == gradientLayerName }
-        .forEach { $0.removeFromSuperlayer() }
-
+      self.shimmerLayers.forEach { $0.removeFromSuperlayer() }
       return
     }
 
@@ -94,6 +116,7 @@ extension ShimmerLoading where Self: UIView {
         gradientLayer.add(animationGroup, forKey: animation.keyPath)
 
         view.layer.addSublayer(gradientLayer)
+        self.shimmerLayers.append(gradientLayer)
     }
   }
 }
