@@ -51,6 +51,12 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
+  public static func updateExperimentGroup(_ optimizelyExperimentGroup: OptimizelyExperiment) {
+    self.replaceCurrentEnvironment(
+      optimizelyExperimentGroup: optimizelyExperimentGroup
+    )
+  }
+
   public static func updateServerConfig(_ config: ServerConfigType) {
     let service = Service(serverConfig: config)
 
@@ -120,6 +126,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
   // Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
   public static func pushEnvironment(
+    optimizelyExperimentGroup: OptimizelyExperiment?  = AppEnvironment.current.optimizelyExperimentGroup,
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     application: UIApplicationType = UIApplication.shared,
@@ -149,6 +156,7 @@ public struct AppEnvironment: AppEnvironmentType {
   ) {
     self.pushEnvironment(
       Environment(
+        optimizelyExperimentGroup: optimizelyExperimentGroup,
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
         application: application,
@@ -182,6 +190,7 @@ public struct AppEnvironment: AppEnvironmentType {
   // Replaces the current environment onto the stack with an environment that changes only a subset
   // of current global dependencies.
   public static func replaceCurrentEnvironment(
+    optimizelyExperimentGroup: OptimizelyExperiment? = AppEnvironment.current.optimizelyExperimentGroup,
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     application: UIApplicationType = UIApplication.shared,
@@ -211,6 +220,7 @@ public struct AppEnvironment: AppEnvironmentType {
   ) {
     self.replaceCurrentEnvironment(
       Environment(
+        optimizelyExperimentGroup: optimizelyExperimentGroup,
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
         application: application,

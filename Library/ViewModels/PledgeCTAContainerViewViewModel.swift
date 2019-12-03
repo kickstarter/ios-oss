@@ -50,8 +50,15 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .negate()
 
     let backing = project.map { $0.personalization.backing }
-    let pledgeState = Signal.combineLatest(project, backing)
+    let initialPledgeState = Signal.combineLatest(project, backing)
       .map(pledgeCTA(project:backing:))
+
+    let pledgeStateExperimentCTA = initialPledgeState
+      .filter { $0 == .pledge }
+      .map { _ in AppEnvironment.current.optimizelyExperimentGroup!.userIsInOptimizelyExperiment() ? true : false }
+      .map { experimentSetup(variationKey: $0) }
+
+    let pledgeState = pledgeStateExperimentCTA
 
     let inError = Signal.merge(
       projectError.ignoreValues().mapConst(true),
@@ -172,4 +179,16 @@ private func formattedPledge(amount: Double, project: Project) -> String {
     country: project.country,
     omitCurrencyCode: project.stats.omitUSCurrencyCode
   )
+}
+
+private func experimentSetup(variationKey: Bool) -> PledgeStateCTAType {
+    if variationKey == false {
+      // Execute code for "control" variation
+      return PledgeStateCTAType.pledge
+    } else if variationKey == true {
+      // Execute code for "treatment" variation
+      return PledgeStateCTAType.seeRewards
+    }
+
+  return PledgeStateCTAType.pledge
 }

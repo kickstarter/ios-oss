@@ -1247,6 +1247,9 @@
 		D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */; };
 		D7ADDFE722E0DAFA00157D83 /* RewardCellProjectBackingStateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */; };
 		D7B468F023469F98003D5A51 /* STPCardBrand+CreditCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B468EF23469F98003D5A51 /* STPCardBrand+CreditCardType.swift */; };
+		D7B962AB23888A0B003AA616 /* Optimizely.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7B962AA23888A0B003AA616 /* Optimizely.framework */; };
+		D7B962AF23888FEA003AA616 /* Optimizely.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7B962AA23888A0B003AA616 /* Optimizely.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D7B962B72396ECF6003AA616 /* OptimizelyExperiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */; };
 		D7B9C7581E453FBF00EA3A22 /* UILabel+IsTruncated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */; };
 		D7E20E6D2284A3BD00BA61A0 /* PledgeCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */; };
 		D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */; };
@@ -1408,6 +1411,16 @@
 				D0B065CC2280A31100142B7A /* Argo.framework in CopyFiles */,
 				D0B065CA2280A2DC00142B7A /* ReactiveSwift.framework in CopyFiles */,
 				D0B065C92280A2A700142B7A /* FBSnapshotTestCase.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7B962AD23888FB6003AA616 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D7B962AF23888FEA003AA616 /* Optimizely.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2587,6 +2600,8 @@
 		D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModelTests.swift; sourceTree = "<group>"; };
 		D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellProjectBackingStateType.swift; sourceTree = "<group>"; };
 		D7B468EF23469F98003D5A51 /* STPCardBrand+CreditCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPCardBrand+CreditCardType.swift"; sourceTree = "<group>"; };
+		D7B962AA23888A0B003AA616 /* Optimizely.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Optimizely.framework; path = Carthage/Build/iOS/Optimizely.framework; sourceTree = "<group>"; };
+		D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyExperiment.swift; sourceTree = "<group>"; };
 		D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+IsTruncated.swift"; sourceTree = "<group>"; };
 		D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCTAContainerViewViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2655,6 +2670,7 @@
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 				D0D58D8A2257FAE000532AC1 /* OnePasswordExtension.framework in Frameworks */,
+				D7B962AB23888A0B003AA616 /* Optimizely.framework in Frameworks */,
 				D0D58D862257FAE000532AC1 /* Prelude.framework in Frameworks */,
 				D0D58D8E2257FAE000532AC1 /* Prelude_UIKit.framework in Frameworks */,
 				D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */,
@@ -3264,6 +3280,7 @@
 				A75C811A1D210C4700B5AD03 /* ProjectActivityItemProvider.swift */,
 				D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */,
 				D6B188DD23048187005C7B19 /* ProjectPamphlet+Helpers.swift */,
+				D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */,
 				D6B188DF230481E6005C7B19 /* ProjectPamphlet+HelpersTests.swift */,
 				D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */,
 				D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */,
@@ -3429,6 +3446,7 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D7B962AA23888A0B003AA616 /* Optimizely.framework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
@@ -4247,6 +4265,8 @@
 				16344A3D20B4F6B700610E8D /* Swiftlint */,
 				7713662C20E4048B00D7D7AD /* Fabric */,
 				D0D58D772257F95E00532AC1 /* Carthage */,
+				D7B962AC23888A8E003AA616 /* ShellScript */,
+				D7B962AD23888FB6003AA616 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -4660,6 +4680,25 @@
 			shellPath = /bin/sh;
 			shellScript = "${SRCROOT}/bin/carthage-debug-copy.sh\n";
 		};
+		D7B962AC23888A8E003AA616 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Optimizely.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/Frameworks/Optimizely.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -4803,6 +4842,7 @@
 				A75511651C8642C3005355CF /* String+SimpleHTML.swift in Sources */,
 				A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */,
 				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
+				D7B962B72396ECF6003AA616 /* OptimizelyExperiment.swift in Sources */,
 				D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
 				0199545F1D2D818E00BC1390 /* DashboardProjectsDrawerViewModel.swift in Sources */,
 				D67DF564232ABB960051D207 /* ManagePledgeViewModel.swift in Sources */,

@@ -13,6 +13,7 @@ import Foundation
 #endif
 import Kickstarter_Framework
 import Library
+import Optimizely
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
@@ -146,6 +147,32 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.unregisterForRemoteNotifications
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
+
+    self.viewModel.outputs.configureOptimizely
+      .observeForUI()
+      .observeValues {
+        let logLevel = OptimizelyLogLevel.debug
+        let optimizely = OptimizelyClient(sdkKey: Secrets.OptimizelySDKKey.development,
+                                          defaultLogLevel: logLevel)
+
+        optimizely.start { result in
+          switch result {
+          case .failure(let error):
+            print("Optimizely SDK initiliazation failed: \(error)")
+          case .success:
+            print("Optimizely SDK initialized successfully!")
+          }
+
+          do {
+            let userId = String(AppEnvironment.current.currentUser!.id)
+            let variationKey = try optimizely.activate(experimentKey: "PledgeCTACopy", userId: userId)
+            let experimentGroup = OptimizelyExperiment(variationKey: variationKey)
+            AppEnvironment.updateExperimentGroup(experimentGroup)
+          } catch {
+            print("Optimizely SDK activation failed: \(error)")
+          }
+        }
+    }
 
     self.viewModel.outputs.configureAppCenterWithData
       .observeForUI()

@@ -8,6 +8,9 @@ import ReactiveSwift
  A collection of **all** global variables and singletons that the app wants access to.
  */
 public struct Environment {
+  /// The user's optimizely experiment group
+  public let optimizelyExperimentGroup: OptimizelyExperiment?
+
   /// A type that exposes endpoints for fetching Kickstarter data.
   public let apiService: ServiceType
 
@@ -97,6 +100,7 @@ public struct Environment {
   public let userDefaults: KeyValueStoreType
 
   public init(
+    optimizelyExperimentGroup: OptimizelyExperiment? = nil,
     apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
     application: UIApplicationType = UIApplication.shared,
@@ -125,6 +129,7 @@ public struct Environment {
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
     userDefaults: KeyValueStoreType = UserDefaults.standard
   ) {
+    self.optimizelyExperimentGroup = optimizelyExperimentGroup
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
     self.application = application
