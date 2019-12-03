@@ -399,7 +399,7 @@ final class RewardCardContainerViewModelTests: TestCase {
       "Selected",
       "Selected",
       "Selected",
-      "Selected",
+      "Selected"
     ])
     self.configureNoRewardGradientView.assertValues([false, false, false, false, false, false, false, false])
     self.rewardCardViewBackgroundColor.assertValues([

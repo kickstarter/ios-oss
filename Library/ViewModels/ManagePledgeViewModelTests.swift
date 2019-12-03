@@ -153,11 +153,15 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     self.vm.inputs.menuButtonTapped()
 
-    self.showActionSheetMenuWithOptions.assertValues([[ManagePledgeAlertAction.updatePledge,
-                                                       ManagePledgeAlertAction.changePaymentMethod,
-                                                       ManagePledgeAlertAction.chooseAnotherReward,
-                                                       ManagePledgeAlertAction.contactCreator,
-                                                       ManagePledgeAlertAction.cancelPledge]])
+    self.showActionSheetMenuWithOptions.assertValues([
+      [
+        ManagePledgeAlertAction.updatePledge,
+        ManagePledgeAlertAction.changePaymentMethod,
+        ManagePledgeAlertAction.chooseAnotherReward,
+        ManagePledgeAlertAction.contactCreator,
+        ManagePledgeAlertAction.cancelPledge
+      ]
+    ])
   }
 
   func testMenuButtonTapped_WhenProject_IsNotLive() {
