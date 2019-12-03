@@ -110,7 +110,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.viewModel.outputs.dismissToRootViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+        self?.dismiss(animated: true)
       }
 
     self.viewModel.outputs.goToDiscovery
