@@ -3,19 +3,13 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgeShippingLocationShimmerLoadingView: UIView, ShimmerLoading {
+final class PledgeShippingLocationShimmerLoadingView: UIView {
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var buttonPlaceholder: UIView = {
-    UIView(frame: .zero)
-      |> \.shimmersWhenLoading .~ true
-  }()
+  private lazy var buttonPlaceholder: UIView = { UIView(frame: .zero) }()
 
-  private lazy var amountPlaceholder: UIView = {
-    UIView(frame: .zero)
-      |> \.shimmersWhenLoading .~ true
-  }()
+  private lazy var amountPlaceholder: UIView = { UIView(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -70,5 +64,13 @@ final class PledgeShippingLocationShimmerLoadingView: UIView, ShimmerLoading {
       self.buttonPlaceholder.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4),
       self.amountPlaceholder.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2)
     ])
+  }
+}
+
+// MARK: - ShimmerLoading
+
+extension PledgeShippingLocationShimmerLoadingView: ShimmerLoading {
+  func shimmerViews() -> [UIView] {
+    return [self.amountPlaceholder, self.buttonPlaceholder]
   }
 }

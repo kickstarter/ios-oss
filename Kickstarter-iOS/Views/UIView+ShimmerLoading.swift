@@ -3,8 +3,6 @@ import Library
 import ObjectiveC
 import UIKit
 
-private let gradientLayerName = "ksr_shimmer_gradientLayer"
-
 private enum ShimmerConstants {
   enum Locations {
     static let start: [NSNumber] = [-1.0, -0.5, 0.0]
@@ -19,32 +17,13 @@ private enum ShimmerConstants {
 
 private struct AssociatedKeys {
   static var isLoading = "isLoading"
-  static var shimmersWhenLoading = "shimmersWhenLoading"
   static var shimmerLayers = "shimmerLayers"
 }
 
 protocol ShimmerLoading: AnyObject {
+  func shimmerViews() -> [UIView]
   func startLoading()
   func stopLoading()
-}
-
-extension UIView {
-  var shimmersWhenLoading: Bool {
-    get {
-      guard let value = objc_getAssociatedObject(self, &AssociatedKeys.shimmersWhenLoading) as? Bool else {
-        return false
-      }
-      return value
-    }
-    set(newValue) {
-      objc_setAssociatedObject(
-        self,
-        &AssociatedKeys.shimmersWhenLoading,
-        newValue,
-        objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-      )
-    }
-  }
 }
 
 extension ShimmerLoading where Self: UIView {
@@ -109,8 +88,7 @@ extension ShimmerLoading where Self: UIView {
       return
     }
 
-    allSubViews(of: self)
-      .filter { $0.shimmersWhenLoading }
+    self.shimmerViews()
       .forEach { view in
         let gradientLayer = newGradientLayer(with: view.bounds)
         let animation = newAnimation()
@@ -124,16 +102,11 @@ extension ShimmerLoading where Self: UIView {
   }
 }
 
-private func allSubViews(of view: UIView) -> [UIView] {
-  return view.subviews + view.subviews.flatMap(allSubViews(of:))
-}
-
 private func newGradientLayer(with frame: CGRect) -> CAGradientLayer {
   let gradientBackgroundColor: CGColor = UIColor(white: 0.85, alpha: 1.0).cgColor
   let gradientMovingColor: CGColor = UIColor(white: 0.75, alpha: 1.0).cgColor
 
   let gradientLayer = CAGradientLayer()
-  gradientLayer.name = gradientLayerName
   gradientLayer.frame = frame
   gradientLayer.startPoint = CGPoint(x: 0.0, y: 1.0)
   gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
