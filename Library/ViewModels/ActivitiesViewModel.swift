@@ -155,7 +155,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     }
 
     paymentMethodsEvent.observeValues { v in
-      print(v)
+      print("\n=========== Values =============\n\n\(v)\n\n\n")
     }
 
     self.isRefreshing = isLoading

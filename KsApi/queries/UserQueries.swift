@@ -53,6 +53,7 @@ public func pledgesQueryFields(status: String) -> NonEmptySet<Query.User> {
       .totalCount +| [
         .nodes(
           .status +| [
+            .errorReason,
             .project(
               .id +| [
                 .deadlineAt,
@@ -60,7 +61,7 @@ public func pledgesQueryFields(status: String) -> NonEmptySet<Query.User> {
                 .slug
               ]
             ),
-            .errorReason          ]
+          ]
         )
       ]
     )
