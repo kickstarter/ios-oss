@@ -1,18 +1,19 @@
 import Foundation
 import Library
-import UIKit
 import ObjectiveC
+import UIKit
 
 private let gradientLayerName = "ksr_shimmer_gradientLayer"
 
 private enum ShimmerConstants {
   enum Locations {
-    static let start: [NSNumber] = [-1.0,-0.5, 0.0]
-    static let end: [NSNumber] = [1.0,1.5, 2.0]
+    static let start: [NSNumber] = [-1.0, -0.5, 0.0]
+    static let end: [NSNumber] = [1.0, 1.5, 2.0]
   }
+
   enum Animation {
     static let movingAnimationDuration: CFTimeInterval = 1.25
-    static let delayBetweenAnimationLoops: CFTimeInterval = 0.5
+    static let delayBetweenAnimationLoops: CFTimeInterval = 0.3
   }
 }
 
@@ -92,9 +93,11 @@ extension ShimmerLoading where Self: UIView {
   }
 
   func layoutGradientLayers() {
-    self.shimmerLayers.forEach {
-      $0.frame = $0.superlayer?.bounds ?? .zero
-      $0.setNeedsLayout()
+    self.layoutIfNeeded()
+
+    self.shimmerLayers.forEach { layer in
+      layer.frame = layer.superlayer?.bounds ?? .zero
+      layer.setNeedsLayout()
     }
   }
 
@@ -117,7 +120,7 @@ extension ShimmerLoading where Self: UIView {
 
         view.layer.addSublayer(gradientLayer)
         self.shimmerLayers.append(gradientLayer)
-    }
+      }
   }
 }
 
@@ -126,8 +129,8 @@ private func allSubViews(of view: UIView) -> [UIView] {
 }
 
 private func newGradientLayer(with frame: CGRect) -> CAGradientLayer {
-  let gradientBackgroundColor : CGColor = UIColor(white: 0.85, alpha: 1.0).cgColor
-  let gradientMovingColor : CGColor = UIColor(white: 0.75, alpha: 1.0).cgColor
+  let gradientBackgroundColor: CGColor = UIColor(white: 0.85, alpha: 1.0).cgColor
+  let gradientMovingColor: CGColor = UIColor(white: 0.75, alpha: 1.0).cgColor
 
   let gradientLayer = CAGradientLayer()
   gradientLayer.name = gradientLayerName
@@ -165,6 +168,7 @@ private func newAnimationGroup(with animation: CABasicAnimation) -> CAAnimationG
     + ShimmerConstants.Animation.delayBetweenAnimationLoops
   animationGroup.animations = [animation]
   animationGroup.repeatCount = .infinity
+  animationGroup.beginTime = CACurrentMediaTime()
 
   return animationGroup
 }
