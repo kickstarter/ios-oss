@@ -173,7 +173,9 @@ public enum Query {
   }
 
   public enum Project {
+    case deadlineAt
     case id
+    case name
     case slug
     case updates(Set<QueryArg<Never>>, NonEmptySet<Connection<Project.Update>>)
 
@@ -217,6 +219,7 @@ public enum Query {
     case newletterSubscriptions(NonEmptySet<NewsletterSubscriptions>)
     case notifications(NonEmptySet<Notifications>)
     case optedOutOfRecommendations
+    case pledges(status: String, Set<QueryArg<Never>>, NonEmptySet<Connection<Backing>>)
     case showPublicProfile
     case savedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case storedCards(Set<QueryArg<Never>>, NonEmptySet<Connection<CreditCard>>)
@@ -229,6 +232,12 @@ public enum Query {
       case id
       case lastFour
       case type
+    }
+
+    public enum Backing {
+      case errorReason
+      case project(NonEmptySet<Project>)
+      case status
     }
   }
 }
@@ -356,7 +365,9 @@ extension Query.Category.ProjectsConnection.Argument: CustomStringConvertible {
 extension Query.Project: QueryType {
   public var description: String {
     switch self {
+    case .deadlineAt: return "deadlineAt"
     case .id: return "id"
+    case .name: return "name"
     case .slug: return "slug"
     case let .updates(args, fields): return "updates\(connection(args, fields))"
     }
@@ -406,6 +417,8 @@ extension Query.User: QueryType {
     case let .newletterSubscriptions(fields): return "newslettersSubscriptions { \(join(fields)) }"
     case let .notifications(fields): return "notifications { \(join(fields)) }"
     case .optedOutOfRecommendations: return "optedOutOfRecommendations"
+    case let .pledges(status, args, fields):
+      return "backings(status: \(status))\(connection(args, fields))"
     case let .savedProjects(args, fields): return "savedProjects\(connection(args, fields))"
     case .showPublicProfile: return "showPublicProfile"
     case let .storedCards(args, fields): return "storedCards\(connection(args, fields))"
@@ -419,6 +432,16 @@ extension Query.User: QueryType {
 extension Query.User.CreditCard: QueryType {
   public var description: String {
     return self.rawValue
+  }
+}
+
+extension Query.User.Backing: QueryType {
+  public var description: String {
+    switch self {
+    case .errorReason: return "errorReason"
+    case let .project(fields): return "project { \(join(fields)) }"
+    case .status: return "status"
+    }
   }
 }
 

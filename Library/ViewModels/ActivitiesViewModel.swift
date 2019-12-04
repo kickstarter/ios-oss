@@ -145,6 +145,19 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
           : next
       }
 
+    let paymentMethodsEvent = activities.ignoreValues()
+      .switchMap { _ in
+        AppEnvironment.current.apiService.fetchGraphUserPledges(
+          query: UserQueries.pledges(UserPledge.Status.collected.rawValue).query
+        )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+    }
+
+    paymentMethodsEvent.observeValues { v in
+      print(v)
+    }
+
     self.isRefreshing = isLoading
 
     let clearedActivitiesOnSessionEnd = self.userSessionEndedProperty.signal.mapConst([Activity]())

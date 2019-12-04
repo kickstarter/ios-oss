@@ -79,6 +79,9 @@
     fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>?
     fileprivate let fetchGraphUserAccountFieldsError: GraphError?
 
+    fileprivate let fetchGraphUserPledgesResponse: UserEnvelope<UserPledgeEnvelope>?
+    fileprivate let fetchGraphUserPledgesError: GraphError?
+
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
     fileprivate let addAttachmentError: ErrorEnvelope?
     fileprivate let removeAttachmentResponse: UpdateDraft.Image?
@@ -237,6 +240,8 @@
       fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
       fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>? = nil,
       fetchGraphUserAccountFieldsError: GraphError? = nil,
+      fetchGraphUserPledgesResponse: UserEnvelope<UserPledgeEnvelope>? = nil,
+      fetchGraphUserPledgesError: GraphError? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
       removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -351,6 +356,9 @@
       self.fetchGraphUserAccountFieldsError = fetchGraphUserAccountFieldsError
 
       self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
+
+      self.fetchGraphUserPledgesResponse = fetchGraphUserPledgesResponse
+      self.fetchGraphUserPledgesError = fetchGraphUserPledgesError
 
       self.fetchCheckoutResponse = fetchCheckoutResponse
       self.fetchCheckoutError = fetchCheckoutError
@@ -732,6 +740,11 @@
       } else {
         return .empty
       }
+    }
+
+    internal func fetchGraphUserPledges(query: NonEmptySet<Query>)
+      -> SignalProducer<UserEnvelope<UserPledgeEnvelope>, GraphError> {
+      return .empty
     }
 
     internal func fetchGraph<A>(
