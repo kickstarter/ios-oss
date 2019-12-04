@@ -2788,7 +2788,7 @@
 			name = Configs;
 			sourceTree = "<group>";
 		};
-		A721DF3D1C8CF4F6000CB97C /* Koala */ = {
+		A721DF3D1C8CF4F6000CB97C /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
 				A721DF671C8CFAEB000CB97C /* Koala.swift */,
@@ -2797,7 +2797,7 @@
 				A721DF6A1C8CFAF6000CB97C /* MockTrackingClient.swift */,
 				A721DF611C8CF503000CB97C /* TrackingClientType.swift */,
 			);
-			path = Koala;
+			path = Tracking;
 			sourceTree = "<group>";
 		};
 		A73378F91D0AE33B00C91445 /* Styles */ = {
@@ -3345,7 +3345,7 @@
 				A734A2661D21A1790080BBD5 /* WKNavigationActionData.swift */,
 				A7C725851C85D36D005A016B /* DataSource */,
 				778F891A22D3E35600D095C5 /* Extensions */,
-				A721DF3D1C8CF4F6000CB97C /* Koala */,
+				A721DF3D1C8CF4F6000CB97C /* Tracking */,
 				A73378F91D0AE33B00C91445 /* Styles */,
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
