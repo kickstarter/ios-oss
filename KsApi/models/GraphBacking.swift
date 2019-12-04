@@ -1,13 +1,5 @@
 import Foundation
 
-public struct GraphBackingEnvelope: Swift.Decodable {
-  public var backings: GraphBackingConnection
-
-  public struct GraphBackingConnection: Swift.Decodable {
-    public let nodes: [GraphBacking]
-  }
-}
-
 public struct GraphBacking: Swift.Decodable {
   public var errorReason: String?
   public var project: Project?
