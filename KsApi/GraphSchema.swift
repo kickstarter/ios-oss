@@ -194,8 +194,9 @@ public enum Query {
   }
 
   public enum User {
-    case biography
     case backedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
+    case backings(status: String, Set<QueryArg<Never>>, NonEmptySet<Connection<Backing>>)
+    case biography
     case chosenCurrency
     case conversations(Set<QueryArg<Never>>, NonEmptySet<Connection<Conversation>>)
     case createdProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
@@ -219,7 +220,6 @@ public enum Query {
     case newletterSubscriptions(NonEmptySet<NewsletterSubscriptions>)
     case notifications(NonEmptySet<Notifications>)
     case optedOutOfRecommendations
-    case pledges(status: String, Set<QueryArg<Never>>, NonEmptySet<Connection<Backing>>)
     case showPublicProfile
     case savedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case storedCards(Set<QueryArg<Never>>, NonEmptySet<Connection<CreditCard>>)
@@ -392,6 +392,8 @@ extension Query.Project.Update: QueryType {
 extension Query.User: QueryType {
   public var description: String {
     switch self {
+    case let .backings(status, args, fields):
+      return "backings(status: \(status))\(connection(args, fields))"
     case .biography: return "biography"
     case let .backedProjects(args, fields): return "backedProjects\(connection(args, fields))"
     case let .conversations(args, fields): return "conversations\(connection(args, fields))"
@@ -417,8 +419,6 @@ extension Query.User: QueryType {
     case let .newletterSubscriptions(fields): return "newslettersSubscriptions { \(join(fields)) }"
     case let .notifications(fields): return "notifications { \(join(fields)) }"
     case .optedOutOfRecommendations: return "optedOutOfRecommendations"
-    case let .pledges(status, args, fields):
-      return "backings(status: \(status))\(connection(args, fields))"
     case let .savedProjects(args, fields): return "savedProjects\(connection(args, fields))"
     case .showPublicProfile: return "showPublicProfile"
     case let .storedCards(args, fields): return "storedCards\(connection(args, fields))"

@@ -2,18 +2,18 @@ import Prelude
 
 public enum UserQueries: Queryable {
   case account
+  case backings(String)
   case email
-  case pledges(String)
   case storedCards
 
   public var query: NonEmptySet<Query> {
     switch self {
     case .account:
       return NonEmptySet(Query.user(accountQueryFields()))
+    case .backings(let status):
+      return NonEmptySet(Query.user(backingsQueryFields(status: status)))
     case .email:
       return NonEmptySet(Query.user(changeEmailQueryFields()))
-    case .pledges(let status):
-      return NonEmptySet(Query.user(pledgesQueryFields(status: status)))
     case .storedCards:
       return NonEmptySet(Query.user(storedCardsQueryFields()))
     }
@@ -45,9 +45,9 @@ public func changeEmailQueryFields() -> NonEmptySet<Query.User> {
   return .email +| [.isEmailVerified, .isEmailDeliverable]
 }
 
-public func pledgesQueryFields(status: String) -> NonEmptySet<Query.User> {
+public func backingsQueryFields(status: String) -> NonEmptySet<Query.User> {
   return .id +| [
-    .pledges(
+    .backings(
       status: status,
       [],
       .totalCount +| [

@@ -256,8 +256,8 @@ public struct Service: ServiceType {
     return fetch(query: query)
   }
 
-  public func fetchGraphUserPledges(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserPledgeEnvelope>, GraphError> {
+  public func fetchGraphUserBackings(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
       return fetch(query: query)
   }
 
