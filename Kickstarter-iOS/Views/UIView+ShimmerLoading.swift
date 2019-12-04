@@ -16,7 +16,6 @@ private enum ShimmerConstants {
 }
 
 private struct AssociatedKeys {
-  static var isLoading = "isLoading"
   static var shimmerLayers = "shimmerLayers"
 }
 
@@ -27,22 +26,6 @@ protocol ShimmerLoading: AnyObject {
 }
 
 extension ShimmerLoading where Self: UIView {
-  private var isLoading: Bool {
-    get {
-      guard let value = objc_getAssociatedObject(self, &AssociatedKeys.isLoading) as? Bool else {
-        return false
-      }
-      return value
-    }
-    set(newValue) {
-      objc_setAssociatedObject(
-        self, &AssociatedKeys.isLoading, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-      )
-
-      self.updateAnimation()
-    }
-  }
-
   private var shimmerLayers: [CAGradientLayer] {
     get {
       guard
@@ -64,11 +47,21 @@ extension ShimmerLoading where Self: UIView {
   // MARK: - Accessors
 
   func startLoading() {
-    self.isLoading = true
+    self.shimmerViews()
+      .forEach { view in
+        let gradientLayer = shimmerGradientLayer(with: view.bounds)
+        let animation = shimmerAnimation()
+        let animationGroup = shimmerAnimationGroup(with: animation)
+
+        gradientLayer.add(animationGroup, forKey: animation.keyPath)
+
+        view.layer.addSublayer(gradientLayer)
+        self.shimmerLayers.append(gradientLayer)
+      }
   }
 
   func stopLoading() {
-    self.isLoading = false
+    self.shimmerLayers.forEach { $0.removeFromSuperlayer() }
   }
 
   func layoutGradientLayers() {
@@ -79,30 +72,9 @@ extension ShimmerLoading where Self: UIView {
       layer.setNeedsLayout()
     }
   }
-
-  // MARK: - Shimmer Animation
-
-  private func updateAnimation() {
-    guard self.isLoading else {
-      self.shimmerLayers.forEach { $0.removeFromSuperlayer() }
-      return
-    }
-
-    self.shimmerViews()
-      .forEach { view in
-        let gradientLayer = newGradientLayer(with: view.bounds)
-        let animation = newAnimation()
-        let animationGroup = newAnimationGroup(with: animation)
-
-        gradientLayer.add(animationGroup, forKey: animation.keyPath)
-
-        view.layer.addSublayer(gradientLayer)
-        self.shimmerLayers.append(gradientLayer)
-      }
-  }
 }
 
-private func newGradientLayer(with frame: CGRect) -> CAGradientLayer {
+private func shimmerGradientLayer(with frame: CGRect) -> CAGradientLayer {
   let gradientBackgroundColor: CGColor = UIColor(white: 0.85, alpha: 1.0).cgColor
   let gradientMovingColor: CGColor = UIColor(white: 0.75, alpha: 1.0).cgColor
 
@@ -122,7 +94,7 @@ private func newGradientLayer(with frame: CGRect) -> CAGradientLayer {
   return gradientLayer
 }
 
-private func newAnimation() -> CABasicAnimation {
+private func shimmerAnimation() -> CABasicAnimation {
   let locationsKeyPath = \CAGradientLayer.locations
 
   let animation = CABasicAnimation(keyPath: locationsKeyPath._kvcKeyPathString)
@@ -134,7 +106,7 @@ private func newAnimation() -> CABasicAnimation {
   return animation
 }
 
-private func newAnimationGroup(with animation: CABasicAnimation) -> CAAnimationGroup {
+private func shimmerAnimationGroup(with animation: CABasicAnimation) -> CAAnimationGroup {
   let animationGroup = CAAnimationGroup()
 
   animationGroup.duration = ShimmerConstants.Animation.movingAnimationDuration
