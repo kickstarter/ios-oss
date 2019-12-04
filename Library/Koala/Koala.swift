@@ -483,15 +483,9 @@ public final class Koala {
    - parameter page: The number of pages that have been loaded.
    */
   public func trackDiscovery(params: DiscoveryParams, page: Int) {
-    var props = properties(params: params).withAllValuesFrom(["page": page])
+    let props = properties(params: params).withAllValuesFrom(["page_count": page])
 
-    self.track(event: "Loaded Discovery Results", properties: props)
-
-    // Deprecated event
-    self.track(
-      event: "Discover List View",
-      properties: props.withAllValuesFrom(deprecatedProps)
-    )
+    self.track(event: "Search Results Loaded", properties: props)
   }
 
   public func trackDiscoveryViewed(params: DiscoveryParams) {
@@ -2246,22 +2240,29 @@ private func properties(userActivity: NSUserActivity) -> [String: Any] {
   return props
 }
 
+// MARK: - Discovery Properties
+
 private func properties(params: DiscoveryParams, prefix _: String = "discover_") -> [String: Any] {
   var result: [String: Any] = [:]
+  var unprefixedResult: [String: Any] = [:]
 
   // NB: All filters should be added here since `result["everything"]` is derived from this.
   result["recommended"] = params.recommended
   result["social"] = params.social
   result["staff_picks"] = params.staffPicks
   result["starred"] = params.starred
-  result["term"] = params.query
+  result["tag"] = params.tagId?.rawValue
   result = result.withAllValuesFrom(params.category.map(properties(category:)) ?? [:])
 
   result["everything"] = result.isEmpty
-  result["page"] = params.page
+  result["page_count"] = params.page
   result["sort"] = params.sort?.rawValue
+  result["ref_tag"] = RefTag.fromParams(params: params)
 
-  return result.prefixedKeys("discover_")
+  unprefixedResult["search_term"] = params.query
+  unprefixedResult["page_count"] = params.perPage
+
+  return result.prefixedKeys("discover_").withAllValuesFrom(unprefixedResult)
 }
 
 private func properties(category: KsApi.Category) -> [String: Any] {

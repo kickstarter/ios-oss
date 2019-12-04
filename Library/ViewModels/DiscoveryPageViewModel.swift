@@ -249,7 +249,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let projectCardTapped = paramsChanged
       .takePairWhen(self.tappedProject.signal.skipNil())
-      .map { params, project in (project, refTag(fromParams: params, project: project)) }
+      .map { params, project in (project, RefTag.fromParams(params: params)) }
 
     self.goToActivityProject = activitySampleTapped
 
@@ -484,25 +484,6 @@ private func saveSeen(activities: [Activity]) {
   activities.forEach { activity in
     AppEnvironment.current.userDefaults.lastSeenActivitySampleId = activity.id
   }
-}
-
-private func refTag(fromParams params: DiscoveryParams, project _: Project) -> RefTag {
-  if let tagId = params.tagId {
-    return .projectCollection(tagId)
-  }
-
-  if params.category != nil {
-    return .categoryWithSort(params.sort ?? .magic)
-  } else if params.recommended == .some(true) {
-    return .recsWithSort(params.sort ?? .magic)
-  } else if params.staffPicks == .some(true) {
-    return .recommendedWithSort(params.sort ?? .magic)
-  } else if params.social == .some(true) {
-    return .socialWithSort(params.sort ?? .magic)
-  } else if params.starred == .some(true) {
-    return .starredWithSort(params.sort ?? .magic)
-  }
-  return RefTag.discoveryWithSort(params.sort ?? .magic)
 }
 
 private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {

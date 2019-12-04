@@ -266,6 +266,8 @@ final class KoalaTests: TestCase {
       <> DiscoveryParams.lens.category .~ Category.art
       <> DiscoveryParams.lens.query .~ "collage"
       <> DiscoveryParams.lens.sort .~ .popular
+      <> DiscoveryParams.lens.tagId .~ .goRewardless
+      <> DiscoveryParams.lens.perPage .~ 25
 
     let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
@@ -279,9 +281,11 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["discover_social"] as? Bool)
     XCTAssertEqual(true, properties?["discover_staff_picks"] as? Bool)
     XCTAssertEqual(false, properties?["discover_starred"] as? Bool)
-    XCTAssertEqual("collage", properties?["discover_term"] as? String)
     XCTAssertEqual(false, properties?["discover_everything"] as? Bool)
     XCTAssertEqual("popularity", properties?["discover_sort"] as? String)
+    XCTAssertEqual("518", properties?["discovery_ref_tag"] as? String)
+    XCTAssertEqual("collage", properties?["search_term"] as? String)
+    XCTAssertEqual(25, properties?["page_count"] as? Int)
     XCTAssertEqual(1, properties?["page"] as? Int)
   }
 
