@@ -55,7 +55,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
     let pledgeStateExperimentCTA = initialPledgeState
       .filter { $0 == .pledge }
-      .map { _ in AppEnvironment.current.optimizelyExperimentGroup!.userIsInOptimizelyExperiment() ? true : false }
+      .map { _ in AppEnvironment.current.optimizelyExperimentGroup == .experimental ? true : false }
       .map { experimentSetup(variationKey: $0) }
 
     let pledgeState = pledgeStateExperimentCTA

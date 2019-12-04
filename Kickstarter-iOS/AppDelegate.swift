@@ -166,8 +166,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           do {
             let userId = String(AppEnvironment.current.currentUser!.id)
             let variationKey = try optimizely.activate(experimentKey: "PledgeCTACopy", userId: userId)
-            let experimentGroup = OptimizelyExperiment(variationKey: variationKey)
-            AppEnvironment.updateExperimentGroup(experimentGroup)
+            let experimentGroup = OptimizelyExperiment.Variant.init(variationKey: variationKey)
+            AppEnvironment.updateExperimentGroup(experimentGroup!)
           } catch {
             print("Optimizely SDK activation failed: \(error)")
           }

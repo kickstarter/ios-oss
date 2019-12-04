@@ -51,7 +51,7 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
-  public static func updateExperimentGroup(_ optimizelyExperimentGroup: OptimizelyExperiment) {
+  public static func updateExperimentGroup(_ optimizelyExperimentGroup: OptimizelyExperiment.Variant) {
     self.replaceCurrentEnvironment(
       optimizelyExperimentGroup: optimizelyExperimentGroup
     )
@@ -126,7 +126,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
   // Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
   public static func pushEnvironment(
-    optimizelyExperimentGroup: OptimizelyExperiment?  = AppEnvironment.current.optimizelyExperimentGroup,
+    optimizelyExperimentGroup: OptimizelyExperiment.Variant? = AppEnvironment.current.optimizelyExperimentGroup,
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     application: UIApplicationType = UIApplication.shared,
@@ -190,7 +190,7 @@ public struct AppEnvironment: AppEnvironmentType {
   // Replaces the current environment onto the stack with an environment that changes only a subset
   // of current global dependencies.
   public static func replaceCurrentEnvironment(
-    optimizelyExperimentGroup: OptimizelyExperiment? = AppEnvironment.current.optimizelyExperimentGroup,
+    optimizelyExperimentGroup: OptimizelyExperiment.Variant? = AppEnvironment.current.optimizelyExperimentGroup,
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     application: UIApplicationType = UIApplication.shared,

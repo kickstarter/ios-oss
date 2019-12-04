@@ -9,7 +9,7 @@ import ReactiveSwift
  */
 public struct Environment {
   /// The user's optimizely experiment group
-  public let optimizelyExperimentGroup: OptimizelyExperiment?
+  public let optimizelyExperimentGroup: OptimizelyExperiment.Variant?
 
   /// A type that exposes endpoints for fetching Kickstarter data.
   public let apiService: ServiceType
@@ -100,7 +100,7 @@ public struct Environment {
   public let userDefaults: KeyValueStoreType
 
   public init(
-    optimizelyExperimentGroup: OptimizelyExperiment? = nil,
+    optimizelyExperimentGroup: OptimizelyExperiment.Variant? = nil,
     apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
     application: UIApplicationType = UIApplication.shared,

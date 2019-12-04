@@ -1,14 +1,17 @@
 import Foundation
 import KsApi
 
-public struct OptimizelyExperiment {
-  public var variationKey: String
+public enum OptimizelyExperiment {
+  public enum Variant: String {
+  case control
+  case experimental
 
-  public init(variationKey: String) {
-    self.variationKey = variationKey
-  }
-
-  public func userIsInOptimizelyExperiment() -> Bool {
-    if variationKey == "experimental" { return true } else { return false }
+    public init?(variationKey: String) {
+      switch variationKey {
+      case "control": self = .control
+      case "experimental": self = .experimental
+      default: return nil
+      }
+    }
   }
 }
