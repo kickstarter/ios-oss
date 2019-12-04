@@ -1,7 +1,6 @@
 import Foundation
 import KsApi
 import Library
-import OnePasswordExtension
 import Prelude
 
 final class ChangePasswordViewController: UIViewController, MessageBannerViewControllerPresenting {
@@ -13,7 +12,6 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
   @IBOutlet fileprivate var validationErrorMessageLabel: UILabel!
   @IBOutlet fileprivate var newPasswordLabel: UILabel!
   @IBOutlet fileprivate var newPasswordTextField: UITextField!
-  @IBOutlet fileprivate var onePasswordButton: UIButton!
   @IBOutlet fileprivate var scrollView: UIScrollView!
   @IBOutlet fileprivate var stackView: UIStackView!
 
@@ -37,10 +35,6 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
 
     let navigationBarButton = UIBarButtonItem(customView: self.saveButtonView)
     self.navigationItem.setRightBarButton(navigationBarButton, animated: false)
-
-    self.viewModel.inputs.onePassword(
-      isAvailable: OnePasswordExtension.shared().isAppExtensionAvailable()
-    )
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -72,9 +66,6 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
       |> UILabel.lens.text %~ { _ in
         Strings.Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password()
       }
-
-    _ = self.onePasswordButton
-      |> onePasswordButtonStyle
 
     _ = self.confirmNewPasswordLabel
       |> settingsTitleLabelStyle
@@ -117,8 +108,6 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.currentPasswordTextField.rac.text = self.viewModel.outputs.currentPasswordPrefillValue
-    self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
     self.validationErrorMessageLabel.rac.hidden = self.viewModel.outputs.validationErrorLabelIsHidden
     self.validationErrorMessageLabel.rac.text = self.viewModel.outputs.validationErrorLabelMessage
 
@@ -162,11 +151,6 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
         self?.dismissKeyboard()
       }
 
-    self.viewModel.outputs.onePasswordFindPasswordForURLString
-      .observeValues { [weak self] urlString in
-        self?.onePasswordFindPassword(forURLString: urlString)
-      }
-
     self.viewModel.outputs.changePasswordFailure
       .observeForControllerAction()
       .observeValues { [weak self] errorMessage in
@@ -201,17 +185,6 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
     NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
 
     self.dismiss(animated: true, completion: nil)
-  }
-
-  private func onePasswordFindPassword(forURLString string: String) {
-    OnePasswordExtension.shared()
-      .findLogin(forURLString: string, for: self, sender: self.onePasswordButton) { result, _ in
-        guard let result = result, let password = result[AppExtensionPasswordKey] as? String else {
-          return
-        }
-
-        self.viewModel.inputs.onePasswordFoundPassword(password: password)
-      }
   }
 
   private func dismissKeyboard() {
@@ -297,9 +270,5 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
 
   @IBAction func saveButtonTapped(_: Any) {
     self.viewModel.inputs.saveButtonTapped()
-  }
-
-  @IBAction func onePasswordButtonTapped(_: Any) {
-    self.viewModel.inputs.onePasswordButtonTapped()
   }
 }

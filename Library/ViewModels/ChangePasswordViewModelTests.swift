@@ -15,11 +15,8 @@ final class ChangePasswordViewModelTests: TestCase {
   private let changePasswordSuccess = TestObserver<Void, Never>()
   private let confirmNewPasswordBecomeFirstResponder = TestObserver<Void, Never>()
   private let currentPasswordBecomeFirstResponder = TestObserver<Void, Never>()
-  private let currentPasswordPrefillValue = TestObserver<String, Never>()
   private let dismissKeyboard = TestObserver<Void, Never>()
   private let newPasswordBecomeFirstResponder = TestObserver<Void, Never>()
-  private let onePasswordButtonIsHidden = TestObserver<Bool, Never>()
-  private let onePasswordFindPasswordForURLString = TestObserver<String, Never>()
   private let saveButtonIsEnabled = TestObserver<Bool, Never>()
   private let validationErrorLabelIsHidden = TestObserver<Bool, Never>()
   private let validationErrorLabelMessage = TestObserver<String, Never>()
@@ -36,12 +33,8 @@ final class ChangePasswordViewModelTests: TestCase {
       .observe(self.confirmNewPasswordBecomeFirstResponder.observer)
     self.vm.outputs.currentPasswordBecomeFirstResponder
       .observe(self.currentPasswordBecomeFirstResponder.observer)
-    self.vm.outputs.currentPasswordPrefillValue.observe(self.currentPasswordPrefillValue.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.newPasswordBecomeFirstResponder.observe(self.newPasswordBecomeFirstResponder.observer)
-    self.vm.outputs.onePasswordFindPasswordForURLString
-      .observe(self.onePasswordFindPasswordForURLString.observer)
-    self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonIsHidden.observer)
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
     self.vm.outputs.validationErrorLabelIsHidden.observe(self.validationErrorLabelIsHidden.observer)
     self.vm.outputs.validationErrorLabelMessage.observe(self.validationErrorLabelMessage.observer)
@@ -91,50 +84,6 @@ final class ChangePasswordViewModelTests: TestCase {
     self.saveButtonIsEnabled.assertValues([false])
     self.dismissKeyboard.assertValueCount(1)
     self.activityIndicatorShouldShow.assertValueCount(0)
-  }
-
-  func testOnePasswordButtonHidesProperly_OnIOS11AndEarlier() {
-    withEnvironment(is1PasswordSupported: { true }) {
-      self.vm.inputs.onePassword(isAvailable: true)
-
-      self.onePasswordButtonIsHidden.assertValues([false])
-
-      self.vm.inputs.onePassword(isAvailable: false)
-
-      self.onePasswordButtonIsHidden.assertValues([false, true])
-    }
-  }
-
-  func testOnePasswordButtonHidesProperly_OnIOS12AndLater() {
-    withEnvironment(is1PasswordSupported: { false }) {
-      self.vm.inputs.onePassword(isAvailable: true)
-
-      self.onePasswordButtonIsHidden.assertValues([true])
-
-      self.vm.inputs.onePassword(isAvailable: false)
-
-      self.onePasswordButtonIsHidden.assertValues([true, true])
-    }
-  }
-
-  func testOnePasswordAutofill() {
-    let mockService = MockService(serverConfig: ServerConfig.local)
-
-    withEnvironment(apiService: mockService, is1PasswordSupported: { true }) {
-      self.vm.inputs.onePassword(isAvailable: true)
-      self.vm.inputs.viewDidAppear()
-
-      self.currentPasswordBecomeFirstResponder.assertValueCount(1)
-      self.onePasswordButtonIsHidden.assertValue(false)
-
-      self.vm.inputs.onePasswordButtonTapped()
-
-      self.onePasswordFindPasswordForURLString.assertValues(["http://ksr.test"])
-
-      self.vm.inputs.onePasswordFoundPassword(password: "password")
-
-      self.currentPasswordPrefillValue.assertValue("password")
-    }
   }
 
   func testValidationErrors_VoiceOverON() {

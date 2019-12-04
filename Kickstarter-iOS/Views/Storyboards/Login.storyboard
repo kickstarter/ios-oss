@@ -260,19 +260,11 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="336" height="50"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rfF-KC-Vmh">
-                                                                <rect key="frame" x="0.0" y="15.5" width="301" height="19"/>
+                                                                <rect key="frame" x="0.0" y="15.5" width="336" height="19"/>
                                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next"/>
                                                             </textField>
-                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sED-DC-oIo" userLabel="1password">
-                                                                <rect key="frame" x="301" y="7.5" width="35" height="35"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="35" id="BLy-5u-M2i"/>
-                                                                    <constraint firstAttribute="width" constant="35" id="Oot-c8-LTL"/>
-                                                                </constraints>
-                                                                <state key="normal" image="onepassword-button"/>
-                                                            </button>
                                                         </subviews>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="RPH-c1-qAp"/>
@@ -358,7 +350,6 @@
                         <outlet property="formBackgroundView" destination="Vjk-Pm-lN3" id="amZ-HX-5O5"/>
                         <outlet property="formDividerView" destination="OeS-as-xL5" id="TPR-a7-yCv"/>
                         <outlet property="loginButton" destination="yb8-7t-B6f" id="YV7-rz-Jjv"/>
-                        <outlet property="onePasswordButton" destination="sED-DC-oIo" id="SHk-Ii-46O"/>
                         <outlet property="passwordTextField" destination="A3g-DY-QEE" id="mia-c7-Dw0"/>
                         <outlet property="rootStackView" destination="WAW-aN-vGd" id="NCz-Te-tZj"/>
                         <outlet property="showHidePasswordButton" destination="b9k-W5-N78" id="G2P-ei-0ei"/>
@@ -650,7 +641,4 @@
             <point key="canvasLocation" x="4958" y="736"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="onepassword-button" width="27" height="27"/>
-    </resources>
 </document>

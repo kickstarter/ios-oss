@@ -437,6 +437,16 @@ final class RewardsCollectionViewModelTests: TestCase {
     }
   }
 
+  func testTitle_Project_NotLive() {
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+
+    self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.title.assertValue("View rewards")
+  }
+
   func testBackedRewardIndexPath() {
     let backedReward = Reward.template
       |> Reward.lens.id .~ 5

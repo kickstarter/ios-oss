@@ -1,5 +1,4 @@
 import Library
-import OnePasswordExtension
 import Prelude
 import Prelude_UIKit
 import ReactiveSwift
@@ -11,7 +10,6 @@ internal final class LoginViewController: UIViewController {
   @IBOutlet fileprivate var formBackgroundView: UIView!
   @IBOutlet fileprivate var formDividerView: UIView!
   @IBOutlet fileprivate var loginButton: UIButton!
-  @IBOutlet fileprivate var onePasswordButton: UIButton!
   @IBOutlet fileprivate var passwordTextField: UITextField!
   @IBOutlet fileprivate var rootStackView: UIStackView!
   @IBOutlet fileprivate var showHidePasswordButton: UIButton!
@@ -27,12 +25,6 @@ internal final class LoginViewController: UIViewController {
 
     let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
     self.view.addGestureRecognizer(tap)
-
-    self.onePasswordButton.addTarget(
-      self,
-      action: #selector(self.onePasswordButtonTapped),
-      for: .touchUpInside
-    )
 
     self.emailTextField.addTarget(
       self,
@@ -62,10 +54,6 @@ internal final class LoginViewController: UIViewController {
       self,
       action: #selector(self.showHidePasswordButtonTapped),
       for: .touchUpInside
-    )
-
-    self.viewModel.inputs.onePassword(
-      isAvailable: OnePasswordExtension.shared().isAppExtensionAvailable()
     )
 
     self.viewModel.inputs.viewDidLoad()
@@ -113,8 +101,6 @@ internal final class LoginViewController: UIViewController {
 
     _ = self.formBackgroundView |> cardStyle()
 
-    _ = self.onePasswordButton |> onePasswordButtonStyle
-
     _ = self.rootStackView |> loginRootStackViewStyle
   }
 
@@ -122,12 +108,9 @@ internal final class LoginViewController: UIViewController {
     super.bindViewModel()
 
     self.emailTextField.rac.becomeFirstResponder = self.viewModel.outputs.emailTextFieldBecomeFirstResponder
-    self.emailTextField.rac.text = self.viewModel.outputs.emailText
     self.loginButton.rac.enabled = self.viewModel.outputs.isFormValid
     self.passwordTextField.rac.becomeFirstResponder =
       self.viewModel.outputs.passwordTextFieldBecomeFirstResponder
-    self.passwordTextField.rac.text = self.viewModel.outputs.passwordText
-    self.onePasswordButton.rac.hidden = self.viewModel.outputs.onePasswordButtonIsHidden
 
     self.viewModel.outputs.showHidePasswordButtonToggled
       .observeForUI()
@@ -170,22 +153,6 @@ internal final class LoginViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] email, password in
         self?.startTwoFactorViewController(email, password: password)
-      }
-
-    self.viewModel.outputs.onePasswordFindLoginForURLString
-      .observeForControllerAction()
-      .observeValues { [weak self] in self?.onePasswordFindLogin(forURLString: $0) }
-  }
-
-  fileprivate func onePasswordFindLogin(forURLString string: String) {
-    OnePasswordExtension.shared()
-      .findLogin(forURLString: string, for: self, sender: self.onePasswordButton) { result, _ in
-        guard let result = result else { return }
-
-        self.viewModel.inputs.onePasswordFoundLogin(
-          email: result[AppExtensionUsernameKey] as? String,
-          password: result[AppExtensionPasswordKey] as? String
-        )
       }
   }
 
@@ -240,10 +207,6 @@ internal final class LoginViewController: UIViewController {
   @IBAction
   internal func resetPasswordButtonPressed(_: UIButton) {
     self.viewModel.inputs.resetPasswordButtonPressed()
-  }
-
-  @objc fileprivate func onePasswordButtonTapped() {
-    self.viewModel.inputs.onePasswordButtonTapped()
   }
 
   @objc internal func dismissKeyboard() {
