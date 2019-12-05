@@ -429,7 +429,7 @@ extension ManagePledgeViewController: PledgeViewControllerDelegate {
 }
 
 extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
-  func managePledgePaymentMethodViewDidTapFixButton(_ view: ManagePledgePaymentMethodView) {
+  func managePledgePaymentMethodViewDidTapFixButton(_: ManagePledgePaymentMethodView) {
     self.viewModel.inputs.fixButtonTapped()
   }
 }

@@ -79,7 +79,7 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
       .map(formatted(dateString:))
       .map { Strings.Credit_card_expiration(expiration_date: $0) }
 
-    self.fixButtonHidden = backingSignal
+    self.fixButtonHidden = self.backingSignal
       .map { $0.status != .errored }
 
     self.notifyDelegateFixButtonTapped = self.fixButtonTappedSignal

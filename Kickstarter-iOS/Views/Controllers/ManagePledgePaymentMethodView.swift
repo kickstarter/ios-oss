@@ -47,9 +47,11 @@ final class ManagePledgePaymentMethodView: UIView {
     _ = ([self.cardNumberLabel, self.expirationDateLabel], self.cardLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.paymentMethodImageView,
-          self.cardLabelsStackView,
-          self.fixButton], self.paymentMethodAdaptableStackView)
+    _ = ([
+      self.paymentMethodImageView,
+      self.cardLabelsStackView,
+      self.fixButton
+    ], self.paymentMethodAdaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.titleLabel, self.paymentMethodAdaptableStackView], self.rootStackView)
@@ -62,9 +64,11 @@ final class ManagePledgePaymentMethodView: UIView {
     _ = (self.cardLabelsStackView, self.paymentMethodAdaptableStackView)
       |> ksr_setCustomSpacing(Styles.grid(6))
 
-    self.fixButton.addTarget(self,
-                             action: #selector(ManagePledgePaymentMethodView.fixButtonTapped),
-                             for: .touchUpInside)
+    self.fixButton.addTarget(
+      self,
+      action: #selector(ManagePledgePaymentMethodView.fixButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   // MARK: - Styles
@@ -124,7 +128,7 @@ final class ManagePledgePaymentMethodView: UIView {
         guard let self = self else { return }
 
         self.delegate?.managePledgePaymentMethodViewDidTapFixButton(self)
-    }
+      }
   }
 
   // MARK: - Functions
