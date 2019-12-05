@@ -7,7 +7,7 @@ final class TrackingClientConfigurationTests: TestCase {
   // MARK: - Koala
 
   func testKoalaMethod() {
-    XCTAssertEqual(TrackingClientConfiguration.koala.httpMethod, .GET)
+    XCTAssertEqual(TrackingClientConfiguration.koala.httpMethod, .POST)
   }
 
   func testKoalaIdentifier() {
@@ -46,7 +46,7 @@ final class TrackingClientConfigurationTests: TestCase {
     let request = config.request(config, .staging, data)
 
     XCTAssertEqual(request?.httpBody, nil)
-    XCTAssertEqual(request?.httpMethod, "GET")
+    XCTAssertEqual(request?.httpMethod, "POST")
     XCTAssertEqual(request?.url?.absoluteString, "\(Secrets.KoalaEndpoint.staging)?data=c29tZS1kYXRh")
   }
 

@@ -29,7 +29,7 @@ public struct TrackingClientConfiguration {
 extension TrackingClientConfiguration {
   public static let koala: TrackingClientConfiguration = .init(
     envelope: { $0 },
-    httpMethod: .GET,
+    httpMethod: .POST,
     identifier: .koala,
     recordDictionary: koalaRecordDictionary,
     request: koalaRequest,
