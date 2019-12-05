@@ -17,7 +17,6 @@ extension GraphBacking.Project {
   internal static let template = GraphBacking.Project(
     id: "1",
     name: "Cool project",
-    slug: "/cool-project",
-    deadlineAt: nil
+    slug: "/cool-project"
   )
 }

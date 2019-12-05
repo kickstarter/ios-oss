@@ -173,7 +173,6 @@ public enum Query {
   }
 
   public enum Project {
-    case deadlineAt
     case id
     case name
     case slug
@@ -365,7 +364,6 @@ extension Query.Category.ProjectsConnection.Argument: CustomStringConvertible {
 extension Query.Project: QueryType {
   public var description: String {
     switch self {
-    case .deadlineAt: return "deadlineAt"
     case .id: return "id"
     case .name: return "name"
     case .slug: return "slug"

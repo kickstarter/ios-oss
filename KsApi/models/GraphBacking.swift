@@ -9,7 +9,6 @@ public struct GraphBacking: Swift.Decodable, Equatable {
     public var id: String
     public var name: String
     public var slug: String
-    public var deadlineAt: TimeInterval?
   }
 
   public enum Status: String, CaseIterable, Swift.Decodable {

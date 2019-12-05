@@ -56,7 +56,6 @@ public func backingsQueryFields(status: String) -> NonEmptySet<Query.User> {
             .errorReason,
             .project(
               .id +| [
-                .deadlineAt,
                 .name,
                 .slug
               ]
