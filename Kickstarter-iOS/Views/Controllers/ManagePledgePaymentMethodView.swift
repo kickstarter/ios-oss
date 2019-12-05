@@ -3,12 +3,19 @@ import Library
 import Prelude
 import UIKit
 
+protocol ManagePledgePaymentMethodViewDelegate: AnyObject {
+  func managePledgePaymentMethodViewDidTapFixButton(_ view: ManagePledgePaymentMethodView)
+}
+
 final class ManagePledgePaymentMethodView: UIView {
+  weak var delegate: ManagePledgePaymentMethodViewDelegate?
+
   // MARK: - Properties
 
   private lazy var cardLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var cardNumberLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var fixButton: UIButton = { UIButton(type: .custom) }()
   private lazy var paymentMethodAdaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var paymentMethodImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -32,15 +39,17 @@ final class ManagePledgePaymentMethodView: UIView {
 
   // MARK: - Configuration
 
-  public func configure(with card: Backing.PaymentSource) {
-    self.viewModel.inputs.configureWith(value: card)
+  public func configure(with backing: Backing) {
+    self.viewModel.inputs.configureWith(value: backing)
   }
 
   private func configureViews() {
     _ = ([self.cardNumberLabel, self.expirationDateLabel], self.cardLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.paymentMethodImageView, self.cardLabelsStackView], self.paymentMethodAdaptableStackView)
+    _ = ([self.paymentMethodImageView,
+          self.cardLabelsStackView,
+          self.fixButton], self.paymentMethodAdaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.titleLabel, self.paymentMethodAdaptableStackView], self.rootStackView)
@@ -49,6 +58,13 @@ final class ManagePledgePaymentMethodView: UIView {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.cardLabelsStackView, self.paymentMethodAdaptableStackView)
+      |> ksr_setCustomSpacing(Styles.grid(6))
+
+    self.fixButton.addTarget(self,
+                             action: #selector(ManagePledgePaymentMethodView.fixButtonTapped),
+                             for: .touchUpInside)
   }
 
   // MARK: - Styles
@@ -79,6 +95,10 @@ final class ManagePledgePaymentMethodView: UIView {
     _ = self.titleLabel
       |> checkoutTitleLabelStyle
       |> \.text %~ { _ in Strings.Payment_method() }
+
+    _ = self.fixButton
+      |> redButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Fix() }
   }
 
   // MARK: - View model
@@ -89,6 +109,7 @@ final class ManagePledgePaymentMethodView: UIView {
     self.expirationDateLabel.rac.text = self.viewModel.outputs.expirationDateText
     self.cardNumberLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
     self.cardNumberLabel.rac.accessibilityLabel = self.viewModel.outputs.cardNumberAccessibilityLabel
+    self.fixButton.rac.hidden = self.viewModel.outputs.fixButtonHidden
 
     self.viewModel.outputs.cardImageName
       .observeForUI()
@@ -96,6 +117,14 @@ final class ManagePledgePaymentMethodView: UIView {
         _ = self?.paymentMethodImageView
           ?|> \.image .~ image(named: imageName)
       }
+
+    self.viewModel.outputs.notifyDelegateFixButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+
+        self.delegate?.managePledgePaymentMethodViewDidTapFixButton(self)
+    }
   }
 
   // MARK: - Functions
@@ -106,6 +135,10 @@ final class ManagePledgePaymentMethodView: UIView {
         equalToConstant: CheckoutConstants.PaymentSource.ImageView.width
       )
     ])
+  }
+
+  @objc private func fixButtonTapped() {
+    self.delegate?.managePledgePaymentMethodViewDidTapFixButton(self)
   }
 }
 

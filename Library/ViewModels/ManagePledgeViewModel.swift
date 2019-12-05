@@ -15,6 +15,7 @@ public protocol ManagePledgeViewModelInputs {
   func beginRefresh()
   func configureWith(_ project: Project)
   func cancelPledgeDidFinish(with message: String)
+  func fixButtonTapped()
   func menuButtonTapped()
   func menuOptionSelected(with action: ManagePledgeAlertAction)
   func pledgeViewControllerDidUpdatePledgeWithMessage(_ message: String)
@@ -22,7 +23,7 @@ public protocol ManagePledgeViewModelInputs {
 }
 
 public protocol ManagePledgeViewModelOutputs {
-  var configurePaymentMethodView: Signal<Backing.PaymentSource, Never> { get }
+  var configurePaymentMethodView: Signal<Backing, Never> { get }
   var configurePledgeSummaryView: Signal<Project, Never> { get }
   var configureRewardReceivedWithProject: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
@@ -85,9 +86,6 @@ public final class ManagePledgeViewModel:
     self.title = project.map(navigationBarTitle(with:))
 
     self.configurePaymentMethodView = backing
-      .map { $0.paymentSource }
-      .skipNil()
-
     self.configurePledgeSummaryView = project
     self.configureRewardReceivedWithProject = project
 
@@ -122,8 +120,13 @@ public final class ManagePledgeViewModel:
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
       .map { project in (MessageSubject.project(project), .backerModal) }
 
+    let goToChangePaymentMethod = Signal.merge(
+      self.menuOptionSelectedSignal.filter { $0 == .changePaymentMethod }.ignoreValues(),
+      self.fixButtonTappedSignal
+    )
+
     self.goToChangePaymentMethod = projectAndReward
-      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .changePaymentMethod })
+      .takeWhen(goToChangePaymentMethod)
 
     self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
       = self.cancelPledgeDidFinishWithMessageProperty.signal.skipNil()
@@ -167,6 +170,11 @@ public final class ManagePledgeViewModel:
     self.cancelPledgeDidFinishWithMessageProperty.value = message
   }
 
+  private let (fixButtonTappedSignal, fixButtonTappedObserver) = Signal<Void, Never>.pipe()
+  public func fixButtonTapped() {
+    self.fixButtonTappedObserver.send(value: ())
+  }
+
   private let (menuButtonTappedSignal, menuButtonTappedObserver) = Signal<Void, Never>.pipe()
   public func menuButtonTapped() {
     self.menuButtonTappedObserver.send(value: ())
@@ -191,7 +199,7 @@ public final class ManagePledgeViewModel:
     self.viewDidLoadObserver.send(value: ())
   }
 
-  public let configurePaymentMethodView: Signal<Backing.PaymentSource, Never>
+  public let configurePaymentMethodView: Signal<Backing, Never>
   public let configurePledgeSummaryView: Signal<Project, Never>
   public let configureRewardReceivedWithProject: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
