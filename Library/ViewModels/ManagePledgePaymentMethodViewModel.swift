@@ -81,7 +81,6 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
 
     self.fixButtonHidden = backingSignal
       .map { $0.status != .errored }
-      .mapConst(false)
 
     self.notifyDelegateFixButtonTapped = self.fixButtonTappedSignal
   }
