@@ -148,17 +148,6 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
           : next
       }
 
-    let erroredBackingsEvent = activities.ignoreValues()
-      .switchMap { _ in
-        AppEnvironment.current.apiService.fetchGraphUserBackings(
-          query: UserQueries.backings(GraphBacking.Status.errored.rawValue).query
-        )
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .materialize()
-    }
-
-    self.erroredBackings = erroredBackingsEvent.values().map { $0.me.backings.nodes }
-
     self.isRefreshing = isLoading
 
     let clearedActivitiesOnSessionEnd = self.userSessionEndedProperty.signal.mapConst([Activity]())
@@ -196,6 +185,20 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         self.userSessionEndedProperty.signal
       )
       .map { AppEnvironment.current.currentUser }
+
+    let erroredBackingsEvent = currentUser
+      .switchMap { _ in
+        AppEnvironment.current.apiService.fetchGraphUserBackings(
+          query: UserQueries.backings(GraphBacking.Status.errored.rawValue).query
+          )
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { envelope in
+            envelope.me.backings.nodes
+          }
+          .materialize()
+    }
+
+    self.erroredBackings = erroredBackingsEvent.values()
 
     let loggedInForEmptyState = self.activities
       .filter { AppEnvironment.current.currentUser != nil && $0.isEmpty }

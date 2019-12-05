@@ -744,7 +744,12 @@
 
     internal func fetchGraphUserBackings(query: NonEmptySet<Query>)
       -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
-      return .empty
+      if let error = fetchGraphUserBackingsError {
+        return SignalProducer(error: error)
+      }
+      let response = self.fetchGraphUserBackingsResponse ??
+         UserEnvelope<GraphBackingEnvelope>(me: GraphBackingEnvelope.template)
+      return SignalProducer(value: response)
     }
 
     internal func fetchGraph<A>(

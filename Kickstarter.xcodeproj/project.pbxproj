@@ -1143,6 +1143,8 @@
 		D69C55142397166D00B0987A /* GraphBacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C55132397166D00B0987A /* GraphBacking.swift */; };
 		D69C5516239852CB00B0987A /* GraphBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5515239852CB00B0987A /* GraphBackingEnvelope.swift */; };
 		D69C55182398534E00B0987A /* GraphBackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C55172398534E00B0987A /* GraphBackingTests.swift */; };
+		D69C551A239867F200B0987A /* GraphBackingTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5519239867F200B0987A /* GraphBackingTemplates.swift */; };
+		D69C551C23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C551B23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift */; };
 		D6A45DB72319A7E1006DDB01 /* ManagePledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */; };
 		D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */; };
 		D6A7AB401FDAF3EC007B20AE /* ThanksCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */; };
@@ -2488,6 +2490,8 @@
 		D69C55132397166D00B0987A /* GraphBacking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBacking.swift; sourceTree = "<group>"; };
 		D69C5515239852CB00B0987A /* GraphBackingEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingEnvelope.swift; sourceTree = "<group>"; };
 		D69C55172398534E00B0987A /* GraphBackingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingTests.swift; sourceTree = "<group>"; };
+		D69C5519239867F200B0987A /* GraphBackingTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingTemplates.swift; sourceTree = "<group>"; };
+		D69C551B23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingsEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewController.swift; sourceTree = "<group>"; };
 		D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryPostcardCell.xib; sourceTree = "<group>"; };
 		D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThanksCategoryCell.xib; sourceTree = "<group>"; };
@@ -4100,20 +4104,23 @@
 				D01587F51EEB2ED7006E7684 /* CommentsEnvelopeTemplates.swift */,
 				D01587F61EEB2ED7006E7684 /* CommentTemplates.swift */,
 				D01587F71EEB2ED7006E7684 /* ConfigTemplates.swift */,
+				D794408F2208970E00D0A747 /* CreatePaymentSourceTemplate.swift */,
 				D01587F81EEB2ED7006E7684 /* CreatePledgeEnvelopeTemplates.swift */,
 				D01587F91EEB2ED7006E7684 /* DiscoveryEnvelopeTemplates.swift */,
 				D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */,
 				D01587FA1EEB2ED7006E7684 /* FindFriendsEnvelopeTemplates.swift */,
 				D01587FB1EEB2ED7006E7684 /* FriendStatsEnvelopeTemplates.swift */,
+				D69C5519239867F200B0987A /* GraphBackingTemplates.swift */,
+				D69C551B23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift */,
 				D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */,
-				D08CD20221922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift */,
-				D794408F2208970E00D0A747 /* CreatePaymentSourceTemplate.swift */,
 				D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */,
+				D08CD20221922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift */,
 				D6DC65512178CDDC008CF69C /* GraphUserEmailTemplate.swift */,
 				D01587FC1EEB2ED7006E7684 /* ItemTemplates.swift */,
 				D01587FD1EEB2ED7006E7684 /* LocationTemplates.swift */,
 				D01587FE1EEB2ED7006E7684 /* MessageTemplates.swift */,
 				D01587FF1EEB2ED7006E7684 /* MessageThreadTemplates.swift */,
+				D64DDCE023564D3700DE0EA9 /* PaymentSourceTemplates.swift */,
 				D01588001EEB2ED7006E7684 /* Project.PhotoTemplates.swift */,
 				D01588011EEB2ED7006E7684 /* Project.VideoTemplates.swift */,
 				D01588021EEB2ED7006E7684 /* ProjectNotificationTemplates.swift */,
@@ -4128,9 +4135,9 @@
 				D01588091EEB2ED7006E7684 /* ProjectTemplates.swift */,
 				D015880A1EEB2ED7006E7684 /* RewardsItemTemplates.swift */,
 				D015880B1EEB2ED7006E7684 /* RewardTemplates.swift */,
-				3706408922A8B2B700889CBD /* ShippingTemplates.swift */,
 				D015880C1EEB2ED7006E7684 /* ShippingRulesEnvelopeTemplates.swift */,
 				D015880D1EEB2ED7006E7684 /* ShippingRuleTemplates.swift */,
+				3706408922A8B2B700889CBD /* ShippingTemplates.swift */,
 				D015880E1EEB2ED7006E7684 /* StarEnvelopeTemplates.swift */,
 				D015880F1EEB2ED7006E7684 /* SubmitApplePayTemplates.swift */,
 				D01588101EEB2ED7006E7684 /* SurveyResponseTemplates.swift */,
@@ -4144,7 +4151,6 @@
 				D01588181EEB2ED7006E7684 /* User.StatsTemplates.swift */,
 				D770DDE7217D729300B5319A /* UserCurrencyTemplates.swift */,
 				D01588191EEB2ED7006E7684 /* UserTemplates.swift */,
-				D64DDCE023564D3700DE0EA9 /* PaymentSourceTemplates.swift */,
 			);
 			path = templates;
 			sourceTree = "<group>";
@@ -5612,6 +5618,7 @@
 				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
 				D01588D71EEB2ED7006E7684 /* UpdateLenses.swift in Sources */,
 				D01588FF1EEB2ED7006E7684 /* Project.swift in Sources */,
+				D69C551C23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift in Sources */,
 				D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */,
 				D0158A1D1EEB30A2006E7684 /* ProjectStatsEnvelope.CumulativeStatsTemplates.swift in Sources */,
 				D79CF3BF21AC9CB200ECB73A /* PaymentType.swift in Sources */,
@@ -5703,6 +5710,7 @@
 				D01588B71EEB2ED7006E7684 /* ProjectStatsEnvelope.CumulativeStatsLenses.swift in Sources */,
 				D01589271EEB2ED7006E7684 /* SurveyResponse.swift in Sources */,
 				D75DACA8221DC4340027F478 /* CreatePasswordInput.swift in Sources */,
+				D69C551A239867F200B0987A /* GraphBackingTemplates.swift in Sources */,
 				D0158A0D1EEB30A2006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift in Sources */,
 				D0158A201EEB30A2006E7684 /* ProjectStatsEnvelope.RewardDistributionTemplates.swift in Sources */,
 				D01588C11EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift in Sources */,
