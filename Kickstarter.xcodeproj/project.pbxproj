@@ -316,6 +316,7 @@
 		80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEF011D243B69008C2353 /* BackingViewController.swift */; };
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
 		8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */; };
+		8A14E09B23986DE200387824 /* TrackingClientConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14E09A23986DE200387824 /* TrackingClientConfiguration.swift */; };
 		8A23EF0822F11470001262E1 /* RewardCardContainerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */; };
 		8A29790C234EA7A70039396D /* PledgeAmountSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29790B234EA7A70039396D /* PledgeAmountSummaryViewController.swift */; };
 		8A297910234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29790F234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift */; };
@@ -1719,6 +1720,7 @@
 		80EAEF031D243C4E008C2353 /* Backing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Backing.storyboard; sourceTree = "<group>"; };
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardIntent.swift; sourceTree = "<group>"; };
+		8A14E09A23986DE200387824 /* TrackingClientConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingClientConfiguration.swift; sourceTree = "<group>"; };
 		8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCardContainerViewTests.swift; sourceTree = "<group>"; };
 		8A29790B234EA7A70039396D /* PledgeAmountSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountSummaryViewController.swift; sourceTree = "<group>"; };
 		8A29790F234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountSummaryViewModel.swift; sourceTree = "<group>"; };
@@ -2795,6 +2797,7 @@
 				A7ED1F401E831B8900BFFA01 /* KoalaTests.swift */,
 				A721DF641C8CF5A3000CB97C /* KoalaTrackingClient.swift */,
 				A721DF6A1C8CFAF6000CB97C /* MockTrackingClient.swift */,
+				8A14E09A23986DE200387824 /* TrackingClientConfiguration.swift */,
 				A721DF611C8CF503000CB97C /* TrackingClientType.swift */,
 			);
 			path = Tracking;
@@ -4958,6 +4961,7 @@
 				A7F6F0C11DC7EBF7002C118C /* DateProtocol.swift in Sources */,
 				8A297910234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift in Sources */,
 				77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */,
+				8A14E09B23986DE200387824 /* TrackingClientConfiguration.swift in Sources */,
 				018422C01D2C486900CA7566 /* DashboardProjectsDrawerCellViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
