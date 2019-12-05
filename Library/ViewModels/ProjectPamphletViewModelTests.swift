@@ -851,7 +851,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(),
       config: config,
-      koala: Koala(client: client)
+      koala: Koala(koalaClient: client)
     ) {
       XCTAssertEqual([], client.events)
 

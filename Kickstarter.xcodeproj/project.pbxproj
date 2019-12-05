@@ -317,6 +317,7 @@
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
 		8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */; };
 		8A14E09B23986DE200387824 /* TrackingClientConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14E09A23986DE200387824 /* TrackingClientConfiguration.swift */; };
+		8A14E09D2399A38C00387824 /* TrackingClientConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14E09C2399A38C00387824 /* TrackingClientConfigurationTests.swift */; };
 		8A23EF0822F11470001262E1 /* RewardCardContainerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */; };
 		8A29790C234EA7A70039396D /* PledgeAmountSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29790B234EA7A70039396D /* PledgeAmountSummaryViewController.swift */; };
 		8A297910234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29790F234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift */; };
@@ -1721,6 +1722,7 @@
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardIntent.swift; sourceTree = "<group>"; };
 		8A14E09A23986DE200387824 /* TrackingClientConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingClientConfiguration.swift; sourceTree = "<group>"; };
+		8A14E09C2399A38C00387824 /* TrackingClientConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingClientConfigurationTests.swift; sourceTree = "<group>"; };
 		8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCardContainerViewTests.swift; sourceTree = "<group>"; };
 		8A29790B234EA7A70039396D /* PledgeAmountSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountSummaryViewController.swift; sourceTree = "<group>"; };
 		8A29790F234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountSummaryViewModel.swift; sourceTree = "<group>"; };
@@ -2798,6 +2800,7 @@
 				A721DF6A1C8CFAF6000CB97C /* MockTrackingClient.swift */,
 				A721DF641C8CF5A3000CB97C /* TrackingClient.swift */,
 				8A14E09A23986DE200387824 /* TrackingClientConfiguration.swift */,
+				8A14E09C2399A38C00387824 /* TrackingClientConfigurationTests.swift */,
 				A721DF611C8CF503000CB97C /* TrackingClientType.swift */,
 			);
 			path = Tracking;
@@ -5014,6 +5017,7 @@
 				8A73EAD12339732900FF9051 /* PledgeCreditCardViewModelTests.swift in Sources */,
 				D04AABF7218BB2F700CF713E /* SettingsNotificationsViewModelTests.swift in Sources */,
 				A7ED1FF41E831C5C00BFFA01 /* ProjectDescriptionViewModelTests.swift in Sources */,
+				8A14E09D2399A38C00387824 /* TrackingClientConfigurationTests.swift in Sources */,
 				D0A7880F2204EF93006AE4F4 /* SelectCurrencyViewModelTests.swift in Sources */,
 				770D86CA22F3396000CDC6A1 /* PledgeAddNewCardViewModelTests.swift in Sources */,
 				D093B4F021A8B14100910962 /* MockPushRegistration.swift in Sources */,

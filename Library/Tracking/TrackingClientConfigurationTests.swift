@@ -1,33 +1,131 @@
-//
-//  TrackingClientConfigurationTests.swift
-//  Library-iOSTests
-//
-//  Created by Justin Swart on 12/5/19.
-//  Copyright © 2019 Kickstarter. All rights reserved.
-//
-
+import Foundation
+import KsApi
+import Library
 import XCTest
 
-class TrackingClientConfigurationTests: TestCase {
+final class TrackingClientConfigurationTests: TestCase {
+  // MARK: - Koala
 
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+  func testKoalaMethod() {
+    XCTAssertEqual(TrackingClientConfiguration.koala.httpMethod, .GET)
+  }
+
+  func testKoalaIdentifier() {
+    XCTAssertEqual(TrackingClientConfiguration.koala.identifier, .koala)
+  }
+
+  func testKoalaRecordDictionary() {
+    let config = TrackingClientConfiguration.koala
+
+    let recordDictionary = config.recordDictionary("event-name", ["key": "value"])
+    let propertiesDictionary = (recordDictionary["properties"] as? [String: Any])
+
+    XCTAssertEqual(recordDictionary["event"] as? String, "event-name")
+    XCTAssertEqual(propertiesDictionary?["key"] as? String, "value")
+  }
+
+  func testKoalaEnvelope() {
+    let config = TrackingClientConfiguration.koala
+
+    let record: [String: Any] = [
+      "event": "event-name",
+      "properties": ["key": "value"]
+    ]
+
+    let recordDictionary = config.envelope(record) as? [String: Any]
+    let propertiesDictionary = (recordDictionary?["properties"] as? [String: Any])
+
+    XCTAssertEqual(recordDictionary?["event"] as? String, "event-name")
+    XCTAssertEqual(propertiesDictionary?["key"] as? String, "value")
+  }
+
+  func testKoalaRequest() {
+    let config = TrackingClientConfiguration.koala
+
+    let data = Data("some-data".utf8)
+    let request = config.request(config, .staging, data)
+
+    XCTAssertEqual(request?.httpBody, nil)
+    XCTAssertEqual(request?.httpMethod, "GET")
+    XCTAssertEqual(request?.url?.absoluteString, "\(Secrets.KoalaEndpoint.staging)?data=c29tZS1kYXRh")
+  }
+
+  func testKoalaURL() {
+    let config = TrackingClientConfiguration.koala
+
+    let stagingUrl = config.url(.staging)
+    let productionUrl = config.url(.production)
+
+    XCTAssertEqual(stagingUrl?.absoluteString, Secrets.KoalaEndpoint.staging)
+    XCTAssertEqual(productionUrl?.absoluteString, Secrets.KoalaEndpoint.production)
+  }
+
+  // MARK: - DataLake
+
+  func testDataLakeMethod() {
+    XCTAssertEqual(TrackingClientConfiguration.dataLake.httpMethod, .PUT)
+  }
+
+  func testDataLakeIdentifier() {
+    XCTAssertEqual(TrackingClientConfiguration.dataLake.identifier, .dataLake)
+  }
+
+  func testDataLakeRecordDictionary() {
+    let config = TrackingClientConfiguration.dataLake
+
+    let recordDictionary = config.recordDictionary("event-name", ["key": "value"])
+    let propertiesDictionary = (recordDictionary["data"] as? [String: Any])?["properties"] as? [String: Any]
+
+    XCTAssertEqual((recordDictionary["data"] as? [String: Any])?["event"] as? String, "event-name")
+    XCTAssertEqual(propertiesDictionary?["key"] as? String, "value")
+
+    guard let uuidString = recordDictionary["partition-key"] as? String else {
+      XCTFail("Should have a UUID String")
+      return
     }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+    XCTAssertNotNil(UUID(uuidString: uuidString))
+  }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+  func testDataLakeEnvelope() {
+    let config = TrackingClientConfiguration.dataLake
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
+    let record: [String: Any] = [
+      "data": [
+        "event": "event-name",
+        "properties": "props"
+      ],
+      "partition-key": "key"
+    ]
 
+    let envelope = config.envelope(record) as? [String: Any]
+    let recordDictionary = (envelope?["records"] as? [String: Any])
+
+    XCTAssertTrue(envelope?.keys.contains("records") ?? false)
+    XCTAssertEqual((recordDictionary?["data"] as? [String: Any])?["event"] as? String, "event-name")
+    XCTAssertEqual((recordDictionary?["data"] as? [String: Any])?["properties"] as? String, "props")
+    XCTAssertEqual(recordDictionary?["partition-key"] as? String, "key")
+  }
+
+  func testDataLakeRequest() {
+    let config = TrackingClientConfiguration.dataLake
+
+    let data = Data("some-data".utf8)
+    let request = config.request(config, .staging, data)
+
+    XCTAssertEqual(request?.httpBody, data)
+    XCTAssertEqual(request?.httpMethod, "PUT")
+    XCTAssertEqual(request?.allHTTPHeaderFields, ["Content-Type": "application/json; charset=utf-8"])
+    XCTAssertEqual(request?.url?.absoluteString, Secrets.LakeEndpoint.staging)
+  }
+
+  func testDataLakeURL() {
+    let config = TrackingClientConfiguration.dataLake
+
+    let stagingUrl = config.url(.staging)
+    let productionUrl = config.url(.production)
+
+    XCTAssertEqual(stagingUrl?.absoluteString, Secrets.LakeEndpoint.staging)
+    XCTAssertEqual(productionUrl?.absoluteString, Secrets.LakeEndpoint.production)
+  }
 }

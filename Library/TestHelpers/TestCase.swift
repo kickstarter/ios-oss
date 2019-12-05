@@ -13,11 +13,12 @@ internal class TestCase: FBSnapshotTestCase {
   internal let cache = KSCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
+  internal let dataLakeTrackingClient = MockTrackingClient()
   internal let dateType = MockDate.self
   internal let mainBundle = MockBundle()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
-  internal let trackingClient = MockTrackingClient()
+  internal let trackingClient = MockTrackingClient() // TODO: Rename
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
 
@@ -54,7 +55,11 @@ internal class TestCase: FBSnapshotTestCase {
       debounceInterval: .seconds(0),
       device: MockDevice(),
       isVoiceOverRunning: { false },
-      koala: Koala(client: self.trackingClient, loggedInUser: nil),
+      koala: Koala(
+        dataLakeClient: self.dataLakeTrackingClient,
+        koalaClient: self.trackingClient,
+        loggedInUser: nil
+      ),
       language: .en,
       launchedCountries: .init(),
       locale: .init(identifier: "en_US"),

@@ -356,7 +356,7 @@ public final class Koala {
 
   public init(
     bundle: NSBundleType = Bundle.main,
-    dataLakeClient: TrackingClientType,
+    dataLakeClient: TrackingClientType = TrackingClient(.dataLake), // TODO: Remove default value
     koalaClient: TrackingClientType,
     config: Config? = nil,
     device: UIDeviceType = UIDevice.current,

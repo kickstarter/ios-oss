@@ -349,7 +349,7 @@ final class ChangeEmailViewModelTests: TestCase {
   func testTrackViewedChangeEmail() {
     let client = MockTrackingClient()
 
-    withEnvironment(koala: Koala(client: client)) {
+    withEnvironment(koala: Koala(koalaClient: client)) {
       XCTAssertEqual([], client.events)
 
       self.vm.inputs.viewDidAppear()
@@ -365,7 +365,7 @@ final class ChangeEmailViewModelTests: TestCase {
   func testTrackChangeEmail() {
     let client = MockTrackingClient()
 
-    withEnvironment(koala: Koala(client: client)) {
+    withEnvironment(koala: Koala(koalaClient: client)) {
       XCTAssertEqual([], client.events)
 
       self.vm.inputs.emailFieldTextDidChange(text: "new@email.com")
@@ -388,7 +388,7 @@ final class ChangeEmailViewModelTests: TestCase {
   func testTrackResendVerificationEmail() {
     let client = MockTrackingClient()
 
-    withEnvironment(koala: Koala(client: client)) {
+    withEnvironment(koala: Koala(koalaClient: client)) {
       XCTAssertEqual([], client.events)
 
       self.vm.inputs.resendVerificationEmailButtonTapped()
