@@ -742,13 +742,13 @@
       }
     }
 
-    internal func fetchGraphUserBackings(query: NonEmptySet<Query>)
+    internal func fetchGraphUserBackings(query _: NonEmptySet<Query>)
       -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
       if let error = fetchGraphUserBackingsError {
         return SignalProducer(error: error)
       }
       let response = self.fetchGraphUserBackingsResponse ??
-         UserEnvelope<GraphBackingEnvelope>(me: GraphBackingEnvelope.template)
+        UserEnvelope<GraphBackingEnvelope>(me: GraphBackingEnvelope.template)
       return SignalProducer(value: response)
     }
 

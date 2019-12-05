@@ -190,13 +190,13 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphUserBackings(
           query: UserQueries.backings(GraphBacking.Status.errored.rawValue).query
-          )
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { envelope in
-            envelope.me.backings.nodes
-          }
-          .materialize()
-    }
+        )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .map { envelope in
+          envelope.me.backings.nodes
+        }
+        .materialize()
+      }
 
     self.erroredBackings = erroredBackingsEvent.values()
 

@@ -549,13 +549,12 @@ final class ActivitiesViewModelTests: TestCase {
     let backingsResponse = UserEnvelope<GraphBackingEnvelope>(me: envelope)
 
     withEnvironment(apiService: MockService(fetchGraphUserBackingsResponse: backingsResponse)) {
-
       self.erroredBackings.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
-      
+
       self.erroredBackings.assertValues([[GraphBacking.errored]])
     }
   }

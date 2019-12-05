@@ -258,7 +258,7 @@ public struct Service: ServiceType {
 
   public func fetchGraphUserBackings(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
-      return fetch(query: query)
+    return fetch(query: query)
   }
 
   public func fetchMessageThread(messageThreadId: Int)

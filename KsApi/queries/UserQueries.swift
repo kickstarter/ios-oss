@@ -10,7 +10,7 @@ public enum UserQueries: Queryable {
     switch self {
     case .account:
       return NonEmptySet(Query.user(accountQueryFields()))
-    case .backings(let status):
+    case let .backings(status):
       return NonEmptySet(Query.user(backingsQueryFields(status: status)))
     case .email:
       return NonEmptySet(Query.user(changeEmailQueryFields()))
@@ -60,7 +60,7 @@ public func backingsQueryFields(status: String) -> NonEmptySet<Query.User> {
                 .name,
                 .slug
               ]
-            ),
+            )
           ]
         )
       ]

@@ -2,7 +2,6 @@
 import XCTest
 
 final class GraphBackingTests: XCTestCase {
-
   func testGraphBackingDecoding() {
     let jsonString = """
     {
