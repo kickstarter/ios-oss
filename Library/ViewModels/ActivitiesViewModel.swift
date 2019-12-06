@@ -189,7 +189,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     let erroredBackingsEvent = currentUser
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphUserBackings(
-          query: UserQueries.backings(GraphBacking.Status.errored.rawValue).query
+          query: UserQueries.backings(GraphBacking.Status.collected.rawValue).query
         )
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .map { envelope in
@@ -198,7 +198,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         .materialize()
       }
 
-    self.erroredBackings = erroredBackingsEvent.values()
+    self.erroredBackings = erroredBackingsEvent.values().filter { !$0.isEmpty }
 
     let loggedInForEmptyState = self.activities
       .filter { AppEnvironment.current.currentUser != nil && $0.isEmpty }

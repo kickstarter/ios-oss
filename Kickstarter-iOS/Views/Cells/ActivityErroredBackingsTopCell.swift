@@ -3,9 +3,10 @@ import Library
 import Prelude
 import UIKit
 
-final class ActivityErroredPledgesTopCell: UITableViewCell {
+final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  private let dataSource: ErroredBackingsDataSource = ErroredBackingsDataSource()
   private let labelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let subtitleLabel: UILabel = { UILabel(frame: .zero) }()
@@ -17,20 +18,25 @@ final class ActivityErroredPledgesTopCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    self.tableView.registerCellClass(ErroredPledgeCell.self)
+    self.tableView.registerCellClass(ErroredBackingCell.self)
+    self.tableView.translatesAutoresizingMaskIntoConstraints = false
+    self.tableView.estimatedRowHeight = UITableView.automaticDimension
 
     self.bindStyles()
     self.configureViews()
+    self.bindViewModel()
   }
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
 
-  // MARK: Configuration
+  // MARK: - Configuration
 
-  private func configureWith(value backings: [GraphBacking]) {
-
+  internal func configureWith(value backings: [GraphBacking]) {
+    self.tableView.dataSource = self.dataSource
+    self.dataSource.load(backings)
+    self.tableView.reloadData()
   }
 
   private func configureViews() {
@@ -45,9 +51,36 @@ final class ActivityErroredPledgesTopCell: UITableViewCell {
       |> ksr_constrainViewToMarginsInParent()
   }
 
-  // MARK: View model
+  // MARK: - View model
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.titleLabel.text = "Title"
+    self.subtitleLabel.text = "Subtitle"
   }
+
+  // MARK: - Styles
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    _ = self.labelsStackView
+      |> labelsStackViewStyle
+
+    _ = self.rootStackView
+      |> rootStackVIewStyle
+  }
+}
+
+// MARK: Styles
+
+private let labelsStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> verticalStackViewStyle
+}
+
+private let rootStackVIewStyle: StackViewStyle = { stackView in
+  stackView
+    |> verticalStackViewStyle
 }

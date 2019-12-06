@@ -1140,8 +1140,9 @@
 		D69C55182398534E00B0987A /* GraphBackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C55172398534E00B0987A /* GraphBackingTests.swift */; };
 		D69C551A239867F200B0987A /* GraphBackingTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5519239867F200B0987A /* GraphBackingTemplates.swift */; };
 		D69C551C23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C551B23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift */; };
-		D69C551E239AA41400B0987A /* ActivityErroredPledgesTopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C551D239AA41400B0987A /* ActivityErroredPledgesTopCell.swift */; };
-		D69C5520239AB08900B0987A /* ErroredPledgeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C551F239AB08900B0987A /* ErroredPledgeCell.swift */; };
+		D69C551E239AA41400B0987A /* ActivityErroredBackingsTopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C551D239AA41400B0987A /* ActivityErroredBackingsTopCell.swift */; };
+		D69C5524239AB7E300B0987A /* ErroredBackingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5523239AB7E300B0987A /* ErroredBackingsDataSource.swift */; };
+		D69C5526239AB99B00B0987A /* ErroredBackingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5525239AB99B00B0987A /* ErroredBackingCell.swift */; };
 		D6A45DB72319A7E1006DDB01 /* ManagePledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */; };
 		D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */; };
 		D6A7AB401FDAF3EC007B20AE /* ThanksCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */; };
@@ -2485,8 +2486,9 @@
 		D69C55172398534E00B0987A /* GraphBackingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingTests.swift; sourceTree = "<group>"; };
 		D69C5519239867F200B0987A /* GraphBackingTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingTemplates.swift; sourceTree = "<group>"; };
 		D69C551B23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingsEnvelopeTemplates.swift; sourceTree = "<group>"; };
-		D69C551D239AA41400B0987A /* ActivityErroredPledgesTopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredPledgesTopCell.swift; sourceTree = "<group>"; };
-		D69C551F239AB08900B0987A /* ErroredPledgeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredPledgeCell.swift; sourceTree = "<group>"; };
+		D69C551D239AA41400B0987A /* ActivityErroredBackingsTopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsTopCell.swift; sourceTree = "<group>"; };
+		D69C5523239AB7E300B0987A /* ErroredBackingsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErroredBackingsDataSource.swift; sourceTree = "<group>"; };
+		D69C5525239AB99B00B0987A /* ErroredBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErroredBackingCell.swift; sourceTree = "<group>"; };
 		D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewController.swift; sourceTree = "<group>"; };
 		D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryPostcardCell.xib; sourceTree = "<group>"; };
 		D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThanksCategoryCell.xib; sourceTree = "<group>"; };
@@ -2955,7 +2957,7 @@
 		A751A51C1C85EAD8009C5DEA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				D69C551D239AA41400B0987A /* ActivityErroredPledgesTopCell.swift */,
+				D69C551D239AA41400B0987A /* ActivityErroredBackingsTopCell.swift */,
 				A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */,
 				A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */,
 				A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */,
@@ -2987,6 +2989,7 @@
 				A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */,
 				59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */,
 				A72C3AB31D00FB1F0075227E /* DiscoverySelectableRowCell.swift */,
+				D69C5525239AB99B00B0987A /* ErroredBackingCell.swift */,
 				77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */,
 				A7CC14371D00E74F00035C52 /* FindFriendsFacebookConnectCell.swift */,
 				A7CC14381D00E74F00035C52 /* FindFriendsFriendFollowCell.swift */,
@@ -3036,7 +3039,6 @@
 				3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */,
 				3767EDAA22CFFED40088E8E4 /* ShippingRuleCell.swift */,
 				014A8E1A1CE3CE34003BF51C /* ThanksCategoryCell.swift */,
-				D69C551F239AB08900B0987A /* ErroredPledgeCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3495,6 +3497,7 @@
 				A7ED200A1E83229E00BFFA01 /* DiscoveryPagesDataSourceTests.swift */,
 				A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */,
 				A7ED200B1E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift */,
+				D69C5523239AB7E300B0987A /* ErroredBackingsDataSource.swift */,
 				A7CC14431D00E75F00035C52 /* FindFriendsDataSource.swift */,
 				A7ED200C1E83229E00BFFA01 /* FindFriendsDataSourceTests.swift */,
 				77E6440020F64F0B005F6B38 /* HelpDataSource.swift */,
@@ -5196,6 +5199,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D69C5526239AB99B00B0987A /* ErroredBackingCell.swift in Sources */,
 				A7D8B6B61DCCD4DE009BF854 /* ProjectNavigatorTransitionAnimator.swift in Sources */,
 				773452FA2384477D00E6B6A3 /* DiscoveryEditorialCell.swift in Sources */,
 				A7561A3B1D3144210028DEA1 /* ProjectDescriptionViewController.swift in Sources */,
@@ -5256,7 +5260,6 @@
 				3742036F22DD45A2007AA86E /* PillCell.swift in Sources */,
 				770D86C622F0D47000CDC6A1 /* PledgeAddNewCardView.swift in Sources */,
 				59AE35E21D67643100A310E6 /* DiscoveryPostcardCell.swift in Sources */,
-				D69C5520239AB08900B0987A /* ErroredPledgeCell.swift in Sources */,
 				A7FA38A41D9068940041FC9C /* PledgeTitleCell.swift in Sources */,
 				37096C3422BC24DD003D1F40 /* UIFeedbackGeneratorType.swift in Sources */,
 				59B0DFC51D11AC850081D2DC /* DashboardDataSource.swift in Sources */,
@@ -5327,6 +5330,7 @@
 				A7B1EBB31D90496A00BEE8B3 /* NoRewardCell.swift in Sources */,
 				37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */,
 				01940B291D467ECE0074FCE3 /* HelpWebViewController.swift in Sources */,
+				D69C5524239AB7E300B0987A /* ErroredBackingsDataSource.swift in Sources */,
 				A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */,
 				A7180BAA1CCED598001711CA /* CommentsViewController.swift in Sources */,
 				D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */,
@@ -5399,7 +5403,7 @@
 				5970739A1D06346700B00444 /* ProjectNotificationsViewController.swift in Sources */,
 				D6508F6C2049C83C002DCC01 /* UIStackView+BackgroundColor.swift in Sources */,
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
-				D69C551E239AA41400B0987A /* ActivityErroredPledgesTopCell.swift in Sources */,
+				D69C551E239AA41400B0987A /* ActivityErroredBackingsTopCell.swift in Sources */,
 				77EFBAE52268E01400DA5C3C /* RewardCell.swift in Sources */,
 				77FD8B46216D6245000A95AC /* LoadingBarButtonItemView.swift in Sources */,
 				9D14FF8E1D133351005F4ABB /* ProjectActivityEmptyStateCell.swift in Sources */,
