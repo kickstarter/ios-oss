@@ -290,11 +290,11 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
 
     Signal.zip(pageCount, paginatedActivities)
       .filter { pageCount, _ in
-        return pageCount == 1
+        pageCount == 1
       } // Track first page only
       .map(second)
       .map { $0.count }
-      .observeValues {  AppEnvironment.current.koala.trackActivities(count: $0) }
+      .observeValues { AppEnvironment.current.koala.trackActivities(count: $0) }
   }
 
   fileprivate let dismissFacebookConnectSectionProperty = MutableProperty(())

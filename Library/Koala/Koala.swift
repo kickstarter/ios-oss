@@ -405,7 +405,6 @@ public final class Koala {
     self.track(event: "Activity Feed Viewed", properties: ["activities_count": count])
   }
 
-
   // MARK: - Application Lifecycle
 
   /// Call when the app launches or enters foreground.
@@ -489,7 +488,8 @@ public final class Koala {
   public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
     self.track(
       event: "Filter Clicked",
-      properties: discoveryProperties(from: params))
+      properties: discoveryProperties(from: params)
+    )
   }
 
   /**
@@ -501,7 +501,7 @@ public final class Koala {
     let props = discoveryProperties(from: params)
       .withAllValuesFrom([
         "discover_sort": sort.rawValue
-        ])
+      ])
 
     self.track(event: "Explore Sort Clicked", properties: props)
   }
@@ -517,7 +517,7 @@ public final class Koala {
    Call when a collection is viewed
 
    - parameter params: The DiscoveryParams associated with the collection
-  */
+   */
   public func trackCollectionViewed(params: DiscoveryParams) {
     self.track(event: "Collection Viewed", properties: discoveryProperties(from: params))
   }
@@ -1251,8 +1251,10 @@ public final class Koala {
   // Call when projects have been obtained from a search.
   public func trackSearchResults(query: String, params: DiscoveryParams, hasResults: Bool) {
     let props = discoveryProperties(from: params)
-      .withAllValuesFrom(["search_term": query,
-                          "has_results": hasResults])
+      .withAllValuesFrom([
+        "search_term": query,
+        "has_results": hasResults
+      ])
 
     self.track(event: "Search Results Loaded", properties: props)
   }

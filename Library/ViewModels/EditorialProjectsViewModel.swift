@@ -38,7 +38,6 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
     let configureWithParams: Signal<DiscoveryParams, Never> = tagId
       .map { tagId in DiscoveryParams.defaults |> DiscoveryParams.lens.tagId .~ tagId }
 
-
     self.configureDiscoveryPageViewControllerWithParams = configureWithParams
     self.imageName = tagId.map(editorialImageName)
     self.titleLabelText = tagId.map(editorialTitleLabelText)

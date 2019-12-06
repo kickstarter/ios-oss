@@ -125,9 +125,11 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.inputs.searchTextChanged("a")
     self.vm.inputs.cancelButtonPressed()
 
-    XCTAssertEqual(["Search Page Viewed"],
-                   self.trackingClient.events,
-                   "Search input and cancel not tracked")
+    XCTAssertEqual(
+      ["Search Page Viewed"],
+      self.trackingClient.events,
+      "Search input and cancel not tracked"
+    )
   }
 
   func testChangeSearchFieldFocus() {
@@ -242,8 +244,10 @@ internal final class SearchViewModelTests: TestCase {
       self.trackingClient.events,
       "A koala event is tracked for the search results."
     )
-    XCTAssertEqual([nil, "skull graphic tee", "skull graphic tee"],
-                   self.trackingClient.properties(forKey: "search_term"))
+    XCTAssertEqual(
+      [nil, "skull graphic tee", "skull graphic tee"],
+      self.trackingClient.properties(forKey: "search_term")
+    )
 
     self.vm.inputs.searchTextChanged("")
     self.scheduler.advance()
@@ -325,8 +329,10 @@ internal final class SearchViewModelTests: TestCase {
         self.trackingClient.events,
         "A koala event is tracked for the search results."
       )
-      XCTAssertEqual([nil, "skull graphic tee"],
-                     self.trackingClient.properties(forKey: "search_term"))
+      XCTAssertEqual(
+        [nil, "skull graphic tee"],
+        self.trackingClient.properties(forKey: "search_term")
+      )
 
       let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ []
 
@@ -548,12 +554,14 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("dogs")
       self.scheduler.advance(by: apiDelay + debounceDelay)
 
-      XCTAssertEqual([
+      XCTAssertEqual(
+        [
           "Search Page Viewed",
           "Search Results Loaded",
           "Search Results Loaded",
           "Search Results Loaded",
-          "Search Results Loaded"],
+          "Search Results Loaded"
+        ],
         self.trackingClient.events
       )
       XCTAssertEqual([nil, "d", "do", "dog", "dogs"], self.trackingClient.properties(forKey: "search_term"))

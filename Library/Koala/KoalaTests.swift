@@ -264,9 +264,11 @@ final class KoalaTests: TestCase {
       <> DiscoveryParams.lens.social .~ false
       <> DiscoveryParams.lens.recommended .~ false
       <> DiscoveryParams.lens.category .~ (Category.documentary
-        |> Category.lens.parent .~ .init(id: Category.filmAndVideo.id,
-                                         name: Category.filmAndVideo.name)
+        |> Category.lens.parent .~ .init(
+          id: Category.filmAndVideo.id,
+          name: Category.filmAndVideo.name
         )
+      )
       <> DiscoveryParams.lens.query .~ "collage"
       <> DiscoveryParams.lens.sort .~ .popular
       <> DiscoveryParams.lens.tagId .~ .goRewardless

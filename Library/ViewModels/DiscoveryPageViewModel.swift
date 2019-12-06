@@ -361,13 +361,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     requestFirstPageWith
       .observeValues { params in
         AppEnvironment.current.koala.trackDiscovery(params: params)
-    }
+      }
 
     self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
       .observeValues { tagId in
         AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: RefTag.projectCollection(tagId))
-    }
+      }
   }
 
   fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)

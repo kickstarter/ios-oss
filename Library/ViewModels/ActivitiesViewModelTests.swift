@@ -585,8 +585,10 @@ final class ActivitiesViewModelTests: TestCase {
       self.vm.inputs.refresh()
       self.scheduler.advance()
 
-      XCTAssertEqual(["Activity Feed Viewed", "Activity Feed Viewed"],
-                     self.trackingClient.events, "Impression tracked when view refreshes")
+      XCTAssertEqual(
+        ["Activity Feed Viewed", "Activity Feed Viewed"],
+        self.trackingClient.events, "Impression tracked when view refreshes"
+      )
 
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
