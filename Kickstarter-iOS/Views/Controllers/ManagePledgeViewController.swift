@@ -336,6 +336,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         title = Strings.Contact_creator()
       case .cancelPledge:
         title = Strings.Cancel_pledge()
+      case .viewRewards:
+        title = Strings.View_rewards()
       }
 
       let style: UIAlertAction.Style = option == .cancelPledge ? .destructive : .default
