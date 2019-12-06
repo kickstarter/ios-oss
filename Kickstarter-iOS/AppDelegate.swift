@@ -150,28 +150,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.configureOptimizely
       .observeForUI()
-      .observeValues {
-        let logLevel = OptimizelyLogLevel.debug
-        let optimizely = OptimizelyClient(sdkKey: Secrets.OptimizelySDKKey.development,
-                                          defaultLogLevel: logLevel)
-
-        optimizely.start { result in
-          switch result {
-          case .failure(let error):
-            print("Optimizely SDK initiliazation failed: \(error)")
-          case .success:
-            print("Optimizely SDK initialized successfully!")
-          }
-
-          do {
-            let userId = String(AppEnvironment.current.currentUser!.id)
-            let variationKey = try optimizely.activate(experimentKey: "PledgeCTACopy", userId: userId)
-            let experimentGroup = OptimizelyExperiment.Variant.init(variationKey: variationKey)
-            AppEnvironment.updateExperimentGroup(experimentGroup!)
-          } catch {
-            print("Optimizely SDK activation failed: \(error)")
-          }
-        }
+      .observeValues { _ in
+        KSOptimizely.setup()
     }
 
     self.viewModel.outputs.configureAppCenterWithData

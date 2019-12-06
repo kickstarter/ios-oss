@@ -2,6 +2,7 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import Optimizely
 
 public protocol PledgeCTAContainerViewViewModelInputs {
   func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool))
@@ -53,12 +54,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     let initialPledgeState = Signal.combineLatest(project, backing)
       .map(pledgeCTA(project:backing:))
 
-    let pledgeStateExperimentCTA = initialPledgeState
+    let pledgeState = initialPledgeState
       .filter { $0 == .pledge }
-      .map { _ in AppEnvironment.current.optimizelyExperimentGroup == .experimental ? true : false }
-      .map { experimentSetup(variationKey: $0) }
-
-    let pledgeState = pledgeStateExperimentCTA
+      .map { _ in KSOptimizely.variant(for: OptimizelyExperiment.Name.pledgeCTACopy) }
+      .map { experimentSetup(key: $0) }
 
     let inError = Signal.merge(
       projectError.ignoreValues().mapConst(true),
@@ -181,14 +180,12 @@ private func formattedPledge(amount: Double, project: Project) -> String {
   )
 }
 
-private func experimentSetup(variationKey: Bool) -> PledgeStateCTAType {
-    if variationKey == false {
-      // Execute code for "control" variation
-      return PledgeStateCTAType.pledge
-    } else if variationKey == true {
-      // Execute code for "treatment" variation
-      return PledgeStateCTAType.seeRewards
-    }
+private func experimentSetup(key: String) -> PledgeStateCTAType {
+  if key == OptimizelyExperiment.Variant.control.rawValue {
+    return PledgeStateCTAType.pledge
+  } else if key == OptimizelyExperiment.Variant.experimental.rawValue {
+    return PledgeStateCTAType.seeRewards
+  }
 
   return PledgeStateCTAType.pledge
 }
