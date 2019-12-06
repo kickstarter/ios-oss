@@ -299,11 +299,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
-    requestFirstPageWith
-      .observeValues { params in
-        AppEnvironment.current.koala.trackDiscovery(params: params)
-      }
-
     self.setScrollsToTop = Signal.merge(
       self.viewDidAppearProperty.signal.mapConst(true),
       self.viewDidDisappearProperty.signal.mapConst(false)
@@ -354,18 +349,25 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
 
-    self.discoveryEditorialCellTappedWithValueProperty.signal
-      .skipNil()
-      .observeValues { tagId in
-        AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: RefTag.projectCollection(tagId))
-      }
-
     self.notifyDelegateContentOffsetChanged = Signal.combineLatest(
       self.scrollViewDidScrollToContentOffsetProperty.signal.skipNil(),
       self.projectsAreLoadingAnimated.map(first)
     )
     .filter(second >>> isFalse)
     .map(first)
+
+    // MARK: - Tracking
+
+    requestFirstPageWith
+      .observeValues { params in
+        AppEnvironment.current.koala.trackDiscovery(params: params)
+    }
+
+    self.discoveryEditorialCellTappedWithValueProperty.signal
+      .skipNil()
+      .observeValues { tagId in
+        AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: RefTag.projectCollection(tagId))
+    }
   }
 
   fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)

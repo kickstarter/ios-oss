@@ -116,65 +116,18 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
-  func testCancelSearchField_WithTextChange() {
+  func testCancelSearchField() {
     self.vm.inputs.viewWillAppear(animated: true)
+
+    XCTAssertEqual(["Search Page Viewed"], self.trackingClient.events, "Impression tracked")
+
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.searchTextChanged("a")
     self.vm.inputs.cancelButtonPressed()
 
-    XCTAssertEqual(["Discover Search", "Viewed Search", "Cleared Search Term"], self.trackingClient.events)
-
-    self.vm.inputs.searchFieldDidBeginEditing()
-    self.vm.inputs.cancelButtonPressed()
-
-    XCTAssertEqual(
-      ["Discover Search", "Viewed Search", "Cleared Search Term"],
-      self.trackingClient.events,
-      "Cancel event not tracked for empty search term."
-    )
-  }
-
-  func testCancelSearchField_WithFocusChange() {
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.searchFieldDidBeginEditing()
-    self.vm.inputs.searchTextChanged("a")
-
-    self.scheduler.advance()
-
-    XCTAssertEqual(
-      ["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
-      self.trackingClient.events
-    )
-
-    self.vm.inputs.searchTextEditingDidEnd()
-
-    XCTAssertEqual(
-      ["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
-      self.trackingClient.events, "No additional events tracked on focus change."
-    )
-
-    self.vm.inputs.searchFieldDidBeginEditing()
-    self.vm.inputs.cancelButtonPressed()
-
-    XCTAssertEqual(
-      [
-        "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
-        "Cleared Search Term"
-      ],
-      self.trackingClient.events, "Cancel event tracked."
-    )
-  }
-
-  func testCancelSearchField_WithoutTextChange() {
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.searchFieldDidBeginEditing()
-    self.vm.inputs.cancelButtonPressed()
-
-    XCTAssertEqual(
-      ["Discover Search", "Viewed Search"],
-      self.trackingClient.events,
-      "Canceling empty search does not trigger koala event."
-    )
+    XCTAssertEqual(["Search Page Viewed"],
+                   self.trackingClient.events,
+                   "Search input and cancel not tracked")
   }
 
   func testChangeSearchFieldFocus() {
@@ -202,7 +155,7 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.inputs.searchTextChanged("b")
     self.vm.inputs.clearSearchText()
 
-    XCTAssertEqual(["Discover Search", "Viewed Search", "Cleared Search Term"], self.trackingClient.events)
+    XCTAssertEqual(["Search Page Viewed"], self.trackingClient.events, "Clear search text not tracked")
   }
 
   func testPopularLoaderIndicatorIsAnimating() {
@@ -255,12 +208,8 @@ internal final class SearchViewModelTests: TestCase {
     self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
     self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
     XCTAssertEqual(
-      ["Discover Search", "Viewed Search"], self.trackingClient.events,
+      ["Search Page Viewed"], self.trackingClient.events,
       "The search view event tracked upon view appearing."
-    )
-    XCTAssertEqual(
-      [true, nil],
-      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
     )
 
     self.vm.inputs.searchTextChanged("skull graphic tee")
@@ -279,34 +228,22 @@ internal final class SearchViewModelTests: TestCase {
       "Popular title visibility still not emit after time has passed."
     )
     XCTAssertEqual(
-      ["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+      ["Search Page Viewed", "Search Results Loaded"],
       self.trackingClient.events,
       "A koala event is tracked for the search results."
     )
-    XCTAssertEqual(
-      [true, nil, true, nil],
-      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
-    )
-    // swiftlint:disable:next force_unwrapping
-    XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last!["search_term"] as? String)
+    XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last?["search_term"] as? String)
 
     self.vm.inputs.willDisplayRow(7, outOf: 10)
     self.scheduler.advance()
 
     XCTAssertEqual(
-      [
-        "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
-        "Discover Search Results Load More", "Loaded More Search Results"
-      ],
+      ["Search Page Viewed", "Search Results Loaded", "Search Results Loaded"],
       self.trackingClient.events,
       "A koala event is tracked for the search results."
     )
-    XCTAssertEqual(
-      [true, nil, true, nil, true, nil],
-      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
-    )
-    // swiftlint:disable:next force_unwrapping
-    XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last!["search_term"] as? String)
+    XCTAssertEqual([nil, "skull graphic tee", "skull graphic tee"],
+                   self.trackingClient.properties(forKey: "search_term"))
 
     self.vm.inputs.searchTextChanged("")
     self.scheduler.advance()
@@ -320,11 +257,9 @@ internal final class SearchViewModelTests: TestCase {
       "Clearing search brings back popular title."
     )
     XCTAssertEqual(
-      [
-        "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
-        "Discover Search Results Load More", "Loaded More Search Results"
-      ],
-      self.trackingClient.events
+      ["Search Page Viewed", "Search Results Loaded", "Search Results Loaded"],
+      self.trackingClient.events,
+      "Doesn't track empty queries"
     )
 
     self.vm.inputs.viewWillAppear(animated: true)
@@ -338,10 +273,7 @@ internal final class SearchViewModelTests: TestCase {
       "Leaving view and coming back doesn't change popular title"
     )
     XCTAssertEqual(
-      [
-        "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
-        "Discover Search Results Load More", "Loaded More Search Results", "Discover Search", "Viewed Search"
-      ],
+      ["Search Page Viewed", "Search Results Loaded", "Search Results Loaded", "Search Page Viewed"],
       self.trackingClient.events
     )
   }
@@ -369,12 +301,8 @@ internal final class SearchViewModelTests: TestCase {
       self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
       self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
       XCTAssertEqual(
-        ["Discover Search", "Viewed Search"], self.trackingClient.events,
+        ["Search Page Viewed"], self.trackingClient.events,
         "The search view event tracked upon view appearing."
-      )
-      XCTAssertEqual(
-        [true, nil],
-        self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
       )
 
       self.vm.inputs.searchTextChanged("skull graphic tee")
@@ -393,16 +321,12 @@ internal final class SearchViewModelTests: TestCase {
         "Popular title visibility still not emit after time has passed."
       )
       XCTAssertEqual(
-        ["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+        ["Search Page Viewed", "Search Results Loaded"],
         self.trackingClient.events,
         "A koala event is tracked for the search results."
       )
-      XCTAssertEqual(
-        [true, nil, true, nil],
-        self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
-      )
-      // swiftlint:disable:next force_unwrapping
-      XCTAssertEqual("skull graphic tee", self.trackingClient.properties.last!["search_term"] as? String)
+      XCTAssertEqual([nil, "skull graphic tee"],
+                     self.trackingClient.properties(forKey: "search_term"))
 
       let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ []
 
@@ -479,7 +403,7 @@ internal final class SearchViewModelTests: TestCase {
       )
       projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
 
-      XCTAssertEqual(["Discover Search", "Viewed Search"], self.trackingClient.events)
+      XCTAssertEqual(["Search Page Viewed"], self.trackingClient.events)
     }
   }
 
@@ -538,7 +462,7 @@ internal final class SearchViewModelTests: TestCase {
 
       self.hasProjects.assertValues([true, false, true], "Search projects load after waiting enough time.")
       XCTAssertEqual(
-        ["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+        ["Search Page Viewed", "Search Results Loaded"],
         self.trackingClient.events
       )
 
@@ -547,7 +471,7 @@ internal final class SearchViewModelTests: TestCase {
 
       self.hasProjects.assertValues([true, false, true], "Nothing new is emitted.")
       XCTAssertEqual(
-        ["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+        ["Search Page Viewed", "Search Results Loaded"],
         self.trackingClient.events,
         "Nothing new is tracked."
       )
@@ -567,7 +491,7 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.inputs.cancelButtonPressed()
 
     self.searchFieldText.assertValues([""])
-    XCTAssertEqual(["Discover Search", "Viewed Search", "Cleared Search Term"], self.trackingClient.events)
+    XCTAssertEqual(["Search Page Viewed"], self.trackingClient.events)
   }
 
   func testSearchFieldEditingDidEnd() {
@@ -591,50 +515,48 @@ internal final class SearchViewModelTests: TestCase {
 
       self.vm.inputs.searchFieldDidBeginEditing()
 
-      XCTAssertEqual(["Discover Search", "Viewed Search"], self.trackingClient.events)
+      XCTAssertEqual(["Search Page Viewed"], self.trackingClient.events)
+      XCTAssertEqual([nil], self.trackingClient.properties(forKey: "search_term"))
 
       self.vm.inputs.searchTextChanged("d")
       self.scheduler.advance(by: apiDelay + debounceDelay)
 
       XCTAssertEqual(
-        ["Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results"],
+        ["Search Page Viewed", "Search Results Loaded"],
         self.trackingClient.events
       )
+      XCTAssertEqual([nil, "d"], self.trackingClient.properties(forKey: "search_term"))
 
       self.vm.inputs.searchTextChanged("do")
       self.scheduler.advance(by: apiDelay + debounceDelay)
 
       XCTAssertEqual(
-        [
-          "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
-          "Discover Search Results", "Loaded Search Results"
-        ],
+        ["Search Page Viewed", "Search Results Loaded", "Search Results Loaded"],
         self.trackingClient.events
       )
+      XCTAssertEqual([nil, "d", "do"], self.trackingClient.properties(forKey: "search_term"))
 
       self.vm.inputs.searchTextChanged("dog")
       self.scheduler.advance(by: apiDelay + debounceDelay)
 
       XCTAssertEqual(
-        [
-          "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
-          "Discover Search Results", "Loaded Search Results", "Discover Search Results",
-          "Loaded Search Results"
-        ],
+        ["Search Page Viewed", "Search Results Loaded", "Search Results Loaded", "Search Results Loaded"],
         self.trackingClient.events
       )
+      XCTAssertEqual([nil, "d", "do", "dog"], self.trackingClient.properties(forKey: "search_term"))
 
       self.vm.inputs.searchTextChanged("dogs")
       self.scheduler.advance(by: apiDelay + debounceDelay)
 
-      XCTAssertEqual(
-        [
-          "Discover Search", "Viewed Search", "Discover Search Results", "Loaded Search Results",
-          "Discover Search Results", "Loaded Search Results", "Discover Search Results",
-          "Loaded Search Results", "Discover Search Results", "Loaded Search Results"
-        ],
+      XCTAssertEqual([
+          "Search Page Viewed",
+          "Search Results Loaded",
+          "Search Results Loaded",
+          "Search Results Loaded",
+          "Search Results Loaded"],
         self.trackingClient.events
       )
+      XCTAssertEqual([nil, "d", "do", "dog", "dogs"], self.trackingClient.properties(forKey: "search_term"))
     }
   }
 

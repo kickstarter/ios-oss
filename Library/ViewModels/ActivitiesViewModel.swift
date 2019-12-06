@@ -288,7 +288,10 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         return SignalProducer(value: (project, update))
       }
 
-    Signal.combineLatest(self.viewDidLoadProperty.signal, self.activities)
+    Signal.zip(pageCount, paginatedActivities)
+      .filter { pageCount, _ in
+        return pageCount == 1
+      } // Track first page only
       .map(second)
       .map { $0.count }
       .observeValues {  AppEnvironment.current.koala.trackActivities(count: $0) }

@@ -263,30 +263,35 @@ final class KoalaTests: TestCase {
       <> DiscoveryParams.lens.starred .~ false
       <> DiscoveryParams.lens.social .~ false
       <> DiscoveryParams.lens.recommended .~ false
-      <> DiscoveryParams.lens.category .~ Category.art
+      <> DiscoveryParams.lens.category .~ (Category.documentary
+        |> Category.lens.parent .~ .init(id: Category.filmAndVideo.id,
+                                         name: Category.filmAndVideo.name)
+        )
       <> DiscoveryParams.lens.query .~ "collage"
       <> DiscoveryParams.lens.sort .~ .popular
       <> DiscoveryParams.lens.tagId .~ .goRewardless
-      <> DiscoveryParams.lens.perPage .~ 25
+      <> DiscoveryParams.lens.page .~ 2
 
     let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackDiscovery(params: params, page: 1)
+    koala.trackDiscovery(params: params)
 
     let properties = client.properties.last
 
-    XCTAssertEqual(1, properties?["discover_category_id"] as? Int)
+    XCTAssertEqual(30, properties?["discover_category_id"] as? Int)
+    XCTAssertEqual("Documentary", properties?["discover_category_name"] as? String)
     XCTAssertEqual(false, properties?["discover_recommended"] as? Bool)
     XCTAssertEqual(false, properties?["discover_social"] as? Bool)
     XCTAssertEqual(true, properties?["discover_staff_picks"] as? Bool)
     XCTAssertEqual(false, properties?["discover_starred"] as? Bool)
     XCTAssertEqual(false, properties?["discover_everything"] as? Bool)
+    XCTAssertEqual(Category.filmAndVideo.intID, properties?["discover_parent_category_id"] as? Int)
+    XCTAssertEqual(Category.filmAndVideo.name, properties?["discover_parent_category_name"] as? String)
     XCTAssertEqual("popularity", properties?["discover_sort"] as? String)
-    XCTAssertEqual("518", properties?["discovery_ref_tag"] as? String)
+    XCTAssertEqual("ios_project_collection_tag_518", properties?["discover_ref_tag"] as? String)
     XCTAssertEqual("collage", properties?["search_term"] as? String)
-    XCTAssertEqual(25, properties?["page_count"] as? Int)
-    XCTAssertEqual(1, properties?["page"] as? Int)
+    XCTAssertEqual(2, properties?["page_count"] as? Int)
   }
 
   func testDiscoveryProperties_NoCategory() {
@@ -302,7 +307,7 @@ final class KoalaTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackDiscovery(params: params, page: 1)
+    koala.trackDiscovery(params: params)
 
     let properties = client.properties.last
 
@@ -313,7 +318,6 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["discover_starred"] as? Bool)
     XCTAssertEqual(false, properties?["discover_everything"] as? Bool)
     XCTAssertEqual("popularity", properties?["discover_sort"] as? String)
-    XCTAssertEqual(1, properties?["page"] as? Int)
   }
 
   func testDiscoveryProperties_Everything() {
@@ -325,7 +329,7 @@ final class KoalaTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackDiscovery(params: params, page: 1)
+    koala.trackDiscovery(params: params)
 
     let properties = client.properties.last
 
@@ -337,7 +341,6 @@ final class KoalaTests: TestCase {
     XCTAssertNil(properties?["discover_term"])
     XCTAssertEqual(true, properties?["discover_everything"] as? Bool)
     XCTAssertEqual("magic", properties?["discover_sort"] as? String)
-    XCTAssertEqual(1, properties?["page"] as? Int)
   }
 
   func testTrackViewedPaymentMethods() {
@@ -485,14 +488,6 @@ final class KoalaTests: TestCase {
 
     XCTAssertEqual(["Selected Chosen Currency"], client.events)
     XCTAssertEqual(Currency.CAD.descriptionText, client.properties.last?["currency"] as? String)
-  }
-
-  func testTrackDiscoveryPullToRefresh() {
-    let client = MockTrackingClient()
-    let koala = Koala(client: client)
-
-    koala.trackDiscoveryPullToRefresh()
-    XCTAssertEqual(["Triggered Refresh"], client.events)
   }
 
   func testTrackPledgeCTAButtonClicked_FixState() {
@@ -688,39 +683,63 @@ final class KoalaTests: TestCase {
     self.assertManagePledgeOptionClickedProperties(of: .cancelPledge, property: "cancel_pledge")
   }
 
-  func testTrackManagaPledgeOptionClicked_ChangePaymentMethod() {
+  func testTrackManagePledgeOptionClicked_ChangePaymentMethod() {
     self.assertManagePledgeOptionClickedProperties(
       of: .changePaymentMethod,
       property: "change_payment_method"
     )
   }
 
-  func testTrackManagaPledgeOptionClicked_ChooseAnotherReward() {
+  func testTrackManagePledgeOptionClicked_ChooseAnotherReward() {
     self.assertManagePledgeOptionClickedProperties(
       of: .chooseAnotherReward,
       property: "choose_another_reward"
     )
   }
 
-  func testTrackManagaPledgeOptionClicked_ContactCreator() {
+  func testTrackManagePledgeOptionClicked_ContactCreator() {
     self.assertManagePledgeOptionClickedProperties(
       of: .contactCreator,
       property: "contact_creator"
     )
   }
 
-  func testTrackManagaPledgeOptionClicked_UpdatePledge() {
+  func testTrackManagePledgeOptionClicked_UpdatePledge() {
     self.assertManagePledgeOptionClickedProperties(
       of: .updatePledge,
       property: "update_pledge"
     )
   }
 
-  func testTrackManagaPledgeOptionClicked_ViewRewards() {
+  func testTrackManagePledgeOptionClicked_ViewRewards() {
     self.assertManagePledgeOptionClickedProperties(
       of: .viewRewards,
       property: "view_rewards"
     )
+  }
+
+  // MARK: - Search Tracking
+
+  func testTrackSearchViewed() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackProjectSearchView()
+
+    XCTAssertEqual(["Search Page Viewed"], client.events)
+  }
+
+  func testTrackSearchResults() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackSearchResults(query: "query", params: DiscoveryParams.defaults, hasResults: true)
+
+    let props = client.properties.last
+
+    XCTAssertEqual(["Search Results Loaded"], client.events)
+    XCTAssertEqual("query", props?["search_term"] as? String)
+    XCTAssertEqual(true, props?["has_results"] as? Bool)
   }
 
   private func assertManagePledgeOptionClickedProperties(

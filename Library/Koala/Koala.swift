@@ -1244,18 +1244,15 @@ public final class Koala {
 
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    // TODO: pass discover properties?
+    // TODO: pass user properties, session properties
     self.track(event: "Search Page Viewed", properties: deprecatedProps)
   }
 
   // Call when projects have been obtained from a search.
-  public func trackSearchResults(query: String, page: Int, hasResults: Bool) {
-    let sharedProps: [String: Any] = ["search_term": query]
-
-    // TODO: send discovery props
-
-    let deprecatedProps = sharedProps.withAllValuesFrom(["page_count": page, Koala.DeprecatedKey: true])
-    let props = sharedProps.withAllValuesFrom(["page": page, "has_results": hasResults])
+  public func trackSearchResults(query: String, params: DiscoveryParams, hasResults: Bool) {
+    let props = discoveryProperties(from: params)
+      .withAllValuesFrom(["search_term": query,
+                          "has_results": hasResults])
 
     self.track(event: "Search Results Loaded", properties: props)
   }
@@ -2185,10 +2182,6 @@ private func properties(category: KsApi.Category) -> [String: Any] {
   result["category_id"] = category.intID
   result["category_name"] = category.name
   result["category_projects_count"] = category.totalProjectCount
-
-  result["category_is_root"] = category.isRoot
-  result["category_root_id"] = category.rootId
-  result["category_root_name"] = category.root?.name
 
   let parentProperties = category.parent.map(properties(category:)) ?? [:]
   return result

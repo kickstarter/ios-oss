@@ -195,12 +195,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map(first)
       .map { !$0.isEmpty }
 
-    Signal.combineLatest(query, page)
+    Signal.combineLatest(query, requestFirstPageWith)
       .takePairWhen(hasResults)
       .map(unpack)
       .filter { query, _, _ in !query.isEmpty }
-      .observeValues { query, page, hasResults in
-        AppEnvironment.current.koala.trackSearchResults(query: query, page: page, hasResults: hasResults)
+      .observeValues { query, params, hasResults in
+        AppEnvironment.current.koala.trackSearchResults(query: query, params: params, hasResults: hasResults)
       }
 
     self.goToProject = Signal.combineLatest(self.projects, query)
