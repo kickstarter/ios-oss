@@ -131,7 +131,7 @@
          <EnvironmentVariable
             key = "KOALA_TRACKING"
             value = "true"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "OS_ACTIVITY_MODE"
