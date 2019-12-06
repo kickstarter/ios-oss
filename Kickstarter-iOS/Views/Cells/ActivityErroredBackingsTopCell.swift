@@ -37,6 +37,15 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
     self.tableView.dataSource = self.dataSource
     self.dataSource.load(backings)
     self.tableView.reloadData()
+    self.updateTableViewConstraints()
+  }
+
+  private func updateTableViewConstraints() {
+    self.tableView.layoutIfNeeded()
+    NSLayoutConstraint.activate([
+      self.tableView.heightAnchor.constraint(equalToConstant: self.tableView.contentSize.height)
+    ])
+    self.setNeedsLayout()
   }
 
   private func configureViews() {
