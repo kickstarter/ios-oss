@@ -300,20 +300,14 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
     requestFirstPageWith
-      .takePairWhen(pageCount)
-      .observeValues { params, page in
-        AppEnvironment.current.koala.trackDiscovery(params: params, page: page)
+      .observeValues { params in
+        AppEnvironment.current.koala.trackDiscovery(params: params)
       }
 
     self.setScrollsToTop = Signal.merge(
       self.viewDidAppearProperty.signal.mapConst(true),
       self.viewDidDisappearProperty.signal.mapConst(false)
     )
-
-    self.pulledToRefreshProperty.signal
-      .observeValues {
-        AppEnvironment.current.koala.trackDiscoveryPullToRefresh()
-      }
 
     self.configureEditorialTableViewHeader = paramsChanged
       .filter { $0.tagId == .goRewardless }

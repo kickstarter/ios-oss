@@ -288,17 +288,10 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         return SignalProducer(value: (project, update))
       }
 
-    self.viewWillAppearProperty.signal
-      .skipNil()
-      .filter(isFalse)
-      .observeValues { _ in AppEnvironment.current.koala.trackActivities() }
-
-    self.refreshProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackLoadedNewerActivity() }
-
-    pageCount
-      .filter { $0 > 1 }
-      .observeValues { AppEnvironment.current.koala.trackLoadedOlderActivity(page: $0) }
+    Signal.combineLatest(self.viewDidLoadProperty.signal, self.activities)
+      .map(second)
+      .map { $0.count }
+      .observeValues {  AppEnvironment.current.koala.trackActivities(count: $0) }
   }
 
   fileprivate let dismissFacebookConnectSectionProperty = MutableProperty(())

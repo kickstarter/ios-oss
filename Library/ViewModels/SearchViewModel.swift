@@ -203,9 +203,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         AppEnvironment.current.koala.trackSearchResults(query: query, page: page, hasResults: hasResults)
       }
 
-    self.clearSearchTextProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackClearedSearchTerm() }
-
     self.goToProject = Signal.combineLatest(self.projects, query)
       .takePairWhen(self.tappedProjectProperty.signal.skipNil())
       .map { projectsAndQuery, tappedProject in
@@ -213,12 +210,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
         return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
       }
-
-    query.combinePrevious()
-      .map(first)
-      .takeWhen(self.cancelButtonPressedProperty.signal)
-      .filter { !$0.isEmpty }
-      .observeValues { _ in AppEnvironment.current.koala.trackClearedSearchTerm() }
   }
 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
