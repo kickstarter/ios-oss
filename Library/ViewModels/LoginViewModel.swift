@@ -16,15 +16,6 @@ public protocol LoginViewModelInputs {
   /// Call when login button is pressed.
   func loginButtonPressed()
 
-  /// Call with onepassword's available ability.
-  func onePassword(isAvailable available: Bool)
-
-  /// Call when the onepassword button is tapped.
-  func onePasswordButtonTapped()
-
-  /// Call when onepassword finds a login.
-  func onePasswordFoundLogin(email: String?, password: String?)
-
   /// String value of password textfield text
   func passwordChanged(_ password: String?)
 
@@ -51,9 +42,6 @@ public protocol LoginViewModelOutputs {
   /// Emits when to dismiss a textfield keyboard
   var dismissKeyboard: Signal<(), Never> { get }
 
-  /// Emits text that should be put into the email field.
-  var emailText: Signal<String, Never> { get }
-
   /// Sets whether the email text field is the first responder.
   var emailTextFieldBecomeFirstResponder: Signal<(), Never> { get }
 
@@ -62,15 +50,6 @@ public protocol LoginViewModelOutputs {
 
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
-
-  /// Emits a boolean that determines if the onepassword button should be hidden or not.
-  var onePasswordButtonIsHidden: Signal<Bool, Never> { get }
-
-  /// Emits when we should request from the onepassword extension a login.
-  var onePasswordFindLoginForURLString: Signal<String, Never> { get }
-
-  /// Emits text that should be put into the password field.
-  var passwordText: Signal<String, Never> { get }
 
   /// Emits when the password textfield should become the first responder
   var passwordTextFieldBecomeFirstResponder: Signal<(), Never> { get }
@@ -99,8 +78,8 @@ public protocol LoginViewModelType {
 public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, LoginViewModelOutputs {
   public init() {
     let emailAndPassword = Signal.combineLatest(
-      .merge(self.emailChangedProperty.signal.skipNil(), self.prefillEmailProperty.signal.skipNil()),
-      .merge(self.passwordChangedProperty.signal.skipNil(), self.prefillPasswordProperty.signal.skipNil())
+      self.emailChangedProperty.signal.skipNil(),
+      self.passwordChangedProperty.signal.skipNil()
     )
 
     self.emailTextFieldBecomeFirstResponder = self.viewDidLoadProperty.signal
@@ -110,11 +89,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 
     let tryLogin = Signal.merge(
       self.loginButtonPressedProperty.signal,
-      self.passwordTextFieldDoneEditingProperty.signal,
-      Signal.combineLatest(
-        self.prefillEmailProperty.signal,
-        self.prefillPasswordProperty.signal
-      ).ignoreValues()
+      self.passwordTextFieldDoneEditingProperty.signal
     )
 
     let loginEvent = emailAndPassword
@@ -156,20 +131,8 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 
     self.showResetPassword = self.resetPasswordPressedProperty.signal
 
-    self.onePasswordButtonIsHidden = self.onePasswordIsAvailableProperty.signal.map(negate)
-      .map(is1PasswordButtonHidden)
-
-    self.onePasswordFindLoginForURLString = self.onePasswordButtonTappedProperty.signal
-      .map { AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString }
-
-    self.emailText = self.prefillEmailProperty.signal.skipNil()
-    self.passwordText = self.prefillPasswordProperty.signal.skipNil()
-
-    Signal.combineLatest(self.emailText, self.passwordText)
-      .observeValues { _ in AppEnvironment.current.koala.trackAttemptingOnePasswordLogin() }
-
-    self.onePasswordIsAvailableProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackLoginFormView(onePasswordIsAvailable: $0) }
+    self.viewWillAppearProperty.signal
+      .observeValues { AppEnvironment.current.koala.trackLoginFormView() }
 
     self.logIntoEnvironment
       .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
@@ -204,23 +167,6 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   fileprivate let loginButtonPressedProperty = MutableProperty(())
   public func loginButtonPressed() {
     self.loginButtonPressedProperty.value = ()
-  }
-
-  fileprivate let onePasswordButtonTappedProperty = MutableProperty(())
-  public func onePasswordButtonTapped() {
-    self.onePasswordButtonTappedProperty.value = ()
-  }
-
-  fileprivate let prefillEmailProperty = MutableProperty<String?>(nil)
-  fileprivate let prefillPasswordProperty = MutableProperty<String?>(nil)
-  public func onePasswordFoundLogin(email: String?, password: String?) {
-    self.prefillEmailProperty.value = email
-    self.prefillPasswordProperty.value = password
-  }
-
-  fileprivate let onePasswordIsAvailableProperty = MutableProperty(false)
-  public func onePassword(isAvailable available: Bool) {
-    self.onePasswordIsAvailableProperty.value = available
   }
 
   fileprivate let emailTextFieldDoneEditingProperty = MutableProperty(())
@@ -259,13 +205,9 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   }
 
   public let dismissKeyboard: Signal<(), Never>
-  public let emailText: Signal<String, Never>
   public let emailTextFieldBecomeFirstResponder: Signal<(), Never>
   public let isFormValid: Signal<Bool, Never>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
-  public var onePasswordButtonIsHidden: Signal<Bool, Never>
-  public let onePasswordFindLoginForURLString: Signal<String, Never>
-  public let passwordText: Signal<String, Never>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
   public let postNotification: Signal<(Notification, Notification), Never>
   public let showError: Signal<String, Never>
