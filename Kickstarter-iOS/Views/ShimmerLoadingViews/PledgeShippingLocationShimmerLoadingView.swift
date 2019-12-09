@@ -6,10 +6,9 @@ import UIKit
 final class PledgeShippingLocationShimmerLoadingView: UIView {
   // MARK: - Properties
 
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var buttonPlaceholder: UIView = { UIView(frame: .zero) }()
-
   private lazy var amountPlaceholder: UIView = { UIView(frame: .zero) }()
+  private lazy var buttonPlaceholder: UIView = { UIView(frame: .zero) }()
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   // MARK: - Lifecycle
 

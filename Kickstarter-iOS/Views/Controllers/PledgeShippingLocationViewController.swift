@@ -102,7 +102,9 @@ final class PledgeShippingLocationViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.adaptableStackView.rac.hidden = self.viewModel.outputs.adaptableStackViewIsHidden
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
+    self.shimmerLoadingView.rac.hidden = self.viewModel.outputs.shimmerLoadingViewIsHidden
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
 
     self.viewModel.outputs.notifyDelegateOfSelectedShippingRule
@@ -119,13 +121,6 @@ final class PledgeShippingLocationViewController: UIViewController {
         self?.presentShippingRules(
           project, shippingRules: shippingRules, selectedShippingRule: selectedShippingRule
         )
-      }
-
-    self.viewModel.outputs.isLoading
-      .observeForUI()
-      .observeValues { [weak self] isLoading in
-        self?.shimmerLoadingView.isHidden = !isLoading
-        self?.adaptableStackView.isHidden = isLoading
       }
 
     self.viewModel.outputs.dismissShippingRules
