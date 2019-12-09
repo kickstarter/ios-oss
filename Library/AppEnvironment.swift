@@ -52,7 +52,7 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
-  public static func updateOptimizelyClient(_ optimizelyClient: OptimizelyClient) {
+  public static func updateOptimizelyClient(_ optimizelyClient: KSOptimizelyClientType) {
     self.replaceCurrentEnvironment(
       optimizelyClient: optimizelyClient
     )
@@ -127,7 +127,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
   // Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
   public static func pushEnvironment(
-    optimizelyClient: OptimizelyClient? = AppEnvironment.current.optimizelyClient,
+    optimizelyClient: KSOptimizelyClientType = AppEnvironment.current.optimizelyClient,
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     application: UIApplicationType = UIApplication.shared,
@@ -191,7 +191,7 @@ public struct AppEnvironment: AppEnvironmentType {
   // Replaces the current environment onto the stack with an environment that changes only a subset
   // of current global dependencies.
   public static func replaceCurrentEnvironment(
-    optimizelyClient: OptimizelyClient? = AppEnvironment.current.optimizelyClient,
+    optimizelyClient: KSOptimizelyClientType = AppEnvironment.current.optimizelyClient,
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     application: UIApplicationType = UIApplication.shared,

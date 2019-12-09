@@ -18,6 +18,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
   internal let trackingClient = MockTrackingClient()
+  internal let optimizelyClient = MockOptimizely()
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
 
