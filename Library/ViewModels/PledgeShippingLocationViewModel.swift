@@ -13,11 +13,12 @@ public protocol PledgeShippingLocationViewModelInputs {
 }
 
 public protocol PledgeShippingLocationViewModelOutputs {
+  var adaptableStackViewIsHidden: Signal<Bool, Never> { get }
   var amountAttributedText: Signal<NSAttributedString, Never> { get }
   var dismissShippingRules: Signal<Void, Never> { get }
-  var isLoading: Signal<Bool, Never> { get }
   var presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
   var notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never> { get }
+  var shimmerLoadingViewIsHidden: Signal<Bool, Never> { get }
   var shippingLocationButtonTitle: Signal<String, Never> { get }
   var shippingRulesError: Signal<String, Never> { get }
 }
@@ -54,10 +55,18 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
           .materialize()
       }
 
-    self.isLoading = Signal.merge(
+    let shippingRulesLoadingCompleted = shippingRulesEvent
+      .filter { $0.isTerminating }
+      .mapConst(false)
+      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+
+    let isLoading = Signal.merge(
       shippingShouldBeginLoading,
-      shippingRulesEvent.filter { $0.isTerminating }.mapConst(false)
+      shippingRulesLoadingCompleted
     )
+
+    self.adaptableStackViewIsHidden = isLoading
+    self.shimmerLoadingViewIsHidden = isLoading.negate()
 
     let shippingRules = shippingRulesEvent.values()
 
@@ -129,11 +138,12 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     self.viewDidLoadProperty.value = ()
   }
 
+  public let adaptableStackViewIsHidden: Signal<Bool, Never>
   public let amountAttributedText: Signal<NSAttributedString, Never>
   public let dismissShippingRules: Signal<Void, Never>
-  public let isLoading: Signal<Bool, Never>
   public let presentShippingRules: Signal<(Project, [ShippingRule], ShippingRule), Never>
   public let notifyDelegateOfSelectedShippingRule: Signal<ShippingRule, Never>
+  public let shimmerLoadingViewIsHidden: Signal<Bool, Never>
   public let shippingLocationButtonTitle: Signal<String, Never>
   public let shippingRulesError: Signal<String, Never>
 

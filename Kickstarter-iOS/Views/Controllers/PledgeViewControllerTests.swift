@@ -108,7 +108,7 @@ final class PledgeViewControllerTests: TestCase {
         controller.configureWith(project: project, reward: reward, refTag: nil, context: .update)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+        self.scheduler.advance(by: .seconds(1))
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -129,7 +129,7 @@ final class PledgeViewControllerTests: TestCase {
         controller.configureWith(project: project, reward: reward, refTag: nil, context: .update)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+        self.scheduler.advance(by: .seconds(1))
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -149,7 +149,7 @@ final class PledgeViewControllerTests: TestCase {
         controller.configureWith(project: project, reward: reward, refTag: nil, context: .update)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+        self.scheduler.advance(by: .seconds(1))
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -272,7 +272,7 @@ final class PledgeViewControllerTests: TestCase {
           controller.configureWith(project: .template, reward: reward, refTag: nil, context: .pledge)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-          self.scheduler.run()
+          self.scheduler.advance(by: .seconds(1))
 
           let loggedIn = currentUser != nil
           let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
