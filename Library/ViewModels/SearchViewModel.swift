@@ -195,8 +195,12 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map(first)
       .map { !$0.isEmpty }
 
+    let firstPageResults = Signal.zip(hasResults, page)
+      .filter { _, page in page == 1 }
+      .map(first)
+
     Signal.combineLatest(query, requestFirstPageWith)
-      .takePairWhen(hasResults)
+      .takePairWhen(firstPageResults)
       .map(unpack)
       .filter { query, _, _ in !query.isEmpty }
       .observeValues { query, params, hasResults in

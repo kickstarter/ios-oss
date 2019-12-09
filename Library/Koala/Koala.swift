@@ -1245,7 +1245,7 @@ public final class Koala {
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
     // TODO: pass user properties, session properties
-    self.track(event: "Search Page Viewed", properties: deprecatedProps)
+    self.track(event: "Search Page Viewed")
   }
 
   // Call when projects have been obtained from a search.
@@ -2174,7 +2174,6 @@ private func discoveryProperties(from params: DiscoveryParams,
   result["ref_tag"] = RefTag.fromParams(params: params).stringTag
 
   unprefixedResult["search_term"] = params.query
-  unprefixedResult["page_count"] = params.page
 
   return result.prefixedKeys("discover_").withAllValuesFrom(unprefixedResult)
 }

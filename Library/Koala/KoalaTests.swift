@@ -293,7 +293,6 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("popularity", properties?["discover_sort"] as? String)
     XCTAssertEqual("ios_project_collection_tag_518", properties?["discover_ref_tag"] as? String)
     XCTAssertEqual("collage", properties?["search_term"] as? String)
-    XCTAssertEqual(2, properties?["page_count"] as? Int)
   }
 
   func testDiscoveryProperties_NoCategory() {

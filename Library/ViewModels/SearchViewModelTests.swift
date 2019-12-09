@@ -240,12 +240,12 @@ internal final class SearchViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Search Page Viewed", "Search Results Loaded", "Search Results Loaded"],
+      ["Search Page Viewed", "Search Results Loaded"],
       self.trackingClient.events,
       "A koala event is tracked for the search results."
     )
     XCTAssertEqual(
-      [nil, "skull graphic tee", "skull graphic tee"],
+      [nil, "skull graphic tee"],
       self.trackingClient.properties(forKey: "search_term")
     )
 
@@ -261,7 +261,7 @@ internal final class SearchViewModelTests: TestCase {
       "Clearing search brings back popular title."
     )
     XCTAssertEqual(
-      ["Search Page Viewed", "Search Results Loaded", "Search Results Loaded"],
+      ["Search Page Viewed", "Search Results Loaded"],
       self.trackingClient.events,
       "Doesn't track empty queries"
     )
@@ -277,7 +277,7 @@ internal final class SearchViewModelTests: TestCase {
       "Leaving view and coming back doesn't change popular title"
     )
     XCTAssertEqual(
-      ["Search Page Viewed", "Search Results Loaded", "Search Results Loaded", "Search Page Viewed"],
+      ["Search Page Viewed", "Search Results Loaded", "Search Page Viewed"],
       self.trackingClient.events
     )
   }
