@@ -2,6 +2,7 @@ import Prelude
 
 public enum UserQueries: Queryable {
   case account
+  case backings(String)
   case email
   case storedCards
 
@@ -9,6 +10,8 @@ public enum UserQueries: Queryable {
     switch self {
     case .account:
       return NonEmptySet(Query.user(accountQueryFields()))
+    case let .backings(status):
+      return NonEmptySet(Query.user(backingsQueryFields(status: status)))
     case .email:
       return NonEmptySet(Query.user(changeEmailQueryFields()))
     case .storedCards:
@@ -40,4 +43,26 @@ public func storedCardsQueryFields() -> NonEmptySet<Query.User> {
 
 public func changeEmailQueryFields() -> NonEmptySet<Query.User> {
   return .email +| [.isEmailVerified, .isEmailDeliverable]
+}
+
+public func backingsQueryFields(status: String) -> NonEmptySet<Query.User> {
+  return .id +| [
+    .backings(
+      status: status,
+      [],
+      .totalCount +| [
+        .nodes(
+          .status +| [
+            .errorReason,
+            .project(
+              .id +| [
+                .name,
+                .slug
+              ]
+            )
+          ]
+        )
+      ]
+    )
+  ]
 }
