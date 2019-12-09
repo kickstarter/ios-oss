@@ -135,12 +135,10 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
     return Strings.Fix_your_payment_method()
   case (.backed(.live), false, true):
     return Strings.Select()
-  case (.backed(.live), true, _):
+  case (.backed(.live), true, _), (.backed(.nonLive), true, _):
     return Strings.Selected()
   case (.nonBacked(.live), _, true):
     return Strings.Select()
-  case (.backed(.nonLive), true, _):
-    return Strings.View_your_pledge()
   case (.backed(.nonLive), false, _),
        (.nonBacked(.nonLive), _, _):
     return nil
@@ -184,7 +182,7 @@ private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {
   let isAvailable = rewardIsAvailable(reward: reward)
   let isBacking = userIsBacking(reward: reward, inProject: project)
 
-  return (project.state == .live && isAvailable && !isBacking) || (project.state != .live && isBacking)
+  return (project.state == .live && isAvailable && !isBacking)
 }
 
 private func rewardIsAvailable(reward: Reward) -> Bool {
