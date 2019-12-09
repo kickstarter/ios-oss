@@ -9,6 +9,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
   case chooseAnotherReward
   case contactCreator
   case cancelPledge
+  case viewRewards
 }
 
 public protocol ManagePledgeViewModelInputs {
@@ -96,19 +97,13 @@ public final class ManagePledgeViewModel:
 
     self.showActionSheetMenuWithOptions = project
       .takeWhen(self.menuButtonTappedSignal)
-      .map { project -> [ManagePledgeAlertAction] in
-        if project.state == .live, project.personalization.backing?.status != .preauth {
-          return ManagePledgeAlertAction.allCases
-        } else {
-          return [.contactCreator]
-        }
-      }
+      .map(actionSheetMenuOptionsFor(project:))
 
     self.goToUpdatePledge = projectAndReward
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
 
     self.goToRewards = project
-      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .chooseAnotherReward })
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .chooseAnotherReward || $0 == .viewRewards })
 
     let cancelPledgeSelected = self.menuOptionSelectedSignal
       .filter { $0 == .cancelPledge }
@@ -214,6 +209,18 @@ public final class ManagePledgeViewModel:
 
 // MARK: - Functions
 
+private func actionSheetMenuOptionsFor(project: Project) -> [ManagePledgeAlertAction] {
+  guard project.state == .live else {
+    return [.viewRewards, .contactCreator]
+  }
+
+  if project.personalization.backing?.status == .preauth {
+    return [.contactCreator]
+  }
+
+  return ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
+}
+
 private func navigationBarTitle(with project: Project) -> String {
   return project.state == .live ? Strings.Manage_your_pledge() : Strings.Your_pledge()
 }
@@ -226,5 +233,6 @@ private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAl
   case .chooseAnotherReward: return .chooseAnotherReward
   case .contactCreator: return .contactCreator
   case .updatePledge: return .updatePledge
+  case .viewRewards: return .viewRewards
   }
 }
