@@ -153,7 +153,15 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     self.vm.inputs.menuButtonTapped()
 
-    self.showActionSheetMenuWithOptions.assertValues([ManagePledgeAlertAction.allCases])
+    self.showActionSheetMenuWithOptions.assertValues([
+      [
+        ManagePledgeAlertAction.updatePledge,
+        ManagePledgeAlertAction.changePaymentMethod,
+        ManagePledgeAlertAction.chooseAnotherReward,
+        ManagePledgeAlertAction.contactCreator,
+        ManagePledgeAlertAction.cancelPledge
+      ]
+    ])
   }
 
   func testMenuButtonTapped_WhenProject_IsNotLive() {
@@ -167,7 +175,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     self.vm.inputs.menuButtonTapped()
 
-    self.showActionSheetMenuWithOptions.assertValues([[.contactCreator]])
+    self.showActionSheetMenuWithOptions.assertValues([[.viewRewards, .contactCreator]])
   }
 
   func testMenuButtonTapped_WhenProject_IsLive_BackingStatus_IsPreAuth() {
