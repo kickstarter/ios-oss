@@ -16,7 +16,9 @@ final class ManagePledgePaymentMethodView: UIView {
   private lazy var cardNumberLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var fixButton: UIButton = { UIButton(type: .custom)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var paymentMethodAdaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var paymentMethodImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
