@@ -10,7 +10,8 @@ public final class Koala {
   internal static let DeprecatedKey = "DEPRECATED"
 
   private let bundle: NSBundleType
-  private let client: TrackingClientType
+  private let dataLakeClient: TrackingClientType
+  private let koalaClient: TrackingClientType
   internal private(set) var config: Config?
   private let device: UIDeviceType
   private let distinctId: String
@@ -355,7 +356,8 @@ public final class Koala {
 
   public init(
     bundle: NSBundleType = Bundle.main,
-    client: TrackingClientType,
+    dataLakeClient: TrackingClientType = TrackingClient(.dataLake),
+    client: TrackingClientType = TrackingClient(.koala),
     config: Config? = nil,
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
@@ -363,7 +365,8 @@ public final class Koala {
     distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString
   ) {
     self.bundle = bundle
-    self.client = client
+    self.dataLakeClient = dataLakeClient
+    self.koalaClient = client
     self.config = config
     self.device = device
     self.loggedInUser = loggedInUser
@@ -2028,7 +2031,12 @@ public final class Koala {
 
     self.logEventCallback?(event, props)
 
-    self.client.track(
+    self.koalaClient.track(
+      event: event,
+      properties: props
+    )
+
+    self.dataLakeClient.track(
       event: event,
       properties: props
     )

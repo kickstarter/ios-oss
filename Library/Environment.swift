@@ -110,7 +110,7 @@ public struct Environment {
     device: UIDeviceType = UIDevice.current,
     environmentVariables: EnvironmentVariables = EnvironmentVariables(),
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
-    koala: Koala = Koala(client: KoalaTrackingClient()),
+    koala: Koala = Koala(),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
     locale: Locale = .current,
