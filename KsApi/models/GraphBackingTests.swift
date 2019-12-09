@@ -20,11 +20,10 @@ final class GraphBackingTests: XCTestCase {
       }
     }
     """
-    let data = jsonString.data(using: .utf8)
+    let data = Data(jsonString.utf8)
 
     do {
-      // swiftlint:disable:next force_unwrapping
-      let envelope = try JSONDecoder().decode(GraphBackingEnvelope.self, from: data!)
+      let envelope = try JSONDecoder().decode(GraphBackingEnvelope.self, from: data)
 
       XCTAssertEqual(envelope.backings.nodes.count, 1)
 
