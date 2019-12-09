@@ -806,7 +806,7 @@ final class RewardCardContainerViewModelTests: TestCase {
   func testPledgeButtonTapped_eventTracking() {
     let client = MockTrackingClient()
 
-    withEnvironment(apiService: MockService(), koala: Koala(koalaClient: client)) {
+    withEnvironment(apiService: MockService(), koala: Koala(client: client)) {
       XCTAssertEqual([], client.events)
 
       self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))

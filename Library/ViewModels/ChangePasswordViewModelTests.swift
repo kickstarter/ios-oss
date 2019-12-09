@@ -339,7 +339,7 @@ final class ChangePasswordViewModelTests: TestCase {
   func testTrackViewedChangePassword() {
     let client = MockTrackingClient()
 
-    withEnvironment(koala: Koala(koalaClient: client)) {
+    withEnvironment(koala: Koala(client: client)) {
       XCTAssertEqual([], client.events)
 
       self.vm.inputs.viewDidAppear()
@@ -356,7 +356,7 @@ final class ChangePasswordViewModelTests: TestCase {
     let service = MockService()
     let client = MockTrackingClient()
 
-    withEnvironment(apiService: service, koala: Koala(koalaClient: client)) {
+    withEnvironment(apiService: service, koala: Koala(client: client)) {
       self.vm.inputs.currentPasswordFieldDidReturn(currentPassword: "password")
       self.vm.inputs.newPasswordFieldDidReturn(newPassword: "123456")
       self.vm.inputs.newPasswordConfirmationFieldDidReturn(newPasswordConfirmed: "123456")

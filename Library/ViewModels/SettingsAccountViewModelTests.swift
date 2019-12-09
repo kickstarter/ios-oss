@@ -74,7 +74,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
     let koalaClient = MockTrackingClient()
     let dataLakeClient = MockTrackingClient()
 
-    withEnvironment(koala: Koala(dataLakeClient: dataLakeClient, koalaClient: koalaClient)) {
+    withEnvironment(koala: Koala(dataLakeClient: dataLakeClient, client: koalaClient)) {
       XCTAssertEqual([], koalaClient.events)
       XCTAssertEqual([], dataLakeClient.events)
 

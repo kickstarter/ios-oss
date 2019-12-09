@@ -24,7 +24,7 @@ final class KoalaTests: TestCase {
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
     let koala = Koala(
-      bundle: bundle, koalaClient: client, config: config, device: device, loggedInUser: nil,
+      bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
       screen: screen
     )
 
@@ -70,7 +70,7 @@ final class KoalaTests: TestCase {
 
   func testDefaultPropertiesVoiceOver() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     withEnvironment(isVoiceOverRunning: { true }) {
       koala.trackAppOpen()
@@ -96,7 +96,7 @@ final class KoalaTests: TestCase {
       |> \.stats.createdProjectsCount .~ 3
       |> \.stats.starredProjectsCount .~ 4
       |> \.location .~ .template
-    let koala = Koala(koalaClient: client, loggedInUser: user)
+    let koala = Koala(client: client, loggedInUser: user)
 
     koala.trackAppOpen()
     XCTAssertEqual(["App Open", "Opened App"], client.events)
@@ -114,7 +114,7 @@ final class KoalaTests: TestCase {
 
   func testDeviceFormatAndClientPlatform_ForIPhoneIdiom() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client, device: MockDevice(userInterfaceIdiom: .phone), loggedInUser: nil)
+    let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .phone), loggedInUser: nil)
     koala.trackAppOpen()
 
     XCTAssertEqual("phone", client.properties.last?["device_format"] as? String)
@@ -123,7 +123,7 @@ final class KoalaTests: TestCase {
 
   func testDeviceFormatAndClientPlatform_ForIPadIdiom() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client, device: MockDevice(userInterfaceIdiom: .pad), loggedInUser: nil)
+    let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .pad), loggedInUser: nil)
     koala.trackAppOpen()
 
     XCTAssertEqual("tablet", client.properties.last?["device_format"] as? String)
@@ -132,7 +132,7 @@ final class KoalaTests: TestCase {
 
   func testDeviceFormatAndClientPlatform_ForTvIdiom() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client, device: MockDevice(userInterfaceIdiom: .tv), loggedInUser: nil)
+    let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .tv), loggedInUser: nil)
     koala.trackAppOpen()
 
     XCTAssertEqual("tv", client.properties.last?["device_format"] as? String)
@@ -141,7 +141,7 @@ final class KoalaTests: TestCase {
 
   func testTrackProject() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client, loggedInUser: nil)
+    let koala = Koala(client: client, loggedInUser: nil)
     let project = Project.template
 
     koala.trackProjectShow(project, refTag: .discovery, cookieRefTag: .recommended)
@@ -190,7 +190,7 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       <> Project.lens.personalization.isStarred .~ false
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(3, client.properties.count)
@@ -208,7 +208,7 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.isStarred .~ false
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(3, client.properties.count)
@@ -226,7 +226,7 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.isStarred .~ true
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(3, client.properties.count)
@@ -244,7 +244,7 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       <> Project.lens.personalization.isStarred .~ false
     let loggedInUser = project.creator
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(3, client.properties.count)
@@ -268,7 +268,7 @@ final class KoalaTests: TestCase {
       <> DiscoveryParams.lens.sort .~ .popular
 
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackDiscovery(params: params, page: 1)
 
@@ -296,7 +296,7 @@ final class KoalaTests: TestCase {
       <> DiscoveryParams.lens.sort .~ .popular
 
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackDiscovery(params: params, page: 1)
 
@@ -319,7 +319,7 @@ final class KoalaTests: TestCase {
       |> DiscoveryParams.lens.sort .~ .magic
 
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackDiscovery(params: params, page: 1)
 
@@ -338,7 +338,7 @@ final class KoalaTests: TestCase {
 
   func testTrackViewedPaymentMethods() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackViewedPaymentMethods()
     XCTAssertEqual(["Viewed Payment Methods"], client.events)
@@ -346,7 +346,7 @@ final class KoalaTests: TestCase {
 
   func testTrackViewedAddNewCard() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackViewedAddNewCard()
     XCTAssertEqual(["Viewed Add New Card"], client.events)
@@ -354,7 +354,7 @@ final class KoalaTests: TestCase {
 
   func testTrackDeletedPaymentMethod() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackDeletedPaymentMethod()
     XCTAssertEqual(["Deleted Payment Method"], client.events)
@@ -362,7 +362,7 @@ final class KoalaTests: TestCase {
 
   func testTrackDeletePaymentMethodError() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackDeletePaymentMethodError()
     XCTAssertEqual(["Errored Delete Payment Method"], client.events)
@@ -370,7 +370,7 @@ final class KoalaTests: TestCase {
 
   func testTrackSavedPaymentMethod() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackSavedPaymentMethod()
     XCTAssertEqual(["Saved Payment Method"], client.events)
@@ -378,7 +378,7 @@ final class KoalaTests: TestCase {
 
   func testTrackFailedPaymentMethodCreation() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackFailedPaymentMethodCreation()
     XCTAssertEqual(["Failed Payment Method Creation"], client.events)
@@ -391,7 +391,7 @@ final class KoalaTests: TestCase {
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
     let koala = Koala(
-      bundle: bundle, koalaClient: client, config: config, device: device, loggedInUser: nil,
+      bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
       screen: screen
     )
 
@@ -412,7 +412,7 @@ final class KoalaTests: TestCase {
 
   func testTrackViewedAccount() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackAccountView()
 
@@ -421,7 +421,7 @@ final class KoalaTests: TestCase {
 
   func testTrackCreatePassword_viewed() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackCreatePassword(event: .viewed)
 
@@ -430,7 +430,7 @@ final class KoalaTests: TestCase {
 
   func testTrackCreatePassword_passwordCreated() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackCreatePassword(event: .passwordCreated)
 
@@ -439,7 +439,7 @@ final class KoalaTests: TestCase {
 
   func testTrackViewedChangeEmail() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackChangeEmailView()
 
@@ -448,7 +448,7 @@ final class KoalaTests: TestCase {
 
   func testTrackChangeEmail() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackChangeEmail()
 
@@ -457,7 +457,7 @@ final class KoalaTests: TestCase {
 
   func testTrackViewedChangePassword() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackChangePasswordView()
 
@@ -466,7 +466,7 @@ final class KoalaTests: TestCase {
 
   func testTrackChangePassword() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackChangePassword()
 
@@ -475,7 +475,7 @@ final class KoalaTests: TestCase {
 
   func testTrackChangedCurrency() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackChangedCurrency(.CAD)
 
@@ -485,7 +485,7 @@ final class KoalaTests: TestCase {
 
   func testTrackDiscoveryPullToRefresh() {
     let client = MockTrackingClient()
-    let koala = Koala(koalaClient: client)
+    let koala = Koala(client: client)
 
     koala.trackDiscoveryPullToRefresh()
     XCTAssertEqual(["Triggered Refresh"], client.events)
@@ -496,7 +496,7 @@ final class KoalaTests: TestCase {
     let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackPledgeCTAButtonClicked(stateType: .fix, project: project, screen: .projectPage)
 
@@ -511,7 +511,7 @@ final class KoalaTests: TestCase {
     let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackPledgeCTAButtonClicked(stateType: .pledge, project: project, screen: .projectPage)
 
@@ -526,7 +526,7 @@ final class KoalaTests: TestCase {
     let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackPledgeCTAButtonClicked(stateType: .manage, project: project, screen: .projectPage)
 
@@ -541,7 +541,7 @@ final class KoalaTests: TestCase {
     let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackPledgeCTAButtonClicked(stateType: .viewBacking, project: project, screen: .projectPage)
 
@@ -556,7 +556,7 @@ final class KoalaTests: TestCase {
     let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackPledgeCTAButtonClicked(stateType: .viewRewards, project: project, screen: .projectPage)
 
@@ -572,7 +572,7 @@ final class KoalaTests: TestCase {
     let project = Project.template
       |> Project.lens.creator .~ user
 
-    let koala = Koala(koalaClient: client, loggedInUser: user)
+    let koala = Koala(client: client, loggedInUser: user)
 
     koala.trackPledgeCTAButtonClicked(stateType: .viewYourRewards, project: project, screen: .projectPage)
 
@@ -591,7 +591,7 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.backing .~ backing
     let loggedInUser = User.template |> \.id .~ 42
 
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackSelectRewardButtonClicked(
       project: project,
@@ -610,7 +610,7 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let loggedInUser = User.template
 
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackCancelPledgeButtonClicked(
       project: .template,
@@ -622,7 +622,7 @@ final class KoalaTests: TestCase {
   func testTrackUpdatePaymentMethodClicked() {
     let client = MockTrackingClient()
     let loggedInUser = User.template
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackUpdatePaymentMethodButton(project: .template, pledgeAmount: 22.00)
 
@@ -635,7 +635,7 @@ final class KoalaTests: TestCase {
   func testTrackUpdatePledgeButtonClicked() {
     let client = MockTrackingClient()
     let loggedInUser = User.template
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackUpdatePledgeButtonClicked(
       project: .template,
@@ -651,7 +651,7 @@ final class KoalaTests: TestCase {
   func testTrackPledgeScreenViewed() {
     let client = MockTrackingClient()
     let loggedInUser = User.template
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackPledgeScreenViewed(project: .template)
     XCTAssertEqual(["Pledge Screen Viewed"], client.events)
@@ -660,7 +660,7 @@ final class KoalaTests: TestCase {
   func testTrackPledgeButtonClicked() {
     let client = MockTrackingClient()
     let loggedInUser = User.template
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackPledgeButtonClicked(project: .template, pledgeAmount: 30.00)
 
@@ -673,7 +673,7 @@ final class KoalaTests: TestCase {
   func testTrackAddNewCardButtonClicked() {
     let client = MockTrackingClient()
     let loggedInUser = User.template
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackAddNewCardButtonClicked(project: .template)
 
@@ -725,7 +725,7 @@ final class KoalaTests: TestCase {
   ) {
     let client = MockTrackingClient()
     let loggedInUser = User.template
-    let koala = Koala(koalaClient: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client, loggedInUser: loggedInUser)
 
     koala.trackManagePledgeOptionClicked(project: .template, managePledgeMenuCTA: type)
 

@@ -57,7 +57,7 @@ internal class TestCase: FBSnapshotTestCase {
       isVoiceOverRunning: { false },
       koala: Koala(
         dataLakeClient: self.dataLakeTrackingClient,
-        koalaClient: self.trackingClient,
+        client: self.trackingClient,
         loggedInUser: nil
       ),
       language: .en,

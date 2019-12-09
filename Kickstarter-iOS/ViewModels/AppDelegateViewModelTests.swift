@@ -778,7 +778,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(),
       currentUser: .template,
-      koala: Koala(koalaClient: client),
+      koala: Koala(client: client),
       pushRegistrationType: MockPushRegistration.self
     ) {
       XCTAssertEqual([], client.events)
@@ -812,7 +812,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(),
       currentUser: .template,
-      koala: Koala(koalaClient: client),
+      koala: Koala(client: client),
       pushRegistrationType: MockPushRegistration.self
     ) {
       XCTAssertEqual([], client.events)
@@ -844,7 +844,7 @@ final class AppDelegateViewModelTests: TestCase {
     MockPushRegistration.registerProducer = .init(value: true)
 
     withEnvironment(
-      currentUser: .template, koala: Koala(koalaClient: client), pushRegistrationType: MockPushRegistration.self
+      currentUser: .template, koala: Koala(client: client), pushRegistrationType: MockPushRegistration.self
     ) {
       XCTAssertEqual([], client.events)
 
@@ -864,7 +864,7 @@ final class AppDelegateViewModelTests: TestCase {
     MockPushRegistration.registerProducer = .init(value: false)
 
     withEnvironment(
-      currentUser: .template, koala: Koala(koalaClient: client), pushRegistrationType: MockPushRegistration.self
+      currentUser: .template, koala: Koala(client: client), pushRegistrationType: MockPushRegistration.self
     ) {
       XCTAssertEqual([], client.events)
 
