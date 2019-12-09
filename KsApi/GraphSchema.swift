@@ -174,6 +174,7 @@ public enum Query {
 
   public enum Project {
     case id
+    case name
     case slug
     case updates(Set<QueryArg<Never>>, NonEmptySet<Connection<Project.Update>>)
 
@@ -192,8 +193,9 @@ public enum Query {
   }
 
   public enum User {
-    case biography
     case backedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
+    case backings(status: String, Set<QueryArg<Never>>, NonEmptySet<Connection<Backing>>)
+    case biography
     case chosenCurrency
     case conversations(Set<QueryArg<Never>>, NonEmptySet<Connection<Conversation>>)
     case createdProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
@@ -229,6 +231,12 @@ public enum Query {
       case id
       case lastFour
       case type
+    }
+
+    public enum Backing {
+      case errorReason
+      case project(NonEmptySet<Project>)
+      case status
     }
   }
 }
@@ -357,6 +365,7 @@ extension Query.Project: QueryType {
   public var description: String {
     switch self {
     case .id: return "id"
+    case .name: return "name"
     case .slug: return "slug"
     case let .updates(args, fields): return "updates\(connection(args, fields))"
     }
@@ -381,6 +390,8 @@ extension Query.Project.Update: QueryType {
 extension Query.User: QueryType {
   public var description: String {
     switch self {
+    case let .backings(status, args, fields):
+      return "backings(status: \(status))\(connection(args, fields))"
     case .biography: return "biography"
     case let .backedProjects(args, fields): return "backedProjects\(connection(args, fields))"
     case let .conversations(args, fields): return "conversations\(connection(args, fields))"
@@ -419,6 +430,16 @@ extension Query.User: QueryType {
 extension Query.User.CreditCard: QueryType {
   public var description: String {
     return self.rawValue
+  }
+}
+
+extension Query.User.Backing: QueryType {
+  public var description: String {
+    switch self {
+    case .errorReason: return "errorReason"
+    case let .project(fields): return "project { \(join(fields)) }"
+    case .status: return "status"
+    }
   }
 }
 

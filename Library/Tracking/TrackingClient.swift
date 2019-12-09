@@ -4,49 +4,42 @@ import Prelude
 private let flushInterval = 60.0
 private let chunkSize = 4
 
-public final class KoalaTrackingClient: TrackingClientType {
-  fileprivate let URLSession: URLSession
-  fileprivate let queue = DispatchQueue(label: "com.kickstarter.KoalaTrackingClient")
+public final class TrackingClient: TrackingClientType {
+  fileprivate let config: TrackingClientConfiguration
+  fileprivate let queue: DispatchQueue
   fileprivate var buffer: [[String: Any]] = []
   fileprivate var timer: Timer?
   fileprivate var taskId = UIBackgroundTaskIdentifier.invalid
+  fileprivate let urlSession: URLSession = .shared
 
-  fileprivate var base: String {
-    switch AppEnvironment.current.environmentType {
-    case .production:
-      return Secrets.KoalaEndpoint.production
-    default:
-      return Secrets.KoalaEndpoint.staging
-    }
-  }
-
-  public init(URLSession: URLSession = .shared) {
-    self.URLSession = URLSession
+  public init(_ configuration: TrackingClientConfiguration) {
+    self.config = configuration
+    self.queue = DispatchQueue(label: "com.kickstarter.\(self.config.identifier)TrackingClient")
 
     let notifications = NotificationCenter.default
     notifications.addObserver(
       self,
-      selector: #selector(applicationDidBecomeActive),
+      selector: #selector(TrackingClient.applicationDidBecomeActive),
       name: UIApplication.didBecomeActiveNotification, object: nil
     )
     notifications.addObserver(
       self,
-      selector: #selector(applicationDidEnterBackground),
+      selector: #selector(TrackingClient.applicationDidEnterBackground),
       name: UIApplication.didEnterBackgroundNotification, object: nil
     )
     notifications.addObserver(
       self,
-      selector: #selector(applicationWillEnterForeground),
+      selector: #selector(TrackingClient.applicationWillEnterForeground),
       name: UIApplication.willEnterForegroundNotification, object: nil
     )
     notifications.addObserver(
       self,
-      selector: #selector(applicationWillResignActive),
+      selector: #selector(TrackingClient.applicationWillResignActive),
       name: UIApplication.willResignActiveNotification, object: nil
     )
     notifications.addObserver(
       self,
-      selector: #selector(applicationWillTerminate),
+      selector: #selector(TrackingClient.applicationWillTerminate),
       name: UIApplication.willTerminateNotification, object: nil
     )
 
@@ -56,10 +49,11 @@ public final class KoalaTrackingClient: TrackingClientType {
 
   public func track(event: String, properties: [String: Any]) {
     if AppEnvironment.current.environmentVariables.isKoalaTrackingEnabled {
-      print("🐨 [Koala Track]: \(event), properties: \(properties)")
+      // swiftlint:disable:next line_length
+      print("\(self.config.identifier.emoji) [\(self.config.identifier) Track]: \(event), properties: \(properties)")
 
       self.queue.async {
-        self.buffer.append(["event": event, "properties": properties])
+        self.buffer.append(self.config.recordDictionary(event, properties))
       }
     }
   }
@@ -80,10 +74,9 @@ public final class KoalaTrackingClient: TrackingClientType {
 
       while !self.buffer.isEmpty {
         guard
-          KoalaTrackingClient.base64Payload(Array(self.buffer.prefix(chunkSize)))
-          .flatMap(self.koalaURL)
-          .flatMap(KoalaTrackingClient.koalaRequest)
-          .flatMap(self.synchronousKoalaResult) != nil
+          self.payload(Array(self.buffer.prefix(chunkSize)))
+          .flatMap(self.request)
+          .flatMap(self.synchronousResult) != nil
         else { break }
 
         self.buffer.removeFirst(min(chunkSize, self.buffer.count))
@@ -99,9 +92,9 @@ public final class KoalaTrackingClient: TrackingClientType {
         let url = URL(fileURLWithPath: file)
         let data = try NSKeyedArchiver.archivedData(withRootObject: self.buffer, requiringSecureCoding: false)
         try data.write(to: url)
-        print("🐨🔵 koala.plist successfully saved.")
+        print("\(self.config.identifier.emoji)🔵 \(self.plistName()) successfully saved.")
       } catch {
-        print("🐨🔴 Failed to save koala.plist: \(error)")
+        print("\(self.config.identifier.emoji)🔴 Failed to save \(self.plistName()): \(error)")
       }
       self.buffer.removeAll()
     }
@@ -122,61 +115,60 @@ public final class KoalaTrackingClient: TrackingClientType {
     }
   }
 
-  fileprivate static func base64Payload(_ payload: [Any]) -> String? {
-    return (try? JSONSerialization.data(withJSONObject: payload, options: []))
-      .map { $0.base64EncodedString(options: []) }
+  fileprivate func payload(_ payload: Any) -> Data? {
+    return try? JSONSerialization.data(
+      withJSONObject: self.config.envelope(payload),
+      options: []
+    )
   }
 
-  fileprivate func koalaURL(_ dataString: String) -> URL? {
-    if dataString.count >= 10_000 {
-      print("🐨 [Koala Error]: Base64 payload is longer than 10,000 characters.")
-    }
-    return URL(string: "\(self.base)?data=\(dataString)")
+  fileprivate func request(_ data: Data) -> URLRequest? {
+    return self.config.request(self.config, AppEnvironment.current.environmentType, data)
   }
 
-  fileprivate static func koalaRequest(_ url: URL) -> URLRequest {
-    var request = URLRequest(url: url)
-    request.httpMethod = "POST"
-    return request
-  }
-
-  fileprivate func synchronousKoalaResult(_ request: URLRequest) -> HTTPURLResponse? {
+  fileprivate func synchronousResult(_ request: URLRequest) -> HTTPURLResponse? {
     var result: HTTPURLResponse?
     let semaphore = DispatchSemaphore(value: 0)
 
-    self.URLSession.dataTask(with: request) { _, response, _ in
+    self.urlSession.dataTask(with: request) { _, response, _ in
       defer { semaphore.signal() }
 
       if let httpResponse = response as? HTTPURLResponse {
-        print("🐨 [Koala Status Code]: \(httpResponse.statusCode)")
+        // swiftlint:disable:next line_length
+        print("\(self.config.identifier.emoji) [\(self.config.identifier) Status Code]: \(httpResponse.statusCode)")
 
         result = httpResponse
       }
+    }
+    .resume()
 
-    }.resume()
     _ = semaphore.wait(timeout: .distantFuture)
 
     if result == nil {
-      NSLog("[Koala Request] response/error result unexpectedly nil")
+      NSLog("[\(self.config.identifier) Request] response/error result unexpectedly nil")
     }
 
     return result
   }
 
+  private func plistName() -> String {
+    return "\(self.config.identifier.rawValue.lowercased()).plist"
+  }
+
   fileprivate func fileName() -> String? {
     return NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first
-      .flatMap { URL(string: $0)?.appendingPathComponent("koala.plist").absoluteString }
+      .flatMap { URL(string: $0)?.appendingPathComponent(self.plistName()).absoluteString }
   }
 }
 
-extension KoalaTrackingClient {
+extension TrackingClient {
   @objc fileprivate func applicationDidBecomeActive() {
     self.startTimer()
   }
 
   @objc fileprivate func applicationDidEnterBackground() {
     let handler = {
-      UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(self.taskId.rawValue))
+      UIApplication.shared.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: self.taskId.rawValue))
       self.taskId = UIBackgroundTaskIdentifier.invalid
     }
 
@@ -193,7 +185,7 @@ extension KoalaTrackingClient {
   @objc fileprivate func applicationWillEnterForeground() {
     self.queue.async {
       guard self.taskId != UIBackgroundTaskIdentifier.invalid else { return }
-      UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(self.taskId.rawValue))
+      UIApplication.shared.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: self.taskId.rawValue))
       self.taskId = UIBackgroundTaskIdentifier.invalid
     }
   }
@@ -205,9 +197,4 @@ extension KoalaTrackingClient {
   @objc fileprivate func applicationWillTerminate() {
     self.save()
   }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-private func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
-  return UIBackgroundTaskIdentifier(rawValue: input)
 }

@@ -21,6 +21,10 @@ final class PledgeShippingLocationViewController: UIViewController {
   private lazy var shippingLocationButton: UIButton = { UIButton(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var shimmerLoadingView: PledgeShippingLocationShimmerLoadingView = {
+    PledgeShippingLocationShimmerLoadingView(frame: .zero)
+  }()
+
   private lazy var spacer: UIView = {
     UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -38,7 +42,7 @@ final class PledgeShippingLocationViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.titleLabel, self.adaptableStackView], self.rootStackView)
+    _ = ([self.titleLabel, self.adaptableStackView, self.shimmerLoadingView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.shippingLocationButton, self.spacer, self.amountLabel], self.adaptableStackView)
@@ -98,7 +102,9 @@ final class PledgeShippingLocationViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.adaptableStackView.rac.hidden = self.viewModel.outputs.adaptableStackViewIsHidden
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
+    self.shimmerLoadingView.rac.hidden = self.viewModel.outputs.shimmerLoadingViewIsHidden
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
 
     self.viewModel.outputs.notifyDelegateOfSelectedShippingRule
