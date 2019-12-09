@@ -1,4 +1,6 @@
+@testable import KsApi
 @testable import Library
+import Prelude
 import XCTest
 
 public final class RefTagTests: XCTestCase {
@@ -172,5 +174,31 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(RefTag.thanks, RefTag(code: RefTag.thanks.stringTag))
     XCTAssertEqual(RefTag.update, RefTag(code: RefTag.update.stringTag))
     XCTAssertEqual(RefTag.unrecognized("custom"), RefTag(code: RefTag.unrecognized("custom").stringTag))
+  }
+
+  func testRefTagFromDiscoveryParams() {
+    let discoSort = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.sort .~ .endingSoon
+    let discoCategory = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.sort .~ .endingSoon
+      |> DiscoveryParams.lens.category .~ Category.documentary
+    let discoRecommended = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.recommended .~ true
+    let discoPWL = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.staffPicks .~ true
+    let discoSocial = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.social .~ true
+    let discoStarred = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.starred .~ true
+    let discoCollection = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.tagId .~ .goRewardless
+
+    XCTAssertEqual("discovery_ending_soon", RefTag.fromParams(discoSort).stringTag)
+    XCTAssertEqual("category_ending_soon", RefTag.fromParams(discoCategory).stringTag)
+    XCTAssertEqual("recs_home", RefTag.fromParams(discoRecommended).stringTag)
+    XCTAssertEqual("recommended_home", RefTag.fromParams(discoPWL).stringTag)
+    XCTAssertEqual("social_home", RefTag.fromParams(discoSocial).stringTag)
+    XCTAssertEqual("starred_home", RefTag.fromParams(discoStarred).stringTag)
+    XCTAssertEqual("ios_project_collection_tag_518", RefTag.fromParams(discoCollection).stringTag)
   }
 }

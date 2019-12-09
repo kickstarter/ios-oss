@@ -734,12 +734,18 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
 
-    koala.trackSearchResults(query: "query", params: DiscoveryParams.defaults, hasResults: true)
+    koala.trackSearchResults(
+      query: "query",
+      params: DiscoveryParams.defaults,
+      refTag: .search,
+      hasResults: true
+    )
 
     let props = client.properties.last
 
     XCTAssertEqual(["Search Results Loaded"], client.events)
     XCTAssertEqual("query", props?["search_term"] as? String)
+    XCTAssertEqual("search", props?["discover_ref_tag"] as? String)
     XCTAssertEqual(true, props?["has_results"] as? Bool)
   }
 

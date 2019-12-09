@@ -1271,7 +1271,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     XCTAssertEqual(["Editorial Card Clicked"], self.trackingClient.events)
     XCTAssertEqual(
       ["ios_project_collection_tag_518"],
-      self.trackingClient.properties(forKey: "refTag", as: String.self)
+      self.trackingClient.properties(forKey: "ref_tag", as: String.self)
     )
 
     self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
@@ -1279,7 +1279,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     XCTAssertEqual(["Editorial Card Clicked", "Editorial Card Clicked"], self.trackingClient.events)
     XCTAssertEqual(
       ["ios_project_collection_tag_518", "ios_project_collection_tag_518"],
-      self.trackingClient.properties(forKey: "refTag")
+      self.trackingClient.properties(forKey: "ref_tag")
     )
   }
 

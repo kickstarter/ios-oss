@@ -2172,7 +2172,7 @@ private func properties(userActivity: NSUserActivity) -> [String: Any] {
 
 private func discoveryProperties(
   from params: DiscoveryParams,
-  prefix _: String = "discover_"
+  prefix: String = "discover_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
   var unprefixedResult: [String: Any] = [:]
@@ -2191,7 +2191,7 @@ private func discoveryProperties(
 
   unprefixedResult["search_term"] = params.query
 
-  return result.prefixedKeys("discover_").withAllValuesFrom(unprefixedResult)
+  return result.prefixedKeys(prefix).withAllValuesFrom(unprefixedResult)
 }
 
 private func properties(category: KsApi.Category) -> [String: Any] {
