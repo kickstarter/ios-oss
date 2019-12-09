@@ -200,7 +200,7 @@ extension RefTag: Argo.Decodable {
 }
 
 extension RefTag {
-  public static func fromParams(params: DiscoveryParams) -> RefTag {
+  public static func fromParams(_ params: DiscoveryParams) -> RefTag {
     if let tagId = params.tagId {
       return .projectCollection(tagId)
     }
@@ -216,6 +216,7 @@ extension RefTag {
     } else if params.starred == .some(true) {
       return .starredWithSort(params.sort ?? .magic)
     }
+
     return RefTag.discoveryWithSort(params.sort ?? .magic)
   }
 }

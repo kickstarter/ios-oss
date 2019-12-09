@@ -249,7 +249,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let projectCardTapped = paramsChanged
       .takePairWhen(self.tappedProject.signal.skipNil())
-      .map { params, project in (project, RefTag.fromParams(params: params)) }
+      .map { params, project in (project, RefTag.fromParams(params)) }
 
     self.goToActivityProject = activitySampleTapped
 

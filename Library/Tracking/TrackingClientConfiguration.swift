@@ -13,6 +13,12 @@ public enum TrackingClientIdentifier: String {
   }
 }
 
+extension TrackingClientIdentifier: CustomStringConvertible {
+  public var description: String {
+    return self.rawValue
+  }
+}
+
 public typealias TrackingClientRecordDictionary = (String, [String: Any]) -> [String: Any]
 public typealias TrackingClientRequest = (TrackingClientConfiguration, EnvironmentType, Data) -> URLRequest?
 public typealias TrackingClientURL = (EnvironmentType) -> URL?

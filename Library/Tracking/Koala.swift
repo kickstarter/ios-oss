@@ -513,7 +513,7 @@ public final class Koala {
    Call when the user taps the editorial header at the top of Discovery
    */
   public func trackEditorialHeaderTapped(refTag: RefTag) {
-    self.track(event: "Editorial Card Clicked", properties: ["refTag": refTag.stringTag])
+    self.track(event: "Editorial Card Clicked", properties: ["ref_tag": refTag.stringTag])
   }
 
   /**
@@ -1252,9 +1252,13 @@ public final class Koala {
   }
 
   // Call when projects have been obtained from a search.
-  public func trackSearchResults(query: String, params: DiscoveryParams, hasResults: Bool) {
+  public func trackSearchResults(query: String,
+                                 params: DiscoveryParams,
+                                 refTag: RefTag,
+                                 hasResults: Bool) {
     let props = discoveryProperties(from: params)
       .withAllValuesFrom([
+        "discover_ref_tag": refTag.stringTag,
         "search_term": query,
         "has_results": hasResults
       ])
@@ -2181,7 +2185,7 @@ private func discoveryProperties(
 
   result["everything"] = result.isEmpty
   result["sort"] = params.sort?.rawValue
-  result["ref_tag"] = RefTag.fromParams(params: params).stringTag
+  result["ref_tag"] = RefTag.fromParams(params).stringTag
 
   unprefixedResult["search_term"] = params.query
 
