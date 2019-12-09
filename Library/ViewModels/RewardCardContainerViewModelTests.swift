@@ -389,17 +389,17 @@ final class RewardCardContainerViewModelTests: TestCase {
 
     self.gradientViewHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonStyleType.assertValues([.black, .black, .black, .black, .black, .black, .black, .black])
-    self.pledgeButtonEnabled.assertValues([true, true, true, true, true, true, true, true])
+    self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "View your pledge",
-      "View your pledge",
-      "View your pledge",
-      "View your pledge",
-      "View your pledge",
-      "View your pledge",
-      "View your pledge",
-      "View your pledge"
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected"
     ])
     self.configureNoRewardGradientView.assertValues([false, false, false, false, false, false, false, false])
     self.rewardCardViewBackgroundColor.assertValues([
@@ -654,14 +654,14 @@ final class RewardCardContainerViewModelTests: TestCase {
 
     self.gradientViewHidden.assertValues([false, false, false, false, false])
     self.pledgeButtonStyleType.assertValues([.black, .black, .black, .black, .black])
-    self.pledgeButtonEnabled.assertValues([true, true, true, true, true])
+    self.pledgeButtonEnabled.assertValues([false, false, false, false, false])
     self.pledgeButtonHidden.assertValues([false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
-      "View your pledge",
-      "View your pledge",
-      "View your pledge",
-      "View your pledge",
-      "View your pledge"
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected",
+      "Selected"
     ])
     self.configureNoRewardGradientView.assertValues([false, false, false, false, false])
     self.rewardCardViewBackgroundColor.assertValues([

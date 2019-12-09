@@ -9,6 +9,7 @@ final class ActivitiesViewModelTests: TestCase {
 
   fileprivate let activitiesPresent = TestObserver<Bool, Never>()
   fileprivate let clearBadgeValue = TestObserver<(), Never>()
+  fileprivate let erroredBackings = TestObserver<[GraphBacking], Never>()
   fileprivate let isRefreshing = TestObserver<Bool, Never>()
   fileprivate let goToProject = TestObserver<Project, Never>()
   fileprivate let goToSurveyResponse = TestObserver<SurveyResponse, Never>()
@@ -37,6 +38,7 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.outputs.goToProject.map { $0.1 }.observe(self.showRefTag.observer)
     self.vm.outputs.deleteFacebookConnectSection.observe(self.deleteFacebookConnectSection.observer)
     self.vm.outputs.deleteFindFriendsSection.observe(self.deleteFindFriendsSection.observer)
+    self.vm.outputs.erroredBackings.observe(self.erroredBackings.observer)
     self.vm.outputs.goToFriends.observe(self.goToFriends.observer)
     self.vm.outputs.goToSurveyResponse.observe(self.goToSurveyResponse.observer)
     self.vm.outputs.showEmptyStateIsLoggedIn.observe(self.showEmptyStateIsLoggedIn.observer)
@@ -539,6 +541,21 @@ final class ActivitiesViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(animated: false)
 
       self.unansweredSurveyResponse.assertValues([[surveyResponse]])
+    }
+  }
+
+  func testErroredBackings() {
+    let envelope = GraphBackingEnvelope.erroredBackings
+    let backingsResponse = UserEnvelope<GraphBackingEnvelope>(me: envelope)
+
+    withEnvironment(apiService: MockService(fetchGraphUserBackingsResponse: backingsResponse)) {
+      self.erroredBackings.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.erroredBackings.assertValues([[GraphBacking.errored]])
     }
   }
 

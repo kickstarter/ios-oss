@@ -7,7 +7,8 @@ public enum Mailbox: String {
   case sent
 }
 
-/**
+/*
+ *
  A type that knows how to perform requests for Kickstarter data.
  */
 public protocol ServiceType {
@@ -156,6 +157,10 @@ public protocol ServiceType {
   /// Fetch User's email fields object using graphQL.
   func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError>
+
+  /// Fetch User's backings with a specific status.
+  func fetchGraphUserBackings(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError>
 
   /// Fetches all of the messages in a particular message thread.
   func fetchMessageThread(messageThreadId: Int)
