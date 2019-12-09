@@ -14,6 +14,11 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
   private let tableView: UITableView = { UITableView(frame: .zero) }()
   private let titleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private lazy var tableViewHeightConstraint: NSLayoutConstraint = {
+    self.tableView.heightAnchor.constraint(equalToConstant: 1)
+      |> \.priority .~ .defaultHigh
+  }()
+
   // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -25,6 +30,7 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
 
     self.bindStyles()
     self.configureViews()
+    self.setupConstraints()
     self.bindViewModel()
   }
 
@@ -41,13 +47,15 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
     self.updateTableViewConstraints()
   }
 
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([self.tableViewHeightConstraint])
+  }
+
   private func updateTableViewConstraints() {
     self.tableView.layoutIfNeeded()
-    NSLayoutConstraint.activate([
-      self.tableView.heightAnchor.constraint(
-        equalToConstant: self.tableView.contentSize.height + self.labelsStackView.frame.size.height
-      )
-    ])
+
+    self.tableViewHeightConstraint.constant = self.tableView.contentSize.height
+
     self.setNeedsLayout()
   }
 
