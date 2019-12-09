@@ -18,7 +18,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let mainBundle = MockBundle()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
-  internal let trackingClient = MockTrackingClient() // TODO: Rename
+  internal let trackingClient = MockTrackingClient()
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
 
