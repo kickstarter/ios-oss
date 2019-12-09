@@ -1252,10 +1252,12 @@ public final class Koala {
   }
 
   // Call when projects have been obtained from a search.
-  public func trackSearchResults(query: String,
-                                 params: DiscoveryParams,
-                                 refTag: RefTag,
-                                 hasResults: Bool) {
+  public func trackSearchResults(
+    query: String,
+    params: DiscoveryParams,
+    refTag: RefTag,
+    hasResults: Bool
+  ) {
     let props = discoveryProperties(from: params)
       .withAllValuesFrom([
         "discover_ref_tag": refTag.stringTag,
