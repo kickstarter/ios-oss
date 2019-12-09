@@ -68,6 +68,9 @@ public protocol ActivitiesViewModelOutputs {
   /// Emits when should remove Find Friends section.
   var deleteFindFriendsSection: Signal<(), Never> { get }
 
+  /// Emits an array of errored backings to be displayed on the top of the list of projects.
+  var erroredBackings: Signal<[GraphBacking], Never> { get }
+
   /// Emits when we should dismiss the empty state controller.
   var hideEmptyState: Signal<(), Never> { get }
 
@@ -182,6 +185,20 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         self.userSessionEndedProperty.signal
       )
       .map { AppEnvironment.current.currentUser }
+
+    let erroredBackingsEvent = currentUser
+      .switchMap { _ in
+        AppEnvironment.current.apiService.fetchGraphUserBackings(
+          query: UserQueries.backings(GraphBacking.Status.errored.rawValue).query
+        )
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .map { envelope in
+          envelope.me.backings.nodes
+        }
+        .materialize()
+      }
+
+    self.erroredBackings = erroredBackingsEvent.values()
 
     let loggedInForEmptyState = self.activities
       .filter { AppEnvironment.current.currentUser != nil && $0.isEmpty }
@@ -380,6 +397,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   public let clearBadgeValue: Signal<(), Never>
   public let deleteFacebookConnectSection: Signal<(), Never>
   public let deleteFindFriendsSection: Signal<(), Never>
+  public let erroredBackings: Signal<[GraphBacking], Never>
   public let hideEmptyState: Signal<(), Never>
   public let isRefreshing: Signal<Bool, Never>
   public let goToFriends: Signal<FriendsSource, Never>
