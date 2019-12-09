@@ -15,7 +15,8 @@ final class ManagePledgePaymentMethodView: UIView {
   private lazy var cardLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var cardNumberLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var fixButton: UIButton = { UIButton(type: .custom) }()
+  private lazy var fixButton: UIButton = { UIButton(type: .custom)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false }()
   private lazy var paymentMethodAdaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var paymentMethodImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -69,6 +70,9 @@ final class ManagePledgePaymentMethodView: UIView {
       action: #selector(ManagePledgePaymentMethodView.fixButtonTapped),
       for: .touchUpInside
     )
+
+    self.fixButton.setContentHuggingPriority(.required, for: .horizontal)
+    self.fixButton.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
 
   // MARK: - Styles
@@ -137,12 +141,14 @@ final class ManagePledgePaymentMethodView: UIView {
     NSLayoutConstraint.activate([
       self.paymentMethodImageView.widthAnchor.constraint(
         equalToConstant: CheckoutConstants.PaymentSource.ImageView.width
-      )
+      ),
+      self.fixButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.grid(10)),
+      self.fixButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
   }
 
   @objc private func fixButtonTapped() {
-    self.delegate?.managePledgePaymentMethodViewDidTapFixButton(self)
+    self.viewModel.inputs.fixButtonTapped()
   }
 }
 
