@@ -2156,7 +2156,8 @@ private func properties(userActivity: NSUserActivity) -> [String: Any] {
 
 // MARK: - Discovery Properties
 
-private func discoveryProperties(from params: DiscoveryParams, prefix _: String = "discover_") -> [String: Any] {
+private func discoveryProperties(from params: DiscoveryParams,
+                                 prefix _: String = "discover_") -> [String: Any] {
   var result: [String: Any] = [:]
   var unprefixedResult: [String: Any] = [:]
 
