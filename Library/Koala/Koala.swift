@@ -2184,7 +2184,6 @@ private func properties(category: KsApi.Category) -> [String: Any] {
 
   result["category_id"] = category.intID
   result["category_name"] = category.name
-  result["category_projects_count"] = category.totalProjectCount
 
   let parentProperties = category.parent.map(properties(category:)) ?? [:]
   return result
