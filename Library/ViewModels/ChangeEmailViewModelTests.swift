@@ -17,8 +17,6 @@ final class ChangeEmailViewModelTests: TestCase {
   private let dismissKeyboard = TestObserver<(), Never>()
   private let emailText = TestObserver<String, Never>()
   private let messageLabelViewHidden = TestObserver<Bool, Never>()
-  private let onePasswordButtonIsHidden = TestObserver<Bool, Never>()
-  private let onePasswordFindLoginForURLString = TestObserver<String, Never>()
   private let passwordFieldBecomeFirstResponder = TestObserver<Void, Never>()
   private let passwordText = TestObserver<String, Never>()
   private let resendVerificationEmailViewIsHidden = TestObserver<Bool, Never>()
@@ -38,10 +36,7 @@ final class ChangeEmailViewModelTests: TestCase {
     self.vm.outputs.emailText.observe(self.emailText.observer)
     self.vm.outputs.dismissKeyboard.observe(self.dismissKeyboard.observer)
     self.vm.outputs.messageLabelViewHidden.observe(self.messageLabelViewHidden.observer)
-    self.vm.outputs.onePasswordButtonIsHidden.observe(self.onePasswordButtonIsHidden.observer)
-    self.vm.outputs.onePasswordFindLoginForURLString.observe(self.onePasswordFindLoginForURLString.observer)
     self.vm.outputs.passwordFieldBecomeFirstResponder.observe(self.passwordFieldBecomeFirstResponder.observer)
-    self.vm.outputs.passwordText.observe(self.passwordText.observer)
     self.vm.outputs.resendVerificationEmailViewIsHidden.observe(
       self.resendVerificationEmailViewIsHidden.observer
     )
@@ -111,54 +106,6 @@ final class ChangeEmailViewModelTests: TestCase {
     }
   }
 
-  func testOnePasswordButtonHidesProperly_OnIOS11AndEarlier() {
-    self.vm.inputs.viewDidLoad()
-
-    withEnvironment(is1PasswordSupported: { true }) {
-      self.vm.inputs.onePassword(isAvailable: true)
-
-      self.onePasswordButtonIsHidden.assertValues([false])
-
-      self.vm.inputs.onePassword(isAvailable: false)
-
-      self.onePasswordButtonIsHidden.assertValues([false, true])
-    }
-  }
-
-  func testOnePasswordButtonHidesProperly_OnIOS12AndLater() {
-    self.vm.inputs.viewDidLoad()
-
-    withEnvironment(is1PasswordSupported: { false }) {
-      self.vm.inputs.onePassword(isAvailable: true)
-
-      self.onePasswordButtonIsHidden.assertValues([true])
-
-      self.vm.inputs.onePassword(isAvailable: false)
-
-      self.onePasswordButtonIsHidden.assertValues([true, true])
-    }
-  }
-
-  func testTrackingEventsIfOnePassword_IsAvailable() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.onePassword(isAvailable: true)
-
-    XCTAssertEqual(
-      [true, nil],
-      self.trackingClient.properties(forKey: "1password_extension_available", as: Bool.self)
-    )
-
-    XCTAssertEqual(
-      [nil, true],
-      self.trackingClient.properties(forKey: "one_password_extension_available", as: Bool.self)
-    )
-  }
-
-  func testPasswordText_OnePassword() {
-    self.vm.inputs.onePasswordFound(password: "123456")
-    self.passwordText.assertValues(["123456"])
-  }
-
   func testEmailText_AfterFetchingUsersEmail() {
     let response = UserEnvelope<UserEmailFields>(me: .template)
 
@@ -168,14 +115,6 @@ final class ChangeEmailViewModelTests: TestCase {
 
       self.emailText.assertValues(["ksr@kickstarter.com"])
     }
-  }
-
-  func testOnePasswordFindLoginForURLString() {
-    self.vm.inputs.onePasswordButtonTapped()
-
-    self.onePasswordFindLoginForURLString.assertValues(
-      [AppEnvironment.current.apiService.serverConfig.webBaseUrl.absoluteString]
-    )
   }
 
   func testSaveButtonEnabledStatus() {
@@ -195,22 +134,6 @@ final class ChangeEmailViewModelTests: TestCase {
       // Disabled if new email is equal to the old one.
       self.vm.inputs.emailFieldTextDidChange(text: "ksr@kickstarter.com")
       self.saveButtonIsEnabled.assertValues([true, false])
-    }
-  }
-
-  func testSaveButtonEnablesAfter_OnePasswordPrefillsField() {
-    let response = UserEnvelope<UserEmailFields>(me: .template)
-
-    withEnvironment(apiService: MockService(changeEmailResponse: response)) {
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      self.vm.inputs.emailFieldTextDidChange(text: "ksr@ksr.com")
-      self.saveButtonIsEnabled.assertDidNotEmitValue()
-
-      self.vm.inputs.onePasswordFound(password: "123456")
-      self.saveButtonIsEnabled.assertValues([true])
     }
   }
 

@@ -10,7 +10,8 @@ public final class Koala {
   internal static let DeprecatedKey = "DEPRECATED"
 
   private let bundle: NSBundleType
-  private let client: TrackingClientType
+  private let dataLakeClient: TrackingClientType
+  private let koalaClient: TrackingClientType
   internal private(set) var config: Config?
   private let device: UIDeviceType
   private let distinctId: String
@@ -355,7 +356,8 @@ public final class Koala {
 
   public init(
     bundle: NSBundleType = Bundle.main,
-    client: TrackingClientType,
+    dataLakeClient: TrackingClientType = TrackingClient(.dataLake),
+    client: TrackingClientType = TrackingClient(.koala),
     config: Config? = nil,
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
@@ -363,7 +365,8 @@ public final class Koala {
     distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString
   ) {
     self.bundle = bundle
-    self.client = client
+    self.dataLakeClient = dataLakeClient
+    self.koalaClient = client
     self.config = config
     self.device = device
     self.loggedInUser = loggedInUser
@@ -474,13 +477,6 @@ public final class Koala {
     self.track(event: "Opened Deep Link", properties: props)
   }
 
-  public func trackAttemptingOnePasswordLogin() {
-    // Deprecated event
-    self.track(event: "Attempting 1password Login", properties: deprecatedProps)
-
-    self.track(event: "Triggered 1Password")
-  }
-
   // MARK: - Discovery Events
 
   /**
@@ -491,7 +487,6 @@ public final class Koala {
    */
   public func trackDiscovery(params: DiscoveryParams, page: Int) {
     var props = properties(params: params).withAllValuesFrom(["page": page])
-    props["current_variants"] = AppEnvironment.current.config?.abExperimentsArray
 
     self.track(event: "Loaded Discovery Results", properties: props)
 
@@ -594,6 +589,13 @@ public final class Koala {
    */
   public func trackDiscoveryPullToRefresh() {
     self.track(event: "Triggered Refresh")
+  }
+
+  /**
+   Call when the user taps the editorial header at the top of Discovery
+   */
+  public func trackEditorialHeaderTapped(refTag: RefTag) {
+    self.track(event: "Editorial Card Clicked", properties: ["refTag": refTag.stringTag])
   }
 
   // MARK: - Checkout Events
@@ -796,18 +798,14 @@ public final class Koala {
     )
   }
 
-  public func trackLoginFormView(onePasswordIsAvailable: Bool) {
+  public func trackLoginFormView() {
     self.track(
       event: "User Login",
       properties: [
-        "1password_extension_available": onePasswordIsAvailable,
         Koala.DeprecatedKey: true
       ]
     )
-    self.track(
-      event: "Viewed Login",
-      properties: ["one_password_extension_available": onePasswordIsAvailable]
-    )
+    self.track(event: "Viewed Login")
   }
 
   public func trackLoginSuccess(authType: AuthType) {
@@ -1366,7 +1364,6 @@ public final class Koala {
     var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
     props["referrer_credit"] = cookieRefTag?.stringTag
-    props["current_variants"] = AppEnvironment.current.config?.abExperimentsArray
 
     // Deprecated event
     self.track(
@@ -2034,7 +2031,12 @@ public final class Koala {
 
     self.logEventCallback?(event, props)
 
-    self.client.track(
+    self.koalaClient.track(
+      event: event,
+      properties: props
+    )
+
+    self.dataLakeClient.track(
       event: event,
       properties: props
     )
@@ -2043,10 +2045,16 @@ public final class Koala {
   private func defaultProperties() -> [String: Any] {
     var props: [String: Any] = [:]
 
+    let enabledFeatureFlags = self.config?.features
+      .filter { key, value in key.starts(with: "ios_") && value }
+      .keys
+      .sorted()
+
     props["manufacturer"] = "Apple"
     props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
-    props["current_variants"] = AppEnvironment.current.config?.abExperimentsArray
+    props["current_variants"] = self.config?.abExperimentsArray.sorted() ?? []
+    props["enabled_feature_flags"] = enabledFeatureFlags ?? []
     props["model"] = Koala.deviceModel
     props["distinct_id"] = self.distinctId
     props["device_fingerprint"] = self.distinctId
@@ -2065,7 +2073,7 @@ public final class Koala {
     props["client_type"] = "native"
     props["device_format"] = self.deviceFormat
     props["client_platform"] = self.clientPlatform
-    props["cellular_connection"] = CTTelephonyNetworkInfo().currentRadioAccessTechnology
+    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
     props["wifi_connection"] = Reachability.current == .wifi
 
     if let loggedInUser = self.loggedInUser {

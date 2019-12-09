@@ -3,14 +3,28 @@ import Library
 import Prelude
 import UIKit
 
+protocol DiscoveryPageViewControllerDelegate: AnyObject {
+  func discoverPageViewController(
+    _ viewController: DiscoveryPageViewController,
+    contentOffsetDidChangeTo offset: CGPoint
+  )
+}
+
 internal final class DiscoveryPageViewController: UITableViewController {
-  fileprivate var emptyStatesController: EmptyStatesViewController?
-  fileprivate let dataSource = DiscoveryProjectsDataSource()
-  private var sessionEndedObserver: Any?
-  private var sessionStartedObserver: Any?
-  private var currentEnvironmentChangedObserver: Any?
   fileprivate let viewModel: DiscoveryPageViewModelType = DiscoveryPageViewModel()
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
+
+  // MARK: - Properties
+
+  private var configUpdatedObserver: Any?
+  private var currentEnvironmentChangedObserver: Any?
+  fileprivate let dataSource = DiscoveryProjectsDataSource()
+  public weak var delegate: DiscoveryPageViewControllerDelegate?
+  fileprivate var emptyStatesController: EmptyStatesViewController?
+  private lazy var headerLabel = { UILabel(frame: .zero) }()
+  internal var preferredBackgroundColor: UIColor?
+  private var sessionEndedObserver: Any?
+  private var sessionStartedObserver: Any?
 
   internal static func configuredWith(sort: DiscoveryParams.Sort) -> DiscoveryPageViewController {
     let vc = Storyboard.DiscoveryPage.instantiate(DiscoveryPageViewController.self)
@@ -18,14 +32,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
     return vc
   }
 
-  internal func change(filter: DiscoveryParams) {
-    self.viewModel.inputs.selectedFilter(filter)
-  }
-
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
+    self.tableView.registerCellClass(DiscoveryEditorialCell.self)
 
     self.tableView.dataSource = self.dataSource
 
@@ -55,6 +66,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
         )
       })
 
+    self.configUpdatedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_configUpdated, object: nil, queue: nil, using: { [weak self] _ in
+        self?.viewModel.inputs.configUpdated(config: AppEnvironment.current.config)
+      })
+
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: nil)
     self.emptyStatesController = emptyVC
     emptyVC.delegate = self
@@ -73,6 +89,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
     self.currentEnvironmentChangedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    self.configUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -93,11 +110,25 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.inputs.viewDidDisappear(animated: animated)
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
+  }
+
   internal override func bindStyles() {
     super.bindStyles()
 
     _ = self
       |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+
+    if let preferredBackgroundColor = self.preferredBackgroundColor {
+      _ = self
+        |> \.view.backgroundColor .~ preferredBackgroundColor
+    }
+
+    _ = self.headerLabel
+      |> headerLabelStyle
   }
 
   internal override func bindViewModel() {
@@ -106,13 +137,15 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.outputs.projectsAreLoadingAnimated
       .observeForUI()
       .observeValues { [weak self] isLoading, animated in
-        if isLoading {
-          UIView.perform(animated: true) {
-            self?.refreshControl?.beginRefreshing()
-          }
-        } else {
-          UIView.perform(animated: animated) {
-            self?.refreshControl?.endRefreshing()
+        DispatchQueue.main.async {
+          if isLoading {
+            UIView.perform(animated: true) {
+              self?.refreshControl?.beginRefreshing()
+            }
+          } else {
+            UIView.perform(animated: animated) {
+              self?.refreshControl?.endRefreshing()
+            }
           }
         }
       }
@@ -161,6 +194,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.showEditorialHeader
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.dataSource.showEditorial(value: value)
+
+        self?.tableView.reloadData()
+      }
+
     self.viewModel.outputs.setScrollsToTop
       .observeForUI()
       .observeValues { [weak self] in
@@ -198,6 +239,26 @@ internal final class DiscoveryPageViewController: UITableViewController {
           discovery.setSortsEnabled(true)
         }
       }
+
+    self.viewModel.outputs.goToEditorialProjectList
+      .observeForControllerAction()
+      .observeValues { [weak self] tagId in
+        self?.goToEditorialProjectList(using: tagId)
+      }
+
+    self.viewModel.outputs.notifyDelegateContentOffsetChanged
+      .observeForUI()
+      .observeValues { [weak self] offset in
+        guard let self = self else { return }
+
+        self.delegate?.discoverPageViewController(self, contentOffsetDidChangeTo: offset)
+      }
+
+    self.viewModel.outputs.configureEditorialTableViewHeader
+      .observeForUI()
+      .observeValues { [weak self] title in
+        self?.configureHeaderView(with: title)
+      }
   }
 
   internal override func tableView(
@@ -214,6 +275,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let cell = cell as? ActivitySampleProjectCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? DiscoveryOnboardingCell, cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? DiscoveryEditorialCell {
       cell.delegate = self
     }
 
@@ -232,6 +295,37 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let activity = self.dataSource.activityAtIndexPath(indexPath) {
       self.viewModel.inputs.tapped(activity: activity)
     }
+  }
+
+  // MARK: - Functions
+
+  private func configureHeaderView(with title: String) {
+    let headerContainer = UIView(frame: .zero)
+      |> \.backgroundColor .~ .white
+      |> \.accessibilityLabel .~ title
+      |> \.accessibilityTraits .~ .header
+      |> \.isAccessibilityElement .~ true
+      |> \.layoutMargins %~~ { _, _ in
+        self.view.traitCollection.isRegularRegular
+          ? .init(top: Styles.grid(4), left: Styles.grid(30), bottom: Styles.grid(2), right: Styles.grid(30))
+          : .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+      }
+
+    _ = self.headerLabel
+      |> \.text .~ title
+
+    _ = (self.headerLabel, headerContainer)
+      |> ksr_addSubviewToParent()
+
+    self.tableView.tableHeaderView = headerContainer
+
+    _ = (self.headerLabel, headerContainer)
+      |> ksr_constrainViewToMarginsInParent()
+
+    let widthConstraint = self.headerLabel.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
+      |> \.priority .~ .defaultHigh
+
+    NSLayoutConstraint.activate([widthConstraint])
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
@@ -254,6 +348,12 @@ internal final class DiscoveryPageViewController: UITableViewController {
     }
 
     self.present(controller, animated: true, completion: nil)
+  }
+
+  fileprivate func goToEditorialProjectList(using tagId: DiscoveryParams.TagID) {
+    let vc = EditorialProjectsViewController.instantiate()
+    vc.configure(with: tagId)
+    self.present(vc, animated: true)
   }
 
   fileprivate func goTo(project: Project, refTag: RefTag) {
@@ -298,8 +398,20 @@ internal final class DiscoveryPageViewController: UITableViewController {
     navigator.updatePlaylist(playlist)
   }
 
+  // MARK: - Accessors
+
+  internal func change(filter: DiscoveryParams) {
+    self.viewModel.inputs.selectedFilter(filter)
+  }
+
+  // MARK: - Actions
+
   @objc private func pulledToRefresh() {
     self.viewModel.inputs.pulledToRefresh()
+  }
+
+  override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    self.viewModel.inputs.scrollViewDidScroll(toContentOffset: scrollView.contentOffset)
   }
 }
 
@@ -311,6 +423,8 @@ extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, Activi
   }
 }
 
+// MARK: - DiscoveryOnboardingCellDelegate
+
 extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
   internal func discoveryOnboardingTappedSignUpLoginButton() {
     let loginTout = LoginToutViewController.configuredWith(loginIntent: .discoveryOnboarding)
@@ -320,6 +434,16 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
     self.present(nav, animated: true, completion: nil)
   }
 }
+
+// MARK: - DiscoveryEditorialCellDelegate
+
+extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
+  func discoveryEditorialCellTapped(_: DiscoveryEditorialCell, tagId: DiscoveryParams.TagID) {
+    self.viewModel.inputs.discoveryEditorialCellTapped(with: tagId)
+  }
+}
+
+// MARK: - EmptyStatesViewControllerDelegate
 
 extension DiscoveryPageViewController: EmptyStatesViewControllerDelegate {
   func emptyStatesViewController(
@@ -386,4 +510,16 @@ private extension UIView {
       UIView.performWithoutAnimation { closure() }
     }
   }
+}
+
+// MARK: - Styles
+
+private let headerLabelStyle: LabelStyle = { label in
+  label
+    |> \.textColor .~ UIColor.ksr_trust_700
+    |> \.font .~ UIFont.ksr_subhead().bolded
+    |> \.lineBreakMode .~ .byWordWrapping
+    |> \.numberOfLines .~ 0
+    |> \.textAlignment .~ .center
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }

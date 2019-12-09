@@ -432,24 +432,41 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
       self.updateConfigInEnvironment.assertValues([config1])
+
+      self.vm.inputs.didUpdateConfig(config1)
+      self.postNotificationName.assertValues([.ksr_configUpdated])
     }
 
     let config2 = Config.template |> Config.lens.countryCode .~ "GB"
     withEnvironment(apiService: MockService(fetchConfigResponse: config2)) {
       self.vm.inputs.applicationWillEnterForeground()
       self.updateConfigInEnvironment.assertValues([config1, config2])
+
+      self.vm.inputs.didUpdateConfig(config2)
+      self.postNotificationName.assertValues([.ksr_configUpdated, .ksr_configUpdated])
     }
 
     let config3 = Config.template |> Config.lens.countryCode .~ "CZ"
     withEnvironment(apiService: MockService(fetchConfigResponse: config3)) {
       self.vm.inputs.userSessionEnded()
       self.updateConfigInEnvironment.assertValues([config1, config2, config3])
+
+      self.vm.inputs.didUpdateConfig(config3)
+      self.postNotificationName.assertValues([.ksr_configUpdated, .ksr_configUpdated, .ksr_configUpdated])
     }
 
     let config4 = Config.template |> Config.lens.countryCode .~ "CA"
     withEnvironment(apiService: MockService(fetchConfigResponse: config4)) {
       self.vm.inputs.userSessionStarted()
       self.updateConfigInEnvironment.assertValues([config1, config2, config3, config4])
+
+      self.vm.inputs.didUpdateConfig(config4)
+      self.postNotificationName.assertValues([
+        .ksr_configUpdated,
+        .ksr_configUpdated,
+        .ksr_configUpdated,
+        .ksr_configUpdated
+      ])
     }
   }
 
@@ -1355,7 +1372,7 @@ final class AppDelegateViewModelTests: TestCase {
     )
   }
 
-  func testVisitorCookies() {
+  func testVisitorCookies_ApplicationDidFinishLaunching() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
       launchOptions: [:]
@@ -1365,6 +1382,134 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertEqual(
       ["DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF", "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"],
       AppEnvironment.current.cookieStorage.cookies!.map { $0.value }
+    )
+    XCTAssertEqual(
+      [
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl.host
+      ]
+      .compact(),
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
+    )
+  }
+
+  func testVisitorCookies_ApplicationWillEnterForeground() {
+    let existingCookie = HTTPCookie(
+      properties: [
+        .name: "existing-cookie",
+        .value: "existing-cookie-value",
+        .domain: AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host as Any,
+        .path: "/",
+        .version: 0,
+        .expires: Date.distantFuture,
+        .secure: true
+      ]
+    )
+
+    AppEnvironment.current.cookieStorage.setCookie(existingCookie!)
+
+    self.vm.inputs.applicationWillEnterForeground()
+
+    XCTAssertEqual(
+      ["existing-cookie", "vis", "vis"],
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.name }.sorted()
+    )
+    XCTAssertEqual(
+      [
+        "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+        "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+        "existing-cookie-value"
+      ],
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.value }.sorted()
+    )
+    XCTAssertEqual(
+      [
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl.host
+      ]
+      .compact(),
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
+    )
+  }
+
+  func testVisitorCookies_UserSessionStarted() {
+    let existingCookie = HTTPCookie(
+      properties: [
+        .name: "existing-cookie",
+        .value: "existing-cookie-value",
+        .domain: AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host as Any,
+        .path: "/",
+        .version: 0,
+        .expires: Date.distantFuture,
+        .secure: true
+      ]
+    )
+
+    AppEnvironment.current.cookieStorage.setCookie(existingCookie!)
+
+    self.vm.inputs.userSessionStarted()
+
+    XCTAssertEqual(
+      ["existing-cookie", "vis", "vis"],
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.name }.sorted()
+    )
+    XCTAssertEqual(
+      [
+        "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+        "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+        "existing-cookie-value"
+      ],
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.value }.sorted()
+    )
+    XCTAssertEqual(
+      [
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl.host
+      ]
+      .compact(),
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
+    )
+  }
+
+  func testVisitorCookies_UserSessionEnded() {
+    let existingCookie = HTTPCookie(
+      properties: [
+        .name: "existing-cookie",
+        .value: "existing-cookie-value",
+        .domain: AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host as Any,
+        .path: "/",
+        .version: 0,
+        .expires: Date.distantFuture,
+        .secure: true
+      ]
+    )
+
+    AppEnvironment.current.cookieStorage.setCookie(existingCookie!)
+
+    self.vm.inputs.userSessionEnded()
+
+    XCTAssertEqual(
+      ["existing-cookie", "vis", "vis"],
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.name }.sorted()
+    )
+    XCTAssertEqual(
+      [
+        "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+        "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
+        "existing-cookie-value"
+      ],
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.value }.sorted()
+    )
+    XCTAssertEqual(
+      [
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.apiBaseUrl.host,
+        AppEnvironment.current.apiService.serverConfig.webBaseUrl.host
+      ]
+      .compact(),
+      AppEnvironment.current.cookieStorage.cookies!.map { $0.domain }.sorted()
     )
   }
 

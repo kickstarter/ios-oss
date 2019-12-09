@@ -153,12 +153,38 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     self.vm.inputs.menuButtonTapped()
 
-    self.showActionSheetMenuWithOptions.assertValues([ManagePledgeAlertAction.allCases])
+    self.showActionSheetMenuWithOptions.assertValues([
+      [
+        ManagePledgeAlertAction.updatePledge,
+        ManagePledgeAlertAction.changePaymentMethod,
+        ManagePledgeAlertAction.chooseAnotherReward,
+        ManagePledgeAlertAction.contactCreator,
+        ManagePledgeAlertAction.cancelPledge
+      ]
+    ])
   }
 
   func testMenuButtonTapped_WhenProject_IsNotLive() {
     let project = Project.template
       |> Project.lens.state .~ .successful
+
+    self.vm.inputs.configureWith(project)
+    self.vm.inputs.viewDidLoad()
+
+    self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+    self.vm.inputs.menuButtonTapped()
+
+    self.showActionSheetMenuWithOptions.assertValues([[.viewRewards, .contactCreator]])
+  }
+
+  func testMenuButtonTapped_WhenProject_IsLive_BackingStatus_IsPreAuth() {
+    let backing = Backing.template
+      |> Backing.lens.status .~ .preauth
+
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ backing
 
     self.vm.inputs.configureWith(project)
     self.vm.inputs.viewDidLoad()

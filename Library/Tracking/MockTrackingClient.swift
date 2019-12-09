@@ -1,3 +1,5 @@
+import Library
+
 internal final class MockTrackingClient: TrackingClientType {
   internal var tracks: [(event: String, properties: [String: Any])] = []
 

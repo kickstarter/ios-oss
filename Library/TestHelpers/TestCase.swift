@@ -13,6 +13,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let cache = KSCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
+  internal let dataLakeTrackingClient = MockTrackingClient()
   internal let dateType = MockDate.self
   internal let mainBundle = MockBundle()
   internal let reachability = MutableProperty(Reachability.wifi)
@@ -54,9 +55,12 @@ internal class TestCase: FBSnapshotTestCase {
       dateType: self.dateType,
       debounceInterval: .seconds(0),
       device: MockDevice(),
-      is1PasswordSupported: { true },
       isVoiceOverRunning: { false },
-      koala: Koala(client: self.trackingClient, loggedInUser: nil),
+      koala: Koala(
+        dataLakeClient: self.dataLakeTrackingClient,
+        client: self.trackingClient,
+        loggedInUser: nil
+      ),
       language: .en,
       launchedCountries: .init(),
       locale: .init(identifier: "en_US"),
@@ -79,7 +83,7 @@ internal func preferredSimulatorCheck() {
   let supportedModels = ["iPhone10,1", "iPhone10,4"] // iPhone 8
   let modelKey = "SIMULATOR_MODEL_IDENTIFIER"
 
-  guard #available(iOS 12.0, *), supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
+  guard #available(*, iOS 12.0), supportedModels.contains(ProcessInfo().environment[modelKey] ?? "") else {
     fatalError("Please only test and record screenshots on an iPhone 8 simulator running iOS 12")
   }
 }

@@ -81,6 +81,10 @@ extension UIColor {
         600: .ksr_text_navy_600
       ],
 
+      "Trust": [
+        700: .ksr_trust_700
+      ],
+
       "Violet": [
         500: .ksr_violet_500
       ]
@@ -240,6 +244,11 @@ extension UIColor {
   /// 0x626369
   public static var ksr_text_navy_600: UIColor {
     return .hex(0x626369)
+  }
+
+  /// 0x0A007D
+  public static var ksr_trust_700: UIColor {
+    return .hex(0x0A007D)
   }
 
   /// 0x00ACED
