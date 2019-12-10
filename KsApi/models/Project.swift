@@ -139,6 +139,14 @@ public struct Project {
     public var featuredAt: TimeInterval?
     public var launchedAt: TimeInterval
     public var stateChangedAt: TimeInterval
+
+    // Returns project duration in Days
+    public func duration(using calendar: Calendar = .current) -> Int? {
+      let deadlineDate = Date(timeIntervalSince1970: self.deadline)
+      let launchedAtDate = Date(timeIntervalSince1970: self.launchedAt)
+
+      return calendar.dateComponents([.day], from: launchedAtDate, to: deadlineDate).day
+    }
   }
 
   public struct Personalization {

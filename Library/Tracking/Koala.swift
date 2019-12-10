@@ -357,6 +357,7 @@ public final class Koala {
   public init(
     bundle: NSBundleType = Bundle.main,
     dataLakeClient: TrackingClientType = TrackingClient(.dataLake),
+    calendar: Calendar = Calendar.current,
     client: TrackingClientType = TrackingClient(.koala),
     config: Config? = nil,
     device: UIDeviceType = UIDevice.current,
@@ -604,7 +605,7 @@ public final class Koala {
     stateType: PledgeStateCTAType,
     project: Project, screen: CheckoutContext
   ) {
-    let props = properties(project: project)
+    let props = projectProperties(from: project)
       .withAllValuesFrom(["screen": screen.trackingString])
 
     switch stateType {
@@ -657,7 +658,7 @@ public final class Koala {
     backing: Backing?,
     screen: CheckoutContext
   ) {
-    let props = properties(project: project, reward: reward, backing: backing)
+    let props = projectProperties(from: project, reward: reward, backing: backing)
       .withAllValuesFrom(["screen": screen.trackingString])
 
     self.track(event: "Select Reward Button Clicked", properties: props)
@@ -1356,44 +1357,28 @@ public final class Koala {
    - parameter refTag:       The ref tag used when opening the project.
    - parameter cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
    */
-  public func trackProjectShow(
+  public func trackProjectViewed(
     _ project: Project,
     refTag: RefTag? = nil,
     cookieRefTag: RefTag? = nil
   ) {
-    var props = properties(project: project, loggedInUser: self.loggedInUser)
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+
+    // TODO: move ref_tag and referrer_credit to session properties
     props["ref_tag"] = refTag?.stringTag
     props["referrer_credit"] = cookieRefTag?.stringTag
 
-    // Deprecated event
     self.track(
       event: "Project Page Viewed",
-      properties: props.withAllValuesFrom(deprecatedProps)
+      properties: props
     )
-
-    self.track(
-      event: "Viewed Project Page",
-      properties: props.withAllValuesFrom(deprecatedProps)
-    )
-
-    self.track(event: "Project Page", properties: props)
   }
 
-  public func trackSwipedProject(_ project: Project, refTag: RefTag?, type: SwipeType) {
-    var props = properties(project: project, loggedInUser: self.loggedInUser)
-    props["ref_tag"] = refTag?.stringTag
-    props["type"] = type.trackingString
-
-    self.track(event: "Swiped Project", properties: props)
-    self.track(event: "Project Navigate", properties: props)
-  }
-
-  public func trackClosedProjectPage(_ project: Project, refTag: RefTag?, gestureType: GestureType) {
-    var props = properties(project: project, loggedInUser: self.loggedInUser)
-    props["gesture_type"] = gestureType.trackingString
+  public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
 
-    self.track(event: "Closed Project Page", properties: props)
+    self.track(event: "Project Swiped", properties: props)
   }
 
   public func trackProjectSave(_ project: Project, context: SaveContext) {
@@ -2138,78 +2123,55 @@ public final class Koala {
   }
 }
 
+// FIXME: remove the function below and replace with projectProperties
+
 private func properties(
   project: Project,
   loggedInUser: User?,
   prefix: String = "project_"
 ) -> [String: Any] {
-  var props: [String: Any] = [:]
-
-  props["backers_count"] = project.stats.backersCount
-  props["country"] = project.country.countryCode
-  props["currency"] = project.country.currencyCode
-  props["goal"] = project.stats.goal
-  props["pid"] = project.id
-  props["name"] = project.name
-  props["pledged"] = project.stats.pledged
-  props["percent_raised"] = project.stats.fundingProgress
-  props["has_video"] = project.video != nil
-  props["state"] = project.state.rawValue
-  props["update_count"] = project.stats.updatesCount
-  props["comments_count"] = project.stats.commentsCount
-
-  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
-  props["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
-  props["duration"] = Int(round(project.dates.deadline - project.dates.launchedAt))
-
-  props["category"] = project.category.name
-  props["parent_category"] = project.category.parent?.name
-
-  props["location"] = project.location.name
-
-  var loggedInUserProperties: [String: Any] = [:]
-  if let user = loggedInUser {
-    loggedInUserProperties["user_is_project_creator"] = project.creator.id == user.id
-    loggedInUserProperties["user_is_backer"] = project.personalization.isBacking
-    loggedInUserProperties["user_has_starred"] = project.personalization.isStarred
-  }
-
-  return props.prefixedKeys(prefix)
-    .withAllValuesFrom(properties(user: project.creator, prefix: "creator_"))
-    .withAllValuesFrom(loggedInUserProperties)
+  return projectProperties(from: project, loggedInUser: loggedInUser, prefix: prefix)
 }
 
-private func properties(
-  project: Project,
-  reward: Reward? = nil,
-  backing: Backing? = nil,
-  prefix: String = "project_"
+// MARK: - Project Properties
+
+private func projectProperties(from project: Project,
+                                    reward: Reward? = nil,
+                                    backing: Backing? = nil,
+                                    loggedInUser: User? = nil,
+                                    prefix: String = "project_"
 ) -> [String: Any] {
   var props: [String: Any] = [:]
 
+  props["creator_uid"] = project.creator.id
+  props["backers_count"] = project.stats.backersCount
+  props["category"] = project.category.name
+  props["country"] = project.country.countryCode
+  props["currency"] = project.country.currencyCode
+  props["deadline"] = project.dates.deadline
+  props["goal"] = project.stats.goal
+  props["launched_at"] = project.dates.launchedAt
+  props["location"] = project.location.name
   props["name"] = project.name
   props["pid"] = project.id
-  props["category"] = project.category.name
-  props["has_video"] = project.video != nil
-  props["location"] = project.location.name
-  props["country"] = project.country.countryCode
+  props["parent_category"] = project.category.parent?.name
+  props["percent_raised"] = project.stats.fundingProgress
+  props["pledged"] = project.stats.pledged
+  props["state"] = project.state
+  props["static_usd_rate"] = project.stats.staticUsdRate
 
   let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
   props["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
 
-  props["percent_raised"] = project.stats.fundingProgress
+  var userProperties: [String: Any] = [:]
+  userProperties["has_starred"] = project.personalization.isStarred
+  userProperties["is_backer"] = project.personalization.isBacking
+  userProperties["is_project_creator"] = project.creator.id == loggedInUser?.id
 
-  var rewardProperties: [String: Any] = [:]
-  rewardProperties["backer_reward_minimum"] = reward?.minimum
-
-  var backingProperties: [String: Any] = [:]
-  backingProperties["pledge_total"] = backing?.amount
-
-  props["currency"] = project.country.currencyCode
+  props["duration"] = project.dates.duration(using: self.calendar)
 
   return props.prefixedKeys(prefix)
-    .withAllValuesFrom(rewardProperties)
-    .withAllValuesFrom(backingProperties)
+    .withAllValuesFrom(userProperties.prefixedKeys("user"))
 }
 
 private func properties(update: Update, prefix: String = "update_") -> [String: Any] {
