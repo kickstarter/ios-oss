@@ -337,6 +337,18 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     )
     .map(first)
     .map(tabData(forUser:))
+    
+    // MARK: - Koala
+    
+    self.tabBarItemsData
+      .takePairWhen(self.didSelectIndexProperty.signal.observeValues)
+      .filterMap { data, index in
+        guard let item = data.items[index] else { return nil }
+        
+        return item
+    }.observeValues { tabBarItem in
+      AppEnvironment.current.koala.trackTabBarItemClicked(tabBarItem)
+    }
   }
 
   private let (applicationWillEnterForegroundSignal, applicationWillEnterForegroundObserver)

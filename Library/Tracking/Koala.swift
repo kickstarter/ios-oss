@@ -353,6 +353,33 @@ public final class Koala {
       }
     }
   }
+  
+  public enum TabBarItemLabel: String {
+    case discovery
+    case activity
+    case search
+    case dashboard
+    case profile
+    
+    var trackingString: String {
+      return self.rawValue
+    }
+    
+    static func trackingString(from tabBarItem: TabBarItem) -> TabBarItemLabel {
+      switch tabBarItem {
+      case activity(_):
+        return .activity
+      case dashboard(_):
+        return .dashboard
+      case home(_):
+        return .discovery
+      case profile(_, _):
+        return .profile
+      case search(_):
+        return .search
+      }
+    }
+  }
 
   public init(
     bundle: NSBundleType = Bundle.main,
@@ -467,6 +494,12 @@ public final class Koala {
     )
 
     self.track(event: "Opened Deep Link", properties: props)
+  }
+  
+  public func trackTabBarClicked(_ tabBarItem: TabBarItem) {
+    let label = TabBarItemTrackingString.trackingString(from: tabBarItem)
+    
+    self.track("Tab Bar Clicked", properties: ["ios_tab_bar_label": label])
   }
 
   // MARK: - Discovery Events

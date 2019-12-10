@@ -1,5 +1,6 @@
 @testable import KsApi
 @testable import Library
+@testable import Kickstarter_Framework
 import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
@@ -762,5 +763,31 @@ final class KoalaTests: TestCase {
     let properties = client.properties.last
     XCTAssertEqual(["Manage Pledge Option Clicked"], client.events)
     XCTAssertEqual(property, properties?["cta"] as? String)
+  }
+  
+  func testTabBarClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    let tabBarActivity = TabBarItem.activity(index: 0)
+    let tabBarDashboard = TabBarItem.dashboard(index: 0)
+    let tabBarHome = TabBarItem.home(index: 0)
+    let tabBarProfile = TabBarItem.profile(avatarUrl: nil, index: 0)
+    let tabBarSearch = TabBarItem.search(index: 0)
+    
+    koala.trackTabBarItemClicked(tabBarActivity)
+    XCTAssertEqual("activity", client.properties?.last["ios_tab_bar_label"])
+    
+    koala.trackTaBarItemClicked(tabBarDashboard)
+    XCTAssertEqual("dashboard", client.properties?.last["ios_tab_bar_label"])
+    
+    koala.trackTaBarItemClicked(tabBarHome)
+    XCTAssertEqual("home", client.properties?.last["ios_tab_bar_label"])
+    
+    koala.trackTaBarItemClicked(tabBarProfile)
+    XCTAssertEqual("profile", client.properties?.last["ios_tab_bar_label"])
+    
+    koala.trackTaBarItemClicked(tabBarSearch)
+    XCTAssertEqual("search", client.properties?.last["ios_tab_bar_label"])
   }
 }
