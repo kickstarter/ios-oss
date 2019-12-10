@@ -235,6 +235,7 @@ internal final class DiscoveryViewModelTests: TestCase {
    */
   func testSortSwipeEventTracking() {
     self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear(animated: true)
 
     XCTAssertEqual([], self.trackingClient.events)
 
@@ -253,19 +254,18 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.vm.inputs.pageTransition(completed: true)
 
     XCTAssertEqual(
-      ["Selected Discovery Sort"], self.trackingClient.events,
+      ["Explore Sort Clicked"], self.trackingClient.events,
       "Swipe event tracked once the transition completes."
     )
     XCTAssertEqual(
       ["popularity"], self.trackingClient.properties(forKey: "discover_sort"),
       "Correct sort is tracked."
     )
-    XCTAssertEqual(["swipe"], self.trackingClient.properties(forKey: "gesture_type"))
 
     self.vm.inputs.sortPagerSelected(sort: .newest)
 
     XCTAssertEqual(
-      ["Selected Discovery Sort", "Selected Discovery Sort"],
+      ["Explore Sort Clicked", "Explore Sort Clicked"],
       self.trackingClient.events,
       "Event is tracked when a sort is chosen from the pager."
     )
@@ -274,12 +274,11 @@ internal final class DiscoveryViewModelTests: TestCase {
       self.trackingClient.properties(forKey: "discover_sort"),
       "Correct sort is tracked."
     )
-    XCTAssertEqual(["swipe", "tap"], self.trackingClient.properties(forKey: "gesture_type"))
 
     self.vm.inputs.sortPagerSelected(sort: .newest)
 
     XCTAssertEqual(
-      ["Selected Discovery Sort", "Selected Discovery Sort"],
+      ["Explore Sort Clicked", "Explore Sort Clicked"],
       self.trackingClient.events,
       "Selecting the same sort again does not track another event."
     )

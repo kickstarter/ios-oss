@@ -198,3 +198,25 @@ extension RefTag: Argo.Decodable {
     }
   }
 }
+
+extension RefTag {
+  public static func fromParams(_ params: DiscoveryParams) -> RefTag {
+    if let tagId = params.tagId {
+      return .projectCollection(tagId)
+    }
+
+    if params.category != nil {
+      return .categoryWithSort(params.sort ?? .magic)
+    } else if params.recommended == .some(true) {
+      return .recsWithSort(params.sort ?? .magic)
+    } else if params.staffPicks == .some(true) {
+      return .recommendedWithSort(params.sort ?? .magic)
+    } else if params.social == .some(true) {
+      return .socialWithSort(params.sort ?? .magic)
+    } else if params.starred == .some(true) {
+      return .starredWithSort(params.sort ?? .magic)
+    }
+
+    return RefTag.discoveryWithSort(params.sort ?? .magic)
+  }
+}

@@ -400,23 +400,15 @@ public final class Koala {
     self.preferredContentSizeCategoryObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
+  // MARK: - Activity
+
   /// Call when the activities screen is shown.
-  public func trackActivities() {
-    self.track(event: "Activities", properties: deprecatedProps)
-    self.track(event: "Viewed Activity")
+  public func trackActivities(count: Int) {
+    // TODO: add user properties and session props
+    self.track(event: "Activity Feed Viewed", properties: ["activities_count": count])
   }
 
-  /// Call when the activities are refreshed.
-  public func trackLoadedNewerActivity() {
-    self.track(event: "Loaded Newer Activity")
-  }
-
-  /// Call when the activities are paginated.
-  ///
-  /// - parameter page: The number of pages that have been loaded.
-  public func trackLoadedOlderActivity(page: Int) {
-    self.track(event: "Loaded Older Activity", properties: ["page": page])
-  }
+  // MARK: - Application Lifecycle
 
   /// Call when the app launches or enters foreground.
   public func trackAppOpen() {
@@ -480,122 +472,57 @@ public final class Koala {
   // MARK: - Discovery Events
 
   /**
-   Call when a discovery search is made, including pagination.
+   Call when a discovery page is viewed and the first page is loaded.
 
    - parameter params: The params used for the discovery search.
-   - parameter page: The number of pages that have been loaded.
    */
-  public func trackDiscovery(params: DiscoveryParams, page: Int) {
-    var props = properties(params: params).withAllValuesFrom(["page": page])
 
-    self.track(event: "Loaded Discovery Results", properties: props)
+  public func trackDiscovery(params: DiscoveryParams) {
+    let props = discoveryProperties(from: params)
 
-    // Deprecated event
-    self.track(
-      event: "Discover List View",
-      properties: props.withAllValuesFrom(deprecatedProps)
-    )
-  }
-
-  public func trackDiscoveryViewed(params: DiscoveryParams) {
-    self.track(event: "Viewed Discovery", properties: properties(params: params))
-  }
-
-  public func trackDiscoveryFavoritedCategory(params: DiscoveryParams, isFavorited: Bool) {
-    let props = params.category.map(properties) ?? [:]
-    let deprecatedProps = props.withAllValuesFrom(
-      ["toggle_to": isFavorited, Koala.DeprecatedKey: true]
-    )
-
-    self.track(
-      event: isFavorited ? "Added Favorite Category" : "Removed Favorite Category",
-      properties: props
-    )
-
-    // Deprecated event
-    self.track(
-      event: "Discover Category Favorite",
-      properties: deprecatedProps
-    )
-  }
-
-  /// Call when the discovery filters appear
-  public func trackDiscoveryModal() {
-    let props: [String: Any] = ["modal_type": "filters"]
-
-    self.track(event: "Viewed Discovery Filters", properties: props)
-
-    // Deprecated event
-    self.track(
-      event: "Discover Switch Modal",
-      properties: props.withAllValuesFrom(deprecatedProps)
-    )
+    self.track(event: "Explore Page Viewed", properties: props)
   }
 
   /**
-   Call when a filter is selected from the discovery modal.
+   Call when a filter is selected from the Explore modal.
 
    - parameter params: The params selected from the modal.
-   - parameter isFavorite: Whether the filter is a favorite category or not.
    */
-  public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams, isFavorite: Bool = false) {
+  public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
     self.track(
-      event: "Selected Discovery Filter",
-      properties: properties(params: params).withAllValuesFrom([
-        "is_favorite": isFavorite ? "1" : "0"
-      ])
+      event: "Filter Clicked",
+      properties: discoveryProperties(from: params)
     )
-
-    // Deprecated event
-    self.track(
-      event: "Discover Modal Selected Filter",
-      properties: properties(params: params).withAllValuesFrom(deprecatedProps)
-    )
-  }
-
-  /**
-    Call when closing filter modal without selecting a new filter.
-
-    - parameter params: The params selected from the modal.
-   **/
-  public func trackDiscoveryModalClosedFilter(params: DiscoveryParams) {
-    self.track(event: "Closed Discovery Filter", properties: properties(params: params))
-  }
-
-  /**
-    Call when expanding filter on a parent category tap.
-
-    - parameter params: The params selected from the modal.
-   **/
-  public func trackDiscoveryModalExpandedFilter(params: DiscoveryParams) {
-    self.track(event: "Expanded Discovery Filter", properties: properties(params: params))
   }
 
   /**
    Call when the user swipes between sorts or selects a sort.
 
    - parameter sort: The new sort that was selected.
-   - parameter gesture: The gesture that was used.
    */
-  public func trackDiscoverySelectedSort(nextSort sort: DiscoveryParams.Sort, gesture: GestureType) {
-    self.track(event: "Selected Discovery Sort", properties: [
-      "discover_sort": sort.rawValue,
-      "gesture_type": gesture.trackingString
-    ])
-  }
+  public func trackDiscoverySelectedSort(nextSort sort: DiscoveryParams.Sort, params: DiscoveryParams) {
+    let props = discoveryProperties(from: params)
+      .withAllValuesFrom([
+        "discover_sort": sort.rawValue
+      ])
 
-  /**
-   Call when the user drags the top of the project list downward to refresh projects.
-   */
-  public func trackDiscoveryPullToRefresh() {
-    self.track(event: "Triggered Refresh")
+    self.track(event: "Explore Sort Clicked", properties: props)
   }
 
   /**
    Call when the user taps the editorial header at the top of Discovery
    */
   public func trackEditorialHeaderTapped(refTag: RefTag) {
-    self.track(event: "Editorial Card Clicked", properties: ["refTag": refTag.stringTag])
+    self.track(event: "Editorial Card Clicked", properties: ["ref_tag": refTag.stringTag])
+  }
+
+  /**
+   Call when a collection is viewed
+
+   - parameter params: The DiscoveryParams associated with the collection
+   */
+  public func trackCollectionViewed(params: DiscoveryParams) {
+    self.track(event: "Collection Viewed", properties: discoveryProperties(from: params))
   }
 
   // MARK: - Checkout Events
@@ -1320,31 +1247,25 @@ public final class Koala {
 
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    self.track(event: "Discover Search", properties: deprecatedProps)
-
-    self.track(event: "Viewed Search")
+    // TODO: pass user properties, session properties
+    self.track(event: "Search Page Viewed")
   }
 
   // Call when projects have been obtained from a search.
-  public func trackSearchResults(query: String, page: Int, hasResults: Bool) {
-    let sharedProps: [String: Any] = ["search_term": query]
+  public func trackSearchResults(
+    query: String,
+    params: DiscoveryParams,
+    refTag: RefTag,
+    hasResults: Bool
+  ) {
+    let props = discoveryProperties(from: params)
+      .withAllValuesFrom([
+        "discover_ref_tag": refTag.stringTag,
+        "search_term": query,
+        "has_results": hasResults
+      ])
 
-    let deprecatedProps = sharedProps.withAllValuesFrom(["page_count": page, Koala.DeprecatedKey: true])
-    let props = sharedProps.withAllValuesFrom(["page": page, "has_results": hasResults])
-
-    if page == 1 {
-      self.track(event: "Discover Search Results", properties: deprecatedProps)
-
-      self.track(event: "Loaded Search Results", properties: props)
-    } else {
-      self.track(event: "Discover Search Results Load More", properties: deprecatedProps)
-
-      self.track(event: "Loaded More Search Results", properties: props)
-    }
-  }
-
-  public func trackClearedSearchTerm() {
-    self.track(event: "Cleared Search Term")
+    self.track(event: "Search Results Loaded", properties: props)
   }
 
   // MARK: - Project Events
@@ -1934,13 +1855,6 @@ public final class Koala {
 
   // MARK: - Empty State Events
 
-  public func trackEmptyStateViewed(type: EmptyState) {
-    self.track(
-      event: "Viewed Empty State",
-      properties: ["type": type.rawValue]
-    )
-  }
-
   public func trackEmptyStateButtonTapped(type: EmptyState) {
     self.track(
       event: "Tapped Empty State Button",
@@ -2216,22 +2130,30 @@ private func properties(userActivity: NSUserActivity) -> [String: Any] {
   return props
 }
 
-private func properties(params: DiscoveryParams, prefix _: String = "discover_") -> [String: Any] {
+// MARK: - Discovery Properties
+
+private func discoveryProperties(
+  from params: DiscoveryParams,
+  prefix: String = "discover_"
+) -> [String: Any] {
   var result: [String: Any] = [:]
+  var unprefixedResult: [String: Any] = [:]
 
   // NB: All filters should be added here since `result["everything"]` is derived from this.
   result["recommended"] = params.recommended
   result["social"] = params.social
   result["staff_picks"] = params.staffPicks
   result["starred"] = params.starred
-  result["term"] = params.query
+  result["tag"] = params.tagId?.rawValue
   result = result.withAllValuesFrom(params.category.map(properties(category:)) ?? [:])
 
   result["everything"] = result.isEmpty
-  result["page"] = params.page
   result["sort"] = params.sort?.rawValue
+  result["ref_tag"] = RefTag.fromParams(params).stringTag
 
-  return result.prefixedKeys("discover_")
+  unprefixedResult["search_term"] = params.query
+
+  return result.prefixedKeys(prefix).withAllValuesFrom(unprefixedResult)
 }
 
 private func properties(category: KsApi.Category) -> [String: Any] {
@@ -2239,11 +2161,6 @@ private func properties(category: KsApi.Category) -> [String: Any] {
 
   result["category_id"] = category.intID
   result["category_name"] = category.name
-  result["category_projects_count"] = category.totalProjectCount
-
-  result["category_is_root"] = category.isRoot
-  result["category_root_id"] = category.rootId
-  result["category_root_name"] = category.root?.name
 
   let parentProperties = category.parent.map(properties(category:)) ?? [:]
   return result
