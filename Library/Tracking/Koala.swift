@@ -2103,7 +2103,7 @@ private func properties(
   reward: Reward? = nil,
   backing: Backing? = nil,
   prefix: String = "project_"
-  ) -> [String: Any] {
+) -> [String: Any] {
   var props: [String: Any] = [:]
 
   props["name"] = project.name
