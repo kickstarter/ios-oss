@@ -155,14 +155,8 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     self.animateInView = self.viewDidAppearProperty.signal
 
-    self.viewDidLoadProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackDiscoveryModal() }
-
     self.notifyDelegateOfSelectedRow
       .observeValues { AppEnvironment.current.koala.trackDiscoveryModalSelectedFilter(params: $0.params) }
-
-    self.tappedExpandableRowProperty.signal.skipNil()
-      .observeValues { AppEnvironment.current.koala.trackDiscoveryModalExpandedFilter(params: $0.params) }
   }
 
   fileprivate let initialSelectedRowProperty = MutableProperty<SelectableRow?>(nil)

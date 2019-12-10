@@ -100,30 +100,22 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     self.scheduler.advance(by: AppEnvironment.current.apiDelayInterval)
 
-    XCTAssertEqual(["Viewed Discovery Filters", "Discover Switch Modal"], self.trackingClient.events)
-
+    XCTAssertEqual(
+      [],
+      self.trackingClient.events
+    )
     self.vm.inputs.tapped(expandableRow: filmExpandableRow)
 
     XCTAssertEqual(
-      ["Viewed Discovery Filters", "Discover Switch Modal", "Expanded Discovery Filter"],
+      [],
       self.trackingClient.events
     )
 
     self.vm.inputs.tapped(selectableRow: documentarySelectableRow)
 
-    XCTAssertEqual([
-      "Viewed Discovery Filters", "Discover Switch Modal", "Expanded Discovery Filter",
-      "Selected Discovery Filter", "Discover Modal Selected Filter"
-    ], self.trackingClient.events)
-
+    XCTAssertEqual(["Filter Clicked"], self.trackingClient.events)
     XCTAssertEqual(
-      [
-        nil,
-        nil,
-        Category.filmAndVideo.intID,
-        Category.documentary.intID,
-        Category.documentary.intID
-      ],
+      [Category.documentary.intID],
       self.trackingClient.properties(forKey: "discover_category_id", as: Int.self)
     )
   }

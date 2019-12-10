@@ -103,14 +103,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasRemovedProjects.assertValues([false], "Projects are not removed.")
     self.projectsAreLoading.assertValues([true, false], "Loading indicator toggles on/off.")
     XCTAssertEqual(
-      ["Loaded Discovery Results", "Discover List View"],
+      ["Explore Page Viewed"],
       self.trackingClient.events,
-      "Event is tracked once projects load."
-    )
-    XCTAssertEqual(
-      [1, 1],
-      self.trackingClient.properties(forKey: "page", as: Int.self),
-      "First page property tracks."
+      "Impression is tracked."
     )
 
     // Scroll down a bit and advance scheduler
@@ -120,14 +115,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasAddedProjects.assertValues([true], "No projects are added.")
     self.hasRemovedProjects.assertValues([false], "No projects are removed.")
     XCTAssertEqual(
-      ["Loaded Discovery Results", "Discover List View"],
+      ["Explore Page Viewed"],
       self.trackingClient.events,
       "No new events are tracked."
-    )
-    XCTAssertEqual(
-      [1, 1],
-      self.trackingClient.properties(forKey: "page", as: Int.self),
-      "No new properties are tracked."
     )
 
     // Scroll down to the bottom of the view and advanced scheduler
@@ -140,17 +130,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       [true, false, true, false], "Loading indicator toggles on/off."
     )
     XCTAssertEqual(
-      [
-        "Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
-        "Discover List View"
-      ],
+      ["Explore Page Viewed"],
       self.trackingClient.events,
-      "Another event is tracked."
-    )
-    XCTAssertEqual(
-      [1, 1, 2, 2],
-      self.trackingClient.properties(forKey: "page", as: Int.self),
-      "The second page property is tracked."
+      "No new events are tracked"
     )
 
     // Make scroll area increase in size, advanced scheduler
@@ -160,17 +142,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasAddedProjects.assertValues([true, true], "No projects are added.")
     self.hasRemovedProjects.assertValues([false, false], "No projects are removed.")
     XCTAssertEqual(
-      [
-        "Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
-        "Discover List View"
-      ],
+      ["Explore Page Viewed"],
       self.trackingClient.events,
       "No new events are tracked."
-    )
-    XCTAssertEqual(
-      [1, 1, 2, 2],
-      self.trackingClient.properties(forKey: "page", as: Int.self),
-      "No new properties are tracked."
     )
 
     // Change the filter params used
@@ -193,17 +167,14 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       "Loading indicator toggles on/off."
     )
     XCTAssertEqual(
-      [
-        "Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
-        "Discover List View", "Loaded Discovery Results", "Discover List View"
-      ],
+      ["Explore Page Viewed", "Explore Page Viewed"],
       self.trackingClient.events,
-      "Another event is tracked."
+      "Another event is tracked when the filters are updated."
     )
     XCTAssertEqual(
-      [1, 1, 2, 2, 1, 1],
-      self.trackingClient.properties(forKey: "page", as: Int.self),
-      "The first page property is tracked."
+      [nil, 1],
+      self.trackingClient.properties(forKey: "discover_category_id", as: Int.self),
+      "The updated category is tracked."
     )
 
     // Scroll to the end of the list and advance the scheduler.
@@ -226,18 +197,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       "Loading indicator toggles on/off."
     )
     XCTAssertEqual(
-      [
-        "Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
-        "Discover List View", "Loaded Discovery Results", "Discover List View", "Loaded Discovery Results",
-        "Discover List View"
-      ],
+      ["Explore Page Viewed", "Explore Page Viewed"],
       self.trackingClient.events,
-      "Another event is tracked."
-    )
-    XCTAssertEqual(
-      [1, 1, 2, 2, 1, 1, 2, 2],
-      self.trackingClient.properties(forKey: "page", as: Int.self),
-      "The second page property is tracked."
+      "No new events are tracked."
     )
   }
 
@@ -1168,12 +1130,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
-  func testPullToRefreshEvent() {
-    XCTAssertEqual([], self.trackingClient.events)
-    self.vm.inputs.pulledToRefresh()
-    XCTAssertEqual(["Triggered Refresh"], self.trackingClient.events)
-  }
-
   func testProjectAreLoadingAnimated() {
     let playlist = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
     let projectEnv = .template
@@ -1315,7 +1271,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     XCTAssertEqual(["Editorial Card Clicked"], self.trackingClient.events)
     XCTAssertEqual(
       ["ios_project_collection_tag_518"],
-      self.trackingClient.properties(forKey: "refTag", as: String.self)
+      self.trackingClient.properties(forKey: "ref_tag", as: String.self)
     )
 
     self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
@@ -1323,7 +1279,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     XCTAssertEqual(["Editorial Card Clicked", "Editorial Card Clicked"], self.trackingClient.events)
     XCTAssertEqual(
       ["ios_project_collection_tag_518", "ios_project_collection_tag_518"],
-      self.trackingClient.properties(forKey: "refTag")
+      self.trackingClient.properties(forKey: "ref_tag")
     )
   }
 

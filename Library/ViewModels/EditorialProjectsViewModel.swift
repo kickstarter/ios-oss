@@ -35,9 +35,10 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
     )
     .map(first)
 
-    self.configureDiscoveryPageViewControllerWithParams = tagId
+    let configureWithParams: Signal<DiscoveryParams, Never> = tagId
       .map { tagId in DiscoveryParams.defaults |> DiscoveryParams.lens.tagId .~ tagId }
 
+    self.configureDiscoveryPageViewControllerWithParams = configureWithParams
     self.imageName = tagId.map(editorialImageName)
     self.titleLabelText = tagId.map(editorialTitleLabelText)
 
@@ -62,6 +63,9 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
     self.applyViewTransformsWithYOffset = self.discoveryPageViewControllerContentOffsetChangedProperty.signal
       .skipNil()
       .map(\.y)
+
+    configureWithParams
+      .observeValues { AppEnvironment.current.koala.trackCollectionViewed(params: $0) }
   }
 
   private let closeButtonTappedProperty = MutableProperty(())
