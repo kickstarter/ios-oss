@@ -132,18 +132,15 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 
     self.sortsAreEnabled = self.setSortsEnabledProperty.signal.skipNil()
 
-    self.sortPagerSelectedSortProperty.signal.skipNil()
-      .skipRepeats(==)
-      .observeValues { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .tap) }
-
-    swipeToSort
-      .observeValues {
-        AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $0, gesture: .swipe)
-      }
+    currentParams
+      .takePairWhen(self.sortPagerSelectedSortProperty.signal.skipNil().skipRepeats(==))
+      .observeValues { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $1, params: $0) }
 
     currentParams
-      .takeWhen(self.viewWillAppearProperty.signal.skipNil().filter(isFalse))
-      .observeValues { AppEnvironment.current.koala.trackDiscoveryViewed(params: $0) }
+      .takePairWhen(swipeToSort)
+      .observeValues {
+        AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $1, params: $0)
+      }
   }
 
   fileprivate let didChangeRecommendationsSettingProperty = MutableProperty(())

@@ -116,6 +116,12 @@ public final class TrackingClient: TrackingClientType {
   }
 
   fileprivate func payload(_ payload: Any) -> Data? {
+    guard JSONSerialization.isValidJSONObject(payload) else {
+      assertionFailure("🔴 Payload is not a valid JSON object")
+
+      return nil
+    }
+
     return try? JSONSerialization.data(
       withJSONObject: self.config.envelope(payload),
       options: []

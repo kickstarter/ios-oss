@@ -579,37 +579,40 @@ final class ActivitiesViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advance()
 
-      XCTAssertEqual(["Activities", "Viewed Activity"], self.trackingClient.events)
+      XCTAssertEqual([], self.trackingClient.events, "Tracking waits for results")
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
       self.vm.inputs.userSessionStarted()
       self.scheduler.advance()
 
+      XCTAssertEqual(
+        ["Activity Feed Viewed"],
+        self.trackingClient.events, "Impression is tracked"
+      )
+      XCTAssertEqual([3], self.trackingClient.properties(forKey: "activities_count", as: Int.self))
+
       self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advance()
 
       XCTAssertEqual(
-        ["Activities", "Viewed Activity", "Activities", "Viewed Activity"],
-        self.trackingClient.events, "Activity view emits on view will appear if not animated."
+        ["Activity Feed Viewed"],
+        self.trackingClient.events, "Impression is not tracked when the view doesn't animate"
       )
 
       self.vm.inputs.refresh()
       self.scheduler.advance()
 
-      XCTAssertEqual([
-        "Activities", "Viewed Activity", "Activities", "Viewed Activity",
-        "Loaded Newer Activity"
-      ], self.trackingClient.events)
+      XCTAssertEqual(
+        ["Activity Feed Viewed", "Activity Feed Viewed"],
+        self.trackingClient.events, "Impression tracked when view refreshes"
+      )
 
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
       XCTAssertEqual(
-        [
-          "Activities", "Viewed Activity", "Activities", "Viewed Activity",
-          "Loaded Newer Activity"
-        ], self.trackingClient.events,
-        "Activity view does not emit without animated appearance."
+        ["Activity Feed Viewed", "Activity Feed Viewed", "Activity Feed Viewed"], self.trackingClient.events,
+        "Impression tracked when view re-appears with animation"
       )
 
       withEnvironment(apiService: MockService(fetchActivitiesResponse: page2)) {
@@ -618,16 +621,9 @@ final class ActivitiesViewModelTests: TestCase {
         self.scheduler.advance()
 
         XCTAssertEqual(
-          [
-            "Activities", "Viewed Activity", "Activities", "Viewed Activity",
-            "Loaded Newer Activity", "Loaded Older Activity"
-          ],
-          self.trackingClient.events
-        )
-        XCTAssertEqual(
-          [nil, nil, nil, nil, nil, 2],
-          self.trackingClient.properties(forKey: "page", as: Int.self),
-          "Page property tracks."
+          ["Activity Feed Viewed", "Activity Feed Viewed", "Activity Feed Viewed"],
+          self.trackingClient.events,
+          "Impression is not tracked on pagination"
         )
       }
     }
