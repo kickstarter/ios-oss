@@ -2074,6 +2074,9 @@ private func projectProperties(from project: Project,
   props["pledged"] = project.stats.pledged
   props["state"] = project.state.rawValue
   props["static_usd_rate"] = project.stats.staticUsdRate
+  props["current_pledge_amount_usd"] = project.stats.pledgedUsd
+  props["is_repeat_creator"] = project.creator.isRepeatCreator
+  props["goal_usd"] = project.stats.goalUsd
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
