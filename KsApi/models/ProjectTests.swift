@@ -212,14 +212,14 @@ final class ProjectTests: XCTestCase {
     let launchedAt = DateComponents()
       |> \.day .~ 15
       |> \.month .~ 3
-      |> \.year .~ 2020
+      |> \.year .~ 2_020
       |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
 
     // 1 month after launch
     let deadline = DateComponents()
       |> \.day .~ 14
       |> \.month .~ 4
-      |> \.year .~ 2020
+      |> \.year .~ 2_020
       |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
 
     let calendar = Calendar(identifier: .gregorian)
@@ -238,14 +238,14 @@ final class ProjectTests: XCTestCase {
     let deadline = DateComponents()
       |> \.day .~ 2
       |> \.month .~ 3
-      |> \.year .~ 2020
+      |> \.year .~ 2_020
       |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
 
     // 24 hours before deadline
     let now = DateComponents()
       |> \.day .~ 1
       |> \.month .~ 3
-      |> \.year .~ 2020
+      |> \.year .~ 2_020
       |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
 
     let calendar = Calendar(identifier: .gregorian)

@@ -165,13 +165,13 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(project.creator.id, properties?["project_creator_uid"] as? Int)
     XCTAssertEqual(24 * 15, properties?["project_hours_remaining"] as? Int)
     XCTAssertEqual(30, properties?["project_duration"] as? Int)
-    XCTAssertEqual(1476657315, properties?["project_deadline"] as? Double)
-    XCTAssertEqual(1474065315, properties?["project_launched_at"] as? Double)
+    XCTAssertEqual(1_476_657_315, properties?["project_deadline"] as? Double)
+    XCTAssertEqual(1_474_065_315, properties?["project_launched_at"] as? Double)
     XCTAssertEqual(2, properties?["project_static_usd_rate"] as? Float)
     XCTAssertEqual("live", properties?["project_state"] as? String)
-    XCTAssertEqual(2000, properties?["project_current_pledge_amount_usd"] as? Int)
+    XCTAssertEqual(2_000, properties?["project_current_pledge_amount_usd"] as? Int)
     XCTAssertEqual(false, properties?["project_is_repeat_creator"] as? Bool)
-    XCTAssertEqual(4000, properties?["project_goal_usd"] as? Int)
+    XCTAssertEqual(4_000, properties?["project_goal_usd"] as? Int)
 
     XCTAssertNotNil(project.video)
 

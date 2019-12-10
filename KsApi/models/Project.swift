@@ -142,7 +142,7 @@ public struct Project {
 
     /**
      Returns project duration in Days
-    */
+     */
     public func duration(using calendar: Calendar = .current) -> Int? {
       let deadlineDate = Date(timeIntervalSince1970: self.deadline)
       let launchedAtDate = Date(timeIntervalSince1970: self.launchedAt)

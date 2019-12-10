@@ -100,7 +100,6 @@ final class UserTests: XCTestCase {
     let repeatCreator = User.template
       |> User.lens.stats.createdProjectsCount .~ 2
 
-
     XCTAssertEqual(true, repeatCreator.isRepeatCreator)
     XCTAssertEqual(false, creator.isRepeatCreator)
     XCTAssertEqual(false, user.isRepeatCreator)

@@ -1294,6 +1294,12 @@ public final class Koala {
     )
   }
 
+  /**
+   Call when a project page is swiped to the next project.
+
+   - parameter project:      The next project being viewed.
+   - parameter refTag:       The ref tag used when swiping to the project.
+   */
   public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
@@ -2044,17 +2050,18 @@ private func properties(
   project: Project,
   loggedInUser: User?,
   prefix: String = "project_"
-  ) -> [String: Any] {
+) -> [String: Any] {
   return projectProperties(from: project, loggedInUser: loggedInUser, prefix: prefix)
 }
 
-private func projectProperties(from project: Project,
-                                    reward: Reward? = nil,
-                                    backing: Backing? = nil,
-                                    loggedInUser: User? = nil,
-                                    dateType: DateProtocol.Type = AppEnvironment.current.dateType,
-                                    calendar: Calendar = AppEnvironment.current.calendar,
-                                    prefix: String = "project_"
+private func projectProperties(
+  from project: Project,
+  reward _: Reward? = nil,
+  backing _: Backing? = nil,
+  loggedInUser: User? = nil,
+  dateType: DateProtocol.Type = AppEnvironment.current.dateType,
+  calendar: Calendar = AppEnvironment.current.calendar,
+  prefix: String = "project_"
 ) -> [String: Any] {
   var props: [String: Any] = [:]
 

@@ -404,7 +404,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2, 1])
     XCTAssertEqual([
-     "Project Swiped", "Project Swiped", "Project Swiped"
+      "Project Swiped", "Project Swiped", "Project Swiped"
     ], self.trackingClient.events)
   }
 }
