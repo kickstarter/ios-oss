@@ -357,7 +357,6 @@ public final class Koala {
   public init(
     bundle: NSBundleType = Bundle.main,
     dataLakeClient: TrackingClientType = TrackingClient(.dataLake),
-    calendar: Calendar = Calendar.current,
     client: TrackingClientType = TrackingClient(.koala),
     config: Config? = nil,
     device: UIDeviceType = UIDevice.current,
@@ -2123,22 +2122,24 @@ public final class Koala {
   }
 }
 
+// MARK: - Project Properties
+
 // FIXME: remove the function below and replace with projectProperties
 
 private func properties(
   project: Project,
   loggedInUser: User?,
   prefix: String = "project_"
-) -> [String: Any] {
+  ) -> [String: Any] {
   return projectProperties(from: project, loggedInUser: loggedInUser, prefix: prefix)
 }
-
-// MARK: - Project Properties
 
 private func projectProperties(from project: Project,
                                     reward: Reward? = nil,
                                     backing: Backing? = nil,
                                     loggedInUser: User? = nil,
+                                    dateType: DateProtocol.Type = AppEnvironment.current.dateType,
+                                    calendar: Calendar = AppEnvironment.current.calendar,
                                     prefix: String = "project_"
 ) -> [String: Any] {
   var props: [String: Any] = [:]
@@ -2160,15 +2161,14 @@ private func projectProperties(from project: Project,
   props["state"] = project.state
   props["static_usd_rate"] = project.stats.staticUsdRate
 
-  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
-  props["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
+  let now = dateType.init().date
+  props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
+  props["duration"] = project.dates.duration(using: calendar)
 
   var userProperties: [String: Any] = [:]
   userProperties["has_starred"] = project.personalization.isStarred
   userProperties["is_backer"] = project.personalization.isBacking
   userProperties["is_project_creator"] = project.creator.id == loggedInUser?.id
-
-  props["duration"] = project.dates.duration(using: self.calendar)
 
   return props.prefixedKeys(prefix)
     .withAllValuesFrom(userProperties.prefixedKeys("user"))

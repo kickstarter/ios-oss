@@ -144,7 +144,8 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client, loggedInUser: nil)
     let project = Project.template
 
-    koala.trackProjectShow(project, refTag: .discovery, cookieRefTag: .recommended)
+    koala.trackProjectViewed(project, refTag: .discovery, cookieRefTag: .recommended)
+
     XCTAssertEqual(3, client.properties.count)
 
     let properties = client.properties.last
@@ -192,7 +193,7 @@ final class KoalaTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(3, client.properties.count)
 
     let properties = client.properties.last
@@ -210,7 +211,7 @@ final class KoalaTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(3, client.properties.count)
 
     let properties = client.properties.last
@@ -228,7 +229,7 @@ final class KoalaTests: TestCase {
     let loggedInUser = User.template |> \.id .~ 42
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(3, client.properties.count)
 
     let properties = client.properties.last
@@ -246,7 +247,7 @@ final class KoalaTests: TestCase {
     let loggedInUser = project.creator
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackProjectShow(project, refTag: nil, cookieRefTag: nil)
+    koala.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(3, client.properties.count)
 
     let properties = client.properties.last

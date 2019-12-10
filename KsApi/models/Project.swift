@@ -147,6 +147,12 @@ public struct Project {
 
       return calendar.dateComponents([.day], from: launchedAtDate, to: deadlineDate).day
     }
+
+    public func hoursRemaining(from date: Date = Date(), using calendar: Calendar = .current) -> Int? {
+      let deadlineDate = Date(timeIntervalSince1970: self.deadline)
+
+      return calendar.dateComponents([.hour], from: date, to: deadlineDate).hour
+    }
   }
 
   public struct Personalization {

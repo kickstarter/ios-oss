@@ -150,8 +150,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page Viewed", "Viewed Project Page", "Project Page"],
-      self.trackingClient.events, "A project page koala event is tracked."
+      ["Project Page Viewed"],
+      self.trackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
