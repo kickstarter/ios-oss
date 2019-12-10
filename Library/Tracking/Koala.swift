@@ -1963,7 +1963,7 @@ public final class Koala {
     props["screen_height"] = UInt(self.screen.bounds.height)
     props["device_orientation"] = Koala.deviceOrientation
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
-    props["preferred_content_size_category"] = self.preferredContentSizeCategory
+    props["preferred_content_size_category"] = self.preferredContentSizeCategory?.rawValue
 
     props["mp_lib"] = "kickstarter_ios"
     props["koala_lib"] = "kickstarter_ios"
@@ -2072,7 +2072,7 @@ private func projectProperties(from project: Project,
   props["parent_category"] = project.category.parent?.name
   props["percent_raised"] = project.stats.fundingProgress
   props["pledged"] = project.stats.pledged
-  props["state"] = project.state
+  props["state"] = project.state.rawValue
   props["static_usd_rate"] = project.stats.staticUsdRate
 
   let now = dateType.init().date
@@ -2085,7 +2085,7 @@ private func projectProperties(from project: Project,
   userProperties["is_project_creator"] = project.creator.id == loggedInUser?.id
 
   return props.prefixedKeys(prefix)
-    .withAllValuesFrom(userProperties.prefixedKeys("user"))
+    .withAllValuesFrom(userProperties.prefixedKeys("user_"))
 }
 
 private func properties(update: Update, prefix: String = "update_") -> [String: Any] {
