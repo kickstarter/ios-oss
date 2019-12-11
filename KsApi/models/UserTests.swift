@@ -102,6 +102,6 @@ final class UserTests: XCTestCase {
 
     XCTAssertEqual(true, repeatCreator.isRepeatCreator)
     XCTAssertEqual(false, creator.isRepeatCreator)
-    XCTAssertEqual(false, user.isRepeatCreator)
+    XCTAssertNil(user.isRepeatCreator)
   }
 }
