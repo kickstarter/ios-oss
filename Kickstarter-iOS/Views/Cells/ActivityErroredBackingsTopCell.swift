@@ -13,9 +13,11 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
   private let subtitleLabel: UILabel = { UILabel(frame: .zero) }()
   private let tableView: UITableView = { UITableView(frame: .zero) }()
   private let titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private let viewModel: ActivityErroredBackingsTopCellViewModelType =
+    ActivityErroredBackingsTopCellViewModel()
 
   private lazy var tableViewHeightConstraint: NSLayoutConstraint = {
-    self.tableView.heightAnchor.constraint(equalToConstant: 1)
+    self.tableView.heightAnchor.constraint(equalToConstant: 0)
       |> \.priority .~ .defaultHigh
   }()
 
@@ -26,7 +28,7 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
 
     self.tableView.registerCellClass(ErroredBackingCell.self)
     self.tableView.translatesAutoresizingMaskIntoConstraints = false
-    self.tableView.estimatedRowHeight = UITableView.automaticDimension
+    self.tableView.dataSource = self.dataSource
 
     self.bindStyles()
     self.configureViews()
@@ -41,10 +43,7 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   internal func configureWith(value backings: [GraphBacking]) {
-    self.tableView.dataSource = self.dataSource
-    self.dataSource.load(backings)
-    self.tableView.reloadData()
-    self.updateTableViewConstraints()
+    self.viewModel.inputs.configure(with: backings)
   }
 
   private func setupConstraints() {
@@ -79,7 +78,14 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
 
   override func bindViewModel() {
     super.bindViewModel()
-    
+
+    self.viewModel.outputs.erroredBackings
+      .observeForUI()
+      .observeValues { [weak self] backings in
+        self?.dataSource.load(backings)
+        self?.tableView.reloadData()
+        self?.updateTableViewConstraints()
+      }
   }
 
   // MARK: - Styles
@@ -89,6 +95,9 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
 
     _ = self.backgroundContainerView
       |> backgroundContainerViewStyle
+
+    _ = self.contentView
+      |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(1), leftRight: Styles.grid(1))
 
     _ = self.labelsStackView
       |> labelsStackViewStyle
