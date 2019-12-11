@@ -364,21 +364,6 @@ public final class Koala {
     var trackingString: String {
       return self.rawValue
     }
-    
-    static func trackingString(from tabBarItem: TabBarItem) -> TabBarItemLabel {
-      switch tabBarItem {
-      case activity(_):
-        return .activity
-      case dashboard(_):
-        return .dashboard
-      case home(_):
-        return .discovery
-      case profile(_, _):
-        return .profile
-      case search(_):
-        return .search
-      }
-    }
   }
 
   public init(
@@ -496,10 +481,10 @@ public final class Koala {
     self.track(event: "Opened Deep Link", properties: props)
   }
   
-  public func trackTabBarClicked(_ tabBarItem: TabBarItem) {
-    let label = TabBarItemTrackingString.trackingString(from: tabBarItem)
+  public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
+    let label = tabBarItemLabel.trackingString
     
-    self.track("Tab Bar Clicked", properties: ["ios_tab_bar_label": label])
+    self.track(event: "Tab Bar Clicked", properties: ["ios_tab_bar_label": label])
   }
 
   // MARK: - Discovery Events
