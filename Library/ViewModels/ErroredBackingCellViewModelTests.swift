@@ -4,9 +4,7 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-
 final class ErroredBackingCellViewModelTests: TestCase {
-
   private let vm: ErroredBackingCellViewModelType = ErroredBackingCellViewModel()
 
   private let projectName = TestObserver<String, Never>()

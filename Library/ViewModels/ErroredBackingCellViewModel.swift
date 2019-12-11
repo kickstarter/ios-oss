@@ -15,8 +15,7 @@ public protocol ErroredBackingCellViewModelType {
 }
 
 public final class ErroredBackingCellViewModel: ErroredBackingCellViewModelType,
-ErroredBackingCellViewModelInputs, ErroredBackingCellViewModelOutputs {
-
+  ErroredBackingCellViewModelInputs, ErroredBackingCellViewModelOutputs {
   public init() {
     self.projectName = self.backingSignal
       .map(\.project?.name)

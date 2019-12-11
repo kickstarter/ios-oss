@@ -41,7 +41,7 @@ final class ErroredBackingCell: UITableViewCell, ValueCell {
 
   private func configureViews() {
     _ = ([self.projectNameLabel, self.manageButton], self.rootStackView)
-    |> ksr_addArrangedSubviewsToStackView()
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()

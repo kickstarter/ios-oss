@@ -15,8 +15,7 @@ public protocol ActivityErroredBackingsTopCellViewModelType {
 }
 
 public final class ActivityErroredBackingsTopCellViewModel: ActivityErroredBackingsTopCellViewModelType,
-ActivityErroredBackingsTopCellInputs, ActivityErroredBackingsTopCellOutputs {
-
+  ActivityErroredBackingsTopCellInputs, ActivityErroredBackingsTopCellOutputs {
   public init() {
     self.erroredBackings = self.backingsSignal
   }

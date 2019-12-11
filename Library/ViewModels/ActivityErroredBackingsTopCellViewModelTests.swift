@@ -5,7 +5,6 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class ActivityErroredBackingsTopCellViewModelTests: TestCase {
-
   private let vm: ActivityErroredBackingsTopCellViewModelType = ActivityErroredBackingsTopCellViewModel()
 
   private let erroredBackings = TestObserver<[GraphBacking], Never>()
@@ -17,7 +16,6 @@ final class ActivityErroredBackingsTopCellViewModelTests: TestCase {
   }
 
   func testErroredBackings() {
-
     let backings = GraphBackingEnvelope.template.backings.nodes
 
     self.erroredBackings.assertDidNotEmitValue()
