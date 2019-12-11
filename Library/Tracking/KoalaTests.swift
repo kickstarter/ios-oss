@@ -769,25 +769,41 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
 
-    let tabBarActivity = TabBarItem.activity(index: 0)
-    let tabBarDashboard = TabBarItem.dashboard(index: 0)
-    let tabBarHome = TabBarItem.home(index: 0)
-    let tabBarProfile = TabBarItem.profile(avatarUrl: nil, index: 0)
-    let tabBarSearch = TabBarItem.search(index: 0)
+    let tabBarActivity = Koala.TabBarItemLabel.activity
+    let tabBarDashboard = Koala.TabBarItemLabel.dashboard
+    let tabBarHome = Koala.TabBarItemLabel.discovery
+    let tabBarProfile = Koala.TabBarItemLabel.profile
+    let tabBarSearch = Koala.TabBarItemLabel.search
+
+
+    koala.trackTabBarClicked(tabBarActivity)
+
+    XCTAssertEqual(["Tab Bar Clicked"], client.events)
+    XCTAssertEqual("activity", client.properties.last?["ios_tab_bar_label"] as? String)
     
-    koala.trackTabBarItemClicked(tabBarActivity)
-    XCTAssertEqual("activity", client.properties?.last["ios_tab_bar_label"])
+    koala.trackTabBarClicked(tabBarDashboard)
+
+    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], client.events)
+    XCTAssertEqual("dashboard", client.properties.last?["ios_tab_bar_label"]  as? String)
     
-    koala.trackTaBarItemClicked(tabBarDashboard)
-    XCTAssertEqual("dashboard", client.properties?.last["ios_tab_bar_label"])
+    koala.trackTabBarClicked(tabBarHome)
+
+    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"], client.events)
+    XCTAssertEqual("discovery", client.properties.last?["ios_tab_bar_label"] as? String)
     
-    koala.trackTaBarItemClicked(tabBarHome)
-    XCTAssertEqual("home", client.properties?.last["ios_tab_bar_label"])
+    koala.trackTabBarClicked(tabBarProfile)
+
+    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"],
+                   client.events)
+    XCTAssertEqual("profile", client.properties.last?["ios_tab_bar_label"] as? String)
     
-    koala.trackTaBarItemClicked(tabBarProfile)
-    XCTAssertEqual("profile", client.properties?.last["ios_tab_bar_label"])
-    
-    koala.trackTaBarItemClicked(tabBarSearch)
-    XCTAssertEqual("search", client.properties?.last["ios_tab_bar_label"])
+    koala.trackTabBarClicked(tabBarSearch)
+
+    XCTAssertEqual(["Tab Bar Clicked",
+                    "Tab Bar Clicked",
+                    "Tab Bar Clicked",
+                    "Tab Bar Clicked",
+                    "Tab Bar Clicked"], client.events)
+    XCTAssertEqual("search", client.properties.last?["ios_tab_bar_label"] as? String)
   }
 }
