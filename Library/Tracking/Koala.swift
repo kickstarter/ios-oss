@@ -2065,11 +2065,12 @@ private func projectProperties(
 ) -> [String: Any] {
   var props: [String: Any] = [:]
 
-  props["creator_uid"] = project.creator.id
   props["backers_count"] = project.stats.backersCount
   props["category"] = project.category.name
   props["country"] = project.country.countryCode
+  props["comments_count"] = project.stats.commentsCount
   props["currency"] = project.country.currencyCode
+  props["creator_uid"] = project.creator.id
   props["deadline"] = project.dates.deadline
   props["goal"] = project.stats.goal
   props["launched_at"] = project.dates.launchedAt
@@ -2082,20 +2083,23 @@ private func projectProperties(
   props["state"] = project.state.rawValue
   props["static_usd_rate"] = project.stats.staticUsdRate
   props["current_pledge_amount_usd"] = project.stats.pledgedUsd
-  props["is_repeat_creator"] = project.creator.isRepeatCreator
   props["goal_usd"] = project.stats.goalUsd
+  props["has_video"] = project.video != nil
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
   props["duration"] = project.dates.duration(using: calendar)
 
   var userProperties: [String: Any] = [:]
-  userProperties["has_starred"] = project.personalization.isStarred
+  userProperties["has_watched"] = project.personalization.isStarred
   userProperties["is_backer"] = project.personalization.isBacking
   userProperties["is_project_creator"] = project.creator.id == loggedInUser?.id
 
-  return props.prefixedKeys(prefix)
-    .withAllValuesFrom(userProperties.prefixedKeys("user_"))
+  let userProps = userProperties.prefixedKeys("user_")
+
+  return props
+    .withAllValuesFrom(userProps)
+    .prefixedKeys(prefix)
 }
 
 private func properties(
