@@ -42,7 +42,6 @@ internal class TestCase: FBSnapshotTestCase {
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
     AppEnvironment.pushEnvironment(
-      optimizelyClient: self.optimizelyClient,
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
       application: UIApplication.shared,
@@ -66,6 +65,7 @@ internal class TestCase: FBSnapshotTestCase {
       launchedCountries: .init(),
       locale: .init(identifier: "en_US"),
       mainBundle: self.mainBundle,
+      optimizelyClient: self.optimizelyClient,
       pushRegistrationType: MockPushRegistration.self,
       reachability: self.reachability.producer,
       scheduler: self.scheduler,

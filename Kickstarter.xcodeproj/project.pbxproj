@@ -1204,6 +1204,8 @@
 		D7064786239B157E00B33C20 /* Optimizely.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7B962AA23888A0B003AA616 /* Optimizely.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D706478E23A2BEB300B33C20 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */; };
 		D706479023A2BF4B00B33C20 /* OptimizelyClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */; };
+		D706479123A2C91D00B33C20 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */; };
+		D706479223A2C91E00B33C20 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */; };
 		D7180BA222EF9DE900EB0110 /* RewardCellProjectBackingStateTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */; };
 		D72370542118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */; };
 		D723708C2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */; };
@@ -5552,6 +5554,7 @@
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */,
 				D60CAB922208A1B60083FA40 /* SelectCurrencyViewControllerTests.swift in Sources */,
+				D706479123A2C91D00B33C20 /* MockOptimizelyClient.swift in Sources */,
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
 				77C25FBF2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift in Sources */,
 				A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */,
@@ -5921,6 +5924,7 @@
 				D033E2C422A05B7400464E43 /* MockApplication.swift in Sources */,
 				D05DFC4F227A5878006F3B68 /* MockPushRegistration.swift in Sources */,
 				D05DFC4D227A5842006F3B68 /* TestCase.swift in Sources */,
+				D706479223A2C91E00B33C20 /* MockOptimizelyClient.swift in Sources */,
 				8AD79530239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

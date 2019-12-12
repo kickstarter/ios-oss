@@ -15,7 +15,6 @@ extension XCTestCase {
 
   // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   func withEnvironment(
-    optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     application: UIApplicationType = UIApplication.shared,
@@ -35,6 +34,7 @@ extension XCTestCase {
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
@@ -43,7 +43,6 @@ extension XCTestCase {
   ) {
     self.withEnvironment(
       Environment(
-        optimizelyClient: optimizelyClient,
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
         application: application,
@@ -63,6 +62,7 @@ extension XCTestCase {
         launchedCountries: launchedCountries,
         locale: locale,
         mainBundle: mainBundle,
+        optimizelyClient: optimizelyClient,
         pushRegistrationType: pushRegistrationType,
         scheduler: scheduler,
         ubiquitousStore: ubiquitousStore,
