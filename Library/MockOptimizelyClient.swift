@@ -12,12 +12,4 @@ public class MockOptimizelyClient: OptimizelyClientType {
       return "control"
     }
   }
-
-  public func variant(for _: OptimizelyExperiment.Key) -> String {
-    if self.experimentalGroup == true {
-      return "experimental"
-    } else {
-      return "control"
-    }
-  }
 }
