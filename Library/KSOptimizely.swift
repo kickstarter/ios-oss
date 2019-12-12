@@ -2,22 +2,8 @@ import Foundation
 import KsApi
 import Optimizely
 
-public protocol KSOptimizelyClientType: class {
-  static func variant(for experiment: OptimizelyExperiment.Name) -> String
-}
-
-//extension KSOptimizelyClientType {
-//  func activate(experimentKey: String, userId: String) throws -> String {
-//    return ""
-//  }
-//}
-
-public final class KSOptimizely: KSOptimizelyClientType {
-  static let optimizelyClient: OptimizelyClient = OptimizelyClient(sdkKey: KSOptimizely.sdkKey,
-                                                                   defaultLogLevel: OptimizelyLogLevel.debug)
-
-  public init() {
-  }
+public final class KSOptimizely {
+  public init() {}
 
   private static var sdkKey: String {
     switch AppEnvironment.current.environmentType {
@@ -33,11 +19,11 @@ public final class KSOptimizely: KSOptimizelyClientType {
   }
 
   public class func setup() {
- //   let logLevel = OptimizelyLogLevel.debug
- //   let optimizely = OptimizelyClient(sdkKey: KSOptimizely.sdkKey,
- //   defaultLogLevel: logLevel)
+    let logLevel = OptimizelyLogLevel.debug
+    let optimizely = OptimizelyClient(sdkKey: KSOptimizely.sdkKey,
+    defaultLogLevel: logLevel)
 
-    optimizelyClient.start { result in
+    optimizely.start { result in
       switch result {
       case .failure(let error):
         print("Optimizely SDK initiliazation failed: \(error)")
@@ -45,18 +31,19 @@ public final class KSOptimizely: KSOptimizelyClientType {
         print("Optimizely SDK initialized successfully!")
       }
 
-      //AppEnvironment.updateOptimizelyClient(KSOptimizely.self as! KSOptimizelyClientType)
+      AppEnvironment.updateOptimizelyClient(optimizely)
     }
   }
 
-  public class func variant(for experiment: OptimizelyExperiment.Name) -> String {
+  public class func variant(for experiment: OptimizelyExperiment.Key) -> String {
     do {
-      guard let user = AppEnvironment.current.currentUser else {
+      guard let user = AppEnvironment.current.currentUser,
+        let optimizelyClient = AppEnvironment.current.optimizelyClient else {
         return OptimizelyExperiment.Variant.control.rawValue
       }
       let userId = String(user.id)
-      let variationKey = try self.optimizelyClient.activate(experimentKey: experiment.rawValue,
-                                                            userId: userId)
+      let variationKey = try optimizelyClient.activate(experimentKey: experiment.rawValue,
+                                                       userId: userId, attributes: nil)
       return variationKey
     } catch {
       print("Optimizely SDK activation failed: \(error)")
@@ -64,5 +51,3 @@ public final class KSOptimizely: KSOptimizelyClientType {
     return ""
   }
 }
-
-

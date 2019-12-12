@@ -252,18 +252,6 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.notifyDelegateCTATapped.assertValueCount(1)
   }
 
-  func testOptimizelyExperiment() {
-    let project = Project.template
-      |> Project.lens.personalization.isBacking .~ nil
-      |> Project.lens.state .~ .live
-
-    let optimizely = MockOptimizely()
-
-    self.vm.inputs.configureWith(value: (.left(project), false))
-    self.buttonStyleType.assertValues([ButtonStyleType.green])
-    self.buttonTitleText.assertValues(["See rewards"])
-  }
-
   func testTrackingEvents() {
     let project = Project.template
       |> Project.lens.state .~ .successful

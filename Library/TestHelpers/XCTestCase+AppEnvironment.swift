@@ -15,6 +15,7 @@ extension XCTestCase {
 
   // Pushes an environment onto the stack, executes a closure, and then pops the environment from the stack.
   func withEnvironment(
+    optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     application: UIApplicationType = UIApplication.shared,
@@ -42,6 +43,7 @@ extension XCTestCase {
   ) {
     self.withEnvironment(
       Environment(
+        optimizelyClient: optimizelyClient,
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
         application: application,

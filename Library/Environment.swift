@@ -10,7 +10,7 @@ import Optimizely
  */
 public struct Environment {
   /// The optimizely client
-  public let optimizelyClient: KSOptimizelyClientType
+  public let optimizelyClient: OptimizelyClientType?
 
   /// A type that exposes endpoints for fetching Kickstarter data.
   public let apiService: ServiceType
@@ -98,7 +98,7 @@ public struct Environment {
   public let userDefaults: KeyValueStoreType
 
   public init(
-    optimizelyClient: KSOptimizelyClientType = KSOptimizely(),
+    optimizelyClient: OptimizelyClientType? = nil,
     apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
     application: UIApplicationType = UIApplication.shared,

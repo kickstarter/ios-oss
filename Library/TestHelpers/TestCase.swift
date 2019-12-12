@@ -16,10 +16,10 @@ internal class TestCase: FBSnapshotTestCase {
   internal let dataLakeTrackingClient = MockTrackingClient()
   internal let dateType = MockDate.self
   internal let mainBundle = MockBundle()
+  internal let optimizelyClient = MockOptimizelyClient()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
   internal let trackingClient = MockTrackingClient()
-  internal let optimizelyClient = MockOptimizely()
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
 
@@ -42,6 +42,7 @@ internal class TestCase: FBSnapshotTestCase {
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
     AppEnvironment.pushEnvironment(
+      optimizelyClient: self.optimizelyClient,
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
       application: UIApplication.shared,

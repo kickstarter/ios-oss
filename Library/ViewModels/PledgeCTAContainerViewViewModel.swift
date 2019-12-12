@@ -2,7 +2,6 @@ import KsApi
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import Optimizely
 
 public protocol PledgeCTAContainerViewViewModelInputs {
   func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool))
@@ -51,13 +50,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .negate()
 
     let backing = project.map { $0.personalization.backing }
-    let initialPledgeState = Signal.combineLatest(project, backing)
+    let pledgeState = Signal.combineLatest(project, backing)
       .map(pledgeCTA(project:backing:))
-
-    let pledgeState = initialPledgeState
-      .filter { $0 == .pledge }
-      .map { _ in KSOptimizely.variant(for: OptimizelyExperiment.Name.pledgeCTACopy) }
-      .map { experimentSetup(key: $0) }
 
     let inError = Signal.merge(
       projectError.ignoreValues().mapConst(true),
@@ -69,7 +63,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       isLoading.filter(isFalse).ignoreValues()
     )
 
-    self.notifyDelegateCTATapped = pledgeState
+    self.notifyDelegateCTATapped =  pledgeState
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
 
     self.retryStackViewIsHidden = inError
@@ -180,12 +174,3 @@ private func formattedPledge(amount: Double, project: Project) -> String {
   )
 }
 
-private func experimentSetup(key: String) -> PledgeStateCTAType {
-  if key == OptimizelyExperiment.Variant.control.rawValue {
-    return PledgeStateCTAType.pledge
-  } else if key == OptimizelyExperiment.Variant.experimental.rawValue {
-    return PledgeStateCTAType.seeRewards
-  }
-
-  return PledgeStateCTAType.pledge
-}
