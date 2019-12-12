@@ -127,7 +127,6 @@ public struct AppEnvironment: AppEnvironmentType {
 
   // Pushes a new environment onto the stack that changes only a subset of the current global dependencies.
   public static func pushEnvironment(
-    optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     application: UIApplicationType = UIApplication.shared,
@@ -148,6 +147,7 @@ public struct AppEnvironment: AppEnvironmentType {
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
@@ -156,7 +156,6 @@ public struct AppEnvironment: AppEnvironmentType {
   ) {
     self.pushEnvironment(
       Environment(
-        optimizelyClient: optimizelyClient,
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
         application: application,
@@ -177,6 +176,7 @@ public struct AppEnvironment: AppEnvironmentType {
         launchedCountries: launchedCountries,
         locale: locale,
         mainBundle: mainBundle,
+        optimizelyClient: optimizelyClient,
         pushRegistrationType: pushRegistrationType,
         reachability: reachability,
         scheduler: scheduler,
@@ -189,7 +189,6 @@ public struct AppEnvironment: AppEnvironmentType {
   // Replaces the current environment onto the stack with an environment that changes only a subset
   // of current global dependencies.
   public static func replaceCurrentEnvironment(
-    optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
     application: UIApplicationType = UIApplication.shared,
@@ -210,6 +209,7 @@ public struct AppEnvironment: AppEnvironmentType {
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
@@ -218,7 +218,6 @@ public struct AppEnvironment: AppEnvironmentType {
   ) {
     self.replaceCurrentEnvironment(
       Environment(
-        optimizelyClient: optimizelyClient,
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
         application: application,
@@ -239,6 +238,7 @@ public struct AppEnvironment: AppEnvironmentType {
         launchedCountries: launchedCountries,
         locale: locale,
         mainBundle: mainBundle,
+        optimizelyClient: optimizelyClient,
         pushRegistrationType: pushRegistrationType,
         reachability: reachability,
         scheduler: scheduler,

@@ -1,6 +1,5 @@
 import KsApi
 import Library
-import Optimizely
 import Prelude
 import UIKit
 

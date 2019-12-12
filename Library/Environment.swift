@@ -9,9 +9,6 @@ import ReactiveSwift
  A collection of **all** global variables and singletons that the app wants access to.
  */
 public struct Environment {
-  /// The optimizely client
-  public let optimizelyClient: OptimizelyClientType?
-
   /// A type that exposes endpoints for fetching Kickstarter data.
   public let apiService: ServiceType
 
@@ -81,6 +78,9 @@ public struct Environment {
   /// A type that exposes how to interface with an NSBundle. Default value is `Bundle.main`.
   public let mainBundle: NSBundleType
 
+  /// The optimizely client
+  public let optimizelyClient: OptimizelyClientType?
+
   /// A type that manages registration for push notifications.
   public let pushRegistrationType: PushRegistrationType.Type
 
@@ -98,7 +98,6 @@ public struct Environment {
   public let userDefaults: KeyValueStoreType
 
   public init(
-    optimizelyClient: OptimizelyClientType? = nil,
     apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
     application: UIApplicationType = UIApplication.shared,
@@ -120,13 +119,13 @@ public struct Environment {
     launchedCountries: LaunchedCountries = .init(),
     locale: Locale = .current,
     mainBundle: NSBundleType = Bundle.main,
+    optimizelyClient: OptimizelyClientType? = nil,
     pushRegistrationType: PushRegistrationType.Type = PushRegistration.self,
     reachability: SignalProducer<Reachability, Never> = Reachability.signalProducer,
     scheduler: DateScheduler = QueueScheduler.main,
     ubiquitousStore: KeyValueStoreType = NSUbiquitousKeyValueStore.default,
     userDefaults: KeyValueStoreType = UserDefaults.standard
   ) {
-    self.optimizelyClient = optimizelyClient
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
     self.application = application
@@ -148,6 +147,7 @@ public struct Environment {
     self.launchedCountries = launchedCountries
     self.locale = locale
     self.mainBundle = mainBundle
+    self.optimizelyClient = optimizelyClient
     self.pushRegistrationType = pushRegistrationType
     self.reachability = reachability
     self.scheduler = scheduler

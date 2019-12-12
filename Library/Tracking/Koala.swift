@@ -610,7 +610,7 @@ public final class Koala {
     switch stateType {
     case .fix:
       self.track(event: "Fix Pledge Button Clicked", properties: props)
-    case .pledge, .seeRewards:
+    case .pledge:
       self.track(event: "Back this Project Button Clicked", properties: props)
     case .manage:
       self.track(event: "Manage Pledge Button Clicked", properties: props)
