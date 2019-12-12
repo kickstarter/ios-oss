@@ -10,6 +10,7 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
   private let headerView: ActivityErroredBackingsTopCellHeader = {
     ActivityErroredBackingsTopCellHeader(frame: .zero)
   }()
+
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let viewModel: ActivityErroredBackingsTopCellViewModelType =
     ActivityErroredBackingsTopCellViewModel()
@@ -56,7 +57,7 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] backings in
         self?.configureErroredBackingViews(with: backings)
-    }
+      }
   }
 
   // MARK: - Styles
@@ -74,7 +75,6 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
   // MARK: - Private Helpers
 
   private func configureErroredBackingViews(with backings: [GraphBacking]) {
-
     self.rootStackView.addArrangedSubview(self.headerView)
 
     let erroredBackingsViews = backings.map { backing -> ErroredBackingView in
@@ -90,8 +90,8 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
       separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
       return [view, separator]
-      }
-      .flatMap { $0 }
+    }
+    .flatMap { $0 }
 
     let allItemViews = separatedItemViews + [erroredBackingsViews.last].compact()
 
@@ -115,5 +115,5 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
 }
 
 extension ActivityErroredBackingsTopCell: ErroredBackingViewDelegate {
-  func erroredBackingViewDidTapManage(_ view: ErroredBackingView, backing: GraphBacking) {}
+  func erroredBackingViewDidTapManage(_: ErroredBackingView, backing _: GraphBacking) {}
 }

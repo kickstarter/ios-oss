@@ -29,7 +29,7 @@ final class ErroredBackingView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.manageButton.addTarget(self, action: #selector(manageButtonTapped), for: .touchUpInside)
+    self.manageButton.addTarget(self, action: #selector(self.manageButtonTapped), for: .touchUpInside)
 
     self.configureViews()
     self.configureConstraints()
@@ -78,7 +78,7 @@ final class ErroredBackingView: UIView {
       }
   }
 
-  // MARK - Actions
+  // MARK: - Actions
 
   @objc func manageButtonTapped() {
     self.viewModel.inputs.manageButtonTapped()

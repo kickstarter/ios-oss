@@ -32,7 +32,7 @@ public final class ErroredBackingViewViewModel: ErroredBackingViewViewModelType,
     self.backingObserver.send(value: value)
   }
 
-  private let (manageButtonTappedSignal, manageButtonTappedObserver)  = Signal<Void, Never>.pipe()
+  private let (manageButtonTappedSignal, manageButtonTappedObserver) = Signal<Void, Never>.pipe()
   public func manageButtonTapped() {
     self.manageButtonTappedObserver.send(value: ())
   }
