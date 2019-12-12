@@ -353,14 +353,14 @@ public final class Koala {
       }
     }
   }
-  
+
   public enum TabBarItemLabel: String {
     case discovery
     case activity
     case search
     case dashboard
     case profile
-    
+
     var trackingString: String {
       return self.rawValue
     }
@@ -480,10 +480,10 @@ public final class Koala {
 
     self.track(event: "Opened Deep Link", properties: props)
   }
-  
+
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
     let label = tabBarItemLabel.trackingString
-    
+
     self.track(event: "Tab Bar Clicked", properties: ["ios_tab_bar_label": label])
   }
 

@@ -319,18 +319,18 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     )
     .map(first)
     .map(tabData(forUser:))
-    
+
     // MARK: - Koala
-    
+
     self.tabBarItemsData
       .takePairWhen(self.didSelectIndexProperty.signal)
       .filterMap { data, index in
         guard index < data.items.count else { return nil }
-        
+
         return tabBarItemLabel(for: data.items[index])
-    }.observeValues { tabBarItemLabel in
-      AppEnvironment.current.koala.trackTabBarClicked(tabBarItemLabel)
-    }
+      }.observeValues { tabBarItemLabel in
+        AppEnvironment.current.koala.trackTabBarClicked(tabBarItemLabel)
+      }
   }
 
   private let (applicationWillEnterForegroundSignal, applicationWillEnterForegroundObserver)
@@ -497,15 +497,15 @@ private func activitiesBadgeValue(with value: Int?) -> String? {
 
 private func tabBarItemLabel(for tabBarItem: TabBarItem) -> Koala.TabBarItemLabel {
   switch tabBarItem {
-  case .activity(_):
+  case .activity:
     return .activity
-  case .dashboard(_):
+  case .dashboard:
     return .dashboard
-  case .home(_):
+  case .home:
     return .discovery
-  case .profile(_, _):
+  case .profile:
     return .profile
-  case .search(_):
+  case .search:
     return .search
   }
 }

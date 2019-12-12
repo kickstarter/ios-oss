@@ -296,20 +296,20 @@ public final class RootTabBarViewController: UITabBarController {
   }
 
   internal func viewController(from data: RootViewControllerData) -> UIViewController? {
-      switch data {
-      case .discovery:
-        return DiscoveryViewController.instantiate()
-      case .activities:
-        return ActivitiesViewController.instantiate()
-      case .search:
-        return SearchViewController.instantiate()
-      case let .dashboard(isMember):
-        return isMember ? DashboardViewController.instantiate() : nil
-      case let .profile(isLoggedIn):
-        return isLoggedIn
-          ? BackerDashboardViewController.instantiate()
-          : LoginToutViewController.configuredWith(loginIntent: .generic)
-      }
+    switch data {
+    case .discovery:
+      return DiscoveryViewController.instantiate()
+    case .activities:
+      return ActivitiesViewController.instantiate()
+    case .search:
+      return SearchViewController.instantiate()
+    case let .dashboard(isMember):
+      return isMember ? DashboardViewController.instantiate() : nil
+    case let .profile(isLoggedIn):
+      return isLoggedIn
+        ? BackerDashboardViewController.instantiate()
+        : LoginToutViewController.configuredWith(loginIntent: .generic)
+    }
   }
 
   // MARK: - Accessors

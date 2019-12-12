@@ -1,6 +1,6 @@
+@testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-@testable import Kickstarter_Framework
 import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
@@ -764,7 +764,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["Manage Pledge Option Clicked"], client.events)
     XCTAssertEqual(property, properties?["cta"] as? String)
   }
-  
+
   func testTabBarClicked() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
@@ -775,35 +775,38 @@ final class KoalaTests: TestCase {
     let tabBarProfile = Koala.TabBarItemLabel.profile
     let tabBarSearch = Koala.TabBarItemLabel.search
 
-
     koala.trackTabBarClicked(tabBarActivity)
 
     XCTAssertEqual(["Tab Bar Clicked"], client.events)
     XCTAssertEqual("activity", client.properties.last?["ios_tab_bar_label"] as? String)
-    
+
     koala.trackTabBarClicked(tabBarDashboard)
 
     XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], client.events)
-    XCTAssertEqual("dashboard", client.properties.last?["ios_tab_bar_label"]  as? String)
-    
+    XCTAssertEqual("dashboard", client.properties.last?["ios_tab_bar_label"] as? String)
+
     koala.trackTabBarClicked(tabBarHome)
 
     XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"], client.events)
     XCTAssertEqual("discovery", client.properties.last?["ios_tab_bar_label"] as? String)
-    
+
     koala.trackTabBarClicked(tabBarProfile)
 
-    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"],
-                   client.events)
+    XCTAssertEqual(
+      ["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"],
+      client.events
+    )
     XCTAssertEqual("profile", client.properties.last?["ios_tab_bar_label"] as? String)
-    
+
     koala.trackTabBarClicked(tabBarSearch)
 
-    XCTAssertEqual(["Tab Bar Clicked",
-                    "Tab Bar Clicked",
-                    "Tab Bar Clicked",
-                    "Tab Bar Clicked",
-                    "Tab Bar Clicked"], client.events)
+    XCTAssertEqual([
+      "Tab Bar Clicked",
+      "Tab Bar Clicked",
+      "Tab Bar Clicked",
+      "Tab Bar Clicked",
+      "Tab Bar Clicked"
+    ], client.events)
     XCTAssertEqual("search", client.properties.last?["ios_tab_bar_label"] as? String)
   }
 }
