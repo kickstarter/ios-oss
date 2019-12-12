@@ -18,6 +18,7 @@ public final class ActivityErroredBackingsTopCellViewModel: ActivityErroredBacki
   ActivityErroredBackingsTopCellInputs, ActivityErroredBackingsTopCellOutputs {
   public init() {
     self.erroredBackings = self.backingsSignal
+      .skipRepeats()
   }
 
   private let (backingsSignal, backingsObserver) = Signal<[GraphBacking], Never>.pipe()

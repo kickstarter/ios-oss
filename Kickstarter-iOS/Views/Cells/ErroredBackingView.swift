@@ -11,18 +11,25 @@ private enum Layout {
   }
 }
 
-final class ErroredBackingCell: UITableViewCell, ValueCell {
+protocol ErroredBackingViewDelegate {
+  func erroredBackingViewDidTapManage(_ view: ErroredBackingView, backing: GraphBacking)
+}
+
+final class ErroredBackingView: UIView {
   // MARK: - Properties
 
+  public var delegate: ErroredBackingViewDelegate?
   private let manageButton: UIButton = { UIButton(type: .custom) }()
   private let projectNameLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private let viewModel: ErroredBackingCellViewModelType = ErroredBackingCellViewModel()
+  private let viewModel: ErroredBackingViewViewModelType = ErroredBackingViewViewModel()
 
   // MARK: - Life cycle
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    self.manageButton.addTarget(self, action: #selector(manageButtonTapped), for: .touchUpInside)
 
     self.configureViews()
     self.configureConstraints()
@@ -43,7 +50,7 @@ final class ErroredBackingCell: UITableViewCell, ValueCell {
     _ = ([self.projectNameLabel, self.manageButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.rootStackView, self.contentView)
+    _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
   }
@@ -61,6 +68,20 @@ final class ErroredBackingCell: UITableViewCell, ValueCell {
     super.bindViewModel()
 
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
+
+    self.viewModel.outputs.notifyDelegateManageButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] backing in
+        guard let self = self else { return }
+
+        self.delegate?.erroredBackingViewDidTapManage(self, backing: backing)
+      }
+  }
+
+  // MARK - Actions
+
+  @objc func manageButtonTapped() {
+    self.viewModel.inputs.manageButtonTapped()
   }
 
   // MARK: - Styles
@@ -69,7 +90,6 @@ final class ErroredBackingCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self
-      |> \.selectionStyle .~ .none
       |> \.backgroundColor .~ .ksr_grey_300
 
     _ = self.manageButton
