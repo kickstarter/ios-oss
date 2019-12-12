@@ -8,11 +8,11 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
 
   private let backgroundContainerView: UIView = { UIView(frame: .zero) }()
   private let dataSource: ErroredBackingsDataSource = ErroredBackingsDataSource()
-  private let labelsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let headerView: ActivityErroredBackingsTopCellHeader = {
+    ActivityErroredBackingsTopCellHeader(frame: .zero)
+  }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private let subtitleLabel: UILabel = { UILabel(frame: .zero) }()
   private let tableView: UITableView = { UITableView(frame: .zero) }()
-  private let titleLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel: ActivityErroredBackingsTopCellViewModelType =
     ActivityErroredBackingsTopCellViewModel()
 
@@ -27,8 +27,10 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.tableView.registerCellClass(ErroredBackingCell.self)
+    self.tableView.estimatedRowHeight = UITableView.automaticDimension
     self.tableView.translatesAutoresizingMaskIntoConstraints = false
     self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
 
     self.bindStyles()
     self.configureViews()
@@ -50,23 +52,15 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
     NSLayoutConstraint.activate([self.tableViewHeightConstraint])
   }
 
-  private func updateTableViewConstraints() {
-    self.tableView.layoutIfNeeded()
-
-    self.tableViewHeightConstraint.constant = self.tableView.contentSize.height
-
-    self.setNeedsLayout()
-  }
-
   private func configureViews() {
+    _ = self
+      |> \.selectionStyle .~ .none
+
     _ = (self.backgroundContainerView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = ([self.titleLabel, self.subtitleLabel], self.labelsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.labelsStackView, self.tableView], self.rootStackView)
+    _ = ([self.tableView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.backgroundContainerView)
@@ -83,8 +77,8 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] backings in
         self?.dataSource.load(backings)
-        self?.tableView.reloadData()
         self?.updateTableViewConstraints()
+        self?.tableView.reloadData()
       }
   }
 
@@ -93,39 +87,41 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.tableView
+      |> tableViewStyle
+
     _ = self.backgroundContainerView
       |> backgroundContainerViewStyle
 
-    _ = self.contentView
-      |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(1), leftRight: Styles.grid(1))
-
-    _ = self.labelsStackView
-      |> labelsStackViewStyle
-
     _ = self.rootStackView
       |> rootStackViewStyle
+  }
 
-    _ = self.subtitleLabel
-      |> subtitleLabelStyle
+  // MARK: - Private Helpers
 
-    _ = self.titleLabel
-      |> titleLabelStyle
+  private func updateTableViewConstraints() {
+    self.tableView.layoutIfNeeded()
+
+    self.tableViewHeightConstraint.constant = self.tableView.contentSize.height
+
+    self.setNeedsLayout()
   }
 }
 
 // MARK: Styles
 
+private let tableViewStyle: TableViewStyle = { tableView in
+  tableView
+    |> \.isScrollEnabled .~ false
+    |> \.backgroundColor .~ .ksr_grey_300
+    |> \.separatorInset .~ UIEdgeInsets(topBottom: 0)
+}
+
 private let backgroundContainerViewStyle: ViewStyle = { view in
   view
     |> \.backgroundColor .~ .ksr_grey_300
     |> \.clipsToBounds .~ true
-    |> \.layer.cornerRadius .~ Styles.grid(1)
-}
-
-private let labelsStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> verticalStackViewStyle
-    |> \.spacing .~ Styles.grid(1)
+    |> \.layer.cornerRadius .~ Styles.grid(2)
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
@@ -133,16 +129,20 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> verticalStackViewStyle
 }
 
-private let subtitleLabelStyle: LabelStyle = { label in
-  label
-    |> \.text %~ { _ in Strings.We_cant_process_your_pledge_for() }
-    |> \.font .~ UIFont.ksr_footnote()
-    |> \.textColor .~ .ksr_soft_black
-}
+extension ActivityErroredBackingsTopCell: UITableViewDelegate {
+  func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
+    return self.headerView
+  }
 
-private let titleLabelStyle: LabelStyle = { label in
-  label
-    |> \.text %~ { _ in Strings.Payment_failure() }
-    |> \.font .~ UIFont.ksr_title2().bolded
-    |> \.textColor .~ .ksr_soft_black
+  func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
+    return  UITableView.automaticDimension
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return UIView() |> \.backgroundColor .~ .ksr_grey_300
+  }
+
+  func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
+    return 0.1
+  }
 }

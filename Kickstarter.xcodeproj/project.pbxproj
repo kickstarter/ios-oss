@@ -1147,6 +1147,7 @@
 		D69C552B239EFA6C00B0987A /* ActivityErroredBackingsTopCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552A239EFA6C00B0987A /* ActivityErroredBackingsTopCellViewModel.swift */; };
 		D69C552D23A03D9700B0987A /* ActivityErroredBackingsTopCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552C23A03D9700B0987A /* ActivityErroredBackingsTopCellViewModelTests.swift */; };
 		D69C552F23A0609600B0987A /* ErroredBackingCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552E23A0609600B0987A /* ErroredBackingCellViewModelTests.swift */; };
+		D69C553123A17A0700B0987A /* ActivityErroredBackingsTopCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C553023A17A0700B0987A /* ActivityErroredBackingsTopCellHeader.swift */; };
 		D6A45DB72319A7E1006DDB01 /* ManagePledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */; };
 		D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */; };
 		D6A7AB401FDAF3EC007B20AE /* ThanksCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */; };
@@ -2497,6 +2498,7 @@
 		D69C552A239EFA6C00B0987A /* ActivityErroredBackingsTopCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsTopCellViewModel.swift; sourceTree = "<group>"; };
 		D69C552C23A03D9700B0987A /* ActivityErroredBackingsTopCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsTopCellViewModelTests.swift; sourceTree = "<group>"; };
 		D69C552E23A0609600B0987A /* ErroredBackingCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingCellViewModelTests.swift; sourceTree = "<group>"; };
+		D69C553023A17A0700B0987A /* ActivityErroredBackingsTopCellHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsTopCellHeader.swift; sourceTree = "<group>"; };
 		D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewController.swift; sourceTree = "<group>"; };
 		D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryPostcardCell.xib; sourceTree = "<group>"; };
 		D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThanksCategoryCell.xib; sourceTree = "<group>"; };
@@ -2927,6 +2929,7 @@
 		A751A51B1C85EAD8009C5DEA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D69C553023A17A0700B0987A /* ActivityErroredBackingsTopCellHeader.swift */,
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
@@ -5426,6 +5429,7 @@
 				3742037322DEB67A007AA86E /* PillCollectionViewDataSource.swift in Sources */,
 				017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */,
 				8AD486352359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift in Sources */,
+				D69C553123A17A0700B0987A /* ActivityErroredBackingsTopCellHeader.swift in Sources */,
 				014D625B1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift in Sources */,
 				A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */,
 				597073B21D07281800B00444 /* ProjectNotificationCell.swift in Sources */,

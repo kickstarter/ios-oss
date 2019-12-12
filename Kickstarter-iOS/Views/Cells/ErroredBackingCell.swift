@@ -45,7 +45,7 @@ final class ErroredBackingCell: UITableViewCell, ValueCell {
 
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+      |> ksr_constrainViewToEdgesInParent()
   }
 
   private func configureConstraints() {
@@ -68,8 +68,9 @@ final class ErroredBackingCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.contentView
-      |> contentViewStyle
+    _ = self
+      |> \.selectionStyle .~ .none
+      |> \.backgroundColor .~ .ksr_grey_300
 
     _ = self.manageButton
       |> manageButtonStyle
@@ -87,11 +88,6 @@ final class ErroredBackingCell: UITableViewCell, ValueCell {
 
 // MARK: - Styles
 
-private let contentViewStyle: ViewStyle = { view in
-  view
-    |> \.backgroundColor .~ .ksr_grey_300
-}
-
 private let manageButtonStyle: ButtonStyle = { button in
   button
     |> redButtonStyle
@@ -105,11 +101,13 @@ private let manageButtonTitleLabelStyle: LabelStyle = { (label: UILabel) in
 
 private let projectNameLabelStyle: LabelStyle = { label in
   label
-    |> \.font .~ UIFont.ksr_footnote()
+    |> \.font .~ UIFont.ksr_footnote().bolded
     |> \.numberOfLines .~ 0
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.spacing .~ Styles.gridHalf(1)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
 }

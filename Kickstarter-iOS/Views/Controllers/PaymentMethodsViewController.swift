@@ -184,7 +184,7 @@ internal final class PaymentMethodsViewController: UIViewController, MessageBann
 
 extension PaymentMethodsViewController: UITableViewDelegate {
   func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
-    return 0.1
+    return 1
   }
 
   func tableView(_: UITableView, heightForHeaderInSection _: Int) -> CGFloat {
