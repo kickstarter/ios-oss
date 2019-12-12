@@ -2,10 +2,10 @@ import Argo
 import FBSDKCoreKit
 import Foundation
 import KsApi
+import Optimizely
 import Prelude
 import ReactiveSwift
 import Runes
-import Optimizely
 
 /**
  A global stack that captures the current state of global objects that the app wants access to.

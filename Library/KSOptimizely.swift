@@ -20,12 +20,14 @@ public final class KSOptimizely {
 
   public class func setup() {
     let logLevel = OptimizelyLogLevel.debug
-    let optimizely = OptimizelyClient(sdkKey: KSOptimizely.sdkKey,
-    defaultLogLevel: logLevel)
+    let optimizely = OptimizelyClient(
+      sdkKey: KSOptimizely.sdkKey,
+      defaultLogLevel: logLevel
+    )
 
     optimizely.start { result in
       switch result {
-      case .failure(let error):
+      case let .failure(error):
         print("Optimizely SDK initiliazation failed: \(error)")
       case .success:
         print("Optimizely SDK initialized successfully!")
@@ -42,8 +44,10 @@ public final class KSOptimizely {
         return OptimizelyExperiment.Variant.control.rawValue
       }
       let userId = String(user.id)
-      let variationKey = try optimizelyClient.activate(experimentKey: experiment.rawValue,
-                                                       userId: userId, attributes: nil)
+      let variationKey = try optimizelyClient.activate(
+        experimentKey: experiment.rawValue,
+        userId: userId, attributes: nil
+      )
       return variationKey
     } catch {
       print("Optimizely SDK activation failed: \(error)")

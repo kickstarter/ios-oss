@@ -2,8 +2,8 @@ import AVFoundation
 import FBSDKCoreKit
 import Foundation
 import KsApi
-import ReactiveSwift
 import Optimizely
+import ReactiveSwift
 
 /**
  A collection of **all** global variables and singletons that the app wants access to.

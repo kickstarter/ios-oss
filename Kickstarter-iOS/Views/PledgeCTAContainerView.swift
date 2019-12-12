@@ -1,8 +1,8 @@
 import KsApi
 import Library
+import Optimizely
 import Prelude
 import UIKit
-import Optimizely
 
 protocol PledgeCTAContainerViewDelegate: AnyObject {
   func pledgeCTAButtonTapped(with state: PledgeStateCTAType)

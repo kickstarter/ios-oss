@@ -11,4 +11,3 @@ extension OptimizelyClient: OptimizelyClientType {
     return KSOptimizely.variant(for: experiment)
   }
 }
-

@@ -63,7 +63,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       isLoading.filter(isFalse).ignoreValues()
     )
 
-    self.notifyDelegateCTATapped =  pledgeState
+    self.notifyDelegateCTATapped = pledgeState
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
 
     self.retryStackViewIsHidden = inError
@@ -173,4 +173,3 @@ private func formattedPledge(amount: Double, project: Project) -> String {
     omitCurrencyCode: project.stats.omitUSCurrencyCode
   )
 }
-

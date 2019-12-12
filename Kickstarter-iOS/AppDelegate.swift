@@ -156,7 +156,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { _ in
         KSOptimizely.setup()
-    }
+      }
 
     self.viewModel.outputs.configureAppCenterWithData
       .observeForUI()

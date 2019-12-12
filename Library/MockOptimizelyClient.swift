@@ -4,21 +4,20 @@ import Optimizely
 public class MockOptimizelyClient: OptimizelyClientType {
   var experimentalGroup = true
 
-  public func activate(experimentKey: String, userId: String, attributes: OptimizelyAttributes?) throws
+  public func activate(experimentKey _: String, userId _: String, attributes _: OptimizelyAttributes?) throws
     -> String {
-      if experimentalGroup == true {
-        return "experimental"
-      } else {
-        return "control"
-      }
-  }
-
-  public func variant(for experiment: OptimizelyExperiment.Key) -> String {
-    if experimentalGroup == true {
+    if self.experimentalGroup == true {
       return "experimental"
     } else {
       return "control"
     }
   }
 
+  public func variant(for _: OptimizelyExperiment.Key) -> String {
+    if self.experimentalGroup == true {
+      return "experimental"
+    } else {
+      return "control"
+    }
+  }
 }
