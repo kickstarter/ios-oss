@@ -177,4 +177,16 @@ final class EditorialProjectsViewModelTests: TestCase {
 
     self.applyViewTransformsWithYOffset.assertValues([100, 250, 350, 0])
   }
+
+  func testTrackCollectionViewed() {
+    let client = MockTrackingClient()
+    withEnvironment(koala: Koala(client: client)) {
+      XCTAssertEqual([], client.events)
+
+      self.vm.inputs.configure(with: .goRewardless)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Collection Viewed"], client.events)
+    }
+  }
 }

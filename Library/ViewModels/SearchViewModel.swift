@@ -195,16 +195,22 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map(first)
       .map { !$0.isEmpty }
 
-    Signal.combineLatest(query, page)
-      .takePairWhen(hasResults)
+    let firstPageResults = Signal.zip(hasResults, page)
+      .filter { _, page in page == 1 }
+      .map(first)
+
+    Signal.combineLatest(query, requestFirstPageWith)
+      .takePairWhen(firstPageResults)
       .map(unpack)
       .filter { query, _, _ in !query.isEmpty }
-      .observeValues { query, page, hasResults in
-        AppEnvironment.current.koala.trackSearchResults(query: query, page: page, hasResults: hasResults)
+      .observeValues { query, params, hasResults in
+        AppEnvironment.current.koala.trackSearchResults(
+          query: query,
+          params: params,
+          refTag: .search,
+          hasResults: hasResults
+        )
       }
-
-    self.clearSearchTextProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackClearedSearchTerm() }
 
     self.goToProject = Signal.combineLatest(self.projects, query)
       .takePairWhen(self.tappedProjectProperty.signal.skipNil())
@@ -213,12 +219,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
         return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
       }
-
-    query.combinePrevious()
-      .map(first)
-      .takeWhen(self.cancelButtonPressedProperty.signal)
-      .filter { !$0.isEmpty }
-      .observeValues { _ in AppEnvironment.current.koala.trackClearedSearchTerm() }
   }
 
   fileprivate let cancelButtonPressedProperty = MutableProperty(())
