@@ -14,6 +14,7 @@ import Foundation
 import Kickstarter_Framework
 import Library
 import Prelude
+import Qualtrics
 import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
@@ -42,6 +43,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     UIImageView.appearance(whenContainedInInstancesOf: [UITabBar.self])
       .accessibilityIgnoresInvertColors = true
+
+    // FIXME: Replace with actual values, trigger via VM output
+    Qualtrics.shared.initialize(brandId: "BRAND ID", zoneId: "PROJECT ID", interceptId: "INTERCEPT ID")
 
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
