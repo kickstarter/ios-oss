@@ -1206,6 +1206,7 @@
 		D706479023A2BF4B00B33C20 /* OptimizelyClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */; };
 		D706479123A2C91D00B33C20 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */; };
 		D706479223A2C91E00B33C20 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */; };
+		D706479423A2E1C700B33C20 /* Optimizely.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7B962AA23888A0B003AA616 /* Optimizely.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D7180BA222EF9DE900EB0110 /* RewardCellProjectBackingStateTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */; };
 		D72370542118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */; };
 		D723708C2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */; };
@@ -1421,6 +1422,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D706479423A2E1C700B33C20 /* Optimizely.framework in CopyFiles */,
 				D0B065D62280A96900142B7A /* Runes.framework in CopyFiles */,
 				D0B065D32280A81000142B7A /* KsApi.framework in CopyFiles */,
 				D0B065D02280A68900142B7A /* ReactiveExtensions.framework in CopyFiles */,
