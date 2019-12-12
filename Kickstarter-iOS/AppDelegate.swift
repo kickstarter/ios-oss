@@ -44,6 +44,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     UIImageView.appearance(whenContainedInInstancesOf: [UITabBar.self])
       .accessibilityIgnoresInvertColors = true
 
+    // FIXME: Replace with actual values, trigger via VM output
+    Qualtrics.shared.initialize(brandId: "BRAND ID", zoneId: "PROJECT ID", interceptId: "INTERCEPT ID")
+
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
         ubiquitousStore: NSUbiquitousKeyValueStore.default,
