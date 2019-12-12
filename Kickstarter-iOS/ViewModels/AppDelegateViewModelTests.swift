@@ -16,7 +16,7 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let applicationIconBadgeNumber = TestObserver<Int, Never>()
   fileprivate let configureAppCenterWithData = TestObserver<AppCenterConfigData, Never>()
   fileprivate let configureFabric = TestObserver<(), Never>()
-  fileprivate let configureOptimizely = TestObserver<(), Never>()
+  fileprivate let configureOptimizely = TestObserver<String, Never>()
   fileprivate let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
   private let findRedirectUrl = TestObserver<URL, Never>()
   fileprivate let forceLogout = TestObserver<(), Never>()
@@ -122,9 +122,13 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testConfigureOptimizely() {
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+    let mockService = MockService(serverConfig: ServerConfig.production)
 
-    self.configureOptimizely.assertValueCount(1)
+    withEnvironment(apiService: mockService ) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.production])
+    }
   }
 
   func testConfigureAppCenter_AlphaApp_LoggedOut() {

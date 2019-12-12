@@ -92,7 +92,7 @@ public protocol AppDelegateViewModelOutputs {
   var configureFabric: Signal<(), Never> { get }
 
   /// Emits when the application should configure Optimizely
-  var configureOptimizely: Signal<(), Never> { get }
+  var configureOptimizely: Signal<String, Never> { get }
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
@@ -512,7 +512,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
-    self.configureOptimizely = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+    self.configureOptimizely = self.applicationLaunchOptionsProperty.signal
+      .map { _ in KSOptimizely.sdkKey }
 
     self.configureAppCenterWithData = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
@@ -722,7 +723,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFabric: Signal<(), Never>
-  public let configureOptimizely: Signal<(), Never>
+  public let configureOptimizely: Signal<String, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
