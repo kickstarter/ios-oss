@@ -44,9 +44,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     UIImageView.appearance(whenContainedInInstancesOf: [UITabBar.self])
       .accessibilityIgnoresInvertColors = true
 
-    // FIXME: Replace with actual values, trigger via VM output
-    Qualtrics.shared.initialize(brandId: "BRAND ID", zoneId: "PROJECT ID", interceptId: "INTERCEPT ID")
-
     AppEnvironment.replaceCurrentEnvironment(
       AppEnvironment.fromStorage(
         ubiquitousStore: NSUbiquitousKeyValueStore.default,
@@ -202,6 +199,36 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.findRedirectUrl
       .observeForUI()
       .observeValues { [weak self] in self?.findRedirectUrl($0) }
+
+    self.viewModel.outputs.configureQualtrics
+      .observeValues { [weak self] config in
+        let properties = Properties()
+        config.stringProperties.forEach { key, value in
+          properties.setString(string: value, for: key)
+        }
+
+        Qualtrics.shared.initialize(
+          brandId: config.brandId,
+          zoneId: config.zoneId,
+          interceptId: config.interceptId
+        ) { result in
+          self?.viewModel.inputs.qualtricsInitialized(with: result)
+        }
+      }
+
+    self.viewModel.outputs.evaluateQualtricsTargetingLogic
+      .observeValues { [weak self] in
+        Qualtrics.shared.evaluateTargetingLogic() { result in
+          self?.viewModel.inputs.didEvaluateQualtricsTargetingLogic(with: result)
+        }
+      }
+
+    self.viewModel.outputs.displayQualtricsSurvey
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let vc = self?.rootTabBarController else { return }
+        _ = Qualtrics.shared.display(viewController: vc)
+      }
 
     // swiftlint:disable discarded_notification_center_observer
     NotificationCenter.default
@@ -384,8 +411,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
-    self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
-    self.rootTabBarController?.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
+    guard let rootTabBarController = self.rootTabBarController else {
+      completion()
+      return
+    }
+
+    if !Qualtrics.shared.handleLocalNotification(response: response, displayOn: rootTabBarController) {
+      self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
+      rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
+    }
     completion()
   }
 }
