@@ -34,7 +34,7 @@ final class RootViewModelTests: TestCase {
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
 
     let viewControllers = self.vm.outputs.setViewControllers
-      .map { $0.map(viewController(from:)).compact() }
+      .map { $0.map(RootTabBarViewController.viewController(from:)).compact() }
 
     Signal.combineLatest(viewControllers, self.vm.outputs.scrollToTop)
       .map { vcs, idx in vcs[clamp(0, vcs.count - 1)(idx)] }
@@ -573,7 +573,7 @@ final class RootViewModelTests: TestCase {
 
 private func extractRootNames(_ vcs: [RootViewControllerData]) -> [String] {
   return vcs
-    .map(viewController(from:))
+    .map(RootTabBarViewController.viewController(from:))
     .compact()
     .map(UINavigationController.init(rootViewController:))
     .compactMap(extractRootName)
@@ -588,21 +588,4 @@ private func extractRootName(_ vc: UIViewController) -> String? {
 
 private func extractName(_ vc: UIViewController) -> String {
   return "\(type(of: vc))".replacingOccurrences(of: "ViewController", with: "")
-}
-
-private func viewController(from data: RootViewControllerData) -> UIViewController? {
-  switch data {
-  case .discovery:
-    return DiscoveryViewController.instantiate()
-  case .activities:
-    return ActivitiesViewController.instantiate()
-  case .search:
-    return SearchViewController.instantiate()
-  case let .dashboard(isMember):
-    return isMember ? DashboardViewController.instantiate() : nil
-  case let .profile(isLoggedIn):
-    return isLoggedIn
-      ? BackerDashboardViewController.instantiate()
-      : LoginToutViewController.configuredWith(loginIntent: .generic)
-  }
 }

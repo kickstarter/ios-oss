@@ -456,31 +456,8 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
   )
 }
 
-extension TabBarItemsData: Equatable {
-  public static func == (lhs: TabBarItemsData, rhs: TabBarItemsData) -> Bool {
-    return lhs.items == rhs.items
-      && lhs.isLoggedIn == rhs.isLoggedIn
-      && lhs.isMember == rhs.isMember
-  }
-}
-
-extension TabBarItem: Equatable {
-  public static func == (lhs: TabBarItem, rhs: TabBarItem) -> Bool {
-    switch (lhs, rhs) {
-    case let (.activity(lhs), .activity(rhs)):
-      return lhs == rhs
-    case let (.dashboard(lhs), .dashboard(rhs)):
-      return lhs == rhs
-    case let (.home(lhs), .home(rhs)):
-      return lhs == rhs
-    case let (.profile(lhs), .profile(rhs)):
-      return lhs.avatarUrl == rhs.avatarUrl && lhs.index == rhs.index
-    case let (.search(lhs), .search(rhs)):
-      return lhs == rhs
-    default: return false
-    }
-  }
-}
+extension TabBarItemsData: Equatable {}
+extension TabBarItem: Equatable {}
 
 private func activitiesBadgeValue(with value: Int?) -> String? {
   let isVoiceOverRunning = AppEnvironment.current.isVoiceOverRunning()

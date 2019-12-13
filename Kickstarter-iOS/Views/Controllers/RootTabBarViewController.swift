@@ -111,7 +111,7 @@ public final class RootTabBarViewController: UITabBarController {
 
     self.viewModel.outputs.setViewControllers
       .observeForUI()
-      .map { $0.map { self.viewController(from: $0) }.compact() }
+      .map { $0.map { RootTabBarViewController.viewController(from: $0) }.compact() }
       .map { $0.map(UINavigationController.init(rootViewController:)) }
       .observeValues { [weak self] in
         self?.setViewControllers($0, animated: false)
@@ -295,7 +295,7 @@ public final class RootTabBarViewController: UITabBarController {
     return nil
   }
 
-  internal func viewController(from data: RootViewControllerData) -> UIViewController? {
+  static func viewController(from data: RootViewControllerData) -> UIViewController? {
     switch data {
     case .discovery:
       return DiscoveryViewController.instantiate()
