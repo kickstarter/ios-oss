@@ -156,7 +156,7 @@ private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleTyp
   switch projectBackingState {
   case .backedError:
     if isBackingThisReward {
-      return .apricot
+      return .red
     }
   case .backed(.live):
     if isBackingThisReward {
