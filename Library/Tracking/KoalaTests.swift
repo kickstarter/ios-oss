@@ -20,7 +20,7 @@ final class KoalaTests: TestCase {
         "ios_feature_something": false,
         "ios_feature_checkout": true,
         "ios_feature_go_rewardless": true
-    ]
+      ]
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
     let koala = Koala(

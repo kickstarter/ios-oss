@@ -1960,7 +1960,6 @@ public final class Koala {
   // MARK: - Session Properties
 
   private func sessionProperties(_ prefix: String = "session_") -> [String: Any] {
-
     var props: [String: Any] = [:]
 
     let enabledFeatureFlags = self.config?.features
