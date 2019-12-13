@@ -249,7 +249,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let projectCardTapped = paramsChanged
       .takePairWhen(self.tappedProject.signal.skipNil())
-      .map { params, project in (project, refTag(fromParams: params, project: project)) }
+      .map { params, project in (project, RefTag.fromParams(params)) }
 
     self.goToActivityProject = activitySampleTapped
 
@@ -299,21 +299,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
-    requestFirstPageWith
-      .takePairWhen(pageCount)
-      .observeValues { params, page in
-        AppEnvironment.current.koala.trackDiscovery(params: params, page: page)
-      }
-
     self.setScrollsToTop = Signal.merge(
       self.viewDidAppearProperty.signal.mapConst(true),
       self.viewDidDisappearProperty.signal.mapConst(false)
     )
-
-    self.pulledToRefreshProperty.signal
-      .observeValues {
-        AppEnvironment.current.koala.trackDiscoveryPullToRefresh()
-      }
 
     self.configureEditorialTableViewHeader = paramsChanged
       .filter { $0.tagId == .goRewardless }
@@ -360,18 +349,25 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
 
-    self.discoveryEditorialCellTappedWithValueProperty.signal
-      .skipNil()
-      .observeValues { tagId in
-        AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: RefTag.projectCollection(tagId))
-      }
-
     self.notifyDelegateContentOffsetChanged = Signal.combineLatest(
       self.scrollViewDidScrollToContentOffsetProperty.signal.skipNil(),
       self.projectsAreLoadingAnimated.map(first)
     )
     .filter(second >>> isFalse)
     .map(first)
+
+    // MARK: - Tracking
+
+    requestFirstPageWith
+      .observeValues { params in
+        AppEnvironment.current.koala.trackDiscovery(params: params)
+      }
+
+    self.discoveryEditorialCellTappedWithValueProperty.signal
+      .skipNil()
+      .observeValues { tagId in
+        AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: RefTag.projectCollection(tagId))
+      }
   }
 
   fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)
@@ -484,25 +480,6 @@ private func saveSeen(activities: [Activity]) {
   activities.forEach { activity in
     AppEnvironment.current.userDefaults.lastSeenActivitySampleId = activity.id
   }
-}
-
-private func refTag(fromParams params: DiscoveryParams, project _: Project) -> RefTag {
-  if let tagId = params.tagId {
-    return .projectCollection(tagId)
-  }
-
-  if params.category != nil {
-    return .categoryWithSort(params.sort ?? .magic)
-  } else if params.recommended == .some(true) {
-    return .recsWithSort(params.sort ?? .magic)
-  } else if params.staffPicks == .some(true) {
-    return .recommendedWithSort(params.sort ?? .magic)
-  } else if params.social == .some(true) {
-    return .socialWithSort(params.sort ?? .magic)
-  } else if params.starred == .some(true) {
-    return .starredWithSort(params.sort ?? .magic)
-  }
-  return RefTag.discoveryWithSort(params.sort ?? .magic)
 }
 
 private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {

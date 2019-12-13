@@ -18,22 +18,24 @@ private let shippingRules = [
 final class PledgeShippingLocationViewModelTests: TestCase {
   private let vm: PledgeShippingLocationViewModelType = PledgeShippingLocationViewModel()
 
+  private let adaptableStackViewIsHidden = TestObserver<Bool, Never>()
   private let amountText = TestObserver<String, Never>()
   private let dismissShippingRules = TestObserver<Void, Never>()
-  private let isLoading = TestObserver<Bool, Never>()
   private let presentShippingRulesProject = TestObserver<Project, Never>()
   private let presentShippingRulesAllRules = TestObserver<[ShippingRule], Never>()
   private let presentShippingRulesSelectedRule = TestObserver<ShippingRule, Never>()
   private let notifyDelegateOfSelectedShippingRule = TestObserver<ShippingRule, Never>()
+  private let shimmerLoadingViewIsHidden = TestObserver<Bool, Never>()
   private let shippingLocationButtonTitle = TestObserver<String, Never>()
   private let shippingRulesError = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.adaptableStackViewIsHidden.observe(self.adaptableStackViewIsHidden.observer)
     self.vm.outputs.amountAttributedText.map { $0.string }.observe(self.amountText.observer)
     self.vm.outputs.dismissShippingRules.observe(self.dismissShippingRules.observer)
-    self.vm.outputs.isLoading.observe(self.isLoading.observer)
+    self.vm.outputs.shimmerLoadingViewIsHidden.observe(self.shimmerLoadingViewIsHidden.observer)
     self.vm.outputs.presentShippingRules.map { $0.0 }.observe(self.presentShippingRulesProject.observer)
     self.vm.outputs.presentShippingRules.map { $0.1 }.observe(self.presentShippingRulesAllRules.observer)
     self.vm.outputs.presentShippingRules.map { $0.2 }.observe(self.presentShippingRulesSelectedRule.observer)
@@ -54,7 +56,8 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.amountText.assertValues(["+$0.00"])
-      self.isLoading.assertValues([true])
+      self.adaptableStackViewIsHidden.assertValues([true])
+      self.shimmerLoadingViewIsHidden.assertValues([false])
       self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
       self.shippingLocationButtonTitle.assertValues([])
 
@@ -66,10 +69,16 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       }
 
       self.amountText.assertValues(["+$0.00", "+$5.00"])
-      self.isLoading.assertValues([true, false])
+      self.adaptableStackViewIsHidden.assertValues([true])
+      self.shimmerLoadingViewIsHidden.assertValues([false])
       self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule])
       self.shippingLocationButtonTitle.assertValues(["Brooklyn, NY"])
       self.shippingRulesError.assertDidNotEmitValue()
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.adaptableStackViewIsHidden.assertValues([true, false])
+      self.shimmerLoadingViewIsHidden.assertValues([false, true])
     }
   }
 
@@ -160,10 +169,16 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.amountText.assertValues(["+$0.00"])
-      self.isLoading.assertValues([true, false])
+      self.adaptableStackViewIsHidden.assertValues([true])
+      self.shimmerLoadingViewIsHidden.assertValues([false])
       self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
       self.shippingLocationButtonTitle.assertValues([])
       self.shippingRulesError.assertValues([Strings.We_were_unable_to_load_the_shipping_destinations()])
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.adaptableStackViewIsHidden.assertValues([true, false])
+      self.shimmerLoadingViewIsHidden.assertValues([false, true])
     }
   }
 
@@ -190,7 +205,8 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.amountText.assertValues(["+$0.00"])
-      self.isLoading.assertValues([true])
+      self.adaptableStackViewIsHidden.assertValues([true])
+      self.shimmerLoadingViewIsHidden.assertValues([false])
       self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
       self.shippingLocationButtonTitle.assertValues([])
 
@@ -202,10 +218,16 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       }
 
       self.amountText.assertValues(["+$0.00", "+$5.00"])
-      self.isLoading.assertValues([true, false])
+      self.adaptableStackViewIsHidden.assertValues([true])
+      self.shimmerLoadingViewIsHidden.assertValues([false])
       self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule])
       self.shippingLocationButtonTitle.assertValues(["Canada"])
       self.shippingRulesError.assertDidNotEmitValue()
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.adaptableStackViewIsHidden.assertValues([true, false])
+      self.shimmerLoadingViewIsHidden.assertValues([false, true])
     }
   }
 
@@ -234,7 +256,8 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.amountText.assertValues(["+$0.00"])
-      self.isLoading.assertValues([true])
+      self.adaptableStackViewIsHidden.assertValues([true])
+      self.shimmerLoadingViewIsHidden.assertValues([false])
       self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
       self.shippingLocationButtonTitle.assertValues([])
 
@@ -246,10 +269,16 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       }
 
       self.amountText.assertValues(["+$0.00", "+$5.00"])
-      self.isLoading.assertValues([true, false])
+      self.adaptableStackViewIsHidden.assertValues([true])
+      self.shimmerLoadingViewIsHidden.assertValues([false])
       self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule])
       self.shippingLocationButtonTitle.assertValues(["Brooklyn, NY"])
       self.shippingRulesError.assertDidNotEmitValue()
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.adaptableStackViewIsHidden.assertValues([true, false])
+      self.shimmerLoadingViewIsHidden.assertValues([false, true])
     }
   }
 }

@@ -229,18 +229,6 @@ public final class DiscoveryNavigationHeaderViewModel: DiscoveryNavigationHeader
         AppEnvironment.current.ubiquitousStore.hasSeenFavoriteCategoryAlert = true
         AppEnvironment.current.userDefaults.hasSeenFavoriteCategoryAlert = true
       })
-
-    currentParams
-      .takePairWhen(categoryIdOnFavoriteTap.map(isFavoriteCategoryStored(withId:)))
-      .observeValues {
-        AppEnvironment.current.koala.trackDiscoveryFavoritedCategory(params: $0, isFavorited: $1)
-      }
-
-    paramsAndFiltersAreHidden
-      .takeWhen(self.titleButtonTappedProperty.signal)
-      .filter { $0.filtersAreHidden }
-      .map { $0.params }
-      .observeValues { AppEnvironment.current.koala.trackDiscoveryModalClosedFilter(params: $0) }
   }
 
   fileprivate let paramsProperty = MutableProperty<DiscoveryParams?>(nil)

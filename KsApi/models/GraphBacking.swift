@@ -12,6 +12,7 @@ public struct GraphBacking: Swift.Decodable, Equatable {
   }
 
   public enum Status: String, CaseIterable, Swift.Decodable {
+    case authenticationRequired = "authentication_required"
     case canceled
     case collected
     case dropped

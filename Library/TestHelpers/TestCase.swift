@@ -13,6 +13,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let cache = KSCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
+  internal let dataLakeTrackingClient = MockTrackingClient()
   internal let dateType = MockDate.self
   internal let mainBundle = MockBundle()
   internal let reachability = MutableProperty(Reachability.wifi)
@@ -54,7 +55,11 @@ internal class TestCase: FBSnapshotTestCase {
       debounceInterval: .seconds(0),
       device: MockDevice(),
       isVoiceOverRunning: { false },
-      koala: Koala(client: self.trackingClient, loggedInUser: nil),
+      koala: Koala(
+        dataLakeClient: self.dataLakeTrackingClient,
+        client: self.trackingClient,
+        loggedInUser: nil
+      ),
       language: .en,
       launchedCountries: .init(),
       locale: .init(identifier: "en_US"),

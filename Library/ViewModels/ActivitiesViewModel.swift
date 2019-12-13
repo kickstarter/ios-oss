@@ -189,7 +189,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     let erroredBackingsEvent = currentUser
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphUserBackings(
-          query: UserQueries.backings(GraphBacking.Status.collected.rawValue).query
+          query: UserQueries.backings(GraphBacking.Status.errored.rawValue).query
         )
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .map { envelope in
@@ -306,17 +306,13 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         return SignalProducer(value: (project, update))
       }
 
-    self.viewWillAppearProperty.signal
-      .skipNil()
-      .filter(isFalse)
-      .observeValues { _ in AppEnvironment.current.koala.trackActivities() }
-
-    self.refreshProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackLoadedNewerActivity() }
-
-    pageCount
-      .filter { $0 > 1 }
-      .observeValues { AppEnvironment.current.koala.trackLoadedOlderActivity(page: $0) }
+    Signal.zip(pageCount, paginatedActivities)
+      .filter { pageCount, _ in
+        pageCount == 1
+      } // Track first page only
+      .map(second)
+      .map { $0.count }
+      .observeValues { AppEnvironment.current.koala.trackActivities(count: $0) }
   }
 
   fileprivate let dismissFacebookConnectSectionProperty = MutableProperty(())
