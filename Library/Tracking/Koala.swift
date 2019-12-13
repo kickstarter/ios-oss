@@ -1296,7 +1296,6 @@ public final class Koala {
 
   /**
    Call when a project page is swiped to the next project.
-
    - parameter project:      The next project being viewed.
    - parameter refTag:       The ref tag used when swiping to the project.
    */
