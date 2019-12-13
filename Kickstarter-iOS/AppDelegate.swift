@@ -14,6 +14,7 @@ import Foundation
 import Kickstarter_Framework
 import Library
 import Prelude
+import Qualtrics
 import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
