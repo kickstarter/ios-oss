@@ -1940,7 +1940,7 @@ public final class Koala {
 
   // Private tracking method that merges in default properties.
   private func track(event: String, properties: [String: Any] = [:]) {
-    let props = self.defaultProperties()
+    let props = self.sessionProperties()
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
       .withAllValuesFrom(properties)
 
@@ -1957,62 +1957,9 @@ public final class Koala {
     )
   }
 
-  // FIXME: deprecated, use sessionProperties()
-  private func defaultProperties() -> [String: Any] {
-    var props: [String: Any] = [:]
-
-    let enabledFeatureFlags = self.config?.features
-      .filter { key, value in key.starts(with: "ios_") && value }
-      .keys
-      .sorted()
-
-    props["manufacturer"] = "Apple"
-    props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
-    props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
-    props["current_variants"] = self.config?.abExperimentsArray.sorted() ?? []
-    props["enabled_feature_flags"] = enabledFeatureFlags ?? []
-    props["model"] = Koala.deviceModel
-    props["distinct_id"] = self.distinctId
-    props["device_fingerprint"] = self.distinctId
-    props["iphone_uuid"] = self.distinctId
-    props["os"] = self.device.systemName
-    props["os_version"] = self.device.systemVersion
-    props["screen_width"] = UInt(self.screen.bounds.width)
-    props["screen_height"] = UInt(self.screen.bounds.height)
-    props["device_orientation"] = Koala.deviceOrientation
-    props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
-    props["preferred_content_size_category"] = self.preferredContentSizeCategory
-
-    props["mp_lib"] = "kickstarter_ios"
-    props["koala_lib"] = "kickstarter_ios"
-
-    props["client_type"] = "native"
-    props["device_format"] = self.deviceFormat
-    props["client_platform"] = self.clientPlatform
-    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
-    props["wifi_connection"] = Reachability.current == .wifi
-
-    if let loggedInUser = self.loggedInUser {
-      properties(user: loggedInUser).forEach { props[$0] = $1 }
-    }
-    props["user_is_admin"] = self.loggedInUser?.isAdmin
-    props["user_logged_in"] = self.loggedInUser != nil
-    props["user_country"] = self.loggedInUser?.location?.country ?? self.config?.countryCode
-
-    props["apple_pay_capable"] = PKPaymentAuthorizationViewController.applePayCapable()
-    props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
-
-    props["time"] = Date().timeIntervalSince1970
-
-    return props
-  }
-
   // MARK: - Session Properties
 
   private func sessionProperties(_ prefix: String = "session_") -> [String: Any] {
-    // 40 properties
-    // Not implemented:
-    // android_uuid, session_browser, browser_language, browser_version, calculated_language, session_ghosting
 
     var props: [String: Any] = [:]
 
@@ -2025,37 +1972,34 @@ public final class Koala {
     props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
     props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
     props["client_type"] = "native"
-    props["current_variants"] = self.config?.abExperimentsArray.sorted() ?? []
+    props["current_variants"] = self.config?.abExperimentsArray.sorted()
 
     props["device"] = self.device.name
     props["device_fingerprint"] = self.distinctId
     props["device_format"] = self.deviceFormat
     props["device_manufacturer"] = "Apple"
     props["device_model"] = Koala.deviceModel
-    props["device_orientation"] = Koala.deviceOrientation
+    props["device_orientation"] = self.deviceOrientation
+    props["distinct_id"] = self.distinctId
 
-    props["display_currency"] = AppEnvironment.current.locale.currencyCode // TODO: check whether this is the desired value
-    props["display_language"] = AppEnvironment.current.locale.languageCode // TODO: check whether this is the desired value
-
-    props["enabled_features"] = enabledFeatureFlags ?? []
+    props["enabled_features"] = enabledFeatureFlags
     props["iphone_uuid"] = self.distinctId
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
     props["mp_lib"] = "kickstarter_ios"
     props["os"] = self.device.systemName
     props["os_version"] = self.device.systemVersion
-    props["wifi_connection"] = Reachability.current == .wifi
     props["time"] = Date().timeIntervalSince1970
     props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
-    props["distinct_id"] = self.distinctId
     props["screen_width"] = UInt(self.screen.bounds.width)
     props["user_agent"] = Service.userAgent
     props["user_logged_in"] = self.loggedInUser != nil
+    props["wifi_connection"] = Reachability.current == .wifi
 
     // unconfirmed
     props["client_platform"] = self.clientPlatform
 
-    return props
+    return props.prefixedKeys(prefix)
   }
 
   private static let deviceModel: String? = {
@@ -2066,8 +2010,8 @@ public final class Koala {
     return String(cString: machine)
   }()
 
-  private static var deviceOrientation: String {
-    switch UIDevice.current.orientation {
+  private var deviceOrientation: String {
+    switch self.device.orientation {
     case .faceDown:
       return "Face Down"
     case .faceUp:

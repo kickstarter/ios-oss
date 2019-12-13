@@ -7,6 +7,7 @@ public protocol UIDeviceType {
   var identifierForVendor: UUID? { get }
   var modelCode: String { get }
   var name: String { get }
+  var orientation: UIDeviceOrientation { get }
   var systemName: String { get }
   var systemVersion: String { get }
   var userInterfaceIdiom: UIUserInterfaceIdiom { get }
@@ -26,11 +27,14 @@ internal struct MockDevice: UIDeviceType {
   internal let identifierForVendor = UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
   internal let modelCode = "MockmodelCode"
   internal let name = "iPhone 10"
+  internal let orientation: UIDeviceOrientation
   internal let systemName = "MockSystemName"
   internal let systemVersion: String = "MockSystemVersion"
   internal let userInterfaceIdiom: UIUserInterfaceIdiom
 
-  internal init(userInterfaceIdiom: UIUserInterfaceIdiom = .phone) {
+  internal init(userInterfaceIdiom: UIUserInterfaceIdiom = .phone,
+                orientation: UIDeviceOrientation = .portrait) {
     self.userInterfaceIdiom = userInterfaceIdiom
+    self.orientation = orientation
   }
 }
