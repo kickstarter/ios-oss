@@ -747,10 +747,10 @@
       if let error = fetchGraphUserBackingsError {
         return SignalProducer(error: error)
       }
-        let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [])
-        let emptyEnvelope = GraphBackingEnvelope.template
-          |> \.backings .~ backings
-        let emptyResponse = UserEnvelope<GraphBackingEnvelope>(me: emptyEnvelope)
+      let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [])
+      let emptyEnvelope = GraphBackingEnvelope.template
+        |> \.backings .~ backings
+      let emptyResponse = UserEnvelope<GraphBackingEnvelope>(me: emptyEnvelope)
 
       let response = self.fetchGraphUserBackingsResponse ?? emptyResponse
       return SignalProducer(value: response)
