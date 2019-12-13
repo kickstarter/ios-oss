@@ -763,4 +763,46 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["Manage Pledge Option Clicked"], client.events)
     XCTAssertEqual(property, properties?["cta"] as? String)
   }
+
+  func testUserProperties_loggedOut() {
+    let client = MockTrackingClient()
+    let config = Config.template |> Config.lens.countryCode .~ "US"
+    let koala = Koala(client: client, config: config, loggedInUser: nil)
+
+    koala.trackActivities(count: 1)
+
+    let props = client.properties.last
+
+    XCTAssertEqual("US", props?["user_country"] as? String)
+    XCTAssertNil(props?["user_backed_projects_count"])
+    XCTAssertNil(props?["user_facebook_account"])
+    XCTAssertNil(props?["user_watched_projects_count"])
+    XCTAssertNil(props?["user_uid"])
+    XCTAssertNil(props?["user_is_admin"])
+  }
+
+  func testUserProperties_loggedIn() {
+    let client = MockTrackingClient()
+
+    let user = User.template
+      |> User.lens.stats.backedProjectsCount .~ 5
+      |> User.lens.location .~ Location.usa
+      |> User.lens.facebookConnected .~ true
+      |> User.lens.stats.starredProjectsCount .~ 2
+      |> User.lens.id .~ 10
+      |> User.lens.isAdmin .~ false
+
+    let koala = Koala(client: client, loggedInUser: user)
+
+    koala.trackActivities(count: 1)
+
+    let props = client.properties.last
+
+    XCTAssertEqual(5, props?["user_backed_projects_count"] as? Int)
+    XCTAssertEqual("US", props?["user_country"] as? String)
+    XCTAssertEqual(true, props?["user_facebook_account"] as? Bool)
+    XCTAssertEqual(2, props?["user_watched_projects_count"] as? Int)
+    XCTAssertEqual(10, props?["user_uid"] as? Int)
+    XCTAssertEqual(false, props?["user_is_admin"] as? Bool)
+  }
 }

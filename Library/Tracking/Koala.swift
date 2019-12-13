@@ -404,7 +404,6 @@ public final class Koala {
 
   /// Call when the activities screen is shown.
   public func trackActivities(count: Int) {
-    // TODO: add user properties and session props
     self.track(event: "Activity Feed Viewed", properties: ["activities_count": count])
   }
 
@@ -1941,7 +1940,9 @@ public final class Koala {
 
   // Private tracking method that merges in default properties.
   private func track(event: String, properties: [String: Any] = [:]) {
-    let props = self.defaultProperties().withAllValuesFrom(properties)
+    let props = self.defaultProperties()
+      .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
+      .withAllValuesFrom(properties)
 
     self.logEventCallback?(event, props)
 
@@ -1956,6 +1957,7 @@ public final class Koala {
     )
   }
 
+  // FIXME: deprecated, use sessionProperties()
   private func defaultProperties() -> [String: Any] {
     var props: [String: Any] = [:]
 
@@ -2001,6 +2003,57 @@ public final class Koala {
     props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
 
     props["time"] = Date().timeIntervalSince1970
+
+    return props
+  }
+
+  // MARK: - Session Properties
+
+  private func sessionProperties(_ prefix: String = "session_") -> [String: Any] {
+    // 40 properties
+    // Not implemented:
+    // android_uuid, session_browser, browser_language, browser_version, calculated_language, session_ghosting
+
+    var props: [String: Any] = [:]
+
+    let enabledFeatureFlags = self.config?.features
+      .filter { key, value in key.starts(with: "ios_") && value }
+      .keys
+      .sorted()
+
+    props["apple_pay_capable"] = PKPaymentAuthorizationViewController.applePayCapable()
+    props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
+    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
+    props["client_type"] = "native"
+    props["current_variants"] = self.config?.abExperimentsArray.sorted() ?? []
+
+    props["device"] = self.device.name
+    props["device_fingerprint"] = self.distinctId
+    props["device_format"] = self.deviceFormat
+    props["device_manufacturer"] = "Apple"
+    props["device_model"] = Koala.deviceModel
+    props["device_orientation"] = Koala.deviceOrientation
+
+    props["display_currency"] = AppEnvironment.current.locale.currencyCode // TODO: check whether this is the desired value
+    props["display_language"] = AppEnvironment.current.locale.languageCode // TODO: check whether this is the desired value
+
+    props["enabled_features"] = enabledFeatureFlags ?? []
+    props["iphone_uuid"] = self.distinctId
+    props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
+    props["mp_lib"] = "kickstarter_ios"
+    props["os"] = self.device.systemName
+    props["os_version"] = self.device.systemVersion
+    props["wifi_connection"] = Reachability.current == .wifi
+    props["time"] = Date().timeIntervalSince1970
+    props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
+    props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
+    props["distinct_id"] = self.distinctId
+    props["screen_width"] = UInt(self.screen.bounds.width)
+    props["user_agent"] = Service.userAgent
+    props["user_logged_in"] = self.loggedInUser != nil
+
+    // unconfirmed
+    props["client_platform"] = self.clientPlatform
 
     return props
   }
@@ -2273,6 +2326,21 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
   } else {
     return shareType.rawValue
   }
+}
+
+// MARK: - User Properties
+
+private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
+  var props: [String: Any] = [:]
+
+  props["is_admin"] = user?.isAdmin
+  props["backed_projects_count"] = user?.stats.backedProjectsCount
+  props["country"] = user?.location?.country ?? config?.countryCode
+  props["facebook_account"] = user?.facebookConnected
+  props["watched_projects_count"] = user?.stats.starredProjectsCount
+  props["uid"] = user?.id
+
+  return props.prefixedKeys(prefix)
 }
 
 extension Koala {
