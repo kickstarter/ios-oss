@@ -67,7 +67,7 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
 
     _ = self.contentView
       |> contentViewStyle
-    
+
     _ = self.backgroundContainerView
       |> backgroundContainerViewStyle
 

@@ -41,7 +41,6 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
   }
 
   internal func load(erroredBackings: [GraphBacking]) {
-
     self.set(
       values: [erroredBackings],
       cellClass: ActivityErroredBackingsTopCell.self,
