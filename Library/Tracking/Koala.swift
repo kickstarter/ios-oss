@@ -2068,7 +2068,7 @@ private func projectProperties(
   props["backers_count"] = project.stats.backersCount
   props["category"] = project.category.name
   props["country"] = project.country.countryCode
-  props["comments_count"] = project.stats.commentsCount
+  props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
   props["creator_uid"] = project.creator.id
   props["deadline"] = project.dates.deadline
@@ -2085,6 +2085,7 @@ private func projectProperties(
   props["current_pledge_amount_usd"] = project.stats.pledgedUsd
   props["goal_usd"] = project.stats.goalUsd
   props["has_video"] = project.video != nil
+  props["updates_count"] = project.stats.updatesCount
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)

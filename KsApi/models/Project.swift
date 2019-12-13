@@ -153,7 +153,11 @@ public struct Project {
     public func hoursRemaining(from date: Date = Date(), using calendar: Calendar = .current) -> Int? {
       let deadlineDate = Date(timeIntervalSince1970: self.deadline)
 
-      return calendar.dateComponents([.hour], from: date, to: deadlineDate).hour
+      guard let hoursRemaining = calendar.dateComponents([.hour], from: date, to: deadlineDate).hour else {
+        return nil
+      }
+
+      return max(0, hoursRemaining)
     }
   }
 

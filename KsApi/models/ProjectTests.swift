@@ -257,4 +257,28 @@ final class ProjectTests: XCTestCase {
 
     XCTAssertEqual(24, project.dates.hoursRemaining(from: nowDate!, using: calendar))
   }
+
+  func testHoursRemaining_LessThanZero() {
+    let deadline = DateComponents()
+      |> \.day .~ 2
+      |> \.month .~ 3
+      |> \.year .~ 2_020
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+
+    // 24 hours after deadline
+    let now = DateComponents()
+      |> \.day .~ 3
+      |> \.month .~ 3
+      |> \.year .~ 2_020
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+
+    let calendar = Calendar(identifier: .gregorian)
+    let nowDate = calendar.date(from: now)
+    let deadlineInterval = calendar.date(from: deadline)?.timeIntervalSince1970
+
+    let project = Project.template
+      |> Project.lens.dates.deadline .~ deadlineInterval!
+
+    XCTAssertEqual(0, project.dates.hoursRemaining(from: nowDate!, using: calendar))
+  }
 }

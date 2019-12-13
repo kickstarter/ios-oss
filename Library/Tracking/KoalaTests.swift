@@ -160,6 +160,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(project.id, properties?["project_pid"] as? Int)
     XCTAssertEqual(project.stats.pledged, properties?["project_pledged"] as? Int)
     XCTAssertEqual(project.stats.fundingProgress, properties?["project_percent_raised"] as? Float)
+    XCTAssertEqual(project.stats.updatesCount, properties?["project_updates_count"] as? Int)
     XCTAssertEqual(project.category.name, properties?["project_category"] as? String)
     XCTAssertEqual(project.category._parent?.name, properties?["project_parent_category"] as? String)
     XCTAssertEqual(project.location.name, properties?["project_location"] as? String)
@@ -181,7 +182,7 @@ final class KoalaTests: TestCase {
     XCTAssertNil(properties?["project_user_is_backer"])
     XCTAssertNil(properties?["project_user_has_starred"])
 
-    XCTAssertEqual(22, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(23, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInUser() {
