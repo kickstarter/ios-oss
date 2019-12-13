@@ -2012,8 +2012,6 @@ public final class Koala {
     props["user_agent"] = Service.userAgent
     props["user_logged_in"] = self.loggedInUser != nil
     props["wifi_connection"] = Reachability.current == .wifi
-
-    // unconfirmed
     props["client_platform"] = self.clientPlatform
 
     return props.prefixedKeys(prefix)

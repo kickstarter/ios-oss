@@ -781,7 +781,7 @@ final class KoalaTests: TestCase {
     let config = Config.template |> Config.lens.countryCode .~ "US"
     let koala = Koala(client: client, config: config, loggedInUser: nil)
 
-    koala.trackActivities(count: 1)
+    koala.trackAppOpen()
 
     let props = client.properties.last
 
@@ -806,7 +806,7 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: user)
 
-    koala.trackActivities(count: 1)
+    koala.trackAppOpen()
 
     let props = client.properties.last
 
