@@ -36,9 +36,6 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
   }
 
   private func configureViews() {
-    _ = self
-      |> \.selectionStyle .~ .none
-
     _ = (self.backgroundContainerView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
@@ -65,6 +62,12 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> cellStyle
+
+    _ = self.contentView
+      |> contentViewStyle
+    
     _ = self.backgroundContainerView
       |> backgroundContainerViewStyle
 
@@ -84,7 +87,7 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
       return view
     }
 
-    let separatedItemViews = erroredBackingsViews.dropLast().map { view -> [UIView] in
+    let erroredBackingsViewsWithSeparators = erroredBackingsViews.dropLast().map { view -> [UIView] in
       let separator = UIView()
         |> separatorStyleDark
       separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
@@ -93,7 +96,7 @@ final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
     }
     .flatMap { $0 }
 
-    let allItemViews = separatedItemViews + [erroredBackingsViews.last].compact()
+    let allItemViews = erroredBackingsViewsWithSeparators + [erroredBackingsViews.last].compact()
 
     _ = (allItemViews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -107,6 +110,18 @@ private let backgroundContainerViewStyle: ViewStyle = { view in
     |> \.backgroundColor .~ .ksr_grey_300
     |> \.clipsToBounds .~ true
     |> \.layer.cornerRadius .~ Styles.grid(2)
+}
+
+private let cellStyle: TableViewCellStyle = { cell in
+  cell
+    |> \.selectionStyle .~ .none
+    |> \.layoutMargins .~ UIEdgeInsets.init(all: Styles.grid(2))
+    |> \.preservesSuperviewLayoutMargins .~ false
+}
+
+private let contentViewStyle: ViewStyle = { view in
+  view
+    |> \.preservesSuperviewLayoutMargins .~ true
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in

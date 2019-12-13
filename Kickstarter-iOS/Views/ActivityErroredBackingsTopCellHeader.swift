@@ -62,6 +62,7 @@ private let subtitleLabelStyle: LabelStyle = { label in
     |> \.text %~ { _ in Strings.We_cant_process_your_pledge_for() }
     |> \.font .~ UIFont.ksr_footnote()
     |> \.textColor .~ .ksr_soft_black
+    |> \.numberOfLines .~ 0
 }
 
 private let titleLabelStyle: LabelStyle = { label in
@@ -69,4 +70,5 @@ private let titleLabelStyle: LabelStyle = { label in
     |> \.text %~ { _ in Strings.Payment_failure() }
     |> \.font .~ UIFont.ksr_title2().bolded
     |> \.textColor .~ .ksr_soft_black
+    |> \.numberOfLines .~ 0
 }

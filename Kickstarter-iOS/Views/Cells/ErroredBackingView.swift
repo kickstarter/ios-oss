@@ -19,6 +19,7 @@ final class ErroredBackingView: UIView {
   // MARK: - Properties
 
   public var delegate: ErroredBackingViewDelegate?
+  private let backingInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let manageButton: UIButton = { UIButton(type: .custom) }()
   private let projectNameLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -47,7 +48,10 @@ final class ErroredBackingView: UIView {
   }
 
   private func configureViews() {
-    _ = ([self.projectNameLabel, self.manageButton], self.rootStackView)
+    _ = ([self.projectNameLabel], self.backingInfoStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.backingInfoStackView, self.manageButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self)
@@ -92,6 +96,9 @@ final class ErroredBackingView: UIView {
     _ = self
       |> \.backgroundColor .~ .ksr_grey_300
 
+    _ = self.backingInfoStackView
+      |> backingInfoStackViewStyle
+
     _ = self.manageButton
       |> manageButtonStyle
 
@@ -102,11 +109,18 @@ final class ErroredBackingView: UIView {
       |> projectNameLabelStyle
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> rootStackViewStyle(
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+      )
   }
 }
 
 // MARK: - Styles
+
+private let backingInfoStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> verticalStackViewStyle
+}
 
 private let manageButtonStyle: ButtonStyle = { button in
   button
@@ -125,9 +139,15 @@ private let projectNameLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 0
 }
 
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.spacing .~ Styles.gridHalf(1)
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
+private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
+  return { (stackView: UIStackView) in
+    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
+
+    return stackView
+      |> \.alignment .~ .center
+      |> \.axis .~ NSLayoutConstraint.Axis.horizontal
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
+      |> \.spacing .~ spacing
+  }
 }
