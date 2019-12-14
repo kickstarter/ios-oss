@@ -616,7 +616,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     .mapConst(0)
 
     self.configureQualtrics = self.applicationLaunchOptionsProperty.signal.map { _ in
-      return .init(
+      .init(
         brandId: Secrets.Qualtrics.brandId,
         zoneId: Secrets.Qualtrics.zoneId,
         interceptId: QualtricsIntercept.survey.interceptId,
