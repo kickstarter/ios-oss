@@ -106,12 +106,6 @@ public final class ProjectNavBarViewModel: ProjectNavBarViewModelType,
     .skipRepeats { $0.opaque == $1.opaque }
 
     self.dismissViewController = self.closeButtonTappedProperty.signal
-
-    configuredProjectAndRefTag
-      .takeWhen(self.closeButtonTappedProperty.signal)
-      .observeValues { project, refTag in
-        AppEnvironment.current.koala.trackClosedProjectPage(project, refTag: refTag, gestureType: .tap)
-      }
   }
 
   fileprivate let projectAndRefTagProperty = MutableProperty<(Project, RefTag?)?>(nil)

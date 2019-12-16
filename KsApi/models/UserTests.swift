@@ -92,4 +92,16 @@ final class UserTests: XCTestCase {
 
     XCTAssertEqual(user.value?.encode() as NSDictionary?, json as NSDictionary?)
   }
+
+  func testIsRepeatCreator() {
+    let user = User.template
+    let creator = User.template
+      |> User.lens.stats.createdProjectsCount .~ 1
+    let repeatCreator = User.template
+      |> User.lens.stats.createdProjectsCount .~ 2
+
+    XCTAssertEqual(true, repeatCreator.isRepeatCreator)
+    XCTAssertEqual(false, creator.isRepeatCreator)
+    XCTAssertNil(user.isRepeatCreator)
+  }
 }
