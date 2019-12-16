@@ -869,4 +869,22 @@ final class KoalaTests: TestCase {
     ], client.events)
     XCTAssertEqual("search", client.properties.last?["ios_tab_bar_label"] as? String)
   }
+
+  func testLakeWhiteList() {
+    let koalaClient = MockTrackingClient()
+    let dataLakeClient = MockTrackingClient()
+    let koala = Koala(dataLakeClient: dataLakeClient, client: koalaClient)
+
+    koala.trackAppOpen() // non-white-listed event
+
+    XCTAssertEqual(["App Open", "Opened App"], koalaClient.events, "Event is tracked by koala client")
+    XCTAssertEqual([], dataLakeClient.events, "Event is not tracked by data lake client")
+
+    koala.trackProjectViewed(Project.template) // white-listed event
+
+    XCTAssertEqual(["App Open", "Opened App", "Project Page Viewed"], koalaClient.events,
+                   "White-listed event is tracked by koala client")
+    XCTAssertEqual(["Project Page Viewed"], dataLakeClient.events,
+                   "White-listed event is tracked by data lake client")
+  }
 }

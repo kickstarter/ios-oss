@@ -21,6 +21,24 @@ public final class Koala {
   private var preferredContentSizeCategoryObserver: Any?
   private let screen: UIScreenType
 
+  private enum DataLakeWhiteListedEvents: String, CaseIterable {
+    case explorePageViewed = "Explore Page Viewed"
+    case exploreSortClicked = "Explore Sort Clicked"
+    case activityFeedViewed = "Activity Feed Viewed"
+    case editorialCardClicked = "Editorial Card Clicked"
+    case collectionViewed = "Collection Viewed"
+    case filterClicked = "Filter Clicked"
+    case tabBarClicked = "Tab Bar Clicked"
+    case searchPageViewed = "Search Page Viewed"
+    case searchResultsLoaded = "Search Results Loaded"
+    case projectSwiped = "Project Swiped"
+    case projectPageViewed = "Project Page Viewed"
+
+    static func allWhiteListedEvents() -> [String] {
+      return DataLakeWhiteListedEvents.allCases.map { $0.rawValue }
+    }
+  }
+
   /// Determines the authentication type for login or signup events.
   public enum AuthType {
     case email
@@ -530,7 +548,7 @@ public final class Koala {
    Call when the user taps the editorial header at the top of Discovery
    */
   public func trackEditorialHeaderTapped(refTag: RefTag) {
-    self.track(event: "Editorial Card Clicked", properties: ["ref_tag": refTag.stringTag])
+    self.track(event: "Editorial Card Clicked", properties: [:], refTag: refTag.stringTag)
   }
 
   /**
@@ -1266,7 +1284,6 @@ public final class Koala {
 
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    // TODO: pass user properties, session properties
     self.track(event: "Search Page Viewed")
   }
 
@@ -1301,11 +1318,7 @@ public final class Koala {
     refTag: RefTag? = nil,
     cookieRefTag: RefTag? = nil
   ) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-
-    // TODO: move ref_tag and referrer_credit to session properties
-    props["ref_tag"] = refTag?.stringTag
-    props["referrer_credit"] = cookieRefTag?.stringTag
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
     self.track(
       event: "Project Page Viewed",
@@ -1321,8 +1334,7 @@ public final class Koala {
    - parameter refTag:       The ref tag used when swiping to the project.
    */
   public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-    props["ref_tag"] = refTag?.stringTag
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
     self.track(event: "Project Swiped", properties: props, refTag: refTag?.stringTag)
   }
@@ -1967,10 +1979,12 @@ public final class Koala {
       properties: props
     )
 
-    self.dataLakeClient.track(
-      event: event,
-      properties: props
-    )
+    if DataLakeWhiteListedEvents.allWhiteListedEvents().contains(event) {
+      self.dataLakeClient.track(
+        event: event,
+        properties: props
+      )
+    }
   }
 
   // MARK: - Session Properties
