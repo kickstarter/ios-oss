@@ -416,7 +416,6 @@ public final class Koala {
 
   /// Call when the activities screen is shown.
   public func trackActivities(count: Int) {
-    // TODO: add user properties and session props
     self.track(event: "Activity Feed Viewed", properties: ["activities_count": count])
   }
 
@@ -1310,7 +1309,9 @@ public final class Koala {
 
     self.track(
       event: "Project Page Viewed",
-      properties: props
+      properties: props,
+      refTag: refTag?.stringTag,
+      referrerCredit: cookieRefTag?.stringTag
     )
   }
 
@@ -1323,7 +1324,7 @@ public final class Koala {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
 
-    self.track(event: "Project Swiped", properties: props)
+    self.track(event: "Project Swiped", properties: props, refTag: refTag?.stringTag)
   }
 
   public func trackProjectSave(_ project: Project, context: SaveContext) {
@@ -1949,8 +1950,15 @@ public final class Koala {
   }
 
   // Private tracking method that merges in default properties.
-  private func track(event: String, properties: [String: Any] = [:]) {
-    let props = self.defaultProperties().withAllValuesFrom(properties)
+  private func track(
+    event: String,
+    properties: [String: Any] = [:],
+    refTag: String? = nil,
+    referrerCredit: String? = nil
+  ) {
+    let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
+      .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
+      .withAllValuesFrom(properties)
 
     self.logEventCallback?(event, props)
 
@@ -1965,7 +1973,13 @@ public final class Koala {
     )
   }
 
-  private func defaultProperties() -> [String: Any] {
+  // MARK: - Session Properties
+
+  private func sessionProperties(
+    refTag: String?,
+    referrerCredit: String?,
+    prefix: String = "session_"
+  ) -> [String: Any] {
     var props: [String: Any] = [:]
 
     let enabledFeatureFlags = self.config?.features
@@ -1973,45 +1987,38 @@ public final class Koala {
       .keys
       .sorted()
 
-    props["manufacturer"] = "Apple"
-    props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
-    props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
-    props["current_variants"] = self.config?.abExperimentsArray.sorted() ?? []
-    props["enabled_feature_flags"] = enabledFeatureFlags ?? []
-    props["model"] = Koala.deviceModel
-    props["distinct_id"] = self.distinctId
-    props["device_fingerprint"] = self.distinctId
-    props["iphone_uuid"] = self.distinctId
-    props["os"] = self.device.systemName
-    props["os_version"] = self.device.systemVersion
-    props["screen_width"] = UInt(self.screen.bounds.width)
-    props["screen_height"] = UInt(self.screen.bounds.height)
-    props["device_orientation"] = Koala.deviceOrientation
-    props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
-    props["preferred_content_size_category"] = self.preferredContentSizeCategory?.rawValue
-
-    props["mp_lib"] = "kickstarter_ios"
-    props["koala_lib"] = "kickstarter_ios"
-
-    props["client_type"] = "native"
-    props["device_format"] = self.deviceFormat
-    props["client_platform"] = self.clientPlatform
-    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
-    props["wifi_connection"] = Reachability.current == .wifi
-
-    if let loggedInUser = self.loggedInUser {
-      properties(user: loggedInUser).forEach { props[$0] = $1 }
-    }
-    props["user_is_admin"] = self.loggedInUser?.isAdmin
-    props["user_logged_in"] = self.loggedInUser != nil
-    props["user_country"] = self.loggedInUser?.location?.country ?? self.config?.countryCode
-
     props["apple_pay_capable"] = PKPaymentAuthorizationViewController.applePayCapable()
     props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
+    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
+    props["client_type"] = "native"
+    props["current_variants"] = self.config?.abExperimentsArray.sorted()
 
+    props["device_fingerprint"] = self.distinctId
+    props["device_format"] = self.deviceFormat
+    props["device_manufacturer"] = "Apple"
+    props["device_model"] = Koala.deviceModel
+    props["device_orientation"] = self.deviceOrientation
+    props["distinct_id"] = self.distinctId
+
+    props["enabled_features"] = enabledFeatureFlags
+    props["iphone_uuid"] = self.distinctId
+    props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
+    props["mp_lib"] = "kickstarter_ios"
+    props["os"] = self.device.systemName
+    props["os_version"] = self.device.systemVersion
     props["time"] = Date().timeIntervalSince1970
+    props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
+    props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
+    props["screen_width"] = UInt(self.screen.bounds.width)
+    props["user_agent"] = Service.userAgent
+    props["user_logged_in"] = self.loggedInUser != nil
+    props["wifi_connection"] = Reachability.current == .wifi
+    props["client_platform"] = self.clientPlatform
 
-    return props
+    props["ref_tag"] = refTag
+    props["referrer_credit"] = referrerCredit
+
+    return props.prefixedKeys(prefix)
   }
 
   private static let deviceModel: String? = {
@@ -2022,8 +2029,8 @@ public final class Koala {
     return String(cString: machine)
   }()
 
-  private static var deviceOrientation: String {
-    switch UIDevice.current.orientation {
+  private var deviceOrientation: String {
+    switch self.device.orientation {
     case .faceDown:
       return "Face Down"
     case .faceUp:
@@ -2128,17 +2135,6 @@ private func properties(comment: Comment, prefix: String = "comment_") -> [Strin
   var properties: [String: Any] = [:]
 
   properties["body_length"] = comment.body.count
-
-  return properties.prefixedKeys(prefix)
-}
-
-private func properties(user: User, prefix: String = "user_") -> [String: Any] {
-  var properties: [String: Any] = [:]
-
-  properties["uid"] = user.id
-  properties["backed_projects_count"] = user.stats.backedProjectsCount
-  properties["created_projects_count"] = user.stats.createdProjectsCount
-  properties["starred_projects_count"] = user.stats.starredProjectsCount
 
   return properties.prefixedKeys(prefix)
 }
@@ -2259,6 +2255,21 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
   } else {
     return shareType.rawValue
   }
+}
+
+// MARK: - User Properties
+
+private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
+  var props: [String: Any] = [:]
+
+  props["is_admin"] = user?.isAdmin
+  props["backed_projects_count"] = user?.stats.backedProjectsCount
+  props["country"] = user?.location?.country ?? config?.countryCode
+  props["facebook_account"] = user?.facebookConnected
+  props["watched_projects_count"] = user?.stats.starredProjectsCount
+  props["uid"] = user?.id
+
+  return props.prefixedKeys(prefix)
 }
 
 extension Koala {
