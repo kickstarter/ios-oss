@@ -85,6 +85,14 @@ public struct User {
   public var isCreator: Bool {
     return (self.stats.createdProjectsCount ?? 0) > 0
   }
+
+  public var isRepeatCreator: Bool? {
+    guard let createdProjectsCount = self.stats.createdProjectsCount else {
+      return nil
+    }
+
+    return createdProjectsCount > 1
+  }
 }
 
 extension User: Equatable {}

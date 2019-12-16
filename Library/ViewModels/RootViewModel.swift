@@ -1,37 +1,19 @@
 import KsApi
-import Library
 import Prelude
 import ReactiveSwift
 import UIKit
 
-typealias RootViewControllerIndex = Int
-typealias RootTabBarItemBadgeValueData = (String?, RootViewControllerIndex)
+public typealias RootViewControllerIndex = Int
+public typealias RootTabBarItemBadgeValueData = (String?, RootViewControllerIndex)
 
-internal enum RootViewControllerData: Equatable {
+public enum RootViewControllerData: Equatable {
   case discovery
   case activities
   case search
   case dashboard(isMember: Bool)
   case profile(isLoggedIn: Bool)
 
-  var viewController: UIViewController? {
-    switch self {
-    case .discovery:
-      return DiscoveryViewController.instantiate()
-    case .activities:
-      return ActivitiesViewController.instantiate()
-    case .search:
-      return SearchViewController.instantiate()
-    case let .dashboard(isMember):
-      return isMember ? DashboardViewController.instantiate() : nil
-    case let .profile(isLoggedIn):
-      return isLoggedIn
-        ? BackerDashboardViewController.instantiate()
-        : LoginToutViewController.configuredWith(loginIntent: .generic)
-    }
-  }
-
-  static func == (lhs: RootViewControllerData, rhs: RootViewControllerData) -> Bool {
+  public static func == (lhs: RootViewControllerData, rhs: RootViewControllerData) -> Bool {
     switch (lhs, rhs) {
     case (.discovery, .discovery): return true
     case (.activities, .activities): return true
@@ -73,13 +55,13 @@ internal enum RootViewControllerData: Equatable {
   }
 }
 
-internal struct TabBarItemsData {
-  internal let items: [TabBarItem]
-  internal let isLoggedIn: Bool
-  internal let isMember: Bool
+public struct TabBarItemsData {
+  public let items: [TabBarItem]
+  public let isLoggedIn: Bool
+  public let isMember: Bool
 }
 
-internal enum TabBarItem {
+public enum TabBarItem {
   case activity(index: RootViewControllerIndex)
   case dashboard(index: RootViewControllerIndex)
   case home(index: RootViewControllerIndex)
@@ -87,7 +69,7 @@ internal enum TabBarItem {
   case search(index: RootViewControllerIndex)
 }
 
-internal protocol RootViewModelInputs {
+public protocol RootViewModelInputs {
   /// Call when the application will enter foreground.
   func applicationWillEnterForeground()
 
@@ -137,7 +119,7 @@ internal protocol RootViewModelInputs {
   func voiceOverStatusDidChange()
 }
 
-internal protocol RootViewModelOutputs {
+public protocol RootViewModelOutputs {
   /// Emits when the discovery VC should filter with specific params.
   var filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), Never> { get }
 
@@ -164,13 +146,13 @@ internal protocol RootViewModelOutputs {
   var updateUserInEnvironment: Signal<User, Never> { get }
 }
 
-internal protocol RootViewModelType {
+public protocol RootViewModelType {
   var inputs: RootViewModelInputs { get }
   var outputs: RootViewModelOutputs { get }
 }
 
-internal final class RootViewModel: RootViewModelType, RootViewModelInputs, RootViewModelOutputs {
-  internal init() {
+public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootViewModelOutputs {
+  public init() {
     let currentUser = Signal.merge(
       self.viewDidLoadProperty.signal,
       self.userSessionStartedProperty.signal,
@@ -337,100 +319,112 @@ internal final class RootViewModel: RootViewModelType, RootViewModelInputs, Root
     )
     .map(first)
     .map(tabData(forUser:))
+
+    // MARK: - Koala
+
+    self.tabBarItemsData
+      .takePairWhen(self.didSelectIndexProperty.signal)
+      .filterMap { data, index in
+        guard index < data.items.count else { return nil }
+
+        return tabBarItemLabel(for: data.items[index])
+      }.observeValues { tabBarItemLabel in
+        AppEnvironment.current.koala.trackTabBarClicked(tabBarItemLabel)
+      }
   }
 
   private let (applicationWillEnterForegroundSignal, applicationWillEnterForegroundObserver)
     = Signal<(), Never>.pipe()
-  func applicationWillEnterForeground() {
+  public func applicationWillEnterForeground() {
     self.applicationWillEnterForegroundObserver.send(value: ())
   }
 
   fileprivate let currentUserUpdatedProperty = MutableProperty(())
-  internal func currentUserUpdated() {
+  public func currentUserUpdated() {
     self.currentUserUpdatedProperty.value = ()
   }
 
   private let (didReceiveBadgeValueSignal, didReceiveBadgeValueObserver) = Signal<Int?, Never>.pipe()
-  func didReceiveBadgeValue(_ value: Int?) {
+  public func didReceiveBadgeValue(_ value: Int?) {
     self.didReceiveBadgeValueObserver.send(value: value)
   }
 
   fileprivate let didSelectIndexProperty = MutableProperty(0)
-  internal func didSelect(index: Int) {
+  public func didSelect(index: Int) {
     self.didSelectIndexProperty.value = index
   }
 
   fileprivate let shouldSelectIndexProperty = MutableProperty<Int?>(nil)
-  internal func shouldSelect(index: Int?) {
+  public func shouldSelect(index: Int?) {
     self.shouldSelectIndexProperty.value = index
   }
 
   fileprivate let switchToActivitiesProperty = MutableProperty(())
-  internal func switchToActivities() {
+  public func switchToActivities() {
     self.switchToActivitiesProperty.value = ()
   }
 
   fileprivate let switchToDashboardProperty = MutableProperty<Param?>(nil)
-  internal func switchToDashboard(project param: Param?) {
+  public func switchToDashboard(project param: Param?) {
     self.switchToDashboardProperty.value = param
   }
 
   fileprivate let switchToDiscoveryProperty = MutableProperty<DiscoveryParams?>(nil)
-  internal func switchToDiscovery(params: DiscoveryParams?) {
+  public func switchToDiscovery(params: DiscoveryParams?) {
     self.switchToDiscoveryProperty.value = params
   }
 
   fileprivate let switchToLoginProperty = MutableProperty(())
-  internal func switchToLogin() {
+  public func switchToLogin() {
     self.switchToLoginProperty.value = ()
   }
 
   fileprivate let switchToProfileProperty = MutableProperty(())
-  internal func switchToProfile() {
+  public func switchToProfile() {
     self.switchToProfileProperty.value = ()
   }
 
   fileprivate let switchToSearchProperty = MutableProperty(())
-  internal func switchToSearch() {
+  public func switchToSearch() {
     self.switchToSearchProperty.value = ()
   }
 
   fileprivate let userLocalePreferencesChangedProperty = MutableProperty(())
-  internal func userLocalePreferencesChanged() {
+  public func userLocalePreferencesChanged() {
     self.userLocalePreferencesChangedProperty.value = ()
   }
 
   fileprivate let userSessionStartedProperty = MutableProperty(())
-  internal func userSessionStarted() {
+  public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
   }
 
   fileprivate let userSessionEndedProperty = MutableProperty(())
-  internal func userSessionEnded() {
+  public func userSessionEnded() {
     self.userSessionEndedProperty.value = ()
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
-  internal func viewDidLoad() {
+  public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
   fileprivate let voiceOverStatusDidChangeProperty = MutableProperty(())
-  internal func voiceOverStatusDidChange() {
+  public func voiceOverStatusDidChange() {
     self.voiceOverStatusDidChangeProperty.value = ()
   }
 
-  internal let filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), Never>
-  internal let scrollToTop: Signal<RootViewControllerIndex, Never>
-  internal let selectedIndex: Signal<RootViewControllerIndex, Never>
-  internal let setBadgeValueAtIndex: Signal<RootTabBarItemBadgeValueData, Never>
-  internal let setViewControllers: Signal<[RootViewControllerData], Never>
-  internal let switchDashboardProject: Signal<(Int, Param), Never>
-  internal let tabBarItemsData: Signal<TabBarItemsData, Never>
-  internal let updateUserInEnvironment: Signal<User, Never>
+  public let filterDiscovery: Signal<(RootViewControllerIndex, DiscoveryParams), Never>
+  public let scrollToTop: Signal<RootViewControllerIndex, Never>
+  public let selectedIndex: Signal<RootViewControllerIndex, Never>
+  public let setBadgeValueAtIndex: Signal<RootTabBarItemBadgeValueData, Never>
+  public let setViewControllers: Signal<[RootViewControllerData], Never>
+  public let switchDashboardProject: Signal<(Int, Param), Never>
+  public let tabBarItemsData: Signal<TabBarItemsData, Never>
+  public let updateUserInEnvironment: Signal<User, Never>
 
-  internal var inputs: RootViewModelInputs { return self }
-  internal var outputs: RootViewModelOutputs { return self }
+  public var inputs: RootViewModelInputs { return self }
+  public var outputs: RootViewModelOutputs { return self }
 }
 
 private func generateStandardViewControllers() -> [RootViewControllerData] {
@@ -462,31 +456,8 @@ private func tabData(forUser user: User?) -> TabBarItemsData {
   )
 }
 
-extension TabBarItemsData: Equatable {
-  static func == (lhs: TabBarItemsData, rhs: TabBarItemsData) -> Bool {
-    return lhs.items == rhs.items
-      && lhs.isLoggedIn == rhs.isLoggedIn
-      && lhs.isMember == rhs.isMember
-  }
-}
-
-extension TabBarItem: Equatable {
-  static func == (lhs: TabBarItem, rhs: TabBarItem) -> Bool {
-    switch (lhs, rhs) {
-    case let (.activity(lhs), .activity(rhs)):
-      return lhs == rhs
-    case let (.dashboard(lhs), .dashboard(rhs)):
-      return lhs == rhs
-    case let (.home(lhs), .home(rhs)):
-      return lhs == rhs
-    case let (.profile(lhs), .profile(rhs)):
-      return lhs.avatarUrl == rhs.avatarUrl && lhs.index == rhs.index
-    case let (.search(lhs), .search(rhs)):
-      return lhs == rhs
-    default: return false
-    }
-  }
-}
+extension TabBarItemsData: Equatable {}
+extension TabBarItem: Equatable {}
 
 private func activitiesBadgeValue(with value: Int?) -> String? {
   let isVoiceOverRunning = AppEnvironment.current.isVoiceOverRunning()
@@ -499,4 +470,19 @@ private func activitiesBadgeValue(with value: Int?) -> String? {
   return (badgeValue > maxBadgeValue) && !isVoiceOverRunning
     ? Strings.activities_badge_value_plus(activities_badge_value: "\(clampedBadgeValue)")
     : "\(clampedBadgeValue)"
+}
+
+private func tabBarItemLabel(for tabBarItem: TabBarItem) -> Koala.TabBarItemLabel {
+  switch tabBarItem {
+  case .activity:
+    return .activity
+  case .dashboard:
+    return .dashboard
+  case .home:
+    return .discovery
+  case .profile:
+    return .profile
+  case .search:
+    return .search
+  }
 }

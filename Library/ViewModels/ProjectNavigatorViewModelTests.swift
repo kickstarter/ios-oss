@@ -156,13 +156,6 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.finishInteractiveTransition.assertValueCount(1)
     self.updateInteractiveTransition.assertValueCount(2)
     self.setTransitionAnimatorIsInFlight.assertValues([false, true, false])
-
-    XCTAssertEqual(["Closed Project Page"], self.trackingClient.events)
-    XCTAssertEqual(
-      ["swipe"],
-      self.trackingClient.properties(forKey: "gesture_type", as: String.self),
-      "Track swiped to close."
-    )
   }
 
   func testTransitionLifecycle_Overscroll_Cancel() {
@@ -395,25 +388,15 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.vm.inputs.pageTransition(completed: true, from: 0)
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1])
-    XCTAssertEqual(["Swiped Project", "Project Navigate"], self.trackingClient.events)
-    XCTAssertEqual(
-      ["next", "next"],
-      self.trackingClient.properties(forKey: "type", as: String.self),
-      "Track next swipe."
-    )
+    XCTAssertEqual(["Project Swiped"], self.trackingClient.events)
 
     self.vm.inputs.willTransition(toProject: playlist[1], at: 2)
     self.vm.inputs.pageTransition(completed: true, from: 1)
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2])
     XCTAssertEqual(
-      ["Swiped Project", "Project Navigate", "Swiped Project", "Project Navigate"],
+      ["Project Swiped", "Project Swiped"],
       self.trackingClient.events
-    )
-    XCTAssertEqual(
-      ["next", "next", "next", "next"],
-      self.trackingClient.properties(forKey: "type", as: String.self),
-      "Track next swipe."
     )
 
     self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
@@ -421,13 +404,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2, 1])
     XCTAssertEqual([
-      "Swiped Project", "Project Navigate", "Swiped Project", "Project Navigate",
-      "Swiped Project", "Project Navigate"
+      "Project Swiped", "Project Swiped", "Project Swiped"
     ], self.trackingClient.events)
-    XCTAssertEqual(
-      ["next", "next", "next", "next", "previous", "previous"],
-      self.trackingClient.properties(forKey: "type", as: String.self),
-      "Track previous swipe."
-    )
   }
 }
