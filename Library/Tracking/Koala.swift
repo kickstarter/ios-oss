@@ -2202,34 +2202,34 @@ private func discoveryProperties(
   prefix: String = "discover_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
-  var unprefixedResult: [String: Any] = [:]
 
   // NB: All filters should be added here since `result["everything"]` is derived from this.
   result["recommended"] = params.recommended
   result["social"] = params.social
-  result["staff_picks"] = params.staffPicks
-  result["starred"] = params.starred
+  result["pwl"] = params.staffPicks
+  result["watched"] = params.starred
   result["tag"] = params.tagId?.rawValue
-  result = result.withAllValuesFrom(params.category.map(properties(category:)) ?? [:])
+  let categoryProps = params.category.map { properties(category: $0, prefix: "subcategory_") }
+  let parentCategoryProps = params.category?.parent.map { properties(category: $0) }
+
+  result = result.withAllValuesFrom(categoryProps ?? [:])
+  result = result.withAllValuesFrom(parentCategoryProps ?? [:] )
 
   result["everything"] = result.isEmpty
   result["sort"] = params.sort?.rawValue
   result["ref_tag"] = RefTag.fromParams(params).stringTag
+  result["search_term"] = params.query
 
-  unprefixedResult["search_term"] = params.query
-
-  return result.prefixedKeys(prefix).withAllValuesFrom(unprefixedResult)
+  return result.prefixedKeys(prefix)
 }
 
-private func properties(category: KsApi.Category) -> [String: Any] {
+private func properties(category: KsApi.Category, prefix: String = "category_") -> [String: Any] {
   var result: [String: Any] = [:]
 
-  result["category_id"] = category.intID
-  result["category_name"] = category.name
+  result["id"] = category.intID
+  result["name"] = category.name
 
-  let parentProperties = category.parent.map(properties(category:)) ?? [:]
-  return result
-    .withAllValuesFrom(parentProperties.prefixedKeys("parent_"))
+  return result.prefixedKeys(prefix)
 }
 
 private func properties(

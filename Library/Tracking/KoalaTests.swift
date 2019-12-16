@@ -292,18 +292,18 @@ final class KoalaTests: TestCase {
 
     let properties = client.properties.last
 
-    XCTAssertEqual(30, properties?["discover_category_id"] as? Int)
-    XCTAssertEqual("Documentary", properties?["discover_category_name"] as? String)
+    XCTAssertEqual(30, properties?["discover_subcategory_id"] as? Int)
+    XCTAssertEqual("Documentary", properties?["discover_subcategory_name"] as? String)
     XCTAssertEqual(false, properties?["discover_recommended"] as? Bool)
     XCTAssertEqual(false, properties?["discover_social"] as? Bool)
-    XCTAssertEqual(true, properties?["discover_staff_picks"] as? Bool)
-    XCTAssertEqual(false, properties?["discover_starred"] as? Bool)
+    XCTAssertEqual(true, properties?["discover_pwl"] as? Bool)
+    XCTAssertEqual(false, properties?["discover_watched"] as? Bool)
     XCTAssertEqual(false, properties?["discover_everything"] as? Bool)
-    XCTAssertEqual(Category.filmAndVideo.intID, properties?["discover_parent_category_id"] as? Int)
-    XCTAssertEqual(Category.filmAndVideo.name, properties?["discover_parent_category_name"] as? String)
+    XCTAssertEqual(Category.filmAndVideo.intID, properties?["discover_category_id"] as? Int)
+    XCTAssertEqual(Category.filmAndVideo.name, properties?["discover_category_name"] as? String)
     XCTAssertEqual("popularity", properties?["discover_sort"] as? String)
     XCTAssertEqual("ios_project_collection_tag_518", properties?["discover_ref_tag"] as? String)
-    XCTAssertEqual("collage", properties?["search_term"] as? String)
+    XCTAssertEqual("collage", properties?["discover_search_term"] as? String)
   }
 
   func testDiscoveryProperties_NoCategory() {
