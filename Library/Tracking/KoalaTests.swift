@@ -324,10 +324,11 @@ final class KoalaTests: TestCase {
     let properties = client.properties.last
 
     XCTAssertNil(properties?["discover_category_id"])
+    XCTAssertNil(properties?["discover_subcategory_id"])
     XCTAssertEqual(false, properties?["discover_recommended"] as? Bool)
     XCTAssertEqual(false, properties?["discover_social"] as? Bool)
-    XCTAssertEqual(true, properties?["discover_staff_picks"] as? Bool)
-    XCTAssertEqual(false, properties?["discover_starred"] as? Bool)
+    XCTAssertEqual(true, properties?["discover_pwl"] as? Bool)
+    XCTAssertEqual(false, properties?["discover_watched"] as? Bool)
     XCTAssertEqual(false, properties?["discover_everything"] as? Bool)
     XCTAssertEqual("popularity", properties?["discover_sort"] as? String)
   }
@@ -346,11 +347,12 @@ final class KoalaTests: TestCase {
     let properties = client.properties.last
 
     XCTAssertNil(properties?["discover_category_id"])
+    XCTAssertNil(properties?["discover_subcategory_id"])
     XCTAssertNil(properties?["discover_recommended"])
     XCTAssertNil(properties?["discover_social"])
-    XCTAssertNil(properties?["discover_staff_picks"])
-    XCTAssertNil(properties?["discover_starred"])
-    XCTAssertNil(properties?["discover_term"])
+    XCTAssertNil(properties?["discover_pwl"])
+    XCTAssertNil(properties?["discover_watched"])
+    XCTAssertNil(properties?["discover_search_term"])
     XCTAssertEqual(true, properties?["discover_everything"] as? Bool)
     XCTAssertEqual("magic", properties?["discover_sort"] as? String)
   }

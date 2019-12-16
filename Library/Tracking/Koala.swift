@@ -550,9 +550,7 @@ public final class Koala {
     project: Project, screen: CheckoutContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["screen": screen.trackingString,
-                          "backer_reward_minimum": reward?.minimum,
-                          "pledge_total": backing?.amount])
+      .withAllValuesFrom(["screen": screen.trackingString])
 
     switch stateType {
     case .fix:
