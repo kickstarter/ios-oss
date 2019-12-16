@@ -146,6 +146,7 @@ final class KoalaTests: TestCase {
     let project = Project.template
       |> Project.lens.stats.staticUsdRate .~ 2
       |> Project.lens.stats.commentsCount .~ 10
+      |> Project.lens.prelaunchActivated .~ true
 
     koala.trackProjectViewed(project, refTag: .discovery, cookieRefTag: .recommended)
 
@@ -159,11 +160,10 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(project.country.currencyCode, properties?["project_currency"] as? String)
     XCTAssertEqual(project.stats.goal, properties?["project_goal"] as? Int)
     XCTAssertEqual(project.id, properties?["project_pid"] as? Int)
-    XCTAssertEqual(project.stats.pledged, properties?["project_pledged"] as? Int)
     XCTAssertEqual(project.stats.fundingProgress, properties?["project_percent_raised"] as? Float)
     XCTAssertEqual(project.stats.updatesCount, properties?["project_updates_count"] as? Int)
-    XCTAssertEqual(project.category.name, properties?["project_category"] as? String)
-    XCTAssertEqual(project.category._parent?.name, properties?["project_parent_category"] as? String)
+    XCTAssertEqual(project.category.name, properties?["project_subcategory"] as? String)
+    XCTAssertEqual(project.category._parent?.name, properties?["project_category"] as? String)
     XCTAssertEqual(project.location.name, properties?["project_location"] as? String)
     XCTAssertEqual(project.creator.id, properties?["project_creator_uid"] as? Int)
     XCTAssertEqual(24 * 15, properties?["project_hours_remaining"] as? Int)
@@ -172,10 +172,14 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(1_474_065_315, properties?["project_launched_at"] as? Double)
     XCTAssertEqual(2, properties?["project_static_usd_rate"] as? Float)
     XCTAssertEqual("live", properties?["project_state"] as? String)
+    XCTAssertEqual(project.stats.pledged, properties?["project_current_pledge_amount"] as? Int)
     XCTAssertEqual(2_000, properties?["project_current_pledge_amount_usd"] as? Int)
     XCTAssertEqual(4_000, properties?["project_goal_usd"] as? Int)
     XCTAssertEqual(true, properties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, properties?["project_comments_count"] as? Int)
+    XCTAssertEqual(true, properties?["project_prelaunch_activated"] as? Bool)
+    XCTAssertEqual(0, properties?["project_rewards_count"] as? Int)
+
     XCTAssertEqual("discovery", properties?["ref_tag"] as? String)
     XCTAssertEqual("recommended", properties?["referrer_credit"] as? String)
 
@@ -183,7 +187,7 @@ final class KoalaTests: TestCase {
     XCTAssertNil(properties?["project_user_is_backer"])
     XCTAssertNil(properties?["project_user_has_starred"])
 
-    XCTAssertEqual(23, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(25, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInUser() {
@@ -204,7 +208,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(25, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInBacker() {
@@ -224,7 +228,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(true, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(25, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInStarrer() {
@@ -244,7 +248,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(true, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(25, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInCreator() {
@@ -264,7 +268,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(25, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testDiscoveryProperties() {
