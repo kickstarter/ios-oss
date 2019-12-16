@@ -110,6 +110,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.viewModel.outputs.dismissToRootViewController
       .observeForControllerAction()
       .observeValues { [weak self] in
+        NotificationCenter.default.post($0)
         self?.dismiss(animated: true)
       }
 

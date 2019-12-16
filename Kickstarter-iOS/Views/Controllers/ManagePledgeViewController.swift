@@ -8,6 +8,8 @@ protocol ManagePledgeViewControllerDelegate: AnyObject {
     _ viewController: ManagePledgeViewController,
     shouldDismissAndShowSuccessBannerWithMessage message: String
   )
+
+  func managePledgeViewControllerDidUpdatePledge(_ viewController: ManagePledgeViewController)
 }
 
 final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
@@ -217,6 +219,13 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       .observeForControllerAction()
       .observeValues { [weak self] project, backing in
         self?.goToCancelPledge(project: project, backing: backing)
+      }
+
+    self.viewModel.outputs.notifyDelegateDidUpdatePledge
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.managePledgeViewControllerDidUpdatePledge(self)
       }
 
     self.viewModel.outputs.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage

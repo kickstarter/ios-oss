@@ -31,7 +31,7 @@ public protocol ThanksViewModelOutputs {
   var backedProjectText: Signal<NSAttributedString, Never> { get }
 
   /// Emits when view controller should dismiss
-  var dismissToRootViewController: Signal<(), Never> { get }
+  var dismissToRootViewController: Signal<Notification, Never> { get }
 
   /// Emits DiscoveryParams when should go to Discovery
   var goToDiscovery: Signal<DiscoveryParams, Never> { get }
@@ -107,6 +107,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .on(value: { AppEnvironment.current.userDefaults.hasSeenAppRating = true })
 
     self.dismissToRootViewController = self.closeButtonTappedProperty.signal
+      .mapConst(Notification(name: .ksr_projectBacked))
 
     self.goToDiscovery = self.categoryCellTappedProperty.signal.skipNil()
       .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
@@ -225,7 +226,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
   // MARK: - ThanksViewModelOutputs
 
-  public let dismissToRootViewController: Signal<(), Never>
+  public let dismissToRootViewController: Signal<Notification, Never>
   public let goToDiscovery: Signal<DiscoveryParams, Never>
   public let backedProjectText: Signal<NSAttributedString, Never>
   public let goToProject: Signal<(Project, [Project], RefTag), Never>

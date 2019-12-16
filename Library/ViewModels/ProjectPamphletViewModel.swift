@@ -14,6 +14,12 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call after the view loads and passes the initial TopConstraint constant.
   func initial(topConstraint: CGFloat)
 
+  /// Call when the Thank you page is dismissed after finishing backing the project
+  func didBackProject()
+
+  /// Call when the ManagePledgeViewController finished updating a pledge
+  func managePledgeViewControllerDidUpdatePledge()
+
   /// Call when the ManagePledgeViewController finished with a confirmation message
   func managePledgeViewControllerFinished(with message: String)
 
@@ -74,7 +80,9 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let freshProjectAndRefTagEvent = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
-        self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false),
+        self.didBackProjectProperty.signal.ignoreValues().mapConst(false),
+        self.managePledgeViewControllerFinishedWithMessageProperty.signal.ignoreValues().mapConst(false),
+        self.managePledgeViewControllerDidUpdatePledgeProperty.signal.ignoreValues().mapConst(false),
         self.pledgeRetryButtonTappedProperty.signal.mapConst(false)
       ))
       .map(unpack)
@@ -214,6 +222,16 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
   public func configureWith(projectOrParam: Either<Project, Param>, refTag: RefTag?) {
     self.configDataProperty.value = (projectOrParam, refTag)
+  }
+
+  private let didBackProjectProperty = MutableProperty<Void>(())
+  public func didBackProject() {
+    self.didBackProjectProperty.value = ()
+  }
+
+  private let managePledgeViewControllerDidUpdatePledgeProperty = MutableProperty(())
+  public func managePledgeViewControllerDidUpdatePledge() {
+    self.managePledgeViewControllerDidUpdatePledgeProperty.value = ()
   }
 
   private let managePledgeViewControllerFinishedWithMessageProperty = MutableProperty<String?>(nil)

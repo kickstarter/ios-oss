@@ -34,6 +34,7 @@ public protocol ManagePledgeViewModelOutputs {
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
   var notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never> { get }
+  var notifyDelegateDidUpdatePledge: Signal<Void, Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
@@ -68,6 +69,8 @@ public final class ManagePledgeViewModel:
     self.endRefreshing = refreshProjectEvent
       .filter { $0.isTerminating }
       .ignoreValues()
+
+    self.notifyDelegateDidUpdatePledge = refreshProjectEvent.values().ignoreValues()
 
     let project = Signal.merge(initialProject, refreshProjectEvent.values())
     let backing = project
@@ -196,6 +199,7 @@ public final class ManagePledgeViewModel:
   public let goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
+  public let notifyDelegateDidUpdatePledge: Signal<Void, Never>
   public let notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>

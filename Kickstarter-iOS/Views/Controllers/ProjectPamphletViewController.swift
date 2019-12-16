@@ -61,6 +61,12 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.didBackProject),
+      name: NSNotification.Name.ksr_projectBacked,
+      object: nil
+    )
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -203,6 +209,10 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
 
   // MARK: - Private Helpers
 
+  @objc private func didBackProject() {
+    self.viewModel.inputs.didBackProject()
+  }
+
   private func setInitial(constraints: [NSLayoutConstraint?], constant: CGFloat) {
     constraints.forEach {
       $0?.constant = constant
@@ -324,6 +334,10 @@ extension ProjectPamphletViewController: ManagePledgeViewControllerDelegate {
     shouldDismissAndShowSuccessBannerWithMessage message: String
   ) {
     self.viewModel.inputs.managePledgeViewControllerFinished(with: message)
+  }
+
+  func managePledgeViewControllerDidUpdatePledge(_ viewController: ManagePledgeViewController) {
+    self.viewModel.inputs.managePledgeViewControllerDidUpdatePledge()
   }
 }
 
