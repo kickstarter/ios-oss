@@ -620,9 +620,11 @@ public final class Koala {
     screen: CheckoutContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["screen": screen.trackingString,
-                          "backer_reward_minimum": reward?.minimum,
-                          "pledge_total": backing?.amount])
+      .withAllValuesFrom([
+        "screen": screen.trackingString,
+        "backer_reward_minimum": reward?.minimum,
+        "pledge_total": backing?.amount
+      ])
 
     self.track(event: "Select Reward Button Clicked", properties: props)
   }
@@ -2182,7 +2184,7 @@ private func discoveryProperties(
   let parentCategoryProps = params.category?.parent.map { properties(category: $0) }
 
   result = result.withAllValuesFrom(categoryProps ?? [:])
-  result = result.withAllValuesFrom(parentCategoryProps ?? [:] )
+  result = result.withAllValuesFrom(parentCategoryProps ?? [:])
 
   result["everything"] = result.isEmpty
   result["sort"] = params.sort?.rawValue

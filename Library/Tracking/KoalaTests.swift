@@ -181,7 +181,6 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(true, properties?["project_prelaunch_activated"] as? Bool)
     XCTAssertEqual(0, properties?["project_rewards_count"] as? Int)
 
-
     XCTAssertEqual(false, properties?["project_user_is_project_creator"] as? Bool)
     XCTAssertNil(properties?["project_user_is_backer"])
     XCTAssertNil(properties?["project_user_has_starred"])
@@ -882,9 +881,13 @@ final class KoalaTests: TestCase {
 
     koala.trackProjectViewed(Project.template) // white-listed event
 
-    XCTAssertEqual(["App Open", "Opened App", "Project Page Viewed"], koalaClient.events,
-                   "White-listed event is tracked by koala client")
-    XCTAssertEqual(["Project Page Viewed"], dataLakeClient.events,
-                   "White-listed event is tracked by data lake client")
+    XCTAssertEqual(
+      ["App Open", "Opened App", "Project Page Viewed"], koalaClient.events,
+      "White-listed event is tracked by koala client"
+    )
+    XCTAssertEqual(
+      ["Project Page Viewed"], dataLakeClient.events,
+      "White-listed event is tracked by data lake client"
+    )
   }
 }
