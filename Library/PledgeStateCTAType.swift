@@ -50,12 +50,7 @@ public enum PledgeStateCTAType {
   public var titleLabel: String? {
     switch self {
     case .fix:
-      return localizedString(
-        key: "Payment_failure",
-        defaultValue: "Payment failure",
-        count: nil,
-        substitutions: [:]
-      )
+      return Strings.Payment_failure()
     case .manage:
       return Strings.Youre_a_backer()
     default:
@@ -66,12 +61,7 @@ public enum PledgeStateCTAType {
   public var subtitleLabel: String? {
     switch self {
     case .fix:
-      return localizedString(
-        key: "We_cant_process_your_pledge",
-        defaultValue: "We can't process your pledge.",
-        count: nil,
-        substitutions: [:]
-      )
+      return Strings.We_cant_process_your_pledge()
     default:
       return nil
     }
