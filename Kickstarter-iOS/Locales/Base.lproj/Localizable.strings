@@ -345,6 +345,7 @@
 "Password_visibility" = "Password visibility";
 "Passwords_matching_message" = "New passwords must match.";
 "Past_live_stream" = "Past live stream";
+"Payment_failure" = "Payment failure";
 "Payment_method" = "Payment method";
 "Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
 "Payment_methods" = "Payment methods";
@@ -556,6 +557,7 @@
 "View_your_rewards" = "View your rewards";
 "Watch_live" = "Watch live";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "We can’t process this pledge because of a problem with the backer’s payment method.";
+"We_cant_process_your_pledge" = "We can't process your pledge.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "We can’t process your pledge. Please update your payment method.";
 "We_collected_the_backers_pledge_for_this_project" = "We collected the backer’s pledge for this project.";
 "We_collected_your_pledge_for_this_project" = "We collected your pledge for this project.";
