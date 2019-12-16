@@ -38,15 +38,6 @@ final class KoalaTests: TestCase {
 
     let properties = client.properties.last
 
-    // FIXME: The following properties cannot be reliably tested
-    //    XCTAssertEqual(false, properties?["session_apple_pay_capable"] as? Bool)
-    //    XCTAssertEqual(false, properties?["session_apple_pay_device"] as? Bool)
-    //    XCTAssertEqual("User-agent", properties?["session_user_agent"] as? String)
-    //    XCTAssertEqual("wifi", properties?["session_wifi_connection"] as? String)
-    //    XCTAssertEqual(["service": "at-t"], properties?["session_cellular_connection"] as? [String: String])
-    //    XCTAssertEqual("", properties?["session_user_agent"] as? String)
-    //    XCTAssertEqual("", properties?["session_device_model"] as? String)
-
     XCTAssertEqual(
       ["native_checkout[experimental]", "other_experiment[control]"],
       properties?["session_current_variants"] as? [String]
