@@ -1948,10 +1948,12 @@ public final class Koala {
   }
 
   // Private tracking method that merges in default properties.
-  private func track(event: String,
-                     properties: [String: Any] = [:],
-                     refTag: String? = nil,
-                     referrerCredit: String? = nil) {
+  private func track(
+    event: String,
+    properties: [String: Any] = [:],
+    refTag: String? = nil,
+    referrerCredit: String? = nil
+  ) {
     let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
       .withAllValuesFrom(properties)
@@ -1971,9 +1973,11 @@ public final class Koala {
 
   // MARK: - Session Properties
 
-  private func sessionProperties(refTag: String?,
-                                 referrerCredit: String?,
-                                 prefix: String = "session_") -> [String: Any] {
+  private func sessionProperties(
+    refTag: String?,
+    referrerCredit: String?,
+    prefix: String = "session_"
+  ) -> [String: Any] {
     var props: [String: Any] = [:]
 
     let enabledFeatureFlags = self.config?.features
