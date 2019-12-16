@@ -155,7 +155,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.configureOptimizely
       .observeForUI()
       .observeValues { key in
-        KSOptimizely.setup(with: key)
+//        KSOptimizely.setup(with: key)
+
+        self.configureOptimizely(with: key)
       }
 
     self.viewModel.outputs.configureAppCenterWithData
@@ -297,6 +299,27 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   ) {
     self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
     completionHandler(true)
+  }
+
+  // MARK: - Functions
+
+  private func configureOptimizely(with key: String) {
+    let optimizelyClient = OptimizelyClient(sdkKey: key)
+
+    optimizelyClient.start { result in
+      var shouldUpdateClient: Bool
+
+      switch result {
+      case .success(_):
+        shouldUpdateClient = self.viewModel.inputs.optimizelyConfigured(isSuccess: true)
+      case .failure(_):
+        shouldUpdateClient = self.viewModel.inputs.optimizelyConfigured(isSuccess: false)
+      }
+
+      if shouldUpdateClient {
+        AppEnvironment.updateOptimizelyClient(optimizelyClient)
+      }
+    }
   }
 
   fileprivate func presentContextualPermissionAlert(_ notification: Notification) {

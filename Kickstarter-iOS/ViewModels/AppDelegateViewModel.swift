@@ -68,6 +68,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
+  /// Call when Optimizely has been configured with the given result
+  func optimizelyConfigured(isSuccess: Bool) -> Bool
+
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
 
@@ -513,7 +516,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
     self.configureOptimizely = self.applicationLaunchOptionsProperty.signal
-      .map { _ in KSOptimizely.sdkKey }
+      .map { _ in AppEnvironment.current.environmentType }
+      .map(optimizelySDKKey(for:))
 
     self.configureAppCenterWithData = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
@@ -606,6 +610,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     .flatMap { AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
     .filter(isTrue)
     .mapConst(0)
+
+    self.optimizelyConfigurationReturnValue = MutableProperty<Bool>(false)
+
+    self.optimizelyConfigurationReturnValue <~ self.optimizelyConfiguredWithResultProperty.signal
+      .skipNil()
   }
 
   // swiftlint:enable cyclomatic_complexity
@@ -719,6 +728,16 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public var applicationDidFinishLaunchingReturnValue: Bool {
     return self.applicationDidFinishLaunchingReturnValueProperty.value
   }
+
+  private let optimizelyConfigurationReturnValue: MutableProperty<Bool>
+
+  fileprivate let optimizelyConfiguredWithResultProperty = MutableProperty<Bool?>(nil)
+  public func optimizelyConfigured(isSuccess: Bool) -> Bool {
+    self.optimizelyConfiguredWithResultProperty.value = isSuccess
+
+    return optimizelyConfigurationReturnValue.value
+  }
+
 
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
@@ -934,6 +953,19 @@ extension ShortcutItem {
         userInfo: nil
       )
     }
+  }
+}
+
+private func optimizelySDKKey(for environmentType: EnvironmentType) -> String {
+  switch environmentType {
+    case .production:
+      return Secrets.OptimizelySDKKey.production
+    case .development:
+      return Secrets.OptimizelySDKKey.development
+    case .staging:
+      return Secrets.OptimizelySDKKey.staging
+    default:
+      return Secrets.OptimizelySDKKey.development
   }
 }
 
