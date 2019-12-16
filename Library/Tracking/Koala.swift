@@ -1299,15 +1299,13 @@ public final class Koala {
     refTag: RefTag? = nil,
     cookieRefTag: RefTag? = nil
   ) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-
-    // TODO: move ref_tag and referrer_credit to session properties
-    props["ref_tag"] = refTag?.stringTag
-    props["referrer_credit"] = cookieRefTag?.stringTag
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
     self.track(
       event: "Project Page Viewed",
-      properties: props
+      properties: props,
+      refTag: refTag?.stringTag,
+      referrerCredit: cookieRefTag?.stringTag
     )
   }
 
@@ -1317,10 +1315,9 @@ public final class Koala {
    - parameter refTag:       The ref tag used when swiping to the project.
    */
   public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-    props["ref_tag"] = refTag?.stringTag
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
-    self.track(event: "Project Swiped", properties: props)
+    self.track(event: "Project Swiped", properties: props, refTag: refTag?.stringTag)
   }
 
   public func trackProjectSave(_ project: Project, context: SaveContext) {
@@ -1946,8 +1943,11 @@ public final class Koala {
   }
 
   // Private tracking method that merges in default properties.
-  private func track(event: String, properties: [String: Any] = [:]) {
-    let props = self.sessionProperties()
+  private func track(event: String,
+                     properties: [String: Any] = [:],
+                     refTag: String? = nil,
+                     referrerCredit: String? = nil) {
+    let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
       .withAllValuesFrom(properties)
 
@@ -1966,7 +1966,9 @@ public final class Koala {
 
   // MARK: - Session Properties
 
-  private func sessionProperties(_ prefix: String = "session_") -> [String: Any] {
+  private func sessionProperties(refTag: String?,
+                                 referrerCredit: String?,
+                                 prefix: String = "session_") -> [String: Any] {
     var props: [String: Any] = [:]
 
     let enabledFeatureFlags = self.config?.features
@@ -1980,7 +1982,6 @@ public final class Koala {
     props["client_type"] = "native"
     props["current_variants"] = self.config?.abExperimentsArray.sorted()
 
-    props["device"] = self.device.name
     props["device_fingerprint"] = self.distinctId
     props["device_format"] = self.deviceFormat
     props["device_manufacturer"] = "Apple"
@@ -1995,13 +1996,16 @@ public final class Koala {
     props["os"] = self.device.systemName
     props["os_version"] = self.device.systemVersion
     props["time"] = Date().timeIntervalSince1970
-    props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
-    props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
+    props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
+    props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["screen_width"] = UInt(self.screen.bounds.width)
     props["user_agent"] = Service.userAgent
     props["user_logged_in"] = self.loggedInUser != nil
     props["wifi_connection"] = Reachability.current == .wifi
     props["client_platform"] = self.clientPlatform
+
+    props["ref_tag"] = refTag
+    props["referrer_credit"] = referrerCredit
 
     return props.prefixedKeys(prefix)
   }

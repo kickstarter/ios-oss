@@ -60,9 +60,8 @@ final class KoalaTests: TestCase {
     )
 
     XCTAssertEqual("native", properties?["session_client_type"] as? String)
-    XCTAssertEqual("1234567890", properties?["session_app_version"] as? String)
-    XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", properties?["session_app_release"] as? String)
-    XCTAssertEqual("iPhone 10", properties?["session_device"] as? String)
+    XCTAssertEqual("1234567890", properties?["session_app_build_number"] as? String)
+    XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", properties?["session_app_release_version"] as? String)
     XCTAssertEqual("phone", properties?["session_device_format"] as? String)
     XCTAssertEqual("abc-123", properties?["session_device_fingerprint"] as? String)
     XCTAssertEqual("Apple", properties?["session_device_manufacturer"] as? String)
@@ -77,7 +76,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["session_user_logged_in"] as? Bool)
     XCTAssertEqual("ios", properties?["session_client_platform"] as? String)
 
-    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("session_") }.count)
+    XCTAssertEqual(25, properties?.keys.filter { $0.hasPrefix("session_") }.count)
   }
 
   func testSessionProperties_VoiceOver() {
@@ -187,14 +186,15 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(4_000, properties?["project_goal_usd"] as? Int)
     XCTAssertEqual(true, properties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, properties?["project_comments_count"] as? Int)
-    XCTAssertEqual("discovery", properties?["ref_tag"] as? String)
-    XCTAssertEqual("recommended", properties?["referrer_credit"] as? String)
 
     XCTAssertEqual(false, properties?["project_user_is_project_creator"] as? Bool)
     XCTAssertNil(properties?["project_user_is_backer"])
     XCTAssertNil(properties?["project_user_has_starred"])
 
     XCTAssertEqual(23, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+
+    XCTAssertEqual("discovery", properties?["session_ref_tag"] as? String)
+    XCTAssertEqual("recommended", properties?["session_referrer_credit"] as? String)
   }
 
   func testProjectProperties_LoggedInUser() {
