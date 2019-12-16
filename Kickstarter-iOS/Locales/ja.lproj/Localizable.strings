@@ -345,7 +345,7 @@
 "Password_visibility" = "パスワードの表示/非表示";
 "Passwords_matching_message" = "新しいパスワードが一致しません。";
 "Past_live_stream" = "過去のプロジェクト";
-"Payment_failure" = "Payment failure";
+"Payment_failure" = "お支払い手続きに失敗しました";
 "Payment_method" = "支払方法";
 "Payment_method_was_successfully_charged" = "支払い方法が登録されました。";
 "Payment_methods" = "お支払い方法";
@@ -560,8 +560,8 @@
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "We can’t process your pledge. Please update your payment method.";
 "We_collected_the_backers_pledge_for_this_project" = "We collected the backer’s pledge for this project.";
 "We_collected_your_pledge_for_this_project" = "We collected your pledge for this project.";
-"We_cant_process_your_pledge" = "We can't process your pledge.";
-"We_cant_process_your_pledge_for" = "We can't process your pledge for:";
+"We_cant_process_your_pledge" = "プレッジを処理することができません。";
+"We_cant_process_your_pledge_for" = "以下のプレッジを処理することが出来ません:";
 "We_couldnt_find_anything_for_search_term" = "「%{search_term}」に一致するものがありませんでした。";
 "We_couldnt_process_your_pledge" = "プレッジを処理できませんでした。";
 "We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours" = "キャンペーンの最後の24時間において、プレッジを取り消すことよってプロジェクトがファンディングゴールに到達できなくなる場合においては、そのようなプレッジの取り消しは許可されません。";
