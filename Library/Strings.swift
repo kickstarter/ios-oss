@@ -5726,6 +5726,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Payment failure"
+
+   - **en**: "Payment failure"
+   - **de**: "Zahlung fehlgeschlagen"
+   - **es**: "Error de pago"
+   - **fr**: "Échec du paiement"
+   - **ja**: "お支払い手続きに失敗しました"
+  */
+  public static func Payment_failure() -> String {
+    return localizedString(
+      key: "Payment_failure",
+      defaultValue: "Payment failure",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Payment method"
 
    - **en**: "Payment method"
@@ -9109,6 +9126,23 @@ catch your eye?"
     return localizedString(
       key: "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method",
       defaultValue: "We can’t process this pledge because of a problem with the backer’s payment method.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "We can't process your pledge."
+
+   - **en**: "We can't process your pledge."
+   - **de**: "Wir können deine Zahlung leider nicht bearbeiten."
+   - **es**: "No podemos procesar tu contribución."
+   - **fr**: "Impossible de traiter votre engagement."
+   - **ja**: "プレッジを処理することができません。"
+  */
+  public static func We_cant_process_your_pledge() -> String {
+    return localizedString(
+      key: "We_cant_process_your_pledge",
+      defaultValue: "We can't process your pledge.",
       count: nil,
       substitutions: [:]
     )

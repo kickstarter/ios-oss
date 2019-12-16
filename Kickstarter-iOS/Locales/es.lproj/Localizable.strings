@@ -346,6 +346,7 @@
 "Password_visibility" = "Visibilidad de la contraseña";
 "Passwords_matching_message" = "Las nuevas contraseñas deben coincidir.";
 "Past_live_stream" = "Live Stream pasado";
+"Payment_failure" = "Error de pago";
 "Payment_method" = "Método de pago";
 "Payment_method_was_successfully_charged" = "Cargo efectuado a método de pago indicado.";
 "Payment_methods" = "Métodos de pago";
@@ -557,6 +558,7 @@
 "View_your_rewards" = "Ver tus recompensas";
 "Watch_live" = "Ver en vivo";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "No podemos procesar esta contribución por un problema con el método de pago del patrocinador.";
+"We_cant_process_your_pledge" = "No podemos procesar tu contribución.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "No podemos procesar la contribución. Por favor actualiza tu método de pago.";
 "We_collected_the_backers_pledge_for_this_project" = "Hemos recolectado la contribución del patrocinador a este proyecto.";
 "We_collected_your_pledge_for_this_project" = "Hemos recolectado tu contribución a este proyecto.";
