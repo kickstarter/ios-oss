@@ -1299,7 +1299,11 @@ public final class Koala {
     refTag: RefTag? = nil,
     cookieRefTag: RefTag? = nil
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+
+    // TODO: move ref_tag and referrer_credit to session properties
+    props["ref_tag"] = refTag?.stringTag
+    props["referrer_credit"] = cookieRefTag?.stringTag
 
     self.track(
       event: "Project Page Viewed",
@@ -1315,7 +1319,8 @@ public final class Koala {
    - parameter refTag:       The ref tag used when swiping to the project.
    */
   public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    props["ref_tag"] = refTag?.stringTag
 
     self.track(event: "Project Swiped", properties: props, refTag: refTag?.stringTag)
   }
