@@ -186,7 +186,7 @@ final class KoalaTests: TestCase {
     XCTAssertNil(properties?["project_user_is_backer"])
     XCTAssertNil(properties?["project_user_has_starred"])
 
-    XCTAssertEqual(23, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(25, properties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual("discovery", properties?["session_ref_tag"] as? String)
     XCTAssertEqual("recommended", properties?["session_referrer_credit"] as? String)
