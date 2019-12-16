@@ -2,7 +2,6 @@ import AVFoundation
 import FBSDKCoreKit
 import Foundation
 import KsApi
-import Optimizely
 import ReactiveSwift
 
 /**
