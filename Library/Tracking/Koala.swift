@@ -2167,17 +2167,6 @@ private func properties(comment: Comment, prefix: String = "comment_") -> [Strin
   return properties.prefixedKeys(prefix)
 }
 
-private func properties(user: User, prefix: String = "user_") -> [String: Any] {
-  var properties: [String: Any] = [:]
-
-  properties["uid"] = user.id
-  properties["backed_projects_count"] = user.stats.backedProjectsCount
-  properties["created_projects_count"] = user.stats.createdProjectsCount
-  properties["starred_projects_count"] = user.stats.starredProjectsCount
-
-  return properties.prefixedKeys(prefix)
-}
-
 private func properties(userActivity: NSUserActivity) -> [String: Any] {
   var props: [String: Any] = [:]
 
