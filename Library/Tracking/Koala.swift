@@ -541,6 +541,8 @@ public final class Koala {
       self.track(event: "Back this Project Button Clicked", properties: props)
     case .manage:
       self.track(event: "Manage Pledge Button Clicked", properties: props)
+    case .seeRewards:
+      self.track(event: "See Rewards Button Clicked", properties: props)
     case .viewBacking:
       self.track(event: "View Your Pledge Button Clicked", properties: props)
     case .viewRewards:
