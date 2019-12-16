@@ -139,18 +139,7 @@ public final class ProjectNavigatorViewModel: ProjectNavigatorViewModelType,
     configData
       .takePairWhen(swipedToProjectAtIndexFromIndex)
       .observeValues { configData, pii in
-        let type = swipeType(currentIndex: pii.currentIndex, previousIndex: pii.previousIndex)
-        AppEnvironment.current.koala.trackSwipedProject(pii.project, refTag: configData.refTag, type: type)
-      }
-
-    Signal.combineLatest(configData, currentProject)
-      .takeWhen(self.finishInteractiveTransition)
-      .observeValues { configData, project in
-        AppEnvironment.current.koala.trackClosedProjectPage(
-          project,
-          refTag: configData.refTag,
-          gestureType: .swipe
-        )
+        AppEnvironment.current.koala.trackSwipedProject(pii.project, refTag: configData.refTag)
       }
   }
 
