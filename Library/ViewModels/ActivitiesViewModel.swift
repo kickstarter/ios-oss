@@ -199,6 +199,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       }
 
     self.erroredBackings = erroredBackingsEvent.values()
+      .filter { !$0.isEmpty }
 
     let loggedInForEmptyState = self.activities
       .filter { AppEnvironment.current.currentUser != nil && $0.isEmpty }

@@ -20,6 +20,7 @@ final class GraphBackingTests: XCTestCase {
       }
     }
     """
+
     let data = Data(jsonString.utf8)
 
     do {
