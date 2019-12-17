@@ -1148,7 +1148,7 @@
 		D69C551C23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C551B23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift */; };
 		D69C5529239ED10E00B0987A /* ErroredBackingViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5528239ED10E00B0987A /* ErroredBackingViewViewModel.swift */; };
 		D69C552B239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552A239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift */; };
-		D69C552D23A03D9700B0987A /* ActivityErroredBackingsTopCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552C23A03D9700B0987A /* ActivityErroredBackingsTopCellViewModelTests.swift */; };
+		D69C552D23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552C23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift */; };
 		D69C552F23A0609600B0987A /* ErroredBackingViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552E23A0609600B0987A /* ErroredBackingViewViewModelTests.swift */; };
 		D69C553123A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C553023A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift */; };
 		D69C553323A2C30300B0987A /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C553223A2C30200B0987A /* ErroredBackingView.swift */; };
@@ -2502,7 +2502,7 @@
 		D69C551B23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingsEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D69C5528239ED10E00B0987A /* ErroredBackingViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingViewViewModel.swift; sourceTree = "<group>"; };
 		D69C552A239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCellViewModel.swift; sourceTree = "<group>"; };
-		D69C552C23A03D9700B0987A /* ActivityErroredBackingsTopCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsTopCellViewModelTests.swift; sourceTree = "<group>"; };
+		D69C552C23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCellViewModelTests.swift; sourceTree = "<group>"; };
 		D69C552E23A0609600B0987A /* ErroredBackingViewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingViewViewModelTests.swift; sourceTree = "<group>"; };
 		D69C553023A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCellHeader.swift; sourceTree = "<group>"; };
 		D69C553223A2C30200B0987A /* ErroredBackingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ErroredBackingView.swift; path = Cells/ErroredBackingView.swift; sourceTree = "<group>"; };
@@ -3597,7 +3597,7 @@
 				A7F4418E1D005A9400FE6FC5 /* ActivitiesViewModel.swift */,
 				A7ED1F6D1E831C5C00BFFA01 /* ActivitiesViewModelTests.swift */,
 				D69C552A239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift */,
-				D69C552C23A03D9700B0987A /* ActivityErroredBackingsTopCellViewModelTests.swift */,
+				D69C552C23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift */,
 				A7F4418F1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift */,
 				A7ED1F6F1E831C5C00BFFA01 /* ActivityFriendBackingViewModelTests.swift */,
 				A7F441901D005A9400FE6FC5 /* ActivityFriendFollowCellViewModel.swift */,
@@ -5029,7 +5029,7 @@
 			files = (
 				D723708C2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift in Sources */,
 				A7ED1FAC1E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift in Sources */,
-				D69C552D23A03D9700B0987A /* ActivityErroredBackingsTopCellViewModelTests.swift in Sources */,
+				D69C552D23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift in Sources */,
 				A7ED20021E831C5C00BFFA01 /* ThanksViewModelTests.swift in Sources */,
 				3757D107228E521600241AE6 /* UIFontTests.swift in Sources */,
 				A7ED1F351E830FDC00BFFA01 /* String+SimpleHTMLTests.swift in Sources */,
