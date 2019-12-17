@@ -434,7 +434,8 @@ public final class Koala {
 
   /// Call when the activities screen is shown.
   public func trackActivities(count: Int) {
-    self.track(event: "Activity Feed Viewed", properties: ["activities_count": count])
+    self.track(event: DataLakeWhiteListedEvents.activityFeedViewed.rawValue,
+               properties: ["activities_count": count])
   }
 
   // MARK: - Application Lifecycle
@@ -501,7 +502,8 @@ public final class Koala {
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
     let label = tabBarItemLabel.trackingString
 
-    self.track(event: "Tab Bar Clicked", properties: ["ios_tab_bar_label": label])
+    self.track(event: DataLakeWhiteListedEvents.tabBarClicked.rawValue,
+               properties: ["ios_tab_bar_label": label])
   }
 
   // MARK: - Discovery Events
@@ -515,7 +517,7 @@ public final class Koala {
   public func trackDiscovery(params: DiscoveryParams) {
     let props = discoveryProperties(from: params)
 
-    self.track(event: "Explore Page Viewed", properties: props)
+    self.track(event: DataLakeWhiteListedEvents.explorePageViewed.rawValue, properties: props)
   }
 
   /**
@@ -525,7 +527,7 @@ public final class Koala {
    */
   public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
     self.track(
-      event: "Filter Clicked",
+      event: DataLakeWhiteListedEvents.filterClicked.rawValue,
       properties: discoveryProperties(from: params)
     )
   }
@@ -541,14 +543,15 @@ public final class Koala {
         "discover_sort": sort.rawValue
       ])
 
-    self.track(event: "Explore Sort Clicked", properties: props)
+    self.track(event: DataLakeWhiteListedEvents.exploreSortClicked.rawValue, properties: props)
   }
 
   /**
    Call when the user taps the editorial header at the top of Discovery
    */
   public func trackEditorialHeaderTapped(refTag: RefTag) {
-    self.track(event: "Editorial Card Clicked", properties: [:], refTag: refTag.stringTag)
+    self.track(event: DataLakeWhiteListedEvents.editorialCardClicked.rawValue,
+               properties: [:], refTag: refTag.stringTag)
   }
 
   /**
@@ -557,7 +560,8 @@ public final class Koala {
    - parameter params: The DiscoveryParams associated with the collection
    */
   public func trackCollectionViewed(params: DiscoveryParams) {
-    self.track(event: "Collection Viewed", properties: discoveryProperties(from: params))
+    self.track(event: DataLakeWhiteListedEvents.collectionViewed.rawValue,
+               properties: discoveryProperties(from: params))
   }
 
   // MARK: - Checkout Events
@@ -622,8 +626,8 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom([
         "screen": screen.trackingString,
-        "backer_reward_minimum": reward?.minimum,
-        "pledge_total": backing?.amount
+        "backer_reward_minimum": reward?.minimum as Any,
+        "pledge_total": backing?.amount as Any
       ])
 
     self.track(event: "Select Reward Button Clicked", properties: props)
@@ -1286,7 +1290,7 @@ public final class Koala {
 
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    self.track(event: "Search Page Viewed")
+    self.track(event: DataLakeWhiteListedEvents.searchPageViewed.rawValue)
   }
 
   // Call when projects have been obtained from a search.
@@ -1303,7 +1307,7 @@ public final class Koala {
         "has_results": hasResults
       ])
 
-    self.track(event: "Search Results Loaded", properties: props)
+    self.track(event: DataLakeWhiteListedEvents.searchResultsLoaded.rawValue, properties: props)
   }
 
   // MARK: - Project Events
@@ -1323,7 +1327,7 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
     self.track(
-      event: "Project Page Viewed",
+      event: DataLakeWhiteListedEvents.projectPageViewed.rawValue,
       properties: props,
       refTag: refTag?.stringTag,
       referrerCredit: cookieRefTag?.stringTag
@@ -1338,7 +1342,8 @@ public final class Koala {
   public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
-    self.track(event: "Project Swiped", properties: props, refTag: refTag?.stringTag)
+    self.track(event: DataLakeWhiteListedEvents.projectSwiped.rawValue,
+               properties: props, refTag: refTag?.stringTag)
   }
 
   public func trackProjectSave(_ project: Project, context: SaveContext) {
