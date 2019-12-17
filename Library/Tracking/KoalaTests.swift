@@ -65,7 +65,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["session_user_logged_in"] as? Bool)
     XCTAssertEqual("ios", properties?["session_client_platform"] as? String)
     XCTAssertEqual("en", properties?["session_display_language"] as? String)
-    XCTAssertEqual(1475361315, properties?["session_time"] as? Double)
+    XCTAssertEqual(1_475_361_315, properties?["session_time"] as? Double)
 
     XCTAssertEqual(24, properties?.keys.filter { $0.hasPrefix("session_") }.count)
   }
