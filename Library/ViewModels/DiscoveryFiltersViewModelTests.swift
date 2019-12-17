@@ -116,7 +116,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     XCTAssertEqual(["Filter Clicked"], self.trackingClient.events)
     XCTAssertEqual(
       [Category.documentary.intID],
-      self.trackingClient.properties(forKey: "discover_category_id", as: Int.self)
+      self.trackingClient.properties(forKey: "discover_subcategory_id", as: Int.self)
     )
   }
 
