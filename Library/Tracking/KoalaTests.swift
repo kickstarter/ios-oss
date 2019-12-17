@@ -54,20 +54,33 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("1234567890", properties?["session_app_build_number"] as? String)
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", properties?["session_app_release_version"] as? String)
     XCTAssertEqual("phone", properties?["session_device_format"] as? String)
-    XCTAssertEqual("abc-123", properties?["session_device_fingerprint"] as? String)
     XCTAssertEqual("Apple", properties?["session_device_manufacturer"] as? String)
     XCTAssertEqual("Portrait", properties?["session_device_orientation"] as? String)
-    XCTAssertEqual("abc-123", properties?["session_distinct_id"] as? String)
+    XCTAssertEqual("abc-123", properties?["session_device_distinct_id"] as? String)
 
     XCTAssertEqual("MockSystemName", properties?["session_os"] as? String)
     XCTAssertEqual("MockSystemVersion", properties?["session_os_version"] as? String)
     XCTAssertEqual(UInt(screen.bounds.width), properties?["session_screen_width"] as? UInt)
     XCTAssertEqual("kickstarter_ios", properties?["session_mp_lib"] as? String)
-    XCTAssertEqual("abc-123", properties?["session_iphone_uuid"] as? String)
     XCTAssertEqual(false, properties?["session_user_logged_in"] as? Bool)
     XCTAssertEqual("ios", properties?["session_client_platform"] as? String)
+    XCTAssertEqual("en", properties?["session_display_language"] as? String)
+    XCTAssertEqual(1475361315, properties?["session_time"] as? Double)
 
-    XCTAssertEqual(25, properties?.keys.filter { $0.hasPrefix("session_") }.count)
+    XCTAssertEqual(24, properties?.keys.filter { $0.hasPrefix("session_") }.count)
+  }
+
+  func testSessionProperties_Language() {
+    withEnvironment(language: Language.es) {
+      let client = MockTrackingClient()
+      let koala = Koala(client: client)
+
+      koala.trackAppOpen()
+
+      let properties = client.properties.last
+
+      XCTAssertEqual("es", properties?["session_display_language"] as? String)
+    }
   }
 
   func testSessionProperties_VoiceOver() {
@@ -837,17 +850,17 @@ final class KoalaTests: TestCase {
     koala.trackTabBarClicked(tabBarActivity)
 
     XCTAssertEqual(["Tab Bar Clicked"], client.events)
-    XCTAssertEqual("activity", client.properties.last?["ios_tab_bar_label"] as? String)
+    XCTAssertEqual("activity", client.properties.last?["tab_bar_label"] as? String)
 
     koala.trackTabBarClicked(tabBarDashboard)
 
     XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], client.events)
-    XCTAssertEqual("dashboard", client.properties.last?["ios_tab_bar_label"] as? String)
+    XCTAssertEqual("dashboard", client.properties.last?["tab_bar_label"] as? String)
 
     koala.trackTabBarClicked(tabBarHome)
 
     XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"], client.events)
-    XCTAssertEqual("discovery", client.properties.last?["ios_tab_bar_label"] as? String)
+    XCTAssertEqual("discovery", client.properties.last?["tab_bar_label"] as? String)
 
     koala.trackTabBarClicked(tabBarProfile)
 
@@ -855,7 +868,7 @@ final class KoalaTests: TestCase {
       ["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"],
       client.events
     )
-    XCTAssertEqual("profile", client.properties.last?["ios_tab_bar_label"] as? String)
+    XCTAssertEqual("profile", client.properties.last?["tab_bar_label"] as? String)
 
     koala.trackTabBarClicked(tabBarSearch)
 
@@ -866,7 +879,7 @@ final class KoalaTests: TestCase {
       "Tab Bar Clicked",
       "Tab Bar Clicked"
     ], client.events)
-    XCTAssertEqual("search", client.properties.last?["ios_tab_bar_label"] as? String)
+    XCTAssertEqual("search", client.properties.last?["tab_bar_label"] as? String)
   }
 
   func testLakeWhiteList() {

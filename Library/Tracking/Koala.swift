@@ -506,7 +506,7 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.tabBarClicked.rawValue,
-      properties: ["ios_tab_bar_label": label]
+      properties: ["tab_bar_label": label]
     )
   }
 
@@ -2023,21 +2023,20 @@ public final class Koala {
     props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
     props["client_type"] = "native"
     props["current_variants"] = self.config?.abExperimentsArray.sorted()
+    props["display_language"] = AppEnvironment.current.language.rawValue
 
-    props["device_fingerprint"] = self.distinctId
     props["device_format"] = self.deviceFormat
     props["device_manufacturer"] = "Apple"
     props["device_model"] = Koala.deviceModel
     props["device_orientation"] = self.deviceOrientation
-    props["distinct_id"] = self.distinctId
+    props["device_distinct_id"] = self.distinctId
 
     props["enabled_features"] = enabledFeatureFlags
-    props["iphone_uuid"] = self.distinctId
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
     props["mp_lib"] = "kickstarter_ios"
     props["os"] = self.device.systemName
     props["os_version"] = self.device.systemVersion
-    props["time"] = Date().timeIntervalSince1970
+    props["time"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
     props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["screen_width"] = UInt(self.screen.bounds.width)
