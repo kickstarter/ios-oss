@@ -173,7 +173,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     )
     XCTAssertEqual(
       [nil, 1],
-      self.trackingClient.properties(forKey: "discover_category_id", as: Int.self),
+      self.trackingClient.properties(forKey: "discover_subcategory_id", as: Int.self),
       "The updated category is tracked."
     )
 
@@ -1271,7 +1271,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     XCTAssertEqual(["Editorial Card Clicked"], self.trackingClient.events)
     XCTAssertEqual(
       ["ios_project_collection_tag_518"],
-      self.trackingClient.properties(forKey: "ref_tag", as: String.self)
+      self.trackingClient.properties(forKey: "session_ref_tag", as: String.self)
     )
 
     self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
@@ -1279,7 +1279,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     XCTAssertEqual(["Editorial Card Clicked", "Editorial Card Clicked"], self.trackingClient.events)
     XCTAssertEqual(
       ["ios_project_collection_tag_518", "ios_project_collection_tag_518"],
-      self.trackingClient.properties(forKey: "ref_tag")
+      self.trackingClient.properties(forKey: "session_ref_tag")
     )
   }
 
