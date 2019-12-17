@@ -121,7 +121,7 @@ private let dataLakeRequest: TrackingClientRequest = { config, environmentType, 
     ["Content-Type": "application/json; charset=utf-8"]
   )
 
-  return request
+  return AppEnvironment.current.apiService.preparedRequest(forRequest: request)
 }
 
 private let dataLakeUrl: TrackingClientURL = { environmentType in
