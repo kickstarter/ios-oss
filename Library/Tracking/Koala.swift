@@ -434,8 +434,10 @@ public final class Koala {
 
   /// Call when the activities screen is shown.
   public func trackActivities(count: Int) {
-    self.track(event: DataLakeWhiteListedEvents.activityFeedViewed.rawValue,
-               properties: ["activities_count": count])
+    self.track(
+      event: DataLakeWhiteListedEvents.activityFeedViewed.rawValue,
+      properties: ["activities_count": count]
+    )
   }
 
   // MARK: - Application Lifecycle
@@ -502,8 +504,10 @@ public final class Koala {
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
     let label = tabBarItemLabel.trackingString
 
-    self.track(event: DataLakeWhiteListedEvents.tabBarClicked.rawValue,
-               properties: ["ios_tab_bar_label": label])
+    self.track(
+      event: DataLakeWhiteListedEvents.tabBarClicked.rawValue,
+      properties: ["ios_tab_bar_label": label]
+    )
   }
 
   // MARK: - Discovery Events
@@ -550,8 +554,10 @@ public final class Koala {
    Call when the user taps the editorial header at the top of Discovery
    */
   public func trackEditorialHeaderTapped(refTag: RefTag) {
-    self.track(event: DataLakeWhiteListedEvents.editorialCardClicked.rawValue,
-               properties: [:], refTag: refTag.stringTag)
+    self.track(
+      event: DataLakeWhiteListedEvents.editorialCardClicked.rawValue,
+      properties: [:], refTag: refTag.stringTag
+    )
   }
 
   /**
@@ -560,8 +566,10 @@ public final class Koala {
    - parameter params: The DiscoveryParams associated with the collection
    */
   public func trackCollectionViewed(params: DiscoveryParams) {
-    self.track(event: DataLakeWhiteListedEvents.collectionViewed.rawValue,
-               properties: discoveryProperties(from: params))
+    self.track(
+      event: DataLakeWhiteListedEvents.collectionViewed.rawValue,
+      properties: discoveryProperties(from: params)
+    )
   }
 
   // MARK: - Checkout Events
@@ -1342,8 +1350,10 @@ public final class Koala {
   public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
-    self.track(event: DataLakeWhiteListedEvents.projectSwiped.rawValue,
-               properties: props, refTag: refTag?.stringTag)
+    self.track(
+      event: DataLakeWhiteListedEvents.projectSwiped.rawValue,
+      properties: props, refTag: refTag?.stringTag
+    )
   }
 
   public func trackProjectSave(_ project: Project, context: SaveContext) {
