@@ -416,7 +416,6 @@ public final class Koala {
 
   /// Call when the activities screen is shown.
   public func trackActivities(count: Int) {
-    // TODO: add user properties and session props
     self.track(event: "Activity Feed Viewed", properties: ["activities_count": count])
   }
 
@@ -1295,44 +1294,35 @@ public final class Koala {
    - parameter refTag:       The ref tag used when opening the project.
    - parameter cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
    */
-  public func trackProjectShow(
+  public func trackProjectViewed(
     _ project: Project,
     refTag: RefTag? = nil,
     cookieRefTag: RefTag? = nil
   ) {
-    var props = properties(project: project, loggedInUser: self.loggedInUser)
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+
+    // TODO: move ref_tag and referrer_credit to session properties
     props["ref_tag"] = refTag?.stringTag
     props["referrer_credit"] = cookieRefTag?.stringTag
 
-    // Deprecated event
     self.track(
       event: "Project Page Viewed",
-      properties: props.withAllValuesFrom(deprecatedProps)
+      properties: props,
+      refTag: refTag?.stringTag,
+      referrerCredit: cookieRefTag?.stringTag
     )
-
-    self.track(
-      event: "Viewed Project Page",
-      properties: props.withAllValuesFrom(deprecatedProps)
-    )
-
-    self.track(event: "Project Page", properties: props)
   }
 
-  public func trackSwipedProject(_ project: Project, refTag: RefTag?, type: SwipeType) {
-    var props = properties(project: project, loggedInUser: self.loggedInUser)
-    props["ref_tag"] = refTag?.stringTag
-    props["type"] = type.trackingString
-
-    self.track(event: "Swiped Project", properties: props)
-    self.track(event: "Project Navigate", properties: props)
-  }
-
-  public func trackClosedProjectPage(_ project: Project, refTag: RefTag?, gestureType: GestureType) {
-    var props = properties(project: project, loggedInUser: self.loggedInUser)
-    props["gesture_type"] = gestureType.trackingString
+  /**
+   Call when a project page is swiped to the next project.
+   - parameter project:      The next project being viewed.
+   - parameter refTag:       The ref tag used when swiping to the project.
+   */
+  public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
     props["ref_tag"] = refTag?.stringTag
 
-    self.track(event: "Closed Project Page", properties: props)
+    self.track(event: "Project Swiped", properties: props, refTag: refTag?.stringTag)
   }
 
   public func trackProjectSave(_ project: Project, context: SaveContext) {
@@ -1958,8 +1948,15 @@ public final class Koala {
   }
 
   // Private tracking method that merges in default properties.
-  private func track(event: String, properties: [String: Any] = [:]) {
-    let props = self.defaultProperties().withAllValuesFrom(properties)
+  private func track(
+    event: String,
+    properties: [String: Any] = [:],
+    refTag: String? = nil,
+    referrerCredit: String? = nil
+  ) {
+    let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
+      .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
+      .withAllValuesFrom(properties)
 
     self.logEventCallback?(event, props)
 
@@ -1974,7 +1971,13 @@ public final class Koala {
     )
   }
 
-  private func defaultProperties() -> [String: Any] {
+  // MARK: - Session Properties
+
+  private func sessionProperties(
+    refTag: String?,
+    referrerCredit: String?,
+    prefix: String = "session_"
+  ) -> [String: Any] {
     var props: [String: Any] = [:]
 
     let enabledFeatureFlags = self.config?.features
@@ -1982,45 +1985,38 @@ public final class Koala {
       .keys
       .sorted()
 
-    props["manufacturer"] = "Apple"
-    props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
-    props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
-    props["current_variants"] = self.config?.abExperimentsArray.sorted() ?? []
-    props["enabled_feature_flags"] = enabledFeatureFlags ?? []
-    props["model"] = Koala.deviceModel
-    props["distinct_id"] = self.distinctId
-    props["device_fingerprint"] = self.distinctId
-    props["iphone_uuid"] = self.distinctId
-    props["os"] = self.device.systemName
-    props["os_version"] = self.device.systemVersion
-    props["screen_width"] = UInt(self.screen.bounds.width)
-    props["screen_height"] = UInt(self.screen.bounds.height)
-    props["device_orientation"] = Koala.deviceOrientation
-    props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
-    props["preferred_content_size_category"] = self.preferredContentSizeCategory
-
-    props["mp_lib"] = "kickstarter_ios"
-    props["koala_lib"] = "kickstarter_ios"
-
-    props["client_type"] = "native"
-    props["device_format"] = self.deviceFormat
-    props["client_platform"] = self.clientPlatform
-    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
-    props["wifi_connection"] = Reachability.current == .wifi
-
-    if let loggedInUser = self.loggedInUser {
-      properties(user: loggedInUser).forEach { props[$0] = $1 }
-    }
-    props["user_is_admin"] = self.loggedInUser?.isAdmin
-    props["user_logged_in"] = self.loggedInUser != nil
-    props["user_country"] = self.loggedInUser?.location?.country ?? self.config?.countryCode
-
     props["apple_pay_capable"] = PKPaymentAuthorizationViewController.applePayCapable()
     props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
+    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
+    props["client_type"] = "native"
+    props["current_variants"] = self.config?.abExperimentsArray.sorted()
 
+    props["device_fingerprint"] = self.distinctId
+    props["device_format"] = self.deviceFormat
+    props["device_manufacturer"] = "Apple"
+    props["device_model"] = Koala.deviceModel
+    props["device_orientation"] = self.deviceOrientation
+    props["distinct_id"] = self.distinctId
+
+    props["enabled_features"] = enabledFeatureFlags
+    props["iphone_uuid"] = self.distinctId
+    props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
+    props["mp_lib"] = "kickstarter_ios"
+    props["os"] = self.device.systemName
+    props["os_version"] = self.device.systemVersion
     props["time"] = Date().timeIntervalSince1970
+    props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
+    props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
+    props["screen_width"] = UInt(self.screen.bounds.width)
+    props["user_agent"] = Service.userAgent
+    props["user_logged_in"] = self.loggedInUser != nil
+    props["wifi_connection"] = Reachability.current == .wifi
+    props["client_platform"] = self.clientPlatform
 
-    return props
+    props["ref_tag"] = refTag
+    props["referrer_credit"] = referrerCredit
+
+    return props.prefixedKeys(prefix)
   }
 
   private static let deviceModel: String? = {
@@ -2031,8 +2027,8 @@ public final class Koala {
     return String(cString: machine)
   }()
 
-  private static var deviceOrientation: String {
-    switch UIDevice.current.orientation {
+  private var deviceOrientation: String {
+    switch self.device.orientation {
     case .faceDown:
       return "Face Down"
     case .faceUp:
@@ -2070,45 +2066,65 @@ public final class Koala {
   }
 }
 
+// MARK: - Project Properties
+
+// FIXME: remove the function below and replace with projectProperties
+
 private func properties(
   project: Project,
   loggedInUser: User?,
   prefix: String = "project_"
 ) -> [String: Any] {
+  return projectProperties(from: project, loggedInUser: loggedInUser, prefix: prefix)
+}
+
+private func projectProperties(
+  from project: Project,
+  reward _: Reward? = nil,
+  backing _: Backing? = nil,
+  loggedInUser: User? = nil,
+  dateType: DateProtocol.Type = AppEnvironment.current.dateType,
+  calendar: Calendar = AppEnvironment.current.calendar,
+  prefix: String = "project_"
+) -> [String: Any] {
   var props: [String: Any] = [:]
 
   props["backers_count"] = project.stats.backersCount
-  props["country"] = project.country.countryCode
-  props["currency"] = project.country.currencyCode
-  props["goal"] = project.stats.goal
-  props["pid"] = project.id
-  props["name"] = project.name
-  props["pledged"] = project.stats.pledged
-  props["percent_raised"] = project.stats.fundingProgress
-  props["has_video"] = project.video != nil
-  props["state"] = project.state.rawValue
-  props["update_count"] = project.stats.updatesCount
-  props["comments_count"] = project.stats.commentsCount
-
-  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
-  props["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
-  props["duration"] = Int(round(project.dates.deadline - project.dates.launchedAt))
-
   props["category"] = project.category.name
-  props["parent_category"] = project.category.parent?.name
-
+  props["country"] = project.country.countryCode
+  props["comments_count"] = project.stats.commentsCount ?? 0
+  props["currency"] = project.country.currencyCode
+  props["creator_uid"] = project.creator.id
+  props["deadline"] = project.dates.deadline
+  props["goal"] = project.stats.goal
+  props["launched_at"] = project.dates.launchedAt
   props["location"] = project.location.name
+  props["name"] = project.name
+  props["pid"] = project.id
+  props["parent_category"] = project.category.parent?.name
+  props["percent_raised"] = project.stats.fundingProgress
+  props["pledged"] = project.stats.pledged
+  props["state"] = project.state.rawValue
+  props["static_usd_rate"] = project.stats.staticUsdRate
+  props["current_pledge_amount_usd"] = project.stats.pledgedUsd
+  props["goal_usd"] = project.stats.goalUsd
+  props["has_video"] = project.video != nil
+  props["updates_count"] = project.stats.updatesCount
 
-  var loggedInUserProperties: [String: Any] = [:]
-  if let user = loggedInUser {
-    loggedInUserProperties["user_is_project_creator"] = project.creator.id == user.id
-    loggedInUserProperties["user_is_backer"] = project.personalization.isBacking
-    loggedInUserProperties["user_has_starred"] = project.personalization.isStarred
-  }
+  let now = dateType.init().date
+  props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
+  props["duration"] = project.dates.duration(using: calendar)
 
-  return props.prefixedKeys(prefix)
-    .withAllValuesFrom(properties(user: project.creator, prefix: "creator_"))
-    .withAllValuesFrom(loggedInUserProperties)
+  var userProperties: [String: Any] = [:]
+  userProperties["has_watched"] = project.personalization.isStarred
+  userProperties["is_backer"] = project.personalization.isBacking
+  userProperties["is_project_creator"] = project.creator.id == loggedInUser?.id
+
+  let userProps = userProperties.prefixedKeys("user_")
+
+  return props
+    .withAllValuesFrom(userProps)
+    .prefixedKeys(prefix)
 }
 
 private func properties(
@@ -2160,17 +2176,6 @@ private func properties(comment: Comment, prefix: String = "comment_") -> [Strin
   var properties: [String: Any] = [:]
 
   properties["body_length"] = comment.body.count
-
-  return properties.prefixedKeys(prefix)
-}
-
-private func properties(user: User, prefix: String = "user_") -> [String: Any] {
-  var properties: [String: Any] = [:]
-
-  properties["uid"] = user.id
-  properties["backed_projects_count"] = user.stats.backedProjectsCount
-  properties["created_projects_count"] = user.stats.createdProjectsCount
-  properties["starred_projects_count"] = user.stats.starredProjectsCount
 
   return properties.prefixedKeys(prefix)
 }
@@ -2291,6 +2296,21 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
   } else {
     return shareType.rawValue
   }
+}
+
+// MARK: - User Properties
+
+private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
+  var props: [String: Any] = [:]
+
+  props["is_admin"] = user?.isAdmin
+  props["backed_projects_count"] = user?.stats.backedProjectsCount
+  props["country"] = user?.location?.country ?? config?.countryCode
+  props["facebook_account"] = user?.facebookConnected
+  props["watched_projects_count"] = user?.stats.starredProjectsCount
+  props["uid"] = user?.id
+
+  return props.prefixedKeys(prefix)
 }
 
 extension Koala {

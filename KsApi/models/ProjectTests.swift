@@ -207,4 +207,78 @@ final class ProjectTests: XCTestCase {
 
     XCTAssertEqual(2_000, project.stats.pledgedUsd)
   }
+
+  func testDuration() {
+    let launchedAt = DateComponents()
+      |> \.day .~ 15
+      |> \.month .~ 3
+      |> \.year .~ 2_020
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+
+    // 1 month after launch
+    let deadline = DateComponents()
+      |> \.day .~ 14
+      |> \.month .~ 4
+      |> \.year .~ 2_020
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+
+    let calendar = Calendar(identifier: .gregorian)
+
+    let deadlineInterval = calendar.date(from: deadline)?.timeIntervalSince1970
+    let launchedAtInterval = calendar.date(from: launchedAt)?.timeIntervalSince1970
+
+    let project = Project.template
+      |> Project.lens.dates.deadline .~ deadlineInterval!
+      |> Project.lens.dates.launchedAt .~ launchedAtInterval!
+
+    XCTAssertEqual(30, project.dates.duration(using: calendar))
+  }
+
+  func testHoursRemaining() {
+    let deadline = DateComponents()
+      |> \.day .~ 2
+      |> \.month .~ 3
+      |> \.year .~ 2_020
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+
+    // 24 hours before deadline
+    let now = DateComponents()
+      |> \.day .~ 1
+      |> \.month .~ 3
+      |> \.year .~ 2_020
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+
+    let calendar = Calendar(identifier: .gregorian)
+    let nowDate = calendar.date(from: now)
+    let deadlineInterval = calendar.date(from: deadline)?.timeIntervalSince1970
+
+    let project = Project.template
+      |> Project.lens.dates.deadline .~ deadlineInterval!
+
+    XCTAssertEqual(24, project.dates.hoursRemaining(from: nowDate!, using: calendar))
+  }
+
+  func testHoursRemaining_LessThanZero() {
+    let deadline = DateComponents()
+      |> \.day .~ 2
+      |> \.month .~ 3
+      |> \.year .~ 2_020
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+
+    // 24 hours after deadline
+    let now = DateComponents()
+      |> \.day .~ 3
+      |> \.month .~ 3
+      |> \.year .~ 2_020
+      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
+
+    let calendar = Calendar(identifier: .gregorian)
+    let nowDate = calendar.date(from: now)
+    let deadlineInterval = calendar.date(from: deadline)?.timeIntervalSince1970
+
+    let project = Project.template
+      |> Project.lens.dates.deadline .~ deadlineInterval!
+
+    XCTAssertEqual(0, project.dates.hoursRemaining(from: nowDate!, using: calendar))
+  }
 }
