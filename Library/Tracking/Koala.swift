@@ -2188,8 +2188,9 @@ private func discoveryProperties(
   let categoryProps = params.category.map { properties(category: $0, prefix: "subcategory_") }
   let parentCategoryProps = params.category?.parent.map { properties(category: $0) }
 
-  result = result.withAllValuesFrom(categoryProps ?? [:])
-  result = result.withAllValuesFrom(parentCategoryProps ?? [:])
+  result = result
+    .withAllValuesFrom(categoryProps ?? [:])
+    .withAllValuesFrom(parentCategoryProps ?? [:])
 
   result["everything"] = result.isEmpty
   result["sort"] = params.sort?.rawValue
