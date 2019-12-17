@@ -5,7 +5,7 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class ActivityErroredBackingsTopCellViewModelTests: TestCase {
-  private let vm: ActivityErroredBackingsTopCellViewModelType = ActivityErroredBackingsTopCellViewModel()
+  private let vm: ActivityErroredBackingsTopCellViewModelType = ActivityErroredBackingsCellViewModel()
 
   private let erroredBackings = TestObserver<[GraphBacking], Never>()
 

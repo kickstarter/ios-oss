@@ -45,7 +45,7 @@ internal final class ActivitiesViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.gridHalf(3)))
-    self.tableView.registerCellClass(ActivityErroredBackingsTopCell.self)
+    self.tableView.registerCellClass(ActivityErroredBackingsCell.self)
     self.tableView.dataSource = self.dataSource
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)

@@ -43,7 +43,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
   internal func load(erroredBackings: [GraphBacking]) {
     self.set(
       values: [erroredBackings],
-      cellClass: ActivityErroredBackingsTopCell.self,
+      cellClass: ActivityErroredBackingsCell.self,
       inSection: Section.erroredBackings.rawValue
     )
   }
@@ -83,7 +83,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as ActivityErroredBackingsTopCell, value as [GraphBacking]):
+    case let (cell as ActivityErroredBackingsCell, value as [GraphBacking]):
       cell.configureWith(value: value)
     case let (cell as ActivityUpdateCell, activity as Activity):
       cell.configureWith(value: activity)

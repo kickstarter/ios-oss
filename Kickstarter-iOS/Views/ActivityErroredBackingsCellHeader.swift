@@ -2,7 +2,7 @@ import Library
 import Prelude
 import UIKit
 
-final class ActivityErroredBackingsTopCellHeader: UIView {
+final class ActivityErroredBackingsCellHeader: UIView {
   // MARK: - Properties
 
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()

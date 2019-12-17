@@ -11,14 +11,14 @@ private enum Layout {
   }
 }
 
-protocol ErroredBackingViewDelegate {
+protocol ErroredBackingViewDelegate: class {
   func erroredBackingViewDidTapManage(_ view: ErroredBackingView, backing: GraphBacking)
 }
 
 final class ErroredBackingView: UIView {
   // MARK: - Properties
 
-  public var delegate: ErroredBackingViewDelegate?
+  public weak var delegate: ErroredBackingViewDelegate?
   private let backingInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let manageButton: UIButton = { UIButton(type: .custom) }()
   private let projectNameLabel: UILabel = { UILabel(frame: .zero) }()

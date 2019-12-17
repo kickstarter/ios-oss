@@ -3,17 +3,17 @@ import Library
 import Prelude
 import UIKit
 
-final class ActivityErroredBackingsTopCell: UITableViewCell, ValueCell {
+final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private let backgroundContainerView: UIView = { UIView(frame: .zero) }()
-  private let headerView: ActivityErroredBackingsTopCellHeader = {
-    ActivityErroredBackingsTopCellHeader(frame: .zero)
+  private let headerView: ActivityErroredBackingsCellHeader = {
+    ActivityErroredBackingsCellHeader(frame: .zero)
   }()
 
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private let viewModel: ActivityErroredBackingsTopCellViewModelType =
-    ActivityErroredBackingsTopCellViewModel()
+  private let viewModel: ActivityErroredBackingsCellViewModelType =
+    ActivityErroredBackingsCellViewModel()
 
   // MARK: - Lifecycle
 
@@ -115,7 +115,7 @@ private let backgroundContainerViewStyle: ViewStyle = { view in
 private let cellStyle: TableViewCellStyle = { cell in
   cell
     |> \.selectionStyle .~ .none
-    |> \.layoutMargins .~ UIEdgeInsets.init(all: Styles.grid(2))
+    |> \.layoutMargins .~ UIEdgeInsets(all: Styles.grid(2))
     |> \.preservesSuperviewLayoutMargins .~ false
 }
 
@@ -129,6 +129,6 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> verticalStackViewStyle
 }
 
-extension ActivityErroredBackingsTopCell: ErroredBackingViewDelegate {
+extension ActivityErroredBackingsCell: ErroredBackingViewDelegate {
   func erroredBackingViewDidTapManage(_: ErroredBackingView, backing _: GraphBacking) {}
 }
