@@ -121,8 +121,10 @@ public final class ManagePledgeViewModel:
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .changePaymentMethod })
 
     self.notifyDelegateManagePledgeViewControllerFinishedWithMessage
-      = Signal.merge(self.cancelPledgeDidFinishWithMessageProperty.signal,
-                     refreshProjectEvent.mapConst(nil))
+      = Signal.merge(
+        self.cancelPledgeDidFinishWithMessageProperty.signal,
+        refreshProjectEvent.mapConst(nil)
+      )
 
     self.rewardReceivedViewControllerViewIsHidden = projectAndReward
       .map { project, reward in reward.isNoReward || project.personalization.backing?.status != .collected }

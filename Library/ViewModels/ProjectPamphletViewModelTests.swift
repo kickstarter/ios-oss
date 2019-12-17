@@ -90,7 +90,6 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
     self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
-
   }
 
   func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
@@ -719,7 +718,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       config: config,
       mainBundle: releaseBundle
     ) {
-
       self.vm.inputs.didBackProject()
 
       XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull)
@@ -766,7 +764,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       config: config,
       mainBundle: releaseBundle
     ) {
-
       self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
       XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull)
