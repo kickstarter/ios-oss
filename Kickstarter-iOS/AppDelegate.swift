@@ -317,6 +317,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       }
 
       if shouldUpdateClient {
+        print("🔮 Optimizely SDK Successfully Configured")
         AppEnvironment.updateOptimizelyClient(optimizelyClient)
       }
     }
