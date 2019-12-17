@@ -559,6 +559,7 @@
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "Dieser Finanzierungsbeitrag konnte aufgrund eines Problems mit der Zahlungsmethode des Unterstützers nicht bearbeitet werden.";
 "We_cant_process_your_pledge" = "Wir können deine Zahlung leider nicht bearbeiten.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "Dein Finanzierungsbeitrag kann nicht bearbeitet werden. Bitte aktualisiere deine Zahlungsmethode.";
+"We_cant_process_your_pledge_for" = "Wir können deine Zahlung aus folgendem Grund leider nicht bearbeiten:";
 "We_collected_the_backers_pledge_for_this_project" = "Der Finanzierungsbeitrag dieses Unterstützers wurde abgebucht.";
 "We_collected_your_pledge_for_this_project" = "Dein Finanzierungsbeitrag für dieses Projekt wurde abgebucht.";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";
