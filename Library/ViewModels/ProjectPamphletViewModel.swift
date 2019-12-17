@@ -186,7 +186,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     self.dismissManagePledgeAndShowMessageBannerWithMessage
       = self.managePledgeViewControllerFinishedWithMessageProperty.signal
-      .filter(isNotNil)
       .skipNil()
 
     let cookieRefTag = freshProjectAndRefTag

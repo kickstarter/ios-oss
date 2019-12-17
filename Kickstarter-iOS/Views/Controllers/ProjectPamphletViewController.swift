@@ -61,12 +61,12 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(self.didBackProject),
-      name: NSNotification.Name.ksr_projectBacked,
-      object: nil
-    )
+    NotificationCenter.default
+      .addObserver(self,
+                   selector: #selector(self.didBackProject),
+                   name: NSNotification.Name.ksr_projectBacked,
+                   object: nil
+                  )
 
     self.viewModel.inputs.viewDidLoad()
   }
