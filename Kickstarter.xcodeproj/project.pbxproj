@@ -224,7 +224,9 @@
 		774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */; };
 		774ACC19225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774ACC18225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift */; };
 		774D98D223A818A800FC81C2 /* Optimizely.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7B962AA23888A0B003AA616 /* Optimizely.framework */; };
-		774D98D323A8196700FC81C2 /* OptimizelyClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */; };
+		774D98D423A94EDB00FC81C2 /* OptimizelyExperiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */; };
+		774D98D623A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */; };
+		774D98D723A94F8400FC81C2 /* OptimizelyClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */; };
 		774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774F8D5A22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift */; };
 		774F8D5D22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774F8D5C22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift */; };
 		7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */; };
@@ -1265,7 +1267,6 @@
 		D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A86A3A1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift */; };
 		D7ADDFE722E0DAFA00157D83 /* RewardCellProjectBackingStateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */; };
 		D7B468F023469F98003D5A51 /* STPCardBrand+CreditCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B468EF23469F98003D5A51 /* STPCardBrand+CreditCardType.swift */; };
-		D7B962B72396ECF6003AA616 /* OptimizelyExperiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */; };
 		D7B9C7581E453FBF00EA3A22 /* UILabel+IsTruncated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */; };
 		D7E20E6D2284A3BD00BA61A0 /* PledgeCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */; };
 		D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */; };
@@ -1644,6 +1645,7 @@
 		774A76E820D841110012A71F /* BetaToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsViewController.swift; sourceTree = "<group>"; };
 		774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsViewControllerTests.swift; sourceTree = "<group>"; };
 		774ACC18225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletViewControllerTests.swift; sourceTree = "<group>"; };
+		774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optimizely+OptimizelyClientType.swift"; sourceTree = "<group>"; };
 		774F8D5A22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewController.swift; sourceTree = "<group>"; };
 		774F8D5C22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewModel.swift; sourceTree = "<group>"; };
 		7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
@@ -2761,6 +2763,7 @@
 				379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */,
 				7720BA6C22DE79260071FDA1 /* UIViewController+Presentation.swift */,
 				379CFFF12242DAC400F6F0C2 /* WebViewController.swift */,
+				774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -3277,8 +3280,6 @@
 				A71404381CAF215900A2795B /* KeyValueStoreType.swift */,
 				A71F59E71D2424CA00909BE3 /* KSCache.swift */,
 				D7F96A97239863EA00DB5B73 /* KSOptimizely.swift */,
-				D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */,
-				D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */,
 				A7ED1F171E830FDC00BFFA01 /* KSCacheTests.swift */,
 				A7C725821C85D36D005A016B /* Language.swift */,
 				A7ED1F181E830FDC00BFFA01 /* LanguageTests.swift */,
@@ -3300,6 +3301,8 @@
 				8A73EADD233BE12D00FF9051 /* NSMutableAttributedString+SetFontKeepingTraitsTests.swift */,
 				37EB3E4B228CF4A400076E4C /* NumberFormatter.swift */,
 				37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */,
+				D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */,
+				D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
 				A7ED1F1C1E830FDC00BFFA01 /* PaginateTests.swift */,
 				373AB25C222A0D8900769FC2 /* PasswordValidation.swift */,
@@ -3318,7 +3321,6 @@
 				A75C811A1D210C4700B5AD03 /* ProjectActivityItemProvider.swift */,
 				D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */,
 				D6B188DD23048187005C7B19 /* ProjectPamphlet+Helpers.swift */,
-				D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */,
 				D6B188DF230481E6005C7B19 /* ProjectPamphlet+HelpersTests.swift */,
 				D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */,
 				D6B4D9BE209B88F3002C7B68 /* PushNotificationdialogTests.swift */,
@@ -3574,6 +3576,7 @@
 			children = (
 				A7ED1F431E831BA200BFFA01 /* AlertError+Equatable.swift */,
 				A7ED1F441E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift */,
+				D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */,
 				D033E2C122A05B4800464E43 /* MockApplication.swift */,
 				A7ED1F451E831BA200BFFA01 /* MockBundle.swift */,
 				A7ED1F461E831BA200BFFA01 /* TestCase.swift */,
@@ -4834,6 +4837,7 @@
 				8A8099F422E2142C00373E66 /* RewardCardContainerViewModel.swift in Sources */,
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
+				774D98D423A94EDB00FC81C2 /* OptimizelyExperiment.swift in Sources */,
 				A734A2671D21A1790080BBD5 /* WKNavigationActionData.swift in Sources */,
 				A7C93FB61D44142900C2DF9B /* ProjectDescriptionViewModel.swift in Sources */,
 				8AFB8C97233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift in Sources */,
@@ -4869,7 +4873,6 @@
 				A75511651C8642C3005355CF /* String+SimpleHTML.swift in Sources */,
 				A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */,
 				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
-				D7B962B72396ECF6003AA616 /* OptimizelyExperiment.swift in Sources */,
 				8AA524912384CAAC00FD52CF /* EditorialProjectsViewModel.swift in Sources */,
 				8A213CEF239EAEA400BBB4C7 /* Koala.swift in Sources */,
 				D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
@@ -5015,6 +5018,7 @@
 				8A297910234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift in Sources */,
 				77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */,
 				018422C01D2C486900CA7566 /* DashboardProjectsDrawerCellViewModel.swift in Sources */,
+				774D98D723A94F8400FC81C2 /* OptimizelyClientType.swift in Sources */,
 				8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5311,7 +5315,6 @@
 				379CFFFE2242DAF400F6F0C2 /* Storyboard.swift in Sources */,
 				A72C3AA41D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */,
 				37653F82220A07710016E7F9 /* SettingsGroupedHeaderView.swift in Sources */,
-				774D98D323A8196700FC81C2 /* OptimizelyClientType.swift in Sources */,
 				379CFFFA2242DAD500F6F0C2 /* DeprecatedWebViewController.swift in Sources */,
 				D796868021013C1F00E54C61 /* SettingsPrivacyStaticCell.swift in Sources */,
 				771E630B23425977005967E8 /* CancelPledgeViewController.swift in Sources */,
@@ -5371,6 +5374,7 @@
 				A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */,
 				A7180BAA1CCED598001711CA /* CommentsViewController.swift in Sources */,
 				D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */,
+				774D98D623A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift in Sources */,
 				D6534D3822E784B500E9D279 /* PledgeCreditCardView.swift in Sources */,
 				A7561A3D1D3146290028DEA1 /* ProjectNavigatorViewController.swift in Sources */,
 				595CDAB81D3537180051C816 /* FundingGraphView.swift in Sources */,
