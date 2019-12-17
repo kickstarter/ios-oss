@@ -345,6 +345,7 @@
 "Password_visibility" = "Passwort-Anzeige";
 "Passwords_matching_message" = "Neues Passwort stimmt nicht überein.";
 "Past_live_stream" = "Früherer Live-Stream";
+"Payment_failure" = "Zahlung fehlgeschlagen";
 "Payment_method" = "Zahlungsmethode";
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
 "Payment_methods" = "Zahlungsmethoden";
@@ -556,6 +557,7 @@
 "View_your_rewards" = "Deine Belohnungen ansehen";
 "Watch_live" = "Live ansehen";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "Dieser Finanzierungsbeitrag konnte aufgrund eines Problems mit der Zahlungsmethode des Unterstützers nicht bearbeitet werden.";
+"We_cant_process_your_pledge" = "Wir können deine Zahlung leider nicht bearbeiten.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "Dein Finanzierungsbeitrag kann nicht bearbeitet werden. Bitte aktualisiere deine Zahlungsmethode.";
 "We_collected_the_backers_pledge_for_this_project" = "Der Finanzierungsbeitrag dieses Unterstützers wurde abgebucht.";
 "We_collected_your_pledge_for_this_project" = "Dein Finanzierungsbeitrag für dieses Projekt wurde abgebucht.";

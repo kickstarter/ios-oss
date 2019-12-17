@@ -143,6 +143,8 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
   switch (project.state, projectBacking.status) {
   case (.live, _):
     return .manage
+  case (.successful, .errored):
+    return .fix
   case (_, _):
     return .viewBacking
   }
