@@ -21,7 +21,7 @@ public final class Koala {
   private var preferredContentSizeCategoryObserver: Any?
   private let screen: UIScreenType
 
-  private enum DataLakeWhiteListedEvents: String, CaseIterable {
+  private enum DataLakeWhiteListedEvent: String, CaseIterable {
     case explorePageViewed = "Explore Page Viewed"
     case exploreSortClicked = "Explore Sort Clicked"
     case activityFeedViewed = "Activity Feed Viewed"
@@ -35,7 +35,7 @@ public final class Koala {
     case projectPageViewed = "Project Page Viewed"
 
     static func allWhiteListedEvents() -> [String] {
-      return DataLakeWhiteListedEvents.allCases.map { $0.rawValue }
+      return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
     }
   }
 
@@ -435,7 +435,7 @@ public final class Koala {
   /// Call when the activities screen is shown.
   public func trackActivities(count: Int) {
     self.track(
-      event: DataLakeWhiteListedEvents.activityFeedViewed.rawValue,
+      event: DataLakeWhiteListedEvent.activityFeedViewed.rawValue,
       properties: ["activities_count": count]
     )
   }
@@ -505,7 +505,7 @@ public final class Koala {
     let label = tabBarItemLabel.trackingString
 
     self.track(
-      event: DataLakeWhiteListedEvents.tabBarClicked.rawValue,
+      event: DataLakeWhiteListedEvent.tabBarClicked.rawValue,
       properties: ["ios_tab_bar_label": label]
     )
   }
@@ -521,7 +521,7 @@ public final class Koala {
   public func trackDiscovery(params: DiscoveryParams) {
     let props = discoveryProperties(from: params)
 
-    self.track(event: DataLakeWhiteListedEvents.explorePageViewed.rawValue, properties: props)
+    self.track(event: DataLakeWhiteListedEvent.explorePageViewed.rawValue, properties: props)
   }
 
   /**
@@ -531,7 +531,7 @@ public final class Koala {
    */
   public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
     self.track(
-      event: DataLakeWhiteListedEvents.filterClicked.rawValue,
+      event: DataLakeWhiteListedEvent.filterClicked.rawValue,
       properties: discoveryProperties(from: params)
     )
   }
@@ -547,7 +547,7 @@ public final class Koala {
         "discover_sort": sort.rawValue
       ])
 
-    self.track(event: DataLakeWhiteListedEvents.exploreSortClicked.rawValue, properties: props)
+    self.track(event: DataLakeWhiteListedEvent.exploreSortClicked.rawValue, properties: props)
   }
 
   /**
@@ -555,7 +555,7 @@ public final class Koala {
    */
   public func trackEditorialHeaderTapped(refTag: RefTag) {
     self.track(
-      event: DataLakeWhiteListedEvents.editorialCardClicked.rawValue,
+      event: DataLakeWhiteListedEvent.editorialCardClicked.rawValue,
       properties: [:], refTag: refTag.stringTag
     )
   }
@@ -567,7 +567,7 @@ public final class Koala {
    */
   public func trackCollectionViewed(params: DiscoveryParams) {
     self.track(
-      event: DataLakeWhiteListedEvents.collectionViewed.rawValue,
+      event: DataLakeWhiteListedEvent.collectionViewed.rawValue,
       properties: discoveryProperties(from: params)
     )
   }
@@ -1298,7 +1298,7 @@ public final class Koala {
 
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    self.track(event: DataLakeWhiteListedEvents.searchPageViewed.rawValue)
+    self.track(event: DataLakeWhiteListedEvent.searchPageViewed.rawValue)
   }
 
   // Call when projects have been obtained from a search.
@@ -1315,7 +1315,7 @@ public final class Koala {
         "has_results": hasResults
       ])
 
-    self.track(event: DataLakeWhiteListedEvents.searchResultsLoaded.rawValue, properties: props)
+    self.track(event: DataLakeWhiteListedEvent.searchResultsLoaded.rawValue, properties: props)
   }
 
   // MARK: - Project Events
@@ -1335,7 +1335,7 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
     self.track(
-      event: DataLakeWhiteListedEvents.projectPageViewed.rawValue,
+      event: DataLakeWhiteListedEvent.projectPageViewed.rawValue,
       properties: props,
       refTag: refTag?.stringTag,
       referrerCredit: cookieRefTag?.stringTag
@@ -1351,7 +1351,7 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
     self.track(
-      event: DataLakeWhiteListedEvents.projectSwiped.rawValue,
+      event: DataLakeWhiteListedEvent.projectSwiped.rawValue,
       properties: props, refTag: refTag?.stringTag
     )
   }
@@ -1996,7 +1996,7 @@ public final class Koala {
       properties: props
     )
 
-    if DataLakeWhiteListedEvents.allWhiteListedEvents().contains(event) {
+    if DataLakeWhiteListedEvent.allWhiteListedEvents().contains(event) {
       self.dataLakeClient.track(
         event: event,
         properties: props
