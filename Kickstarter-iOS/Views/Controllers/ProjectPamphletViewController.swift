@@ -67,6 +67,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
       name: NSNotification.Name.ksr_projectBacked,
       object: nil
     )
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -331,13 +332,9 @@ extension ProjectPamphletViewController: VideoViewControllerDelegate {
 extension ProjectPamphletViewController: ManagePledgeViewControllerDelegate {
   func managePledgeViewController(
     _: ManagePledgeViewController,
-    shouldDismissAndShowSuccessBannerWithMessage message: String
+    managePledgeViewControllerFinishedWithMessage message: String?
   ) {
     self.viewModel.inputs.managePledgeViewControllerFinished(with: message)
-  }
-
-  func managePledgeViewControllerDidUpdatePledge(_ viewController: ManagePledgeViewController) {
-    self.viewModel.inputs.managePledgeViewControllerDidUpdatePledge()
   }
 }
 

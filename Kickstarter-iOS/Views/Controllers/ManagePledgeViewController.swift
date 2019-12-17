@@ -6,10 +6,8 @@ import UIKit
 protocol ManagePledgeViewControllerDelegate: AnyObject {
   func managePledgeViewController(
     _ viewController: ManagePledgeViewController,
-    shouldDismissAndShowSuccessBannerWithMessage message: String
+    managePledgeViewControllerFinishedWithMessage message: String?
   )
-
-  func managePledgeViewControllerDidUpdatePledge(_ viewController: ManagePledgeViewController)
 }
 
 final class ManagePledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
@@ -221,20 +219,13 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.goToCancelPledge(project: project, backing: backing)
       }
 
-    self.viewModel.outputs.notifyDelegateDidUpdatePledge
-      .observeForUI()
-      .observeValues { [weak self] in
-        guard let self = self else { return }
-        self.delegate?.managePledgeViewControllerDidUpdatePledge(self)
-      }
-
-    self.viewModel.outputs.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+    self.viewModel.outputs.notifyDelegateManagePledgeViewControllerFinishedWithMessage
       .observeForUI()
       .observeValues { [weak self] message in
         guard let self = self else { return }
         self.delegate?.managePledgeViewController(
           self,
-          shouldDismissAndShowSuccessBannerWithMessage: message
+          managePledgeViewControllerFinishedWithMessage: message
         )
       }
 

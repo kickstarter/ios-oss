@@ -17,11 +17,8 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call when the Thank you page is dismissed after finishing backing the project
   func didBackProject()
 
-  /// Call when the ManagePledgeViewController finished updating a pledge
-  func managePledgeViewControllerDidUpdatePledge()
-
-  /// Call when the ManagePledgeViewController finished with a confirmation message
-  func managePledgeViewControllerFinished(with message: String)
+  /// Call when the ManagePledgeViewController finished updating/cancelling a pledge with an optional message
+  func managePledgeViewControllerFinished(with message: String?)
 
   /// Call when the pledge CTA button is tapped
   func pledgeCTAButtonTapped(with state: PledgeStateCTAType)
@@ -82,7 +79,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
         self.viewDidLoadProperty.signal.mapConst(true),
         self.didBackProjectProperty.signal.ignoreValues().mapConst(false),
         self.managePledgeViewControllerFinishedWithMessageProperty.signal.ignoreValues().mapConst(false),
-        self.managePledgeViewControllerDidUpdatePledgeProperty.signal.ignoreValues().mapConst(false),
         self.pledgeRetryButtonTappedProperty.signal.mapConst(false)
       ))
       .map(unpack)
@@ -189,7 +185,9 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(layoutConstraintConstant(initialTopConstraint:traitCollection:))
 
     self.dismissManagePledgeAndShowMessageBannerWithMessage
-      = self.managePledgeViewControllerFinishedWithMessageProperty.signal.skipNil()
+      = self.managePledgeViewControllerFinishedWithMessageProperty.signal
+        .filter(isNotNil)
+        .skipNil()
 
     let cookieRefTag = freshProjectAndRefTag
       .map { project, refTag in
@@ -229,13 +227,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     self.didBackProjectProperty.value = ()
   }
 
-  private let managePledgeViewControllerDidUpdatePledgeProperty = MutableProperty(())
-  public func managePledgeViewControllerDidUpdatePledge() {
-    self.managePledgeViewControllerDidUpdatePledgeProperty.value = ()
-  }
-
   private let managePledgeViewControllerFinishedWithMessageProperty = MutableProperty<String?>(nil)
-  public func managePledgeViewControllerFinished(with message: String) {
+  public func managePledgeViewControllerFinished(with message: String?) {
     self.managePledgeViewControllerFinishedWithMessageProperty.value = message
   }
 
