@@ -810,6 +810,7 @@ final class KoalaTests: TestCase {
     XCTAssertNil(props?["user_watched_projects_count"])
     XCTAssertNil(props?["user_uid"])
     XCTAssertNil(props?["user_is_admin"])
+    XCTAssertNil(props?["user_launched_projects_count"])
   }
 
   func testUserProperties_loggedIn() {
@@ -820,6 +821,7 @@ final class KoalaTests: TestCase {
       |> User.lens.location .~ Location.usa
       |> User.lens.facebookConnected .~ true
       |> User.lens.stats.starredProjectsCount .~ 2
+      |> User.lens.stats.createdProjectsCount .~ 3
       |> User.lens.id .~ 10
       |> User.lens.isAdmin .~ false
 
@@ -835,6 +837,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(2, props?["user_watched_projects_count"] as? Int)
     XCTAssertEqual(10, props?["user_uid"] as? Int)
     XCTAssertEqual(false, props?["user_is_admin"] as? Bool)
+    XCTAssertEqual(3, props?["user_launched_projects_count"] as? Int)
   }
 
   func testTabBarClicked() {
