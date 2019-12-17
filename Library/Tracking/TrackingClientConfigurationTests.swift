@@ -111,12 +111,19 @@ final class TrackingClientConfigurationTests: TestCase {
     let config = TrackingClientConfiguration.dataLake
 
     let data = Data("some-data".utf8)
-    let request = config.request(config, .staging, data)
+    guard let request = config.request(config, .staging, data) else {
+      XCTFail("Should have a request")
+      return
+    }
 
-    XCTAssertEqual(request?.httpBody, data)
-    XCTAssertEqual(request?.httpMethod, "PUT")
-    XCTAssertEqual(request?.allHTTPHeaderFields, ["Content-Type": "application/json; charset=utf-8"])
-    XCTAssertEqual(request?.url?.absoluteString, Secrets.LakeEndpoint.staging)
+    XCTAssertEqual(request.httpBody, data)
+    XCTAssertEqual(request.httpMethod, "PUT")
+    XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], "application/json; charset=utf-8")
+    XCTAssertEqual(
+      request.url?.absoluteString,
+      expectedPreparedURL(with: Secrets.LakeEndpoint.staging)?.absoluteString
+    )
+    XCTAssertTrue(AppEnvironment.current.apiService.isPrepared(request: request))
   }
 
   func testDataLakeURL() {
@@ -128,4 +135,19 @@ final class TrackingClientConfigurationTests: TestCase {
     XCTAssertEqual(stagingUrl?.absoluteString, Secrets.LakeEndpoint.staging)
     XCTAssertEqual(productionUrl?.absoluteString, Secrets.LakeEndpoint.production)
   }
+}
+
+private func expectedPreparedURL(with urlString: String?) -> URL? {
+  var components = URLComponents(string: urlString ?? "")
+
+  components?.queryItems = [
+    URLQueryItem(
+      name: "client_id",
+      value: AppEnvironment.current.apiService.serverConfig.apiClientAuth.clientId
+    ),
+    URLQueryItem(name: "currency", value: "USD")
+  ]
+  .compactMap { $0 }
+
+  return components?.url
 }
