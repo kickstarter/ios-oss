@@ -154,10 +154,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.configureOptimizely
       .observeForUI()
-      .observeValues { key in
-//        KSOptimizely.setup(with: key)
-
-        self.configureOptimizely(with: key)
+      .observeValues { [weak self] key in
+        self?.configureOptimizely(with: key)
       }
 
     self.viewModel.outputs.configureAppCenterWithData
