@@ -1,14 +1,14 @@
-import Library
 import Kickstarter_Framework
 import KsApi
+import Library
 
 internal struct OptimizelyError: Error {}
 
 public class MockOptimizelyClient: OptimizelyClientType {
   var experiments: [String: String] = [:]
-  var error: Error? = nil
+  var error: Error?
 
-  public func activate(experimentKey: String, userId: String, attributes: [String : Any?]?) throws -> String {
+  public func activate(experimentKey: String, userId _: String, attributes _: [String: Any?]?) throws -> String {
     if let error = self.error {
       throw error
     }

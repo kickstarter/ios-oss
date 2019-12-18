@@ -124,7 +124,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testConfigureOptimizely_Production() {
     let mockService = MockService(serverConfig: ServerConfig.production)
 
-    withEnvironment(apiService: mockService ) {
+    withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
       self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.production])
@@ -134,7 +134,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testConfigureOptimizely_Staging() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
-    withEnvironment(apiService: mockService ) {
+    withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
       self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])
@@ -144,7 +144,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testOptimizelyConfiguration_IsSuccess() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
-    withEnvironment(apiService: mockService ) {
+    withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
       self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])
@@ -158,7 +158,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testOptimizelyConfiguration_IsFailure() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
-    withEnvironment(apiService: mockService ) {
+    withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
       self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])

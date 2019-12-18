@@ -735,9 +735,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public func optimizelyConfigured(isSuccess: Bool) -> Bool {
     self.optimizelyConfiguredWithResultProperty.value = isSuccess
 
-    return optimizelyConfigurationReturnValue.value
+    return self.optimizelyConfigurationReturnValue.value
   }
-
 
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
@@ -958,14 +957,14 @@ extension ShortcutItem {
 
 private func optimizelySDKKey(for environmentType: EnvironmentType) -> String {
   switch environmentType {
-    case .production:
-      return Secrets.OptimizelySDKKey.production
-    case .development:
-      return Secrets.OptimizelySDKKey.development
-    case .staging:
-      return Secrets.OptimizelySDKKey.staging
-    default:
-      return Secrets.OptimizelySDKKey.development
+  case .production:
+    return Secrets.OptimizelySDKKey.production
+  case .development:
+    return Secrets.OptimizelySDKKey.development
+  case .staging:
+    return Secrets.OptimizelySDKKey.staging
+  default:
+    return Secrets.OptimizelySDKKey.development
   }
 }
 

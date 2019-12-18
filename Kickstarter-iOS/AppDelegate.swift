@@ -308,9 +308,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       var shouldUpdateClient: Bool
 
       switch result {
-      case .success(_):
+      case .success:
         shouldUpdateClient = self.viewModel.inputs.optimizelyConfigured(isSuccess: true)
-      case .failure(_):
+      case .failure:
         shouldUpdateClient = self.viewModel.inputs.optimizelyConfigured(isSuccess: false)
       }
 
