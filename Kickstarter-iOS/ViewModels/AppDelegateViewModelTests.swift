@@ -1769,115 +1769,204 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testQualtricsDisplaySurvey_Success() {
-    self.configureQualtrics.assertDidNotEmitValue()
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+  func testQualtricsDisplaySurvey_FeatureFlagDisabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.qualtrics.rawValue: false]
 
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+    withEnvironment(config: config) {
+      self.configureQualtrics.assertDidNotEmitValue()
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
 
-    let expectedConfig = QualtricsConfigData(
-      brandId: Secrets.Qualtrics.brandId,
-      zoneId: Secrets.Qualtrics.zoneId,
-      interceptId: QualtricsIntercept.survey.interceptId,
-      stringProperties: [
-        "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith("")
-      ]
-    )
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.didUpdateConfig(config)
 
-    self.configureQualtrics.assertValues([expectedConfig])
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
-
-    self.vm.inputs.qualtricsInitialized(with: MockQualtricsResultType(passedResult: true))
-
-    self.configureQualtrics.assertValues([expectedConfig])
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
-
-    self.scheduler.advance(by: .seconds(2))
-
-    self.configureQualtrics.assertValues([expectedConfig])
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertValueCount(1)
-
-    self.vm.inputs.didEvaluateQualtricsTargetingLogic(with: MockQualtricsResultType(passedResult: true))
-
-    self.configureQualtrics.assertValues([expectedConfig])
-    self.displayQualtricsSurvey.assertValueCount(1)
-    self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+      self.configureQualtrics.assertDidNotEmitValue()
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+    }
   }
 
-  func testQualtricsDisplaySurvey_FailureToConfigure() {
-    self.configureQualtrics.assertDidNotEmitValue()
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+  func testQualtricsDisplaySurvey_Success_LoggedOut() {
+    let config = Config.template
+      |> \.features .~ [Feature.qualtrics.rawValue: true]
 
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+    withEnvironment(config: config) {
+      self.configureQualtrics.assertDidNotEmitValue()
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
 
-    let expectedConfig = QualtricsConfigData(
-      brandId: Secrets.Qualtrics.brandId,
-      zoneId: Secrets.Qualtrics.zoneId,
-      interceptId: QualtricsIntercept.survey.interceptId,
-      stringProperties: [
-        "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith("")
-      ]
-    )
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.didUpdateConfig(config)
 
-    self.configureQualtrics.assertValues([expectedConfig])
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      let expectedConfig = QualtricsConfigData(
+        brandId: Secrets.Qualtrics.brandId,
+        zoneId: Secrets.Qualtrics.zoneId,
+        interceptId: QualtricsIntercept.survey.interceptId,
+        stringProperties: [
+          "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith(""),
+          "language": AppEnvironment.current.language.rawValue,
+          "logged_in": "false"
+        ]
+      )
 
-    self.vm.inputs.qualtricsInitialized(with: MockQualtricsResultType(passedResult: false))
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
 
-    self.configureQualtrics.assertValues([expectedConfig])
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      self.vm.inputs.qualtricsInitialized(with: MockQualtricsResultType(passedResult: true))
 
-    self.scheduler.advance(by: .seconds(2))
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
 
-    self.configureQualtrics.assertValues([expectedConfig])
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      self.scheduler.advance(by: .seconds(2))
+
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+
+      self.vm.inputs.didEvaluateQualtricsTargetingLogic(with: MockQualtricsResultType(passedResult: true))
+
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertValueCount(1)
+      self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+    }
   }
 
-  func testQualtricsDisplaySurvey_DidNotPassTargetingLogic() {
-    self.configureQualtrics.assertDidNotEmitValue()
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+  func testQualtricsDisplaySurvey_Success_LoggedIn() {
+    let config = Config.template
+      |> \.features .~ [Feature.qualtrics.rawValue: true]
 
-    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+    withEnvironment(config: config, currentUser: .template) {
+      self.configureQualtrics.assertDidNotEmitValue()
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
 
-    let expectedConfig = QualtricsConfigData(
-      brandId: Secrets.Qualtrics.brandId,
-      zoneId: Secrets.Qualtrics.zoneId,
-      interceptId: QualtricsIntercept.survey.interceptId,
-      stringProperties: [
-        "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith("")
-      ]
-    )
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.didUpdateConfig(config)
 
-    self.configureQualtrics.assertValues([expectedConfig])
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      let expectedConfig = QualtricsConfigData(
+        brandId: Secrets.Qualtrics.brandId,
+        zoneId: Secrets.Qualtrics.zoneId,
+        interceptId: QualtricsIntercept.survey.interceptId,
+        stringProperties: [
+          "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith(""),
+          "language": AppEnvironment.current.language.rawValue,
+          "logged_in": "true"
+        ]
+      )
 
-    self.vm.inputs.qualtricsInitialized(with: MockQualtricsResultType(passedResult: true))
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
 
-    self.configureQualtrics.assertValues([expectedConfig])
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      self.vm.inputs.qualtricsInitialized(with: MockQualtricsResultType(passedResult: true))
 
-    self.scheduler.advance(by: .seconds(2))
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
 
-    self.configureQualtrics.assertValues([expectedConfig])
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+      self.scheduler.advance(by: .seconds(2))
 
-    self.vm.inputs.didEvaluateQualtricsTargetingLogic(with: MockQualtricsResultType(passedResult: false))
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertValueCount(1)
 
-    self.configureQualtrics.assertValues([expectedConfig])
-    self.displayQualtricsSurvey.assertDidNotEmitValue()
-    self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+      self.vm.inputs.didEvaluateQualtricsTargetingLogic(with: MockQualtricsResultType(passedResult: true))
+
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertValueCount(1)
+      self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+    }
+  }
+
+  func testQualtricsDisplaySurvey_FailureToConfigure_LoggedIn() {
+    let config = Config.template
+      |> \.features .~ [Feature.qualtrics.rawValue: true]
+
+    withEnvironment(config: config, currentUser: .template) {
+      self.configureQualtrics.assertDidNotEmitValue()
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.didUpdateConfig(config)
+
+      let expectedConfig = QualtricsConfigData(
+        brandId: Secrets.Qualtrics.brandId,
+        zoneId: Secrets.Qualtrics.zoneId,
+        interceptId: QualtricsIntercept.survey.interceptId,
+        stringProperties: [
+          "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith(""),
+          "language": AppEnvironment.current.language.rawValue,
+          "logged_in": "true"
+        ]
+      )
+
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+
+      self.vm.inputs.qualtricsInitialized(with: MockQualtricsResultType(passedResult: false))
+
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+
+      self.scheduler.advance(by: .seconds(2))
+
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+    }
+  }
+
+  func testQualtricsDisplaySurvey_DidNotPassTargetingLogic_LoggedIn() {
+    let config = Config.template
+      |> \.features .~ [Feature.qualtrics.rawValue: true]
+
+    withEnvironment(config: config, currentUser: .template) {
+      self.configureQualtrics.assertDidNotEmitValue()
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.didUpdateConfig(config)
+
+      let expectedConfig = QualtricsConfigData(
+        brandId: Secrets.Qualtrics.brandId,
+        zoneId: Secrets.Qualtrics.zoneId,
+        interceptId: QualtricsIntercept.survey.interceptId,
+        stringProperties: [
+          "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith(""),
+          "language": AppEnvironment.current.language.rawValue,
+          "logged_in": "true"
+        ]
+      )
+
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+
+      self.vm.inputs.qualtricsInitialized(with: MockQualtricsResultType(passedResult: true))
+
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+
+      self.scheduler.advance(by: .seconds(2))
+
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+
+      self.vm.inputs.didEvaluateQualtricsTargetingLogic(with: MockQualtricsResultType(passedResult: false))
+
+      self.configureQualtrics.assertValues([expectedConfig])
+      self.displayQualtricsSurvey.assertDidNotEmitValue()
+      self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+    }
   }
 }
 

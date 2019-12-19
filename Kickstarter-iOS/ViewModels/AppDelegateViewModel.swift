@@ -615,13 +615,20 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     .filter(isTrue)
     .mapConst(0)
 
-    self.configureQualtrics = self.applicationLaunchOptionsProperty.signal.map { _ in
+    self.configureQualtrics = Signal.zip(
+      self.applicationLaunchOptionsProperty.signal,
+      self.didUpdateConfigProperty.signal
+    )
+    .filter { _ in featureQualtricsIsEnabled() }
+    .map { _ in
       .init(
         brandId: Secrets.Qualtrics.brandId,
         zoneId: Secrets.Qualtrics.zoneId,
         interceptId: QualtricsIntercept.survey.interceptId,
         stringProperties: [
-          "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith("")
+          "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith(""),
+          "language": AppEnvironment.current.language.rawValue,
+          "logged_in": "\(AppEnvironment.current.currentUser != nil)"
         ]
       )
     }
