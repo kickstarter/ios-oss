@@ -9,7 +9,8 @@ extension OptimizelyClientType {
     for experiment: OptimizelyExperiment.Key,
     userId: String
   ) -> OptimizelyExperiment.Variant {
-    guard let variation = try? self.activate(experimentKey: experiment.rawValue, userId: userId, attributes: nil)
+    guard
+      let variation = try? self.activate(experimentKey: experiment.rawValue, userId: userId, attributes: nil)
     else {
       return .control
     }
