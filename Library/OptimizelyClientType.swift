@@ -10,11 +10,12 @@ extension OptimizelyClientType {
     userId: String
   ) -> OptimizelyExperiment.Variant {
     guard
-      let variation = try? self.activate(experimentKey: experiment.rawValue, userId: userId, attributes: nil)
+      let variation = try? self.activate(experimentKey: experiment.rawValue, userId: userId, attributes: nil),
+      let variant = OptimizelyExperiment.Variant(rawValue: variation)
     else {
       return .control
     }
 
-    return OptimizelyExperiment.Variant(rawValue: variation) ?? .control
+    return variant
   }
 }
