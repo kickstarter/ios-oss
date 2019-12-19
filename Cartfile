@@ -1,14 +1,14 @@
 ### Internal
 
-github "kickstarter/Kickstarter-Prelude" "d03f8831dcec9ad157db4f1c5f769ec17e1a3766"
-github "kickstarter/Kickstarter-ReactiveExtensions" "c3ce269fd2dd14b8d63ce1bc5b78f7397c0c0753"
+github "kickstarter/Kickstarter-Prelude" "3bf7f7791c90369eaa58f45753765b173a14a5ed"
+github "kickstarter/Kickstarter-ReactiveExtensions" "9537a215e51186008ab76965e271ff11cee47c97"
 
 ### 3rd Party
 
 github "Alamofire/AlamofireImage" "8e635e6151212f8871a321bbdd980af7c31af73b"
 github "facebook/facebook-objc-sdk" == 5.0.2
 github "microsoft/appcenter-sdk-apple" == 2.5.0
-github "ReactiveCocoa/ReactiveSwift" == 6.0.0
+github "ReactiveCocoa/ReactiveSwift" == 6.1.0
 github "stripe/stripe-ios" == 18.0.0
 github "uber/ios-snapshot-test-case" == 4.0.0
 github "thoughtbot/Argo" "39f06f089d25c111444e5a85eef64586e54756ac"
