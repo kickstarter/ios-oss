@@ -8,7 +8,8 @@ public class MockOptimizelyClient: OptimizelyClientType {
   var experiments: [String: String] = [:]
   var error: Error?
 
-  public func activate(experimentKey: String, userId _: String, attributes _: [String: Any?]?) throws -> String {
+  public func activate(experimentKey: String, userId _: String, attributes _: [String: Any?]?) throws
+    -> String {
     if let error = self.error {
       throw error
     }
