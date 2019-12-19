@@ -100,19 +100,6 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
           screen: .projectPage
         )
       }
-
-    let experimentVariant = self.projectOrErrorProperty.signal
-      .filterMap { _ -> (OptimizelyClientType, User)? in
-        guard let optimizelyClient = AppEnvironment.current.optimizelyClient,
-          let user = AppEnvironment.current.currentUser else {
-          return nil
-        }
-
-        return (optimizelyClient, user)
-      }.map { client, user in client.variant(for: .pledgeCTACopy, userId: String(user.id)) }
-      .observeValues { variant in
-        print("**** Optimizely variant: \(variant)")
-      }
   }
 
   fileprivate let projectOrErrorProperty =
