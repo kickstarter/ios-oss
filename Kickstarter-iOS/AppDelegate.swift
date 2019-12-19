@@ -304,10 +304,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   private func configureOptimizely(with key: String) {
     let optimizelyClient = OptimizelyClient(sdkKey: key)
 
-    optimizelyClient.start { result in
-      let shouldUpdateClient = self.viewModel.inputs.optimizelyConfigured(with: result)
-      
-      if shouldUpdateClient {
+    optimizelyClient.start { [weak self] result in
+      let shouldUpdateClient = self?.viewModel.inputs.optimizelyConfigured(with: result)
+
+      if let shouldUpdateClient = shouldUpdateClient, shouldUpdateClient {
         print("🔮 Optimizely SDK Successfully Configured")
         AppEnvironment.updateOptimizelyClient(optimizelyClient)
       }

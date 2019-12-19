@@ -3,8 +3,8 @@ import Library
 
 internal struct MockOptimizelyResult: OptimizelyResultType {
   var shouldSucceed: Bool = true
-  
+
   var isSuccess: Bool {
-    return shouldSucceed
+    return self.shouldSucceed
   }
 }
