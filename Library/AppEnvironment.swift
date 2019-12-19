@@ -2,7 +2,6 @@ import Argo
 import FBSDKCoreKit
 import Foundation
 import KsApi
-import Optimizely
 import Prelude
 import ReactiveSwift
 import Runes

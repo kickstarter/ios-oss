@@ -68,6 +68,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
+  /// Call when Optimizely has been configured with the given result
+  func optimizelyConfigured(with result: OptimizelyResultType) -> Bool
+
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
 
@@ -513,7 +516,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
     self.configureOptimizely = self.applicationLaunchOptionsProperty.signal
-      .map { _ in KSOptimizely.sdkKey }
+      .map { _ in AppEnvironment.current.environmentType }
+      .map(optimizelySDKKey(for:))
 
     self.configureAppCenterWithData = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
@@ -606,6 +610,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     .flatMap { AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
     .filter(isTrue)
     .mapConst(0)
+
+    self.optimizelyConfigurationReturnValue <~ self.optimizelyConfiguredWithResultProperty.signal
+      .skipNil()
+      .map { $0.isSuccess }
   }
 
   // swiftlint:enable cyclomatic_complexity
@@ -718,6 +726,15 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
   public var applicationDidFinishLaunchingReturnValue: Bool {
     return self.applicationDidFinishLaunchingReturnValueProperty.value
+  }
+
+  private let optimizelyConfigurationReturnValue = MutableProperty<Bool>(false)
+
+  fileprivate let optimizelyConfiguredWithResultProperty = MutableProperty<OptimizelyResultType?>(nil)
+  public func optimizelyConfigured(with result: OptimizelyResultType) -> Bool {
+    self.optimizelyConfiguredWithResultProperty.value = result
+
+    return self.optimizelyConfigurationReturnValue.value
   }
 
   public let applicationIconBadgeNumber: Signal<Int, Never>
@@ -934,6 +951,17 @@ extension ShortcutItem {
         userInfo: nil
       )
     }
+  }
+}
+
+private func optimizelySDKKey(for environmentType: EnvironmentType) -> String {
+  switch environmentType {
+  case .production:
+    return Secrets.OptimizelySDKKey.production
+  case .staging:
+    return Secrets.OptimizelySDKKey.staging
+  case .development, .local:
+    return Secrets.OptimizelySDKKey.development
   }
 }
 
