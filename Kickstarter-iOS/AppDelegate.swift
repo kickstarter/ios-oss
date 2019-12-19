@@ -305,15 +305,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     let optimizelyClient = OptimizelyClient(sdkKey: key)
 
     optimizelyClient.start { result in
-      var shouldUpdateClient: Bool
-
-      switch result {
-      case .success:
-        shouldUpdateClient = self.viewModel.inputs.optimizelyConfigured(isSuccess: true)
-      case .failure:
-        shouldUpdateClient = self.viewModel.inputs.optimizelyConfigured(isSuccess: false)
-      }
-
+      let shouldUpdateClient = self.viewModel.inputs.optimizelyConfigured(with: result)
+      
       if shouldUpdateClient {
         print("🔮 Optimizely SDK Successfully Configured")
         AppEnvironment.updateOptimizelyClient(optimizelyClient)

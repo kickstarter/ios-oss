@@ -2,7 +2,7 @@ import Kickstarter_Framework
 import KsApi
 import Library
 
-internal struct OptimizelyError: Error {}
+internal struct MockOptimizelyError: Error {}
 
 public class MockOptimizelyClient: OptimizelyClientType {
   var experiments: [String: String] = [:]

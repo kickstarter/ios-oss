@@ -69,7 +69,7 @@ public protocol AppDelegateViewModelInputs {
   func foundRedirectUrl(_ url: URL)
 
   /// Call when Optimizely has been configured with the given result
-  func optimizelyConfigured(isSuccess: Bool) -> Bool
+  func optimizelyConfigured(with result: OptimizelyResultType) -> Bool
 
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
@@ -611,10 +611,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     .filter(isTrue)
     .mapConst(0)
 
-    self.optimizelyConfigurationReturnValue = MutableProperty<Bool>(false)
-
     self.optimizelyConfigurationReturnValue <~ self.optimizelyConfiguredWithResultProperty.signal
       .skipNil()
+      .map { $0.isSuccess }
   }
 
   // swiftlint:enable cyclomatic_complexity
@@ -729,11 +728,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     return self.applicationDidFinishLaunchingReturnValueProperty.value
   }
 
-  private let optimizelyConfigurationReturnValue: MutableProperty<Bool>
+  private let optimizelyConfigurationReturnValue = MutableProperty<Bool>(false)
 
-  fileprivate let optimizelyConfiguredWithResultProperty = MutableProperty<Bool?>(nil)
-  public func optimizelyConfigured(isSuccess: Bool) -> Bool {
-    self.optimizelyConfiguredWithResultProperty.value = isSuccess
+  fileprivate let optimizelyConfiguredWithResultProperty = MutableProperty<OptimizelyResultType?>(nil)
+  public func optimizelyConfigured(with result: OptimizelyResultType) -> Bool {
+    self.optimizelyConfiguredWithResultProperty.value = result
 
     return self.optimizelyConfigurationReturnValue.value
   }
@@ -959,11 +958,9 @@ private func optimizelySDKKey(for environmentType: EnvironmentType) -> String {
   switch environmentType {
   case .production:
     return Secrets.OptimizelySDKKey.production
-  case .development:
-    return Secrets.OptimizelySDKKey.development
   case .staging:
     return Secrets.OptimizelySDKKey.staging
-  default:
+  case .development, .local:
     return Secrets.OptimizelySDKKey.development
   }
 }
