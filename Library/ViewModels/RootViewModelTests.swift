@@ -151,7 +151,7 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexIndex.assertValues([])
 
     let mockService = MockService(
-      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0))
+      clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0))
     )
 
     let user = User.template
@@ -189,7 +189,7 @@ final class RootViewModelTests: TestCase {
     self.setBadgeValueAtIndexIndex.assertValues([])
 
     let mockService = MockService(
-      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0))
+      clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0))
     )
 
     withEnvironment(apiService: mockService, application: mockApplication) {

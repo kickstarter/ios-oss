@@ -19,7 +19,7 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
 
     AppEnvironment.pushEnvironment(
       apiService: MockService(
-        fetchShippingRulesResult: Result(success: [
+        fetchShippingRulesResult: Result.success([
           .template |> ShippingRule.lens.location .~ .usa,
           .template |> ShippingRule.lens.location .~ .canada,
           .template |> ShippingRule.lens.location .~ .greatBritain,
@@ -262,8 +262,8 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
   func testChangeReward() {
     let newReward = self.cosmicReward
       |> Reward.lens.id .~ 42
-      |> Reward.lens.minimum .~ 42
-      |> Reward.lens.convertedMinimum .~ 55
+      |> Reward.lens.minimum .~ 42.0
+      |> Reward.lens.convertedMinimum .~ 55.0
       |> Reward.lens.rewardsItems .~ []
     let oldReward = self.cosmicReward
       |> Reward.lens.rewardsItems .~ []
@@ -296,8 +296,8 @@ internal final class DeprecatedRewardPledgeViewControllerTests: TestCase {
   func testChangeReward_ApplePayCapable() {
     let newReward = self.cosmicReward
       |> Reward.lens.id .~ 42
-      |> Reward.lens.minimum .~ 42
-      |> Reward.lens.convertedMinimum .~ 55
+      |> Reward.lens.minimum .~ 42.0
+      |> Reward.lens.convertedMinimum .~ 55.0
       |> Reward.lens.rewardsItems .~ []
     let oldReward = self.cosmicReward
       |> Reward.lens.rewardsItems .~ []

@@ -74,7 +74,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(
       project: .template,
-      rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0)
+      rewardOrBacking: .left(.template |> Reward.lens.remaining .~ .some(0))
     )
 
     self.allGoneHidden.assertValues([true, false], "All gone indicator is displayed when none remaining.")
@@ -88,7 +88,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(
       project: .template |> Project.lens.state .~ .successful,
-      rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0)
+      rewardOrBacking: .left(.template |> Reward.lens.remaining .~ .some(0))
     )
 
     self.allGoneHidden.assertValues(
@@ -293,7 +293,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   func testDescriptionLabelHidden_SoldOutReward_NonBacker() {
     self.vm.inputs.configureWith(
       project: .template,
-      rewardOrBacking: .left(.template |> Reward.lens.remaining .~ 0)
+      rewardOrBacking: .left(.template |> Reward.lens.remaining .~ .some(0))
     )
 
     self.descriptionLabelHidden.assertValues([true])
@@ -304,7 +304,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   }
 
   func testDescriptionLabelHidden_SoldOutReward_Backer() {
-    let reward = .template |> Reward.lens.remaining .~ 0
+    let reward = .template |> Reward.lens.remaining .~ .some(0)
     self.vm.inputs.configureWith(
       project: .template
         |> Project.lens.personalization.backing .~ (.template |> Backing.lens.reward .~ reward),
@@ -382,7 +382,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
     let reward = .template
       |> Reward.lens.backersCount .~ 42
       |> Reward.lens.limit .~ nil
-      |> Reward.lens.endsAt .~ 0
+      |> Reward.lens.endsAt .~ 0.0
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -411,7 +411,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
   func testFooterViewHidden_SoldOut_WithRewards_OnTap() {
     let reward = .template
-      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.remaining .~ .some(0)
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -474,7 +474,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
   func testItemsContainerHidden_SoldOut_WithItems_OnTap() {
     let reward = .template
-      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.remaining .~ .some(0)
       |> Reward.lens.rewardsItems .~ [.template]
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
@@ -488,7 +488,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
 
   func testItemsContainerHidden_SoldOut_WithNoItems_OnTap() {
     let reward = .template
-      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.remaining .~ .some(0)
       |> Reward.lens.rewardsItems .~ []
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
@@ -546,7 +546,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
     let project = Project.template
     let reward = .template
       |> Reward.lens.minimum .~ 1_000
-      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.remaining .~ .some(0)
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
@@ -575,7 +575,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   }
 
   func testNotifyDelegateRewardCellWantsExpansion_SoldOut() {
-    let reward = .template |> Reward.lens.remaining .~ 0
+    let reward = .template |> Reward.lens.remaining .~ .some(0)
 
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
@@ -620,7 +620,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   func testTitleLabel_WithTitle_AllGone() {
     let reward = .template
       |> Reward.lens.title .~ "The thing"
-      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.remaining .~ .some(0)
 
     self.vm.inputs.configureWith(
       project: .template,
@@ -635,7 +635,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   func testTitleLabelColor_WithTitle_AllGone_NonLive() {
     let reward = .template
       |> Reward.lens.title .~ "The thing"
-      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.remaining .~ .some(0)
 
     self.vm.inputs.configureWith(
       project: .template |> Project.lens.state .~ .successful,
@@ -716,7 +716,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   func testMinimumLabel_AllGoneUserIsNonBackerLiveProject() {
     let reward = .template
       |> Reward.lens.minimum .~ 1_000
-      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.remaining .~ .some(0)
     let project = .template
       |> Project.lens.state .~ .live
 
@@ -732,7 +732,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   func testMinimumLabel_AllGoneUserIsNonBackerNonLiveProject() {
     let reward = .template
       |> Reward.lens.minimum .~ 1_000
-      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.remaining .~ .some(0)
     let project = .template
       |> Project.lens.state .~ .successful
 
@@ -748,7 +748,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   func testMinimumLabel_AllGoneUserIsBackerLiveProject() {
     let reward = .template
       |> Reward.lens.minimum .~ 1_000
-      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.remaining .~ .some(0)
     let project = .template
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true
@@ -769,7 +769,7 @@ final class DeprecatedRewardCellViewModelTests: TestCase {
   func testMinimumLabel_AllGoneUserIsBackerNonLiveProject() {
     let reward = .template
       |> Reward.lens.minimum .~ 1_000
-      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.remaining .~ .some(0)
     let project = .template
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isBacking .~ true

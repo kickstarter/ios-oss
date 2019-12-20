@@ -276,7 +276,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
   func testCountryAndShippingAmountLabelText_WithRecognizedCountry() {
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResult: Result(success: shippingRules)),
+      apiService: MockService(fetchShippingRulesResult: Result.success(shippingRules)),
       config: .template |> Config.lens.countryCode .~ "AU"
     ) {
       self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
@@ -294,7 +294,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
   func testCountryAndShippingAmountLabelText_WithUnrecognizedCountry() {
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResult: Result(success: shippingRules)),
+      apiService: MockService(fetchShippingRulesResult: Result.success(shippingRules)),
       config: .template |> Config.lens.countryCode .~ "XYZ"
     ) {
       self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
@@ -317,7 +317,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let otherShippingRule = shippingRules.first!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResult: Result(success: shippingRules)),
+      apiService: MockService(fetchShippingRulesResult: Result.success(shippingRules)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
     ) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -496,7 +496,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> \.availableCardTypes .~ ["AMEX"]
     let reward = Reward.template
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: []))) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result.success([]))) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
@@ -537,7 +537,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.template
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: []))) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result.success([]))) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
@@ -579,7 +579,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.title .~ "The thing!"
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: []))) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result.success([]))) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
@@ -622,7 +622,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
     let shippingRule = .template |> ShippingRule.lens.cost .~ 0
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: [shippingRule]))) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result.success([shippingRule]))) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()
@@ -672,7 +672,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.last!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResult: Result(success: shippingRules)),
+      apiService: MockService(fetchShippingRulesResult: Result.success(shippingRules)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
     ) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
@@ -725,7 +725,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.last!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResult: Result(success: shippingRules)),
+      apiService: MockService(fetchShippingRulesResult: Result.success(shippingRules)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
     ) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
@@ -780,7 +780,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let changedShippingRule = shippingRules.first!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResult: Result(success: shippingRules)),
+      apiService: MockService(fetchShippingRulesResult: Result.success(shippingRules)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
     ) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
@@ -1250,7 +1250,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       newCheckoutUrl: "http://kickstarter.com/checkout", status: 200
     )
 
-    withEnvironment(apiService: MockService(updatePledgeResult: Result(success: updatePledgeResponse))) {
+    withEnvironment(apiService: MockService(updatePledgeResult: Result.success(updatePledgeResponse))) {
       self.vm.inputs.updatePledgeButtonTapped()
 
       self.loadingOverlayIsHidden.assertValues([true, false])
@@ -1297,7 +1297,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       newCheckoutUrl: "http://kickstarter.com/checkout", status: 200
     )
 
-    withEnvironment(apiService: MockService(updatePledgeResult: Result(success: updatePledgeResponse))) {
+    withEnvironment(apiService: MockService(updatePledgeResult: Result.success(updatePledgeResponse))) {
       self.vm.inputs.updatePledgeButtonTapped()
 
       self.loadingOverlayIsHidden.assertValues([true, false])
@@ -1426,7 +1426,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     // Updating pledge response comes back with no checkout url when everything completed successfully
     let updatePledgeResponse = UpdatePledgeEnvelope(newCheckoutUrl: nil, status: 200)
 
-    withEnvironment(apiService: MockService(updatePledgeResult: Result(success: updatePledgeResponse))) {
+    withEnvironment(apiService: MockService(updatePledgeResult: Result.success(updatePledgeResponse))) {
       self.vm.inputs.updatePledgeButtonTapped()
 
       self.loadingOverlayIsHidden.assertValues([true, false])
@@ -1471,7 +1471,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     // Updating pledge response comes back with no checkout url when everything completed successfully
     let updatePledgeResponse = UpdatePledgeEnvelope(newCheckoutUrl: nil, status: 200)
 
-    withEnvironment(apiService: MockService(updatePledgeResult: Result(success: updatePledgeResponse))) {
+    withEnvironment(apiService: MockService(updatePledgeResult: Result.success(updatePledgeResponse))) {
       self.vm.inputs.updatePledgeButtonTapped()
 
       self.loadingOverlayIsHidden.assertValues([true, false])
@@ -1493,7 +1493,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let otherShippingRule = shippingRules.first!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResult: Result(success: shippingRules)),
+      apiService: MockService(fetchShippingRulesResult: Result.success(shippingRules)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
     ) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
@@ -1866,8 +1866,9 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   func testPledgeTextFieldText() {
     let project = Project.template
     let reward = .template
-      |> Reward.lens.minimum .~ 42
+      |> Reward.lens.minimum .~ 42.0
       |> Reward.lens.id .~ 24
+
     self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: false)
     self.vm.inputs.viewDidLoad()
 
@@ -2121,7 +2122,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testShippingAmountLabelText_USUser_CAProject() {
-    let apiService = MockService(fetchShippingRulesResult: Result(success: shippingRules))
+    let apiService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
     let config = .template |> Config.lens.countryCode .~ "US"
     let project = .template |> Project.lens.country .~ .ca
 
@@ -2138,7 +2139,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testShippingAmountLabelText_CAUser_CAProject() {
-    let apiService = MockService(fetchShippingRulesResult: Result(success: shippingRules))
+    let apiService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
     let config = .template |> Config.lens.countryCode .~ "CA"
     let project = .template |> Project.lens.country .~ .ca
 
@@ -2155,7 +2156,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testShippingAmountLabelText_USUser_DKProject() {
-    let apiService = MockService(fetchShippingRulesResult: Result(success: shippingRules))
+    let apiService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
     let config = .template |> Config.lens.countryCode .~ "US"
     let project = .template |> Project.lens.country .~ .dk
 
@@ -2172,7 +2173,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   }
 
   func testShippingInputStackViewHidden_WithNoShipping() {
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: []))) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result.success([]))) {
       self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -2187,7 +2188,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   func testShippingInputStackViewHidden_WithShipping() {
     let reward = .template |> Reward.lens.shipping.enabled .~ true
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: shippingRules))) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result.success(shippingRules))) {
       self.vm.inputs.configureWith(project: .template, reward: reward, applePayCapable: false)
       self.vm.inputs.viewDidLoad()
 
@@ -2426,7 +2427,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
   func testTrackChangedPledgeAmount_ManagingReward() {
     let newReward = .template
-      |> Reward.lens.minimum .~ 50
+      |> Reward.lens.minimum .~ 50.0
       |> Reward.lens.id .~ 42
     let oldReward = .template
       |> Reward.lens.id .~ 24
@@ -2464,7 +2465,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.last!
 
     withEnvironment(
-      apiService: MockService(fetchShippingRulesResult: Result(failure: error)),
+      apiService: MockService(fetchShippingRulesResult: Result.failure(error)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
     ) {
       self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
@@ -2504,7 +2505,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.last!
 
     withEnvironment(
-      apiService: MockService(createPledgeResult: Result(failure: errorUnknown)),
+      apiService: MockService(createPledgeResult: Result.failure(errorUnknown)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
     ) {
       self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
@@ -2527,7 +2528,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.dismissViewController.assertValueCount(1)
 
       withEnvironment(
-        apiService: MockService(createPledgeResult: Result(failure: errorEmptyMessage)),
+        apiService: MockService(createPledgeResult: Result.failure(errorEmptyMessage)),
         config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
       ) {
         self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
@@ -2572,7 +2573,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.last!
 
     withEnvironment(
-      apiService: MockService(changePaymentMethodResult: Result(failure: errorUnknown)),
+      apiService: MockService(changePaymentMethodResult: Result.failure(errorUnknown)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
     ) {
       self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
@@ -2595,7 +2596,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.dismissViewController.assertValueCount(1)
 
       withEnvironment(
-        apiService: MockService(changePaymentMethodResult: Result(failure: errorEmptyMessage)),
+        apiService: MockService(changePaymentMethodResult: Result.failure(errorEmptyMessage)),
         config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
       ) {
         self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
@@ -2640,7 +2641,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.last!
 
     withEnvironment(
-      apiService: MockService(updatePledgeResult: Result(failure: errorUnknown)),
+      apiService: MockService(updatePledgeResult: Result.failure(errorUnknown)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
     ) {
       self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
@@ -2663,7 +2664,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.dismissViewController.assertValueCount(1)
 
       withEnvironment(
-        apiService: MockService(updatePledgeResult: Result(failure: errorEmptyMessage)),
+        apiService: MockService(updatePledgeResult: Result.failure(errorEmptyMessage)),
         config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
       ) {
         self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)
@@ -2708,7 +2709,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let defaultShippingRule = shippingRules.last!
 
     withEnvironment(
-      apiService: MockService(createPledgeResult: Result(failure: errorUnknown)),
+      apiService: MockService(createPledgeResult: Result.failure(errorUnknown)),
       config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
     ) {
       self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: true)
@@ -2741,7 +2742,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.dismissViewController.assertValueCount(1)
 
       withEnvironment(
-        apiService: MockService(createPledgeResult: Result(failure: errorEmptyMessage)),
+        apiService: MockService(createPledgeResult: Result.failure(errorEmptyMessage)),
         config: .template |> Config.lens.countryCode .~ defaultShippingRule.location.country
       ) {
         self.vm.inputs.configureWith(project: .template, reward: .template, applePayCapable: false)

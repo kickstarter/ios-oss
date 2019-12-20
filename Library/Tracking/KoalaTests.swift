@@ -158,7 +158,7 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client, loggedInUser: nil)
     let project = Project.template
-      |> Project.lens.stats.staticUsdRate .~ 2
+      |> Project.lens.stats.staticUsdRate .~ 2.0
       |> Project.lens.stats.commentsCount .~ 10
       |> Project.lens.prelaunchActivated .~ true
 

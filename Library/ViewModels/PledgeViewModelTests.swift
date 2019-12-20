@@ -358,10 +358,10 @@ final class PledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService, currentUser: .template) {
       let shippingRule = ShippingRule.template
         |> ShippingRule.lens.id .~ 123
-        |> ShippingRule.lens.cost .~ 10
+        |> ShippingRule.lens.cost .~ 10.0
       let backing = Backing.template
         |> Backing.lens.amount .~ 100
-        |> Backing.lens.locationId .~ 123
+        |> Backing.lens.locationId .~ .some(123)
       let project = Project.template
         |> Project.lens.personalization.backing .~ backing
       let reward = Reward.template
@@ -1365,7 +1365,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     let updateBackingEnvelope = UpdateBackingEnvelope(
@@ -1448,7 +1448,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     let mockService = MockService(
@@ -1517,7 +1517,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.submitButtonTitle.assertDidNotEmitValue()
@@ -1623,7 +1623,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ Reward.otherReward
           |> Backing.lens.rewardId .~ Reward.otherReward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.submitButtonTitle.assertDidNotEmitValue()
@@ -1705,7 +1705,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.submitButtonTitle.assertDidNotEmitValue()
@@ -1813,7 +1813,7 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
         )
 
       self.vm.inputs.configureWith(
@@ -1965,7 +1965,7 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
         )
 
       self.vm.inputs.configureWith(
@@ -2085,7 +2085,7 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
         )
 
       self.vm.inputs.configureWith(
@@ -2208,7 +2208,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -2452,7 +2452,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -2654,7 +2654,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -2844,7 +2844,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -3219,7 +3219,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     let updateBackingEnvelope = UpdateBackingEnvelope(
@@ -3310,7 +3310,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     let updateBackingEnvelope = UpdateBackingEnvelope(
@@ -3401,7 +3401,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     let updateBackingEnvelope = UpdateBackingEnvelope(

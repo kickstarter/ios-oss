@@ -25,7 +25,7 @@ internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
     let reward = .template
       |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ 50
       |> ProjectStatsEnvelope.RewardStats.lens.id .~ 5
-      |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 5
+      |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 5.0
       |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 250
 
     self.vm.inputs.configureWith(country: .us, reward: reward, totalPledged: 1_000)
@@ -39,7 +39,7 @@ internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
     let reward = .template
       |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ 2
       |> ProjectStatsEnvelope.RewardStats.lens.id .~ 5
-      |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 5
+      |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 5.0
       |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 10
 
     self.vm.inputs.configureWith(country: .us, reward: reward, totalPledged: 10_000)
@@ -53,7 +53,7 @@ internal final class DashboardRewardRowStackViewViewModelTests: TestCase {
     let reward = .template
       |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ 0
       |> ProjectStatsEnvelope.RewardStats.lens.id .~ 5
-      |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 3
+      |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 3.0
       |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 0
 
     self.vm.inputs.configureWith(country: .us, reward: reward, totalPledged: 1_000)

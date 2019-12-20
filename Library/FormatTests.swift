@@ -578,8 +578,10 @@ final class FormatTests: TestCase {
     let tomorrow = now.timeIntervalSince1970 + (60 * 60 * 24)
     let daysAgo = now.timeIntervalSince1970 - (60 * 60 * 24 * 2)
     let inDays = now.timeIntervalSince1970 + (60 * 60 * 24 * 2)
-    let awhileAgo = now.timeIntervalSince1970 - (60 * 60 * 24 * 30 + 60 * 60 * 24)
-    let inAwhile = now.timeIntervalSince1970 + (60 * 60 * 24 * 30 + 60 * 60 * 24)
+
+    let muliplier = (60 * 60 * 24 * 30 + 60 * 60 * 24)
+    let awhileAgo = now.timeIntervalSince1970 - TimeInterval(muliplier)
+    let inAwhile = now.timeIntervalSince1970 + TimeInterval(muliplier)
 
     withEnvironment(language: .en, locale: Locale(identifier: "en"), mainBundle: MockBundle()) {
       XCTAssertEqual("just now", Format.relative(secondsInUTC: justNow))

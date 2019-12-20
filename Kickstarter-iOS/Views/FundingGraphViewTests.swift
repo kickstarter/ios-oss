@@ -95,8 +95,8 @@ internal final class FundingGraphViewTests: TestCase {
   func testOneDayProject() {
     let oneDayProject = .template
       |> Project.lens.stats.goal .~ 2_000
-      |> Project.lens.dates.launchedAt .~ 123_456_789
-      |> Project.lens.dates.deadline .~ (123_456_789 + 60 * 60 * 24)
+      |> Project.lens.dates.launchedAt .~ 123_456_789.0
+      |> Project.lens.dates.deadline .~ Double(123_456_789 + 60 * 60 * 24)
 
     let graphView = FundingGraphView(frame: CGRect(x: 0, y: 0, width: 300, height: 225))
 
@@ -123,8 +123,8 @@ internal final class FundingGraphViewTests: TestCase {
 
 private let project = .template
   |> Project.lens.stats.goal .~ 22_000
-  |> Project.lens.dates.launchedAt .~ 1_477_494_745
-  |> Project.lens.dates.deadline .~ 1_480_187_443
+  |> Project.lens.dates.launchedAt .~ 1_477_494_745.0
+  |> Project.lens.dates.deadline .~ 1_480_187_443.0
 
 private func fundingStats(forProject project: Project, pledgeValues: [Int])
   -> [ProjectStatsEnvelope.FundingDateStats] {

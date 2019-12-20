@@ -25,7 +25,7 @@ final class RewardCardContainerViewTests: TestCase {
               |> Backing.lens.reward .~ reward
               |> Backing.lens.rewardId .~ reward.id
               |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700
+              |> Backing.lens.amount .~ 700.0
           )
 
         let vc = rewardCardInViewController(
@@ -53,7 +53,7 @@ final class RewardCardContainerViewTests: TestCase {
               |> Backing.lens.reward .~ Reward.otherReward
               |> Backing.lens.rewardId .~ Reward.otherReward.id
               |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700
+              |> Backing.lens.amount .~ 700.0
           )
 
         let vc = rewardCardInViewController(
@@ -128,7 +128,7 @@ final class RewardCardContainerViewTests: TestCase {
               |> Backing.lens.reward .~ reward
               |> Backing.lens.rewardId .~ reward.id
               |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700
+              |> Backing.lens.amount .~ 700.0
           )
 
         let vc = rewardCardInViewController(
@@ -156,7 +156,7 @@ final class RewardCardContainerViewTests: TestCase {
               |> Backing.lens.reward .~ Reward.otherReward
               |> Backing.lens.rewardId .~ Reward.otherReward.id
               |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700
+              |> Backing.lens.amount .~ 700.0
           )
 
         let vc = rewardCardInViewController(
@@ -211,7 +211,7 @@ final class RewardCardContainerViewTests: TestCase {
               |> Backing.lens.reward .~ reward
               |> Backing.lens.rewardId .~ reward.id
               |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700
+              |> Backing.lens.amount .~ 700.0
               |> Backing.lens.status .~ .errored
           )
 
@@ -246,7 +246,7 @@ final class RewardCardContainerViewTests: TestCase {
               |> Backing.lens.reward .~ reward
               |> Backing.lens.rewardId .~ reward.id
               |> Backing.lens.shippingAmount .~ 10
-              |> Backing.lens.amount .~ 700
+              |> Backing.lens.amount .~ 700.0
               |> Backing.lens.status .~ .errored
           )
 
@@ -394,27 +394,27 @@ let allRewards: [(String, Reward)] = {
   let availableLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
-    |> Reward.lens.convertedMinimum .~ 7
+    |> Reward.lens.convertedMinimum .~ 7.0
   let availableTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
-    |> Reward.lens.convertedMinimum .~ 7
+    |> Reward.lens.convertedMinimum .~ 7.0
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
   let availableLimitedTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
-    |> Reward.lens.convertedMinimum .~ 7
+    |> Reward.lens.convertedMinimum .~ 7.0
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
   let availableNonLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.endsAt .~ nil
-    |> Reward.lens.convertedMinimum .~ 7
+    |> Reward.lens.convertedMinimum .~ 7.0
   let availableShippingEnabledReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
     |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
-    |> Reward.lens.convertedMinimum .~ 7
+    |> Reward.lens.convertedMinimum .~ 7.0
     |> Reward.lens.shipping .~ (
       .template
         |> Reward.Shipping.lens.enabled .~ true
@@ -424,21 +424,21 @@ let allRewards: [(String, Reward)] = {
   let unavailableLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 0
-    |> Reward.lens.convertedMinimum .~ 7
+    |> Reward.lens.convertedMinimum .~ 7.0
   let unavailableTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ nil
     |> Reward.lens.remaining .~ nil
     |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
-    |> Reward.lens.convertedMinimum .~ 7
+    |> Reward.lens.convertedMinimum .~ 7.0
   let unavailableLimitedTimebasedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 0
-    |> Reward.lens.convertedMinimum .~ 7
+    |> Reward.lens.convertedMinimum .~ 7.0
     |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
   let unavailableShippingEnabledReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 0
-    |> Reward.lens.convertedMinimum .~ 7
+    |> Reward.lens.convertedMinimum .~ 7.0
 
     |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
     |> Reward.lens.shipping .~ (

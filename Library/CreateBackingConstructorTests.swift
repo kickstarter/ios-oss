@@ -42,7 +42,7 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     let reward = Reward.template
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.location .. Location.lens.id .~ 1
-      |> ShippingRule.lens.cost .~ 5
+      |> ShippingRule.lens.cost .~ 5.0
 
     let applePayParams = ApplePayParams(
       paymentInstrumentName: "paymentInstrumentName",

@@ -115,7 +115,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
       |> Project.lens.personalization.backing %~~ { _, _ in
         .template
-          |> Backing.lens.amount .~ 5
+          |> Backing.lens.amount .~ 5.0
           |> Backing.lens.rewardId .~ nil
           |> Backing.lens.reward .~ nil
       }
