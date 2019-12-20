@@ -66,7 +66,7 @@ internal final class DeprecatedRewardCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> DeprecatedRewardCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
+      |> DeprecatedRewardCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button
       |> (DeprecatedRewardCell.lens.contentView .. UIView.lens.layoutMargins) %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(2), left: Styles.grid(16), bottom: Styles.grid(4), right: Styles.grid(16))

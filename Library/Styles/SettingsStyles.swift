@@ -78,7 +78,7 @@ public let settingsSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
 
 public let notificationButtonStyle = UIButton.lens.layer.cornerRadius .~ 9
   <> UIButton.lens.accessibilityHint %~ { _ in Strings.Double_tap_to_toggle_setting() }
-  <> UIButton.lens.accessibilityTraits .~ UIAccessibilityTraits.none.rawValue
+  <> UIButton.lens.accessibilityTraits .~ UIAccessibilityTraits.none
   <> UIButton.lens.layer.borderColor .~ UIColor.ksr_grey_600.cgColor
   <> UIButton.lens.layer.borderWidth .~ 1.0
   <> UIButton.lens.backgroundColor(for: .normal) .~ .white

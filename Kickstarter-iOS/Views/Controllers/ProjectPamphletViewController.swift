@@ -122,7 +122,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
         |> \.shadowColor .~ UIColor.black.cgColor
         |> \.shadowOpacity .~ 0.12
         |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
-        |> \.shadowRadius .~ 1.0
+        |> \.shadowRadius .~ CGFloat(1.0)
         |> \.maskedCorners .~ [CACornerMask.layerMaxXMinYCorner, CACornerMask.layerMinXMinYCorner]
     }
   }

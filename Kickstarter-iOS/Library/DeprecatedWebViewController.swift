@@ -50,7 +50,7 @@ internal class DeprecatedWebViewController: UIViewController {
     _ = self.webView
       |> UIWebView.lens.suppressesIncrementalRendering .~ true
       |> UIWebView.lens.translatesAutoresizingMaskIntoConstraints .~ false
-      |> UIWebView.lens.scrollView.decelerationRate .~ UIScrollView.DecelerationRate.normal.rawValue
+      |> UIWebView.lens.scrollView.decelerationRate .~ UIScrollView.DecelerationRate.normal
   }
 
   internal override func bindViewModel() {

@@ -934,10 +934,15 @@
       if let project = self.fetchProjectResponse {
         return SignalProducer(value: project)
       }
+
+      let projectWithId = Project.template
+        |> Project.lens.id %~ { param.id ?? $0 }
+
+      let projectWithSlugAndId = projectWithId
+        |> Project.lens.slug %~ { param.slug ?? $0 }
+
       return SignalProducer(
-        value: .template
-          |> Project.lens.id %~ { param.id ?? $0 }
-          |> Project.lens.slug %~ { param.slug ?? $0 }
+        value: projectWithSlugAndId
       )
     }
 
