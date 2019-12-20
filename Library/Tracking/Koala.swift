@@ -2111,7 +2111,7 @@ private func projectProperties(
 
   props["backers_count"] = project.stats.backersCount
   props["subcategory"] = project.category.name
-  props["subcategory_id"] = project.category.intID
+  props["subcategory_id"] = project.category.id
   props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
@@ -2123,7 +2123,7 @@ private func projectProperties(
   props["name"] = project.name
   props["pid"] = project.id
   props["category"] = project.category.parent?.name
-  props["category_id"] = project.category.parent?.intID
+  props["category_id"] = project.category.parentId
   props["percent_raised"] = project.stats.fundingProgress
   props["state"] = project.state.rawValue
   props["static_usd_rate"] = project.stats.staticUsdRate
