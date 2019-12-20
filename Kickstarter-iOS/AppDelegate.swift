@@ -202,18 +202,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.configureQualtrics
       .observeValues { [weak self] config in
-        let properties = Properties()
-        config.stringProperties.forEach { key, value in
-          properties.setString(string: value, for: key)
-        }
-
-        Qualtrics.shared.initialize(
-          brandId: config.brandId,
-          zoneId: config.zoneId,
-          interceptId: config.interceptId
-        ) { result in
-          self?.viewModel.inputs.qualtricsInitialized(with: result)
-        }
+        self?.configureQualtrics(with: config)
       }
 
     self.viewModel.outputs.evaluateQualtricsTargetingLogic
@@ -368,6 +357,23 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     let task = session.dataTask(with: url)
     task.resume()
+  }
+
+  // MARK: - Qualtrics Configuration
+
+  private func configureQualtrics(with config: QualtricsConfigData) {
+    let properties = Properties()
+    config.stringProperties.forEach { key, value in
+      properties.setString(string: value, for: key)
+    }
+
+    Qualtrics.shared.initialize(
+      brandId: config.brandId,
+      zoneId: config.zoneId,
+      interceptId: config.interceptId
+    ) { result in
+      self.viewModel.inputs.qualtricsInitialized(with: result)
+    }
   }
 }
 
