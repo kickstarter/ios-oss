@@ -16,6 +16,7 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let applicationIconBadgeNumber = TestObserver<Int, Never>()
   fileprivate let configureAppCenterWithData = TestObserver<AppCenterConfigData, Never>()
   fileprivate let configureFabric = TestObserver<(), Never>()
+  fileprivate let configureOptimizely = TestObserver<String, Never>()
   fileprivate let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
   private let findRedirectUrl = TestObserver<URL, Never>()
   fileprivate let forceLogout = TestObserver<(), Never>()
@@ -43,6 +44,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.applicationIconBadgeNumber.observe(self.applicationIconBadgeNumber.observer)
     self.vm.outputs.configureAppCenterWithData.observe(self.configureAppCenterWithData.observer)
     self.vm.outputs.configureFabric.observe(self.configureFabric.observer)
+    self.vm.outputs.configureOptimizely.observe(self.configureOptimizely.observer)
     self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
@@ -117,6 +119,55 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
     self.configureFabric.assertValueCount(1)
+  }
+
+  func testConfigureOptimizely_Production() {
+    let mockService = MockService(serverConfig: ServerConfig.production)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.production])
+    }
+  }
+
+  func testConfigureOptimizely_Staging() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])
+    }
+  }
+
+  func testOptimizelyConfiguration_IsSuccess() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])
+
+      let shouldUpdateClient = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+
+      XCTAssertTrue(shouldUpdateClient)
+    }
+  }
+
+  func testOptimizelyConfiguration_IsFailure() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+    let mockResult = MockOptimizelyResult() |> \.shouldSucceed .~ false
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])
+
+      let shouldUpdateClient = self.vm.inputs.optimizelyConfigured(with: mockResult)
+
+      XCTAssertFalse(shouldUpdateClient)
+    }
   }
 
   func testConfigureAppCenter_AlphaApp_LoggedOut() {
