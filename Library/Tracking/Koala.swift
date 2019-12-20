@@ -2111,6 +2111,7 @@ private func projectProperties(
 
   props["backers_count"] = project.stats.backersCount
   props["subcategory"] = project.category.name
+  props["subcategory_id"] = project.category.id
   props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
@@ -2122,6 +2123,7 @@ private func projectProperties(
   props["name"] = project.name
   props["pid"] = project.id
   props["category"] = project.category.parent?.name
+  props["category_id"] = project.category.parentId
   props["percent_raised"] = project.stats.fundingProgress
   props["state"] = project.state.rawValue
   props["static_usd_rate"] = project.stats.staticUsdRate
@@ -2129,9 +2131,7 @@ private func projectProperties(
   props["current_pledge_amount_usd"] = project.stats.pledgedUsd
   props["goal_usd"] = project.stats.goalUsd
   props["has_video"] = project.video != nil
-  props["updates_count"] = project.stats.updatesCount
   props["prelaunch_activated"] = project.prelaunchActivated
-  props["rewards_count"] = project.rewards.count
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
