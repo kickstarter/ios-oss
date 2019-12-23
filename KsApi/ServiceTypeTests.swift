@@ -309,10 +309,10 @@ private func userAgent() -> String {
 
 // swiftlint:enable line_length
 
-private func testToolBuildNumber() -> Double {
+private func testToolBuildNumber() -> Int {
   guard
     let buildString = Bundle.main.infoDictionary?["CFBundleVersion"] as? String,
-    let buildNumber = Double(buildString)
+    let buildNumber = Int(buildString)
   else { return 0 }
 
   return buildNumber
