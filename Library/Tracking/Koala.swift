@@ -636,7 +636,7 @@ public final class Koala {
         "pledge_context": screen.trackingString
       ])
 
-    self.track(event: "Reward Clicked", properties: props)
+    self.track(event: "Select Reward Button Clicked", properties: props)
   }
 
   public func trackPledgeScreenViewed(project: Project) {

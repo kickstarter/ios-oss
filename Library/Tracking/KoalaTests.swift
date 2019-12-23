@@ -393,7 +393,7 @@ final class KoalaTests: TestCase {
     let project = Project.cosmicSurgery
     let reward = Reward.template
 
-    koala.trackRewardClicked(project: project, reward: reward, backing: nil, screen: .backThisPage)
+    koala.trackRewardClicked(project: project, reward: reward, screen: .backThisPage)
 
     let props = client.properties.last
 
@@ -415,7 +415,7 @@ final class KoalaTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5.0
 
-    koala.trackRewardClicked(project: project, reward: reward, backing: nil, screen: .backThisPage)
+    koala.trackRewardClicked(project: project, reward: reward, screen: .backThisPage)
 
     let props = client.properties.last
 
@@ -438,7 +438,7 @@ final class KoalaTests: TestCase {
       |> Reward.lens.shipping .~ (Reward.Shipping.template
         |> Reward.Shipping.lens.preference .~ Reward.Shipping.Preference.restricted)
 
-    koala.trackRewardClicked(project: project, reward: reward, backing: nil, screen: .backThisPage)
+    koala.trackRewardClicked(project: project, reward: reward, screen: .backThisPage)
 
     let props = client.properties.last
 
@@ -686,10 +686,7 @@ final class KoalaTests: TestCase {
   func testTrackSelectRewardButtonClicked() {
     let client = MockTrackingClient()
     let reward = Reward.template
-    let backing = .template
-      |> Backing.lens.reward .~ reward
-    let project = .template
-      |> Project.lens.personalization.backing .~ backing
+    let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
@@ -697,13 +694,12 @@ final class KoalaTests: TestCase {
     koala.trackRewardClicked(
       project: project,
       reward: reward,
-      backing: backing,
       screen: .backThisPage
     )
 
     let properties = client.properties.last
 
-    XCTAssertEqual(["Reward Clicked"], client.events)
+    XCTAssertEqual(["Select Reward Button Clicked"], client.events)
     XCTAssertEqual("Back this page", properties?["pledge_context"] as? String)
   }
 

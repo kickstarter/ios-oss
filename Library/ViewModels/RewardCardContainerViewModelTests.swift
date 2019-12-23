@@ -813,7 +813,7 @@ final class RewardCardContainerViewModelTests: TestCase {
 
       self.vm.inputs.pledgeButtonTapped()
 
-      XCTAssertEqual(["Reward Clicked"], client.events)
+      XCTAssertEqual(["Select Reward Button Clicked"], client.events)
     }
   }
 
