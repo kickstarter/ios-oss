@@ -157,14 +157,15 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.stackViewIsHidden.assertValues([true])
   }
 
-  func testPledgeCTAExperimentalGroup_NonBacker_LiveProject_loggedIn() {
+  func testPledgeCTA_NonBacker_LiveProject_LoggedIn_OptimizelyExperimental() {
     let user = User.template |> User.lens.id .~ 5
     let project = Project.template
       |> Project.lens.personalization.backing .~ nil
       |> Project.lens.personalization.isBacking .~ false
 
     let optimizelyClient = MockOptimizelyClient()
-    optimizelyClient.experimentalGroup = true
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.experimental.rawValue]
 
     withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
       self.vm.inputs.configureWith(value: (.left(project), false))

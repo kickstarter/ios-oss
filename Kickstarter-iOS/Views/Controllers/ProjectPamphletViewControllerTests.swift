@@ -114,7 +114,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 1_964
 
     let optimizelyClient = MockOptimizelyClient()
-    optimizelyClient.experimentalGroup = true
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.experimental.rawValue]
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
@@ -142,7 +143,6 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 1_964
 
     let optimizelyClient = MockOptimizelyClient()
-    optimizelyClient.experimentalGroup = false
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
