@@ -138,7 +138,7 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
       return PledgeStateCTAType.viewYourRewards
     }
 
-    if testGroup == OptimizelyExperiment.Variant.experimental.rawValue && project.state == .live {
+    if testGroup == OptimizelyExperiment.Variant.experimental.rawValue, project.state == .live {
       return PledgeStateCTAType.seeRewards
     }
 

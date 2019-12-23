@@ -42,7 +42,7 @@ public func variant(for experiment: OptimizelyExperiment.Key) -> String {
   do {
     guard let user = AppEnvironment.current.currentUser,
       let optimizelyClient = AppEnvironment.current.optimizelyClient else {
-        return OptimizelyExperiment.Variant.control.rawValue
+      return OptimizelyExperiment.Variant.control.rawValue
     }
     let userId = String(user.id)
     let variationKey = try optimizelyClient.activate(
