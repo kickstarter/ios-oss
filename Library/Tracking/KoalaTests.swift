@@ -164,7 +164,7 @@ final class KoalaTests: TestCase {
     let project = Project.template
       |> Project.lens.category .~ (Category.illustration
         |> Category.lens.id .~ "123"
-        |> Category.lens.parentId .~ "321" )
+        |> Category.lens.parentId .~ "321")
       |> Project.lens.stats.staticUsdRate .~ 2
       |> Project.lens.stats.commentsCount .~ 10
       |> Project.lens.prelaunchActivated .~ true
