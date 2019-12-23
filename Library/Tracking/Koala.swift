@@ -628,14 +628,12 @@ public final class Koala {
   public func trackRewardClicked(
     project: Project,
     reward: Reward,
-    backing: Backing?,
     screen: CheckoutContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom([
-        "pledge_context": screen.trackingString,
-        "pledge_total": backing?.amount as Any
+        "pledge_context": screen.trackingString
       ])
 
     self.track(event: "Reward Clicked", properties: props)
