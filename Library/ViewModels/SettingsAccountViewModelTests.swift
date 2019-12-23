@@ -72,21 +72,17 @@ internal final class SettingsAccountViewModelTests: TestCase {
 
   func testTrackViewedAccount() {
     let koalaClient = MockTrackingClient()
-    let dataLakeClient = MockTrackingClient()
 
-    withEnvironment(koala: Koala(dataLakeClient: dataLakeClient, client: koalaClient)) {
+    withEnvironment(koala: Koala(client: koalaClient)) {
       XCTAssertEqual([], koalaClient.events)
-      XCTAssertEqual([], dataLakeClient.events)
 
       self.vm.inputs.viewDidAppear()
 
       XCTAssertEqual(["Viewed Account"], koalaClient.events)
-      XCTAssertEqual(["Viewed Account"], dataLakeClient.events)
 
       self.vm.inputs.viewDidAppear()
 
       XCTAssertEqual(["Viewed Account", "Viewed Account"], koalaClient.events)
-      XCTAssertEqual(["Viewed Account", "Viewed Account"], dataLakeClient.events)
     }
   }
 }

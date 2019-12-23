@@ -68,6 +68,11 @@
 		01F219561DC12BF7005DD2E4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */; };
 		01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */; };
 		01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */; };
+		1611EF5E23ABD1550051CDCC /* OptimizelyResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */; };
+		1611EF6023ABD3D90051CDCC /* MockOptimizelyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF5F23ABD3D90051CDCC /* MockOptimizelyResult.swift */; };
+		1611EF6223ABD7C00051CDCC /* OptimizelyResultTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */; };
+		1611EF6323ABDA820051CDCC /* Optimizely.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7B962AA23888A0B003AA616 /* Optimizely.framework */; };
+		1611EF6423ABDB3D0051CDCC /* Optimizely.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7B962AA23888A0B003AA616 /* Optimizely.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */; };
 		3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */; };
 		3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */; };
@@ -223,6 +228,12 @@
 		774A76E920D841110012A71F /* BetaToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76E820D841110012A71F /* BetaToolsViewController.swift */; };
 		774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */; };
 		774ACC19225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774ACC18225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift */; };
+		774D98D223A818A800FC81C2 /* Optimizely.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7B962AA23888A0B003AA616 /* Optimizely.framework */; };
+		774D98D423A94EDB00FC81C2 /* OptimizelyExperiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */; };
+		774D98D623A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */; };
+		774D98D723A94F8400FC81C2 /* OptimizelyClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */; };
+		774D98D923A96E7500FC81C2 /* OptimizelyClientTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774D98D823A96E7500FC81C2 /* OptimizelyClientTypeTests.swift */; };
+		774D98DA23A9795100FC81C2 /* Optimizely.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7B962AA23888A0B003AA616 /* Optimizely.framework */; };
 		774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774F8D5A22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift */; };
 		774F8D5D22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774F8D5C22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift */; };
 		7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */; };
@@ -284,6 +295,7 @@
 		77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440020F64F0B005F6B38 /* HelpDataSource.swift */; };
 		77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440220F65074005F6B38 /* HelpViewController.swift */; };
 		77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E84E0B2166A8C600DA8891 /* MessageBannerViewControllerTests.swift */; };
+		77EBB62123A175C700A58853 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A775B5451CA871D700BBB587 /* RootViewModel.swift */; };
 		77EFBAA62268D32000DA5C3C /* RewardsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBAA52268D32000DA5C3C /* RewardsCollectionViewController.swift */; };
 		77EFBAE02268D34A00DA5C3C /* RewardsCollectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBADE2268D33E00DA5C3C /* RewardsCollectionViewControllerTests.swift */; };
 		77EFBAE32268D48A00DA5C3C /* RewardsCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EFBAE12268D44D00DA5C3C /* RewardsCollectionViewModel.swift */; };
@@ -528,7 +540,6 @@
 		A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */; };
 		A774684B1D6E400D007DCDFC /* DeprecatedRewardPledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A774684A1D6E400D007DCDFC /* DeprecatedRewardPledgeViewModel.swift */; };
 		A775B5211CA8705B00BBB587 /* RootTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A775B51F1CA8705B00BBB587 /* RootTabBarViewController.swift */; };
-		A775B5471CA871D700BBB587 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A775B5451CA871D700BBB587 /* RootViewModel.swift */; };
 		A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D7B061CBAAF5D0077586B /* Paginate.swift */; };
 		A77DA9241E4D13F000DB3A66 /* DeprecatedRewardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77DA9231E4D13F000DB3A66 /* DeprecatedRewardCell.xib */; };
 		A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78012641D2EEA620027396E /* ReferralChartView.swift */; };
@@ -1207,6 +1218,9 @@
 		D706479123A2C91D00B33C20 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */; };
 		D706479223A2C91E00B33C20 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */; };
 		D706479423A2E1C700B33C20 /* Optimizely.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D7B962AA23888A0B003AA616 /* Optimizely.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D706478E23A2BEB300B33C20 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */; };
+		D706479123A2C91D00B33C20 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */; };
+		D706479223A2C91E00B33C20 /* MockOptimizelyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */; };
 		D7180BA222EF9DE900EB0110 /* RewardCellProjectBackingStateTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */; };
 		D72370542118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */; };
 		D723708C2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */; };
@@ -1386,6 +1400,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				1611EF6423ABDB3D0051CDCC /* Optimizely.framework in CopyFiles */,
 				D08C68AE22AF12E0001ED5E8 /* FBSDKCoreKit.framework in CopyFiles */,
 				D08C68AF22AF12E0001ED5E8 /* FBSDKLoginKit.framework in CopyFiles */,
 				D00698EB225CF63C00EB58BD /* Runes.framework in CopyFiles */,
@@ -1504,6 +1519,9 @@
 		01F219521DC12697005DD2E4 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01F547EC1D53994B000A98EF /* TabBarItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemStyles.swift; sourceTree = "<group>"; };
 		01FD71EB1D3808E500070BAC /* BarButtonItemStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItemStyles.swift; sourceTree = "<group>"; };
+		1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyResultType.swift; sourceTree = "<group>"; };
+		1611EF5F23ABD3D90051CDCC /* MockOptimizelyResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockOptimizelyResult.swift; sourceTree = "<group>"; };
+		1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyResultTypeTests.swift; sourceTree = "<group>"; };
 		37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationViewController.swift; sourceTree = "<group>"; };
 		3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariables.swift; sourceTree = "<group>"; };
 		3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariablesTests.swift; sourceTree = "<group>"; };
@@ -1661,6 +1679,8 @@
 		774A76E820D841110012A71F /* BetaToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsViewController.swift; sourceTree = "<group>"; };
 		774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsViewControllerTests.swift; sourceTree = "<group>"; };
 		774ACC18225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletViewControllerTests.swift; sourceTree = "<group>"; };
+		774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optimizely+OptimizelyClientType.swift"; sourceTree = "<group>"; };
+		774D98D823A96E7500FC81C2 /* OptimizelyClientTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyClientTypeTests.swift; sourceTree = "<group>"; };
 		774F8D5A22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewController.swift; sourceTree = "<group>"; };
 		774F8D5C22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewModel.swift; sourceTree = "<group>"; };
 		7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
@@ -2688,6 +2708,7 @@
 				D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */,
 				D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */,
 				D09D4ED02289D63500C33B77 /* Runes.framework in Frameworks */,
+				774D98D223A818A800FC81C2 /* Optimizely.framework in Frameworks */,
 				D09362A9225D693000E1411A /* Stripe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2706,6 +2727,7 @@
 				D0B7124622AEEDBC00317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68A822AF104B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
 				A73924001D27230B004524C3 /* Kickstarter_Framework.framework in Frameworks */,
+				774D98DA23A9795100FC81C2 /* Optimizely.framework in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 				D7B962AB23888A0B003AA616 /* Optimizely.framework in Frameworks */,
 				D0D58D862257FAE000532AC1 /* Prelude.framework in Frameworks */,
@@ -2720,6 +2742,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1611EF6323ABDA820051CDCC /* Optimizely.framework in Frameworks */,
 				A724BA641D2BFCC80041863C /* Kickstarter_Framework.framework in Frameworks */,
 				D0B7124A22AEEDFA00317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68AB22AF105C001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
@@ -2778,6 +2801,8 @@
 				379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */,
 				7720BA6C22DE79260071FDA1 /* UIViewController+Presentation.swift */,
 				379CFFF12242DAC400F6F0C2 /* WebViewController.swift */,
+				774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */,
+				1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -2950,8 +2975,6 @@
 				A7ED205D1E83256700BFFA01 /* AppDelegateViewModelTests.swift */,
 				01940B2A1D46814E0074FCE3 /* HelpWebViewModel.swift */,
 				A7ED205E1E83256700BFFA01 /* HelpWebViewModelTests.swift */,
-				A775B5451CA871D700BBB587 /* RootViewModel.swift */,
-				A7ED205F1E83256700BFFA01 /* RootViewModelTests.swift */,
 				8072F44E1D46BAA400999EF1 /* UpdatePreviewViewModel.swift */,
 				A7ED20601E83256700BFFA01 /* UpdatePreviewViewModelTests.swift */,
 				A731BF8E1D1EE4CD00A734AC /* UpdateViewModel.swift */,
@@ -3317,6 +3340,10 @@
 				8A73EADD233BE12D00FF9051 /* NSMutableAttributedString+SetFontKeepingTraitsTests.swift */,
 				37EB3E4B228CF4A400076E4C /* NumberFormatter.swift */,
 				37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */,
+				D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */,
+				D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */,
+				774D98D823A96E7500FC81C2 /* OptimizelyClientTypeTests.swift */,
+				1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
 				A7ED1F1C1E830FDC00BFFA01 /* PaginateTests.swift */,
 				373AB25C222A0D8900769FC2 /* PasswordValidation.swift */,
@@ -3591,6 +3618,7 @@
 			children = (
 				A7ED1F431E831BA200BFFA01 /* AlertError+Equatable.swift */,
 				A7ED1F441E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift */,
+				D706478C23A2BE4E00B33C20 /* MockOptimizelyClient.swift */,
 				D033E2C122A05B4800464E43 /* MockApplication.swift */,
 				A7ED1F451E831BA200BFFA01 /* MockBundle.swift */,
 				A7ED1F461E831BA200BFFA01 /* TestCase.swift */,
@@ -3607,6 +3635,7 @@
 				37096C2F22BC238C003D1F40 /* MockFeedbackGenerator.swift */,
 				3751E42A2335E7CE00047E9A /* TraitCollection.swift */,
 				A7ED20221E83237F00BFFA01 /* TraitController.swift */,
+				1611EF5F23ABD3D90051CDCC /* MockOptimizelyResult.swift */,
 			);
 			path = TestHelpers;
 			sourceTree = "<group>";
@@ -3843,6 +3872,8 @@
 				77BC00F72330236600808E75 /* RewardCellViewModelTests.swift */,
 				77EFBAE12268D44D00DA5C3C /* RewardsCollectionViewModel.swift */,
 				77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */,
+				A775B5451CA871D700BBB587 /* RootViewModel.swift */,
+				A7ED205F1E83256700BFFA01 /* RootViewModelTests.swift */,
 				D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */,
 				A7ED1F7B1E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift */,
 				A7F441AA1D005A9400FE6FC5 /* SearchViewModel.swift */,
@@ -4803,6 +4834,7 @@
 				D7B9C7581E453FBF00EA3A22 /* UILabel+IsTruncated.swift in Sources */,
 				3772A4C6229C9E2000EDDC6F /* String+Attributed.swift in Sources */,
 				A755115B1C8642C3005355CF /* AppEnvironment.swift in Sources */,
+				77EBB62123A175C700A58853 /* RootViewModel.swift in Sources */,
 				A7F441AD1D005A9400FE6FC5 /* ActivitiesViewModel.swift in Sources */,
 				A75A9DBF1D6F3A3000603D1D /* DeprecatedRewardShippingPickerViewModel.swift in Sources */,
 				77C93C2522C27443005D3195 /* DebugData.swift in Sources */,
@@ -4872,6 +4904,7 @@
 				8A8099F422E2142C00373E66 /* RewardCardContainerViewModel.swift in Sources */,
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
+				774D98D423A94EDB00FC81C2 /* OptimizelyExperiment.swift in Sources */,
 				A734A2671D21A1790080BBD5 /* WKNavigationActionData.swift in Sources */,
 				A7C93FB61D44142900C2DF9B /* ProjectDescriptionViewModel.swift in Sources */,
 				8AFB8C97233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift in Sources */,
@@ -4895,6 +4928,7 @@
 				D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */,
 				A75C811E1D210C4700B5AD03 /* ProjectActivityItemProvider.swift in Sources */,
 				370C8B6623590CA500DE75DD /* LoadingButtonViewModel.swift in Sources */,
+				1611EF5E23ABD1550051CDCC /* OptimizelyResultType.swift in Sources */,
 				D79F0F7321067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift in Sources */,
 				D04AAC29218BB70D00CF713E /* BetaToolsViewModel.swift in Sources */,
 				D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */,
@@ -5054,6 +5088,7 @@
 				77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */,
 				018422C01D2C486900CA7566 /* DashboardProjectsDrawerCellViewModel.swift in Sources */,
 				D706479023A2BF4B00B33C20 /* OptimizelyClientType.swift in Sources */,
+				774D98D723A94F8400FC81C2 /* OptimizelyClientType.swift in Sources */,
 				8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5074,6 +5109,7 @@
 				A7ED1F491E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift in Sources */,
 				A7ED1FBB1E831C5C00BFFA01 /* CommentsViewModelTests.swift in Sources */,
 				77AA2B3D233D10D3008BBCB8 /* CreateBackingConstructorTests.swift in Sources */,
+				774D98D923A96E7500FC81C2 /* OptimizelyClientTypeTests.swift in Sources */,
 				A7ED1FD91E831C5C00BFFA01 /* ProjectActivitiesViewModelTests.swift in Sources */,
 				A7ED1FDB1E831C5C00BFFA01 /* DashboardViewModelTests.swift in Sources */,
 				3706408822A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift in Sources */,
@@ -5285,7 +5321,6 @@
 				A74FFE691CE3FFE200C7BCB9 /* SearchMessagesViewController.swift in Sources */,
 				598D96B81D426F70003F3F66 /* ActivitySampleProjectCell.swift in Sources */,
 				0169F9861D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift in Sources */,
-				A775B5471CA871D700BBB587 /* RootViewModel.swift in Sources */,
 				A7CC14421D00E74F00035C52 /* FindFriendsStatsCell.swift in Sources */,
 				77A3C53B219CCEBF00824FC1 /* SettingsAccountDataSource.swift in Sources */,
 				015A06F71D219513007AE210 /* DashboardRewardsCell.swift in Sources */,
@@ -5409,6 +5444,7 @@
 				A73EF70A1DCC17DD008FDBE5 /* ProjectNavigatorPagesDataSource.swift in Sources */,
 				A7180BAA1CCED598001711CA /* CommentsViewController.swift in Sources */,
 				D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */,
+				774D98D623A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift in Sources */,
 				D6534D3822E784B500E9D279 /* PledgeCreditCardView.swift in Sources */,
 				A7561A3D1D3146290028DEA1 /* ProjectNavigatorViewController.swift in Sources */,
 				595CDAB81D3537180051C816 /* FundingGraphView.swift in Sources */,
@@ -5535,6 +5571,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1611EF6023ABD3D90051CDCC /* MockOptimizelyResult.swift in Sources */,
 				77F6E765212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift in Sources */,
 				D770DE78217E876000B5319A /* AddNewCardViewControllerTests.swift in Sources */,
 				A7ED20631E83256700BFFA01 /* HelpWebViewModelTests.swift in Sources */,
@@ -5599,6 +5636,7 @@
 				A7ED20241E83237F00BFFA01 /* TraitController.swift in Sources */,
 				A7ED201F1E83232A00BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
 				A7ED20171E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift in Sources */,
+				1611EF6223ABD7C00051CDCC /* OptimizelyResultTypeTests.swift in Sources */,
 				774ACC19225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift in Sources */,
 				8A23EF0822F11470001262E1 /* RewardCardContainerViewTests.swift in Sources */,
 				A7ED20451E8323E900BFFA01 /* DashboardViewControllerTests.swift in Sources */,

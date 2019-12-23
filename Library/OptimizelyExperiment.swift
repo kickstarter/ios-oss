@@ -1,12 +1,11 @@
 import Foundation
-import KsApi
 
 public enum OptimizelyExperiment {
   public enum Key: String {
     case pledgeCTACopy = "pledge_cta_copy"
   }
 
-  public enum Variant: String {
+  public enum Variant: String, Equatable {
     case control
     case experimental
   }

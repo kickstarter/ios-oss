@@ -34,7 +34,7 @@ final class RootViewModelTests: TestCase {
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
 
     let viewControllers = self.vm.outputs.setViewControllers
-      .map { $0.map { $0.viewController }.compact() }
+      .map { $0.map(RootTabBarViewController.viewController(from:)).compact() }
 
     Signal.combineLatest(viewControllers, self.vm.outputs.scrollToTop)
       .map { vcs, idx in vcs[clamp(0, vcs.count - 1)(idx)] }
@@ -393,14 +393,20 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.didSelect(index: 1)
 
     self.selectedIndex.assertValues([0, 1], "Selects index immediately.")
+    XCTAssertEqual(["Tab Bar Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["activity"], self.trackingClient.properties(forKey: "tab_bar_label"))
 
     self.vm.inputs.didSelect(index: 0)
 
     self.selectedIndex.assertValues([0, 1, 0], "Selects index immediately.")
+    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["activity", "discovery"], self.trackingClient.properties(forKey: "tab_bar_label"))
 
     self.vm.inputs.didSelect(index: 10)
 
     self.selectedIndex.assertValues([0, 1, 0, 3], "Selects index immediately.")
+    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["activity", "discovery"], self.trackingClient.properties(forKey: "tab_bar_label"))
   }
 
   func testScrollToTop() {
@@ -567,7 +573,7 @@ final class RootViewModelTests: TestCase {
 
 private func extractRootNames(_ vcs: [RootViewControllerData]) -> [String] {
   return vcs
-    .map { $0.viewController }
+    .map(RootTabBarViewController.viewController(from:))
     .compact()
     .map(UINavigationController.init(rootViewController:))
     .compactMap(extractRootName)

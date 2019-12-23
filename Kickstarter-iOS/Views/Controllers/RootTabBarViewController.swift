@@ -111,7 +111,7 @@ public final class RootTabBarViewController: UITabBarController {
 
     self.viewModel.outputs.setViewControllers
       .observeForUI()
-      .map { $0.map { $0.viewController }.compact() }
+      .map { $0.map { RootTabBarViewController.viewController(from: $0) }.compact() }
       .map { $0.map(UINavigationController.init(rootViewController:)) }
       .observeValues { [weak self] in
         self?.setViewControllers($0, animated: false)
@@ -293,6 +293,23 @@ public final class RootTabBarViewController: UITabBarController {
       }
     }
     return nil
+  }
+
+  static func viewController(from data: RootViewControllerData) -> UIViewController? {
+    switch data {
+    case .discovery:
+      return DiscoveryViewController.instantiate()
+    case .activities:
+      return ActivitiesViewController.instantiate()
+    case .search:
+      return SearchViewController.instantiate()
+    case let .dashboard(isMember):
+      return isMember ? DashboardViewController.instantiate() : nil
+    case let .profile(isLoggedIn):
+      return isLoggedIn
+        ? BackerDashboardViewController.instantiate()
+        : LoginToutViewController.configuredWith(loginIntent: .generic)
+    }
   }
 
   // MARK: - Accessors

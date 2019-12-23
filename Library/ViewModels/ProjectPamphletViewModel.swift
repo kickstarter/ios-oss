@@ -197,7 +197,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     .map { (project: $0.0, refTag: $0.1, cookieRefTag: $1, _: $2) }
     .take(first: 1)
     .observeValues { project, refTag, cookieRefTag, _ in
-      AppEnvironment.current.koala.trackProjectShow(
+      AppEnvironment.current.koala.trackProjectViewed(
         project,
         refTag: refTag,
         cookieRefTag: cookieRefTag

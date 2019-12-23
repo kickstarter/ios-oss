@@ -121,13 +121,52 @@ final class AppDelegateViewModelTests: TestCase {
     self.configureFabric.assertValueCount(1)
   }
 
-  func testConfigureOptimizely() {
+  func testConfigureOptimizely_Production() {
     let mockService = MockService(serverConfig: ServerConfig.production)
 
-    withEnvironment(apiService: mockService ) {
+    withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
       self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.production])
+    }
+  }
+
+  func testConfigureOptimizely_Staging() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])
+    }
+  }
+
+  func testOptimizelyConfiguration_IsSuccess() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])
+
+      let shouldUpdateClient = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+
+      XCTAssertTrue(shouldUpdateClient)
+    }
+  }
+
+  func testOptimizelyConfiguration_IsFailure() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+    let mockResult = MockOptimizelyResult() |> \.shouldSucceed .~ false
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])
+
+      let shouldUpdateClient = self.vm.inputs.optimizelyConfigured(with: mockResult)
+
+      XCTAssertFalse(shouldUpdateClient)
     }
   }
 

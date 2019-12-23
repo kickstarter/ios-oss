@@ -150,17 +150,17 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page Viewed", "Viewed Project Page", "Project Page"],
-      self.trackingClient.events, "A project page koala event is tracked."
+      ["Project Page Viewed"],
+      self.trackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
+      [RefTag.category.stringTag],
+      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
       "The ref tag is tracked in the koala event."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
+      [RefTag.category.stringTag],
+      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
       "The referral credit is tracked in the koala event."
     )
     XCTAssertEqual(
@@ -188,25 +188,24 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       [
-        "Project Page Viewed", "Viewed Project Page", "Project Page", "Project Page Viewed",
-        "Viewed Project Page", "Project Page"
+        "Project Page Viewed", "Project Page Viewed"
       ],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
       [
-        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
-        RefTag.recommended.stringTag, RefTag.recommended.stringTag, RefTag.recommended.stringTag
+        RefTag.category.stringTag,
+        RefTag.recommended.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
+      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
       "The new ref tag is tracked in koala event."
     )
     XCTAssertEqual(
       [
-        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
-        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag
+        RefTag.category.stringTag,
+        RefTag.category.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
+      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
       "The referrer credit did not change, and is still category."
     )
     XCTAssertEqual(
@@ -298,17 +297,17 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page Viewed", "Viewed Project Page", "Project Page"],
+      ["Project Page Viewed"],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
+      [RefTag.category.stringTag],
+      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
       "The ref tag is tracked in the koala event."
     )
     XCTAssertEqual(
-      [RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
+      [RefTag.category.stringTag],
+      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
       "The referral credit is tracked in the koala event."
     )
     XCTAssertEqual(
@@ -336,25 +335,23 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       [
-        "Project Page Viewed", "Viewed Project Page", "Project Page", "Project Page Viewed",
-        "Viewed Project Page", "Project Page"
+        "Project Page Viewed", "Project Page Viewed"
       ],
       self.trackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
       [
-        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
-        RefTag.recommended.stringTag, RefTag.recommended.stringTag, RefTag.recommended.stringTag
+        RefTag.category.stringTag,
+        RefTag.recommended.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["ref_tag"] as? String },
+      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
       "The new ref tag is tracked in koala event."
     )
     XCTAssertEqual(
       [
-        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag,
-        RefTag.category.stringTag, RefTag.category.stringTag, RefTag.category.stringTag
+        RefTag.category.stringTag, RefTag.category.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["referrer_credit"] as? String },
+      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
       "The referrer credit did not change, and is still category."
     )
     XCTAssertEqual(
@@ -843,17 +840,15 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
   }
 
-  func testbackThisButton_eventTracking() {
+  func testBackThisProjectButton_Tracking() {
     let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
-    let client = MockTrackingClient()
     let project = Project.template
 
     withEnvironment(
       apiService: MockService(),
-      config: config,
-      koala: Koala(client: client)
+      config: config
     ) {
-      XCTAssertEqual([], client.events)
+      XCTAssertEqual([], self.trackingClient.events)
 
       self.configureInitialState(.left(project))
 
@@ -861,9 +856,10 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.goToRewardsRefTag.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+
       XCTAssertEqual(
-        ["Project Page Viewed", "Viewed Project Page", "Project Page"],
-        client.events
+        ["Project Page Viewed"],
+        self.trackingClient.events
       )
     }
   }
