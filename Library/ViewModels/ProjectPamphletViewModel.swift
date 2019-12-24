@@ -196,7 +196,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     .map(unpack)
     .map { project, refTag, _ in
       let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
-      
+
       return (project: project, refTag: refTag, cookieRefTag: cookieRefTag)
     }
     .observeValues { project, refTag, cookieRefTag in

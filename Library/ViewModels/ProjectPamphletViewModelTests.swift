@@ -213,36 +213,41 @@ final class ProjectPamphletViewModelTests: TestCase {
       "A single cookie has been set."
     )
   }
-  
+
   func testProjectPageViewed_Tracking_OnError() {
     let service = MockService(fetchProjectError: .couldNotParseJSON)
-    
+
     withEnvironment(apiService: service) {
       self.configureInitialState(.init(left: .template))
-      
+
       self.scheduler.advance()
-      
-      XCTAssertEqual([],
-                     self.trackingClient.events,
-                     "Project Page Viewed doesnt track if the request fails")
+
+      XCTAssertEqual(
+        [],
+        self.trackingClient.events,
+        "Project Page Viewed doesnt track if the request fails"
+      )
     }
   }
-  
+
   func testProjectPaveViewed_OnViewDidAppear() {
     self.configureInitialState(.init(left: .template))
-    
+
     self.scheduler.advance()
-    
-    XCTAssertEqual(["Project Page Viewed"],
-                   self.trackingClient.events)
-    
+
+    XCTAssertEqual(
+      ["Project Page Viewed"],
+      self.trackingClient.events
+    )
+
     self.vm.inputs.viewDidAppear(animated: true)
-    
+
     self.scheduler.advance()
-    
-    XCTAssertEqual(["Project Page Viewed", "Project Page Viewed"],
-                   self.trackingClient.events)
-    
+
+    XCTAssertEqual(
+      ["Project Page Viewed", "Project Page Viewed"],
+      self.trackingClient.events
+    )
   }
 
   func testMockCookieStorageSet_SeparateSchedulers() {
