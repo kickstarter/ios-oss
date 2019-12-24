@@ -192,19 +192,17 @@ internal final class SharedFunctionsTests: XCTestCase {
   }
   
   func testDeviceIdentifier_IdentifierForVendor_IsNotNil() {
-    withEnvironment {
-      XCTAssertEqual("DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF", deviceIdentifer(uuid: MockUUID()))
+    withEnvironment(device: MockDevice()) {
+      XCTAssertEqual("DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF", deviceIdentifier(uuid: MockUUID()))
     }
   }
   
   func testDeviceIdentifier_IdentifierForVendor_IsNil() {
     let device = MockDevice()
       |> \.identifierForVendor .~ nil
-    
-    let mockUUID = MockUUID()
-    
+        
     withEnvironment(device: device) {
-      XCTAssertEqual("ABCD-123", deviceIdentifer(uuid: MockUUID()))
+      XCTAssertEqual("ABCD-123", deviceIdentifier(uuid: MockUUID()))
     }
   }
 }

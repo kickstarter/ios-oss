@@ -76,6 +76,7 @@
 		1611EF6723B2752A0051CDCC /* UUIDType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6623B2752A0051CDCC /* UUIDType.swift */; };
 		1611EF6923B275700051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
 		1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
+		1611EF6B23B2792F0051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
 		37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */; };
 		3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */; };
 		3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */; };
@@ -5917,6 +5918,7 @@
 			files = (
 				D05DFC44227A578C006F3B68 /* KickstarterUITests.swift in Sources */,
 				D05DFC4E227A5861006F3B68 /* MockBundle.swift in Sources */,
+				1611EF6B23B2792F0051CDCC /* MockUUID.swift in Sources */,
 				D033E2C422A05B7400464E43 /* MockApplication.swift in Sources */,
 				D05DFC4F227A5878006F3B68 /* MockPushRegistration.swift in Sources */,
 				D05DFC4D227A5842006F3B68 /* TestCase.swift in Sources */,
