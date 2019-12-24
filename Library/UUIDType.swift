@@ -4,4 +4,4 @@ public protocol UUIDType {
   var uuidString: String { get }
 }
 
-extension UUID: UUIDType { }
+extension UUID: UUIDType {}

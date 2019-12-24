@@ -240,7 +240,7 @@ internal func deviceIdentifier(uuid: UUIDType, env: Environment = AppEnvironment
   guard let identifier = env.device.identifierForVendor else {
     return uuid.uuidString
   }
-  
+
   return identifier.uuidString
 }
 
