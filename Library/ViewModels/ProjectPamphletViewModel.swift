@@ -189,14 +189,17 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
       .take(first: 1)
 
-    Signal.combineLatest(
-      freshProjectAndRefTag,
-      cookieRefTag,
+    Signal.zip(
+      freshProjectAndRefTag.skip(first: 1),
       self.viewDidAppearAnimated.signal.ignoreValues()
     )
-    .map { (project: $0.0, refTag: $0.1, cookieRefTag: $1, _: $2) }
-    .take(first: 1)
-    .observeValues { project, refTag, cookieRefTag, _ in
+    .map(unpack)
+    .map { project, refTag, _ in
+      let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
+      
+      return (project: project, refTag: refTag, cookieRefTag: cookieRefTag)
+    }
+    .observeValues { project, refTag, cookieRefTag in
       AppEnvironment.current.koala.trackProjectViewed(
         project,
         refTag: refTag,

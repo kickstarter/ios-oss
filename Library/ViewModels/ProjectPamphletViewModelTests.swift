@@ -213,6 +213,37 @@ final class ProjectPamphletViewModelTests: TestCase {
       "A single cookie has been set."
     )
   }
+  
+  func testProjectPageViewed_Tracking_OnError() {
+    let service = MockService(fetchProjectError: .couldNotParseJSON)
+    
+    withEnvironment(apiService: service) {
+      self.configureInitialState(.init(left: .template))
+      
+      self.scheduler.advance()
+      
+      XCTAssertEqual([],
+                     self.trackingClient.events,
+                     "Project Page Viewed doesnt track if the request fails")
+    }
+  }
+  
+  func testProjectPaveViewed_OnViewDidAppear() {
+    self.configureInitialState(.init(left: .template))
+    
+    self.scheduler.advance()
+    
+    XCTAssertEqual(["Project Page Viewed"],
+                   self.trackingClient.events)
+    
+    self.vm.inputs.viewDidAppear(animated: true)
+    
+    self.scheduler.advance()
+    
+    XCTAssertEqual(["Project Page Viewed", "Project Page Viewed"],
+                   self.trackingClient.events)
+    
+  }
 
   func testMockCookieStorageSet_SeparateSchedulers() {
     let project = Project.template
@@ -837,30 +868,6 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull2)
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
-    }
-  }
-
-  func testBackThisProjectButton_Tracking() {
-    let config = Config.template |> \.features .~ [Feature.nativeCheckout.rawValue: true]
-    let project = Project.template
-
-    withEnvironment(
-      apiService: MockService(),
-      config: config
-    ) {
-      XCTAssertEqual([], self.trackingClient.events)
-
-      self.configureInitialState(.left(project))
-
-      self.goToRewardsProject.assertDidNotEmitValue()
-      self.goToRewardsRefTag.assertDidNotEmitValue()
-
-      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
-
-      XCTAssertEqual(
-        ["Project Page Viewed"],
-        self.trackingClient.events
-      )
     }
   }
 
