@@ -112,7 +112,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .skipNil()
 
     let shouldGoToRewards = ctaButtonTappedWithType
-      .filter { [.pledge, .viewRewards, .viewYourRewards].contains($0) }
+      .filter { [.pledge, .seeRewards, .viewRewards, .viewYourRewards].contains($0) }
       .ignoreValues()
       .filter(userCanSeeNativeCheckout)
 
