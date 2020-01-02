@@ -47,7 +47,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.configureFabric.observe(self.configureFabric.observer)
     self.vm.outputs.configureOptimizely.map(first).observe(self.configureOptimizelySDKKey.observer)
     self.vm.outputs.configureOptimizely.map(second).observe(self.configureOptimizelyLogLevel.observer)
-    self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)    
+    self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
@@ -150,7 +150,7 @@ final class AppDelegateViewModelTests: TestCase {
       bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
       lang: Language.en.rawValue
     )
-    
+
     withEnvironment(mainBundle: mockBundle) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
