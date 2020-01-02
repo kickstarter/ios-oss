@@ -14,3 +14,14 @@ extension OptimizelyResult: OptimizelyResultType {
     }
   }
 }
+
+extension KSROptimizelyLogLevel {
+  public var optimizelyLogLevel: OptimizelyLogLevel {
+    switch self {
+    case .error:
+      return OptimizelyLogLevel.error
+    case .debug:
+      return OptimizelyLogLevel.debug
+    }
+  }
+}
