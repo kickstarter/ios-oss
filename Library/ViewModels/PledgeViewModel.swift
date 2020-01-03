@@ -503,6 +503,19 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.goToThanks = project.takeWhen(createBackingCompletionEvents)
 
+    createBackingDataAndIsApplePay
+      .takeWhen(createBackingCompletionEvents)
+      .map { data, isApplePay in
+        let checkoutData = checkoutPropertiesData(from: data, isApplePay: isApplePay)
+
+        return (data.project, data.reward, data.refTag, checkoutData)
+      }.observeValues { project, reward, refTag, data in
+        AppEnvironment.current.koala.trackCheckoutCompleted(project: project,
+                                                            reward: reward,
+                                                            refTag: refTag,
+                                                            checkoutData: data)
+    }
+
     let errorsOrNil = Signal.merge(
       createOrUpdateEvent.errors().wrapInOptional(),
       isCreateOrUpdateBacking.mapConst(nil)
@@ -802,4 +815,23 @@ private func allValuesChangedAndValid(
   }
 
   return amountValid && shippingRuleValid
+}
+
+private func checkoutPropertiesData(from createBackingData: CreateBackingData, isApplePay: Bool)
+  -> Koala.CheckoutPropertiesData {
+    let amount = Format.decimalCurrency(for: createBackingData.pledgeAmount)
+    let rewardId = createBackingData.reward.id
+    let estimatedDelivery = createBackingData.reward.estimatedDeliveryOn
+    let paymentType = isApplePay ? "APPLE_PAY" : "CREDIT_CARD"
+    let shippingEnabled = createBackingData.reward.shipping.enabled
+    let shippingAmount = createBackingData.shippingRule?.cost
+    let userHasStoredApplePayCard = false // todo: update with real logic
+
+    return Koala.CheckoutPropertiesData(amount: amount,
+                                        estimatedDelivery: estimatedDelivery,
+                                        paymentType: paymentType,
+                                        rewardId: rewardId,
+                                        shippingEnabled: shippingEnabled,
+                                        shippingAmount: shippingAmount,
+                                        userHasStoredApplePayCard: userHasStoredApplePayCard)
 }

@@ -33,6 +33,7 @@ public final class Koala {
     case searchResultsLoaded = "Search Results Loaded"
     case projectSwiped = "Project Swiped"
     case projectPageViewed = "Project Page Viewed"
+    case checkoutCompleted = "Checkout Completed"
 
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
@@ -384,6 +385,16 @@ public final class Koala {
     }
   }
 
+  public struct CheckoutPropertiesData {
+    let amount: String
+    let estimatedDelivery: TimeInterval?
+    let paymentType: String?
+    let rewardId: Int
+    let shippingEnabled: Bool
+    let shippingAmount: Double?
+    let userHasStoredApplePayCard: Bool
+  }
+
   public init(
     bundle: NSBundleType = Bundle.main,
     dataLakeClient: TrackingClientType = TrackingClient(.dataLake),
@@ -650,6 +661,19 @@ public final class Koala {
       .withAllValuesFrom(["pledge_total": pledgeAmount])
 
     self.track(event: "Pledge Button Clicked", properties: props)
+  }
+
+  public func trackCheckoutCompleted(project: Project,
+                                     reward: Reward,
+                                     refTag: RefTag?,
+                                     checkoutData: CheckoutPropertiesData) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(checkoutProperties(from: checkoutData))
+
+    self.track(event: DataLakeWhiteListedEvent.checkoutCompleted.rawValue,
+               properties: props,
+               refTag: refTag?.stringTag)
   }
 
   public func trackAddNewCardButtonClicked(project: Project) {
@@ -2193,6 +2217,23 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
   result["shipping_preference"] = reward.shipping.preference?.trackingString
 
   return result.prefixedKeys(prefix)
+}
+
+// MARK: - Checkout Properties
+
+private func checkoutProperties(from data: Koala.CheckoutPropertiesData, prefix: String = "checkout_")
+  -> [String: Any] {
+    var result: [String: Any] = [:]
+
+    result["amount"] = data.amount
+    result["payment_type"] = data.paymentType
+    result["reward_id"] = data.rewardId
+    result["shipping_amount"] = data.shippingAmount
+    result["reward_estimated_delivery_on"] = data.estimatedDelivery
+    result["reward_shipping_enabled"] = data.shippingEnabled
+    result["user_has_stored_apple_pay_card"] = data.userHasStoredApplePayCard
+
+    return result.prefixedKeys(prefix)
 }
 
 // MARK: - Discovery Properties
