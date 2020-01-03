@@ -15,8 +15,8 @@ extension OptimizelyResult: OptimizelyResultType {
   }
 }
 
-extension KSROptimizelyLogLevel {
-  public var optimizelyLogLevel: OptimizelyLogLevel {
+extension OptimizelyLogLevelType {
+  public var logLevel: OptimizelyLogLevel {
     switch self {
     case .error:
       return OptimizelyLogLevel.error

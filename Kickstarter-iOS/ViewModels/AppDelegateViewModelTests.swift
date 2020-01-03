@@ -17,7 +17,7 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let configureAppCenterWithData = TestObserver<AppCenterConfigData, Never>()
   fileprivate let configureFabric = TestObserver<(), Never>()
   fileprivate let configureOptimizelySDKKey = TestObserver<String, Never>()
-  fileprivate let configureOptimizelyLogLevel = TestObserver<KSROptimizelyLogLevel, Never>()
+  fileprivate let configureOptimizelyLogLevel = TestObserver<OptimizelyLogLevelType, Never>()
   fileprivate let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
   private let findRedirectUrl = TestObserver<URL, Never>()
   fileprivate let forceLogout = TestObserver<(), Never>()
@@ -155,7 +155,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
       self.configureOptimizelyLogLevel
-        .assertValues([KSROptimizelyLogLevel.error])
+        .assertValues([OptimizelyLogLevelType.error])
     }
   }
 
@@ -169,7 +169,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
       self.configureOptimizelyLogLevel
-        .assertValues([KSROptimizelyLogLevel.error])
+        .assertValues([OptimizelyLogLevelType.error])
     }
   }
 
@@ -183,7 +183,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
       self.configureOptimizelyLogLevel
-        .assertValues([KSROptimizelyLogLevel.error])
+        .assertValues([OptimizelyLogLevelType.error])
     }
   }
 
@@ -197,7 +197,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
       self.configureOptimizelyLogLevel
-        .assertValues([KSROptimizelyLogLevel.debug])
+        .assertValues([OptimizelyLogLevelType.debug])
     }
   }
 

@@ -19,11 +19,6 @@ public enum NotificationAuthorizationStatus {
   case provisional
 }
 
-public enum KSROptimizelyLogLevel {
-  case error
-  case debug
-}
-
 public protocol AppDelegateViewModelInputs {
   /// Call when the application is handed off to.
   func applicationContinueUserActivity(_ userActivity: NSUserActivity) -> Bool
@@ -100,7 +95,7 @@ public protocol AppDelegateViewModelOutputs {
   var configureFabric: Signal<(), Never> { get }
 
   /// Emits when the application should configure Optimizely
-  var configureOptimizely: Signal<(String, KSROptimizelyLogLevel), Never> { get }
+  var configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never> { get }
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
@@ -745,7 +740,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFabric: Signal<(), Never>
-  public let configureOptimizely: Signal<(String, KSROptimizelyLogLevel), Never>
+  public let configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
@@ -959,9 +954,9 @@ extension ShortcutItem {
   }
 }
 
-private func optimizelyData(for environment: Environment) -> (String, KSROptimizelyLogLevel) {
+private func optimizelyData(for environment: Environment) -> (String, OptimizelyLogLevelType) {
   let environmentType = environment.environmentType
-  let logLevel = environment.mainBundle.isDebug ? KSROptimizelyLogLevel.debug : KSROptimizelyLogLevel.error
+  let logLevel = environment.mainBundle.isDebug ? OptimizelyLogLevelType.debug : OptimizelyLogLevelType.error
 
   var sdkKey: String
 

@@ -301,8 +301,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   // MARK: - Functions
 
-  private func configureOptimizely(with key: String, logLevel: KSROptimizelyLogLevel) {
-    let optimizelyClient = OptimizelyClient(sdkKey: key, defaultLogLevel: logLevel.optimizelyLogLevel)
+  private func configureOptimizely(with key: String, logLevel: OptimizelyLogLevelType) {
+    let optimizelyClient = OptimizelyClient(sdkKey: key, defaultLogLevel: logLevel.logLevel)
 
     optimizelyClient.start { [weak self] result in
       let shouldUpdateClient = self?.viewModel.inputs.optimizelyConfigured(with: result)
