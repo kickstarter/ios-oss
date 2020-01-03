@@ -154,8 +154,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.configureOptimizely
       .observeForUI()
-      .observeValues { [weak self] key in
-        self?.configureOptimizely(with: key)
+      .observeValues { [weak self] key, logLevel in
+        self?.configureOptimizely(with: key, logLevel: logLevel)
       }
 
     self.viewModel.outputs.configureAppCenterWithData
@@ -301,8 +301,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   // MARK: - Functions
 
-  private func configureOptimizely(with key: String) {
-    let optimizelyClient = OptimizelyClient(sdkKey: key)
+  private func configureOptimizely(with key: String, logLevel: OptimizelyLogLevelType) {
+    let optimizelyClient = OptimizelyClient(sdkKey: key, defaultLogLevel: logLevel.logLevel)
 
     optimizelyClient.start { [weak self] result in
       let shouldUpdateClient = self?.viewModel.inputs.optimizelyConfigured(with: result)

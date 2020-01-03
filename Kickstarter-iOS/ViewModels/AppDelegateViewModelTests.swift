@@ -16,7 +16,8 @@ final class AppDelegateViewModelTests: TestCase {
   fileprivate let applicationIconBadgeNumber = TestObserver<Int, Never>()
   fileprivate let configureAppCenterWithData = TestObserver<AppCenterConfigData, Never>()
   fileprivate let configureFabric = TestObserver<(), Never>()
-  fileprivate let configureOptimizely = TestObserver<String, Never>()
+  fileprivate let configureOptimizelySDKKey = TestObserver<String, Never>()
+  fileprivate let configureOptimizelyLogLevel = TestObserver<OptimizelyLogLevelType, Never>()
   fileprivate let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
   private let findRedirectUrl = TestObserver<URL, Never>()
   fileprivate let forceLogout = TestObserver<(), Never>()
@@ -44,7 +45,8 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.applicationIconBadgeNumber.observe(self.applicationIconBadgeNumber.observer)
     self.vm.outputs.configureAppCenterWithData.observe(self.configureAppCenterWithData.observer)
     self.vm.outputs.configureFabric.observe(self.configureFabric.observer)
-    self.vm.outputs.configureOptimizely.observe(self.configureOptimizely.observer)
+    self.vm.outputs.configureOptimizely.map(first).observe(self.configureOptimizelySDKKey.observer)
+    self.vm.outputs.configureOptimizely.map(second).observe(self.configureOptimizelyLogLevel.observer)
     self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
@@ -127,7 +129,8 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.production])
+      self.configureOptimizelySDKKey
+        .assertValues([Secrets.OptimizelySDKKey.production])
     }
   }
 
@@ -137,7 +140,64 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])
+      self.configureOptimizelySDKKey
+        .assertValues([Secrets.OptimizelySDKKey.staging])
+    }
+  }
+
+  func testConfigureOptimizely_Release() {
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+      lang: Language.en.rawValue
+    )
+
+    withEnvironment(mainBundle: mockBundle) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizelyLogLevel
+        .assertValues([OptimizelyLogLevelType.error])
+    }
+  }
+
+  func testConfigureOptimizely_Alpha() {
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue,
+      lang: Language.en.rawValue
+    )
+
+    withEnvironment(mainBundle: mockBundle) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizelyLogLevel
+        .assertValues([OptimizelyLogLevelType.error])
+    }
+  }
+
+  func testConfigureOptimizely_Beta() {
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue,
+      lang: Language.en.rawValue
+    )
+
+    withEnvironment(mainBundle: mockBundle) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizelyLogLevel
+        .assertValues([OptimizelyLogLevelType.error])
+    }
+  }
+
+  func testConfigureOptimizely_Debug() {
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.debug.rawValue,
+      lang: Language.en.rawValue
+    )
+
+    withEnvironment(mainBundle: mockBundle) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.configureOptimizelyLogLevel
+        .assertValues([OptimizelyLogLevelType.debug])
     }
   }
 
@@ -147,7 +207,8 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])
+      self.configureOptimizelySDKKey
+        .assertValues([Secrets.OptimizelySDKKey.staging])
 
       let shouldUpdateClient = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
@@ -162,7 +223,8 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.configureOptimizely.assertValues([Secrets.OptimizelySDKKey.staging])
+      self.configureOptimizelySDKKey
+        .assertValues([Secrets.OptimizelySDKKey.staging])
 
       let shouldUpdateClient = self.vm.inputs.optimizelyConfigured(with: mockResult)
 

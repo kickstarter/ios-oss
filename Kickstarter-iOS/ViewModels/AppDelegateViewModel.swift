@@ -95,7 +95,7 @@ public protocol AppDelegateViewModelOutputs {
   var configureFabric: Signal<(), Never> { get }
 
   /// Emits when the application should configure Optimizely
-  var configureOptimizely: Signal<String, Never> { get }
+  var configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never> { get }
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
@@ -516,8 +516,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
     self.configureOptimizely = self.applicationLaunchOptionsProperty.signal
-      .map { _ in AppEnvironment.current.environmentType }
-      .map(optimizelySDKKey(for:))
+      .map { _ in AppEnvironment.current }
+      .map(optimizelyData(for:))
 
     self.configureAppCenterWithData = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
@@ -740,7 +740,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFabric: Signal<(), Never>
-  public let configureOptimizely: Signal<String, Never>
+  public let configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
@@ -954,15 +954,22 @@ extension ShortcutItem {
   }
 }
 
-private func optimizelySDKKey(for environmentType: EnvironmentType) -> String {
+private func optimizelyData(for environment: Environment) -> (String, OptimizelyLogLevelType) {
+  let environmentType = environment.environmentType
+  let logLevel = environment.mainBundle.isDebug ? OptimizelyLogLevelType.debug : OptimizelyLogLevelType.error
+
+  var sdkKey: String
+
   switch environmentType {
   case .production:
-    return Secrets.OptimizelySDKKey.production
+    sdkKey = Secrets.OptimizelySDKKey.production
   case .staging:
-    return Secrets.OptimizelySDKKey.staging
+    sdkKey = Secrets.OptimizelySDKKey.staging
   case .development, .local:
-    return Secrets.OptimizelySDKKey.development
+    sdkKey = Secrets.OptimizelySDKKey.development
   }
+
+  return (sdkKey, logLevel)
 }
 
 private func visitorCookies() -> [HTTPCookie] {
