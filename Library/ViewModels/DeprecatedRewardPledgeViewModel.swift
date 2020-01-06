@@ -486,9 +486,9 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
 
     self.goToLoginSignup = projectAndReward
       .takeWhen(Signal.merge(
-      loggedOutUserTappedApplePayButton,
-      loggedOutUserTappedPaymentMethodButton
-    ).ignoreValues())
+        loggedOutUserTappedApplePayButton,
+        loggedOutUserTappedPaymentMethodButton
+      ).ignoreValues())
       .map { (LoginIntent.backProject, $0.0, $0.1) }
 
     self.goToPaymentAuthorization = Signal.combineLatest(

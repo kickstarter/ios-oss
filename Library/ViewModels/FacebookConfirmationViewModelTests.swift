@@ -77,7 +77,8 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
     self.sendNewsletters.assertValues([false, false], "Newsletter is toggled off")
     XCTAssertEqual(
-      ["Unsubscribed From Newsletter",
+      [
+        "Unsubscribed From Newsletter",
         "Signup Newsletter Toggle"
       ],
       self.trackingClient.events,
@@ -89,10 +90,11 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
     self.sendNewsletters.assertValues([false, false, true], "Newsletter is toggled on")
     XCTAssertEqual(
-      ["Unsubscribed From Newsletter",
-       "Signup Newsletter Toggle",
-       "Subscribed To Newsletter",
-       "Signup Newsletter Toggle"
+      [
+        "Unsubscribed From Newsletter",
+        "Signup Newsletter Toggle",
+        "Subscribed To Newsletter",
+        "Signup Newsletter Toggle"
       ],
       self.trackingClient.events,
       "Newsletter toggle is tracked"

@@ -41,7 +41,6 @@ public final class Koala {
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
 
-
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
     }
@@ -771,15 +770,19 @@ public final class Koala {
    - intent: the LoginIntent associated with the login/signup attempt
    - project: if the login attempt is made from the checkout flow, the associated project
    - reward: if the login attempt is made from the checkout flow, the associated selected reward
-  */
+   */
 
-  public func trackLoginOrSignupButtonClicked(intent: LoginIntent,
-                                            project: Project? = nil,
-                                            reward: Reward? = nil) {
-    let props = loginEventProperties(for: intent, project: project, reward: reward)
+  public func trackLoginOrSignupButtonClicked(
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
+  ) {
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
-    self.track(event: DataLakeWhiteListedEvent.loginOrSignupButtonClicked.rawValue,
-               properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.loginOrSignupButtonClicked.rawValue,
+      properties: props
+    )
   }
 
   /* Call when the Login/Signup page is viewed
@@ -788,11 +791,13 @@ public final class Koala {
    - intent: the LoginIntent associated with the login/signup attempt
    - project: if the login attempt is made from the checkout flow, the associated project
    - reward: if the login attempt is made from the checkout flow, the associated selected reward
-  */
-  public func trackLoginOrSignupPageViewed(intent: LoginIntent,
-                                           project: Project? = nil,
-                                           reward: Reward? = nil) {
-    let props = loginEventProperties(for: intent, project: project, reward: reward)
+   */
+  public func trackLoginOrSignupPageViewed(
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
+  ) {
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
       event: DataLakeWhiteListedEvent.loginOrSignupPageViewed.rawValue,
@@ -806,15 +811,19 @@ public final class Koala {
    - intent: the LoginIntent associated with the login/signup attempt
    - project: if the login attempt is made from the checkout flow, the associated project
    - reward: if the login attempt is made from the checkout flow, the associated selected reward
-  */
+   */
 
-  public func trackLoginButtonClicked(intent: LoginIntent,
-                                      project: Project? = nil,
-                                      reward: Reward? = nil) {
-    let props = loginEventProperties(for: intent, project: project, reward: reward)
+  public func trackLoginButtonClicked(
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
+  ) {
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
-    self.track(event: DataLakeWhiteListedEvent.loginButtonClicked.rawValue,
-               properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.loginButtonClicked.rawValue,
+      properties: props
+    )
   }
 
   /* Call when the "Log in with Facebook" button is tapped on the Login/Signup Page
@@ -825,10 +834,12 @@ public final class Koala {
    - reward: if the login attempt is made from the checkout flow, the associated selected reward
    */
 
-  public func trackFacebookLoginOrSignupButtonClicked(intent: LoginIntent,
-                                                      project: Project? = nil,
-                                                      reward: Reward? = nil) {
-    let props = loginEventProperties(for: intent, project: project, reward: reward)
+  public func trackFacebookLoginOrSignupButtonClicked(
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
+  ) {
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(event: DataLakeWhiteListedEvent.fbLoginOrSignupButtonClicked.rawValue, properties: props)
   }
@@ -841,25 +852,27 @@ public final class Koala {
    - reward: if the login attempt is made from the checkout flow, the associated selected reward
    */
 
-  public func trackSignupButtonClicked(intent: LoginIntent,
-                                       project: Project? = nil,
-                                       reward: Reward? = nil) {
+  public func trackSignupButtonClicked(
+    intent _: LoginIntent,
+    project _: Project? = nil,
+    reward _: Reward? = nil
+  ) {
     self.track(event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue)
   }
 
   private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)
     -> [String: Any] {
-      var props: [String: Any] = [:]
+    var props: [String: Any] = [:]
 
-      if let project = project {
-        props = props.withAllValuesFrom(projectProperties(from: project))
-      }
+    if let project = project {
+      props = props.withAllValuesFrom(projectProperties(from: project))
+    }
 
-      if let reward = reward {
-        props = props.withAllValuesFrom(pledgeProperties(from: reward))
-      }
+    if let reward = reward {
+      props = props.withAllValuesFrom(pledgeProperties(from: reward))
+    }
 
-      return props.withAllValuesFrom(["login_intent": intent.trackingString])
+    return props.withAllValuesFrom(["login_intent": intent.trackingString])
   }
 
   // MARK: - Comments Events

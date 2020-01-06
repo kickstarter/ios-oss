@@ -268,7 +268,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
         nav.modalPresentationStyle = .formSheet
 
         self?.present(nav, animated: true, completion: nil)
-    }
+      }
   }
 
   internal override func tableView(

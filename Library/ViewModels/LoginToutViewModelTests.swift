@@ -64,9 +64,11 @@ final class LoginToutViewModelTests: TestCase {
 
     self.vm.inputs.viewWillAppear()
 
-    XCTAssertEqual(["Log In or Signup Page Viewed"],
-                   trackingClient.events,
-                   "Only tracks the first time the view appears")
+    XCTAssertEqual(
+      ["Log In or Signup Page Viewed"],
+      trackingClient.events,
+      "Only tracks the first time the view appears"
+    )
     XCTAssertEqual("activity", trackingClient.properties.last!["login_intent"] as? String)
   }
 
@@ -129,7 +131,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     vm.inputs.configureWith(.generic, project: nil, reward: nil)
-    vm.inputs.viewWillAppear()
+    self.vm.inputs.viewWillAppear()
 
     self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
 
@@ -144,8 +146,10 @@ final class LoginToutViewModelTests: TestCase {
 
     self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
     XCTAssertEqual(
-      ["Log In or Signup Page Viewed",
-      "Facebook Log In or Signup Button Clicked"],
+      [
+        "Log In or Signup Page Viewed",
+        "Facebook Log In or Signup Button Clicked"
+      ],
       trackingClient.events
     )
 
@@ -171,7 +175,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     vm.inputs.configureWith(.generic, project: nil, reward: nil)
-    vm.inputs.viewWillAppear()
+    self.vm.inputs.viewWillAppear()
 
     self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
     self.showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")
@@ -188,8 +192,10 @@ final class LoginToutViewModelTests: TestCase {
       "Show Facebook Attempt Login error"
     )
     XCTAssertEqual(
-      ["Log In or Signup Page Viewed",
-      "Facebook Log In or Signup Button Clicked"],
+      [
+        "Log In or Signup Page Viewed",
+        "Facebook Log In or Signup Button Clicked"
+      ],
       trackingClient.events
     )
   }
@@ -202,7 +208,7 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     vm.inputs.configureWith(.generic, project: nil, reward: nil)
-    vm.inputs.viewWillAppear()
+    self.vm.inputs.viewWillAppear()
 
     self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
     self.showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")
@@ -219,8 +225,10 @@ final class LoginToutViewModelTests: TestCase {
       "Show Facebook Attempt Login error"
     )
     XCTAssertEqual(
-      ["Log In or Signup Page Viewed",
-       "Facebook Log In or Signup Button Clicked"],
+      [
+        "Log In or Signup Page Viewed",
+        "Facebook Log In or Signup Button Clicked"
+      ],
       trackingClient.events
     )
   }
@@ -266,8 +274,10 @@ final class LoginToutViewModelTests: TestCase {
 
       showFacebookErrorAlert.assertValues([AlertError.facebookTokenFail], "Show Facebook token fail error")
       XCTAssertEqual(
-        ["Log In or Signup Page Viewed",
-         "Facebook Log In or Signup Button Clicked"],
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
         trackingClient.events
       )
     }
@@ -315,8 +325,10 @@ final class LoginToutViewModelTests: TestCase {
         "Show Facebook account taken error"
       )
       XCTAssertEqual(
-        ["Log In or Signup Page Viewed",
-         "Facebook Log In or Signup Button Clicked"],
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
         trackingClient.events
       )
     }
@@ -364,8 +376,10 @@ final class LoginToutViewModelTests: TestCase {
         "Show Facebook account taken error"
       )
       XCTAssertEqual(
-        ["Log In or Signup Page Viewed",
-         "Facebook Log In or Signup Button Clicked"],
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
         trackingClient.events
       )
     }
@@ -415,8 +429,10 @@ final class LoginToutViewModelTests: TestCase {
       showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
       startFacebookConfirmation.assertValueCount(0, "Facebook confirmation did not emit")
       XCTAssertEqual(
-        ["Log In or Signup Page Viewed",
-         "Facebook Log In or Signup Button Clicked"],
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
         trackingClient.events
       )
     }
@@ -464,8 +480,10 @@ final class LoginToutViewModelTests: TestCase {
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
       XCTAssertEqual(
-        ["Log In or Signup Page Viewed",
-         "Facebook Log In or Signup Button Clicked"],
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
         trackingClient.events
       )
 
@@ -483,16 +501,18 @@ final class LoginToutViewModelTests: TestCase {
       )
 
       XCTAssertEqual(
-        ["Log In or Signup Page Viewed",
-         "Facebook Log In or Signup Button Clicked",
-        "Facebook Log In or Signup Button Clicked"],
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked",
+          "Facebook Log In or Signup Button Clicked"
+        ],
         trackingClient.events
       )
     }
   }
 
   func testDismissalWhenNotPresented() {
-    vm.inputs.configureWith(.generic, project: nil, reward: nil)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.view(isPresented: false)
     self.vm.inputs.userSessionStarted()
@@ -501,7 +521,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testDismissalWhenPresented() {
-    vm.inputs.configureWith(.generic, project: nil, reward: nil)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.view(isPresented: true)
     self.vm.inputs.userSessionStarted()

@@ -178,38 +178,51 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     // MARK: - Tracking
 
-    let trackingData = Signal.combineLatest(self.loginIntentProperty.signal.skipNil(),
-                                            self.projectProperty.signal,
-                                            self.rewardProperty.signal)
+    let trackingData = Signal.combineLatest(
+      self.loginIntentProperty.signal.skipNil(),
+      self.projectProperty.signal,
+      self.rewardProperty.signal
+    )
 
     trackingData
       .takeWhen(self.viewWillAppearProperty.signal.take(first: 1))
       .observeValues { intent, project, reward in
-        AppEnvironment.current.koala.trackLoginOrSignupPageViewed(intent: intent,
-                                                                  project: project,
-                                                                  reward: reward) }
+        AppEnvironment.current.koala.trackLoginOrSignupPageViewed(
+          intent: intent,
+          project: project,
+          reward: reward
+        )
+      }
 
     trackingData
       .takeWhen(self.loginButtonPressedProperty.signal)
       .observeValues { intent, project, reward in
-        AppEnvironment.current.koala.trackLoginButtonClicked(intent: intent,
-                                                                            project: project,
-                                                                            reward: reward) }
+        AppEnvironment.current.koala.trackLoginButtonClicked(
+          intent: intent,
+          project: project,
+          reward: reward
+        )
+      }
 
     trackingData
       .takeWhen(self.signupButtonPressedProperty.signal)
       .observeValues { intent, project, reward in
-        AppEnvironment.current.koala.trackSignupButtonClicked(intent: intent,
-                                                                             project: project,
-                                                                             reward: reward) }
+        AppEnvironment.current.koala.trackSignupButtonClicked(
+          intent: intent,
+          project: project,
+          reward: reward
+        )
+      }
 
     trackingData
       .takeWhen(self.facebookLoginButtonPressedProperty.signal)
       .observeValues { intent, project, reward in
-        AppEnvironment.current.koala.trackFacebookLoginOrSignupButtonClicked(intent: intent,
-                                                                                            project: project,
-                                                                                            reward: reward)
-    }
+        AppEnvironment.current.koala.trackFacebookLoginOrSignupButtonClicked(
+          intent: intent,
+          project: project,
+          reward: reward
+        )
+      }
   }
 
   public var inputs: LoginToutViewModelInputs { return self }

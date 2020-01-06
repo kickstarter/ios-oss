@@ -1,6 +1,6 @@
 import Foundation
-import Library
 import KsApi
+import Library
 import Prelude
 
 final class PledgeContinueViewController: UIViewController {
@@ -68,9 +68,11 @@ final class PledgeContinueViewController: UIViewController {
   // MARK: - Functions
 
   private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
-    let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent,
-                                                                           project: project,
-                                                                           reward: reward)
+    let loginSignupViewController = LoginToutViewController.configuredWith(
+      loginIntent: intent,
+      project: project,
+      reward: reward
+    )
 
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
     let navigationBarHeight = navigationController.navigationBar.bounds.height

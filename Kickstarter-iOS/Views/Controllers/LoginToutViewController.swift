@@ -54,9 +54,11 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   // MARK: - Configuration
 
-  internal static func configuredWith(loginIntent intent: LoginIntent,
-                                      project: Project? = nil,
-                                      reward: Reward? = nil) -> LoginToutViewController {
+  internal static func configuredWith(
+    loginIntent intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
+  ) -> LoginToutViewController {
     let vc = LoginToutViewController.instantiate()
     vc.viewModel.inputs.configureWith(intent, project: project, reward: reward)
     vc.helpViewModel.inputs.configureWith(helpContext: .loginTout)
