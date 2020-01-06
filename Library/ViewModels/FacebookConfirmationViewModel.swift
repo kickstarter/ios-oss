@@ -144,17 +144,6 @@ public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelT
 
     self.showLogin = self.loginButtonPressedProperty.signal
 
-    self.viewDidLoadProperty.signal.observeValues { AppEnvironment.current.koala.trackFacebookConfirmation() }
-
-    self.environmentLoggedInProperty.signal
-      .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: .facebook) }
-
-    self.showSignupError
-      .observeValues { _ in AppEnvironment.current.koala.trackSignupError(authType: .facebook) }
-
-    signupEvent.values()
-      .observeValues { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: .facebook) }
-
     self.sendNewslettersToggledProperty.signal
       .observeValues {
         AppEnvironment.current.koala.trackChangeNewsletter(

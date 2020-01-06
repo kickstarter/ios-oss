@@ -33,6 +33,14 @@ public final class Koala {
     case searchResultsLoaded = "Search Results Loaded"
     case projectSwiped = "Project Swiped"
     case projectPageViewed = "Project Page Viewed"
+    case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
+    case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
+    case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
+    case loginButtonClicked = "Log In Button Clicked"
+    case signupButtonClicked = "Signup Button Clicked"
+    case loginSubmitButtonClicked = "Log In Submit Button Clicked"
+    case signupSubmitButtonClicked = "Signup Submit Button Clicked"
+
 
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
@@ -755,115 +763,65 @@ public final class Koala {
     self.track(event: "Closed Reward", properties: props)
   }
 
-  // MARK: - Login Events
+  // MARK: - Login/Signup Events
 
-  public func trackLoginTout(intent: LoginIntent) {
-    // Deprecated event
+  /* Call when the Login or Signup button entry-point is tapped
+
+   parameters:
+   - intent: the LoginIntent associated with the login/signup attempt
+   - project: if the login attempt is made from the checkout flow, the associated project
+   - reward: if the login attempt is made from the checkout flow, the associated selected reward
+  */
+
+  public func trackLoginOrSignupButtonClicked(intent: LoginIntent,
+                                            project: Project? = nil,
+                                            reward: Reward? = nil) {
+    var props: [String: Any] = [:]
+
+    if let project = project {
+      props = props.withAllValuesFrom(projectProperties(from: project))
+    }
+
+    if let reward = reward {
+      props = props.withAllValuesFrom(pledgeProperties(from: reward))
+    }
+
+    props = props.withAllValuesFrom(["login_intent": intent.trackingString])
+
+    self.track(event: DataLakeWhiteListedEvent.loginOrSignupButtonClicked.rawValue,
+               properties: props)
+  }
+
+  /* Call when the Login/Signup page is viewed
+
+   - parameter intent: the LoginIntent associated with the Login/Signup attempt
+  */
+  public func trackLoginOrSignupPageViewed(intent: LoginIntent) {
     self.track(
-      event: "Application Login or Signup",
-      properties: [
-        "intent": intent.trackingString,
-        "context": intent.trackingString,
-        Koala.DeprecatedKey: true
-      ]
-    )
-
-    self.track(
-      event: "Viewed Login Signup",
-      properties: ["intent": intent.trackingString, "context": intent.trackingString]
+      event: DataLakeWhiteListedEvent.loginOrSignupPageViewed.rawValue,
+      properties: ["login_intent": intent.trackingString]
     )
   }
 
-  public func trackLoginFormView() {
-    self.track(
-      event: "User Login",
-      properties: [
-        Koala.DeprecatedKey: true
-      ]
-    )
-    self.track(event: "Viewed Login")
+  /* Call when the Log In button is tapped on the Login/Signup Page
+  */
+
+  public func trackLoginButtonClicked() {
+    self.track(event: DataLakeWhiteListedEvent.loginButtonClicked.rawValue)
   }
 
-  public func trackLoginSuccess(authType: AuthType) {
-    // Deprecated event
-    self.track(event: "Login", properties: deprecatedProps)
+  /* Call when the "Log in with Facebook" button is tapped on the Login/Signup Page
+   */
 
-    self.track(event: "Logged In", properties: ["auth_type": authType.trackingString])
+  public func trackFacebookLoginOrSignupButtonClicked() {
+    self.track(event: DataLakeWhiteListedEvent.fbLoginOrSignupButtonClicked.rawValue)
   }
 
-  public func trackLoginError(authType: AuthType) {
-    // Deprecated event
-    self.track(event: "Errored User Login", properties: deprecatedProps)
+  /* Call when the "Sign up" button is tapped on the Login/Signup Page
+   */
 
-    self.track(event: "Errored Login", properties: ["auth_type": authType.trackingString])
-  }
-
-  public func trackResetPassword() {
-    // Deprecated event
-    self.track(event: "Forgot Password View", properties: deprecatedProps)
-
-    self.track(event: "Viewed Forgot Password")
-  }
-
-  public func trackResetPasswordSuccess() {
-    // Deprecated event
-    self.track(event: "Forgot Password Requested", properties: deprecatedProps)
-
-    self.track(event: "Requested Password Reset")
-  }
-
-  public func trackResetPasswordError() {
-    // Deprecated event
-    self.track(event: "Forgot Password Errored", properties: deprecatedProps)
-
-    self.track(event: "Errored Forgot Password")
-  }
-
-  public func trackFacebookConfirmation() {
-    // Deprecated event
-    self.track(event: "Facebook Confirm", properties: deprecatedProps)
-
-    self.track(event: "Viewed Facebook Signup")
-  }
-
-  public func trackTfa() {
-    // Deprecated event
-    self.track(event: "Two-factor Authentication Confirm View", properties: deprecatedProps)
-
-    self.track(event: "Viewed Two-Factor Confirmation")
-  }
-
-  public func trackTfaResendCode() {
-    // Deprecated event
-    self.track(event: "Two-factor Authentication Resend Code", properties: deprecatedProps)
-
-    self.track(event: "Resent Two-Factor Code")
-  }
-
-  // MARK: - Signup
-
-  // Call when an error is returned after attempting to signup.
-  public func trackSignupError(authType: AuthType) {
-    // Deprecated event
-    self.track(event: "Errored User Signup", properties: deprecatedProps)
-
-    self.track(event: "Errored Signup", properties: ["auth_type": authType.trackingString])
-  }
-
-  // Call when the user has successfully signed up for a new account.
-  public func trackSignupSuccess(authType: AuthType) {
-    // Deprecated event
-    self.track(event: "New User", properties: deprecatedProps)
-
-    self.track(event: "Signed Up", properties: ["auth_type": authType.trackingString])
-  }
-
-  // Call once when the signup view loads.
-  public func trackSignupView() {
-    // Deprecated event
-    self.track(event: "User Signup", properties: deprecatedProps)
-
-    self.track(event: "Viewed Signup")
+  public func trackSignupButtonClicked() {
+    self.track(event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue)
   }
 
   // MARK: - Comments Events

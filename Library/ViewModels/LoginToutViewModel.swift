@@ -170,21 +170,26 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .takeWhen(self.userSessionStartedProperty.signal)
       .ignoreValues()
 
-    self.logIntoEnvironment
-      .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: .facebook) }
-
     self.showFacebookErrorAlert = Signal.merge(
       facebookTokenFailAlert,
       facebookLoginAttemptFailAlert,
       genericFacebookErrorAlert
     )
 
-    self.showFacebookErrorAlert
-      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: .facebook) }
+    // MARK: - Tracking
 
     self.loginIntentProperty.producer.skipNil()
       .takeWhen(self.viewWillAppearProperty.signal.take(first: 1))
-      .observeValues { AppEnvironment.current.koala.trackLoginTout(intent: $0) }
+      .observeValues { AppEnvironment.current.koala.trackLoginOrSignupPageViewed(intent: $0) }
+
+    self.loginButtonPressedProperty.signal
+      .observeValues { AppEnvironment.current.koala.trackLoginButtonClicked() }
+
+    self.signupButtonPressedProperty.signal
+      .observeValues { AppEnvironment.current.koala.trackSignupButtonClicked() }
+
+    self.facebookLoginButtonPressedProperty.signal
+      .observeValues { AppEnvironment.current.koala.trackFacebookLoginOrSignupButtonClicked() }
   }
 
   public var inputs: LoginToutViewModelInputs { return self }
