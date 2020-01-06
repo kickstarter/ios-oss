@@ -503,7 +503,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
         self?.goToCheckout(initialRequest: initialRequest, project: project, reward: reward)
       }
 
-    self.viewModel.outputs.goToLoginTout
+    self.viewModel.outputs.goToLoginSignup
       .observeForControllerAction()
       .observeValues { [weak self] intent, project, reward in
         self?.goToLoginTout(with: intent, project: project, reward: reward)

@@ -7,23 +7,39 @@ import XCTest
 final class PledgeContinueViewModelTests: TestCase {
   private let vm = PledgeContinueViewModel()
 
-  private let goToLoginSignup = TestObserver<LoginIntent, Never>()
+  private let goToLoginSignupIntent = TestObserver<LoginIntent, Never>()
+  private let goToLoginSignupProject = TestObserver<Project, Never>()
+  private let goToLoginSignupReward = TestObserver<Reward, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.goToLoginSignup.observe(self.goToLoginSignup.observer)
+    self.vm.outputs.goToLoginSignup.map(first).observe(self.goToLoginSignupIntent.observer)
+    self.vm.outputs.goToLoginSignup.map(second).observe(self.goToLoginSignupProject.observer)
+    self.vm.outputs.goToLoginSignup.map(third).observe(self.goToLoginSignupReward.observer)
   }
 
   func testGoToLoginSignup() {
-    self.goToLoginSignup.assertDidNotEmitValue()
+    self.goToLoginSignupIntent.assertDidNotEmitValue()
+    self.goToLoginSignupProject.assertDidNotEmitValue()
+    self.goToLoginSignupReward.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (Project.template, Reward.template))
+
+    self.goToLoginSignupIntent.assertDidNotEmitValue()
+    self.goToLoginSignupProject.assertDidNotEmitValue()
+    self.goToLoginSignupReward.assertDidNotEmitValue()
 
     self.vm.inputs.continueButtonTapped()
 
-    self.goToLoginSignup.assertValues([LoginIntent.backProject])
+    self.goToLoginSignupIntent.assertValues([LoginIntent.backProject])
+    self.goToLoginSignupProject.assertValues([.template])
+    self.goToLoginSignupReward.assertValues([.template])
 
     self.vm.inputs.continueButtonTapped()
 
-    self.goToLoginSignup.assertValues([LoginIntent.backProject, LoginIntent.backProject])
+    self.goToLoginSignupIntent.assertValueCount(2)
+    self.goToLoginSignupProject.assertValueCount(2)
+    self.goToLoginSignupReward.assertValueCount(2)
   }
 }

@@ -123,7 +123,7 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
   var goToCheckout: Signal<(URLRequest, Project, Reward), Never> { get }
 
   /// Emits when the login tout should be shown to the user.
-  var goToLoginTout: Signal<(LoginIntent, Project, Reward), Never> { get }
+  var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
 
   /// Emits a payment request object that is to be used to present a payment authorization controller.
   var goToPaymentAuthorization: Signal<PKPaymentRequest, Never> { get }
@@ -484,7 +484,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
       .filter { $0 != nil }
       .ignoreValues()
 
-    self.goToLoginTout = projectAndReward
+    self.goToLoginSignup = projectAndReward
       .takeWhen(Signal.merge(
       loggedOutUserTappedApplePayButton,
       loggedOutUserTappedPaymentMethodButton
@@ -943,7 +943,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
   public let expandRewardDescription: Signal<(), Never>
   public let fulfillmentAndShippingFooterStackViewHidden: Signal<Bool, Never>
   public let goToCheckout: Signal<(URLRequest, Project, Reward), Never>
-  public let goToLoginTout: Signal<(LoginIntent, Project, Reward), Never>
+  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let goToPaymentAuthorization: Signal<PKPaymentRequest, Never>
   public let goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), Never>
   public let goToThanks: Signal<Project, Never>

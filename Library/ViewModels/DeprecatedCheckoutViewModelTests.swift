@@ -17,7 +17,9 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
   fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
   fileprivate let goToThanks = TestObserver<Project, Never>()
   fileprivate let goToWebModal = TestObserver<URLRequest, Never>()
-  fileprivate let openLoginTout = TestObserver<(), Never>()
+  fileprivate let goToLoginSignupIntent = TestObserver<LoginIntent, Never>()
+  fileprivate let goToLoginSignupProject = TestObserver<Project, Never>()
+  fileprivate let goToLoginSignupReward = TestObserver<Reward, Never>()
   fileprivate let popViewController = TestObserver<(), Never>()
   fileprivate let setStripeAppleMerchantIdentifier = TestObserver<String, Never>()
   fileprivate let setStripePublishableKey = TestObserver<String, Never>()
@@ -36,7 +38,9 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
     self.vm.outputs.goToThanks.observe(self.goToThanks.observer)
     self.vm.outputs.goToWebModal.observe(self.goToWebModal.observer)
-    self.vm.outputs.goToLoginSignup.observe(self.openLoginTout.observer)
+    self.vm.outputs.goToLoginSignup.map(first).observe(self.goToLoginSignupIntent.observer)
+    self.vm.outputs.goToLoginSignup.map(second).observe(self.goToLoginSignupProject.observer)
+    self.vm.outputs.goToLoginSignup.map(third).observe(self.goToLoginSignupReward.observer)
     self.vm.outputs.popViewController.observe(self.popViewController.observer)
     self.vm.outputs.setStripeAppleMerchantIdentifier.observe(self.setStripeAppleMerchantIdentifier.observer)
     self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
@@ -511,10 +515,14 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     )
 
     // 3: Interrupt checkout for login/signup
-    self.openLoginTout.assertDidNotEmitValue()
+    self.goToLoginSignupIntent.assertDidNotEmitValue()
+    self.goToLoginSignupProject.assertDidNotEmitValue()
+    self.goToLoginSignupReward.assertDidNotEmitValue()
 
     XCTAssertFalse(self.vm.inputs.shouldStartLoad(withRequest: signupRequest(), navigationType: .other))
-    self.openLoginTout.assertValueCount(1)
+    self.goToLoginSignupIntent.assertValues([.backProject])
+    self.goToLoginSignupProject.assertValues([project])
+    self.goToLoginSignupReward.assertValues([.template])
 
     // 4: Login
     AppEnvironment.login(.init(accessToken: "deadbeef", user: User.template))
