@@ -30,12 +30,6 @@ final class ResetPasswordViewModelTests: TestCase {
     self.emailTextFieldBecomeFirstResponder.assertValueCount(1)
   }
 
-  func testViewDidLoadTracking() {
-    self.vm.inputs.viewDidLoad()
-
-    XCTAssertEqual(["Forgot Password View", "Viewed Forgot Password"], trackingClient.events)
-  }
-
   func testFormIsValid() {
     self.formIsValid.assertDidNotEmitValue("Form is valid did not emit any values")
 
@@ -106,10 +100,6 @@ final class ResetPasswordViewModelTests: TestCase {
         )
       ]
     )
-    XCTAssertEqual([
-      "Forgot Password View", "Viewed Forgot Password", "Forgot Password Requested",
-      "Requested Password Reset"
-    ], trackingClient.events)
   }
 
   func testResetConfirmation() {
