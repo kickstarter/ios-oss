@@ -54,7 +54,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testKoala_whenLoginIntentBeforeViewAppears() {
-    self.vm.inputs.loginIntent(.activity)
+    self.vm.inputs.configureWith(.activity)
     self.vm.inputs.viewWillAppear()
 
     XCTAssertEqual(["Application Login or Signup", "Viewed Login Signup"], trackingClient.events)
@@ -81,21 +81,21 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testHeadlineLabelHidden() {
-    self.vm.inputs.loginIntent(.starProject)
+    self.vm.inputs.configureWith(.starProject)
     self.vm.inputs.viewWillAppear()
 
     self.headlineLabelHidden.assertValues([true])
   }
 
   func testHeadlineLabelShown() {
-    self.vm.inputs.loginIntent(.generic)
+    self.vm.inputs.configureWith(.generic)
     self.vm.inputs.viewWillAppear()
 
     self.headlineLabelHidden.assertValues([false])
   }
 
   func testLoginContextText() {
-    self.vm.inputs.loginIntent(.starProject)
+    self.vm.inputs.configureWith(.starProject)
     self.vm.inputs.viewWillAppear()
 
     self.logInContextText.assertValues(
@@ -477,12 +477,12 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testFacebookButtonTitle() {
-    self.vm.inputs.loginIntent(.backProject)
+    self.vm.inputs.configureWith(.backProject)
     self.vm.inputs.viewWillAppear()
 
     self.facebookButtonTitleText.assertValues(["Continue with Facebook"])
 
-    self.vm.inputs.loginIntent(.loginTab)
+    self.vm.inputs.configureWith(.loginTab)
     self.vm.inputs.viewWillAppear()
     self.facebookButtonTitleText.assertValues(["Continue with Facebook", "Log in with Facebook"])
   }

@@ -4,6 +4,9 @@ import Prelude
 import ReactiveSwift
 
 public protocol LoginToutViewModelInputs {
+  /// Call to set the reason the user is attempting to log in
+  func configureWith(_ intent: LoginIntent, project: Project?, reward: Reward?)
+
   /// Call when the environment has been logged into
   func environmentLoggedIn()
 
@@ -15,9 +18,6 @@ public protocol LoginToutViewModelInputs {
 
   /// Call when Facebook login completed successfully with a result
   func facebookLoginSuccess(result: LoginManagerLoginResult)
-
-  /// Call to set the reason the user is attempting to log in
-  func loginIntent(_ intent: LoginIntent)
 
   /// Call when login button is pressed
   func loginButtonPressed()
@@ -178,18 +178,38 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     // MARK: - Tracking
 
-    self.loginIntentProperty.producer.skipNil()
+    let trackingData = Signal.combineLatest(self.loginIntentProperty.signal.skipNil(),
+                                            self.projectProperty.signal,
+                                            self.rewardProperty.signal)
+
+    trackingData
       .takeWhen(self.viewWillAppearProperty.signal.take(first: 1))
-      .observeValues { AppEnvironment.current.koala.trackLoginOrSignupPageViewed(intent: $0) }
+      .observeValues { intent, project, reward in
+        AppEnvironment.current.koala.trackLoginOrSignupPageViewed(intent: intent,
+                                                                  project: project,
+                                                                  reward: reward) }
 
-    self.loginButtonPressedProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackLoginButtonClicked() }
+    trackingData
+      .takeWhen(self.loginButtonPressedProperty.signal)
+      .observeValues { intent, project, reward in
+        AppEnvironment.current.koala.trackLoginButtonClicked(intent: intent,
+                                                                            project: project,
+                                                                            reward: reward) }
 
-    self.signupButtonPressedProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackSignupButtonClicked() }
+    trackingData
+      .takeWhen(self.signupButtonPressedProperty.signal)
+      .observeValues { intent, project, reward in
+        AppEnvironment.current.koala.trackSignupButtonClicked(intent: intent,
+                                                                             project: project,
+                                                                             reward: reward) }
 
-    self.facebookLoginButtonPressedProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackFacebookLoginOrSignupButtonClicked() }
+    trackingData
+      .takeWhen(self.facebookLoginButtonPressedProperty.signal)
+      .observeValues { intent, project, reward in
+        AppEnvironment.current.koala.trackFacebookLoginOrSignupButtonClicked(intent: intent,
+                                                                                            project: project,
+                                                                                            reward: reward)
+    }
   }
 
   public var inputs: LoginToutViewModelInputs { return self }
@@ -201,8 +221,12 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   }
 
   fileprivate let loginIntentProperty = MutableProperty<LoginIntent?>(.loginTab)
-  public func loginIntent(_ intent: LoginIntent) {
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  fileprivate let rewardProperty = MutableProperty<Reward?>(nil)
+  public func configureWith(_ intent: LoginIntent, project: Project? = nil, reward: Reward? = nil) {
     self.loginIntentProperty.value = intent
+    self.projectProperty.value = project
+    self.rewardProperty.value = reward
   }
 
   fileprivate let loginButtonPressedProperty = MutableProperty(())

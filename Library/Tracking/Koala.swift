@@ -776,17 +776,7 @@ public final class Koala {
   public func trackLoginOrSignupButtonClicked(intent: LoginIntent,
                                             project: Project? = nil,
                                             reward: Reward? = nil) {
-    var props: [String: Any] = [:]
-
-    if let project = project {
-      props = props.withAllValuesFrom(projectProperties(from: project))
-    }
-
-    if let reward = reward {
-      props = props.withAllValuesFrom(pledgeProperties(from: reward))
-    }
-
-    props = props.withAllValuesFrom(["login_intent": intent.trackingString])
+    let props = loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(event: DataLakeWhiteListedEvent.loginOrSignupButtonClicked.rawValue,
                properties: props)
@@ -794,34 +784,80 @@ public final class Koala {
 
   /* Call when the Login/Signup page is viewed
 
-   - parameter intent: the LoginIntent associated with the Login/Signup attempt
+   parameters:
+   - intent: the LoginIntent associated with the login/signup attempt
+   - project: if the login attempt is made from the checkout flow, the associated project
+   - reward: if the login attempt is made from the checkout flow, the associated selected reward
   */
-  public func trackLoginOrSignupPageViewed(intent: LoginIntent) {
+  public func trackLoginOrSignupPageViewed(intent: LoginIntent,
+                                           project: Project? = nil,
+                                           reward: Reward? = nil) {
+    let props = loginEventProperties(for: intent, project: project, reward: reward)
+
     self.track(
       event: DataLakeWhiteListedEvent.loginOrSignupPageViewed.rawValue,
-      properties: ["login_intent": intent.trackingString]
+      properties: props
     )
   }
 
   /* Call when the Log In button is tapped on the Login/Signup Page
+
+   parameters:
+   - intent: the LoginIntent associated with the login/signup attempt
+   - project: if the login attempt is made from the checkout flow, the associated project
+   - reward: if the login attempt is made from the checkout flow, the associated selected reward
   */
 
-  public func trackLoginButtonClicked() {
-    self.track(event: DataLakeWhiteListedEvent.loginButtonClicked.rawValue)
+  public func trackLoginButtonClicked(intent: LoginIntent,
+                                      project: Project? = nil,
+                                      reward: Reward? = nil) {
+    let props = loginEventProperties(for: intent, project: project, reward: reward)
+
+    self.track(event: DataLakeWhiteListedEvent.loginButtonClicked.rawValue,
+               properties: props)
   }
 
   /* Call when the "Log in with Facebook" button is tapped on the Login/Signup Page
+
+   parameters:
+   - intent: the LoginIntent associated with the login/signup attempt
+   - project: if the login attempt is made from the checkout flow, the associated project
+   - reward: if the login attempt is made from the checkout flow, the associated selected reward
    */
 
-  public func trackFacebookLoginOrSignupButtonClicked() {
+  public func trackFacebookLoginOrSignupButtonClicked(intent: LoginIntent,
+                                                      project: Project? = nil,
+                                                      reward: Reward? = nil) {
     self.track(event: DataLakeWhiteListedEvent.fbLoginOrSignupButtonClicked.rawValue)
   }
 
   /* Call when the "Sign up" button is tapped on the Login/Signup Page
+
+   parameters:
+   - intent: the LoginIntent associated with the login/signup attempt
+   - project: if the login attempt is made from the checkout flow, the associated project
+   - reward: if the login attempt is made from the checkout flow, the associated selected reward
    */
 
-  public func trackSignupButtonClicked() {
+  public func trackSignupButtonClicked(intent: LoginIntent,
+                                       project: Project? = nil,
+                                       reward: Reward? = nil) {
     self.track(event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue)
+  }
+
+  private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)
+    -> [String: Any] {
+      var props: [String: Any] = [:]
+
+      if let project = project {
+        props = props.withAllValuesFrom(projectProperties(from: project))
+      }
+
+      if let reward = reward {
+        props = props.withAllValuesFrom(pledgeProperties(from: reward))
+      }
+
+      return props.withAllValuesFrom(["login_intent": intent.trackingString])
   }
 
   // MARK: - Comments Events
