@@ -36,7 +36,7 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
     self.vm.outputs.goToThanks.observe(self.goToThanks.observer)
     self.vm.outputs.goToWebModal.observe(self.goToWebModal.observer)
-    self.vm.outputs.openLoginTout.observe(self.openLoginTout.observer)
+    self.vm.outputs.goToLoginSignup.observe(self.openLoginTout.observer)
     self.vm.outputs.popViewController.observe(self.popViewController.observer)
     self.vm.outputs.setStripeAppleMerchantIdentifier.observe(self.setStripeAppleMerchantIdentifier.observer)
     self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)

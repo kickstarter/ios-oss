@@ -82,9 +82,11 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
       .observeForControllerAction()
       .observeValues { [weak self] request in self?.goToWebModal(request: request) }
 
-    self.viewModel.outputs.openLoginTout
+    self.viewModel.outputs.goToLoginSignup
       .observeForControllerAction()
-      .observeValues { [weak self] _ in self?.openLoginTout() }
+      .observeValues { [weak self] intent, project, reward in
+        self?.goToLoginSignup(with: intent, project: project, reward: reward)
+    }
 
     self.viewModel.outputs.popViewController
       .observeForControllerAction()
@@ -149,8 +151,10 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
     self.present(nav, animated: true, completion: nil)
   }
 
-  fileprivate func openLoginTout() {
-    let vc = LoginToutViewController.configuredWith(loginIntent: .backProject)
+  fileprivate func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
+    let vc = LoginToutViewController.configuredWith(loginIntent: intent,
+                                                    project: project,
+                                                    reward: reward)
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
 

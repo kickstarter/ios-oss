@@ -828,7 +828,9 @@ public final class Koala {
   public func trackFacebookLoginOrSignupButtonClicked(intent: LoginIntent,
                                                       project: Project? = nil,
                                                       reward: Reward? = nil) {
-    self.track(event: DataLakeWhiteListedEvent.fbLoginOrSignupButtonClicked.rawValue)
+    let props = loginEventProperties(for: intent, project: project, reward: reward)
+
+    self.track(event: DataLakeWhiteListedEvent.fbLoginOrSignupButtonClicked.rawValue, properties: props)
   }
 
   /* Call when the "Sign up" button is tapped on the Login/Signup Page
