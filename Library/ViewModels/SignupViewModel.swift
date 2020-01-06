@@ -139,6 +139,9 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
           newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .signup
         )
       }
+
+    attemptSignup
+      .observeValues { AppEnvironment.current.koala.trackSignupSubmitButtonClicked() }
   }
 
   fileprivate let emailChangedProperty = MutableProperty("")

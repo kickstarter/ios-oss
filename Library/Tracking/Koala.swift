@@ -860,6 +860,14 @@ public final class Koala {
     self.track(event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue)
   }
 
+  public func trackSignupSubmitButtonClicked() {
+    self.track(event: DataLakeWhiteListedEvent.signupSubmitButtonClicked.rawValue)
+  }
+
+  public func trackLoginSubmitButtonClicked() {
+    self.track(event: DataLakeWhiteListedEvent.loginSubmitButtonClicked.rawValue)
+  }
+
   private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)
     -> [String: Any] {
     var props: [String: Any] = [:]

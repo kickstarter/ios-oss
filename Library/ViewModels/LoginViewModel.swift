@@ -135,6 +135,9 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       self.shouldShowPasswordProperty.signal,
       self.shouldShowPasswordProperty.signal.takeWhen(self.traitCollectionDidChangeProperty.signal)
     )
+
+    tryLogin
+      .observeValues { AppEnvironment.current.koala.trackLoginSubmitButtonClicked() }
   }
 
   public var inputs: LoginViewModelInputs { return self }

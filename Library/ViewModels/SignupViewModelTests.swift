@@ -63,9 +63,10 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.inputs.passwordChanged("0773rw473rm3l0n")
     self.isSignupButtonEnabled.assertValues([false, true], "Enabled when form is valid.")
 
-    self.vm.inputs.passwordTextFieldReturn()
     self.vm.inputs.signupButtonPressed()
     self.logIntoEnvironment.assertDidNotEmitValue("Does not immediately emit after signup button is pressed.")
+
+    XCTAssertEqual(["Signup Submit Button Clicked"], self.trackingClient.events)
 
     self.scheduler.advance()
 
