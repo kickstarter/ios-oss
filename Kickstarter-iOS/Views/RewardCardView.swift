@@ -104,9 +104,7 @@ public final class RewardCardView: UIView {
 
     _ = self.includedItemsStackView.subviews
       .dropFirst()
-      .compactMap { [weak self] in
-        $0 as? UILabel
-      }
+      .compactMap { $0 as? UILabel }
       ||> baseRewardLabelStyle
       ||> sectionBodyLabelStyle
 
@@ -229,8 +227,6 @@ public final class RewardCardView: UIView {
     self.pillCollectionView.layoutIfNeeded()
 
     self.pillCollectionViewHeightConstraint.constant = self.pillCollectionView.contentSize.height
-
-    self.setNeedsLayout()
   }
 
   fileprivate func load(items: [String]) {

@@ -196,8 +196,6 @@ final class PledgeDescriptionViewController: UIViewController {
       from: actualRect,
       toRect: thumbnailRect
     )
-
-    self.view.setNeedsLayout()
   }
 
   // MARK: - Actions
