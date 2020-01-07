@@ -495,8 +495,11 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let project = Project.template
       |> \.availableCardTypes .~ ["AMEX"]
     let reward = Reward.template
+    let mockApplePayCapable = MockApplePayCapable()
+      |> \.supportedNetworksForProject .~ [.amex]
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: []))) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(success: [])),
+                    applePayCapable: mockApplePayCapable) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
       self.vm.inputs.viewDidLoad()
       self.scheduler.advance()

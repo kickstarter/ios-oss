@@ -4,23 +4,29 @@ import KsApi
 import PassKit
 
 internal struct MockApplePayCapable: ApplePayCapableType {
+  var supportedNetworks: [PKPaymentNetwork] = [.visa, .masterCard, .amex]
+  var isApplePayCapable: Bool = true
+  var isApplePayDevice: Bool = true
+  var isApplePayCapableForProject: Bool = true
+  var supportedNetworksForProject: [PKPaymentNetwork] = [.visa, .masterCard, .amex]
+
   func allSupportedNetworks() -> [PKPaymentNetwork] {
-    return [.visa, .masterCard, .amex]
+    return self.supportedNetworks
   }
 
   func applePayCapable() -> Bool {
-    return true
+    return self.isApplePayCapable
   }
 
   func applePayDevice() -> Bool {
-    return true
+    return self.isApplePayDevice
   }
 
   func applePayCapable(for project: Project) -> Bool {
-    return true
+    return self.isApplePayCapableForProject
   }
 
   func supportedNetworks(for project: Project) -> [PKPaymentNetwork] {
-    return [.visa, .masterCard, .amex]
+    return self.supportedNetworksForProject
   }
 }
