@@ -673,7 +673,7 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(checkoutProperties(from: checkoutData))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString]) // does this make sense to live inside of pledgeProperties instead?
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(
       event: DataLakeWhiteListedEvent.checkoutCompleted.rawValue,
