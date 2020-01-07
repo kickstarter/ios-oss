@@ -1,6 +1,6 @@
 import Foundation
-import Library
 import KsApi
+import Library
 import PassKit
 
 internal struct MockApplePayCapable: ApplePayCapableType {
@@ -22,11 +22,11 @@ internal struct MockApplePayCapable: ApplePayCapableType {
     return self.isApplePayDevice
   }
 
-  func applePayCapable(for project: Project) -> Bool {
+  func applePayCapable(for _: Project) -> Bool {
     return self.isApplePayCapableForProject
   }
 
-  func supportedNetworks(for project: Project) -> [PKPaymentNetwork] {
+  func supportedNetworks(for _: Project) -> [PKPaymentNetwork] {
     return self.supportedNetworksForProject
   }
 }

@@ -91,21 +91,21 @@ public struct ApplePayCapable: ApplePayCapableType {
 
   private static func pkPaymentNetwork(for graphCreditCardType: GraphUserCreditCard.CreditCardType)
     -> PKPaymentNetwork? {
-      switch graphCreditCardType {
-      case .amex:
-        return PKPaymentNetwork.amex
-      case .discover:
-        return PKPaymentNetwork.discover
-      case .jcb:
-        return PKPaymentNetwork.JCB
-      case .mastercard:
-        return PKPaymentNetwork.masterCard
-      case .unionPay:
-        return PKPaymentNetwork.chinaUnionPay
-      case .visa:
-        return PKPaymentNetwork.visa
-      case .diners, .generic:
-        return nil
-      }
+    switch graphCreditCardType {
+    case .amex:
+      return PKPaymentNetwork.amex
+    case .discover:
+      return PKPaymentNetwork.discover
+    case .jcb:
+      return PKPaymentNetwork.JCB
+    case .mastercard:
+      return PKPaymentNetwork.masterCard
+    case .unionPay:
+      return PKPaymentNetwork.chinaUnionPay
+    case .visa:
+      return PKPaymentNetwork.visa
+    case .diners, .generic:
+      return nil
+    }
   }
 }

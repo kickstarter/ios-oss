@@ -663,19 +663,23 @@ public final class Koala {
     self.track(event: "Pledge Button Clicked", properties: props)
   }
 
-  public func trackCheckoutCompleted(project: Project,
-                                     reward: Reward,
-                                     refTag: RefTag?,
-                                     checkoutData: CheckoutPropertiesData,
-                                     pledgeContext: PledgeContext) {
+  public func trackCheckoutCompleted(
+    project: Project,
+    reward: Reward,
+    refTag: RefTag?,
+    checkoutData: CheckoutPropertiesData,
+    pledgeContext: PledgeContext
+  ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(checkoutProperties(from: checkoutData))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString]) // does this make sense to live inside of pledgeProperties instead?
 
-    self.track(event: DataLakeWhiteListedEvent.checkoutCompleted.rawValue,
-               properties: props,
-               refTag: refTag?.stringTag)
+    self.track(
+      event: DataLakeWhiteListedEvent.checkoutCompleted.rawValue,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
   }
 
   public func trackAddNewCardButtonClicked(project: Project) {
@@ -2227,17 +2231,17 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
 
 private func checkoutProperties(from data: Koala.CheckoutPropertiesData, prefix: String = "checkout_")
   -> [String: Any] {
-    var result: [String: Any] = [:]
+  var result: [String: Any] = [:]
 
-    result["amount"] = data.amount
-    result["payment_type"] = data.paymentType
-    result["reward_id"] = data.rewardId
-    result["shipping_amount"] = data.shippingAmount
-    result["reward_estimated_delivery_on"] = data.estimatedDelivery
-    result["reward_shipping_enabled"] = data.shippingEnabled
-    result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
+  result["amount"] = data.amount
+  result["payment_type"] = data.paymentType
+  result["reward_id"] = data.rewardId
+  result["shipping_amount"] = data.shippingAmount
+  result["reward_estimated_delivery_on"] = data.estimatedDelivery
+  result["reward_shipping_enabled"] = data.shippingEnabled
+  result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
-    return result.prefixedKeys(prefix)
+  return result.prefixedKeys(prefix)
 }
 
 // MARK: - Discovery Properties

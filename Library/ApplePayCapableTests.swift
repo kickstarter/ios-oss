@@ -24,7 +24,7 @@ final class ApplePayCapableTests: XCTestCase {
         "VISA",
         "DINERS",
         "UNION_PAY"
-    ]
+      ]
 
     let supportedNetworks = self.applePayCapable.supportedNetworks(for: project)
 
@@ -74,4 +74,3 @@ final class ApplePayCapableTests: XCTestCase {
     XCTAssertTrue(supportedNetworks.contains(.visa))
   }
 }
-
