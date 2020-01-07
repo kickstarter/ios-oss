@@ -6,6 +6,8 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class KoalaTests: TestCase {
+  // MARK: - Session Properties Tests
+
   func testSessionProperties() {
     let bundle = MockBundle()
     let client = MockTrackingClient()
@@ -154,10 +156,16 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("Face Down", props?["session_device_orientation"] as? String)
   }
 
-  func testTrackProject() {
+  // MARK: - Project Properties Tests
+
+  func testProjectProperties() {
     let client = MockTrackingClient()
     let koala = Koala(client: client, loggedInUser: nil)
     let project = Project.template
+      |> Project.lens.rewards .~ [Reward.template]
+      |> Project.lens.category .~ (Category.illustration
+        |> Category.lens.id .~ "123"
+        |> Category.lens.parentId .~ "321")
       |> Project.lens.stats.staticUsdRate .~ 2.0
       |> Project.lens.stats.commentsCount .~ 10
       |> Project.lens.prelaunchActivated .~ true
@@ -175,9 +183,10 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(project.stats.goal, properties?["project_goal"] as? Int)
     XCTAssertEqual(project.id, properties?["project_pid"] as? Int)
     XCTAssertEqual(project.stats.fundingProgress, properties?["project_percent_raised"] as? Float)
-    XCTAssertEqual(project.stats.updatesCount, properties?["project_updates_count"] as? Int)
     XCTAssertEqual(project.category.name, properties?["project_subcategory"] as? String)
-    XCTAssertEqual(project.category._parent?.name, properties?["project_category"] as? String)
+    XCTAssertEqual("123", properties?["project_subcategory_id"] as? String)
+    XCTAssertEqual("Art", properties?["project_category"] as? String)
+    XCTAssertEqual("321", properties?["project_category_id"] as? String)
     XCTAssertEqual(project.location.name, properties?["project_location"] as? String)
     XCTAssertEqual(project.creator.id, properties?["project_creator_uid"] as? Int)
     XCTAssertEqual(24 * 15, properties?["project_hours_remaining"] as? Int)
@@ -192,13 +201,14 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(true, properties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, properties?["project_comments_count"] as? Int)
     XCTAssertEqual(true, properties?["project_prelaunch_activated"] as? Bool)
-    XCTAssertEqual(0, properties?["project_rewards_count"] as? Int)
+    XCTAssertEqual(1, properties?["project_rewards_count"] as? Int)
+    XCTAssertEqual(1, properties?["project_updates_count"] as? Int)
 
     XCTAssertEqual(false, properties?["project_user_is_project_creator"] as? Bool)
     XCTAssertNil(properties?["project_user_is_backer"])
     XCTAssertNil(properties?["project_user_has_starred"])
 
-    XCTAssertEqual(25, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(28, properties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual("discovery", properties?["session_ref_tag"] as? String)
     XCTAssertEqual("recommended", properties?["session_referrer_credit"] as? String)
@@ -222,7 +232,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(27, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInBacker() {
@@ -242,7 +252,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(true, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(27, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInStarrer() {
@@ -262,7 +272,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(true, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(27, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInCreator() {
@@ -282,8 +292,10 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(27, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
+
+  // MARK: - Discovery Properties Tests
 
   func testDiscoveryProperties() {
     let client = MockTrackingClient()
@@ -373,6 +385,67 @@ final class KoalaTests: TestCase {
     XCTAssertNil(properties?["discover_search_term"])
     XCTAssertEqual(true, properties?["discover_everything"] as? Bool)
     XCTAssertEqual("magic", properties?["discover_sort"] as? String)
+  }
+
+  // MARK: - Pledge Properties Tests
+
+  func testPledgeProperties() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.template
+
+    koala.trackRewardClicked(project: project, reward: reward, screen: .backThisPage)
+
+    let props = client.properties.last
+
+    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
+    XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(10.00, props?["pledge_backer_reward_minimum"] as? Double)
+    XCTAssertEqual(false, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
+
+    XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
+  }
+
+  func testPledgeProperties_NoReward() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 5.0
+
+    koala.trackRewardClicked(project: project, reward: reward, screen: .backThisPage)
+
+    let props = client.properties.last
+
+    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(0, props?["pledge_backer_reward_id"] as? Int)
+    XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(5.00, props?["pledge_backer_reward_minimum"] as? Double)
+    XCTAssertEqual(false, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
+
+    XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
+  }
+
+  func testPledgeProperties_ShippingPreference() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.template
+      |> Reward.lens.shipping .~ (Reward.Shipping.template
+        |> Reward.Shipping.lens.preference .~ Reward.Shipping.Preference.restricted)
+
+    koala.trackRewardClicked(project: project, reward: reward, screen: .backThisPage)
+
+    let props = client.properties.last
+
+    XCTAssertEqual("restricted", props?["pledge_backer_reward_shipping_preference"] as? String)
   }
 
   func testTrackViewedPaymentMethods() {
@@ -616,25 +689,21 @@ final class KoalaTests: TestCase {
   func testTrackSelectRewardButtonClicked() {
     let client = MockTrackingClient()
     let reward = Reward.template
-    let backing = .template
-      |> Backing.lens.reward .~ reward
-    let project = .template
-      |> Project.lens.personalization.backing .~ backing
+    let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackSelectRewardButtonClicked(
+    koala.trackRewardClicked(
       project: project,
       reward: reward,
-      backing: backing,
       screen: .backThisPage
     )
 
     let properties = client.properties.last
 
     XCTAssertEqual(["Select Reward Button Clicked"], client.events)
-    XCTAssertEqual("Back this page", properties?["screen"] as? String)
+    XCTAssertEqual("Back this page", properties?["pledge_context"] as? String)
   }
 
   func testTrackCancelPledgeButtonClicked() {

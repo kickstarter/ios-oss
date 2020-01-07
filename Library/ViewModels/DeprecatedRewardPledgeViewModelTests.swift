@@ -1937,7 +1937,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     )
     XCTAssertEqual(
       [reward.id, reward.id, reward.id, reward.id, reward.id, reward.id],
-      self.trackingClient.properties(forKey: "backer_reward_id", as: Int.self)
+      self.trackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
     )
   }
 

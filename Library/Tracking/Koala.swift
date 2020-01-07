@@ -572,7 +572,7 @@ public final class Koala {
     )
   }
 
-  // MARK: - Checkout Events
+  // MARK: - Pledge Events
 
   public func trackPledgeCTAButtonClicked(
     stateType: PledgeStateCTAType,
@@ -625,17 +625,15 @@ public final class Koala {
     self.track(event: "Manage Pledge Option Clicked", properties: props)
   }
 
-  public func trackSelectRewardButtonClicked(
+  public func trackRewardClicked(
     project: Project,
-    reward: Reward?,
-    backing: Backing?,
+    reward: Reward,
     screen: CheckoutContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom([
-        "screen": screen.trackingString,
-        "backer_reward_minimum": reward?.minimum as Any,
-        "pledge_total": backing?.amount as Any
+        "pledge_context": screen.trackingString
       ])
 
     self.track(event: "Select Reward Button Clicked", properties: props)
@@ -666,7 +664,7 @@ public final class Koala {
     pledgeContext: PledgeContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Checkout Cancel", properties: props.withAllValuesFrom(deprecatedProps))
@@ -681,7 +679,7 @@ public final class Koala {
     pledgeContext: PledgeContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom([
         "pledge_context": pledgeContext.trackingString,
         "type": buttonType.trackingString,
@@ -709,7 +707,7 @@ public final class Koala {
     extraProps["payment_method"] = paymentMethod?.trackingString
 
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(extraProps)
 
     self.track(event: "Errored Reward Pledge Button Click", properties: props)
@@ -717,7 +715,7 @@ public final class Koala {
 
   public func trackChangedPledgeAmount(_ project: Project, reward: Reward, pledgeContext: PledgeContext) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Checkout Amount Changed", properties: props.withAllValuesFrom(deprecatedProps))
@@ -731,7 +729,7 @@ public final class Koala {
     pledgeContext: PledgeContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Checkout Location Changed", properties: props.withAllValuesFrom(deprecatedProps))
@@ -741,7 +739,7 @@ public final class Koala {
 
   public func trackSelectedReward(project: Project, reward: Reward, pledgeContext: PledgeContext) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Reward Checkout", properties: props.withAllValuesFrom(deprecatedProps))
@@ -751,7 +749,7 @@ public final class Koala {
 
   public func trackClosedReward(project: Project, reward: Reward, pledgeContext: PledgeContext) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Closed Reward", properties: props)
@@ -1828,7 +1826,7 @@ public final class Koala {
     pledgeContext: PledgeContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     // deprecated
@@ -1846,7 +1844,7 @@ public final class Koala {
     pledgeContext: PledgeContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     // deprecated
@@ -1861,7 +1859,7 @@ public final class Koala {
     pledgeContext: PledgeContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Apple Pay Stripe Token Created", properties: props.withAllValuesFrom(deprecatedProps))
@@ -1875,7 +1873,7 @@ public final class Koala {
     pledgeContext: PledgeContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Apple Pay Stripe Token Errored", properties: props.withAllValuesFrom(deprecatedProps))
@@ -1889,7 +1887,7 @@ public final class Koala {
     pledgeContext: PledgeContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Apple Pay Finished", properties: props.withAllValuesFrom(deprecatedProps))
@@ -1901,7 +1899,7 @@ public final class Koala {
     pledgeContext: PledgeContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
     self.track(event: "Apple Pay Canceled", properties: props.withAllValuesFrom(deprecatedProps))
 
@@ -1923,7 +1921,7 @@ public final class Koala {
     pledgeContext: PledgeContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Expanded Reward Description", properties: props)
@@ -1935,7 +1933,7 @@ public final class Koala {
     pledgeContext: PledgeContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
+      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Expanded Unavailable Reward", properties: props)
@@ -2111,6 +2109,7 @@ private func projectProperties(
 
   props["backers_count"] = project.stats.backersCount
   props["subcategory"] = project.category.name
+  props["subcategory_id"] = project.category.id
   props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
@@ -2122,6 +2121,7 @@ private func projectProperties(
   props["name"] = project.name
   props["pid"] = project.id
   props["category"] = project.category.parent?.name
+  props["category_id"] = project.category.parentId
   props["percent_raised"] = project.stats.fundingProgress
   props["state"] = project.state.rawValue
   props["static_usd_rate"] = project.stats.staticUsdRate
@@ -2129,9 +2129,9 @@ private func projectProperties(
   props["current_pledge_amount_usd"] = project.stats.pledgedUsd
   props["goal_usd"] = project.stats.goalUsd
   props["has_video"] = project.video != nil
-  props["updates_count"] = project.stats.updatesCount
   props["prelaunch_activated"] = project.prelaunchActivated
   props["rewards_count"] = project.rewards.count
+  props["updates_count"] = project.stats.updatesCount
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
@@ -2178,6 +2178,23 @@ private func properties(userActivity: NSUserActivity) -> [String: Any] {
   props["user_activity_keywords"] = Array(userActivity.keywords)
 
   return props
+}
+
+// MARK: - Pledge Properties
+
+private func pledgeProperties(from reward: Reward, prefix: String = "pledge_backer_reward_")
+  -> [String: Any] {
+  var result: [String: Any] = [:]
+
+  result["has_items"] = !reward.rewardsItems.isEmpty
+  result["id"] = reward.id
+  result["is_limited_quantity"] = reward.limit != nil
+  result["is_limited_time"] = reward.endsAt != nil
+  result["minimum"] = reward.minimum
+  result["shipping_enabled"] = reward.shipping.enabled
+  result["shipping_preference"] = reward.shipping.preference?.trackingString
+
+  return result.prefixedKeys(prefix)
 }
 
 // MARK: - Discovery Properties
@@ -2248,22 +2265,6 @@ private func properties(
   }
 
   return result
-}
-
-private func properties(reward: Reward, prefix: String = "backer_reward_") -> [String: Any] {
-  guard reward != Reward.noReward else { return [:] }
-
-  var result: [String: Any] = [:]
-
-  result["id"] = reward.id
-  result["is_limited_quantity"] = reward.limit == nil
-  // result["is_limited_time"] = // implement when reward scheduling is supported
-  result["minimum"] = reward.minimum
-  result["shipping_enabled"] = reward.shipping.enabled
-  result["shipping_preference"] = reward.shipping.preference?.trackingString
-  result["has_items"] = !reward.rewardsItems.isEmpty
-
-  return result.prefixedKeys(prefix)
 }
 
 private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String? {

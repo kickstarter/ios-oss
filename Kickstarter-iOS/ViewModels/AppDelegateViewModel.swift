@@ -15,7 +15,6 @@ public enum NotificationAuthorizationStatus {
   case authorized
   case denied
   case notDetermined
-  @available(iOS 12, *)
   case provisional
 }
 
@@ -56,6 +55,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the user taps "OK" from the contextual alert.
   func didAcceptReceivingRemoteNotifications()
 
+  /// Call with the result of evaluating Qualtrics Targeting Logic
+  func didEvaluateQualtricsTargetingLogic(with result: QualtricsResultType)
+
   /// Call when the app delegate receives a remote notification.
   func didReceive(remoteNotification notification: [AnyHashable: Any])
 
@@ -67,6 +69,9 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
+
+  /// Call with the result from initializing Qualtrics
+  func qualtricsInitialized(with result: QualtricsResultType)
 
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
@@ -91,8 +96,17 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the application should configure Fabric
   var configureFabric: Signal<(), Never> { get }
 
+  /// Emits when the application should configure Qualtrics
+  var configureQualtrics: Signal<QualtricsConfigData, Never> { get }
+
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
+
+  /// Emits when we should display the Qualtrics survey.
+  var displayQualtricsSurvey: Signal<(), Never> { get }
+
+  /// Emits when we should ask Qualtrics to evaluate its targeting logic.
+  var evaluateQualtricsTargetingLogic: Signal<(), Never> { get }
 
   /// Emits when the view needs to figure out the redirect URL for the emitted URL.
   var findRedirectUrl: Signal<URL, Never> { get }
@@ -600,6 +614,35 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     .flatMap { AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
     .filter(isTrue)
     .mapConst(0)
+
+    self.configureQualtrics = Signal.zip(
+      self.applicationLaunchOptionsProperty.signal,
+      self.didUpdateConfigProperty.signal
+    )
+    .filter { _ in featureQualtricsIsEnabled() }
+    .map { _ in
+      .init(
+        brandId: Secrets.Qualtrics.brandId,
+        zoneId: Secrets.Qualtrics.zoneId,
+        interceptId: QualtricsIntercept.survey.interceptId,
+        stringProperties: [
+          "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith(""),
+          "language": AppEnvironment.current.language.rawValue,
+          "logged_in": "\(AppEnvironment.current.currentUser != nil)"
+        ]
+      )
+    }
+
+    self.evaluateQualtricsTargetingLogic = self.qualtricsInitializedWithResultProperty.signal
+      .skipNil()
+      .filter { $0.passed() }
+      .ksr_delay(.seconds(2), on: AppEnvironment.current.scheduler)
+      .ignoreValues()
+
+    self.displayQualtricsSurvey = self.didEvaluateQualtricsTargetingLogicWithResultProperty.signal
+      .skipNil()
+      .filter { $0.passed() }
+      .ignoreValues()
   }
 
   // swiftlint:enable cyclomatic_complexity
@@ -694,6 +737,17 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     return true
   }
 
+  fileprivate let qualtricsInitializedWithResultProperty = MutableProperty<QualtricsResultType?>(nil)
+  public func qualtricsInitialized(with result: QualtricsResultType) {
+    self.qualtricsInitializedWithResultProperty.value = result
+  }
+
+  fileprivate let didEvaluateQualtricsTargetingLogicWithResultProperty
+    = MutableProperty<QualtricsResultType?>(nil)
+  public func didEvaluateQualtricsTargetingLogic(with result: QualtricsResultType) {
+    self.didEvaluateQualtricsTargetingLogicWithResultProperty.value = result
+  }
+
   fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
   public func showNotificationDialog(notification: Notification) {
     self.showNotificationDialogProperty.value = notification
@@ -717,7 +771,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFabric: Signal<(), Never>
+  public let configureQualtrics: Signal<QualtricsConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
+  public let displayQualtricsSurvey: Signal<(), Never>
+  public let evaluateQualtricsTargetingLogic: Signal<(), Never>
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>

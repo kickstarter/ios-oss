@@ -1,3 +1,4 @@
+binary "https://s3-us-west-2.amazonaws.com/si-mobile-sdks/ios/Qualtrics.json" "1.15"
 github "Alamofire/Alamofire" "5.0.0-rc.3"
 github "Alamofire/AlamofireImage" "8e635e6151212f8871a321bbdd980af7c31af73b"
 github "ReactiveCocoa/ReactiveSwift" "6.1.0"
