@@ -2154,6 +2154,8 @@ private func projectProperties(
   props["goal_usd"] = project.stats.goalUsd
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
+  props["rewards_count"] = project.rewards.count
+  props["updates_count"] = project.stats.updatesCount
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
