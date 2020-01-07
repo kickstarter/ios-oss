@@ -2,10 +2,10 @@
 @testable import FBSDKLoginKit
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-// swiftlint:disable force_unwrapping
 import XCTest
 
 final class LoginToutViewModelTests: TestCase {
@@ -53,6 +53,27 @@ final class LoginToutViewModelTests: TestCase {
 
     XCTAssertEqual(["Log In or Signup Page Viewed"], trackingClient.events)
     XCTAssertEqual("login_tab", trackingClient.properties.last?["login_intent"] as? String)
+  }
+
+  func testLoginIntent_Pledge() {
+    let reward = Reward.template
+      |> Reward.lens.id .~ 10
+    let project = Project.template
+      |> Project.lens.id .~ 2
+
+    self.vm.inputs.configureWith(.backProject, project: project, reward: reward)
+    self.vm.inputs.viewWillAppear()
+
+    XCTAssertEqual(["Log In or Signup Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(["pledge"], self.trackingClient.properties(forKey: "login_intent"))
+    XCTAssertEqual(
+      [2], self.trackingClient.properties(forKey: "project_pid", as: Int.self),
+      "Tracking properties contain project properties"
+    )
+    XCTAssertEqual(
+      [10], self.trackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self),
+      "Tracking properties contain pledge properties"
+    )
   }
 
   func testKoala_whenLoginIntentBeforeViewAppears() {
