@@ -27,7 +27,7 @@ extension RewardPledgeNavigationController: UINavigationControllerDelegate {
   ) -> UIViewControllerAnimatedTransitioning? {
     switch (operation, fromVC, toVC) {
     case (.push, is RewardPledgeTransitionAnimatorDelegate, is PledgeViewController):
-      return RewardPledgePushTransitionAnimator()
+      return nil
     case (.pop, is PledgeViewController, is RewardPledgeTransitionAnimatorDelegate):
       return nil
     default:
