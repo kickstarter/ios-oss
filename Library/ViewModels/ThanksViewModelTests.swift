@@ -11,6 +11,7 @@ final class ThanksViewModelTests: TestCase {
   let vm: ThanksViewModelType = ThanksViewModel()
 
   let backedProjectText = TestObserver<String, Never>()
+  let dismissToRootViewControllerAndPostNotification = TestObserver<Notification.Name, Never>()
   let goToDiscovery = TestObserver<KsApi.Category, Never>()
   let goToProject = TestObserver<Project, Never>()
   let goToProjects = TestObserver<[Project], Never>()
@@ -19,7 +20,6 @@ final class ThanksViewModelTests: TestCase {
   let showGamesNewsletterAlert = TestObserver<(), Never>()
   let showGamesNewsletterOptInAlert = TestObserver<String, Never>()
   let showRecommendations = TestObserver<[Project], Never>()
-  let dismissToRootViewController = TestObserver<Notification.Name, Never>()
   let postContextualNotification = TestObserver<(), Never>()
   let postUserUpdatedNotification = TestObserver<Notification.Name, Never>()
   let updateUserInEnvironment = TestObserver<User, Never>()
@@ -29,8 +29,8 @@ final class ThanksViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
     self.vm.outputs.backedProjectText.map { $0.string }.observe(self.backedProjectText.observer)
-    self.vm.outputs.dismissToRootViewController.map { $0.name }
-      .observe(self.dismissToRootViewController.observer)
+    self.vm.outputs.dismissToRootViewControllerAndPostNotification.map { $0.name }
+      .observe(self.dismissToRootViewControllerAndPostNotification.observer)
     self.vm.outputs.goToDiscovery.map { params in params.category ?? Category.filmAndVideo }
       .observe(self.goToDiscovery.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
@@ -53,7 +53,7 @@ final class ThanksViewModelTests: TestCase {
 
     self.vm.inputs.closeButtonTapped()
 
-    self.dismissToRootViewController.assertValue(Notification.Name.ksr_projectBacked)
+    self.dismissToRootViewControllerAndPostNotification.assertValue(Notification.Name.ksr_projectBacked)
   }
 
   func testGoToDiscovery() {

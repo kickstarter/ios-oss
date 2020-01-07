@@ -64,7 +64,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     NotificationCenter.default
       .addObserver(
         self,
-        selector: #selector(self.didBackProject),
+        selector: #selector(ProjectPamphletViewController.didBackProject),
         name: NSNotification.Name.ksr_projectBacked,
         object: nil
       )

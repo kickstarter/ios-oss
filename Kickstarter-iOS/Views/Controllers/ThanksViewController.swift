@@ -107,7 +107,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
 
-    self.viewModel.outputs.dismissToRootViewController
+    self.viewModel.outputs.dismissToRootViewControllerAndPostNotification
       .observeForControllerAction()
       .observeValues { [weak self] in
         NotificationCenter.default.post($0)

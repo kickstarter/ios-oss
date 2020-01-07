@@ -242,23 +242,13 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testProjectPaveViewed_OnViewDidAppear() {
+    XCTAssertEqual([], self.trackingClient.events)
+
     self.configureInitialState(.init(left: .template))
 
     self.scheduler.advance()
 
-    XCTAssertEqual(
-      ["Project Page Viewed"],
-      self.trackingClient.events
-    )
-
-    self.vm.inputs.viewDidAppear(animated: true)
-
-    self.scheduler.advance()
-
-    XCTAssertEqual(
-      ["Project Page Viewed", "Project Page Viewed"],
-      self.trackingClient.events
-    )
+    XCTAssertEqual(["Project Page Viewed"], self.trackingClient.events)
   }
 
   func testMockCookieStorageSet_SeparateSchedulers() {
