@@ -666,10 +666,12 @@ public final class Koala {
   public func trackCheckoutCompleted(project: Project,
                                      reward: Reward,
                                      refTag: RefTag?,
-                                     checkoutData: CheckoutPropertiesData) {
+                                     checkoutData: CheckoutPropertiesData,
+                                     pledgeContext: PledgeContext) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(checkoutProperties(from: checkoutData))
+      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString]) // does this make sense to live inside of pledgeProperties instead?
 
     self.track(event: DataLakeWhiteListedEvent.checkoutCompleted.rawValue,
                properties: props,
@@ -2040,8 +2042,8 @@ public final class Koala {
       .keys
       .sorted()
 
-    props["apple_pay_capable"] = PKPaymentAuthorizationViewController.applePayCapable()
-    props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
+    props["apple_pay_capable"] = AppEnvironment.current.applePayCapable.applePayCapable()
+    props["apple_pay_device"] = AppEnvironment.current.applePayCapable.applePayDevice()
     props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
     props["client_type"] = "native"
     props["current_variants"] = self.config?.abExperimentsArray.sorted()
@@ -2233,7 +2235,7 @@ private func checkoutProperties(from data: Koala.CheckoutPropertiesData, prefix:
     result["shipping_amount"] = data.shippingAmount
     result["reward_estimated_delivery_on"] = data.estimatedDelivery
     result["reward_shipping_enabled"] = data.shippingEnabled
-    result["user_has_stored_apple_pay_card"] = data.userHasStoredApplePayCard
+    result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
     return result.prefixedKeys(prefix)
 }

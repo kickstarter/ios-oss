@@ -510,7 +510,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
-        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
+        "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
         "supportedNetworks": [PKPaymentNetwork.amex],
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
@@ -551,8 +551,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
-        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
+        "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
+        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -593,8 +593,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
-        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
+        "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
+        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -636,8 +636,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
-        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
+        "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
+        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -688,8 +688,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
-        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
+        "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
+        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:
@@ -742,8 +742,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
-        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
+        "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
+        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:
@@ -798,8 +798,8 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "countryCode": project.country.countryCode,
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
-        "merchantIdentifier": PKPaymentAuthorizationViewController.merchantIdentifier,
-        "supportedNetworks": PKPaymentAuthorizationViewController.allSupportedNetworks,
+        "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
+        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:
@@ -2098,7 +2098,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.setStripeAppleMerchantIdentifier.assertValues(
-      [PKPaymentAuthorizationViewController.merchantIdentifier]
+      [Secrets.ApplePay.merchantIdentifier]
     )
   }
 

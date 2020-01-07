@@ -243,18 +243,15 @@ internal func sanitizedPledgeParameters(
   pledgeAmount: Double,
   shippingRule: ShippingRule?
 ) -> SanitizedPledgeParams {
-  let pledgeAmountDecimal = Decimal(pledgeAmount)
-  var shippingAmountDecimal: Decimal = Decimal()
+  var pledgeTotal = pledgeAmount
   var shippingLocationId: String?
 
   if let shippingRule = shippingRule {
-    shippingAmountDecimal = Decimal(shippingRule.cost)
+    pledgeTotal = pledgeAmount.addingCurrency(shippingRule.cost)
     shippingLocationId = String(shippingRule.location.id)
   }
 
-  let pledgeTotal = NSDecimalNumber(decimal: pledgeAmountDecimal + shippingAmountDecimal)
-  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal.doubleValue)
-
+  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal)
   let rewardId = reward.graphID
 
   return (formattedPledgeTotal, rewardId, shippingLocationId)

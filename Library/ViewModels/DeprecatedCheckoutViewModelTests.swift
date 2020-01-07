@@ -1061,7 +1061,7 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.setStripeAppleMerchantIdentifier.assertValues(
-      [PKPaymentAuthorizationViewController.merchantIdentifier]
+      [Secrets.ApplePay.merchantIdentifier]
     )
   }
 
@@ -1124,7 +1124,7 @@ private func applePayUrlRequest(
   let payload: [String: Any] = [
     "country_code": project.country.countryCode,
     "currency_code": project.country.currencyCode,
-    "merchant_identifier": PKPaymentAuthorizationViewController.merchantIdentifier,
+    "merchant_identifier": Secrets.ApplePay.merchantIdentifier,
     "supported_networks": ["AmEx", "Visa", "MasterCard", "Discover"],
     "payment_summary_items": [
       [

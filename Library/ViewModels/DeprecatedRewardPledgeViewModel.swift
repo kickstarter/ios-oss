@@ -277,7 +277,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
 
     self.setStripeAppleMerchantIdentifier = applePayCapable
       .filter(isTrue)
-      .mapConst(PKPaymentAuthorizationViewController.merchantIdentifier)
+      .mapConst(Secrets.ApplePay.merchantIdentifier)
 
     self.setStripePublishableKey = applePayCapable
       .filter(isTrue)
@@ -497,7 +497,11 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     )
     .map { ($0.0, $0.1, $1, $2, $3) }
     .takeWhen(Signal.merge(applePayEventAfterLogin, loggedInUserTappedApplePayButton))
-    .map(PKPaymentRequest.paymentRequest(for:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
+    .map { PKPaymentRequest.paymentRequest(for: $0.0,
+                                           reward: $0.1,
+                                           pledgeAmount: $0.2,
+                                           selectedShippingRule: $0.3,
+                                           merchantIdentifier: $0.4) }
 
     let isLoading = MutableProperty(false)
     pledgeIsLoading = isLoading.signal

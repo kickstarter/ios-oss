@@ -17,6 +17,7 @@ extension XCTestCase {
   func withEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
+    applePayCapable: ApplePayCapableType = AppEnvironment.current.applePayCapable,
     application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
@@ -44,6 +45,7 @@ extension XCTestCase {
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
+        applePayCapable: applePayCapable,
         application: application,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,

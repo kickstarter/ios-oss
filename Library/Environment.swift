@@ -14,6 +14,9 @@ public struct Environment {
   /// The amount of time to delay API requests by. Used primarily for testing. Default value is `0.0`.
   public let apiDelayInterval: DispatchTimeInterval
 
+  /// A type that exposes Apple Pay capabilities
+  public let applePayCapable: ApplePayCapableType
+
   /// The app instance
   public let application: UIApplicationType
 
@@ -96,6 +99,7 @@ public struct Environment {
   public init(
     apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
+    applePayCapable: ApplePayCapableType = ApplePayCapable(),
     application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: KSCache = KSCache(),
@@ -123,6 +127,7 @@ public struct Environment {
   ) {
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
+    self.applePayCapable = applePayCapable
     self.application = application
     self.assetImageGeneratorType = assetImageGeneratorType
     self.cache = cache
