@@ -13,6 +13,7 @@ import Foundation
 #endif
 import Kickstarter_Framework
 import Library
+import Optimizely
 import Prelude
 import Qualtrics
 import ReactiveExtensions
@@ -151,6 +152,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.unregisterForRemoteNotifications
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
+
+    self.viewModel.outputs.configureOptimizely
+      .observeForUI()
+      .observeValues { [weak self] key, logLevel in
+        self?.configureOptimizely(with: key, logLevel: logLevel)
+      }
 
     self.viewModel.outputs.configureAppCenterWithData
       .observeForUI()
@@ -310,6 +317,21 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   ) {
     self.viewModel.inputs.applicationPerformActionForShortcutItem(shortcutItem)
     completionHandler(true)
+  }
+
+  // MARK: - Functions
+
+  private func configureOptimizely(with key: String, logLevel: OptimizelyLogLevelType) {
+    let optimizelyClient = OptimizelyClient(sdkKey: key, defaultLogLevel: logLevel.logLevel)
+
+    optimizelyClient.start { [weak self] result in
+      let shouldUpdateClient = self?.viewModel.inputs.optimizelyConfigured(with: result)
+
+      if let shouldUpdateClient = shouldUpdateClient, shouldUpdateClient {
+        print("🔮 Optimizely SDK Successfully Configured")
+        AppEnvironment.updateOptimizelyClient(optimizelyClient)
+      }
+    }
   }
 
   fileprivate func presentContextualPermissionAlert(_ notification: Notification) {

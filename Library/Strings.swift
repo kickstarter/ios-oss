@@ -7225,6 +7225,23 @@ daring ideas."
     )
   }
   /**
+   "See rewards"
+
+   - **en**: "See rewards"
+   - **de**: "Belohnungen ansehen"
+   - **es**: "Ver recompensas"
+   - **fr**: "Afficher les récompenses"
+   - **ja**: "See rewards"
+  */
+  public static func See_rewards() -> String {
+    return localizedString(
+      key: "See_rewards",
+      defaultValue: "See rewards",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Select"
 
    - **en**: "Select"
