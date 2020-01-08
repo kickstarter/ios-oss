@@ -843,12 +843,21 @@ private func checkoutPropertiesData(from createBackingData: CreateBackingData, i
     pledgeTotal = pledgeTotal.addingCurrency(shippingRule.cost)
   }
 
+  let pledgeTotalUsdCents = pledgeTotal
+    .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
+    .multiplyingCurrency(100.0)
+    .rounded()
+
   let amount = Format.decimalCurrency(for: pledgeTotal)
+  let revenueInUsdCents = Int(pledgeTotalUsdCents)
   let rewardId = createBackingData.reward.id
   let estimatedDelivery = createBackingData.reward.estimatedDeliveryOn
-  let paymentType = isApplePay ? "APPLE_PAY" : "CREDIT_CARD"
+  let paymentType = isApplePay
+    ? Backing.PaymentType.applePay.rawValue
+    : Backing.PaymentType.creditCard.rawValue
   let shippingEnabled = createBackingData.reward.shipping.enabled
   let shippingAmount = createBackingData.shippingRule?.cost
+  let rewardTitle = createBackingData.reward.title
   let userHasEligibleStoredApplePayCard = AppEnvironment.current
     .applePayCapable
     .applePayCapable(for: createBackingData.project)
@@ -857,7 +866,9 @@ private func checkoutPropertiesData(from createBackingData: CreateBackingData, i
     amount: amount,
     estimatedDelivery: estimatedDelivery,
     paymentType: paymentType,
+    revenueInUsdCents: revenueInUsdCents,
     rewardId: rewardId,
+    rewardTitle: rewardTitle,
     shippingEnabled: shippingEnabled,
     shippingAmount: shippingAmount,
     userHasStoredApplePayCard: userHasEligibleStoredApplePayCard

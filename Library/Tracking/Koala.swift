@@ -389,7 +389,9 @@ public final class Koala {
     let amount: String
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
+    let revenueInUsdCents: Int
     let rewardId: Int
+    let rewardTitle: String?
     let shippingEnabled: Bool
     let shippingAmount: Double?
     let userHasStoredApplePayCard: Bool
@@ -2236,7 +2238,9 @@ private func checkoutProperties(from data: Koala.CheckoutPropertiesData, prefix:
   result["amount"] = data.amount
   result["payment_type"] = data.paymentType
   result["reward_id"] = data.rewardId
+  result["reward_title"] = data.rewardTitle
   result["shipping_amount"] = data.shippingAmount
+  result["revenue_in_usd_cents"] = data.revenueInUsdCents
   result["reward_estimated_delivery_on"] = data.estimatedDelivery
   result["reward_shipping_enabled"] = data.shippingEnabled
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard

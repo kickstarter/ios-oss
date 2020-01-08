@@ -1134,20 +1134,11 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanks.assertValues([project])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let props = self.trackingClient.properties.last
-
       XCTAssertEqual(
         ["Pledge Screen Viewed", "Checkout Completed"],
         self.trackingClient.events
       )
       XCTAssertEqual([nil, "new_pledge"], self.trackingClient.properties(forKey: "pledge_context"))
-      XCTAssertEqual("5.00", props?["checkout_amount"] as? String)
-      XCTAssertEqual("APPLE_PAY", props?["checkout_payment_type"] as? String)
-      XCTAssertEqual(0, props?["checkout_reward_id"] as? Int)
-      XCTAssertEqual(false, props?["checkout_reward_shipping_enabled"] as? Bool)
-      XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-      XCTAssertNil(props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
-      XCTAssertNil(props?["checkout_shipping_amount"] as? Double)
     }
   }
 
@@ -1339,23 +1330,11 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanks.assertValues([.template])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let props = self.trackingClient.properties.last
-
       XCTAssertEqual(
         ["Pledge Screen Viewed", "Pledge Button Clicked", "Checkout Completed"],
         self.trackingClient.events
       )
       XCTAssertEqual([nil, nil, "new_pledge"], self.trackingClient.properties(forKey: "pledge_context"))
-      XCTAssertEqual("25.00", props?["checkout_amount"] as? String)
-      XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
-      XCTAssertEqual(1, props?["checkout_reward_id"] as? Int)
-      XCTAssertEqual(false, props?["checkout_reward_shipping_enabled"] as? Bool)
-      XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-      XCTAssertEqual(
-        Reward.template.estimatedDeliveryOn,
-        props?["checkout_reward_estimated_delivery_on"] as? TimeInterval
-      )
-      XCTAssertNil(props?["checkout_shipping_amount"] as? Double)
     }
   }
 
@@ -3597,5 +3576,108 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(["Pledge Screen Viewed", "Pledge Button Clicked"], self.trackingClient.events)
+  }
+
+  func testTrackingEvent_CheckoutProperties_CreditCard() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(state: .verifying, backing: .init(clientSecret: nil, requiresAction: false))
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      self.vm.inputs.configureWith(project: .template,
+                                   reward: Reward.noReward,
+                                   refTag: .activity,
+                                   context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.creditCardSelected(with: "123")
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+      self.vm.inputs.submitButtonTapped()
+
+      self.scheduler.run()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed", "Pledge Button Clicked", "Checkout Completed"],
+        self.trackingClient.events
+      )
+
+      let props = self.trackingClient.properties.last
+
+      XCTAssertEqual("25.00", props?["checkout_amount"] as? String)
+      XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
+      XCTAssertEqual(0, props?["checkout_reward_id"] as? Int)
+      XCTAssertEqual(false, props?["checkout_reward_shipping_enabled"] as? Bool)
+      XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
+      XCTAssertNil(props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
+      XCTAssertNil(props?["checkout_shipping_amount"] as? Double)
+      XCTAssertNil(props?["checkout_reward_title"] as? String)
+      XCTAssertEqual(2500, props?["checkout_revenue_in_usd_cents"] as? Int)
+    }
+  }
+
+
+  func testTrackingEvent_CheckoutProperties_ApplePay() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(state: .successful, backing: .init(clientSecret: nil, requiresAction: false))
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.template
+        |> Project.lens.stats.staticUsdRate .~ 2.0
+
+      let reward = Reward.template
+        |> Reward.lens.title .~ "Reward"
+        |> Reward.lens.minimum .~ 5
+        |> Reward.lens.shipping.enabled .~ true
+
+      let shippingRule = ShippingRule.template
+        |> ShippingRule.lens.cost .~ 5
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.scheduler.run()
+
+
+      XCTAssertEqual(["Pledge Screen Viewed", "Checkout Completed"], self.trackingClient.events)
+
+      let props = self.trackingClient.properties.last
+
+      XCTAssertEqual("10.00", props?["checkout_amount"] as? String)
+      XCTAssertEqual("APPLE_PAY", props?["checkout_payment_type"] as? String)
+      XCTAssertEqual(1, props?["checkout_reward_id"] as? Int)
+      XCTAssertEqual("Reward", props?["checkout_reward_title"] as? String)
+      XCTAssertEqual(true, props?["checkout_reward_shipping_enabled"] as? Bool)
+      XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
+      XCTAssertEqual(1506897315.0, props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
+      XCTAssertEqual(2000, props?["checkout_revenue_in_usd_cents"] as? Int)
+      XCTAssertEqual(5.0, props?["checkout_shipping_amount"] as? Double)
+    }
   }
 }
