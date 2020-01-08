@@ -14,8 +14,11 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call after the view loads and passes the initial TopConstraint constant.
   func initial(topConstraint: CGFloat)
 
-  /// Call when the ManagePledgeViewController finished with a confirmation message
-  func managePledgeViewControllerFinished(with message: String)
+  /// Call when the Thank you page is dismissed after finishing backing the project
+  func didBackProject()
+
+  /// Call when the ManagePledgeViewController finished updating/cancelling a pledge with an optional message
+  func managePledgeViewControllerFinished(with message: String?)
 
   /// Call when the pledge CTA button is tapped
   func pledgeCTAButtonTapped(with state: PledgeStateCTAType)
@@ -74,7 +77,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let freshProjectAndRefTagEvent = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
-        self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false),
+        self.didBackProjectProperty.signal.ignoreValues().mapConst(false),
+        self.managePledgeViewControllerFinishedWithMessageProperty.signal.ignoreValues().mapConst(false),
         self.pledgeRetryButtonTappedProperty.signal.mapConst(false)
       ))
       .map(unpack)
@@ -181,7 +185,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(layoutConstraintConstant(initialTopConstraint:traitCollection:))
 
     self.dismissManagePledgeAndShowMessageBannerWithMessage
-      = self.managePledgeViewControllerFinishedWithMessageProperty.signal.skipNil()
+      = self.managePledgeViewControllerFinishedWithMessageProperty.signal
+      .skipNil()
 
     let cookieRefTag = freshProjectAndRefTag
       .map { project, refTag in
@@ -219,8 +224,13 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     self.configDataProperty.value = (projectOrParam, refTag)
   }
 
+  private let didBackProjectProperty = MutableProperty<Void>(())
+  public func didBackProject() {
+    self.didBackProjectProperty.value = ()
+  }
+
   private let managePledgeViewControllerFinishedWithMessageProperty = MutableProperty<String?>(nil)
-  public func managePledgeViewControllerFinished(with message: String) {
+  public func managePledgeViewControllerFinished(with message: String?) {
     self.managePledgeViewControllerFinishedWithMessageProperty.value = message
   }
 
