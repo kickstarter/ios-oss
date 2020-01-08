@@ -3588,10 +3588,12 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: .template,
-                                   reward: Reward.noReward,
-                                   refTag: .activity,
-                                   context: .pledge)
+      self.vm.inputs.configureWith(
+        project: .template,
+        reward: Reward.noReward,
+        refTag: .activity,
+        context: .pledge
+      )
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.creditCardSelected(with: "123")
@@ -3618,10 +3620,9 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertNil(props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
       XCTAssertNil(props?["checkout_shipping_amount"] as? Double)
       XCTAssertNil(props?["checkout_reward_title"] as? String)
-      XCTAssertEqual(2500, props?["checkout_revenue_in_usd_cents"] as? Int)
+      XCTAssertEqual(2_500, props?["checkout_revenue_in_usd_cents"] as? Int)
     }
   }
-
 
   func testTrackingEvent_CheckoutProperties_ApplePay() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
@@ -3664,7 +3665,6 @@ final class PledgeViewModelTests: TestCase {
 
       self.scheduler.run()
 
-
       XCTAssertEqual(["Pledge Screen Viewed", "Checkout Completed"], self.trackingClient.events)
 
       let props = self.trackingClient.properties.last
@@ -3675,8 +3675,8 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual("Reward", props?["checkout_reward_title"] as? String)
       XCTAssertEqual(true, props?["checkout_reward_shipping_enabled"] as? Bool)
       XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-      XCTAssertEqual(1506897315.0, props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
-      XCTAssertEqual(2000, props?["checkout_revenue_in_usd_cents"] as? Int)
+      XCTAssertEqual(1_506_897_315.0, props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
+      XCTAssertEqual(2_000, props?["checkout_revenue_in_usd_cents"] as? Int)
       XCTAssertEqual(5.0, props?["checkout_shipping_amount"] as? Double)
     }
   }
