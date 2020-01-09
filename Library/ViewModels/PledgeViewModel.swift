@@ -574,7 +574,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .filter { $0.0 == .pledge }
       .takeWhen(self.viewDidLoadProperty.signal)
       .observeValues { _, project, _ in
-        AppEnvironment.current.koala.trackPledgeScreenViewed(project: project)
+        AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(project: project)
       }
 
     contextAndProjectAndPledgeAmount

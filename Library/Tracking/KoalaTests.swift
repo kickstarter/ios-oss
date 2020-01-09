@@ -753,7 +753,7 @@ final class KoalaTests: TestCase {
     let loggedInUser = User.template
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackPledgeScreenViewed(project: .template)
+    koala.trackCheckoutPaymentPageViewed(project: .template)
     XCTAssertEqual(["Pledge Screen Viewed"], client.events)
   }
 

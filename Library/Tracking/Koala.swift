@@ -585,7 +585,7 @@ public final class Koala {
     case .fix:
       self.track(event: "Fix Pledge Button Clicked", properties: props)
     case .pledge:
-      self.track(event: "Back this Project Button Clicked", properties: props)
+      self.track(event: "Project Page Pledge Button Clicked", properties: props)
     case .manage:
       self.track(event: "Manage Pledge Button Clicked", properties: props)
     case .viewBacking:
@@ -639,10 +639,21 @@ public final class Koala {
     self.track(event: "Select Reward Button Clicked", properties: props)
   }
 
-  public func trackPledgeScreenViewed(project: Project) {
+  public func trackCheckoutPaymentPageViewed(project: Project, reward: Reward) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
 
-    self.track(event: "Pledge Screen Viewed", properties: props)
+    // TODO: add event name to data lake whitelist
+    self.track(event: "Checkout Payment Page Viewed", properties: props)
+  }
+
+  // TODO: add checkout properties
+  public func trackThanksPageViewed(project: Project, reward: Reward) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+
+    // TODO: add event name to data lake whitelist
+    self.track(event: "Thanks Page Viewed", properties: props)
   }
 
   public func trackPledgeButtonClicked(project: Project, pledgeAmount: Double) {
