@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import Library
 import Prelude
 
@@ -9,6 +10,10 @@ final class PledgeContinueViewController: UIViewController {
   private let viewModel: PledgeContinueViewModelType = PledgeContinueViewModel()
 
   // MARK: - Lifecycle
+
+  func configureWith(value: (project: Project, reward: Reward)) {
+    self.viewModel.inputs.configure(with: value)
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -35,8 +40,8 @@ final class PledgeContinueViewController: UIViewController {
 
     self.viewModel.outputs.goToLoginSignup
       .observeForControllerAction()
-      .observeValues { [weak self] intent in
-        self?.goToLoginSignup(with: intent)
+      .observeValues { [weak self] intent, project, reward in
+        self?.goToLoginSignup(with: intent, project: project, reward: reward)
       }
   }
 
@@ -62,8 +67,12 @@ final class PledgeContinueViewController: UIViewController {
 
   // MARK: - Functions
 
-  private func goToLoginSignup(with intent: LoginIntent) {
-    let loginSignupViewController = LoginToutViewController.configuredWith(loginIntent: intent)
+  private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(
+      loginIntent: intent,
+      project: project,
+      reward: reward
+    )
 
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
     let navigationBarHeight = navigationController.navigationBar.bounds.height

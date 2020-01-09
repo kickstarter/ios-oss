@@ -25,6 +25,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the filter is changed.
   func selectedFilter(_ params: DiscoveryParams)
 
+  /// Call when the onboarding login/signup button is tapped
+  func signupLoginButtonTapped()
+
   /// Call when the user taps on the activity sample.
   func tapped(activity: Activity)
 
@@ -73,6 +76,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits a refTag for the editorial project list
   var goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never> { get }
+
+  /// Emits a LoginIntent for the LoginToutViewController ot be configured with
+  var goToLoginSignup: Signal<LoginIntent, Never> { get }
 
   /// Emits a project, playlist, ref tag that we should go to from discovery.
   var goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never> { get }
@@ -356,6 +362,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .filter(second >>> isFalse)
     .map(first)
 
+    self.goToLoginSignup = self.signupLoginButtonTappedProperty.signal
+      .mapConst(LoginIntent.discoveryOnboarding)
+
     // MARK: - Tracking
 
     requestFirstPageWith
@@ -368,6 +377,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .observeValues { tagId in
         AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: RefTag.projectCollection(tagId))
       }
+
+    self.goToLoginSignup
+      .observeValues { AppEnvironment.current.koala.trackLoginOrSignupButtonClicked(intent: $0) }
   }
 
   fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)
@@ -404,6 +416,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   fileprivate let selectedFilterProperty = MutableProperty<DiscoveryParams?>(nil)
   public func selectedFilter(_ params: DiscoveryParams) {
     self.selectedFilterProperty.value = params
+  }
+
+  fileprivate let signupLoginButtonTappedProperty = MutableProperty(())
+  public func signupLoginButtonTapped() {
+    self.signupLoginButtonTappedProperty.value = ()
   }
 
   fileprivate let tappedActivity = MutableProperty<Activity?>(nil)
@@ -456,6 +473,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let configureEditorialTableViewHeader: Signal<String, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
   public let goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never>
+  public let goToLoginSignup: Signal<LoginIntent, Never>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>
   public let goToProjectUpdate: Signal<(Project, Update), Never>
   public let hideEmptyState: Signal<Void, Never>

@@ -131,19 +131,13 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 
     self.showResetPassword = self.resetPasswordPressedProperty.signal
 
-    self.viewWillAppearProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackLoginFormView() }
-
-    self.logIntoEnvironment
-      .observeValues { _ in AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
-
     self.showHidePasswordButtonToggled = Signal.merge(
       self.shouldShowPasswordProperty.signal,
       self.shouldShowPasswordProperty.signal.takeWhen(self.traitCollectionDidChangeProperty.signal)
     )
 
-    self.showError
-      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
+    tryLogin
+      .observeValues { AppEnvironment.current.koala.trackLoginSubmitButtonClicked() }
   }
 
   public var inputs: LoginViewModelInputs { return self }

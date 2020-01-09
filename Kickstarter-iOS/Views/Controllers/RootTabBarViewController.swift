@@ -308,7 +308,7 @@ public final class RootTabBarViewController: UITabBarController {
     case let .profile(isLoggedIn):
       return isLoggedIn
         ? BackerDashboardViewController.instantiate()
-        : LoginToutViewController.configuredWith(loginIntent: .generic)
+        : LoginToutViewController.configuredWith(loginIntent: .loginTab)
     }
   }
 

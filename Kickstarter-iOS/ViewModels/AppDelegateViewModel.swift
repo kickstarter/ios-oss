@@ -70,6 +70,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
+  /// Call when Optimizely has been configured with the given result
+  func optimizelyConfigured(with result: OptimizelyResultType) -> Bool
+
   /// Call with the result from initializing Qualtrics
   func qualtricsInitialized(with result: QualtricsResultType)
 
@@ -95,6 +98,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when the application should configure Fabric
   var configureFabric: Signal<(), Never> { get }
+
+  /// Emits when the application should configure Optimizely
+  var configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never> { get }
 
   /// Emits when the application should configure Qualtrics
   var configureQualtrics: Signal<QualtricsConfigData, Never> { get }
@@ -523,6 +529,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
+    self.configureOptimizely = self.applicationLaunchOptionsProperty.signal
+      .map { _ in AppEnvironment.current }
+      .map(optimizelyData(for:))
+
     self.configureAppCenterWithData = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.userSessionStartedProperty.signal,
@@ -614,6 +624,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     .flatMap { AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
     .filter(isTrue)
     .mapConst(0)
+
+    self.optimizelyConfigurationReturnValue <~ self.optimizelyConfiguredWithResultProperty.signal
+      .skipNil()
+      .map { $0.isSuccess }
 
     self.configureQualtrics = Signal.zip(
       self.applicationLaunchOptionsProperty.signal,
@@ -768,9 +782,19 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     return self.applicationDidFinishLaunchingReturnValueProperty.value
   }
 
+  private let optimizelyConfigurationReturnValue = MutableProperty<Bool>(false)
+
+  fileprivate let optimizelyConfiguredWithResultProperty = MutableProperty<OptimizelyResultType?>(nil)
+  public func optimizelyConfigured(with result: OptimizelyResultType) -> Bool {
+    self.optimizelyConfiguredWithResultProperty.value = result
+
+    return self.optimizelyConfigurationReturnValue.value
+  }
+
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFabric: Signal<(), Never>
+  public let configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never>
   public let configureQualtrics: Signal<QualtricsConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let displayQualtricsSurvey: Signal<(), Never>
@@ -985,6 +1009,24 @@ extension ShortcutItem {
       )
     }
   }
+}
+
+private func optimizelyData(for environment: Environment) -> (String, OptimizelyLogLevelType) {
+  let environmentType = environment.environmentType
+  let logLevel = environment.mainBundle.isDebug ? OptimizelyLogLevelType.debug : OptimizelyLogLevelType.error
+
+  var sdkKey: String
+
+  switch environmentType {
+  case .production:
+    sdkKey = Secrets.OptimizelySDKKey.production
+  case .staging:
+    sdkKey = Secrets.OptimizelySDKKey.staging
+  case .development, .local:
+    sdkKey = Secrets.OptimizelySDKKey.development
+  }
+
+  return (sdkKey, logLevel)
 }
 
 private func visitorCookies() -> [HTTPCookie] {
