@@ -12,6 +12,7 @@ public protocol PledgeDescriptionViewModelInputs {
 
 public protocol PledgeDescriptionViewModelOutputs {
   var estimatedDeliveryText: Signal<String, Never> { get }
+  var estimatedDeliveryStackViewIsHidden: Signal<Bool, Never> { get }
   var popViewController: Signal<(), Never> { get }
   var presentTrustAndSafety: Signal<Void, Never> { get }
   var rewardTitle: Signal<String, Never> { get }
@@ -31,6 +32,12 @@ public final class PledgeDescriptionViewModel: PledgeDescriptionViewModelType,
       .map { $0.estimatedDeliveryOn }
       .skipNil()
       .map { Format.date(secondsInUTC: $0, template: DateFormatter.monthYear, timeZone: UTCTimeZone) }
+
+    self.estimatedDeliveryStackViewIsHidden = self.configDataProperty.signal
+      .skipNil()
+      .map(second)
+      .map { $0.shipping.enabled }
+      .negate()
 
     self.presentTrustAndSafety = self.learnMoreTappedProperty.signal
     self.rewardTitle = self.configDataProperty.signal
@@ -56,6 +63,7 @@ public final class PledgeDescriptionViewModel: PledgeDescriptionViewModelType,
   }
 
   public let estimatedDeliveryText: Signal<String, Never>
+  public let estimatedDeliveryStackViewIsHidden: Signal<Bool, Never>
   public let popViewController: Signal<(), Never>
   public let presentTrustAndSafety: Signal<Void, Never>
   public let rewardTitle: Signal<String, Never>

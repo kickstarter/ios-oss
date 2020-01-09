@@ -8,7 +8,6 @@ final class PledgeDescriptionViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var descriptionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var estimatedDeliveryStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
@@ -38,9 +37,6 @@ final class PledgeDescriptionViewController: UIViewController {
 
     _ = self.view
       |> checkoutBackgroundStyle
-
-    _ = self.descriptionStackView
-      |> descriptionStackViewStyle
 
     _ = self.estimatedDeliveryLabel
       |> estimatedDeliveryLabelStyle
@@ -96,20 +92,6 @@ final class PledgeDescriptionViewController: UIViewController {
     ])
   }
 
-  private func configureStackView() {
-    let views = [
-      self.estimatedDeliveryLabel,
-      self.dateLabel,
-      self.learnMoreTextView
-    ]
-
-    _ = (views, self.descriptionStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.descriptionStackView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-  }
-
   // MARK: - Actions
 
   @objc private func rewardCardTapped() {
@@ -122,6 +104,7 @@ final class PledgeDescriptionViewController: UIViewController {
     super.bindViewModel()
 
     self.dateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryText
+    self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewIsHidden
 
     self.viewModel.outputs.presentTrustAndSafety
       .observeForUI()
@@ -176,13 +159,6 @@ private let dateLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.font .~ UIFont.ksr_caption1()
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0
-}
-
-private let descriptionStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
-  stackView
-    |> \.spacing .~ Styles.grid(1)
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(1))
 }
 
 private let estimatedDeliveryLabelStyle: LabelStyle = { (label: UILabel) in
