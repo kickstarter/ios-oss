@@ -67,7 +67,6 @@ final class ProjectPamphletViewModelTests: TestCase {
     let refTag = RefTag.category
     self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: refTag)
     self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: false)
     self.vm.inputs.viewDidAppear(animated: false)
 
     self.configureChildViewControllersWithProject.assertValues([project])
@@ -78,13 +77,19 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.configureChildViewControllersWithProject.assertValues([project, project])
     self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag])
 
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.viewDidAppear(animated: true)
+    self.vm.inputs.didBackProject()
 
     self.scheduler.advance()
 
     self.configureChildViewControllersWithProject.assertValues([project, project, project])
     self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag])
+
+    self.vm.inputs.managePledgeViewControllerFinished(with: nil)
+
+    self.scheduler.advance()
+
+    self.configureChildViewControllersWithProject.assertValues([project, project, project, project])
+    self.configureChildViewControllersWithRefTag.assertValues([refTag, refTag, refTag, refTag])
   }
 
   func testConfigureChildViewControllersWithProject_ConfiguredWithParam() {
@@ -103,13 +108,19 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.configureChildViewControllersWithProject.assertValues([project])
     self.configureChildViewControllersWithRefTag.assertValues([nil])
 
-    self.vm.inputs.viewWillAppear(animated: true)
-    self.vm.inputs.viewDidAppear(animated: true)
+    self.vm.inputs.didBackProject()
 
     self.scheduler.advance()
 
     self.configureChildViewControllersWithProject.assertValues([project, project])
     self.configureChildViewControllersWithRefTag.assertValues([nil, nil])
+
+    self.vm.inputs.managePledgeViewControllerFinished(with: nil)
+
+    self.scheduler.advance()
+
+    self.configureChildViewControllersWithProject.assertValues([project, project, project])
+    self.configureChildViewControllersWithRefTag.assertValues([nil, nil, nil])
   }
 
   func testNavigationBar() {
@@ -231,23 +242,13 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testProjectPaveViewed_OnViewDidAppear() {
+    XCTAssertEqual([], self.trackingClient.events)
+
     self.configureInitialState(.init(left: .template))
 
     self.scheduler.advance()
 
-    XCTAssertEqual(
-      ["Project Page Viewed"],
-      self.trackingClient.events
-    )
-
-    self.vm.inputs.viewDidAppear(animated: true)
-
-    self.scheduler.advance()
-
-    XCTAssertEqual(
-      ["Project Page Viewed", "Project Page Viewed"],
-      self.trackingClient.events
-    )
+    XCTAssertEqual(["Project Page Viewed"], self.trackingClient.events)
   }
 
   func testMockCookieStorageSet_SeparateSchedulers() {
@@ -709,7 +710,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
   }
 
-  func testConfigurePledgeCTAView_reloadsUponReturnToView_featureEnabled_experimentEnabled() {
+  func testConfigurePledgeCTAView_reloadsUponBackProject_featureEnabled_experimentEnabled() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
@@ -743,8 +744,53 @@ final class ProjectPamphletViewModelTests: TestCase {
       config: config,
       mainBundle: releaseBundle
     ) {
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.vm.inputs.viewDidAppear(animated: true)
+      self.vm.inputs.didBackProject()
+
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull)
+      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
+
+      self.scheduler.advance()
+
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull2)
+      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
+    }
+  }
+
+  func testConfigurePledgeCTAView_reloadsUponUpdatePledge_featureEnabled_experimentEnabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
+    let project = Project.template
+    let projectFull = Project.template
+      |> \.id .~ 2
+      |> Project.lens.personalization.isBacking .~ true
+    let projectFull2 = Project.template
+      |> \.id .~ 3
+
+    let mockService = MockService(fetchProjectResponse: projectFull)
+
+    withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
+      self.configurePledgeCTAViewProject.assertDidNotEmitValue()
+      self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == project)
+      self.configurePledgeCTAViewIsLoading.assertValues([true])
+
+      self.scheduler.advance()
+
+      XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull)
+      self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+    }
+
+    withEnvironment(
+      apiService: MockService(fetchProjectResponse: projectFull2),
+      config: config,
+      mainBundle: releaseBundle
+    ) {
+      self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
       XCTAssertTrue(self.configurePledgeCTAViewProject.lastValue?.left == projectFull)
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])

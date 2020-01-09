@@ -294,7 +294,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeForControllerAction()
       .observeValues { [weak self] project in
         generateNotificationSuccessFeedback()
-
         self?.goToThanks(project: project)
       }
 
