@@ -157,6 +157,25 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.stackViewIsHidden.assertValues([true])
   }
 
+  func testPledgeCTA_NonBacker_LiveProject_LoggedIn_OptimizelyExperimental() {
+    let user = User.template |> User.lens.id .~ 5
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.personalization.isBacking .~ false
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.experimental.rawValue]
+
+    withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configureWith(value: (.left(project), false))
+      self.buttonStyleType.assertValues([ButtonStyleType.green])
+      self.buttonTitleText.assertValues([Strings.See_rewards()])
+      self.spacerIsHidden.assertValues([true])
+      self.stackViewIsHidden.assertValues([true])
+    }
+  }
+
   func testPledgeCTA_NonBacker_NonLiveProject_loggedIn() {
     let project = Project.template
       |> Project.lens.state .~ .successful

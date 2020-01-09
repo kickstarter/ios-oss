@@ -23,12 +23,12 @@ extension UIDevice: UIDeviceType {
 }
 
 internal struct MockDevice: UIDeviceType {
-  internal let identifierForVendor = UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
-  internal let modelCode = "MockmodelCode"
-  internal let orientation: UIDeviceOrientation
-  internal let systemName = "MockSystemName"
-  internal let systemVersion: String = "MockSystemVersion"
-  internal let userInterfaceIdiom: UIUserInterfaceIdiom
+  internal var identifierForVendor = UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
+  internal var modelCode = "MockmodelCode"
+  internal var orientation: UIDeviceOrientation
+  internal var systemName = "MockSystemName"
+  internal var systemVersion: String = "MockSystemVersion"
+  internal var userInterfaceIdiom: UIUserInterfaceIdiom
 
   internal init(
     userInterfaceIdiom: UIUserInterfaceIdiom = .phone,

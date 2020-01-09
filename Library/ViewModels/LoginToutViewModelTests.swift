@@ -2,10 +2,10 @@
 @testable import FBSDKLoginKit
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-// swiftlint:disable force_unwrapping
 import XCTest
 
 final class LoginToutViewModelTests: TestCase {
@@ -45,25 +45,52 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testLoginIntentTracking_Default() {
+    self.vm.inputs.configureWith(.loginTab, project: nil, reward: nil)
+
     XCTAssertEqual([], trackingClient.events, "Login tout did not track")
 
     self.vm.inputs.viewWillAppear()
 
-    XCTAssertEqual(["Application Login or Signup", "Viewed Login Signup"], trackingClient.events)
-    XCTAssertEqual("login_tab", trackingClient.properties.last!["intent"] as? String)
+    XCTAssertEqual(["Log In or Signup Page Viewed"], trackingClient.events)
+    XCTAssertEqual("login_tab", trackingClient.properties.last?["login_intent"] as? String)
+  }
+
+  func testLoginIntent_Pledge() {
+    let reward = Reward.template
+      |> Reward.lens.id .~ 10
+    let project = Project.template
+      |> Project.lens.id .~ 2
+
+    self.vm.inputs.configureWith(.backProject, project: project, reward: reward)
+    self.vm.inputs.viewWillAppear()
+
+    XCTAssertEqual(["Log In or Signup Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(["pledge"], self.trackingClient.properties(forKey: "login_intent"))
+    XCTAssertEqual(
+      [2], self.trackingClient.properties(forKey: "project_pid", as: Int.self),
+      "Tracking properties contain project properties"
+    )
+    XCTAssertEqual(
+      [10], self.trackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self),
+      "Tracking properties contain pledge properties"
+    )
   }
 
   func testKoala_whenLoginIntentBeforeViewAppears() {
-    self.vm.inputs.loginIntent(.activity)
+    self.vm.inputs.configureWith(.activity, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
-    XCTAssertEqual(["Application Login or Signup", "Viewed Login Signup"], trackingClient.events)
-    XCTAssertEqual("activity", trackingClient.properties.last!["intent"] as? String)
+    XCTAssertEqual(["Log In or Signup Page Viewed"], trackingClient.events)
+    XCTAssertEqual("activity", trackingClient.properties.last!["login_intent"] as? String)
 
     self.vm.inputs.viewWillAppear()
 
-    XCTAssertEqual(["Application Login or Signup", "Viewed Login Signup"], trackingClient.events)
-    XCTAssertEqual("activity", trackingClient.properties.last!["intent"] as? String)
+    XCTAssertEqual(
+      ["Log In or Signup Page Viewed"],
+      trackingClient.events,
+      "Only tracks the first time the view appears"
+    )
+    XCTAssertEqual("activity", trackingClient.properties.last!["login_intent"] as? String)
   }
 
   func testStartLogin() {
@@ -81,21 +108,21 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testHeadlineLabelHidden() {
-    self.vm.inputs.loginIntent(.starProject)
+    self.vm.inputs.configureWith(.starProject, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.headlineLabelHidden.assertValues([true])
   }
 
   func testHeadlineLabelShown() {
-    self.vm.inputs.loginIntent(.generic)
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.headlineLabelHidden.assertValues([false])
   }
 
   func testLoginContextText() {
-    self.vm.inputs.loginIntent(.starProject)
+    self.vm.inputs.configureWith(.starProject, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.logInContextText.assertValues(
@@ -124,7 +151,8 @@ final class LoginToutViewModelTests: TestCase {
       declinedPermissions: []
     )
 
-    vm.inputs.viewWillAppear()
+    vm.inputs.configureWith(.generic, project: nil, reward: nil)
+    self.vm.inputs.viewWillAppear()
 
     self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
 
@@ -139,10 +167,12 @@ final class LoginToutViewModelTests: TestCase {
 
     self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
     XCTAssertEqual(
-      ["Application Login or Signup", "Viewed Login Signup", "Login", "Logged In"],
-      trackingClient.events, "Koala login is tracked"
+      [
+        "Log In or Signup Page Viewed",
+        "Facebook Log In or Signup Button Clicked"
+      ],
+      trackingClient.events
     )
-    XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
 
     self.vm.inputs.environmentLoggedIn()
     XCTAssertEqual(self.postNotification.values.first?.0, .ksr_sessionStarted, "Login notification posted.")
@@ -165,7 +195,8 @@ final class LoginToutViewModelTests: TestCase {
       ]
     )
 
-    vm.inputs.viewWillAppear()
+    vm.inputs.configureWith(.generic, project: nil, reward: nil)
+    self.vm.inputs.viewWillAppear()
 
     self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
     self.showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")
@@ -181,11 +212,13 @@ final class LoginToutViewModelTests: TestCase {
       [AlertError.facebookLoginAttemptFail(error: error)],
       "Show Facebook Attempt Login error"
     )
-    XCTAssertEqual([
-      "Application Login or Signup", "Viewed Login Signup", "Errored User Login",
-      "Errored Login"
-    ], trackingClient.events)
-    XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
+    XCTAssertEqual(
+      [
+        "Log In or Signup Page Viewed",
+        "Facebook Log In or Signup Button Clicked"
+      ],
+      trackingClient.events
+    )
   }
 
   func testLoginFacebookFlow_AttemptFail_WithDefaultMessage() {
@@ -195,7 +228,8 @@ final class LoginToutViewModelTests: TestCase {
       userInfo: [:]
     )
 
-    vm.inputs.viewWillAppear()
+    vm.inputs.configureWith(.generic, project: nil, reward: nil)
+    self.vm.inputs.viewWillAppear()
 
     self.attemptFacebookLogin.assertValueCount(0, "Attempt Facebook login did not emit")
     self.showFacebookErrorAlert.assertValueCount(0, "Facebook login error did not emit")
@@ -211,11 +245,13 @@ final class LoginToutViewModelTests: TestCase {
       [AlertError.facebookLoginAttemptFail(error: error)],
       "Show Facebook Attempt Login error"
     )
-    XCTAssertEqual([
-      "Application Login or Signup", "Viewed Login Signup", "Errored User Login",
-      "Errored Login"
-    ], trackingClient.events)
-    XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
+    XCTAssertEqual(
+      [
+        "Log In or Signup Page Viewed",
+        "Facebook Log In or Signup Button Clicked"
+      ],
+      trackingClient.events
+    )
   }
 
   func testLoginFacebookFlow_InvalidTokenFail() {
@@ -246,21 +282,25 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
+      vm.inputs.configureWith(.generic, project: nil, reward: nil)
       vm.inputs.viewWillAppear()
 
       showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
 
+      vm.inputs.facebookLoginButtonPressed()
       vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
       scheduler.advance()
 
       showFacebookErrorAlert.assertValues([AlertError.facebookTokenFail], "Show Facebook token fail error")
-      XCTAssertEqual([
-        "Application Login or Signup", "Viewed Login Signup", "Errored User Login",
-        "Errored Login"
-      ], trackingClient.events)
-      XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
+      XCTAssertEqual(
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
+        trackingClient.events
+      )
     }
   }
 
@@ -292,7 +332,10 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
+      vm.inputs.configureWith(.generic, project: nil, reward: nil)
       vm.inputs.viewWillAppear()
+
+      vm.inputs.facebookLoginButtonPressed()
       vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
@@ -302,11 +345,13 @@ final class LoginToutViewModelTests: TestCase {
         [AlertError.genericFacebookError(envelope: error)],
         "Show Facebook account taken error"
       )
-      XCTAssertEqual([
-        "Application Login or Signup", "Viewed Login Signup", "Errored User Login",
-        "Errored Login"
-      ], trackingClient.events)
-      XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
+      XCTAssertEqual(
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
+        trackingClient.events
+      )
     }
   }
 
@@ -338,7 +383,10 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
+      vm.inputs.configureWith(.generic, project: nil, reward: nil)
       vm.inputs.viewWillAppear()
+
+      vm.inputs.facebookLoginButtonPressed()
       vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
@@ -348,11 +396,13 @@ final class LoginToutViewModelTests: TestCase {
         [AlertError.genericFacebookError(envelope: error)],
         "Show Facebook account taken error"
       )
-      XCTAssertEqual([
-        "Application Login or Signup", "Viewed Login Signup", "Errored User Login",
-        "Errored Login"
-      ], trackingClient.events)
-      XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
+      XCTAssertEqual(
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
+        trackingClient.events
+      )
     }
   }
 
@@ -384,7 +434,10 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
+      vm.inputs.configureWith(.generic, project: nil, reward: nil)
       vm.inputs.viewWillAppear()
+
+      vm.inputs.facebookLoginButtonPressed()
       vm.inputs.facebookLoginSuccess(result: result)
 
       startTwoFactorChallenge.assertDidNotEmitValue()
@@ -397,8 +450,11 @@ final class LoginToutViewModelTests: TestCase {
       showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
       startFacebookConfirmation.assertValueCount(0, "Facebook confirmation did not emit")
       XCTAssertEqual(
-        ["Application Login or Signup", "Viewed Login Signup"], trackingClient.events,
-        "Login error was not tracked"
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
+        trackingClient.events
       )
     }
   }
@@ -431,7 +487,10 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: MockService(loginError: error)) {
+      vm.inputs.configureWith(.generic, project: nil, reward: nil)
       vm.inputs.viewWillAppear()
+
+      vm.inputs.facebookLoginButtonPressed()
       vm.inputs.facebookLoginSuccess(result: result)
 
       // Wait enough time for API request to be made.
@@ -442,14 +501,18 @@ final class LoginToutViewModelTests: TestCase {
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
       XCTAssertEqual(
-        ["Application Login or Signup", "Viewed Login Signup"], trackingClient.events,
-        "Login error was not tracked"
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
+        trackingClient.events
       )
 
       self.vm.inputs.viewWillAppear()
 
       startFacebookConfirmation.assertValues(["12344566"], "Facebook confirmation didn't start again.")
 
+      vm.inputs.facebookLoginButtonPressed()
       vm.inputs.facebookLoginSuccess(result: result)
       scheduler.advance()
 
@@ -457,10 +520,20 @@ final class LoginToutViewModelTests: TestCase {
         ["12344566", "12344566"],
         "Start Facebook confirmation emitted with token"
       )
+
+      XCTAssertEqual(
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked",
+          "Facebook Log In or Signup Button Clicked"
+        ],
+        trackingClient.events
+      )
     }
   }
 
   func testDismissalWhenNotPresented() {
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.view(isPresented: false)
     self.vm.inputs.userSessionStarted()
@@ -469,6 +542,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testDismissalWhenPresented() {
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.view(isPresented: true)
     self.vm.inputs.userSessionStarted()
@@ -477,12 +551,12 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testFacebookButtonTitle() {
-    self.vm.inputs.loginIntent(.backProject)
+    self.vm.inputs.configureWith(.backProject, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
     self.facebookButtonTitleText.assertValues(["Continue with Facebook"])
 
-    self.vm.inputs.loginIntent(.loginTab)
+    self.vm.inputs.configureWith(.loginTab, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
     self.facebookButtonTitleText.assertValues(["Continue with Facebook", "Log in with Facebook"])
   }
