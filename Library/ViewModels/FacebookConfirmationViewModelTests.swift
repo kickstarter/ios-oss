@@ -33,8 +33,6 @@ final class FacebookConfirmationViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.displayEmail.assertValues(["kittens@kickstarter.com"], "Display email")
-
-    XCTAssertEqual(["Facebook Confirm", "Viewed Facebook Signup"], trackingClient.events)
   }
 
   func testNewsletterSwitch_whenViewDidLoad() {
@@ -44,7 +42,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
     self.sendNewsletters.assertValues([false], "Newsletter toggle emits false")
     XCTAssertEqual(
-      ["Facebook Confirm", "Viewed Facebook Signup"], trackingClient.events,
+      [], trackingClient.events,
       "Newsletter toggle is not tracked on intital state"
     )
   }
@@ -56,10 +54,6 @@ final class FacebookConfirmationViewModelTests: TestCase {
       vm.inputs.viewDidLoad()
 
       sendNewsletters.assertValues([false], "Newsletter toggle emits false")
-      XCTAssertEqual(
-        ["Facebook Confirm", "Viewed Facebook Signup"], trackingClient.events,
-        "Newsletter toggle is not tracked on intital state"
-      )
     }
   }
 
@@ -71,7 +65,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
       sendNewsletters.assertValues([false], "Newsletter toggle emits false")
       XCTAssertEqual(
-        ["Facebook Confirm", "Viewed Facebook Signup"], trackingClient.events,
+        [], trackingClient.events,
         "Newsletter toggle is not tracked on intital state"
       )
     }
@@ -84,7 +78,7 @@ final class FacebookConfirmationViewModelTests: TestCase {
     self.sendNewsletters.assertValues([false, false], "Newsletter is toggled off")
     XCTAssertEqual(
       [
-        "Facebook Confirm", "Viewed Facebook Signup", "Unsubscribed From Newsletter",
+        "Unsubscribed From Newsletter",
         "Signup Newsletter Toggle"
       ],
       self.trackingClient.events,
@@ -97,8 +91,10 @@ final class FacebookConfirmationViewModelTests: TestCase {
     self.sendNewsletters.assertValues([false, false, true], "Newsletter is toggled on")
     XCTAssertEqual(
       [
-        "Facebook Confirm", "Viewed Facebook Signup", "Unsubscribed From Newsletter",
-        "Signup Newsletter Toggle", "Subscribed To Newsletter", "Signup Newsletter Toggle"
+        "Unsubscribed From Newsletter",
+        "Signup Newsletter Toggle",
+        "Subscribed To Newsletter",
+        "Signup Newsletter Toggle"
       ],
       self.trackingClient.events,
       "Newsletter toggle is tracked"
@@ -114,10 +110,6 @@ final class FacebookConfirmationViewModelTests: TestCase {
     scheduler.advance()
 
     self.logIntoEnvironment.assertValueCount(1, "Account successfully created")
-    XCTAssertEqual(
-      ["Facebook Confirm", "Viewed Facebook Signup", "New User", "Signed Up"],
-      trackingClient.events, "Koala signup is tracked"
-    )
 
     self.vm.inputs.environmentLoggedIn()
 
@@ -125,12 +117,6 @@ final class FacebookConfirmationViewModelTests: TestCase {
       [.ksr_sessionStarted],
       "Login notification posted."
     )
-
-    XCTAssertEqual([
-      "Facebook Confirm", "Viewed Facebook Signup", "New User", "Signed Up", "Login",
-      "Logged In"
-    ], trackingClient.events, "Login tracked.")
-    XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
   }
 
   func testCreateNewAccount_withNewsletterToggle() {
@@ -142,15 +128,6 @@ final class FacebookConfirmationViewModelTests: TestCase {
     scheduler.advance()
 
     self.logIntoEnvironment.assertValueCount(1, "Account successfully created")
-    XCTAssertEqual(
-      [
-        "Facebook Confirm", "Viewed Facebook Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle",
-        "New User", "Signed Up"
-      ],
-      self.trackingClient.events,
-      "Koala login is tracked"
-    )
-    XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
 
     self.vm.inputs.environmentLoggedIn()
 
@@ -160,14 +137,9 @@ final class FacebookConfirmationViewModelTests: TestCase {
     )
 
     XCTAssertEqual(
-      [
-        "Facebook Confirm", "Viewed Facebook Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle",
-        "New User", "Signed Up", "Login", "Logged In"
-      ],
-      self.trackingClient.events,
-      "Login tracked."
+      ["Subscribed To Newsletter", "Signup Newsletter Toggle"],
+      self.trackingClient.events
     )
-    XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
   }
 
   func testCreateNewAccount_withError() {
@@ -189,11 +161,6 @@ final class FacebookConfirmationViewModelTests: TestCase {
       showSignupError.assertValues(
         ["Email address has an issue. If you are not sure why, please contact us."]
       )
-      XCTAssertEqual(
-        ["Facebook Confirm", "Viewed Facebook Signup", "Errored User Signup", "Errored Signup"],
-        trackingClient.events
-      )
-      XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
     }
   }
 
@@ -216,11 +183,6 @@ final class FacebookConfirmationViewModelTests: TestCase {
       showSignupError.assertValues(
         ["Couldn't log in with Facebook."]
       )
-      XCTAssertEqual(
-        ["Facebook Confirm", "Viewed Facebook Signup", "Errored User Signup", "Errored Signup"],
-        trackingClient.events
-      )
-      XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
     }
   }
 

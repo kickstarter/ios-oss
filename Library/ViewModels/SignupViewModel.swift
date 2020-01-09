@@ -132,12 +132,6 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(Notification(name: .ksr_sessionStarted))
 
-    self.environmentLoggedInProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
-
-    self.showError
-      .observeValues { _ in AppEnvironment.current.koala.trackSignupError(authType: Koala.AuthType.email) }
-
     self.weeklyNewsletterChangedProperty.signal
       .skipNil()
       .observeValues {
@@ -146,11 +140,8 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
         )
       }
 
-    signupEvent.values()
-      .observeValues { _ in AppEnvironment.current.koala.trackSignupSuccess(authType: Koala.AuthType.email) }
-
-    self.viewDidLoadProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackSignupView() }
+    attemptSignup
+      .observeValues { AppEnvironment.current.koala.trackSignupSubmitButtonClicked() }
   }
 
   fileprivate let emailChangedProperty = MutableProperty("")
