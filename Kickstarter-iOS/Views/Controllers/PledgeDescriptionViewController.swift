@@ -28,6 +28,7 @@ final class PledgeDescriptionViewController: UIViewController {
     super.viewDidLoad()
 
     self.configureSubviews()
+    self.setupConstraints()
   }
 
   // MARK: - Styles
@@ -44,14 +45,11 @@ final class PledgeDescriptionViewController: UIViewController {
     _ = self.estimatedDeliveryLabel
       |> estimatedDeliveryLabelStyle
 
-    _ = self.estimatedDeliveryStackView
-      |> estimatedDeliveryStackViewStyle
-
     _ = self.rewardInfoBackgroundView
       |> rewardInfoBackgroundViewStyle
 
     _ = self.rewardTitleLabel
-      |> rewardTItleLabelStyle
+      |> rewardTitleLabelStyle
 
     _ = self.dateLabel
       |> dateLabelStyle
@@ -63,9 +61,11 @@ final class PledgeDescriptionViewController: UIViewController {
       |> learnMoreTextViewStyle
 
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+    _ = self.estimatedDeliveryStackView
+      |> estimatedDeliveryStackViewStyle(isAccessibilityCategory)
 
     _ = self.rewardInfoStackView
-      |> rewardInfoStackViewStyle(isAccessibilityCategory)
+      |> rewardInfoStackViewStyle
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -76,10 +76,10 @@ final class PledgeDescriptionViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.estimatedDeliveryLabel, self.dateLabel], self.estimatedDeliveryStackView)
+    _ = ([self.estimatedDeliveryLabel, self.dateLabel, UIView()], self.estimatedDeliveryStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.rewardTitleLabel, self.estimatedDeliveryStackView], self.rewardInfoStackView)
+    _ = ([self.estimatedDeliveryStackView, self.rewardTitleLabel], self.rewardInfoStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rewardInfoStackView, self.rewardInfoBackgroundView)
@@ -88,6 +88,12 @@ final class PledgeDescriptionViewController: UIViewController {
 
     _ = ([self.rewardInfoBackgroundView, self.learnMoreTextView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+  }
+
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      self.rewardInfoBackgroundView.widthAnchor.constraint(equalTo: self.rootStackView.widthAnchor)
+    ])
   }
 
   private func configureStackView() {
@@ -126,7 +132,7 @@ final class PledgeDescriptionViewController: UIViewController {
     self.viewModel.outputs.configureRewardCardViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.rewardTitleLabel
+        _ = self?.rewardTitleLabel
           ?|> \.text .~ data.1.left?.title
       }
 
@@ -164,10 +170,16 @@ extension PledgeDescriptionViewController: UITextViewDelegate {
 
 // MARK: Styles
 
+private let dateLabelStyle: LabelStyle = { (label: UILabel) in
+  label
+    |> \.textColor .~ UIColor.ksr_soft_black
+    |> \.font .~ UIFont.ksr_caption1()
+    |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.numberOfLines .~ 0
+}
+
 private let descriptionStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.distribution .~ UIStackView.Distribution.fill
     |> \.spacing .~ Styles.grid(1)
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(1))
@@ -175,24 +187,21 @@ private let descriptionStackViewStyle: StackViewStyle = { (stackView: UIStackVie
 
 private let estimatedDeliveryLabelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.text %~ { _ in Strings.Estimated_delivery_of() }
+    |> \.text %~ { _ in Strings.Estimated_delivery() }
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.font .~ UIFont.ksr_caption1()
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.numberOfLines .~ 0
 }
 
-private let estimatedDeliveryStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
-  stackView
-    |> verticalStackViewStyle
-}
-
-private let dateLabelStyle: LabelStyle = { (label: UILabel) in
-  label
-    |> \.textColor .~ UIColor.ksr_soft_black
-    |> \.font .~ UIFont.ksr_caption1()
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.numberOfLines .~ 0
+private func estimatedDeliveryStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
+  return { (stackView: UIStackView) in
+    stackView
+      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.spacing .~ Styles.grid(1)
+      |> \.distribution .~ .fill
+      |> \.alignment .~ .leading
+  }
 }
 
 private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
@@ -211,16 +220,13 @@ private let rewardInfoBackgroundViewStyle: ViewStyle = { (view: UIView) in
     |> \.layer.cornerRadius .~ Styles.grid(2)
 }
 
-private func rewardInfoStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
-  return { (stackView: UIStackView) in
+private let rewardInfoStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
 
-    return stackView
-      |> \.alignment .~ .center
-      |> \.axis .~ NSLayoutConstraint.Axis.horizontal
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
-      |> \.spacing .~ Styles.grid(2)
-  }
+  stackView
+    |> verticalStackViewStyle
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
+    |> \.spacing .~ Styles.grid(1)
 }
 
 private let rewardTitleLabelStyle: LabelStyle = { (label: UILabel) in
@@ -246,7 +252,7 @@ private func attributedLearnMoreText() -> NSAttributedString? {
   // swiftlint:disable line_length
   let string = Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability(
     trust_link: trustLink
-  )
+  ).replacingOccurrences(of: "<br/>", with: " ")
   // swiftlint:enable line_length
 
   return checkoutAttributedLink(with: string)
