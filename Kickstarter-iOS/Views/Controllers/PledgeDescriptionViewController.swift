@@ -129,11 +129,11 @@ final class PledgeDescriptionViewController: UIViewController {
         self?.presentHelpWebViewController(with: .trust, presentationStyle: .formSheet)
       }
 
-    self.viewModel.outputs.configureRewardCardViewWithData
+    self.viewModel.outputs.rewardTitle
       .observeForUI()
-      .observeValues { [weak self] data in
+      .observeValues { [weak self] title in
         _ = self?.rewardTitleLabel
-          ?|> \.text .~ data.1.left?.title
+          ?|> \.text .~ title
       }
 
     self.viewModel.outputs.popViewController
