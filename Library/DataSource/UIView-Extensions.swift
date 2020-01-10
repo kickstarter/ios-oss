@@ -3,7 +3,7 @@ import UIKit
 private func swizzle(_ v: UIView.Type) {
   [
     (#selector(v.traitCollectionDidChange(_:)), #selector(v.ksr_traitCollectionDidChange(_:))),
-    (#selector(v.layoutSubviews), #selector(v.ksr_layoutSubviews))
+    (#selector(v.didMoveToSuperview), #selector(v.ksr_didMoveToSuperview))
   ]
   .forEach { original, swizzled in
 
@@ -43,6 +43,7 @@ extension UIView {
   open override func awakeFromNib() {
     super.awakeFromNib()
     self.bindViewModel()
+    self.bindStyles()
   }
 
   @objc open func bindStyles() {}
@@ -61,31 +62,8 @@ extension UIView {
     self.bindStyles()
   }
 
-  @objc internal func ksr_layoutSubviews() {
-    self.ksr_layoutSubviews()
-
-    if !self.didLayoutSubviews {
-      self.bindStyles()
-      self.didLayoutSubviews = true
-    }
-  }
-
-  private struct AssociatedKeys {
-    static var didLayoutSubviews = "didLayoutSubviews"
-  }
-
-  // Helper to figure out if the `layoutSubviews` has been called yet
-  private var didLayoutSubviews: Bool {
-    get {
-      return (objc_getAssociatedObject(self, &AssociatedKeys.didLayoutSubviews) as? Bool) ?? false
-    }
-    set {
-      objc_setAssociatedObject(
-        self,
-        &AssociatedKeys.didLayoutSubviews,
-        newValue,
-        .OBJC_ASSOCIATION_RETAIN_NONATOMIC
-      )
-    }
+  @objc internal func ksr_didMoveToSuperview() {
+    self.ksr_didMoveToSuperview()
+    self.bindStyles()
   }
 }
