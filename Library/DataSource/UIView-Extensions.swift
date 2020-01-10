@@ -43,7 +43,6 @@ extension UIView {
   open override func awakeFromNib() {
     super.awakeFromNib()
     self.bindViewModel()
-    self.bindStyles()
   }
 
   @objc open func bindStyles() {}
