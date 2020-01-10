@@ -448,6 +448,24 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("restricted", props?["pledge_backer_reward_shipping_preference"] as? String)
   }
 
+  func testTrackCheckoutPaymentMethodViewed() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCheckoutPaymentPageViewed(project: .template, reward: .template)
+
+    let props = client.properties.last
+
+    XCTAssertEqual(["Checkout Payment Page Viewed"], client.events)
+
+    assertProjectProperties(props)
+    assertPledgeProperties(props)
+  }
+
+  func testTrackThanksPageViewed() {
+
+  }
+
   func testTrackViewedPaymentMethods() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
@@ -748,15 +766,6 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(50.00, properties?["pledge_total"] as? Double)
   }
 
-  func testTrackPledgeScreenViewed() {
-    let client = MockTrackingClient()
-    let loggedInUser = User.template
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
-
-    koala.trackCheckoutPaymentPageViewed(project: .template)
-    XCTAssertEqual(["Pledge Screen Viewed"], client.events)
-  }
-
   func testTrackPledgeButtonClicked() {
     let client = MockTrackingClient()
     let loggedInUser = User.template
@@ -974,5 +983,50 @@ final class KoalaTests: TestCase {
       ["Project Page Viewed"], dataLakeClient.events,
       "White-listed event is tracked by data lake client"
     )
+  }
+
+  private func assertProjectProperties(_ props: [String: Any]?) {
+    XCTAssertEqual(10, props?["project_backers_count"] as? Int)
+    XCTAssertEqual("US", props?["project_country"] as? String)
+    XCTAssertEqual("USD", props?["project_currency"] as? String)
+    XCTAssertEqual(2_000, props?["project_goal"] as? Int)
+    XCTAssertEqual(1, props?["project_pid"] as? Int)
+    XCTAssertEqual(0.50, props?["project_percent_raised"] as? Float)
+    XCTAssertEqual("Art", props?["project_subcategory"] as? String)
+    XCTAssertEqual("Q2F0ZWdvcnktMQ==", props?["project_subcategory_id"] as? String)
+
+    XCTAssertEqual("Brooklyn", props?["project_location"] as? String)
+    XCTAssertEqual(1, props?["project_creator_uid"] as? Int)
+    XCTAssertEqual(24 * 15, props?["project_hours_remaining"] as? Int)
+    XCTAssertEqual(30, props?["project_duration"] as? Int)
+    XCTAssertEqual(1_476_657_315, props?["project_deadline"] as? Double)
+    XCTAssertEqual(1_474_065_315, props?["project_launched_at"] as? Double)
+    XCTAssertEqual(1, props?["project_static_usd_rate"] as? Float)
+    XCTAssertEqual("live", props?["project_state"] as? String)
+    XCTAssertEqual(1_000, props?["project_current_pledge_amount"] as? Int)
+    XCTAssertEqual(1_000, props?["project_current_pledge_amount_usd"] as? Int)
+    XCTAssertEqual(2_000, props?["project_goal_usd"] as? Int)
+    XCTAssertEqual(true, props?["project_has_video"] as? Bool)
+    XCTAssertEqual(10, props?["project_comments_count"] as? Int)
+    XCTAssertEqual(0, props?["project_rewards_count"] as? Int)
+    XCTAssertEqual(1, props?["project_updates_count"] as? Int)
+
+    XCTAssertEqual(false, props?["project_user_is_project_creator"] as? Bool)
+    XCTAssertNil(props?["project_user_is_backer"])
+    XCTAssertNil(props?["project_user_has_starred"])
+    XCTAssertNil(props?["project_category"] as? String)
+    XCTAssertNil(props?["project_category_id"] as? String)
+    XCTAssertNil(props?["project_prelaunch_activated"] as? Bool)
+  }
+
+  private func assertPledgeProperties(_ props: [String: Any]?) {
+    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
+    XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(10.00, props?["pledge_backer_reward_minimum"] as? Double)
+    XCTAssertEqual(false, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
+
+    XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
   }
 }

@@ -40,6 +40,10 @@ public final class Koala {
     case signupButtonClicked = "Signup Button Clicked"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
+    case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
+    case selectRewardButtonClicked = "Select Reward Button Clicked"
+    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
+    case thanksPageViewed = "Thanks Page Viewed"
 
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
@@ -641,28 +645,22 @@ public final class Koala {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom([
-        "pledge_context": screen.trackingString
-      ])
 
-    self.track(event: "Select Reward Button Clicked", properties: props)
+    self.track(event: DataLakeWhiteListedEvent.selectRewardButtonClicked.rawValue, properties: props)
   }
 
   public func trackCheckoutPaymentPageViewed(project: Project, reward: Reward) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
 
-    // TODO: add event name to data lake whitelist
-    self.track(event: "Checkout Payment Page Viewed", properties: props)
+    self.track(event: DataLakeWhiteListedEvent.checkoutPaymentPageViewed.rawValue, properties: props)
   }
 
-  // TODO: add checkout properties
   public func trackThanksPageViewed(project: Project, reward: Reward) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
 
-    // TODO: add event name to data lake whitelist
-    self.track(event: "Thanks Page Viewed", properties: props)
+    self.track(event: DataLakeWhiteListedEvent.thanksPageViewed.rawValue, properties: props)
   }
 
   public func trackPledgeButtonClicked(project: Project, pledgeAmount: Double) {
