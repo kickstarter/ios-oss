@@ -503,24 +503,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.goToThanks = project.takeWhen(createBackingCompletionEvents)
 
-    Signal.combineLatest(createBackingDataAndIsApplePay, context)
-      .takeWhen(createBackingCompletionEvents)
-      .map { createBackingDataAndIsApplePay, context in
-        let (data, isApplePay) = createBackingDataAndIsApplePay
-        let checkoutData = checkoutPropertiesData(from: data, isApplePay: isApplePay)
-        let trackingContext = trackingPledgeContext(for: context)
-
-        return (data.project, data.reward, data.refTag, checkoutData, trackingContext)
-      }.observeValues { project, reward, refTag, data, context in
-        AppEnvironment.current.koala.trackCheckoutCompleted(
-          project: project,
-          reward: reward,
-          refTag: refTag,
-          checkoutData: data,
-          pledgeContext: context
-        )
-      }
-
     let errorsOrNil = Signal.merge(
       createOrUpdateEvent.errors().wrapInOptional(),
       isCreateOrUpdateBacking.mapConst(nil)
