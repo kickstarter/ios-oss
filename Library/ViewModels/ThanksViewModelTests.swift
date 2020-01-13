@@ -47,7 +47,7 @@ final class ThanksViewModelTests: TestCase {
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
   }
 
-  func testdismissToRootViewController() {
+  func testDismissToRootViewController() {
     self.vm.inputs.project(.template)
     self.vm.inputs.viewDidLoad()
 
