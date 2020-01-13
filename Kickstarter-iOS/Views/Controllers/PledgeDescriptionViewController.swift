@@ -223,13 +223,13 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
 private func attributedLearnMoreText() -> NSAttributedString? {
   guard let trustLink = HelpType.trust.url(
     withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
-  )?.absoluteString else { return nil }
+    )?.absoluteString else { return nil }
 
-  // swiftlint:disable line_length
-  let string = Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability(
-    trust_link: trustLink
-  ).replacingOccurrences(of: "<br/>", with: " ")
-  // swiftlint:enable line_length
+  let storeString = Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life()
+  let accountabilityString =  Strings.Learn_more_about_accountability()
+  let fullString = storeString + " " + accountabilityString
+  
+  guard let attributedString = checkoutAttributedLink(with: fullString) else { return nil }
 
-  return checkoutAttributedLink(with: string)
+  return attributedString.setAsLink(textToFind: accountabilityString, linkURL: trustLink)
 }
