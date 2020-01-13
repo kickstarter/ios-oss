@@ -40,6 +40,8 @@ public final class Koala {
     case signupButtonClicked = "Signup Button Clicked"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
+    case forgotPasswordViewed = "Reset Password Viewed"
+    case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
 
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
