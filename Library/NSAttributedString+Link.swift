@@ -1,7 +1,7 @@
 import Foundation
 
 public extension NSAttributedString {
-  func setAsLink(textToFind:String, linkURL:String) -> NSAttributedString {
+  func setAsLink(textToFind: String, linkURL: String) -> NSAttributedString {
     let string = NSMutableAttributedString(attributedString: self)
     let foundRange = string.mutableString.range(of: textToFind)
     if foundRange.location != NSNotFound {

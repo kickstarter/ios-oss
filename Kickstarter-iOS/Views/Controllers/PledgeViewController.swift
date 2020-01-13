@@ -483,16 +483,16 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
 // MARK: - RewardPledgeTransitionAnimatorDelegate
 
 extension PledgeViewController: RewardPledgeTransitionAnimatorDelegate {
-  func beginTransition(_ operation: UINavigationController.Operation) {
-    //self.descriptionViewController.beginTransition(operation)
+  func beginTransition(_: UINavigationController.Operation) {
+    // self.descriptionViewController.beginTransition(operation)
   }
 
-  func snapshotData(withContainerView view: UIView) -> RewardPledgeTransitionSnapshotData? {
-    //return self.descriptionViewController.snapshotData(withContainerView: view)
+  func snapshotData(withContainerView _: UIView) -> RewardPledgeTransitionSnapshotData? {
+    // return self.descriptionViewController.snapshotData(withContainerView: view)
     return nil
   }
 
-  func destinationFrameData(withContainerView view: UIView) -> RewardPledgeTransitionDestinationFrameData? {
+  func destinationFrameData(withContainerView _: UIView) -> RewardPledgeTransitionDestinationFrameData? {
 //    guard let (destination, mask) = self.descriptionViewController
 //      .destinationFrameData(withContainerView: view)
 //    else { return nil }
@@ -504,8 +504,8 @@ extension PledgeViewController: RewardPledgeTransitionAnimatorDelegate {
     return nil
   }
 
-  func endTransition(_ operation: UINavigationController.Operation) {
-    //self.descriptionViewController.endTransition(operation)
+  func endTransition(_: UINavigationController.Operation) {
+    // self.descriptionViewController.endTransition(operation)
   }
 }
 
