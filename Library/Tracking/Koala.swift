@@ -40,7 +40,7 @@ public final class Koala {
     case signupButtonClicked = "Signup Button Clicked"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
-    case forgotPasswordViewed = "Reset Password Viewed"
+    case forgotPasswordViewed = "Forgot Password Viewed"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
 
     static func allWhiteListedEvents() -> [String] {
@@ -857,11 +857,14 @@ public final class Koala {
    */
 
   public func trackSignupButtonClicked(
-    intent _: LoginIntent,
-    project _: Project? = nil,
-    reward _: Reward? = nil
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
   ) {
-    self.track(event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue)
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+
+    self.track(event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue,
+               properties: props)
   }
 
   public func trackSignupSubmitButtonClicked() {
@@ -870,6 +873,14 @@ public final class Koala {
 
   public func trackLoginSubmitButtonClicked() {
     self.track(event: DataLakeWhiteListedEvent.loginSubmitButtonClicked.rawValue)
+  }
+  
+  public func trackForgotPasswordViewed() {
+    self.track(event: DataLakeWhiteListedEvent.forgotPasswordViewed.rawValue)
+  }
+  
+  public func track2FAViewed() {
+    self.track(event: DataLakeWhiteListedEvent.twoFactorConfirmationViewed.rawValue)
   }
 
   private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)

@@ -94,17 +94,55 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testStartLogin() {
+    self.vm.inputs.configureWith(.activity, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.loginButtonPressed()
 
     self.startLogin.assertValueCount(1, "Start login emitted")
+    
+    XCTAssertEqual(["Log In or Signup Page Viewed", "Log In Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["activity", "activity"], self.trackingClient.properties(forKey: "login_intent"))
+    XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "project_pid"))
+    XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_backer_reward_id"))
+  }
+  
+  func testStartLogin_PledgeIntent() {
+    self.vm.inputs.configureWith(.backProject, project: .template, reward: .template)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.loginButtonPressed()
+    
+    self.startLogin.assertValueCount(1)
+    
+    XCTAssertEqual(["Log In or Signup Page Viewed", "Log In Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["pledge", "pledge"], self.trackingClient.properties(forKey: "login_intent"))
+    XCTAssertEqual([1, 1], self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+    XCTAssertEqual([1, 1], self.trackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self))
   }
 
   func testStartSignup() {
+    self.vm.inputs.configureWith(.activity, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.signupButtonPressed()
 
     self.startSignup.assertValueCount(1, "Start sign up emitted")
+    
+    XCTAssertEqual(["Log In or Signup Page Viewed", "Signup Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["activity", "activity"], self.trackingClient.properties(forKey: "login_intent"))
+    XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "project_pid"))
+    XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_backer_reward_id"))
+  }
+  
+  func testStartSignup_PledgeIntent() {
+    self.vm.inputs.configureWith(.backProject, project: .template, reward: .template)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.signupButtonPressed()
+    
+    self.startSignup.assertValueCount(1)
+    
+    XCTAssertEqual(["Log In or Signup Page Viewed", "Signup Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["pledge", "pledge"], self.trackingClient.properties(forKey: "login_intent"))
+    XCTAssertEqual([1, 1], self.trackingClient.properties(forKey: "project_pid", as: Int.self))
+    XCTAssertEqual([1, 1], self.trackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self))
   }
 
   func testHeadlineLabelHidden() {
