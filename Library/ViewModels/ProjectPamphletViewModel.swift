@@ -127,7 +127,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .filter(featureNativeCheckoutPledgeViewIsEnabled >>> isFalse)
 
     let shouldGoToManagePledge = ctaButtonTappedWithType
-      .filter { $0 == .viewBacking || $0 == .manage }
+      .filter(shouldGoToManagePledge(with:))
       .ignoreValues()
       .filter(featureNativeCheckoutPledgeViewIsEnabled)
 
@@ -355,4 +355,8 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   }
 
   return projectProducer
+}
+
+private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {
+  return type.isAny(of: .viewBacking, .manage, .fix)
 }
