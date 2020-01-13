@@ -11,9 +11,9 @@ final class PledgeDescriptionViewController: UIViewController {
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var estimatedDeliveryStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
-  private lazy var rewardTitleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rewardInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rewardInfoBackgroundView: UIView = { UIView(frame: .zero) }()
+  private lazy var rewardTitleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -35,20 +35,16 @@ final class PledgeDescriptionViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
-      |> checkoutBackgroundStyle
+    _ = self.dateLabel
+      |> dateLabelStyle
 
     _ = self.estimatedDeliveryLabel
       |> estimatedDeliveryLabelStyle
 
-    _ = self.rewardInfoBackgroundView
-      |> rewardInfoBackgroundViewStyle
+    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
-    _ = self.rewardTitleLabel
-      |> rewardTitleLabelStyle
-
-    _ = self.dateLabel
-      |> dateLabelStyle
+    _ = self.estimatedDeliveryStackView
+      |> estimatedDeliveryStackViewStyle(isAccessibilityCategory)
 
     _ = self.learnMoreTextView
       |> checkoutBackgroundStyle
@@ -56,15 +52,20 @@ final class PledgeDescriptionViewController: UIViewController {
     _ = self.learnMoreTextView
       |> learnMoreTextViewStyle
 
-    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-    _ = self.estimatedDeliveryStackView
-      |> estimatedDeliveryStackViewStyle(isAccessibilityCategory)
+    _ = self.rewardInfoBackgroundView
+      |> rewardInfoBackgroundViewStyle
 
     _ = self.rewardInfoStackView
       |> rewardInfoStackViewStyle
 
+    _ = self.rewardTitleLabel
+      |> rewardTitleLabelStyle
+
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.view
+      |> checkoutBackgroundStyle
   }
 
   private func configureSubviews() {
@@ -191,9 +192,8 @@ private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> 
 
 private let rewardInfoBackgroundViewStyle: ViewStyle = { (view: UIView) in
   view
+    |> roundedStyle(cornerRadius: Styles.grid(2))
     |> \.backgroundColor .~ .white
-    |> \.clipsToBounds .~ true
-    |> \.layer.cornerRadius .~ Styles.grid(2)
 }
 
 private let rewardInfoStackViewStyle: StackViewStyle = { (stackView: UIStackView) in

@@ -11,8 +11,8 @@ public protocol PledgeDescriptionViewModelInputs {
 }
 
 public protocol PledgeDescriptionViewModelOutputs {
-  var estimatedDeliveryText: Signal<String, Never> { get }
   var estimatedDeliveryStackViewIsHidden: Signal<Bool, Never> { get }
+  var estimatedDeliveryText: Signal<String, Never> { get }
   var popViewController: Signal<(), Never> { get }
   var presentTrustAndSafety: Signal<Void, Never> { get }
   var rewardTitle: Signal<String, Never> { get }
@@ -62,8 +62,8 @@ public final class PledgeDescriptionViewModel: PledgeDescriptionViewModelType,
     self.rewardCardTappedObserver.send(value: ())
   }
 
-  public let estimatedDeliveryText: Signal<String, Never>
   public let estimatedDeliveryStackViewIsHidden: Signal<Bool, Never>
+  public let estimatedDeliveryText: Signal<String, Never>
   public let popViewController: Signal<(), Never>
   public let presentTrustAndSafety: Signal<Void, Never>
   public let rewardTitle: Signal<String, Never>
