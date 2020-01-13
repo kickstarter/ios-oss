@@ -5,7 +5,15 @@ import PassKit
 import Prelude
 import XCTest
 
-final class PKPaymentAuthorizationViewControllerHelpersTests: XCTestCase {
+final class ApplePayCapabilitiesTests: XCTestCase {
+  private var applePayCapabilities: ApplePayCapabilities = ApplePayCapabilities()
+
+  override func setUp() {
+    super.setUp()
+
+    self.applePayCapabilities = ApplePayCapabilities()
+  }
+
   func test_supportedNetworksForProject_allCardTypes() {
     let project = Project.template
       |> \.availableCardTypes .~ [
@@ -18,9 +26,9 @@ final class PKPaymentAuthorizationViewControllerHelpersTests: XCTestCase {
         "UNION_PAY"
       ]
 
-    let supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks(for: project)
+    let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 
-    XCTAssertEqual(supportedNetworks.count, PKPaymentAuthorizationViewController.allSupportedNetworks.count)
+    XCTAssertEqual(6, supportedNetworks.count)
     XCTAssertTrue(supportedNetworks.contains(.amex))
     XCTAssertTrue(supportedNetworks.contains(.discover))
     XCTAssertTrue(supportedNetworks.contains(.JCB))
@@ -33,7 +41,7 @@ final class PKPaymentAuthorizationViewControllerHelpersTests: XCTestCase {
     let project = Project.template
       |> \.availableCardTypes .~ ["American EX"]
 
-    let supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks(for: project)
+    let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 
     XCTAssertEqual(supportedNetworks.count, 0)
   }
@@ -43,7 +51,7 @@ final class PKPaymentAuthorizationViewControllerHelpersTests: XCTestCase {
       |> \.availableCardTypes .~ nil
       |> \.country .~ .us
 
-    let supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks(for: project)
+    let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 
     XCTAssertTrue(supportedNetworks.contains(.amex))
     XCTAssertTrue(supportedNetworks.contains(.discover))
@@ -58,7 +66,7 @@ final class PKPaymentAuthorizationViewControllerHelpersTests: XCTestCase {
       |> \.availableCardTypes .~ nil
       |> \.country .~ .de
 
-    let supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks(for: project)
+    let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 
     XCTAssertTrue(supportedNetworks.contains(.amex))
     XCTAssertTrue(supportedNetworks.contains(.JCB))
