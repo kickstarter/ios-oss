@@ -445,6 +445,7 @@
 "Say_something_kind" = "Un petit mot sympa...";
 "Security_code" = "Code de sécurité";
 "See_all_category_name_projects" = "Tous les projets de la catégorie %{category_name}";
+"See_rewards" = "Afficher les récompenses";
 "Select" = "Sélectionner";
 "Select_an_option" = "Sélectionner une option";
 "Select_another_project" = "Sélectionner un autre projet";
