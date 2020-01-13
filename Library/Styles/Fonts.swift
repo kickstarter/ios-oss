@@ -123,7 +123,15 @@ extension UIFont {
     default: defaultSize = 17
     }
 
-    let font = UIFont.preferredFont(forTextStyle: style)
+    let font: UIFont
+    if #available(iOS 13.0, *) {
+      font = UIFont.preferredFont(
+        forTextStyle: style,
+        compatibleWith: .current
+      )
+    } else {
+      font = UIFont.preferredFont(forTextStyle: style)
+    }
     let descriptor = font.fontDescriptor
     return UIFont(
       descriptor: descriptor,
