@@ -168,6 +168,7 @@ private let estimatedDeliveryLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.font .~ UIFont.ksr_caption1()
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.minimumScaleFactor .~ 0.5
 }
 
 private func estimatedDeliveryStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
