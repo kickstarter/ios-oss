@@ -66,7 +66,7 @@ public protocol DeprecatedCheckoutViewModelOutputs {
   var goToWebModal: Signal<URLRequest, Never> { get }
 
   /// Emits when the login tout should be opened.
-  var openLoginTout: Signal<Void, Never> { get }
+  var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
 
   /// Emits when the view controller should be popped.
   var popViewController: Signal<Void, Never> { get }
@@ -194,9 +194,9 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
       .map { $0.left }
       .skipNil()
 
-    self.openLoginTout = requestData
-      .filter { $0.navigation == .signup }
-      .ignoreValues()
+    self.goToLoginSignup = configData
+      .takeWhen(requestData.filter { $0.navigation == .signup }.ignoreValues())
+      .map { (LoginIntent.backProject, $0.project, $0.reward) }
 
     let checkoutCancelled = Signal.merge(
       projectRequest,
@@ -397,7 +397,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
   public let goToSafariBrowser: Signal<URL, Never>
   public let goToThanks: Signal<Project, Never>
   public let goToWebModal: Signal<URLRequest, Never>
-  public let openLoginTout: Signal<Void, Never>
+  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let popViewController: Signal<Void, Never>
   public let setStripeAppleMerchantIdentifier: Signal<String, Never>
   public let setStripePublishableKey: Signal<String, Never>

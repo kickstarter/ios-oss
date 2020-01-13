@@ -46,7 +46,9 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
   fileprivate let fulfillmentAndShippingFooterStackViewHidden = TestObserver<Bool, Never>()
   fileprivate let goToCheckoutRequest = TestObserver<String, Never>() // todo
   fileprivate let goToCheckoutProject = TestObserver<Project, Never>() // todo
-  fileprivate let goToLoginTout = TestObserver<(), Never>()
+  fileprivate let goToLoginSignupIntent = TestObserver<LoginIntent, Never>()
+  fileprivate let goToLoginSignupProject = TestObserver<Project, Never>()
+  fileprivate let goToLoginSignupReward = TestObserver<Reward, Never>()
   fileprivate let goToPaymentAuthorization = TestObserver<NSDictionary, Never>()
   fileprivate let goToShippingPickerProject = TestObserver<Project, Never>()
   fileprivate let goToShippingPickerShippingRules = TestObserver<[ShippingRule], Never>()
@@ -106,7 +108,9 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       .skipNil()
       .observe(self.goToCheckoutRequest.observer)
     self.vm.outputs.goToCheckout.map(second).observe(self.goToCheckoutProject.observer)
-    self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
+    self.vm.outputs.goToLoginSignup.map(first).observe(self.goToLoginSignupIntent.observer)
+    self.vm.outputs.goToLoginSignup.map(second).observe(self.goToLoginSignupProject.observer)
+    self.vm.outputs.goToLoginSignup.map(third).observe(self.goToLoginSignupReward.observer)
     self.vm.outputs.goToPaymentAuthorization.map { $0.encode() as NSDictionary }
       .observe(self.goToPaymentAuthorization.observer)
     self.vm.outputs.goToShippingPicker.map(first).observe(self.goToShippingPickerProject.observer)
@@ -1065,13 +1069,15 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
       self.vm.inputs.applePayButtonTapped()
 
       self.goToPaymentAuthorization.assertValueCount(0)
-      self.goToLoginTout.assertValueCount(1)
+
+      self.goToLoginSignupIntent.assertValues([.backProject])
+      self.goToLoginSignupProject.assertValues([project])
+      self.goToLoginSignupReward.assertValues([.template])
 
       withEnvironment(currentUser: .template) {
         self.vm.inputs.userSessionStarted()
 
         self.goToPaymentAuthorization.assertValueCount(0, "Apple Pay flow does not start immediately.")
-        self.goToLoginTout.assertValueCount(1)
 
         self.scheduler.advance(by: .seconds(1))
 
@@ -1144,9 +1150,12 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.goToCheckoutProject.assertValues([])
       self.goToCheckoutRequest.assertValueCount(0)
-      self.goToLoginTout.assertValueCount(1)
       self.pledgeIsLoading.assertValueCount(0)
       self.loadingOverlayIsHidden.assertValues([true])
+
+      self.goToLoginSignupIntent.assertValues([.backProject])
+      self.goToLoginSignupProject.assertValues([project])
+      self.goToLoginSignupReward.assertValues([.template])
 
       withEnvironment(currentUser: .template) {
         self.vm.inputs.userSessionStarted()
@@ -1203,9 +1212,12 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
 
       self.goToCheckoutProject.assertValues([])
       self.goToCheckoutRequest.assertValueCount(0)
-      self.goToLoginTout.assertValueCount(1)
       self.pledgeIsLoading.assertValueCount(0)
       self.loadingOverlayIsHidden.assertValues([true])
+
+      self.goToLoginSignupIntent.assertValues([.backProject])
+      self.goToLoginSignupProject.assertValues([project])
+      self.goToLoginSignupReward.assertValues([.template])
 
       withEnvironment(currentUser: .template) {
         self.vm.inputs.userSessionStarted()

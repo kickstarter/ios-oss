@@ -105,7 +105,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedIn_NonBacker_LiveProject_NativeCheckout_Enabled() {
+  func testLoggedIn_NonBacker_LiveProject_NativeCheckout_Enabled_ExperimentalGroup() {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
@@ -113,10 +113,43 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let liveProject = self.project
       |> Project.lens.stats.convertedPledgedAmount .~ 1_964
 
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.experimental.rawValue]
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
         apiService: MockService(fetchProjectResponse: liveProject),
-        config: config, currentUser: .template, language: language
+        config: config, currentUser: .template, language: language, optimizelyClient: optimizelyClient
+      ) {
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(liveProject), refTag: nil)
+
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
+
+        scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testLoggedIn_NonBacker_LiveProject_NativeCheckout_Enabled_ControlGroup() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
+
+    let liveProject = self.project
+      |> Project.lens.stats.convertedPledgedAmount .~ 1_964
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.control.rawValue]
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(
+        apiService: MockService(fetchProjectResponse: liveProject),
+        config: config, currentUser: .template, language: language, optimizelyClient: optimizelyClient
       ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(liveProject), refTag: nil)
 

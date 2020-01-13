@@ -236,6 +236,14 @@ internal func classNameWithoutModule(_ class: AnyClass) -> String {
     .joined(separator: ".")
 }
 
+internal func deviceIdentifier(uuid: UUIDType, env: Environment = AppEnvironment.current) -> String {
+  guard let identifier = env.device.identifierForVendor else {
+    return uuid.uuidString
+  }
+
+  return identifier.uuidString
+}
+
 typealias SanitizedPledgeParams = (pledgeTotal: String, rewardId: String, locationId: String?)
 
 internal func sanitizedPledgeParameters(
