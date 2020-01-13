@@ -40,6 +40,7 @@ public final class Koala {
     case signupButtonClicked = "Signup Button Clicked"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
+    case thanksPageViewed = "Thanks Page Viewed"
 
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
@@ -677,6 +678,17 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
     self.track(event: "Add New Card Button Clicked", properties: props)
+  }
+  
+  public func trackThanksPageViewed(project: Project, reward: Reward, checkoutData: CheckoutPropertiesData?) {
+    var props = projectProperties(from: project)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      
+    if let checkoutData = checkoutData {
+      props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
+    }
+    
+    self.track(event: DataLakeWhiteListedEvent.thanksPageViewed.rawValue, properties: props)
   }
 
   public func trackCheckoutCancel(

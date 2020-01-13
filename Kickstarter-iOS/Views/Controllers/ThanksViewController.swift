@@ -20,10 +20,10 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let dataSource = ThanksProjectsDataSource()
 
-  internal static func configuredWith(project: Project) -> ThanksViewController {
+  internal static func configured(with data: ThanksPageData) -> ThanksViewController {
     let vc = Storyboard.Thanks.instantiate(ThanksViewController.self)
-    vc.viewModel.inputs.project(project)
-    vc.shareViewModel.inputs.configureWith(shareContext: .thanks(project), shareContextView: nil)
+    vc.viewModel.inputs.configure(with: data)
+    vc.shareViewModel.inputs.configureWith(shareContext: .thanks(data.project), shareContextView: nil)
     return vc
   }
 

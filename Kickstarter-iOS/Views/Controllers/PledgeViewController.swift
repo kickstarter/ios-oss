@@ -292,9 +292,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
-      .observeValues { [weak self] project in
+      .observeValues { [weak self] data in
         generateNotificationSuccessFeedback()
-        self?.goToThanks(project: project)
+        self?.goToThanks(data: data)
       }
 
     self.viewModel.outputs.notifyDelegateUpdatePledgeDidSucceedWithMessage
@@ -385,8 +385,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.present(paymentAuthorizationViewController, animated: true)
   }
 
-  private func goToThanks(project: Project) {
-    let thanksVC = ThanksViewController.configuredWith(project: project)
+  private func goToThanks(data: ThanksPageData) {
+    let thanksVC = ThanksViewController.configured(with: data)
     self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 

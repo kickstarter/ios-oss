@@ -3,18 +3,17 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+public typealias ThanksPageData = (project: Project, reward: Reward, checkoutData: Koala.CheckoutPropertiesData?)
+
 public protocol ThanksViewModelInputs {
-  /// Call when the view controller view did load
-  func viewDidLoad()
+  /// Call to configure the VM
+  func configure(with data: ThanksPageData)
 
   /// Call when close button is tapped
   func closeButtonTapped()
 
   /// Call when category cell is tapped
   func categoryCellTapped(_ category: KsApi.Category)
-
-  /// Call to set project
-  func project(_ project: Project)
 
   /// Call when project cell is tapped
   func projectTapped(_ project: Project)
@@ -24,6 +23,9 @@ public protocol ThanksViewModelInputs {
 
   /// Call when the current user has been updated in the environment
   func userUpdated()
+  
+  /// Call when the view controller view did load
+  func viewDidLoad()
 }
 
 public protocol ThanksViewModelOutputs {
@@ -68,7 +70,12 @@ public protocol ThanksViewModelType {
 
 public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, ThanksViewModelOutputs {
   public init() {
-    let project = self.projectProperty.signal.skipNil()
+    let project = self.configureWithDataProperty.signal
+      .skipNil()
+      .map(first)
+    let trackingData = self.configureWithDataProperty.signal
+      .skipNil()
+      .map(third)
 
     self.backedProjectText = project.map {
       let string = Strings.You_have_successfully_backed_project_html(
@@ -180,6 +187,10 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .observeValues { project in
         AppEnvironment.current.koala.trackTriggeredAppStoreRatingDialog(project: project)
       }
+    
+    Signal.combineLatest(self.configureWithDataProperty.signal.skipNil(), self.viewDidLoadProperty.signal.ignoreValues())
+      .map(first)
+      .observeValues { AppEnvironment.current.koala.trackThanksPageViewed(project: $0.project, reward: $0.reward, checkoutData: $0.checkoutData) }
   }
 
   // MARK: - ThanksViewModelType
@@ -188,6 +199,11 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public var outputs: ThanksViewModelOutputs { return self }
 
   // MARK: - ThanksViewModelInputs
+  
+  fileprivate let configureWithDataProperty = MutableProperty<ThanksPageData?>(nil)
+  public func configure(with data: ThanksPageData) {
+    self.configureWithDataProperty.value = data
+  }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
