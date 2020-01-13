@@ -255,6 +255,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
+        self?.continueViewController.configureWith(value: data)
         self?.descriptionViewController.configureWith(value: data)
         self?.pledgeAmountViewController.configureWith(value: data)
         self?.pledgeAmountSummaryViewController.configureWith(data.project)
@@ -293,7 +294,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeForControllerAction()
       .observeValues { [weak self] project in
         generateNotificationSuccessFeedback()
-
         self?.goToThanks(project: project)
       }
 

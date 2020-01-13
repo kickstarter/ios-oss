@@ -134,28 +134,6 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
           userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]
         )
       ))
-
-    self.viewWillAppearProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackTfa() }
-
-    self.facebookTokenProperty.signal.ignoreValues()
-      .takeWhen(self.logIntoEnvironment)
-      .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.facebook) }
-
-    self.passwordProperty.signal.ignoreValues()
-      .takeWhen(self.logIntoEnvironment)
-      .observeValues { AppEnvironment.current.koala.trackLoginSuccess(authType: Koala.AuthType.email) }
-
-    self.resendPressedProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackTfaResendCode() }
-
-    self.facebookTokenProperty.signal
-      .takeWhen(self.showError)
-      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.facebook) }
-
-    self.emailProperty.signal
-      .takeWhen(self.showError)
-      .observeValues { _ in AppEnvironment.current.koala.trackLoginError(authType: Koala.AuthType.email) }
   }
 
   fileprivate let codeProperty = MutableProperty<String?>(nil)

@@ -38,7 +38,6 @@ internal final class SignupViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["User Signup", "Viewed Signup"], self.trackingClient.events)
     self.setWeeklyNewsletterState.assertValues([false], "Unselected when view loads.")
     self.isSignupButtonEnabled.assertValues([false], "Disabled when view loads.")
     self.nameTextFieldBecomeFirstResponder
@@ -64,25 +63,20 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.inputs.passwordChanged("0773rw473rm3l0n")
     self.isSignupButtonEnabled.assertValues([false, true], "Enabled when form is valid.")
 
-    self.vm.inputs.passwordTextFieldReturn()
     self.vm.inputs.signupButtonPressed()
-    XCTAssertEqual(["User Signup", "Viewed Signup"], self.trackingClient.events)
     self.logIntoEnvironment.assertDidNotEmitValue("Does not immediately emit after signup button is pressed.")
 
+    XCTAssertEqual(["Signup Submit Button Clicked"], self.trackingClient.events)
+
     self.scheduler.advance()
-    XCTAssertEqual(["User Signup", "Viewed Signup", "New User", "Signed Up"], self.trackingClient.events)
-    // swiftlint:disable:next force_unwrapping
-    XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
+
     self.logIntoEnvironment.assertValueCount(1, "Login after scheduler advances.")
     self.postNotification.assertDidNotEmitValue("Does not emit until environment logged in.")
 
     self.vm.inputs.environmentLoggedIn()
 
     self.scheduler.advance()
-    XCTAssertEqual(
-      ["User Signup", "Viewed Signup", "New User", "Signed Up", "Login", "Logged In"],
-      self.trackingClient.events
-    )
+
     self.postNotification.assertValues(
       [.ksr_sessionStarted],
       "Notification posted after scheduler advances."
@@ -132,7 +126,6 @@ internal final class SignupViewModelTests: TestCase {
     self.withEnvironment(apiService: MockService(signupError: errorEnvelope)) {
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(["User Signup", "Viewed Signup"], self.trackingClient.events)
       self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
       self.vm.inputs.nameChanged("Native Squad")
       self.vm.inputs.passwordChanged("!")
@@ -143,32 +136,21 @@ internal final class SignupViewModelTests: TestCase {
       self.scheduler.advance()
       self.logIntoEnvironment.assertValueCount(0, "Should not login.")
       self.showError.assertValues([error], "Signup error.")
-      XCTAssertEqual(
-        ["User Signup", "Viewed Signup", "Errored User Signup", "Errored Signup"],
-        self.trackingClient.events
-      )
 
       self.vm.inputs.passwordTextFieldReturn()
       self.showError.assertValueCount(1)
 
       scheduler.advance()
       self.showError.assertValues([error, error], "Signup error.")
-      XCTAssertEqual([
-        "User Signup", "Viewed Signup", "Errored User Signup", "Errored Signup",
-        "Errored User Signup", "Errored Signup"
-      ], self.trackingClient.events)
-      // swiftlint:disable:next force_unwrapping
-      XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
     }
   }
 
   func testWeeklyNewsletterChanged() {
     self.vm.inputs.viewDidLoad()
-    XCTAssertEqual(["User Signup", "Viewed Signup"], self.trackingClient.events)
 
     self.vm.inputs.weeklyNewsletterChanged(true)
     XCTAssertEqual(
-      ["User Signup", "Viewed Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle"],
+      ["Subscribed To Newsletter", "Signup Newsletter Toggle"],
       self.trackingClient.events
     )
     XCTAssertEqual(
@@ -179,7 +161,7 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.inputs.weeklyNewsletterChanged(false)
     XCTAssertEqual(
       [
-        "User Signup", "Viewed Signup", "Subscribed To Newsletter", "Signup Newsletter Toggle",
+        "Subscribed To Newsletter", "Signup Newsletter Toggle",
         "Unsubscribed From Newsletter", "Signup Newsletter Toggle"
       ],
       self.trackingClient.events

@@ -503,9 +503,11 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
         self?.goToCheckout(initialRequest: initialRequest, project: project, reward: reward)
       }
 
-    self.viewModel.outputs.goToLoginTout
+    self.viewModel.outputs.goToLoginSignup
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.goToLoginTout() }
+      .observeValues { [weak self] intent, project, reward in
+        self?.goToLoginTout(with: intent, project: project, reward: reward)
+      }
 
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
@@ -555,8 +557,12 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  fileprivate func goToLoginTout() {
-    let vc = LoginToutViewController.configuredWith(loginIntent: .backProject)
+  fileprivate func goToLoginTout(with intent: LoginIntent, project: Project, reward: Reward) {
+    let vc = LoginToutViewController.configuredWith(
+      loginIntent: intent,
+      project: project,
+      reward: reward
+    )
     let nav = UINavigationController(rootViewController: vc)
     nav.modalPresentationStyle = .formSheet
 

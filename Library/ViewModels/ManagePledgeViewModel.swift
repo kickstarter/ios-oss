@@ -33,7 +33,7 @@ public protocol ManagePledgeViewModelOutputs {
   var goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
-  var notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never> { get }
+  var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
@@ -120,8 +120,11 @@ public final class ManagePledgeViewModel:
     self.goToChangePaymentMethod = projectAndReward
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .changePaymentMethod })
 
-    self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
-      = self.cancelPledgeDidFinishWithMessageProperty.signal.skipNil()
+    self.notifyDelegateManagePledgeViewControllerFinishedWithMessage = Signal.merge(
+      self.cancelPledgeDidFinishWithMessageProperty.signal,
+      refreshProjectEvent.mapConst(nil)
+    )
+
     self.rewardReceivedViewControllerViewIsHidden = projectAndReward
       .map { project, reward in reward.isNoReward || project.personalization.backing?.status != .collected }
 
@@ -196,7 +199,7 @@ public final class ManagePledgeViewModel:
   public let goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
-  public let notifyDelegateShouldDismissAndShowSuccessBannerWithMessage: Signal<String, Never>
+  public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>
