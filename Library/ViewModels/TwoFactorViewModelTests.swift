@@ -275,11 +275,11 @@ final class TwoFactorViewModelTests: TestCase {
       resendSuccess.assertValueCount(0, "Code was not resent")
     }
   }
-  
+
   func testTracking() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear()
-    
+
     XCTAssertEqual(["Two-Factor Confirmation Viewed"], self.trackingClient.events)
   }
 }

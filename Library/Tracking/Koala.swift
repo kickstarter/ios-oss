@@ -863,8 +863,10 @@ public final class Koala {
   ) {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
-    self.track(event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue,
-               properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue,
+      properties: props
+    )
   }
 
   public func trackSignupSubmitButtonClicked() {
@@ -874,11 +876,11 @@ public final class Koala {
   public func trackLoginSubmitButtonClicked() {
     self.track(event: DataLakeWhiteListedEvent.loginSubmitButtonClicked.rawValue)
   }
-  
+
   public func trackForgotPasswordViewed() {
     self.track(event: DataLakeWhiteListedEvent.forgotPasswordViewed.rawValue)
   }
-  
+
   public func track2FAViewed() {
     self.track(event: DataLakeWhiteListedEvent.twoFactorConfirmationViewed.rawValue)
   }
