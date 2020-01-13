@@ -5,13 +5,13 @@ import PassKit
 import Prelude
 import XCTest
 
-final class ApplePayCapableTests: XCTestCase {
-  private var applePayCapable: ApplePayCapable = ApplePayCapable()
+final class ApplePayCapabilitiesTests: XCTestCase {
+  private var applePayCapabilities: ApplePayCapabilities = ApplePayCapabilities()
 
   override func setUp() {
     super.setUp()
 
-    self.applePayCapable = ApplePayCapable()
+    self.applePayCapabilities = ApplePayCapabilities()
   }
 
   func test_supportedNetworksForProject_allCardTypes() {
@@ -26,7 +26,7 @@ final class ApplePayCapableTests: XCTestCase {
         "UNION_PAY"
       ]
 
-    let supportedNetworks = self.applePayCapable.supportedNetworks(for: project)
+    let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 
     XCTAssertEqual(6, supportedNetworks.count)
     XCTAssertTrue(supportedNetworks.contains(.amex))
@@ -41,7 +41,7 @@ final class ApplePayCapableTests: XCTestCase {
     let project = Project.template
       |> \.availableCardTypes .~ ["American EX"]
 
-    let supportedNetworks = self.applePayCapable.supportedNetworks(for: project)
+    let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 
     XCTAssertEqual(supportedNetworks.count, 0)
   }
@@ -51,7 +51,7 @@ final class ApplePayCapableTests: XCTestCase {
       |> \.availableCardTypes .~ nil
       |> \.country .~ .us
 
-    let supportedNetworks = self.applePayCapable.supportedNetworks(for: project)
+    let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 
     XCTAssertTrue(supportedNetworks.contains(.amex))
     XCTAssertTrue(supportedNetworks.contains(.discover))
@@ -66,7 +66,7 @@ final class ApplePayCapableTests: XCTestCase {
       |> \.availableCardTypes .~ nil
       |> \.country .~ .de
 
-    let supportedNetworks = self.applePayCapable.supportedNetworks(for: project)
+    let supportedNetworks = self.applePayCapabilities.supportedNetworks(for: project)
 
     XCTAssertTrue(supportedNetworks.contains(.amex))
     XCTAssertTrue(supportedNetworks.contains(.JCB))

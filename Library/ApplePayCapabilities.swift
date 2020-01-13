@@ -2,7 +2,7 @@ import Foundation
 import KsApi
 import PassKit
 
-public protocol ApplePayCapableType {
+public protocol ApplePayCapabilitiesType {
   /*
    Returns an array of all KSR supported networks
    */
@@ -38,7 +38,7 @@ public protocol ApplePayCapableType {
   func supportedNetworks(for project: Project) -> [PKPaymentNetwork]
 }
 
-public struct ApplePayCapable: ApplePayCapableType {
+public struct ApplePayCapabilities: ApplePayCapabilitiesType {
   public init() {}
 
   public func allSupportedNetworks() -> [PKPaymentNetwork] {
@@ -73,7 +73,7 @@ public struct ApplePayCapable: ApplePayCapableType {
 
     return availableCardTypes
       .compactMap(GraphUserCreditCard.CreditCardType.init(rawValue:))
-      .compactMap(ApplePayCapable.pkPaymentNetwork(for:))
+      .compactMap(ApplePayCapabilities.pkPaymentNetwork(for:))
   }
 
   internal func supportedNetworks(projectCountry: Project.Country) -> [PKPaymentNetwork] {

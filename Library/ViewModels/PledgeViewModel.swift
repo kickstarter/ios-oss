@@ -841,7 +841,7 @@ private func checkoutPropertiesData(from createBackingData: CreateBackingData, i
   let shippingAmount = createBackingData.shippingRule?.cost
   let rewardTitle = createBackingData.reward.title
   let userHasEligibleStoredApplePayCard = AppEnvironment.current
-    .applePayCapable
+    .applePayCapabilities
     .applePayCapable(for: createBackingData.project)
 
   return Koala.CheckoutPropertiesData(

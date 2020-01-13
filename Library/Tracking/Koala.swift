@@ -2028,8 +2028,8 @@ public final class Koala {
       .keys
       .sorted()
 
-    props["apple_pay_capable"] = AppEnvironment.current.applePayCapable.applePayCapable()
-    props["apple_pay_device"] = AppEnvironment.current.applePayCapable.applePayDevice()
+    props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
+    props["apple_pay_device"] = AppEnvironment.current.applePayCapabilities.applePayDevice()
     props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
     props["client_type"] = "native"
     props["current_variants"] = self.config?.abExperimentsArray.sorted()

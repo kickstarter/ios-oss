@@ -15,7 +15,7 @@ public struct Environment {
   public let apiDelayInterval: DispatchTimeInterval
 
   /// A type that exposes Apple Pay capabilities
-  public let applePayCapable: ApplePayCapableType
+  public let applePayCapabilities: ApplePayCapabilitiesType
 
   /// The app instance
   public let application: UIApplicationType
@@ -99,7 +99,7 @@ public struct Environment {
   public init(
     apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
-    applePayCapable: ApplePayCapableType = ApplePayCapable(),
+    applePayCapable: ApplePayCapabilitiesType = ApplePayCapabilities(),
     application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: KSCache = KSCache(),
@@ -127,7 +127,7 @@ public struct Environment {
   ) {
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
-    self.applePayCapable = applePayCapable
+    self.applePayCapabilities = applePayCapable
     self.application = application
     self.assetImageGeneratorType = assetImageGeneratorType
     self.cache = cache

@@ -13,7 +13,7 @@ extension PKPaymentRequest {
   ) -> PKPaymentRequest {
     let request = PKPaymentRequest()
     request.merchantIdentifier = merchantIdentifier
-    request.supportedNetworks = env.applePayCapable.supportedNetworks(for: project)
+    request.supportedNetworks = env.applePayCapabilities.supportedNetworks(for: project)
     request.merchantCapabilities = .capability3DS
     request.countryCode = project.country.countryCode
     request.currencyCode = project.country.currencyCode
