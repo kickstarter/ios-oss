@@ -358,5 +358,5 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
 }
 
 private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {
-  return type == .viewBacking || type == .manage || type == .fix
+  return type.isAny(of: .viewBacking, .manage, .fix)
 }

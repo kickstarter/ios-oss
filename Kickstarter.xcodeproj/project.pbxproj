@@ -1183,6 +1183,8 @@
 		D6B9F90A22035840003282A5 /* Author.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9F90922035840003282A5 /* Author.swift */; };
 		D6B9F943220358D1003282A5 /* AuthorTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9F942220358D1003282A5 /* AuthorTemplates.swift */; };
 		D6B9F94522035E34003282A5 /* AuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9F94422035E34003282A5 /* AuthorTests.swift */; };
+		D6BD66BB23CCF79D008694BB /* Equatable+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BD66BA23CCF79D008694BB /* Equatable+Helpers.swift */; };
+		D6BD66BD23CCF7B6008694BB /* EquatableHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BD66BC23CCF7B6008694BB /* EquatableHelpersTests.swift */; };
 		D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */; };
 		D6C3845C210B9AC400ADB671 /* SettingsNewslettersTopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */; };
 		D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */; };
@@ -2541,6 +2543,8 @@
 		D6B9F942220358D1003282A5 /* AuthorTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorTemplates.swift; sourceTree = "<group>"; };
 		D6B9F94422035E34003282A5 /* AuthorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorTests.swift; sourceTree = "<group>"; };
 		D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewControllerTests.swift; sourceTree = "<group>"; };
+		D6BD66BA23CCF79D008694BB /* Equatable+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Equatable+Helpers.swift"; sourceTree = "<group>"; };
+		D6BD66BC23CCF7B6008694BB /* EquatableHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableHelpersTests.swift; sourceTree = "<group>"; };
 		D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersTopCell.swift; sourceTree = "<group>"; };
 		D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNewslettersTopCell.xib; sourceTree = "<group>"; };
 		D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphSchemaTests.swift; sourceTree = "<group>"; };
@@ -3258,6 +3262,8 @@
 				7703B42123217D4F00169EF3 /* EnvironmentType.swift */,
 				3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */,
 				3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */,
+				D6BD66BA23CCF79D008694BB /* Equatable+Helpers.swift */,
+				D6BD66BC23CCF7B6008694BB /* EquatableHelpersTests.swift */,
 				A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */,
 				77556F1C20A09993008CEA57 /* ExperimentName+Helpers.swift */,
 				D667C2BB2305F03300EC094A /* ExperimentName+HelpersTests.swift */,
@@ -4847,6 +4853,7 @@
 				D69C552B239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift in Sources */,
 				A7F441CB1D005A9400FE6FC5 /* MessagesSearchViewModel.swift in Sources */,
 				A7CC14651D00E81B00035C52 /* FriendsSource.swift in Sources */,
+				D6BD66BB23CCF79D008694BB /* Equatable+Helpers.swift in Sources */,
 				3706408622A8A6D700889CBD /* PledgeShippingLocationViewModel.swift in Sources */,
 				3757D0CE228E51F800241AE6 /* UIFont.swift in Sources */,
 				778F891C22D3E37300D095C5 /* Feature+Helpers.swift in Sources */,
@@ -5061,6 +5068,7 @@
 				A7ED1FE41E831C5C00BFFA01 /* EmptyStatesViewModelTests.swift in Sources */,
 				D04AACA8218BB72100CF713E /* FindFriendsCellViewModelTests.swift in Sources */,
 				8AA524932384CAC100FD52CF /* EditorialProjectsViewModelTests.swift in Sources */,
+				D6BD66BD23CCF7B6008694BB /* EquatableHelpersTests.swift in Sources */,
 				D04AACA6218BB72100CF713E /* ChangePasswordViewModelTests.swift in Sources */,
 				8A213CF5239EAF5600BBB4C7 /* TrackingClientConfigurationTests.swift in Sources */,
 				77E023D62305E02C00C63444 /* PKPaymentAuthorizationViewControllerHelpersTests.swift in Sources */,
