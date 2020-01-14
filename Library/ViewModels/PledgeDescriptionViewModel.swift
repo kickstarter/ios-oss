@@ -36,8 +36,7 @@ public final class PledgeDescriptionViewModel: PledgeDescriptionViewModelType,
     self.estimatedDeliveryStackViewIsHidden = self.configDataProperty.signal
       .skipNil()
       .map(second)
-      .map { $0.shipping.enabled }
-      .negate()
+      .map { $0.estimatedDeliveryOn.isNil }
 
     self.presentTrustAndSafety = self.learnMoreTappedProperty.signal
     self.rewardTitle = self.configDataProperty.signal

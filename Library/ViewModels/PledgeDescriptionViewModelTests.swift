@@ -68,18 +68,18 @@ internal final class PledgeDescriptionViewModelTests: TestCase {
     self.rewardTitle.assertValue("Back it because you believe in it.")
   }
 
-  func testEstimatedDeliveryStackViewIsHidden_ShippingEnabled() {
+  func testEstimatedDeliveryStackViewIsHidden_HasEstimatedDelivery() {
     let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.estimatedDeliveryOn .~ 1_468_527_587.32843
 
     self.vm.inputs.configureWith(data: (.template, reward))
 
     self.estimatedDeliveryStackViewIsHidden.assertValue(false)
   }
 
-  func testEstimatedDeliveryStackViewIsHidden_ShippingDisabled() {
+  func testEstimatedDeliveryStackViewIsHidden_NoEstimatedDelivery() {
     let reward = Reward.template
-      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.estimatedDeliveryOn .~ nil
 
     self.vm.inputs.configureWith(data: (.template, reward))
 
