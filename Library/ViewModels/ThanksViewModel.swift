@@ -3,7 +3,8 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public typealias ThanksPageData = (project: Project, reward: Reward, checkoutData: Koala.CheckoutPropertiesData?)
+public typealias ThanksPageData = (project: Project, reward: Reward,
+  checkoutData: Koala.CheckoutPropertiesData?)
 
 public protocol ThanksViewModelInputs {
   /// Call to configure the VM
@@ -73,9 +74,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     let project = self.configureWithDataProperty.signal
       .skipNil()
       .map(first)
-    let trackingData = self.configureWithDataProperty.signal
-      .skipNil()
-      .map(third)
 
     self.backedProjectText = project.map {
       let string = Strings.You_have_successfully_backed_project_html(
