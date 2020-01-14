@@ -23,7 +23,7 @@ public protocol ThanksViewModelInputs {
 
   /// Call when the current user has been updated in the environment
   func userUpdated()
-  
+
   /// Call when the view controller view did load
   func viewDidLoad()
 }
@@ -187,13 +187,17 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .observeValues { project in
         AppEnvironment.current.koala.trackTriggeredAppStoreRatingDialog(project: project)
       }
-    
-    Signal.combineLatest(self.configureWithDataProperty.signal.skipNil(),
-                         self.viewDidLoadProperty.signal.ignoreValues())
-      .map(first)
-      .observeValues { AppEnvironment.current.koala.trackThanksPageViewed(project: $0.project,
-                                                                          reward: $0.reward,
-                                                                          checkoutData: $0.checkoutData) }
+
+    Signal.combineLatest(
+      self.configureWithDataProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal.ignoreValues()
+    )
+    .map(first)
+    .observeValues { AppEnvironment.current.koala.trackThanksPageViewed(
+      project: $0.project,
+      reward: $0.reward,
+      checkoutData: $0.checkoutData
+    ) }
   }
 
   // MARK: - ThanksViewModelType
@@ -202,7 +206,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public var outputs: ThanksViewModelOutputs { return self }
 
   // MARK: - ThanksViewModelInputs
-  
+
   fileprivate let configureWithDataProperty = MutableProperty<ThanksPageData?>(nil)
   public func configure(with data: ThanksPageData) {
     self.configureWithDataProperty.value = data

@@ -1134,21 +1134,23 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
-      
-      let checkoutData = Koala.CheckoutPropertiesData(amount: "5.00",
-                                                      estimatedDelivery: nil,
-                                                      paymentType: "APPLE_PAY",
-                                                      revenueInUsdCents: 500,
-                                                      rewardId: 0,
-                                                      rewardTitle: nil,
-                                                      shippingEnabled: false,
-                                                      shippingAmount: nil,
-                                                      userHasStoredApplePayCard: true)
+
+      let checkoutData = Koala.CheckoutPropertiesData(
+        amount: "5.00",
+        estimatedDelivery: nil,
+        paymentType: "APPLE_PAY",
+        revenueInUsdCents: 500,
+        rewardId: 0,
+        rewardTitle: nil,
+        shippingEnabled: false,
+        shippingAmount: nil,
+        userHasStoredApplePayCard: true
+      )
 
       self.goToThanksProject.assertValues([project])
       self.goToThanksReward.assertValues([reward])
       self.goToThanksCheckoutData.assertValues([checkoutData])
-      
+
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(

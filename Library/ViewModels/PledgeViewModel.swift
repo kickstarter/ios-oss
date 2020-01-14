@@ -500,11 +500,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       createOrUpdateBackingDidCompleteNoSCA.combineLatest(with: creatingContext).ignoreValues(),
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
-    
+
     let thanksPageData = createBackingDataAndIsApplePay
       .map { data, isApplePay -> ThanksPageData in
         let checkoutPropsData = checkoutPropertiesData(from: data, isApplePay: isApplePay)
-        
+
         return (data.project, data.reward, checkoutPropsData)
       }
 

@@ -679,15 +679,15 @@ public final class Koala {
 
     self.track(event: "Add New Card Button Clicked", properties: props)
   }
-  
+
   public func trackThanksPageViewed(project: Project, reward: Reward, checkoutData: CheckoutPropertiesData?) {
     var props = projectProperties(from: project)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      
+
     if let checkoutData = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
     }
-    
+
     self.track(event: DataLakeWhiteListedEvent.thanksPageViewed.rawValue, properties: props)
   }
 

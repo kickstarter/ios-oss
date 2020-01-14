@@ -99,7 +99,6 @@ final class ThanksViewModelTests: TestCase {
 
   func testRatingAlert_Initial() {
     withEnvironment(currentUser: .template) {
-
       showRatingAlert.assertValueCount(0, "Rating Alert does not emit")
 
       self.vm.inputs.configure(with: (Project.template, Reward.template, nil))
@@ -212,8 +211,10 @@ final class ThanksViewModelTests: TestCase {
       vm.inputs.gamesNewsletterSignupButtonTapped()
 
       showGamesNewsletterOptInAlert.assertValues(["Kickstarter Loves Games"], "Opt-in alert emits with title")
-      XCTAssertEqual(["Thanks Page Viewed", "Subscribed To Newsletter", "Newsletter Subscribe"],
-                     self.trackingClient.events)
+      XCTAssertEqual(
+        ["Thanks Page Viewed", "Subscribed To Newsletter", "Newsletter Subscribe"],
+        self.trackingClient.events
+      )
     }
   }
 
@@ -241,9 +242,11 @@ final class ThanksViewModelTests: TestCase {
       goToProjects.assertValueCount(1)
       goToRefTag.assertValues([.thanks])
       XCTAssertEqual(
-        ["Triggered App Store Rating Dialog",
-         "Thanks Page Viewed",
-         "Checkout Finished Discover Open Project"],
+        [
+          "Triggered App Store Rating Dialog",
+          "Thanks Page Viewed",
+          "Checkout Finished Discover Open Project"
+        ],
         self.trackingClient.events
       )
     }
@@ -287,15 +290,17 @@ final class ThanksViewModelTests: TestCase {
   }
 
   func testThanksPageViewed_Properties() {
-    let checkoutData = Koala.CheckoutPropertiesData(amount: "10.00",
-                                                    estimatedDelivery: nil,
-                                                    paymentType: "CREDIT_CARD",
-                                                    revenueInUsdCents: 500,
-                                                    rewardId: 2,
-                                                    rewardTitle: "SUPER reward",
-                                                    shippingEnabled: false,
-                                                    shippingAmount: nil,
-                                                    userHasStoredApplePayCard: true)
+    let checkoutData = Koala.CheckoutPropertiesData(
+      amount: "10.00",
+      estimatedDelivery: nil,
+      paymentType: "CREDIT_CARD",
+      revenueInUsdCents: 500,
+      rewardId: 2,
+      rewardTitle: "SUPER reward",
+      shippingEnabled: false,
+      shippingAmount: nil,
+      userHasStoredApplePayCard: true
+    )
 
     self.vm.inputs.configure(with: (Project.template, Reward.template, checkoutData))
     self.vm.inputs.viewDidLoad()
@@ -324,7 +329,7 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertEqual(false, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
 
     XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
-    
+
     // Project properties
     XCTAssertEqual(1, props?["project_pid"] as? Int)
   }
