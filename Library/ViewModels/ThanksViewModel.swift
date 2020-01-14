@@ -188,9 +188,12 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
         AppEnvironment.current.koala.trackTriggeredAppStoreRatingDialog(project: project)
       }
     
-    Signal.combineLatest(self.configureWithDataProperty.signal.skipNil(), self.viewDidLoadProperty.signal.ignoreValues())
+    Signal.combineLatest(self.configureWithDataProperty.signal.skipNil(),
+                         self.viewDidLoadProperty.signal.ignoreValues())
       .map(first)
-      .observeValues { AppEnvironment.current.koala.trackThanksPageViewed(project: $0.project, reward: $0.reward, checkoutData: $0.checkoutData) }
+      .observeValues { AppEnvironment.current.koala.trackThanksPageViewed(project: $0.project,
+                                                                          reward: $0.reward,
+                                                                          checkoutData: $0.checkoutData) }
   }
 
   // MARK: - ThanksViewModelType

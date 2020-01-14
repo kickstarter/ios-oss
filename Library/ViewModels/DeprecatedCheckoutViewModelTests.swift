@@ -16,6 +16,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
   fileprivate let goToPaymentAuthorization = TestObserver<NSDictionary, Never>()
   fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
   fileprivate let goToThanksProject = TestObserver<Project, Never>()
+  fileprivate let goToThanksReward = TestObserver<Reward, Never>()
+  fileprivate let goToThanksCheckoutData = TestObserver<Koala.CheckoutPropertiesData?, Never>()
   fileprivate let goToWebModal = TestObserver<URLRequest, Never>()
   fileprivate let goToLoginSignupIntent = TestObserver<LoginIntent, Never>()
   fileprivate let goToLoginSignupProject = TestObserver<Project, Never>()
@@ -37,6 +39,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       .observe(self.goToPaymentAuthorization.observer)
     self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
     self.vm.outputs.goToThanks.map(first).observe(self.goToThanksProject.observer)
+    self.vm.outputs.goToThanks.map(second).observe(self.goToThanksReward.observer)
+    self.vm.outputs.goToThanks.map(third).observe(self.goToThanksCheckoutData.observer)
     self.vm.outputs.goToWebModal.observe(self.goToWebModal.observer)
     self.vm.outputs.goToLoginSignup.map(first).observe(self.goToLoginSignupIntent.observer)
     self.vm.outputs.goToLoginSignup.map(second).observe(self.goToLoginSignupProject.observer)
@@ -305,6 +309,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
       // 5: Redirect to thanks
       self.goToThanksProject.assertDidNotEmitValue()
+      self.goToThanksReward.assertDidNotEmitValue()
+      self.goToThanksCheckoutData.assertDidNotEmitValue()
       self.webViewLoadRequestURL.assertValueCount(4)
 
       XCTAssertFalse(
@@ -316,7 +322,9 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
         ),
         "Not prepared"
       )
-      self.goToThanksProject.assertValueCount(1)
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([Reward.template])
+      self.goToThanksCheckoutData.assertValues([nil])
     }
 
     self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
@@ -380,6 +388,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
       // 3: Redirect to thanks
       self.goToThanksProject.assertDidNotEmitValue()
+      self.goToThanksReward.assertDidNotEmitValue()
+      self.goToThanksCheckoutData.assertDidNotEmitValue()
       self.webViewLoadRequestURL.assertValueCount(3)
 
       XCTAssertFalse(
@@ -389,7 +399,9 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
         ),
         "Don't go to the URL since we handle it with a native thanks screen."
       )
-      self.goToThanksProject.assertValueCount(1)
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([Reward.template])
+      self.goToThanksCheckoutData.assertValues([nil])
     }
 
     self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
@@ -453,6 +465,9 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
       // 3: Redirect to thanks
       self.goToThanksProject.assertDidNotEmitValue()
+      self.goToThanksReward.assertDidNotEmitValue()
+      self.goToThanksCheckoutData.assertDidNotEmitValue()
+
       self.webViewLoadRequestURL.assertValueCount(3)
 
       XCTAssertFalse(
@@ -462,7 +477,9 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
         ),
         "Don't go to the URL since we handle it with a native thanks screen."
       )
-      self.goToThanksProject.assertValueCount(1)
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([Reward.template])
+      self.goToThanksCheckoutData.assertValues([nil])
     }
 
     self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
@@ -617,6 +634,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
       // 3: Redirect to thanks
       self.goToThanksProject.assertDidNotEmitValue()
+      self.goToThanksReward.assertDidNotEmitValue()
+      self.goToThanksCheckoutData.assertDidNotEmitValue()
 
       XCTAssertFalse(
         self.vm.inputs.shouldStartLoad(
@@ -625,7 +644,9 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
         ),
         "Don't go to the URL since we handle it with a native thanks screen."
       )
-      self.goToThanksProject.assertValueCount(1)
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([Reward.template])
+      self.goToThanksCheckoutData.assertValues([nil])
     }
 
     self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
@@ -727,6 +748,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
       // 3: Checkout is racing, delay a second to check status (failed!), then display failure alert.
       self.goToThanksProject.assertDidNotEmitValue()
+      self.goToThanksReward.assertDidNotEmitValue()
+      self.goToThanksCheckoutData.assertDidNotEmitValue()
       self.webViewLoadRequestURL.assertValueCount(3)
 
       XCTAssertFalse(
@@ -738,7 +761,9 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
       self.showAlert.assertValueCount(0)
 
       self.scheduler.advance(by: .seconds(1))
-      self.goToThanksProject.assertValueCount(0)
+      self.goToThanksProject.assertDidNotEmitValue()
+      self.goToThanksReward.assertDidNotEmitValue()
+      self.goToThanksCheckoutData.assertDidNotEmitValue()
       self.showAlert.assertValues([failedEnvelope.stateReason])
 
       // 4: Alert dismissed, pop view controller
@@ -810,6 +835,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
       // 3: Checkout is racing, delay a second to check status (successful!), then go to thanks.
       self.goToThanksProject.assertDidNotEmitValue()
+      self.goToThanksReward.assertDidNotEmitValue()
+      self.goToThanksCheckoutData.assertDidNotEmitValue()
       self.webViewLoadRequestURL.assertValueCount(3)
 
       XCTAssertFalse(
@@ -821,7 +848,9 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
       self.scheduler.advance(by: .seconds(1))
       self.showAlert.assertValueCount(0)
-      self.goToThanksProject.assertValueCount(1)
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([Reward.template])
+      self.goToThanksCheckoutData.assertValues([nil])
     }
 
     self.evaluateJavascript.assertValueCount(0, "No javascript was evaluated.")
@@ -1034,6 +1063,8 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
 
       // 5: Redirect to thanks
       self.goToThanksProject.assertDidNotEmitValue()
+      self.goToThanksReward.assertDidNotEmitValue()
+      self.goToThanksCheckoutData.assertDidNotEmitValue()
       self.webViewLoadRequestURL.assertValueCount(3)
 
       XCTAssertFalse(
@@ -1043,7 +1074,9 @@ final class DeprecatedCheckoutViewModelTests: TestCase {
         ),
         "Don't go to the URL since we handle it with a native thanks screen."
       )
-      self.goToThanksProject.assertValueCount(1)
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([Reward.template])
+      self.goToThanksCheckoutData.assertValues([nil])
     }
   }
 
