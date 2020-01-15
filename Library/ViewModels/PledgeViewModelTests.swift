@@ -1133,6 +1133,11 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToThanks.assertValues([project])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed"],
+        self.trackingClient.events
+      )
     }
   }
 
@@ -1190,10 +1195,15 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToThanks.assertValues([project])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed"],
+        self.trackingClient.events
+      )
     }
   }
 
-  func testGoToThanks_WhenStripeTokenCreated_ReturnsFailure() {
+  func testApplePay_WhenStripeTokenCreated_IsNil_ReturnsFailure() {
     withEnvironment(apiService: MockService()) {
       let project = Project.template
       let reward = Reward.noReward
@@ -1220,6 +1230,12 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToThanks.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed"],
+        self.trackingClient.events
+      )
+      XCTAssertEqual([nil], self.trackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -1259,6 +1275,12 @@ final class PledgeViewModelTests: TestCase {
 
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.goToThanks.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed"],
+        self.trackingClient.events
+      )
+      XCTAssertEqual([nil], self.trackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -1305,6 +1327,11 @@ final class PledgeViewModelTests: TestCase {
       self.submitButtonIsLoading.assertValues([true, false])
       self.goToThanks.assertValues([.template])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        self.trackingClient.events
+      )
     }
   }
 
@@ -1348,6 +1375,12 @@ final class PledgeViewModelTests: TestCase {
       self.submitButtonIsLoading.assertValues([true, false])
       self.goToThanks.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        self.trackingClient.events
+      )
+      XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -3064,6 +3097,11 @@ final class PledgeViewModelTests: TestCase {
       self.submitButtonEnabled.assertValues([false, true, false, true])
       self.goToThanks.assertValues([project])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        self.trackingClient.events
+      )
     }
   }
 
@@ -3134,6 +3172,12 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertValues(
         ["The operation couldn’t be completed. (KsApi.GraphError error 5.)"]
       )
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        self.trackingClient.events
+      )
+      XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -3202,6 +3246,12 @@ final class PledgeViewModelTests: TestCase {
       self.submitButtonEnabled.assertValues([false, true, false, true])
       self.goToThanks.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        self.trackingClient.events
+      )
+      XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
     }
   }
 
