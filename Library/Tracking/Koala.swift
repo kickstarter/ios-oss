@@ -395,6 +395,18 @@ public final class Koala {
     }
   }
 
+  public struct CheckoutPropertiesData {
+    let amount: String
+    let estimatedDelivery: TimeInterval?
+    let paymentType: String?
+    let revenueInUsdCents: Int
+    let rewardId: Int
+    let rewardTitle: String?
+    let shippingEnabled: Bool
+    let shippingAmount: Double?
+    let userHasStoredApplePayCard: Bool
+  }
+
   public init(
     bundle: NSBundleType = Bundle.main,
     dataLakeClient: TrackingClientType = TrackingClient(.dataLake),
@@ -2044,8 +2056,8 @@ public final class Koala {
       .keys
       .sorted()
 
-    props["apple_pay_capable"] = PKPaymentAuthorizationViewController.applePayCapable()
-    props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
+    props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
+    props["apple_pay_device"] = AppEnvironment.current.applePayCapabilities.applePayDevice()
     props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
     props["client_type"] = "native"
     props["current_variants"] = self.config?.abExperimentsArray.sorted()
@@ -2221,6 +2233,25 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
   result["minimum"] = reward.minimum
   result["shipping_enabled"] = reward.shipping.enabled
   result["shipping_preference"] = reward.shipping.preference?.trackingString
+
+  return result.prefixedKeys(prefix)
+}
+
+// MARK: - Checkout Properties
+
+private func checkoutProperties(from data: Koala.CheckoutPropertiesData, prefix: String = "checkout_")
+  -> [String: Any] {
+  var result: [String: Any] = [:]
+
+  result["amount"] = data.amount
+  result["payment_type"] = data.paymentType
+  result["reward_id"] = data.rewardId
+  result["reward_title"] = data.rewardTitle
+  result["shipping_amount"] = data.shippingAmount
+  result["revenue_in_usd_cents"] = data.revenueInUsdCents
+  result["reward_estimated_delivery_on"] = data.estimatedDelivery
+  result["reward_shipping_enabled"] = data.shippingEnabled
+  result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
   return result.prefixedKeys(prefix)
 }

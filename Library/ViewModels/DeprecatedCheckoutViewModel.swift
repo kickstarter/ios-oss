@@ -240,7 +240,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
 
     self.setStripeAppleMerchantIdentifier = applePayCapable
       .filter(isTrue)
-      .mapConst(PKPaymentAuthorizationViewController.merchantIdentifier)
+      .mapConst(Secrets.ApplePay.merchantIdentifier)
 
     self.setStripePublishableKey = applePayCapable
       .filter(isTrue)

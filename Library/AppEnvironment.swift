@@ -128,6 +128,7 @@ public struct AppEnvironment: AppEnvironmentType {
   public static func pushEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
+    applePayCapable: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
@@ -157,6 +158,7 @@ public struct AppEnvironment: AppEnvironmentType {
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
+        applePayCapable: applePayCapable,
         application: application,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
@@ -190,6 +192,7 @@ public struct AppEnvironment: AppEnvironmentType {
   public static func replaceCurrentEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
+    applePayCapable: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
@@ -219,6 +222,7 @@ public struct AppEnvironment: AppEnvironmentType {
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
+        applePayCapable: applePayCapable,
         application: application,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
