@@ -634,18 +634,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       self.didUpdateConfigProperty.signal
     )
     .filter { _ in featureQualtricsIsEnabled() }
-    .map { _ in
-      .init(
-        brandId: Secrets.Qualtrics.brandId,
-        zoneId: Secrets.Qualtrics.zoneId,
-        interceptId: QualtricsIntercept.survey.interceptId,
-        stringProperties: [
-          "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith(""),
-          "language": AppEnvironment.current.language.rawValue,
-          "logged_in": "\(AppEnvironment.current.currentUser != nil)"
-        ]
-      )
-    }
+    .ignoreValues()
+    .map(qualtricsConfigData)
 
     self.evaluateQualtricsTargetingLogic = self.qualtricsInitializedWithResultProperty.signal
       .skipNil()
@@ -1058,4 +1048,22 @@ private func visitorCookies() -> [HTTPCookie] {
     )
   )
   .compact()
+}
+
+private func qualtricsConfigData() -> QualtricsConfigData {
+  return .init(
+    brandId: Secrets.Qualtrics.brandId,
+    zoneId: Secrets.Qualtrics.zoneId,
+    interceptId: QualtricsIntercept.survey.interceptId,
+    stringProperties: [
+      "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier,
+      "language": AppEnvironment.current.language.rawValue,
+      "logged_in": "\(AppEnvironment.current.currentUser != nil)",
+      "distinct_id": AppEnvironment.current.device.identifierForVendor?.uuidString,
+      "user_uid": AppEnvironment.current.currentUser.flatMap { $0.id }.map(String.init),
+      "hours_since_joined": AppEnvironment.current.currentUser?
+        .hoursSinceJoined(AppEnvironment.current.dateType.init().date).flatMap(String.init)
+    ]
+    .compact()
+  )
 }

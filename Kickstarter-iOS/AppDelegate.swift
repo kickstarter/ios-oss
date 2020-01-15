@@ -384,9 +384,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   // MARK: - Qualtrics Configuration
 
   private func configureQualtrics(with config: QualtricsConfigData) {
-    let properties = Properties()
     config.stringProperties.forEach { key, value in
-      properties.setString(string: value, for: key)
+      Qualtrics.shared.properties.setString(string: value, for: key)
     }
 
     Qualtrics.shared.initialize(

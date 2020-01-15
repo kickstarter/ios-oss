@@ -8,6 +8,7 @@ public struct User {
   public var id: Int
   public var isAdmin: Bool?
   public var isFriend: Bool?
+  public var joinDate: Date?
   public var location: Location?
   public var name: String
   public var needsFreshFacebookToken: Bool?
@@ -93,6 +94,12 @@ public struct User {
 
     return createdProjectsCount > 1
   }
+
+  public func hoursSinceJoined(_ now: Date = Date()) -> Int? {
+    guard let joinDate = self.joinDate else { return nil }
+
+    return Calendar.current.dateComponents([.hour], from: joinDate, to: now).hour
+  }
 }
 
 extension User: Equatable {}
@@ -115,6 +122,7 @@ extension User: Argo.Decodable {
     let tmp2 = tmp1
       <*> json <|? "is_admin"
       <*> json <|? "is_friend"
+      <*> (json <|? "join_date" >>- decodedDate)
       <*> (json <|? "location" <|> .success(nil))
     let tmp3 = tmp2
       <*> json <| "name"
@@ -138,6 +146,7 @@ extension User: EncodableType {
     result["id"] = self.id
     result["is_admin"] = self.isAdmin ?? false
     result["is_friend"] = self.isFriend ?? false
+    result["join_date"] = dateToString(self.joinDate)
     result["location"] = self.location?.encode()
     result["name"] = self.name
     result["opted_out_of_recommendations"] = self.optedOutOfRecommendations ?? false
@@ -312,4 +321,24 @@ extension User.Stats: EncodableType {
     result["unread_messages_count"] = self.unreadMessagesCount
     return result
   }
+}
+
+private func joinDateFormatter() -> DateFormatter {
+  let dateFormatter = DateFormatter()
+  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssX"
+  dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+  return dateFormatter
+}
+
+private func decodedDate(_ dateString: String?) -> Decoded<Date?> {
+  guard let dateString = dateString else { return .success(nil) }
+
+  return .success(joinDateFormatter().date(from: dateString))
+}
+
+private func dateToString(_ date: Date?) -> String? {
+  guard let date = date else { return nil }
+
+  return joinDateFormatter().string(from: date)
 }
