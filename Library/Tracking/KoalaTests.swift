@@ -396,7 +396,7 @@ final class KoalaTests: TestCase {
     let project = Project.cosmicSurgery
     let reward = Reward.template
 
-    koala.trackRewardClicked(project: project, reward: reward, screen: .backThisPage)
+    koala.trackRewardClicked(project: project, reward: reward)
 
     let props = client.properties.last
 
@@ -418,7 +418,7 @@ final class KoalaTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5.0
 
-    koala.trackRewardClicked(project: project, reward: reward, screen: .backThisPage)
+    koala.trackRewardClicked(project: project, reward: reward)
 
     let props = client.properties.last
 
@@ -441,7 +441,7 @@ final class KoalaTests: TestCase {
       |> Reward.lens.shipping .~ (Reward.Shipping.template
         |> Reward.Shipping.lens.preference .~ Reward.Shipping.Preference.restricted)
 
-    koala.trackRewardClicked(project: project, reward: reward, screen: .backThisPage)
+    koala.trackRewardClicked(project: project, reward: reward)
 
     let props = client.properties.last
 
@@ -452,7 +452,7 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
 
-    koala.trackCheckoutPaymentPageViewed(project: .template, reward: .template)
+    koala.trackCheckoutPaymentPageViewed(project: .template, reward: .template, refTag: RefTag.activity)
 
     let props = client.properties.last
 
@@ -460,10 +460,8 @@ final class KoalaTests: TestCase {
 
     assertProjectProperties(props)
     assertPledgeProperties(props)
-  }
 
-  func testTrackThanksPageViewed() {
-
+    XCTAssertEqual("activity", props?["session_ref_tag"] as? String)
   }
 
   func testTrackViewedPaymentMethods() {
@@ -714,8 +712,7 @@ final class KoalaTests: TestCase {
 
     koala.trackRewardClicked(
       project: project,
-      reward: reward,
-      screen: .backThisPage
+      reward: reward
     )
 
     let properties = client.properties.last

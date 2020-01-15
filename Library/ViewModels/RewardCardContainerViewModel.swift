@@ -83,8 +83,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
       .observeValues { project, reward in
         AppEnvironment.current.koala.trackRewardClicked(
           project: project,
-          reward: reward,
-          screen: .backThisPage
+          reward: reward
         )
       }
   }
