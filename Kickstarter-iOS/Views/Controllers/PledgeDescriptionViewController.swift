@@ -185,7 +185,9 @@ private func estimatedDeliveryStackViewStyle(_ isAccessibilityCategory: Bool) ->
 private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
   _ = textView
     |> tappableLinksViewStyle
+    |> \.font .~ UIFont.ksr_caption1()
     |> \.attributedText .~ attributedLearnMoreText()
+    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.accessibilityTraits .~ [.staticText]
 
   return textView
@@ -229,8 +231,7 @@ private func attributedLearnMoreText() -> NSAttributedString? {
   let storeString = Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life()
   let accountabilityString = Strings.Learn_more_about_accountability()
   let fullString = storeString + " " + accountabilityString
-
-  guard let attributedString = checkoutAttributedLink(with: fullString) else { return nil }
+  let attributedString = NSAttributedString(string: fullString)
 
   return attributedString.setAsLink(textToFind: accountabilityString, linkURL: trustLink)
 }
