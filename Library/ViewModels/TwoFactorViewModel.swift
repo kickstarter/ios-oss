@@ -134,6 +134,9 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
           userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]
         )
       ))
+
+    self.viewDidLoadProperty.signal
+      .observeValues { AppEnvironment.current.koala.track2FAViewed() }
   }
 
   fileprivate let codeProperty = MutableProperty<String?>(nil)
