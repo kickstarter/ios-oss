@@ -3,8 +3,10 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public typealias ThanksPageData = (project: Project, reward: Reward,
-  checkoutData: Koala.CheckoutPropertiesData?)
+public typealias ThanksPageData = (
+  project: Project, reward: Reward,
+  checkoutData: Koala.CheckoutPropertiesData?
+)
 
 public protocol ThanksViewModelInputs {
   /// Call to configure the VM

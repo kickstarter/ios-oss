@@ -170,8 +170,10 @@ final class ThanksViewModelTests: TestCase {
 
       updateUserInEnvironment.assertValueCount(1)
       showGamesNewsletterOptInAlert.assertValueCount(0, "Opt-in alert does not emit")
-      XCTAssertEqual(["Thanks Page Viewed", "Subscribed To Newsletter", "Newsletter Subscribe"],
-                     self.trackingClient.events)
+      XCTAssertEqual(
+        ["Thanks Page Viewed", "Subscribed To Newsletter", "Newsletter Subscribe"],
+        self.trackingClient.events
+      )
 
       vm.inputs.userUpdated()
 
