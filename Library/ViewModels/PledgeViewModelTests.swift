@@ -43,9 +43,9 @@ final class PledgeViewModelTests: TestCase {
   private let goToApplePayPaymentAuthorizationShippingRule = TestObserver<ShippingRule?, Never>()
   private let goToApplePayPaymentAuthorizationMerchantId = TestObserver<String, Never>()
 
+  private let goToThanksCheckoutData = TestObserver<Koala.CheckoutPropertiesData?, Never>()
   private let goToThanksProject = TestObserver<Project, Never>()
   private let goToThanksReward = TestObserver<Reward, Never>()
-  private let goToThanksCheckoutData = TestObserver<Koala.CheckoutPropertiesData?, Never>()
 
   private let notifyDelegateUpdatePledgeDidSucceedWithMessage = TestObserver<String, Never>()
 
@@ -1212,7 +1212,19 @@ final class PledgeViewModelTests: TestCase {
 
       self.scheduler.run()
 
+      let checkoutData = Koala.CheckoutPropertiesData(amount: "5.00",
+                                                      estimatedDelivery: nil,
+                                                      paymentType: "APPLE_PAY",
+                                                      revenueInUsdCents: 500,
+                                                      rewardId: 0,
+                                                      rewardTitle: nil,
+                                                      shippingEnabled: false,
+                                                      shippingAmount: nil,
+                                                      userHasStoredApplePayCard: true)
+
       self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([reward])
+      self.goToThanksCheckoutData.assertValues([checkoutData])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
@@ -1344,8 +1356,21 @@ final class PledgeViewModelTests: TestCase {
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false, true])
       self.submitButtonIsLoading.assertValues([true, false])
-      self.goToThanksProject.assertValues([.template])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      let checkoutData = Koala.CheckoutPropertiesData(amount: "25.00",
+                                                      estimatedDelivery: Reward.template.estimatedDeliveryOn,
+                                                      paymentType: "CREDIT_CARD",
+                                                      revenueInUsdCents: 2500,
+                                                      rewardId: Reward.template.id,
+                                                      rewardTitle: Reward.template.title,
+                                                      shippingEnabled: Reward.template.shipping.enabled,
+                                                      shippingAmount: nil,
+                                                      userHasStoredApplePayCard: true)
+
+      self.goToThanksProject.assertValues([.template])
+      self.goToThanksReward.assertValues([.template])
+      self.goToThanksCheckoutData.assertValues([checkoutData])
 
       XCTAssertEqual(
         ["Pledge Screen Viewed", "Pledge Button Clicked"],
@@ -3114,8 +3139,21 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanksProject.assertValues([project])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      let checkoutData = Koala.CheckoutPropertiesData(amount: "25.00",
+                                                      estimatedDelivery: Reward.template.estimatedDeliveryOn,
+                                                      paymentType: "CREDIT_CARD",
+                                                      revenueInUsdCents: 2500,
+                                                      rewardId: Reward.template.id,
+                                                      rewardTitle: Reward.template.title,
+                                                      shippingEnabled: Reward.template.shipping.enabled,
+                                                      shippingAmount: nil,
+                                                      userHasStoredApplePayCard: true)
+
+      self.goToThanksProject.assertValues([.template])
+      self.goToThanksReward.assertValues([.template])
+      self.goToThanksCheckoutData.assertValues([checkoutData])
 
       XCTAssertEqual(
         ["Pledge Screen Viewed", "Pledge Button Clicked"],
