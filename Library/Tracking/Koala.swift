@@ -341,17 +341,6 @@ public final class Koala {
     }
   }
 
-  public enum CheckoutContext {
-    case backThisPage
-    case projectPage
-
-    var trackingString: String {
-      switch self {
-      case .backThisPage: return "Back this page"
-      case .projectPage: return "Project page"
-      }
-    }
-  }
 
   /**
    Determines the place from which the update was presented.
@@ -599,10 +588,9 @@ public final class Koala {
 
   public func trackPledgeCTAButtonClicked(
     stateType: PledgeStateCTAType,
-    project: Project, screen: CheckoutContext
+    project: Project
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["screen": screen.trackingString])
 
     switch stateType {
     case .fix:

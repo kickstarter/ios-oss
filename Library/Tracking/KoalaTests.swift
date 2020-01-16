@@ -618,12 +618,9 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .fix, project: project, screen: .projectPage)
-
-    let properties = client.properties.last
+    koala.trackPledgeCTAButtonClicked(stateType: .fix, project: project)
 
     XCTAssertEqual(["Fix Pledge Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
   func testTrackPledgeCTAButtonClicked_PledgeState() {
@@ -633,12 +630,9 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .pledge, project: project, screen: .projectPage)
-
-    let properties = client.properties.last
+    koala.trackPledgeCTAButtonClicked(stateType: .pledge, project: project)
 
     XCTAssertEqual(["Project Page Pledge Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
   func testTrackPledgeCTAButtonClicked_ManageState() {
@@ -648,12 +642,9 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .manage, project: project, screen: .projectPage)
-
-    let properties = client.properties.last
+    koala.trackPledgeCTAButtonClicked(stateType: .manage, project: project)
 
     XCTAssertEqual(["Manage Pledge Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
   func testTrackPledgeCTAButtonClicked_ViewBackingState() {
@@ -663,12 +654,9 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .viewBacking, project: project, screen: .projectPage)
-
-    let properties = client.properties.last
+    koala.trackPledgeCTAButtonClicked(stateType: .viewBacking, project: project)
 
     XCTAssertEqual(["View Your Pledge Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
   func testTrackPledgeCTAButtonClicked_ViewRewardState() {
@@ -678,12 +666,9 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .viewRewards, project: project, screen: .projectPage)
-
-    let properties = client.properties.last
+    koala.trackPledgeCTAButtonClicked(stateType: .viewRewards, project: project)
 
     XCTAssertEqual(["View Rewards Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
   func testTrackPledgeCTAButtonClicked_ViewYourRewardsState() {
@@ -694,12 +679,9 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: user)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .viewYourRewards, project: project, screen: .projectPage)
-
-    let properties = client.properties.last
+    koala.trackPledgeCTAButtonClicked(stateType: .viewYourRewards, project: project)
 
     XCTAssertEqual(["View Your Rewards Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
   func testTrackSelectRewardButtonClicked() {
@@ -985,6 +967,9 @@ final class KoalaTests: TestCase {
     )
   }
 
+  /*
+   Helper for testing projectProperties from a template Project
+  */
   private func assertProjectProperties(_ props: [String: Any]?) {
     XCTAssertEqual(10, props?["project_backers_count"] as? Int)
     XCTAssertEqual("US", props?["project_country"] as? String)
@@ -1019,6 +1004,9 @@ final class KoalaTests: TestCase {
     XCTAssertNil(props?["project_prelaunch_activated"] as? Bool)
   }
 
+  /*
+   Helper for testing pledgeProperties from a template Reward
+   */
   private func assertPledgeProperties(_ props: [String: Any]?) {
     XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
@@ -1030,6 +1018,9 @@ final class KoalaTests: TestCase {
     XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
   }
 
+  /*
+   Helper for testing checkoutProperties from a template Koala.CheckoutPropertiesData
+   */
   private func assertCheckoutProperties(_ props: [String: Any]?) {
     XCTAssertEqual("20.00", props?["checkout_amount"] as? String)
     XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
