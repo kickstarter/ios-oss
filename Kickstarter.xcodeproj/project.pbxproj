@@ -371,7 +371,6 @@
 		8A8099F522E2143000373E66 /* RewardCardContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099EE22E2142C00373E66 /* RewardCardContainerViewModelTests.swift */; };
 		8A8099F622E2143400373E66 /* RewardCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099EF22E2142C00373E66 /* RewardCardViewModelTests.swift */; };
 		8A8099F822E2156E00373E66 /* RewardPledgeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099F722E2156E00373E66 /* RewardPledgeNavigationController.swift */; };
-		8A8099FD22E2172D00373E66 /* UISpringTimingParameters+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */; };
 		8AA117F323A414BF00F7E339 /* Qualtrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7953123A286D800998C79 /* Qualtrics.framework */; };
 		8AA117F523A4160800F7E339 /* MockQualtricsResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */; };
 		8AA5248F2384CA7900FD52CF /* EditorialProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5248E2384CA7900FD52CF /* EditorialProjectsViewController.swift */; };
@@ -1801,7 +1800,6 @@
 		8A8099EF22E2142C00373E66 /* RewardCardViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardViewModelTests.swift; sourceTree = "<group>"; };
 		8A8099F022E2142C00373E66 /* RewardCardContainerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardContainerViewModel.swift; sourceTree = "<group>"; };
 		8A8099F722E2156E00373E66 /* RewardPledgeNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardPledgeNavigationController.swift; sourceTree = "<group>"; };
-		8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISpringTimingParameters+Convenience.swift"; sourceTree = "<group>"; };
 		8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQualtricsResultType.swift; sourceTree = "<group>"; };
 		8AA5248E2384CA7900FD52CF /* EditorialProjectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorialProjectsViewController.swift; sourceTree = "<group>"; };
 		8AA524902384CAAC00FD52CF /* EditorialProjectsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorialProjectsViewModel.swift; sourceTree = "<group>"; };
@@ -3420,7 +3418,6 @@
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
 				A78537E11CB5422100385B73 /* UIScreenType.swift */,
 				A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */,
-				8A8099FB22E2172900373E66 /* UISpringTimingParameters+Convenience.swift */,
 				37FDAF702273B7FF00662CC8 /* UIStackView.swift */,
 				D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */,
 				37FDAFAA2273B86800662CC8 /* UIStackView+Tests.swift */,
@@ -4877,7 +4874,6 @@
 				7748438022D8DA3800508C9B /* Instantiable.swift in Sources */,
 				A73379481D0E36CA00C91445 /* Fonts.swift in Sources */,
 				370F52B3225426C700F159B9 /* UIApplication.swift in Sources */,
-				8A8099FD22E2172D00373E66 /* UISpringTimingParameters+Convenience.swift in Sources */,
 				D6BD66B323CCC9A8008694BB /* NSAttributedString+Link.swift in Sources */,
 				D64DDCDD235616B500DE0EA9 /* ManagePledgePaymentMethodViewModel.swift in Sources */,
 				015572731E79C4FF005FB8CC /* BackerDashboardProjectCellViewModel.swift in Sources */,
