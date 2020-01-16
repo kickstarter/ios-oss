@@ -44,6 +44,9 @@ public final class Koala {
     case selectRewardButtonClicked = "Select Reward Button Clicked"
     case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
     case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
+    case thanksPageViewed = "Thanks Page Viewed"
+    case forgotPasswordViewed = "Forgot Password Viewed"
+    case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
 
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
@@ -384,7 +387,7 @@ public final class Koala {
     }
   }
 
-  public struct CheckoutPropertiesData {
+  public struct CheckoutPropertiesData: Equatable {
     let amount: String
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
@@ -711,6 +714,17 @@ public final class Koala {
     self.track(event: "Add New Card Button Clicked", properties: props)
   }
 
+  public func trackThanksPageViewed(project: Project, reward: Reward, checkoutData: CheckoutPropertiesData?) {
+    var props = projectProperties(from: project)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+
+    if let checkoutData = checkoutData {
+      props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
+    }
+
+    self.track(event: DataLakeWhiteListedEvent.thanksPageViewed.rawValue, properties: props)
+  }
+
   public func trackCheckoutCancel(
     project: Project,
     reward: Reward,
@@ -899,11 +913,16 @@ public final class Koala {
    */
 
   public func trackSignupButtonClicked(
-    intent _: LoginIntent,
-    project _: Project? = nil,
-    reward _: Reward? = nil
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
   ) {
-    self.track(event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue)
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+
+    self.track(
+      event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue,
+      properties: props
+    )
   }
 
   public func trackSignupSubmitButtonClicked() {
@@ -912,6 +931,14 @@ public final class Koala {
 
   public func trackLoginSubmitButtonClicked() {
     self.track(event: DataLakeWhiteListedEvent.loginSubmitButtonClicked.rawValue)
+  }
+
+  public func trackForgotPasswordViewed() {
+    self.track(event: DataLakeWhiteListedEvent.forgotPasswordViewed.rawValue)
+  }
+
+  public func track2FAViewed() {
+    self.track(event: DataLakeWhiteListedEvent.twoFactorConfirmationViewed.rawValue)
   }
 
   private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)

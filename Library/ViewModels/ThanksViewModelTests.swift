@@ -47,8 +47,8 @@ final class ThanksViewModelTests: TestCase {
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
   }
 
-  func testdismissToRootViewController() {
-    self.vm.inputs.project(.template)
+  func testDismissToRootViewController() {
+    self.vm.inputs.configure(with: (Project.template, Reward.template, nil))
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.closeButtonTapped()
@@ -67,8 +67,8 @@ final class ThanksViewModelTests: TestCase {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      vm.inputs.project(project)
-      vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
 
@@ -78,7 +78,7 @@ final class ThanksViewModelTests: TestCase {
 
       goToDiscovery.assertValues([.illustration])
       XCTAssertEqual(
-        ["Triggered App Store Rating Dialog", "Checkout Finished Discover More"],
+        ["Triggered App Store Rating Dialog", "Thanks Page Viewed", "Checkout Finished Discover More"],
         self.trackingClient.events
       )
     }
@@ -86,7 +86,7 @@ final class ThanksViewModelTests: TestCase {
 
   func testDisplayBackedProjectText() {
     let project = .template |> Project.lens.category .~ .games
-    self.vm.inputs.project(project)
+    self.vm.inputs.configure(with: (project, Reward.template, nil))
     self.vm.inputs.viewDidLoad()
 
     self.backedProjectText.assertValues(
@@ -99,15 +99,14 @@ final class ThanksViewModelTests: TestCase {
 
   func testRatingAlert_Initial() {
     withEnvironment(currentUser: .template) {
-      vm.inputs.project(Project.template)
-
       showRatingAlert.assertValueCount(0, "Rating Alert does not emit")
 
-      vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (Project.template, Reward.template, nil))
+      self.vm.inputs.viewDidLoad()
 
       showRatingAlert.assertValueCount(1, "Rating Alert emits when view did load")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not emit")
-      XCTAssertEqual(["Triggered App Store Rating Dialog"], self.trackingClient.events)
+      XCTAssertEqual(["Triggered App Store Rating Dialog", "Thanks Page Viewed"], self.trackingClient.events)
     }
   }
 
@@ -118,8 +117,9 @@ final class ThanksViewModelTests: TestCase {
         "Newsletter pref is not set"
       )
 
-      vm.inputs.project(.template |> Project.lens.category .~ .games)
-      vm.inputs.viewDidLoad()
+      let project = Project.template |> Project.lens.category .~ .games
+      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.viewDidLoad()
 
       showRatingAlert.assertValueCount(0, "Rating alert does not show on games project")
       showGamesNewsletterAlert.assertValueCount(1, "Games alert shows on games project")
@@ -134,7 +134,7 @@ final class ThanksViewModelTests: TestCase {
       let secondShowGamesNewsletterAlert = TestObserver<(), Never>()
       secondVM.outputs.showGamesNewsletterAlert.observe(secondShowGamesNewsletterAlert.observer)
 
-      secondVM.inputs.project(.template |> Project.lens.category .~ .games)
+      secondVM.inputs.configure(with: (project, Reward.template, nil))
       secondVM.inputs.viewDidLoad()
 
       secondShowRatingAlert.assertValueCount(1, "Rating alert shows on games project")
@@ -145,19 +145,22 @@ final class ThanksViewModelTests: TestCase {
   func testGamesNewsletterAlert_ShouldNotShow_WhenUserIsSubscribed() {
     let newsletters = User.NewsletterSubscriptions.template |> User.NewsletterSubscriptions.lens.games .~ true
     let user = User.template |> \.newsletters .~ newsletters
+    let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(currentUser: user) {
-      vm.inputs.project(.template |> Project.lens.category .~ .games)
-      vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.viewDidLoad()
 
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not show on games project")
     }
   }
 
   func testGamesNewsletterSignup() {
+    let project = Project.template |> Project.lens.category .~ .games
+
     withEnvironment(currentUser: .template) {
-      vm.inputs.project(.template |> Project.lens.category .~ .games)
-      vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.viewDidLoad()
 
       showGamesNewsletterAlert.assertValueCount(1)
 
@@ -167,7 +170,10 @@ final class ThanksViewModelTests: TestCase {
 
       updateUserInEnvironment.assertValueCount(1)
       showGamesNewsletterOptInAlert.assertValueCount(0, "Opt-in alert does not emit")
-      XCTAssertEqual(["Subscribed To Newsletter", "Newsletter Subscribe"], trackingClient.events)
+      XCTAssertEqual(
+        ["Thanks Page Viewed", "Subscribed To Newsletter", "Newsletter Subscribe"],
+        self.trackingClient.events
+      )
 
       vm.inputs.userUpdated()
 
@@ -197,16 +203,21 @@ final class ThanksViewModelTests: TestCase {
   }
 
   func testGamesNewsletterOptInAlert() {
+    let project = Project.template |> Project.lens.category .~ .games
+
     withEnvironment(countryCode: "DE", currentUser: User.template) {
-      vm.inputs.project(.template |> Project.lens.category .~ .games)
-      vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.viewDidLoad()
 
       showGamesNewsletterAlert.assertValueCount(1)
 
       vm.inputs.gamesNewsletterSignupButtonTapped()
 
       showGamesNewsletterOptInAlert.assertValues(["Kickstarter Loves Games"], "Opt-in alert emits with title")
-      XCTAssertEqual(["Subscribed To Newsletter", "Newsletter Subscribe"], trackingClient.events)
+      XCTAssertEqual(
+        ["Thanks Page Viewed", "Subscribed To Newsletter", "Newsletter Subscribe"],
+        self.trackingClient.events
+      )
     }
   }
 
@@ -221,8 +232,8 @@ final class ThanksViewModelTests: TestCase {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      vm.inputs.project(project)
-      vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
 
@@ -234,7 +245,11 @@ final class ThanksViewModelTests: TestCase {
       goToProjects.assertValueCount(1)
       goToRefTag.assertValues([.thanks])
       XCTAssertEqual(
-        ["Triggered App Store Rating Dialog", "Checkout Finished Discover Open Project"],
+        [
+          "Triggered App Store Rating Dialog",
+          "Thanks Page Viewed",
+          "Checkout Finished Discover Open Project"
+        ],
         self.trackingClient.events
       )
     }
@@ -251,10 +266,11 @@ final class ThanksViewModelTests: TestCase {
     ]
 
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
+    let project = Project.template |> Project.lens.id .~ 12
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      vm.inputs.project(.template |> Project.lens.id .~ 12)
-      vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
 
@@ -264,14 +280,60 @@ final class ThanksViewModelTests: TestCase {
 
   func testRecommendationsWithoutProjects() {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ []
+    let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      vm.inputs.project(.template |> Project.lens.category .~ .games)
-      vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
 
       showRecommendations.assertValueCount(0, "Recommended projects did not emit")
     }
+  }
+
+  func testThanksPageViewed_Properties() {
+    let checkoutData = Koala.CheckoutPropertiesData(
+      amount: "10.00",
+      estimatedDelivery: nil,
+      paymentType: "CREDIT_CARD",
+      revenueInUsdCents: 500,
+      rewardId: 2,
+      rewardTitle: "SUPER reward",
+      shippingEnabled: false,
+      shippingAmount: nil,
+      userHasStoredApplePayCard: true
+    )
+
+    self.vm.inputs.configure(with: (Project.template, Reward.template, checkoutData))
+    self.vm.inputs.viewDidLoad()
+
+    let props = self.trackingClient.properties.last
+
+    XCTAssertEqual(["Triggered App Store Rating Dialog", "Thanks Page Viewed"], self.trackingClient.events)
+
+    // Checkout properties
+    XCTAssertEqual("10.00", props?["checkout_amount"] as? String)
+    XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
+    XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
+    XCTAssertEqual(2, props?["checkout_reward_id"] as? Int)
+    XCTAssertEqual(500, props?["checkout_revenue_in_usd_cents"] as? Int)
+    XCTAssertEqual(false, props?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
+    XCTAssertNil(props?["checkout_shipping_amount"] as? Double)
+    XCTAssertNil(props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
+
+    // Pledge properties
+    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
+    XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(10.00, props?["pledge_backer_reward_minimum"] as? Double)
+    XCTAssertEqual(false, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
+
+    XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
+
+    // Project properties
+    XCTAssertEqual(1, props?["project_pid"] as? Int)
   }
 }
