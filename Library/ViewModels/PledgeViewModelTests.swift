@@ -3528,7 +3528,8 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.submitButtonTapped()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed", "Update Payment Method Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["Checkout Payment Page Viewed",
+                    "Update Payment Method Button Clicked"], self.trackingClient.events)
   }
 
   func testTrackingEvents_ContextIsUpdate() {
