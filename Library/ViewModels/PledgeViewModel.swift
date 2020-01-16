@@ -571,18 +571,27 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     initialData
-      .observeValues { project, reward, refTag, context in
-        AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(project: project,
-                                                                    reward: reward,
-                                                                    refTag: refTag)
-    }
-
-    contextAndProjectAndPledgeAmount
-      .takeWhen(createButtonTapped)
-      .observeValues { _, project, pledgeAmount in
-        AppEnvironment.current.koala.trackPledgeButtonClicked(
+      .observeValues { project, reward, refTag, _ in
+        AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(
           project: project,
-          pledgeAmount: pledgeAmount
+          reward: reward,
+          refTag: refTag
+        )
+      }
+
+    createBackingData
+      .takeWhen(createButtonTapped)
+      .map { data in
+        let checkoutData = checkoutPropertiesData(from: data, isApplePay: false)
+
+        return (data.project, data.reward, data.refTag, checkoutData)
+      }
+      .observeValues { project, reward, refTag, checkoutData in
+        AppEnvironment.current.koala.trackPledgeSubmitButtonClicked(
+          project: project,
+          reward: reward,
+          checkoutData: checkoutData,
+          refTag: refTag
         )
       }
   }

@@ -458,8 +458,8 @@ final class KoalaTests: TestCase {
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], client.events)
 
-    assertProjectProperties(props)
-    assertPledgeProperties(props)
+    self.assertProjectProperties(props)
+    self.assertPledgeProperties(props)
 
     XCTAssertEqual("activity", props?["session_ref_tag"] as? String)
   }
@@ -637,7 +637,7 @@ final class KoalaTests: TestCase {
 
     let properties = client.properties.last
 
-    XCTAssertEqual(["Back this Project Button Clicked"], client.events)
+    XCTAssertEqual(["Project Page Pledge Button Clicked"], client.events)
     XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
@@ -715,10 +715,7 @@ final class KoalaTests: TestCase {
       reward: reward
     )
 
-    let properties = client.properties.last
-
     XCTAssertEqual(["Select Reward Button Clicked"], client.events)
-    XCTAssertEqual("Back this page", properties?["pledge_context"] as? String)
   }
 
   func testTrackCancelPledgeButtonClicked() {
@@ -763,17 +760,23 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(50.00, properties?["pledge_total"] as? Double)
   }
 
-  func testTrackPledgeButtonClicked() {
+  func testTrackPledgeSubmitButtonClicked() {
     let client = MockTrackingClient()
-    let loggedInUser = User.template
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client)
 
-    koala.trackPledgeButtonClicked(project: .template, pledgeAmount: 30.00)
+    koala.trackPledgeSubmitButtonClicked(
+      project: .template,
+      reward: .template,
+      checkoutData: .template, refTag: nil
+    )
 
-    let properties = client.properties.last
+    let props = client.properties.last
 
-    XCTAssertEqual(["Pledge Button Clicked"], client.events)
-    XCTAssertEqual(30.00, properties?["pledge_total"] as? Double)
+    XCTAssertEqual(["Pledge Submit Button Clicked"], client.events)
+
+    self.assertProjectProperties(props)
+    self.assertPledgeProperties(props)
+    self.assertCheckoutProperties(props)
   }
 
   func testTrackAddNewCardButtonClicked() {
@@ -1026,4 +1029,30 @@ final class KoalaTests: TestCase {
 
     XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
   }
+
+  private func assertCheckoutProperties(_ props: [String: Any]?) {
+    XCTAssertEqual("20.00", props?["checkout_amount"] as? String)
+    XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
+    XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
+    XCTAssertEqual(2, props?["checkout_reward_id"] as? Int)
+    XCTAssertEqual(2_000, props?["checkout_revenue_in_usd_cents"] as? Int)
+    XCTAssertEqual(false, props?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
+    XCTAssertNil(props?["checkout_shipping_amount"] as? Double)
+    XCTAssertNil(props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
+  }
+}
+
+extension Koala.CheckoutPropertiesData {
+  static let template = Koala.CheckoutPropertiesData(
+    amount: "20.00",
+    estimatedDelivery: nil,
+    paymentType: "CREDIT_CARD",
+    revenueInUsdCents: 2_000,
+    rewardId: 2,
+    rewardTitle: "SUPER reward",
+    shippingEnabled: false,
+    shippingAmount: nil,
+    userHasStoredApplePayCard: true
+  )
 }
