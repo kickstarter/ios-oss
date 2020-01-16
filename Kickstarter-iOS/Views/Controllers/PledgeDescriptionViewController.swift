@@ -231,7 +231,14 @@ private func attributedLearnMoreText() -> NSAttributedString? {
   let storeString = Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life()
   let accountabilityString = Strings.Learn_more_about_accountability()
   let fullString = storeString + " " + accountabilityString
-  let attributedString = NSAttributedString(string: fullString)
+
+  guard let attributedString = try? NSAttributedString(
+    data: Data(fullString.utf8),
+    options: [
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
+    documentAttributes: nil
+  ) else { return nil }
 
   return attributedString.setAsLink(textToFind: accountabilityString, linkURL: trustLink)
 }
