@@ -62,8 +62,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     self.viewModel.outputs.loadProjectIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] project, visible in
-        self?.dataSource.load(project: project, visible: visible)
+      .observeValues { [weak self] project in
+        self?.dataSource.load(project: project)
         self?.tableView.reloadData()
       }
 
@@ -86,12 +86,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goToUpdates(project: $0) }
 
-    self.viewModel.outputs.goToRewardPledge
-      .observeForControllerAction()
-      .observeValues { [weak self] project, reward in
-        self?.goToRewardPledge(project: project, reward: reward)
-      }
-
     self.viewModel.outputs.goToDashboard
       .observeForControllerAction()
       .observeValues { [weak self] param in
@@ -102,8 +96,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   public override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let (_, rewardOrBacking) = self.dataSource[indexPath] as? (Project, Either<Reward, Backing>) {
       self.viewModel.inputs.tapped(rewardOrBacking: rewardOrBacking)
-    } else if self.dataSource.indexPathIsPledgeAnyAmountCell(indexPath) {
-      self.viewModel.inputs.tappedPledgeAnyAmount()
     } else if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
       self.viewModel.inputs.tappedComments()
     } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
@@ -113,8 +105,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
   public override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     if let cell = cell as? ProjectPamphletMainCell {
-      cell.delegate = self
-    } else if let cell = cell as? DeprecatedRewardCell {
       cell.delegate = self
     } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
       cell.delegate = self
@@ -131,23 +121,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
           self?.dismiss(animated: true, completion: nil)
         })
       }
-  }
-
-  fileprivate func goToRewardPledge(project: Project, reward: Reward) {
-    let applePayCapable = AppEnvironment.current.applePayCapabilities.applePayCapable(for: project)
-
-    let vc = DeprecatedRewardPledgeViewController.configuredWith(
-      project: project,
-      reward: reward,
-      applePayCapable: applePayCapable
-    )
-
-    let nav = UINavigationController(rootViewController: vc)
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = nav
-        |> \.modalPresentationStyle .~ .formSheet
-    }
-    self.present(nav, animated: true, completion: nil)
   }
 
   fileprivate func goToBacking(project: Project) {
@@ -254,14 +227,6 @@ extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
 
   public func videoViewControllerDidStart(_ controller: VideoViewController) {
     self.delegate?.videoViewControllerDidStart(controller)
-  }
-}
-
-extension ProjectPamphletContentViewController: DeprecatedRewardCellDelegate {
-  internal func rewardCellWantsExpansion(_ cell: DeprecatedRewardCell) {
-    cell.contentView.setNeedsUpdateConstraints()
-    self.tableView.beginUpdates()
-    self.tableView.endUpdates()
   }
 }
 

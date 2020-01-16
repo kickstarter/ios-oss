@@ -1,10 +1,6 @@
 import Foundation
 import KsApi
 
-public func experimentNativeCheckoutIsEnabled() -> Bool {
-  return Experiment.Name.nativeCheckoutV1.isEnabled()
-}
-
 extension Experiment.Name {
   fileprivate func isEnabled(in environment: Environment = AppEnvironment.current) -> Bool {
     guard

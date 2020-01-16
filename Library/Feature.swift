@@ -1,5 +1,7 @@
 import Foundation
 
+// TODO: remove nativeCheckout, nativeCheckoutPledgeView once we've refactored FeatureFlagToolsViewModelTests
+
 public enum Feature: String {
   case goRewardless = "ios_go_rewardless"
   case nativeCheckout = "ios_native_checkout"
