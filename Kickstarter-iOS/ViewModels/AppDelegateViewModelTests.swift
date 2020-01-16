@@ -2116,7 +2116,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertValueCount(1)
-      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], 1)
     }
   }
 }
