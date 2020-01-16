@@ -360,6 +360,7 @@
 		8A4DDAB52373429300ADE31D /* PledgeStatusLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */; };
 		8A4DDAB72373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */; };
 		8A4DDAB92374DF9F00ADE31D /* String+AttributedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB82374DF9F00ADE31D /* String+AttributedTests.swift */; };
+		8A61E1E423D1202000CA9603 /* MockQualtricsPropertiesType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */; };
 		8A73EACF2339528000FF9051 /* PledgeCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EACE2339528000FF9051 /* PledgeCreditCardViewModel.swift */; };
 		8A73EAD12339732900FF9051 /* PledgeCreditCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD02339732900FF9051 /* PledgeCreditCardViewModelTests.swift */; };
 		8A73EAD9233B00A500FF9051 /* NSMutableAttributedString+SetFontKeepingTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD8233B00A500FF9051 /* NSMutableAttributedString+SetFontKeepingTraits.swift */; };
@@ -1790,6 +1791,7 @@
 		8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModel.swift; sourceTree = "<group>"; };
 		8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModelTests.swift; sourceTree = "<group>"; };
 		8A4DDAB82374DF9F00ADE31D /* String+AttributedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AttributedTests.swift"; sourceTree = "<group>"; };
+		8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQualtricsPropertiesType.swift; sourceTree = "<group>"; };
 		8A73EACE2339528000FF9051 /* PledgeCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCreditCardViewModel.swift; sourceTree = "<group>"; };
 		8A73EAD02339732900FF9051 /* PledgeCreditCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCreditCardViewModelTests.swift; sourceTree = "<group>"; };
 		8A73EAD8233B00A500FF9051 /* NSMutableAttributedString+SetFontKeepingTraits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+SetFontKeepingTraits.swift"; sourceTree = "<group>"; };
@@ -2785,9 +2787,12 @@
 			children = (
 				379CFFED2242DAC300F6F0C2 /* DeprecatedWebViewController.swift */,
 				379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */,
+				8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */,
 				8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */,
 				379CFFF02242DAC400F6F0C2 /* Nib.swift */,
 				379CFFEB2242DAC200F6F0C2 /* NSBundle-Framework.swift */,
+				774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */,
+				1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */,
 				770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */,
 				8AD7953323A2C95000998C79 /* QualtricsTypes.swift */,
 				D76436D1224040B700DAFC9E /* SharedFunctions.swift */,
@@ -2800,8 +2805,6 @@
 				379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */,
 				7720BA6C22DE79260071FDA1 /* UIViewController+Presentation.swift */,
 				379CFFF12242DAC400F6F0C2 /* WebViewController.swift */,
-				774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */,
-				1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -5578,6 +5581,7 @@
 				A7ED20491E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift in Sources */,
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */,
+				8A61E1E423D1202000CA9603 /* MockQualtricsPropertiesType.swift in Sources */,
 				D60CAB922208A1B60083FA40 /* SelectCurrencyViewControllerTests.swift in Sources */,
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
 				77C25FBF2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift in Sources */,

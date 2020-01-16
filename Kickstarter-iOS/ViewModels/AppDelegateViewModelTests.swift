@@ -1882,6 +1882,10 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  // MARK: - Qualtrics
+
+  private let firstAppSessionKey = "first_app_session"
+
   func testQualtricsDisplaySurvey_FeatureFlagDisabled() {
     let config = Config.template
       |> \.features .~ [Feature.qualtrics.rawValue: false]
@@ -1904,10 +1908,13 @@ final class AppDelegateViewModelTests: TestCase {
     let config = Config.template
       |> \.features .~ [Feature.qualtrics.rawValue: true]
 
+    let mockQualtricsPropertiesType = MockQualtricsPropertiesType()
+
     withEnvironment(config: config) {
       self.configureQualtrics.assertDidNotEmitValue()
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
       self.vm.inputs.didUpdateConfig(config)
@@ -1927,24 +1934,31 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.vm.inputs.qualtricsInitialized(with: MockQualtricsResultType(passedResult: true))
 
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.scheduler.advance(by: .seconds(2))
 
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
-      self.vm.inputs.didEvaluateQualtricsTargetingLogic(with: MockQualtricsResultType(passedResult: true))
+      self.vm.inputs.didEvaluateQualtricsTargetingLogic(
+        with: MockQualtricsResultType(passedResult: true),
+        properties: mockQualtricsPropertiesType
+      )
 
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertValueCount(1)
       self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], 1)
     }
   }
 
@@ -1956,10 +1970,13 @@ final class AppDelegateViewModelTests: TestCase {
       |> User.lens.joinDate .~ AppEnvironment.current.calendar
       .date(byAdding: .hour, value: -24, to: MockDate.init().date)
 
+    let mockQualtricsPropertiesType = MockQualtricsPropertiesType()
+
     withEnvironment(config: config, currentUser: user) {
       self.configureQualtrics.assertDidNotEmitValue()
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
       self.vm.inputs.didUpdateConfig(config)
@@ -1979,24 +1996,31 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.vm.inputs.qualtricsInitialized(with: MockQualtricsResultType(passedResult: true))
 
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.scheduler.advance(by: .seconds(2))
 
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
-      self.vm.inputs.didEvaluateQualtricsTargetingLogic(with: MockQualtricsResultType(passedResult: true))
+      self.vm.inputs.didEvaluateQualtricsTargetingLogic(
+        with: MockQualtricsResultType(passedResult: true),
+        properties: mockQualtricsPropertiesType
+      )
 
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertValueCount(1)
       self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], 1)
     }
   }
 
@@ -2004,10 +2028,13 @@ final class AppDelegateViewModelTests: TestCase {
     let config = Config.template
       |> \.features .~ [Feature.qualtrics.rawValue: true]
 
+    let mockQualtricsPropertiesType = MockQualtricsPropertiesType()
+
     withEnvironment(config: config, currentUser: .template) {
       self.configureQualtrics.assertDidNotEmitValue()
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
       self.vm.inputs.didUpdateConfig(config)
@@ -2022,18 +2049,21 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.vm.inputs.qualtricsInitialized(with: MockQualtricsResultType(passedResult: false))
 
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.scheduler.advance(by: .seconds(2))
 
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
     }
   }
 
@@ -2041,10 +2071,13 @@ final class AppDelegateViewModelTests: TestCase {
     let config = Config.template
       |> \.features .~ [Feature.qualtrics.rawValue: true]
 
+    let mockQualtricsPropertiesType = MockQualtricsPropertiesType()
+
     withEnvironment(config: config, currentUser: .template) {
       self.configureQualtrics.assertDidNotEmitValue()
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
       self.vm.inputs.didUpdateConfig(config)
@@ -2059,24 +2092,31 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.vm.inputs.qualtricsInitialized(with: MockQualtricsResultType(passedResult: true))
 
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
       self.scheduler.advance(by: .seconds(2))
 
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
 
-      self.vm.inputs.didEvaluateQualtricsTargetingLogic(with: MockQualtricsResultType(passedResult: false))
+      self.vm.inputs.didEvaluateQualtricsTargetingLogic(
+        with: MockQualtricsResultType(passedResult: false),
+        properties: mockQualtricsPropertiesType
+      )
 
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertValueCount(1)
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], nil)
     }
   }
 }

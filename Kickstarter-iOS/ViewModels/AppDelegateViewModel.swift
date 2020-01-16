@@ -55,8 +55,10 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the user taps "OK" from the contextual alert.
   func didAcceptReceivingRemoteNotifications()
 
-  /// Call with the result of evaluating Qualtrics Targeting Logic
-  func didEvaluateQualtricsTargetingLogic(with result: QualtricsResultType)
+  /// Call with the result of evaluating Qualtrics Targeting Logic and current Qualtrics.Properties
+  func didEvaluateQualtricsTargetingLogic(
+    with result: QualtricsResultType, properties: QualtricsPropertiesType
+  )
 
   /// Call when the app delegate receives a remote notification.
   func didReceive(remoteNotification notification: [AnyHashable: Any])
@@ -645,7 +647,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.displayQualtricsSurvey = self.didEvaluateQualtricsTargetingLogicWithResultProperty.signal
       .skipNil()
-      .filter { $0.passed() }
+      .filter { result, _ in result.passed() }
+      .on(value: { _, properties in properties.setNumber(number: 1, for: "first_app_session") })
       .ignoreValues()
   }
 
@@ -711,6 +714,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.didAcceptReceivingRemoteNotificationsProperty.value = ()
   }
 
+  fileprivate let didEvaluateQualtricsTargetingLogicWithResultProperty
+    = MutableProperty<(QualtricsResultType, QualtricsPropertiesType)?>(nil)
+  public func didEvaluateQualtricsTargetingLogic(
+    with result: QualtricsResultType, properties: QualtricsPropertiesType
+  ) {
+    self.didEvaluateQualtricsTargetingLogicWithResultProperty.value = (result, properties)
+  }
+
   fileprivate let didUpdateConfigProperty = MutableProperty<Config?>(nil)
   public func didUpdateConfig(_ config: Config) {
     self.didUpdateConfigProperty.value = config
@@ -744,12 +755,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let qualtricsInitializedWithResultProperty = MutableProperty<QualtricsResultType?>(nil)
   public func qualtricsInitialized(with result: QualtricsResultType) {
     self.qualtricsInitializedWithResultProperty.value = result
-  }
-
-  fileprivate let didEvaluateQualtricsTargetingLogicWithResultProperty
-    = MutableProperty<QualtricsResultType?>(nil)
-  public func didEvaluateQualtricsTargetingLogic(with result: QualtricsResultType) {
-    self.didEvaluateQualtricsTargetingLogicWithResultProperty.value = result
   }
 
   fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
