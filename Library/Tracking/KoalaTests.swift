@@ -969,7 +969,7 @@ final class KoalaTests: TestCase {
 
   /*
    Helper for testing projectProperties from a template Project
-  */
+   */
   private func assertProjectProperties(_ props: [String: Any]?) {
     XCTAssertEqual(10, props?["project_backers_count"] as? Int)
     XCTAssertEqual("US", props?["project_country"] as? String)

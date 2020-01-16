@@ -344,7 +344,6 @@ public final class Koala {
     }
   }
 
-
   /**
    Determines the place from which the update was presented.
 
