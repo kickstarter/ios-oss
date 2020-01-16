@@ -1212,15 +1212,17 @@ final class PledgeViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      let checkoutData = Koala.CheckoutPropertiesData(amount: "5.00",
-                                                      estimatedDelivery: nil,
-                                                      paymentType: "APPLE_PAY",
-                                                      revenueInUsdCents: 500,
-                                                      rewardId: 0,
-                                                      rewardTitle: nil,
-                                                      shippingEnabled: false,
-                                                      shippingAmount: nil,
-                                                      userHasStoredApplePayCard: true)
+      let checkoutData = Koala.CheckoutPropertiesData(
+        amount: "5.00",
+        estimatedDelivery: nil,
+        paymentType: "APPLE_PAY",
+        revenueInUsdCents: 500,
+        rewardId: 0,
+        rewardTitle: nil,
+        shippingEnabled: false,
+        shippingAmount: nil,
+        userHasStoredApplePayCard: true
+      )
 
       self.goToThanksProject.assertValues([project])
       self.goToThanksReward.assertValues([reward])
@@ -1358,15 +1360,17 @@ final class PledgeViewModelTests: TestCase {
       self.submitButtonIsLoading.assertValues([true, false])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let checkoutData = Koala.CheckoutPropertiesData(amount: "25.00",
-                                                      estimatedDelivery: Reward.template.estimatedDeliveryOn,
-                                                      paymentType: "CREDIT_CARD",
-                                                      revenueInUsdCents: 2500,
-                                                      rewardId: Reward.template.id,
-                                                      rewardTitle: Reward.template.title,
-                                                      shippingEnabled: Reward.template.shipping.enabled,
-                                                      shippingAmount: nil,
-                                                      userHasStoredApplePayCard: true)
+      let checkoutData = Koala.CheckoutPropertiesData(
+        amount: "25.00",
+        estimatedDelivery: Reward.template.estimatedDeliveryOn,
+        paymentType: "CREDIT_CARD",
+        revenueInUsdCents: 2_500,
+        rewardId: Reward.template.id,
+        rewardTitle: Reward.template.title,
+        shippingEnabled: Reward.template.shipping.enabled,
+        shippingAmount: nil,
+        userHasStoredApplePayCard: true
+      )
 
       self.goToThanksProject.assertValues([.template])
       self.goToThanksReward.assertValues([.template])
@@ -3141,15 +3145,17 @@ final class PledgeViewModelTests: TestCase {
       self.submitButtonEnabled.assertValues([false, true, false, true])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let checkoutData = Koala.CheckoutPropertiesData(amount: "25.00",
-                                                      estimatedDelivery: Reward.template.estimatedDeliveryOn,
-                                                      paymentType: "CREDIT_CARD",
-                                                      revenueInUsdCents: 2500,
-                                                      rewardId: Reward.template.id,
-                                                      rewardTitle: Reward.template.title,
-                                                      shippingEnabled: Reward.template.shipping.enabled,
-                                                      shippingAmount: nil,
-                                                      userHasStoredApplePayCard: true)
+      let checkoutData = Koala.CheckoutPropertiesData(
+        amount: "25.00",
+        estimatedDelivery: Reward.template.estimatedDeliveryOn,
+        paymentType: "CREDIT_CARD",
+        revenueInUsdCents: 2_500,
+        rewardId: Reward.template.id,
+        rewardTitle: Reward.template.title,
+        shippingEnabled: Reward.template.shipping.enabled,
+        shippingAmount: nil,
+        userHasStoredApplePayCard: true
+      )
 
       self.goToThanksProject.assertValues([.template])
       self.goToThanksReward.assertValues([.template])
