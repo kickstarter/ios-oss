@@ -72,10 +72,10 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
 
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
-      .observeValues { [weak self] project in
+      .observeValues { [weak self] data in
         generateNotificationSuccessFeedback()
 
-        self?.goToThanks(project: project)
+        self?.goToThanks(data: data)
       }
 
     self.viewModel.outputs.goToWebModal
@@ -140,8 +140,8 @@ internal final class DeprecatedCheckoutViewController: DeprecatedWebViewControll
     self.present(vc, animated: true, completion: nil)
   }
 
-  fileprivate func goToThanks(project: Project) {
-    let thanksVC = ThanksViewController.configuredWith(project: project)
+  fileprivate func goToThanks(data: ThanksPageData) {
+    let thanksVC = ThanksViewController.configured(with: data)
     self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 
