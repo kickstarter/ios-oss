@@ -26,9 +26,9 @@ public enum PledgeStateCTAType {
     case .viewYourRewards:
       return Strings.View_your_rewards()
     case .seeTheRewards:
-      return "See the rewards"
+      return Strings.See_the_rewards()
     case .viewTheRewards:
-      return "View the rewards"
+      return Strings.View_the_rewards()
     }
   }
 

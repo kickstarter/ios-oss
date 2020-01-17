@@ -139,7 +139,7 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
     if currentUserIsCreator(of: project) {
       return PledgeStateCTAType.viewYourRewards
     }
-    
+
     if let variant = optimizelyVariant, project.state == .live {
       switch variant {
       case .variant1:
