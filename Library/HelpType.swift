@@ -10,7 +10,6 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
   case trust
   case accessibility
 
-
   public var accessibilityTraits: UIAccessibilityTraits {
     switch self {
     case .contact:
