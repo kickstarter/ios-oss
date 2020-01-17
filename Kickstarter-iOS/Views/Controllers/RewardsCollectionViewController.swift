@@ -299,55 +299,6 @@ extension RewardsCollectionViewController: RewardCellDelegate {
   }
 }
 
-// MARK: - RewardPledgeTransitionAnimatorDelegate
-
-extension RewardsCollectionViewController: RewardPledgeTransitionAnimatorDelegate {
-  func beginTransition(_: UINavigationController.Operation) {
-    self.selectedRewardCell()?.alpha = 0
-  }
-
-  func snapshotData(withContainerView view: UIView) -> RewardPledgeTransitionSnapshotData? {
-    guard
-      let cell = self.selectedRewardCell(),
-      let snapshotView = cell.rewardCardContainerView.snapshotView(afterScreenUpdates: false),
-      let sourceFrame = cell.rewardCardContainerView.superview?
-      .convert(cell.rewardCardContainerView.frame, to: view)
-    else { return nil }
-
-    return (snapshotView, sourceFrame, snapshotView.bounds)
-  }
-
-  func destinationFrameData(withContainerView _: UIView) -> RewardPledgeTransitionDestinationFrameData? {
-    guard
-      let cell = self.selectedRewardCell(),
-      let frame = cell.rewardCardContainerView.superview?
-      .convert(cell.rewardCardContainerView.frame, to: self.view)
-    else { return nil }
-
-    return (frame, CGRect(origin: .zero, size: frame.size))
-  }
-
-  func endTransition(_: UINavigationController.Operation) {
-    self.selectedRewardCell()?.alpha = 1
-  }
-
-  private func selectedRewardCell() -> RewardCell? {
-    guard
-      let selectedReward = self.viewModel.outputs.selectedReward(),
-      let cell = self.cell(for: selectedReward)
-    else { return nil }
-
-    return cell
-  }
-
-  private func cell(for reward: Reward) -> RewardCell? {
-    return self.collectionView.visibleCells
-      .compactMap { $0 as? RewardCell }
-      .filter { cell in cell.currentReward(is: reward) }
-      .first
-  }
-}
-
 // MARK: Styles
 
 private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICollectionView in
