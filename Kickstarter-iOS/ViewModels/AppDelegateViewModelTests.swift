@@ -1958,7 +1958,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertValueCount(1)
       self.evaluateQualtricsTargetingLogic.assertValueCount(1)
-      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], 1)
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], 0)
     }
   }
 
@@ -2020,7 +2020,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertValueCount(1)
       self.evaluateQualtricsTargetingLogic.assertValueCount(1)
-      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], 1)
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], 0)
     }
   }
 
@@ -2116,7 +2116,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureQualtrics.assertValues([expectedConfig])
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertValueCount(1)
-      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], 1)
+      XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], 0)
     }
   }
 }
