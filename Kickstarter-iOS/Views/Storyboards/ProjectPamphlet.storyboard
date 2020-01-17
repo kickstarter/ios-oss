@@ -73,7 +73,7 @@
                                 <rect key="frame" x="0.0" y="3" width="400" height="48"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOA-as-ZZE">
-                                        <rect key="frame" x="8" y="-2" width="48" height="43"/>
+                                        <rect key="frame" x="10" y="-3" width="48" height="43"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="DOA-as-ZZE" secondAttribute="height" multiplier="1:1" constant="5" id="MWQ-Ky-Rk8"/>
                                         </constraints>
@@ -110,7 +110,7 @@
                                 <constraints>
                                     <constraint firstItem="7Gb-Xw-vvb" firstAttribute="centerY" secondItem="FYk-7e-N0e" secondAttribute="centerY" id="5wf-Ej-y9f"/>
                                     <constraint firstItem="7Gb-Xw-vvb" firstAttribute="trailing" secondItem="FYk-7e-N0e" secondAttribute="leading" constant="3" id="7PD-HK-gXb"/>
-                                    <constraint firstItem="DOA-as-ZZE" firstAttribute="centerY" secondItem="jxM-Ay-art" secondAttribute="centerY" constant="-4.5" id="BC8-MC-vSz"/>
+                                    <constraint firstItem="DOA-as-ZZE" firstAttribute="centerY" secondItem="jxM-Ay-art" secondAttribute="centerY" constant="-5.5" id="BC8-MC-vSz"/>
                                     <constraint firstItem="7Gb-Xw-vvb" firstAttribute="height" secondItem="jxM-Ay-art" secondAttribute="height" constant="-5" id="Cpe-nZ-Yin"/>
                                     <constraint firstItem="F7o-wQ-ufD" firstAttribute="centerX" secondItem="jxM-Ay-art" secondAttribute="centerX" id="DIP-gY-GSb"/>
                                     <constraint firstItem="F7o-wQ-ufD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DOA-as-ZZE" secondAttribute="trailing" constant="12" id="GMr-tI-u8O"/>
@@ -119,7 +119,7 @@
                                     <constraint firstItem="DOA-as-ZZE" firstAttribute="height" secondItem="jxM-Ay-art" secondAttribute="height" constant="-5" id="XIg-eB-4VD"/>
                                     <constraint firstItem="FYk-7e-N0e" firstAttribute="centerY" secondItem="jxM-Ay-art" secondAttribute="centerY" constant="-4.5" id="brP-dC-KeS"/>
                                     <constraint firstItem="7Gb-Xw-vvb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="F7o-wQ-ufD" secondAttribute="trailing" constant="12" id="cTi-ZV-f9W"/>
-                                    <constraint firstItem="DOA-as-ZZE" firstAttribute="leading" secondItem="jxM-Ay-art" secondAttribute="leadingMargin" id="ePl-XW-skR"/>
+                                    <constraint firstItem="DOA-as-ZZE" firstAttribute="leading" secondItem="jxM-Ay-art" secondAttribute="leadingMargin" constant="2" id="ePl-XW-skR"/>
                                     <constraint firstItem="FYk-7e-N0e" firstAttribute="height" secondItem="jxM-Ay-art" secondAttribute="height" constant="-5" id="fGf-sF-Mwx"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="FYk-7e-N0e" secondAttribute="trailing" constant="-5" id="xZo-4P-fXK"/>
                                 </constraints>
