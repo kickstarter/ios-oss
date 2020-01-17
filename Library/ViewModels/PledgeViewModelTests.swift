@@ -43,7 +43,9 @@ final class PledgeViewModelTests: TestCase {
   private let goToApplePayPaymentAuthorizationShippingRule = TestObserver<ShippingRule?, Never>()
   private let goToApplePayPaymentAuthorizationMerchantId = TestObserver<String, Never>()
 
-  private let goToThanks = TestObserver<Project, Never>()
+  private let goToThanksCheckoutData = TestObserver<Koala.CheckoutPropertiesData?, Never>()
+  private let goToThanksProject = TestObserver<Project, Never>()
+  private let goToThanksReward = TestObserver<Reward, Never>()
 
   private let notifyDelegateUpdatePledgeDidSucceedWithMessage = TestObserver<String, Never>()
 
@@ -111,7 +113,9 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.merchantIdentifier }
       .observe(self.goToApplePayPaymentAuthorizationMerchantId.observer)
 
-    self.vm.outputs.goToThanks.observe(self.goToThanks.observer)
+    self.vm.outputs.goToThanks.map(first).observe(self.goToThanksProject.observer)
+    self.vm.outputs.goToThanks.map(second).observe(self.goToThanksReward.observer)
+    self.vm.outputs.goToThanks.map(third).observe(self.goToThanksCheckoutData.observer)
 
     self.vm.outputs.notifyDelegateUpdatePledgeDidSucceedWithMessage
       .observe(self.notifyDelegateUpdatePledgeDidSucceedWithMessage.observer)
@@ -985,7 +989,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
-    self.goToThanks.assertDidNotEmitValue()
+    self.goToThanksProject.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
   }
 
@@ -1111,7 +1115,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.applePayButtonTapped()
 
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
@@ -1122,17 +1126,37 @@ final class PledgeViewModelTests: TestCase {
         self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
       )
 
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
-      self.goToThanks.assertDidNotEmitValue("Signal waits for Create Backing to complete")
+      self.goToThanksProject.assertDidNotEmitValue("Signal waits for Create Backing to complete")
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
 
-      self.goToThanks.assertValues([project])
+      let checkoutData = Koala.CheckoutPropertiesData(
+        amount: "5.00",
+        estimatedDelivery: nil,
+        paymentType: "APPLE_PAY",
+        revenueInUsdCents: 500,
+        rewardId: 0,
+        rewardTitle: nil,
+        shippingEnabled: false,
+        shippingAmount: nil,
+        userHasStoredApplePayCard: true
+      )
+
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([reward])
+      self.goToThanksCheckoutData.assertValues([checkoutData])
+
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed"],
+        self.trackingClient.events
+      )
     }
   }
 
@@ -1169,7 +1193,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.applePayButtonTapped()
 
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
@@ -1180,20 +1204,39 @@ final class PledgeViewModelTests: TestCase {
         self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
       )
 
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
-      self.goToThanks.assertValues([project])
+      let checkoutData = Koala.CheckoutPropertiesData(
+        amount: "5.00",
+        estimatedDelivery: nil,
+        paymentType: "APPLE_PAY",
+        revenueInUsdCents: 500,
+        rewardId: 0,
+        rewardTitle: nil,
+        shippingEnabled: false,
+        shippingAmount: nil,
+        userHasStoredApplePayCard: true
+      )
+
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([reward])
+      self.goToThanksCheckoutData.assertValues([checkoutData])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed"],
+        self.trackingClient.events
+      )
     }
   }
 
-  func testGoToThanks_WhenStripeTokenCreated_ReturnsFailure() {
+  func testApplePay_WhenStripeTokenCreated_IsNil_ReturnsFailure() {
     withEnvironment(apiService: MockService()) {
       let project = Project.template
       let reward = Reward.noReward
@@ -1203,7 +1246,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.applePayButtonTapped()
 
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
@@ -1218,8 +1261,14 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed"],
+        self.trackingClient.events
+      )
+      XCTAssertEqual([nil], self.trackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -1236,7 +1285,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.applePayButtonTapped()
 
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
@@ -1247,7 +1296,7 @@ final class PledgeViewModelTests: TestCase {
         self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
       )
 
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
@@ -1258,7 +1307,13 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed"],
+        self.trackingClient.events
+      )
+      XCTAssertEqual([nil], self.trackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -1277,7 +1332,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
@@ -1295,7 +1350,7 @@ final class PledgeViewModelTests: TestCase {
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false])
       self.submitButtonIsLoading.assertValues([true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
@@ -1303,8 +1358,28 @@ final class PledgeViewModelTests: TestCase {
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false, true])
       self.submitButtonIsLoading.assertValues([true, false])
-      self.goToThanks.assertValues([.template])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      let checkoutData = Koala.CheckoutPropertiesData(
+        amount: "25.00",
+        estimatedDelivery: Reward.template.estimatedDeliveryOn,
+        paymentType: "CREDIT_CARD",
+        revenueInUsdCents: 2_500,
+        rewardId: Reward.template.id,
+        rewardTitle: Reward.template.title,
+        shippingEnabled: Reward.template.shipping.enabled,
+        shippingAmount: nil,
+        userHasStoredApplePayCard: true
+      )
+
+      self.goToThanksProject.assertValues([.template])
+      self.goToThanksReward.assertValues([.template])
+      self.goToThanksCheckoutData.assertValues([checkoutData])
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        self.trackingClient.events
+      )
     }
   }
 
@@ -1320,7 +1395,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
@@ -1338,7 +1413,7 @@ final class PledgeViewModelTests: TestCase {
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false])
       self.submitButtonIsLoading.assertValues([true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
@@ -1346,8 +1421,14 @@ final class PledgeViewModelTests: TestCase {
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false, true])
       self.submitButtonIsLoading.assertValues([true, false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        self.trackingClient.events
+      )
+      XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -1797,7 +1878,7 @@ final class PledgeViewModelTests: TestCase {
     self.popToRootViewController.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.goToThanks.assertDidNotEmitValue()
+    self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService) {
       let reward = Reward.postcards
@@ -1835,7 +1916,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -1850,7 +1931,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
@@ -1867,7 +1948,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
         PKPaymentAuthorizationStatus.success,
@@ -1885,7 +1966,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
@@ -1900,7 +1981,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -1917,7 +1998,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertValueCount(1)
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
     }
   }
 
@@ -1949,7 +2030,7 @@ final class PledgeViewModelTests: TestCase {
     self.popToRootViewController.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.goToThanks.assertDidNotEmitValue()
+    self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService) {
       let reward = Reward.postcards
@@ -1987,7 +2068,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -2002,7 +2083,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
         PKPaymentAuthorizationStatus.failure,
@@ -2020,7 +2101,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -2035,7 +2116,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
@@ -2050,7 +2131,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
     }
   }
 
@@ -2069,7 +2150,7 @@ final class PledgeViewModelTests: TestCase {
     self.popToRootViewController.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.goToThanks.assertDidNotEmitValue()
+    self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService) {
       let reward = Reward.postcards
@@ -2106,7 +2187,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -2121,7 +2202,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
@@ -2138,7 +2219,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
         PKPaymentAuthorizationStatus.success,
@@ -2156,7 +2237,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -2171,7 +2252,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
@@ -2186,7 +2267,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
     }
   }
 
@@ -2221,7 +2302,7 @@ final class PledgeViewModelTests: TestCase {
     self.popToRootViewController.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.goToThanks.assertDidNotEmitValue()
+    self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
       self.vm.inputs.configureWith(
@@ -2242,7 +2323,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -2257,7 +2338,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
@@ -2274,7 +2355,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
         PKPaymentAuthorizationStatus.success,
@@ -2292,7 +2373,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -2307,7 +2388,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
@@ -2322,7 +2403,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
     }
 
     let updateBackingEnvelope = UpdateBackingEnvelope(
@@ -2371,7 +2452,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
         PKPaymentAuthorizationStatus.success,
@@ -2392,7 +2473,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -2410,7 +2491,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
@@ -2430,7 +2511,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertValueCount(1)
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
     }
   }
 
@@ -2465,7 +2546,7 @@ final class PledgeViewModelTests: TestCase {
     self.popToRootViewController.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.goToThanks.assertDidNotEmitValue()
+    self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
       self.vm.inputs.configureWith(
@@ -2487,7 +2568,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -2502,7 +2583,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
@@ -2519,7 +2600,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
         PKPaymentAuthorizationStatus.success,
@@ -2537,7 +2618,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -2552,7 +2633,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
@@ -2567,7 +2648,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
     }
 
     let updateBackingEnvelope = UpdateBackingEnvelope(
@@ -2600,7 +2681,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.submitButtonTapped()
 
@@ -2615,7 +2696,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -2632,7 +2713,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertValueCount(1)
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
     }
   }
 
@@ -2668,7 +2749,7 @@ final class PledgeViewModelTests: TestCase {
     self.popToRootViewController.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.goToThanks.assertDidNotEmitValue()
+    self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
       self.vm.inputs.configureWith(
@@ -2692,7 +2773,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.submitButtonTapped()
 
@@ -2707,7 +2788,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -2722,7 +2803,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
     }
 
     let updateBackingEnvelope = UpdateBackingEnvelope(
@@ -2755,7 +2836,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
@@ -2772,7 +2853,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
         PKPaymentAuthorizationStatus.success,
@@ -2790,7 +2871,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -2805,7 +2886,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
@@ -2822,7 +2903,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertValueCount(1)
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
     }
   }
 
@@ -2858,7 +2939,7 @@ final class PledgeViewModelTests: TestCase {
     self.popToRootViewController.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.goToThanks.assertDidNotEmitValue()
+    self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.configureWith(
@@ -2882,7 +2963,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.submitButtonTapped()
 
@@ -2897,7 +2978,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -2912,7 +2993,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -2927,7 +3008,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
@@ -2944,7 +3025,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
         PKPaymentAuthorizationStatus.success,
@@ -2962,7 +3043,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.scheduler.run()
 
@@ -2977,7 +3058,7 @@ final class PledgeViewModelTests: TestCase {
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
 
       self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
 
@@ -2995,7 +3076,7 @@ final class PledgeViewModelTests: TestCase {
         "Something went wrong."
       ])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
     }
   }
 
@@ -3012,7 +3093,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.goToThanks.assertDidNotEmitValue()
+    self.goToThanksProject.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
     let project = Project.template
@@ -3023,14 +3104,14 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
@@ -3039,21 +3120,21 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.submitButtonTapped()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.scaFlowCompleted(
@@ -3062,8 +3143,28 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertValues([project])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      let checkoutData = Koala.CheckoutPropertiesData(
+        amount: "25.00",
+        estimatedDelivery: Reward.template.estimatedDeliveryOn,
+        paymentType: "CREDIT_CARD",
+        revenueInUsdCents: 2_500,
+        rewardId: Reward.template.id,
+        rewardTitle: Reward.template.title,
+        shippingEnabled: Reward.template.shipping.enabled,
+        shippingAmount: nil,
+        userHasStoredApplePayCard: true
+      )
+
+      self.goToThanksProject.assertValues([.template])
+      self.goToThanksReward.assertValues([.template])
+      self.goToThanksCheckoutData.assertValues([checkoutData])
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        self.trackingClient.events
+      )
     }
   }
 
@@ -3080,7 +3181,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.goToThanks.assertDidNotEmitValue()
+    self.goToThanksProject.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
     let project = Project.template
@@ -3091,14 +3192,14 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
@@ -3107,21 +3208,21 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.submitButtonTapped()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.scaFlowCompleted(
@@ -3130,10 +3231,16 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(
         ["The operation couldn’t be completed. (KsApi.GraphError error 5.)"]
       )
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        self.trackingClient.events
+      )
+      XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -3150,7 +3257,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.submitButtonEnabled.assertDidNotEmitValue()
-    self.goToThanks.assertDidNotEmitValue()
+    self.goToThanksProject.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
     let project = Project.template
@@ -3161,14 +3268,14 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.creditCardSelected(with: "123")
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
@@ -3177,21 +3284,21 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.submitButtonTapped()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.submitButtonEnabled.assertValues([false, true, false])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.scheduler.run()
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.scaFlowCompleted(
@@ -3200,8 +3307,14 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        self.trackingClient.events
+      )
+      XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -3278,7 +3391,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.scaFlowCompleted(
@@ -3287,7 +3400,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertValues([
         "Got it! Your changes have been saved."
       ])
@@ -3369,7 +3482,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.scaFlowCompleted(
@@ -3378,7 +3491,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(
@@ -3460,7 +3573,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.beginSCAFlowWithClientSecret.assertValues(["client-secret"])
       self.submitButtonEnabled.assertValues([false, true, false, true])
-      self.goToThanks.assertDidNotEmitValue()
+      self.goToThanksProject.assertDidNotEmitValue()
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()

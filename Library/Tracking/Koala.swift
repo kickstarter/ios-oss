@@ -40,6 +40,9 @@ public final class Koala {
     case signupButtonClicked = "Signup Button Clicked"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
+    case thanksPageViewed = "Thanks Page Viewed"
+    case forgotPasswordViewed = "Forgot Password Viewed"
+    case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
 
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
@@ -391,6 +394,18 @@ public final class Koala {
     }
   }
 
+  public struct CheckoutPropertiesData: Equatable {
+    let amount: String
+    let estimatedDelivery: TimeInterval?
+    let paymentType: String?
+    let revenueInUsdCents: Int
+    let rewardId: Int
+    let rewardTitle: String?
+    let shippingEnabled: Bool
+    let shippingAmount: Double?
+    let userHasStoredApplePayCard: Bool
+  }
+
   public init(
     bundle: NSBundleType = Bundle.main,
     dataLakeClient: TrackingClientType = TrackingClient(.dataLake),
@@ -667,6 +682,17 @@ public final class Koala {
     self.track(event: "Add New Card Button Clicked", properties: props)
   }
 
+  public func trackThanksPageViewed(project: Project, reward: Reward, checkoutData: CheckoutPropertiesData?) {
+    var props = projectProperties(from: project)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+
+    if let checkoutData = checkoutData {
+      props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
+    }
+
+    self.track(event: DataLakeWhiteListedEvent.thanksPageViewed.rawValue, properties: props)
+  }
+
   public func trackCheckoutCancel(
     project: Project,
     reward: Reward,
@@ -855,11 +881,16 @@ public final class Koala {
    */
 
   public func trackSignupButtonClicked(
-    intent _: LoginIntent,
-    project _: Project? = nil,
-    reward _: Reward? = nil
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
   ) {
-    self.track(event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue)
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+
+    self.track(
+      event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue,
+      properties: props
+    )
   }
 
   public func trackSignupSubmitButtonClicked() {
@@ -868,6 +899,14 @@ public final class Koala {
 
   public func trackLoginSubmitButtonClicked() {
     self.track(event: DataLakeWhiteListedEvent.loginSubmitButtonClicked.rawValue)
+  }
+
+  public func trackForgotPasswordViewed() {
+    self.track(event: DataLakeWhiteListedEvent.forgotPasswordViewed.rawValue)
+  }
+
+  public func track2FAViewed() {
+    self.track(event: DataLakeWhiteListedEvent.twoFactorConfirmationViewed.rawValue)
   }
 
   private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)
@@ -2035,8 +2074,8 @@ public final class Koala {
       .keys
       .sorted()
 
-    props["apple_pay_capable"] = PKPaymentAuthorizationViewController.applePayCapable()
-    props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
+    props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
+    props["apple_pay_device"] = AppEnvironment.current.applePayCapabilities.applePayDevice()
     props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
     props["client_type"] = "native"
     props["current_variants"] = self.config?.abExperimentsArray.sorted()
@@ -2212,6 +2251,25 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
   result["minimum"] = reward.minimum
   result["shipping_enabled"] = reward.shipping.enabled
   result["shipping_preference"] = reward.shipping.preference?.trackingString
+
+  return result.prefixedKeys(prefix)
+}
+
+// MARK: - Checkout Properties
+
+private func checkoutProperties(from data: Koala.CheckoutPropertiesData, prefix: String = "checkout_")
+  -> [String: Any] {
+  var result: [String: Any] = [:]
+
+  result["amount"] = data.amount
+  result["payment_type"] = data.paymentType
+  result["reward_id"] = data.rewardId
+  result["reward_title"] = data.rewardTitle
+  result["shipping_amount"] = data.shippingAmount
+  result["revenue_in_usd_cents"] = data.revenueInUsdCents
+  result["reward_estimated_delivery_on"] = data.estimatedDelivery
+  result["reward_shipping_enabled"] = data.shippingEnabled
+  result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
   return result.prefixedKeys(prefix)
 }

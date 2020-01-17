@@ -8,11 +8,12 @@ extension PKPaymentRequest {
     reward: Reward,
     pledgeAmount: Double,
     selectedShippingRule: ShippingRule?,
-    merchantIdentifier: String
+    merchantIdentifier: String,
+    env: Environment = AppEnvironment.current
   ) -> PKPaymentRequest {
     let request = PKPaymentRequest()
     request.merchantIdentifier = merchantIdentifier
-    request.supportedNetworks = PKPaymentAuthorizationViewController.supportedNetworks(for: project)
+    request.supportedNetworks = env.applePayCapabilities.supportedNetworks(for: project)
     request.merchantCapabilities = .capability3DS
     request.countryCode = project.country.countryCode
     request.currencyCode = project.country.currencyCode

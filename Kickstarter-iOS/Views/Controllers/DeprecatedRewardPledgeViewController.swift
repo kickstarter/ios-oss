@@ -64,7 +64,7 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
   internal static func configuredWith(
     project: Project,
     reward: Reward,
-    applePayCapable: Bool = PKPaymentAuthorizationViewController.applePayCapable()
+    applePayCapable: Bool = AppEnvironment.current.applePayCapabilities.applePayCapable()
   ) -> DeprecatedRewardPledgeViewController {
     let vc = Storyboard.RewardPledge.instantiate(DeprecatedRewardPledgeViewController.self)
     vc.viewModel.inputs.configureWith(project: project, reward: reward, applePayCapable: applePayCapable)
@@ -511,10 +511,10 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
 
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
-      .observeValues { [weak self] project in
+      .observeValues { [weak self] data in
         generateNotificationSuccessFeedback()
 
-        self?.goToThanks(project: project)
+        self?.goToThanks(data: data)
       }
 
     self.viewModel.outputs.showAlert
@@ -596,8 +596,8 @@ internal final class DeprecatedRewardPledgeViewController: UIViewController {
     self.present(vc, animated: true, completion: nil)
   }
 
-  fileprivate func goToThanks(project: Project) {
-    let thanksVC = ThanksViewController.configuredWith(project: project)
+  fileprivate func goToThanks(data: ThanksPageData) {
+    let thanksVC = ThanksViewController.configured(with: data)
     self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 

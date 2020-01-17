@@ -133,7 +133,7 @@ public protocol DeprecatedRewardPledgeViewModelOutputs {
   var goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), Never> { get }
 
   /// Emits when we should go to the thanks screen.
-  var goToThanks: Signal<Project, Never> { get }
+  var goToThanks: Signal<ThanksPageData, Never> { get }
 
   /// Emits when we should go to the trust & safety page.
   var goToTrustAndSafety: Signal<(), Never> { get }
@@ -277,7 +277,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
 
     self.setStripeAppleMerchantIdentifier = applePayCapable
       .filter(isTrue)
-      .mapConst(PKPaymentAuthorizationViewController.merchantIdentifier)
+      .mapConst(Secrets.ApplePay.merchantIdentifier)
 
     self.setStripePublishableKey = applePayCapable
       .filter(isTrue)
@@ -499,7 +499,13 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
     )
     .map { ($0.0, $0.1, $1, $2, $3) }
     .takeWhen(Signal.merge(applePayEventAfterLogin, loggedInUserTappedApplePayButton))
-    .map(PKPaymentRequest.paymentRequest(for:reward:pledgeAmount:selectedShippingRule:merchantIdentifier:))
+    .map { PKPaymentRequest.paymentRequest(
+      for: $0.0,
+      reward: $0.1,
+      pledgeAmount: $0.2,
+      selectedShippingRule: $0.3,
+      merchantIdentifier: $0.4
+    ) }
 
     let isLoading = MutableProperty(false)
     pledgeIsLoading = isLoading.signal
@@ -591,7 +597,8 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
       createApplePayPledgeEvent.values().ignoreValues()
     )
 
-    self.goToThanks = project
+    self.goToThanks = Signal.combineLatest(project, reward)
+      .map { ($0.0, $0.1, nil) }
       .takeWhen(completedPledge)
 
     let updatedPledgeNeedsNewCheckout = updatePledgeEvent.values()
@@ -946,7 +953,7 @@ public final class DeprecatedRewardPledgeViewModel: Type, Inputs, Outputs {
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let goToPaymentAuthorization: Signal<PKPaymentRequest, Never>
   public let goToShippingPicker: Signal<(Project, [ShippingRule], ShippingRule), Never>
-  public let goToThanks: Signal<Project, Never>
+  public let goToThanks: Signal<ThanksPageData, Never>
   public let goToTrustAndSafety: Signal<(), Never>
   public var items: Signal<[String], Never> {
     return self.rewardViewModel.outputs.items
