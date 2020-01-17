@@ -23,9 +23,6 @@ public protocol BackerDashboardProjectsViewModelInputs {
   /// Call when the user has updated.
   func currentUserUpdated()
 
-  /// Call when the .ksr_projectSaved notification is posted.
-  func projectSaved()
-
   /// Call when a project cell is tapped.
   func projectTapped(_ project: Project)
 
@@ -160,11 +157,6 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
   private let currentUserUpdatedProperty = MutableProperty(())
   public func currentUserUpdated() {
     self.currentUserUpdatedProperty.value = ()
-  }
-
-  private let projectSavedProperty = MutableProperty(())
-  public func projectSaved() {
-    self.projectSavedProperty.value = ()
   }
 
   private let projectTappedProperty = MutableProperty<Project?>(nil)

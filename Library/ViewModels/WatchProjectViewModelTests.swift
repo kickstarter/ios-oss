@@ -26,6 +26,7 @@ internal final class WatchProjectViewModelTests: TestCase {
       self.generateNotificationSuccessFeedback.observer
     )
     self.vm.outputs.goToLoginTout.observe(self.goToLoginTout.observer)
+    self.vm.outputs.postNotificationWithProject.observe(self.postNotificationWithProject.observer)
     self.vm.outputs.saveButtonAccessibilityValue.observe(self.saveButtonAccessibilityValue.observer)
     self.vm.outputs.saveButtonSelected.observe(self.saveButtonSelected.observer)
     self.vm.outputs.showNotificationDialog.map { $0.name }.observe(self.showNotificationDialog.observer)
@@ -352,6 +353,25 @@ internal final class WatchProjectViewModelTests: TestCase {
         ["Project Star", "Starred Project", "Saved Project"], self.trackingClient.events,
         "A star koala event is tracked."
       )
+    }
+  }
+
+  func testPostNotificationEmits_WhenProjectIsSavedSuccessfully() {
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
+
+    let project = Project.template
+      |> Project.lens.personalization.isStarred .~ true
+
+    withEnvironment(apiService: MockService(watchProjectMutationResult: .success(.watchTemplate))) {
+      self.vm.inputs.configure(with: project)
+      self.vm.inputs.viewDidLoad()
+
+      self.postNotificationWithProject.assertValueCount(0)
+
+      self.vm.inputs.saveButtonTapped(selected: false)
+      self.scheduler.advance(by: .milliseconds(500))
+
+      self.postNotificationWithProject.assertValueCount(1)
     }
   }
 }

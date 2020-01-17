@@ -110,12 +110,12 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       self.projectSavedProperty.signal.ignoreValues(),
       self.viewWillAppearProperty.signal.ignoreValues()
     )
-      .switchMap { _ in
-        AppEnvironment.current.apiService.fetchUserSelf()
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
-          .materialize()
-      }
+    .switchMap { _ in
+      AppEnvironment.current.apiService.fetchUserSelf()
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
+        .materialize()
+    }
 
     let user = fetchedUserEvent.values()
 

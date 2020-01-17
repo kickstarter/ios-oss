@@ -96,6 +96,18 @@ internal final class BackerDashboardViewModelTests: TestCase {
       // Signals that emit just once because they rely on the datasource tab index to exist first.
       self.pinSelectedIndicatorToTab.assertValues([.backed])
       self.pinSelectedIndicatorToTabAnimated.assertValues([false])
+
+      let user2 = user
+        |> \.name .~ "Updated user"
+        |> \.stats.starredProjectsCount .~ 60
+
+      withEnvironment(apiService: MockService(fetchUserSelfResponse: user2)) {
+        self.vm.inputs.projectSaved()
+
+        self.scheduler.advance()
+
+        self.updateCurrentUserInEnvironment.assertValues([user, user, user2])
+      }
     }
   }
 
