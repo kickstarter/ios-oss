@@ -26,6 +26,9 @@ public protocol BackerDashboardViewModelInputs {
   /// Call when the UIPageViewController finishes transitioning.
   func pageTransition(completed: Bool)
 
+  /// Call when the ksr_projectSaved notification is posted.
+  func projectSaved()
+
   /// Call when saved projects button is tapped.
   func savedProjectsButtonTapped()
 
@@ -103,7 +106,10 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
     self.configurePagesDataSource = self.viewDidLoadProperty.signal
       .map { (.backed, DiscoveryParams.Sort.endingSoon) }
 
-    let fetchedUserEvent = self.viewWillAppearProperty.signal.ignoreValues()
+    let fetchedUserEvent = Signal.merge(
+      self.projectSavedProperty.signal.ignoreValues(),
+      self.viewWillAppearProperty.signal.ignoreValues()
+    )
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchUserSelf()
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
@@ -206,6 +212,11 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
   private let pageTransitionCompletedProperty = MutableProperty(false)
   public func pageTransition(completed: Bool) {
     self.pageTransitionCompletedProperty.value = completed
+  }
+
+  private let projectSavedProperty = MutableProperty(())
+  public func projectSaved() {
+    self.projectSavedProperty.value = ()
   }
 
   private let savedProjectsButtonTappedProperty = MutableProperty(())
