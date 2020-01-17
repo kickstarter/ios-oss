@@ -647,7 +647,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.displayQualtricsSurvey = self.didEvaluateQualtricsTargetingLogicWithResultProperty.signal
       .skipNil()
-      .on(value: { _, properties in properties.setNumber(number: 1, for: "first_app_session") })
+      .on(value: { _, properties in properties.setNumber(number: 0, for: "first_app_session") })
       .filter { result, _ in result.passed() }
       .ignoreValues()
   }
