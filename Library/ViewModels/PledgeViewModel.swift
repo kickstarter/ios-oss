@@ -56,7 +56,7 @@ public protocol PledgeViewModelOutputs {
   var continueViewHidden: Signal<Bool, Never> { get }
   var descriptionViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
-  var goToThanks: Signal<Project, Never> { get }
+  var goToThanks: Signal<ThanksPageData, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
   var notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
@@ -501,7 +501,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
 
-    self.goToThanks = project.takeWhen(createBackingCompletionEvents)
+    let thanksPageData = createBackingDataAndIsApplePay
+      .map { data, isApplePay -> ThanksPageData in
+        let checkoutPropsData = checkoutPropertiesData(from: data, isApplePay: isApplePay)
+
+        return (data.project, data.reward, checkoutPropsData)
+      }
+
+    self.goToThanks = thanksPageData
+      .takeWhen(createBackingCompletionEvents)
 
     let errorsOrNil = Signal.merge(
       createOrUpdateEvent.errors().wrapInOptional(),
@@ -677,7 +685,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let continueViewHidden: Signal<Bool, Never>
   public let descriptionViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
-  public let goToThanks: Signal<Project, Never>
+  public let goToThanks: Signal<ThanksPageData, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
   public let notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
