@@ -60,7 +60,7 @@ public protocol DeprecatedCheckoutViewModelOutputs {
   var goToSafariBrowser: Signal<URL, Never> { get }
 
   /// Emits when the thanks screen should be loaded.
-  var goToThanks: Signal<Project, Never> { get }
+  var goToThanks: Signal<ThanksPageData, Never> { get }
 
   /// Emits when the web modal should be loaded.
   var goToWebModal: Signal<URLRequest, Never> { get }
@@ -102,6 +102,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
     let applePayCapable = configData.map { $0.applePayCapable }
     let initialRequest = configData.map { $0.initialRequest }
     let project = configData.map { $0.project }
+    let reward = configData.map { $0.reward }
 
     let requestData = self.shouldStartLoadProperty.signal.skipNil()
       .map { request, navigationType -> RequestData in
@@ -187,7 +188,8 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
       self.checkoutRacingViewModel.outputs.goToThanks
     )
 
-    self.goToThanks = project
+    self.goToThanks = Signal.combineLatest(project, reward)
+      .map { ($0.0, $0.1, nil) }
       .takeWhen(thanksRequestOrRacingSuccessful)
 
     self.goToWebModal = modalRequestOrSafariRequest
@@ -395,7 +397,7 @@ public final class DeprecatedCheckoutViewModel: DeprecatedCheckoutViewModelType 
   public let evaluateJavascript: Signal<String, Never>
   public let goToPaymentAuthorization: Signal<PKPaymentRequest, Never>
   public let goToSafariBrowser: Signal<URL, Never>
-  public let goToThanks: Signal<Project, Never>
+  public let goToThanks: Signal<ThanksPageData, Never>
   public let goToWebModal: Signal<URLRequest, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let popViewController: Signal<Void, Never>
