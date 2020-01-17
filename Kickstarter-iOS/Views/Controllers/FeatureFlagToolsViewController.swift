@@ -7,7 +7,7 @@ import UIKit
 final class FeatureFlagToolsViewController: UITableViewController {
   // MARK: - Properties
 
-  private var features = [(Feature, Bool)]()
+  private var features = [Features]()
   private let reuseId = "FeatureFlagTools.TableViewCell"
   private let viewModel: FeatureFlagToolsViewModelType = FeatureFlagToolsViewModel()
 
@@ -79,12 +79,13 @@ extension FeatureFlagToolsViewController {
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseId, for: indexPath)
-    let feature = self.features[indexPath.row]
+    let featureTuples = featureEnabledFromDictionaries(self.features)
+    let (feature, enabled) = featureTuples[indexPath.row]
 
     let switchControl = UISwitch(frame: .zero)
       |> baseSwitchControlStyle
       |> \.tag .~ indexPath.row
-      |> \.isOn .~ feature.1
+      |> \.isOn .~ enabled
 
     switchControl.addTarget(self, action: #selector(self.switchTogged(_:)), for: .valueChanged)
 
@@ -94,7 +95,7 @@ extension FeatureFlagToolsViewController {
 
     _ = cell.textLabel
       ?|> baseTableViewCellTitleLabelStyle
-      ?|> \.text .~ feature.0.description
+      ?|> \.text .~ feature.description
 
     return cell
   }
