@@ -1966,13 +1966,9 @@ final class AppDelegateViewModelTests: TestCase {
     let config = Config.template
       |> \.features .~ [Feature.qualtrics.rawValue: true]
 
-    let user = User.template
-      |> User.lens.joinDate .~ AppEnvironment.current.calendar
-      .date(byAdding: .hour, value: -24, to: MockDate.init().date)
-
     let mockQualtricsPropertiesType = MockQualtricsPropertiesType()
 
-    withEnvironment(config: config, currentUser: user) {
+    withEnvironment(config: config, currentUser: .template) {
       self.configureQualtrics.assertDidNotEmitValue()
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertDidNotEmitValue()
@@ -1988,8 +1984,7 @@ final class AppDelegateViewModelTests: TestCase {
         stringProperties: qualtricsProps()
           .withAllValuesFrom([
             "logged_in": "true",
-            "user_uid": "1",
-            "hours_since_joined": "24"
+            "user_uid": "1"
           ])
       )
 
@@ -2127,9 +2122,7 @@ private func qualtricsProps() -> [String: String] {
     "language": AppEnvironment.current.language.rawValue,
     "logged_in": "true",
     "distinct_id": AppEnvironment.current.device.identifierForVendor?.uuidString,
-    "user_uid": AppEnvironment.current.currentUser.flatMap { $0.id }.map(String.init),
-    "hours_since_joined": AppEnvironment.current.currentUser?
-      .hoursSinceJoined(MockDate.init().date).flatMap(String.init)
+    "user_uid": AppEnvironment.current.currentUser.flatMap { $0.id }.map(String.init)
   ]
   .compact()
 }

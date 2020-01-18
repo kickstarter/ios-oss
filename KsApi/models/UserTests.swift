@@ -36,7 +36,6 @@ final class UserTests: XCTestCase {
       ],
       "is_admin": false,
       "is_friend": false,
-      "join_date": "2015-08-03T15:49:52Z",
       "opted_out_of_recommendations": true,
       "show_public_profile": false,
       "social": true
@@ -56,7 +55,6 @@ final class UserTests: XCTestCase {
     XCTAssertEqual(false, user?.notifications.commentReplies)
     XCTAssertEqual(false, user?.facebookConnected)
     XCTAssertEqual(false, user?.isFriend)
-    XCTAssertEqual(expectedJoinDate(), user?.joinDate)
     XCTAssertNotNil(user?.location)
     XCTAssertEqual(json as NSDictionary?, user?.encode() as NSDictionary?)
   }
@@ -86,7 +84,6 @@ final class UserTests: XCTestCase {
       ],
       "is_admin": false,
       "is_friend": false,
-      "join_date": "2015-08-03T15:49:52Z",
       "opted_out_of_recommendations": true,
       "show_public_profile": false,
       "social": true
@@ -107,51 +104,4 @@ final class UserTests: XCTestCase {
     XCTAssertEqual(false, creator.isRepeatCreator)
     XCTAssertNil(user.isRepeatCreator)
   }
-
-  func testHoursSinceJoined() {
-    let nowComponents = DateComponents(
-      timeZone: TimeZone(secondsFromGMT: 0),
-      year: 2_020,
-      month: 01,
-      day: 01,
-      hour: 00,
-      minute: 00,
-      second: 00
-    )
-
-    let joinDateComponents = DateComponents(
-      timeZone: TimeZone(secondsFromGMT: 0),
-      year: 2_019,
-      month: 12,
-      day: 31,
-      hour: 00,
-      minute: 00,
-      second: 00
-    )
-
-    guard let now = Calendar.current.date(from: nowComponents) else {
-      XCTFail("Need a date for now")
-      return
-    }
-    let joined24HoursAgo = Calendar.current.date(from: joinDateComponents)
-
-    let user = User.template
-      |> User.lens.joinDate .~ joined24HoursAgo
-
-    XCTAssertEqual(user.hoursSinceJoined(now), 24)
-  }
-}
-
-private func expectedJoinDate() -> Date? {
-  let components = DateComponents(
-    timeZone: TimeZone(secondsFromGMT: 0),
-    year: 2_015,
-    month: 8,
-    day: 3,
-    hour: 15,
-    minute: 49,
-    second: 52
-  )
-
-  return Calendar.current.date(from: components)
 }

@@ -1065,9 +1065,7 @@ private func qualtricsConfigData() -> QualtricsConfigData {
       "language": AppEnvironment.current.language.rawValue,
       "logged_in": "\(AppEnvironment.current.currentUser != nil)",
       "distinct_id": AppEnvironment.current.device.identifierForVendor?.uuidString,
-      "user_uid": AppEnvironment.current.currentUser.flatMap { $0.id }.map(String.init),
-      "hours_since_joined": AppEnvironment.current.currentUser?
-        .hoursSinceJoined(AppEnvironment.current.dateType.init().date).flatMap(String.init)
+      "user_uid": AppEnvironment.current.currentUser.flatMap { $0.id }.map(String.init)
     ]
     .compact()
   )

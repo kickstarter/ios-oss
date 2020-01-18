@@ -7,7 +7,6 @@ extension User {
     id: 1,
     isAdmin: false,
     isFriend: nil,
-    joinDate: nil,
     location: nil,
     name: "Blob",
     needsFreshFacebookToken: false,
