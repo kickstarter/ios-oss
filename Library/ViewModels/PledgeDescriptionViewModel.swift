@@ -11,10 +11,11 @@ public protocol PledgeDescriptionViewModelInputs {
 }
 
 public protocol PledgeDescriptionViewModelOutputs {
-  var configureRewardCardViewWithData: Signal<(Project, Either<Reward, Backing>), Never> { get }
+  var estimatedDeliveryStackViewIsHidden: Signal<Bool, Never> { get }
   var estimatedDeliveryText: Signal<String, Never> { get }
   var popViewController: Signal<(), Never> { get }
   var presentTrustAndSafety: Signal<Void, Never> { get }
+  var rewardTitle: Signal<String, Never> { get }
 }
 
 public protocol PledgeDescriptionViewModelType {
@@ -32,10 +33,15 @@ public final class PledgeDescriptionViewModel: PledgeDescriptionViewModelType,
       .skipNil()
       .map { Format.date(secondsInUTC: $0, template: DateFormatter.monthYear, timeZone: UTCTimeZone) }
 
-    self.presentTrustAndSafety = self.learnMoreTappedProperty.signal
-    self.configureRewardCardViewWithData = self.configDataProperty.signal
+    self.estimatedDeliveryStackViewIsHidden = self.configDataProperty.signal
       .skipNil()
-      .map { project, reward in (project, .init(left: reward)) }
+      .map(second)
+      .map { $0.estimatedDeliveryOn.isNil }
+
+    self.presentTrustAndSafety = self.learnMoreTappedProperty.signal
+    self.rewardTitle = self.configDataProperty.signal
+      .skipNil()
+      .map { _, reward in reward.title ?? Strings.Back_it_because_you_believe_in_it() }
 
     self.popViewController = self.rewardCardTappedSignal
   }
@@ -55,10 +61,11 @@ public final class PledgeDescriptionViewModel: PledgeDescriptionViewModelType,
     self.rewardCardTappedObserver.send(value: ())
   }
 
-  public let configureRewardCardViewWithData: Signal<(Project, Either<Reward, Backing>), Never>
+  public let estimatedDeliveryStackViewIsHidden: Signal<Bool, Never>
   public let estimatedDeliveryText: Signal<String, Never>
   public let popViewController: Signal<(), Never>
   public let presentTrustAndSafety: Signal<Void, Never>
+  public let rewardTitle: Signal<String, Never>
 
   public var inputs: PledgeDescriptionViewModelInputs { return self }
   public var outputs: PledgeDescriptionViewModelOutputs { return self }
