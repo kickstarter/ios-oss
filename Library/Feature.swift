@@ -1,10 +1,6 @@
 import Foundation
 
-public protocol FeatureType: CustomStringConvertible {
-  init?(rawValue: String)
-}
-
-public enum Feature: String, FeatureType {
+public enum Feature: String {
   case goRewardless = "ios_go_rewardless"
   case qualtrics = "ios_qualtrics"
 }
