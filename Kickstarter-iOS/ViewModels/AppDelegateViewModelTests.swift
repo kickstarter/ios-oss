@@ -1925,10 +1925,8 @@ final class AppDelegateViewModelTests: TestCase {
         interceptId: QualtricsIntercept.survey.interceptId,
         stringProperties: qualtricsProps()
           .withAllValuesFrom([
-            "logged_in": "false",
-            "user_uid": nil,
-            "hours_since_joined": nil
-          ].compact())
+            "logged_in": "false"
+          ])
       )
 
       self.configureQualtrics.assertValues([expectedConfig])
