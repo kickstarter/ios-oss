@@ -763,8 +763,7 @@ final class KoalaTests: TestCase {
 
   func testTrackAddNewCardButtonClicked() {
     let client = MockTrackingClient()
-    let loggedInUser = User.template
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client)
 
     koala.trackAddNewCardButtonClicked(project: .template, reward: .template)
 
@@ -772,8 +771,8 @@ final class KoalaTests: TestCase {
 
     XCTAssertEqual(["Add New Card Button Clicked"], client.events)
 
-    assertProjectProperties(props)
-    assertPledgeProperties(props)
+    self.assertProjectProperties(props)
+    self.assertPledgeProperties(props)
   }
 
   func testTrackManagePledgeOptionClicked_CancelPledgeSelected() {

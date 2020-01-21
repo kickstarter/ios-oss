@@ -388,9 +388,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let mockApplePayCapabilities = MockApplePayCapabilities()
       |> \.isApplePayDevice .~ false
 
-    withEnvironment(apiService: mockService,
-                    applePayCapabilities: mockApplePayCapabilities,
-                    currentUser: User.template) {
+    withEnvironment(
+      apiService: mockService,
+      applePayCapabilities: mockApplePayCapabilities,
+      currentUser: User.template
+    ) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
@@ -422,9 +424,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let mockApplePayCapabilities = MockApplePayCapabilities()
       |> \.isApplePayDevice .~ true
 
-    withEnvironment(apiService: mockService,
-                    applePayCapabilities: mockApplePayCapabilities,
-                    currentUser: User.template) {
+    withEnvironment(
+      apiService: mockService,
+      applePayCapabilities: mockApplePayCapabilities,
+      currentUser: User.template
+    ) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
@@ -504,9 +508,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let mockApplePayCapabilities = MockApplePayCapabilities()
       |> \.isApplePayDevice .~ false
 
-    withEnvironment(apiService: apiService,
-                    applePayCapabilities: mockApplePayCapabilities,
-                    currentUser: User.template) {
+    withEnvironment(
+      apiService: apiService,
+      applePayCapabilities: mockApplePayCapabilities,
+      currentUser: User.template
+    ) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
@@ -540,9 +546,11 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     let mockApplePayCapabilities = MockApplePayCapabilities()
       |> \.isApplePayDevice .~ true
 
-    withEnvironment(apiService: apiService,
-                    applePayCapabilities: mockApplePayCapabilities,
-                    currentUser: User.template) {
+    withEnvironment(
+      apiService: apiService,
+      applePayCapabilities: mockApplePayCapabilities,
+      currentUser: User.template
+    ) {
       self.reloadPaymentMethodsCards.assertDidNotEmitValue()
       self.reloadPaymentMethodsAvailableCardTypes.assertDidNotEmitValue()
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
@@ -676,6 +684,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
 
     self.vm.inputs.addNewCardTapped(with: .pledge)
+
+    let props = self.trackingClient.properties.last
 
     XCTAssertEqual(["Add New Card Button Clicked"], self.trackingClient.events)
   }
