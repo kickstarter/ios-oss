@@ -1,6 +1,7 @@
 "A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "プロジェクトのファンディングが成功した際には、プレッジ額はプロジェクトをローンチした国の通貨で集められます。表示されている金額はおおよその換算額ですのでご注意ください。";
 "A_weekly_roundup_of_the_best_and_brightest" = "Kickstarter スタッフがセレクトした今週のおすすめプロジェクト総まとめ。";
 "About_reward_amount" = "約 %{reward_amount}　";
+"Accessibility_statement" = "Accessibility Statement";
 "Account" = "アカウント";
 "Add" = "追加";
 "Add_attachments" = "添付ファイルを追加...";
@@ -445,7 +446,8 @@
 "Say_something_kind" = "言葉に注意";
 "Security_code" = "セキュリティーコード";
 "See_all_category_name_projects" = "%{category_name} プロジェクトをすべて見る";
-"See_rewards" = "See rewards";
+"See_rewards" = "リワードを見る";
+"See_the_rewards" = "See the rewards";
 "Select" = "選択";
 "Select_an_option" = "選択してください";
 "Select_another_project" = "他のプロジェクトを選ぶ";
@@ -552,6 +554,7 @@
 "View_progress" = "進捗状況を表示";
 "View_project" = "プロジェクトを見る";
 "View_rewards" = "リワードを見る";
+"View_the_rewards" = "View the rewards";
 "View_your_pledge" = "プレッジをみる";
 "View_your_reward" = "リワードをみる";
 "View_your_rewards" = "リワードを見る";

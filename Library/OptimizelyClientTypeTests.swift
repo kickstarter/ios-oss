@@ -6,10 +6,10 @@ final class OptimizelyClientTypeTests: TestCase {
   func testVariantForExperiment_NoError() {
     let mockClient = MockOptimizelyClient()
       |> \.experiments .~
-      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.experimental.rawValue]
+      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
 
     XCTAssertEqual(
-      OptimizelyExperiment.Variant.experimental,
+      OptimizelyExperiment.Variant.variant1,
       mockClient.variant(for: .pledgeCTACopy, userId: "123"),
       "Returns the correction variation"
     )
@@ -18,7 +18,7 @@ final class OptimizelyClientTypeTests: TestCase {
   func testVariantForExperiment_ThrowsError() {
     let mockClient = MockOptimizelyClient()
       |> \.experiments .~
-      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.experimental.rawValue]
+      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
       |> \.error .~ MockOptimizelyError()
 
     XCTAssertEqual(

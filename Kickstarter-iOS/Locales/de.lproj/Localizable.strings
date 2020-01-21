@@ -1,6 +1,7 @@
 "A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht. Bis dahin können nur ungefähre Beträge angezeigt werden.";
 "A_weekly_roundup_of_the_best_and_brightest" = "Eine wöchentliche Zusammenfassung der besten und cleversten Projekte auf Kickstarter, handverlesen von unserem Team.";
 "About_reward_amount" = "Ungefähr %{reward_amount}";
+"Accessibility_statement" = "Accessibility Statement";
 "Account" = "Konto";
 "Add" = "Hinzufügen";
 "Add_attachments" = "Anhänge hinzufügen ...";
@@ -446,6 +447,7 @@
 "Security_code" = "Sicherheitscode";
 "See_all_category_name_projects" = "Alle %{category_name}-Projekte anzeigen";
 "See_rewards" = "Belohnungen ansehen";
+"See_the_rewards" = "See the rewards";
 "Select" = "Auswählen";
 "Select_an_option" = "Bitte eine Option wählen";
 "Select_another_project" = "Wähle ein anderes Projekt aus";
@@ -552,6 +554,7 @@
 "View_progress" = "Verlauf ansehen";
 "View_project" = "Projekt ansehen";
 "View_rewards" = "Belohnungen ansehen";
+"View_the_rewards" = "View the rewards";
 "View_your_pledge" = "Deinen Finanzierungsbeitrag ansehen";
 "View_your_reward" = "Belohnung ansehen";
 "View_your_rewards" = "Deine Belohnungen ansehen";
