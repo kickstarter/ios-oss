@@ -447,6 +447,7 @@
 "Security_code" = "Security code";
 "See_all_category_name_projects" = "See all %{category_name} projects";
 "See_rewards" = "See rewards";
+"See_the_rewards" = "See the rewards";
 "Select" = "Select";
 "Select_an_option" = "Select an option";
 "Select_another_project" = "Select another project";
@@ -553,6 +554,7 @@
 "View_progress" = "View progress";
 "View_project" = "View project";
 "View_rewards" = "View rewards";
+"View_the_rewards" = "View the rewards";
 "View_your_pledge" = "View your pledge";
 "View_your_reward" = "View your reward";
 "View_your_rewards" = "View your rewards";
