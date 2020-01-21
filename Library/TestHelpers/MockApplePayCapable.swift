@@ -3,7 +3,7 @@ import KsApi
 import Library
 import PassKit
 
-internal struct MockApplePayCapable: ApplePayCapabilitiesType {
+internal struct MockApplePayCapabilities: ApplePayCapabilitiesType {
   var supportedNetworks: [PKPaymentNetwork] = [.visa, .masterCard, .amex]
   var isApplePayCapable: Bool = true
   var isApplePayDevice: Bool = true
