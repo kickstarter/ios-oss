@@ -59,6 +59,23 @@ public enum Strings {
     )
   }
   /**
+   "Accessibility Statement"
+
+   - **en**: "Accessibility Statement"
+   - **de**: "Accessibility Statement"
+   - **es**: "Accessibility Statement"
+   - **fr**: "Accessibility Statement"
+   - **ja**: "Accessibility Statement"
+  */
+  public static func Accessibility_statement() -> String {
+    return localizedString(
+      key: "Accessibility_statement",
+      defaultValue: "Accessibility Statement",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Account"
 
    - **en**: "Account"
