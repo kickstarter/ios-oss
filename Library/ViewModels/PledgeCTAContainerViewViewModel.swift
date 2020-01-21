@@ -96,8 +96,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .observeValues {
         AppEnvironment.current.koala.trackPledgeCTAButtonClicked(
           stateType: $0,
-          project: $1,
-          screen: .projectPage
+          project: $1
         )
       }
   }

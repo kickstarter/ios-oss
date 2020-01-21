@@ -40,6 +40,10 @@ public final class Koala {
     case signupButtonClicked = "Signup Button Clicked"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
+    case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
+    case selectRewardButtonClicked = "Select Reward Button Clicked"
+    case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
+    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
     case thanksPageViewed = "Thanks Page Viewed"
     case forgotPasswordViewed = "Forgot Password Viewed"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
@@ -340,18 +344,6 @@ public final class Koala {
     }
   }
 
-  public enum CheckoutContext {
-    case backThisPage
-    case projectPage
-
-    var trackingString: String {
-      switch self {
-      case .backThisPage: return "Back this page"
-      case .projectPage: return "Project page"
-      }
-    }
-  }
-
   /**
    Determines the place from which the update was presented.
 
@@ -598,16 +590,15 @@ public final class Koala {
 
   public func trackPledgeCTAButtonClicked(
     stateType: PledgeStateCTAType,
-    project: Project, screen: CheckoutContext
+    project: Project
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["screen": screen.trackingString])
 
     switch stateType {
     case .fix:
       self.track(event: "Fix Pledge Button Clicked", properties: props)
     case .pledge:
-      self.track(event: "Back this Project Button Clicked", properties: props)
+      self.track(event: DataLakeWhiteListedEvent.projectPagePledgeButtonClicked.rawValue, properties: props)
     case .manage:
       self.track(event: "Manage Pledge Button Clicked", properties: props)
     case .seeTheRewards:
@@ -651,31 +642,71 @@ public final class Koala {
     self.track(event: "Manage Pledge Option Clicked", properties: props)
   }
 
+  /* Call when a reward is selected
+
+   parameters:
+   - project: the project being pledged to
+   - reward: the selected reward
+   */
+
   public func trackRewardClicked(
     project: Project,
-    reward: Reward,
-    screen: CheckoutContext
+    reward: Reward
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom([
-        "pledge_context": screen.trackingString
-      ])
 
-    self.track(event: "Select Reward Button Clicked", properties: props)
+    self.track(event: DataLakeWhiteListedEvent.selectRewardButtonClicked.rawValue, properties: props)
   }
 
-  public func trackPledgeScreenViewed(project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+  /* Call when the pledge screen is shown
 
-    self.track(event: "Pledge Screen Viewed", properties: props)
+   parameters:
+   - project: the project being pledged to
+   - reward: the chosen reward
+   - refTag: the associated RefTag for the pledge
+
+   */
+
+  public func trackCheckoutPaymentPageViewed(
+    project: Project,
+    reward: Reward,
+    refTag: RefTag?
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+
+    self.track(
+      event: DataLakeWhiteListedEvent.checkoutPaymentPageViewed.rawValue,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
   }
 
-  public func trackPledgeButtonClicked(project: Project, pledgeAmount: Double) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["pledge_total": pledgeAmount])
+  /* Call when the Pledge button is clicked
 
-    self.track(event: "Pledge Button Clicked", properties: props)
+   parameters:
+   - project: the project being pledged to
+   - reward: the chosen reward
+   - checkoutData: all the checkout data associated with the pledge
+
+   */
+
+  public func trackPledgeSubmitButtonClicked(
+    project: Project,
+    reward: Reward,
+    checkoutData: CheckoutPropertiesData,
+    refTag: RefTag?
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(checkoutProperties(from: checkoutData))
+
+    self.track(
+      event: DataLakeWhiteListedEvent.pledgeSubmitButtonClicked.rawValue,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
   }
 
   public func trackAddNewCardButtonClicked(project: Project) {
