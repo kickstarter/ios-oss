@@ -36,7 +36,7 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
     case .trust:
       return ""
     case .accessibility:
-      return "Accessibility Statement"
+      return Strings.Accessibility_statement()
     }
   }
 
