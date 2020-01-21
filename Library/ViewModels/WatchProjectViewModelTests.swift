@@ -366,12 +366,12 @@ internal final class WatchProjectViewModelTests: TestCase {
       self.vm.inputs.configure(with: project)
       self.vm.inputs.viewDidLoad()
 
-      self.postNotificationWithProject.assertValueCount(0)
+      self.postNotificationWithProject.assertValueCount(1)
 
       self.vm.inputs.saveButtonTapped(selected: false)
       self.scheduler.advance(by: .milliseconds(500))
 
-      self.postNotificationWithProject.assertValueCount(1)
+      self.postNotificationWithProject.assertValueCount(3)
     }
   }
 }

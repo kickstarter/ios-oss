@@ -169,7 +169,7 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
     self.saveButtonAccessibilityValue = self.saveButtonSelected
       .map { starred in starred ? Strings.Saved() : Strings.Unsaved() }
 
-    self.postNotificationWithProject = projectOnSaveButtonToggleSuccess
+    self.postNotificationWithProject = project
 
     projectOnSaveButtonToggleSuccess
       .observeValues { AppEnvironment.current.koala.trackProjectSave($0, context: .project) }
