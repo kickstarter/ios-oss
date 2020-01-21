@@ -246,7 +246,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
 
   // MARK: - Error fetching project
 
-  func testProjectPamphletViewController() {
+  func testProjectPamphletViewController_ErrorFetchingProject() {
     let config = Config.template
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
