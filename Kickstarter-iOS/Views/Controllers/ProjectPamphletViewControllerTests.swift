@@ -101,33 +101,6 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedIn_NonBacker_LiveProject() {
-    let config = Config.template
-
-    let liveProject = self.project
-      |> Project.lens.stats.convertedPledgedAmount .~ 1_964
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~
-      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.experimental.rawValue]
-
-    combos(Language.allLanguages, Device.allCases).forEach { language, device in
-      withEnvironment(
-        apiService: MockService(fetchProjectResponse: liveProject),
-        config: config, currentUser: .template, language: language, optimizelyClient: optimizelyClient
-      ) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(liveProject), refTag: nil)
-
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_200 : parent.view.frame.size.height
-
-        scheduler.run()
-
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
-      }
-    }
-  }
-
   func testLoggedIn_Backer_LiveProject_Error() {
     let config = Config.template
     let currentUser = User.template
