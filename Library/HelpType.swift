@@ -8,6 +8,7 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
   case privacy
   case cookie
   case trust
+  case accessibility
 
   public var accessibilityTraits: UIAccessibilityTraits {
     switch self {
@@ -34,6 +35,8 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
       return Strings.profile_settings_about_cookie()
     case .trust:
       return ""
+    case .accessibility:
+      return Strings.Accessibility_statement()
     }
   }
 
@@ -66,6 +69,8 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
       return "Terms"
     case .trust:
       return "Trust & Safety"
+    case .accessibility:
+      return "Accessibility Statement"
     }
   }
 
@@ -85,6 +90,8 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
       return baseUrl.appendingPathComponent("terms-of-use")
     case .trust:
       return baseUrl.appendingPathComponent("trust")
+    case .accessibility:
+      return baseUrl.appendingPathComponent("accessibility")
     }
   }
 }
@@ -93,7 +100,7 @@ extension HelpType: Equatable {}
 public func == (lhs: HelpType, rhs: HelpType) -> Bool {
   switch (lhs, rhs) {
   case (.contact, .contact), (.cookie, .cookie), (.helpCenter, .helpCenter), (.howItWorks, .howItWorks),
-       (.privacy, .privacy), (.terms, .terms), (.trust, .trust):
+       (.privacy, .privacy), (.terms, .terms), (.trust, .trust), (.accessibility, .accessibility):
     return true
   default:
     return false
