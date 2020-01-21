@@ -7231,12 +7231,29 @@ daring ideas."
    - **de**: "Belohnungen ansehen"
    - **es**: "Ver recompensas"
    - **fr**: "Afficher les récompenses"
-   - **ja**: "See rewards"
+   - **ja**: "リワードを見る"
   */
   public static func See_rewards() -> String {
     return localizedString(
       key: "See_rewards",
       defaultValue: "See rewards",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "See the rewards"
+
+   - **en**: "See the rewards"
+   - **de**: "See the rewards"
+   - **es**: "See the rewards"
+   - **fr**: "See the rewards"
+   - **ja**: "See the rewards"
+  */
+  public static func See_the_rewards() -> String {
+    return localizedString(
+      key: "See_the_rewards",
+      defaultValue: "See the rewards",
       count: nil,
       substitutions: [:]
     )
@@ -9041,6 +9058,23 @@ catch your eye?"
     return localizedString(
       key: "View_rewards",
       defaultValue: "View rewards",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "View the rewards"
+
+   - **en**: "View the rewards"
+   - **de**: "View the rewards"
+   - **es**: "View the rewards"
+   - **fr**: "View the rewards"
+   - **ja**: "View the rewards"
+  */
+  public static func View_the_rewards() -> String {
+    return localizedString(
+      key: "View_the_rewards",
+      defaultValue: "View the rewards",
       count: nil,
       substitutions: [:]
     )

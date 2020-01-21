@@ -1154,7 +1154,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Pledge Screen Viewed"],
+        ["Checkout Payment Page Viewed"],
         self.trackingClient.events
       )
     }
@@ -1230,7 +1230,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Pledge Screen Viewed"],
+        ["Checkout Payment Page Viewed"],
         self.trackingClient.events
       )
     }
@@ -1265,7 +1265,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Pledge Screen Viewed"],
+        ["Checkout Payment Page Viewed"],
         self.trackingClient.events
       )
       XCTAssertEqual([nil], self.trackingClient.properties(forKey: "pledge_context"))
@@ -1310,7 +1310,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Pledge Screen Viewed"],
+        ["Checkout Payment Page Viewed"],
         self.trackingClient.events
       )
       XCTAssertEqual([nil], self.trackingClient.properties(forKey: "pledge_context"))
@@ -1377,7 +1377,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksCheckoutData.assertValues([checkoutData])
 
       XCTAssertEqual(
-        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
         self.trackingClient.events
       )
     }
@@ -1425,7 +1425,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
 
       XCTAssertEqual(
-        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
         self.trackingClient.events
       )
       XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
@@ -3162,7 +3162,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksCheckoutData.assertValues([checkoutData])
 
       XCTAssertEqual(
-        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
         self.trackingClient.events
       )
     }
@@ -3237,7 +3237,7 @@ final class PledgeViewModelTests: TestCase {
       )
 
       XCTAssertEqual(
-        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
         self.trackingClient.events
       )
       XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
@@ -3311,7 +3311,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Pledge Screen Viewed", "Pledge Button Clicked"],
+        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
         self.trackingClient.events
       )
       XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
@@ -3587,33 +3587,42 @@ final class PledgeViewModelTests: TestCase {
     )
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
 
     self.vm.inputs.submitButtonTapped()
 
-    XCTAssertEqual(["Update Payment Method Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual([
+      "Checkout Payment Page Viewed",
+      "Update Payment Method Button Clicked"
+    ], self.trackingClient.events)
   }
 
   func testTrackingEvents_ContextIsUpdate() {
     self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .update)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
 
     self.vm.inputs.submitButtonTapped()
 
-    XCTAssertEqual(["Update Pledge Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(
+      ["Checkout Payment Page Viewed", "Update Pledge Button Clicked"],
+      self.trackingClient.events
+    )
   }
 
   func testTrackingEvents_ContextIsUpdateReward() {
     self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .updateReward)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
 
     self.vm.inputs.submitButtonTapped()
 
-    XCTAssertEqual(["Update Pledge Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(
+      ["Checkout Payment Page Viewed", "Update Pledge Button Clicked"],
+      self.trackingClient.events
+    )
   }
 
   func testTrackingEvents_PledgeScreenViewed() {
@@ -3622,18 +3631,57 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual([], self.trackingClient.events)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Pledge Screen Viewed"], self.trackingClient.events)
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
   }
 
-  func testTrackingEvents_PledgeButtonClicked() {
-    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
-
+  func testTrackingEvents_PledgeSubmitButtonClicked() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .discovery, context: .pledge)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Pledge Screen Viewed"], self.trackingClient.events)
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (
+      amount: 50.0,
+      min: 10.0,
+      max: 100.0,
+      isValid: true
+    ))
+    self.vm.inputs.shippingRuleSelected(.template)
+    self.vm.inputs.creditCardSelected(with: "123")
 
     self.vm.inputs.submitButtonTapped()
 
-    XCTAssertEqual(["Pledge Screen Viewed", "Pledge Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(
+      ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+      self.trackingClient.events
+    )
+
+    let props = self.trackingClient.properties.last
+
+    // Checkout properties
+    XCTAssertEqual("55.00", props?["checkout_amount"] as? String)
+    XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
+    XCTAssertEqual(1, props?["checkout_reward_id"] as? Int)
+    XCTAssertEqual(5_500, props?["checkout_revenue_in_usd_cents"] as? Int)
+    XCTAssertEqual(false, props?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
+    XCTAssertEqual(5.0, props?["checkout_shipping_amount"] as? Double)
+    XCTAssertEqual(1_506_897_315.0, props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
+    XCTAssertNil(props?["checkout_reward_title"] as? String)
+
+    // Pledge properties
+    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
+    XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(10.00, props?["pledge_backer_reward_minimum"] as? Double)
+    XCTAssertEqual(false, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
+
+    XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
+
+    // Project properties
+    XCTAssertEqual(1, props?["project_pid"] as? Int)
+
+    XCTAssertEqual("discovery", props?["session_ref_tag"] as? String)
   }
 }
