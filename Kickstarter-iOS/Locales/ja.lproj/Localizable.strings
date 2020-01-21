@@ -1,6 +1,7 @@
 "A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "プロジェクトのファンディングが成功した際には、プレッジ額はプロジェクトをローンチした国の通貨で集められます。表示されている金額はおおよその換算額ですのでご注意ください。";
 "A_weekly_roundup_of_the_best_and_brightest" = "Kickstarter スタッフがセレクトした今週のおすすめプロジェクト総まとめ。";
 "About_reward_amount" = "約 %{reward_amount}　";
+"Accessibility_statement" = "Accessibility Statement";
 "Account" = "アカウント";
 "Add" = "追加";
 "Add_attachments" = "添付ファイルを追加...";
