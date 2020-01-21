@@ -140,9 +140,15 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
       return PledgeStateCTAType.viewYourRewards
     }
 
-    if optimizelyVariant == OptimizelyExperiment.Variant.experimental,
-      project.state == .live {
-      return PledgeStateCTAType.seeRewards
+    if let variant = optimizelyVariant, project.state == .live {
+      switch variant {
+      case .variant1:
+        return PledgeStateCTAType.seeTheRewards
+      case .variant2:
+        return PledgeStateCTAType.viewTheRewards
+      case .control:
+        return PledgeStateCTAType.pledge
+      }
     }
 
     return project.state == .live ? PledgeStateCTAType.pledge : PledgeStateCTAType.viewRewards
