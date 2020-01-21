@@ -7,7 +7,7 @@ import UIKit
 final class FeatureFlagToolsViewController: UITableViewController {
   // MARK: - Properties
 
-  private var features = [Features]()
+  private var features = [FeatureEnabled]()
   private let reuseId = "FeatureFlagTools.TableViewCell"
   private let viewModel: FeatureFlagToolsViewModelType = FeatureFlagToolsViewModel()
 
@@ -35,7 +35,7 @@ final class FeatureFlagToolsViewController: UITableViewController {
     self.viewModel.outputs.reloadWithData
       .observeForUI()
       .observeValues { [weak self] features in
-        self?.features = features
+        self?.features = featureEnabledFromDictionaries(features)
 
         self?.tableView.reloadData()
       }
@@ -79,8 +79,7 @@ extension FeatureFlagToolsViewController {
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseId, for: indexPath)
-    let featureTuples = featureEnabledFromDictionaries(self.features)
-    let (feature, enabled) = featureTuples[indexPath.row]
+    let (feature, enabled) = self.features[indexPath.row]
 
     let switchControl = UISwitch(frame: .zero)
       |> baseSwitchControlStyle
