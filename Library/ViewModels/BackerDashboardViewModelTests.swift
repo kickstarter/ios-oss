@@ -106,7 +106,7 @@ internal final class BackerDashboardViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchUserSelfResponse: user)) {
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
-      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(false)
 
       self.scheduler.advance()
 

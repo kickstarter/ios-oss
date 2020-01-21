@@ -108,7 +108,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
 
     let fetchedUserEvent = Signal.merge(
       self.projectSavedProperty.signal.ignoreValues(),
-      self.viewDidLoadProperty.signal.ignoreValues()
+      self.viewWillAppearProperty.signal.ignoreValues()
     )
     .switchMap { _ in
       AppEnvironment.current.apiService.fetchUserSelf()
