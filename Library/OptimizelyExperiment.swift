@@ -7,6 +7,7 @@ public enum OptimizelyExperiment {
 
   public enum Variant: String, Equatable {
     case control
-    case experimental
+    case variant1 = "variant-1"
+    case variant2 = "variant-2"
   }
 }

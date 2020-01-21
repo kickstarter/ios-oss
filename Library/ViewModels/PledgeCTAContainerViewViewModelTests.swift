@@ -157,7 +157,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.stackViewIsHidden.assertValues([true])
   }
 
-  func testPledgeCTA_NonBacker_LiveProject_LoggedIn_OptimizelyExperimental() {
+  func testPledgeCTA_NonBacker_LiveProject_LoggedIn_OptimizelyExperimental_Variant1() {
     let user = User.template |> User.lens.id .~ 5
     let project = Project.template
       |> Project.lens.personalization.backing .~ nil
@@ -165,12 +165,31 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~
-      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.experimental.rawValue]
+      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
 
     withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
       self.vm.inputs.configureWith(value: (.left(project), false))
       self.buttonStyleType.assertValues([ButtonStyleType.green])
-      self.buttonTitleText.assertValues([Strings.See_rewards()])
+      self.buttonTitleText.assertValues(["See the rewards"])
+      self.spacerIsHidden.assertValues([true])
+      self.stackViewIsHidden.assertValues([true])
+    }
+  }
+
+  func testPledgeCTA_NonBacker_LiveProject_LoggedIn_OptimizelyExperimental_Variant2() {
+    let user = User.template |> User.lens.id .~ 5
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.personalization.isBacking .~ false
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant2.rawValue]
+
+    withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configureWith(value: (.left(project), false))
+      self.buttonStyleType.assertValues([ButtonStyleType.green])
+      self.buttonTitleText.assertValues(["View the rewards"])
       self.spacerIsHidden.assertValues([true])
       self.stackViewIsHidden.assertValues([true])
     }
