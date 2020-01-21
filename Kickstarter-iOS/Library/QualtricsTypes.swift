@@ -26,5 +26,10 @@ public protocol QualtricsResultType {
   func passed() -> Bool
 }
 
+@objc public protocol QualtricsPropertiesType {
+  @objc func setNumber(number: Double, for key: String)
+}
+
 extension TargetingResult: QualtricsResultType {}
 extension InitializationResult: QualtricsResultType {}
+extension QualtricsProperties: QualtricsPropertiesType {}

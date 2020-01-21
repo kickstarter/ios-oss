@@ -215,7 +215,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.evaluateQualtricsTargetingLogic
       .observeValues { [weak self] in
         Qualtrics.shared.evaluateTargetingLogic() { result in
-          self?.viewModel.inputs.didEvaluateQualtricsTargetingLogic(with: result)
+          self?.viewModel.inputs.didEvaluateQualtricsTargetingLogic(
+            with: result, properties: Qualtrics.shared.properties
+          )
         }
       }
 
