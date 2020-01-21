@@ -33,7 +33,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     )
 
     self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
-    self.tableView.register(nib: .DeprecatedRewardCell)
 
     self.viewModel.inputs.viewDidLoad()
   }
