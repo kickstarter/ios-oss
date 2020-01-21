@@ -11,7 +11,7 @@ final class HelpDataSourceTests: XCTestCase {
 
     XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(3, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
   }
 
   func testCellTypeForIndexPath_validIndexPath() {
