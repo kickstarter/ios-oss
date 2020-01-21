@@ -717,7 +717,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let didEvaluateQualtricsTargetingLogicWithResultProperty
     = MutableProperty<(QualtricsResultType, QualtricsPropertiesType)?>(nil)
   public func didEvaluateQualtricsTargetingLogic(
-    with result: QualtricsResultType, properties: QualtricsPropertiesType
+    with result: QualtricsResultType,
+    properties: QualtricsPropertiesType
   ) {
     self.didEvaluateQualtricsTargetingLogicWithResultProperty.value = (result, properties)
   }
