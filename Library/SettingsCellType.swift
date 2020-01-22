@@ -137,7 +137,7 @@ public enum HelpSectionType: Int {
     case .help:
       return [.helpCenter, .contact]
     case .privacy:
-      return [.terms, .privacy, .cookie]
+      return [.terms, .privacy, .cookie, .accessibility]
     }
   }
 }

@@ -215,7 +215,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.evaluateQualtricsTargetingLogic
       .observeValues { [weak self] in
         Qualtrics.shared.evaluateTargetingLogic() { result in
-          self?.viewModel.inputs.didEvaluateQualtricsTargetingLogic(with: result)
+          self?.viewModel.inputs.didEvaluateQualtricsTargetingLogic(
+            with: result, properties: Qualtrics.shared.properties
+          )
         }
       }
 
@@ -384,9 +386,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   // MARK: - Qualtrics Configuration
 
   private func configureQualtrics(with config: QualtricsConfigData) {
-    let properties = Properties()
     config.stringProperties.forEach { key, value in
-      properties.setString(string: value, for: key)
+      Qualtrics.shared.properties.setString(string: value, for: key)
     }
 
     Qualtrics.shared.initialize(
