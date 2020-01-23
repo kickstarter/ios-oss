@@ -10,6 +10,7 @@
     internal let language: String
     internal let currency: String
     internal let buildVersion: String
+    internal let deviceIdentifier: String
 
     fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>?
 
@@ -172,7 +173,8 @@
       oauthToken: OauthTokenAuthType?,
       language: String,
       currency: String,
-      buildVersion: String = "1"
+      buildVersion: String = "1",
+      deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
     ) {
       self.init(
         appId: appId,
@@ -181,6 +183,7 @@
         language: language,
         currency: currency,
         buildVersion: buildVersion,
+        deviceIdentifier: deviceIdentifier,
         fetchActivitiesResponse: nil
       )
     }
@@ -192,6 +195,7 @@
       language: String = "en",
       currency: String = "USD",
       buildVersion: String = "1",
+      deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
       cancelBackingResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>? = nil,
       changeEmailError: GraphError? = nil,
@@ -296,6 +300,7 @@
       self.language = language
       self.currency = currency
       self.buildVersion = buildVersion
+      self.deviceIdentifier = deviceIdentifier
 
       self.addNewCreditCardResult = addNewCreditCardResult
 
