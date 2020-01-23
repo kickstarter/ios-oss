@@ -685,8 +685,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
     self.vm.inputs.addNewCardTapped(with: .pledge)
 
-    let props = self.trackingClient.properties.last
-
     XCTAssertEqual(["Add New Card Button Clicked"], self.trackingClient.events)
   }
 }
