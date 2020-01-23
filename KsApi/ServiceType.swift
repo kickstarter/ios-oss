@@ -18,6 +18,7 @@ public protocol ServiceType {
   var language: String { get }
   var currency: String { get }
   var buildVersion: String { get }
+  var deviceIdentifier: String { get }
 
   init(
     appId: String,
@@ -25,7 +26,8 @@ public protocol ServiceType {
     oauthToken: OauthTokenAuthType?,
     language: String,
     currency: String,
-    buildVersion: String
+    buildVersion: String,
+    deviceIdentifier: String
   )
 
   /// Returns a new service with the oauth token replaced.
@@ -508,6 +510,7 @@ extension ServiceType {
     headers["Kickstarter-iOS-App"] = self.buildVersion
     headers["User-Agent"] = Self.userAgent
     headers["X-KICKSTARTER-CLIENT"] = self.serverConfig.apiClientAuth.clientId
+    headers["Kickstarter-iOS-App-UUID"] = self.deviceIdentifier
 
     return headers
   }
