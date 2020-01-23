@@ -55,8 +55,10 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the user taps "OK" from the contextual alert.
   func didAcceptReceivingRemoteNotifications()
 
-  /// Call with the result of evaluating Qualtrics Targeting Logic
-  func didEvaluateQualtricsTargetingLogic(with result: QualtricsResultType)
+  /// Call with the result of evaluating Qualtrics Targeting Logic and current Qualtrics.Properties
+  func didEvaluateQualtricsTargetingLogic(
+    with result: QualtricsResultType, properties: QualtricsPropertiesType
+  )
 
   /// Call when the app delegate receives a remote notification.
   func didReceive(remoteNotification notification: [AnyHashable: Any])
@@ -634,18 +636,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       self.didUpdateConfigProperty.signal
     )
     .filter { _ in featureQualtricsIsEnabled() }
-    .map { _ in
-      .init(
-        brandId: Secrets.Qualtrics.brandId,
-        zoneId: Secrets.Qualtrics.zoneId,
-        interceptId: QualtricsIntercept.survey.interceptId,
-        stringProperties: [
-          "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier.coalesceWith(""),
-          "language": AppEnvironment.current.language.rawValue,
-          "logged_in": "\(AppEnvironment.current.currentUser != nil)"
-        ]
-      )
-    }
+    .ignoreValues()
+    .map(qualtricsConfigData)
 
     self.evaluateQualtricsTargetingLogic = self.qualtricsInitializedWithResultProperty.signal
       .skipNil()
@@ -655,7 +647,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.displayQualtricsSurvey = self.didEvaluateQualtricsTargetingLogicWithResultProperty.signal
       .skipNil()
-      .filter { $0.passed() }
+      .on(value: { _, properties in properties.setNumber(number: 0, for: "first_app_session") })
+      .filter { result, _ in result.passed() }
       .ignoreValues()
   }
 
@@ -721,6 +714,15 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.didAcceptReceivingRemoteNotificationsProperty.value = ()
   }
 
+  fileprivate let didEvaluateQualtricsTargetingLogicWithResultProperty
+    = MutableProperty<(QualtricsResultType, QualtricsPropertiesType)?>(nil)
+  public func didEvaluateQualtricsTargetingLogic(
+    with result: QualtricsResultType,
+    properties: QualtricsPropertiesType
+  ) {
+    self.didEvaluateQualtricsTargetingLogicWithResultProperty.value = (result, properties)
+  }
+
   fileprivate let didUpdateConfigProperty = MutableProperty<Config?>(nil)
   public func didUpdateConfig(_ config: Config) {
     self.didUpdateConfigProperty.value = config
@@ -754,12 +756,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let qualtricsInitializedWithResultProperty = MutableProperty<QualtricsResultType?>(nil)
   public func qualtricsInitialized(with result: QualtricsResultType) {
     self.qualtricsInitializedWithResultProperty.value = result
-  }
-
-  fileprivate let didEvaluateQualtricsTargetingLogicWithResultProperty
-    = MutableProperty<QualtricsResultType?>(nil)
-  public func didEvaluateQualtricsTargetingLogic(with result: QualtricsResultType) {
-    self.didEvaluateQualtricsTargetingLogicWithResultProperty.value = result
   }
 
   fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
@@ -1058,4 +1054,20 @@ private func visitorCookies() -> [HTTPCookie] {
     )
   )
   .compact()
+}
+
+private func qualtricsConfigData() -> QualtricsConfigData {
+  return .init(
+    brandId: Secrets.Qualtrics.brandId,
+    zoneId: Secrets.Qualtrics.zoneId,
+    interceptId: QualtricsIntercept.survey.interceptId,
+    stringProperties: [
+      "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier,
+      "language": AppEnvironment.current.language.rawValue,
+      "logged_in": "\(AppEnvironment.current.currentUser != nil)",
+      "distinct_id": AppEnvironment.current.device.identifierForVendor?.uuidString,
+      "user_uid": AppEnvironment.current.currentUser.flatMap { $0.id }.map(String.init)
+    ]
+    .compact()
+  )
 }
