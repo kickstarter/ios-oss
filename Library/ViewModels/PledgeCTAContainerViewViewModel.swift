@@ -132,7 +132,11 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
   let uuid = deviceIdentifier(uuid: UUID())
   let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-    .variant(for: OptimizelyExperiment.Key.pledgeCTACopy, userId: uuid)
+    .variant(
+      for: OptimizelyExperiment.Key.pledgeCTACopy,
+      userId: uuid,
+      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false
+    )
 
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
     if currentUserIsCreator(of: project) {
