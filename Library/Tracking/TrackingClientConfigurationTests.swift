@@ -1,6 +1,6 @@
 import Foundation
-import KsApi
-import Library
+@testable import KsApi
+@testable import Library
 import XCTest
 
 final class TrackingClientConfigurationTests: TestCase {
@@ -70,7 +70,7 @@ final class TrackingClientConfigurationTests: TestCase {
     XCTAssertEqual(TrackingClientConfiguration.dataLake.identifier, .dataLake)
   }
 
-  func testDataLakeRecordDictionary() {
+  func testDataLakeRecordDictionary_LoggedOut_NoIdentifierForVendor() {
     let config = TrackingClientConfiguration.dataLake
 
     let recordDictionary = config.recordDictionary("event-name", ["key": "value"])
@@ -85,6 +85,32 @@ final class TrackingClientConfigurationTests: TestCase {
     }
 
     XCTAssertNotNil(UUID(uuidString: uuidString))
+  }
+
+  func testDataLakeRecordDictionary_LoggedIn_IdentifierForVendor() {
+    withEnvironment(currentUser: .template, device: MockDevice()) {
+      let config = TrackingClientConfiguration.dataLake
+
+      let recordDictionary = config.recordDictionary("event-name", ["key": "value"])
+      let propertiesDictionary = (recordDictionary["data"] as? [String: Any])?["properties"] as? [String: Any]
+
+      XCTAssertEqual((recordDictionary["data"] as? [String: Any])?["event"] as? String, "event-name")
+      XCTAssertEqual(propertiesDictionary?["key"] as? String, "value")
+      XCTAssertEqual(recordDictionary["partition-key"] as? String, "1")
+    }
+  }
+
+  func testDataLakeRecordDictionary_LoggedOut_IdentifierForVendor() {
+    withEnvironment(device: MockDevice()) {
+      let config = TrackingClientConfiguration.dataLake
+
+      let recordDictionary = config.recordDictionary("event-name", ["key": "value"])
+      let propertiesDictionary = (recordDictionary["data"] as? [String: Any])?["properties"] as? [String: Any]
+
+      XCTAssertEqual((recordDictionary["data"] as? [String: Any])?["event"] as? String, "event-name")
+      XCTAssertEqual(propertiesDictionary?["key"] as? String, "value")
+      XCTAssertEqual(recordDictionary["partition-key"] as? String, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
+    }
   }
 
   func testDataLakeEnvelope() {

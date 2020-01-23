@@ -21,7 +21,8 @@ final class ServiceTypeTests: XCTestCase {
       token: "cafebeef"
     ),
     language: "ksr",
-    buildVersion: "1234567890"
+    buildVersion: "1234567890",
+    deviceIdentifier: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
   )
 
   private let anonAdHocService = Service(
@@ -37,7 +38,8 @@ final class ServiceTypeTests: XCTestCase {
         password: "password"
       ),
       graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
-    )
+    ),
+    deviceIdentifier: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
   )
 
   private let anonService = Service(
@@ -50,7 +52,8 @@ final class ServiceTypeTests: XCTestCase {
       ),
       basicHTTPAuth: nil,
       graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
-    )
+    ),
+    deviceIdentifier: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
   )
 
   func testEquals() {
@@ -97,7 +100,8 @@ final class ServiceTypeTests: XCTestCase {
         "Accept-Language": "ksr",
         "Kickstarter-App-Id": "com.kickstarter.test",
         "X-KICKSTARTER-CLIENT": "deadbeef",
-        "User-Agent": userAgent()
+        "User-Agent": userAgent(),
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
       ],
       request.allHTTPHeaderFields!
     )
@@ -118,7 +122,8 @@ final class ServiceTypeTests: XCTestCase {
         "Accept-Language": "ksr",
         "Kickstarter-App-Id": "com.kickstarter.test",
         "X-KICKSTARTER-CLIENT": "deadbeef",
-        "User-Agent": userAgent()
+        "User-Agent": userAgent(),
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
       ],
       request.allHTTPHeaderFields!
     )
@@ -140,7 +145,8 @@ final class ServiceTypeTests: XCTestCase {
         "Accept-Language": "ksr",
         "Kickstarter-App-Id": "com.kickstarter.test",
         "X-KICKSTARTER-CLIENT": "deadbeef",
-        "User-Agent": userAgent()
+        "User-Agent": userAgent(),
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
       ],
       request.allHTTPHeaderFields!
     )
@@ -163,7 +169,8 @@ final class ServiceTypeTests: XCTestCase {
         "Kickstarter-App-Id": "com.kickstarter.test",
         "Content-Type": "application/json; charset=utf-8",
         "X-KICKSTARTER-CLIENT": "deadbeef",
-        "User-Agent": userAgent()
+        "User-Agent": userAgent(),
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
       ],
       request.allHTTPHeaderFields!
     )
@@ -193,7 +200,8 @@ final class ServiceTypeTests: XCTestCase {
         "Accept-Language": "ksr",
         "Kickstarter-App-Id": "com.kickstarter.test",
         "X-KICKSTARTER-CLIENT": "deadbeef",
-        "User-Agent": userAgent()
+        "User-Agent": userAgent(),
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
       ],
       request.allHTTPHeaderFields!
     )
@@ -216,7 +224,8 @@ final class ServiceTypeTests: XCTestCase {
         "Accept-Language": "en",
         "Kickstarter-App-Id": "com.kickstarter.test",
         "X-KICKSTARTER-CLIENT": "deadbeef",
-        "User-Agent": userAgent()
+        "User-Agent": userAgent(),
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
       ],
       request.allHTTPHeaderFields!
     )
@@ -236,7 +245,8 @@ final class ServiceTypeTests: XCTestCase {
           password: "password"
         ),
         graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
-      )
+      ),
+      deviceIdentifier: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
     )
 
     let url = URL(string: "http://api.ksr.com/v1/test?key=value")!
@@ -253,7 +263,8 @@ final class ServiceTypeTests: XCTestCase {
         "Accept-Language": "en",
         "Kickstarter-App-Id": "com.kickstarter.test",
         "X-KICKSTARTER-CLIENT": "deadbeef",
-        "User-Agent": userAgent()
+        "User-Agent": userAgent(),
+        "Kickstarter-iOS-App-UUID": "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
       ],
       request.allHTTPHeaderFields!
     )
@@ -282,6 +293,10 @@ final class ServiceTypeTests: XCTestCase {
     XCTAssertEqual(request?.allHTTPHeaderFields?["Kickstarter-iOS-App"], self.service.buildVersion)
     XCTAssertEqual(request?.allHTTPHeaderFields?["X-KICKSTARTER-CLIENT"], "deadbeef")
     XCTAssertEqual(request?.allHTTPHeaderFields?["User-Agent"], userAgent())
+    XCTAssertEqual(
+      request?.allHTTPHeaderFields?["Kickstarter-iOS-App-UUID"],
+      "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
+    )
   }
 
   func testGraphMutationRequestBody() {
