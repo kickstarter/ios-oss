@@ -99,6 +99,32 @@ internal final class BackerDashboardViewModelTests: TestCase {
     }
   }
 
+  func testUserUpdatesInEnvironment_AfterSavingProject() {
+    let user = User.template
+      |> \.name .~ "user"
+      |> \.stats.starredProjectsCount .~ 60
+
+    withEnvironment(apiService: MockService(fetchUserSelfResponse: user)) {
+      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: user))
+      self.vm.inputs.viewWillAppear(false)
+
+      self.scheduler.advance()
+
+      self.updateCurrentUserInEnvironment.assertValues([user])
+
+      let user2 = user
+        |> \.name .~ "Updated user"
+
+      withEnvironment(apiService: MockService(fetchUserSelfResponse: user2)) {
+        self.vm.inputs.projectSaved()
+
+        self.scheduler.advance()
+
+        self.updateCurrentUserInEnvironment.assertValues([user, user, user2])
+      }
+    }
+  }
+
   func testConfigurePagesData() {
     self.configurePagesDataSourceTab.assertValueCount(0)
     self.configurePagesDataSourceSort.assertValueCount(0)
