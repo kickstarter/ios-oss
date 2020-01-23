@@ -173,6 +173,7 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
     _: ProjectPamphletViewController,
     panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer
   ) {
+    // Disables pan-to-dismiss transition animator on iOS 13
     if #available(iOS 13.0, *) { return }
 
     guard let scrollView = recognizer.view as? UIScrollView else { return }
