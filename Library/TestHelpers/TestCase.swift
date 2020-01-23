@@ -44,7 +44,7 @@ internal class TestCase: FBSnapshotTestCase {
     AppEnvironment.pushEnvironment(
       apiService: self.apiService,
       apiDelayInterval: .seconds(0),
-      applePayCapable: MockApplePayCapable(),
+      applePayCapabilities: MockApplePayCapabilities(),
       application: UIApplication.shared,
       assetImageGeneratorType: AVAssetImageGenerator.self,
       cache: self.cache,

@@ -159,7 +159,7 @@ private let dateLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.textColor .~ UIColor.ksr_soft_black
     |> \.font .~ UIFont.ksr_caption1()
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.numberOfLines .~ 0
+    |> \.minimumScaleFactor .~ 0.5
 }
 
 private let estimatedDeliveryLabelStyle: LabelStyle = { (label: UILabel) in
