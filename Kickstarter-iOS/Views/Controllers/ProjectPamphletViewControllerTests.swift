@@ -37,12 +37,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  // MARK: - Logged In, Native Checkout Enabled
+  // MARK: - Logged In
 
-  func testLoggedIn_Backer_LiveProject_NativeCheckout_Enabled() {
+  func testLoggedIn_Backer_LiveProject() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
-      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
     let reward = Reward.template
       |> Reward.lens.title .~ "Magic Lamp"
     let backing = Backing.template
@@ -74,10 +72,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedIn_Backer_NonLiveProject_NativeCheckout_Enabled() {
+  func testLoggedIn_Backer_NonLiveProject() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
-      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
     let backedProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
@@ -105,10 +101,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedIn_Backer_LiveProject_Error_NativeCheckout_Enabled() {
+  func testLoggedIn_Backer_LiveProject_Error() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
-      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
     let currentUser = User.template
     let backing = Backing.template
       |> Backing.lens.status .~ .errored
@@ -138,10 +132,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedIn_Backer_NonLiveProject_Error_NativeCheckout_Enabled() {
+  func testLoggedIn_Backer_NonLiveProject_Error() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
-      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
     let currentUser = User.template
     let backing = Backing.template
       |> Backing.lens.status .~ .errored
@@ -171,10 +163,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedIn_NonBacker_NonLiveProject_NativeCheckout_Enabled() {
+  func testLoggedIn_NonBacker_NonLiveProject() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
-      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
     let backedProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
@@ -201,12 +191,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
-  // MARK: - Logged Out, Native Checkout Enabled
+  // MARK: - Logged Out
 
-  func testLoggedOut_NonBacker_LiveProject_NativeCheckout_Feature_Enabled() {
+  func testLoggedOut_NonBacker_LiveProject() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
-      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
 
     let liveProject = self.project
       |> Project.lens.stats.convertedPledgedAmount .~ 1_964
@@ -228,10 +216,8 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
-  func testLoggedOut_NonBacker_NonLiveProject_NativeCheckout_Enabled() {
+  func testLoggedOut_NonBacker_NonLiveProject() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
-      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
     let backedProject = Project.cosmicSurgery
       |> Project.lens.photo.full .~ ""
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
@@ -258,60 +244,10 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     }
   }
 
-  // MARK: - Native Checkout Disabled or Undefined
+  // MARK: - Error fetching project
 
-  func testLoggedOut_LiveProject_NativeCheckout_Disabled() {
+  func testProjectPamphletViewController_ErrorFetchingProject() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: false]
-
-    let language = Language.en
-    let device = Device.phone4_7inch
-
-    let liveProject = self.project
-      |> Project.lens.stats.convertedPledgedAmount .~ 1_964
-
-    // All we want to see here is that the pledge CTA button is hidden
-
-    withEnvironment(
-      apiService: MockService(fetchProjectResponse: liveProject),
-      config: config, currentUser: nil, language: language
-    ) {
-      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(liveProject), refTag: nil)
-      _ = traitControllers(device: device, orientation: .portrait, child: vc)
-
-      FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
-    }
-  }
-
-  func testLoggedOut_LiveProject_NativeCheckout_Undefined() {
-    let config = Config.template
-      |> \.features .~ [:]
-
-    let language = Language.en
-    let device = Device.phone4_7inch
-
-    let liveProject = self.project
-      |> Project.lens.stats.convertedPledgedAmount .~ 1_964
-
-    // All we want to see here is that the pledge CTA button is hidden
-    withEnvironment(
-      apiService: MockService(fetchProjectResponse: liveProject),
-      config: config, language: language
-    ) {
-      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(liveProject), refTag: nil)
-
-      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = device == .pad ? 2_300 : 1_800
-
-      FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
-    }
-  }
-
-  // MARK: - Native Checkout Enabled, Error fetching project
-
-  func testProjectPamphletViewController_NativeCheckoutEnabled_ErrorFetchingProject() {
-    let config = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(

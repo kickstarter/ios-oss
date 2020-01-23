@@ -188,10 +188,6 @@ public struct Service: ServiceType {
     return request(.backing(projectId: project.id, backerId: user.id))
   }
 
-  public func fetchCheckout(checkoutUrl url: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope> {
-    return request(.checkout(url))
-  }
-
   public func fetchComments(paginationUrl url: String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return requestPagination(url)
   }
@@ -473,24 +469,6 @@ public struct Service: ServiceType {
   public func signup(facebookAccessToken token: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
     return request(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
-  }
-
-  public func submitApplePay(
-    checkoutUrl: String,
-    stripeToken: String,
-    paymentInstrumentName: String,
-    paymentNetwork: String,
-    transactionIdentifier: String
-  ) -> SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope> {
-    return request(
-      .submitApplePay(
-        checkoutUrl: checkoutUrl,
-        stripeToken: stripeToken,
-        paymentInstrumentName: paymentInstrumentName,
-        paymentNetwork: paymentNetwork,
-        transactionIdentifier: transactionIdentifier
-      )
-    )
   }
 
   public func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {

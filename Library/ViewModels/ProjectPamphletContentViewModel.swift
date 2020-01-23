@@ -21,8 +21,7 @@ public protocol ProjectPamphletContentViewModelOutputs {
   var goToRewardPledge: Signal<(Project, Reward), Never> { get }
   var goToUpdates: Signal<Project, Never> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, Never> { get }
-  var loadProjectIntoDataSource: Signal<(Project, Bool), Never> { get }
-  var rewardTitleCellVisible: Signal<Bool, Never> { get }
+  var loadProjectIntoDataSource: Signal<Project, Never> { get }
 }
 
 public protocol ProjectPamphletContentViewModelType {
@@ -57,15 +56,11 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
     )
     .take(first: 1)
 
-    self.rewardTitleCellVisible = project
-      .map { $0.state == .live && $0.personalization.isBacking == true }
-
     self.loadProjectIntoDataSource = Signal.combineLatest(
       project,
-      timeToLoadDataSource,
-      self.rewardTitleCellVisible
+      timeToLoadDataSource
     )
-    .map { project, _, rewardVisible in (project, rewardVisible) }
+    .map(first)
 
     self.loadMinimalProjectIntoDataSource = project
       .takePairWhen(self.viewWillAppearAnimatedProperty.signal)
@@ -150,8 +145,7 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
   public let goToRewardPledge: Signal<(Project, Reward), Never>
   public let goToUpdates: Signal<Project, Never>
   public let loadMinimalProjectIntoDataSource: Signal<Project, Never>
-  public let loadProjectIntoDataSource: Signal<(Project, Bool), Never>
-  public let rewardTitleCellVisible: Signal<Bool, Never>
+  public let loadProjectIntoDataSource: Signal<Project, Never>
 
   public var inputs: ProjectPamphletContentViewModelInputs { return self }
   public var outputs: ProjectPamphletContentViewModelOutputs { return self }

@@ -7,7 +7,7 @@ public typealias FeatureEnabled = (feature: Feature, isEnabled: Bool)
 
 public protocol FeatureFlagToolsViewModelOutputs {
   var postNotification: Signal<Notification, Never> { get }
-  var reloadWithData: Signal<[FeatureEnabled], Never> { get }
+  var reloadWithData: Signal<[Features], Never> { get }
   var updateConfigWithFeatures: Signal<Features, Never> { get }
 }
 
@@ -28,30 +28,19 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
     let didUpdateConfigAndUI = self.didUpdateConfigProperty.signal
       .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
 
-    let features: Signal<[FeatureEnabled], Never> = Signal.merge(
+    let features = Signal.merge(
       self.viewDidLoadProperty.signal,
       didUpdateConfigAndUI
     )
     .map { _ in AppEnvironment.current.config?.features }
     .skipNil()
-    .map { configFeatures in
-      var features = [FeatureEnabled]()
-
-      for (key, value) in configFeatures {
-        guard let feature = Feature(rawValue: key) else {
-          continue
-        }
-
-        features.append((feature: feature, isEnabled: value))
-      }
-
-      return features
-    }
 
     let sortedFeatures = features
-      .map { features in features.sorted { $0.feature.description < $1.feature.description } }
+      .map { features in Array(features).sorted(by: { $0.0 < $1.0 }) }
 
-    self.reloadWithData = sortedFeatures
+    self.reloadWithData = sortedFeatures.map { featureTuples in
+      featureTuples.map { key, value in [key: value] }
+    }
 
     self.updateConfigWithFeatures = sortedFeatures
       .takePairWhen(self.setFeatureEnabledAtIndexProperty.signal.skipNil())
@@ -59,12 +48,12 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
       .map { features, index, enabled -> Features? in
         let featureEnabledPair = features[index]
 
-        guard featureEnabledPair.isEnabled != enabled else {
+        guard featureEnabledPair.value != enabled else {
           return nil
         }
 
         var environmentFeatures = AppEnvironment.current.config?.features
-        environmentFeatures?[featureEnabledPair.feature.rawValue] = enabled
+        environmentFeatures?[featureEnabledPair.key] = enabled
 
         return environmentFeatures
       }
@@ -90,9 +79,19 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
   }
 
   public let postNotification: Signal<Notification, Never>
-  public let reloadWithData: Signal<[FeatureEnabled], Never>
+  public let reloadWithData: Signal<[Features], Never>
   public let updateConfigWithFeatures: Signal<Features, Never>
 
   public var inputs: FeatureFlagToolsViewModelInputs { return self }
   public var outputs: FeatureFlagToolsViewModelOutputs { return self }
+}
+
+public func featureEnabledFromDictionaries(_ dictionaryArray: [Features]) -> [FeatureEnabled] {
+  return dictionaryArray.compactMap { dictionary -> (Feature, Bool)? in
+    dictionary.compactMap { key, value in
+      guard let feature = Feature(rawValue: key) else { return nil }
+      return (feature, value)
+    }
+    .first
+  }
 }
