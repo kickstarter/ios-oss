@@ -647,16 +647,23 @@ public final class Koala {
    parameters:
    - project: the project being pledged to
    - reward: the selected reward
+   - context: the pledge context
+   - refTag: the optional RefTag associated with the pledge
    */
 
   public func trackRewardClicked(
     project: Project,
-    reward: Reward
+    reward: Reward,
+    context: PledgeContext,
+    refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(context))
 
-    self.track(event: DataLakeWhiteListedEvent.selectRewardButtonClicked.rawValue, properties: props)
+    self.track(event: DataLakeWhiteListedEvent.selectRewardButtonClicked.rawValue,
+               properties: props,
+               refTag: refTag?.stringTag)
   }
 
   /* Call when the pledge screen is shown
@@ -671,10 +678,12 @@ public final class Koala {
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
+    context: Koala.PledgeContext,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(context))
 
     self.track(
       event: DataLakeWhiteListedEvent.checkoutPaymentPageViewed.rawValue,
@@ -689,6 +698,7 @@ public final class Koala {
    - project: the project being pledged to
    - reward: the chosen reward
    - checkoutData: all the checkout data associated with the pledge
+   - refTag: the associated RefTag for the pledge
 
    */
 
@@ -701,6 +711,7 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(checkoutProperties(from: checkoutData))
+      .withAllValuesFrom(contextProperties(.newPledge)) // the context is always "newPledge" for this event
 
     self.track(
       event: DataLakeWhiteListedEvent.pledgeSubmitButtonClicked.rawValue,
@@ -715,9 +726,20 @@ public final class Koala {
     self.track(event: "Add New Card Button Clicked", properties: props)
   }
 
-  public func trackThanksPageViewed(project: Project, reward: Reward, checkoutData: CheckoutPropertiesData?) {
+  /* Call when the Thanks page is viewed
+
+   parameters:
+   - project: the project that was pledged to
+   - reward: the reward that was chosen
+   - checkoutData: all the checkout data associated with the pledge
+   */
+
+  public func trackThanksPageViewed(project: Project,
+                                    reward: Reward,
+                                    checkoutData: CheckoutPropertiesData?) {
     var props = projectProperties(from: project)
       .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(.newPledge)) // the context is always "newPledge" for this event
 
     if let checkoutData = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
@@ -2125,7 +2147,6 @@ public final class Koala {
     props["mp_lib"] = "kickstarter_ios"
     props["os"] = self.device.systemName
     props["os_version"] = self.device.systemVersion
-    props["time"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
     props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["screen_width"] = UInt(self.screen.bounds.width)
@@ -2341,6 +2362,18 @@ private func properties(category: KsApi.Category, prefix: String = "category_") 
 
   result["id"] = category.intID
   result["name"] = category.name
+
+  return result.prefixedKeys(prefix)
+}
+
+// MARK: - Context Properties
+
+private func contextProperties(_ pledgeFlowContext: Koala.PledgeContext?,
+                               prefix: String = "context_") -> [String: Any] {
+  var result: [String: Any] = [:]
+
+  result["pledge_flow"] = pledgeFlowContext
+  result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
 
   return result.prefixedKeys(prefix)
 }

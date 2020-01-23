@@ -579,10 +579,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     initialData
-      .observeValues { project, reward, refTag, _ in
+      .observeValues { project, reward, refTag, context in
         AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(
           project: project,
           reward: reward,
+          context: trackingPledgeContext(for: context),
           refTag: refTag
         )
       }
