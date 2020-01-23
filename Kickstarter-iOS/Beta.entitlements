@@ -7,6 +7,8 @@
     <key>com.apple.developer.associated-domains</key>
     <array>
       <string>applinks:www.kickstarter.com</string>
+      <string>applinks:native.dev.kickstarter.com</string>
+      <string>applinks:staging.kickstarter.com</string>
       <string>applinks:click.e.kickstarter.com</string>
       <string>applinks:click.em.kickstarter.com</string>
       <string>applinks:email.kickstarter.com</string>
