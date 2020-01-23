@@ -7,7 +7,7 @@ protocol BetaToolsFooterViewDelegate: class {
 }
 
 final class BetaToolsFooterView: UIView {
-// MARK: - Properties
+  // MARK: - Properties
 
   private let appVersionDetailLabel: UILabel = { UILabel(frame: .zero) }()
   private let appVersionStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -33,11 +33,11 @@ final class BetaToolsFooterView: UIView {
     )
   }
 
-  required init?(coder aDecoder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-// MARK: - Configuration
+  // MARK: - Configuration
 
   private func configureViews() {
     _ = (self.rootStackView, self)
@@ -50,8 +50,10 @@ final class BetaToolsFooterView: UIView {
     _ = ([self.deviceIdentifierTitleLabel, self.deviceIdentifierDetailLabel], self.deviceIdentifierStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.betaFeedbackButton, self.appVersionStackView, self.deviceIdentifierStackView],
-         self.rootStackView)
+    _ = (
+      [self.betaFeedbackButton, self.appVersionStackView, self.deviceIdentifierStackView],
+      self.rootStackView
+    )
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -63,7 +65,7 @@ final class BetaToolsFooterView: UIView {
     ])
   }
 
-// MARK: - Styles
+  // MARK: - Styles
 
   override func bindStyles() {
     super.bindStyles()

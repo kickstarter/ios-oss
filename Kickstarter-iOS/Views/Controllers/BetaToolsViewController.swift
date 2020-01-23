@@ -5,10 +5,6 @@ import Prelude
 import SafariServices
 import UIKit
 
-private enum Layout: Int {
-  case footerHeight = 100
-}
-
 internal final class BetaToolsViewController: UITableViewController {
   // MARK: - Properties
 
