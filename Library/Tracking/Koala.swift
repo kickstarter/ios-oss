@@ -517,11 +517,11 @@ public final class Koala {
   }
 
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
-    let label = tabBarItemLabel.trackingString
+    let properties = contextProperties(pledgeFlowContext: nil, tabBarLabel: tabBarItemLabel)
 
     self.track(
       event: DataLakeWhiteListedEvent.tabBarClicked.rawValue,
-      properties: ["tab_bar_label": label]
+      properties: properties
     )
   }
 
@@ -660,7 +660,7 @@ public final class Koala {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(context))
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(event: DataLakeWhiteListedEvent.selectRewardButtonClicked.rawValue,
                properties: props,
@@ -684,7 +684,7 @@ public final class Koala {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(context))
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
       event: DataLakeWhiteListedEvent.checkoutPaymentPageViewed.rawValue,
@@ -712,7 +712,7 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(checkoutProperties(from: checkoutData))
-      .withAllValuesFrom(contextProperties(.newPledge)) // the context is always "newPledge" for this event
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge)) // the context is always "newPledge" for this event
 
     self.track(
       event: DataLakeWhiteListedEvent.pledgeSubmitButtonClicked.rawValue,
@@ -734,7 +734,7 @@ public final class Koala {
                                            context: Koala.PledgeContext) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(context)) // the context is always "newPledge" for this event
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
       event: DataLakeWhiteListedEvent.addNewCardButtonClicked.rawValue,
@@ -755,7 +755,8 @@ public final class Koala {
                                     checkoutData: CheckoutPropertiesData?) {
     var props = projectProperties(from: project)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(.newPledge)) // the context is always "newPledge" for this event
+      // the context is always "newPledge" for this event
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
 
     if let checkoutData = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
@@ -2114,6 +2115,7 @@ public final class Koala {
   ) {
     let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
+      .withAllValuesFrom(contextProperties())
       .withAllValuesFrom(properties)
 
     self.logEventCallback?(event, props)
@@ -2384,12 +2386,14 @@ private func properties(category: KsApi.Category, prefix: String = "category_") 
 
 // MARK: - Context Properties
 
-private func contextProperties(_ pledgeFlowContext: Koala.PledgeContext?,
+private func contextProperties(pledgeFlowContext: Koala.PledgeContext? = nil,
+                               tabBarLabel: Koala.TabBarItemLabel? = nil,
                                prefix: String = "context_") -> [String: Any] {
   var result: [String: Any] = [:]
 
   result["pledge_flow"] = pledgeFlowContext?.trackingString
   result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
+  result["tab_bar_label"] = tabBarLabel?.trackingString
 
   return result.prefixedKeys(prefix)
 }
