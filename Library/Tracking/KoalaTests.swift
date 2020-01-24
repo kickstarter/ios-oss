@@ -996,6 +996,15 @@ final class KoalaTests: TestCase {
     )
   }
 
+  func testContextProperties() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackAppOpen()
+
+    XCTAssertEqual(1475361315.0, client.properties.last?["context_timestamp"] as? TimeInterval)
+  }
+
   /*
    Helper for testing projectProperties from a template Project
    */
