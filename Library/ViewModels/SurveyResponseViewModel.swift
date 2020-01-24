@@ -1,6 +1,8 @@
 import KsApi
+import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import WebKit
 
 public protocol SurveyResponseViewModelInputs {
   /// Call when the alert OK button is tapped.
@@ -12,8 +14,11 @@ public protocol SurveyResponseViewModelInputs {
   /// Call to configure with a survey response.
   func configureWith(surveyResponse: SurveyResponse)
 
-  /// Call when the webview decides whether to load a request.
-  func shouldStartLoad(withRequest request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool
+  /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
+  func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy
+
+  /// Call with the result after evaluating JavaScript on the form.
+  func didEvaluateJavaScriptWithResult(_ result: Any?)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -22,6 +27,9 @@ public protocol SurveyResponseViewModelInputs {
 public protocol SurveyResponseViewModelOutputs {
   /// Emits when the view controller should be dismissed.
   var dismissViewController: Signal<Void, Never> { get }
+
+  /// Emits when the form data needs to be extracted with JavaScript using the JS to evaluate.
+  var extractFormDataWithJavaScript: Signal<String, Never> { get }
 
   /// Emits a project and ref tag that should be used to present a project controller.
   var goToProject: Signal<(Param, RefTag?), Never> { get }
@@ -43,21 +51,29 @@ public protocol SurveyResponseViewModelType: SurveyResponseViewModelInputs, Surv
 
 public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public init() {
-    let initialRequest = self.surveyResponseProperty.signal.skipNil()
-      .takeWhen(self.viewDidLoadProperty.signal)
+    let surveyResponse = Signal.combineLatest(
+      self.surveyResponseProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
+
+    let initialRequest = surveyResponse
       .map { surveyResponse -> URLRequest? in
         guard let url = URL(string: surveyResponse.urls.web.survey) else { return nil }
         return URLRequest(url: url)
       }
       .skipNil()
 
-    let postRequest = self.shouldStartLoadProperty.signal.skipNil()
+    let requestAndNavigationType = self.policyForNavigationActionProperty.signal.skipNil()
+      .map { action in (action.request, action.navigationType) }
+
+    let surveyPostRequest = requestAndNavigationType
       .filter { request, navigationType in
         isUnpreparedSurvey(request: request) && navigationType == .formSubmitted
       }
       .map { request, _ in request }
 
-    let redirectAfterPostRequest = self.shouldStartLoadProperty.signal.skipNil()
+    let redirectAfterPostRequest = requestAndNavigationType
       .filter { request, navigationType in
         isUnpreparedSurvey(request: request) && navigationType == .other
       }
@@ -68,7 +84,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       self.closeButtonTappedProperty.signal
     )
 
-    self.goToProject = self.shouldStartLoadProperty.signal.skipNil()
+    self.goToProject = requestAndNavigationType
       .map { request, _ -> (Param, RefTag?)? in
         if case let (.project(param, .root, refTag))? = Navigation.match(request) {
           return (param, refTag)
@@ -77,7 +93,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
       }
       .skipNil()
 
-    self.shouldStartLoadResponseProperty <~ self.shouldStartLoadProperty.signal.skipNil()
+    self.policyDecisionProperty <~ requestAndNavigationType
       .map { request, _ in
         if !AppEnvironment.current.apiService.isPrepared(request: request) {
           return false
@@ -85,6 +101,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
         return isSurvey(request: request)
       }
+      .map { $0 ? .allow : .cancel }
 
     self.showAlert = redirectAfterPostRequest
       .mapConst(Strings.Got_it_your_survey_response_has_been_submitted())
@@ -92,9 +109,21 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     self.title = self.viewDidLoadProperty.signal
       .mapConst(Strings.Survey())
 
+    self.extractFormDataWithJavaScript = surveyResponse
+      .takeWhen(surveyPostRequest.filter { $0.httpBody == nil })
+      .map { surveyResponse in
+        "$('#edit_survey_response_\(surveyResponse.id)').serialize()"
+      }
+
+    let newRequest = Signal.combineLatest(
+      surveyPostRequest.filter { $0.httpBody == nil },
+      self.didEvaluateJavaScriptWithResultProperty.signal
+    )
+    .map(requestInjectedWithFormData)
+
     self.webViewLoadRequest = Signal.merge(
       initialRequest,
-      postRequest
+      newRequest
     )
     .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
   }
@@ -105,14 +134,16 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   fileprivate let closeButtonTappedProperty = MutableProperty(())
   public func closeButtonTapped() { self.closeButtonTappedProperty.value = () }
 
-  fileprivate let shouldStartLoadProperty = MutableProperty<(URLRequest, UIWebView.NavigationType)?>(nil)
-  fileprivate let shouldStartLoadResponseProperty = MutableProperty(false)
-  public func shouldStartLoad(
-    withRequest request: URLRequest,
-    navigationType: UIWebView.NavigationType
-  ) -> Bool {
-    self.shouldStartLoadProperty.value = (request, navigationType)
-    return self.shouldStartLoadResponseProperty.value
+  fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
+  fileprivate let policyDecisionProperty = MutableProperty(WKNavigationActionPolicy.allow)
+  public func decidePolicyFor(navigationAction: WKNavigationActionData) -> WKNavigationActionPolicy {
+    self.policyForNavigationActionProperty.value = navigationAction
+    return self.policyDecisionProperty.value
+  }
+
+  private let didEvaluateJavaScriptWithResultProperty = MutableProperty<Any?>(nil)
+  public func didEvaluateJavaScriptWithResult(_ result: Any?) {
+    self.didEvaluateJavaScriptWithResultProperty.value = result
   }
 
   fileprivate let surveyResponseProperty = MutableProperty<SurveyResponse?>(nil)
@@ -124,6 +155,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
   public func viewDidLoad() { self.viewDidLoadProperty.value = () }
 
   public let dismissViewController: Signal<Void, Never>
+  public let extractFormDataWithJavaScript: Signal<String, Never>
   public let goToProject: Signal<(Param, RefTag?), Never>
   public let showAlert: Signal<String, Never>
   public let title: Signal<String, Never>
@@ -141,4 +173,12 @@ private func isUnpreparedSurvey(request: URLRequest) -> Bool {
 private func isSurvey(request: URLRequest) -> Bool {
   guard case (.project(_, .survey, _))? = Navigation.match(request) else { return false }
   return true
+}
+
+private func requestInjectedWithFormData(with request: URLRequest, result: Any?) -> URLRequest {
+  var newRequest = request
+  if let formData = result as? String {
+    newRequest.httpBody = formData.data(using: .utf8)
+  }
+  return newRequest
 }
