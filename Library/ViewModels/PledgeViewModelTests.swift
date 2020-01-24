@@ -3637,7 +3637,7 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
 
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["backings_count"] as? Int, nil)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["location"] as? String, "Brooklyn")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["location"] as? String, nil)
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["os_version"] as? String, "MockSystemVersion")
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["logged_in"] as? Bool, false)
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["chosen_currency"] as? String, nil)
@@ -3650,6 +3650,7 @@ final class PledgeViewModelTests: TestCase {
 
   func testTrackingEvents_PledgeScreenViewed_LoggedIn() {
     let user = User.template
+      |> \.location .~ Location.template
       |> \.stats.backedProjectsCount .~ 50
 
     withEnvironment(currentUser: user) {
@@ -3669,7 +3670,7 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
 
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["backings_count"] as? Int, 50)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["location"] as? String, "Brooklyn")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["location"] as? String, "us")
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["os_version"] as? String, "MockSystemVersion")
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["logged_in"] as? Bool, true)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["chosen_currency"] as? String, "USD")

@@ -43,7 +43,7 @@ public func optimizelyTrackingAttributesAndEventTags(
 ) -> ([String: Any], [String: Any]) {
   let properties: [String: Any] = [
     "backings_count": user?.stats.backedProjectsCount,
-    "location": project.location.name,
+    "location": user?.location?.country.lowercased(),
     "os_version": AppEnvironment.current.device.systemVersion,
     "logged_in": user != nil,
     "chosen_currency": project.stats.currentCurrency,
