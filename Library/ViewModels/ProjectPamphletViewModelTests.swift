@@ -933,6 +933,158 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.dismissManagePledgeAndShowMessageBannerWithMessage.assertValues(["Your changes have been saved"])
   }
 
+  func testOptimizelyTrackingPledgeCTAButtonTapped_LoggedOut_NonBacked() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+    XCTAssertNil(self.optimizelyClient.trackedAttributes)
+    XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
+    self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+
+    XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+    XCTAssertNil(self.optimizelyClient.trackedAttributes)
+    XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
+    // Only track for non-backed, pledge state
+    self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+
+    XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Rewards CTA Tapped")
+
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["backings_count"] as? Int, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["location"] as? String, "Brooklyn")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["os_version"] as? String, "MockSystemVersion")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["logged_in"] as? Bool, false)
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["chosen_currency"] as? String, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["locale"] as? String, "en_US")
+
+    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
+    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["ref_tag"] as? String, "discovery")
+    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["referrer_credit"] as? String, "discovery")
+  }
+
+  func testOptimizelyTrackingPledgeCTAButtonTapped_LoggedOut_Backed() {
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.otherReward
+          |> Backing.lens.rewardId .~ Reward.otherReward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+    XCTAssertNil(self.optimizelyClient.trackedAttributes)
+    XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
+    self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+
+    XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+    XCTAssertNil(self.optimizelyClient.trackedAttributes)
+    XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
+    // Only track for non-backed, pledge state
+    self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+
+    // Project is backed, no tracking
+    XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+    XCTAssertNil(self.optimizelyClient.trackedAttributes)
+    XCTAssertNil(self.optimizelyClient.trackedEventTags)
+  }
+
+  func testOptimizelyTrackingPledgeCTAButtonTapped_LoggedIn_NonBacked() {
+    let user = User.template
+      |> \.stats.backedProjectsCount .~ 50
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
+      XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+      XCTAssertNil(self.optimizelyClient.trackedAttributes)
+      XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+
+      XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
+      XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+      XCTAssertNil(self.optimizelyClient.trackedAttributes)
+      XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
+      // Only track for non-backed, pledge state
+      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+
+      XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
+      XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Rewards CTA Tapped")
+
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["backings_count"] as? Int, 50)
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["location"] as? String, "Brooklyn")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["os_version"] as? String, "MockSystemVersion")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["logged_in"] as? Bool, true)
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["chosen_currency"] as? String, nil)
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["locale"] as? String, "en_US")
+
+      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
+      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["ref_tag"] as? String, "discovery")
+      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["referrer_credit"] as? String, "discovery")
+    }
+  }
+
+  func testOptimizelyTrackingPledgeCTAButtonTapped_LoggedIn_Backed() {
+    let user = User.template
+      |> \.stats.backedProjectsCount .~ 50
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.otherReward
+          |> Backing.lens.rewardId .~ Reward.otherReward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700
+      )
+
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
+      XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+      XCTAssertNil(self.optimizelyClient.trackedAttributes)
+      XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
+
+      XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
+      XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+      XCTAssertNil(self.optimizelyClient.trackedAttributes)
+      XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
+      // Only track for non-backed, pledge state
+      self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+
+      // Project is backed, no tracking
+      XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
+      XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+      XCTAssertNil(self.optimizelyClient.trackedAttributes)
+      XCTAssertNil(self.optimizelyClient.trackedEventTags)
+    }
+  }
+
   // MARK: - Functions
 
   private func configureInitialState(_ projectOrParam: Either<Project, Param>) {

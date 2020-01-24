@@ -1,8 +1,11 @@
 import Foundation
+import KsApi
+import Prelude
 
 public protocol OptimizelyClientType: AnyObject {
   func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
+  func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws
 }
 
 extension OptimizelyClientType {
@@ -31,4 +34,29 @@ extension OptimizelyClientType {
 
     return variant
   }
+}
+
+public func optimizelyTrackingAttributesAndEventTags(
+  with user: User?,
+  project: Project,
+  refTag: RefTag?
+) -> ([String: Any], [String: Any]) {
+  let properties: [String: Any] = [
+    "backings_count": user?.stats.backedProjectsCount,
+    "location": project.location.name,
+    "os_version": AppEnvironment.current.device.systemVersion,
+    "logged_in": user != nil,
+    "chosen_currency": project.stats.currentCurrency,
+    "locale": AppEnvironment.current.locale.identifier
+  ]
+  .compact()
+
+  let eventTags: [String: Any] = [
+    "project_subcategory": project.category.name,
+    "ref_tag": refTag?.stringTag,
+    "referrer_credit": (cookieRefTagFor(project: project) ?? refTag)?.stringTag
+  ]
+  .compact()
+
+  return (properties, eventTags)
 }
