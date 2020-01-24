@@ -604,11 +604,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   func testApplePayButtonTapped() {
     withEnvironment(currentUser: .template) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.configure(with: (user: .template,
-                                      project: .template,
-                                      Reward.template,
-                                      .pledge,
-                                      .discovery))
+      self.vm.inputs.configure(with: (
+        user: .template,
+        project: .template,
+        Reward.template,
+        .pledge,
+        .discovery
+      ))
 
       self.notifyDelegateApplePayButtonTapped.assertDidNotEmitValue()
 

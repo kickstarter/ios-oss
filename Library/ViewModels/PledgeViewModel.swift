@@ -132,12 +132,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
 
     self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
-    .filter { !$3.paymentMethodsViewHidden }
-    .filterMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
-      guard let user = AppEnvironment.current.currentUser else { return nil }
+      .filter { !$3.paymentMethodsViewHidden }
+      .filterMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
+        guard let user = AppEnvironment.current.currentUser else { return nil }
 
-      return (user, project, reward, context, refTag)
-    }
+        return (user, project, reward, context, refTag)
+      }
 
     let projectAndPledgeTotal = project
       .combineLatest(with: pledgeTotal)

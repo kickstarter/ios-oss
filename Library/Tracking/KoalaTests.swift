@@ -784,10 +784,12 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
 
-    koala.trackAddNewCardButtonClicked(project: .template,
-                                       reward: .template,
-                                       context: .newPledge,
-                                       refTag: .activity)
+    koala.trackAddNewCardButtonClicked(
+      project: .template,
+      reward: .template,
+      context: .newPledge,
+      refTag: .activity
+    )
 
     let props = client.properties.last
 
@@ -1002,7 +1004,7 @@ final class KoalaTests: TestCase {
 
     koala.trackAppOpen()
 
-    XCTAssertEqual(1475361315.0, client.properties.last?["context_timestamp"] as? TimeInterval)
+    XCTAssertEqual(1_475_361_315.0, client.properties.last?["context_timestamp"] as? TimeInterval)
   }
 
   /*
