@@ -1,14 +1,15 @@
 import Foundation
 
 public struct Checkout: Decodable {
-  public var state: State
   public var backing: Backing
+  public var id: String
+  public var state: State
 
   public enum State: String, Decodable, CaseIterable {
     case authorizing = "AUTHORIZING"
-    case verifying = "VERIFYING"
-    case successful = "SUCCESSFUL"
     case failed = "FAILED"
+    case successful = "SUCCESSFUL"
+    case verifying = "VERIFYING"
   }
 
   public struct Backing: Decodable {
