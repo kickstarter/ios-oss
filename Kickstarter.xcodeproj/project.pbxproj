@@ -202,6 +202,7 @@
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
 		7705563B22BC03A600DCB062 /* TableViewStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7705563A22BC03A600DCB062 /* TableViewStyles.swift */; };
+		770A0A7723DB4244002DB8FC /* TrackingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770A0A7623DB4244002DB8FC /* TrackingHelpers.swift */; };
 		770D86C622F0D47000CDC6A1 /* PledgeAddNewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770D86C522F0D47000CDC6A1 /* PledgeAddNewCardView.swift */; };
 		770D86C822F337B800CDC6A1 /* PledgeAddNewCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770D86C722F337B800CDC6A1 /* PledgeAddNewCardViewModel.swift */; };
 		770D86CA22F3396000CDC6A1 /* PledgeAddNewCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770D86C922F3396000CDC6A1 /* PledgeAddNewCardViewModelTests.swift */; };
@@ -1640,6 +1641,7 @@
 		7703B42123217D4F00169EF3 /* EnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentType.swift; sourceTree = "<group>"; };
 		7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PKPaymentRequest+Helpers.swift"; sourceTree = "<group>"; };
 		7705563A22BC03A600DCB062 /* TableViewStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewStyles.swift; sourceTree = "<group>"; };
+		770A0A7623DB4244002DB8FC /* TrackingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpers.swift; sourceTree = "<group>"; };
 		770D86C522F0D47000CDC6A1 /* PledgeAddNewCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAddNewCardView.swift; sourceTree = "<group>"; };
 		770D86C722F337B800CDC6A1 /* PledgeAddNewCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAddNewCardViewModel.swift; sourceTree = "<group>"; };
 		770D86C922F3396000CDC6A1 /* PledgeAddNewCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAddNewCardViewModelTests.swift; sourceTree = "<group>"; };
@@ -2883,6 +2885,7 @@
 				8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */,
 				8A213CE6239EAEA400BBB4C7 /* TrackingClientConfigurationTests.swift */,
 				8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */,
+				770A0A7623DB4244002DB8FC /* TrackingHelpers.swift */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -4839,6 +4842,7 @@
 				A757EB2B1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */,
 				80E8EAC81D3EC65A007BDA4B /* Image.swift in Sources */,
 				D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */,
+				770A0A7723DB4244002DB8FC /* TrackingHelpers.swift in Sources */,
 				80D73AF61D50F1A60099231F /* Navigation.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
