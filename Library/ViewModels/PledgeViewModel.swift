@@ -136,11 +136,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       context
     )
     .filter { !$1.paymentMethodsViewHidden }
-    .map(first)
-    .filterMap { project, reward -> PledgePaymentMethodsValue? in
+    .map(unpack)
+    .filterMap { project, reward, context -> PledgePaymentMethodsValue? in
       guard let user = AppEnvironment.current.currentUser else { return nil }
 
-      return (user, project, reward)
+      return (user, project, reward, context)
     }
 
     let projectAndPledgeTotal = project
@@ -584,7 +584,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(
           project: project,
           reward: reward,
-          context: trackingPledgeContext(for: context),
+          context: TrackingHelpers.pledgeContext(for: context),
           refTag: refTag
         )
       }
@@ -823,18 +823,7 @@ private func allValuesChangedAndValid(
   return amountValid && shippingRuleValid
 }
 
-// MARK: - HelperFunctions
-
-private func trackingPledgeContext(for viewContext: PledgeViewContext) -> Koala.PledgeContext {
-  switch viewContext {
-  case .pledge:
-    return Koala.PledgeContext.newPledge
-  case .update, .changePaymentMethod:
-    return Koala.PledgeContext.manageReward
-  case .updateReward:
-    return Koala.PledgeContext.changeReward
-  }
-}
+// MARK: - Helper Functions
 
 private func checkoutPropertiesData(from createBackingData: CreateBackingData, isApplePay: Bool)
   -> Koala.CheckoutPropertiesData {

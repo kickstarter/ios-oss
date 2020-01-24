@@ -4,7 +4,8 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public typealias PledgePaymentMethodsValue = (user: User, project: Project, reward: Reward)
+public typealias PledgePaymentMethodsValue = (user: User, project: Project, reward: Reward,
+  context: PledgeViewContext)
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func applePayButtonTapped()
@@ -41,7 +42,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     .map(second)
 
     let project = configureWithValue.map { $0.project }
-    let projectAndReward = configureWithValue.map { ($0.project, $0.reward) }
+    let projectRewardAndContext = configureWithValue.map { ($0.project, $0.reward, $0.context) }
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
 
     let storedCardsEvent = configureWithValue
@@ -112,10 +113,13 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     // Tracking
 
-    projectAndReward
+    projectRewardAndContext
       .takeWhen(self.goToAddCardScreen)
-      .observeValues { project, reward in
-        AppEnvironment.current.koala.trackAddNewCardButtonClicked(project: project, reward: reward)
+      .observeValues { project, reward, context in
+        let pledgeContext = TrackingHelpers.pledgeContext(for: context)
+        AppEnvironment.current.koala.trackAddNewCardButtonClicked(project: project,
+                                                                  reward: reward,
+                                                                  context: pledgeContext)
       }
   }
 

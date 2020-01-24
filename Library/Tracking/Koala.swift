@@ -648,7 +648,7 @@ public final class Koala {
    parameters:
    - project: the project being pledged to
    - reward: the selected reward
-   - context: the pledge context
+   - context: the PledgeContext from which the event was triggered
    - refTag: the optional RefTag associated with the pledge
    */
 
@@ -672,8 +672,8 @@ public final class Koala {
    parameters:
    - project: the project being pledged to
    - reward: the chosen reward
+   - context: the PledgeContext from which the event was triggered
    - refTag: the associated RefTag for the pledge
-
    */
 
   public func trackCheckoutPaymentPageViewed(
@@ -721,9 +721,20 @@ public final class Koala {
     )
   }
 
-  public func trackAddNewCardButtonClicked(project: Project, reward: Reward) {
+  /* Call when the Add New Card button is clicked from the pledge screen
+
+   parameters:
+   - project: the project that is being pledged to
+   - reward: the reward that was chosen for the pledge
+   - context: the PledgeContext from which the event was triggered
+   */
+
+  public func trackAddNewCardButtonClicked(project: Project,
+                                           reward: Reward,
+                                           context: Koala.PledgeContext) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(context)) // the context is always "newPledge" for this event
 
     self.track(
       event: DataLakeWhiteListedEvent.addNewCardButtonClicked.rawValue,
@@ -2377,7 +2388,7 @@ private func contextProperties(_ pledgeFlowContext: Koala.PledgeContext?,
                                prefix: String = "context_") -> [String: Any] {
   var result: [String: Any] = [:]
 
-  result["pledge_flow"] = pledgeFlowContext
+  result["pledge_flow"] = pledgeFlowContext?.trackingString
   result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
 
   return result.prefixedKeys(prefix)
