@@ -735,7 +735,8 @@ public final class Koala {
   public func trackAddNewCardButtonClicked(
     project: Project,
     reward: Reward,
-    context: Koala.PledgeContext
+    context: Koala.PledgeContext,
+    refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
@@ -743,7 +744,8 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.addNewCardButtonClicked.rawValue,
-      properties: props
+      properties: props,
+      refTag: refTag?.stringTag
     )
   }
 

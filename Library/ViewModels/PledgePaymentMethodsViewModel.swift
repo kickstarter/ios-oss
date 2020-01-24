@@ -6,7 +6,8 @@ import UIKit
 
 public typealias PledgePaymentMethodsValue = (
   user: User, project: Project, reward: Reward,
-  context: PledgeViewContext
+  context: PledgeViewContext,
+  refTag: RefTag?
 )
 
 public protocol PledgePaymentMethodsViewModelInputs {
@@ -44,7 +45,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     .map(second)
 
     let project = configureWithValue.map { $0.project }
-    let projectRewardAndContext = configureWithValue.map { ($0.project, $0.reward, $0.context) }
+    let projectRewardContextRefTag = configureWithValue.map { ($0.project, $0.reward, $0.context, $0.refTag) }
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
 
     let storedCardsEvent = configureWithValue
@@ -115,14 +116,15 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     // Tracking
 
-    projectRewardAndContext
+    projectRewardContextRefTag
       .takeWhen(self.goToAddCardScreen)
-      .observeValues { project, reward, context in
+      .observeValues { project, reward, context, refTag in
         let pledgeContext = TrackingHelpers.pledgeContext(for: context)
         AppEnvironment.current.koala.trackAddNewCardButtonClicked(
           project: project,
           reward: reward,
-          context: pledgeContext
+          context: pledgeContext,
+          refTag: refTag
         )
       }
   }

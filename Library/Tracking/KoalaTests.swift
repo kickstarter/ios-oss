@@ -784,7 +784,10 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
 
-    koala.trackAddNewCardButtonClicked(project: .template, reward: .template, context: .newPledge)
+    koala.trackAddNewCardButtonClicked(project: .template,
+                                       reward: .template,
+                                       context: .newPledge,
+                                       refTag: .activity)
 
     let props = client.properties.last
 
@@ -794,6 +797,7 @@ final class KoalaTests: TestCase {
     self.assertPledgeProperties(props)
 
     XCTAssertEqual("new_pledge", props?["context_pledge_flow"] as? String)
+    XCTAssertEqual("activity", props?["session_ref_tag"] as? String)
   }
 
   func testTrackManagePledgeOptionClicked_CancelPledgeSelected() {

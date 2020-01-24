@@ -127,20 +127,16 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { project, total in (project, total) }
 
     let configurePaymentMethodsViewController = Signal.merge(
-      projectAndReward,
-      projectAndReward.takeWhen(self.userSessionStartedSignal)
+      initialData,
+      initialData.takeWhen(self.userSessionStartedSignal)
     )
 
-    self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(
-      configurePaymentMethodsViewController,
-      context
-    )
-    .filter { !$1.paymentMethodsViewHidden }
-    .map(unpack)
-    .filterMap { project, reward, context -> PledgePaymentMethodsValue? in
+    self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
+    .filter { !$3.paymentMethodsViewHidden }
+    .filterMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
       guard let user = AppEnvironment.current.currentUser else { return nil }
 
-      return (user, project, reward, context)
+      return (user, project, reward, context, refTag)
     }
 
     let projectAndPledgeTotal = project
