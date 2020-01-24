@@ -1098,7 +1098,11 @@ final class PledgeViewModelTests: TestCase {
 
   func testApplePay_GoToThanks() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(state: .successful, backing: .init(clientSecret: nil, requiresAction: false))
+      checkout: Checkout(
+        id: "1",
+        state: .successful,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
     )
     let mockService = MockService(
       createBackingResult:
@@ -1162,7 +1166,11 @@ final class PledgeViewModelTests: TestCase {
 
   func testApplePay_GoToThanks_WhenRefTag_IsNil() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(state: .successful, backing: .init(clientSecret: nil, requiresAction: false))
+      checkout: Checkout(
+        id: "1",
+        state: .successful,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
     )
     let mockService = MockService(
       createBackingResult:
@@ -1319,7 +1327,11 @@ final class PledgeViewModelTests: TestCase {
 
   func testCreateBacking_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(state: .verifying, backing: .init(clientSecret: nil, requiresAction: false))
+      checkout: Checkout(
+        id: "1",
+        state: .verifying,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
     )
     let mockService = MockService(
       createBackingResult:
@@ -1452,6 +1464,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "1",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -1713,6 +1726,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "1",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -1854,6 +1868,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "1",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2006,6 +2021,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "1",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2409,6 +2425,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "1",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2654,6 +2671,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "1",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2809,6 +2827,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "1",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3083,7 +3102,9 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
+        id: "1",
+        state: .verifying,
+        backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
     )
     let mockService = MockService(
@@ -3171,7 +3192,9 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Failed() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
+        id: "1",
+        state: .verifying,
+        backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
     )
     let mockService = MockService(
@@ -3247,7 +3270,9 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Canceled() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
+        id: "1",
+        state: .verifying,
+        backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
     )
     let mockService = MockService(
@@ -3338,6 +3363,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "1",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3429,6 +3455,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "1",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3520,6 +3547,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "1",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
