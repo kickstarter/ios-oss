@@ -131,7 +131,6 @@
 		3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3780C8602208F8C1002117D1 /* SettingsTextInputCell.swift */; };
 		378CA24622C4449F004E3C86 /* CountryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378CA24522C4449F004E3C86 /* CountryLenses.swift */; };
 		379C00012242DAFF00F6F0C2 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFF12242DAC400F6F0C2 /* WebViewController.swift */; };
-		379CFFFA2242DAD500F6F0C2 /* DeprecatedWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFED2242DAC300F6F0C2 /* DeprecatedWebViewController.swift */; };
 		379CFFFB2242DADB00F6F0C2 /* MFMailComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */; };
 		379CFFFC2242DAE800F6F0C2 /* Nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFF02242DAC400F6F0C2 /* Nib.swift */; };
 		379CFFFD2242DAEB00F6F0C2 /* NSBundle-Framework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379CFFEB2242DAC200F6F0C2 /* NSBundle-Framework.swift */; };
@@ -1533,7 +1532,6 @@
 		378CA24522C4449F004E3C86 /* CountryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryLenses.swift; sourceTree = "<group>"; };
 		379CFFEA2242DAC200F6F0C2 /* UIImageView+URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+URL.swift"; sourceTree = "<group>"; };
 		379CFFEB2242DAC200F6F0C2 /* NSBundle-Framework.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle-Framework.swift"; sourceTree = "<group>"; };
-		379CFFED2242DAC300F6F0C2 /* DeprecatedWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedWebViewController.swift; sourceTree = "<group>"; };
 		379CFFEE2242DAC300F6F0C2 /* Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storyboard.swift; sourceTree = "<group>"; };
 		379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MFMailComposeViewController.swift; sourceTree = "<group>"; };
 		379CFFF02242DAC400F6F0C2 /* Nib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nib.swift; sourceTree = "<group>"; };
@@ -2711,7 +2709,6 @@
 		0127FC511C98BFD000E335C6 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				379CFFED2242DAC300F6F0C2 /* DeprecatedWebViewController.swift */,
 				379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */,
 				8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */,
 				8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */,
@@ -5101,7 +5098,6 @@
 				D6B4F00021079F750079159D /* SettingsNewslettersCellViewModelTests.swift in Sources */,
 				A7ED1FE71E831C5C00BFFA01 /* FacebookConfirmationViewModelTests.swift in Sources */,
 				D6BD66B523CCCA51008694BB /* NSAttributedStringLinkTests.swift in Sources */,
-				A7ED1FFE1E831C5C00BFFA01 /* DeprecatedRewardCellViewModelTests.swift in Sources */,
 				D04AACA9218BB72100CF713E /* LoadingBarButtonItemViewModelTests.swift in Sources */,
 				8A4503F6234BEDD4008309EC /* PledgeViewContextTests.swift in Sources */,
 				A78355B91E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift in Sources */,
@@ -5241,7 +5237,6 @@
 				379CFFFE2242DAF400F6F0C2 /* Storyboard.swift in Sources */,
 				A72C3AA41D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */,
 				37653F82220A07710016E7F9 /* SettingsGroupedHeaderView.swift in Sources */,
-				379CFFFA2242DAD500F6F0C2 /* DeprecatedWebViewController.swift in Sources */,
 				D796868021013C1F00E54C61 /* SettingsPrivacyStaticCell.swift in Sources */,
 				771E630B23425977005967E8 /* CancelPledgeViewController.swift in Sources */,
 				A7A0534E1CD19C68005AF5E2 /* CommentDialogViewController.swift in Sources */,
