@@ -47,7 +47,7 @@ public protocol PledgeViewModelInputs {
 
 public protocol PledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
-  var configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never> { get }
+  var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
@@ -118,15 +118,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.notifyPledgeAmountViewControllerShippingAmountChanged = shippingCost
 
-    self.configureWithData = initialData.map { (project: $0.0, reward: $0.1) }
+    let projectAndReward = initialData.map { (project: $0.0, reward: $0.1) }
+
+    self.configureWithData = projectAndReward
 
     self.configureSummaryViewControllerWithData = project
       .takePairWhen(pledgeTotal)
       .map { project, total in (project, total) }
 
     let configurePaymentMethodsViewController = Signal.merge(
-      project,
-      project.takeWhen(self.userSessionStartedSignal)
+      projectAndReward,
+      projectAndReward.takeWhen(self.userSessionStartedSignal)
     )
 
     self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(
@@ -135,12 +137,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
     .filter { !$1.paymentMethodsViewHidden }
     .map(first)
-    .map { project -> (User, Project)? in
+    .filterMap { project, reward -> PledgePaymentMethodsValue? in
       guard let user = AppEnvironment.current.currentUser else { return nil }
 
-      return (user, project)
+      return (user, project, reward)
     }
-    .skipNil()
 
     let projectAndPledgeTotal = project
       .combineLatest(with: pledgeTotal)
@@ -685,7 +686,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   // MARK: - Outputs
 
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
-  public let configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never>
+  public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
