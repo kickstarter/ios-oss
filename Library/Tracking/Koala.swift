@@ -662,9 +662,11 @@ public final class Koala {
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
-    self.track(event: DataLakeWhiteListedEvent.selectRewardButtonClicked.rawValue,
-               properties: props,
-               refTag: refTag?.stringTag)
+    self.track(
+      event: DataLakeWhiteListedEvent.selectRewardButtonClicked.rawValue,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
   }
 
   /* Call when the pledge screen is shown
@@ -712,7 +714,8 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(checkoutProperties(from: checkoutData))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge)) // the context is always "newPledge" for this event
+      // the context is always "newPledge" for this event
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
 
     self.track(
       event: DataLakeWhiteListedEvent.pledgeSubmitButtonClicked.rawValue,
@@ -729,9 +732,11 @@ public final class Koala {
    - context: the PledgeContext from which the event was triggered
    */
 
-  public func trackAddNewCardButtonClicked(project: Project,
-                                           reward: Reward,
-                                           context: Koala.PledgeContext) {
+  public func trackAddNewCardButtonClicked(
+    project: Project,
+    reward: Reward,
+    context: Koala.PledgeContext
+  ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
@@ -750,9 +755,11 @@ public final class Koala {
    - checkoutData: all the checkout data associated with the pledge
    */
 
-  public func trackThanksPageViewed(project: Project,
-                                    reward: Reward,
-                                    checkoutData: CheckoutPropertiesData?) {
+  public func trackThanksPageViewed(
+    project: Project,
+    reward: Reward,
+    checkoutData: CheckoutPropertiesData?
+  ) {
     var props = projectProperties(from: project)
       .withAllValuesFrom(pledgeProperties(from: reward))
       // the context is always "newPledge" for this event
@@ -2386,9 +2393,11 @@ private func properties(category: KsApi.Category, prefix: String = "category_") 
 
 // MARK: - Context Properties
 
-private func contextProperties(pledgeFlowContext: Koala.PledgeContext? = nil,
-                               tabBarLabel: Koala.TabBarItemLabel? = nil,
-                               prefix: String = "context_") -> [String: Any] {
+private func contextProperties(
+  pledgeFlowContext: Koala.PledgeContext? = nil,
+  tabBarLabel: Koala.TabBarItemLabel? = nil,
+  prefix: String = "context_"
+) -> [String: Any] {
   var result: [String: Any] = [:]
 
   result["pledge_flow"] = pledgeFlowContext?.trackingString

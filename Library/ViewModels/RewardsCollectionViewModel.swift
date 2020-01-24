@@ -138,7 +138,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
           context: context,
           refTag: refTag
         )
-    }
+      }
   }
 
   private let configDataProperty = MutableProperty<(Project, RefTag?, RewardsCollectionViewContext)?>(nil)
