@@ -44,9 +44,11 @@ public func optimizelyTrackingAttributesAndEventTags(
   let properties: [String: Any] = [
     "user_backed_projects_count": user?.stats.backedProjectsCount,
     "user_launched_projects_count": user?.stats.createdProjectsCount,
-    "user_country": user?.location?.country.lowercased() ?? AppEnvironment.current.config?.countryCode,
+    "user_country": (user?.location?.country ?? AppEnvironment.current.config?.countryCode)?.lowercased(),
     "user_facebook_account": user?.facebookConnected,
     "user_display_language": AppEnvironment.current.language.rawValue,
+    "user_ref_tag": refTag?.stringTag,
+    "user_referrer_credit": (cookieRefTagFor(project: project) ?? refTag)?.stringTag,
     "session_os_version": AppEnvironment.current.device.systemVersion,
     "session_user_is_logged_in": user != nil,
     "session_app_release_version": AppEnvironment.current.mainBundle.shortVersionString,
@@ -55,15 +57,12 @@ public func optimizelyTrackingAttributesAndEventTags(
   ]
   .compact()
 
-  let eventTags: [String: Any] = [
+  let eventTags: [String: Any] = ([
     "project_subcategory": project.category.name,
     "project_category": project.category.parent?.name,
-    "project_country": project.location.country,
-    "project_user_has_watched": project.personalization.isStarred,
-    "ref_tag": refTag?.stringTag,
-    "referrer_credit": (cookieRefTagFor(project: project) ?? refTag)?.stringTag
-  ]
-  .compact()
+    "project_country": project.location.country.lowercased(),
+    "project_user_has_watched": project.personalization.isStarred
+  ] as [String: Any?]).compact()
 
   return (properties, eventTags)
 }

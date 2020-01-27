@@ -3625,8 +3625,15 @@ final class PledgeViewModelTests: TestCase {
     )
   }
 
+  // swiftlint:disable line_length
   func testTrackingEvents_PledgeScreenViewed_LoggedOut() {
-    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .discovery, context: .pledge)
+    let project = Project.template
+      |> Project.lens.category.parent .~ ParentCategory(
+        id: Category.art.id,
+        name: Category.art.name
+      )
+
+    self.vm.inputs.configureWith(project: project, reward: .template, refTag: .discovery, context: .pledge)
 
     XCTAssertEqual([], self.trackingClient.events)
     self.vm.inputs.viewDidLoad()
@@ -3636,26 +3643,41 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
 
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["backings_count"] as? Int, nil)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["location"] as? String, nil)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["os_version"] as? String, "MockSystemVersion")
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["logged_in"] as? Bool, false)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["chosen_currency"] as? String, nil)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["locale"] as? String, "en_US")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_ref_tag"] as? String, "discovery")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_referrer_credit"] as? String, "discovery")
+
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_os_version"] as? String, "MockSystemVersion")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, false)
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_app_release_version"] as? String, "1.2.3.4.5.6.7.8.9.0")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
 
     XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["ref_tag"] as? String, "discovery")
-    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["referrer_credit"] as? String, "discovery")
+    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, "Art")
+    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
+    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? String, nil)
   }
 
   func testTrackingEvents_PledgeScreenViewed_LoggedIn() {
     let user = User.template
       |> \.location .~ Location.template
       |> \.stats.backedProjectsCount .~ 50
+      |> \.stats.createdProjectsCount .~ 25
+      |> \.facebookConnected .~ true
 
     withEnvironment(currentUser: user) {
       let project = Project.template
+        |> Project.lens.category.parent .~ ParentCategory(
+          id: Category.art.id,
+          name: Category.art.name
+        )
         |> Project.lens.stats.currentCurrency .~ "USD"
+        |> \.personalization.isStarred .~ true
 
       self.vm.inputs.configureWith(
         project: project, reward: .template, refTag: .discovery, context: .pledge
@@ -3669,18 +3691,28 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
 
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["backings_count"] as? Int, 50)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["location"] as? String, "us")
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["os_version"] as? String, "MockSystemVersion")
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["logged_in"] as? Bool, true)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["chosen_currency"] as? String, "USD")
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["locale"] as? String, "en_US")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, 50)
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, 25)
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, true)
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_ref_tag"] as? String, "discovery")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_referrer_credit"] as? String, "discovery")
+
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_os_version"] as? String, "MockSystemVersion")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, true)
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_app_release_version"] as? String, "1.2.3.4.5.6.7.8.9.0")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
 
       XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["ref_tag"] as? String, "discovery")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["referrer_credit"] as? String, "discovery")
+      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, "Art")
+      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
+      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, true)
     }
   }
+
+  // swiftlint:enable line_length
 
   func testTrackingEvents_PledgeSubmitButtonClicked() {
     self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .discovery, context: .pledge)
