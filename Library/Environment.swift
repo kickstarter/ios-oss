@@ -102,7 +102,7 @@ public struct Environment {
   public init(
     apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
-    applePayCapable: ApplePayCapabilitiesType = ApplePayCapabilities(),
+    applePayCapabilities: ApplePayCapabilitiesType = ApplePayCapabilities(),
     application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: KSCache = KSCache(),
@@ -131,7 +131,7 @@ public struct Environment {
   ) {
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
-    self.applePayCapabilities = applePayCapable
+    self.applePayCapabilities = applePayCapabilities
     self.application = application
     self.assetImageGeneratorType = assetImageGeneratorType
     self.cache = cache

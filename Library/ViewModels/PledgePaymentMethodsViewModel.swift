@@ -4,11 +4,11 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public typealias PledgePaymentMethodsValue = (user: User, project: Project, deviceIsApplePayCapable: Bool)
+public typealias PledgePaymentMethodsValue = (user: User, project: Project, reward: Reward)
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func applePayButtonTapped()
-  func configureWith(_ value: PledgePaymentMethodsValue)
+  func configure(with value: PledgePaymentMethodsValue)
   func creditCardSelected(paymentSourceId: String)
   func addNewCardViewControllerDidAdd(newCard card: GraphUserCreditCard.CreditCard)
   func viewDidLoad()
@@ -41,7 +41,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     .map(second)
 
     let project = configureWithValue.map { $0.project }
-
+    let projectAndReward = configureWithValue.map { ($0.project, $0.reward) }
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
 
     let storedCardsEvent = configureWithValue
@@ -53,7 +53,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
 
     self.applePayStackViewHidden = configureWithValue
-      .map { ($0.project, $0.deviceIsApplePayCapable) }
+      .map { ($0.project, AppEnvironment.current.applePayCapabilities.applePayDevice()) }
       .map(showApplePayButton(for:applePayDevice:))
       .negate()
 
@@ -112,13 +112,10 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     // Tracking
 
-    project
-      .filter { isCreatingPledge($0) }
+    projectAndReward
       .takeWhen(self.goToAddCardScreen)
-      .observeValues {
-        AppEnvironment.current.koala.trackAddNewCardButtonClicked(
-          project: $0
-        )
+      .observeValues { project, reward in
+        AppEnvironment.current.koala.trackAddNewCardButtonClicked(project: project, reward: reward)
       }
   }
 
@@ -128,7 +125,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   }
 
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
-  public func configureWith(_ value: PledgePaymentMethodsValue) {
+  public func configure(with value: PledgePaymentMethodsValue) {
     self.configureWithValueProperty.value = value
   }
 
