@@ -314,13 +314,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .switchMap { input in
         AppEnvironment.current.apiService.createBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { Either<CreateBackingEnvelope, UpdateBackingEnvelope>.left($0) }
+          .map { $0 as StripeSCARequiring }
           .materialize()
       }
-
-    createBackingEvents.observeValues { v in
-      print(v)
-    }
 
     // MARK: - Update Backing
 
@@ -360,7 +356,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .switchMap { input in
         AppEnvironment.current.apiService.updateBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { Either<CreateBackingEnvelope, UpdateBackingEnvelope>.right($0) }
+          .map { $0 as StripeSCARequiring }
           .materialize()
       }
 
@@ -478,9 +474,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
 
     let createOrUpdateBackingEventValuesNoSCA = valuesOrNil
-      .map { v in
-        v as? StripeSCARequiring  
-      }
       .skipNil()
       .filter(requiresSCA >>> isFalse)
 
@@ -490,7 +483,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .ignoreValues()
 
     let createOrUpdateBackingEventValuesRequiresSCA = valuesOrNil
-      .map { $0 as? StripeSCARequiring }
       .skipNil()
       .filter(requiresSCA)
 
@@ -510,8 +502,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
 
-    let checkoutId = createBackingEvents.values()
-      .map { $0.left?.createBacking.checkout.id }
+    let checkoutId = createBackingEvents
+      .map { $0.event.value?.checkoutId }
 
     let thanksPageData = createBackingDataAndIsApplePay
       .combineLatest(with: checkoutId)
@@ -526,8 +518,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         return (data.project, data.reward, checkoutPropsData)
       }
 
-    self.goToThanks = thanksPageData
-      .takeWhen(createBackingCompletionEvents)
+    self.goToThanks = createBackingCompletionEvents
+      .takePairWhen(thanksPageData)
+      .map(second)
+      .take(first: 1)
 
     let errorsOrNil = Signal.merge(
       createOrUpdateEvent.errors().wrapInOptional(),
@@ -605,14 +599,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
       }
 
-    let checkoutPropertiesDataWithCheckoutId = Signal.combineLatest(createBackingData, checkoutId)
-      .map {
-        ($0.0, checkoutPropertiesData(from: $0.0, checkoutId: $0.1, isApplePay: false))
-    }
+    createBackingData
+      .takeWhen(createButtonTapped)
+      .map { data in
+        let checkoutData = checkoutPropertiesData(from: data, isApplePay: false)
 
-    checkoutPropertiesDataWithCheckoutId
-      .map { backinData, properties in
-        return (backinData.project, backinData.reward, backinData.refTag, properties)
+        return (data.project, data.reward, data.refTag, checkoutData)
       }
       .observeValues { project, reward, refTag, checkoutData in
         AppEnvironment.current.koala.trackPledgeSubmitButtonClicked(
