@@ -6,6 +6,140 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class KoalaTests: TestCase {
+  func testDefaultProperties() {
+    let bundle = MockBundle()
+    let client = MockTrackingClient()
+    let config = Config.template
+      |> Config.lens.countryCode .~ "GB"
+      |> Config.lens.locale .~ "en"
+      |> Config.lens.abExperiments .~ [
+        "native_checkout": "experimental",
+        "other_experiment": "control"
+      ]
+      |> Config.lens.features .~ [
+        "android_flag": true,
+        "ios_feature_something": false,
+        "ios_feature_checkout": true,
+        "ios_feature_go_rewardless": true
+    ]
+    let device = MockDevice(userInterfaceIdiom: .phone)
+    let screen = MockScreen()
+    let koala = Koala(
+      bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
+      screen: screen
+    )
+
+    koala.trackAppOpen()
+    XCTAssertEqual(["App Open", "Opened App"], client.events)
+
+    let properties = client.properties.last
+
+    XCTAssertEqual("Apple", properties?["manufacturer"] as? String)
+
+    XCTAssertEqual(bundle.infoDictionary?["CFBundleVersion"] as? Int, properties?["app_version"] as? Int)
+    XCTAssertEqual(
+      bundle.infoDictionary?["CFBundleShortVersionString"] as? String,
+      properties?["app_release"] as? String
+    )
+    XCTAssertNotNil(properties?["model"])
+    XCTAssertEqual(device.systemName, properties?["os"] as? String)
+    XCTAssertEqual(device.systemVersion, properties?["os_version"] as? String)
+    XCTAssertEqual(UInt(screen.bounds.width), properties?["screen_width"] as? UInt)
+    XCTAssertEqual(UInt(screen.bounds.height), properties?["screen_height"] as? UInt)
+
+    XCTAssertEqual(
+      ["native_checkout[experimental]", "other_experiment[control]"],
+      properties?["current_variants"] as? [String]
+    )
+    XCTAssertEqual(
+      [
+        "ios_feature_checkout",
+        "ios_feature_go_rewardless"
+      ],
+      properties?["enabled_feature_flags"] as? [String]
+    )
+    XCTAssertEqual("kickstarter_ios", properties?["mp_lib"] as? String)
+    XCTAssertEqual("native", properties?["client_type"] as? String)
+    XCTAssertEqual("phone", properties?["device_format"] as? String)
+    XCTAssertEqual("ios", properties?["client_platform"] as? String)
+
+    XCTAssertNil(properties?["user_uid"])
+    XCTAssertEqual(false, properties?["user_logged_in"] as? Bool)
+    XCTAssertNil(properties?["user_is_admin"])
+    XCTAssertEqual("GB", properties?["user_country"] as? String)
+  }
+
+  func testDefaultPropertiesVoiceOver() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    withEnvironment(isVoiceOverRunning: { true }) {
+      koala.trackAppOpen()
+
+      let properties = client.properties.last
+
+      XCTAssertEqual(true, properties?["is_voiceover_running"] as? Bool)
+    }
+
+    withEnvironment(isVoiceOverRunning: { false }) {
+      koala.trackAppOpen()
+
+      let properties = client.properties.last
+
+      XCTAssertEqual(false, properties?["is_voiceover_running"] as? Bool)
+    }
+  }
+
+  func testDefaultPropertiesWithLoggedInUser() {
+    let client = MockTrackingClient()
+    let user = User.template
+      |> \.stats.backedProjectsCount .~ 2
+      |> \.stats.createdProjectsCount .~ 3
+      |> \.stats.starredProjectsCount .~ 4
+      |> \.location .~ .template
+    let koala = Koala(client: client, loggedInUser: user)
+
+    koala.trackAppOpen()
+    XCTAssertEqual(["App Open", "Opened App"], client.events)
+
+    let properties = client.properties.last
+
+    XCTAssertEqual(user.id, properties?["user_uid"] as? Int)
+    XCTAssertEqual(true, properties?["user_logged_in"] as? Bool)
+    XCTAssertEqual(user.isAdmin, properties?["user_is_admin"] as? Bool)
+    XCTAssertEqual(user.stats.backedProjectsCount, properties?["user_backed_projects_count"] as? Int)
+    XCTAssertEqual(user.stats.createdProjectsCount, properties?["user_created_projects_count"] as? Int)
+    XCTAssertEqual(user.stats.starredProjectsCount, properties?["user_starred_projects_count"] as? Int)
+    XCTAssertEqual(user.location?.country, properties?["user_country"] as? String)
+  }
+
+  func testDeviceFormatAndClientPlatform_ForIPhoneIdiom() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .phone), loggedInUser: nil)
+    koala.trackAppOpen()
+
+    XCTAssertEqual("phone", client.properties.last?["device_format"] as? String)
+    XCTAssertEqual("ios", client.properties.last?["client_platform"] as? String)
+  }
+
+  func testDeviceFormatAndClientPlatform_ForIPadIdiom() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .pad), loggedInUser: nil)
+    koala.trackAppOpen()
+
+    XCTAssertEqual("tablet", client.properties.last?["device_format"] as? String)
+    XCTAssertEqual("ios", client.properties.last?["client_platform"] as? String)
+  }
+
+  func testDeviceFormatAndClientPlatform_ForTvIdiom() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .tv), loggedInUser: nil)
+    koala.trackAppOpen()
+
+    XCTAssertEqual("tv", client.properties.last?["device_format"] as? String)
+    XCTAssertEqual("tvos", client.properties.last?["client_platform"] as? String)
+  }
+
   // MARK: - Session Properties Tests
 
   func testSessionProperties() {
@@ -36,7 +170,7 @@ final class KoalaTests: TestCase {
       distinctId: "abc-123"
     )
 
-    koala.trackAppOpen()
+    koala.trackProjectSearchView()
 
     let properties = client.properties.last
 
@@ -77,7 +211,7 @@ final class KoalaTests: TestCase {
       let client = MockTrackingClient()
       let koala = Koala(client: client)
 
-      koala.trackAppOpen()
+      koala.trackProjectSearchView()
 
       let properties = client.properties.last
 
@@ -90,7 +224,7 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client)
 
     withEnvironment(isVoiceOverRunning: { true }) {
-      koala.trackAppOpen()
+      koala.trackProjectSearchView()
 
       let properties = client.properties.last
 
@@ -98,7 +232,7 @@ final class KoalaTests: TestCase {
     }
 
     withEnvironment(isVoiceOverRunning: { false }) {
-      koala.trackAppOpen()
+      koala.trackProjectSearchView()
 
       let properties = client.properties.last
 
@@ -110,7 +244,7 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client, loggedInUser: User.template)
 
-    koala.trackAppOpen()
+    koala.trackProjectSearchView()
 
     let properties = client.properties.last
 
@@ -120,7 +254,7 @@ final class KoalaTests: TestCase {
   func testSessionProperties_DeviceFormatAndClientPlatform_ForIPhoneIdiom() {
     let client = MockTrackingClient()
     let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .phone), loggedInUser: nil)
-    koala.trackAppOpen()
+    koala.trackProjectSearchView()
 
     XCTAssertEqual("phone", client.properties.last?["session_device_format"] as? String)
     XCTAssertEqual("ios", client.properties.last?["session_client_platform"] as? String)
@@ -129,7 +263,7 @@ final class KoalaTests: TestCase {
   func testSessionProperties_DeviceFormatAndClientPlatform_ForIPadIdiom() {
     let client = MockTrackingClient()
     let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .pad), loggedInUser: nil)
-    koala.trackAppOpen()
+    koala.trackProjectSearchView()
 
     XCTAssertEqual("tablet", client.properties.last?["session_device_format"] as? String)
     XCTAssertEqual("ios", client.properties.last?["session_client_platform"] as? String)
@@ -138,7 +272,7 @@ final class KoalaTests: TestCase {
   func testSessionProperties_DeviceFormatAndClientPlatform_ForTvIdiom() {
     let client = MockTrackingClient()
     let koala = Koala(client: client, device: MockDevice(userInterfaceIdiom: .tv), loggedInUser: nil)
-    koala.trackAppOpen()
+    koala.trackProjectSearchView()
 
     XCTAssertEqual("tv", client.properties.last?["session_device_format"] as? String)
     XCTAssertEqual("tvos", client.properties.last?["session_client_platform"] as? String)
@@ -149,7 +283,7 @@ final class KoalaTests: TestCase {
     let device = MockDevice(orientation: .faceDown)
     let koala = Koala(client: client, device: device)
 
-    koala.trackAppOpen()
+    koala.trackProjectSearchView()
 
     let props = client.properties.last
 
@@ -515,11 +649,13 @@ final class KoalaTests: TestCase {
   func testLogEventsCallback() {
     let bundle = MockBundle()
     let client = MockTrackingClient()
+    let dataLakeClient = MockTrackingClient()
     let config = Config.template
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
     let koala = Koala(
-      bundle: bundle, client: client, config: config, device: device, loggedInUser: nil,
+      bundle: bundle,
+      dataLakeClient: dataLakeClient, client: client, config: config, device: device, loggedInUser: nil,
       screen: screen
     )
 
@@ -534,8 +670,24 @@ final class KoalaTests: TestCase {
 
     XCTAssertEqual(["App Open", "Opened App"], client.events)
     XCTAssertEqual(["App Open", "Opened App"], callBackEvents)
-    XCTAssertEqual("Apple", client.properties.last?["session_device_manufacturer"] as? String)
-    XCTAssertEqual("Apple", callBackProperties?["session_device_manufacturer"] as? String)
+    XCTAssertEqual("Apple",
+                   client.properties.last?["manufacturer"] as? String,
+                   "Koala properties are logged")
+    XCTAssertEqual("Apple",
+                   callBackProperties?["manufacturer"] as? String,
+                   "Koala properties are logged")
+
+    koala.trackProjectSearchView()
+
+    XCTAssertEqual(["Search Page Viewed"], dataLakeClient.events)
+    XCTAssertEqual(["App Open", "Opened App", "Search Page Viewed", "Search Page Viewed"],
+                   callBackEvents,
+                   "Koala and DataLake events are logged")
+    XCTAssertEqual("Apple",
+                   dataLakeClient.properties.last?["session_device_manufacturer"] as? String,
+                   "DataLake whitelisted properties are logged")
+    XCTAssertEqual("Apple", callBackProperties?["session_device_manufacturer"] as? String,
+                   "DataLake whitelisted properties are logged")
   }
 
   func testTrackViewedAccount() {
@@ -864,7 +1016,7 @@ final class KoalaTests: TestCase {
     let config = Config.template |> Config.lens.countryCode .~ "US"
     let koala = Koala(client: client, config: config, loggedInUser: nil)
 
-    koala.trackAppOpen()
+    koala.trackProjectSearchView()
 
     let props = client.properties.last
 
@@ -891,7 +1043,7 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: user)
 
-    koala.trackAppOpen()
+    koala.trackProjectSearchView()
 
     let props = client.properties.last
 
@@ -959,6 +1111,14 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["App Open", "Opened App"], koalaClient.events, "Event is tracked by koala client")
     XCTAssertEqual([], dataLakeClient.events, "Event is not tracked by data lake client")
 
+    let koalaProperties = koalaClient.properties.last
+
+    XCTAssertEqual("Apple",
+                   koalaProperties?["manufacturer"] as? String,
+                   "Koala session property names are correct")
+    XCTAssertEqual(false, koalaProperties?["user_logged_in"] as? Bool,
+                   "Koala user property names are correct")
+
     koala.trackProjectViewed(Project.template) // white-listed event
 
     XCTAssertEqual(
@@ -969,6 +1129,15 @@ final class KoalaTests: TestCase {
       ["Project Page Viewed"], dataLakeClient.events,
       "White-listed event is tracked by data lake client"
     )
+
+    let dataLakeProperties = dataLakeClient.properties.last
+
+    XCTAssertEqual("Apple",
+                   dataLakeProperties?["session_device_manufacturer"] as? String,
+                   "DataLake session property names are correct")
+    XCTAssertEqual(false,
+                   dataLakeProperties?["session_user_logged_in"] as? Bool,
+                   "DataLake user property names are correct")
   }
 
   /*

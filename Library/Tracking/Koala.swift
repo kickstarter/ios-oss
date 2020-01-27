@@ -2079,23 +2079,51 @@ public final class Koala {
     refTag: String? = nil,
     referrerCredit: String? = nil
   ) {
-    let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
-      .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
-      .withAllValuesFrom(properties)
+    var allProperties: [String: Any] = [:]
 
-    self.logEventCallback?(event, props)
+    if DataLakeWhiteListedEvent.allWhiteListedEvents().contains(event) {
+      allProperties = self.dataLakeProperties(with: properties,
+                                              refTag: refTag,
+                                              referrerCredit: referrerCredit)
+
+      self.trackDataLakeEvent(event, properties: allProperties)
+    } else {
+      allProperties = self.koalaProperties(with: properties)
+    }
+
+    self.trackKoalaEvent(event, properties: allProperties)
+  }
+
+  private func trackDataLakeEvent(_ event: String,
+                                  properties: [String: Any] = [:]) {
+    self.logEventCallback?(event, properties)
+
+    self.dataLakeClient.track(
+      event: event,
+      properties: properties
+    )
+  }
+
+  private func trackKoalaEvent(_ event: String,
+                               properties: [String: Any] = [:]) {
+    self.logEventCallback?(event, properties)
 
     self.koalaClient.track(
       event: event,
-      properties: props
+      properties: properties
     )
+  }
 
-    if DataLakeWhiteListedEvent.allWhiteListedEvents().contains(event) {
-      self.dataLakeClient.track(
-        event: event,
-        properties: props
-      )
-    }
+  private func koalaProperties(with properties: [String: Any]) -> [String: Any] {
+    return self.defaultProperties().withAllValuesFrom(properties)
+  }
+
+  private func dataLakeProperties(with properties: [String: Any],
+                                  refTag: String?,
+                                  referrerCredit: String?) -> [String: Any] {
+    return self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
+      .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
+      .withAllValuesFrom(properties)
   }
 
   // MARK: - Session Properties
@@ -2143,6 +2171,58 @@ public final class Koala {
     props["referrer_credit"] = referrerCredit
 
     return props.prefixedKeys(prefix)
+  }
+
+  /*
+   DEPRECATED - Used only for Koala events, all new events should use sessionProperties
+  */
+  private func defaultProperties() -> [String: Any] {
+    var props: [String: Any] = [:]
+
+    let enabledFeatureFlags = self.config?.features
+      .filter { key, value in key.starts(with: "ios_") && value }
+      .keys
+      .sorted()
+
+    props["manufacturer"] = "Apple"
+    props["app_version"] = self.bundle.infoDictionary?["CFBundleVersion"]
+    props["app_release"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
+    props["current_variants"] = self.config?.abExperimentsArray.sorted() ?? []
+    props["enabled_feature_flags"] = enabledFeatureFlags ?? []
+    props["model"] = Koala.deviceModel
+    props["distinct_id"] = self.distinctId
+    props["device_fingerprint"] = self.distinctId
+    props["iphone_uuid"] = self.distinctId
+    props["os"] = self.device.systemName
+    props["os_version"] = self.device.systemVersion
+    props["screen_width"] = UInt(self.screen.bounds.width)
+    props["screen_height"] = UInt(self.screen.bounds.height)
+    props["device_orientation"] = self.deviceOrientation
+    props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
+    props["preferred_content_size_category"] = self.preferredContentSizeCategory
+
+    props["mp_lib"] = "kickstarter_ios"
+    props["koala_lib"] = "kickstarter_ios"
+
+    props["client_type"] = "native"
+    props["device_format"] = self.deviceFormat
+    props["client_platform"] = self.clientPlatform
+    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
+    props["wifi_connection"] = Reachability.current == .wifi
+
+    if let loggedInUser = self.loggedInUser {
+      properties(user: loggedInUser).forEach { props[$0] = $1 }
+    }
+    props["user_is_admin"] = self.loggedInUser?.isAdmin
+    props["user_logged_in"] = self.loggedInUser != nil
+    props["user_country"] = self.loggedInUser?.location?.country ?? self.config?.countryCode
+
+    props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
+    props["apple_pay_device"] = AppEnvironment.current.applePayCapabilities.applePayDevice()
+
+    props["time"] = Date().timeIntervalSince1970
+
+    return props
   }
 
   private static let deviceModel: String? = {
@@ -2243,6 +2323,20 @@ private func projectProperties(
   return props
     .withAllValuesFrom(userProps)
     .prefixedKeys(prefix)
+}
+
+/*
+ DEPRECATED - used only for Koala events, all new events should use userProperties
+ */
+private func properties(user: User, prefix: String = "user_") -> [String: Any] {
+  var properties: [String: Any] = [:]
+
+  properties["uid"] = user.id
+  properties["backed_projects_count"] = user.stats.backedProjectsCount
+  properties["created_projects_count"] = user.stats.createdProjectsCount
+  properties["starred_projects_count"] = user.stats.starredProjectsCount
+
+  return properties.prefixedKeys(prefix)
 }
 
 private func properties(update: Update, prefix: String = "update_") -> [String: Any] {
