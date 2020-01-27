@@ -2119,7 +2119,7 @@ public final class Koala {
     props["current_variants"] = self.config?.abExperimentsArray.sorted()
     props["display_language"] = AppEnvironment.current.language.rawValue
 
-    props["device_format"] = self.deviceFormat
+    props["device_format"] = self.device.deviceFormat
     props["device_manufacturer"] = "Apple"
     props["device_model"] = Koala.deviceModel
     props["device_orientation"] = self.deviceOrientation
@@ -2171,15 +2171,6 @@ public final class Koala {
       return "Unknown"
     @unknown default:
       fatalError()
-    }
-  }
-
-  private var deviceFormat: String {
-    switch self.device.userInterfaceIdiom {
-    case .phone: return "phone"
-    case .pad: return "tablet"
-    case .tv: return "tv"
-    default: return "unspecified"
     }
   }
 

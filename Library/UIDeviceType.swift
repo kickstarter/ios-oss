@@ -38,3 +38,14 @@ internal struct MockDevice: UIDeviceType {
     self.orientation = orientation
   }
 }
+
+extension UIDeviceType {
+  var deviceFormat: String {
+    switch self.userInterfaceIdiom {
+    case .phone: return "phone"
+    case .pad: return "tablet"
+    case .tv: return "tv"
+    default: return "unspecified"
+    }
+  }
+}

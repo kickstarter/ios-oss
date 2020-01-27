@@ -42,17 +42,24 @@ public func optimizelyTrackingAttributesAndEventTags(
   refTag: RefTag?
 ) -> ([String: Any], [String: Any]) {
   let properties: [String: Any] = [
-    "backings_count": user?.stats.backedProjectsCount,
-    "location": user?.location?.country.lowercased(),
-    "os_version": AppEnvironment.current.device.systemVersion,
-    "logged_in": user != nil,
-    "chosen_currency": project.stats.currentCurrency,
-    "locale": AppEnvironment.current.locale.identifier
+    "user_backed_projects_count": user?.stats.backedProjectsCount,
+    "user_launched_projects_count": user?.stats.createdProjectsCount,
+    "user_country": user?.location?.country.lowercased() ?? AppEnvironment.current.config?.countryCode,
+    "user_facebook_account": user?.facebookConnected,
+    "user_display_language": AppEnvironment.current.language.rawValue,
+    "session_os_version": AppEnvironment.current.device.systemVersion,
+    "session_user_is_logged_in": user != nil,
+    "session_app_release_version": AppEnvironment.current.mainBundle.shortVersionString,
+    "session_apple_pay_device": AppEnvironment.current.applePayCapabilities.applePayDevice(),
+    "session_device_format": AppEnvironment.current.device.deviceFormat
   ]
   .compact()
 
   let eventTags: [String: Any] = [
     "project_subcategory": project.category.name,
+    "project_category": project.category.parent?.name,
+    "project_country": project.location.country,
+    "project_user_has_watched": project.personalization.isStarred,
     "ref_tag": refTag?.stringTag,
     "referrer_credit": (cookieRefTagFor(project: project) ?? refTag)?.stringTag
   ]
