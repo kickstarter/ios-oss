@@ -502,8 +502,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
 
-    let checkoutId = createBackingEvents
-      .map { $0.event.value?.checkoutId }
+    let checkoutId = createBackingEvents.values()
+      .map { $0.checkoutId }
 
     let thanksPageData = createBackingDataAndIsApplePay
       .combineLatest(with: checkoutId)
@@ -519,9 +519,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     self.goToThanks = createBackingCompletionEvents
-      .takePairWhen(thanksPageData)
+      .combineLatest(with: thanksPageData)
       .map(second)
-      .take(first: 1)
 
     let errorsOrNil = Signal.merge(
       createOrUpdateEvent.errors().wrapInOptional(),

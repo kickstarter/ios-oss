@@ -1141,6 +1141,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "5.00",
+        checkoutId: "1",
         estimatedDelivery: nil,
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 500,
@@ -1222,6 +1223,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "5.00",
+        checkoutId: "1",
         estimatedDelivery: nil,
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 500,
@@ -1374,6 +1376,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "25.00",
+        checkoutId: "1",
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
         revenueInUsdCents: 2_500,
@@ -3168,6 +3171,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "25.00",
+        checkoutId: "1",
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
         revenueInUsdCents: 2_500,

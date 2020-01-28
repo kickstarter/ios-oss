@@ -1041,6 +1041,7 @@ final class KoalaTests: TestCase {
 extension Koala.CheckoutPropertiesData {
   static let template = Koala.CheckoutPropertiesData(
     amount: "20.00",
+    checkoutId: "1",
     estimatedDelivery: nil,
     paymentType: "CREDIT_CARD",
     revenueInUsdCents: 2_000,

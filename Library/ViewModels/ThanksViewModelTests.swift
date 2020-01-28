@@ -295,6 +295,7 @@ final class ThanksViewModelTests: TestCase {
   func testThanksPageViewed_Properties() {
     let checkoutData = Koala.CheckoutPropertiesData(
       amount: "10.00",
+      checkoutId: "1",
       estimatedDelivery: nil,
       paymentType: "CREDIT_CARD",
       revenueInUsdCents: 500,
