@@ -314,7 +314,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .switchMap { input in
         AppEnvironment.current.apiService.createBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0 as StripeSCARequiring }
+          .map { ($0.createBacking.checkout.id, $0 as StripeSCARequiring) }
           .materialize()
       }
 
@@ -356,7 +356,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .switchMap { input in
         AppEnvironment.current.apiService.updateBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0 as StripeSCARequiring }
+          .map { ($0.updateBacking.checkout.id, $0 as StripeSCARequiring) }
           .materialize()
       }
 
@@ -475,6 +475,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let createOrUpdateBackingEventValuesNoSCA = valuesOrNil
       .skipNil()
+      .map(second)
       .filter(requiresSCA >>> isFalse)
 
     let createOrUpdateBackingDidCompleteNoSCA = isCreateOrUpdateBacking
@@ -484,6 +485,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let createOrUpdateBackingEventValuesRequiresSCA = valuesOrNil
       .skipNil()
+      .map(second)
       .filter(requiresSCA)
 
     self.beginSCAFlowWithClientSecret = createOrUpdateBackingEventValuesRequiresSCA
@@ -503,7 +505,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
 
     let checkoutId = createBackingEvents.values()
-      .map { $0.checkoutId }
+      .map(first)
 
     let thanksPageData = createBackingDataAndIsApplePay
       .combineLatest(with: checkoutId)
