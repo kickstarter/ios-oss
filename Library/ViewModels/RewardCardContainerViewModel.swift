@@ -76,16 +76,6 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.rewardSelected = reward
       .takeWhen(self.pledgeButtonTappedProperty.signal)
       .map { $0.id }
-
-    // Tracking
-    projectAndReward
-      .takeWhen(self.pledgeButtonTappedProperty.signal)
-      .observeValues { project, reward in
-        AppEnvironment.current.koala.trackRewardClicked(
-          project: project,
-          reward: reward
-        )
-      }
   }
 
   private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
