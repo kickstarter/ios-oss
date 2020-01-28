@@ -2468,12 +2468,7 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
   var props: [String: Any] = [:]
 
-  props["is_admin"] = user?.isAdmin
-  props["backed_projects_count"] = user?.stats.backedProjectsCount
   props["country"] = user?.location?.country ?? config?.countryCode
-  props["facebook_account"] = user?.facebookConnected
-  props["watched_projects_count"] = user?.stats.starredProjectsCount
-  props["launched_projects_count"] = user?.stats.createdProjectsCount
   props["uid"] = user?.id
 
   return props.prefixedKeys(prefix)
