@@ -47,7 +47,7 @@ public protocol PledgeViewModelInputs {
 
 public protocol PledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
-  var configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never> { get }
+  var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
@@ -118,29 +118,26 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.notifyPledgeAmountViewControllerShippingAmountChanged = shippingCost
 
-    self.configureWithData = initialData.map { (project: $0.0, reward: $0.1) }
+    let projectAndReward = initialData.map { (project: $0.0, reward: $0.1) }
+
+    self.configureWithData = projectAndReward
 
     self.configureSummaryViewControllerWithData = project
       .takePairWhen(pledgeTotal)
       .map { project, total in (project, total) }
 
     let configurePaymentMethodsViewController = Signal.merge(
-      project,
-      project.takeWhen(self.userSessionStartedSignal)
+      initialData,
+      initialData.takeWhen(self.userSessionStartedSignal)
     )
 
-    self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(
-      configurePaymentMethodsViewController,
-      context
-    )
-    .filter { !$1.paymentMethodsViewHidden }
-    .map(first)
-    .map { project -> (User, Project)? in
-      guard let user = AppEnvironment.current.currentUser else { return nil }
+    self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
+      .filter { !$3.paymentMethodsViewHidden }
+      .filterMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
+        guard let user = AppEnvironment.current.currentUser else { return nil }
 
-      return (user, project)
-    }
-    .skipNil()
+        return (user, project, reward, context, refTag)
+      }
 
     let projectAndPledgeTotal = project
       .combineLatest(with: pledgeTotal)
@@ -579,10 +576,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     initialData
-      .observeValues { project, reward, refTag, _ in
+      .observeValues { project, reward, refTag, context in
         AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(
           project: project,
           reward: reward,
+          context: TrackingHelpers.pledgeContext(for: context),
           refTag: refTag
         )
       }
@@ -685,7 +683,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   // MARK: - Outputs
 
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
-  public let configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never>
+  public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
@@ -821,18 +819,7 @@ private func allValuesChangedAndValid(
   return amountValid && shippingRuleValid
 }
 
-// MARK: - HelperFunctions
-
-private func trackingPledgeContext(for viewContext: PledgeViewContext) -> Koala.PledgeContext {
-  switch viewContext {
-  case .pledge:
-    return Koala.PledgeContext.newPledge
-  case .update, .changePaymentMethod:
-    return Koala.PledgeContext.manageReward
-  case .updateReward:
-    return Koala.PledgeContext.changeReward
-  }
-}
+// MARK: - Helper Functions
 
 private func checkoutPropertiesData(from createBackingData: CreateBackingData, isApplePay: Bool)
   -> Koala.CheckoutPropertiesData {

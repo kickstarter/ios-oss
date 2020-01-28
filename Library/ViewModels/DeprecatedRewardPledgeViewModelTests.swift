@@ -503,12 +503,12 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
     let project = Project.template
       |> \.availableCardTypes .~ ["AMEX"]
     let reward = Reward.template
-    let mockApplePayCapable = MockApplePayCapable()
+    let mockApplePayCapable = MockApplePayCapabilities()
       |> \.supportedNetworksForProject .~ [.amex]
 
     withEnvironment(
       apiService: MockService(fetchShippingRulesResult: Result(success: [])),
-      applePayCapable: mockApplePayCapable
+      applePayCapabilities: mockApplePayCapable
     ) {
       self.vm.inputs.configureWith(project: project, reward: reward, applePayCapable: true)
       self.vm.inputs.viewDidLoad()
@@ -565,7 +565,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
-        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
+        "supportedNetworks": MockApplePayCapabilities().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -607,7 +607,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
-        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
+        "supportedNetworks": MockApplePayCapabilities().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -650,7 +650,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
-        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
+        "supportedNetworks": MockApplePayCapabilities().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [
           [
@@ -702,7 +702,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
-        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
+        "supportedNetworks": MockApplePayCapabilities().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:
@@ -756,7 +756,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
-        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
+        "supportedNetworks": MockApplePayCapabilities().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:
@@ -812,7 +812,7 @@ internal final class DeprecatedRewardPledgeViewModelTests: TestCase {
         "currencyCode": project.country.currencyCode,
         "merchantCapabilities": [PKMerchantCapability.capability3DS.rawValue],
         "merchantIdentifier": Secrets.ApplePay.merchantIdentifier,
-        "supportedNetworks": MockApplePayCapable().allSupportedNetworks(),
+        "supportedNetworks": MockApplePayCapabilities().allSupportedNetworks(),
         "shippingType": PKShippingType.shipping.rawValue,
         "paymentSummaryItems": [[String: Any]].init(
           arrayLiteral:

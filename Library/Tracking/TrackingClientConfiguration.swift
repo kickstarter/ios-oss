@@ -105,7 +105,7 @@ private let dataLakeRecordDictionary: TrackingClientRecordDictionary = { event, 
       "event": event,
       "properties": properties
     ],
-    "partition-key": UUID().uuidString
+    "partition-key": partitionKey()
   ]
 }
 
@@ -135,4 +135,10 @@ private let dataLakeUrl: TrackingClientURL = { environmentType in
   }
 
   return URL(string: urlString)
+}
+
+private func partitionKey() -> String {
+  return AppEnvironment.current.currentUser.flatMap { $0.id }.map(String.init)
+    .coalesceWith(AppEnvironment.current.device.identifierForVendor?.uuidString)
+    .coalesceWith(UUID().uuidString)
 }

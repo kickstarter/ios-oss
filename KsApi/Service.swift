@@ -19,6 +19,7 @@ public struct Service: ServiceType {
   public let language: String
   public let currency: String
   public let buildVersion: String
+  public let deviceIdentifier: String
 
   public init(
     appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
@@ -26,7 +27,8 @@ public struct Service: ServiceType {
     oauthToken: OauthTokenAuthType? = nil,
     language: String = "en",
     currency: String = "USD",
-    buildVersion: String = Bundle.main._buildVersion
+    buildVersion: String = Bundle.main._buildVersion,
+    deviceIdentifier: String = UIDevice.current.identifierForVendor.coalesceWith(UUID()).uuidString
   ) {
     self.appId = appId
     self.serverConfig = serverConfig
@@ -34,6 +36,7 @@ public struct Service: ServiceType {
     self.language = language
     self.currency = currency
     self.buildVersion = buildVersion
+    self.deviceIdentifier = deviceIdentifier
 
     // Global override required for injecting custom User-Agent header in ajax requests
     UserDefaults.standard.register(defaults: ["UserAgent": Service.userAgent])

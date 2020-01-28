@@ -4,11 +4,15 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public typealias PledgePaymentMethodsValue = (user: User, project: Project, deviceIsApplePayCapable: Bool)
+public typealias PledgePaymentMethodsValue = (
+  user: User, project: Project, reward: Reward,
+  context: PledgeViewContext,
+  refTag: RefTag?
+)
 
 public protocol PledgePaymentMethodsViewModelInputs {
   func applePayButtonTapped()
-  func configureWith(_ value: PledgePaymentMethodsValue)
+  func configure(with value: PledgePaymentMethodsValue)
   func creditCardSelected(paymentSourceId: String)
   func addNewCardViewControllerDidAdd(newCard card: GraphUserCreditCard.CreditCard)
   func viewDidLoad()
@@ -41,7 +45,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     .map(second)
 
     let project = configureWithValue.map { $0.project }
-
+    let projectRewardContextRefTag = configureWithValue.map { ($0.project, $0.reward, $0.context, $0.refTag) }
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
 
     let storedCardsEvent = configureWithValue
@@ -53,7 +57,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
 
     self.applePayStackViewHidden = configureWithValue
-      .map { ($0.project, $0.deviceIsApplePayCapable) }
+      .map { ($0.project, AppEnvironment.current.applePayCapabilities.applePayDevice()) }
       .map(showApplePayButton(for:applePayDevice:))
       .negate()
 
@@ -112,12 +116,15 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     // Tracking
 
-    project
-      .filter { isCreatingPledge($0) }
+    projectRewardContextRefTag
       .takeWhen(self.goToAddCardScreen)
-      .observeValues {
+      .observeValues { project, reward, context, refTag in
+        let pledgeContext = TrackingHelpers.pledgeContext(for: context)
         AppEnvironment.current.koala.trackAddNewCardButtonClicked(
-          project: $0
+          project: project,
+          reward: reward,
+          context: pledgeContext,
+          refTag: refTag
         )
       }
   }
@@ -128,7 +135,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   }
 
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
-  public func configureWith(_ value: PledgePaymentMethodsValue) {
+  public func configure(with value: PledgePaymentMethodsValue) {
     self.configureWithValueProperty.value = value
   }
 
