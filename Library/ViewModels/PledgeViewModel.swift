@@ -849,43 +849,43 @@ private func checkoutPropertiesData(
   from createBackingData: CreateBackingData,
   checkoutId: String? = nil,
   isApplePay: Bool
-  )
+)
   -> Koala.CheckoutPropertiesData {
-    var pledgeTotal = createBackingData.pledgeAmount
+  var pledgeTotal = createBackingData.pledgeAmount
 
-    if let shippingRule = createBackingData.shippingRule {
-      pledgeTotal = pledgeTotal.addingCurrency(shippingRule.cost)
-    }
+  if let shippingRule = createBackingData.shippingRule {
+    pledgeTotal = pledgeTotal.addingCurrency(shippingRule.cost)
+  }
 
-    let pledgeTotalUsdCents = pledgeTotal
-      .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
-      .multiplyingCurrency(100.0)
-      .rounded()
+  let pledgeTotalUsdCents = pledgeTotal
+    .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
+    .multiplyingCurrency(100.0)
+    .rounded()
 
-    let amount = Format.decimalCurrency(for: pledgeTotal)
-    let revenueInUsdCents = Int(pledgeTotalUsdCents)
-    let rewardId = createBackingData.reward.id
-    let estimatedDelivery = createBackingData.reward.estimatedDeliveryOn
-    let paymentType = isApplePay
-      ? Backing.PaymentType.applePay.rawValue
-      : Backing.PaymentType.creditCard.rawValue
-    let shippingEnabled = createBackingData.reward.shipping.enabled
-    let shippingAmount = createBackingData.shippingRule?.cost
-    let rewardTitle = createBackingData.reward.title
-    let userHasEligibleStoredApplePayCard = AppEnvironment.current
-      .applePayCapabilities
-      .applePayCapable(for: createBackingData.project)
+  let amount = Format.decimalCurrency(for: pledgeTotal)
+  let revenueInUsdCents = Int(pledgeTotalUsdCents)
+  let rewardId = createBackingData.reward.id
+  let estimatedDelivery = createBackingData.reward.estimatedDeliveryOn
+  let paymentType = isApplePay
+    ? Backing.PaymentType.applePay.rawValue
+    : Backing.PaymentType.creditCard.rawValue
+  let shippingEnabled = createBackingData.reward.shipping.enabled
+  let shippingAmount = createBackingData.shippingRule?.cost
+  let rewardTitle = createBackingData.reward.title
+  let userHasEligibleStoredApplePayCard = AppEnvironment.current
+    .applePayCapabilities
+    .applePayCapable(for: createBackingData.project)
 
-    return Koala.CheckoutPropertiesData(
-      amount: amount,
-      checkoutId: checkoutId,
-      estimatedDelivery: estimatedDelivery,
-      paymentType: paymentType,
-      revenueInUsdCents: revenueInUsdCents,
-      rewardId: rewardId,
-      rewardTitle: rewardTitle,
-      shippingEnabled: shippingEnabled,
-      shippingAmount: shippingAmount,
-      userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
-    )
+  return Koala.CheckoutPropertiesData(
+    amount: amount,
+    checkoutId: checkoutId,
+    estimatedDelivery: estimatedDelivery,
+    paymentType: paymentType,
+    revenueInUsdCents: revenueInUsdCents,
+    rewardId: rewardId,
+    rewardTitle: rewardTitle,
+    shippingEnabled: shippingEnabled,
+    shippingAmount: shippingAmount,
+    userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
+  )
 }
