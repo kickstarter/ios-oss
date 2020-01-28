@@ -140,7 +140,7 @@ private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTATyp
         for: OptimizelyExperiment.Key.pledgeCTACopy,
         userId: deviceIdentifier(uuid: UUID()),
         isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false
-    )
+      )
 
     if let variant = optimizelyVariant, project.state == .live {
       switch variant {

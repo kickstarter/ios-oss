@@ -238,10 +238,14 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       self.spacerIsHidden.assertValues([false])
       self.stackViewIsHidden.assertValues([false])
 
-      XCTAssertFalse(optimizelyClient.activatePathCalled,
-                     "Optimizely client should not be called when the pledge button won't be shown")
-      XCTAssertFalse(optimizelyClient.getVariantPathCalled,
-                     "Optimizely client should not be called when the pledge button won't be shown")
+      XCTAssertFalse(
+        optimizelyClient.activatePathCalled,
+        "Optimizely client should not be called when the pledge button won't be shown"
+      )
+      XCTAssertFalse(
+        optimizelyClient.getVariantPathCalled,
+        "Optimizely client should not be called when the pledge button won't be shown"
+      )
     }
   }
 
