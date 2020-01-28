@@ -218,8 +218,11 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
 
+    let shouldTrackCTATappedEvent = ctaButtonTappedWithType
+      .filter { [.pledge, .seeTheRewards, .viewTheRewards].contains($0) }
+
     Signal.combineLatest(project, refTag)
-      .takeWhen(ctaButtonTappedWithType.filter { $0 == .pledge })
+      .takeWhen(shouldTrackCTATappedEvent)
       .observeValues { project, refTag in
         let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
           with: AppEnvironment.current.currentUser,
