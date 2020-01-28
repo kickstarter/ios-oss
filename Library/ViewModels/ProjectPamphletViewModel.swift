@@ -220,7 +220,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     Signal.combineLatest(project, refTag)
       .takeWhen(ctaButtonTappedWithType.filter { $0 == .pledge })
-      .filter { project, _ in project.personalization.backing == nil }
       .observeValues { project, refTag in
         let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
           with: AppEnvironment.current.currentUser,
