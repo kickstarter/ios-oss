@@ -517,11 +517,11 @@ public final class Koala {
   }
 
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
-    let label = tabBarItemLabel.trackingString
+    let properties = contextProperties(pledgeFlowContext: nil, tabBarLabel: tabBarItemLabel)
 
     self.track(
       event: DataLakeWhiteListedEvent.tabBarClicked.rawValue,
-      properties: ["tab_bar_label": label]
+      properties: properties
     )
   }
 
@@ -648,16 +648,25 @@ public final class Koala {
    parameters:
    - project: the project being pledged to
    - reward: the selected reward
+   - context: the PledgeContext from which the event was triggered
+   - refTag: the optional RefTag associated with the pledge
    */
 
   public func trackRewardClicked(
     project: Project,
-    reward: Reward
+    reward: Reward,
+    context: PledgeContext,
+    refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
-    self.track(event: DataLakeWhiteListedEvent.selectRewardButtonClicked.rawValue, properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.selectRewardButtonClicked.rawValue,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
   }
 
   /* Call when the pledge screen is shown
@@ -665,17 +674,19 @@ public final class Koala {
    parameters:
    - project: the project being pledged to
    - reward: the chosen reward
+   - context: the PledgeContext from which the event was triggered
    - refTag: the associated RefTag for the pledge
-
    */
 
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
+    context: Koala.PledgeContext,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
       event: DataLakeWhiteListedEvent.checkoutPaymentPageViewed.rawValue,
@@ -690,6 +701,7 @@ public final class Koala {
    - project: the project being pledged to
    - reward: the chosen reward
    - checkoutData: all the checkout data associated with the pledge
+   - refTag: the associated RefTag for the pledge
 
    */
 
@@ -702,6 +714,8 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(checkoutProperties(from: checkoutData))
+      // the context is always "newPledge" for this event
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
 
     self.track(
       event: DataLakeWhiteListedEvent.pledgeSubmitButtonClicked.rawValue,
@@ -710,19 +724,48 @@ public final class Koala {
     )
   }
 
-  public func trackAddNewCardButtonClicked(project: Project, reward: Reward) {
+  /* Call when the Add New Card button is clicked from the pledge screen
+
+   parameters:
+   - project: the project that is being pledged to
+   - reward: the reward that was chosen for the pledge
+   - context: the PledgeContext from which the event was triggered
+   */
+
+  public func trackAddNewCardButtonClicked(
+    project: Project,
+    reward: Reward,
+    context: Koala.PledgeContext,
+    refTag: RefTag?
+  ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
       event: DataLakeWhiteListedEvent.addNewCardButtonClicked.rawValue,
-      properties: props
+      properties: props,
+      refTag: refTag?.stringTag
     )
   }
 
-  public func trackThanksPageViewed(project: Project, reward: Reward, checkoutData: CheckoutPropertiesData?) {
+  /* Call when the Thanks page is viewed
+
+   parameters:
+   - project: the project that was pledged to
+   - reward: the reward that was chosen
+   - checkoutData: all the checkout data associated with the pledge
+   */
+
+  public func trackThanksPageViewed(
+    project: Project,
+    reward: Reward,
+    checkoutData: CheckoutPropertiesData?
+  ) {
     var props = projectProperties(from: project)
       .withAllValuesFrom(pledgeProperties(from: reward))
+      // the context is always "newPledge" for this event
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
 
     if let checkoutData = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
@@ -2123,6 +2166,7 @@ public final class Koala {
                                   referrerCredit: String?) -> [String: Any] {
     return self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
+      .withAllValuesFrom(contextProperties())
       .withAllValuesFrom(properties)
   }
 
@@ -2158,7 +2202,6 @@ public final class Koala {
     props["mp_lib"] = "kickstarter_ios"
     props["os"] = self.device.systemName
     props["os_version"] = self.device.systemVersion
-    props["time"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
     props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["screen_width"] = UInt(self.screen.bounds.width)
@@ -2444,6 +2487,22 @@ private func properties(category: KsApi.Category, prefix: String = "category_") 
   return result.prefixedKeys(prefix)
 }
 
+// MARK: - Context Properties
+
+private func contextProperties(
+  pledgeFlowContext: Koala.PledgeContext? = nil,
+  tabBarLabel: Koala.TabBarItemLabel? = nil,
+  prefix: String = "context_"
+) -> [String: Any] {
+  var result: [String: Any] = [:]
+
+  result["pledge_flow"] = pledgeFlowContext?.trackingString
+  result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
+  result["tab_bar_label"] = tabBarLabel?.trackingString
+
+  return result.prefixedKeys(prefix)
+}
+
 private func properties(
   shareContext: ShareContext,
   loggedInUser: User?,
@@ -2503,12 +2562,7 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
   var props: [String: Any] = [:]
 
-  props["is_admin"] = user?.isAdmin
-  props["backed_projects_count"] = user?.stats.backedProjectsCount
   props["country"] = user?.location?.country ?? config?.countryCode
-  props["facebook_account"] = user?.facebookConnected
-  props["watched_projects_count"] = user?.stats.starredProjectsCount
-  props["launched_projects_count"] = user?.stats.createdProjectsCount
   props["uid"] = user?.id
 
   return props.prefixedKeys(prefix)

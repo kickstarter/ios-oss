@@ -8,7 +8,6 @@ import UIKit
 internal final class BetaToolsViewController: UITableViewController {
   // MARK: - Properties
 
-  private let betaFeedbackButton = UIButton(type: .custom)
   private var betaToolsData: BetaToolsData?
   private let helpViewModel: HelpViewModelType = HelpViewModel()
   private let viewModel: BetaToolsViewModelType = BetaToolsViewModel()
@@ -27,10 +26,6 @@ internal final class BetaToolsViewController: UITableViewController {
       |> \.dataSource .~ self
 
     self.configureFooterView()
-    self.betaFeedbackButton.addTarget(
-      self, action: #selector(self.betaFeedbackButtonTapped),
-      for: .touchUpInside
-    )
 
     let doneButton = UIBarButtonItem(
       title: Strings.Done(), style: .done, target: self,
@@ -52,10 +47,6 @@ internal final class BetaToolsViewController: UITableViewController {
   override func bindStyles() {
     _ = self.navigationController
       ?|> UINavigationController.lens.isNavigationBarHidden .~ false
-
-    _ = self.betaFeedbackButton
-      |> greenButtonStyle
-      |> UIButton.lens.title(for: .normal) .~ "Submit feedback for beta"
   }
 
   override func bindViewModel() {
@@ -124,10 +115,6 @@ internal final class BetaToolsViewController: UITableViewController {
 
   // MARK: - Selectors
 
-  @objc private func betaFeedbackButtonTapped() {
-    self.viewModel.inputs.betaFeedbackButtonTapped(canSendMail: MFMailComposeViewController.canSendMail())
-  }
-
   @objc private func doneButtonTapped() {
     self.navigationController?.dismiss(animated: true)
   }
@@ -137,27 +124,26 @@ internal final class BetaToolsViewController: UITableViewController {
   private func configureFooterView() {
     let containerView = UIView(frame: .zero)
 
+    let betaToolsFooterView = BetaToolsFooterView(frame: .zero)
+      |> \.delegate .~ self
+
     /* Silences autolayout warnings between conflicting table view frame-based sizing and our
      tableFooterView's autolayout constraints
      */
     let priority = UILayoutPriority(rawValue: 999)
 
-    _ = (self.betaFeedbackButton, containerView)
+    _ = (betaToolsFooterView, containerView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent(priority: priority)
 
     _ = self.tableView
       |> \.tableFooterView .~ containerView
 
-    let widthConstraint = self.betaFeedbackButton.widthAnchor
-      .constraint(equalTo: self.tableView.layoutMarginsGuide.widthAnchor)
-      |> \.priority .~ .defaultHigh
-
-    let heightConstraint = self.betaFeedbackButton.heightAnchor
-      .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-      |> \.priority .~ .defaultHigh
-
-    NSLayoutConstraint.activate([widthConstraint, heightConstraint])
+    NSLayoutConstraint.activate([
+      betaToolsFooterView.widthAnchor
+        .constraint(equalTo: self.tableView.layoutMarginsGuide.widthAnchor)
+        |> \.priority .~ .defaultHigh
+    ])
   }
 
   private func goToDebugPushNotifications() {
@@ -309,6 +295,14 @@ extension BetaToolsViewController {
     self.viewModel.inputs.didSelectBetaToolsRow(row)
 
     tableView.deselectRow(at: indexPath, animated: true)
+  }
+}
+
+// MARK: - BetaToolsFooterViewDelegate
+
+extension BetaToolsViewController: BetaToolsFooterViewDelegate {
+  func betaToolsFooterViewDelegateDidTapFeedbackButton() {
+    self.viewModel.inputs.betaFeedbackButtonTapped(canSendMail: MFMailComposeViewController.canSendMail())
   }
 }
 
