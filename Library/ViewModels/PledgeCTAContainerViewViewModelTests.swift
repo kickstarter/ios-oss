@@ -222,6 +222,29 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     }
   }
 
+  func testPledgeCTA_Backer_LiveProject_LoggedIn_OptimizelyExperimental_Variant1() {
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ Backing.template
+      |> Project.lens.personalization.isBacking .~ true
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
+
+    withEnvironment(currentUser: .template, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configureWith(value: (.left(project), false))
+      self.buttonStyleType.assertValues([ButtonStyleType.blue])
+      self.buttonTitleText.assertValues(["Manage"])
+      self.spacerIsHidden.assertValues([false])
+      self.stackViewIsHidden.assertValues([false])
+
+      XCTAssertFalse(optimizelyClient.activatePathCalled,
+                     "Optimizely client should not be called when the pledge button won't be shown")
+      XCTAssertFalse(optimizelyClient.getVariantPathCalled,
+                     "Optimizely client should not be called when the pledge button won't be shown")
+    }
+  }
+
   func testPledgeCTA_NonBacker_NonLiveProject_loggedIn() {
     let project = Project.template
       |> Project.lens.state .~ .successful
