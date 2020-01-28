@@ -1,5 +1,6 @@
 import Foundation
 
+// This model is used in multiple queries, if modified update UpdateBacking and CreateBacking mutations.
 public struct Checkout: Decodable {
   public var id: String
   public var state: State
