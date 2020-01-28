@@ -869,12 +869,7 @@ final class KoalaTests: TestCase {
     let props = client.properties.last
 
     XCTAssertEqual("US", props?["user_country"] as? String)
-    XCTAssertNil(props?["user_backed_projects_count"])
-    XCTAssertNil(props?["user_facebook_account"])
-    XCTAssertNil(props?["user_watched_projects_count"])
     XCTAssertNil(props?["user_uid"])
-    XCTAssertNil(props?["user_is_admin"])
-    XCTAssertNil(props?["user_launched_projects_count"])
   }
 
   func testUserProperties_loggedIn() {
@@ -895,13 +890,8 @@ final class KoalaTests: TestCase {
 
     let props = client.properties.last
 
-    XCTAssertEqual(5, props?["user_backed_projects_count"] as? Int)
     XCTAssertEqual("US", props?["user_country"] as? String)
-    XCTAssertEqual(true, props?["user_facebook_account"] as? Bool)
-    XCTAssertEqual(2, props?["user_watched_projects_count"] as? Int)
     XCTAssertEqual(10, props?["user_uid"] as? Int)
-    XCTAssertEqual(false, props?["user_is_admin"] as? Bool)
-    XCTAssertEqual(3, props?["user_launched_projects_count"] as? Int)
   }
 
   func testTabBarClicked() {
