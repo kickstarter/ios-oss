@@ -54,6 +54,42 @@ public final class Koala {
     }
   }
 
+  /// Determines the screen from which the event is sent.
+  public enum LocationContext: String {
+    case account = "settings_account_screen" //SettingsAccountViewController
+    case activities = "activity_feed_screen" //ActivitiesViewController
+    case cancelPledge = "cancel_pledge_screen" //CancelPledgeViewController
+    case changeEmail = "settings_account_change_email_screen" //ChangeEmailViewController
+    case changePassword = "settings_account_change_password_screen" //ChangePasswordViewController
+    case createPassword = "settings_create_password_screen" //CreatePasswordViewController
+    case creatorBio = "creator_bio_screen" //ProjectCreatorViewController
+    case creatorBioMessageCreator = "creator_bio_message_creator_screen" //MessagesViewController
+    case creatorBioPushMessageCreator = "push_message_creator_screen" //MessagesViewController
+    case creatorDashboard = "creator_dashboard_screen" //DashboardViewController
+    case discovery = "explore_screen" //DiscoveryViewController
+    case editorialProjects = "editorial_collection_screen" //EditorialProjectsViewController
+    case help = "settings_help_screen" //HelpViewController
+    case login = "login_screen" //LoginViewController
+    case loginTout = "login_or_signup_screen" //LoginToutViewController
+    case managePledgeMessageCreator = "manage_pledge_message_creator_screen" //MessageDialogViewController
+    case newsletters = "settings_newsletters_screen" //SettingsNewslettersViewController
+    case notifications = "settings_notifications_screen" //SettingsNotificationsViewController
+    case paymentMethods = "settings_account_payment_methods_screen" //PaymentMethodsViewController
+    case pledgeAddNewCard = "pledge_add_new_card_screen" //AddNewCardViewController
+    case pledgeScreen = "pledge_screen" //PledgeViewController
+    case privacy = "settings_account_privacy_screen" //SettingsPrivacyViewController
+    case profile = "profile_screen" //BackerDashboardViewController
+    case project = "project_screen" //ProjectPamphletViewController
+    case projectComments = "project_comments_screen" //CommentsViewController
+    case projectNotifications = "settings_project_notifications_screen" //ProjectNotificationsViewController
+    case rewards = "rewards_screen" //RewardsViewController
+    case settingsAddNewCard = "settings_add_new_card_screen" //AddNewCardViewController
+    case signup = "sign_up" //SignupViewController
+    case thanks = "thanks_screen" //ThanksViewController
+    case twoFactorAuth = "two_factor_auth_verify_screen" //TwoFactorViewController
+    case updateComments = "update_comments_screen" //CommentsViewController
+  }
+
   /// Determines the authentication type for login or signup events.
   public enum AuthType {
     case email
