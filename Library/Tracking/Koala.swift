@@ -593,13 +593,15 @@ public final class Koala {
     stateType: PledgeStateCTAType,
     project: Project
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
 
     switch stateType {
     case .fix:
       self.track(event: "Fix Pledge Button Clicked", properties: props)
     case .pledge:
-      self.track(event: DataLakeWhiteListedEvent.projectPagePledgeButtonClicked.rawValue, properties: props)
+      let projectProps = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      self.track(event: DataLakeWhiteListedEvent.projectPagePledgeButtonClicked.rawValue,
+                 properties: projectProps)
     case .manage:
       self.track(event: "Manage Pledge Button Clicked", properties: props)
     case .seeTheRewards:
@@ -616,28 +618,28 @@ public final class Koala {
   }
 
   public func trackCancelPledgeButtonClicked(project: Project, backing: Backing) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["pledge_total": backing.amount])
 
     self.track(event: "Cancel Pledge Button Clicked", properties: props)
   }
 
   public func trackUpdatePaymentMethodButton(project: Project, pledgeAmount: Double) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["pledge_total": pledgeAmount])
 
     self.track(event: "Update Payment Method Button Clicked", properties: props)
   }
 
   public func trackUpdatePledgeButtonClicked(project: Project, pledgeAmount: Double) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["pledge_total": pledgeAmount])
 
     self.track(event: "Update Pledge Button Clicked", properties: props)
   }
 
   public func trackManagePledgeOptionClicked(project: Project, managePledgeMenuCTA: ManagePledgeMenuCTAType) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["cta": managePledgeMenuCTA.trackingString])
 
     self.track(event: "Manage Pledge Option Clicked", properties: props)
@@ -779,8 +781,8 @@ public final class Koala {
     reward: Reward,
     pledgeContext: PledgeContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Checkout Cancel", properties: props.withAllValuesFrom(deprecatedProps))
@@ -794,8 +796,8 @@ public final class Koala {
     pageContext: CheckoutPageContext,
     pledgeContext: PledgeContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom([
         "pledge_context": pledgeContext.trackingString,
         "type": buttonType.trackingString,
@@ -822,16 +824,16 @@ public final class Koala {
     ]
     extraProps["payment_method"] = paymentMethod?.trackingString
 
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(extraProps)
 
     self.track(event: "Errored Reward Pledge Button Click", properties: props)
   }
 
   public func trackChangedPledgeAmount(_ project: Project, reward: Reward, pledgeContext: PledgeContext) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Checkout Amount Changed", properties: props.withAllValuesFrom(deprecatedProps))
@@ -844,8 +846,8 @@ public final class Koala {
     reward: Reward,
     pledgeContext: PledgeContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Checkout Location Changed", properties: props.withAllValuesFrom(deprecatedProps))
@@ -854,8 +856,8 @@ public final class Koala {
   }
 
   public func trackSelectedReward(project: Project, reward: Reward, pledgeContext: PledgeContext) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Reward Checkout", properties: props.withAllValuesFrom(deprecatedProps))
@@ -864,8 +866,8 @@ public final class Koala {
   }
 
   public func trackClosedReward(project: Project, reward: Reward, pledgeContext: PledgeContext) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Closed Reward", properties: props)
@@ -1008,7 +1010,7 @@ public final class Koala {
   // MARK: - Comments Events
 
   public func trackLoadNewerComments(project: Project, update: Update?, context: CommentsContext) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
       .withAllValuesFrom(["context": context.trackingString])
 
@@ -1029,7 +1031,7 @@ public final class Koala {
     page: Int,
     context: CommentsContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
       .withAllValuesFrom(["page_count": page, "context": context.trackingString])
 
@@ -1049,7 +1051,7 @@ public final class Koala {
     update: Update?,
     context: CommentDialogContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
       .withAllValuesFrom(
         [
@@ -1067,7 +1069,7 @@ public final class Koala {
     update: Update?,
     context: CommentDialogContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
       .withAllValuesFrom(
         [
@@ -1085,7 +1087,7 @@ public final class Koala {
     update: Update?,
     context: CommentDialogContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
       .withAllValuesFrom(
         [
@@ -1099,7 +1101,7 @@ public final class Koala {
   }
 
   public func trackCommentCreate(comment: Comment, project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(comment: comment))
       .withAllValuesFrom(deprecatedProps)
 
@@ -1107,7 +1109,7 @@ public final class Koala {
   }
 
   public func trackCommentCreate(comment: Comment, update: Update, project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(properties(update: update))
       .withAllValuesFrom(properties(comment: comment))
       .withAllValuesFrom(deprecatedProps)
@@ -1116,7 +1118,7 @@ public final class Koala {
   }
 
   public func trackCommentsView(project: Project, update: Update?, context: CommentsContext) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(update.map { properties(update: $0) } ?? [:])
       .withAllValuesFrom(["context": context.trackingString])
 
@@ -1236,21 +1238,21 @@ public final class Koala {
   public func trackCheckoutFinishJumpToDiscovery(project: Project) {
     self.track(
       event: "Checkout Finished Discover More",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
   }
 
   public func trackCheckoutFinishJumpToProject(project: Project) {
     self.track(
       event: "Checkout Finished Discover Open Project",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
   }
 
   public func trackTriggeredAppStoreRatingDialog(project: Project) {
     self.track(
       event: "Triggered App Store Rating Dialog",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
   }
 
@@ -1259,33 +1261,33 @@ public final class Koala {
   public func trackDashboardClosedProjectSwitcher(onProject project: Project) {
     self.track(
       event: "Closed Project Switcher",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
   }
 
   public func trackDashboardSeeAllRewards(project: Project) {
     self.track(
       event: "Showed All Rewards",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
   }
 
   public func trackDashboardSeeMoreReferrers(project: Project) {
     self.track(
       event: "Showed All Referrers",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
   }
 
   public func trackDashboardShowProjectSwitcher(onProject project: Project) {
     self.track(
       event: "Showed Project Switcher",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
   }
 
   public func trackDashboardSwitchProject(_ project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
 
     self.track(event: "Switched Projects", properties: props)
 
@@ -1297,7 +1299,7 @@ public final class Koala {
   }
 
   public func trackDashboardView(project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
 
     self.track(event: "Viewed Project Dashboard", properties: props)
 
@@ -1311,7 +1313,7 @@ public final class Koala {
   // MARK: - Project activity
 
   public func trackViewedProjectActivity(project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
 
     self.track(event: "Viewed Project Activity", properties: props)
     // deprecated
@@ -1322,7 +1324,7 @@ public final class Koala {
   }
 
   public func trackLoadedNewerProjectActivity(project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
 
     self.track(event: "Loaded Newer Project Activity", properties: props)
     // deprecated
@@ -1333,7 +1335,7 @@ public final class Koala {
   }
 
   public func trackLoadedOlderProjectActivity(project: Project, page: Int) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["page_count": page])
 
     self.track(event: "Loaded Older Project Activity", properties: props)
@@ -1347,7 +1349,7 @@ public final class Koala {
   // MARK: - Messages
 
   public func trackMessageThreadsView(mailbox: Mailbox, project: Project?, refTag: RefTag) {
-    let props = (project.flatMap { projectProperties(from: $0, loggedInUser: self.loggedInUser) } ?? [:])
+    let props = (project.flatMap { properties(project: project, loggedInUser: self.loggedInUser) } ?? [:])
       .withAllValuesFrom(["ref_tag": refTag.stringTag])
 
     switch mailbox {
@@ -1367,13 +1369,13 @@ public final class Koala {
   }
 
   public func trackViewedMessageSearch(project: Project?) {
-    let props = project.flatMap { projectProperties(from: $0, loggedInUser: self.loggedInUser) } ?? [:]
+    let props = project.flatMap { properties(project: project, loggedInUser: self.loggedInUser) } ?? [:]
 
     self.track(event: "Viewed Message Search", properties: props)
   }
 
   public func trackViewedMessageSearchResults(term: String, project: Project?, hasResults: Bool) {
-    let props = (project.flatMap { projectProperties(from: $0, loggedInUser: self.loggedInUser) } ?? [:])
+    let props = (project.flatMap { properties(project: project, loggedInUser: self.loggedInUser) } ?? [:])
       .withAllValuesFrom(["term": term])
     let _deprecatedProps = props.withAllValuesFrom(deprecatedProps)
 
@@ -1387,7 +1389,7 @@ public final class Koala {
   }
 
   public func trackClearedMessageSearchTerm(project: Project?) {
-    let props = project.flatMap { projectProperties(from: $0, loggedInUser: self.loggedInUser) } ?? [:]
+    let props = project.flatMap { properties(project: project, loggedInUser: self.loggedInUser) } ?? [:]
 
     self.track(
       event: "Cleared Message Search Term",
@@ -1396,7 +1398,7 @@ public final class Koala {
   }
 
   public func trackMessageThreadView(project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
 
     self.track(
       event: "Message Thread View",
@@ -1407,7 +1409,7 @@ public final class Koala {
   }
 
   public func trackViewedMessageEditor(project: Project, context: MessageDialogContext) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["message_type": "single", "context": context.rawValue])
 
     self.track(event: "Viewed Message Editor", properties: props)
@@ -1420,7 +1422,7 @@ public final class Koala {
    - parameter context: The place where the message was sent from.
    */
   public func trackMessageSent(project: Project, context: MessageDialogContext) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["message_type": "single", "context": context.rawValue])
 
     self.track(
@@ -1496,7 +1498,7 @@ public final class Koala {
   public func trackProjectSave(_ project: Project, context: SaveContext) {
     guard let isStarred = project.personalization.isStarred else { return }
 
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["context": context.trackingString])
 
     // Deprecated event
@@ -1517,7 +1519,7 @@ public final class Koala {
   }
 
   public func trackOpenedExternalLink(project: Project, context: ExternalLinkContext) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(["context": context.trackingString])
 
     self.track(event: "Opened External Link", properties: props)
@@ -1624,7 +1626,7 @@ public final class Koala {
     project: Project?,
     context: NewsletterContext
   ) {
-    let props = project.flatMap { projectProperties(from: $0, loggedInUser: self.loggedInUser) } ?? [:]
+    let props = project.flatMap { properties(project: project, loggedInUser: self.loggedInUser) } ?? [:]
       .withAllValuesFrom(["context": context.trackingString, "type": newsletter.trackingString])
 
     self.track(
@@ -1817,7 +1819,7 @@ public final class Koala {
   }
 
   public func trackChangedUpdateDraftVisibility(forProject project: Project, isPublic: Bool) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["type"] = isPublic ? "public" : "backers_only"
     self.track(event: "Changed Visibility", properties: props)
   }
@@ -1859,7 +1861,7 @@ public final class Koala {
   }
 
   private func updateDraftProperties(project: Project) -> [String: Any] {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    var props = properties(project: project, loggedInUser: self.loggedInUser)
     props["context"] = "update_draft"
     return props
   }
@@ -1869,7 +1871,7 @@ public final class Koala {
   public func trackViewedPledge(forProject project: Project) {
     self.track(
       event: "Viewed Pledge Info",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
 
     // Deprecated event
@@ -1933,7 +1935,7 @@ public final class Koala {
 
     self.track(
       event: "Paused Project Video",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
   }
 
@@ -1943,7 +1945,7 @@ public final class Koala {
 
     self.track(
       event: "Resumed Project Video",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
   }
 
@@ -1953,7 +1955,7 @@ public final class Koala {
 
     self.track(
       event: "Started Project Video",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
   }
 
@@ -2369,6 +2371,50 @@ private func projectProperties(
 }
 
 /*
+ DEPRECATED - used only for Koala events, all new events should use projectProperties
+ */
+private func properties(
+  project: Project,
+  loggedInUser: User?,
+  prefix: String = "project_"
+  ) -> [String: Any] {
+  var props: [String: Any] = [:]
+
+  props["backers_count"] = project.stats.backersCount
+  props["country"] = project.country.countryCode
+  props["currency"] = project.country.currencyCode
+  props["goal"] = project.stats.goal
+  props["pid"] = project.id
+  props["name"] = project.name
+  props["pledged"] = project.stats.pledged
+  props["percent_raised"] = project.stats.fundingProgress
+  props["has_video"] = project.video != nil
+  props["state"] = project.state.rawValue
+  props["update_count"] = project.stats.updatesCount
+  props["comments_count"] = project.stats.commentsCount
+
+  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
+  props["hours_remaining"] = Int(ceil(max(0.0, (project.dates.deadline - now) / 3_600.0)))
+  props["duration"] = Int(round(project.dates.deadline - project.dates.launchedAt))
+
+  props["category"] = project.category.name
+  props["parent_category"] = project.category.parent?.name
+
+  props["location"] = project.location.name
+
+  var loggedInUserProperties: [String: Any] = [:]
+  if let user = loggedInUser {
+    loggedInUserProperties["user_is_project_creator"] = project.creator.id == user.id
+    loggedInUserProperties["user_is_backer"] = project.personalization.isBacking
+    loggedInUserProperties["user_has_starred"] = project.personalization.isStarred
+  }
+
+  return props.prefixedKeys(prefix)
+    .withAllValuesFrom(properties(user: project.creator, prefix: "creator_"))
+    .withAllValuesFrom(loggedInUserProperties)
+}
+
+/*
  DEPRECATED - used only for Koala events, all new events should use userProperties
  */
 private func properties(user: User, prefix: String = "user_") -> [String: Any] {
@@ -2515,19 +2561,19 @@ private func properties(
 
   switch shareContext {
   case let .creatorDashboard(project):
-    result = result.withAllValuesFrom(projectProperties(from: project, loggedInUser: loggedInUser))
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: self.loggedInUser))
     result["context"] = "creator_dashboard"
   case let .discovery(project):
-    result = result.withAllValuesFrom(projectProperties(from: project, loggedInUser: loggedInUser))
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: self.loggedInUser))
     result["context"] = "discovery"
   case let .project(project):
-    result = result.withAllValuesFrom(projectProperties(from: project, loggedInUser: loggedInUser))
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: self.loggedInUser))
     result["context"] = "project"
   case let .thanks(project):
-    result = result.withAllValuesFrom(projectProperties(from: project, loggedInUser: loggedInUser))
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: self.loggedInUser))
     result["context"] = "thanks"
   case let .update(project, update):
-    result = result.withAllValuesFrom(projectProperties(from: project, loggedInUser: loggedInUser))
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: self.loggedInUser))
     result = result.withAllValuesFrom(properties(update: update))
     result["context"] = "update"
   }
