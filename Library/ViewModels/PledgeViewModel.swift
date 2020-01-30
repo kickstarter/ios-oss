@@ -596,6 +596,23 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
       }
 
+    initialData
+      .observeValues { project, _, refTag, _ in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: project,
+          refTag: refTag
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Pledge Screen Viewed",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
+
     createBackingData
       .takeWhen(createButtonTapped)
       .map { data in
