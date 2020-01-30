@@ -147,6 +147,8 @@ final class UpdateViewModelTests: TestCase {
       self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue
     )
     self.goToComments.assertValues([self.update])
+    self.goToProject.assertDidNotEmitValue()
+    self.goToSafariBrowser.assertDidNotEmitValue()
   }
 
   func testGoToSafariBrowser() {

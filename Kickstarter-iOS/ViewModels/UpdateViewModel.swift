@@ -147,7 +147,7 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
     )
     .filter { goToProject, goToComments, goToUpdate in
       goToProject == nil && goToComments == nil && goToUpdate == nil
-    }.logEvents(identifier: "*** NOT PROJECT NOT COMMENTS**")
+    }
 
     let goToExternalLink = Signal.zip(navigationAction, notProjectNotCommentsNotUpdate).map(first)
     let goToPrelaunchPage = Signal.zip(navigationAction, projectIsPrelaunch).map(first)
