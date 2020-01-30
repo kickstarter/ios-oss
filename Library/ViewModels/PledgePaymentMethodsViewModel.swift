@@ -124,7 +124,8 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           project: project,
           reward: reward,
           context: pledgeContext,
-          refTag: refTag
+          refTag: refTag,
+          location: .pledgeAddNewCard
         )
       }
   }

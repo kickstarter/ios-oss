@@ -23,31 +23,31 @@ public final class Koala {
 
   private enum DataLakeWhiteListedEvent: String, CaseIterable {
     case explorePageViewed = "Explore Page Viewed"
-    case exploreSortClicked = "Explore Sort Clicked"
-    case activityFeedViewed = "Activity Feed Viewed"
+    case exploreSortClicked = "Explore Sort Clicked" //
+    case activityFeedViewed = "Activity Feed Viewed" //
     case editorialCardClicked = "Editorial Card Clicked"
-    case collectionViewed = "Collection Viewed"
-    case filterClicked = "Filter Clicked"
+    case collectionViewed = "Collection Viewed" //
+    case filterClicked = "Filter Clicked" //
     case tabBarClicked = "Tab Bar Clicked"
     case searchPageViewed = "Search Page Viewed"
     case searchResultsLoaded = "Search Results Loaded"
     case projectSwiped = "Project Swiped"
     case projectPageViewed = "Project Page Viewed"
-    case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
+    case loginOrSignupButtonClicked = "Log In or Signup Button Clicked" //
     case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
-    case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
-    case loginButtonClicked = "Log In Button Clicked"
-    case signupButtonClicked = "Signup Button Clicked"
-    case loginSubmitButtonClicked = "Log In Submit Button Clicked"
-    case signupSubmitButtonClicked = "Signup Submit Button Clicked"
+    case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked" //
+    case loginButtonClicked = "Log In Button Clicked" //
+    case signupButtonClicked = "Signup Button Clicked" //
+    case loginSubmitButtonClicked = "Log In Submit Button Clicked" //
+    case signupSubmitButtonClicked = "Signup Submit Button Clicked" //
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
-    case selectRewardButtonClicked = "Select Reward Button Clicked"
-    case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
-    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
-    case thanksPageViewed = "Thanks Page Viewed"
+    case selectRewardButtonClicked = "Select Reward Button Clicked" //
+    case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked" //
+    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed" //
+    case thanksPageViewed = "Thanks Page Viewed" //
     case forgotPasswordViewed = "Forgot Password Viewed"
-    case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
-    case addNewCardButtonClicked = "Add New Card Button Clicked"
+    case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed" //
+    case addNewCardButtonClicked = "Add New Card Button Clicked" //
 
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
@@ -487,6 +487,7 @@ public final class Koala {
   public func trackActivities(count: Int) {
     self.track(
       event: DataLakeWhiteListedEvent.activityFeedViewed.rawValue,
+      location: .activities,
       properties: ["activities_count": count]
     )
   }
@@ -583,6 +584,7 @@ public final class Koala {
   public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
     self.track(
       event: DataLakeWhiteListedEvent.filterClicked.rawValue,
+      location: .discovery,
       properties: discoveryProperties(from: params)
     )
   }
@@ -598,7 +600,11 @@ public final class Koala {
         "discover_sort": sort.rawValue
       ])
 
-    self.track(event: DataLakeWhiteListedEvent.exploreSortClicked.rawValue, properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.exploreSortClicked.rawValue,
+      location: .discovery,
+      properties: props
+    )
   }
 
   /**
@@ -619,6 +625,7 @@ public final class Koala {
   public func trackCollectionViewed(params: DiscoveryParams) {
     self.track(
       event: DataLakeWhiteListedEvent.collectionViewed.rawValue,
+      location: .editorialProjects,
       properties: discoveryProperties(from: params)
     )
   }
@@ -700,6 +707,7 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.selectRewardButtonClicked.rawValue,
+      location: .rewards,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -726,6 +734,7 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.checkoutPaymentPageViewed.rawValue,
+      location: .pledgeScreen,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -755,6 +764,7 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.pledgeSubmitButtonClicked.rawValue,
+      location: .pledgeScreen,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -772,7 +782,8 @@ public final class Koala {
     project: Project,
     reward: Reward,
     context: Koala.PledgeContext,
-    refTag: RefTag?
+    refTag: RefTag?,
+    location: Koala.LocationContext? = nil
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
@@ -780,6 +791,7 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.addNewCardButtonClicked.rawValue,
+      location: location,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -807,7 +819,11 @@ public final class Koala {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
     }
 
-    self.track(event: DataLakeWhiteListedEvent.thanksPageViewed.rawValue, properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.thanksPageViewed.rawValue,
+      location: .thanks,
+      properties: props
+    )
   }
 
   public func trackCheckoutCancel(
@@ -967,6 +983,7 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.loginButtonClicked.rawValue,
+      location: .loginTout,
       properties: props
     )
   }
@@ -986,7 +1003,11 @@ public final class Koala {
   ) {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
-    self.track(event: DataLakeWhiteListedEvent.fbLoginOrSignupButtonClicked.rawValue, properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.fbLoginOrSignupButtonClicked.rawValue,
+      location: .loginTout,
+      properties: props
+    )
   }
 
   /* Call when the "Sign up" button is tapped on the Login/Signup Page
@@ -1006,16 +1027,17 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue,
+      location: .loginTout,
       properties: props
     )
   }
 
   public func trackSignupSubmitButtonClicked() {
-    self.track(event: DataLakeWhiteListedEvent.signupSubmitButtonClicked.rawValue)
+    self.track(event: DataLakeWhiteListedEvent.signupSubmitButtonClicked.rawValue, location: .signup)
   }
 
   public func trackLoginSubmitButtonClicked() {
-    self.track(event: DataLakeWhiteListedEvent.loginSubmitButtonClicked.rawValue)
+    self.track(event: DataLakeWhiteListedEvent.loginSubmitButtonClicked.rawValue, location: .login)
   }
 
   public func trackForgotPasswordViewed() {
@@ -1023,7 +1045,7 @@ public final class Koala {
   }
 
   public func track2FAViewed() {
-    self.track(event: DataLakeWhiteListedEvent.twoFactorConfirmationViewed.rawValue)
+    self.track(event: DataLakeWhiteListedEvent.twoFactorConfirmationViewed.rawValue, location: .twoFactorAuth)
   }
 
   private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)
@@ -2154,6 +2176,7 @@ public final class Koala {
   // Private tracking method that merges in default properties.
   private func track(
     event: String,
+    location: Koala.LocationContext? = nil,
     properties: [String: Any] = [:],
     refTag: String? = nil,
     referrerCredit: String? = nil
