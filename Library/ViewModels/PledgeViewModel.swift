@@ -504,6 +504,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(first)
 
     let thanksPageData = createBackingDataAndIsApplePay
+      .takeWhen(createBackingCompletionEvents)
       .combineLatest(with: checkoutId)
       .map(unpack)
       .map { data, isApplePay, checkoutId -> ThanksPageData in
@@ -516,9 +517,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         return (data.project, data.reward, checkoutPropsData)
       }
 
-    self.goToThanks = createBackingCompletionEvents
-      .combineLatest(with: thanksPageData)
-      .map(second)
+    self.goToThanks = thanksPageData
 
     let errorsOrNil = Signal.merge(
       createOrUpdateEvent.errors().wrapInOptional(),
