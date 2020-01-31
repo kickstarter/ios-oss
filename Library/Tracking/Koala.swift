@@ -389,7 +389,7 @@ public final class Koala {
 
   public struct CheckoutPropertiesData: Equatable {
     let amount: String
-    let checkoutId: String?
+    let checkoutId: Int?
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
     let revenueInUsdCents: Int

@@ -1139,7 +1139,7 @@ final class PledgeViewModelTests: TestCase {
   func testApplePay_GoToThanks() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        id: "1",
+        id: "Q2hlY2tvdXQtMQ==",
         state: .successful,
         backing: .init(clientSecret: nil, requiresAction: false)
       )
@@ -1181,7 +1181,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "5.00",
-        checkoutId: "1",
+        checkoutId: 1,
         estimatedDelivery: nil,
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 500,
@@ -1208,7 +1208,7 @@ final class PledgeViewModelTests: TestCase {
   func testApplePay_GoToThanks_WhenRefTag_IsNil() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        id: "1",
+        id: "Q2hlY2tvdXQtMQ==",
         state: .successful,
         backing: .init(clientSecret: nil, requiresAction: false)
       )
@@ -1265,7 +1265,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "5.00",
-        checkoutId: "1",
+        checkoutId: 1,
         estimatedDelivery: nil,
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 500,
@@ -1372,7 +1372,7 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        id: "1",
+        id: "Q2hlY2tvdXQtMQ==",
         state: .verifying,
         backing: .init(clientSecret: nil, requiresAction: false)
       )
@@ -1418,7 +1418,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "25.00",
-        checkoutId: "1",
+        checkoutId: 1,
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
         revenueInUsdCents: 2_500,
@@ -1509,7 +1509,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: "1",
+          id: nil,
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -1771,7 +1771,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: "1",
+          id: nil,
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -1913,7 +1913,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: "1",
+          id: nil,
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2066,7 +2066,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: "1",
+          id: nil,
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2470,7 +2470,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: "1",
+          id: nil,
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2716,7 +2716,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: "1",
+          id: nil,
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2872,7 +2872,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: "1",
+          id: nil,
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3147,7 +3147,7 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        id: "1",
+        id: "Q2hlY2tvdXQtMQ==",
         state: .verifying,
         backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
@@ -3213,7 +3213,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "25.00",
-        checkoutId: "1",
+        checkoutId: 1,
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
         revenueInUsdCents: 2_500,
@@ -3238,7 +3238,7 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Failed() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        id: "1",
+        id: "Q2hlY2tvdXQtMQ==",
         state: .verifying,
         backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
@@ -3316,7 +3316,7 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Canceled() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        id: "1",
+        id: "Q2hlY2tvdXQtMQ==",
         state: .verifying,
         backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
@@ -3409,7 +3409,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: "1",
+          id: nil,
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3501,7 +3501,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: "1",
+          id: nil,
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3593,7 +3593,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: "1",
+          id: nil,
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",

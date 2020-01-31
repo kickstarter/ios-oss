@@ -500,6 +500,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let checkoutId = createBackingEvents.values()
       .map(first)
+      .map(decompose)
 
     let thanksPageData = createBackingDataAndIsApplePay
       .takeWhen(createBackingCompletionEvents)
@@ -849,7 +850,7 @@ private func allValuesChangedAndValid(
 
 private func checkoutPropertiesData(
   from createBackingData: CreateBackingData,
-  checkoutId: String? = nil,
+  checkoutId: Int? = nil,
   isApplePay: Bool
 )
   -> Koala.CheckoutPropertiesData {
