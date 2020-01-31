@@ -734,12 +734,14 @@ final class ProjectPamphletViewModelTests: TestCase {
     let config = Config.template
       |> \.features .~ [Feature.nativeCheckout.rawValue: true]
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
+
     let project = Project.template
     let projectFull = Project.template
-      |> \.id .~ 2
+      |> Project.lens.rewards .~ [Reward.noReward, Reward.template]
+
+    let backedProject = Project.template
+      |> Project.lens.personalization.backing .~ Backing.template
       |> Project.lens.personalization.isBacking .~ true
-    let projectFull2 = Project.template
-      |> \.id .~ 3
 
     let mockService = MockService(fetchProjectResponse: projectFull)
 
@@ -749,29 +751,35 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: true)
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
 
       self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
+      self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
     }
 
     withEnvironment(
-      apiService: MockService(fetchProjectResponse: projectFull2),
+      apiService: MockService(fetchProjectResponse: backedProject),
       config: config,
       mainBundle: releaseBundle
     ) {
       self.vm.inputs.didBackProject()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull2])
+      self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
 
       self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
+      self.configurePledgeCTAViewProject.assertValues([project,
+                                                       project,
+                                                       projectFull,
+                                                       projectFull,
+                                                       projectFull,
+                                                       backedProject])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
     }
   }
@@ -782,10 +790,11 @@ final class ProjectPamphletViewModelTests: TestCase {
       |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "experimental"]
     let project = Project.template
     let projectFull = Project.template
-      |> \.id .~ 2
+      |> Project.lens.personalization.backing .~ (Backing.template |> Backing.lens.amount .~ 10.0)
       |> Project.lens.personalization.isBacking .~ true
-    let projectFull2 = Project.template
-      |> \.id .~ 3
+    let updatedProject = Project.template
+      |> Project.lens.personalization.backing .~ (Backing.template |> Backing.lens.amount .~ 15.0)
+      |> Project.lens.personalization.isBacking .~ true
 
     let mockService = MockService(fetchProjectResponse: projectFull)
 
@@ -801,23 +810,28 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull])
+      self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
     }
 
     withEnvironment(
-      apiService: MockService(fetchProjectResponse: projectFull2),
+      apiService: MockService(fetchProjectResponse: updatedProject),
       config: config,
       mainBundle: releaseBundle
     ) {
       self.vm.inputs.managePledgeViewControllerFinished(with: nil)
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull])
+      self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
 
       self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull2])
+      self.configurePledgeCTAViewProject.assertValues([project,
+                                                       project,
+                                                       projectFull,
+                                                       projectFull,
+                                                       projectFull,
+                                                       updatedProject])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
     }
   }
@@ -922,7 +936,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull])
+      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
     }
 
@@ -932,12 +946,17 @@ final class ProjectPamphletViewModelTests: TestCase {
     ) {
       self.vm.inputs.pledgeRetryButtonTapped()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull])
+      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull, projectFull])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
 
       self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull2])
+      self.configurePledgeCTAViewProject.assertValues([project,
+                                                       projectFull,
+                                                       projectFull,
+                                                       projectFull,
+                                                       projectFull2,
+                                                       projectFull2])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
     }
   }
