@@ -130,18 +130,17 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 // MARK: - Functions
 
 private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
-  let uuid = deviceIdentifier(uuid: UUID())
-  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-    .variant(
-      for: OptimizelyExperiment.Key.pledgeCTACopy,
-      userId: uuid,
-      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false
-    )
-
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
     if currentUserIsCreator(of: project) {
       return PledgeStateCTAType.viewYourRewards
     }
+
+    let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+      .variant(
+        for: OptimizelyExperiment.Key.pledgeCTACopy,
+        userId: deviceIdentifier(uuid: UUID()),
+        isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false
+      )
 
     if let variant = optimizelyVariant, project.state == .live {
       switch variant {
