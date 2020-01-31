@@ -631,14 +631,14 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertValues([project])
-
       self.configurePledgeCTAViewIsLoading.assertValues([true])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
       self.scheduler.run()
 
       self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
-
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
     }
   }
 
@@ -661,16 +661,19 @@ final class ProjectPamphletViewModelTests: TestCase {
     ) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
       self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
       self.scheduler.run()
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
     }
   }
 
@@ -689,16 +692,20 @@ final class ProjectPamphletViewModelTests: TestCase {
     ) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
       self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
       self.scheduler.run()
 
+      self.configurePledgeCTAViewProject.assertValues([project, project])
       self.configurePledgeCTAViewErrorEnvelope.assertValueCount(1)
       self.configurePledgeCTAViewIsLoading.assertValues([true, false, false])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery])
     }
   }
 
@@ -717,16 +724,19 @@ final class ProjectPamphletViewModelTests: TestCase {
     ) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
       self.configureInitialState(.left(project))
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
       self.scheduler.run()
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
     }
   }
 
@@ -748,6 +758,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
@@ -755,11 +766,13 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
       self.scheduler.advance()
 
       self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
     }
 
     withEnvironment(
@@ -771,6 +784,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery, .discovery])
 
       self.scheduler.advance()
 
@@ -781,6 +795,12 @@ final class ProjectPamphletViewModelTests: TestCase {
                                                        projectFull,
                                                        backedProject])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery,
+                                                      .discovery,
+                                                      .discovery,
+                                                      .discovery,
+                                                      .discovery,
+                                                      .discovery])
     }
   }
 
@@ -801,17 +821,20 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
       self.scheduler.advance()
 
       self.configurePledgeCTAViewProject.assertValues([project, project, projectFull])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
     }
 
     withEnvironment(
@@ -823,6 +846,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configurePledgeCTAViewProject.assertValues([project, project, projectFull, projectFull])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery, .discovery])
 
       self.scheduler.advance()
 
@@ -833,6 +857,12 @@ final class ProjectPamphletViewModelTests: TestCase {
                                                        projectFull,
                                                        updatedProject])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery,
+                                                      .discovery,
+                                                      .discovery,
+                                                      .discovery,
+                                                      .discovery,
+                                                      .discovery])
     }
   }
 
@@ -852,17 +882,20 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiService: mockService, config: config, mainBundle: releaseBundle) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
       self.scheduler.advance()
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
     }
 
     withEnvironment(
@@ -894,6 +927,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
     }
   }
 
@@ -908,6 +942,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
     }
   }
 
@@ -927,17 +962,20 @@ final class ProjectPamphletViewModelTests: TestCase {
     withEnvironment(apiService: mockService, config: config) {
       self.configurePledgeCTAViewProject.assertDidNotEmitValue()
       self.configurePledgeCTAViewIsLoading.assertDidNotEmitValue()
+      self.configurePledgeCTAViewRefTag.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
 
       self.configurePledgeCTAViewProject.assertValues([project])
       self.configurePledgeCTAViewIsLoading.assertValues([true])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery])
 
       self.scheduler.advance()
 
       self.configurePledgeCTAViewProject.assertValues([project, projectFull, projectFull])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
     }
 
     withEnvironment(
@@ -958,6 +996,12 @@ final class ProjectPamphletViewModelTests: TestCase {
                                                        projectFull2,
                                                        projectFull2])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
+      self.configurePledgeCTAViewRefTag.assertValues([.discovery,
+                                                      .discovery,
+                                                      .discovery,
+                                                      .discovery,
+                                                      .discovery,
+                                                      .discovery])
     }
   }
 
