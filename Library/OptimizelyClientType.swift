@@ -13,24 +13,17 @@ extension OptimizelyClientType {
     for experiment: OptimizelyExperiment.Key,
     userId: String,
     isAdmin: Bool,
-    project: Project? = nil,
-    refTag: RefTag? = nil
+    userAttributes: [String: Any]? = nil
   ) -> OptimizelyExperiment.Variant {
-    let properties = optimizelyUserTrackingAttributes(
-      with: AppEnvironment.current.currentUser,
-      project: project,
-      refTag: refTag
-    )
-
     let variationString: String?
 
     if isAdmin {
       variationString = try? self.getVariationKey(
-        experimentKey: experiment.rawValue, userId: userId, attributes: properties
+        experimentKey: experiment.rawValue, userId: userId, attributes: userAttributes
       )
     } else {
       variationString = try? self.activate(
-        experimentKey: experiment.rawValue, userId: userId, attributes: properties
+        experimentKey: experiment.rawValue, userId: userId, attributes: userAttributes
       )
     }
 
@@ -50,7 +43,7 @@ public func optimizelyTrackingAttributesAndEventTags(
   project: Project,
   refTag: RefTag?
 ) -> ([String: Any], [String: Any]) {
-  let properties = optimizelyUserTrackingAttributes(with: user, project: project, refTag: refTag)
+  let properties = optimizelyUserAttributes(with: user, project: project, refTag: refTag)
 
   let eventTags: [String: Any] = ([
     "project_subcategory": project.category.name,
@@ -62,7 +55,7 @@ public func optimizelyTrackingAttributesAndEventTags(
   return (properties, eventTags)
 }
 
-private func optimizelyUserTrackingAttributes(
+public func optimizelyUserAttributes(
   with user: User?,
   project: Project?,
   refTag: RefTag?

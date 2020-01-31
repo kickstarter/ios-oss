@@ -3,10 +3,14 @@ import Library
 internal struct MockOptimizelyError: Error {}
 
 internal class MockOptimizelyClient: OptimizelyClientType {
+  // MARK: - Experiment Activation Test Properties
   var activatePathCalled: Bool = false
   var experiments: [String: String] = [:]
   var error: MockOptimizelyError?
   var getVariantPathCalled: Bool = false
+  var userAttributes: [String: Any?]?
+  
+  // MARK: - Event Tracking Test Properties
   var trackedAttributes: [String: Any?]?
   var trackedEventKey: String?
   var trackedEventTags: [String: Any?]?
@@ -26,7 +30,7 @@ internal class MockOptimizelyClient: OptimizelyClientType {
 
   private func experiment(forKey key: String, userId _: String, attributes: [String: Any?]?) throws
     -> String {
-      self.trackedAttributes = attributes
+    self.userAttributes = attributes
 
     if let error = self.error {
       throw error
