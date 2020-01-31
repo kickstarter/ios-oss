@@ -473,10 +473,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .skipNil()
       .filter(requiresSCA >>> isFalse)
 
-    let createOrUpdateBackingDidCompleteNoSCA = isCreateOrUpdateBacking
+    let isCreateOrUpdateBackingNoSCA = isCreateOrUpdateBacking
       .takeWhen(createOrUpdateBackingEventValuesNoSCA)
       .filter(isTrue)
       .ignoreValues()
+
+    let createOrUpdateBackingDidCompleteNoSCA = Signal.zip(
+      isCreateOrUpdateBackingNoSCA,
+      createOrUpdateEvent.filter { $0.isTerminating }.ignoreValues())
 
     let createOrUpdateBackingEventValuesRequiresSCA = valuesOrNil
       .skipNil()
@@ -503,8 +507,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map(decompose)
 
     let thanksPageData = createBackingDataAndIsApplePay
-      .takeWhen(createBackingCompletionEvents)
-      .combineLatest(with: checkoutId)
+      .takePairWhen(checkoutId)
       .map(unpack)
       .map { data, isApplePay, checkoutId -> ThanksPageData in
         let checkoutPropsData = checkoutPropertiesData(
@@ -517,6 +520,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     self.goToThanks = thanksPageData
+      .takeWhen(createBackingCompletionEvents)
 
     let errorsOrNil = Signal.merge(
       createOrUpdateEvent.errors().wrapInOptional(),
