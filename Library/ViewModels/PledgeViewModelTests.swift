@@ -1509,7 +1509,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: nil,
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -1771,7 +1771,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: nil,
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -1913,7 +1913,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: nil,
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2066,7 +2066,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: nil,
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2470,7 +2470,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: nil,
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2716,7 +2716,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: nil,
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2872,7 +2872,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: nil,
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3409,7 +3409,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: nil,
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3501,7 +3501,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: nil,
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3593,7 +3593,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
-          id: nil,
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
