@@ -352,12 +352,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .switchMap { input in
         AppEnvironment.current.apiService.updateBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { ($0.updateBacking.checkout.id, $0 as StripeSCARequiring) }
+          .map { $0 as StripeSCARequiring }
           .materialize()
       }
 
     let createOrUpdateEvent = Signal.merge(
-      createBackingEvents,
+      createBackingEvents.map { $0.map(second) },
       updateBackingEvents
     )
 
@@ -471,7 +471,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let createOrUpdateBackingEventValuesNoSCA = valuesOrNil
       .skipNil()
-      .map(second)
       .filter(requiresSCA >>> isFalse)
 
     let createOrUpdateBackingDidCompleteNoSCA = isCreateOrUpdateBacking
@@ -481,7 +480,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let createOrUpdateBackingEventValuesRequiresSCA = valuesOrNil
       .skipNil()
-      .map(second)
       .filter(requiresSCA)
 
     self.beginSCAFlowWithClientSecret = createOrUpdateBackingEventValuesRequiresSCA
