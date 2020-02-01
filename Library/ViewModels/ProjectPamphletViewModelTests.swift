@@ -788,19 +788,23 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project,
-                                                       project,
-                                                       projectFull,
-                                                       projectFull,
-                                                       projectFull,
-                                                       backedProject])
+      self.configurePledgeCTAViewProject.assertValues([
+        project,
+        project,
+        projectFull,
+        projectFull,
+        projectFull,
+        backedProject
+      ])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery,
-                                                      .discovery,
-                                                      .discovery,
-                                                      .discovery,
-                                                      .discovery,
-                                                      .discovery])
+      self.configurePledgeCTAViewRefTag.assertValues([
+        .discovery,
+        .discovery,
+        .discovery,
+        .discovery,
+        .discovery,
+        .discovery
+      ])
     }
   }
 
@@ -850,19 +854,23 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project,
-                                                       project,
-                                                       projectFull,
-                                                       projectFull,
-                                                       projectFull,
-                                                       updatedProject])
+      self.configurePledgeCTAViewProject.assertValues([
+        project,
+        project,
+        projectFull,
+        projectFull,
+        projectFull,
+        updatedProject
+      ])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery,
-                                                      .discovery,
-                                                      .discovery,
-                                                      .discovery,
-                                                      .discovery,
-                                                      .discovery])
+      self.configurePledgeCTAViewRefTag.assertValues([
+        .discovery,
+        .discovery,
+        .discovery,
+        .discovery,
+        .discovery,
+        .discovery
+      ])
     }
   }
 
@@ -989,19 +997,23 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePledgeCTAViewProject.assertValues([project,
-                                                       projectFull,
-                                                       projectFull,
-                                                       projectFull,
-                                                       projectFull2,
-                                                       projectFull2])
+      self.configurePledgeCTAViewProject.assertValues([
+        project,
+        projectFull,
+        projectFull,
+        projectFull,
+        projectFull2,
+        projectFull2
+      ])
       self.configurePledgeCTAViewIsLoading.assertValues([true, true, false, true, true, false])
-      self.configurePledgeCTAViewRefTag.assertValues([.discovery,
-                                                      .discovery,
-                                                      .discovery,
-                                                      .discovery,
-                                                      .discovery,
-                                                      .discovery])
+      self.configurePledgeCTAViewRefTag.assertValues([
+        .discovery,
+        .discovery,
+        .discovery,
+        .discovery,
+        .discovery,
+        .discovery
+      ])
     }
   }
 

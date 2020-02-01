@@ -142,7 +142,7 @@ private func pledgeCTA(project: Project, refTag: RefTag?, backing: Backing?) -> 
     if currentUserIsCreator(of: project) {
       return PledgeStateCTAType.viewYourRewards
     }
-    
+
     let userAttributes = optimizelyUserAttributes(
       with: AppEnvironment.current.currentUser,
       project: project,

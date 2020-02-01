@@ -156,16 +156,16 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.spacerIsHidden.assertValues([true])
     self.stackViewIsHidden.assertValues([true])
   }
-  
+
   func testPledgeCTA_LiveProject_LoggedOut_OptimizelyExperimental_Variant1() {
     let project = Project.template
       |> Project.lens.personalization.backing .~ nil
       |> Project.lens.personalization.isBacking .~ false
-    
+
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~
       [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
-    
+
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
       self.vm.inputs.configureWith(value: (.left((project, .discovery)), false))
       self.buttonStyleType.assertValues([ButtonStyleType.green])
@@ -174,24 +174,28 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       self.stackViewIsHidden.assertValues([true])
       XCTAssertTrue(optimizelyClient.activatePathCalled)
       XCTAssertFalse(optimizelyClient.getVariantPathCalled)
-      
+
       XCTAssertNil(optimizelyClient.userAttributes?["user_backed_projects_count"] as? Int)
       XCTAssertNil(optimizelyClient.userAttributes?["user_launched_projects_count"] as? Int)
       XCTAssertNil(optimizelyClient.userAttributes?["user_facebook_account"] as? Bool)
-      XCTAssertEqual(optimizelyClient.userAttributes?["user_country"] as? String,
-                     "us",
-                     "Country is populated from the config")
+      XCTAssertEqual(
+        optimizelyClient.userAttributes?["user_country"] as? String,
+        "us",
+        "Country is populated from the config"
+      )
       XCTAssertEqual(optimizelyClient.userAttributes?["user_display_language"] as? String, "en")
-      
+
       XCTAssertEqual(optimizelyClient.userAttributes?["session_ref_tag"] as? String, "discovery")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_referrer_credit"] as? String, "discovery")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_os_version"] as? String, "MockSystemVersion")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_user_is_logged_in"] as? Bool, false)
-      XCTAssertEqual(optimizelyClient.userAttributes?["session_app_release_version"] as? String,
-                     "1.2.3.4.5.6.7.8.9.0")
+      XCTAssertEqual(
+        optimizelyClient.userAttributes?["session_app_release_version"] as? String,
+        "1.2.3.4.5.6.7.8.9.0"
+      )
       XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
-      
+
       XCTAssertNil(optimizelyClient.trackedEventTags)
     }
   }
@@ -220,22 +224,24 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       self.stackViewIsHidden.assertValues([true])
       XCTAssertTrue(optimizelyClient.activatePathCalled)
       XCTAssertFalse(optimizelyClient.getVariantPathCalled)
-      
+
       XCTAssertEqual(optimizelyClient.userAttributes?["user_backed_projects_count"] as? Int, 50)
       XCTAssertEqual(optimizelyClient.userAttributes?["user_launched_projects_count"] as? Int, 25)
       XCTAssertEqual(optimizelyClient.userAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(optimizelyClient.userAttributes?["user_facebook_account"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["user_display_language"] as? String, "en")
-      
+
       XCTAssertEqual(optimizelyClient.userAttributes?["session_ref_tag"] as? String, "discovery")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_referrer_credit"] as? String, "discovery")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_os_version"] as? String, "MockSystemVersion")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_user_is_logged_in"] as? Bool, true)
-      XCTAssertEqual(optimizelyClient.userAttributes?["session_app_release_version"] as? String,
-                     "1.2.3.4.5.6.7.8.9.0")
+      XCTAssertEqual(
+        optimizelyClient.userAttributes?["session_app_release_version"] as? String,
+        "1.2.3.4.5.6.7.8.9.0"
+      )
       XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
-  
+
       XCTAssertNil(optimizelyClient.trackedEventTags)
     }
   }
@@ -262,22 +268,24 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       self.stackViewIsHidden.assertValues([true])
       XCTAssertTrue(optimizelyClient.activatePathCalled)
       XCTAssertFalse(optimizelyClient.getVariantPathCalled)
-      
+
       XCTAssertEqual(optimizelyClient.userAttributes?["user_backed_projects_count"] as? Int, 50)
       XCTAssertEqual(optimizelyClient.userAttributes?["user_launched_projects_count"] as? Int, 25)
       XCTAssertEqual(optimizelyClient.userAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(optimizelyClient.userAttributes?["user_facebook_account"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["user_display_language"] as? String, "en")
-      
+
       XCTAssertEqual(optimizelyClient.userAttributes?["session_ref_tag"] as? String, "discovery")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_referrer_credit"] as? String, "discovery")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_os_version"] as? String, "MockSystemVersion")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_user_is_logged_in"] as? Bool, true)
-      XCTAssertEqual(optimizelyClient.userAttributes?["session_app_release_version"] as? String,
-                     "1.2.3.4.5.6.7.8.9.0")
+      XCTAssertEqual(
+        optimizelyClient.userAttributes?["session_app_release_version"] as? String,
+        "1.2.3.4.5.6.7.8.9.0"
+      )
       XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
-      
+
       XCTAssertNil(optimizelyClient.trackedEventTags)
     }
   }
@@ -306,22 +314,24 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       self.stackViewIsHidden.assertValues([true])
       XCTAssertFalse(optimizelyClient.activatePathCalled)
       XCTAssertTrue(optimizelyClient.getVariantPathCalled)
-      
+
       XCTAssertEqual(optimizelyClient.userAttributes?["user_backed_projects_count"] as? Int, 50)
       XCTAssertEqual(optimizelyClient.userAttributes?["user_launched_projects_count"] as? Int, 25)
       XCTAssertEqual(optimizelyClient.userAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(optimizelyClient.userAttributes?["user_facebook_account"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["user_display_language"] as? String, "en")
-      
+
       XCTAssertEqual(optimizelyClient.userAttributes?["session_ref_tag"] as? String, "discovery")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_referrer_credit"] as? String, "discovery")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_os_version"] as? String, "MockSystemVersion")
       XCTAssertEqual(optimizelyClient.userAttributes?["session_user_is_logged_in"] as? Bool, true)
-      XCTAssertEqual(optimizelyClient.userAttributes?["session_app_release_version"] as? String,
-                     "1.2.3.4.5.6.7.8.9.0")
+      XCTAssertEqual(
+        optimizelyClient.userAttributes?["session_app_release_version"] as? String,
+        "1.2.3.4.5.6.7.8.9.0"
+      )
       XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
-      
+
       XCTAssertNil(optimizelyClient.trackedEventTags)
     }
   }
@@ -350,7 +360,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
         optimizelyClient.getVariantPathCalled,
         "Optimizely client should not be called when the pledge button won't be shown"
       )
-      
+
       XCTAssertNil(optimizelyClient.userAttributes)
     }
   }
