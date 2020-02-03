@@ -305,12 +305,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       )
     )
 
+    // Captures the checkoutId immediately and avoids a race condition further down the chain.
+    let checkoutIdProperty = MutableProperty<Int?>(nil)
+
     let createBackingEvents = createBackingDataAndIsApplePay
       .map(CreateBackingInput.input(from:isApplePay:))
-      .switchMap { input in
+      .switchMap { [checkoutIdProperty] input in
         AppEnvironment.current.apiService.createBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { ($0.createBacking.checkout.id, $0 as StripeSCARequiring) }
+          .map { envelope -> StripeSCARequiring in
+            checkoutIdProperty.value = decompose(id: envelope.createBacking.checkout.id)
+            return envelope as StripeSCARequiring
+          }
           .materialize()
       }
 
@@ -357,7 +363,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     let createOrUpdateEvent = Signal.merge(
-      createBackingEvents.map { $0.map(second) },
+      createBackingEvents,
       updateBackingEvents
     )
 
@@ -473,14 +479,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .skipNil()
       .filter(requiresSCA >>> isFalse)
 
-    let isCreateOrUpdateBackingNoSCA = isCreateOrUpdateBacking
+    let createOrUpdateBackingDidCompleteNoSCA = isCreateOrUpdateBacking
       .takeWhen(createOrUpdateBackingEventValuesNoSCA)
       .filter(isTrue)
       .ignoreValues()
-
-    let createOrUpdateBackingDidCompleteNoSCA = Signal.zip(
-      isCreateOrUpdateBackingNoSCA,
-      createOrUpdateEvent.filter { $0.isTerminating }.ignoreValues())
 
     let createOrUpdateBackingEventValuesRequiresSCA = valuesOrNil
       .skipNil()
@@ -502,12 +504,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
 
-    let checkoutId = createBackingEvents.values()
-      .map(first)
-      .map(decompose)
-
-    let thanksPageData = createBackingDataAndIsApplePay
-      .takePairWhen(checkoutId)
+    let thanksPageData = createBackingDataAndIsApplePay.combineLatest(with: checkoutIdProperty.signal)
       .map(unpack)
       .map { data, isApplePay, checkoutId -> ThanksPageData in
         let checkoutPropsData = checkoutPropertiesData(
