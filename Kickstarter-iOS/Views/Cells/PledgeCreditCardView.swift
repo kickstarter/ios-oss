@@ -105,9 +105,6 @@ final class PledgeCreditCardView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> \.accessibilityElements .~ self.subviews
-
     _ = self.cardView
       |> pledgeCardViewStyle
 
