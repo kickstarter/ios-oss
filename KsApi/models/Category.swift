@@ -39,6 +39,16 @@ public struct Category: Swift.Decodable {
     return decompose(id: self.id)
   }
 
+  /*
+   This is a work around that fixes the incompatibility between the types of category id returned by
+   the server (Int) and the type we need to send when requesting category by id
+   through GraphQL (base64 encoded String). This will be removed once we start consuming GraphQL to fetch
+   Discovery projects.
+   */
+  public static func decode(id: String) -> String {
+    return "Category-\(id)"
+  }
+
   public var parent: Category? {
     return self._parent?.categoryType
   }
