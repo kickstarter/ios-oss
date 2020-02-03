@@ -207,7 +207,7 @@ extension Project: Argo.Decodable {
     let tmp1 = curry(Project.init)
       <^> json <||? "available_card_types"
       <*> json <| "blurb"
-      <*> ((json <| "category" >>- decodeToGraphCategory) as Decoded<Category>)
+      <*> ((json <| "category" >>- tryDecodable) as Decoded<Category>)
       <*> Project.Country.decode(json)
       <*> json <| "creator"
     let tmp2 = tmp1
@@ -324,50 +324,4 @@ private func removeUnknowns(_ xs: [Project.MemberData.Permission]) -> [Project.M
 private func toInt(string: String) -> Decoded<Int> {
   return Int(string).map(Decoded.success)
     ?? Decoded.failure(DecodeError.custom("Couldn't decoded \"\(string)\" into Int."))
-}
-
-/*
- This is a helper function that extracts the value from the Argo.JSON object type to create a graph Category
- object (that conforms to Swift.Decodable). It's an work around that fixes the problem of incompatibility
- between Swift.Decodable and Argo.Decodable protocols and will be deleted in the future when we update our
- code to use exclusively Swift's native Decodable.
- */
-private func decodeToGraphCategory(_ json: JSON?) -> Decoded<Category> {
-  guard let jsonObj = json else {
-    return .success(Category(id: "-1", name: "Unknown Category"))
-  }
-
-  switch jsonObj {
-  case let .object(dic):
-    let category = Category(
-      id: categoryInfo(dic).0,
-      name: categoryInfo(dic).1,
-      parentId: categoryInfo(dic).2
-    )
-    return .success(category)
-  default:
-    return .failure(DecodeError.custom("JSON should be object type"))
-  }
-}
-
-private func categoryInfo(_ json: [String: JSON]) -> (String, String, String?) {
-  guard let name = json["name"], let id = json["id"] else {
-    return ("", "", nil)
-  }
-  let parentId = json["parent_id"]
-
-  switch (id, name, parentId) {
-  case let (.number(id), .string(name), .number(parentId)?):
-    return ("\(id)", name, "\(parentId)")
-  case (let .number(id), let .string(name), nil):
-    return ("\(id)", name, nil)
-  default:
-    return ("", "", nil)
-  }
-}
-
-extension Project: GraphIDBridging {
-  public static var modelName: String {
-    return "Project"
-  }
 }
