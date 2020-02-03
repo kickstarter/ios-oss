@@ -217,6 +217,27 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
+
+    let shouldTrackCTATappedEvent = ctaButtonTappedWithType
+      .filter { [.pledge, .seeTheRewards, .viewTheRewards].contains($0) }
+
+    Signal.combineLatest(project, refTag)
+      .takeWhen(shouldTrackCTATappedEvent)
+      .observeValues { project, refTag in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: project,
+          refTag: refTag
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Project Page Rewards CTA Tapped",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -285,9 +306,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public var outputs: ProjectPamphletViewModelOutputs { return self }
 }
 
-private let cookieSeparator = "?"
-private let escapedCookieSeparator = "%3F"
-
 private func layoutConstraintConstant(
   initialTopConstraint: CGFloat,
   traitCollection: UITraitCollection
@@ -297,63 +315,6 @@ private func layoutConstraintConstant(
   }
 
   return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
-}
-
-// Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
-// been previously set.
-private func cookieRefTagFor(project: Project) -> RefTag? {
-  return AppEnvironment.current.cookieStorage.cookies?
-    .filter { cookie in cookie.name == cookieName(project) }
-    .first
-    .map(refTagName(fromCookie:))
-    .flatMap(RefTag.init(code:))
-}
-
-// Derives the name of the ref cookie from the project.
-private func cookieName(_ project: Project) -> String {
-  return "ref_\(project.id)"
-}
-
-// Tries to extract the name of the ref tag from a cookie. It has to do double work in case the cookie
-// is accidentally encoded with a `%3F` instead of a `?`.
-private func refTagName(fromCookie cookie: HTTPCookie) -> String {
-  return cleanUp(refTagString: cookie.value)
-}
-
-// Tries to remove cruft from a ref tag.
-private func cleanUp(refTag: RefTag) -> RefTag {
-  return RefTag(code: cleanUp(refTagString: refTag.stringTag))
-}
-
-// Tries to remove cruft from a ref tag string.
-private func cleanUp(refTagString: String) -> String {
-  let secondPass = refTagString.components(separatedBy: escapedCookieSeparator)
-  if let name = secondPass.first, secondPass.count == 2 {
-    return String(name)
-  }
-
-  let firstPass = refTagString.components(separatedBy: cookieSeparator)
-  if let name = firstPass.first, firstPass.count == 2 {
-    return String(name)
-  }
-
-  return refTagString
-}
-
-// Constructs a cookie from a ref tag and project.
-private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
-  let timestamp = Int(AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970)
-
-  var properties: [HTTPCookiePropertyKey: Any] = [:]
-  properties[.name] = cookieName(project)
-  properties[.value] = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
-  properties[.domain] = URL(string: project.urls.web.project)?.host
-  properties[.path] = URL(string: project.urls.web.project)?.path
-  properties[.version] = 0
-  properties[.expires] = AppEnvironment.current.dateType
-    .init(timeIntervalSince1970: project.dates.deadline).date
-
-  return HTTPCookie(properties: properties)
 }
 
 private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)

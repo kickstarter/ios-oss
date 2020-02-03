@@ -340,6 +340,7 @@
 		80EAEF001D243A7A008C2353 /* BackingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEEFF1D243A7A008C2353 /* BackingViewModel.swift */; };
 		80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80EAEF031D243C4E008C2353 /* Backing.storyboard */; };
 		80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEF011D243B69008C2353 /* BackingViewController.swift */; };
+		8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */; };
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
 		8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */; };
 		8A14E09723971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */; };
@@ -1772,6 +1773,7 @@
 		80EAEEFF1D243A7A008C2353 /* BackingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewModel.swift; sourceTree = "<group>"; };
 		80EAEF011D243B69008C2353 /* BackingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewController.swift; sourceTree = "<group>"; };
 		80EAEF031D243C4E008C2353 /* Backing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Backing.storyboard; sourceTree = "<group>"; };
+		8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieRefTagFunctions.swift; sourceTree = "<group>"; };
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardIntent.swift; sourceTree = "<group>"; };
 		8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationShimmerLoadingView.swift; sourceTree = "<group>"; };
@@ -2787,6 +2789,7 @@
 		0127FC511C98BFD000E335C6 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */,
 				379CFFED2242DAC300F6F0C2 /* DeprecatedWebViewController.swift */,
 				379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */,
 				8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */,
@@ -4878,6 +4881,7 @@
 				77BC00F623301BD400808E75 /* RewardCellViewModel.swift in Sources */,
 				3767EDB122CFFF2B0088E8E4 /* ShippingRulesViewModel.swift in Sources */,
 				D79F0F772107D60800D3B32C /* SettingsRequestDataCellViewModel.swift in Sources */,
+				8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */,
 				A73EF6D21DCC173C008FDBE5 /* ProjectNavigatorViewModel.swift in Sources */,
 				A75511621C8642C3005355CF /* LaunchedCountries.swift in Sources */,
 				A76126B71C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
