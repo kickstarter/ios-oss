@@ -48,9 +48,6 @@ final class PledgeCreditCardView: UIView {
   // MARK: - Configuration
 
   private func configureSubviews() {
-    _ = self
-      |> \.accessibilityElements .~ self.subviews
-
     _ = ([self.cardView, self.unavailableCardTypeLabel], self.containerStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -152,6 +149,7 @@ final class PledgeCreditCardView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.lastFourLabel.rac.accessibilityLabel = self.viewModel.outputs.cardNumberAccessibilityLabel
     self.selectButton.rac.title = self.viewModel.outputs.selectButtonTitle
     self.selectButton.rac.selected = self.viewModel.outputs.selectButtonIsSelected
     self.selectButton.rac.enabled = self.viewModel.outputs.selectButtonEnabled
