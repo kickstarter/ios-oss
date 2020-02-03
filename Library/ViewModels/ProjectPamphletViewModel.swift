@@ -41,7 +41,7 @@ public protocol ProjectPamphletViewModelOutputs {
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
   /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
-  var configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never> { get }
+  var configurePledgeCTAView: Signal<(Either<(Project, RefTag?), ErrorEnvelope>, Bool), Never> { get }
 
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
 
@@ -155,14 +155,10 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
         BackingData(project, AppEnvironment.current.currentUser)
       }
 
-    let projectCTA: Signal<Either<Project, ErrorEnvelope>, Never> = project
-      .map { .left($0) }
-
-    let projectError: Signal<Either<Project, ErrorEnvelope>, Never> = freshProjectAndRefTagEvent.errors()
-      .map { .right($0) }
+    let projectError: Signal<ErrorEnvelope, Never> = freshProjectAndRefTagEvent.errors()
 
     self.configurePledgeCTAView = Signal.combineLatest(
-      Signal.merge(projectCTA, projectError),
+      Signal.merge(freshProjectAndRefTag.map(Either.left), projectError.map(Either.right)),
       isLoading.signal
     )
     .filter { _ in userCanSeeNativeCheckout() }
@@ -292,7 +288,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
-  public let configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never>
+  public let configurePledgeCTAView: Signal<(Either<(Project, RefTag?), ErrorEnvelope>, Bool), Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToDeprecatedManagePledge: Signal<PledgeData, Never>
   public let goToDeprecatedViewBacking: Signal<BackingData, Never>
