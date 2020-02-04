@@ -124,8 +124,7 @@ extension Category {
     // Next try to decode from v1 flat structure
     let parentId = try? container.decode(Int?.self, forKey: .parentId)
       .flatMap(String.init)
-      .map { "\(Category.modelName)-\($0)" }
-      .flatMap { $0.data(using: .utf8)?.base64EncodedString() }
+      .flatMap(toGraphCategoryID)
 
     let parentName = try? container.decode(String.self, forKey: .parentName)
 
@@ -142,9 +141,9 @@ extension Category {
 
     // Next try to decode from v1 flat structure
     return try? decoder.container(keyedBy: v1CodingKeys.self)
-      .decode(Int?.self, forKey: .parentId).flatMap(String.init)
-      .map { "\(Category.modelName)-\($0)" }
-      .flatMap { $0.data(using: .utf8)?.base64EncodedString() }
+      .decode(Int?.self, forKey: .parentId)
+      .flatMap(String.init)
+      .flatMap(toGraphCategoryID)
   }
 }
 
@@ -211,5 +210,19 @@ private func stringOrInt<K>(
     return id
   }
 
-  return String(try container.decode(Int.self, forKey: key))
+  guard let id = toGraphCategoryID(String(try container.decode(Int.self, forKey: key))) else {
+    throw DecodingError.dataCorruptedError(
+      forKey: key,
+      in: container,
+      debugDescription: "Unable to decode Category ID"
+    )
+  }
+
+  return id
+}
+
+private func toGraphCategoryID(_ id: String) -> String? {
+  return "\(Category.modelName)-\(id)"
+    .data(using: .utf8)?
+    .base64EncodedString()
 }

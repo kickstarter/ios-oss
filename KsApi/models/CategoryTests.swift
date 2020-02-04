@@ -46,7 +46,8 @@ class CategoryTests: XCTestCase {
 
   func testV1Category() {
     let category = try? JSONDecoder().decode(Category.self, from: Data(self.v1Json.utf8))
-    XCTAssertEqual(category?.id, "28")
+    XCTAssertEqual(category?.id, "Q2F0ZWdvcnktMjg=")
+    XCTAssertEqual(category?.intID, 28)
     XCTAssertEqual(category?.name, "Product Design")
     XCTAssertEqual(category?.parentId, "Q2F0ZWdvcnktNw==")
     XCTAssertEqual(category?.parent?.id, "Q2F0ZWdvcnktNw==")
