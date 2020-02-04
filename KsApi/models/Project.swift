@@ -218,7 +218,7 @@ extension Project: Argo.Decodable {
     let tmp1 = curry(Project.init)
       <^> json <||? "available_card_types"
       <*> json <| "blurb"
-      <*> Project.Category.decode(json)
+      <*> json <| "category"
       <*> Project.Country.decode(json)
       <*> json <| "creator"
     let tmp2 = tmp1

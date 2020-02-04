@@ -110,6 +110,10 @@ final class ProjectTests: XCTestCase {
 
     XCTAssertNil(project.error)
     XCTAssertEqual("US", project.value?.country.countryCode)
+    XCTAssertEqual(1, project.value?.category.id)
+    XCTAssertEqual("Art", project.value?.category.name)
+    XCTAssertEqual(5, project.value?.category.parentId)
+    XCTAssertEqual("Parent Category", project.value?.category.parentName)
   }
 
   func testJSONParsing_WithMemberData() {

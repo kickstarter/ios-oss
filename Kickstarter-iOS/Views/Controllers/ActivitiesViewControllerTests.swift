@@ -58,7 +58,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
         |> Project.lens.photo.med .~ ""
         |> Project.lens.photo.full .~ ""
         |> Project.lens.stats.fundingProgress .~ 0.88
-        |> Project.lens.category .~ games
+        |> Project.lens.category .~ .games
       )
       |> Activity.lens.user .~ (.template
         |> \.name .~ "Judith Light"
