@@ -7,6 +7,7 @@ final class CreateBackingEnvelopeTests: XCTestCase {
     {
       "createBacking": {
         "checkout": {
+          "id": "2020",
           "state": "VERIFYING",
           "backing": {
             "requiresAction": false,
@@ -21,6 +22,7 @@ final class CreateBackingEnvelopeTests: XCTestCase {
 
     do {
       let envelope = try JSONDecoder().decode(CreateBackingEnvelope.self, from: data)
+      XCTAssertEqual(envelope.createBacking.checkout.id, "2020")
       XCTAssertEqual(envelope.createBacking.checkout.state, .verifying)
       XCTAssertEqual(envelope.createBacking.checkout.backing.requiresAction, false)
       XCTAssertEqual(envelope.createBacking.checkout.backing.clientSecret, "super-secret")

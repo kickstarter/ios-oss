@@ -305,12 +305,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       )
     )
 
+    // Captures the checkoutId immediately and avoids a race condition further down the chain.
+    let checkoutIdProperty = MutableProperty<Int?>(nil)
+
     let createBackingEvents = createBackingDataAndIsApplePay
       .map(CreateBackingInput.input(from:isApplePay:))
-      .switchMap { input in
+      .switchMap { [checkoutIdProperty] input in
         AppEnvironment.current.apiService.createBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0 as StripeSCARequiring }
+          .map { envelope -> StripeSCARequiring in
+            checkoutIdProperty.value = decompose(id: envelope.createBacking.checkout.id)
+            return envelope as StripeSCARequiring
+          }
           .materialize()
       }
 
@@ -498,9 +504,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
 
-    let thanksPageData = createBackingDataAndIsApplePay
-      .map { data, isApplePay -> ThanksPageData in
-        let checkoutPropsData = checkoutPropertiesData(from: data, isApplePay: isApplePay)
+    let thanksPageData = createBackingDataAndIsApplePay.combineLatest(with: checkoutIdProperty.signal)
+      .map(unpack)
+      .map { data, isApplePay, checkoutId -> ThanksPageData in
+        let checkoutPropsData = checkoutPropertiesData(
+          from: data,
+          checkoutId: checkoutId,
+          isApplePay: isApplePay
+        )
 
         return (data.project, data.reward, checkoutPropsData)
       }
@@ -838,8 +849,11 @@ private func allValuesChangedAndValid(
 
 // MARK: - Helper Functions
 
-private func checkoutPropertiesData(from createBackingData: CreateBackingData, isApplePay: Bool)
-  -> Koala.CheckoutPropertiesData {
+private func checkoutPropertiesData(
+  from createBackingData: CreateBackingData,
+  checkoutId: Int? = nil,
+  isApplePay: Bool
+) -> Koala.CheckoutPropertiesData {
   var pledgeTotal = createBackingData.pledgeAmount
 
   if let shippingRule = createBackingData.shippingRule {
@@ -867,6 +881,7 @@ private func checkoutPropertiesData(from createBackingData: CreateBackingData, i
 
   return Koala.CheckoutPropertiesData(
     amount: amount,
+    checkoutId: checkoutId,
     estimatedDelivery: estimatedDelivery,
     paymentType: paymentType,
     revenueInUsdCents: revenueInUsdCents,
