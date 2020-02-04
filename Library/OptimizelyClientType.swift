@@ -59,7 +59,7 @@ public func optimizelyTrackingAttributesAndEventTags(
 
   let eventTags: [String: Any] = ([
     "project_subcategory": project.category.name,
-    "project_category": project.category.parent?.name,
+    "project_category": project.category.parentName,
     "project_country": project.location.country.lowercased(),
     "project_user_has_watched": project.personalization.isStarred
   ] as [String: Any?]).compact()

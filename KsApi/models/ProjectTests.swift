@@ -61,6 +61,8 @@ final class ProjectTests: XCTestCase {
       "category": [
         "id": 1,
         "name": "Art",
+        "parent_id": 5,
+        "parent_name": "Parent Category",
         "slug": "art",
         "position": 1
       ],
@@ -148,6 +150,8 @@ final class ProjectTests: XCTestCase {
       "category": [
         "id": 1,
         "name": "Art",
+        "parent_id": 5,
+        "parent_name": "Parent Category",
         "slug": "art",
         "position": 1
       ],

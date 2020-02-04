@@ -25,6 +25,17 @@ public struct Project {
   public var urls: UrlsEnvelope
   public var video: Video?
 
+  public struct Category {
+    public var id: Int
+    public var name: String
+    public var parentId: Int?
+    public var parentName: String?
+
+    public var rootId: Int {
+      return self.parentId ?? self.id
+    }
+  }
+
   public struct UrlsEnvelope {
     public var web: WebEnvelope
 
@@ -207,7 +218,7 @@ extension Project: Argo.Decodable {
     let tmp1 = curry(Project.init)
       <^> json <||? "available_card_types"
       <*> json <| "blurb"
-      <*> ((json <| "category" >>- tryDecodable) as Decoded<Category>)
+      <*> Project.Category.decode(json)
       <*> Project.Country.decode(json)
       <*> json <| "creator"
     let tmp2 = tmp1
@@ -290,6 +301,16 @@ extension Project.Personalization: Argo.Decodable {
       <*> json <||? "friends"
       <*> json <|? "is_backing"
       <*> json <|? "is_starred"
+  }
+}
+
+extension Project.Category: Argo.Decodable {
+  public static func decode(_ json: JSON) -> Decoded<Project.Category> {
+    return curry(Project.Category.init)
+      <^> json <| "id"
+      <*> json <| "name"
+      <*> json <|? "parent_id"
+      <*> json <|? "parent_name"
   }
 }
 

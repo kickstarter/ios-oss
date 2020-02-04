@@ -46,7 +46,7 @@ public struct Category: Swift.Decodable {
    Discovery projects.
    */
   public static func decode(id: String) -> String {
-    return "\(Category.modelName)-\(id)"
+    return "Category-\(id)"
   }
 
   public var parent: Category? {
@@ -80,8 +80,6 @@ public struct Category: Swift.Decodable {
     }
     return self.root?.intID
   }
-
-  public static var modelName: String = "Category"
 }
 
 extension Category {
@@ -89,61 +87,14 @@ extension Category {
     case id, name, parentId, _parent = "parentCategory", subcategories, totalProjectCount
   }
 
-  private enum v1CodingKeys: String, CodingKey {
-    case parentId = "parent_id"
-    case parentName = "parent_name"
-  }
-
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-
-    self.id = try stringOrInt(in: values, for: .id)
+    self.id = try values.decode(String.self, forKey: .id)
     self.name = try values.decode(String.self, forKey: .name)
-    self.parentId = try? Category.tryParentId(decoder)
-    self._parent = try? Category.tryParentCategory(decoder)
+    self.parentId = try? values.decode(String.self, forKey: .parentId)
+    self._parent = try? values.decode(ParentCategory.self, forKey: ._parent)
     self.subcategories = try? values.decode(SubcategoryConnection.self, forKey: .subcategories)
     self.totalProjectCount = try? values.decode(Int.self, forKey: .totalProjectCount)
-  }
-
-  /* Tries to decode the parent category from the expected GraphQL structure
-   * failing which tries to decode it from the v1 API structure.
-   * Returns nil if both fail to decode.
-   */
-  private static func tryParentCategory(
-    _ decoder: Decoder
-  ) throws -> ParentCategory? {
-    // First try to decode as GraphQL ParentCategory from parentCategory key
-    if let category = try? decoder
-      .container(keyedBy: CodingKeys.self)
-      .decode(ParentCategory.self, forKey: ._parent) {
-      return category
-    }
-
-    let container = try decoder.container(keyedBy: v1CodingKeys.self)
-
-    // Next try to decode from v1 flat structure
-    let parentId = try? container.decode(Int?.self, forKey: .parentId)
-      .flatMap(String.init)
-      .flatMap(toGraphCategoryID)
-
-    let parentName = try? container.decode(String.self, forKey: .parentName)
-
-    guard let id = parentId, let name = parentName else { return nil }
-
-    return ParentCategory(id: id, name: name)
-  }
-
-  private static func tryParentId(_ decoder: Decoder) throws -> String? {
-    // First try to decode as GraphQL id from parentId key
-    if let id = try? decoder.container(keyedBy: CodingKeys.self).decode(String.self, forKey: .parentId) {
-      return id
-    }
-
-    // Next try to decode from v1 flat structure
-    return try? decoder.container(keyedBy: v1CodingKeys.self)
-      .decode(Int?.self, forKey: .parentId)
-      .flatMap(String.init)
-      .flatMap(toGraphCategoryID)
   }
 }
 
@@ -200,29 +151,4 @@ extension Category: CustomStringConvertible, CustomDebugStringConvertible {
   public var debugDescription: String {
     return self.description
   }
-}
-
-private func stringOrInt<K>(
-  in container: KeyedDecodingContainer<K>,
-  for key: KeyedDecodingContainer<K>.Key
-) throws -> String {
-  if let id = try? container.decode(String.self, forKey: key) {
-    return id
-  }
-
-  guard let id = toGraphCategoryID(String(try container.decode(Int.self, forKey: key))) else {
-    throw DecodingError.dataCorruptedError(
-      forKey: key,
-      in: container,
-      debugDescription: "Unable to decode Category ID"
-    )
-  }
-
-  return id
-}
-
-private func toGraphCategoryID(_ id: String) -> String? {
-  return "\(Category.modelName)-\(id)"
-    .data(using: .utf8)?
-    .base64EncodedString()
 }
