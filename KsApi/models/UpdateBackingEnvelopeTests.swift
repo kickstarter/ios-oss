@@ -7,6 +7,7 @@ final class UpdateBackingEnvelopeTests: XCTestCase {
     {
       "updateBacking": {
         "checkout": {
+          "id": "2020",
           "state": "VERIFYING",
           "backing": {
             "requiresAction": false,
@@ -21,6 +22,7 @@ final class UpdateBackingEnvelopeTests: XCTestCase {
 
     do {
       let envelope = try JSONDecoder().decode(UpdateBackingEnvelope.self, from: data)
+      XCTAssertEqual(envelope.updateBacking.checkout.id, "2020")
       XCTAssertEqual(envelope.updateBacking.checkout.state, .verifying)
       XCTAssertEqual(envelope.updateBacking.checkout.backing.requiresAction, false)
       XCTAssertEqual(envelope.updateBacking.checkout.backing.clientSecret, "super-secret")
@@ -34,6 +36,7 @@ final class UpdateBackingEnvelopeTests: XCTestCase {
     {
       "updateBacking": {
         "checkout": {
+          "id": "2020",
           "state": "VERIFYING",
           "backing": {
             "requiresAction": false,
@@ -48,6 +51,7 @@ final class UpdateBackingEnvelopeTests: XCTestCase {
 
     do {
       let envelope = try JSONDecoder().decode(UpdateBackingEnvelope.self, from: data)
+      XCTAssertEqual(envelope.updateBacking.checkout.id, "2020")
       XCTAssertEqual(envelope.updateBacking.checkout.state, .verifying)
       XCTAssertEqual(envelope.updateBacking.checkout.backing.requiresAction, false)
       XCTAssertEqual(envelope.updateBacking.checkout.backing.clientSecret, nil)
