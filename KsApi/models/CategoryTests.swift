@@ -29,6 +29,26 @@ class CategoryTests: XCTestCase {
     """
   }
 
+  private var v1Json: String {
+    return """
+    {
+      "id": 28,
+      "name": "Product Design",
+      "parent_id": 7,
+      "parent_name": "Design"
+    }
+    """
+  }
+
+  func testV1Category() {
+    let category = try? JSONDecoder().decode(Category.self, from: Data(self.v1Json.utf8))
+    XCTAssertEqual(category?.id, "28")
+    XCTAssertEqual(category?.name, "Product Design")
+    XCTAssertEqual(category?.parentId, "7")
+    XCTAssertEqual(category?.parent?.id, "7")
+    XCTAssertEqual(category?.parent?.name, "Design")
+  }
+
   func testDecode_WithNilValues() {
     if let decodedData = categoriesFromJSON() {
       XCTAssertNotNil(decodedData.rootCategories)
