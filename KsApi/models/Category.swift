@@ -46,7 +46,7 @@ public struct Category: Swift.Decodable {
    Discovery projects.
    */
   public static func decode(id: String) -> String {
-    return "Category-\(id)"
+    return "\(Category.modelName)-\(id)"
   }
 
   public var parent: Category? {
@@ -80,6 +80,8 @@ public struct Category: Swift.Decodable {
     }
     return self.root?.intID
   }
+
+  public static var modelName: String = "Category"
 }
 
 extension Category {
@@ -120,7 +122,11 @@ extension Category {
     let container = try decoder.container(keyedBy: v1CodingKeys.self)
 
     // Next try to decode from v1 flat structure
-    let parentId = try? container.decode(Int?.self, forKey: .parentId).flatMap(String.init)
+    let parentId = try? container.decode(Int?.self, forKey: .parentId)
+      .flatMap(String.init)
+      .map { "\(Category.modelName)-\($0)" }
+      .flatMap { $0.data(using: .utf8)?.base64EncodedString() }
+
     let parentName = try? container.decode(String.self, forKey: .parentName)
 
     guard let id = parentId, let name = parentName else { return nil }
@@ -137,6 +143,8 @@ extension Category {
     // Next try to decode from v1 flat structure
     return try? decoder.container(keyedBy: v1CodingKeys.self)
       .decode(Int?.self, forKey: .parentId).flatMap(String.init)
+      .map { "\(Category.modelName)-\($0)" }
+      .flatMap { $0.data(using: .utf8)?.base64EncodedString() }
   }
 }
 

@@ -5,28 +5,32 @@ import XCTest
 
 class CategoryTests: XCTestCase {
   private var json: String {
-    return """
+    let json = """
     {
-       "rootCategories": [ {
-          "id":"Q2F0ZWdvcnktMQ==",
-          "name":"Art",
-          "subcategories":{
-             "nodes": [{
-                "id":"Q2F0ZWdvcnktMjg3",
-                "name":"Ceramics",
-                "parentCategory":{
-                   "id":"Q2F0ZWdvcnktMQ==",
-                   "name":"Art"
-                                 }
-                      }],
-          "parentId":"Q2F0ZWdvcnktMQ==",
-          "totalCount":8
-                           }
-                        } ]
-
-            }
-
+      "rootCategories": [
+        {
+          "id": "Q2F0ZWdvcnktMQ==",
+          "name": "Art",
+          "subcategories": {
+            "nodes": [
+              {
+                "id": "Q2F0ZWdvcnktMjg3",
+                "name": "Ceramics",
+                "parentCategory": {
+                  "id": "Q2F0ZWdvcnktMQ==",
+                  "name": "Art"
+                }
+              }
+            ],
+            "parentId": "Q2F0ZWdvcnktMQ==",
+            "totalCount": 8
+          }
+        }
+      ]
+    }
     """
+
+    return json
   }
 
   private var v1Json: String {
@@ -44,8 +48,10 @@ class CategoryTests: XCTestCase {
     let category = try? JSONDecoder().decode(Category.self, from: Data(self.v1Json.utf8))
     XCTAssertEqual(category?.id, "28")
     XCTAssertEqual(category?.name, "Product Design")
-    XCTAssertEqual(category?.parentId, "7")
-    XCTAssertEqual(category?.parent?.id, "7")
+    XCTAssertEqual(category?.parentId, "Q2F0ZWdvcnktNw==")
+    XCTAssertEqual(category?.parent?.id, "Q2F0ZWdvcnktNw==")
+    XCTAssertEqual(category?.parentId, category?.parent?.id)
+    XCTAssertEqual(category?.parent?.intID, 7)
     XCTAssertEqual(category?.parent?.name, "Design")
   }
 
