@@ -224,12 +224,6 @@ internal final class AddNewCardViewController: UIViewController,
         self?.messageBannerViewController?.showBanner(with: .error, message: errorMessage)
       }
 
-    self.viewModel.outputs.zipcodeTextFieldBecomeFirstResponder
-      .observeForControllerAction()
-      .observeValues { [weak self] _ in
-        self?.zipcodeView.textField.becomeFirstResponder()
-      }
-
     Keyboard.change
       .observeForUI()
       .observeValues { [weak self] change in

@@ -45,7 +45,6 @@ public protocol AddNewCardViewModelOutputs {
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var setStripePublishableKey: Signal<String, Never> { get }
   var unsupportedCardBrandErrorText: Signal<String, Never> { get }
-  var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
 }
 
 public protocol AddNewCardViewModelType {
@@ -78,7 +77,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
     self.cardholderNameBecomeFirstResponder = self.viewDidLoadProperty.signal
     self.paymentDetailsBecomeFirstResponder = self.cardholderNameTextFieldReturnProperty.signal
-    self.zipcodeTextFieldBecomeFirstResponder = self.paymentCardTextFieldDidEndEditingProperty.signal
 
     let zipcode = self.zipcodeProperty.signal.skipNil()
     let zipcodeIsValid: Signal<Bool, Never> = zipcode.map { !$0.isEmpty }
@@ -306,7 +304,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
   public let unsupportedCardBrandErrorText: Signal<String, Never>
-  public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }
