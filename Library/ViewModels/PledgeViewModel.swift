@@ -853,8 +853,7 @@ private func checkoutPropertiesData(
   from createBackingData: CreateBackingData,
   checkoutId: Int? = nil,
   isApplePay: Bool
-)
-  -> Koala.CheckoutPropertiesData {
+) -> Koala.CheckoutPropertiesData {
   var pledgeTotal = createBackingData.pledgeAmount
 
   if let shippingRule = createBackingData.shippingRule {
