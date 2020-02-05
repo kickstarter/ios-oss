@@ -45,7 +45,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.stats.currentCurrency .~ "USD"
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.blue])
     self.buttonTitleText.assertValues([Strings.Manage()])
     self.titleText.assertValues([Strings.Youre_a_backer()])
@@ -65,7 +65,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.stats.currentCurrency .~ "USD"
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.blue])
     self.buttonTitleText.assertValues([Strings.Manage()])
     self.titleText.assertValues([Strings.Youre_a_backer()])
@@ -80,7 +80,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ Backing.template
       |> Project.lens.state .~ .successful
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.black])
     self.buttonTitleText.assertValues([Strings.View_your_pledge()])
     self.spacerIsHidden.assertValues([true])
@@ -92,7 +92,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ nil
       |> Project.lens.state .~ .live
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.green])
     self.buttonTitleText.assertValues([Strings.Back_this_project()])
     self.spacerIsHidden.assertValues([true])
@@ -104,7 +104,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ nil
       |> Project.lens.state .~ .successful
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.black])
     self.buttonTitleText.assertValues([Strings.View_rewards()])
     self.spacerIsHidden.assertValues([true])
@@ -119,7 +119,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.backing .~ backing
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.blue])
     self.buttonTitleText.assertValues([Strings.Manage()])
     self.titleText.assertValues([Strings.Youre_a_backer()])
@@ -136,7 +136,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.backing .~ backing
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.black])
     self.buttonTitleText.assertValues([Strings.View_your_pledge()])
     self.titleText.assertValues([])
@@ -150,15 +150,64 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ nil
       |> Project.lens.personalization.isBacking .~ false
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.green])
     self.buttonTitleText.assertValues([Strings.Back_this_project()])
     self.spacerIsHidden.assertValues([true])
     self.stackViewIsHidden.assertValues([true])
   }
 
+  func testPledgeCTA_LiveProject_LoggedOut_OptimizelyExperimental_Variant1() {
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.personalization.isBacking .~ false
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configureWith(value: (.left((project, .discovery)), false))
+      self.buttonStyleType.assertValues([ButtonStyleType.green])
+      self.buttonTitleText.assertValues(["See the rewards"])
+      self.spacerIsHidden.assertValues([true])
+      self.stackViewIsHidden.assertValues([true])
+      XCTAssertTrue(optimizelyClient.activatePathCalled)
+      XCTAssertFalse(optimizelyClient.getVariantPathCalled)
+
+      XCTAssertNil(optimizelyClient.userAttributes?["user_backed_projects_count"] as? Int)
+      XCTAssertNil(optimizelyClient.userAttributes?["user_launched_projects_count"] as? Int)
+      XCTAssertNil(optimizelyClient.userAttributes?["user_facebook_account"] as? Bool)
+      XCTAssertEqual(
+        optimizelyClient.userAttributes?["user_country"] as? String,
+        "us",
+        "Country is populated from the config"
+      )
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_display_language"] as? String, "en")
+
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_ref_tag"] as? String, "discovery")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_referrer_credit"] as? String, "discovery")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_os_version"] as? String, "MockSystemVersion")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_user_is_logged_in"] as? Bool, false)
+      XCTAssertEqual(
+        optimizelyClient.userAttributes?["session_app_release_version"] as? String,
+        "1.2.3.4.5.6.7.8.9.0"
+      )
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
+
+      XCTAssertNil(optimizelyClient.trackedEventTags)
+    }
+  }
+
   func testPledgeCTA_NonBacker_LiveProject_LoggedIn_OptimizelyExperimental_Variant1() {
-    let user = User.template |> User.lens.id .~ 5
+    let user = User.template
+      |> User.lens.id .~ 5
+      |> \.location .~ Location.template
+      |> \.stats.backedProjectsCount .~ 50
+      |> \.stats.createdProjectsCount .~ 25
+      |> \.facebookConnected .~ true
+
     let project = Project.template
       |> Project.lens.personalization.backing .~ nil
       |> Project.lens.personalization.isBacking .~ false
@@ -168,18 +217,41 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
 
     withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.left(project), false))
+      self.vm.inputs.configureWith(value: (.left((project, .discovery)), false))
       self.buttonStyleType.assertValues([ButtonStyleType.green])
       self.buttonTitleText.assertValues(["See the rewards"])
       self.spacerIsHidden.assertValues([true])
       self.stackViewIsHidden.assertValues([true])
       XCTAssertTrue(optimizelyClient.activatePathCalled)
       XCTAssertFalse(optimizelyClient.getVariantPathCalled)
+
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_backed_projects_count"] as? Int, 50)
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_launched_projects_count"] as? Int, 25)
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_country"] as? String, "us")
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_facebook_account"] as? Bool, true)
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_display_language"] as? String, "en")
+
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_ref_tag"] as? String, "discovery")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_referrer_credit"] as? String, "discovery")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_os_version"] as? String, "MockSystemVersion")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_user_is_logged_in"] as? Bool, true)
+      XCTAssertEqual(
+        optimizelyClient.userAttributes?["session_app_release_version"] as? String,
+        "1.2.3.4.5.6.7.8.9.0"
+      )
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
+
+      XCTAssertNil(optimizelyClient.trackedEventTags)
     }
   }
 
   func testPledgeCTA_NonBacker_LiveProject_LoggedIn_OptimizelyExperimental_Variant2() {
     let user = User.template |> User.lens.id .~ 5
+      |> \.location .~ Location.template
+      |> \.stats.backedProjectsCount .~ 50
+      |> \.stats.createdProjectsCount .~ 25
+      |> \.facebookConnected .~ true
     let project = Project.template
       |> Project.lens.personalization.backing .~ nil
       |> Project.lens.personalization.isBacking .~ false
@@ -189,19 +261,42 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant2.rawValue]
 
     withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.left(project), false))
+      self.vm.inputs.configureWith(value: (.left((project, .discovery)), false))
       self.buttonStyleType.assertValues([ButtonStyleType.green])
       self.buttonTitleText.assertValues(["View the rewards"])
       self.spacerIsHidden.assertValues([true])
       self.stackViewIsHidden.assertValues([true])
       XCTAssertTrue(optimizelyClient.activatePathCalled)
       XCTAssertFalse(optimizelyClient.getVariantPathCalled)
+
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_backed_projects_count"] as? Int, 50)
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_launched_projects_count"] as? Int, 25)
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_country"] as? String, "us")
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_facebook_account"] as? Bool, true)
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_display_language"] as? String, "en")
+
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_ref_tag"] as? String, "discovery")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_referrer_credit"] as? String, "discovery")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_os_version"] as? String, "MockSystemVersion")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_user_is_logged_in"] as? Bool, true)
+      XCTAssertEqual(
+        optimizelyClient.userAttributes?["session_app_release_version"] as? String,
+        "1.2.3.4.5.6.7.8.9.0"
+      )
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
+
+      XCTAssertNil(optimizelyClient.trackedEventTags)
     }
   }
 
   func testPledgeCTA_NonBacker_LiveProject_LoggedIn_OptimizelyExperimental_Variant1_IsAdmin() {
     let user = User.template
       |> User.lens.id .~ 5
+      |> \.location .~ Location.template
+      |> \.stats.backedProjectsCount .~ 50
+      |> \.stats.createdProjectsCount .~ 25
+      |> \.facebookConnected .~ true
       |> User.lens.isAdmin .~ true
     let project = Project.template
       |> Project.lens.personalization.backing .~ nil
@@ -212,13 +307,32 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
 
     withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.left(project), false))
+      self.vm.inputs.configureWith(value: (.left((project, .discovery)), false))
       self.buttonStyleType.assertValues([ButtonStyleType.green])
       self.buttonTitleText.assertValues(["See the rewards"])
       self.spacerIsHidden.assertValues([true])
       self.stackViewIsHidden.assertValues([true])
       XCTAssertFalse(optimizelyClient.activatePathCalled)
       XCTAssertTrue(optimizelyClient.getVariantPathCalled)
+
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_backed_projects_count"] as? Int, 50)
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_launched_projects_count"] as? Int, 25)
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_country"] as? String, "us")
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_facebook_account"] as? Bool, true)
+      XCTAssertEqual(optimizelyClient.userAttributes?["user_display_language"] as? String, "en")
+
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_ref_tag"] as? String, "discovery")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_referrer_credit"] as? String, "discovery")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_os_version"] as? String, "MockSystemVersion")
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_user_is_logged_in"] as? Bool, true)
+      XCTAssertEqual(
+        optimizelyClient.userAttributes?["session_app_release_version"] as? String,
+        "1.2.3.4.5.6.7.8.9.0"
+      )
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
+      XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
+
+      XCTAssertNil(optimizelyClient.trackedEventTags)
     }
   }
 
@@ -232,7 +346,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
 
     withEnvironment(currentUser: .template, optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.left(project), false))
+      self.vm.inputs.configureWith(value: (.left((project, .discovery)), false))
       self.buttonStyleType.assertValues([ButtonStyleType.blue])
       self.buttonTitleText.assertValues(["Manage"])
       self.spacerIsHidden.assertValues([false])
@@ -246,6 +360,8 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
         optimizelyClient.getVariantPathCalled,
         "Optimizely client should not be called when the pledge button won't be shown"
       )
+
+      XCTAssertNil(optimizelyClient.userAttributes)
     }
   }
 
@@ -254,7 +370,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isBacking .~ false
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.black])
     self.buttonTitleText.assertValues([Strings.View_rewards()])
     self.spacerIsHidden.assertValues([true])
@@ -268,7 +384,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.state .~ .live
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(value: (.left(project), false))
+      self.vm.inputs.configureWith(value: (.left((project, nil)), false))
       self.buttonStyleType.assertValues([ButtonStyleType.black])
       self.buttonTitleText.assertValues(["View your rewards"])
       self.spacerIsHidden.assertValues([true])
@@ -283,7 +399,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.state .~ .successful
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(value: (.left(project), false))
+      self.vm.inputs.configureWith(value: (.left((project, nil)), false))
       self.buttonStyleType.assertValues([ButtonStyleType.black])
       self.buttonTitleText.assertValues(["View your rewards"])
       self.spacerIsHidden.assertValues([true])
@@ -295,7 +411,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.state .~ .live
 
-    self.vm.inputs.configureWith(value: (.left(project), true))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), true))
     self.activityIndicatorIsHidden.assertValues([false])
     self.pledgeCTAButtonIsHidden.assertValues([true])
     self.pledgeRetryButtonIsHidden.assertValues([true])
@@ -305,7 +421,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.spacerIsHidden.assertDidNotEmitValue()
     self.stackViewIsHidden.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.activityIndicatorIsHidden.assertValues([false, true])
     self.pledgeCTAButtonIsHidden.assertValues([true, false])
     self.pledgeRetryButtonIsHidden.assertValues([true])
@@ -322,7 +438,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.pledgeRetryButtonIsHidden.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.pledgeRetryButtonIsHidden.assertValues([true])
 
     self.vm.inputs.configureWith(value: (.right(.couldNotParseJSON), false))
@@ -336,7 +452,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.notifyDelegateCTATapped.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.green])
     self.buttonTitleText.assertValues([Strings.Back_this_project()])
 
@@ -351,7 +467,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.notifyDelegateCTATapped.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false))
     self.buttonStyleType.assertValues([ButtonStyleType.black])
     self.buttonTitleText.assertValues([Strings.View_rewards()])
 
