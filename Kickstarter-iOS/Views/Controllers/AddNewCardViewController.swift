@@ -369,10 +369,6 @@ extension AddNewCardViewController {
       textField.expirationYear, textField.cvc, stpCardBrand.creditCardType
     ))
   }
-
-  internal func paymentCardTextFieldDidEndEditing(_: STPPaymentCardTextField) {
-    self.viewModel.inputs.paymentCardTextFieldDidEndEditing()
-  }
 }
 
 // MARK: - Styles

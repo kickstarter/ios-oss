@@ -19,7 +19,6 @@ public protocol AddNewCardViewModelInputs {
   func cardholderNameTextFieldReturn()
   func creditCardChanged(cardDetails: CardDetails)
   func configure(with intent: AddNewCardIntent, project: Project?)
-  func paymentCardTextFieldDidEndEditing()
   func paymentInfo(isValid: Bool)
   func rememberThisCardToggleChanged(to value: Bool)
   func saveButtonTapped()
@@ -237,11 +236,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   private let addNewCardIntentAndProjectProperty = MutableProperty<(AddNewCardIntent, Project?)?>(nil)
   public func configure(with intent: AddNewCardIntent, project: Project?) {
     self.addNewCardIntentAndProjectProperty.value = (intent, project)
-  }
-
-  private let paymentCardTextFieldDidEndEditingProperty = MutableProperty(())
-  public func paymentCardTextFieldDidEndEditing() {
-    self.paymentCardTextFieldDidEndEditingProperty.value = ()
   }
 
   private let paymentInfoIsValidProperty = MutableProperty(false)
