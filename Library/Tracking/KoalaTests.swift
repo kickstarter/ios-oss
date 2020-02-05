@@ -162,9 +162,10 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client, loggedInUser: nil)
     let project = Project.template
       |> Project.lens.rewards .~ [Reward.template]
-      |> Project.lens.category .~ (Category.illustration
-        |> Category.lens.id .~ "123"
-        |> Category.lens.parentId .~ "321")
+      |> \.category .~ (.illustration
+        |> \.id .~ 123
+        |> \.parentId .~ 321
+      )
       |> Project.lens.stats.staticUsdRate .~ 2
       |> Project.lens.stats.commentsCount .~ 10
       |> Project.lens.prelaunchActivated .~ true
@@ -183,9 +184,9 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(project.id, properties?["project_pid"] as? Int)
     XCTAssertEqual(project.stats.fundingProgress, properties?["project_percent_raised"] as? Float)
     XCTAssertEqual(project.category.name, properties?["project_subcategory"] as? String)
-    XCTAssertEqual("123", properties?["project_subcategory_id"] as? String)
+    XCTAssertEqual(123, properties?["project_subcategory_id"] as? Int)
     XCTAssertEqual("Art", properties?["project_category"] as? String)
-    XCTAssertEqual("321", properties?["project_category_id"] as? String)
+    XCTAssertEqual(321, properties?["project_category_id"] as? Int)
     XCTAssertEqual(project.location.name, properties?["project_location"] as? String)
     XCTAssertEqual(project.creator.id, properties?["project_creator_uid"] as? Int)
     XCTAssertEqual(24 * 15, properties?["project_hours_remaining"] as? Int)
@@ -1008,7 +1009,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(1, props?["project_pid"] as? Int)
     XCTAssertEqual(0.50, props?["project_percent_raised"] as? Float)
     XCTAssertEqual("Art", props?["project_subcategory"] as? String)
-    XCTAssertEqual("Q2F0ZWdvcnktMQ==", props?["project_subcategory_id"] as? String)
+    XCTAssertEqual(1, props?["project_subcategory_id"] as? Int)
 
     XCTAssertEqual("Brooklyn", props?["project_location"] as? String)
     XCTAssertEqual(1, props?["project_creator_uid"] as? Int)

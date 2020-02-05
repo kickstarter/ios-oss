@@ -3702,10 +3702,8 @@ final class PledgeViewModelTests: TestCase {
   // swiftlint:disable line_length
   func testTrackingEvents_PledgeScreenViewed_LoggedOut() {
     let project = Project.template
-      |> Project.lens.category.parent .~ ParentCategory(
-        id: Category.art.id,
-        name: Category.art.name
-      )
+      |> \.category.parentId .~ Project.Category.art.id
+      |> \.category.parentName .~ Project.Category.art.name
 
     self.vm.inputs.configureWith(project: project, reward: .template, refTag: .discovery, context: .pledge)
 
@@ -3746,10 +3744,8 @@ final class PledgeViewModelTests: TestCase {
 
     withEnvironment(currentUser: user) {
       let project = Project.template
-        |> Project.lens.category.parent .~ ParentCategory(
-          id: Category.art.id,
-          name: Category.art.name
-        )
+        |> \.category.parentId .~ Project.Category.art.id
+        |> \.category.parentName .~ Project.Category.art.name
         |> Project.lens.stats.currentCurrency .~ "USD"
         |> \.personalization.isStarred .~ true
 

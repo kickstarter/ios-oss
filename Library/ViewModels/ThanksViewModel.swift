@@ -269,9 +269,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
  Discovery projects.
 
  */
-private func toBase64(_ category: KsApi.Category) -> String {
+private func toBase64(_ category: Project.Category) -> String {
   let id = category.parentId ?? category.id
-  let decodedId = Category.decode(id: id)
+  let decodedId = Category.decode(id: "\(id)")
   return decodedId.toBase64()
 }
 

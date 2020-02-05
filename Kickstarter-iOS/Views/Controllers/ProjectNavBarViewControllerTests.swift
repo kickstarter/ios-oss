@@ -20,7 +20,7 @@ internal final class ProjectNavBarViewControllerTests: TestCase {
   func testCategory() {
     let navBar = Storyboard.ProjectPamphlet.instantiate(ProjectNavBarViewController.self)
     navBar.configureWith(
-      project: Project.lens.category.set(Category.art, .template), refTag: nil
+      project: Project.template |> \.category .~ .art, refTag: nil
     )
 
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: navBar)
@@ -68,7 +68,7 @@ internal final class ProjectNavBarViewControllerTests: TestCase {
   func testLongCategoryName_SmallDevice() {
     let navBar = Storyboard.ProjectPamphlet.instantiate(ProjectNavBarViewController.self)
     navBar.configureWith(
-      project: .template |> Project.lens.category.name .~ "Herramientas de fabricación",
+      project: .template |> \.category.name .~ "Herramientas de fabricación",
       refTag: nil
     )
 

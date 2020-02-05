@@ -35,7 +35,7 @@ extension Project {
       ) }
     )
 
-    public static let category = Lens<Project, Category>(
+    public static let category = Lens<Project, Project.Category>(
       view: { $0.category },
       set: { Project(
         availableCardTypes: $1.availableCardTypes, blurb: $1.blurb, category: $0, country: $1.country,
@@ -258,20 +258,6 @@ extension Lens where Whole == Project, Part == User {
 
   public var name: Lens<Project, String> {
     return Project.lens.creator .. User.lens.name
-  }
-}
-
-extension Lens where Whole == Project, Part == Category {
-  public var id: Lens<Project, String> {
-    return Project.lens.category .. Category.lens.id
-  }
-
-  public var name: Lens<Project, String> {
-    return Project.lens.category .. Category.lens.name
-  }
-
-  public var parent: Lens<Project, ParentCategory?> {
-    return Project.lens.category .. Category.lens.parent
   }
 }
 
