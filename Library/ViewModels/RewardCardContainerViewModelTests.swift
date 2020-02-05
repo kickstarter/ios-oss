@@ -803,20 +803,6 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.rewardSelected.assertValues([Reward.template.id])
   }
 
-  func testPledgeButtonTapped_eventTracking() {
-    let client = MockTrackingClient()
-
-    withEnvironment(apiService: MockService(), koala: Koala(client: client)) {
-      XCTAssertEqual([], client.events)
-
-      self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(.template))
-
-      self.vm.inputs.pledgeButtonTapped()
-
-      XCTAssertEqual(["Select Reward Button Clicked"], client.events)
-    }
-  }
-
   func testGoRewardlessNoRewardTreatment_Live_NonBacked_FeatureFlag_isOn() {
     let mockConfig = Config.template
       |> \.features .~ [Feature.goRewardless.rawValue: true]

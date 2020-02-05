@@ -201,6 +201,7 @@
 		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
 		7705563B22BC03A600DCB062 /* TableViewStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7705563A22BC03A600DCB062 /* TableViewStyles.swift */; };
+		770A0A7723DB4244002DB8FC /* TrackingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770A0A7623DB4244002DB8FC /* TrackingHelpers.swift */; };
 		770D86C622F0D47000CDC6A1 /* PledgeAddNewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770D86C522F0D47000CDC6A1 /* PledgeAddNewCardView.swift */; };
 		770D86C822F337B800CDC6A1 /* PledgeAddNewCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770D86C722F337B800CDC6A1 /* PledgeAddNewCardViewModel.swift */; };
 		770D86CA22F3396000CDC6A1 /* PledgeAddNewCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770D86C922F3396000CDC6A1 /* PledgeAddNewCardViewModelTests.swift */; };
@@ -336,6 +337,7 @@
 		80EAEF001D243A7A008C2353 /* BackingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEEFF1D243A7A008C2353 /* BackingViewModel.swift */; };
 		80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80EAEF031D243C4E008C2353 /* Backing.storyboard */; };
 		80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEF011D243B69008C2353 /* BackingViewController.swift */; };
+		8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */; };
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
 		8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */; };
 		8A14E09723971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */; };
@@ -1093,6 +1095,7 @@
 		D612A21922F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D612A21822F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift */; };
 		D61440FE23200F09002A6507 /* ManagePledgeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61440FD23200F09002A6507 /* ManagePledgeViewModelTests.swift */; };
 		D61F38EE233D0DAE00C8972B /* ManagePledgeRewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61F38ED233D0DAE00C8972B /* ManagePledgeRewardView.swift */; };
+		D625AA0C23DA34EA009E6F2C /* BetaToolsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */; };
 		D62B1477221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */; };
 		D62B14B02212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */; };
 		D63BBCD0217E5460007E01F0 /* PaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63BBCCF217E5460007E01F0 /* PaymentMethodsViewController.swift */; };
@@ -1602,6 +1605,7 @@
 		7703B42123217D4F00169EF3 /* EnvironmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentType.swift; sourceTree = "<group>"; };
 		7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PKPaymentRequest+Helpers.swift"; sourceTree = "<group>"; };
 		7705563A22BC03A600DCB062 /* TableViewStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewStyles.swift; sourceTree = "<group>"; };
+		770A0A7623DB4244002DB8FC /* TrackingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpers.swift; sourceTree = "<group>"; };
 		770D86C522F0D47000CDC6A1 /* PledgeAddNewCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAddNewCardView.swift; sourceTree = "<group>"; };
 		770D86C722F337B800CDC6A1 /* PledgeAddNewCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAddNewCardViewModel.swift; sourceTree = "<group>"; };
 		770D86C922F3396000CDC6A1 /* PledgeAddNewCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAddNewCardViewModelTests.swift; sourceTree = "<group>"; };
@@ -1730,6 +1734,7 @@
 		80EAEEFF1D243A7A008C2353 /* BackingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewModel.swift; sourceTree = "<group>"; };
 		80EAEF011D243B69008C2353 /* BackingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewController.swift; sourceTree = "<group>"; };
 		80EAEF031D243C4E008C2353 /* Backing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Backing.storyboard; sourceTree = "<group>"; };
+		8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieRefTagFunctions.swift; sourceTree = "<group>"; };
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardIntent.swift; sourceTree = "<group>"; };
 		8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationShimmerLoadingView.swift; sourceTree = "<group>"; };
@@ -2418,6 +2423,7 @@
 		D61440FD23200F09002A6507 /* ManagePledgeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewModelTests.swift; sourceTree = "<group>"; };
 		D61440FF23200FD3002A6507 /* ManagePledgeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewControllerTests.swift; sourceTree = "<group>"; };
 		D61F38ED233D0DAE00C8972B /* ManagePledgeRewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeRewardView.swift; sourceTree = "<group>"; };
+		D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetaToolsFooterView.swift; sourceTree = "<group>"; };
 		D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePaymentMethodEnvelope.swift; sourceTree = "<group>"; };
 		D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePaymentMethodEnvelopeTests.swift; sourceTree = "<group>"; };
 		D63BBCCF217E5460007E01F0 /* PaymentMethodsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewController.swift; sourceTree = "<group>"; };
@@ -2709,6 +2715,8 @@
 		0127FC511C98BFD000E335C6 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */,
+				379CFFED2242DAC300F6F0C2 /* DeprecatedWebViewController.swift */,
 				379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */,
 				8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */,
 				8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */,
@@ -2808,6 +2816,7 @@
 				8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */,
 				8A213CE6239EAEA400BBB4C7 /* TrackingClientConfigurationTests.swift */,
 				8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */,
+				770A0A7623DB4244002DB8FC /* TrackingHelpers.swift */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -2911,6 +2920,7 @@
 			isa = PBXGroup;
 			children = (
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
+				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
@@ -4717,6 +4727,7 @@
 				A757EB2B1D1AD89E00A5C978 /* DiscoveryStyles.swift in Sources */,
 				80E8EAC81D3EC65A007BDA4B /* Image.swift in Sources */,
 				D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */,
+				770A0A7723DB4244002DB8FC /* TrackingHelpers.swift in Sources */,
 				80D73AF61D50F1A60099231F /* Navigation.swift in Sources */,
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
@@ -4748,6 +4759,7 @@
 				77BC00F623301BD400808E75 /* RewardCellViewModel.swift in Sources */,
 				3767EDB122CFFF2B0088E8E4 /* ShippingRulesViewModel.swift in Sources */,
 				D79F0F772107D60800D3B32C /* SettingsRequestDataCellViewModel.swift in Sources */,
+				8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */,
 				A73EF6D21DCC173C008FDBE5 /* ProjectNavigatorViewModel.swift in Sources */,
 				A75511621C8642C3005355CF /* LaunchedCountries.swift in Sources */,
 				A76126B71C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,
@@ -5237,6 +5249,8 @@
 				379CFFFE2242DAF400F6F0C2 /* Storyboard.swift in Sources */,
 				A72C3AA41D00F7170075227E /* DiscoveryPagesDataSource.swift in Sources */,
 				37653F82220A07710016E7F9 /* SettingsGroupedHeaderView.swift in Sources */,
+				D625AA0C23DA34EA009E6F2C /* BetaToolsFooterView.swift in Sources */,
+				379CFFFA2242DAD500F6F0C2 /* DeprecatedWebViewController.swift in Sources */,
 				D796868021013C1F00E54C61 /* SettingsPrivacyStaticCell.swift in Sources */,
 				771E630B23425977005967E8 /* CancelPledgeViewController.swift in Sources */,
 				A7A0534E1CD19C68005AF5E2 /* CommentDialogViewController.swift in Sources */,

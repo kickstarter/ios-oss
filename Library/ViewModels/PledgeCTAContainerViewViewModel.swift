@@ -4,7 +4,7 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeCTAContainerViewViewModelInputs {
-  func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool))
+  func configureWith(value: (projectOrError: Either<(Project, RefTag?), ErrorEnvelope>, isLoading: Bool))
   func pledgeCTAButtonTapped()
 }
 
@@ -41,6 +41,12 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     let project = projectOrError
       .map(Either.left)
       .skipNil()
+      .map(first)
+
+    let refTag = projectOrError
+      .map(Either.left)
+      .skipNil()
+      .map(second)
 
     let projectError = projectOrError
       .map(Either.right)
@@ -50,8 +56,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .negate()
 
     let backing = project.map { $0.personalization.backing }
-    let pledgeState = Signal.combineLatest(project, backing)
-      .map(pledgeCTA(project:backing:))
+    let pledgeState = Signal.combineLatest(project, refTag, backing)
+      .map(pledgeCTA(project:refTag:backing:))
 
     let inError = Signal.merge(
       projectError.ignoreValues().mapConst(true),
@@ -102,8 +108,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
   }
 
   fileprivate let projectOrErrorProperty =
-    MutableProperty<(Either<Project, ErrorEnvelope>, isLoading: Bool)?>(nil)
-  public func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool)) {
+    MutableProperty<(Either<(Project, RefTag?), ErrorEnvelope>, isLoading: Bool)?>(nil)
+  public func configureWith(
+    value: (projectOrError: Either<(Project, RefTag?), ErrorEnvelope>, isLoading: Bool)
+  ) {
     self.projectOrErrorProperty.value = value
   }
 
@@ -129,19 +137,25 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
 // MARK: - Functions
 
-private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
-  let uuid = deviceIdentifier(uuid: UUID())
-  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-    .variant(
-      for: OptimizelyExperiment.Key.pledgeCTACopy,
-      userId: uuid,
-      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false
-    )
-
+private func pledgeCTA(project: Project, refTag: RefTag?, backing: Backing?) -> PledgeStateCTAType {
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
     if currentUserIsCreator(of: project) {
       return PledgeStateCTAType.viewYourRewards
     }
+
+    let userAttributes = optimizelyUserAttributes(
+      with: AppEnvironment.current.currentUser,
+      project: project,
+      refTag: refTag
+    )
+
+    let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+      .variant(
+        for: OptimizelyExperiment.Key.pledgeCTACopy,
+        userId: deviceIdentifier(uuid: UUID()),
+        isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+        userAttributes: userAttributes
+      )
 
     if let variant = optimizelyVariant, project.state == .live {
       switch variant {

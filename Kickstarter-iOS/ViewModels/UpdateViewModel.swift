@@ -104,8 +104,6 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
         return nil
       }
 
-    self.goToComments = possiblyGoToComments.skipNil()
-
     let possiblyGoToProject = navigationAction
       .map { action in
         action.navigationType == .linkActivated
@@ -113,7 +111,14 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
           : nil
       }
 
-    self.goToProject = project
+    let possiblyGoToUpdate = navigationAction
+      .map { action in
+        action.navigationType == .linkActivated
+          ? Navigation.Project.updateWithRequest(action.request)
+          : nil
+      }
+
+    let projectAndRefTag = project
       .takePairWhen(possiblyGoToProject)
       .switchMap { (project, projectParamAndRefTag) -> SignalProducer<(Project, RefTag), Never> in
 
@@ -131,15 +136,30 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
         return producer.map { ($0, refTag ?? RefTag.update) }
       }
 
-    self.goToSafariBrowser = Signal.zip(navigationAction, possiblyGoToProject, possiblyGoToComments)
-      .filter { action, goToProject, goToComments in
-        Navigation.Project.updateWithRequest(action.request) == nil
-          && action.navigationType == .linkActivated
-          && goToProject == nil
-          && goToComments == nil
+    self.goToComments = possiblyGoToComments.skipNil()
+    self.goToProject = projectAndRefTag.filter { project, _ in project.prelaunchActivated != .some(true) }
+
+    let projectIsPrelaunch = projectAndRefTag.filter { project, _ in project.prelaunchActivated == true }
+    let notProjectNotCommentsNotUpdate = Signal.zip(
+      possiblyGoToProject,
+      possiblyGoToComments,
+      possiblyGoToUpdate
+    )
+    .filter { goToProject, goToComments, goToUpdate in
+      ([goToProject, goToComments, goToUpdate] as [Any?]).compactMap { $0 }.isEmpty
+    }
+
+    let goToExternalLink = Signal.zip(navigationAction, notProjectNotCommentsNotUpdate).map(first)
+    let goToPrelaunchPage = Signal.zip(navigationAction, projectIsPrelaunch).map(first)
+
+    self.goToSafariBrowser = Signal.merge(goToExternalLink, goToPrelaunchPage)
+      .filterMap { action in
+        guard action.navigationType == .linkActivated else {
+          return nil
+        }
+
+        return action.request.url
       }
-      .map { action, _, _ in action.request.url }
-      .skipNil()
 
     project
       .takeWhen(self.goToSafariBrowser)

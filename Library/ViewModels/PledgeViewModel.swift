@@ -127,21 +127,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { project, total in (project, total) }
 
     let configurePaymentMethodsViewController = Signal.merge(
-      projectAndReward,
-      projectAndReward.takeWhen(self.userSessionStartedSignal)
+      initialData,
+      initialData.takeWhen(self.userSessionStartedSignal)
     )
 
-    self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(
-      configurePaymentMethodsViewController,
-      context
-    )
-    .filter { !$1.paymentMethodsViewHidden }
-    .map(first)
-    .filterMap { project, reward -> PledgePaymentMethodsValue? in
-      guard let user = AppEnvironment.current.currentUser else { return nil }
+    self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
+      .filter { !$3.paymentMethodsViewHidden }
+      .filterMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
+        guard let user = AppEnvironment.current.currentUser else { return nil }
 
-      return (user, project, reward)
-    }
+        return (user, project, reward, context, refTag)
+      }
 
     let projectAndPledgeTotal = project
       .combineLatest(with: pledgeTotal)
@@ -309,12 +305,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       )
     )
 
+    // Captures the checkoutId immediately and avoids a race condition further down the chain.
+    let checkoutIdProperty = MutableProperty<Int?>(nil)
+
     let createBackingEvents = createBackingDataAndIsApplePay
       .map(CreateBackingInput.input(from:isApplePay:))
-      .switchMap { input in
+      .switchMap { [checkoutIdProperty] input in
         AppEnvironment.current.apiService.createBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0 as StripeSCARequiring }
+          .map { envelope -> StripeSCARequiring in
+            checkoutIdProperty.value = decompose(id: envelope.createBacking.checkout.id)
+            return envelope as StripeSCARequiring
+          }
           .materialize()
       }
 
@@ -502,9 +504,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
 
-    let thanksPageData = createBackingDataAndIsApplePay
-      .map { data, isApplePay -> ThanksPageData in
-        let checkoutPropsData = checkoutPropertiesData(from: data, isApplePay: isApplePay)
+    let thanksPageData = createBackingDataAndIsApplePay.combineLatest(with: checkoutIdProperty.signal)
+      .map(unpack)
+      .map { data, isApplePay, checkoutId -> ThanksPageData in
+        let checkoutPropsData = checkoutPropertiesData(
+          from: data,
+          checkoutId: checkoutId,
+          isApplePay: isApplePay
+        )
 
         return (data.project, data.reward, checkoutPropsData)
       }
@@ -580,12 +587,30 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
 
     initialData
-      .observeValues { project, reward, refTag, _ in
+      .observeValues { project, reward, refTag, context in
         AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(
           project: project,
           reward: reward,
+          context: TrackingHelpers.pledgeContext(for: context),
           refTag: refTag
         )
+      }
+
+    initialData
+      .observeValues { project, _, refTag, _ in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: project,
+          refTag: refTag
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Pledge Screen Viewed",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
       }
 
     createBackingData
@@ -822,21 +847,13 @@ private func allValuesChangedAndValid(
   return amountValid && shippingRuleValid
 }
 
-// MARK: - HelperFunctions
+// MARK: - Helper Functions
 
-private func trackingPledgeContext(for viewContext: PledgeViewContext) -> Koala.PledgeContext {
-  switch viewContext {
-  case .pledge:
-    return Koala.PledgeContext.newPledge
-  case .update, .changePaymentMethod:
-    return Koala.PledgeContext.manageReward
-  case .updateReward:
-    return Koala.PledgeContext.changeReward
-  }
-}
-
-private func checkoutPropertiesData(from createBackingData: CreateBackingData, isApplePay: Bool)
-  -> Koala.CheckoutPropertiesData {
+private func checkoutPropertiesData(
+  from createBackingData: CreateBackingData,
+  checkoutId: Int? = nil,
+  isApplePay: Bool
+) -> Koala.CheckoutPropertiesData {
   var pledgeTotal = createBackingData.pledgeAmount
 
   if let shippingRule = createBackingData.shippingRule {
@@ -864,6 +881,7 @@ private func checkoutPropertiesData(from createBackingData: CreateBackingData, i
 
   return Koala.CheckoutPropertiesData(
     amount: amount,
+    checkoutId: checkoutId,
     estimatedDelivery: estimatedDelivery,
     paymentType: paymentType,
     revenueInUsdCents: revenueInUsdCents,

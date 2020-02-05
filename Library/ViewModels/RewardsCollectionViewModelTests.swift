@@ -404,4 +404,31 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     self.scrollToBackedRewardIndexPath.assertValue(indexPath)
   }
+
+  func testRewardSelectedTracking_PledgeContext() {
+    let rewards = [
+      .template
+        |> Reward.lens.id .~ 1,
+      .template
+        |> Reward.lens.id .~ 2,
+      .template
+        |> Reward.lens.id .~ 3,
+      .template
+        |> Reward.lens.id .~ 4
+    ]
+
+    let project = Project.template
+      |> \.rewards .~ rewards
+
+    self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.rewardSelected(with: 2)
+
+    XCTAssertEqual(["Select Reward Button Clicked"], self.trackingClient.events)
+
+    XCTAssertEqual([2], self.trackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self))
+    XCTAssertEqual(["new_pledge"], self.trackingClient.properties(forKey: "context_pledge_flow"))
+    XCTAssertEqual(["activity"], self.trackingClient.properties(forKey: "session_ref_tag"))
+  }
 }
