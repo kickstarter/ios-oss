@@ -27,7 +27,6 @@ internal final class AddNewCardViewModelTests: TestCase {
   private let setStripePublishableKey = TestObserver<String, Never>()
   private let unsupportedCardBrandErrorText = TestObserver<String, Never>()
   private let zipcode = TestObserver<String, Never>()
-  private let zipcodeTextFieldBecomeFirstResponder = TestObserver<Void, Never>()
 
   override func setUp() {
     super.setUp()
@@ -55,8 +54,6 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.vm.outputs.saveButtonIsEnabled.observe(self.saveButtonIsEnabled.observer)
     self.vm.outputs.setStripePublishableKey.observe(self.setStripePublishableKey.observer)
     self.vm.outputs.unsupportedCardBrandErrorText.observe(self.unsupportedCardBrandErrorText.observer)
-    self.vm.outputs.zipcodeTextFieldBecomeFirstResponder
-      .observe(self.zipcodeTextFieldBecomeFirstResponder.observer)
   }
 
   func testZipcodeTextFieldReturn_submitsPaymentDetails() {
@@ -172,7 +169,6 @@ internal final class AddNewCardViewModelTests: TestCase {
   func testBecomeFirstResponder() {
     self.cardholderNameBecomeFirstResponder.assertDidNotEmitValue()
     self.paymentDetailsBecomeFirstResponder.assertDidNotEmitValue()
-    self.zipcodeTextFieldBecomeFirstResponder.assertDidNotEmitValue()
     self.activityIndicatorShouldShow.assertDidNotEmitValue()
     self.saveButtonIsEnabled.assertDidNotEmitValue()
 
@@ -182,7 +178,6 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.cardholderNameBecomeFirstResponder
       .assertValueCount(1, "Cardholder name field is first responder when view loads.")
     self.paymentDetailsBecomeFirstResponder.assertDidNotEmitValue("Not first responder when view loads")
-    self.zipcodeTextFieldBecomeFirstResponder.assertDidNotEmitValue()
     self.vm.inputs.cardholderNameChanged("")
     self.vm.inputs.paymentInfo(isValid: false)
     self.vm.inputs.zipcodeChanged(zipcode: "")
