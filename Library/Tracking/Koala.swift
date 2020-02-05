@@ -1981,7 +1981,7 @@ private func projectProperties(
   props["location"] = project.location.name
   props["name"] = project.name
   props["pid"] = project.id
-  props["category"] = project.category.parent?.name
+  props["category"] = project.category.parentName
   props["category_id"] = project.category.parentId
   props["percent_raised"] = project.stats.fundingProgress
   props["state"] = project.state.rawValue

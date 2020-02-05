@@ -79,7 +79,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
   func testView_Card_Project_TodaySpecial() {
     let featuredProj = self.anomalisaNoPhoto
-      |> Project.lens.category .~ Category.art
+      |> Project.lens.category .~ Project.Category.art
       |> Project.lens.dates.featuredAt .~ self.dateType.init().timeIntervalSince1970
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]

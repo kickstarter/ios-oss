@@ -55,7 +55,7 @@ public final class ProjectNavBarViewModel: ProjectNavBarViewModelType,
 
     let configuredProject = configuredProjectAndRefTag.map(first)
 
-    self.categoryButtonText = configuredProject.map(Project.lens.category.name.view)
+    self.categoryButtonText = configuredProject.map(\.category.name)
       .skipRepeats()
 
     self.categoryButtonTintColor = configuredProject.mapConst(discoveryPrimaryColor())

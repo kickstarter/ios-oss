@@ -61,7 +61,7 @@ extension Project {
     |> Project.lens.photo.small .~ "https://ksr-ugc.imgix.net/assets/012/224/660/847bc4da31e6863e9351bee4e55b8005_original.jpg?w=160&h=90&fit=fill&bg=FBFAF8&v=1464773625&auto=format&q=92&s=fc738d87d861a96333e9f93bee680c27"
     |> Project.lens.name .~ "Today"
     |> Project.lens.blurb .~ "A 24-hour timepiece beautifully designed to change the way you see your day."
-    |> Project.lens.category.name .~ "Product Design"
+    |> \.category.name .~ "Product Design"
     |> Project.lens.stats.backersCount .~ 1_090
     |> Project.lens.stats.pledged .~ 212_870
     |> Project.lens.stats.goal .~ 24_000
@@ -72,7 +72,7 @@ extension Project {
     |> Project.lens.photo.small .~ "https://ksr-ugc.imgix.net/assets/012/347/230/2eddca8c4a06ecb69b8787b985201b92_original.jpg?w=460&fit=max&v=1463756137&auto=format&q=92&s=98a6df348751e8b325e48eb8f802fa7e"
     |> Project.lens.name .~ "Cosmic Surgery"
     |> Project.lens.blurb .~ "Cosmic Surgery is a photo book, set in the not too distant future where the world of cosmetic surgery is about to be transformed."
-    |> Project.lens.category.name .~ "Photo Books"
+    |> \.category.name .~ "Photo Books"
     |> Project.lens.stats.backersCount .~ 329
     |> Project.lens.stats.pledged .~ 22_318
     |> Project.lens.stats.goal .~ 22_000
@@ -98,7 +98,7 @@ extension Project {
     |> Project.lens.photo.med .~ "https://ksr-ugc.imgix.net/assets/005/055/025/6e0d27710c9ae20d661e2974e99fe239_original.jpg?w=460&fit=max&v=1449722467&auto=format&q=92&s=cd67034e3ee1f363be0df4f5d3b5f728"
     |> Project.lens.name .~ "Charlie Kaufman's Anomalisa"
     |> Project.lens.blurb .~ "From writer Charlie Kaufman (Being John Malkovich, Eternal Sunshine of the Spotless Mind) and Duke Johnson (Moral Orel, Frankenhole) comes Anomalisa."
-    |> Project.lens.category.name .~ "Animation"
+    |> \.category.name .~ "Animation"
     |> Project.lens.stats.backersCount .~ 5_770
     |> Project.lens.stats.pledged .~ 406_237
     |> Project.lens.stats.goal .~ 200_000
