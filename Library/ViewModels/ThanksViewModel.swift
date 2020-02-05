@@ -117,7 +117,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .mapConst(Notification(name: .ksr_projectBacked))
 
     self.goToDiscovery = self.categoryCellTappedProperty.signal.skipNil()
-      .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
+      .map {
+        DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0
+    }
 
     let rootCategory: Signal<KsApi.Category, Never> = project
       .map { toBase64($0.category) }

@@ -257,6 +257,12 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
     self.present(controller, animated: true, completion: nil)
   }
 
+  internal func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    if let cell = cell as? ThanksCategoryCell {
+      cell.delegate = self
+    }
+  }
+
   internal func tableView(
     _: UITableView,
     didSelectRowAt indexPath: IndexPath
@@ -279,4 +285,10 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
 extension ThanksViewController: ProjectNavigatorDelegate {
   func transitionedToProject(at _: Int) {}
+}
+
+extension ThanksViewController: ThanksCategoryCellDelegate {
+  func thanksSeeAllProjectsTapped(_ thanksCategoryCell: ThanksCategoryCell, category: KsApi.Category) {
+    self.viewModel.inputs.categoryCellTapped(category)
+  }
 }
