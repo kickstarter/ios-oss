@@ -34,7 +34,7 @@ internal final class ThanksProjectsDataSource: ValueCellDataSource {
     return discoveryProjectCellRowValue?.project
   }
 
-  internal func categoryAtIndexPath(_ indexPath: IndexPath) -> KsApi.Category? {
-    return self[indexPath] as? KsApi.Category
-  }
+//  internal func categoryAtIndexPath(_ indexPath: IndexPath) -> KsApi.Category? {
+//    return self[indexPath] as? KsApi.Category
+//  }
 }
