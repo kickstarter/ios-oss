@@ -76,5 +76,4 @@ public func optimizelyUserAttributes(
   ]
   .compact()
   return properties
-
 }
