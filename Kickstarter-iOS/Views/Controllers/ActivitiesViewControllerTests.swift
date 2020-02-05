@@ -26,12 +26,6 @@ internal final class ActivitiesViewControllerTests: TestCase {
   }
 
   func testActivities_All() {
-    let games = Category.template
-      |> \.id .~ "12"
-      |> \.name .~ "Games"
-      |> \.subcategories
-      .~ Category.SubcategoryConnection(totalCount: 1, nodes: [.tabletopGames])
-
     let daysAgoDate = self.dateType.init().timeIntervalSince1970 - 60 * 60 * 24 * 2
 
     let follow = .template
