@@ -75,5 +75,6 @@ public func optimizelyUserAttributes(
     "session_device_format": AppEnvironment.current.device.deviceFormat
   ]
   .compact()
+
   return properties
 }
