@@ -81,7 +81,7 @@ final class ProjectNavBarViewModelTests: TestCase {
 
   func testCategoryButtonText() {
     self.vm.inputs.configureWith(
-      project: .template |> Project.lens.category.name .~ "Some Category",
+      project: .template |> \.category.name .~ "Some Category",
       refTag: nil
     )
     self.vm.inputs.viewDidLoad()

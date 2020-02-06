@@ -5,28 +5,32 @@ import XCTest
 
 class CategoryTests: XCTestCase {
   private var json: String {
-    return """
+    let json = """
     {
-       "rootCategories": [ {
-          "id":"Q2F0ZWdvcnktMQ==",
-          "name":"Art",
-          "subcategories":{
-             "nodes": [{
-                "id":"Q2F0ZWdvcnktMjg3",
-                "name":"Ceramics",
-                "parentCategory":{
-                   "id":"Q2F0ZWdvcnktMQ==",
-                   "name":"Art"
-                                 }
-                      }],
-          "parentId":"Q2F0ZWdvcnktMQ==",
-          "totalCount":8
-                           }
-                        } ]
-
-            }
-
+      "rootCategories": [
+        {
+          "id": "Q2F0ZWdvcnktMQ==",
+          "name": "Art",
+          "subcategories": {
+            "nodes": [
+              {
+                "id": "Q2F0ZWdvcnktMjg3",
+                "name": "Ceramics",
+                "parentCategory": {
+                  "id": "Q2F0ZWdvcnktMQ==",
+                  "name": "Art"
+                }
+              }
+            ],
+            "parentId": "Q2F0ZWdvcnktMQ==",
+            "totalCount": 8
+          }
+        }
+      ]
+    }
     """
+
+    return json
   }
 
   func testDecode_WithNilValues() {

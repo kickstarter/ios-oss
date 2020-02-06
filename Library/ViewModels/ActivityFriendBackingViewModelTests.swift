@@ -18,51 +18,47 @@ internal final class ActivityFriendBackingViewModelTests: TestCase {
   }
 
   func testFrientTitle_ParentCategory() {
-    let games = Category.template
-      |> \.id .~ "12"
+    let games = Project.Category.template
+      |> \.id .~ 12
       |> \.name .~ "Games"
-      |> \.subcategories
-      .~ Category.SubcategoryConnection(totalCount: 1, nodes: [.tabletopGames])
 
     self.vm.inputs.configureWith(
       activity:
       .template
         |> Activity.lens.category .~ .backing
-        |> Activity.lens.project .~ (.template |> Project.lens.category .~ games)
+        |> Activity.lens.project .~ (.template |> \.category .~ games)
     )
 
     self.friendTitleLabel.assertValues(["Blob backed a Games project."])
   }
 
   func testFrientTitle_SubCategory() {
-    let illustration = Category.template
-      |> \.id .~ "25"
+    let illustration = Project.Category.template
+      |> \.id .~ 25
       |> \.name .~ "Illustration"
-      |> \.parentId .~ "1"
-      |> Category.lens.parent .~ ParentCategory(id: "1", name: "Art")
+      |> \.parentId .~ 1
+      |> \.parentName .~ "Art"
 
     self.vm.inputs.configureWith(
       activity:
       .template
         |> Activity.lens.category .~ .backing
-        |> Activity.lens.project .~ (.template |> Project.lens.category .~ illustration)
+        |> Activity.lens.project .~ (.template |> \.category .~ illustration)
     )
 
     self.friendTitleLabel.assertValues(["Blob backed an Art project."])
   }
 
   func testAccessibility() {
-    let games = Category.template
-      |> \.id .~ "12"
+    let games = Project.Category.template
+      |> \.id .~ 12
       |> \.name .~ "Games"
-      |> \.subcategories
-      .~ Category.SubcategoryConnection(totalCount: 1, nodes: [.tabletopGames])
 
     self.vm.inputs.configureWith(
       activity:
       .template
         |> Activity.lens.category .~ .backing
-        |> Activity.lens.project .~ (.template |> Project.lens.category .~ games)
+        |> Activity.lens.project .~ (.template |> \.category .~ games)
     )
 
     self.cellAccessibilityLabel.assertValues(["Blob backed a Games project., The Project"])

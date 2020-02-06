@@ -12,6 +12,7 @@ public struct UpdateBackingMutation<T: GraphMutationInput>: GraphMutation {
     mutation updateBacking($input: UpdateBackingInput!) {
       updateBacking(input: $input) {
         checkout {
+          id
           state
           backing {
             requiresAction

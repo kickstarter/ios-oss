@@ -85,7 +85,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   func testDisplayBackedProjectText() {
-    let project = .template |> Project.lens.category .~ .games
+    let project = Project.template |> \.category .~ .games
     self.vm.inputs.configure(with: (project, Reward.template, nil))
     self.vm.inputs.viewDidLoad()
 
@@ -295,6 +295,7 @@ final class ThanksViewModelTests: TestCase {
   func testThanksPageViewed_Properties() {
     let checkoutData = Koala.CheckoutPropertiesData(
       amount: "10.00",
+      checkoutId: 1,
       estimatedDelivery: nil,
       paymentType: "CREDIT_CARD",
       revenueInUsdCents: 500,
