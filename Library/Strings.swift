@@ -7262,10 +7262,10 @@ daring ideas."
    "See the rewards"
 
    - **en**: "See the rewards"
-   - **de**: "See the rewards"
-   - **es**: "See the rewards"
-   - **fr**: "See the rewards"
-   - **ja**: "See the rewards"
+   - **de**: "Belohnungen einblenden"
+   - **es**: "Ver las recompensas"
+   - **fr**: "Afficher les récompenses"
+   - **ja**: "リワードを保存"
   */
   public static func See_the_rewards() -> String {
     return localizedString(
@@ -9083,10 +9083,10 @@ catch your eye?"
    "View the rewards"
 
    - **en**: "View the rewards"
-   - **de**: "View the rewards"
-   - **es**: "View the rewards"
-   - **fr**: "View the rewards"
-   - **ja**: "View the rewards"
+   - **de**: "Belohnungen ansehen"
+   - **es**: "Ver las recompensas"
+   - **fr**: "Voir les récompenses"
+   - **ja**: "リワードを表示"
   */
   public static func View_the_rewards() -> String {
     return localizedString(

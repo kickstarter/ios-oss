@@ -447,7 +447,7 @@
 "Security_code" = "Code de sécurité";
 "See_all_category_name_projects" = "Tous les projets de la catégorie %{category_name}";
 "See_rewards" = "Afficher les récompenses";
-"See_the_rewards" = "See the rewards";
+"See_the_rewards" = "Afficher les récompenses";
 "Select" = "Sélectionner";
 "Select_an_option" = "Sélectionner une option";
 "Select_another_project" = "Sélectionner un autre projet";
@@ -554,7 +554,7 @@
 "View_progress" = "Voir les progrès";
 "View_project" = "Afficher le projet";
 "View_rewards" = "Afficher les récompenses";
-"View_the_rewards" = "View the rewards";
+"View_the_rewards" = "Voir les récompenses";
 "View_your_pledge" = "Afficher mon engagement";
 "View_your_reward" = "Afficher ma récompense";
 "View_your_rewards" = "Afficher mes récompenses";

@@ -447,7 +447,7 @@
 "Security_code" = "セキュリティーコード";
 "See_all_category_name_projects" = "%{category_name} プロジェクトをすべて見る";
 "See_rewards" = "リワードを見る";
-"See_the_rewards" = "See the rewards";
+"See_the_rewards" = "リワードを保存";
 "Select" = "選択";
 "Select_an_option" = "選択してください";
 "Select_another_project" = "他のプロジェクトを選ぶ";
@@ -554,7 +554,7 @@
 "View_progress" = "進捗状況を表示";
 "View_project" = "プロジェクトを見る";
 "View_rewards" = "リワードを見る";
-"View_the_rewards" = "View the rewards";
+"View_the_rewards" = "リワードを表示";
 "View_your_pledge" = "プレッジをみる";
 "View_your_reward" = "リワードをみる";
 "View_your_rewards" = "リワードを見る";
