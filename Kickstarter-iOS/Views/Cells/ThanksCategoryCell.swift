@@ -39,7 +39,7 @@ internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] in
         guard let _self = self else { return }
         self?.delegate?.thanksSeeAllProjectsTapped(_self, category: $0)
-    }
+      }
 
     self.seeAllProjectCategoryButton.rac.title = self.viewModel.outputs.seeAllProjectCategoryTitle
   }

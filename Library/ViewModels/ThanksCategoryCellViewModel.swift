@@ -16,20 +16,20 @@ public protocol ThanksCategoryCellViewModelOutputs {
 
 public protocol ThanksCategoryCellViewModelType {
   var inputs: ThanksCategoryCellViewModelInputs { get }
-  var outputs:ThanksCategoryCellViewModelOutputs { get }
+  var outputs: ThanksCategoryCellViewModelOutputs { get }
 }
 
 public final class ThanksCategoryCellViewModel: ThanksCategoryCellViewModelType,
-ThanksCategoryCellViewModelInputs, ThanksCategoryCellViewModelOutputs {
+  ThanksCategoryCellViewModelInputs, ThanksCategoryCellViewModelOutputs {
   public init() {
-    let projectCategory = categoryProperty.signal.skipNil()
+    let projectCategory = self.categoryProperty.signal.skipNil()
 
     self.seeAllProjectCategoryTitle = projectCategory.map {
       Strings.See_all_category_name_projects(category_name: $0.name)
     }
 
     self.notifyToGoToDiscovery = projectCategory
-      .takeWhen(allProjectCategoryButtonTappedProperty.signal)
+      .takeWhen(self.allProjectCategoryButtonTappedProperty.signal)
   }
 
   fileprivate let categoryProperty = MutableProperty<KsApi.Category?>(nil)
