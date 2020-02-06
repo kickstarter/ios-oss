@@ -4,20 +4,20 @@ import Prelude
 import UIKit
 
 internal protocol ThanksCategoryCellDelegate: AnyObject {
-  func thanksSeeAllProjectsTapped(_ thanksCategoryCell: ThanksCategoryCell, category: KsApi.Category)
+  func thanksSeeAllProjectsTapped(_ cell: ThanksCategoryCell, category: KsApi.Category)
 }
 
 internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
+  internal weak var delegate: ThanksCategoryCellDelegate?
   fileprivate let viewModel: ThanksCategoryCellViewModelType = ThanksCategoryCellViewModel()
 
-  internal weak var delegate: ThanksCategoryCellDelegate?
-
-  @IBOutlet fileprivate var seeAllProjectsButton: UIButton!
+  @IBOutlet fileprivate var seeAllProjectCategoryButton: UIButton!
 
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.seeAllProjectsButton.addTarget(self, action: #selector(self.seeAllProjectsTapped), for: .touchUpInside)
+    self.seeAllProjectCategoryButton
+      .addTarget(self, action: #selector(self.seeAllProjectCategoryTapped), for: .touchUpInside)
   }
 
   func configureWith(value category: KsApi.Category) {
@@ -27,7 +27,7 @@ internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self.seeAllProjectsButton
+    _ = self.seeAllProjectCategoryButton
       |> greyButtonStyle
   }
 
@@ -41,10 +41,10 @@ internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
         self?.delegate?.thanksSeeAllProjectsTapped(_self, category: $0)
     }
 
-    self.seeAllProjectsButton.rac.title = self.viewModel.outputs.seeAllProjectsTitle
+    self.seeAllProjectCategoryButton.rac.title = self.viewModel.outputs.seeAllProjectCategoryTitle
   }
 
-  @objc fileprivate func seeAllProjectsTapped() {
-    self.viewModel.inputs.allprojectsButtonTapped()
+  @objc fileprivate func seeAllProjectCategoryTapped() {
+    self.viewModel.inputs.allProjectCategoryButtonTapped()
   }
 }

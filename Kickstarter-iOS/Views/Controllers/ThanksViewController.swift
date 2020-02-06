@@ -269,8 +269,6 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   ) {
     if let project = self.dataSource.projectAtIndexPath(indexPath) {
       self.viewModel.inputs.projectTapped(project)
-    } else if let category = self.dataSource.categoryAtIndexPath(indexPath) {
-      self.viewModel.inputs.categoryCellTapped(category)
     }
   }
 
