@@ -98,18 +98,18 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       .filter { action in action.navigationType == .linkActivated }
       .filter(isExternalNavigation)
 
-    let isInternalNavigationAction = navigationAction
+    let internalNavigationAction = navigationAction
       .filter { action in action.navigationType == .linkActivated }
       .filter(isExternalNavigation >>> isFalse)
 
     let goToComments = currentUpdate
-      .takePairWhen(isInternalNavigationAction)
+      .takePairWhen(internalNavigationAction)
       .map { update, action -> Update? in
         Navigation.Project.updateCommentsWithRequest(action.request) != nil ? update : nil
       }
       .skipNil()
 
-    let goToProject = isInternalNavigationAction
+    let goToProject = internalNavigationAction
       .map { action in (action, Navigation.Project.withRequest(action.request)) }
       .filter(second >>> isNotNil)
 
