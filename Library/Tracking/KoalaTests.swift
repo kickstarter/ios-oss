@@ -1159,9 +1159,9 @@ final class KoalaTests: TestCase {
 
   func testContextProperties() {
     let client = MockTrackingClient()
-    let koala = Koala(client: client)
+    let koala = Koala(dataLakeClient: client)
 
-    koala.trackAppOpen()
+    koala.trackProjectSearchView()
 
     XCTAssertEqual(1_475_361_315.0, client.properties.last?["context_timestamp"] as? TimeInterval)
   }

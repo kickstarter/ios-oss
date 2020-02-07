@@ -1349,7 +1349,7 @@ public final class Koala {
   // MARK: - Messages
 
   public func trackMessageThreadsView(mailbox: Mailbox, project: Project?, refTag: RefTag) {
-    let props = (project.flatMap { properties(project: project, loggedInUser: self.loggedInUser) } ?? [:])
+    let props = (project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:])
       .withAllValuesFrom(["ref_tag": refTag.stringTag])
 
     switch mailbox {
@@ -1369,13 +1369,13 @@ public final class Koala {
   }
 
   public func trackViewedMessageSearch(project: Project?) {
-    let props = project.flatMap { properties(project: project, loggedInUser: self.loggedInUser) } ?? [:]
+    let props = project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:]
 
     self.track(event: "Viewed Message Search", properties: props)
   }
 
   public func trackViewedMessageSearchResults(term: String, project: Project?, hasResults: Bool) {
-    let props = (project.flatMap { properties(project: project, loggedInUser: self.loggedInUser) } ?? [:])
+    let props = (project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:])
       .withAllValuesFrom(["term": term])
     let _deprecatedProps = props.withAllValuesFrom(deprecatedProps)
 
@@ -1389,7 +1389,7 @@ public final class Koala {
   }
 
   public func trackClearedMessageSearchTerm(project: Project?) {
-    let props = project.flatMap { properties(project: project, loggedInUser: self.loggedInUser) } ?? [:]
+    let props = project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:]
 
     self.track(
       event: "Cleared Message Search Term",
@@ -1626,7 +1626,7 @@ public final class Koala {
     project: Project?,
     context: NewsletterContext
   ) {
-    let props = project.flatMap { properties(project: project, loggedInUser: self.loggedInUser) } ?? [:]
+    let props = project.flatMap { properties(project: $0, loggedInUser: self.loggedInUser) } ?? [:]
       .withAllValuesFrom(["context": context.trackingString, "type": newsletter.trackingString])
 
     self.track(
@@ -1925,7 +1925,7 @@ public final class Koala {
 
     self.track(
       event: "Completed Project Video",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+      properties: properties(project: project, loggedInUser: self.loggedInUser)
     )
   }
 
@@ -1966,8 +1966,8 @@ public final class Koala {
     reward: Reward,
     pledgeContext: PledgeContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     // deprecated
@@ -1984,8 +1984,8 @@ public final class Koala {
     reward: Reward,
     pledgeContext: PledgeContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     // deprecated
@@ -1999,8 +1999,8 @@ public final class Koala {
     reward: Reward,
     pledgeContext: PledgeContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Apple Pay Stripe Token Created", properties: props.withAllValuesFrom(deprecatedProps))
@@ -2013,8 +2013,8 @@ public final class Koala {
     reward: Reward,
     pledgeContext: PledgeContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Apple Pay Stripe Token Errored", properties: props.withAllValuesFrom(deprecatedProps))
@@ -2027,8 +2027,8 @@ public final class Koala {
     reward: Reward,
     pledgeContext: PledgeContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Apple Pay Finished", properties: props.withAllValuesFrom(deprecatedProps))
@@ -2039,8 +2039,8 @@ public final class Koala {
     reward: Reward,
     pledgeContext: PledgeContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
     self.track(event: "Apple Pay Canceled", properties: props.withAllValuesFrom(deprecatedProps))
 
@@ -2061,8 +2061,8 @@ public final class Koala {
     project: Project,
     pledgeContext: PledgeContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Expanded Reward Description", properties: props)
@@ -2073,8 +2073,8 @@ public final class Koala {
     project: Project,
     pledgeContext: PledgeContext
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
+    let props = properties(project: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(properties(reward: reward))
       .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
 
     self.track(event: "Expanded Unavailable Reward", properties: props)
@@ -2415,6 +2415,25 @@ private func properties(
 }
 
 /*
+ DEPRECATED - used only for Koala events, all new events should use pledgeProperties
+ */
+private func properties(reward: Reward, prefix: String = "backer_reward_") -> [String: Any] {
+  guard reward != Reward.noReward else { return [:] }
+
+  var result: [String: Any] = [:]
+
+  result["id"] = reward.id
+  result["is_limited_quantity"] = reward.limit == nil
+  // result["is_limited_time"] = // implement when reward scheduling is supported
+  result["minimum"] = reward.minimum
+  result["shipping_enabled"] = reward.shipping.enabled
+  result["shipping_preference"] = reward.shipping.preference?.trackingString
+  result["has_items"] = !reward.rewardsItems.isEmpty
+
+  return result.prefixedKeys(prefix)
+}
+
+/*
  DEPRECATED - used only for Koala events, all new events should use userProperties
  */
 private func properties(user: User, prefix: String = "user_") -> [String: Any] {
@@ -2561,19 +2580,19 @@ private func properties(
 
   switch shareContext {
   case let .creatorDashboard(project):
-    result = result.withAllValuesFrom(properties(project: project, loggedInUser: self.loggedInUser))
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "creator_dashboard"
   case let .discovery(project):
-    result = result.withAllValuesFrom(properties(project: project, loggedInUser: self.loggedInUser))
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "discovery"
   case let .project(project):
-    result = result.withAllValuesFrom(properties(project: project, loggedInUser: self.loggedInUser))
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "project"
   case let .thanks(project):
-    result = result.withAllValuesFrom(properties(project: project, loggedInUser: self.loggedInUser))
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result["context"] = "thanks"
   case let .update(project, update):
-    result = result.withAllValuesFrom(properties(project: project, loggedInUser: self.loggedInUser))
+    result = result.withAllValuesFrom(properties(project: project, loggedInUser: loggedInUser))
     result = result.withAllValuesFrom(properties(update: update))
     result["context"] = "update"
   }
