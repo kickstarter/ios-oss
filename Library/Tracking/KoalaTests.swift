@@ -21,7 +21,7 @@ final class KoalaTests: TestCase {
         "ios_feature_something": false,
         "ios_feature_checkout": true,
         "ios_feature_go_rewardless": true
-    ]
+      ]
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
     let koala = Koala(
@@ -679,24 +679,34 @@ final class KoalaTests: TestCase {
 
     XCTAssertEqual(["App Open", "Opened App"], client.events)
     XCTAssertEqual(["App Open", "Opened App"], callBackEvents)
-    XCTAssertEqual("Apple",
-                   client.properties.last?["manufacturer"] as? String,
-                   "Koala properties are logged")
-    XCTAssertEqual("Apple",
-                   callBackProperties?["manufacturer"] as? String,
-                   "Koala properties are logged")
+    XCTAssertEqual(
+      "Apple",
+      client.properties.last?["manufacturer"] as? String,
+      "Koala properties are logged"
+    )
+    XCTAssertEqual(
+      "Apple",
+      callBackProperties?["manufacturer"] as? String,
+      "Koala properties are logged"
+    )
 
     koala.trackProjectSearchView()
 
     XCTAssertEqual(["Search Page Viewed"], dataLakeClient.events)
-    XCTAssertEqual(["App Open", "Opened App", "Search Page Viewed", "Search Page Viewed"],
-                   callBackEvents,
-                   "Koala and DataLake events are logged")
-    XCTAssertEqual("Apple",
-                   dataLakeClient.properties.last?["session_device_manufacturer"] as? String,
-                   "DataLake whitelisted properties are logged")
-    XCTAssertEqual("Apple", callBackProperties?["session_device_manufacturer"] as? String,
-                   "DataLake whitelisted properties are logged")
+    XCTAssertEqual(
+      ["App Open", "Opened App", "Search Page Viewed", "Search Page Viewed"],
+      callBackEvents,
+      "Koala and DataLake events are logged"
+    )
+    XCTAssertEqual(
+      "Apple",
+      dataLakeClient.properties.last?["session_device_manufacturer"] as? String,
+      "DataLake whitelisted properties are logged"
+    )
+    XCTAssertEqual(
+      "Apple", callBackProperties?["session_device_manufacturer"] as? String,
+      "DataLake whitelisted properties are logged"
+    )
   }
 
   func testTrackViewedAccount() {
@@ -1130,11 +1140,15 @@ final class KoalaTests: TestCase {
 
     let koalaProperties = koalaClient.properties.last
 
-    XCTAssertEqual("Apple",
-                   koalaProperties?["manufacturer"] as? String,
-                   "Koala session property names are correct")
-    XCTAssertEqual(false, koalaProperties?["user_logged_in"] as? Bool,
-                   "Koala user property names are correct")
+    XCTAssertEqual(
+      "Apple",
+      koalaProperties?["manufacturer"] as? String,
+      "Koala session property names are correct"
+    )
+    XCTAssertEqual(
+      false, koalaProperties?["user_logged_in"] as? Bool,
+      "Koala user property names are correct"
+    )
 
     koala.trackProjectViewed(Project.template) // white-listed event
 
@@ -1149,12 +1163,16 @@ final class KoalaTests: TestCase {
 
     let dataLakeProperties = dataLakeClient.properties.last
 
-    XCTAssertEqual("Apple",
-                   dataLakeProperties?["session_device_manufacturer"] as? String,
-                   "DataLake session property names are correct")
-    XCTAssertEqual(false,
-                   dataLakeProperties?["session_user_logged_in"] as? Bool,
-                   "DataLake user property names are correct")
+    XCTAssertEqual(
+      "Apple",
+      dataLakeProperties?["session_device_manufacturer"] as? String,
+      "DataLake session property names are correct"
+    )
+    XCTAssertEqual(
+      false,
+      dataLakeProperties?["session_user_logged_in"] as? Bool,
+      "DataLake user property names are correct"
+    )
   }
 
   func testContextProperties() {

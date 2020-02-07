@@ -600,8 +600,10 @@ public final class Koala {
       self.track(event: "Fix Pledge Button Clicked", properties: props)
     case .pledge:
       let projectProps = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      self.track(event: DataLakeWhiteListedEvent.projectPagePledgeButtonClicked.rawValue,
-                 properties: projectProps)
+      self.track(
+        event: DataLakeWhiteListedEvent.projectPagePledgeButtonClicked.rawValue,
+        properties: projectProps
+      )
     case .manage:
       self.track(event: "Manage Pledge Button Clicked", properties: props)
     case .seeTheRewards:
@@ -2127,9 +2129,11 @@ public final class Koala {
     var allProperties: [String: Any] = [:]
 
     if DataLakeWhiteListedEvent.allWhiteListedEvents().contains(event) {
-      allProperties = self.dataLakeProperties(with: properties,
-                                              refTag: refTag,
-                                              referrerCredit: referrerCredit)
+      allProperties = self.dataLakeProperties(
+        with: properties,
+        refTag: refTag,
+        referrerCredit: referrerCredit
+      )
 
       self.trackDataLakeEvent(event, properties: allProperties)
     } else {
@@ -2139,8 +2143,10 @@ public final class Koala {
     self.trackKoalaEvent(event, properties: allProperties)
   }
 
-  private func trackDataLakeEvent(_ event: String,
-                                  properties: [String: Any] = [:]) {
+  private func trackDataLakeEvent(
+    _ event: String,
+    properties: [String: Any] = [:]
+  ) {
     self.logEventCallback?(event, properties)
 
     self.dataLakeClient.track(
@@ -2149,8 +2155,10 @@ public final class Koala {
     )
   }
 
-  private func trackKoalaEvent(_ event: String,
-                               properties: [String: Any] = [:]) {
+  private func trackKoalaEvent(
+    _ event: String,
+    properties: [String: Any] = [:]
+  ) {
     self.logEventCallback?(event, properties)
 
     self.koalaClient.track(
@@ -2163,9 +2171,11 @@ public final class Koala {
     return self.defaultProperties().withAllValuesFrom(properties)
   }
 
-  private func dataLakeProperties(with properties: [String: Any],
-                                  refTag: String?,
-                                  referrerCredit: String?) -> [String: Any] {
+  private func dataLakeProperties(
+    with properties: [String: Any],
+    refTag: String?,
+    referrerCredit: String?
+  ) -> [String: Any] {
     return self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
       .withAllValuesFrom(contextProperties())
@@ -2220,7 +2230,7 @@ public final class Koala {
 
   /*
    DEPRECATED - Used only for Koala events, all new events should use sessionProperties
-  */
+   */
   private func defaultProperties() -> [String: Any] {
     var props: [String: Any] = [:]
 
@@ -2377,7 +2387,7 @@ private func properties(
   project: Project,
   loggedInUser: User?,
   prefix: String = "project_"
-  ) -> [String: Any] {
+) -> [String: Any] {
   var props: [String: Any] = [:]
 
   props["backers_count"] = project.stats.backersCount
