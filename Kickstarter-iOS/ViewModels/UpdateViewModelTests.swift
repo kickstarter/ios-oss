@@ -205,18 +205,47 @@ final class UpdateViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     withEnvironment(apiService: MockService(fetchProjectResponse: prelaunchProject)) {
-      let request = URLRequest(url: prelaunchProjectURL)
+      guard let google = URL(string: "https://www.google.com") else {
+        XCTFail("Should have a URL")
+        return
+      }
 
-      let navigationAction = WKNavigationActionData(
+      let request1 = URLRequest(url: google)
+
+      let navigationAction1 = WKNavigationActionData(
+        navigationType: .other,
+        request: request1,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: request1),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: request1)
+      )
+
+      XCTAssertEqual(
+        WKNavigationActionPolicy.allow.rawValue,
+        self.vm.inputs.decidePolicyFor(navigationAction: navigationAction1).rawValue
+      )
+
+      self.scheduler.run()
+
+      self.goToProject.assertDidNotEmitValue()
+      self.goToComments.assertDidNotEmitValue()
+      self.webViewLoadRequest.assertValueCount(1, "Initial update load request")
+      self.goToSafariBrowser.assertValues([])
+
+      XCTAssertEqual([], self.trackingClient.events)
+      XCTAssertEqual(nil, self.trackingClient.properties.last?["context"] as? String)
+
+      let request2 = URLRequest(url: prelaunchProjectURL)
+
+      let navigationAction2 = WKNavigationActionData(
         navigationType: .linkActivated,
-        request: request,
-        sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
-        targetFrame: WKFrameInfoData(mainFrame: true, request: request)
+        request: request2,
+        sourceFrame: WKFrameInfoData(mainFrame: true, request: request2),
+        targetFrame: WKFrameInfoData(mainFrame: true, request: request2)
       )
 
       XCTAssertEqual(
         WKNavigationActionPolicy.cancel.rawValue,
-        self.vm.inputs.decidePolicyFor(navigationAction: navigationAction).rawValue
+        self.vm.inputs.decidePolicyFor(navigationAction: navigationAction2).rawValue
       )
 
       self.scheduler.run()
