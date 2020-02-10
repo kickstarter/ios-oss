@@ -1,6 +1,6 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
-import Library
+@testable import Library
 import Prelude
 
 final class BetaToolsViewControllerTests: TestCase {
@@ -19,7 +19,7 @@ final class BetaToolsViewControllerTests: TestCase {
   func testBetaToolsViewController() {
     let service = MockService(serverConfig: ServerConfig.staging)
 
-    withEnvironment(apiService: service, language: .en) {
+    withEnvironment(apiService: service, language: .en, mainBundle: MockBundle()) {
       let controller = BetaToolsViewController.instantiate()
       let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
 
