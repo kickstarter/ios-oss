@@ -42,7 +42,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
+        parent.view.frame.size.height = device == .pad ? 1_200 : 900
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -62,9 +62,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = 1_750
+        parent.view.frame.size.height = 900
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)", tolerance: 0.0001)
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -100,9 +100,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_600 : 1_350
+        parent.view.frame.size.height = device == .pad ? 1_200 : 900
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -115,7 +115,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
       |> Project.lens.personalization.backing %~~ { _, _ in
         .template
-          |> Backing.lens.amount .~ 5
+          |> Backing.lens.amount .~ 5.0
           |> Backing.lens.rewardId .~ nil
           |> Backing.lens.reward .~ nil
       }
@@ -128,9 +128,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = 1_200
+        parent.view.frame.size.height = 900
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)", tolerance: 0.0001)
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
     }
   }
@@ -157,9 +157,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_600 : 1_350
+        parent.view.frame.size.height = device == .pad ? 1_200 : 900
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.0001)
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -180,9 +180,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
     let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-    parent.view.frame.size.height = 1_500
+    parent.view.frame.size.height = 900
 
-    FBSnapshotVerifyView(vc.view, tolerance: 0.0001)
+    FBSnapshotVerifyView(vc.view)
   }
 
   func testCreator_LiveProject() {
@@ -196,7 +196,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       withEnvironment(currentUser: user, language: language, locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
+        parent.view.frame.size.height = device == .pad ? 1_200 : 900
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -214,7 +214,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       withEnvironment(currentUser: user, language: language, locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 2_300 : 2_200
+        parent.view.frame.size.height = device == .pad ? 1_200 : 900
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -231,9 +231,9 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = 1_700
+        parent.view.frame.size.height = 900
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)", tolerance: 0.0001)
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
     }
   }

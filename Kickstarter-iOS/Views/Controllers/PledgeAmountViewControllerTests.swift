@@ -4,6 +4,9 @@
 import Prelude
 import UIKit
 
+private let regularHeight: CGFloat = 150
+private let expandedHeight: CGFloat = 350
+
 final class PledgeAmountViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
@@ -23,7 +26,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-      parent.view.frame.size.height = 100
+      parent.view.frame.size.height = regularHeight
 
       controller.configureWith(value: (project: .template, reward: .template))
 
@@ -35,7 +38,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     UITraitCollection.allCases.forEach { additionalTraits in
       let controller = PledgeAmountViewController.instantiate()
       let (parent, _) = traitControllers(child: controller, additionalTraits: additionalTraits)
-      parent.view.frame.size.height = 300
+      parent.view.frame.size.height = expandedHeight
 
       controller.configureWith(value: (project: .template, reward: .template))
 
@@ -52,7 +55,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-      parent.view.frame.size.height = 100
+      parent.view.frame.size.height = regularHeight
 
       controller.configureWith(value: (project: project, reward: .template))
 
@@ -67,7 +70,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-      parent.view.frame.size.height = 100
+      parent.view.frame.size.height = regularHeight
 
       controller.configureWith(value: (project: .template, reward: reward))
       controller.stepperValueChanged(UIStepper(frame: .zero) |> \.value .~ 0)
@@ -90,7 +93,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-      parent.view.frame.size.height = 100
+      parent.view.frame.size.height = regularHeight
 
       controller.configureWith(value: (project: .template, reward: .template))
       controller.stepperValueChanged(stepper)
@@ -110,7 +113,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-      parent.view.frame.size.height = 100
+      parent.view.frame.size.height = regularHeight
 
       controller.configureWith(value: (project: .template, reward: reward))
       controller.stepperValueChanged(stepper)
@@ -129,7 +132,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-      parent.view.frame.size.height = 100
+      parent.view.frame.size.height = regularHeight
 
       controller.configureWith(value: (project: .template, reward: reward))
       controller.stepperValueChanged(stepper)
@@ -149,7 +152,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-      parent.view.frame.size.height = 100
+      parent.view.frame.size.height = regularHeight
 
       controller.configureWith(value: (project: project, reward: .template))
       controller.stepperValueChanged(stepper)
@@ -169,7 +172,7 @@ final class PledgeAmountViewControllerTests: TestCase {
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-      parent.view.frame.size.height = 100
+      parent.view.frame.size.height = regularHeight
 
       controller.configureWith(value: (project: project, reward: .template))
       controller.stepperValueChanged(stepper)

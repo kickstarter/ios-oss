@@ -18,23 +18,23 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
   let reward3 = Reward.template
     |> Reward.lens.backersCount .~ 120
     |> Reward.lens.id .~ 2
-    |> Reward.lens.minimum .~ 20
+    |> Reward.lens.minimum .~ 20.0
   let reward4 = Reward.template
     |> Reward.lens.backersCount .~ 4
     |> Reward.lens.id .~ 3
-    |> Reward.lens.minimum .~ 15
+    |> Reward.lens.minimum .~ 15.0
   let reward5 = Reward.template
     |> Reward.lens.backersCount .~ 25
     |> Reward.lens.id .~ 4
-    |> Reward.lens.minimum .~ 35
+    |> Reward.lens.minimum .~ 35.0
   let reward6 = Reward.template
     |> Reward.lens.backersCount .~ 16
     |> Reward.lens.id .~ 5
-    |> Reward.lens.minimum .~ 30
+    |> Reward.lens.minimum .~ 30.0
   let reward7 = Reward.template
     |> Reward.lens.id .~ 6
     |> Reward.lens.backersCount .~ 0
-    |> Reward.lens.minimum .~ 100
+    |> Reward.lens.minimum .~ 100.0
 
   let stat1 = .template
     |> ProjectStatsEnvelope.RewardStats.lens.id .~ 1
@@ -42,31 +42,31 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
   let stat2 = .template
     |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ 120
     |> ProjectStatsEnvelope.RewardStats.lens.id .~ 2
-    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 20
+    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 20.0
     |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 1_000
 
   let stat3 = .template
     |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ 4
     |> ProjectStatsEnvelope.RewardStats.lens.id .~ 3
-    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 15
+    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 15.0
     |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 250
 
   let stat4 = .template
     |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ 25
     |> ProjectStatsEnvelope.RewardStats.lens.id .~ 4
-    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 35
+    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 35.0
     |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 1_750
 
   let stat5 = .template
     |> ProjectStatsEnvelope.RewardStats.lens.backersCount .~ 16
     |> ProjectStatsEnvelope.RewardStats.lens.id .~ 5
-    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 30
+    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 30.0
     |> ProjectStatsEnvelope.RewardStats.lens.pledged .~ 1_500
 
   let zeroPledgedStat1 = ProjectStatsEnvelope.RewardStats.unPledged
   let zeroPledgedStat2 = ProjectStatsEnvelope.RewardStats.unPledged
     |> ProjectStatsEnvelope.RewardStats.lens.id .~ 6
-    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 100
+    |> ProjectStatsEnvelope.RewardStats.lens.minimum .~ 100.0
 
   override func setUp() {
     super.setUp()
@@ -99,21 +99,6 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
     self.rewardsRowCountry.assertValues([.us])
     self.rewardsRowTotalPledged.assertValues([1_500])
     self.hideSeeAllTiersButton.assertValues([true])
-
-    // switched project
-//    let rewards2 = [reward2, reward3, reward7]
-//    let project2 = Project.template
-//      |> Project.lens.rewards .~ rewards2
-//      |> Project.lens.stats.pledged .~ 1_000
-//    let stats2 = [stat2]
-//
-//    self.vm.inputs.configureWith(project: project2, rewardStats: stats2, totalPledged: 1000)
-//
-//    self.rewardsRowRewards.assertValues([[stat2, stat1, zeroPledgedStat1],
-//      [zeroPledgedStat2, stat2, zeroPledgedStat1]])
-//    self.rewardsRowCountry.assertValues([.us, .us])
-//    self.rewardsRowTotalPledged.assertValues([1500, 1000])
-//    self.hideSeeAllTiersButton.assertValues([true])
   }
 
   func testShowAllRewards() {

@@ -45,10 +45,6 @@ public protocol ProjectPamphletViewModelOutputs {
 
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
 
-  var goToDeprecatedManagePledge: Signal<PledgeData, Never> { get }
-
-  var goToDeprecatedViewBacking: Signal<BackingData, Never> { get }
-
   var goToManagePledge: Signal<Project, Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
@@ -118,22 +114,10 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     let shouldGoToRewards = ctaButtonTappedWithType
       .filter { [.pledge, .viewRewards, .viewYourRewards, .seeTheRewards, .viewTheRewards].contains($0) }
       .ignoreValues()
-      .filter(userCanSeeNativeCheckout)
-
-    let shouldGoToDeprecatedManagePledge = ctaButtonTappedWithType
-      .filter { $0 == .manage }
-      .ignoreValues()
-      .filter(featureNativeCheckoutPledgeViewIsEnabled >>> isFalse)
-
-    let shouldGoToDeprecatedViewBacking = ctaButtonTappedWithType
-      .filter { $0 == .viewBacking }
-      .ignoreValues()
-      .filter(featureNativeCheckoutPledgeViewIsEnabled >>> isFalse)
 
     let shouldGoToManagePledge = ctaButtonTappedWithType
       .filter { $0 == .viewBacking || $0 == .manage }
       .ignoreValues()
-      .filter(featureNativeCheckoutPledgeViewIsEnabled)
 
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(shouldGoToRewards)
@@ -142,26 +126,12 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .takeWhen(shouldGoToManagePledge)
       .map(first)
 
-    self.goToDeprecatedManagePledge = Signal.combineLatest(projectAndBacking, refTag)
-      .takeWhen(shouldGoToDeprecatedManagePledge)
-      .map(unpack)
-      .map { project, backing, refTag in
-        PledgeData(project: project, reward: reward(from: backing, inProject: project), refTag: refTag)
-      }
-
-    self.goToDeprecatedViewBacking = projectAndBacking
-      .takeWhen(shouldGoToDeprecatedViewBacking)
-      .map { project, _ in
-        BackingData(project, AppEnvironment.current.currentUser)
-      }
-
     let projectError: Signal<ErrorEnvelope, Never> = freshProjectAndRefTagEvent.errors()
 
     self.configurePledgeCTAView = Signal.combineLatest(
       Signal.merge(freshProjectAndRefTag.map(Either.left), projectError.map(Either.right)),
       isLoading.signal
     )
-    .filter { _ in userCanSeeNativeCheckout() }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -290,8 +260,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<(Either<(Project, RefTag?), ErrorEnvelope>, Bool), Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
-  public let goToDeprecatedManagePledge: Signal<PledgeData, Never>
-  public let goToDeprecatedViewBacking: Signal<BackingData, Never>
   public let goToManagePledge: Signal<Project, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>

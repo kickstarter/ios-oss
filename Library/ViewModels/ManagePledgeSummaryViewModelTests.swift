@@ -35,8 +35,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
   func testTextOutputsEmitTheCorrectValue() {
     let backing = .template
       |> Backing.lens.sequence .~ 999
-      |> Backing.lens.pledgedAt .~ 1_568_666_243
-      |> Backing.lens.amount .~ 30
+      |> Backing.lens.pledgedAt .~ 1_568_666_243.0
+      |> Backing.lens.amount .~ 30.0
       |> Backing.lens.shippingAmount .~ 7
 
     let project = Project.template

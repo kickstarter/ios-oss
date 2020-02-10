@@ -697,7 +697,7 @@ final class RewardCardViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.template
       |> Reward.lens.remaining .~ 10
-      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.minimum .~ 1_000.0
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
@@ -708,7 +708,7 @@ final class RewardCardViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.template
       |> Reward.lens.remaining .~ 0
-      |> Reward.lens.minimum .~ 1_000
+      |> Reward.lens.minimum .~ 1_000.0
 
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 

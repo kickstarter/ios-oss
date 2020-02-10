@@ -35,7 +35,7 @@ internal final class DashboardProjectsDrawerCell: UITableViewCell, ValueCell {
 
     _ = self
       |> UITableViewCell.lens.isAccessibilityElement .~ true
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button
 
     _ = self.projectNumLabel |> dashboardDrawerProjectNumberTextLabelStyle
     _ = self.projectNameLabel |> dashboardDrawerProjectNameTextLabelStyle

@@ -25,7 +25,7 @@ internal final class DashboardReferrersRowStackViewViewModelTests: TestCase {
     let referrer = .template
       |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 50
       |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.125
-      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 100
+      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 100.0
       |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "search"
       |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .internal
     let country = Project.Country.us

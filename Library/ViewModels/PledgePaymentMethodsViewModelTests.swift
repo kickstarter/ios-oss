@@ -475,7 +475,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           |> Backing.lens.reward .~ Reward.postcards
           |> Backing.lens.rewardId .~ Reward.postcards.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     withEnvironment(apiService: mockService, currentUser: User.template) {

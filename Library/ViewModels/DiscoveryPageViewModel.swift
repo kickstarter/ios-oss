@@ -176,9 +176,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     )
 
     let paginatedProjects: Signal<[Project], Never>
-    let pageCount: Signal<Int, Never>
     let isLoading: Signal<Bool, Never>
-    (paginatedProjects, isLoading, pageCount) = paginate(
+    (paginatedProjects, isLoading, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,

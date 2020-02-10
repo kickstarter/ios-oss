@@ -62,7 +62,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
     let launch = .template
       |> Activity.lens.id .~ 73
-      |> Activity.lens.project .~ (.cosmicSurgery
+      |> Activity.lens.project .~ .some(.cosmicSurgery
         |> Project.lens.photo.med .~ ""
         |> Project.lens.photo.full .~ ""
         |> Project.lens.name .~ "A Very Important Project About Kittens and Puppies"

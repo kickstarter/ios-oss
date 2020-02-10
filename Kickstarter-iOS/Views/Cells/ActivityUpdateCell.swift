@@ -61,7 +61,7 @@ internal final class ActivityUpdateCell: UITableViewCell, ValueCell {
 
     _ = self
       |> feedTableViewCellStyle
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button
 
     _ = self.cardView
       |> cardStyle()
