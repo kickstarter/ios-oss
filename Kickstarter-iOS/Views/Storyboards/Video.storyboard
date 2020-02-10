@@ -34,10 +34,6 @@
                                     <constraint firstAttribute="width" secondItem="Z6Z-Qr-3Gq" secondAttribute="height" multiplier="16:9" id="D1s-eH-RY5"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mYY-fe-xbg">
-                                <rect key="frame" x="12" y="12" width="376" height="212.5"/>
-                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eBP-iG-9iY">
                                 <rect key="frame" x="174" y="93" width="52" height="40"/>
                                 <constraints>
@@ -51,16 +47,12 @@
                         <constraints>
                             <constraint firstItem="Z6Z-Qr-3Gq" firstAttribute="leading" secondItem="qLv-n8-tLe" secondAttribute="leading" constant="12" id="3Ye-cR-oIZ"/>
                             <constraint firstItem="xRP-Dy-zdg" firstAttribute="leading" secondItem="qLv-n8-tLe" secondAttribute="leading" constant="12" id="3ej-al-UlW"/>
-                            <constraint firstItem="mYY-fe-xbg" firstAttribute="bottom" secondItem="Z6Z-Qr-3Gq" secondAttribute="bottom" constant="1" id="Bl6-uB-sPe"/>
                             <constraint firstItem="eBP-iG-9iY" firstAttribute="centerX" secondItem="Z6Z-Qr-3Gq" secondAttribute="centerX" id="Ii0-Hd-IF5"/>
                             <constraint firstItem="eBP-iG-9iY" firstAttribute="centerY" secondItem="Z6Z-Qr-3Gq" secondAttribute="centerY" constant="-4.75" id="KrD-cN-TkA"/>
                             <constraint firstItem="xRP-Dy-zdg" firstAttribute="top" secondItem="xk2-fv-789" secondAttribute="bottom" constant="12" id="M80-UO-okJ"/>
-                            <constraint firstItem="mYY-fe-xbg" firstAttribute="trailing" secondItem="Z6Z-Qr-3Gq" secondAttribute="trailing" id="U2v-Zv-ad2"/>
                             <constraint firstAttribute="trailing" secondItem="xRP-Dy-zdg" secondAttribute="trailing" constant="12" id="Wc5-gz-wxb"/>
                             <constraint firstAttribute="trailing" secondItem="Z6Z-Qr-3Gq" secondAttribute="trailing" constant="12" id="ZCJ-kj-dFu"/>
                             <constraint firstItem="Up2-lq-jO6" firstAttribute="top" secondItem="xRP-Dy-zdg" secondAttribute="bottom" constant="6" id="bxf-rn-7m3"/>
-                            <constraint firstItem="mYY-fe-xbg" firstAttribute="leading" secondItem="Z6Z-Qr-3Gq" secondAttribute="leading" id="inM-73-nIU"/>
-                            <constraint firstItem="mYY-fe-xbg" firstAttribute="top" secondItem="Z6Z-Qr-3Gq" secondAttribute="top" id="jp9-om-cpd"/>
                             <constraint firstItem="Z6Z-Qr-3Gq" firstAttribute="top" secondItem="xk2-fv-789" secondAttribute="bottom" constant="12" id="wEC-3c-pTG"/>
                         </constraints>
                     </view>
@@ -70,7 +62,6 @@
                         <outlet property="playButton" destination="eBP-iG-9iY" id="qTG-HO-rbm"/>
                         <outlet property="projectImageView" destination="Z6Z-Qr-3Gq" id="J2C-u2-4ei"/>
                         <outlet property="videoContainerView" destination="xRP-Dy-zdg" id="5hO-s9-LSa"/>
-                        <outlet property="videoOverlayView" destination="mYY-fe-xbg" id="Bqt-U1-1w6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TWx-34-H27" userLabel="First Responder" sceneMemberID="firstResponder"/>

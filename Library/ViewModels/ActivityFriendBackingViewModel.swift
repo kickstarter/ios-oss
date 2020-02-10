@@ -49,7 +49,12 @@ public final class ActivityFriendBackingViewModel: ActivityFriendBackingViewMode
 
     self.friendTitle = activity
       .map { activity in
-        guard let categoryId = activity.project?.category.parentId ?? activity.project?.category.id else {
+        let stringCategoryId = (
+          activity.project?.category.parentId ?? activity.project?.category.id
+        )
+        .map(String.init)
+
+        guard let categoryId = stringCategoryId else {
           return NSAttributedString(string: "")
         }
 

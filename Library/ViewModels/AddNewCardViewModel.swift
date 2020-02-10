@@ -19,7 +19,6 @@ public protocol AddNewCardViewModelInputs {
   func cardholderNameTextFieldReturn()
   func creditCardChanged(cardDetails: CardDetails)
   func configure(with intent: AddNewCardIntent, project: Project?)
-  func paymentCardTextFieldDidEndEditing()
   func paymentInfo(isValid: Bool)
   func rememberThisCardToggleChanged(to value: Bool)
   func saveButtonTapped()
@@ -45,7 +44,6 @@ public protocol AddNewCardViewModelOutputs {
   var saveButtonIsEnabled: Signal<Bool, Never> { get }
   var setStripePublishableKey: Signal<String, Never> { get }
   var unsupportedCardBrandErrorText: Signal<String, Never> { get }
-  var zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never> { get }
 }
 
 public protocol AddNewCardViewModelType {
@@ -78,7 +76,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
 
     self.cardholderNameBecomeFirstResponder = self.viewDidLoadProperty.signal
     self.paymentDetailsBecomeFirstResponder = self.cardholderNameTextFieldReturnProperty.signal
-    self.zipcodeTextFieldBecomeFirstResponder = self.paymentCardTextFieldDidEndEditingProperty.signal
 
     let zipcode = self.zipcodeProperty.signal.skipNil()
     let zipcodeIsValid: Signal<Bool, Never> = zipcode.map { !$0.isEmpty }
@@ -241,11 +238,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     self.addNewCardIntentAndProjectProperty.value = (intent, project)
   }
 
-  private let paymentCardTextFieldDidEndEditingProperty = MutableProperty(())
-  public func paymentCardTextFieldDidEndEditing() {
-    self.paymentCardTextFieldDidEndEditingProperty.value = ()
-  }
-
   private let paymentInfoIsValidProperty = MutableProperty(false)
   public func paymentInfo(isValid: Bool) {
     self.paymentInfoIsValidProperty.value = isValid
@@ -306,7 +298,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public let saveButtonIsEnabled: Signal<Bool, Never>
   public let setStripePublishableKey: Signal<String, Never>
   public let unsupportedCardBrandErrorText: Signal<String, Never>
-  public let zipcodeTextFieldBecomeFirstResponder: Signal<Void, Never>
 
   public var inputs: AddNewCardViewModelInputs { return self }
   public var outputs: AddNewCardViewModelOutputs { return self }
