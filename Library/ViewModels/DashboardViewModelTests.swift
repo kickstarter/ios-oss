@@ -286,7 +286,7 @@ internal final class DashboardViewModelTests: TestCase {
       let updatedProjects = (0...4).map {
         .template
           |> Project.lens.id .~ $0
-          |> Project.lens.name %~ { $0 + " (updated)" }
+          |> Project.lens.name %~ { "\($0)" + " (updated)" }
       }
 
       withEnvironment(apiService: MockService(fetchProjectsResponse: updatedProjects)) {

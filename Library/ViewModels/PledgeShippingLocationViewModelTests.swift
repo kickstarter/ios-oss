@@ -160,7 +160,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result(failure: error))) {
+    withEnvironment(apiService: MockService(fetchShippingRulesResult: Result.failure(error))) {
       self.vm.inputs.configureWith(project: .template, reward: reward)
       self.vm.inputs.viewDidLoad()
 
@@ -192,7 +192,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
           |> Backing.lens.reward .~ Reward.postcards
           |> Backing.lens.rewardId .~ Reward.postcards.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
           |> Backing.lens.locationId .~ Location.canada.id
           |> Backing.lens.locationName .~ Location.canada.name
       )
@@ -243,7 +243,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
           |> Backing.lens.reward .~ Reward.postcards
           |> Backing.lens.rewardId .~ Reward.postcards.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
           |> Backing.lens.locationId .~ Location.canada.id
           |> Backing.lens.locationName .~ Location.canada.name
       )

@@ -8,7 +8,8 @@ private func swizzle(_ vc: UIViewController.Type) {
     (#selector(vc.viewDidLoad), #selector(vc.ksr_viewDidLoad)),
     (#selector(vc.viewWillAppear(_:)), #selector(vc.ksr_viewWillAppear(_:))),
     (#selector(vc.traitCollectionDidChange(_:)), #selector(vc.ksr_traitCollectionDidChange(_:)))
-  ].forEach { original, swizzled in
+  ]
+  .forEach { original, swizzled in
 
     guard let originalMethod = class_getInstanceMethod(vc, original),
       let swizzledMethod = class_getInstanceMethod(vc, swizzled) else { return }

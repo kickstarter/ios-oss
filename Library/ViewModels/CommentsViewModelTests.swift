@@ -196,7 +196,7 @@ internal final class CommentsViewModelTests: TestCase {
   func testPaginationAndRefresh_Update() {
     let update = Update.template
 
-    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
+    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result.success(.template))) {
       self.vm.inputs.configureWith(project: nil, update: update)
       self.vm.inputs.viewDidLoad()
 
@@ -209,7 +209,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([true], "A set of comments is emitted.")
       self.commentsAreLoading.assertValues([true, false])
 
-      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
+      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result.success(.template))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
         self.hasComments.assertValues([true], "No new comments are emitted.")
@@ -244,7 +244,7 @@ internal final class CommentsViewModelTests: TestCase {
   func testUpdateComments_NoProjectProvided() {
     let update = Update.template
 
-    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
+    withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result.success(.template))) {
       self.vm.inputs.configureWith(project: nil, update: update)
       self.vm.inputs.viewDidLoad()
 
@@ -257,7 +257,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([true], "A set of comments is emitted.")
       self.commentsAreLoading.assertValues([true, false])
 
-      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result(success: .template))) {
+      withEnvironment(apiService: MockService(fetchUpdateCommentsResponse: Result.success(.template))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
         self.hasComments.assertValues([true], "No new comments are emitted.")

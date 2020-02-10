@@ -47,7 +47,7 @@ internal final class DashboardViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)", tolerance: 0.004)
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
@@ -70,7 +70,7 @@ private let externalReferrerStats = .template
   |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 5
   |> ProjectStatsEnvelope.ReferrerStats.lens.code .~ "direct"
   |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.25
-  |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 25
+  |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 25.0
   |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "Direct traffic"
   |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .external
 
@@ -78,7 +78,7 @@ private let internalReferrerStats = .template
   |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 10
   |> ProjectStatsEnvelope.ReferrerStats.lens.code .~ "search"
   |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.4
-  |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 40
+  |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 40.0
   |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "Search"
   |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .internal
 
@@ -86,7 +86,7 @@ private let customReferrerStats = .template
   |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 25
   |> ProjectStatsEnvelope.ReferrerStats.lens.code .~ "dfg"
   |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.35
-  |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 35
+  |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 35.0
   |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "Dfg"
   |> ProjectStatsEnvelope.ReferrerStats.lens.referrerType .~ .custom
 
@@ -118,8 +118,8 @@ private let cumulativeStats = .template
 private let cosmicSurgery = .cosmicSurgery
   |> Project.lens.stats.pledged .~ cumulativeStats.pledged
   |> Project.lens.memberData.lastUpdatePublishedAt .~ 1_477_581_146
-  |> Project.lens.memberData.unreadMessagesCount .~ 42
-  |> Project.lens.memberData.unseenActivityCount .~ 1_299
+  |> Project.lens.memberData.unreadMessagesCount .~ .some(42)
+  |> Project.lens.memberData.unseenActivityCount .~ .some(1_299)
   |> Project.lens.memberData.permissions .~ [.post, .viewPledges]
   |> Project.lens.rewards .~ rewards
 

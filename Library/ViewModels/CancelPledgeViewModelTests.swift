@@ -128,7 +128,8 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testCancelPledgeButtonEnabled() {
-    let mockService = MockService(cancelBackingResult: .init(success: .init()))
+    let envelope = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(cancelBackingResult: .success(envelope))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.configure(with: .template, backing: .template)
@@ -157,7 +158,8 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testCancelPledge_Success() {
-    let mockService = MockService(cancelBackingResult: .init(success: .init()))
+    let envelope = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(cancelBackingResult: .success(envelope))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.configure(with: .template, backing: .template)
@@ -196,8 +198,7 @@ final class CancelPledgeViewModelTests: TestCase {
   func testCancelPledge_Error() {
     let mockService = MockService(
       cancelBackingResult:
-      .init(
-        failure:
+      .failure(
         .decodeError(
           .init(message: "You can't cancel your pledge right now.")
         )
@@ -224,7 +225,8 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testTrackingEvents() {
-    let mockService = MockService(cancelBackingResult: .init(success: .init()))
+    let envelope = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(cancelBackingResult: .success(envelope))
 
     withEnvironment(apiService: mockService) {
       self.vm.inputs.configure(with: .template, backing: .template)

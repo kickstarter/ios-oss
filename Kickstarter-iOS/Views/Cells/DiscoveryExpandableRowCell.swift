@@ -17,7 +17,7 @@ internal final class DiscoveryExpandableRowCell: UITableViewCell, ValueCell {
 
     _ = self
       |> discoveryFilterRowMarginStyle
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button
 
     _ = self.projectsCountLabel
       |> UILabel.lens.isAccessibilityElement .~ false

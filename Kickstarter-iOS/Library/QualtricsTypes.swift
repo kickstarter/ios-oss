@@ -32,4 +32,4 @@ public protocol QualtricsResultType {
 
 extension TargetingResult: QualtricsResultType {}
 extension InitializationResult: QualtricsResultType {}
-extension Properties: QualtricsPropertiesType {}
+extension QualtricsProperties: QualtricsPropertiesType {}
