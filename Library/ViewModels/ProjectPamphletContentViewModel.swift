@@ -153,7 +153,7 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 
 private func reward(forBacking backing: Backing, inProject project: Project) -> Reward? {
   return backing.reward
-    ?? project.rewards.filter { $0.id == backing.rewardId }.first
+    ?? project.rewards.first { $0.id == backing.rewardId }
     ?? Reward.noReward
 }
 

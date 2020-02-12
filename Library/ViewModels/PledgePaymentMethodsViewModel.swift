@@ -109,7 +109,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     self.updateSelectedCreditCard = allCards
       .takePairWhen(self.creditCardSelectedSignal)
-      .map { cards, id in cards.filter { $0.id == id }.first }
+      .map { cards, id in cards.first { $0.id == id } }
       .skipNil()
 
     self.goToAddCardScreen = Signal.combineLatest(self.addNewCardIntentProperty.signal.skipNil(), project)
