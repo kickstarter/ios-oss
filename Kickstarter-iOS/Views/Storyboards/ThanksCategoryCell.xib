@@ -35,7 +35,7 @@
             <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="seeAllProjectsButton" destination="hbb-GW-PrV" id="Sfl-8U-s0p"/>
+                <outlet property="seeAllProjectsButton" destination="hbb-GW-PrV" id="yk8-KW-44G"/>
             </connections>
             <point key="canvasLocation" x="-133" y="-727"/>
         </tableViewCell>

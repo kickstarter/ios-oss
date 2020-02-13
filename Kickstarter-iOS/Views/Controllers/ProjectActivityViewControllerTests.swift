@@ -99,7 +99,7 @@ private let baseActivity =
       |> Update.lens.publishedAt .~ 123_456_789.0
   )
   |> Activity.lens.user .~ user
-  |> Activity.lens.memberData.backing .~ (
+  |> Activity.lens.memberData.backing .~ .some(
     .template
       |> Backing.lens.amount .~ 25
       |> Backing.lens.backerId .~ user.id

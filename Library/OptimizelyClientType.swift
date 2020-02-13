@@ -12,16 +12,18 @@ extension OptimizelyClientType {
   public func variant(
     for experiment: OptimizelyExperiment.Key,
     userId: String,
-    isAdmin: Bool
+    isAdmin: Bool,
+    userAttributes: [String: Any]? = nil
   ) -> OptimizelyExperiment.Variant {
     let variationString: String?
+
     if isAdmin {
       variationString = try? self.getVariationKey(
-        experimentKey: experiment.rawValue, userId: userId, attributes: nil
+        experimentKey: experiment.rawValue, userId: userId, attributes: userAttributes
       )
     } else {
       variationString = try? self.activate(
-        experimentKey: experiment.rawValue, userId: userId, attributes: nil
+        experimentKey: experiment.rawValue, userId: userId, attributes: userAttributes
       )
     }
 
@@ -41,6 +43,23 @@ public func optimizelyTrackingAttributesAndEventTags(
   project: Project,
   refTag: RefTag?
 ) -> ([String: Any], [String: Any]) {
+  let properties = optimizelyUserAttributes(with: user, project: project, refTag: refTag)
+
+  let eventTags: [String: Any] = ([
+    "project_subcategory": project.category.name,
+    "project_category": project.category.parentName,
+    "project_country": project.location.country.lowercased(),
+    "project_user_has_watched": project.personalization.isStarred
+  ] as [String: Any?]).compact()
+
+  return (properties, eventTags)
+}
+
+public func optimizelyUserAttributes(
+  with user: User?,
+  project: Project?,
+  refTag: RefTag?
+) -> [String: Any] {
   let properties: [String: Any] = [
     "user_backed_projects_count": user?.stats.backedProjectsCount,
     "user_launched_projects_count": user?.stats.createdProjectsCount,
@@ -48,7 +67,7 @@ public func optimizelyTrackingAttributesAndEventTags(
     "user_facebook_account": user?.facebookConnected,
     "user_display_language": AppEnvironment.current.language.rawValue,
     "session_ref_tag": refTag?.stringTag,
-    "session_referrer_credit": (cookieRefTagFor(project: project) ?? refTag)?.stringTag,
+    "session_referrer_credit": project.flatMap(cookieRefTagFor(project:)).coalesceWith(refTag)?.stringTag,
     "session_os_version": AppEnvironment.current.device.systemVersion,
     "session_user_is_logged_in": user != nil,
     "session_app_release_version": AppEnvironment.current.mainBundle.shortVersionString,
@@ -57,12 +76,5 @@ public func optimizelyTrackingAttributesAndEventTags(
   ]
   .compact()
 
-  let eventTags: [String: Any] = ([
-    "project_subcategory": project.category.name,
-    "project_category": project.category.parent?.name,
-    "project_country": project.location.country.lowercased(),
-    "project_user_has_watched": project.personalization.isStarred
-  ] as [String: Any?]).compact()
-
-  return (properties, eventTags)
+  return properties
 }

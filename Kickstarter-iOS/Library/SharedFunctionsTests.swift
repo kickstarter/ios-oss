@@ -61,7 +61,7 @@ internal final class SharedFunctionsTests: XCTestCase {
   func testFormattedPledgeParameters_WithShipping() {
     let reward = Reward.template
     let selectedShippingRule = ShippingRule.template
-      |> ShippingRule.lens.cost .~ 3
+      |> ShippingRule.lens.cost .~ 3.0
       |> ShippingRule.lens.location .~ (Location.template |> Location.lens.id .~ 123)
 
     let params = sanitizedPledgeParameters(

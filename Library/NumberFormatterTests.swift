@@ -81,7 +81,7 @@ final class NumberFormatterTests: TestCase {
       return
     }
 
-    XCTAssertEqual("DKK1,000.00", attributedString.string)
+    XCTAssertEqual("DKK 1,000.00", attributedString.string)
 
     let range = attributedString.range(of: "00", options: .backwards)
     let attributedSubstring = attributedString.attributedSubstring(from: range)

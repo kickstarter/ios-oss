@@ -53,7 +53,7 @@ internal final class DashboardViewController: UITableViewController {
 
     _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-      |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
+      |> UIActivityIndicatorView.lens.style .~ .white
       |> UIActivityIndicatorView.lens.color .~ .ksr_soft_black
   }
 

@@ -9,7 +9,11 @@ internal protocol ProjectNavigatorDelegate: AnyObject {
 }
 
 internal final class ProjectNavigatorViewController: UIPageViewController {
-  fileprivate let transitionAnimator = ProjectNavigatorTransitionAnimator()
+  fileprivate lazy var transitionAnimator: ProjectNavigatorTransitionAnimator? = {
+    guard #available(iOS 13.0, *) else { return ProjectNavigatorTransitionAnimator() }
+    return nil
+  }()
+
   fileprivate weak var navigatorDelegate: ProjectNavigatorDelegate?
   fileprivate let pageDataSource: ProjectNavigatorPagesDataSource!
   fileprivate let viewModel: ProjectNavigatorViewModelType = ProjectNavigatorViewModel()
@@ -96,7 +100,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     self.viewModel.outputs.cancelInteractiveTransition
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.transitionAnimator.cancel()
+        self?.transitionAnimator?.cancel()
       }
 
     self.viewModel.outputs.dismissViewController
@@ -108,7 +112,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     self.viewModel.outputs.finishInteractiveTransition
       .observeForControllerAction()
       .observeValues { [weak self] in
-        self?.transitionAnimator.finish()
+        self?.transitionAnimator?.finish()
       }
 
     self.viewModel.outputs.notifyDelegateTransitionedToProjectIndex
@@ -120,7 +124,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     self.viewModel.outputs.setTransitionAnimatorIsInFlight
       .observeForUI()
       .observeValues { [weak self] in
-        self?.transitionAnimator.isInFlight = $0
+        self?.transitionAnimator?.isInFlight = $0
       }
 
     self.viewModel.outputs.setNeedsStatusBarAppearanceUpdate
@@ -131,7 +135,7 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
       .observeForControllerAction()
       .observeValues { [weak self] translation in
         guard let _self = self else { return }
-        self?.transitionAnimator.update(translation / _self.view.bounds.height)
+        self?.transitionAnimator?.update(translation / _self.view.bounds.height)
       }
   }
 
@@ -169,6 +173,9 @@ extension ProjectNavigatorViewController: ProjectPamphletViewControllerDelegate 
     _: ProjectPamphletViewController,
     panGestureRecognizerDidChange recognizer: UIPanGestureRecognizer
   ) {
+    // Disables pan-to-dismiss transition animator on iOS 13
+    if #available(iOS 13.0, *) { return }
+
     guard let scrollView = recognizer.view as? UIScrollView else { return }
 
     self.viewModel.inputs.panning(
@@ -236,7 +243,7 @@ extension ProjectNavigatorViewController: UIViewControllerTransitioningDelegate 
 
   func interactionControllerForDismissal(using _: UIViewControllerAnimatedTransitioning)
     -> UIViewControllerInteractiveTransitioning? {
-    return self.transitionAnimator.isInFlight ? self.transitionAnimator : nil
+    return self.transitionAnimator?.isInFlight == true ? self.transitionAnimator : nil
   }
 }
 

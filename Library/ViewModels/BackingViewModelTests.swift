@@ -119,7 +119,7 @@ internal final class BackingViewModelTests: TestCase {
       |> Backing.lens.amount .~ 35
       |> Backing.lens.backer .~ user
       |> Backing.lens.pledgedAt .~ 1_468_527_587.32843
-      |> Backing.lens.shippingAmount .~ 5
+      |> Backing.lens.shippingAmount .~ .some(5)
       |> Backing.lens.status .~ .pledged
 
     withEnvironment(apiService: MockService(fetchBackingResponse: backing), currentUser: user) {

@@ -37,7 +37,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
     withEnvironment(countryCode: "US") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 2_200
+      parent.view.frame.size.height = 900
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_US_userLocation_US")
     }
@@ -47,7 +47,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
     withEnvironment(countryCode: "AU") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 2_200
+      parent.view.frame.size.height = 900
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_US_userLocation_AU")
     }
@@ -62,7 +62,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
     withEnvironment(countryCode: "US") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 2_200
+      parent.view.frame.size.height = 900
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_US_userLocation_US")
     }
@@ -77,7 +77,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
     withEnvironment(countryCode: "CA") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 2_200
+      parent.view.frame.size.height = 900
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_US_userLocation_CA")
     }
@@ -104,7 +104,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
     withEnvironment(countryCode: "CA") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 2_200
+      parent.view.frame.size.height = 900
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_US_userLocation_CA")
     }
@@ -125,7 +125,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
     withEnvironment(countryCode: "SE") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 2_200
+      parent.view.frame.size.height = 900
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_SEK_userLocation_SE")
     }
@@ -141,7 +141,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
     withEnvironment(countryCode: "US") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 2_200
+      parent.view.frame.size.height = 900
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_nil_userLocation_US")
     }
@@ -157,7 +157,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
     withEnvironment(countryCode: "CA") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 2_200
+      parent.view.frame.size.height = 900
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_nil_userLocation_SE")
     }
@@ -173,7 +173,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
     withEnvironment(countryCode: "XX") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
-      parent.view.frame.size.height = 2_200
+      parent.view.frame.size.height = 900
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_nil_userLocation_SE")
     }

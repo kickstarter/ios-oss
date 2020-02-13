@@ -90,7 +90,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
         )
 
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
@@ -159,7 +159,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.reward .~ Reward.otherReward
             |> Backing.lens.rewardId .~ Reward.otherReward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
         )
 
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
@@ -363,7 +363,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
         )
 
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
@@ -432,7 +432,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.reward .~ Reward.otherReward
             |> Backing.lens.rewardId .~ Reward.otherReward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
         )
 
       self.vm.inputs.configureWith(project: project, rewardOrBacking: .init(reward))
@@ -554,7 +554,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
             |> Backing.lens.status .~ .errored
         )
 
@@ -627,7 +627,7 @@ final class RewardCardContainerViewModelTests: TestCase {
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
             |> Backing.lens.status .~ .errored
         )
 

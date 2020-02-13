@@ -102,7 +102,6 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
       .switchMap { project, shouldWatch in
         watchProjectProducer(with: project, shouldWatch: shouldWatch)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0.watchProject.project.isWatched }
           .map { _ in (project, project.personalization.isStarred ?? false, success: true) }
           .flatMapError { _ in .init(value: (project, !shouldWatch, success: false)) }
           .take(until: saveButtonTapped.ignoreValues())
@@ -172,7 +171,6 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
       .map { starred in starred ? Strings.Saved() : Strings.Unsaved() }
 
     self.postNotificationWithProject = project
-      .takeWhen(saveButtonTapped)
 
     projectOnSaveButtonToggleSuccess
       .observeValues { AppEnvironment.current.koala.trackProjectSave($0, context: .project) }

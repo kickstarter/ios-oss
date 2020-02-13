@@ -376,10 +376,10 @@ final class PledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService, currentUser: .template) {
       let shippingRule = ShippingRule.template
         |> ShippingRule.lens.id .~ 123
-        |> ShippingRule.lens.cost .~ 10
+        |> ShippingRule.lens.cost .~ 10.0
       let backing = Backing.template
         |> Backing.lens.amount .~ 100
-        |> Backing.lens.locationId .~ 123
+        |> Backing.lens.locationId .~ .some(123)
       let project = Project.template
         |> Project.lens.personalization.backing .~ backing
       let reward = Reward.template
@@ -1138,7 +1138,11 @@ final class PledgeViewModelTests: TestCase {
 
   func testApplePay_GoToThanks() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(state: .successful, backing: .init(clientSecret: nil, requiresAction: false))
+      checkout: Checkout(
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .successful,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
     )
     let mockService = MockService(
       createBackingResult:
@@ -1177,6 +1181,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "5.00",
+        checkoutId: 1,
         estimatedDelivery: nil,
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 500,
@@ -1202,7 +1207,11 @@ final class PledgeViewModelTests: TestCase {
 
   func testApplePay_GoToThanks_WhenRefTag_IsNil() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(state: .successful, backing: .init(clientSecret: nil, requiresAction: false))
+      checkout: Checkout(
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .successful,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
     )
     let mockService = MockService(
       createBackingResult:
@@ -1256,6 +1265,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "5.00",
+        checkoutId: 1,
         estimatedDelivery: nil,
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 500,
@@ -1361,7 +1371,11 @@ final class PledgeViewModelTests: TestCase {
 
   func testCreateBacking_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(state: .verifying, backing: .init(clientSecret: nil, requiresAction: false))
+      checkout: Checkout(
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .verifying,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
     )
     let mockService = MockService(
       createBackingResult:
@@ -1404,6 +1418,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "25.00",
+        checkoutId: 1,
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
         revenueInUsdCents: 2_500,
@@ -1488,12 +1503,13 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -1571,7 +1587,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     let mockService = MockService(
@@ -1640,7 +1656,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.submitButtonTitle.assertDidNotEmitValue()
@@ -1746,7 +1762,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ Reward.otherReward
           |> Backing.lens.rewardId .~ Reward.otherReward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.submitButtonTitle.assertDidNotEmitValue()
@@ -1755,6 +1771,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -1828,7 +1845,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.submitButtonTitle.assertDidNotEmitValue()
@@ -1896,6 +1913,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -1936,7 +1954,7 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
         )
 
       self.vm.inputs.configureWith(
@@ -2048,6 +2066,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2088,7 +2107,7 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
         )
 
       self.vm.inputs.configureWith(
@@ -2208,7 +2227,7 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.reward .~ reward
             |> Backing.lens.rewardId .~ reward.id
             |> Backing.lens.shippingAmount .~ 10
-            |> Backing.lens.amount .~ 700
+            |> Backing.lens.amount .~ 700.0
         )
 
       self.vm.inputs.configureWith(
@@ -2331,7 +2350,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -2451,6 +2470,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2575,7 +2595,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -2696,6 +2716,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2777,7 +2798,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -2851,6 +2872,7 @@ final class PledgeViewModelTests: TestCase {
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -2967,7 +2989,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -3125,7 +3147,9 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Success() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .verifying,
+        backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
     )
     let mockService = MockService(
@@ -3189,6 +3213,7 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "25.00",
+        checkoutId: 1,
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
         revenueInUsdCents: 2_500,
@@ -3213,7 +3238,9 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Failed() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .verifying,
+        backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
     )
     let mockService = MockService(
@@ -3289,7 +3316,9 @@ final class PledgeViewModelTests: TestCase {
   func testCreateBacking_RequiresSCA_Canceled() {
     let createBacking = CreateBackingEnvelope.CreateBacking(
       checkout: Checkout(
-        state: .verifying, backing: .init(clientSecret: "client-secret", requiresAction: true)
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .verifying,
+        backing: .init(clientSecret: "client-secret", requiresAction: true)
       )
     )
     let mockService = MockService(
@@ -3374,12 +3403,13 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3465,12 +3495,13 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3556,12 +3587,13 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     let updateBackingEnvelope = UpdateBackingEnvelope(
       updateBacking: .init(
         checkout: .init(
+          id: "Q2hlY2tvdXQtMQ==",
           state: .successful,
           backing: .init(
             clientSecret: "client-secret",
@@ -3670,10 +3702,8 @@ final class PledgeViewModelTests: TestCase {
   // swiftlint:disable line_length
   func testTrackingEvents_PledgeScreenViewed_LoggedOut() {
     let project = Project.template
-      |> Project.lens.category.parent .~ ParentCategory(
-        id: Category.art.id,
-        name: Category.art.name
-      )
+      |> \.category.parentId .~ Project.Category.art.id
+      |> \.category.parentName .~ Project.Category.art.name
 
     self.vm.inputs.configureWith(project: project, reward: .template, refTag: .discovery, context: .pledge)
 
@@ -3714,10 +3744,8 @@ final class PledgeViewModelTests: TestCase {
 
     withEnvironment(currentUser: user) {
       let project = Project.template
-        |> Project.lens.category.parent .~ ParentCategory(
-          id: Category.art.id,
-          name: Category.art.name
-        )
+        |> \.category.parentId .~ Project.Category.art.id
+        |> \.category.parentName .~ Project.Category.art.name
         |> Project.lens.stats.currentCurrency .~ "USD"
         |> \.personalization.isStarred .~ true
 

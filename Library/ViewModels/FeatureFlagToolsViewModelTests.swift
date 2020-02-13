@@ -11,57 +11,70 @@ final class FeatureFlagToolsViewModelTests: TestCase {
 
   private let postNotificationName = TestObserver<Notification.Name, Never>()
   private let updateConfigWithFeatures = TestObserver<Features, Never>()
-  private let reloadWithDataFeatures = TestObserver<[Feature], Never>()
-  private let reloadWithDataEnabledValues = TestObserver<[Bool], Never>()
+  private let reloadWithDataFeatures = TestObserver<[Features], Never>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.postNotification.map(\.name).observe(self.postNotificationName.observer)
     self.vm.outputs.updateConfigWithFeatures.observe(self.updateConfigWithFeatures.observer)
-    self.vm.outputs.reloadWithData.map { $0.map { $0.0 } }.observe(self.reloadWithDataFeatures.observer)
-    self.vm.outputs.reloadWithData.map { $0.map { $0.1 } }.observe(self.reloadWithDataEnabledValues.observer)
+    self.vm.outputs.reloadWithData.observe(self.reloadWithDataFeatures.observer)
   }
 
   func testDataIsSortedAlphabetically_When_Sorted() {
     let mockConfig = Config.template
       |> \.features .~ [
-        Feature.nativeCheckout.rawValue: false,
-        Feature.nativeCheckoutPledgeView.rawValue: true
+        "a": false,
+        "b": true,
+        "c": true
       ]
 
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()
 
-      self.reloadWithDataFeatures.assertValues([[Feature.nativeCheckout, Feature.nativeCheckoutPledgeView]])
-      self.reloadWithDataEnabledValues.assertValues([[false, true]])
+      self.reloadWithDataFeatures.assertValues([
+        [
+          ["a": false],
+          ["b": true],
+          ["c": true]
+        ]
+      ])
     }
   }
 
   func testDataIsSortedAlphabetically_When_Unsorted() {
     let mockConfig = Config.template
       |> \.features .~ [
-        Feature.nativeCheckoutPledgeView.rawValue: true,
-        Feature.nativeCheckout.rawValue: false
+        "c": true,
+        "a": false,
+        "b": true
       ]
 
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()
 
-      self.reloadWithDataFeatures.assertValues([[Feature.nativeCheckout, Feature.nativeCheckoutPledgeView]])
-      self.reloadWithDataEnabledValues.assertValues([[false, true]])
+      self.reloadWithDataFeatures.assertValues([
+        [
+          ["a": false],
+          ["b": true],
+          ["c": true]
+        ]
+      ])
     }
   }
 
   func testFeatureFlagTools_LoadsWithFeatureFlags() {
     let mockConfig = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.features .~ ["a": true]
 
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()
 
-      self.reloadWithDataFeatures.assertValues([[Feature.nativeCheckout]])
-      self.reloadWithDataEnabledValues.assertValues([[true]])
+      self.reloadWithDataFeatures.assertValues([
+        [
+          ["a": true]
+        ]
+      ])
     }
   }
 
@@ -72,20 +85,35 @@ final class FeatureFlagToolsViewModelTests: TestCase {
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()
 
-      self.reloadWithDataFeatures.assertValues([[]], "Does not display unrecognized features.")
-      self.reloadWithDataEnabledValues.assertValues([[]], "Does not display unrecognized features.")
+      self.reloadWithDataFeatures.assertValues([
+        [
+          ["some_unknown_feature": false]
+        ]
+      ], "Does emit unknown features")
     }
+  }
+
+  func testFeatureEnabledFromDictionaries_UnkownFeatures() {
+    let featureEnabled = featureEnabledFromDictionaries([["some_unknown_feature": false]])
+
+    XCTAssertTrue(featureEnabled.isEmpty, "Unknown features do not produce Feature enums")
+  }
+
+  func testFeatureEnabledFromDictionaries_KnownFeatures() {
+    let featureEnabled = featureEnabledFromDictionaries([["ios_go_rewardless": false]])
+
+    XCTAssertFalse(featureEnabled.isEmpty, "Known features produce Feature enums")
   }
 
   func testUpdateFeatureFlagEnabledValue() {
     let originalFeatures = [
-      Feature.nativeCheckoutPledgeView.rawValue: true,
-      Feature.nativeCheckout.rawValue: true
+      "a": true,
+      "b": true
     ]
 
     let expectedFeatures = [
-      Feature.nativeCheckout.rawValue: true,
-      Feature.nativeCheckoutPledgeView.rawValue: false
+      "a": true,
+      "b": false
     ]
 
     let mockConfig = Config.template
@@ -94,8 +122,12 @@ final class FeatureFlagToolsViewModelTests: TestCase {
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()
 
-      self.reloadWithDataFeatures.assertValues([[Feature.nativeCheckout, Feature.nativeCheckoutPledgeView]])
-      self.reloadWithDataEnabledValues.assertValues([[true, true]])
+      self.reloadWithDataFeatures.assertValues([
+        [
+          ["a": true],
+          ["b": true]
+        ]
+      ])
 
       self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: true)
 
@@ -112,21 +144,26 @@ final class FeatureFlagToolsViewModelTests: TestCase {
     withEnvironment(config: updatedConfig) {
       self.vm.inputs.didUpdateConfig()
 
-      scheduler.run()
+      self.scheduler.run()
 
       self.reloadWithDataFeatures.assertValues([
-        [Feature.nativeCheckout, Feature.nativeCheckoutPledgeView],
-        [Feature.nativeCheckout, Feature.nativeCheckoutPledgeView]
+        [
+          ["a": true],
+          ["b": true]
+        ],
+        [
+          ["a": true],
+          ["b": false]
+        ]
       ])
-      self.reloadWithDataEnabledValues.assertValues([[true, true], [true, false]])
     }
   }
 
   func testPostNotification() {
     let mockConfig = Config.template
       |> \.features .~ [
-        Feature.nativeCheckoutPledgeView.rawValue: true,
-        Feature.nativeCheckout.rawValue: true
+        "a": true,
+        "b": true
       ]
 
     withEnvironment(config: mockConfig) {
