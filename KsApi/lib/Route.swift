@@ -12,7 +12,6 @@ internal enum Route {
   case categories
   case category(Param)
   case changePaymentMethod(project: Project)
-  case checkout(String)
   case config
   case createPledge(
     project: Project, amount: Double, reward: Reward?, shippingLocation: Location?,
@@ -55,10 +54,6 @@ internal enum Route {
   case signup(
     name: String, email: String, password: String, passwordConfirmation: String,
     sendNewsletters: Bool
-  )
-  case submitApplePay(
-    checkoutUrl: String, stripeToken: String, paymentInstrumentName: String,
-    paymentNetwork: String, transactionIdentifier: String
   )
   case surveyResponse(surveyResponseId: Int)
   case unansweredSurveyResponses
@@ -116,9 +111,6 @@ internal enum Route {
         .appendingPathComponent("change_method")
 
       return (.PUT, changeMethodUrl?.absoluteString ?? "", ["format": "json"], nil)
-
-    case let .checkout(url):
-      return (.GET, url, [:], nil)
 
     case .config:
       return (.GET, "/v1/app/ios/config", ["no_cache": "\(Date().timeIntervalSince1970)"], nil)
@@ -284,22 +276,6 @@ internal enum Route {
         "send_newsletters": sendNewsletters
       ]
       return (.POST, "/v1/users", params, nil)
-
-    case let .submitApplePay(
-      checkoutUrl, stripeToken, paymentInstrumentName, paymentNetwork,
-      transactionIdentifier
-    ):
-
-      let params = [
-        "format": "json",
-        "payment_instrument_name": paymentInstrumentName,
-        "payment_network": paymentNetwork,
-        "payment_type": "apple_pay",
-        "token": stripeToken,
-        "transaction_identifier": transactionIdentifier
-      ]
-
-      return (.POST, checkoutUrl, params, nil)
 
     case let .surveyResponse(surveyResponseId):
       return (.GET, "/v1/users/self/surveys/\(surveyResponseId)", [:], nil)

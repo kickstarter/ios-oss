@@ -166,7 +166,7 @@ final class KoalaTests: TestCase {
         |> \.id .~ 123
         |> \.parentId .~ 321
       )
-      |> Project.lens.stats.staticUsdRate .~ 2
+      |> Project.lens.stats.staticUsdRate .~ 2.0
       |> Project.lens.stats.commentsCount .~ 10
       |> Project.lens.prelaunchActivated .~ true
 

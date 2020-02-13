@@ -43,7 +43,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       |> \.accessibilityElements .~ (
         accessibilityElementsHidden
           ? [self.emailNotificationsButton, self.pushNotificationsButton].compact()
-          : nil
+          : []
       )
 
     _ = self.titleLabel

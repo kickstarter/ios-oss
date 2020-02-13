@@ -68,7 +68,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.vm.inputs.configureWith(project: project, reward: Reward.postcards)
@@ -105,7 +105,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
           |> Backing.lens.reward .~ Reward.postcards
           |> Backing.lens.rewardId .~ Reward.postcards.id
           |> Backing.lens.shippingAmount .~ 10
-          |> Backing.lens.amount .~ 700
+          |> Backing.lens.amount .~ 700.0
       )
 
     self.vm.inputs.configureWith(project: project, reward: otherReward)
@@ -129,7 +129,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
           |> Backing.lens.reward .~ nil
           |> Backing.lens.rewardId .~ nil
           |> Backing.lens.shippingAmount .~ 0
-          |> Backing.lens.amount .~ 5
+          |> Backing.lens.amount .~ 5.0
       )
 
     let noReward = Reward.noReward

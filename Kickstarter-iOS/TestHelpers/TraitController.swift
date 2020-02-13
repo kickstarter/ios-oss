@@ -23,8 +23,9 @@ internal func traitControllers(
 )
   -> (parent: UIViewController, child: UIViewController) {
   let parent = UIViewController()
-  parent.addChild(child)
   parent.view.addSubview(child.view)
+  parent.addChild(child)
+  parent.didMove(toParent: parent)
 
   child.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 

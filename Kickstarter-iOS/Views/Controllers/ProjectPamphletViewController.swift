@@ -43,9 +43,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    if userCanSeeNativeCheckout() {
-      self.configurePledgeCTAContainerView()
-    }
+    self.configurePledgeCTAContainerView()
 
     self.navBarController = self.children
       .compactMap { $0 as? ProjectNavBarViewController }.first
@@ -84,9 +82,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
       constant: self.initialTopConstraint
     )
 
-    if userCanSeeNativeCheckout() {
-      self.updateContentInsets()
-    }
+    self.updateContentInsets()
   }
 
   public override func viewDidAppear(_ animated: Bool) {
@@ -120,19 +116,17 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   public override func bindStyles() {
     super.bindStyles()
 
-    if userCanSeeNativeCheckout() {
-      _ = self.pledgeCTAContainerView
-        |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
+    _ = self.pledgeCTAContainerView
+      |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
 
-      _ = self.pledgeCTAContainerView.layer
-        |> checkoutLayerCardRoundedStyle
-        |> \.backgroundColor .~ UIColor.white.cgColor
-        |> \.shadowColor .~ UIColor.black.cgColor
-        |> \.shadowOpacity .~ 0.12
-        |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
-        |> \.shadowRadius .~ 1.0
-        |> \.maskedCorners .~ [CACornerMask.layerMaxXMinYCorner, CACornerMask.layerMinXMinYCorner]
-    }
+    _ = self.pledgeCTAContainerView.layer
+      |> checkoutLayerCardRoundedStyle
+      |> \.backgroundColor .~ UIColor.white.cgColor
+      |> \.shadowColor .~ UIColor.black.cgColor
+      |> \.shadowOpacity .~ 0.12
+      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
+      |> \.shadowRadius .~ CGFloat(1.0)
+      |> \.maskedCorners .~ [CACornerMask.layerMaxXMinYCorner, CACornerMask.layerMinXMinYCorner]
   }
 
   public override func bindViewModel() {
@@ -150,18 +144,6 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
       .observeForControllerAction()
       .observeValues { [weak self] project in
         self?.goToManageViewPledge(project: project)
-      }
-
-    self.viewModel.outputs.goToDeprecatedViewBacking
-      .observeForControllerAction()
-      .observeValues { [weak self] project, user in
-        self?.goToDeprecatedViewBacking(project: project, user: user)
-      }
-
-    self.viewModel.outputs.goToDeprecatedManagePledge
-      .observeForControllerAction()
-      .observeValues { [weak self] project, reward, refTag in
-        self?.goToDeprecatedManagePledge(project: project, reward: reward, refTag: refTag)
       }
 
     self.viewModel.outputs.configureChildViewControllersWithProject
@@ -240,32 +222,6 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     }
 
     self.present(nc, animated: true)
-  }
-
-  private func goToDeprecatedManagePledge(project: Project, reward: Reward, refTag _: RefTag?) {
-    let pledgeViewController = DeprecatedRewardPledgeViewController
-      .configuredWith(
-        project: project, reward: reward
-      )
-
-    let nav = UINavigationController(rootViewController: pledgeViewController)
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = nav
-        |> \.modalPresentationStyle .~ .formSheet
-    }
-    self.present(nav, animated: true)
-  }
-
-  private func goToDeprecatedViewBacking(project: Project, user _: User?) {
-    let backingViewController = BackingViewController.configuredWith(project: project, backer: nil)
-
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      let nav = UINavigationController(rootViewController: backingViewController)
-        |> \.modalPresentationStyle .~ .formSheet
-      self.present(nav, animated: true)
-    } else {
-      self.navigationController?.pushViewController(backingViewController, animated: true)
-    }
   }
 
   private func updateContentInsets() {

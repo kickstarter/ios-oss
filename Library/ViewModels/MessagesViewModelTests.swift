@@ -83,7 +83,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResult: Result(success: messageThread))
+    let apiService = MockService(fetchMessageThreadResult: Result.success(messageThread))
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -110,7 +110,7 @@ internal final class MessagesViewModelTests: TestCase {
       exception: nil
     )
 
-    let apiService = MockService(fetchMessageThreadResult: Result(failure: errorUnknown))
+    let apiService = MockService(fetchMessageThreadResult: Result.failure(errorUnknown))
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -133,7 +133,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResult: Result(success: messageThread))
+    let apiService = MockService(fetchMessageThreadResult: Result.success(messageThread))
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -175,7 +175,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResult: Result(success: messageThread))
+    let apiService = MockService(fetchMessageThreadResult: Result.success(messageThread))
 
     withEnvironment(apiService: apiService, currentUser: currentUser) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -204,7 +204,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResult: Result(success: messageThread))
+    let apiService = MockService(fetchMessageThreadResult: Result.success(messageThread))
 
     withEnvironment(apiService: apiService, currentUser: currentUser) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
@@ -230,7 +230,7 @@ internal final class MessagesViewModelTests: TestCase {
       |> MessageThread.lens.project .~ project
       |> MessageThread.lens.participant .~ .template
 
-    let apiService = MockService(fetchMessageThreadResult: Result(success: messageThread))
+    let apiService = MockService(fetchMessageThreadResult: Result.success(messageThread))
 
     withEnvironment(apiService: apiService, currentUser: .template) {
       self.vm.inputs.configureWith(data: .right((project: project, backing: backing)))
