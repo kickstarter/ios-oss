@@ -5,7 +5,6 @@ import UIKit
 
 internal protocol ThanksCategoryCellDelegate: AnyObject {
   func thanksCategoryCell(_ cell: ThanksCategoryCell, didTapSeeAllProjectsWith category: KsApi.Category)
-
 }
 
 internal final class ThanksCategoryCell: UITableViewCell, ValueCell {

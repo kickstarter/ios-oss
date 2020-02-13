@@ -289,8 +289,7 @@ extension ThanksViewController: ProjectNavigatorDelegate {
 }
 
 extension ThanksViewController: ThanksCategoryCellDelegate {
-  func thanksCategoryCell(_ cell: ThanksCategoryCell, didTapSeeAllProjectsWith category: KsApi.Category) {
+  func thanksCategoryCell(_: ThanksCategoryCell, didTapSeeAllProjectsWith category: KsApi.Category) {
     self.viewModel.inputs.categoryCellTapped(category)
-
   }
 }
