@@ -37,8 +37,8 @@ internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.notifyDelegateToGoToDiscovery
       .observeForControllerAction()
       .observeValues { [weak self] in
-        guard let _self = self else { return }
-        _self.delegate?.thanksCategoryCell(_self, didTapSeeAllProjectsWith: $0)
+        guard let self = self else { return }
+        self.delegate?.thanksCategoryCell(self, didTapSeeAllProjectsWith: $0)
       }
 
     self.seeAllProjectsButton.rac.title = self.viewModel.outputs.seeAllProjectCategoryTitle
