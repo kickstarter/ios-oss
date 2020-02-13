@@ -5,14 +5,14 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class ThanksCategoryCellViewModelTests: TestCase {
-  private let notifyToGoToDiscovery = TestObserver<KsApi.Category, Never>()
+  private let notifyDelegateToGoToDiscovery = TestObserver<KsApi.Category, Never>()
   private let seeAllProjectCategoryTitle = TestObserver<String, Never>()
   private let vm = ThanksCategoryCellViewModel()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.notifyToGoToDiscovery.observe(self.notifyToGoToDiscovery.observer)
+    self.vm.notifyDelegateToGoToDiscovery.observe(self.notifyDelegateToGoToDiscovery.observer)
     self.vm.seeAllProjectCategoryTitle.observe(self.seeAllProjectCategoryTitle.observer)
   }
 
@@ -20,9 +20,9 @@ final class ThanksCategoryCellViewModelTests: TestCase {
     let category = Category.template
 
     self.vm.inputs.configureWith(category: category)
-    self.notifyToGoToDiscovery.assertDidNotEmitValue()
-    self.vm.inputs.allProjectCategoryButtonTapped()
-    self.notifyToGoToDiscovery.assertDidEmitValue()
+    self.notifyDelegateToGoToDiscovery.assertDidNotEmitValue()
+    self.vm.inputs.seeAllProjectsButtonTapped()
+    self.notifyDelegateToGoToDiscovery.assertDidEmitValue()
   }
 
   func testSeeAllProjectCategoryButtonTitle() {
