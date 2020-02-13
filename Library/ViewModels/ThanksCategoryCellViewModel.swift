@@ -5,12 +5,12 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol ThanksCategoryCellViewModelInputs {
-  func allProjectCategoryButtonTapped()
+  func seeAllProjectsButtonTapped()
   func configureWith(category: KsApi.Category)
 }
 
 public protocol ThanksCategoryCellViewModelOutputs {
-  var notifyToGoToDiscovery: Signal<KsApi.Category, Never> { get }
+  var notifyDelegateToGoToDiscovery: Signal<KsApi.Category, Never> { get }
   var seeAllProjectCategoryTitle: Signal<String, Never> { get }
 }
 
@@ -28,8 +28,8 @@ public final class ThanksCategoryCellViewModel: ThanksCategoryCellViewModelType,
       Strings.See_all_category_name_projects(category_name: $0.name)
     }
 
-    self.notifyToGoToDiscovery = projectCategory
-      .takeWhen(self.allProjectCategoryButtonTappedProperty.signal)
+    self.notifyDelegateToGoToDiscovery = projectCategory
+      .takeWhen(self.seeAllProjectsButtonTappedProperty.signal)
   }
 
   fileprivate let categoryProperty = MutableProperty<KsApi.Category?>(nil)
@@ -37,13 +37,13 @@ public final class ThanksCategoryCellViewModel: ThanksCategoryCellViewModelType,
     self.categoryProperty.value = category
   }
 
-  fileprivate let allProjectCategoryButtonTappedProperty = MutableProperty(())
-  public func allProjectCategoryButtonTapped() {
-    self.allProjectCategoryButtonTappedProperty.value = ()
+  fileprivate let seeAllProjectsButtonTappedProperty = MutableProperty(())
+  public func seeAllProjectsButtonTapped() {
+    self.seeAllProjectsButtonTappedProperty.value = ()
   }
 
   public let seeAllProjectCategoryTitle: Signal<String, Never>
-  public let notifyToGoToDiscovery: Signal<KsApi.Category, Never>
+  public let notifyDelegateToGoToDiscovery: Signal<KsApi.Category, Never>
 
   public var inputs: ThanksCategoryCellViewModelInputs { return self }
   public var outputs: ThanksCategoryCellViewModelOutputs { return self }

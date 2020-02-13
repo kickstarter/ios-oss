@@ -4,20 +4,21 @@ import Prelude
 import UIKit
 
 internal protocol ThanksCategoryCellDelegate: AnyObject {
-  func thanksSeeAllProjectsTapped(_ cell: ThanksCategoryCell, category: KsApi.Category)
+  func thanksCategoryCell(_ cell: ThanksCategoryCell, didTapSeeAllProjectsWith category: KsApi.Category)
+
 }
 
 internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
   internal weak var delegate: ThanksCategoryCellDelegate?
   fileprivate let viewModel: ThanksCategoryCellViewModelType = ThanksCategoryCellViewModel()
 
-  @IBOutlet fileprivate var seeAllProjectCategoryButton: UIButton!
+  @IBOutlet fileprivate var seeAllProjectsButton: UIButton!
 
   override func awakeFromNib() {
     super.awakeFromNib()
 
-    self.seeAllProjectCategoryButton
-      .addTarget(self, action: #selector(self.seeAllProjectCategoryTapped), for: .touchUpInside)
+    self.seeAllProjectsButton
+      .addTarget(self, action: #selector(self.seeAllProjectsButtonTapped), for: .touchUpInside)
   }
 
   func configureWith(value category: KsApi.Category) {
@@ -27,24 +28,24 @@ internal final class ThanksCategoryCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self.seeAllProjectCategoryButton
+    _ = self.seeAllProjectsButton
       |> greyButtonStyle
   }
 
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.notifyToGoToDiscovery
+    self.viewModel.outputs.notifyDelegateToGoToDiscovery
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let _self = self else { return }
-        self?.delegate?.thanksSeeAllProjectsTapped(_self, category: $0)
+        _self.delegate?.thanksCategoryCell(_self, didTapSeeAllProjectsWith: $0)
       }
 
-    self.seeAllProjectCategoryButton.rac.title = self.viewModel.outputs.seeAllProjectCategoryTitle
+    self.seeAllProjectsButton.rac.title = self.viewModel.outputs.seeAllProjectCategoryTitle
   }
 
-  @objc fileprivate func seeAllProjectCategoryTapped() {
-    self.viewModel.inputs.allProjectCategoryButtonTapped()
+  @objc fileprivate func seeAllProjectsButtonTapped() {
+    self.viewModel.inputs.seeAllProjectsButtonTapped()
   }
 }
