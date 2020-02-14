@@ -1,4 +1,5 @@
 import AVFoundation
+import CoreTelephony
 import FBSDKCoreKit
 import Foundation
 import KsApi
@@ -40,6 +41,9 @@ public struct Environment {
 
   /// The currently logged in user.
   public let currentUser: User?
+
+  /// A type that provides telephony network info.
+  public let coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType
 
   /// A type that exposes how to capture dates as measured from # of seconds since 1970.
   public let dateType: DateProtocol.Type
@@ -110,6 +114,7 @@ public struct Environment {
     config: Config? = nil,
     cookieStorage: HTTPCookieStorageProtocol = HTTPCookieStorage.shared,
     countryCode: String = "US",
+    coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType = CTTelephonyNetworkInfo.current(),
     currentUser: User? = nil,
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
@@ -139,6 +144,7 @@ public struct Environment {
     self.config = config
     self.cookieStorage = cookieStorage
     self.countryCode = countryCode
+    self.coreTelephonyNetworkInfo = coreTelephonyNetworkInfo
     self.currentUser = currentUser
     self.dateType = dateType
     self.debounceInterval = debounceInterval

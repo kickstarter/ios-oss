@@ -59,6 +59,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("Apple", properties?["session_device_manufacturer"] as? String)
     XCTAssertEqual("Portrait", properties?["session_device_orientation"] as? String)
     XCTAssertEqual("abc-123", properties?["session_device_distinct_id"] as? String)
+    XCTAssertEqual(["service": "wifi"], properties?["session_cellular_connection"] as? [String: String]?)
 
     XCTAssertEqual("MockSystemName", properties?["session_os"] as? String)
     XCTAssertEqual("MockSystemVersion", properties?["session_os_version"] as? String)
