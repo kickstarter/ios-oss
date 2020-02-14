@@ -998,6 +998,35 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(1_475_361_315.0, client.properties.last?["context_timestamp"] as? TimeInterval)
   }
 
+  func testContextLocationProperties() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackAccountView()
+    XCTAssertEqual("settings_account_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackCancelPledgeButtonClicked(project: .template, backing: .template)
+    XCTAssertEqual("cancel_pledge_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackChangeEmailView()
+    XCTAssertEqual("settings_account_change_email_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackChangePasswordView()
+    XCTAssertEqual("settings_account_change_password_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackCreatePassword(event: .viewed)
+    XCTAssertEqual("settings_create_password_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackActivities(count: 1)
+    XCTAssertEqual("activity_feed_screen", client.properties.last?["context_location"] as? String)
+    koala.trackProjectSearchView()
+    XCTAssertEqual("search_screen", client.properties.last?["context_location"] as? String)
+    koala.trackAddNewCardButtonClicked(project: .template, reward: .template, context: .newPledge, refTag: nil, location: .pledgeAddNewCard)
+    XCTAssertEqual("pledge_add_new_card_screen", client.properties.last?["context_location"] as? String)
+    koala.trackAddNewCardButtonClicked(project: .template, reward: .template, context: .newPledge, refTag: nil, location: .settingsAddNewCard)
+       XCTAssertEqual("settings_add_new_card_screen", client.properties.last?["context_location"] as? String)
+  }
+
   /*
    Helper for testing projectProperties from a template Project
    */
