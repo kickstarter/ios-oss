@@ -44,10 +44,10 @@ public func currentUserIsCreator(of project: Project) -> Bool {
  */
 
 internal func reward(from backing: Backing, inProject project: Project) -> Reward {
-  let noRewardFromProject = project.rewards.filter { $0.id == Reward.noReward.id }.first
+  let noRewardFromProject = project.rewards.first { $0.id == Reward.noReward.id }
 
   return backing.reward
-    ?? project.rewards.filter { $0.id == backing.rewardId }.first
+    ?? project.rewards.first { $0.id == backing.rewardId }
     ?? noRewardFromProject
     ?? Reward.noReward
 }

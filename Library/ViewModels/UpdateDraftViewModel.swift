@@ -212,7 +212,7 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
 
     self.showRemoveAttachmentConfirmation = addedAttachments
       .takePairWhen(self.attachmentTappedProperty.signal)
-      .map { attachments, id in attachments.filter { $0.id == id }.first }
+      .map { attachments, id in attachments.first { $0.id == id } }
       .skipNil()
 
     let removeAttachmentEvent: Signal<Signal<UpdateDraft.Image, ErrorEnvelope>.Event, Never> = draft
