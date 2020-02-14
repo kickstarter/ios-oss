@@ -56,20 +56,15 @@ public final class Koala {
 
   /// Determines the screen from which the event is sent.
   public enum LocationContext: String {
-    case account = "settings_account_screen" //SettingsAccountViewController <-
     case activities = "activity_feed_screen" //ActivitiesViewController <-
-    case cancelPledge = "cancel_pledge_screen" //CancelPledgeViewController <-
-    case changeEmail = "settings_account_change_email_screen" //ChangeEmailViewController <-
-    case changePassword = "settings_account_change_password_screen" //ChangePasswordViewController <-
-    case createPassword = "settings_create_password_screen" //CreatePasswordViewController <-
-    case discovery = "explore_screen" //DiscoveryViewController
-    case editorialProjects = "editorial_collection_screen" //EditorialProjectsViewController
-    case forgotPassword = "forgot_password_screen" //ResetPasswordViewController
+    case discovery = "explore_screen" //DiscoveryViewController <-
+    case editorialProjects = "editorial_collection_screen" //EditorialProjectsViewController <-
+    case forgotPassword = "forgot_password_screen" //ResetPasswordViewController <-
     case login = "login_screen" //LoginViewController
-    case loginTout = "login_or_signup_screen" //LoginToutViewController
+    case loginTout = "login_or_signup_screen" //LoginToutViewController <-
     case pledgeAddNewCard = "pledge_add_new_card_screen" //AddNewCardViewController <-
-    case pledgeScreen = "pledge_screen" //PledgeViewController
-    case projectPage = "project_screen" //ProjectPamphletViewController
+    case pledgeScreen = "pledge_screen" //PledgeViewController <-
+    case projectPage = "project_screen" //ProjectPamphletViewController <-
     case rewards = "rewards_screen" //RewardsViewController
     case search = "search_screen" // <-
     case settingsAddNewCard = "settings_add_new_card_screen" //AddNewCardViewController <-
@@ -782,6 +777,7 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.loginOrSignupButtonClicked.rawValue,
+      location: .discovery,
       properties: props
     )
   }
