@@ -1087,7 +1087,7 @@ final class KoalaTests: TestCase {
 
     koala.track2FAViewed()
     XCTAssertEqual("two_factor_auth_verify_screen", client.properties.last?["context_location"] as? String)
-    }
+  }
 
   /*
    Helper for testing projectProperties from a template Project
