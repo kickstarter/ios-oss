@@ -22,32 +22,32 @@ public final class Koala {
   private let screen: UIScreenType
 
   private enum DataLakeWhiteListedEvent: String, CaseIterable {
+    case activityFeedViewed = "Activity Feed Viewed"
+    case addNewCardButtonClicked = "Add New Card Button Clicked"
+    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
+    case collectionViewed = "Collection Viewed"
+    case editorialCardClicked = "Editorial Card Clicked"
     case explorePageViewed = "Explore Page Viewed"
     case exploreSortClicked = "Explore Sort Clicked"
-    case activityFeedViewed = "Activity Feed Viewed"
-    case editorialCardClicked = "Editorial Card Clicked"
-    case collectionViewed = "Collection Viewed"
+    case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
     case filterClicked = "Filter Clicked"
-    case tabBarClicked = "Tab Bar Clicked"// TODO: Add context_location - Nino Teixeira_01/30/20
-    case searchPageViewed = "Search Page Viewed"// TODO: Add context_location - Nino Teixeira_01/30/20
-    case searchResultsLoaded = "Search Results Loaded"// TODO: Add context_location - Nino Teixeira_01/30/20
-    case projectSwiped = "Project Swiped"
-    case projectPageViewed = "Project Page Viewed"
+    case forgotPasswordViewed = "Forgot Password Viewed"
+    case loginButtonClicked = "Log In Button Clicked"
     case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
     case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
-    case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
-    case loginButtonClicked = "Log In Button Clicked"
-    case signupButtonClicked = "Signup Button Clicked"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
-    case signupSubmitButtonClicked = "Signup Submit Button Clicked"
-    case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
-    case selectRewardButtonClicked = "Select Reward Button Clicked"
     case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
-    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
+    case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
+    case projectPageViewed = "Project Page Viewed"
+    case projectSwiped = "Project Swiped"
+    case searchPageViewed = "Search Page Viewed"
+    case searchResultsLoaded = "Search Results Loaded"
+    case selectRewardButtonClicked = "Select Reward Button Clicked"
+    case signupButtonClicked = "Signup Button Clicked"
+    case signupSubmitButtonClicked = "Signup Submit Button Clicked"
+    case tabBarClicked = "Tab Bar Clicked"
     case thanksPageViewed = "Thanks Page Viewed"
-    case forgotPasswordViewed = "Forgot Password Viewed"// TODO: Add context_location - Nino Teixeira_01/30/20
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
-    case addNewCardButtonClicked = "Add New Card Button Clicked"
 
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
@@ -68,6 +68,7 @@ public final class Koala {
     case creatorDashboard = "creator_dashboard_screen" //DashboardViewController
     case discovery = "explore_screen" //DiscoveryViewController
     case editorialProjects = "editorial_collection_screen" //EditorialProjectsViewController
+    case forgotPassword = "forgot_password_screen" //ResetPasswordViewController
     case help = "settings_help_screen" //HelpViewController
     case login = "login_screen" //LoginViewController
     case loginTout = "login_or_signup_screen" //LoginToutViewController
@@ -83,6 +84,7 @@ public final class Koala {
     case projectNotifications = "settings_project_notifications_screen" //ProjectNotificationsViewController
     case projectPage = "project_screen" //ProjectPamphletViewController
     case rewards = "rewards_screen" //RewardsViewController
+    case search = "search_screen"
     case settingsAddNewCard = "settings_add_new_card_screen" //AddNewCardViewController
     case signup = "sign_up" //SignupViewController
     case thanks = "thanks_screen" //ThanksViewController
@@ -894,7 +896,7 @@ public final class Koala {
   }
 
   public func trackForgotPasswordViewed() {
-    self.track(event: DataLakeWhiteListedEvent.forgotPasswordViewed.rawValue)
+    self.track(event: DataLakeWhiteListedEvent.forgotPasswordViewed.rawValue, location: .forgotPassword)
   }
 
   public func track2FAViewed() {
@@ -1346,7 +1348,7 @@ public final class Koala {
 
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    self.track(event: DataLakeWhiteListedEvent.searchPageViewed.rawValue)
+    self.track(event: DataLakeWhiteListedEvent.searchPageViewed.rawValue, location: .search)
   }
 
   // Call when projects have been obtained from a search.
@@ -1363,7 +1365,11 @@ public final class Koala {
         "has_results": hasResults
       ])
 
-    self.track(event: DataLakeWhiteListedEvent.searchResultsLoaded.rawValue, properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.searchResultsLoaded.rawValue,
+      location: .search,
+      properties: props
+    )
   }
 
   // MARK: - Project Events
