@@ -19,8 +19,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   fileprivate let viewModel: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
   fileprivate var navBarController: ProjectNavBarViewController!
 
-  internal func configureWith(project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
+  internal func configureWith(value: (Project, RefTag?)) {
+    self.viewModel.inputs.configureWith(value: value)
   }
 
   public override func viewDidLoad() {
@@ -59,10 +59,10 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.loadProjectIntoDataSource
+    self.viewModel.outputs.loadProjectAndRefTagIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] project in
-        self?.dataSource.load(project: project)
+      .observeValues { [weak self] projectAndRefTag in
+        self?.dataSource.load(projectAndRefTag: projectAndRefTag)
         self?.tableView.reloadData()
       }
 
@@ -187,9 +187,9 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate {
   internal func projectPamphletMainCell(
     _: ProjectPamphletMainCell,
-    goToCampaignForProject project: Project
+    goToCampaignForProjectWith projectAndRefTag: (project: Project, refTag: RefTag?)
   ) {
-    let vc = ProjectDescriptionViewController.configuredWith(project: project)
+    let vc = ProjectDescriptionViewController.configuredWith(value: projectAndRefTag)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

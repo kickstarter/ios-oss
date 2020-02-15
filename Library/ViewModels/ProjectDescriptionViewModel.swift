@@ -4,8 +4,8 @@ import ReactiveSwift
 import WebKit
 
 public protocol ProjectDescriptionViewModelInputs {
-  /// Call with the project given to the view.
-  func configureWith(project: Project)
+  /// Call with the project and reftag given to the view.
+  func configureWith(value: (Project, RefTag?))
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction: WKNavigationActionData)
@@ -24,6 +24,9 @@ public protocol ProjectDescriptionViewModelInputs {
 }
 
 public protocol ProjectDescriptionViewModelOutputs {
+  /// Emits PledgeCTAContainerViewData to configure the PledgeCTAContainerView
+  var configurePledgeCTAContainerView: Signal<PledgeCTAContainerViewData, Never> { get }
+
   /// Can be returned from the web view's policy decision delegate method.
   var decidedPolicyForNavigationAction: WKNavigationActionPolicy { get }
 
@@ -42,6 +45,9 @@ public protocol ProjectDescriptionViewModelOutputs {
   /// Emits a url request that should be loaded into the webview.
   var loadWebViewRequest: Signal<URLRequest, Never> { get }
 
+  /// Emits whether the pledgeCTAContainerView is hidden.
+  var pledgeCTAContainerViewIsHidden: Signal<Bool, Never> { get }
+
   /// Emits when an error should be displayed.
   var showErrorAlert: Signal<Error, Never> { get }
 }
@@ -54,8 +60,14 @@ public protocol ProjectDescriptionViewModelType {
 public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
   ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
   public init() {
-    let project = Signal.combineLatest(self.projectProperty.signal.skipNil(), self.viewDidLoadProperty.signal)
-      .map(first)
+    let projectAndRefTag = Signal.combineLatest(
+      self.projectProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
+
+    let project = projectAndRefTag.map(first)
+
     let navigationAction = self.policyForNavigationActionProperty.signal.skipNil()
     let navigationActionLink = navigationAction
       .filter { $0.navigationType == .linkActivated }
@@ -115,6 +127,23 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
     .map { navigationAction, _, _ in navigationAction.request.url }
     .skipNil()
 
+    self.pledgeCTAContainerViewIsHidden = projectAndRefTag
+      .map { project, _ in
+        ([
+          project.personalization.backing,
+          AppEnvironment.current.currentUser
+        ] as [Any?])
+          .allSatisfy(isNil)
+        // TODO: && is in experiment
+      }
+
+    self.configurePledgeCTAContainerView = projectAndRefTag
+      .combineLatest(with: self.pledgeCTAContainerViewIsHidden)
+      .filter(second >>> isFalse)
+      .map(first)
+      .map(Either.left)
+      .map { ($0, false, .projectDescription) }
+
     project
       .takeWhen(self.goToSafariBrowser)
       .observeValues {
@@ -122,9 +151,9 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
       }
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
-    self.projectProperty.value = project
+  fileprivate let projectProperty = MutableProperty<(Project, RefTag?)?>(nil)
+  public func configureWith(value: (Project, RefTag?)) {
+    self.projectProperty.value = value
   }
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
@@ -157,11 +186,13 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
     self.webViewDidStartProvisionalNavigationProperty.value = ()
   }
 
+  public let configurePledgeCTAContainerView: Signal<PledgeCTAContainerViewData, Never>
   public let goBackToProject: Signal<(), Never>
   public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
   public let goToSafariBrowser: Signal<URL, Never>
   public let isLoading: Signal<Bool, Never>
   public let loadWebViewRequest: Signal<URLRequest, Never>
+  public let pledgeCTAContainerViewIsHidden: Signal<Bool, Never>
   public let showErrorAlert: Signal<Error, Never>
 
   public var inputs: ProjectDescriptionViewModelInputs { return self }

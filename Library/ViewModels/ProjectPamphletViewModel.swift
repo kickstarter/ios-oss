@@ -40,8 +40,8 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
-  /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
-  var configurePledgeCTAView: Signal<(Either<(Project, RefTag?), ErrorEnvelope>, Bool), Never> { get }
+  /// Emits PledgeCTAContainerViewData to configure PledgeCTAContainerView
+  var configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never> { get }
 
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
 
@@ -130,8 +130,10 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     self.configurePledgeCTAView = Signal.combineLatest(
       Signal.merge(freshProjectAndRefTag.map(Either.left), projectError.map(Either.right)),
-      isLoading.signal
+      isLoading.signal,
+      freshProjectAndRefTag.mapConst(PledgeCTAContainerViewContext.projectPamphlet)
     )
+    .map { $0 as PledgeCTAContainerViewData }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -258,7 +260,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
-  public let configurePledgeCTAView: Signal<(Either<(Project, RefTag?), ErrorEnvelope>, Bool), Never>
+  public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToManagePledge: Signal<Project, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>

@@ -25,8 +25,10 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     )
   }
 
-  internal func load(project: Project) {
+  internal func load(projectAndRefTag: (Project, RefTag?)) {
     self.clearValues()
+
+    let (project, _) = projectAndRefTag
 
     if currentUserIsCreator(of: project) {
       self.set(
@@ -36,7 +38,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       )
     }
 
-    self.set(values: [project], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
+    self.set(values: [projectAndRefTag], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
 
     let values: [ProjectPamphletSubpage] = [
       .comments(project.stats.commentsCount as Int?, .first),
@@ -66,7 +68,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as ProjectPamphletCreatorHeaderCell, value as Project):
       cell.configureWith(value: value)
-    case let (cell as ProjectPamphletMainCell, value as Project):
+    case let (cell as ProjectPamphletMainCell, value as (Project, RefTag?)):
       cell.configureWith(value: value)
     case let (cell as ProjectPamphletMinimalCell, value as Project):
       cell.configureWith(value: value)

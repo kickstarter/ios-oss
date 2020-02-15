@@ -6,8 +6,8 @@ public protocol ProjectPamphletMainCellViewModelInputs {
   /// Call when cell awakeFromNib is called.
   func awakeFromNib()
 
-  /// Call with the project provided to the view controller.
-  func configureWith(project: Project)
+  /// Call with the project and refTag provided to the view controller.
+  func configureWith(value: (Project, RefTag?))
 
   /// Call when the creator button is tapped.
   func creatorButtonTapped()
@@ -59,8 +59,8 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the location name label.
   var locationNameLabelText: Signal<String, Never> { get }
 
-  /// Emits the project when we should go to the campaign view for the project.
-  var notifyDelegateToGoToCampaign: Signal<Project, Never> { get }
+  /// Emits the project and refTag when we should go to the campaign view for the project.
+  var notifyDelegateToGoToCampaignWithProjectAndRefTag: Signal<(Project, RefTag?), Never> { get }
 
   /// Emits the project when we should go to the creator's view for the project.
   var notifyDelegateToGoToCreator: Signal<Project, Never> { get }
@@ -116,7 +116,8 @@ public protocol ProjectPamphletMainCellViewModelType {
 public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellViewModelType,
   ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs {
   public init() {
-    let project = self.projectProperty.signal.skipNil()
+    let projectAndRefTag = self.projectAndRefTagProperty.signal.skipNil()
+    let project = projectAndRefTag.map(first)
 
     self.projectNameLabelText = project.map(Project.lens.name.view)
     self.projectBlurbLabelText = project.map(Project.lens.blurb.view)
@@ -212,7 +213,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
 
-    self.notifyDelegateToGoToCampaign = project
+    self.notifyDelegateToGoToCampaignWithProjectAndRefTag = projectAndRefTag
       .takeWhen(self.readMoreButtonTappedProperty.signal)
 
     self.notifyDelegateToGoToCreator = project
@@ -223,7 +224,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .take(first: 1)
 
     self.opacityForViews = Signal.merge(
-      self.projectProperty.signal.skipNil().mapConst(1.0),
+      self.projectAndRefTagProperty.signal.skipNil().mapConst(1.0),
       self.awakeFromNibProperty.signal.mapConst(0.0)
     )
   }
@@ -233,9 +234,9 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.awakeFromNibProperty.value = ()
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
-    self.projectProperty.value = project
+  fileprivate let projectAndRefTagProperty = MutableProperty<(Project, RefTag?)?>(nil)
+  public func configureWith(value: (Project, RefTag?)) {
+    self.projectAndRefTagProperty.value = value
   }
 
   fileprivate let creatorButtonTappedProperty = MutableProperty(())
@@ -275,7 +276,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let deadlineTitleLabelText: Signal<String, Never>
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
   public let locationNameLabelText: Signal<String, Never>
-  public let notifyDelegateToGoToCampaign: Signal<Project, Never>
+  public let notifyDelegateToGoToCampaignWithProjectAndRefTag: Signal<(Project, RefTag?), Never>
   public let notifyDelegateToGoToCreator: Signal<Project, Never>
   public let opacityForViews: Signal<CGFloat, Never>
   public let pledgedSubtitleLabelText: Signal<String, Never>

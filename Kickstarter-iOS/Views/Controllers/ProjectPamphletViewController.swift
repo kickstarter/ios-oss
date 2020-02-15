@@ -25,8 +25,6 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   fileprivate var contentController: ProjectPamphletContentViewController!
 
   @IBOutlet private var navBarTopConstraint: NSLayoutConstraint!
-
-  private let pledgeCTAContainerViewMargins = Styles.grid(3)
   private let pledgeCTAContainerView: PledgeCTAContainerView = {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -113,22 +111,6 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
-  public override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.pledgeCTAContainerView
-      |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
-
-    _ = self.pledgeCTAContainerView.layer
-      |> checkoutLayerCardRoundedStyle
-      |> \.backgroundColor .~ UIColor.white.cgColor
-      |> \.shadowColor .~ UIColor.black.cgColor
-      |> \.shadowOpacity .~ 0.12
-      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
-      |> \.shadowRadius .~ CGFloat(1.0)
-      |> \.maskedCorners .~ [CACornerMask.layerMaxXMinYCorner, CACornerMask.layerMinXMinYCorner]
-  }
-
   public override func bindViewModel() {
     super.bindViewModel()
 
@@ -149,7 +131,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, refTag in
-        self?.contentController.configureWith(project: project)
+        self?.contentController.configureWith(value: (project, refTag))
         self?.navBarController.configureWith(project: project, refTag: refTag)
       }
 

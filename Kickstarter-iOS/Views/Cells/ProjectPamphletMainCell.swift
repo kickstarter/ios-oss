@@ -5,7 +5,10 @@ import UIKit
 
 internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, addChildController child: UIViewController)
-  func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, goToCampaignForProject project: Project)
+  func projectPamphletMainCell(
+    _ cell: ProjectPamphletMainCell,
+    goToCampaignForProjectWith projectAndRefTag: (project: Project, refTag: RefTag?)
+  )
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, goToCreatorForProject project: Project)
 }
 
@@ -70,8 +73,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.awakeFromNib()
   }
 
-  internal func configureWith(value project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
+  internal func configureWith(value: (Project, RefTag?)) {
+    self.viewModel.inputs.configureWith(value: value)
   }
 
   internal func scrollContentOffset(_ offset: CGFloat) {
@@ -282,32 +285,32 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .skipNil()
       .observeValues { [weak self] in self?.creatorImageView.af_setImage(withURL: $0) }
 
-    self.viewModel.outputs.notifyDelegateToGoToCampaign
+    self.viewModel.outputs.notifyDelegateToGoToCampaignWithProjectAndRefTag
       .observeForControllerAction()
       .observeValues { [weak self] in
-        guard let _self = self else { return }
-        self?.delegate?.projectPamphletMainCell(_self, goToCampaignForProject: $0)
+        guard let self = self else { return }
+        self.delegate?.projectPamphletMainCell(self, goToCampaignForProjectWith: $0)
       }
 
     self.viewModel.outputs.notifyDelegateToGoToCreator
       .observeForControllerAction()
       .observeValues { [weak self] in
-        guard let _self = self else { return }
-        self?.delegate?.projectPamphletMainCell(_self, goToCreatorForProject: $0)
+        guard let self = self else { return }
+        self.delegate?.projectPamphletMainCell(self, goToCreatorForProject: $0)
       }
 
     self.viewModel.outputs.opacityForViews
       .observeForUI()
       .observeValues { [weak self] alpha in
-        guard let _self = self else { return }
+        guard let self = self else { return }
         UIView.animate(
           withDuration: alpha == 0.0 ? 0.0 : 0.3,
           delay: 0.0,
           options: .curveEaseOut,
           animations: {
-            _self.creatorStackView.alpha = alpha
-            _self.statsStackView.alpha = alpha
-            _self.blurbAndReadMoreStackView.alpha = alpha
+            self.creatorStackView.alpha = alpha
+            self.statsStackView.alpha = alpha
+            self.blurbAndReadMoreStackView.alpha = alpha
           },
           completion: nil
         )
