@@ -131,7 +131,7 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to the creator dashboard.
   var goToDashboard: Signal<Param?, Never> { get }
 
-  /// Emits when the root view controller should navigate to the creator dashboard.
+  /// Emits when the root view controller should navigate to the Discovery screen.
   var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
 
   /// Emits when the root view controller should navigate to the login screen.
@@ -163,6 +163,8 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits the push token that has been successfully registered on the server.
   var pushTokenSuccessfullyRegistered: Signal<String, Never> { get }
+
+  var rootViewController: Signal<UIViewController, Never> { get }
 
   /// Emits an array of short cut items to put into the shared application.
   var setApplicationShortcutItems: Signal<[ShortcutItem], Never> { get }
@@ -517,6 +519,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
 
+    self.rootViewController = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      .map { UINavigationController(rootViewController: LandingPageViewController()) }
+
     self.presentViewController = Signal
       .merge(
         projectRootLink,
@@ -811,6 +816,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let presentViewController: Signal<UIViewController, Never>
   public let pushTokenRegistrationStarted: Signal<(), Never>
   public let pushTokenSuccessfullyRegistered: Signal<String, Never>
+  public let rootViewController: Signal<UIViewController, Never>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>
   public let showAlert: Signal<Notification, Never>
   public let synchronizeUbiquitousStore: Signal<(), Never>

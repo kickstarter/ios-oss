@@ -86,14 +86,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.presentViewController
       .observeForUI()
-      .observeValues { [weak self] in
+      .observeValues { [weak self] vc in
         self?.rootTabBarController?.dismiss(animated: true, completion: nil)
-        self?.rootTabBarController?.present($0, animated: true, completion: nil)
+        self?.rootTabBarController?.present(vc, animated: true, completion: nil)
       }
 
     self.viewModel.outputs.goToDiscovery
       .observeForUI()
-      .observeValues { [weak self] in self?.rootTabBarController?.switchToDiscovery(params: $0) }
+      .observeValues { [weak self] in self?.rootTabBarController?.switchToDiscovery(params: $0)
+    }
 
     self.viewModel.outputs.goToActivity
       .observeForUI()
@@ -178,6 +179,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
             MSDistribute.self
           ]
         )
+      }
+
+    self.viewModel.outputs.rootViewController
+      .observeForUI()
+      .observeValues { [weak self] root in
+        self?.window?.rootViewController = root
       }
 
     #if RELEASE || APPCENTER
