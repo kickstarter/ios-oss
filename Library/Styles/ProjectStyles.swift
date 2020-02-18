@@ -3,6 +3,50 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+public enum ProjectCampaignButtonType {
+  case controlType
+  case experimentalType
+
+  public var buttonStyle: ProjectCampaignButtonStyleType {
+     switch self {
+     case .controlType:
+       return .controlReadMoreButton
+     case .experimentalType:
+       return .experimentalReadMoreButton
+     }
+   }
+
+  public var viewHidden: Bool {
+    switch self {
+    case .controlType:
+      return false
+    case .experimentalType:
+      return true
+    }
+  }
+
+  public var stackViewSpacing: CGFloat {
+    switch self {
+    case .controlType:
+      return Styles.grid(0)
+    case .experimentalType:
+      return Styles.grid(4)
+    }
+  }
+}
+
+public enum ProjectCampaignButtonStyleType: Equatable {
+  case controlReadMoreButton
+  case experimentalReadMoreButton
+
+  public var style: ButtonStyle {
+    switch self {
+      case .controlReadMoreButton: return controlReadMoreButtonStyle
+      case .experimentalReadMoreButton: return experimentalReadMoreButtonStyle
+    }
+  }
+}
+
 public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedString {
   let isProjectNamePunctuated = project.name.unicodeScalars.last
     .map(CharacterSet.punctuationCharacters.contains)

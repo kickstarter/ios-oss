@@ -132,3 +132,23 @@ public let shareButtonStyle =
   <> UIButton.lens.image(for: .normal) .~ image(named: "icon--share")
   <> UIButton.lens.tintColor .~ .ksr_soft_black
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
+
+// MARK: - Read More Campaign Button
+
+public let controlReadMoreButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_500
+  <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
+  <> UIButton.lens.contentEdgeInsets .~ .init(
+   top: Styles.grid(3) - 1,
+   left: 0,
+   bottom: Styles.grid(4) - 1,
+   right: 0
+  )
+  <> UIButton.lens.backgroundColor .~ .white
+
+// experimental campaign button
+public let experimentalReadMoreButtonStyle = greyButtonStyle
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign() }
+  <> UIButton.lens.contentHorizontalAlignment .~ .center

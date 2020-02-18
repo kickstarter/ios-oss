@@ -29,6 +29,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the backers title label.
   var backersTitleLabelText: Signal<String, Never> { get }
 
+  /// Emits the spacing of the blurb and reward stgack view.
+  var blurbAndReadMoreStackViewSpacing: Signal<CGFloat, Never> { get }
+
   /// Emits a string to use for the category name label.
   var categoryNameLabelText: Signal<String, Never> { get }
 
@@ -98,6 +101,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the text color of the backer and deadline title label.
   var projectUnsuccessfulLabelTextColor: Signal<UIColor, Never> { get }
 
+  /// Emits the button style of the read more about this campaign button
+  var readMoreButtonStyle: Signal<ProjectCampaignButtonStyleType, Never> { get }
+
   /// Emits a boolean that determines if the project state label should be hidden.
   var stateLabelHidden: Signal<Bool, Never> { get }
 
@@ -106,6 +112,10 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a boolean that determines if the "you're a backer" label should be hidden.
   var youreABackerLabelHidden: Signal<Bool, Never> { get }
+
+  /// Emits a boolean that determines if the the spacer view should be hidden
+  var spacerViewHidden: Signal<Bool, Never> { get }
+
 }
 
 public protocol ProjectPamphletMainCellViewModelType {
@@ -128,6 +138,13 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.creatorImageUrl = project.map { URL(string: $0.creator.avatar.small) }
 
     self.stateLabelHidden = project.map { $0.state == .live }
+
+    let readMoreCTAType = self.awakeFromNibProperty.signal
+      .map { readMoreCTA() }
+    self.readMoreButtonStyle = readMoreCTAType.map { $0.buttonStyle }
+    self.spacerViewHidden = readMoreCTAType.map { $0.viewHidden }
+    self.blurbAndReadMoreStackViewSpacing = readMoreCTAType
+      .map { $0.stackViewSpacing }
 
     self.projectStateLabelText = project
       .filter { $0.state != .live }
@@ -265,6 +282,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
   public let backersSubtitleLabelText: Signal<String, Never>
   public let backersTitleLabelText: Signal<String, Never>
+  public let blurbAndReadMoreStackViewSpacing: Signal<CGFloat, Never>
   public let categoryNameLabelText: Signal<String, Never>
   public let configureVideoPlayerController: Signal<Project, Never>
   public let conversionLabelHidden: Signal<Bool, Never>
@@ -288,6 +306,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let projectStateLabelText: Signal<String, Never>
   public let projectStateLabelTextColor: Signal<UIColor, Never>
   public let projectUnsuccessfulLabelTextColor: Signal<UIColor, Never>
+  public let readMoreButtonStyle: Signal<ProjectCampaignButtonStyleType, Never>
+  public let spacerViewHidden: Signal<Bool, Never>
   public let stateLabelHidden: Signal<Bool, Never>
   public let statsStackViewAccessibilityLabel: Signal<String, Never>
   public let youreABackerLabelHidden: Signal<Bool, Never>
@@ -416,4 +436,31 @@ private func progressColor(forProject project: Project) -> UIColor {
   default:
     return .ksr_green_700
   }
+}
+
+private func readMoreCTA() -> ProjectCampaignButtonType {
+  let userAttributes = optimizelyUserAttributes(
+       with: AppEnvironment.current.currentUser,
+       project: nil,
+       refTag: nil
+     )
+
+     let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+       .variant(
+         for: OptimizelyExperiment.Key.nativeProjectPageCampaignDetails,
+         userId: deviceIdentifier(uuid: UUID()),
+         isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+         userAttributes: userAttributes
+       )
+
+     if let variant = optimizelyVariant {
+       switch variant {
+       case .variant1, .variant2:
+         return ProjectCampaignButtonType.experimentalType
+       case .control:
+         return ProjectCampaignButtonType.controlType
+       }
+     }
+
+  return ProjectCampaignButtonType.controlType
 }
