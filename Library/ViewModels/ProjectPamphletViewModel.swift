@@ -130,10 +130,9 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     self.configurePledgeCTAView = Signal.combineLatest(
       Signal.merge(freshProjectAndRefTag.map(Either.left), projectError.map(Either.right)),
-      isLoading.signal,
-      freshProjectAndRefTag.mapConst(PledgeCTAContainerViewContext.projectPamphlet)
+      isLoading.signal
     )
-    .map { $0 as PledgeCTAContainerViewData }
+    .map { ($0, $1, PledgeCTAContainerViewContext.projectPamphlet) }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }

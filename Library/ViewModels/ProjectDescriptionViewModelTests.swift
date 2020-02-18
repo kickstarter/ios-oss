@@ -8,17 +8,47 @@ import WebKit
 import XCTest
 
 final class ProjectDescriptionViewModelTests: TestCase {
-  fileprivate let vm: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
+  private let vm: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
 
-  fileprivate let goBackToProject = TestObserver<(), Never>()
-  fileprivate let goToMessageDialog = TestObserver<(MessageSubject, Koala.MessageDialogContext), Never>()
-  fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
-  fileprivate let isLoading = TestObserver<Bool, Never>()
-  fileprivate let loadWebViewRequest = TestObserver<URLRequest, Never>()
-  fileprivate let showErrorAlert = TestObserver<NSError, Never>()
+  private let configurePledgeCTAViewContext = TestObserver<PledgeCTAContainerViewContext, Never>()
+  private let configurePledgeCTAViewErrorEnvelope = TestObserver<ErrorEnvelope, Never>()
+  private let configurePledgeCTAViewProject = TestObserver<Project, Never>()
+  private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
+  private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
+  private let goBackToProject = TestObserver<(), Never>()
+  private let goToMessageDialog = TestObserver<(MessageSubject, Koala.MessageDialogContext), Never>()
+  private let goToSafariBrowser = TestObserver<URL, Never>()
+  private let isLoading = TestObserver<Bool, Never>()
+  private let loadWebViewRequest = TestObserver<URLRequest, Never>()
+  private let showErrorAlert = TestObserver<NSError, Never>()
 
   override func setUp() {
     super.setUp()
+
+    self.vm.outputs.configurePledgeCTAContainerView
+      .map(first)
+      .map(\.left)
+      .skipNil()
+      .map(first)
+      .observe(self.configurePledgeCTAViewProject.observer)
+
+    self.vm.outputs.configurePledgeCTAContainerView
+      .map(first)
+      .map(\.left)
+      .skipNil()
+      .map(second)
+      .observe(self.configurePledgeCTAViewRefTag.observer)
+
+    self.vm.outputs.configurePledgeCTAContainerView
+      .map(first)
+      .map(\.right)
+      .skipNil()
+      .observe(self.configurePledgeCTAViewErrorEnvelope.observer)
+
+    self.vm.outputs.configurePledgeCTAContainerView.map(second)
+      .observe(self.configurePledgeCTAViewIsLoading.observer)
+    self.vm.outputs.configurePledgeCTAContainerView.map(third)
+      .observe(self.configurePledgeCTAViewContext.observer)
 
     self.vm.outputs.goBackToProject.observe(self.goBackToProject.observer)
     self.vm.outputs.goToMessageDialog.observe(self.goToMessageDialog.observer)
@@ -33,7 +63,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
       |> Project.lens.id .~ 42
       |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1/42"
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     self.isLoading.assertValues([true])
@@ -72,7 +102,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
       |> Project.lens.id .~ 42
       |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1/42"
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -108,7 +138,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
       |> Project.lens.id .~ 42
       |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1/42"
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -144,7 +174,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
   func testDescriptionRequest() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -178,7 +208,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
   func testIFrameRequest() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -213,7 +243,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
   func testError() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project)
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     let request = URLRequest(url: URL(string: project.urls.web.project)!)
@@ -235,4 +265,12 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     self.showErrorAlert.assertValues([error])
   }
+
+  // TODO: Complete tests once experiment is added
+  func testConfigurePledgeCTAContainerView_NonBacker_Control() {}
+  func testConfigurePledgeCTAContainerView_Backer_Control() {}
+  func testConfigurePledgeCTAContainerView_NonBacker_Variant1() {}
+  func testConfigurePledgeCTAContainerView_Backer_Variant1() {}
+  func testConfigurePledgeCTAContainerView_NonBacker_Variant2() {}
+  func testConfigurePledgeCTAContainerView_Backer_Variant2() {}
 }
