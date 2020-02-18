@@ -56,18 +56,18 @@ public final class Koala {
 
   /// Determines the screen from which the event is sent.
   public enum LocationContext: String {
-    case activities = "activity_feed_screen" // ActivitiesViewController <-
-    case discovery = "explore_screen" // DiscoveryViewController <-
-    case editorialProjects = "editorial_collection_screen" // EditorialProjectsViewController <-
-    case forgotPassword = "forgot_password_screen" // ResetPasswordViewController <-
+    case activities = "activity_feed_screen" // ActivitiesViewController
+    case discovery = "explore_screen" // DiscoveryViewController
+    case editorialProjects = "editorial_collection_screen" // EditorialProjectsViewController
+    case forgotPassword = "forgot_password_screen" // ResetPasswordViewController
     case login = "login_screen" // LoginViewController
-    case loginTout = "login_or_signup_screen" // LoginToutViewController <-
-    case pledgeAddNewCard = "pledge_add_new_card_screen" // AddNewCardViewController <-
-    case pledgeScreen = "pledge_screen" // PledgeViewController <-
-    case projectPage = "project_screen" // ProjectPamphletViewController <-
+    case loginTout = "login_or_signup_screen" // LoginToutViewController
+    case pledgeAddNewCard = "pledge_add_new_card_screen" // AddNewCardViewController
+    case pledgeScreen = "pledge_screen" // PledgeViewController
+    case projectPage = "project_screen" // ProjectPamphletViewController
     case rewards = "rewards_screen" // RewardsViewController
-    case search = "search_screen" // <-
-    case settingsAddNewCard = "settings_add_new_card_screen" // AddNewCardViewController <-
+    case search = "search_screen" // SearchViewController
+    case settingsAddNewCard = "settings_add_new_card_screen" // AddNewCardViewController
     case signup = "sign_up" // SignupViewController
     case thanks = "thanks_screen" // ThanksViewController
     case twoFactorAuth = "two_factor_auth_verify_screen" // TwoFactorViewController
@@ -711,11 +711,11 @@ public final class Koala {
    */
 
   public func trackAddNewCardButtonClicked(
-    project: Project,
-    reward: Reward,
     context: Koala.PledgeContext,
+    location: Koala.LocationContext? = nil,
+    project: Project,
     refTag: RefTag?,
-    location: Koala.LocationContext? = nil
+    reward: Reward
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
