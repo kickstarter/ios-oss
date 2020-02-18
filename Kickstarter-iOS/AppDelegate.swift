@@ -249,6 +249,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.window?.tintColor = .ksr_green_700
 
+    self.viewModel.outputs.goToOnboarding
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        
+        self?.rootTabBarController?.present(CategorySelectionViewController(), animated: true)
+    }
+
     self.viewModel.inputs.applicationDidFinishLaunching(
       application: application,
       launchOptions: launchOptions

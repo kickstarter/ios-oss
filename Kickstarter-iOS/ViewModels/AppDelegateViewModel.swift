@@ -149,6 +149,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits a URL when we should open it in the safari browser.
   var goToMobileSafari: Signal<URL, Never> { get }
 
+  var goToOnboarding: Signal<Void, Never> { get }
+
   /// Emits when the root view controller should navigate to search.
   var goToSearch: Signal<(), Never> { get }
 
@@ -446,6 +448,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         return .some(param)
       }
       .skipNil()
+
+    self.goToOnboarding = self.applicationDidFinishLaunchingReturnValueProperty.signal
+      .ignoreValues()
+      .ksr_delay(.seconds(2), on: AppEnvironment.current.scheduler)
 
     let projectRootLink = projectLink
       .filter { _, subpage, _ in subpage == .root }
@@ -806,6 +812,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToProfile: Signal<(), Never>
   public let goToProjectActivities: Signal<Param, Never>
   public let goToMobileSafari: Signal<URL, Never>
+  public let goToOnboarding: Signal<Void, Never>
   public let goToSearch: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
   public let presentViewController: Signal<UIViewController, Never>
