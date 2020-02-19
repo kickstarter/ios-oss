@@ -3,6 +3,7 @@ import UIKit
 import SpriteKit
 import Library
 import KsApi
+import Prelude
 
 public final class CategorySelectionViewController: UITableViewController {
   private lazy var skView: SKView = {
@@ -17,7 +18,10 @@ public final class CategorySelectionViewController: UITableViewController {
   override public func viewDidLoad() {
     super.viewDidLoad()
 
-    self.tableView.dataSource = dataSource
+    _ = self.tableView
+      |> \.dataSource .~ dataSource
+      |> UITableView.lens.separatorStyle .~ .none
+      |> UITableView.lens.rowHeight .~ UITableView.automaticDimension
 
 //    self.view.backgroundColor = .ksr_grey_200
 //
@@ -51,6 +55,11 @@ public final class CategorySelectionViewController: UITableViewController {
       .observeValues { [weak self] categories in
         self?.dataSource.load(categories: categories)
         self?.tableView.reloadData()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5)) {
+          self?.tableView.setNeedsLayout()
+          self?.tableView.layoutIfNeeded()
+        }
     }
   }
 

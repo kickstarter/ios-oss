@@ -5,8 +5,10 @@ import UIKit
 import Prelude
 
 final class CategorySelectionCell: UITableViewCell, ValueCell {
-  private lazy var rootStackView = { UIStackView(frame: .zero) }()
-  private lazy var categoryNameLabel = { UILabel() }()
+  private lazy var categoryNameLabel = {
+    UILabel(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
   private let pillDataSource = PillCollectionViewDataSource()
   private lazy var subCatsCollectionView = {
     UICollectionView(
@@ -21,13 +23,15 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
       |> \.dataSource .~ self.pillDataSource
       |> \.delegate .~ self
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-
   }()
+
+  private var subCatsHeightConstraint: NSLayoutConstraint?
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
+    self.setupConstraints()
     self.bindViewModel()
     self.bindStyles()
   }
@@ -36,49 +40,84 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  public override func layoutSubviews() {
+    super.layoutSubviews()
+
+    self.updateCollectionViewConstraints()
+  }
+
   func configureWith(value category: KsApi.Category) {
     self.categoryNameLabel.text = category.name
 
     if let subcats = category.subcategories {
       self.pillDataSource.load(subcats.nodes.map { $0.name })
       self.subCatsCollectionView.reloadData()
+
+      self.updateCollectionViewConstraints()
     }
   }
 
   private func configureViews() {
-    _ = (self.rootStackView, self.contentView)
+    [self.categoryNameLabel, self.subCatsCollectionView].forEach { view in
+      _ = (view, self.contentView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = ([categoryNameLabel, subCatsCollectionView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
+    }
 
     self.subCatsCollectionView.register(PillCell.self)
+
+    self.categoryNameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+    self.categoryNameLabel.setContentHuggingPriority(.required, for: .vertical)
+    self.subCatsCollectionView.setContentCompressionResistancePriority(.required, for: .vertical)
   }
 
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.rootStackView
-      |> verticalStackViewStyle
-      |> \.distribution .~ .fill
-      |> \.alignment .~ .fill
+    _ = self
+      |> baseTableViewCellStyle()
+
+    _ = self.subCatsCollectionView
+      |> \.backgroundColor .~ .white
+
+    _ = self.categoryNameLabel
+      |> \.numberOfLines .~ 1
+      |> \.lineBreakMode .~ .byTruncatingTail
+      |> \.textColor .~ UIColor.ksr_soft_black
+      |> \.font .~ UIFont.ksr_headline()
   }
 
   private func setupConstraints() {
-    let pillCollectionViewConstraints = [
-      self.pillCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor),
-      self.pillCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor),
-      self.pillCollectionViewHeightConstraint
-    ]
+    self.subCatsHeightConstraint = self.subCatsCollectionView.heightAnchor.constraint(equalToConstant: 0.0)
 
-    NSLayoutConstraint.activate(pillCollectionViewConstraints)
+    self.subCatsHeightConstraint?.priority = .defaultHigh
+
+    let margins = self.contentView.layoutMarginsGuide
+
+    let constraints = [
+      self.categoryNameLabel.topAnchor.constraint(equalTo: margins.topAnchor),
+      self.categoryNameLabel.leftAnchor.constraint(equalTo: margins.leftAnchor),
+      self.categoryNameLabel.rightAnchor.constraint(equalTo: margins.rightAnchor),
+      self.subCatsCollectionView.topAnchor.constraint(equalTo: self.categoryNameLabel.bottomAnchor,
+                                                      constant: Styles.grid(2)),
+      self.subCatsCollectionView.leftAnchor.constraint(equalTo: margins.leftAnchor),
+      self.subCatsCollectionView.rightAnchor.constraint(equalTo: margins.rightAnchor),
+      self.subCatsCollectionView.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
+      self.subCatsHeightConstraint
+      ].compact()
+
+    NSLayoutConstraint.activate(constraints)
   }
 
   private func updateCollectionViewConstraints() {
     self.subCatsCollectionView.layoutIfNeeded()
 
-    self.pillCollectionViewHeightConstraint.constant = self.pillCollectionView.contentSize.height
+    self.subCatsHeightConstraint?.constant = self.subCatsCollectionView.contentSize.height
+
+    self.contentView.setNeedsLayout()
+    self.contentView.layoutIfNeeded()
+
+    print("CONTENT VIEW HEIGHT \(self.contentView.bounds.height)")
+    print("COLLECTION VIEW HEIGHT \(self.subCatsCollectionView.bounds.height)")
   }
 }
 
