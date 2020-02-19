@@ -23,11 +23,11 @@ final class ProjectPamphletViewModelTests: TestCase {
   private let goToManageViewPledge = TestObserver<Project, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
+  private let popToRootViewController = TestObserver<(), Never>()
   private let setNavigationBarHidden = TestObserver<Bool, Never>()
   private let setNavigationBarAnimated = TestObserver<Bool, Never>()
   private let setNeedsStatusBarAppearanceUpdate = TestObserver<(), Never>()
   private let topLayoutConstraintConstant = TestObserver<CGFloat, Never>()
-  private let popToRootViewController = TestObserver<(), Never>()
 
   internal override func setUp() {
     super.setUp()
