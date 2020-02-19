@@ -4,6 +4,7 @@ import Foundation
 @testable import Library
 import Prelude
 import UIKit
+import XCTest
 
 final class RewardCardContainerViewTests: TestCase {
   override func setUp() {
@@ -318,7 +319,10 @@ final class RewardCardContainerViewTests: TestCase {
 
     combos([Language.en], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(config: mockConfig) {
-        let noReward = allRewards.filter { $0.1.isNoReward }.first!
+        guard let noReward = allRewards.first(where: { $0.1.isNoReward }) else {
+          XCTFail("Should have a reward")
+          return
+        }
         let (description, reward) = noReward
 
         let vc = rewardCardInViewController(
@@ -339,7 +343,10 @@ final class RewardCardContainerViewTests: TestCase {
 
     combos([Language.en], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(config: mockConfig) {
-        let noReward = allRewards.filter { $0.1.isNoReward }.first!
+        guard let noReward = allRewards.first(where: { $0.1.isNoReward }) else {
+          XCTFail("Should have a reward")
+          return
+        }
         let (description, reward) = noReward
         let project = Project.template
           |> Project.lens.personalization.isBacking .~ true

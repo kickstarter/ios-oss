@@ -428,9 +428,9 @@ public func == (lhs: DashboardTitleViewData, rhs: DashboardTitleViewData) -> Boo
 private func find(projectForParam param: Param?, in projects: [Project]) -> Project? {
   guard let param = param else { return nil }
 
-  return projects.filter { project in
+  return projects.first { project in
     if case .id(project.id) = param { return true }
     if case .slug(project.slug) = param { return true }
     return false
-  }.first
+  }
 }

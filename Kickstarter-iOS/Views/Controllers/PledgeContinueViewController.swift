@@ -77,7 +77,11 @@ final class PledgeContinueViewController: UIViewController {
     let navigationController = UINavigationController(rootViewController: loginSignupViewController)
     let navigationBarHeight = navigationController.navigationBar.bounds.height
 
-    self.presentViewControllerWithSheetOverlay(navigationController, offset: navigationBarHeight)
+    if #available(iOS 13.0, *) {
+      self.present(navigationController, animated: true)
+    } else {
+      self.presentViewControllerWithSheetOverlay(navigationController, offset: navigationBarHeight)
+    }
   }
 }
 

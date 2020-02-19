@@ -165,7 +165,10 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   }
 
   func testBackerOfSoldOutReward() {
-    let soldOutReward = self.cosmicSurgery.rewards.filter { $0.remaining == 0 }.first!
+    guard let soldOutReward = self.cosmicSurgery.rewards.first(where: { $0.remaining == 0 }) else {
+      XCTFail("Should have a sold out reward")
+      return
+    }
     let project = self.cosmicSurgery
       |> Project.lens.rewards .~ [soldOutReward]
       |> Project.lens.state .~ .live

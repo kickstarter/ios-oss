@@ -188,7 +188,7 @@ private func subtitle(project: Project, pledgeState: PledgeStateCTAType) -> Stri
   let amount = formattedPledge(amount: backing.amount, project: project)
 
   let reward = backing.reward
-    ?? project.rewards.filter { $0.id == backing.rewardId }.first
+    ?? project.rewards.first { $0.id == backing.rewardId }
     ?? Reward.noReward
 
   guard let rewardTitle = reward.title else { return "\(amount)" }

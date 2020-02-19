@@ -212,7 +212,7 @@ private func rewardSummary(activity: Activity, project: Project) -> String {
 
 private func reward(activity: Activity, project: Project) -> Reward? {
   guard let rewardId = activity.memberData.rewardId ?? activity.memberData.newRewardId else { return nil }
-  return project.rewards.filter { $0.id == rewardId }.first
+  return project.rewards.first { $0.id == rewardId }
 }
 
 private func title(activity: Activity) -> String {
