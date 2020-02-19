@@ -138,11 +138,11 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     self.stateLabelHidden = project.map { $0.state == .live }
 
-    let readMoreCTAType = self.awakeFromNibProperty.signal
-      .map { readMoreCTA() }
-    self.readMoreButtonStyle = readMoreCTAType.map { $0.buttonStyle }
-    self.spacerViewHidden = readMoreCTAType.map { $0.viewHidden }
-    self.blurbAndReadMoreStackViewSpacing = readMoreCTAType
+    let projectCampaignExperimentType = self.awakeFromNibProperty.signal
+      .map { projectCampaignExperiment() }
+    self.readMoreButtonStyle = projectCampaignExperimentType.map { $0.buttonStyle }
+    self.spacerViewHidden = projectCampaignExperimentType.map { $0.viewHidden }
+    self.blurbAndReadMoreStackViewSpacing = projectCampaignExperimentType
       .map { $0.stackViewSpacing }
 
     self.projectStateLabelText = project
@@ -437,7 +437,7 @@ private func progressColor(forProject project: Project) -> UIColor {
   }
 }
 
-private func readMoreCTA() -> ProjectCampaignButtonType {
+private func projectCampaignExperiment() -> ProjectCampaignExperimentType {
   let userAttributes = optimizelyUserAttributes(
     with: AppEnvironment.current.currentUser,
     project: nil,
@@ -455,11 +455,11 @@ private func readMoreCTA() -> ProjectCampaignButtonType {
   if let variant = optimizelyVariant {
     switch variant {
     case .variant1, .variant2:
-      return ProjectCampaignButtonType.experimentalType
+      return ProjectCampaignExperimentType.experimental
     case .control:
-      return ProjectCampaignButtonType.controlType
+      return ProjectCampaignExperimentType.control
     }
   }
 
-  return ProjectCampaignButtonType.controlType
+  return ProjectCampaignExperimentType.control
 }

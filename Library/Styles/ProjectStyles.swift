@@ -3,33 +3,33 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public enum ProjectCampaignButtonType {
-  case controlType
-  case experimentalType
+public enum ProjectCampaignExperimentType {
+  case control
+  case experimental
 
   public var buttonStyle: ProjectCampaignButtonStyleType {
     switch self {
-    case .controlType:
+    case .control:
       return .controlReadMoreButton
-    case .experimentalType:
+    case .experimental:
       return .experimentalReadMoreButton
     }
   }
 
   public var viewHidden: Bool {
     switch self {
-    case .controlType:
+    case .control:
       return false
-    case .experimentalType:
+    case .experimental:
       return true
     }
   }
 
   public var stackViewSpacing: CGFloat {
     switch self {
-    case .controlType:
+    case .control:
       return Styles.grid(0)
-    case .experimentalType:
+    case .experimental:
       return Styles.grid(4)
     }
   }
