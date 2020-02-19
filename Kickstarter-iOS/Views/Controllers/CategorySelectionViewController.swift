@@ -44,8 +44,17 @@ public final class CategorySelectionViewController: UITableViewController {
 
     self.tableView.registerCellClass(CategorySelectionCell.self)
 
+    self.configureHeaderView()
+
     self.viewModel.inputs.viewDidLoad()
   }
+
+  override public func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
+  }
+
 
   override public func bindViewModel() {
     super.bindViewModel()
@@ -55,12 +64,36 @@ public final class CategorySelectionViewController: UITableViewController {
       .observeValues { [weak self] categories in
         self?.dataSource.load(categories: categories)
         self?.tableView.reloadData()
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5)) {
-          self?.tableView.setNeedsLayout()
-          self?.tableView.layoutIfNeeded()
-        }
     }
+  }
+
+  private func configureHeaderView() {
+    let headerContainer = UIView(frame: .zero)
+      |> \.backgroundColor .~ .white
+      |> \.accessibilityTraits .~ .header
+      |> \.isAccessibilityElement .~ true
+      |> \.layoutMargins %~~ { _, _ in
+        self.view.traitCollection.isRegularRegular
+          ? .init(top: Styles.grid(4), left: Styles.grid(30), bottom: Styles.grid(2), right: Styles.grid(30))
+          : .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+      }
+
+
+    let categorySelectionHeader = CategorySelectionHeaderView(frame: .zero)
+
+    _ = (categorySelectionHeader, headerContainer)
+      |> ksr_addSubviewToParent()
+
+    self.tableView.tableHeaderView = headerContainer
+
+    _ = (categorySelectionHeader, headerContainer)
+      |> ksr_constrainViewToMarginsInParent()
+
+    let widthConstraint = categorySelectionHeader.widthAnchor
+      .constraint(equalTo: self.tableView.widthAnchor)
+      |> \.priority .~ .defaultHigh
+
+    NSLayoutConstraint.activate([widthConstraint])
   }
 
   private func configureNodes(categoryNodes: [KsApi.Category]) {

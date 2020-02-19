@@ -227,6 +227,7 @@
 		7727494723FC66EA0065E9F2 /* CategorySelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7727494623FC66EA0065E9F2 /* CategorySelectionViewModel.swift */; };
 		7727494923FC8C2A0065E9F2 /* CategorySelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7727494823FC8C2A0065E9F2 /* CategorySelectionDataSource.swift */; };
 		7727494B23FC99E00065E9F2 /* CategorySelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7727494A23FC99E00065E9F2 /* CategorySelectionCell.swift */; };
+		7727494D23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */; };
 		77277C3022B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */; };
 		773452FA2384477D00E6B6A3 /* DiscoveryEditorialCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773452F92384477D00E6B6A3 /* DiscoveryEditorialCell.swift */; };
 		773452FD2384B6BF00E6B6A3 /* DiscoveryEditorialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773452FB2384AD9300E6B6A3 /* DiscoveryEditorialViewModel.swift */; };
@@ -1639,6 +1640,7 @@
 		7727494623FC66EA0065E9F2 /* CategorySelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionViewModel.swift; sourceTree = "<group>"; };
 		7727494823FC8C2A0065E9F2 /* CategorySelectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionDataSource.swift; sourceTree = "<group>"; };
 		7727494A23FC99E00065E9F2 /* CategorySelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionCell.swift; sourceTree = "<group>"; };
+		7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionHeaderView.swift; sourceTree = "<group>"; };
 		77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
 		773452F92384477D00E6B6A3 /* DiscoveryEditorialCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEditorialCell.swift; sourceTree = "<group>"; };
 		773452FB2384AD9300E6B6A3 /* DiscoveryEditorialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEditorialViewModel.swift; sourceTree = "<group>"; };
@@ -2936,6 +2938,7 @@
 			children = (
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
+				7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */,
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
@@ -5414,6 +5417,7 @@
 				7717805A22F9ED130064A32F /* RewardsCollectionViewFooter.swift in Sources */,
 				3767EDAD22CFFEF20088E8E4 /* ShippingRulesTableViewController.swift in Sources */,
 				370ACB00225D337900C8745F /* PledgeAmountViewController.swift in Sources */,
+				7727494D23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift in Sources */,
 				7727494B23FC99E00065E9F2 /* CategorySelectionCell.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				A731BF901D1EE4CD00A734AC /* UpdateViewModel.swift in Sources */,

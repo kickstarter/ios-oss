@@ -46,6 +46,7 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
     self.updateCollectionViewConstraints()
   }
 
+
   func configureWith(value category: KsApi.Category) {
     self.categoryNameLabel.text = category.name
 
@@ -54,6 +55,8 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
       self.subCatsCollectionView.reloadData()
 
       self.updateCollectionViewConstraints()
+
+      self.setNeedsLayout()
     }
   }
 
@@ -67,7 +70,6 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
 
     self.categoryNameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     self.categoryNameLabel.setContentHuggingPriority(.required, for: .vertical)
-    self.subCatsCollectionView.setContentCompressionResistancePriority(.required, for: .vertical)
   }
 
   override func bindStyles() {
@@ -88,7 +90,6 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
 
   private func setupConstraints() {
     self.subCatsHeightConstraint = self.subCatsCollectionView.heightAnchor.constraint(equalToConstant: 0.0)
-
     self.subCatsHeightConstraint?.priority = .defaultHigh
 
     let margins = self.contentView.layoutMarginsGuide
@@ -113,10 +114,7 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
 
     self.subCatsHeightConstraint?.constant = self.subCatsCollectionView.contentSize.height
 
-    self.contentView.setNeedsLayout()
-    self.contentView.layoutIfNeeded()
-
-    print("CONTENT VIEW HEIGHT \(self.contentView.bounds.height)")
+    print("CONTENT Size HEIGHT \(self.subCatsCollectionView.contentSize.height)")
     print("COLLECTION VIEW HEIGHT \(self.subCatsCollectionView.bounds.height)")
   }
 }
