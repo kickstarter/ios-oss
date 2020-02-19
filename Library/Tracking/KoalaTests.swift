@@ -786,10 +786,10 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client)
 
     koala.trackAddNewCardButtonClicked(
-      project: .template,
-      reward: .template,
       context: .newPledge,
-      refTag: .activity
+      project: .template,
+      refTag: .activity,
+      reward: .template
     )
 
     let props = client.properties.last
@@ -1006,20 +1006,20 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("activity_feed_screen", client.properties.last?["context_location"] as? String)
 
     koala.trackAddNewCardButtonClicked(
-      project: .template,
-      reward: .template,
       context: .newPledge,
+      location: .pledgeAddNewCard,
+      project: .template,
       refTag: nil,
-      location: .pledgeAddNewCard
+      reward: .template
     )
     XCTAssertEqual("pledge_add_new_card_screen", client.properties.last?["context_location"] as? String)
 
     koala.trackAddNewCardButtonClicked(
-      project: .template,
-      reward: .template,
       context: .newPledge,
+      location: .settingsAddNewCard,
+      project: .template,
       refTag: nil,
-      location: .settingsAddNewCard
+      reward: .template
     )
     XCTAssertEqual("settings_add_new_card_screen", client.properties.last?["context_location"] as? String)
 
