@@ -11,6 +11,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   fileprivate let statsStackViewAccessibilityLabel = TestObserver<String, Never>()
   fileprivate let backersTitleLabelText = TestObserver<String, Never>()
+  fileprivate let blurbAndReadMoreStackViewSpacing = TestObserver<CGFloat, Never>()
   fileprivate let conversionLabelHidden = TestObserver<Bool, Never>()
   fileprivate let conversionLabelText = TestObserver<String, Never>()
   fileprivate let creatorImageUrl = TestObserver<String?, Never>()
@@ -29,6 +30,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   fileprivate let projectStateLabelText = TestObserver<String, Never>()
   fileprivate let projectStateLabelTextColor = TestObserver<UIColor, Never>()
   fileprivate let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, Never>()
+  fileprivate let readMoreButtonStyle = TestObserver<ProjectCampaignButtonStyleType, Never>()
+  fileprivate let spacerViewHidden = TestObserver<Bool, Never>()
   fileprivate let stateLabelHidden = TestObserver<Bool, Never>()
   fileprivate let youreABackerLabelHidden = TestObserver<Bool, Never>()
 
@@ -38,6 +41,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.statsStackViewAccessibilityLabel
       .observe(self.statsStackViewAccessibilityLabel.observer)
     self.vm.outputs.backersTitleLabelText.observe(self.backersTitleLabelText.observer)
+    self.vm.outputs.blurbAndReadMoreStackViewSpacing.observe(self.blurbAndReadMoreStackViewSpacing.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.creatorImageUrl.map { $0?.absoluteString }.observe(self.creatorImageUrl.observer)
@@ -57,6 +61,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.projectStateLabelText.observe(self.projectStateLabelText.observer)
     self.vm.outputs.projectStateLabelTextColor.observe(self.projectStateLabelTextColor.observer)
     self.vm.outputs.projectUnsuccessfulLabelTextColor.observe(self.projectUnsuccessfulLabelTextColor.observer)
+    self.vm.outputs.readMoreButtonStyle.observe(self.readMoreButtonStyle.observer)
+    self.vm.outputs.spacerViewHidden.observe(self.spacerViewHidden.observer)
     self.vm.outputs.stateLabelHidden.observe(self.stateLabelHidden.observer)
     self.vm.outputs.youreABackerLabelHidden.observe(self.youreABackerLabelHidden.observer)
   }
@@ -435,4 +441,51 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.opacityForViews.assertValues([0.0, 1.0], "Fade in views after project comes in.")
   }
+
+  func testProjectCampaignCTA_OptimizelyControl() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
+        OptimizelyExperiment.Variant.control.rawValue
+    ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.awakeFromNib()
+
+      self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(0)])
+      self.readMoreButtonStyle.assertValues([ProjectCampaignButtonStyleType.controlReadMoreButton])
+      self.spacerViewHidden.assertValues([false])
+    }
+  }
+
+
+  func testProjectCampaignCTA_OptimizelyExperimental_Variant1() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
+        OptimizelyExperiment.Variant.variant1.rawValue
+    ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.awakeFromNib()
+
+      self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(4)])
+      self.readMoreButtonStyle.assertValues([ProjectCampaignButtonStyleType.experimentalReadMoreButton])
+      self.spacerViewHidden.assertValues([true])
+    }
+  }
+
+  func testProjectCampaignCTA_OptimizelyExperimental_Variant2() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
+        OptimizelyExperiment.Variant.variant2.rawValue
+    ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.awakeFromNib()
+
+      self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(4)])
+      self.readMoreButtonStyle.assertValues([ProjectCampaignButtonStyleType.experimentalReadMoreButton])
+      self.spacerViewHidden.assertValues([true])
+    }
+  }
+
 }

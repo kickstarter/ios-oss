@@ -104,6 +104,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the button style of the read more about this campaign button
   var readMoreButtonStyle: Signal<ProjectCampaignButtonStyleType, Never> { get }
 
+  /// Emits a boolean that determines if the the spacer view should be hidden
+  var spacerViewHidden: Signal<Bool, Never> { get }
+
   /// Emits a boolean that determines if the project state label should be hidden.
   var stateLabelHidden: Signal<Bool, Never> { get }
 
@@ -112,10 +115,6 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a boolean that determines if the "you're a backer" label should be hidden.
   var youreABackerLabelHidden: Signal<Bool, Never> { get }
-
-  /// Emits a boolean that determines if the the spacer view should be hidden
-  var spacerViewHidden: Signal<Bool, Never> { get }
-
 }
 
 public protocol ProjectPamphletMainCellViewModelType {
