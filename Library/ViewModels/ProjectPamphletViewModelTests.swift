@@ -27,6 +27,7 @@ final class ProjectPamphletViewModelTests: TestCase {
   private let setNavigationBarAnimated = TestObserver<Bool, Never>()
   private let setNeedsStatusBarAppearanceUpdate = TestObserver<(), Never>()
   private let topLayoutConstraintConstant = TestObserver<CGFloat, Never>()
+  private let popToRootViewController = TestObserver<(), Never>()
 
   internal override func setUp() {
     super.setUp()
@@ -64,6 +65,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.outputs.goToManagePledge.observe(self.goToManageViewPledge.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
+    self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(first)
       .observe(self.setNavigationBarHidden.observer)
     self.vm.outputs.setNavigationBarHiddenAnimated.map(second)
@@ -1009,6 +1011,17 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
       XCTAssertNil(self.optimizelyClient.trackedEventTags)
     }
+  }
+
+  func testPopToRootViewController() {
+    self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: nil)
+    self.vm.inputs.viewDidLoad()
+
+    self.popToRootViewController.assertDidNotEmitValue()
+
+    self.vm.inputs.didBackProject()
+
+    self.popToRootViewController.assertValueCount(1)
   }
 
   // MARK: - Functions
