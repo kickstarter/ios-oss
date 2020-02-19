@@ -98,7 +98,7 @@ internal final class LandingPageViewController: UIViewController {
 
 private let backgroundImageViewStyle: ImageViewStyle = { imageView in
   imageView
-    |> \.contentMode .~ .scaleAspectFill
+    |> \.contentMode .~ .scaleToFill
     |> \.image .~ image(named: "landing-page-background")
 }
 

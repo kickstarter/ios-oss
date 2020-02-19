@@ -519,12 +519,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
 
-    self.rootViewController = self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      .map {
-        UINavigationController(rootViewController: LandingPageViewController())
-          |> \.isNavigationBarHidden .~ true
-    }
-
     self.presentViewController = Signal
       .merge(
         projectRootLink,
@@ -559,6 +553,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       )
     }
     .skipNil()
+
+    self.rootViewController = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      .takeWhen(self.configureOptimizely.ignoreValues())
+      .map(initialViewController)
 
     self.setApplicationShortcutItems = currentUserEvent
       .values()
@@ -1032,6 +1030,40 @@ private func optimizelyData(for environment: Environment) -> (String, Optimizely
   }
 
   return (sdkKey, logLevel)
+}
+
+private func initialViewController() -> UIViewController {
+  let userAttributes = optimizelyUserAttributes(
+    with: AppEnvironment.current.currentUser,
+    project: nil,
+    refTag: nil
+  )
+
+  let landingPage =  UINavigationController(
+    rootViewController: LandingPageViewController()
+    )
+    |> \.isNavigationBarHidden .~ true
+
+  let rootTabBar = Storyboard.Main.instantiate(RootTabBarViewController.self)
+
+  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+    .variant(
+      for: OptimizelyExperiment.Key.nativeOnboarding,
+      userId: deviceIdentifier(uuid: UUID()),
+      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+      userAttributes: userAttributes
+    )
+
+  guard let variant = optimizelyVariant else {
+    return rootTabBar
+  }
+
+  switch variant {
+  case .control:
+    return rootTabBar
+  case .variant1, .variant2:
+    return landingPage
+  }
 }
 
 private func visitorCookies() -> [HTTPCookie] {
