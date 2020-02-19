@@ -86,7 +86,7 @@ internal final class SettingsPrivacyViewController: UITableViewController {
   }
 
   private func accessibilityFocusOnFollowingCell() {
-    let cell = self.tableView.visibleCells.filter { $0 is SettingsFollowCell }.first
+    let cell = self.tableView.visibleCells.first { $0 is SettingsFollowCell }
     if let cell = cell {
       UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: cell)
     }
