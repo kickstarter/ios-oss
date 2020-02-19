@@ -520,7 +520,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
 
     self.rootViewController = self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      .map { UINavigationController(rootViewController: LandingPageViewController()) }
+      .map {
+        UINavigationController(rootViewController: LandingPageViewController())
+          |> \.isNavigationBarHidden .~ true
+    }
 
     self.presentViewController = Signal
       .merge(
