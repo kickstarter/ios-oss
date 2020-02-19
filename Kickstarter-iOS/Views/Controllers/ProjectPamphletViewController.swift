@@ -186,7 +186,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
-    let vc = rewardsCollectionViewController(project: project, refTag: refTag)
+    let vc = RewardsCollectionViewController.controller(with: project, refTag: refTag)
 
     self.present(vc, animated: true)
   }
@@ -283,36 +283,4 @@ extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
   public func projectNavBarControllerDidTapTitle(_: ProjectNavBarViewController) {
     self.contentController.tableView.scrollToTop()
   }
-}
-
-private func rewardsCollectionViewController(
-  project: Project,
-  refTag: RefTag?
-) -> UINavigationController {
-  let rewardsCollectionViewController = RewardsCollectionViewController
-    .instantiate(with: project, refTag: refTag, context: .createPledge)
-
-  let closeButton = UIBarButtonItem(
-    image: UIImage(named: "icon--cross"),
-    style: .plain,
-    target: rewardsCollectionViewController,
-    action: #selector(RewardsCollectionViewController.closeButtonTapped)
-  )
-
-  _ = closeButton
-    |> \.width .~ Styles.minTouchSize.width
-    |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
-
-  rewardsCollectionViewController.navigationItem.setLeftBarButton(closeButton, animated: false)
-
-  let navigationController = RewardPledgeNavigationController(
-    rootViewController: rewardsCollectionViewController
-  )
-
-  if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-    _ = navigationController
-      |> \.modalPresentationStyle .~ .pageSheet
-  }
-
-  return navigationController
 }

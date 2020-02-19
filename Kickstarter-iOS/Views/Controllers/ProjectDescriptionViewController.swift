@@ -8,8 +8,10 @@ import WebKit
 
 internal final class ProjectDescriptionViewController: WebViewController {
   private let loadingIndicator = UIActivityIndicatorView()
-  private let pledgeCTAContainerView: PledgeCTAContainerView = {
-    PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private lazy var pledgeCTAContainerView: PledgeCTAContainerView = {
+    PledgeCTAContainerView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.delegate .~ self
   }()
 
   private let viewModel: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
@@ -112,6 +114,14 @@ internal final class ProjectDescriptionViewController: WebViewController {
       }
 
     self.pledgeCTAContainerView.rac.hidden = self.viewModel.outputs.pledgeCTAContainerViewIsHidden
+
+    self.viewModel.outputs.goToRewards
+      .observeForControllerAction()
+      .observeValues { value in
+        let vc = RewardsCollectionViewController.controller(with: value.0, refTag: value.1)
+
+        self.present(vc, animated: true)
+      }
   }
 
   // MARK: - Subviews
@@ -177,4 +187,12 @@ extension ProjectDescriptionViewController: MessageDialogViewControllerDelegate 
   }
 
   internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
+}
+
+// MARK: - PledgeCTAContainerViewDelegate
+
+extension ProjectDescriptionViewController: PledgeCTAContainerViewDelegate {
+  func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
+    self.viewModel.inputs.pledgeCTAButtonTapped(with: state)
+  }
 }

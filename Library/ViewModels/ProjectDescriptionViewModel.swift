@@ -10,6 +10,9 @@ public protocol ProjectDescriptionViewModelInputs {
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction: WKNavigationActionData)
 
+  /// Call when the pledge CTA button is tapped.
+  func pledgeCTAButtonTapped(with state: PledgeStateCTAType)
+
   /// Call when the view loads.
   func viewDidLoad()
 
@@ -35,6 +38,9 @@ public protocol ProjectDescriptionViewModelOutputs {
 
   /// Emits when we should navigate to the message dialog.
   var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
+
+  /// Emits when we should navigate to the rewards
+  var goToRewards: Signal<(Project, RefTag?), Never> { get }
 
   /// Emits when we should open a safari browser with the URL.
   var goToSafariBrowser: Signal<URL, Never> { get }
@@ -129,13 +135,10 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
 
     self.pledgeCTAContainerViewIsHidden = projectAndRefTag
       .map { project, _ in
-        ([
-          project.personalization.backing,
-          AppEnvironment.current.currentUser
-        ] as [Any?])
-          .allSatisfy(isNil)
+        project.personalization.backing == nil
         // TODO: && is in experiment
       }
+      .negate()
 
     self.configurePledgeCTAContainerView = projectAndRefTag
       .combineLatest(with: self.pledgeCTAContainerViewIsHidden)
@@ -144,11 +147,19 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
       .map(Either.left)
       .map { ($0, false, .projectDescription) }
 
+    self.goToRewards = projectAndRefTag
+      .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
+
     project
       .takeWhen(self.goToSafariBrowser)
       .observeValues {
         AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectDescription)
       }
+  }
+
+  private let pledgeCTAButtonTappedProperty = MutableProperty<PledgeStateCTAType?>(nil)
+  public func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
+    self.pledgeCTAButtonTappedProperty.value = state
   }
 
   fileprivate let projectProperty = MutableProperty<(Project, RefTag?)?>(nil)
@@ -189,6 +200,7 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
   public let configurePledgeCTAContainerView: Signal<PledgeCTAContainerViewData, Never>
   public let goBackToProject: Signal<(), Never>
   public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
+  public let goToRewards: Signal<(Project, RefTag?), Never>
   public let goToSafariBrowser: Signal<URL, Never>
   public let isLoading: Signal<Bool, Never>
   public let loadWebViewRequest: Signal<URLRequest, Never>

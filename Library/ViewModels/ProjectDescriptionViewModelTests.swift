@@ -17,9 +17,13 @@ final class ProjectDescriptionViewModelTests: TestCase {
   private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
   private let goBackToProject = TestObserver<(), Never>()
   private let goToMessageDialog = TestObserver<(MessageSubject, Koala.MessageDialogContext), Never>()
+  private let goToRewardsProject = TestObserver<Project, Never>()
+  private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let goToSafariBrowser = TestObserver<URL, Never>()
+
   private let isLoading = TestObserver<Bool, Never>()
   private let loadWebViewRequest = TestObserver<URLRequest, Never>()
+  private let pledgeCTAContainerViewIsHidden = TestObserver<Bool, Never>()
   private let showErrorAlert = TestObserver<NSError, Never>()
 
   override func setUp() {
@@ -53,8 +57,11 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.vm.outputs.goBackToProject.observe(self.goBackToProject.observer)
     self.vm.outputs.goToMessageDialog.observe(self.goToMessageDialog.observer)
     self.vm.outputs.goToSafariBrowser.observe(self.goToSafariBrowser.observer)
+    self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
+    self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.loadWebViewRequest.observe(self.loadWebViewRequest.observer)
+    self.vm.outputs.pledgeCTAContainerViewIsHidden.observe(self.pledgeCTAContainerViewIsHidden.observer)
     self.vm.outputs.showErrorAlert.map { $0 as NSError }.observe(self.showErrorAlert.observer)
   }
 
@@ -131,6 +138,19 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.goBackToProject.assertValueCount(0)
     self.goToMessageDialog.assertValueCount(1)
     self.goToSafariBrowser.assertValueCount(0)
+  }
+
+  func testGoToRewards() {
+    self.vm.inputs.configureWith(value: (.template, .discovery))
+    self.vm.inputs.viewDidLoad()
+
+    self.goToRewardsProject.assertDidNotEmitValue()
+    self.goToRewardsRefTag.assertDidNotEmitValue()
+
+    self.vm.inputs.pledgeCTAButtonTapped(with: .viewRewards)
+
+    self.goToRewardsProject.assertValues([.template])
+    self.goToRewardsRefTag.assertValues([.discovery])
   }
 
   func testGoToSafari() {
@@ -267,6 +287,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
   }
 
   // TODO: Complete tests once experiment is added
+  // Include tests for pledgeCTAContainerViewIsHidden
   func testConfigurePledgeCTAContainerView_NonBacker_Control() {}
   func testConfigurePledgeCTAContainerView_Backer_Control() {}
   func testConfigurePledgeCTAContainerView_NonBacker_Variant1() {}
