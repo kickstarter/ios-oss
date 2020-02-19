@@ -444,9 +444,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testProjectCampaignCTA_OptimizelyControl() {
     let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
-        OptimizelyExperiment.Variant.control.rawValue
-    ]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
+          OptimizelyExperiment.Variant.control.rawValue
+      ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
       self.vm.inputs.awakeFromNib()
@@ -457,12 +458,12 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     }
   }
 
-
   func testProjectCampaignCTA_OptimizelyExperimental_Variant1() {
     let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue
-    ]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
       self.vm.inputs.awakeFromNib()
@@ -475,9 +476,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   func testProjectCampaignCTA_OptimizelyExperimental_Variant2() {
     let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
-        OptimizelyExperiment.Variant.variant2.rawValue
-    ]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
+          OptimizelyExperiment.Variant.variant2.rawValue
+      ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
       self.vm.inputs.awakeFromNib()
@@ -487,5 +489,4 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.spacerViewHidden.assertValues([true])
     }
   }
-
 }

@@ -286,7 +286,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] spacing in
         self?.blurbAndReadMoreStackView.spacing = spacing
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateToGoToCreator
       .observeForControllerAction()

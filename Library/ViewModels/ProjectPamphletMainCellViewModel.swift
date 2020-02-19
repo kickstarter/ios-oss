@@ -439,27 +439,27 @@ private func progressColor(forProject project: Project) -> UIColor {
 
 private func readMoreCTA() -> ProjectCampaignButtonType {
   let userAttributes = optimizelyUserAttributes(
-       with: AppEnvironment.current.currentUser,
-       project: nil,
-       refTag: nil
-     )
+    with: AppEnvironment.current.currentUser,
+    project: nil,
+    refTag: nil
+  )
 
-     let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-       .variant(
-         for: OptimizelyExperiment.Key.nativeProjectPageCampaignDetails,
-         userId: deviceIdentifier(uuid: UUID()),
-         isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
-         userAttributes: userAttributes
-       )
+  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+    .variant(
+      for: OptimizelyExperiment.Key.nativeProjectPageCampaignDetails,
+      userId: deviceIdentifier(uuid: UUID()),
+      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+      userAttributes: userAttributes
+    )
 
-     if let variant = optimizelyVariant {
-       switch variant {
-       case .variant1, .variant2:
-         return ProjectCampaignButtonType.experimentalType
-       case .control:
-         return ProjectCampaignButtonType.controlType
-       }
-     }
+  if let variant = optimizelyVariant {
+    switch variant {
+    case .variant1, .variant2:
+      return ProjectCampaignButtonType.experimentalType
+    case .control:
+      return ProjectCampaignButtonType.controlType
+    }
+  }
 
   return ProjectCampaignButtonType.controlType
 }

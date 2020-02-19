@@ -141,10 +141,10 @@ public let controlReadMoreButtonStyle = baseButtonStyle
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
   <> UIButton.lens.contentEdgeInsets .~ .init(
-   top: Styles.grid(3) - 1,
-   left: 0,
-   bottom: Styles.grid(4) - 1,
-   right: 0
+    top: Styles.grid(3) - 1,
+    left: 0,
+    bottom: Styles.grid(4) - 1,
+    right: 0
   )
   <> UIButton.lens.backgroundColor .~ .white
 

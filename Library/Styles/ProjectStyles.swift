@@ -8,13 +8,13 @@ public enum ProjectCampaignButtonType {
   case experimentalType
 
   public var buttonStyle: ProjectCampaignButtonStyleType {
-     switch self {
-     case .controlType:
-       return .controlReadMoreButton
-     case .experimentalType:
-       return .experimentalReadMoreButton
-     }
-   }
+    switch self {
+    case .controlType:
+      return .controlReadMoreButton
+    case .experimentalType:
+      return .experimentalReadMoreButton
+    }
+  }
 
   public var viewHidden: Bool {
     switch self {
@@ -41,8 +41,8 @@ public enum ProjectCampaignButtonStyleType: Equatable {
 
   public var style: ButtonStyle {
     switch self {
-      case .controlReadMoreButton: return controlReadMoreButtonStyle
-      case .experimentalReadMoreButton: return experimentalReadMoreButtonStyle
+    case .controlReadMoreButton: return controlReadMoreButtonStyle
+    case .experimentalReadMoreButton: return experimentalReadMoreButtonStyle
     }
   }
 }
