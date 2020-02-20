@@ -38,7 +38,11 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
       )
     }
 
-    self.set(values: [projectAndRefTag], cellClass: ProjectPamphletMainCell.self, inSection: Section.main.rawValue)
+    self.set(
+      values: [projectAndRefTag],
+      cellClass: ProjectPamphletMainCell.self,
+      inSection: Section.main.rawValue
+    )
 
     let values: [ProjectPamphletSubpage] = [
       .comments(project.stats.commentsCount as Int?, .first),

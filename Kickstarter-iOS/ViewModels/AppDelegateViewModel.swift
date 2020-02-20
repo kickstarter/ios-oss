@@ -454,7 +454,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let projectCommentsLink = projectLink
       .filter { _, subpage, _, _ in subpage == .comments }
-      .map { project, _, vcs, _ in vcs + [CommentsViewController.configuredWith(project: project, update: nil)] }
+      .map { project, _, vcs, _ in
+        vcs + [CommentsViewController.configuredWith(project: project, update: nil)]
+      }
 
     let surveyResponseLink = deepLink
       .map { link -> Int? in
