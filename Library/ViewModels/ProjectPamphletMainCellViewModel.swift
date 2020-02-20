@@ -145,12 +145,13 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .map { projectCampaignExperiment() }
       .skipNil()
 
-   self.readMoreButtonStyle = projectCampaignExperimentType.map(projectCampaignButtonStyleForVariant)
-   self.readMoreButtonTitle = projectCampaignExperimentType.map {
+    self.readMoreButtonStyle = projectCampaignExperimentType.map(projectCampaignButtonStyleForVariant)
+    self.readMoreButtonTitle = projectCampaignExperimentType.map {
       $0 == .control ? Strings.Read_more_about_the_campaign_arrow()
-                     : Strings.Read_more_about_the_campaign() }
-   self.spacerViewHidden = projectCampaignExperimentType.map { $0 != .control }
-   self.blurbAndReadMoreStackViewSpacing = projectCampaignExperimentType.map { $0 == .control ? 0 : 4 }
+        : Strings.Read_more_about_the_campaign()
+    }
+    self.spacerViewHidden = projectCampaignExperimentType.map { $0 != .control }
+    self.blurbAndReadMoreStackViewSpacing = projectCampaignExperimentType.map { $0 == .control ? 0 : 4 }
       .map(Styles.grid)
 
     self.projectStateLabelText = project
@@ -450,7 +451,7 @@ private func projectCampaignExperiment() -> OptimizelyExperiment.Variant? {
   let userAttributes = optimizelyUserAttributes(
     with: AppEnvironment.current.currentUser,
     project: nil, // todo: add project
-    refTag: nil   // todo: add reftag
+    refTag: nil // todo: add reftag
   )
 
   let optimizelyVariant = AppEnvironment.current.optimizelyClient?
