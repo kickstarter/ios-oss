@@ -15,7 +15,8 @@ public protocol LandingPageStatsViewModelType {
   var outputs: LandingPageStatsViewModelOutputs { get }
 }
 
-public final class LandingPageStatsViewModel: LandingPageStatsViewModelType, LandingPageStatsViewModelInputs, LandingPageStatsViewModelOutputs {
+public final class LandingPageStatsViewModel: LandingPageStatsViewModelType, LandingPageStatsViewModelInputs,
+LandingPageStatsViewModelOutputs {
 
   public init() {
 
