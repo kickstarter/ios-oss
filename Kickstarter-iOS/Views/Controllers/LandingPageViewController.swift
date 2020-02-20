@@ -19,7 +19,6 @@ internal final class LandingPageViewController: UIViewController {
   private let ctaButton: UIButton = {
     let button = UIButton(frame: .zero)
     button.setTitle("Get started", for: .normal)
-
     return button
   }()
   private let descriptionLabel: UILabel = { UILabel(frame: .zero) }()

@@ -1134,6 +1134,7 @@
 		D66FB348218212B700A27BCC /* PaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */; };
 		D672985323FEDCB8009D2B8B /* LandingPageCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D672985223FEDCB8009D2B8B /* LandingPageCardType.swift */; };
 		D672985523FEEB30009D2B8B /* LandingPageStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D672985423FEEB30009D2B8B /* LandingPageStatsViewModel.swift */; };
+		D672985723FF1DEB009D2B8B /* LandingPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D672985623FF1DEA009D2B8B /* LandingPageViewModel.swift */; };
 		D67B6C9D221F458700B63A6B /* Config+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6C9C221F458700B63A6B /* Config+Argo.swift */; };
 		D67B6CD6221F468100B63A6B /* Location+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6CD5221F468100B63A6B /* Location+Argo.swift */; };
 		D67B6CD8221F46D700B63A6B /* Project.Country+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6CD7221F46D700B63A6B /* Project.Country+Argo.swift */; };
@@ -2471,6 +2472,7 @@
 		D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewModelTests.swift; sourceTree = "<group>"; };
 		D672985223FEDCB8009D2B8B /* LandingPageCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageCardType.swift; sourceTree = "<group>"; };
 		D672985423FEEB30009D2B8B /* LandingPageStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageStatsViewModel.swift; sourceTree = "<group>"; };
+		D672985623FF1DEA009D2B8B /* LandingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModel.swift; sourceTree = "<group>"; };
 		D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSourceTests.swift; sourceTree = "<group>"; };
 		D67B6C9C221F458700B63A6B /* Config+Argo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Config+Argo.swift"; sourceTree = "<group>"; };
 		D67B6CD5221F468100B63A6B /* Location+Argo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Argo.swift"; sourceTree = "<group>"; };
@@ -3864,6 +3866,7 @@
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
 				D672985423FEEB30009D2B8B /* LandingPageStatsViewModel.swift */,
+				D672985623FF1DEA009D2B8B /* LandingPageViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -4843,6 +4846,7 @@
 				A75511651C8642C3005355CF /* String+SimpleHTML.swift in Sources */,
 				A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */,
 				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
+				D672985723FF1DEB009D2B8B /* LandingPageViewModel.swift in Sources */,
 				8AA524912384CAAC00FD52CF /* EditorialProjectsViewModel.swift in Sources */,
 				8A213CEF239EAEA400BBB4C7 /* Koala.swift in Sources */,
 				D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
