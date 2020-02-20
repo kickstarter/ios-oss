@@ -67,7 +67,7 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
   ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
   public init() {
     let projectAndRefTag = Signal.combineLatest(
-      self.projectProperty.signal.skipNil(),
+      self.projectAndRefTagProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
@@ -162,9 +162,9 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
     self.pledgeCTAButtonTappedProperty.value = state
   }
 
-  fileprivate let projectProperty = MutableProperty<(Project, RefTag?)?>(nil)
+  fileprivate let projectAndRefTagProperty = MutableProperty<(Project, RefTag?)?>(nil)
   public func configureWith(value: (Project, RefTag?)) {
-    self.projectProperty.value = value
+    self.projectAndRefTagProperty.value = value
   }
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)

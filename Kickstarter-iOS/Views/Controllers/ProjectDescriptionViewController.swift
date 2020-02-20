@@ -73,6 +73,8 @@ internal final class ProjectDescriptionViewController: WebViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.pledgeCTAContainerView.rac.hidden = self.viewModel.outputs.pledgeCTAContainerViewIsHidden
+
     self.viewModel.outputs.goToMessageDialog
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goToMessageDialog(subject: $0, context: $1) }
@@ -112,8 +114,6 @@ internal final class ProjectDescriptionViewController: WebViewController {
       .observeValues { [weak self] value in
         self?.pledgeCTAContainerView.configureWith(value: value)
       }
-
-    self.pledgeCTAContainerView.rac.hidden = self.viewModel.outputs.pledgeCTAContainerViewIsHidden
 
     self.viewModel.outputs.goToRewards
       .observeForControllerAction()
