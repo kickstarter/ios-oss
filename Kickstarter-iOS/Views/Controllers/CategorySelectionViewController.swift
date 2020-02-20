@@ -1,46 +1,22 @@
 import Foundation
-import UIKit
-import SpriteKit
-import Library
 import KsApi
+import Library
 import Prelude
+import SpriteKit
+import UIKit
 
 public final class CategorySelectionViewController: UITableViewController {
-  private lazy var skView: SKView = {
-    return SKView(frame: self.view.bounds)
-  }()
-  private lazy var skScene: SKScene = {
-    return SKScene(size: self.view.bounds.size)
-  }()
   private let viewModel: CategorySelectionViewModelType = CategorySelectionViewModel()
   private let dataSource = CategorySelectionDataSource()
 
-  override public func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
-    _ = self.tableView
-      |> \.dataSource .~ dataSource
-      |> UITableView.lens.separatorStyle .~ .none
-      |> UITableView.lens.rowHeight .~ UITableView.automaticDimension
+    _ = self
+      |> baseTableControllerStyle()
 
-//    self.view.backgroundColor = .ksr_grey_200
-//
-//    self.view.addSubview(skView)
-//
-//    skScene.backgroundColor = .ksr_grey_200
-//    skScene.anchorPoint = .zero
-//    skScene.physicsWorld.gravity = .zero
-//    skScene.physicsBody = SKPhysicsBody(edgeLoopFrom: skView.frame)
-//
-//    let radialFieldNode = SKFieldNode.radialGravityField()
-//    radialFieldNode.strength = 2.0
-//    radialFieldNode.position = skView.center
-//    radialFieldNode.isEnabled = true
-//    radialFieldNode.minimumRadius = Float(self.view.bounds.size.width / 2)
-//
-//    skScene.addChild(radialFieldNode)
-//
-//    skView.presentScene(skScene)
+    _ = self.tableView
+      |> \.dataSource .~ self.dataSource
 
     self.tableView.registerCellClass(CategorySelectionCell.self)
 
@@ -49,14 +25,13 @@ public final class CategorySelectionViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override public func viewDidLayoutSubviews() {
+  public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
     self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
-
-  override public func bindViewModel() {
+  public override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.loadCategorySections
@@ -64,7 +39,10 @@ public final class CategorySelectionViewController: UITableViewController {
       .observeValues { [weak self] categories in
         self?.dataSource.load(categories: categories)
         self?.tableView.reloadData()
-    }
+
+        self?.tableView.setNeedsLayout()
+        self?.tableView.layoutIfNeeded()
+      }
   }
 
   private func configureHeaderView() {
@@ -75,9 +53,8 @@ public final class CategorySelectionViewController: UITableViewController {
       |> \.layoutMargins %~~ { _, _ in
         self.view.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(4), left: Styles.grid(30), bottom: Styles.grid(2), right: Styles.grid(30))
-          : .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
+          : .init(all: Styles.grid(4))
       }
-
 
     let categorySelectionHeader = CategorySelectionHeaderView(frame: .zero)
 
@@ -94,38 +71,5 @@ public final class CategorySelectionViewController: UITableViewController {
       |> \.priority .~ .defaultHigh
 
     NSLayoutConstraint.activate([widthConstraint])
-  }
-
-  private func configureNodes(categoryNodes: [KsApi.Category]) {
-    categoryNodes.forEach { category in
-      let font = UIFont.ksr_callout()
-      let radius: CGFloat = 50
-
-      let label = SKLabelNode(text: category.name)
-      label.fontName = font.fontName
-      label.fontSize = font.pointSize
-      label.numberOfLines = 2
-      label.lineBreakMode = .byWordWrapping
-      label.fontColor = .black
-      label.verticalAlignmentMode = .center
-      label.text = category.name
-      label.preferredMaxLayoutWidth = radius * 2
-
-      let node = SKShapeNode(circleOfRadius: radius)
-      node.fillColor = .ksr_red_400
-      node.strokeColor = .ksr_red_400
-//      node.position = CGPoint(x: 10 * index, y: 200)
-      let physicsBody = SKPhysicsBody(circleOfRadius: radius)
-      physicsBody.mass = CGFloat(radius)
-      physicsBody.linearDamping = 3
-      physicsBody.allowsRotation = false
-      physicsBody.restitution = 0.6
-      physicsBody.friction = 0
-
-      node.physicsBody = physicsBody
-      node.addChild(label)
-
-      skScene.addChild(node)
-    }
   }
 }

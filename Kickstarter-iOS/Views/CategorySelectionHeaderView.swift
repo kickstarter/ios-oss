@@ -1,12 +1,12 @@
 import Foundation
-import Prelude
 import Library
+import Prelude
 
 final class CategorySelectionHeaderView: UIView {
   private lazy var rootStackView = { UIStackView(frame: .zero) }()
-  private lazy var titleLabel = { UILabel(frame: .zero) }()
+  private lazy var stepLabel = { UILabel(frame: .zero) }()
   private lazy var subtitleLabel = { UILabel(frame: .zero) }()
-  private lazy var imageView = { UIImageView(frame: .zero) }()
+  private lazy var titleLabel = { UILabel(frame: .zero) }()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -15,7 +15,7 @@ final class CategorySelectionHeaderView: UIView {
     self.bindStyles()
   }
 
-  required init?(coder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -28,22 +28,25 @@ final class CategorySelectionHeaderView: UIView {
       |> \.alignment .~ .leading
 
     _ = self.titleLabel
-      |> \.font .~ UIFont.ksr_title1()
+      |> \.font .~ UIFont.ksr_title1().bolded
       |> \.textColor .~ .ksr_soft_black
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
-      |> \.text .~ "Welcome! Let's find you some creative projects to back."
+      |> \.text .~ "Which categories interest you?"
 
     _ = self.subtitleLabel
-      |> \.font .~ UIFont.ksr_body()
-      |> \.textColor .~ .ksr_soft_black
+      |> \.font .~ UIFont.ksr_subhead()
+      |> \.textColor .~ .ksr_dark_grey_500
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
-      |> \.text .~ "Select at least 5 categories below to get started."
+      |> \.text .~ "Select at least three from the options below."
 
-    _ = self.imageView
-      |> \.tintColor .~ .ksr_green_500
-      |> \.image .~ UIImage(named: "shortcut-icon-k")
+    _ = self.stepLabel
+      |> \.font .~ UIFont.ksr_footnote()
+      |> \.textColor .~ .ksr_text_navy_600
+      |> \.lineBreakMode .~ .byWordWrapping
+      |> \.numberOfLines .~ 0
+      |> \.text .~ "Step 1 of 2"
   }
 
   private func setupViews() {
@@ -51,7 +54,7 @@ final class CategorySelectionHeaderView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([imageView, titleLabel, subtitleLabel], self.rootStackView)
-    |> ksr_addArrangedSubviewsToStackView()
+    _ = ([stepLabel, titleLabel, subtitleLabel], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 }

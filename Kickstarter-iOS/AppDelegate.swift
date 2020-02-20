@@ -252,9 +252,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToOnboarding
       .observeForControllerAction()
       .observeValues { [weak self] in
-        
+
         self?.rootTabBarController?.present(CategorySelectionViewController(), animated: true)
-    }
+      }
 
     self.viewModel.inputs.applicationDidFinishLaunching(
       application: application,

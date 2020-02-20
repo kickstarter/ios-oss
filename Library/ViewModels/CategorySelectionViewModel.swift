@@ -1,6 +1,6 @@
 import Foundation
-import ReactiveSwift
 import KsApi
+import ReactiveSwift
 
 public struct CategorySection {
   let parentCategory: KsApi.Category
@@ -20,11 +20,9 @@ public protocol CategorySelectionViewModelType {
   var outputs: CategorySelectionViewModelOutputs { get }
 }
 
-
 public final class CategorySelectionViewModel: CategorySelectionViewModelType,
-CategorySelectionViewModelInputs, CategorySelectionViewModelOutputs {
+  CategorySelectionViewModelInputs, CategorySelectionViewModelOutputs {
   public init() {
-
     let categoriesEvent = self.viewDidLoadProperty.signal
       .switchMap { _ in
         AppEnvironment.current.apiService
@@ -32,11 +30,10 @@ CategorySelectionViewModelInputs, CategorySelectionViewModelOutputs {
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.rootCategories }
           .materialize()
-    }
+      }
 
     self.loadCategorySections = categoriesEvent.values()
   }
-
 
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
