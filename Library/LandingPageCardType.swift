@@ -47,7 +47,9 @@ public enum LandingPageCardType {
     case .totalPledged:
       return "Total amount (USD) backers have pledged to projects."
     case .trackBackings:
+      // swiftlint:disable line_length
       return "Stay updated on the projects you've backed and learn about how these creative works are produced"
+      // swiftlint:enable line_length
     }
   }
 
