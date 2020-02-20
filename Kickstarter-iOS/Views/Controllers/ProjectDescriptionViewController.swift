@@ -73,6 +73,7 @@ internal final class ProjectDescriptionViewController: WebViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.loadingIndicator.rac.animating = self.viewModel.outputs.isLoading
     self.pledgeCTAContainerView.rac.hidden = self.viewModel.outputs.pledgeCTAContainerViewIsHidden
 
     self.viewModel.outputs.goToMessageDialog
@@ -90,8 +91,6 @@ internal final class ProjectDescriptionViewController: WebViewController {
       .observeValues { [weak self] in
         self?.goTo(url: $0)
       }
-
-    self.loadingIndicator.rac.animating = self.viewModel.outputs.isLoading
 
     self.viewModel.outputs.loadWebViewRequest
       .observeForControllerAction()
