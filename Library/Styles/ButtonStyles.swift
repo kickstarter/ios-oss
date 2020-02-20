@@ -135,11 +135,10 @@ public let shareButtonStyle =
 
 // MARK: - Read More Campaign Button
 
-public let controlReadMoreButtonStyle = baseButtonStyle
+public let readMoreButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_500
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
   <> UIButton.lens.contentEdgeInsets .~ .init(
     top: Styles.grid(3) - 1,
     left: 0,
@@ -149,6 +148,5 @@ public let controlReadMoreButtonStyle = baseButtonStyle
   <> UIButton.lens.backgroundColor .~ .white
 
 // experimental campaign button
-public let experimentalReadMoreButtonStyle = greyButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign() }
+public let greyReadMoreButtonStyle = greyButtonStyle
   <> UIButton.lens.contentHorizontalAlignment .~ .center

@@ -3,46 +3,14 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public enum ProjectCampaignExperimentType {
-  case control
-  case experimental
-
-  public var buttonStyle: ProjectCampaignButtonStyleType {
-    switch self {
-    case .control:
-      return .controlReadMoreButton
-    case .experimental:
-      return .experimentalReadMoreButton
-    }
-  }
-
-  public var viewHidden: Bool {
-    switch self {
-    case .control:
-      return false
-    case .experimental:
-      return true
-    }
-  }
-
-  public var stackViewSpacing: CGFloat {
-    switch self {
-    case .control:
-      return Styles.grid(0)
-    case .experimental:
-      return Styles.grid(4)
-    }
-  }
-}
-
 public enum ProjectCampaignButtonStyleType: Equatable {
   case controlReadMoreButton
   case experimentalReadMoreButton
 
   public var style: ButtonStyle {
     switch self {
-    case .controlReadMoreButton: return controlReadMoreButtonStyle
-    case .experimentalReadMoreButton: return experimentalReadMoreButtonStyle
+    case .controlReadMoreButton: return readMoreButtonStyle
+    case .experimentalReadMoreButton: return greyReadMoreButtonStyle
     }
   }
 }

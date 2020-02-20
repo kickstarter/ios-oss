@@ -31,6 +31,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   fileprivate let projectStateLabelTextColor = TestObserver<UIColor, Never>()
   fileprivate let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, Never>()
   fileprivate let readMoreButtonStyle = TestObserver<ProjectCampaignButtonStyleType, Never>()
+  fileprivate let readMoreButtonTitle = TestObserver<String, Never>()
   fileprivate let spacerViewHidden = TestObserver<Bool, Never>()
   fileprivate let stateLabelHidden = TestObserver<Bool, Never>()
   fileprivate let youreABackerLabelHidden = TestObserver<Bool, Never>()
@@ -62,6 +63,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.projectStateLabelTextColor.observe(self.projectStateLabelTextColor.observer)
     self.vm.outputs.projectUnsuccessfulLabelTextColor.observe(self.projectUnsuccessfulLabelTextColor.observer)
     self.vm.outputs.readMoreButtonStyle.observe(self.readMoreButtonStyle.observer)
+    self.vm.outputs.readMoreButtonTitle.observe(self.readMoreButtonTitle.observer)
     self.vm.outputs.spacerViewHidden.observe(self.spacerViewHidden.observer)
     self.vm.outputs.stateLabelHidden.observe(self.stateLabelHidden.observer)
     self.vm.outputs.youreABackerLabelHidden.observe(self.youreABackerLabelHidden.observer)
@@ -454,6 +456,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(0)])
       self.readMoreButtonStyle.assertValues([ProjectCampaignButtonStyleType.controlReadMoreButton])
+      self.readMoreButtonTitle.assertValues([Strings.Read_more_about_the_campaign_arrow()])
       self.spacerViewHidden.assertValues([false])
     }
   }
@@ -470,6 +473,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(4)])
       self.readMoreButtonStyle.assertValues([ProjectCampaignButtonStyleType.experimentalReadMoreButton])
+      self.readMoreButtonTitle.assertValues([Strings.Read_more_about_the_campaign()])
       self.spacerViewHidden.assertValues([true])
     }
   }
@@ -486,6 +490,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(4)])
       self.readMoreButtonStyle.assertValues([ProjectCampaignButtonStyleType.experimentalReadMoreButton])
+      self.readMoreButtonTitle.assertValues([Strings.Read_more_about_the_campaign()])
       self.spacerViewHidden.assertValues([true])
     }
   }

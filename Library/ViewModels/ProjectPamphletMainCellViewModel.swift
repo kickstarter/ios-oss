@@ -104,6 +104,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the button style of the read more about this campaign button
   var readMoreButtonStyle: Signal<ProjectCampaignButtonStyleType, Never> { get }
 
+  /// Emits the button title of the read more about this campaign button
+  var readMoreButtonTitle: Signal<String, Never> { get }
+
   /// Emits a boolean that determines if the the spacer view should be hidden
   var spacerViewHidden: Signal<Bool, Never> { get }
 
@@ -140,10 +143,15 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     let projectCampaignExperimentType = self.awakeFromNibProperty.signal
       .map { projectCampaignExperiment() }
-    self.readMoreButtonStyle = projectCampaignExperimentType.map { $0.buttonStyle }
-    self.spacerViewHidden = projectCampaignExperimentType.map { $0.viewHidden }
-    self.blurbAndReadMoreStackViewSpacing = projectCampaignExperimentType
-      .map { $0.stackViewSpacing }
+      .skipNil()
+
+   self.readMoreButtonStyle = projectCampaignExperimentType.map(projectCampaignButtonStyleForVariant)
+   self.readMoreButtonTitle = projectCampaignExperimentType.map {
+      $0 == .control ? Strings.Read_more_about_the_campaign_arrow()
+                     : Strings.Read_more_about_the_campaign() }
+   self.spacerViewHidden = projectCampaignExperimentType.map { $0 != .control }
+   self.blurbAndReadMoreStackViewSpacing = projectCampaignExperimentType.map { $0 == .control ? 0 : 4 }
+      .map(Styles.grid)
 
     self.projectStateLabelText = project
       .filter { $0.state != .live }
@@ -306,6 +314,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let projectStateLabelTextColor: Signal<UIColor, Never>
   public let projectUnsuccessfulLabelTextColor: Signal<UIColor, Never>
   public let readMoreButtonStyle: Signal<ProjectCampaignButtonStyleType, Never>
+  public let readMoreButtonTitle: Signal<String, Never>
   public let spacerViewHidden: Signal<Bool, Never>
   public let stateLabelHidden: Signal<Bool, Never>
   public let statsStackViewAccessibilityLabel: Signal<String, Never>
@@ -437,11 +446,11 @@ private func progressColor(forProject project: Project) -> UIColor {
   }
 }
 
-private func projectCampaignExperiment() -> ProjectCampaignExperimentType {
+private func projectCampaignExperiment() -> OptimizelyExperiment.Variant? {
   let userAttributes = optimizelyUserAttributes(
     with: AppEnvironment.current.currentUser,
-    project: nil,
-    refTag: nil
+    project: nil, // todo: add project
+    refTag: nil   // todo: add reftag
   )
 
   let optimizelyVariant = AppEnvironment.current.optimizelyClient?
@@ -452,14 +461,16 @@ private func projectCampaignExperiment() -> ProjectCampaignExperimentType {
       userAttributes: userAttributes
     )
 
-  if let variant = optimizelyVariant {
-    switch variant {
-    case .variant1, .variant2:
-      return ProjectCampaignExperimentType.experimental
-    case .control:
-      return ProjectCampaignExperimentType.control
-    }
-  }
+  return optimizelyVariant
+}
 
-  return ProjectCampaignExperimentType.control
+public func projectCampaignButtonStyleForVariant(
+  _ variant: OptimizelyExperiment.Variant
+) -> ProjectCampaignButtonStyleType {
+  switch variant {
+  case .control:
+    return .controlReadMoreButton
+  case .variant1, .variant2:
+    return .experimentalReadMoreButton
+  }
 }
