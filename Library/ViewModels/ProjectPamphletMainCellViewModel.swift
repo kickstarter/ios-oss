@@ -29,7 +29,7 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the backers title label.
   var backersTitleLabelText: Signal<String, Never> { get }
 
-  /// Emits the spacing of the blurb and reward stgack view.
+  /// Emits the spacing of the blurb and reward stack view.
   var blurbAndReadMoreStackViewSpacing: Signal<CGFloat, Never> { get }
 
   /// Emits a string to use for the category name label.
