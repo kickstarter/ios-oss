@@ -555,7 +555,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     .skipNil()
 
     self.rootViewController = self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      .takeWhen(self.configureOptimizely.ignoreValues())
+      .takeWhen(self.optimizelyConfiguredWithResultProperty.signal.skipNil())
       .map(initialViewController)
 
     self.setApplicationShortcutItems = currentUserEvent
@@ -1055,12 +1055,12 @@ private func initialViewController() -> UIViewController {
     )
 
   guard let variant = optimizelyVariant else {
-    return rootTabBar
+    return landingPage
   }
 
   switch variant {
   case .control:
-    return rootTabBar
+    return landingPage
   case .variant1, .variant2:
     return landingPage
   }

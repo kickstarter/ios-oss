@@ -37,6 +37,10 @@ internal final class LandingPageViewController: UIViewController {
 
     self.configureViews()
     self.setupConstraints()
+    self.ctaButton.addTarget(self,
+                             action: #selector(LandingPageViewController.ctaBUttonTapped),
+                             for: .touchUpInside
+    )
   }
 
   override func bindStyles() {
@@ -91,6 +95,10 @@ internal final class LandingPageViewController: UIViewController {
       self.ctaButton.heightAnchor.constraint(equalToConstant: Layout.Button.height),
       self.logoImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.width)
     ])
+  }
+
+  @objc private func ctaBUttonTapped() {
+
   }
 }
 
