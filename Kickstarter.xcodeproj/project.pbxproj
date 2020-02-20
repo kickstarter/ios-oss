@@ -1133,6 +1133,7 @@
 		D66850A323707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66850A223707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift */; };
 		D66FB348218212B700A27BCC /* PaymentMethodsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */; };
 		D672985323FEDCB8009D2B8B /* LandingPageCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D672985223FEDCB8009D2B8B /* LandingPageCardType.swift */; };
+		D672985523FEEB30009D2B8B /* LandingPageStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D672985423FEEB30009D2B8B /* LandingPageStatsViewModel.swift */; };
 		D67B6C9D221F458700B63A6B /* Config+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6C9C221F458700B63A6B /* Config+Argo.swift */; };
 		D67B6CD6221F468100B63A6B /* Location+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6CD5221F468100B63A6B /* Location+Argo.swift */; };
 		D67B6CD8221F46D700B63A6B /* Project.Country+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6CD7221F46D700B63A6B /* Project.Country+Argo.swift */; };
@@ -2469,6 +2470,7 @@
 		D66850A223707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletCreatorHeaderCellViewModelTests.swift; sourceTree = "<group>"; };
 		D66FB347218212B700A27BCC /* PaymentMethodsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewModelTests.swift; sourceTree = "<group>"; };
 		D672985223FEDCB8009D2B8B /* LandingPageCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageCardType.swift; sourceTree = "<group>"; };
+		D672985423FEEB30009D2B8B /* LandingPageStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageStatsViewModel.swift; sourceTree = "<group>"; };
 		D6765B4C211091AB00AE3DB4 /* SettingsNewslettersDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersDataSourceTests.swift; sourceTree = "<group>"; };
 		D67B6C9C221F458700B63A6B /* Config+Argo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Config+Argo.swift"; sourceTree = "<group>"; };
 		D67B6CD5221F468100B63A6B /* Location+Argo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+Argo.swift"; sourceTree = "<group>"; };
@@ -3262,6 +3264,7 @@
 				A71404381CAF215900A2795B /* KeyValueStoreType.swift */,
 				A71F59E71D2424CA00909BE3 /* KSCache.swift */,
 				A7ED1F171E830FDC00BFFA01 /* KSCacheTests.swift */,
+				D672985223FEDCB8009D2B8B /* LandingPageCardType.swift */,
 				A7C725821C85D36D005A016B /* Language.swift */,
 				A7ED1F181E830FDC00BFFA01 /* LanguageTests.swift */,
 				A7C725831C85D36D005A016B /* LaunchedCountries.swift */,
@@ -3284,6 +3287,7 @@
 				37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */,
 				D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */,
 				774D98D823A96E7500FC81C2 /* OptimizelyClientTypeTests.swift */,
+				D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */,
 				771123FA23BF9E7E00BA5702 /* OptimizelyLogLevelType.swift */,
 				1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
@@ -3299,7 +3303,6 @@
 				9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */,
 				A75C811A1D210C4700B5AD03 /* ProjectActivityItemProvider.swift */,
 				D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */,
-				D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */,
 				D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */,
 				D6B4D9BE209B88F3002C7B68 /* PushNotificationDialogTests.swift */,
 				D76437782241500600DAFC9E /* PushNotificationDialogType.swift */,
@@ -3379,7 +3382,6 @@
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				8A213CE3239EAEA400BBB4C7 /* Tracking */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
-				D672985223FEDCB8009D2B8B /* LandingPageCardType.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -3861,6 +3863,7 @@
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
+				D672985423FEEB30009D2B8B /* LandingPageStatsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -4927,6 +4930,7 @@
 				D798A6AE21656D970053D097 /* Currency.swift in Sources */,
 				77F6E73521222E7C005A5C55 /* EmailFrequency.swift in Sources */,
 				D0237C2622BD7B540092C792 /* PledgeSummaryViewModel.swift in Sources */,
+				D672985523FEEB30009D2B8B /* LandingPageStatsViewModel.swift in Sources */,
 				01A7A4C01C9690220036E553 /* UITextField+LocalizedPlaceholderKey.swift in Sources */,
 				3777F2F72343C7900030BEF5 /* ManageViewPledgeRewardReceivedViewModel.swift in Sources */,
 				0176E13B1C9742FD009CA092 /* UIBarButtonItem.swift in Sources */,

@@ -9,9 +9,10 @@ final class LandingPageStatsView: UIView {
   private let quantityLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private let viewModel: LandingPageStatsViewModelType = LandingPageStatsViewModel()
 
-  public func configure(with cardType: LandingPageCardType) {
-    
+  public func configure(with card: LandingPageCardType) {
+    self.viewModel.inputs.configure(with: card)
   }
 
   private func configureViews() {
@@ -29,6 +30,14 @@ final class LandingPageStatsView: UIView {
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
+    self.quantityLabel.rac.text = self.viewModel.outputs.quantityLabelText
+    self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
   }
 
   override func bindStyles() {
