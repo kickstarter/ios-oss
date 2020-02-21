@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 
 public enum OptimizelyExperiment {
   public enum Key: String {
@@ -10,5 +11,28 @@ public enum OptimizelyExperiment {
     case control
     case variant1 = "variant-1"
     case variant2 = "variant-2"
+  }
+}
+
+extension OptimizelyExperiment {
+  static func projectCampaignExperiment(
+    project: Project,
+    refTag: RefTag?
+  ) -> OptimizelyExperiment.Variant? {
+    let userAttributes = optimizelyUserAttributes(
+      with: AppEnvironment.current.currentUser,
+      project: project,
+      refTag: refTag
+    )
+
+    let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+      .variant(
+        for: OptimizelyExperiment.Key.nativeProjectPageCampaignDetails,
+        userId: deviceIdentifier(uuid: UUID()),
+        isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+        userAttributes: userAttributes
+      )
+
+    return optimizelyVariant
   }
 }

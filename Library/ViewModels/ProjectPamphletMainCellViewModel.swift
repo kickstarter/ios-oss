@@ -128,7 +128,12 @@ public protocol ProjectPamphletMainCellViewModelType {
 public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellViewModelType,
   ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs {
   public init() {
-    let projectAndRefTag = self.projectAndRefTagProperty.signal.skipNil()
+    let projectAndRefTag = Signal.combineLatest(
+      self.projectAndRefTagProperty.signal.skipNil(),
+      self.awakeFromNibProperty.signal
+    )
+    .map(first)
+
     let project = projectAndRefTag.map(first)
 
     self.projectNameLabelText = project.map(Project.lens.name.view)
@@ -142,17 +147,17 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     self.stateLabelHidden = project.map { $0.state == .live }
 
-    let projectCampaignExperimentType = self.awakeFromNibProperty.signal
-      .map { projectCampaignExperiment() }
+    let projectCampaignExperimentVariant = projectAndRefTag
+      .map(OptimizelyExperiment.projectCampaignExperiment)
       .skipNil()
 
-    self.readMoreButtonStyle = projectCampaignExperimentType.map(projectCampaignButtonStyleForVariant)
-    self.readMoreButtonTitle = projectCampaignExperimentType.map {
+    self.readMoreButtonStyle = projectCampaignExperimentVariant.map(projectCampaignButtonStyleForVariant)
+    self.readMoreButtonTitle = projectCampaignExperimentVariant.map {
       $0 == .control ? Strings.Read_more_about_the_campaign_arrow()
         : Strings.Read_more_about_the_campaign()
     }
-    self.spacerViewHidden = projectCampaignExperimentType.map { $0 != .control }
-    self.blurbAndReadMoreStackViewSpacing = projectCampaignExperimentType.map { $0 == .control ? 0 : 4 }
+    self.spacerViewHidden = projectCampaignExperimentVariant.map { $0 != .control }
+    self.blurbAndReadMoreStackViewSpacing = projectCampaignExperimentVariant.map { $0 == .control ? 0 : 4 }
       .map(Styles.grid)
 
     self.projectStateLabelText = project
@@ -446,24 +451,6 @@ private func progressColor(forProject project: Project) -> UIColor {
   default:
     return .ksr_green_700
   }
-}
-
-private func projectCampaignExperiment() -> OptimizelyExperiment.Variant? {
-  let userAttributes = optimizelyUserAttributes(
-    with: AppEnvironment.current.currentUser,
-    project: nil, // todo: add project
-    refTag: nil // todo: add reftag
-  )
-
-  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-    .variant(
-      for: OptimizelyExperiment.Key.nativeProjectPageCampaignDetails,
-      userId: deviceIdentifier(uuid: UUID()),
-      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
-      userAttributes: userAttributes
-    )
-
-  return optimizelyVariant
 }
 
 public func projectCampaignButtonStyleForVariant(
