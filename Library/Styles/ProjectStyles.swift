@@ -3,6 +3,18 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+public enum ProjectCampaignButtonStyleType: Equatable {
+  case controlReadMoreButton
+  case experimentalReadMoreButton
+
+  public var style: ButtonStyle {
+    switch self {
+    case .controlReadMoreButton: return readMoreButtonStyle
+    case .experimentalReadMoreButton: return greyReadMoreButtonStyle
+    }
+  }
+}
+
 public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedString {
   let isProjectNamePunctuated = project.name.unicodeScalars.last
     .map(CharacterSet.punctuationCharacters.contains)

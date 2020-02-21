@@ -51,6 +51,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var projectNameLabel: UILabel!
   @IBOutlet fileprivate var progressBarAndStatsStackView: UIStackView!
   @IBOutlet fileprivate var readMoreButton: UIButton!
+  @IBOutlet fileprivate var spacerView: UIView!
   @IBOutlet fileprivate var stateLabel: UILabel!
   @IBOutlet fileprivate var statsStackView: UIStackView!
   @IBOutlet fileprivate var youreABackerContainerView: UIView!
@@ -117,9 +118,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       ||> UILabel.lens.font .~ .ksr_headline(size: 13)
       ||> UILabel.lens.numberOfLines .~ 1
       ||> UILabel.lens.backgroundColor .~ .white
-
-    _ = self.blurbAndReadMoreStackView
-      |> UIStackView.lens.spacing .~ 0
 
     _ = self.categoryStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
@@ -214,19 +212,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.progressBarAndStatsStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
-    _ = self.readMoreButton
-      |> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
-      |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_500
-      |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
-      |> UIButton.lens.contentEdgeInsets .~ .init(
-        top: Styles.grid(3) - 1,
-        left: 0,
-        bottom: Styles.grid(4) - 1,
-        right: 0
-      )
-      |> UIButton.lens.backgroundColor .~ .white
-
     _ = self.stateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.numberOfLines .~ 2
@@ -269,6 +254,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.pledgedTitleLabel.rac.textColor = self.viewModel.outputs.pledgedTitleLabelTextColor
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
+    self.readMoreButton.rac.title = self.viewModel.outputs.readMoreButtonTitle
+    self.spacerView.rac.hidden = self.viewModel.outputs.spacerViewHidden
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
     self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
@@ -290,6 +277,19 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] in
         guard let self = self else { return }
         self.delegate?.projectPamphletMainCell(self, goToCampaignForProjectWith: $0)
+      }
+
+    self.viewModel.outputs.readMoreButtonStyle
+      .observeForUI()
+      .observeValues { [weak self] buttonStyleType in
+        _ = self?.readMoreButton
+          ?|> buttonStyleType.style
+      }
+
+    self.viewModel.outputs.blurbAndReadMoreStackViewSpacing
+      .observeForUI()
+      .observeValues { [weak self] spacing in
+        self?.blurbAndReadMoreStackView.spacing = spacing
       }
 
     self.viewModel.outputs.notifyDelegateToGoToCreator
