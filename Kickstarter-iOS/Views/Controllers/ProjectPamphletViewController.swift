@@ -164,6 +164,12 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
           self?.messageBannerViewController?.showBanner(with: .success, message: message)
         })
       }
+
+    self.viewModel.outputs.popToRootViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.navigationController?.popToRootViewController(animated: false)
+      }
   }
 
   public override func willTransition(
