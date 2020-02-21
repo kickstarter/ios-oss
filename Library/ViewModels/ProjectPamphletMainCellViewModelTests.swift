@@ -137,7 +137,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = .template |> Project.lens.personalization.isBacking .~ false
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
-    self.vm.inputs.awakeFromNib()
 
     self.youreABackerLabelHidden.assertValues([true])
   }
