@@ -787,10 +787,10 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client)
 
     koala.trackAddNewCardButtonClicked(
-      project: .template,
-      reward: .template,
       context: .newPledge,
-      refTag: .activity
+      project: .template,
+      refTag: .activity,
+      reward: .template
     )
 
     let props = client.properties.last
@@ -997,6 +997,97 @@ final class KoalaTests: TestCase {
     koala.trackAppOpen()
 
     XCTAssertEqual(1_475_361_315.0, client.properties.last?["context_timestamp"] as? TimeInterval)
+  }
+
+  func testContextLocationProperties() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackActivities(count: 1)
+    XCTAssertEqual("activity_feed_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackAddNewCardButtonClicked(
+      context: .newPledge,
+      location: .pledgeAddNewCard,
+      project: .template,
+      refTag: nil,
+      reward: .template
+    )
+    XCTAssertEqual("pledge_add_new_card_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackAddNewCardButtonClicked(
+      context: .newPledge,
+      location: .settingsAddNewCard,
+      project: .template,
+      refTag: nil,
+      reward: .template
+    )
+    XCTAssertEqual("settings_add_new_card_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackCheckoutPaymentPageViewed(
+      project: .template,
+      reward: .template,
+      context: .newPledge,
+      refTag: nil
+    )
+    XCTAssertEqual("pledge_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackCollectionViewed(params: .defaults)
+    XCTAssertEqual("editorial_collection_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackDiscovery(params: .defaults)
+    XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackDiscoveryModalSelectedFilter(params: .defaults)
+    XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackEditorialHeaderTapped(refTag: .discovery)
+    XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackFacebookLoginOrSignupButtonClicked(intent: .generic)
+    XCTAssertEqual("login_or_signup_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackForgotPasswordViewed()
+    XCTAssertEqual("forgot_password_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackLoginButtonClicked(intent: .generic)
+    XCTAssertEqual("login_or_signup_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackLoginOrSignupButtonClicked(intent: .generic)
+    XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackLoginOrSignupPageViewed(intent: .generic)
+    XCTAssertEqual("login_or_signup_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackLoginSubmitButtonClicked()
+    XCTAssertEqual("login_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackPledgeCTAButtonClicked(stateType: .pledge, project: .template)
+    XCTAssertEqual("project_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackProjectSearchView()
+    XCTAssertEqual("search_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackProjectViewed(.template)
+    XCTAssertEqual("project_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackRewardClicked(project: .template, reward: .template, context: .newPledge, refTag: nil)
+    XCTAssertEqual("rewards_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackSearchResults(query: "", params: .defaults, refTag: .search, hasResults: false)
+    XCTAssertEqual("search_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackSwipedProject(.template, refTag: nil)
+    XCTAssertEqual("project_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackSignupSubmitButtonClicked()
+    XCTAssertEqual("sign_up", client.properties.last?["context_location"] as? String)
+
+    koala.trackThanksPageViewed(project: .template, reward: .template, checkoutData: nil)
+    XCTAssertEqual("thanks_screen", client.properties.last?["context_location"] as? String)
+
+    koala.track2FAViewed()
+    XCTAssertEqual("two_factor_auth_verify_screen", client.properties.last?["context_location"] as? String)
   }
 
   /*
