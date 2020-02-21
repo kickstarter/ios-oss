@@ -461,5 +461,30 @@ final class ProjectDescriptionViewModelTests: TestCase {
     }
   }
 
+  func testConfigurePledgeCTAContainerView_LiveProject_NonBacker_Variant2_IsCreatorOfProject() {
+    let user = User.template
+    let project = Project.template
+      |> Project.lens.creator .~ user
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.personalization.isBacking .~ false
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+      ]
+
+    withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
+      self.pledgeCTAContainerViewIsHidden.assertDidNotEmitValue()
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeCTAContainerViewIsHidden.assertValues([true])
+    }
+  }
+
   // swiftlint:enable line_length
 }
