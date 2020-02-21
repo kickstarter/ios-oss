@@ -108,6 +108,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> verticalStackViewStyle
     |> \.distribution .~ .equalSpacing
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
 }
 
 private let titleLabelStyle: LabelStyle = { label in
