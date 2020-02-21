@@ -13,7 +13,7 @@ public protocol LandingPageViewModelType {
   var outputs: LandingPageViewModelOutputs { get }
 }
 
-final class LandingPageViewModel: LandingPageViewModelType, LandingPageViewModelInputs,
+final public class LandingPageViewModel: LandingPageViewModelType, LandingPageViewModelInputs,
 LandingPageViewModelOutputs {
 
   public init() {

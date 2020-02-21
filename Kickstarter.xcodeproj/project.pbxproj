@@ -3696,6 +3696,8 @@
 				A7ED1F521E831C5C00BFFA01 /* FindFriendsViewModelTests.swift */,
 				01940B251D42DC1A0074FCE3 /* HelpViewModel.swift */,
 				A7ED1F8E1E831C5C00BFFA01 /* HelpViewModelTests.swift */,
+				D672985423FEEB30009D2B8B /* LandingPageStatsViewModel.swift */,
+				D672985623FF1DEA009D2B8B /* LandingPageViewModel.swift */,
 				D04AAC18218BB70B00CF713E /* LoadingBarButtonItemViewModel.swift */,
 				D04AAC14218BB70A00CF713E /* LoadingBarButtonItemViewModelTests.swift */,
 				370C8B6523590CA500DE75DD /* LoadingButtonViewModel.swift */,
@@ -3819,8 +3821,6 @@
 				D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */,
 				D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */,
 				D7237095211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift */,
-				D79970B223EB6FF800584911 /* ThanksCategoryCellViewModel.swift */,
-				D79970B523EC88BB00584911 /* ThanksCategoryCellViewModelTests.swift */,
 				D6B6766420FE85000082717D /* SettingsNewslettersCellViewModel.swift */,
 				D6B4EFFF21079F750079159D /* SettingsNewslettersCellViewModelTests.swift */,
 				D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */,
@@ -3853,6 +3853,8 @@
 				A7ED1F631E831C5C00BFFA01 /* SortPagerViewModelTests.swift */,
 				9D7536CE1D78D88D00A7623B /* SurveyResponseViewModel.swift */,
 				A7ED1F6A1E831C5C00BFFA01 /* SurveyResponseViewModelTests.swift */,
+				D79970B223EB6FF800584911 /* ThanksCategoryCellViewModel.swift */,
+				D79970B523EC88BB00584911 /* ThanksCategoryCellViewModelTests.swift */,
 				A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */,
 				A7ED1FA61E831C5C00BFFA01 /* ThanksViewModelTests.swift */,
 				A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */,
@@ -3865,8 +3867,6 @@
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
-				D672985423FEEB30009D2B8B /* LandingPageStatsViewModel.swift */,
-				D672985623FF1DEA009D2B8B /* LandingPageViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
