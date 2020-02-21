@@ -7,6 +7,7 @@ import WebKit
 
 internal class WebViewController: UIViewController {
   internal let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
+  internal var bottomAnchorConstraint: NSLayoutConstraint?
 
   override func loadView() {
     super.loadView()
@@ -17,10 +18,14 @@ internal class WebViewController: UIViewController {
     self.webView.customUserAgent = Service.userAgent
 
     self.view.addSubview(self.webView)
+
+    let bottomAnchorConstraint = self.webView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    self.bottomAnchorConstraint = bottomAnchorConstraint
+
     NSLayoutConstraint.activate(
       [
         self.webView.topAnchor.constraint(equalTo: self.view.topAnchor),
-        self.webView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+        bottomAnchorConstraint,
         self.webView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
         self.webView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
       ]
