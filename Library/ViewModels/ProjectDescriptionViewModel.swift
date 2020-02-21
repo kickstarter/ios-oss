@@ -134,10 +134,7 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
     .skipNil()
 
     self.pledgeCTAContainerViewIsHidden = projectAndRefTag
-      .map { project, _ in
-        project.personalization.backing == nil
-        // TODO: && is in experiment
-      }
+      .map(shouldShowPledgeButton)
       .negate()
 
     self.configurePledgeCTAContainerView = projectAndRefTag
@@ -219,4 +216,13 @@ private func isMessageCreator(navigation: Navigation) -> Bool {
 private func allowed(navigationAction action: WKNavigationActionData) -> Bool {
   return action.request.url?.path.contains("/description") == .some(true)
     || action.targetFrame?.mainFrame == .some(false)
+}
+
+private func shouldShowPledgeButton(project: Project, refTag: RefTag?) -> Bool {
+  let isLive = project.state == .live
+  let notBacking = project.personalization.backing == nil
+  let isVariant2 = OptimizelyExperiment
+    .projectCampaignExperiment(project: project, refTag: refTag) == .variant2
+
+  return [isLive, notBacking, isVariant2].allSatisfy(isTrue)
 }

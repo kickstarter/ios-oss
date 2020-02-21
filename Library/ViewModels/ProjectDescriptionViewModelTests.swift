@@ -286,12 +286,180 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.showErrorAlert.assertValues([error])
   }
 
-  // TODO: Complete tests once experiment is added
-  // Include tests for pledgeCTAContainerViewIsHidden
-  func testConfigurePledgeCTAContainerView_NonBacker_Control() {}
-  func testConfigurePledgeCTAContainerView_Backer_Control() {}
-  func testConfigurePledgeCTAContainerView_NonBacker_Variant1() {}
-  func testConfigurePledgeCTAContainerView_Backer_Variant1() {}
-  func testConfigurePledgeCTAContainerView_NonBacker_Variant2() {}
-  func testConfigurePledgeCTAContainerView_Backer_Variant2() {}
+  // swiftlint:disable line_length
+  func testConfigurePledgeCTAContainerView_LiveProject_NonBacker_Control() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.personalization.isBacking .~ false
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.pledgeCTAContainerViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeCTAContainerViewIsHidden.assertValues([true])
+    }
+  }
+
+  func testConfigurePledgeCTAContainerView_Backer_Control() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.noReward
+          |> Backing.lens.rewardId .~ Reward.noReward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700.0
+      )
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.pledgeCTAContainerViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeCTAContainerViewIsHidden.assertValues([true])
+    }
+  }
+
+  func testConfigurePledgeCTAContainerView_LiveProject_NonBacker_Variant1() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.personalization.isBacking .~ false
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.pledgeCTAContainerViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeCTAContainerViewIsHidden.assertValues([true])
+    }
+  }
+
+  func testConfigurePledgeCTAContainerView_LiveProject_Backer_Variant1() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.noReward
+          |> Backing.lens.rewardId .~ Reward.noReward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700.0
+      )
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.pledgeCTAContainerViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeCTAContainerViewIsHidden.assertValues([true])
+    }
+  }
+
+  func testConfigurePledgeCTAContainerView_LiveProject_NonBacker_Variant2() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.personalization.isBacking .~ false
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.pledgeCTAContainerViewIsHidden.assertDidNotEmitValue()
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeCTAContainerViewIsHidden.assertValues([false])
+      self.goToRewardsProject.assertDidNotEmitValue()
+      self.goToRewardsRefTag.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeCTAButtonTapped(with: .viewRewards)
+
+      self.goToRewardsProject.assertValues([project])
+      self.goToRewardsRefTag.assertValues([.discovery])
+    }
+  }
+
+  func testConfigurePledgeCTAContainerView_NonLiveProject_NonBacker_Variant2() {
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.backing .~ nil
+      |> Project.lens.personalization.isBacking .~ false
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.pledgeCTAContainerViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeCTAContainerViewIsHidden.assertValues([true])
+    }
+  }
+
+  func testConfigurePledgeCTAContainerView_LiveProject_Backer_Variant2() {
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.noReward
+          |> Backing.lens.rewardId .~ Reward.noReward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700.0
+      )
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.pledgeCTAContainerViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeCTAContainerViewIsHidden.assertValues([true])
+    }
+  }
+
+  // swiftlint:enable line_length
 }
