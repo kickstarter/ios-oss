@@ -62,7 +62,8 @@ public final class LandingPageViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] cards in
         self?.configureCards(with: cards)
-      }
+        self?.updatePageControl(with: cards)
+    }
   }
 
   // MARK: - Styles
@@ -155,16 +156,7 @@ public final class LandingPageViewController: UIViewController {
     _ = (cardViews, self.cardViewsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    let layoutMarginsGuide = self.view.layoutMarginsGuide
-
-    cardViews.forEach {
-      NSLayoutConstraint.activate([
-        $0.widthAnchor.constraint(equalTo: layoutMarginsGuide.widthAnchor)
-      ])
-    }
-
-    _ = self.pageControl
-      |> \.numberOfPages .~ cardViews.count
+    self.setupViewsConstraints(cardViews)
   }
 
   private func cardViews(with cards: [LandingPageCardType]) -> [LandingPageStatsView] {
@@ -174,6 +166,21 @@ public final class LandingPageViewController: UIViewController {
       view.configure(with: card)
       return view
     }
+  }
+
+  private func setupViewsConstraints(_ cardViews: [LandingPageStatsView]) {
+    let layoutMarginsGuide = self.view.layoutMarginsGuide
+
+    cardViews.forEach {
+      NSLayoutConstraint.activate([
+        $0.widthAnchor.constraint(equalTo: layoutMarginsGuide.widthAnchor)
+      ])
+    }
+  }
+
+  private func updatePageControl(with cards: [LandingPageCardType]) {
+    _ = self.pageControl
+      |> \.numberOfPages .~ cards.count
   }
 }
 
