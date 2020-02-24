@@ -1,5 +1,3 @@
-import Library
-
 public enum LandingPageCardType {
 
   case allOrNothing
