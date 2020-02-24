@@ -1,5 +1,4 @@
 public enum LandingPageCardType {
-
   case allOrNothing
   case discoverProjects
   case successfulProjects

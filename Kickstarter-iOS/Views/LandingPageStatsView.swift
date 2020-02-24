@@ -3,14 +3,14 @@ import Prelude
 import UIKit
 
 internal enum StatsCardLayout {
-
   enum Card {
     static let height: CGFloat = 100
   }
 }
 
 final class LandingPageStatsView: UIView {
-  //MARK: - Properties
+  // MARK: - Properties
+
   private let cardView: UIView = { UIView(frame: .zero) }()
   private let descriptionLabel: UILabel = { UILabel(frame: .zero) }()
   private let quantityLabel: UILabel = { UILabel(frame: .zero) }()
@@ -30,12 +30,11 @@ final class LandingPageStatsView: UIView {
     self.bindViewModel()
   }
 
-  required init?(coder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
   private func configureViews() {
-
     _ = ([self.titleLabel, self.quantityLabel, self.descriptionLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -84,6 +83,7 @@ final class LandingPageStatsView: UIView {
 }
 
 // MARK: - Styles
+
 private let cardViewStyle: ViewStyle = { view in
   view
     |> roundedStyle(cornerRadius: Styles.grid(1))

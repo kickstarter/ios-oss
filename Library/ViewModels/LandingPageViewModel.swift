@@ -15,7 +15,7 @@ public protocol LandingPageViewModelType {
 }
 
 public final class LandingPageViewModel: LandingPageViewModelType, LandingPageViewModelInputs,
-LandingPageViewModelOutputs {
+  LandingPageViewModelOutputs {
   public init() {
     self.landingPageCards = self.viewDidLoadSignal
       .map(cards)
@@ -46,7 +46,7 @@ private func cards() -> [LandingPageCardType]? {
       userId: deviceIdentifier(uuid: UUID()),
       isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
       userAttributes: userAttributes
-  )
+    )
 
   guard let variant = optimizelyVariant else {
     return nil

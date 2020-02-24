@@ -63,7 +63,7 @@ public final class LandingPageViewController: UIViewController {
       .observeValues { [weak self] cards in
         self?.configureCards(with: cards)
         self?.updatePageControl(with: cards)
-    }
+      }
   }
 
   // MARK: - Styles
@@ -210,7 +210,7 @@ private let descriptionLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_callout()
     |> \.textAlignment .~ .center
     |> \.text %~ { _ in Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
-  }
+    }
 }
 
 private let labelsStackViewStyle: StackViewStyle = { stackView in
@@ -258,7 +258,6 @@ private let titleLabelStyle: LabelStyle = { label in
 }
 
 extension LandingPageViewController: UIScrollViewDelegate {
-
   public func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let pageWidth = scrollView.bounds.width
     let pageFraction = scrollView.contentOffset.x / pageWidth

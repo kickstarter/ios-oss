@@ -18,21 +18,19 @@ public protocol LandingPageStatsViewModelType {
 }
 
 public final class LandingPageStatsViewModel: LandingPageStatsViewModelType, LandingPageStatsViewModelInputs,
-LandingPageStatsViewModelOutputs {
-
+  LandingPageStatsViewModelOutputs {
   public init() {
+    self.descriptionLabelText = self.cardSignal.map(\.description)
 
-    self.descriptionLabelText = cardSignal.map(\.description)
-
-    self.quantityLabelIsHidden = cardSignal
+    self.quantityLabelIsHidden = self.cardSignal
       .map(\.quantity)
       .map(isNil)
 
-    self.quantityLabelText = cardSignal
+    self.quantityLabelText = self.cardSignal
       .map(\.quantity)
       .skipNil()
 
-    self.titleLabelText = cardSignal.map(\.title)
+    self.titleLabelText = self.cardSignal.map(\.title)
   }
 
   private let (cardSignal, cardObserver) = Signal<LandingPageCardType, Never>.pipe()
