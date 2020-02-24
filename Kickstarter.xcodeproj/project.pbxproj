@@ -1092,6 +1092,7 @@
 		D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */; };
 		D6050F4A240424FC00E029D2 /* LandingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F49240424FC00E029D2 /* LandingPageViewController.swift */; };
 		D6050F4C240426FE00E029D2 /* LandingPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */; };
+		D6050F4E2404311300E029D2 /* LandingPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F4D2404311300E029D2 /* LandingPageViewModelTests.swift */; };
 		D6089E8F209106CD0032CC99 /* PushNotificationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */; };
 		D60C8BE92142D61A00D96152 /* SettingsAccountCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE72142D60800D96152 /* SettingsAccountCellType.swift */; };
 		D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */; };
@@ -2426,6 +2427,7 @@
 		D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityEnvelopeTests.swift; sourceTree = "<group>"; };
 		D6050F49240424FC00E029D2 /* LandingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewController.swift; sourceTree = "<group>"; };
 		D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModel.swift; sourceTree = "<group>"; };
+		D6050F4D2404311300E029D2 /* LandingPageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModelTests.swift; sourceTree = "<group>"; };
 		D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationDialog.swift; sourceTree = "<group>"; };
 		D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewController.swift; sourceTree = "<group>"; };
 		D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountDataSource.swift; sourceTree = "<group>"; };
@@ -3688,6 +3690,8 @@
 				A7ED1F521E831C5C00BFFA01 /* FindFriendsViewModelTests.swift */,
 				01940B251D42DC1A0074FCE3 /* HelpViewModel.swift */,
 				A7ED1F8E1E831C5C00BFFA01 /* HelpViewModelTests.swift */,
+				D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */,
+				D6050F4D2404311300E029D2 /* LandingPageViewModelTests.swift */,
 				D04AAC18218BB70B00CF713E /* LoadingBarButtonItemViewModel.swift */,
 				D04AAC14218BB70A00CF713E /* LoadingBarButtonItemViewModelTests.swift */,
 				370C8B6523590CA500DE75DD /* LoadingButtonViewModel.swift */,
@@ -3811,8 +3815,6 @@
 				D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */,
 				D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */,
 				D7237095211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift */,
-				D79970B223EB6FF800584911 /* ThanksCategoryCellViewModel.swift */,
-				D79970B523EC88BB00584911 /* ThanksCategoryCellViewModelTests.swift */,
 				D6B6766420FE85000082717D /* SettingsNewslettersCellViewModel.swift */,
 				D6B4EFFF21079F750079159D /* SettingsNewslettersCellViewModelTests.swift */,
 				D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */,
@@ -3845,6 +3847,8 @@
 				A7ED1F631E831C5C00BFFA01 /* SortPagerViewModelTests.swift */,
 				9D7536CE1D78D88D00A7623B /* SurveyResponseViewModel.swift */,
 				A7ED1F6A1E831C5C00BFFA01 /* SurveyResponseViewModelTests.swift */,
+				D79970B223EB6FF800584911 /* ThanksCategoryCellViewModel.swift */,
+				D79970B523EC88BB00584911 /* ThanksCategoryCellViewModelTests.swift */,
 				A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */,
 				A7ED1FA61E831C5C00BFFA01 /* ThanksViewModelTests.swift */,
 				A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */,
@@ -3857,7 +3861,6 @@
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
-				D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -5028,6 +5031,7 @@
 				A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */,
 				A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */,
 				A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */,
+				D6050F4E2404311300E029D2 /* LandingPageViewModelTests.swift in Sources */,
 				D798A748216698CE0053D097 /* SettingsAccountViewModelTests.swift in Sources */,
 				A7ED1F2D1E830FDC00BFFA01 /* LanguageTests.swift in Sources */,
 				771E630E23426B74005967E8 /* CancelPledgeViewModelTests.swift in Sources */,
