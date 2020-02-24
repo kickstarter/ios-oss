@@ -147,6 +147,24 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
     self.goToRewards = projectAndRefTag
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
 
+    projectAndRefTag
+      .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
+      .observeValues { project, refTag in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: project,
+          refTag: refTag
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Campaign Details Pledge Button Clicked",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
+
     project
       .takeWhen(self.goToSafariBrowser)
       .observeValues {
