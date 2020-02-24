@@ -204,7 +204,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
         try? AppEnvironment.current.optimizelyClient?
           .track(
-            eventKey: "Project Page Rewards CTA Tapped",
+            eventKey: "Project Page Pledge Button Clicked",
             userId: deviceIdentifier(uuid: UUID()),
             attributes: properties,
             eventTags: eventTags

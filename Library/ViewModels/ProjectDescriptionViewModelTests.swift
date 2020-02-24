@@ -461,5 +461,109 @@ final class ProjectDescriptionViewModelTests: TestCase {
     }
   }
 
+  func testOptimizelyTrackingCampaignDetailsPledgeButtonTapped_LiveProject_LoggedIn_NonBacked_Variant1() {
+    let user = User.template
+         |> \.location .~ Location.template
+         |> \.stats.backedProjectsCount .~ 50
+
+    let project = Project.template
+         |> Project.lens.state .~ .live
+         |> Project.lens.personalization.isBacking .~ false
+
+    let optimizelyClient = MockOptimizelyClient()
+    |> \.experiments .~ [
+      OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+    ]
+
+       withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
+        self.vm.inputs.configureWith(value: (project, .discovery))
+        self.vm.inputs.viewDidLoad()
+
+        XCTAssertEqual(optimizelyClient.trackedUserId, nil)
+        XCTAssertEqual(optimizelyClient.trackedEventKey, nil)
+        XCTAssertNil(optimizelyClient.trackedAttributes)
+        XCTAssertNil(optimizelyClient.trackedEventTags)
+
+        self.pledgeCTAContainerViewIsHidden.assertValues([true])
+    }
+  }
+
+  func testOptimizelyTrackingCampaignDetailsPledgeButtonTapped_LiveProject_LoggedIn_Backed_Variant2() {
+    let user = User.template
+         |> \.location .~ Location.template
+         |> \.stats.backedProjectsCount .~ 50
+
+    let project = Project.template
+         |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ Backing.template
+
+    let optimizelyClient = MockOptimizelyClient()
+    |> \.experiments .~ [
+      OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+    ]
+
+       withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
+        self.vm.inputs.configureWith(value: (project, .discovery))
+        self.vm.inputs.viewDidLoad()
+
+        XCTAssertEqual(optimizelyClient.trackedUserId, nil)
+        XCTAssertEqual(optimizelyClient.trackedEventKey, nil)
+        XCTAssertNil(optimizelyClient.trackedAttributes)
+        XCTAssertNil(optimizelyClient.trackedEventTags)
+
+        self.pledgeCTAContainerViewIsHidden.assertValues([true])
+    }
+  }
+
+  func testOptimizelyTrackingCampaignDetailsPledgeButtonTapped_LiveProject_LoggedIn_NonBacked_Variant2() {
+    let user = User.template
+         |> \.location .~ Location.template
+         |> \.stats.backedProjectsCount .~ 50
+
+    let project = Project.template
+         |> Project.lens.state .~ .live
+         |> Project.lens.personalization.backing .~ nil
+
+    let optimizelyClient = MockOptimizelyClient()
+    |> \.experiments .~ [
+      OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+    ]
+
+       withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
+        self.vm.inputs.configureWith(value: (project, .discovery))
+        self.vm.inputs.viewDidLoad()
+
+        XCTAssertEqual(optimizelyClient.trackedUserId, nil)
+        XCTAssertEqual(optimizelyClient.trackedEventKey, nil)
+        XCTAssertNil(optimizelyClient.trackedAttributes)
+        XCTAssertNil(optimizelyClient.trackedEventTags)
+
+
+        self.pledgeCTAContainerViewIsHidden.assertValues([false])
+        self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
+
+        XCTAssertEqual(optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
+        XCTAssertEqual(optimizelyClient.trackedEventKey, "Campaign Details Pledge Button Clicked")
+
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, 50)
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, nil)
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
+
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String, "discovery")
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["session_os_version"] as? String, "MockSystemVersion")
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, true)
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["session_app_release_version"] as? String, "1.2.3.4.5.6.7.8.9.0")
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
+        XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+
+        XCTAssertEqual(optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
+        XCTAssertEqual(optimizelyClient.trackedEventTags?["project_category"] as? String, nil)
+        XCTAssertEqual(optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
+        XCTAssertEqual(optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
+    }
+  }
   // swiftlint:enable line_length
 }
