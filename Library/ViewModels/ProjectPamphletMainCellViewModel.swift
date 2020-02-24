@@ -272,6 +272,29 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       project.rewards.isEmpty && variant == .variant2
     }
     .skipRepeats()
+
+    let shouldTrackCTATappedEvent = projectAndRefTag
+      .takeWhen(self.readMoreButtonTappedProperty.signal)
+      .filter { project, _ in project.state == .live && project.personalization.isBacking == false }
+
+    // optimizely tracking
+    projectAndRefTag
+      .takeWhen(shouldTrackCTATappedEvent)
+      .observeValues { projectAndRefTag in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: projectAndRefTag.0,
+          refTag: projectAndRefTag.1
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Campaign Details Button Clicked",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
   }
 
   private let awakeFromNibProperty = MutableProperty(())

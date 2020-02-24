@@ -147,6 +147,24 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
     self.goToRewards = projectAndRefTag
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
 
+    projectAndRefTag
+      .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
+      .observeValues { project, refTag in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: project,
+          refTag: refTag
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Campaign Details Pledge Button Clicked",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
+
     project
       .takeWhen(self.goToSafariBrowser)
       .observeValues {
@@ -223,6 +241,7 @@ private func shouldShowPledgeButton(project: Project, refTag: RefTag?) -> Bool {
   let notBacking = project.personalization.backing == nil
   let isVariant2 = OptimizelyExperiment
     .projectCampaignExperiment(project: project, refTag: refTag) == .variant2
+  let isNotCreator = currentUserIsCreator(of: project) == false
 
-  return [isLive, notBacking, isVariant2].allSatisfy(isTrue)
+  return [isLive, notBacking, isVariant2, isNotCreator].allSatisfy(isTrue)
 }

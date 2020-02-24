@@ -835,7 +835,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 
     XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
-    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Rewards CTA Tapped")
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Pledge Button Clicked")
 
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, nil)
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, nil)
@@ -904,7 +904,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.vm.inputs.pledgeCTAButtonTapped(with: .seeTheRewards)
 
-    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Rewards CTA Tapped")
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Pledge Button Clicked")
   }
 
   func testOptimizelyTrackingPledgeCTAButtonTapped_ViewTheRewards() {
@@ -917,7 +917,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.vm.inputs.pledgeCTAButtonTapped(with: .viewTheRewards)
 
-    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Rewards CTA Tapped")
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Pledge Button Clicked")
   }
 
   func testOptimizelyTrackingPledgeCTAButtonTapped_LoggedIn_NonBacked() {
@@ -945,7 +945,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
-      XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Rewards CTA Tapped")
+      XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Pledge Button Clicked")
 
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, 50)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, nil)
