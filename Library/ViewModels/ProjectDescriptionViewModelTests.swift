@@ -467,7 +467,9 @@ final class ProjectDescriptionViewModelTests: TestCase {
       |> \.stats.backedProjectsCount .~ 50
 
     let project = Project.template
+      |> Project.lens.creator .~ user
       |> Project.lens.state .~ .live
+      |> Project.lens.personalization.backing .~ nil
       |> Project.lens.personalization.isBacking .~ false
 
     let optimizelyClient = MockOptimizelyClient()
@@ -538,7 +540,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
       XCTAssertNil(optimizelyClient.trackedAttributes)
       XCTAssertNil(optimizelyClient.trackedEventTags)
 
-      self.pledgeCTAContainerViewIsHidden.assertValues([false])
+      self.pledgeCTAContainerViewIsHidden.assertValues([true])
       self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 
       XCTAssertEqual(optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
