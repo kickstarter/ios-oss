@@ -130,7 +130,7 @@ internal final class LandingPageViewController: UIViewController {
       self.ctaButton.rightAnchor.constraint(equalTo: viewMargins.rightAnchor),
       self.ctaButton.bottomAnchor.constraint(equalTo: viewMargins.bottomAnchor),
       self.ctaButton.heightAnchor.constraint(equalToConstant: Layout.Button.height),
-      self.scrollView.heightAnchor.constraint(greaterThanOrEqualToConstant: StatsCardLayout.Card.height),
+      self.scrollView.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Card.height),
       self.cardViewsStackView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor)
     ])
   }
@@ -139,7 +139,7 @@ internal final class LandingPageViewController: UIViewController {
 
   }
 
-  private func configureCards(with cards: [LandingPageCardType]) {
+  private func configureCards(with cards: [UIView]) {
 
     let cardViews = self.cardViews(with: cards)
 
@@ -159,15 +159,6 @@ internal final class LandingPageViewController: UIViewController {
       |> \.currentPage .~ 0
       |> \.currentPageIndicatorTintColor .~ .ksr_green_400
       |> \.pageIndicatorTintColor .~ .white
-  }
-
-  private func cardViews(with cards: [LandingPageCardType]) -> [LandingPageStatsView] {
-    return cards.map { card in
-      let view = LandingPageStatsView(frame: .zero)
-
-      view.configure(with: card)
-      return view
-    }
   }
 }
 

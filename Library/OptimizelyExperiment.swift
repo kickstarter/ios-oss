@@ -2,6 +2,7 @@ import Foundation
 
 public enum OptimizelyExperiment {
   public enum Key: String {
+    case nativeOnboarding = "native_onboarding_series_new_backers"
     case pledgeCTACopy = "pledge_cta_copy"
   }
 

@@ -1091,6 +1091,7 @@
 		D0E78C3622A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E78C3522A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift */; };
 		D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */; };
 		D6050F4A240424FC00E029D2 /* LandingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F49240424FC00E029D2 /* LandingPageViewController.swift */; };
+		D6050F4C240426FE00E029D2 /* LandingPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */; };
 		D6089E8F209106CD0032CC99 /* PushNotificationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */; };
 		D60C8BE92142D61A00D96152 /* SettingsAccountCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE72142D60800D96152 /* SettingsAccountCellType.swift */; };
 		D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */; };
@@ -2424,6 +2425,7 @@
 		D0E78C3522A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityEnvelope.swift; sourceTree = "<group>"; };
 		D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearUserUnseenActivityEnvelopeTests.swift; sourceTree = "<group>"; };
 		D6050F49240424FC00E029D2 /* LandingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewController.swift; sourceTree = "<group>"; };
+		D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModel.swift; sourceTree = "<group>"; };
 		D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationDialog.swift; sourceTree = "<group>"; };
 		D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewController.swift; sourceTree = "<group>"; };
 		D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountDataSource.swift; sourceTree = "<group>"; };
@@ -3855,6 +3857,7 @@
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
+				D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -4841,6 +4844,7 @@
 				D79970B423EB79A600584911 /* ThanksCategoryCellViewModel.swift in Sources */,
 				D67DF564232ABB960051D207 /* ManagePledgeViewModel.swift in Sources */,
 				D0A787BF2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift in Sources */,
+				D6050F4C240426FE00E029D2 /* LandingPageViewModel.swift in Sources */,
 				A76126B91C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */,
 				A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */,
 				01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */,
