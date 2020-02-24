@@ -14,13 +14,12 @@ public protocol LandingPageViewModelType {
   var outputs: LandingPageViewModelOutputs { get }
 }
 
-final public class LandingPageViewModel: LandingPageViewModelType, LandingPageViewModelInputs,
-LandingPageViewModelOutputs {
-
+public final class LandingPageViewModel: LandingPageViewModelType, LandingPageViewModelInputs,
+  LandingPageViewModelOutputs {
   public init() {
     self.landingPageCards = self.viewDidLoadSignal
-    .map(cards)
-    .skipNil()
+      .map(cards)
+      .skipNil()
   }
 
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()

@@ -380,7 +380,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       )
       .observeForUI()
       .map {
-        return LandingPageViewController()
+        LandingPageViewController()
       }
 
     self.goToLogin = deepLink

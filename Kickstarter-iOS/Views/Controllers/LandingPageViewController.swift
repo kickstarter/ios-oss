@@ -32,36 +32,41 @@ public final class LandingPageViewController: UIViewController {
     UIScrollView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let titleLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel: LandingPageViewModelType = LandingPageViewModel()
 
-  // MARK - Life cycle
-  override public func viewDidLoad() {
+  // MARK: - Life cycle
+
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     self.configureViews()
     self.setupConstraints()
-    self.ctaButton.addTarget(self,
-                             action: #selector(LandingPageViewController.ctaBUttonTapped),
-                             for: .touchUpInside
+    self.ctaButton.addTarget(
+      self,
+      action: #selector(LandingPageViewController.ctaBUttonTapped),
+      for: .touchUpInside
     )
 
     self.viewModel.inputs.viewDidLoad()
   }
 
-  // MARK - View Model
-  override public func bindViewModel() {
+  // MARK: - View Model
+
+  public override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.landingPageCards
       .observeForUI()
       .observeValues { [weak self] cards in
         self?.configureCards(with: cards)
-    }
+      }
   }
 
-  // MARK - Styles
-  override public func bindStyles() {
+  // MARK: - Styles
+
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self.backgroundImageView
@@ -93,7 +98,8 @@ public final class LandingPageViewController: UIViewController {
       |> titleLabelStyle
   }
 
-  // MARK - Configuration
+  // MARK: - Configuration
+
   private func configureViews() {
     _ = (self.backgroundImageView, self.view)
       |> ksr_addSubviewToParent()
@@ -113,12 +119,14 @@ public final class LandingPageViewController: UIViewController {
     let spacer2 = UIView()
     let spacer3 = UIView()
 
-    _ = ([spacer1,
-          self.labelsStackView,
-          self.cardsStackView,
-          spacer2,
-          spacer3,
-          self.ctaButton], self.rootStackView)
+    _ = ([
+      spacer1,
+      self.labelsStackView,
+      self.cardsStackView,
+      spacer2,
+      spacer3,
+      self.ctaButton
+    ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
@@ -127,7 +135,6 @@ public final class LandingPageViewController: UIViewController {
   }
 
   private func setupConstraints() {
-
     NSLayoutConstraint.activate([
       self.scrollView.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Card.height),
       self.cardViewsStackView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor)
@@ -138,7 +145,7 @@ public final class LandingPageViewController: UIViewController {
     self.dismiss(animated: true)
   }
 
-  private func configureCards(with cards: [UIView]) {}
+  private func configureCards(with _: [UIView]) {}
 }
 
 // Styles
@@ -168,8 +175,8 @@ private let descriptionLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.font .~ UIFont.ksr_callout()
     |> \.textAlignment .~ .center
-    |> \.text %~ { _ in  Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
-  }
+    |> \.text %~ { _ in Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
+    }
 }
 
 private let labelsStackViewStyle: StackViewStyle = { stackView in
@@ -210,12 +217,11 @@ private let titleLabelStyle: LabelStyle = { label in
 }
 
 extension LandingPageViewController: UIScrollViewDelegate {
-
   public func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let pageWidth = scrollView.bounds.width
     let pageFraction = scrollView.contentOffset.x / pageWidth
 
     _ = self.pageControl
-      |> \.currentPage .~ Int((round(pageFraction)))
+      |> \.currentPage .~ Int(round(pageFraction))
   }
 }
