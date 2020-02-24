@@ -127,6 +127,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { UIApplication.shared.open($0) }
 
+    self.viewModel.outputs.goToLandingPage
+      .observeForUI()
+      .observeValues { [weak self] landingPage in
+        self?.rootTabBarController?.present(landingPage, animated: true)
+      }
+
     self.viewModel.outputs.applicationIconBadgeNumber
       .observeForUI()
       .observeValues { UIApplication.shared.applicationIconBadgeNumber = $0 }

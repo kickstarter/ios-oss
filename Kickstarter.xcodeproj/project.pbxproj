@@ -3106,6 +3106,7 @@
 				77E6440220F65074005F6B38 /* HelpViewController.swift */,
 				778215EC20F7AA5F00F3D09F /* HelpViewControllerTests.swift */,
 				01940B271D467EC60074FCE3 /* HelpWebViewController.swift */,
+				D6050F49240424FC00E029D2 /* LandingPageViewController.swift */,
 				A7F761761C85FACB005405ED /* LoginToutViewController.swift */,
 				A7ED203A1E8323E900BFFA01 /* LoginToutViewControllerTests.swift */,
 				018F1F821C8E182200643DAA /* LoginViewController.swift */,
@@ -3192,7 +3193,6 @@
 				A731BF8B1D1EE44E00A734AC /* UpdateViewController.swift */,
 				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
 				9D89B7E21D6B8B310021F6FF /* WebModalViewController.swift */,
-				D6050F49240424FC00E029D2 /* LandingPageViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

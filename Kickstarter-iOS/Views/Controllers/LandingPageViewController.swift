@@ -17,7 +17,7 @@ private enum Layout {
   }
 }
 
-internal final class LandingPageViewController: UIViewController {
+public final class LandingPageViewController: UIViewController {
   // Properties
   private let backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
   private let cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -36,7 +36,7 @@ internal final class LandingPageViewController: UIViewController {
   private let viewModel: LandingPageViewModelType = LandingPageViewModel()
 
   // MARK - Life cycle
-  override func viewDidLoad() {
+  override public func viewDidLoad() {
     super.viewDidLoad()
 
     self.configureViews()
@@ -50,7 +50,7 @@ internal final class LandingPageViewController: UIViewController {
   }
 
   // MARK - View Model
-  override func bindViewModel() {
+  override public func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.landingPageCards
@@ -61,7 +61,7 @@ internal final class LandingPageViewController: UIViewController {
   }
 
   // MARK - Styles
-  override func bindStyles() {
+  override public func bindStyles() {
     super.bindStyles()
 
     _ = self.backgroundImageView
@@ -109,57 +109,36 @@ internal final class LandingPageViewController: UIViewController {
     _ = ([self.scrollView, self.pageControl], self.cardsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.labelsStackView, self.cardsStackView], self.rootStackView)
+    let spacer1 = UIView()
+    let spacer2 = UIView()
+    let spacer3 = UIView()
+
+    _ = ([spacer1,
+          self.labelsStackView,
+          self.cardsStackView,
+          spacer2,
+          spacer3,
+          self.ctaButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
-
-    _ = (self.ctaButton, self.view)
-      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
   }
 
   private func setupConstraints() {
-    let viewMargins = self.view.layoutMarginsGuide
 
     NSLayoutConstraint.activate([
-      self.rootStackView.leftAnchor.constraint(equalTo: viewMargins.leftAnchor),
-      self.rootStackView.rightAnchor.constraint(equalTo: viewMargins.rightAnchor),
-      self.rootStackView.topAnchor.constraint(equalTo: viewMargins.topAnchor),
-      self.ctaButton.leftAnchor.constraint(equalTo: viewMargins.leftAnchor),
-      self.ctaButton.rightAnchor.constraint(equalTo: viewMargins.rightAnchor),
-      self.ctaButton.bottomAnchor.constraint(equalTo: viewMargins.bottomAnchor),
-      self.ctaButton.heightAnchor.constraint(equalToConstant: Layout.Button.height),
       self.scrollView.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Card.height),
       self.cardViewsStackView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor)
     ])
   }
 
   @objc private func ctaBUttonTapped() {
-
+    self.dismiss(animated: true)
   }
 
-  private func configureCards(with cards: [UIView]) {
-
-    let cardViews = self.cardViews(with: cards)
-
-    _ = (cardViews, self.cardViewsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    let layoutMarginsGuide = self.view.layoutMarginsGuide
-
-    cardViews.forEach {
-      NSLayoutConstraint.activate([
-        $0.widthAnchor.constraint(equalTo: layoutMarginsGuide.widthAnchor)
-      ])
-    }
-
-    _ = self.pageControl
-      |> \.numberOfPages .~ cardViews.count
-      |> \.currentPage .~ 0
-      |> \.currentPageIndicatorTintColor .~ .ksr_green_400
-      |> \.pageIndicatorTintColor .~ .white
-  }
+  private func configureCards(with cards: [UIView]) {}
 }
 
 // Styles
@@ -177,6 +156,9 @@ private let cardsStackViewStyle: StackViewStyle = { stackView in
 private let ctaButtonStyle: ButtonStyle = { button in
   button
     |> greenButtonStyle
+    |> UIButton.lens.title(for: .normal) %~ { _ in
+      localizedString(key: "Get_started", defaultValue: "Get started")
+    }
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 
@@ -210,7 +192,8 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(5)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(20), leftRight: 0)
+    |> \.layoutMargins .~ .init(top: Styles.grid(15), left: 0, bottom: Styles.grid(3), right: 0)
+    |> \.distribution .~ .equalSpacing
 }
 
 private let scrollViewStyle: ScrollStyle = { scrollView in
@@ -228,7 +211,7 @@ private let titleLabelStyle: LabelStyle = { label in
 
 extension LandingPageViewController: UIScrollViewDelegate {
 
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+  public func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let pageWidth = scrollView.bounds.width
     let pageFraction = scrollView.contentOffset.x / pageWidth
 
