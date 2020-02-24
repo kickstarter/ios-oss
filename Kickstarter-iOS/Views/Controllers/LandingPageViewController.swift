@@ -19,6 +19,7 @@ private enum Layout {
 
 public final class LandingPageViewController: UIViewController {
   // Properties
+
   private let backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
   private let cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let cardViewsStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -87,6 +88,9 @@ public final class LandingPageViewController: UIViewController {
     _ = self.logoImageView
       |> logoImageViewStyle
 
+    _ = self.pageControl
+      |> pageControlStyle
+
     _ = self.rootStackView
       |> rootStackViewStyle
 
@@ -145,7 +149,32 @@ public final class LandingPageViewController: UIViewController {
     self.dismiss(animated: true)
   }
 
-  private func configureCards(with _: [UIView]) {}
+  private func configureCards(with cards: [LandingPageCardType]) {
+    let cardViews = self.cardViews(with: cards)
+
+    _ = (cardViews, self.cardViewsStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    let layoutMarginsGuide = self.view.layoutMarginsGuide
+
+    cardViews.forEach {
+      NSLayoutConstraint.activate([
+        $0.widthAnchor.constraint(equalTo: layoutMarginsGuide.widthAnchor)
+      ])
+    }
+
+    _ = self.pageControl
+      |> \.numberOfPages .~ cardViews.count
+  }
+
+  private func cardViews(with cards: [LandingPageCardType]) -> [LandingPageStatsView] {
+    return cards.map { card in
+      let view = LandingPageStatsView(frame: .zero)
+
+      view.configure(with: card)
+      return view
+    }
+  }
 }
 
 // Styles
@@ -176,7 +205,7 @@ private let descriptionLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_callout()
     |> \.textAlignment .~ .center
     |> \.text %~ { _ in Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
-    }
+  }
 }
 
 private let labelsStackViewStyle: StackViewStyle = { stackView in
@@ -191,6 +220,13 @@ private let logoImageViewStyle: ImageViewStyle = { imageView in
     |> \.tintColor .~ .ksr_green_400
     |> \.contentMode .~ .scaleAspectFit
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
+}
+
+private let pageControlStyle: PageControlStyle = { pageControl in
+  pageControl
+    |> \.currentPage .~ 0
+    |> \.currentPageIndicatorTintColor .~ .ksr_green_400
+    |> \.pageIndicatorTintColor .~ .white
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
@@ -217,6 +253,7 @@ private let titleLabelStyle: LabelStyle = { label in
 }
 
 extension LandingPageViewController: UIScrollViewDelegate {
+
   public func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let pageWidth = scrollView.bounds.width
     let pageFraction = scrollView.contentOffset.x / pageWidth

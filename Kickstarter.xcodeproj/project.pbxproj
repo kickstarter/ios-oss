@@ -1093,6 +1093,9 @@
 		D6050F4A240424FC00E029D2 /* LandingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F49240424FC00E029D2 /* LandingPageViewController.swift */; };
 		D6050F4C240426FE00E029D2 /* LandingPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */; };
 		D6050F4E2404311300E029D2 /* LandingPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F4D2404311300E029D2 /* LandingPageViewModelTests.swift */; };
+		D6050F502404387A00E029D2 /* LandingPageCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F4F2404387A00E029D2 /* LandingPageCardType.swift */; };
+		D6050F52240463AC00E029D2 /* LandingPageStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */; };
+		D6050F54240463F100E029D2 /* LandingPageStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6050F53240463F100E029D2 /* LandingPageStatsViewModel.swift */; };
 		D6089E8F209106CD0032CC99 /* PushNotificationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */; };
 		D60C8BE92142D61A00D96152 /* SettingsAccountCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE72142D60800D96152 /* SettingsAccountCellType.swift */; };
 		D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */; };
@@ -2428,6 +2431,9 @@
 		D6050F49240424FC00E029D2 /* LandingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewController.swift; sourceTree = "<group>"; };
 		D6050F4B240426FE00E029D2 /* LandingPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModel.swift; sourceTree = "<group>"; };
 		D6050F4D2404311300E029D2 /* LandingPageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewModelTests.swift; sourceTree = "<group>"; };
+		D6050F4F2404387A00E029D2 /* LandingPageCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageCardType.swift; sourceTree = "<group>"; };
+		D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageStatsView.swift; sourceTree = "<group>"; };
+		D6050F53240463F100E029D2 /* LandingPageStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageStatsViewModel.swift; sourceTree = "<group>"; };
 		D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationDialog.swift; sourceTree = "<group>"; };
 		D60C8BAA2142CD0300D96152 /* SettingsAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountViewController.swift; sourceTree = "<group>"; };
 		D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountDataSource.swift; sourceTree = "<group>"; };
@@ -2970,6 +2976,7 @@
 				8A14E09523971BD000387824 /* ShimmerLoadingViews */,
 				A73923AA1D272242004524C3 /* Storyboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
+				D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3378,6 +3385,7 @@
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				8A213CE3239EAEA400BBB4C7 /* Tracking */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
+				D6050F4F2404387A00E029D2 /* LandingPageCardType.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -3861,6 +3869,7 @@
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
+				D6050F53240463F100E029D2 /* LandingPageStatsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -4715,6 +4724,7 @@
 				773452FD2384B6BF00E6B6A3 /* DiscoveryEditorialViewModel.swift in Sources */,
 				014D629B1E6E31790033D2BD /* BackerDashboardProjectsViewModel.swift in Sources */,
 				5981BE451D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift in Sources */,
+				D6050F54240463F100E029D2 /* LandingPageStatsViewModel.swift in Sources */,
 				D78E038E229305E90043E92F /* PledgeStateCTAType.swift in Sources */,
 				A73379451D0E36A600C91445 /* Colors.swift in Sources */,
 				01C7CDB11D13462500D9E0D1 /* DashboardRewardRowStackViewViewModel.swift in Sources */,
@@ -4860,6 +4870,7 @@
 				77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */,
 				59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */,
 				D703FC6B20F7E3F8004A272D /* SettingsPrivacyViewModel.swift in Sources */,
+				D6050F502404387A00E029D2 /* LandingPageCardType.swift in Sources */,
 				8A4DDAB52373429300ADE31D /* PledgeStatusLabelViewModel.swift in Sources */,
 				0169F9881D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift in Sources */,
 				01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */,
@@ -5416,6 +5427,7 @@
 				A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */,
 				597073B21D07281800B00444 /* ProjectNotificationCell.swift in Sources */,
 				01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
+				D6050F52240463AC00E029D2 /* LandingPageStatsView.swift in Sources */,
 				7717805A22F9ED130064A32F /* RewardsCollectionViewFooter.swift in Sources */,
 				3767EDAD22CFFEF20088E8E4 /* ShippingRulesTableViewController.swift in Sources */,
 				370ACB00225D337900C8745F /* PledgeAmountViewController.swift in Sources */,
