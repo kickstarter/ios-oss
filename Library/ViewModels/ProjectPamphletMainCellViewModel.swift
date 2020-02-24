@@ -264,22 +264,22 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     // optimizely tracking
     projectAndRefTag
-    .takeWhen(shouldTrackCTATappedEvent)
-    .observeValues { projectAndRefTag in
-      let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-        with: AppEnvironment.current.currentUser,
-        project: projectAndRefTag.0,
-        refTag: projectAndRefTag.1
-      )
-
-      try? AppEnvironment.current.optimizelyClient?
-        .track(
-          eventKey: "Campaign Details Button Clicked",
-          userId: deviceIdentifier(uuid: UUID()),
-          attributes: properties,
-          eventTags: eventTags
+      .takeWhen(shouldTrackCTATappedEvent)
+      .observeValues { projectAndRefTag in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: projectAndRefTag.0,
+          refTag: projectAndRefTag.1
         )
-    }
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Campaign Details Button Clicked",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
   }
 
   private let awakeFromNibProperty = MutableProperty(())
