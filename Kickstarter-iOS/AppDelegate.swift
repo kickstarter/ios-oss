@@ -184,10 +184,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.rootViewController
       .observeForUI()
       .observeValues { [weak self] root in
-        
-//        self?.window = UIWindow(frame: UIScreen.main.bounds)
-//        self?.window?.rootViewController = root
-//        self?.window?.makeKeyAndVisible()
         self?.rootTabBarController?.present(root, animated: false)
       }
 
