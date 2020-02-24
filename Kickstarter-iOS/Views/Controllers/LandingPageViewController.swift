@@ -199,9 +199,7 @@ private let cardsStackViewStyle: StackViewStyle = { stackView in
 private let ctaButtonStyle: ButtonStyle = { button in
   button
     |> greenButtonStyle
-    |> UIButton.lens.title(for: .normal) %~ { _ in
-      localizedString(key: "Get_started", defaultValue: "Get started")
-    }
+    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Get_started() }
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 

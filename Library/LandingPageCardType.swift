@@ -1,4 +1,4 @@
-import Foundation
+import Library
 
 public enum LandingPageCardType {
 
@@ -20,35 +20,35 @@ public enum LandingPageCardType {
   public var title: String {
     switch self {
     case .allOrNothing:
-      return "🌎 Discover creative projects"
+      return "👍 " + Strings.All_or_nothing()
     case .discoverProjects:
-      return "👍 Join a fruitful community"
+      return "🌎 " + Strings.Discover_creative_projects()
     case .successfulProjects:
-      return "Support creators to success"
+      return Strings.Guide_creators_to_success()
     case .totalBackers:
-      return "Join a fruitful community"
+      return Strings.Join_a_fruitful_community()
     case .totalPledged:
-      return "Support creative independence"
+      return Strings.Support_creative_independence()
     case .trackBackings:
-      return "👀 Support creative independence"
+      return "👀 " + Strings.Track_your_backings()
     }
   }
 
   public var description: String {
     switch self {
     case .allOrNothing:
-      return "You won't be charged for backing a project unless it reaches its funding goal."
+      return Strings.You_wont_be_charged_for_backing_a_project()
     case .discoverProjects:
-      return "Explore and support latest creative ideas created by our vast global community."
+      return Strings.Explore_and_support_the_latest_creative_ideas()
     case .successfulProjects:
-      return "Successful projects have been created on Kickstarter."
+      return Strings.Successful_projects_have_been_created_on_kickstarter()
     case .totalBackers:
-      return "Backers have signed up to help Kickstarter creators bring their ideas to life."
+      return Strings.Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life()
     case .totalPledged:
-      return "Total amount (USD) backers have pledged to projects."
+      return Strings.Total_amount_backers_have_pledged_to_projects()
     case .trackBackings:
       // swiftlint:disable line_length
-      return "Stay updated on the projects you've backed and learn about how these creative works are produced"
+      return Strings.Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced()
       // swiftlint:enable line_length
     }
   }
@@ -56,11 +56,12 @@ public enum LandingPageCardType {
   public var quantity: String? {
     switch self {
     case .successfulProjects:
-      return "177,000+"
+      return Strings.Total_plus(total: "177,000")
     case .totalBackers:
-      return "17 million+"
+      return Strings.Million_plus(total_amount: "17")
     case .totalPledged:
-      return "$4 billion+"
+      let total = Format.currency(4, country: .us)
+      return Strings.Total_amount_billion_plus(total_amount: total)
     case .allOrNothing, .discoverProjects, .trackBackings:
       return nil
     }
