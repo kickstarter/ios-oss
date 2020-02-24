@@ -121,10 +121,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .observeValues { project, reward, context, refTag in
         let pledgeContext = TrackingHelpers.pledgeContext(for: context)
         AppEnvironment.current.koala.trackAddNewCardButtonClicked(
-          project: project,
-          reward: reward,
           context: pledgeContext,
-          refTag: refTag
+          location: .pledgeAddNewCard,
+          project: project,
+          refTag: refTag,
+          reward: reward
         )
       }
   }
