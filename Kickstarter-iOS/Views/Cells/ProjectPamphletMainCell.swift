@@ -3,6 +3,12 @@ import Library
 import Prelude
 import UIKit
 
+private enum Layout {
+  enum Button {
+    static let height: CGFloat = 48
+  }
+}
+
 internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, addChildController child: UIViewController)
   func projectPamphletMainCell(
@@ -50,7 +56,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var projectNameAndCreatorStackView: UIStackView!
   @IBOutlet fileprivate var projectNameLabel: UILabel!
   @IBOutlet fileprivate var progressBarAndStatsStackView: UIStackView!
-  @IBOutlet fileprivate var readMoreButton: UIButton!
+  @IBOutlet fileprivate var readMoreButton: LoadingButton!
   @IBOutlet fileprivate var spacerView: UIView!
   @IBOutlet fileprivate var stateLabel: UILabel!
   @IBOutlet fileprivate var statsStackView: UIStackView!
@@ -70,6 +76,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       action: #selector(self.readMoreButtonTapped),
       for: .touchUpInside
     )
+
+    self.readMoreButton.heightAnchor
+      .constraint(greaterThanOrEqualToConstant: Layout.Button.height).isActive = true
 
     self.viewModel.inputs.awakeFromNib()
   }
@@ -229,6 +238,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.textColor .~ .white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
+
+    _ = self.readMoreButton
+      |> \.activityIndicatorStyle .~ .gray
   }
 
   internal override func bindViewModel() {
@@ -261,6 +273,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
     self.statsStackView.rac.accessibilityLabel = self.viewModel.outputs.statsStackViewAccessibilityLabel
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
+
+    self.viewModel.outputs.readMoreButtonIsLoading
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        self?.readMoreButton.isLoading = isLoading
+      }
 
     self.viewModel.outputs.configureVideoPlayerController
       .observeForUI()

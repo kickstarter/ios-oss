@@ -33,6 +33,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let projectStateLabelText = TestObserver<String, Never>()
   private let projectStateLabelTextColor = TestObserver<UIColor, Never>()
   private let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, Never>()
+  private let readMoreButtonIsLoading = TestObserver<Bool, Never>()
   private let readMoreButtonStyle = TestObserver<ProjectCampaignButtonStyleType, Never>()
   private let readMoreButtonTitle = TestObserver<String, Never>()
   private let spacerViewHidden = TestObserver<Bool, Never>()
@@ -70,6 +71,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.projectStateLabelText.observe(self.projectStateLabelText.observer)
     self.vm.outputs.projectStateLabelTextColor.observe(self.projectStateLabelTextColor.observer)
     self.vm.outputs.projectUnsuccessfulLabelTextColor.observe(self.projectUnsuccessfulLabelTextColor.observer)
+    self.vm.outputs.readMoreButtonIsLoading.observe(self.readMoreButtonIsLoading.observer)
     self.vm.outputs.readMoreButtonStyle.observe(self.readMoreButtonStyle.observer)
     self.vm.outputs.readMoreButtonTitle.observe(self.readMoreButtonTitle.observer)
     self.vm.outputs.spacerViewHidden.observe(self.spacerViewHidden.observer)
@@ -655,4 +657,85 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
     }
   }
+
+  // swiftlint:disable line_length
+  func testReadMoreButtonIsLoading_Control() {
+    let project = Project.template
+
+    self.readMoreButtonIsLoading.assertDidNotEmitValue()
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configureWith(value: (project, nil))
+      self.vm.inputs.awakeFromNib()
+
+      self.readMoreButtonIsLoading.assertValues([false])
+    }
+  }
+
+  func testReadMoreButtonIsLoading_Variant1() {
+    let project = Project.template
+
+    self.readMoreButtonIsLoading.assertDidNotEmitValue()
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configureWith(value: (project, nil))
+      self.vm.inputs.awakeFromNib()
+
+      self.readMoreButtonIsLoading.assertValues([false])
+    }
+  }
+
+  func testReadMoreButtonIsLoading_Variant2_NoRewards() {
+    let project = Project.template
+
+    self.readMoreButtonIsLoading.assertDidNotEmitValue()
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configureWith(value: (project, nil))
+      self.vm.inputs.awakeFromNib()
+
+      self.readMoreButtonIsLoading.assertValues([true])
+
+      let projectWithRewards = Project.cosmicSurgery
+
+      self.vm.inputs.configureWith(value: (projectWithRewards, nil))
+
+      self.readMoreButtonIsLoading.assertValues([true, false])
+    }
+  }
+
+  func testReadMoreButtonIsLoading_Variant2_HasRewards() {
+    let project = Project.cosmicSurgery
+
+    self.readMoreButtonIsLoading.assertDidNotEmitValue()
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configureWith(value: (project, nil))
+      self.vm.inputs.awakeFromNib()
+
+      self.readMoreButtonIsLoading.assertValues([false])
+    }
+  }
+
+  // swiftlint:enable line_length
 }

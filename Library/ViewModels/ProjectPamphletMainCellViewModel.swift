@@ -101,6 +101,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the text color of the backer and deadline title label.
   var projectUnsuccessfulLabelTextColor: Signal<UIColor, Never> { get }
 
+  /// Emits when the read more button is loading.
+  var readMoreButtonIsLoading: Signal<Bool, Never> { get }
+
   /// Emits the button style of the read more about this campaign button
   var readMoreButtonStyle: Signal<ProjectCampaignButtonStyleType, Never> { get }
 
@@ -258,6 +261,18 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       self.awakeFromNibProperty.signal.mapConst(0.0)
     )
 
+    /* Read more button has initial loading state in second experiment variant
+     * while rewards are being loaded.
+     */
+    self.readMoreButtonIsLoading = Signal.combineLatest(
+      project,
+      projectCampaignExperimentVariant
+    )
+    .map { project, variant in
+      project.rewards.isEmpty && variant == .variant2
+    }
+    .skipRepeats()
+
     let shouldTrackCTATappedEvent = projectAndRefTag
       .takeWhen(self.readMoreButtonTappedProperty.signal)
       .filter { project, _ in project.state == .live && project.personalization.isBacking == false }
@@ -343,6 +358,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let projectStateLabelText: Signal<String, Never>
   public let projectStateLabelTextColor: Signal<UIColor, Never>
   public let projectUnsuccessfulLabelTextColor: Signal<UIColor, Never>
+  public let readMoreButtonIsLoading: Signal<Bool, Never>
   public let readMoreButtonStyle: Signal<ProjectCampaignButtonStyleType, Never>
   public let readMoreButtonTitle: Signal<String, Never>
   public let spacerViewHidden: Signal<Bool, Never>
