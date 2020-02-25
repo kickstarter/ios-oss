@@ -175,7 +175,8 @@ private let descriptionLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.font .~ UIFont.ksr_callout()
     |> \.textAlignment .~ .center
-    |> \.text %~ { _ in Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
+    |> \.text %~ { _ in
+      Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
     }
 }
 

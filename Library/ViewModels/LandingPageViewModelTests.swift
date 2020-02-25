@@ -8,11 +8,7 @@ import XCTest
 internal final class LandingPageViewModelTests: TestCase {
   fileprivate let vm: LandingPageViewModelType = LandingPageViewModel()
 
-  fileprivate let landingPageCards = TestObserver<[UIView], Never>()
-
   override func setUp() {
     super.setUp()
-
-    self.vm.outputs.landingPageCards.observe(self.landingPageCards.observer)
   }
 }
