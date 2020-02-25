@@ -45,7 +45,7 @@ public final class LandingPageViewController: UIViewController {
     self.setupConstraints()
     self.ctaButton.addTarget(
       self,
-      action: #selector(LandingPageViewController.ctaBUttonTapped),
+      action: #selector(LandingPageViewController.ctaButtonTapped),
       for: .touchUpInside
     )
 
@@ -61,6 +61,12 @@ public final class LandingPageViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] cards in
         self?.configureCards(with: cards)
+      }
+
+    self.viewModel.outputs.dismissViewController
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true)
       }
   }
 
@@ -141,8 +147,8 @@ public final class LandingPageViewController: UIViewController {
     ])
   }
 
-  @objc private func ctaBUttonTapped() {
-    self.dismiss(animated: true)
+  @objc private func ctaButtonTapped() {
+    self.viewModel.inputs.ctaButtonTapped()
   }
 
   private func configureCards(with _: [UIView]) {}

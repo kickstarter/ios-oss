@@ -75,6 +75,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when Optimizely has been configured with the given result
   func optimizelyConfigured(with result: OptimizelyResultType) -> Bool
 
+  /// Call when Optimizely has been updated in AppEnvironment
+  func optimizelyUpdatedInEnvironment()
+
   /// Call with the result from initializing Qualtrics
   func qualtricsInitialized(with result: QualtricsResultType)
 
@@ -373,12 +376,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .ignoreValues()
 
     self.goToLandingPage = self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      .takeWhen(
-        self.optimizelyConfiguredWithResultProperty.signal
-          .skipNil()
-          .filter { $0.isSuccess }
-          .ignoreValues()
-      )
+      .takeWhen(self.optimizelyUpdatedInEnvironmentProperty.signal.ignoreValues())
+      .filter(shouldGoToLandingPage)
 
     self.goToLogin = deepLink
       .filter { $0 == .tab(.login) }
@@ -798,6 +797,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     return self.optimizelyConfigurationReturnValue.value
   }
 
+  fileprivate let optimizelyUpdatedInEnvironmentProperty = MutableProperty(())
+  public func optimizelyUpdatedInEnvironment() {
+    self.optimizelyUpdatedInEnvironmentProperty.value = ()
+  }
+
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFabric: Signal<(), Never>
@@ -1082,4 +1086,32 @@ private func qualtricsConfigData() -> QualtricsConfigData {
     ]
     .compact()
   )
+}
+
+private func shouldGoToLandingPage() -> Bool {
+  let userAttributes = optimizelyUserAttributes(
+    with: AppEnvironment.current.currentUser,
+    project: nil,
+    refTag: nil
+  )
+
+  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+    .variant(
+      for: OptimizelyExperiment.Key.nativeOnboarding,
+      userId: deviceIdentifier(uuid: UUID()),
+      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+      userAttributes: userAttributes
+    )
+
+  guard let variant = optimizelyVariant else {
+    return false
+  }
+
+  switch variant {
+  case .variant1, .variant2:
+    return !AppEnvironment.current.ubiquitousStore.hasSeenLandingPage &&
+      !AppEnvironment.current.userDefaults.hasSeenLandingPage
+  case .control:
+    return false
+  }
 }

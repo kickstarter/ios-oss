@@ -3,9 +3,11 @@ import UIKit
 
 public protocol LandingPageViewModelInputs {
   func viewDidLoad()
+  func ctaButtonTapped()
 }
 
 public protocol LandingPageViewModelOutputs {
+  var dismissViewController: Signal<(), Never> { get }
   var landingPageCards: Signal<[UIView], Never> { get }
 }
 
@@ -20,6 +22,17 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
     self.landingPageCards = self.viewDidLoadSignal
       .map(cards)
       .skipNil()
+
+    self.dismissViewController = self.ctaButtonTappedSignal
+      .on(value: { _ in
+        AppEnvironment.current.ubiquitousStore.hasSeenLandingPage = true
+        AppEnvironment.current.userDefaults.hasSeenLandingPage = true
+      })
+  }
+
+  private let (ctaButtonTappedSignal, ctaButtonTappedObserver) = Signal<(), Never>.pipe()
+  public func ctaButtonTapped() {
+    self.ctaButtonTappedObserver.send(value: ())
   }
 
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
@@ -27,6 +40,7 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
     self.viewDidLoadObserver.send(value: ())
   }
 
+  public let dismissViewController: Signal<(), Never>
   public let landingPageCards: Signal<[UIView], Never>
 
   public var inputs: LandingPageViewModelInputs { return self }
