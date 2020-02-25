@@ -3783,7 +3783,7 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testTrackingEvents_PledgeScreenViewed_LoggedIn_IsAdmin() {
+  func testTrackingEvents_PledgeScreenViewed_LoggedIn_IsAdmin_Beta_Staging() {
     let user = User.template
       |> \.location .~ Location.template
       |> \.stats.backedProjectsCount .~ 50
@@ -3791,7 +3791,14 @@ final class PledgeViewModelTests: TestCase {
       |> \.facebookConnected .~ true
       |> \.isAdmin .~ true
 
-    withEnvironment(currentUser: user) {
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue,
+      lang: Language.en.rawValue
+    )
+
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: user, mainBundle: mockBundle) {
       let project = Project.template
         |> \.category.parentId .~ Project.Category.art.id
         |> \.category.parentName .~ Project.Category.art.name
@@ -3805,30 +3812,43 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual([], self.trackingClient.events)
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+      XCTAssertEqual(
+        self.optimizelyClient.trackedAttributes?["user_distinct_id"] as? String,
+        "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
+      )
+    }
+  }
 
-      XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
-      XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
+  func testTrackingEvents_PledgeScreenViewed_LoggedIn_IsAdmin_Release_Production() {
+    let user = User.template
+      |> \.location .~ Location.template
+      |> \.stats.backedProjectsCount .~ 50
+      |> \.stats.createdProjectsCount .~ 25
+      |> \.facebookConnected .~ true
+      |> \.isAdmin .~ true
 
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_distinct_id"] as? String,  "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, 50)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, 25)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, true)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+      lang: Language.en.rawValue
+    )
 
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String, "discovery")
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_os_version"] as? String, "MockSystemVersion")
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, true)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_app_release_version"] as? String, "1.2.3.4.5.6.7.8.9.0")
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+    let mockService = MockService(serverConfig: ServerConfig.production)
 
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, "Art")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, true)
+    withEnvironment(apiService: mockService, currentUser: user, mainBundle: mockBundle) {
+      let project = Project.template
+        |> \.category.parentId .~ Project.Category.art.id
+        |> \.category.parentName .~ Project.Category.art.name
+        |> Project.lens.stats.currentCurrency .~ "USD"
+        |> \.personalization.isStarred .~ true
+
+      self.vm.inputs.configureWith(
+        project: project, reward: .template, refTag: .discovery, context: .pledge
+      )
+
+      XCTAssertEqual([], self.trackingClient.events)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertNil(self.optimizelyClient.trackedAttributes?["user_distinct_id"] as? String)
     }
   }
 
