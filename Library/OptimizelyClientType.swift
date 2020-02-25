@@ -61,6 +61,7 @@ public func optimizelyUserAttributes(
   refTag: RefTag?
 ) -> [String: Any] {
   let properties: [String: Any] = [
+    "user_distinct_id": user?.isAdmin == true ? deviceIdentifier(uuid: UUID()) : nil,
     "user_backed_projects_count": user?.stats.backedProjectsCount,
     "user_launched_projects_count": user?.stats.createdProjectsCount,
     "user_country": (user?.location?.country ?? AppEnvironment.current.config?.countryCode)?.lowercased(),
