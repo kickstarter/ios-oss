@@ -36,14 +36,14 @@ public struct Environment {
   /// A type that exposes how to interact with cookie storage. Default value is `HTTPCookieStorage.shared`.
   public let cookieStorage: HTTPCookieStorageProtocol
 
+  /// A type that provides telephony network info.
+  public let coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType
+
   /// The user’s current country. This is valid whether the user is logged-in or not.
   public let countryCode: String
 
   /// The currently logged in user.
   public let currentUser: User?
-
-  /// A type that provides telephony network info.
-  public let coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType
 
   /// A type that exposes how to capture dates as measured from # of seconds since 1970.
   public let dateType: DateProtocol.Type
@@ -113,8 +113,8 @@ public struct Environment {
     calendar: Calendar = .current,
     config: Config? = nil,
     cookieStorage: HTTPCookieStorageProtocol = HTTPCookieStorage.shared,
-    countryCode: String = "US",
     coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType = CTTelephonyNetworkInfo.current(),
+    countryCode: String = "US",
     currentUser: User? = nil,
     dateType: DateProtocol.Type = Date.self,
     debounceInterval: DispatchTimeInterval = .milliseconds(300),
