@@ -27,15 +27,18 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private var subCatsHeightConstraint: NSLayoutConstraint?
+  private lazy var subCatsHeightConstraint: NSLayoutConstraint = {
+    self.subCatsCollectionView.heightAnchor.constraint(equalToConstant: 0)
+      |> \.priority .~ .defaultHigh
+  }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
     self.setupConstraints()
-    self.bindViewModel()
     self.bindStyles()
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -43,22 +46,10 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
   }
 
   public override func layoutSubviews() {
-    self.updateCollectionViewConstraints()
-
     super.layoutSubviews()
 
-    print("CONTENT Size HEIGHT \(self.subCatsCollectionView.contentSize.height)")
-    print("COLLECTION VIEW HEIGHT \(self.subCatsCollectionView.bounds.height)")
+    self.updateCollectionViewConstraints()
   }
-
-//  public override func didMoveToSuperview() {
-//    super.didMoveToSuperview()
-//
-//    self.updateCollectionViewConstraints()
-////
-////    self.setNeedsLayout()
-////    self.layoutIfNeeded()
-//  }
 
   func configureWith(value category: KsApi.Category) {
     self.viewModel.inputs.configure(with: category)
@@ -74,6 +65,8 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
 
     self.categoryNameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     self.categoryNameLabel.setContentHuggingPriority(.required, for: .vertical)
+    self.subCatsCollectionView.setContentCompressionResistancePriority(.required, for: .vertical)
+    self.subCatsCollectionView.setContentHuggingPriority(.required, for: .vertical)
   }
 
   override func bindViewModel() {
@@ -82,10 +75,13 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.loadSubCategories
       .observeForUI()
       .observeValues { [weak self] subcategories in
-        self?.pillDataSource.load(subcategories)
-        self?.subCatsCollectionView.reloadData()
+        guard let self = self else { return }
+        self.pillDataSource.load(subcategories)
+        self.subCatsCollectionView.reloadData()
 
-        self?.setNeedsLayout()
+        self.updateCollectionViewConstraints()
+
+        self.setNeedsLayout()
     }
 
     self.categoryNameLabel.rac.text = self.viewModel.outputs.categoryTitleText
@@ -111,9 +107,6 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
   }
 
   private func setupConstraints() {
-    self.subCatsHeightConstraint = self.subCatsCollectionView.heightAnchor.constraint(equalToConstant: 0)
-    self.subCatsHeightConstraint?.priority = .defaultHigh
-
     let margins = self.contentView.layoutMarginsGuide
 
     let constraints = [
@@ -128,7 +121,7 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
       self.subCatsCollectionView.rightAnchor.constraint(equalTo: margins.rightAnchor),
       self.subCatsCollectionView.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
       self.subCatsHeightConstraint
-    ].compact()
+    ]
 
     NSLayoutConstraint.activate(constraints)
   }
@@ -138,13 +131,12 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
 
     let contentHeight = self.subCatsCollectionView.contentSize.height
 
-    self.subCatsHeightConstraint?.constant = contentHeight
+    self.subCatsHeightConstraint.constant = contentHeight
 
-    self.setNeedsLayout()
-  }
+    let collectionViewHeight = self.subCatsCollectionView.bounds.height
 
-  override func prepareForReuse() {
-    self.subCatsHeightConstraint?.constant = 0
+    print("CONTENT SIZE HEIGHT \(contentHeight)")
+    print("COLLECTION VIEW HEIGHT \(collectionViewHeight)")
   }
 }
 

@@ -16,6 +16,10 @@ public final class CategorySelectionViewController: UITableViewController {
       |> baseTableControllerStyle()
 
     _ = self.tableView
+      |> \.contentInsetAdjustmentBehavior .~ .never
+      |> \.contentInset .~ .init(bottom: self.view.safeAreaInsets.bottom)
+      |> \.bounces .~ true
+      |> \.alwaysBounceVertical .~ true
       |> \.dataSource .~ self.dataSource
 
     self.tableView.registerCellClass(CategorySelectionCell.self)
@@ -25,10 +29,18 @@ public final class CategorySelectionViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override public func bindStyles() {
+    super.bindStyles() 
+  }
+
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
     self.tableView.ksr_sizeHeaderFooterViewsToFit()
+  }
+
+  public override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
   }
 
   public override func bindViewModel() {
@@ -39,22 +51,14 @@ public final class CategorySelectionViewController: UITableViewController {
       .observeValues { [weak self] categories in
         self?.dataSource.load(categories: categories)
         self?.tableView.reloadData()
-
-        self?.tableView.setNeedsLayout()
-        self?.tableView.layoutIfNeeded()
       }
   }
 
   private func configureHeaderView() {
     let headerContainer = UIView(frame: .zero)
-      |> \.backgroundColor .~ .white
+      |> \.backgroundColor .~ UIColor.ksr_trust_700
       |> \.accessibilityTraits .~ .header
       |> \.isAccessibilityElement .~ true
-      |> \.layoutMargins %~~ { _, _ in
-        self.view.traitCollection.isRegularRegular
-          ? .init(top: Styles.grid(4), left: Styles.grid(30), bottom: Styles.grid(2), right: Styles.grid(30))
-          : .init(all: Styles.grid(4))
-      }
 
     let categorySelectionHeader = CategorySelectionHeaderView(frame: .zero)
 
@@ -64,7 +68,7 @@ public final class CategorySelectionViewController: UITableViewController {
     self.tableView.tableHeaderView = headerContainer
 
     _ = (categorySelectionHeader, headerContainer)
-      |> ksr_constrainViewToMarginsInParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     let widthConstraint = categorySelectionHeader.widthAnchor
       .constraint(equalTo: self.tableView.widthAnchor)
