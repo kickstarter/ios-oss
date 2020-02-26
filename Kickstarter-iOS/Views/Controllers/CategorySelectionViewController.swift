@@ -10,22 +10,14 @@ public final class CategorySelectionViewController: UIViewController {
   private let dataSource = CategorySelectionDataSource()
 
   private lazy var tableView: UITableView = {
-    UITableView(frame: .zero)
-      |> \.backgroundColor .~ .clear
+    UITableView(frame: .zero, style: .plain)
       |> \.allowsSelection .~ false
-      |> \.dataSource .~ self.dataSource
-      |> \.estimatedRowHeight .~ 100
-      |> \.separatorStyle .~ .none
-      |> \.rowHeight .~ UITableView.automaticDimension
-  }()
-
-  private lazy var backgroundHeaderView: UIView = {
-    UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var backgroundHeaderHeightConstraint: NSLayoutConstraint = {
-    self.backgroundHeaderView.heightAnchor.constraint(equalToConstant: 200)
+  private lazy var headerView: UIView = {
+    CategorySelectionHeaderView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var buttonsView: UIView = {
@@ -34,7 +26,12 @@ public final class CategorySelectionViewController: UIViewController {
   }()
 
   private lazy var continueButton: UIButton = { UIButton(type: .custom) }()
-  private lazy var skipButton: UIButton = { UIButton(type: .custom) }()
+  private lazy var skipButton: UIBarButtonItem = {
+    UIBarButtonItem(title: Strings.general_navigation_buttons_skip(),
+                    style: .plain,
+                    target: self,
+                    action: #selector(CategorySelectionViewController.skipButtonTapped))
+  }()
   private lazy var buttonsStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   public override func viewDidLoad() {
@@ -43,11 +40,28 @@ public final class CategorySelectionViewController: UIViewController {
     _ = self
       |> baseControllerStyle()
 
+    _ = self.navigationController?.navigationBar
+      ?|> \.backgroundColor .~ .clear
+      ?|> \.shadowImage .~ UIImage()
+      ?|> \.isTranslucent .~ true
+
+    _ = self.tableView
+    |> \.dataSource .~ self.dataSource
+    |> \.estimatedRowHeight .~ 100
+    |> \.separatorStyle .~ .none
+    |> \.contentInsetAdjustmentBehavior .~ .never
+    |> \.rowHeight .~ UITableView.automaticDimension
+
+    self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+
+    UIApplication.shared.setStatusBarStyle(.lightContent, animated: false)
+
+    self.navigationItem.setRightBarButton(self.skipButton, animated: false)
+
     self.tableView.registerCellClass(CategorySelectionCell.self)
 
     self.configureSubviews()
     self.setupConstraints()
-    self.configureHeaderView()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -55,12 +69,19 @@ public final class CategorySelectionViewController: UIViewController {
   override public func bindStyles() {
     super.bindStyles()
 
-    _ = self.backgroundHeaderView
-      |> \.backgroundColor .~ UIColor.ksr_trust_700
+    _ = self.skipButton
+      |> \.tintColor .~ .white
+
+    _ = self.headerView
+      |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = self.buttonsView
       |> \.backgroundColor .~ .white
       |> \.layoutMargins .~ .init(all: Styles.grid(2))
+      |> \.layer.shadowColor .~ UIColor.black.cgColor
+      |> \.layer.shadowOpacity .~ 0.12
+      |> \.layer.shadowOffset .~ CGSize(width: 0, height: -1.0)
+      |> \.layer.shadowRadius .~ CGFloat(1.0)
 
     _ = self.buttonsStackView
       |> verticalStackViewStyle
@@ -73,13 +94,7 @@ public final class CategorySelectionViewController: UIViewController {
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    self.tableView.ksr_sizeHeaderFooterViewsToFit()
-
-    self.backgroundHeaderHeightConstraint.constant = self.tableView.tableHeaderView?.frame.size.height ?? 0
-  }
-
-  public override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
+    self.tableView.contentInset.bottom = self.buttonsView.frame.height
   }
 
   public override func bindViewModel() {
@@ -94,12 +109,11 @@ public final class CategorySelectionViewController: UIViewController {
   }
 
   private func configureSubviews() {
-    _ = (self.backgroundHeaderView, self.view)
+    _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()
 
     _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
 
     _ = (self.buttonsView, self.view)
       |> ksr_addSubviewToParent()
@@ -108,42 +122,29 @@ public final class CategorySelectionViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = ([self.continueButton, self.skipButton], self.buttonsStackView)
+    _ = ([self.continueButton], self.buttonsStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.backgroundHeaderView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.backgroundHeaderView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.backgroundHeaderView.topAnchor.constraint(equalTo: self.view.topAnchor),
-      self.backgroundHeaderHeightConstraint,
+      self.headerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+      self.tableView.topAnchor.constraint(equalTo: self.headerView.bottomAnchor),
+      self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      self.tableView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.tableView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.buttonsView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.buttonsView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.buttonsView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
     ])
   }
 
-  private func configureHeaderView() {
-    let headerContainer = UIView(frame: .zero)
-      |> \.backgroundColor .~ UIColor.ksr_trust_700
-      |> \.accessibilityTraits .~ .header
-      |> \.isAccessibilityElement .~ true
+  // MARK: - Accessors
 
-    let categorySelectionHeader = CategorySelectionHeaderView(frame: .zero)
-
-    _ = (categorySelectionHeader, headerContainer)
-      |> ksr_addSubviewToParent()
-
-    self.tableView.tableHeaderView = headerContainer
-
-    _ = (categorySelectionHeader, headerContainer)
-      |> ksr_constrainViewToEdgesInParent(priority: .defaultHigh)
-
-    let widthConstraint = categorySelectionHeader.widthAnchor
-      .constraint(equalTo: self.tableView.widthAnchor)
-      |> \.priority .~ .defaultHigh
-
-    NSLayoutConstraint.activate([widthConstraint])
+  @objc func skipButtonTapped() {
+    self.dismiss(animated: true)
   }
 }

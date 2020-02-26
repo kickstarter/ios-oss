@@ -28,6 +28,9 @@ final class CategorySelectionHeaderView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> \.backgroundColor .~ UIColor.ksr_trust_700
+
     _ = self.rootStackView
       |> verticalStackViewStyle
       |> \.distribution .~ .fill
