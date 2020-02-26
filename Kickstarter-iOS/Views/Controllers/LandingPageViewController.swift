@@ -18,7 +18,7 @@ private enum Layout {
 }
 
 public final class LandingPageViewController: UIViewController {
-  // Properties
+  // MARK: - Properties
   private let backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
   private let cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let cardViewsStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -45,12 +45,16 @@ public final class LandingPageViewController: UIViewController {
     self.setupConstraints()
     self.ctaButton.addTarget(
       self,
-      action: #selector(LandingPageViewController.ctaBUttonTapped),
+      action: #selector(LandingPageViewController.ctaButtonTapped),
       for: .touchUpInside
     )
 
     self.viewModel.inputs.viewDidLoad()
   }
+
+  override public var supportedInterfaceOrientations: UIInterfaceOrientationMask{
+     return .portrait
+   }
 
   // MARK: - View Model
 
@@ -136,12 +140,13 @@ public final class LandingPageViewController: UIViewController {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
+      self.ctaButton.heightAnchor.constraint(equalToConstant: Layout.Button.height),
       self.scrollView.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Card.height),
       self.cardViewsStackView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor)
     ])
   }
 
-  @objc private func ctaBUttonTapped() {
+  @objc private func ctaButtonTapped() {
     self.dismiss(animated: true)
   }
 
