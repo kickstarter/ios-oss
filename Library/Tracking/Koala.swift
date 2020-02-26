@@ -1,4 +1,3 @@
-import CoreTelephony
 import KsApi
 import PassKit
 import Prelude
@@ -1948,7 +1947,8 @@ public final class Koala {
 
     props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
     props["apple_pay_device"] = AppEnvironment.current.applePayCapabilities.applePayDevice()
-    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
+    props["cellular_connection"] = AppEnvironment.current.coreTelephonyNetworkInfo
+      .serviceCurrentRadioAccessTechnology
     props["client_type"] = "native"
     props["current_variants"] = self.config?.abExperimentsArray.sorted()
     props["display_language"] = AppEnvironment.current.language.rawValue
