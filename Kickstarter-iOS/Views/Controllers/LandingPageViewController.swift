@@ -62,7 +62,13 @@ public final class LandingPageViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] cards in
         self?.configureCards(with: cards)
-        self?.updatePageControl(with: cards)
+      }
+
+    self.viewModel.outputs.numberOfPages
+      .observeForUI()
+      .observeValues { [weak self] count in
+        _ = self?.pageControl
+          ?|> \.numberOfPages .~ count
       }
   }
 
@@ -177,11 +183,6 @@ public final class LandingPageViewController: UIViewController {
       ])
     }
   }
-
-  private func updatePageControl(with cards: [LandingPageCardType]) {
-    _ = self.pageControl
-      |> \.numberOfPages .~ cards.count
-  }
 }
 
 // Styles
@@ -248,6 +249,7 @@ private let scrollViewStyle: ScrollStyle = { scrollView in
   scrollView
     |> \.bounces .~ false
     |> \.isPagingEnabled .~ true
+    |> \.showsHorizontalScrollIndicator .~ false
 }
 
 private let titleLabelStyle: LabelStyle = { label in

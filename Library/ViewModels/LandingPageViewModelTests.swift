@@ -7,12 +7,14 @@ import XCTest
 
 internal final class LandingPageViewModelTests: TestCase {
   fileprivate let landingPageCards = TestObserver<[LandingPageCardType], Never>()
+  fileprivate let numberOfPages = TestObserver<Int, Never>()
   fileprivate let viewModel: LandingPageViewModelType = LandingPageViewModel()
 
   override func setUp() {
     super.setUp()
 
     self.viewModel.outputs.landingPageCards.observe(self.landingPageCards.observer)
+    self.viewModel.outputs.numberOfPages.observe(self.numberOfPages.observer)
   }
 
   func testCards_Variant1() {
@@ -49,5 +51,18 @@ internal final class LandingPageViewModelTests: TestCase {
 
       self.landingPageCards.assertDidNotEmitValue()
     }
+  }
+
+  func testNumberOfPages() {
+    let optimizelyClient = MockOptimizelyClient()
+        |> \.experiments .~
+        [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant2.rawValue]
+
+      withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+        self.viewModel.inputs.viewDidLoad()
+
+        let cards = LandingPageCardType.howToCards
+        self.numberOfPages.assertValue(cards.count)
+      }
   }
 }

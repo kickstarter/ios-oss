@@ -7,6 +7,7 @@ public protocol LandingPageViewModelInputs {
 
 public protocol LandingPageViewModelOutputs {
   var landingPageCards: Signal<[LandingPageCardType], Never> { get }
+  var numberOfPages: Signal<Int, Never> { get }
 }
 
 public protocol LandingPageViewModelType {
@@ -20,6 +21,9 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
     self.landingPageCards = self.viewDidLoadSignal
       .map(cards)
       .skipNil()
+
+    self.numberOfPages = self.landingPageCards
+      .map(\.count)
   }
 
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
@@ -28,6 +32,7 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
   }
 
   public let landingPageCards: Signal<[LandingPageCardType], Never>
+  public let numberOfPages: Signal<Int, Never>
 
   public var inputs: LandingPageViewModelInputs { return self }
   public var outputs: LandingPageViewModelOutputs { return self }

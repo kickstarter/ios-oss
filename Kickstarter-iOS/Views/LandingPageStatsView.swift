@@ -115,5 +115,5 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
 private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
-    |> \.font .~ UIFont.ksr_caption2().bolded
+    |> \.font .~ UIFont.ksr_callout().bolded
 }

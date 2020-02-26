@@ -53,7 +53,7 @@ public enum LandingPageCardType {
   public var quantity: String? {
     switch self {
     case .successfulProjects:
-      return Strings.Total_plus(total: "177,000")
+      return Strings.Total_plus(total: Format.wholeNumber(177_000))
     case .totalBackers:
       return Strings.Million_plus(total_amount: "17")
     case .totalPledged:
