@@ -1089,6 +1089,13 @@ private func qualtricsConfigData() -> QualtricsConfigData {
 }
 
 private func shouldGoToLandingPage() -> Bool {
+  guard AppEnvironment.current.currentUser == nil else {
+    AppEnvironment.current.ubiquitousStore.hasSeenLandingPage = true
+    AppEnvironment.current.userDefaults.hasSeenLandingPage = true
+
+    return false
+  }
+
   let userAttributes = optimizelyUserAttributes(
     with: AppEnvironment.current.currentUser,
     project: nil,

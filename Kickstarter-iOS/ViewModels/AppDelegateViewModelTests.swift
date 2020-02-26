@@ -2161,6 +2161,23 @@ final class AppDelegateViewModelTests: TestCase {
       self.goToLandingPage.assertDidNotEmitValue()
     }
   }
+
+  func testGoToLandingPage_DoesNotEmitIf_UserIsLoggedIn() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
+
+    let userDefaults = MockKeyValueStore()
+      |> \.hasSeenLandingPage .~ false
+
+    withEnvironment(currentUser: .template, optimizelyClient: optimizelyClient, userDefaults: userDefaults) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.vm.inputs.optimizelyUpdatedInEnvironment()
+
+      self.goToLandingPage.assertDidNotEmitValue()
+    }
+  }
 }
 
 private func qualtricsProps() -> [String: String] {
