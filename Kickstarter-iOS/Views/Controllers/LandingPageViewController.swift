@@ -19,6 +19,7 @@ private enum Layout {
 
 public final class LandingPageViewController: UIViewController {
   // MARK: - Properties
+
   private let backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
   private let cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let cardViewsStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -52,9 +53,9 @@ public final class LandingPageViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override public var supportedInterfaceOrientations: UIInterfaceOrientationMask{
-     return .portrait
-   }
+  public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    return .portrait
+  }
 
   // MARK: - View Model
 
