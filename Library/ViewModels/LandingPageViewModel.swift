@@ -2,8 +2,8 @@ import ReactiveSwift
 import UIKit
 
 public protocol LandingPageViewModelInputs {
-  func viewDidLoad()
   func ctaButtonTapped()
+  func viewDidLoad()
 }
 
 public protocol LandingPageViewModelOutputs {
