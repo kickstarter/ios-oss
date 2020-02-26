@@ -22,9 +22,10 @@ public final class LandingPageViewController: UIViewController {
 
   private let backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
   private let cardsScrollView: UIScrollView = {
-     UIScrollView(frame: .zero)
-       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-   }()
+    UIScrollView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let cardViewsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let ctaButton: UIButton = { UIButton(frame: .zero) }()
