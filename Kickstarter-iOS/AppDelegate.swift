@@ -129,7 +129,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.goToLandingPage
       .observeForUI()
-      .observeValues { [weak self] landingPage in
+      .observeValues { [weak self] in
+        let landingPage = LandingPageViewController()
+          |> \.modalPresentationStyle .~ .fullScreen
         self?.rootTabBarController?.present(landingPage, animated: true)
       }
 
