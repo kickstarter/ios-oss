@@ -292,10 +292,6 @@ public struct Service: ServiceType {
     return request(.project(.id(project.id)))
   }
 
-  public func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope> {
-    return request(.projectNotifications)
-  }
-
   public func fetchProjectActivities(forProject project: Project) ->
     SignalProducer<ProjectActivityEnvelope, ErrorEnvelope> {
     return request(.projectActivities(project))
@@ -304,6 +300,14 @@ public struct Service: ServiceType {
   public func fetchProjectActivities(paginationUrl: String)
     -> SignalProducer<ProjectActivityEnvelope, ErrorEnvelope> {
     return requestPagination(paginationUrl)
+  }
+
+  public func fetchProjectCreatorDetails(query: NonEmptySet<Query>) -> SignalProducer<ProjectCreatorDetailsEnvelope, GraphError> {
+    return fetch(query: query)
+  }
+
+  public func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope> {
+    return request(.projectNotifications)
   }
 
   public func fetchProjects(member: Bool) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {

@@ -7,7 +7,7 @@ final class ProjectCreatorDetailsEnvelopeTests: XCTestCase {
       "project": [
         "creator": [
           "id": "VXNlci0xOTMxNzE1OTI4",
-          "lastLogin": 1_581_718_873,
+          "backingsCount": 152,
           "launchedProjects": [
             "totalCount": 6
           ]
@@ -23,7 +23,7 @@ final class ProjectCreatorDetailsEnvelopeTests: XCTestCase {
     let value = try? JSONDecoder().decode(ProjectCreatorDetailsEnvelope.self, from: data)
 
     XCTAssertEqual(value?.id, "VXNlci0xOTMxNzE1OTI4")
-    XCTAssertEqual(value?.lastLogin, 1_581_718_873)
+    XCTAssertEqual(value?.backingsCount, 152)
     XCTAssertEqual(value?.launchedProjectsCount, 6)
   }
 

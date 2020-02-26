@@ -183,3 +183,19 @@ private func goToBackingData(forProject project: Project, rewardOrBacking: Eithe
 
   return project
 }
+
+private func projectCreatorDetailsQuery(withSlug slug: String) -> NonEmptySet<Query> {
+  return Query.project(
+    slug: slug,
+    .id +| [
+      .creator(
+        .id +| [
+          .backingsCount,
+          .launchedProjects(
+            .totalCount +| []
+          )
+        ]
+      )
+    ]
+  ) +| []
+}

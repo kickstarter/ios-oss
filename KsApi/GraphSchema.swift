@@ -173,6 +173,7 @@ public enum Query {
   }
 
   public enum Project {
+    case creator(NonEmptySet<User>)
     case id
     case name
     case slug
@@ -192,17 +193,18 @@ public enum Query {
     }
   }
 
-  public enum User {
+  public indirect enum User {
     case backedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case backings(status: String, Set<QueryArg<Never>>, NonEmptySet<Connection<Backing>>)
+    case backingsCount
     case biography
     case chosenCurrency
     case conversations(Set<QueryArg<Never>>, NonEmptySet<Connection<Conversation>>)
     case createdProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case drop
     case email
-    indirect case followers(Set<QueryArg<Never>>, NonEmptySet<Connection<User>>)
-    indirect case following(Set<QueryArg<Never>>, NonEmptySet<Connection<User>>)
+    case followers(Set<QueryArg<Never>>, NonEmptySet<Connection<User>>)
+    case following(Set<QueryArg<Never>>, NonEmptySet<Connection<User>>)
     case hasPassword
     case hasUnreadMessages
     case id
@@ -212,6 +214,7 @@ public enum Query {
     case isEmailVerified
     case isFollowing
     case isSocializing
+    case launchedProjects(NonEmptySet<LaunchedProjects>)
     case location(NonEmptySet<Location>)
     case membershipProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case name
@@ -237,6 +240,10 @@ public enum Query {
       case errorReason
       case project(NonEmptySet<Project>)
       case status
+    }
+
+    public enum LaunchedProjects {
+      case totalCount
     }
   }
 }
@@ -364,6 +371,7 @@ extension Query.Category.ProjectsConnection.Argument: CustomStringConvertible {
 extension Query.Project: QueryType {
   public var description: String {
     switch self {
+    case .creator: return "creator"
     case .id: return "id"
     case .name: return "name"
     case .slug: return "slug"
@@ -392,6 +400,7 @@ extension Query.User: QueryType {
     switch self {
     case let .backings(status, args, fields):
       return "backings(status: \(status))\(connection(args, fields))"
+    case .backingsCount: return "backingsCount"
     case .biography: return "biography"
     case let .backedProjects(args, fields): return "backedProjects\(connection(args, fields))"
     case let .conversations(args, fields): return "conversations\(connection(args, fields))"
@@ -410,6 +419,7 @@ extension Query.User: QueryType {
     case .isEmailVerified: return "isEmailVerified"
     case .isFollowing: return "isFollowing"
     case .isSocializing: return "isSocializing"
+    case let .launchedProjects(fields): return "launchedProjects { \(join(fields)) }"
     case let .location(fields): return "location { \(join(fields)) }"
     case let .membershipProjects(args, fields): return "membershipProjects\(connection(args, fields))"
     case .name: return "name"
@@ -439,6 +449,14 @@ extension Query.User.Backing: QueryType {
     case .errorReason: return "errorReason"
     case let .project(fields): return "project { \(join(fields)) }"
     case .status: return "status"
+    }
+  }
+}
+
+extension Query.User.LaunchedProjects: QueryType {
+  public var description: String {
+    switch self {
+    case .totalCount: return "totalCount"
     }
   }
 }

@@ -1,16 +1,16 @@
 import Foundation
 
 public struct ProjectCreatorDetailsEnvelope {
+  public let backingsCount: Int
   public let id: String
-  public let lastLogin: TimeInterval
   public let launchedProjectsCount: Int
 }
 
 extension ProjectCreatorDetailsEnvelope: Decodable {
   private enum CodingKeys: String, CodingKey {
+    case backingsCount
     case creator
     case id
-    case lastLogin
     case launchedProjects
     case project
     case totalCount
@@ -21,8 +21,9 @@ extension ProjectCreatorDetailsEnvelope: Decodable {
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .project)
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .creator)
 
+    self.backingsCount = try values
+      .decode(Int.self, forKey: .backingsCount)
     self.id = try values.decode(String.self, forKey: .id)
-    self.lastLogin = try values.decode(TimeInterval.self, forKey: .lastLogin)
     self.launchedProjectsCount = try values
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .launchedProjects)
       .decode(Int.self, forKey: .totalCount)
