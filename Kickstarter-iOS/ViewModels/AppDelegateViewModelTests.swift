@@ -2118,7 +2118,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testGoToLandingPage_EmitsIf_OptimizelyIsNotControl_HasNotSeenLandingPage() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~
-    [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
+      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
 
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
@@ -2134,7 +2134,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testGoToLandingPage_DoesNotEmitIf_OptimizelyIsControl_UserHasNotSeenLandingPage() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~
-    [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.control.rawValue]
+      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.control.rawValue]
 
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
@@ -2148,10 +2148,10 @@ final class AppDelegateViewModelTests: TestCase {
   func testGoToLandingPage_DoesNotEmitIf_OptimizelyIsNotControl_UserHasSeenLandingPage() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~
-    [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant2.rawValue]
+      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant2.rawValue]
 
     let userDefaults = MockKeyValueStore()
-    userDefaults.hasSeenLandingPage = true
+      |> \.hasSeenLandingPage .~ true
 
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient, userDefaults: userDefaults) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
