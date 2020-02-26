@@ -2,11 +2,6 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public struct CategorySection {
-  let parentCategory: KsApi.Category
-  let subcategories: [KsApi.Category]
-}
-
 public protocol CategorySelectionViewModelInputs {
   func viewDidLoad()
 }

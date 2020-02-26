@@ -105,7 +105,7 @@ public final class CategorySelectionViewController: UIViewController {
     self.tableView.tableHeaderView = headerContainer
 
     _ = (categorySelectionHeader, headerContainer)
-      |> ksr_constrainViewToEdgesInParent()
+      |> ksr_constrainViewToEdgesInParent(priority: .defaultHigh)
 
     let widthConstraint = categorySelectionHeader.widthAnchor
       .constraint(equalTo: self.tableView.widthAnchor)

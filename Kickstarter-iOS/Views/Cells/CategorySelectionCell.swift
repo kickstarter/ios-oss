@@ -6,12 +6,9 @@ import UIKit
 
 final class CategorySelectionCell: UITableViewCell, ValueCell {
   private let viewModel: CategorySelectionCellViewModelType = CategorySelectionCellViewModel()
-  private lazy var categoryNameLabel = {
-    UILabel(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
+  private lazy var categoryNameLabel = { UILabel(frame: .zero) }()
   private let pillDataSource = PillCollectionViewDataSource()
+  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var subCatsCollectionView = {
     UICollectionView(
       frame: .zero,
@@ -29,7 +26,7 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
 
   private lazy var subCatsHeightConstraint: NSLayoutConstraint = {
     self.subCatsCollectionView.heightAnchor.constraint(equalToConstant: 0)
-      |> \.priority .~ .defaultHigh
+      |> \.priority .~ .required
   }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -56,10 +53,12 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
   }
 
   private func configureViews() {
-    [self.categoryNameLabel, self.subCatsCollectionView].forEach { view in
-      _ = (view, self.contentView)
-        |> ksr_addSubviewToParent()
-    }
+    _ = (self.rootStackView, self.contentView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent(priority: .defaultHigh)
+
+    _ = ([self.categoryNameLabel, self.subCatsCollectionView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     self.subCatsCollectionView.register(PillCell.self)
 
@@ -94,7 +93,11 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
 
     _ = self.contentView
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(4))
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(4))
+
+    _ = self.rootStackView
+      |> verticalStackViewStyle
+      |> \.spacing .~ Styles.grid(3)
 
     _ = self.subCatsCollectionView
       |> \.backgroundColor .~ .white
@@ -109,21 +112,10 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
   private func setupConstraints() {
     let margins = self.contentView.layoutMarginsGuide
 
-    let constraints = [
-      self.categoryNameLabel.topAnchor.constraint(equalTo: margins.topAnchor),
-      self.categoryNameLabel.leftAnchor.constraint(equalTo: margins.leftAnchor),
-      self.categoryNameLabel.rightAnchor.constraint(equalTo: margins.rightAnchor),
-      self.subCatsCollectionView.topAnchor.constraint(
-        equalTo: self.categoryNameLabel.bottomAnchor,
-        constant: Styles.grid(2)
-      ),
-      self.subCatsCollectionView.leftAnchor.constraint(equalTo: margins.leftAnchor),
-      self.subCatsCollectionView.rightAnchor.constraint(equalTo: margins.rightAnchor),
-      self.subCatsCollectionView.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
+    NSLayoutConstraint.activate([
+      self.subCatsCollectionView.widthAnchor.constraint(equalTo: margins.widthAnchor),
       self.subCatsHeightConstraint
-    ]
-
-    NSLayoutConstraint.activate(constraints)
+    ])
   }
 
   private func updateCollectionViewConstraints() {
@@ -132,11 +124,6 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
     let contentHeight = self.subCatsCollectionView.contentSize.height
 
     self.subCatsHeightConstraint.constant = contentHeight
-
-    let collectionViewHeight = self.subCatsCollectionView.bounds.height
-
-    print("CONTENT SIZE HEIGHT \(contentHeight)")
-    print("COLLECTION VIEW HEIGHT \(collectionViewHeight)")
   }
 }
 

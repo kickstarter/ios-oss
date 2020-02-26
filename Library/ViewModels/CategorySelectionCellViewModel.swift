@@ -31,9 +31,14 @@ CategorySelectionCellViewModelInputs, CategorySelectionCellViewModelOutputs {
       .skipNil()
       .map(\.nodes)
 
-    self.loadSubCategories = subcategories
-      .map { $0.map { $0.name } }
-
+    self.loadSubCategories = Signal.zip(self.categoryTitleText, subcategories)
+      .map { titleAndSubcategories -> [String] in
+        let (title, subcategories) = titleAndSubcategories
+        var categoryNames = subcategories.map { $0.name }
+        categoryNames.insert("All \(title) Projects", at: 0)
+        
+        return categoryNames
+      }
 
     let selectedIndexes = self.categorySelectedAtIndexProperty.signal
       .skipNil()
