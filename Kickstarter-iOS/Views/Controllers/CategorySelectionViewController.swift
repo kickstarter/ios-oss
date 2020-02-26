@@ -28,6 +28,15 @@ public final class CategorySelectionViewController: UIViewController {
     self.backgroundHeaderView.heightAnchor.constraint(equalToConstant: 200)
   }()
 
+  private lazy var buttonsView: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var continueButton: UIButton = { UIButton(type: .custom) }()
+  private lazy var skipButton: UIButton = { UIButton(type: .custom) }()
+  private lazy var buttonsStackView: UIStackView = { UIStackView(frame: .zero) }()
+
   public override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -48,6 +57,17 @@ public final class CategorySelectionViewController: UIViewController {
 
     _ = self.backgroundHeaderView
       |> \.backgroundColor .~ UIColor.ksr_trust_700
+
+    _ = self.buttonsView
+      |> \.backgroundColor .~ .white
+      |> \.layoutMargins .~ .init(all: Styles.grid(2))
+
+    _ = self.buttonsStackView
+      |> verticalStackViewStyle
+
+    _ = self.continueButton
+      |> greyButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
   }
 
   public override func viewDidLayoutSubviews() {
@@ -80,6 +100,16 @@ public final class CategorySelectionViewController: UIViewController {
     _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.buttonsView, self.view)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.buttonsStackView, self.buttonsView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.continueButton, self.skipButton], self.buttonsStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {
@@ -87,7 +117,10 @@ public final class CategorySelectionViewController: UIViewController {
       self.backgroundHeaderView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.backgroundHeaderView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.backgroundHeaderView.topAnchor.constraint(equalTo: self.view.topAnchor),
-      self.backgroundHeaderHeightConstraint
+      self.backgroundHeaderHeightConstraint,
+      self.buttonsView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.buttonsView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.buttonsView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
     ])
   }
 
