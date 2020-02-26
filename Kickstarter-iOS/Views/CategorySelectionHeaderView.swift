@@ -3,8 +3,13 @@ import Library
 import Prelude
 
 final class CategorySelectionHeaderView: UIView {
-  private lazy var imageView = { UIImageView(frame: .zero) } ()
-  private lazy var rootStackView = { UIStackView(frame: .zero) }()
+  private lazy var imageView = { UIImageView(frame: .zero)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+  private lazy var rootStackView = {
+    UIStackView(frame: .zero)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
   private lazy var stepLabel = { UILabel(frame: .zero) }()
   private lazy var subtitleLabel = { UILabel(frame: .zero) }()
   private lazy var titleLabel = { UILabel(frame: .zero) }()
@@ -25,16 +30,14 @@ final class CategorySelectionHeaderView: UIView {
 
     _ = self.rootStackView
       |> verticalStackViewStyle
+      |> \.distribution .~ .fill
+      |> \.alignment .~ .fill
       |> \.spacing .~ Styles.grid(2)
-      |> \.alignment .~ .leading
-      |> UIStackView.lens.layoutMargins .~ .init(top: Styles.grid(4),
-                                                 left: Styles.grid(3),
-                                                 bottom: 0,
-                                                 right: 0)
-      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     _ = self.titleLabel
-      |> \.font .~ UIFont.ksr_title1().bolded
+      |> \.font .~ UIFont.ksr_title3().bolded
       |> \.textColor .~ .white
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
@@ -45,7 +48,7 @@ final class CategorySelectionHeaderView: UIView {
       |> \.textColor .~ .white
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
-      |> \.text .~ "Select at least three from the options below."
+      |> \.text .~ "Select up to five from the list below."
 
     _ = self.stepLabel
       |> \.font .~ UIFont.ksr_footnote()
@@ -55,16 +58,30 @@ final class CategorySelectionHeaderView: UIView {
       |> \.text .~ "Step 1 of 2"
 
     _ = self.imageView
+      |> UIImageView.lens.contentMode .~ .scaleAspectFill
       |> UIImageView.lens.image .~ UIImage(named: "shapes")
-
   }
 
   private func setupViews() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([stepLabel, titleLabel, subtitleLabel, imageView], self.rootStackView)
+    _ = ([stepLabel, titleLabel, subtitleLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.imageView, self)
+      |> ksr_addSubviewToParent()
+
+    NSLayoutConstraint.activate([
+      self.rootStackView.leftAnchor.constraint(equalTo: self.leftAnchor),
+      self.rootStackView.rightAnchor.constraint(equalTo: self.rightAnchor),
+      self.rootStackView.topAnchor.constraint(equalTo: self.topAnchor),
+      self.imageView.leftAnchor.constraint(equalTo: self.leftAnchor),
+      self.imageView.rightAnchor.constraint(equalTo: self.rightAnchor),
+      self.imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+      self.imageView.leftAnchor.constraint(equalTo: self.leftAnchor),
+      self.imageView.topAnchor.constraint(equalTo: self.rootStackView.bottomAnchor),
+      self.imageView.heightAnchor.constraint(equalToConstant: 44)
+    ])
   }
 }
