@@ -1,7 +1,7 @@
-import UIKit
 import Foundation
-import Prelude
 import Library
+import Prelude
+import UIKit
 
 public final class CategoryCollectionViewSectionHeaderView: UICollectionReusableView {
   private lazy var label: UILabel = { UILabel(frame: .zero) }()
@@ -12,7 +12,7 @@ public final class CategoryCollectionViewSectionHeaderView: UICollectionReusable
     self.setupSubviews()
   }
 
-  required init?(coder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -20,14 +20,16 @@ public final class CategoryCollectionViewSectionHeaderView: UICollectionReusable
     self.label.text = value
   }
 
-  override public func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self
-      |> \.layoutMargins .~ .init(top: Styles.grid(4),
-                                  left: Styles.grid(3),
-                                  bottom: Styles.grid(1),
-                                  right: Styles.grid(3))
+      |> \.layoutMargins .~ .init(
+        top: Styles.grid(4),
+        left: Styles.grid(3),
+        bottom: Styles.grid(1),
+        right: Styles.grid(3)
+      )
       |> \.backgroundColor .~ .white
 
     _ = self.label

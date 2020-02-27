@@ -14,21 +14,23 @@ public final class CategorySelectionViewController: UIViewController {
       frame: .zero,
       collectionViewLayout: self.pillLayout
     )
-    |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
-    |> \.dataSource .~ self.dataSource
-    |> \.delegate .~ self
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
+      |> \.dataSource .~ self.dataSource
+      |> \.delegate .~ self
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var pillLayout: PillLayout = {
     let layout = PillLayout(
       minimumInteritemSpacing: Styles.grid(1),
       minimumLineSpacing: Styles.grid(1),
-      sectionInset: .init(top: Styles.grid(1),
-                          left: Styles.grid(3),
-                          bottom: Styles.grid(3),
-                          right: Styles.grid(3))
+      sectionInset: .init(
+        top: Styles.grid(1),
+        left: Styles.grid(3),
+        bottom: Styles.grid(3),
+        right: Styles.grid(3)
       )
+    )
 
     return layout
   }()
@@ -190,16 +192,20 @@ extension CategorySelectionViewController: UICollectionViewDelegate {
 }
 
 extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
-  public func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      referenceSizeForHeaderInSection section: Int) -> CGSize {
+  public func collectionView(
+    _ collectionView: UICollectionView,
+    layout _: UICollectionViewLayout,
+    referenceSizeForHeaderInSection section: Int
+  ) -> CGSize {
     let indexPath = IndexPath.init(item: 0, section: section)
     let headerView = collectionView.dataSource?
-      .collectionView?(collectionView,
-                       viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
-                       at: indexPath)
+      .collectionView?(
+        collectionView,
+        viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
+        at: indexPath
+      )
     headerView?.layoutIfNeeded()
-    
+
     let height = headerView?.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize).height ?? 0
 
     return CGSize(width: collectionView.bounds.width, height: height)
