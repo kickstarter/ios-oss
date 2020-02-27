@@ -498,7 +498,9 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       self.loadProjectIntoDataSourceProject
         .assertValues([project], "Load the full project into the data source.")
       self.loadProjectIntoDataSourceRefTag.assertValues([.discovery], "Load the refTag into the data source.")
-      self.loadMinimalProjectIntoDataSource.assertValues([], "Do not load the minimal version of the project.")
+      self.loadMinimalProjectIntoDataSource.assertValues(
+        [], "Do not load the minimal version of the project."
+      )
 
       // End presentation.
       self.vm.inputs.viewWillAppear(animated: false)
