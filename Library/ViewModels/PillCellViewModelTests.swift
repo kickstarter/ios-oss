@@ -42,4 +42,3 @@ final class PillCellViewModelTests: TestCase {
     self.backgroundColor.assertValues([UIColor.ksr_green_500])
   }
 }
-

@@ -1,6 +1,6 @@
 import Foundation
-import ReactiveSwift
 import Prelude
+import ReactiveSwift
 import UIKit
 
 public enum PillCellStyle {
@@ -9,19 +9,19 @@ public enum PillCellStyle {
 
   var backgroundColor: UIColor {
     switch self {
-      case .green:
-        return UIColor.ksr_green_500.withAlphaComponent(0.06)
-      case .grey:
-        return UIColor.ksr_grey_400.withAlphaComponent(0.8)
+    case .green:
+      return UIColor.ksr_green_500.withAlphaComponent(0.06)
+    case .grey:
+      return UIColor.ksr_grey_400.withAlphaComponent(0.8)
     }
   }
 
   var textColor: UIColor {
     switch self {
-      case .green:
-        return UIColor.ksr_green_500
-      case .grey:
-        return UIColor.ksr_soft_black
+    case .green:
+      return UIColor.ksr_green_500
+    case .grey:
+      return UIColor.ksr_soft_black
     }
   }
 }
@@ -36,15 +36,13 @@ public protocol PillCellViewModelOutputs {
   var textColor: Signal<UIColor, Never> { get }
 }
 
-
 public protocol PillCellViewModelType {
   var inputs: PillCellViewModelInputs { get }
   var outputs: PillCellViewModelOutputs { get }
 }
 
-
 public final class PillCellViewModel: PillCellViewModelType, PillCellViewModelInputs,
-PillCellViewModelOutputs {
+  PillCellViewModelOutputs {
   public init() {
     self.backgroundColor = self.configureWithValueProperty.signal.skipNil()
       .map(second)

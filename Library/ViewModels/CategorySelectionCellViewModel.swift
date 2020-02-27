@@ -1,7 +1,7 @@
 import Foundation
 import KsApi
-import ReactiveSwift
 import Prelude
+import ReactiveSwift
 
 public protocol CategorySelectionCellViewModelInputs {
   func categorySelected(at index: Int) -> Bool
@@ -19,7 +19,7 @@ public protocol CategorySelectionCellViewModelType {
 }
 
 public final class CategorySelectionCellViewModel: CategorySelectionCellViewModelType,
-CategorySelectionCellViewModelInputs, CategorySelectionCellViewModelOutputs {
+  CategorySelectionCellViewModelInputs, CategorySelectionCellViewModelOutputs {
   public init() {
     self.categoryTitleText = self.configureWithCategoryProperty.signal
       .skipNil()
@@ -36,9 +36,9 @@ CategorySelectionCellViewModelInputs, CategorySelectionCellViewModelOutputs {
         let (title, subcategories) = titleAndSubcategories
         var categoryNames = subcategories.map { $0.name }
         categoryNames.insert("All \(title) Projects", at: 0)
-        
+
         return categoryNames.map { ($0, PillCellStyle.grey) }
-    }
+      }
 
     let selectedIndexes = self.categorySelectedAtIndexProperty.signal
       .skipNil()
@@ -52,7 +52,7 @@ CategorySelectionCellViewModelInputs, CategorySelectionCellViewModelOutputs {
         }
 
         return newSelectedIndexes
-    }
+      }
 
     self.shouldSelectCategoryProperty <~ self.categorySelectedAtIndexProperty.signal.skipNil()
       .takePairWhen(selectedIndexes)
@@ -69,7 +69,7 @@ CategorySelectionCellViewModelInputs, CategorySelectionCellViewModelOutputs {
   public func categorySelected(at index: Int) -> Bool {
     self.categorySelectedAtIndexProperty.value = index
 
-    return shouldSelectCategoryProperty.value
+    return self.shouldSelectCategoryProperty.value
   }
 
   public let categoryTitleText: Signal<String, Never>

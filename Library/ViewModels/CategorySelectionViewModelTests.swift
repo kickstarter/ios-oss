@@ -18,9 +18,11 @@ final class CategorySelectionViewModelTests: TestCase {
   }
 
   func testLoadCategorySections() {
-    let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [.art,
-                                                                          .games,
-                                                                          .filmAndVideo])
+    let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [
+      .art,
+      .games,
+      .filmAndVideo
+    ])
 
     let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
 
@@ -35,4 +37,3 @@ final class CategorySelectionViewModelTests: TestCase {
     }
   }
 }
-

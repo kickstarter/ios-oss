@@ -27,11 +27,14 @@ public final class CategorySelectionViewController: UIViewController {
 
   private lazy var continueButton: UIButton = { UIButton(type: .custom) }()
   private lazy var skipButton: UIBarButtonItem = {
-    UIBarButtonItem(title: Strings.general_navigation_buttons_skip(),
-                    style: .plain,
-                    target: self,
-                    action: #selector(CategorySelectionViewController.skipButtonTapped))
+    UIBarButtonItem(
+      title: Strings.general_navigation_buttons_skip(),
+      style: .plain,
+      target: self,
+      action: #selector(CategorySelectionViewController.skipButtonTapped)
+    )
   }()
+
   private lazy var buttonsStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   public override func viewDidLoad() {
@@ -46,11 +49,11 @@ public final class CategorySelectionViewController: UIViewController {
       ?|> \.isTranslucent .~ true
 
     _ = self.tableView
-    |> \.dataSource .~ self.dataSource
-    |> \.estimatedRowHeight .~ 100
-    |> \.separatorStyle .~ .none
-    |> \.contentInsetAdjustmentBehavior .~ .never
-    |> \.rowHeight .~ UITableView.automaticDimension
+      |> \.dataSource .~ self.dataSource
+      |> \.estimatedRowHeight .~ 100
+      |> \.separatorStyle .~ .none
+      |> \.contentInsetAdjustmentBehavior .~ .never
+      |> \.rowHeight .~ UITableView.automaticDimension
 
     self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
 
@@ -64,11 +67,11 @@ public final class CategorySelectionViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override public var preferredStatusBarStyle: UIStatusBarStyle {
+  public override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
 
-  override public func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self.skipButton

@@ -6,10 +6,12 @@ final class CategorySelectionHeaderView: UIView {
   private lazy var imageView = { UIImageView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var stepLabel = { UILabel(frame: .zero) }()
   private lazy var subtitleLabel = { UILabel(frame: .zero) }()
   private lazy var titleLabel = { UILabel(frame: .zero) }()

@@ -79,7 +79,7 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
         self.updateCollectionViewConstraints()
 
         self.setNeedsLayout()
-    }
+      }
 
     self.categoryNameLabel.rac.text = self.viewModel.outputs.categoryTitleText
   }
