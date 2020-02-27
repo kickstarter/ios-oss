@@ -74,9 +74,39 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
           .materialize()
       }
 
+    let projectCreatorDetailsLoadingValues = projectCreatorDetails.values()
+      .filter(second >>> isTrue)
+      .map { $0 as ProjectCreatorDetailsData }
+
+    let projectCreatorDetailsHasLoadedValues = projectCreatorDetails.values()
+      .filter(second >>> isFalse)
+
+    let projectCreatorDetailsExperimentValues = projectAndRefTag
+      .takePairWhen(projectCreatorDetailsHasLoadedValues)
+      .map { projectAndRefTag, creatorDetails in
+        (projectAndRefTag.0, projectAndRefTag.1, creatorDetails.0, creatorDetails.1)
+      }
+      .map { project, refTag, result, isLoading -> ProjectCreatorDetailsData in
+        let controlData: ProjectCreatorDetailsData = (nil, isLoading)
+
+        // Nil result indicates loading failed, errors demoted. No need to activate experiment.
+        guard result != nil else { return controlData }
+
+        guard
+          projectPageConversionCreatorDetailsExperiment(project: project, refTag: refTag) != .control
+        else { return controlData }
+
+        return (result, isLoading)
+      }
+
+    let projectCreatorDetailsValues = Signal.merge(
+      projectCreatorDetailsLoadingValues,
+      projectCreatorDetailsExperimentValues
+    )
+
     let data = Signal.combineLatest(
       projectAndRefTag,
-      projectCreatorDetails.values()
+      projectCreatorDetailsValues
     )
     .map { projectAndRefTag, creatorDetails in (projectAndRefTag.0, creatorDetails, projectAndRefTag.1) }
 
@@ -220,4 +250,24 @@ private func projectCreatorDetailsQuery(withSlug slug: String) -> NonEmptySet<Qu
       )
     ]
   ) +| []
+}
+
+private func projectPageConversionCreatorDetailsExperiment(
+  project: Project, refTag: RefTag?
+) -> OptimizelyExperiment.Variant? {
+  let userAttributes = optimizelyUserAttributes(
+    with: AppEnvironment.current.currentUser,
+    project: project,
+    refTag: refTag
+  )
+
+  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+    .variant(
+      for: OptimizelyExperiment.Key.projectPageConversionCreatorDetails,
+      userId: deviceIdentifier(uuid: UUID()),
+      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+      userAttributes: userAttributes
+    )
+
+  return optimizelyVariant
 }
