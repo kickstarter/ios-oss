@@ -7,7 +7,7 @@ public protocol CategorySelectionViewModelInputs {
 }
 
 public protocol CategorySelectionViewModelOutputs {
-  var loadCategorySections: Signal<[KsApi.Category], Never> { get }
+  var loadCategorySections: Signal<[(String, [KsApi.Category])], Never> { get }
 }
 
 public protocol CategorySelectionViewModelType {
@@ -27,7 +27,15 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
           .materialize()
       }
 
-    self.loadCategorySections = categoriesEvent.values()
+    self.loadCategorySections = categoriesEvent.values().map { rootCategories in
+      rootCategories.compactMap { category in
+        guard let subcategories = category.subcategories?.nodes else {
+          return nil
+        }
+
+        return (category.name, subcategories)
+      }
+    }
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -35,7 +43,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let loadCategorySections: Signal<[KsApi.Category], Never>
+  public let loadCategorySections: Signal<[(String, [KsApi.Category])], Never>
 
   public var inputs: CategorySelectionViewModelInputs { return self }
   public var outputs: CategorySelectionViewModelOutputs { return self }

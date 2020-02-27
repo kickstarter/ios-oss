@@ -39,7 +39,7 @@ final class CategorySelectionHeaderView: UIView {
       |> \.alignment .~ .fill
       |> \.spacing .~ Styles.grid(2)
       |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(0), leftRight: Styles.grid(3))
 
     _ = self.titleLabel
       |> \.font .~ UIFont.ksr_title3().bolded
