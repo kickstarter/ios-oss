@@ -55,14 +55,14 @@ internal final class LandingPageViewModelTests: TestCase {
 
   func testNumberOfPages() {
     let optimizelyClient = MockOptimizelyClient()
-        |> \.experiments .~
-        [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant2.rawValue]
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant2.rawValue]
 
-      withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
-        self.viewModel.inputs.viewDidLoad()
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.viewModel.inputs.viewDidLoad()
 
-        let cards = LandingPageCardType.howToCards
-        self.numberOfPages.assertValue(cards.count)
-      }
+      let cards = LandingPageCardType.howToCards
+      self.numberOfPages.assertValue(cards.count)
+    }
   }
 }
