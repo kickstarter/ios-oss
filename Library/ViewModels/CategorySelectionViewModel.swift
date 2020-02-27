@@ -7,7 +7,7 @@ public protocol CategorySelectionViewModelInputs {
 }
 
 public protocol CategorySelectionViewModelOutputs {
-  // A tuple of Section Titles: [String], and Section Data: [[(String, PillCellStyle)]]
+  // A tuple of Section Titles: [String], and Categories Section Data: [[(String, PillCellStyle)]]
   var loadCategorySections: Signal<([String], [[(String, PillCellStyle)]]), Never> { get }
 }
 
@@ -29,20 +29,18 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       }
 
     self.loadCategorySections = categoriesEvent.values().map { rootCategories in
-      rootCategories.compactMap { category -> (String, [(String, PillCellStyle)])? in
+      var sectionTitles = [String]()
+      let categoriesData = rootCategories.compactMap { category -> [(String, PillCellStyle)]? in
         guard let subcategories = category.subcategories?.nodes else {
           return nil
         }
 
-        let subcategoriesData = subcategories.map { ($0.name, PillCellStyle.grey) }
+        sectionTitles.append(category.name)
 
-        return (category.name, subcategoriesData)
+        return subcategories.map { ($0.name, PillCellStyle.grey) }
       }
-    }.map { data in
-      let sectionTitles = data.map { $0.0 }
-      let sectionData = data.map { $0.1 }
 
-      return (sectionTitles, sectionData)
+      return (sectionTitles, categoriesData)
     }
   }
 
