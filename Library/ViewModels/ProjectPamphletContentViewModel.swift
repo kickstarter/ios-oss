@@ -2,6 +2,9 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias ProjectCreatorDetailsData = (ProjectCreatorDetailsEnvelope?, isLoading: Bool)
+public typealias ProjectPamphletContentData = (Project, ProjectCreatorDetailsData, RefTag?)
+
 public protocol ProjectPamphletContentViewModelInputs {
   func configureWith(value: (Project, RefTag?))
   func tappedComments()
@@ -21,7 +24,7 @@ public protocol ProjectPamphletContentViewModelOutputs {
   var goToRewardPledge: Signal<(Project, Reward), Never> { get }
   var goToUpdates: Signal<Project, Never> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, Never> { get }
-  var loadProjectAndRefTagIntoDataSource: Signal<(Project, RefTag?), Never> { get }
+  var loadProjectPamphletContentDataIntoDataSource: Signal<ProjectPamphletContentData, Never> { get }
 }
 
 public protocol ProjectPamphletContentViewModelType {
@@ -58,8 +61,27 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
     )
     .take(first: 1)
 
-    self.loadProjectAndRefTagIntoDataSource = Signal.combineLatest(
+    let projectCreatorDetails = project
+      .take(first: 1)
+      .map(\.slug)
+      .switchMap { slug in
+        AppEnvironment.current.apiService
+          .fetchProjectCreatorDetails(query: projectCreatorDetailsQuery(withSlug: slug))
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { result in (result, false) }
+          .prefix(value: (nil, true))
+          .demoteErrors(replaceErrorWith: (nil, false))
+          .materialize()
+      }
+
+    let data = Signal.combineLatest(
       projectAndRefTag,
+      projectCreatorDetails.values().logEvents(identifier: "***")
+    )
+    .map { projectAndRefTag, creatorDetails in (projectAndRefTag.0, creatorDetails, projectAndRefTag.1) }
+
+    self.loadProjectPamphletContentDataIntoDataSource = Signal.combineLatest(
+      data,
       timeToLoadDataSource
     )
     .map(first)
@@ -147,7 +169,7 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
   public let goToRewardPledge: Signal<(Project, Reward), Never>
   public let goToUpdates: Signal<Project, Never>
   public let loadMinimalProjectIntoDataSource: Signal<Project, Never>
-  public let loadProjectAndRefTagIntoDataSource: Signal<(Project, RefTag?), Never>
+  public let loadProjectPamphletContentDataIntoDataSource: Signal<ProjectPamphletContentData, Never>
 
   public var inputs: ProjectPamphletContentViewModelInputs { return self }
   public var outputs: ProjectPamphletContentViewModelOutputs { return self }

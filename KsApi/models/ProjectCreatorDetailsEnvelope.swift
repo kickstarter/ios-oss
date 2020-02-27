@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ProjectCreatorDetailsEnvelope {
+public struct ProjectCreatorDetailsEnvelope: Equatable {
   public let backingsCount: Int
   public let id: String
   public let launchedProjectsCount: Int
