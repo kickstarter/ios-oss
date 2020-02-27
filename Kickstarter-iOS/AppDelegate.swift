@@ -253,7 +253,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForControllerAction()
       .observeValues { [weak self] in
 
-        let navController = UINavigationController(rootViewController: CategorySelectionViewController())
+        let navController = NavigationController(rootViewController: CategorySelectionViewController())
 
         self?.rootTabBarController?.present(navController, animated: true)
       }

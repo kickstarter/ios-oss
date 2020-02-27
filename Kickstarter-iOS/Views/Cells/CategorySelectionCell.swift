@@ -26,7 +26,7 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
 
   private lazy var subCatsHeightConstraint: NSLayoutConstraint = {
     self.subCatsCollectionView.heightAnchor.constraint(equalToConstant: 0)
-      |> \.priority .~ .required
+      |> \.priority .~ .defaultHigh
   }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -55,7 +55,7 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
   private func configureViews() {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent(priority: .defaultHigh)
+      |> ksr_constrainViewToMarginsInParent()
 
     _ = ([self.categoryNameLabel, self.subCatsCollectionView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -64,8 +64,6 @@ final class CategorySelectionCell: UITableViewCell, ValueCell {
 
     self.categoryNameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     self.categoryNameLabel.setContentHuggingPriority(.required, for: .vertical)
-    self.subCatsCollectionView.setContentCompressionResistancePriority(.required, for: .vertical)
-    self.subCatsCollectionView.setContentHuggingPriority(.required, for: .vertical)
   }
 
   override func bindViewModel() {
@@ -139,13 +137,5 @@ extension CategorySelectionCell: UICollectionViewDelegate {
 
     _ = pillCell.label
       |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
-  }
-
-  public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let shouldSelect = self.viewModel.inputs.categorySelected(at: indexPath.row)
-
-    if !shouldSelect {
-      collectionView.deselectItem(at: indexPath, animated: true)
-    }
   }
 }

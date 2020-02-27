@@ -54,8 +54,6 @@ public final class CategorySelectionViewController: UIViewController {
 
     self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
 
-    UIApplication.shared.setStatusBarStyle(.lightContent, animated: false)
-
     self.navigationItem.setRightBarButton(self.skipButton, animated: false)
 
     self.tableView.registerCellClass(CategorySelectionCell.self)
@@ -64,6 +62,10 @@ public final class CategorySelectionViewController: UIViewController {
     self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override public var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
   }
 
   override public func bindStyles() {
