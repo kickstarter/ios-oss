@@ -302,7 +302,8 @@ public struct Service: ServiceType {
     return requestPagination(paginationUrl)
   }
 
-  public func fetchProjectCreatorDetails(query: NonEmptySet<Query>) -> SignalProducer<ProjectCreatorDetailsEnvelope, GraphError> {
+  public func fetchProjectCreatorDetails(query: NonEmptySet<Query>)
+    -> SignalProducer<ProjectCreatorDetailsEnvelope, GraphError> {
     return fetch(query: query)
   }
 
