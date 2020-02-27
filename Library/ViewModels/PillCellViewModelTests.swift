@@ -39,6 +39,6 @@ final class PillCellViewModelTests: TestCase {
     self.textColor.assertDidNotEmitValue()
     self.vm.inputs.configure(with: ("hi", .grey))
 
-    self.backgroundColor.assertValues([UIColor.ksr_green_500])
+    self.textColor.assertValues([UIColor.ksr_soft_black])
   }
 }
