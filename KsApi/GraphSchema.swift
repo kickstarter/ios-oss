@@ -371,7 +371,7 @@ extension Query.Category.ProjectsConnection.Argument: CustomStringConvertible {
 extension Query.Project: QueryType {
   public var description: String {
     switch self {
-    case .creator: return "creator"
+    case let .creator(fields): return "creator { \(join(fields)) }"
     case .id: return "id"
     case .name: return "name"
     case .slug: return "slug"

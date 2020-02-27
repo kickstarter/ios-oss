@@ -76,7 +76,7 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 
     let data = Signal.combineLatest(
       projectAndRefTag,
-      projectCreatorDetails.values().logEvents(identifier: "***")
+      projectCreatorDetails.values()
     )
     .map { projectAndRefTag, creatorDetails in (projectAndRefTag.0, creatorDetails, projectAndRefTag.1) }
 
