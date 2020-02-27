@@ -116,4 +116,5 @@ private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ UIFont.ksr_callout().bolded
+    |> \.numberOfLines .~ 0
 }
