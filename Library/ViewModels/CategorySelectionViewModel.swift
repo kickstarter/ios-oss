@@ -7,7 +7,8 @@ public protocol CategorySelectionViewModelInputs {
 }
 
 public protocol CategorySelectionViewModelOutputs {
-  var loadCategorySections: Signal<[(String, [KsApi.Category])], Never> { get }
+  // A tuple of Section Titles: [String], and Section Data: [[(String, PillCellStyle)]]
+  var loadCategorySections: Signal<([String], [[(String, PillCellStyle)]]), Never> { get }
 }
 
 public protocol CategorySelectionViewModelType {
@@ -28,13 +29,20 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       }
 
     self.loadCategorySections = categoriesEvent.values().map { rootCategories in
-      rootCategories.compactMap { category in
+      rootCategories.compactMap { category -> (String, [(String, PillCellStyle)])? in
         guard let subcategories = category.subcategories?.nodes else {
           return nil
         }
 
-        return (category.name, subcategories)
+        let subcategoriesData = subcategories.map { ($0.name, PillCellStyle.grey) }
+
+        return (category.name, subcategoriesData)
       }
+    }.map { data in
+      let sectionTitles = data.map { $0.0 }
+      let sectionData = data.map { $0.1 }
+
+      return (sectionTitles, sectionData)
     }
   }
 
@@ -43,7 +51,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let loadCategorySections: Signal<[(String, [KsApi.Category])], Never>
+  public let loadCategorySections: Signal<([String], [[(String, PillCellStyle)]]), Never>
 
   public var inputs: CategorySelectionViewModelInputs { return self }
   public var outputs: CategorySelectionViewModelOutputs { return self }

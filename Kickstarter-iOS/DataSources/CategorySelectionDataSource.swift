@@ -5,14 +5,12 @@ import UIKit
 
 internal final class CategorySelectionDataSource: ValueCellDataSource {
   private var categorySectionTitles: [String] = []
-  func load(_ categories: [(String, [KsApi.Category])]) {
-    for (index, category) in categories.enumerated() {
-      let subcategories = category.1.map { ($0.name, PillCellStyle.grey) }
+  func load(_ sectionTitles: [String], categories: [[(String, PillCellStyle)]]) {
+    self.categorySectionTitles = sectionTitles
 
+    for (index, subcategories) in categories.enumerated() {
       self.set(values: subcategories, cellClass: PillCell.self, inSection: index)
     }
-
-    self.categorySectionTitles = categories.map { $0.0 }
   }
 
   override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {

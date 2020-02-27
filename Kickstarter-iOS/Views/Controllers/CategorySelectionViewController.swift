@@ -127,8 +127,8 @@ public final class CategorySelectionViewController: UIViewController {
 
     self.viewModel.outputs.loadCategorySections
       .observeForUI()
-      .observeValues { [weak self] categories in
-        self?.dataSource.load(categories)
+      .observeValues { [weak self] sectionTitles, categories in
+        self?.dataSource.load(sectionTitles, categories: categories)
         self?.collectionView.reloadData()
       }
   }
