@@ -9,10 +9,27 @@ public final class CategorySelectionViewController: UIViewController {
   private let viewModel: CategorySelectionViewModelType = CategorySelectionViewModel()
   private let dataSource = CategorySelectionDataSource()
 
-  private lazy var tableView: UITableView = {
-    UITableView(frame: .zero, style: .plain)
-      |> \.allowsSelection .~ false
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private lazy var collectionView: UICollectionView = {
+    UICollectionView(
+      frame: .zero,
+      collectionViewLayout: self.pillLayout
+    )
+    |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
+    |> \.dataSource .~ self.dataSource
+    |> \.delegate .~ self
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var pillLayout: PillLayout = {
+    let layout = PillLayout(
+      minimumInteritemSpacing: Styles.grid(1),
+      minimumLineSpacing: Styles.grid(1),
+      sectionInset: UIEdgeInsets(topBottom: Styles.grid(1))
+    )
+
+    layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.width, height: 50)
+
+    return layout
   }()
 
   private lazy var headerView: UIView = {
@@ -48,18 +65,18 @@ public final class CategorySelectionViewController: UIViewController {
       ?|> \.shadowImage .~ UIImage()
       ?|> \.isTranslucent .~ true
 
-    _ = self.tableView
-      |> \.dataSource .~ self.dataSource
-      |> \.estimatedRowHeight .~ 100
-      |> \.separatorStyle .~ .none
-      |> \.contentInsetAdjustmentBehavior .~ .never
-      |> \.rowHeight .~ UITableView.automaticDimension
-
+    _ = self.collectionView
+      |> \.backgroundColor .~ .white
     self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
 
     self.navigationItem.setRightBarButton(self.skipButton, animated: false)
 
-    self.tableView.registerCellClass(CategorySelectionCell.self)
+    self.collectionView.registerCellClass(PillCell.self)
+    self.collectionView.register(
+      SuppView.self,
+      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+      withReuseIdentifier: "suppView"
+    )
 
     self.configureSubviews()
     self.setupConstraints()
@@ -99,7 +116,7 @@ public final class CategorySelectionViewController: UIViewController {
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    self.tableView.contentInset.bottom = self.buttonsView.frame.height
+    self.collectionView.contentInset.bottom = self.buttonsView.frame.height
   }
 
   public override func bindViewModel() {
@@ -108,8 +125,8 @@ public final class CategorySelectionViewController: UIViewController {
     self.viewModel.outputs.loadCategorySections
       .observeForUI()
       .observeValues { [weak self] categories in
-        self?.dataSource.load(categories: categories)
-        self?.tableView.reloadData()
+        self?.dataSource.load(categories)
+        self?.collectionView.reloadData()
       }
   }
 
@@ -117,7 +134,7 @@ public final class CategorySelectionViewController: UIViewController {
     _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()
 
-    _ = (self.tableView, self.view)
+    _ = (self.collectionView, self.view)
       |> ksr_addSubviewToParent()
 
     _ = (self.buttonsView, self.view)
@@ -137,10 +154,10 @@ public final class CategorySelectionViewController: UIViewController {
       self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.tableView.topAnchor.constraint(equalTo: self.headerView.bottomAnchor),
-      self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      self.tableView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.tableView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.collectionView.topAnchor.constraint(equalTo: self.headerView.bottomAnchor),
+      self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.buttonsView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.buttonsView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.buttonsView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
@@ -151,5 +168,20 @@ public final class CategorySelectionViewController: UIViewController {
 
   @objc func skipButtonTapped() {
     self.dismiss(animated: true)
+  }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension CategorySelectionViewController: UICollectionViewDelegate {
+  public func collectionView(
+    _ collectionView: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt _: IndexPath
+  ) {
+    guard let pillCell = cell as? PillCell else { return }
+
+    _ = pillCell.label
+      |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
   }
 }
