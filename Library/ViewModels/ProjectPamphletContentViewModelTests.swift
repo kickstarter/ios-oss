@@ -6,7 +6,7 @@ import ReactiveSwift
 import XCTest
 
 final class ProjectPamphletContentViewModelTests: TestCase {
-  fileprivate var vm: ProjectPamphletContentViewModelType!
+  fileprivate let vm: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
 
   fileprivate let goToBacking = TestObserver<Project, Never>()
   fileprivate let goToComments = TestObserver<Project, Never>()
@@ -23,8 +23,6 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-
-    self.vm = ProjectPamphletContentViewModel()
 
     self.vm.outputs.goToBacking.observe(self.goToBacking.observer)
     self.vm.outputs.goToComments.observe(self.goToComments.observer)
