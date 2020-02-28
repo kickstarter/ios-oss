@@ -1116,8 +1116,11 @@ private func shouldGoToLandingPage() -> Bool {
 
   switch variant {
   case .variant1, .variant2:
-    return !AppEnvironment.current.ubiquitousStore.hasSeenLandingPage &&
-      !AppEnvironment.current.userDefaults.hasSeenLandingPage
+    return [
+      AppEnvironment.current.ubiquitousStore.hasSeenLandingPage,
+      AppEnvironment.current.userDefaults.hasSeenLandingPage
+    ]
+    .allSatisfy(isFalse)
   case .control:
     return false
   }
