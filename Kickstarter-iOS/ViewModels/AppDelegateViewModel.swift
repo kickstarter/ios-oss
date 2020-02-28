@@ -1089,7 +1089,13 @@ private func qualtricsConfigData() -> QualtricsConfigData {
 }
 
 private func shouldGoToLandingPage() -> Bool {
-  guard AppEnvironment.current.currentUser == nil else {
+  let hasNotSeenLandingPage = [
+    AppEnvironment.current.ubiquitousStore.hasSeenLandingPage,
+    AppEnvironment.current.userDefaults.hasSeenLandingPage
+  ]
+  .allSatisfy(isFalse)
+
+  guard AppEnvironment.current.currentUser == nil, hasNotSeenLandingPage else {
     AppEnvironment.current.ubiquitousStore.hasSeenLandingPage = true
     AppEnvironment.current.userDefaults.hasSeenLandingPage = true
 
@@ -1109,14 +1115,10 @@ private func shouldGoToLandingPage() -> Bool {
       isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
       userAttributes: userAttributes
     )
-  
+
   switch optimizelyVariant {
   case .variant1, .variant2:
-    return [
-      AppEnvironment.current.ubiquitousStore.hasSeenLandingPage,
-      AppEnvironment.current.userDefaults.hasSeenLandingPage
-    ]
-    .allSatisfy(isFalse)
+    return hasNotSeenLandingPage
   case .control, nil:
     return false
   }
