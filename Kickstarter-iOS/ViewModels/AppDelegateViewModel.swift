@@ -1109,19 +1109,15 @@ private func shouldGoToLandingPage() -> Bool {
       isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
       userAttributes: userAttributes
     )
-
-  guard let variant = optimizelyVariant else {
-    return false
-  }
-
-  switch variant {
+  
+  switch optimizelyVariant {
   case .variant1, .variant2:
     return [
       AppEnvironment.current.ubiquitousStore.hasSeenLandingPage,
       AppEnvironment.current.userDefaults.hasSeenLandingPage
     ]
     .allSatisfy(isFalse)
-  case .control:
+  case .control, nil:
     return false
   }
 }
