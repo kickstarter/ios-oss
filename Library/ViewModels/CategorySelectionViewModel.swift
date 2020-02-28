@@ -28,7 +28,9 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
           .materialize()
       }
 
-    self.loadCategorySections = categoriesEvent.values().map { rootCategories in
+    let orderedCategories = categoriesEvent.values().map(categoriesOrderedByPopularity)
+
+    self.loadCategorySections = orderedCategories.map { rootCategories in
       var sectionTitles = [String]()
       let categoriesData = rootCategories.compactMap { category -> [(String, PillCellStyle)]? in
         guard let subcategories = category.subcategories?.nodes else {
@@ -37,7 +39,13 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
         sectionTitles.append(category.name)
 
-        return subcategories.map { ($0.name, PillCellStyle.grey) }
+        var subcategoriesData = subcategories.map { ($0.name, PillCellStyle.grey) }
+        let allCategoryProjects = (Strings.All_category_name_Projects(category_name: category.name),
+                                PillCellStyle.grey)
+
+        subcategoriesData.insert(allCategoryProjects, at: 0)
+
+        return subcategoriesData
       }
 
       return (sectionTitles, categoriesData)
@@ -53,4 +61,68 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
   public var inputs: CategorySelectionViewModelInputs { return self }
   public var outputs: CategorySelectionViewModelOutputs { return self }
+}
+
+private enum CategoryById: Int, CaseIterable {
+  case games = 12
+  case design = 7
+  case technology = 16
+  case art = 1
+  case comics = 3
+  case fashion = 9
+  case publishing = 18
+  case food = 10
+  case filmAndVideo = 11
+  case music = 14
+  case crafts = 26
+  case photography = 15
+  case journalism = 13
+  case theater = 17
+  case dance = 6
+}
+
+private func categoriesOrderedByPopularity(_ categories: [KsApi.Category]) -> [KsApi.Category] {
+  let categoryIdAndIndex: [CategoryById: Int] = [
+    .games: 0,
+    .design: 1,
+    .technology: 2,
+    .art: 3,
+    .comics: 4,
+    .fashion: 5,
+    .publishing: 6,
+    .food: 7,
+    .filmAndVideo: 8,
+    .music: 9,
+    .crafts: 10,
+    .photography: 11,
+    .journalism: 12,
+    .theater: 13,
+    .dance: 14
+  ]
+
+  let categoryIdAndIndexCount = categoryIdAndIndex.keys.count
+
+  // Pre-create an array of the correct size
+  var orderedRootCategories: [KsApi.Category?] = [KsApi.Category?](repeating: nil,
+                                                                   count: categoryIdAndIndexCount)
+  // Any categories returned whose order is unknown will get appended at the end
+  var unknownOrderCategories: [KsApi.Category] = []
+
+  categories.forEach { category in
+    guard
+      let id = category.intID,
+      let categoryById = CategoryById(rawValue: id),
+      let index = categoryIdAndIndex[categoryById] else {
+      unknownOrderCategories.append(category)
+
+      return
+    }
+
+    orderedRootCategories[index] = category
+  }
+
+  var orderedNonNil = orderedRootCategories.compact()
+  orderedNonNil.append(contentsOf: unknownOrderCategories)
+
+  return orderedNonNil
 }
