@@ -19,7 +19,6 @@ public protocol LandingPageViewModelType {
 
 public final class LandingPageViewModel: LandingPageViewModelType, LandingPageViewModelInputs,
   LandingPageViewModelOutputs {
-
   public init() {
     self.landingPageCards = self.viewDidLoadSignal
       .map(cards)
@@ -32,7 +31,7 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
       })
 
     self.numberOfPages = self.landingPageCards
-    .map(\.count)
+      .map(\.count)
   }
 
   private let (ctaButtonTappedSignal, ctaButtonTappedObserver) = Signal<(), Never>.pipe()

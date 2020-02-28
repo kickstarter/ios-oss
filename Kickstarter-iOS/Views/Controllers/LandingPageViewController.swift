@@ -67,20 +67,20 @@ public final class LandingPageViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] cards in
         self?.configureCards(with: cards)
-    }
+      }
 
     self.viewModel.outputs.dismissViewController
       .observeForUI()
       .observeValues { [weak self] in
         self?.dismiss(animated: true)
-    }
+      }
 
     self.viewModel.outputs.numberOfPages
       .observeForUI()
       .observeValues { [weak self] count in
         _ = self?.pageControl
           ?|> \.numberOfPages .~ count
-    }
+      }
   }
 
   // MARK: - Styles
@@ -239,7 +239,7 @@ private let descriptionLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ .center
     |> \.text %~ { _ in
       Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
-  }
+    }
 }
 
 private let labelsStackViewStyle: StackViewStyle = { stackView in
