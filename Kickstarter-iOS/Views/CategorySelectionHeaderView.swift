@@ -46,21 +46,21 @@ final class CategorySelectionHeaderView: UIView {
       |> \.textColor .~ .white
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
-      |> \.text .~ "Which categories interest you?"
+      |> \.text %~ { _ in Strings.Which_categories_interest_you() }
 
     _ = self.subtitleLabel
       |> \.font .~ UIFont.ksr_subhead()
       |> \.textColor .~ .white
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
-      |> \.text .~ "Select up to five from the list below."
+      |> \.text %~ { _ in Strings.Select_up_to_five() }
 
     _ = self.stepLabel
       |> \.font .~ UIFont.ksr_footnote()
       |> \.textColor .~ .white
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
-      |> \.text .~ "Step 1 of 2"
+      |> \.text %~ { _ in Strings.Step_number(current_step: "1", total_steps: "2") }
 
     _ = self.imageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
