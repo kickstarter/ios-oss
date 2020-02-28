@@ -134,6 +134,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to the creator dashboard.
   var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
 
+  /// Emits when the root view controller should present the Landing Page for new users.
+  var goToLandingPage: Signal<(), Never> { get }
+
   /// Emits when the root view controller should navigate to the login screen.
   var goToLogin: Signal<(), Never> { get }
 
@@ -368,6 +371,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.goToSearch = deepLink
       .filter { $0 == .tab(.search) }
       .ignoreValues()
+
+    self.goToLandingPage = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      .takeWhen(
+        self.optimizelyConfiguredWithResultProperty.signal
+          .skipNil()
+          .filter { $0.isSuccess }
+          .ignoreValues()
+      )
 
     self.goToLogin = deepLink
       .filter { $0 == .tab(.login) }
@@ -801,6 +812,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
   public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
+  public let goToLandingPage: Signal<(), Never>
   public let goToLogin: Signal<(), Never>
   public let goToMessageThread: Signal<MessageThread, Never>
   public let goToProfile: Signal<(), Never>
