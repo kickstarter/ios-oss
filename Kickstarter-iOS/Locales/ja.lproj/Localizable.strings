@@ -454,6 +454,7 @@
 "Select_this_instead" = "代わりにこちらを選択";
 "Select_this_reward" = "このリワードを選ぶ";
 "Select_this_reward_instead" = "このリワードを選択";
+"Select_up_to_five" = "Select up to five from the options below.";
 "Selected" = "選択済み";
 "Selected_reward" = "選択したリワード";
 "Send" = "送信";
@@ -487,6 +488,7 @@
 "Stay_up_to_date" = "最新情報を常に把握したい？";
 "Stay_up_to_date_newsletter" = "Kickstarter チームお気に入りのプロジェクトや、当社が選んだ注目ニュースやイベントについての最新情報を受信しましょう。";
 "Stay_updated_on_this_project" = "このプロジェクトの最新情報を受け取りたい？";
+"Step_number" = "Step %{current_step} of %{total_steps}";
 "Subscribe" = "購読する";
 "Subscribed" = "購読済";
 "Subscribes_to_upcoming_lives_streams" = "ライブ配信を購読";

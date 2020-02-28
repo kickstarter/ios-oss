@@ -454,6 +454,7 @@
 "Select_this_instead" = "Sélectionner";
 "Select_this_reward" = "Sélectionner cette récompense";
 "Select_this_reward_instead" = "Choisir cette récompense";
+"Select_up_to_five" = "Select up to five from the options below.";
 "Selected" = "Sélectionné";
 "Selected_reward" = "Récompense sélectionnée";
 "Send" = "Envoyer";
@@ -487,6 +488,7 @@
 "Stay_up_to_date" = "Envie d'être informé ?";
 "Stay_up_to_date_newsletter" = "Nos projets préférés, les dernières nouvelles et les événements qui ont retenu notre attention.";
 "Stay_updated_on_this_project" = "Envie de suivre ce projet ?";
+"Step_number" = "Étape %{current_step} de%{total_steps}";
 "Subscribe" = "S'abonner";
 "Subscribed" = "Abonné ";
 "Subscribes_to_upcoming_lives_streams" = "Abonnement aux diffusions en direct à venir.";
@@ -581,6 +583,7 @@
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Nous vous enverrons un rappel 48 heures avant la fin de cette campagne. Vous recevrez aussi des rappels pour tous les projets que vous avez enregistré. Ceux-ci sont tous accessibles depuis votre profil.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Lorsque les fonctionnalités de suivi sont activées, vous pouvez vous abonner aux activités des autres, qui pourront à leur tour s'abonner aux vôtres. Pour supprimer définitivement ces données, il vous suffit de désactiver les fonctionnalités de suivi.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Pour chaque projet que vous enregistrez, nous vous enverrons un rappel 48 heures avant la fin de sa campagne.";
+"Which_categories_interest_you" = "Quelles sont les catégories qui vous intéressent ?";
 "Write_a_bio" = "Une petite biographie d'une phrase ou deux.";
 "Yes_cancel_it" = "Oui, annuler";
 "Yes_cancel_my_pledge" = "Oui, annuler mon engagement";
