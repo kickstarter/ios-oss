@@ -87,7 +87,7 @@ public final class CategorySelectionViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+  public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
     return .portrait
   }
 
