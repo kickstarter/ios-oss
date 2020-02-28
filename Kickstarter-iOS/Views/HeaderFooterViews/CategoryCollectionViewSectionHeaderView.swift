@@ -30,7 +30,7 @@ public final class CategoryCollectionViewSectionHeaderView: UICollectionReusable
         bottom: Styles.grid(1),
         right: Styles.grid(3)
       )
-      |> \.backgroundColor .~ .white
+      |> \.backgroundColor .~ .clear
 
     _ = self.label
       |> \.numberOfLines .~ 1

@@ -6,8 +6,8 @@ import SpriteKit
 import UIKit
 
 public final class CategorySelectionViewController: UIViewController {
-  private let viewModel: CategorySelectionViewModelType = CategorySelectionViewModel()
   private let dataSource = CategorySelectionDataSource()
+  private let viewModel: CategorySelectionViewModelType = CategorySelectionViewModel()
 
   private lazy var collectionView: UICollectionView = {
     UICollectionView(
@@ -119,7 +119,8 @@ public final class CategorySelectionViewController: UIViewController {
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    let bottomInset = self.buttonsView.frame.height
+    let bottomSafeAreaInset = self.view.safeAreaInsets.bottom
+    let bottomInset = self.buttonsView.frame.height - bottomSafeAreaInset
     self.collectionView.contentInset.bottom = bottomInset
     self.collectionView.scrollIndicatorInsets.bottom = bottomInset
   }

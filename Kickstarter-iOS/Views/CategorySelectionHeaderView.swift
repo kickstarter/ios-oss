@@ -84,9 +84,7 @@ final class CategorySelectionHeaderView: UIView {
       self.imageView.leftAnchor.constraint(equalTo: self.leftAnchor),
       self.imageView.rightAnchor.constraint(equalTo: self.rightAnchor),
       self.imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-      self.imageView.leftAnchor.constraint(equalTo: self.leftAnchor),
-      self.imageView.topAnchor.constraint(equalTo: self.rootStackView.bottomAnchor),
-      self.imageView.heightAnchor.constraint(equalToConstant: 44)
+      self.imageView.topAnchor.constraint(equalTo: self.rootStackView.bottomAnchor)
     ])
   }
 }
