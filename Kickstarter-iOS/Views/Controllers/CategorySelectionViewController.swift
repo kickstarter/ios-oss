@@ -87,6 +87,10 @@ public final class CategorySelectionViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    return .portrait
+  }
+
   public override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
