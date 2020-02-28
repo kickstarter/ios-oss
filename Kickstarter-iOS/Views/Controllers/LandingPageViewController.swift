@@ -67,13 +67,20 @@ public final class LandingPageViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] cards in
         self?.configureCards(with: cards)
-      }
+    }
 
     self.viewModel.outputs.dismissViewController
       .observeForUI()
       .observeValues { [weak self] in
         self?.dismiss(animated: true)
-      }
+    }
+
+    self.viewModel.outputs.numberOfPages
+      .observeForUI()
+      .observeValues { [weak self] count in
+        _ = self?.pageControl
+          ?|> \.numberOfPages .~ count
+    }
   }
 
   // MARK: - Styles
@@ -101,6 +108,9 @@ public final class LandingPageViewController: UIViewController {
 
     _ = self.logoImageView
       |> logoImageViewStyle
+
+    _ = self.pageControl
+      |> pageControlStyle
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -167,7 +177,33 @@ public final class LandingPageViewController: UIViewController {
     self.viewModel.inputs.ctaButtonTapped()
   }
 
-  private func configureCards(with _: [UIView]) {}
+  private func configureCards(with cards: [LandingPageCardType]) {
+    let cardViews = self.cardViews(with: cards)
+
+    _ = (cardViews, self.cardViewsStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    self.setupViewsConstraints(cardViews)
+  }
+
+  private func cardViews(with cards: [LandingPageCardType]) -> [LandingPageStatsView] {
+    return cards.map { card in
+      let view = LandingPageStatsView(frame: .zero)
+
+      view.configure(with: card)
+      return view
+    }
+  }
+
+  private func setupViewsConstraints(_ cardViews: [LandingPageStatsView]) {
+    let layoutMarginsGuide = self.view.layoutMarginsGuide
+
+    cardViews.forEach {
+      NSLayoutConstraint.activate([
+        $0.widthAnchor.constraint(equalTo: layoutMarginsGuide.widthAnchor)
+      ])
+    }
+  }
 }
 
 // Styles
@@ -191,9 +227,7 @@ private let cardsStackViewStyle: StackViewStyle = { stackView in
 private let ctaButtonStyle: ButtonStyle = { button in
   button
     |> greenButtonStyle
-    |> UIButton.lens.title(for: .normal) %~ { _ in
-      localizedString(key: "Get_started", defaultValue: "Get started")
-    }
+    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Get_started() }
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 
@@ -205,7 +239,7 @@ private let descriptionLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ .center
     |> \.text %~ { _ in
       Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
-    }
+  }
 }
 
 private let labelsStackViewStyle: StackViewStyle = { stackView in
@@ -222,6 +256,13 @@ private let logoImageViewStyle: ImageViewStyle = { imageView in
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 
+private let pageControlStyle: PageControlStyle = { pageControl in
+  pageControl
+    |> \.currentPage .~ 0
+    |> \.currentPageIndicatorTintColor .~ .ksr_green_400
+    |> \.pageIndicatorTintColor .~ .white
+}
+
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> verticalStackViewStyle
@@ -230,6 +271,13 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ .init(top: Styles.grid(15), left: 0, bottom: Styles.grid(3), right: 0)
     |> \.distribution .~ .equalSpacing
+}
+
+private let scrollViewStyle: ScrollStyle = { scrollView in
+  scrollView
+    |> \.bounces .~ false
+    |> \.isPagingEnabled .~ true
+    |> \.showsHorizontalScrollIndicator .~ false
 }
 
 private let titleLabelStyle: LabelStyle = { label in
