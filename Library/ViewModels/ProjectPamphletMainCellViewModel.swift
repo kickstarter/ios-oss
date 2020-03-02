@@ -32,6 +32,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the category name label.
   var categoryNameLabelText: Signal<String, Never> { get }
 
+  /// Emits a project when the creator by line view should be configured.
+   var configureCreatorByLineView: Signal<Project, Never> { get }
+
   /// Emits a project when the video player controller should be configured.
   var configureVideoPlayerController: Signal<Project, Never> { get }
 
@@ -128,6 +131,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.creatorImageUrl = project.map { URL(string: $0.creator.avatar.small) }
 
     self.stateLabelHidden = project.map { $0.state == .live }
+
+    self.configureCreatorByLineView = project.map { $0 }
 
     self.projectStateLabelText = project
       .filter { $0.state != .live }
@@ -266,6 +271,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let backersSubtitleLabelText: Signal<String, Never>
   public let backersTitleLabelText: Signal<String, Never>
   public let categoryNameLabelText: Signal<String, Never>
+  public let configureCreatorByLineView: Signal<Project, Never>
   public let configureVideoPlayerController: Signal<Project, Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
