@@ -21,7 +21,6 @@ public protocol CreatorByLineViewViewModelType {
 
 public final class CreatorByLineViewViewModel: CreatorByLineViewViewModelType, CreatorByLineViewViewModelInputs, CreatorByLineViewViewModelOutputs {
   public init() {
-
     let project = self.projectProperty.signal.skipNil()
 
     self.creatorLabelText = project.map {

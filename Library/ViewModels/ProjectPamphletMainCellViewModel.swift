@@ -33,7 +33,7 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   var categoryNameLabelText: Signal<String, Never> { get }
 
   /// Emits a project when the creator by line view should be configured.
-   var configureCreatorByLineView: Signal<Project, Never> { get }
+  var configureCreatorByLineView: Signal<Project, Never> { get }
 
   /// Emits a project when the video player controller should be configured.
   var configureVideoPlayerController: Signal<Project, Never> { get }

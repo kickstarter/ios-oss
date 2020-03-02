@@ -21,9 +21,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   fileprivate weak var videoController: VideoViewController?
 
   private lazy var creatorByLineView: CreatorByLineView = {
-     CreatorByLineView(frame: .zero)
-       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-   }()
+    CreatorByLineView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate var backersTitleLabel: UILabel!
@@ -76,7 +76,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   }
 
   internal func configureWith(value project: Project) {
-
     _ = ([self.creatorByLineView], self.contentStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -286,7 +285,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] in self?.configureVideoPlayerController(forProject: $0) }
 
     self.viewModel.outputs.configureCreatorByLineView
-    .observeForUI()
+      .observeForUI()
       .observeValues { [weak self] in self?.creatorByLineView.configureWith(value: $0) }
 
     self.viewModel.outputs.creatorImageUrl
