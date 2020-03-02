@@ -1089,10 +1089,7 @@ private func qualtricsConfigData() -> QualtricsConfigData {
 }
 
 private func shouldGoToLandingPage() -> Bool {
-  let hasNotSeenLandingPage = [
-    AppEnvironment.current.userDefaults.hasSeenLandingPage
-  ]
-  .allSatisfy(isFalse)
+  let hasNotSeenLandingPage = !AppEnvironment.current.userDefaults.hasSeenLandingPage
 
   guard AppEnvironment.current.currentUser == nil, hasNotSeenLandingPage else {
     AppEnvironment.current.userDefaults.hasSeenLandingPage = true
