@@ -29,8 +29,6 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
     self.numberOfPages = self.landingPageCards
       .map(\.count)
 
-    // Koala
-
     self.viewDidLoadSignal
       .observeValues { _ in
         AppEnvironment.current.userDefaults.hasSeenLandingPage = true
