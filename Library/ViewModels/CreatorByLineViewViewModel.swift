@@ -20,7 +20,7 @@ public protocol CreatorByLineViewViewModelType {
 }
 
 public final class CreatorByLineViewViewModel: CreatorByLineViewViewModelType,
-CreatorByLineViewViewModelInputs, CreatorByLineViewViewModelOutputs {
+  CreatorByLineViewViewModelInputs, CreatorByLineViewViewModelOutputs {
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
