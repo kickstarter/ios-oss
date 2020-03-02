@@ -21,6 +21,7 @@ public final class CategorySelectionViewController: UIViewController {
       collectionViewLayout: self.pillLayout
     )
       |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
+      |> \.contentInset .~ .init(top: Styles.grid(2))
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.translatesAutoresizingMaskIntoConstraints .~ false

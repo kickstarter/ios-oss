@@ -125,6 +125,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), Never> { get }
 
+  /// Emits when the root view controller should navigate to the onboarding flow
+  var goToCategoryPersonalizationOnboarding: Signal<Void, Never> { get }
+
   /// Emits when application should navigate to the creator's message thread
   var goToCreatorMessageThread: Signal<(Param, MessageThread), Never> { get }
 
@@ -148,9 +151,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits a URL when we should open it in the safari browser.
   var goToMobileSafari: Signal<URL, Never> { get }
-
-  /// Emits when the root view controller should navigate to the onboarding flow
-  var goToOnboarding: Signal<Void, Never> { get }
 
   /// Emits when the root view controller should navigate to search.
   var goToSearch: Signal<(), Never> { get }
@@ -450,9 +450,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
 
-    self.goToOnboarding = self.applicationDidFinishLaunchingReturnValueProperty.signal
+    self.goToCategoryPersonalizationOnboarding = self.applicationDidFinishLaunchingReturnValueProperty.signal
       .ignoreValues()
-      .ksr_delay(.seconds(2), on: AppEnvironment.current.scheduler)
+      .filter(shouldSeeCategoryPersonalization)
 
     let projectRootLink = projectLink
       .filter { _, subpage, _ in subpage == .root }
@@ -805,6 +805,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
+  public let goToCategoryPersonalizationOnboarding: Signal<Void, Never>
   public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
   public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
@@ -813,7 +814,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToProfile: Signal<(), Never>
   public let goToProjectActivities: Signal<Param, Never>
   public let goToMobileSafari: Signal<URL, Never>
-  public let goToOnboarding: Signal<Void, Never>
   public let goToSearch: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
   public let presentViewController: Signal<UIViewController, Never>
@@ -1078,4 +1078,30 @@ private func qualtricsConfigData() -> QualtricsConfigData {
     ]
     .compact()
   )
+}
+
+private func shouldSeeCategoryPersonalization() -> Bool {
+  let isLoggedIn = AppEnvironment.current.currentUser == nil
+  let hasSeenCategoryPersonalization = AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow
+
+  if isLoggedIn || hasSeenCategoryPersonalization {
+    // Currently logged-in users should not see the onboarding flow
+    AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow = true
+
+    return false
+  }
+
+  let variant = AppEnvironment.current.optimizelyClient?.variant(for: .categoryPersonalization,
+                                                                 userId: deviceIdentifier(uuid: UUID()),
+                                                                 isAdmin: false,
+                                                                 userAttributes: optimizelyUserAttributes())
+
+  switch variant {
+  case .control:
+    return false
+  case .variant1:
+    return true
+  default:
+    false
+  }
 }

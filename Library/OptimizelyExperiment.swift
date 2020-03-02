@@ -3,6 +3,7 @@ import Foundation
 public enum OptimizelyExperiment {
   public enum Key: String {
     case pledgeCTACopy = "pledge_cta_copy"
+    case categoryPersonalization = "onboarding_category_personalization_flow"
   }
 
   public enum Variant: String, Equatable {
