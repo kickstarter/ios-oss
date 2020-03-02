@@ -1,4 +1,5 @@
 import AVFoundation
+import CoreTelephony
 import FBSDKCoreKit
 import Foundation
 import KsApi
@@ -34,6 +35,9 @@ public struct Environment {
 
   /// A type that exposes how to interact with cookie storage. Default value is `HTTPCookieStorage.shared`.
   public let cookieStorage: HTTPCookieStorageProtocol
+
+  /// A type that provides telephony network info.
+  public let coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType
 
   /// The user’s current country. This is valid whether the user is logged-in or not.
   public let countryCode: String
@@ -109,6 +113,7 @@ public struct Environment {
     calendar: Calendar = .current,
     config: Config? = nil,
     cookieStorage: HTTPCookieStorageProtocol = HTTPCookieStorage.shared,
+    coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType = CTTelephonyNetworkInfo.current(),
     countryCode: String = "US",
     currentUser: User? = nil,
     dateType: DateProtocol.Type = Date.self,
@@ -139,6 +144,7 @@ public struct Environment {
     self.config = config
     self.cookieStorage = cookieStorage
     self.countryCode = countryCode
+    self.coreTelephonyNetworkInfo = coreTelephonyNetworkInfo
     self.currentUser = currentUser
     self.dateType = dateType
     self.debounceInterval = debounceInterval

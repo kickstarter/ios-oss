@@ -354,6 +354,8 @@
 		8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A297911234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift */; };
 		8A2A2E2E238B3CBE002C62E0 /* UIView+ShimmerLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */; };
 		8A32AE9623EA1DC0005CEA57 /* Project.CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A32AE9523EA1DC0005CEA57 /* Project.CategoryTemplates.swift */; };
+		8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */; };
+		8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */; };
 		8A4503F4234BEDBD008309EC /* PledgeViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4503F3234BEDBD008309EC /* PledgeViewContext.swift */; };
 		8A4503F6234BEDD4008309EC /* PledgeViewContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */; };
 		8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */; };
@@ -372,6 +374,8 @@
 		8A8099F822E2156E00373E66 /* RewardPledgeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099F722E2156E00373E66 /* RewardPledgeNavigationController.swift */; };
 		8AA117F323A414BF00F7E339 /* Qualtrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7953123A286D800998C79 /* Qualtrics.framework */; };
 		8AA117F523A4160800F7E339 /* MockQualtricsResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */; };
+		8AA4E6B22405B2560095D516 /* ProjectCreatorDetailsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4E6B12405B2560095D516 /* ProjectCreatorDetailsEnvelope.swift */; };
+		8AA4E6B42405B6280095D516 /* ProjectCreatorDetailsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4E6B32405B6280095D516 /* ProjectCreatorDetailsEnvelopeTests.swift */; };
 		8AA5248F2384CA7900FD52CF /* EditorialProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5248E2384CA7900FD52CF /* EditorialProjectsViewController.swift */; };
 		8AA524912384CAAC00FD52CF /* EditorialProjectsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA524902384CAAC00FD52CF /* EditorialProjectsViewModel.swift */; };
 		8AA524932384CAC100FD52CF /* EditorialProjectsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA524922384CAC100FD52CF /* EditorialProjectsViewModelTests.swift */; };
@@ -1756,6 +1760,8 @@
 		8A297911234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ShimmerLoading.swift"; sourceTree = "<group>"; };
 		8A32AE9523EA1DC0005CEA57 /* Project.CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.CategoryTemplates.swift; sourceTree = "<group>"; };
+		8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTelephonyNetworkInfoType.swift; sourceTree = "<group>"; };
+		8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoreTelephonyNetworkInfo.swift; sourceTree = "<group>"; };
 		8A4503F3234BEDBD008309EC /* PledgeViewContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewContext.swift; sourceTree = "<group>"; };
 		8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewContextTests.swift; sourceTree = "<group>"; };
 		8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelView.swift; sourceTree = "<group>"; };
@@ -1773,6 +1779,8 @@
 		8A8099F022E2142C00373E66 /* RewardCardContainerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardContainerViewModel.swift; sourceTree = "<group>"; };
 		8A8099F722E2156E00373E66 /* RewardPledgeNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardPledgeNavigationController.swift; sourceTree = "<group>"; };
 		8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQualtricsResultType.swift; sourceTree = "<group>"; };
+		8AA4E6B12405B2560095D516 /* ProjectCreatorDetailsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreatorDetailsEnvelope.swift; sourceTree = "<group>"; };
+		8AA4E6B32405B6280095D516 /* ProjectCreatorDetailsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreatorDetailsEnvelopeTests.swift; sourceTree = "<group>"; };
 		8AA5248E2384CA7900FD52CF /* EditorialProjectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorialProjectsViewController.swift; sourceTree = "<group>"; };
 		8AA524902384CAAC00FD52CF /* EditorialProjectsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorialProjectsViewModel.swift; sourceTree = "<group>"; };
 		8AA524922384CAC100FD52CF /* EditorialProjectsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorialProjectsViewModelTests.swift; sourceTree = "<group>"; };
@@ -3213,6 +3221,7 @@
 				374CB95022C17D6700B84219 /* CharacterSetTests.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
 				A7ED1F131E830FDC00BFFA01 /* CircleAvatarImageViewTests.swift */,
+				8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */,
 				A7D121081D15B08200F364FD /* CountBadgeView.swift */,
 				77AA2B3C233D10D3008BBCB8 /* CreateBackingConstructorTests.swift */,
 				77AA2B39233C09F5008BBCB8 /* CreateBackingInput+Constructor.swift */,
@@ -3260,6 +3269,7 @@
 				A7ED1F1A1E830FDC00BFFA01 /* LocalizedStringTests.swift */,
 				A707BAD41CFFAB9400653B2F /* LoginIntent.swift */,
 				D0200A5321935EDF00F5CC27 /* MessageBannerType.swift */,
+				8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */,
 				D093B4B721A8B0E000910962 /* MockPushRegistration.swift */,
 				80E26A121D500C6A007B3022 /* Navigation.swift */,
 				A7ED1F1B1E830FDC00BFFA01 /* NavigationTests.swift */,
@@ -3274,6 +3284,7 @@
 				37EB3E4D228CF4FB00076E4C /* NumberFormatterTests.swift */,
 				D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */,
 				774D98D823A96E7500FC81C2 /* OptimizelyClientTypeTests.swift */,
+				D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */,
 				771123FA23BF9E7E00BA5702 /* OptimizelyLogLevelType.swift */,
 				1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
@@ -3289,7 +3300,6 @@
 				9DD1E3871D50035E00D4829E /* ProjectActivityData.swift */,
 				A75C811A1D210C4700B5AD03 /* ProjectActivityItemProvider.swift */,
 				D64850541FD879AB00B6AB91 /* ProjectActivityItemProviderTests.swift */,
-				D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */,
 				D6089E572090D5B40032CC99 /* PushNotificationDialog.swift */,
 				D6B4D9BE209B88F3002C7B68 /* PushNotificationDialogTests.swift */,
 				D76437782241500600DAFC9E /* PushNotificationDialogType.swift */,
@@ -3958,8 +3968,8 @@
 				D01587931EEB2ED6006E7684 /* FriendStatsEnvelope.swift */,
 				D01587941EEB2ED6006E7684 /* FriendStatsEnvelopeTests.swift */,
 				D69C55132397166D00B0987A /* GraphBacking.swift */,
-				D69C55172398534E00B0987A /* GraphBackingTests.swift */,
 				D69C5515239852CB00B0987A /* GraphBackingEnvelope.swift */,
+				D69C55172398534E00B0987A /* GraphBackingTests.swift */,
 				D002CAE4218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift */,
 				D63BBD30217F7212007E01F0 /* GraphUserCreditCard.swift */,
 				77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */,
@@ -3985,6 +3995,8 @@
 				D01587D91EEB2ED7006E7684 /* Project.Video.swift */,
 				D01587DA1EEB2ED7006E7684 /* Project.VideoTests.swift */,
 				D01587DB1EEB2ED7006E7684 /* ProjectActivityEnvelope.swift */,
+				8AA4E6B12405B2560095D516 /* ProjectCreatorDetailsEnvelope.swift */,
+				8AA4E6B32405B6280095D516 /* ProjectCreatorDetailsEnvelopeTests.swift */,
 				D01587DC1EEB2ED7006E7684 /* ProjectNotification.swift */,
 				D01587DD1EEB2ED7006E7684 /* ProjectsEnvelope.swift */,
 				D01587DE1EEB2ED7006E7684 /* ProjectStatsEnvelope.swift */,
@@ -4731,6 +4743,7 @@
 				A72C3A971D00F6C70075227E /* SortPagerViewModel.swift in Sources */,
 				9DC572E51D36CA9800AE209C /* ProjectActivityStyles.swift in Sources */,
 				A7F441C91D005A9400FE6FC5 /* MessageDialogViewModel.swift in Sources */,
+				8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */,
 				A78537BC1CB5416700385B73 /* UIDeviceType.swift in Sources */,
 				A7808BF01D625C6A001CF96A /* ProjectCreatorViewModel.swift in Sources */,
 				A755115E1C8642C3005355CF /* Environment.swift in Sources */,
@@ -4841,6 +4854,7 @@
 				37DEC1E72257C9F30051EF9B /* PledgeViewModel.swift in Sources */,
 				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
 				A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
+				8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
 				D77594DC226F9C9C005EE69B /* PledgeDescriptionViewModel.swift in Sources */,
 				77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */,
@@ -5747,6 +5761,7 @@
 				D0E78C3622A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift in Sources */,
 				D0158A1A1EEB30A2006E7684 /* Project.PhotoTemplates.swift in Sources */,
 				8AF34C722342CBAD000B211D /* UpdateBackingMutation.swift in Sources */,
+				8AA4E6B22405B2560095D516 /* ProjectCreatorDetailsEnvelope.swift in Sources */,
 				D01588B51EEB2ED7006E7684 /* ProjectNotificationLenses.swift in Sources */,
 				D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */,
 				D79440572203A63300D0A747 /* CreatePaymentSourceEnvelope.swift in Sources */,
@@ -5792,6 +5807,7 @@
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
 				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,
+				8AA4E6B42405B6280095D516 /* ProjectCreatorDetailsEnvelopeTests.swift in Sources */,
 				D0D10C0B1EEB4550005EBAD0 /* ErrorEnvelopeTests.swift in Sources */,
 				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,
 				D0D10C091EEB4550005EBAD0 /* CreatePledgeEnvelopeTests.swift in Sources */,

@@ -25,8 +25,6 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   fileprivate var contentController: ProjectPamphletContentViewController!
 
   @IBOutlet private var navBarTopConstraint: NSLayoutConstraint!
-
-  private let pledgeCTAContainerViewMargins = Styles.grid(3)
   private let pledgeCTAContainerView: PledgeCTAContainerView = {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -113,22 +111,6 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
-  public override func bindStyles() {
-    super.bindStyles()
-
-    _ = self.pledgeCTAContainerView
-      |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
-
-    _ = self.pledgeCTAContainerView.layer
-      |> checkoutLayerCardRoundedStyle
-      |> \.backgroundColor .~ UIColor.white.cgColor
-      |> \.shadowColor .~ UIColor.black.cgColor
-      |> \.shadowOpacity .~ 0.12
-      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
-      |> \.shadowRadius .~ CGFloat(1.0)
-      |> \.maskedCorners .~ [CACornerMask.layerMaxXMinYCorner, CACornerMask.layerMinXMinYCorner]
-  }
-
   public override func bindViewModel() {
     super.bindViewModel()
 
@@ -149,7 +131,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, refTag in
-        self?.contentController.configureWith(project: project)
+        self?.contentController.configureWith(value: (project, refTag))
         self?.navBarController.configureWith(project: project, refTag: refTag)
       }
 
@@ -182,6 +164,12 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
           self?.messageBannerViewController?.showBanner(with: .success, message: message)
         })
       }
+
+    self.viewModel.outputs.popToRootViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.navigationController?.popToRootViewController(animated: false)
+      }
   }
 
   public override func willTransition(
@@ -204,7 +192,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
-    let vc = rewardsCollectionViewController(project: project, refTag: refTag)
+    let vc = RewardsCollectionViewController.controller(with: project, refTag: refTag)
 
     self.present(vc, animated: true)
   }
@@ -301,36 +289,4 @@ extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
   public func projectNavBarControllerDidTapTitle(_: ProjectNavBarViewController) {
     self.contentController.tableView.scrollToTop()
   }
-}
-
-private func rewardsCollectionViewController(
-  project: Project,
-  refTag: RefTag?
-) -> UINavigationController {
-  let rewardsCollectionViewController = RewardsCollectionViewController
-    .instantiate(with: project, refTag: refTag, context: .createPledge)
-
-  let closeButton = UIBarButtonItem(
-    image: UIImage(named: "icon--cross"),
-    style: .plain,
-    target: rewardsCollectionViewController,
-    action: #selector(RewardsCollectionViewController.closeButtonTapped)
-  )
-
-  _ = closeButton
-    |> \.width .~ Styles.minTouchSize.width
-    |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
-
-  rewardsCollectionViewController.navigationItem.setLeftBarButton(closeButton, animated: false)
-
-  let navigationController = RewardPledgeNavigationController(
-    rootViewController: rewardsCollectionViewController
-  )
-
-  if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-    _ = navigationController
-      |> \.modalPresentationStyle .~ .pageSheet
-  }
-
-  return navigationController
 }

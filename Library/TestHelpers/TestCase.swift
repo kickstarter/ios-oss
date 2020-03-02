@@ -13,6 +13,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let cache = KSCache()
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
+  internal let coreTelephonyNetworkInfo = MockCoreTelephonyNetworkInfo()
   internal let dataLakeTrackingClient = MockTrackingClient()
   internal let dateType = MockDate.self
   internal let mainBundle = MockBundle()
@@ -51,6 +52,7 @@ internal class TestCase: FBSnapshotTestCase {
       calendar: calendar,
       config: self.config,
       cookieStorage: self.cookieStorage,
+      coreTelephonyNetworkInfo: self.coreTelephonyNetworkInfo,
       countryCode: "US",
       currentUser: nil,
       dateType: self.dateType,
