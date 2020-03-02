@@ -58,7 +58,7 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
     _ = (toVC.view, containerView)
       |> ksr_addSubviewToParent()
 
-    let toFrame = fromVC.view.frame
+    let toFrame = containerView.frame
 
     UIView.animate(
       withDuration: self.transitionDuration(using: transitionContext),
@@ -80,7 +80,7 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
 
   private func animateDismissal(
     fromViewController fromVC: UIViewController,
-    toViewController toVC: UIViewController,
+    toViewController _: UIViewController,
     containerView: UIView,
     transitionContext: UIViewControllerContextTransitioning
   ) {
@@ -90,11 +90,12 @@ final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTr
 
     _ = fromVC.view
       |> \.backgroundColor .~ .clear
+      |> \.frame .~ containerView.frame
 
     _ = containerView
       |> ksr_insertSubview(self.darkOverlayView, belowSubview: fromVC.view)
 
-    let toFrame = toVC.view.frame.offsetBy(dx: 0, dy: fromVC.view.frame.height)
+    let toFrame = containerView.frame.offsetBy(dx: 0, dy: fromVC.view.frame.height)
 
     UIView.animate(
       withDuration: self.transitionDuration(using: transitionContext),
