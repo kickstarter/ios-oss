@@ -6,8 +6,14 @@ import SpriteKit
 import UIKit
 
 public final class CategorySelectionViewController: UIViewController {
-  private let dataSource = CategorySelectionDataSource()
-  private let viewModel: CategorySelectionViewModelType = CategorySelectionViewModel()
+  // MARK: - Properties
+
+  private lazy var buttonView: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var continueButton: UIButton = { UIButton(type: .custom) }()
 
   private lazy var collectionView: UICollectionView = {
     UICollectionView(
@@ -17,6 +23,13 @@ public final class CategorySelectionViewController: UIViewController {
       |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let dataSource = CategorySelectionDataSource()
+
+  private lazy var headerView: UIView = {
+    CategorySelectionHeaderView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -35,17 +48,6 @@ public final class CategorySelectionViewController: UIViewController {
     return layout
   }()
 
-  private lazy var headerView: UIView = {
-    CategorySelectionHeaderView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var buttonsView: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var continueButton: UIButton = { UIButton(type: .custom) }()
   private lazy var skipButton: UIBarButtonItem = {
     UIBarButtonItem(
       title: Strings.general_navigation_buttons_skip(),
@@ -55,7 +57,9 @@ public final class CategorySelectionViewController: UIViewController {
     )
   }()
 
-  private lazy var buttonsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let viewModel: CategorySelectionViewModelType = CategorySelectionViewModel()
+
+  // MARK: - Lifecycle
 
   public override func viewDidLoad() {
     super.viewDidLoad()
@@ -64,12 +68,8 @@ public final class CategorySelectionViewController: UIViewController {
       |> baseControllerStyle()
 
     _ = self.navigationController?.navigationBar
-      ?|> \.backgroundColor .~ .clear
-      ?|> \.shadowImage .~ UIImage()
-      ?|> \.isTranslucent .~ true
+      ?|> navigationBarStyle
 
-    _ = self.collectionView
-      |> \.backgroundColor .~ .white
     self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
 
     self.navigationItem.setRightBarButton(self.skipButton, animated: false)
@@ -98,33 +98,27 @@ public final class CategorySelectionViewController: UIViewController {
   public override func bindStyles() {
     super.bindStyles()
 
+    _ = self.collectionView
+      |> collectionViewStyle
+
     _ = self.skipButton
-      |> \.tintColor .~ .white
+      |> skipButtonStyle
 
     _ = self.headerView
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+      |> headerViewStyle
 
-    _ = self.buttonsView
-      |> \.backgroundColor .~ .white
-      |> \.layoutMargins .~ .init(all: Styles.grid(2))
-      |> \.layer.shadowColor .~ UIColor.black.cgColor
-      |> \.layer.shadowOpacity .~ 0.12
-      |> \.layer.shadowOffset .~ CGSize(width: 0, height: -1.0)
-      |> \.layer.shadowRadius .~ CGFloat(1.0)
-
-    _ = self.buttonsStackView
-      |> verticalStackViewStyle
+    _ = self.buttonView
+      |> buttonViewStyle
 
     _ = self.continueButton
-      |> greyButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
+      |> continueButtonStyle
   }
 
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
     let bottomSafeAreaInset = self.view.safeAreaInsets.bottom
-    let bottomInset = self.buttonsView.frame.height - bottomSafeAreaInset
+    let bottomInset = self.buttonView.frame.height - bottomSafeAreaInset
     self.collectionView.contentInset.bottom = bottomInset
     self.collectionView.scrollIndicatorInsets.bottom = bottomInset
   }
@@ -147,15 +141,12 @@ public final class CategorySelectionViewController: UIViewController {
     _ = (self.collectionView, self.view)
       |> ksr_addSubviewToParent()
 
-    _ = (self.buttonsView, self.view)
+    _ = (self.buttonView, self.view)
       |> ksr_addSubviewToParent()
 
-    _ = (self.buttonsStackView, self.buttonsView)
+    _ = (self.continueButton, self.buttonView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
-
-    _ = ([self.continueButton], self.buttonsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {
@@ -168,9 +159,9 @@ public final class CategorySelectionViewController: UIViewController {
       self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.buttonsView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.buttonsView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.buttonsView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+      self.buttonView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.buttonView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.buttonView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
     ])
   }
 
@@ -215,4 +206,44 @@ extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
 
     return CGSize(width: collectionView.bounds.width, height: height)
   }
+}
+
+// MARK: - Styles
+
+private let skipButtonStyle: BarButtonStyle = { button in
+  button
+    |> \.tintColor .~ .white
+}
+
+private let headerViewStyle: ViewStyle = { view in
+  view
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
+}
+
+private let buttonViewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .white
+    |> \.layoutMargins .~ .init(all: Styles.grid(2))
+    |> \.layer.shadowColor .~ UIColor.black.cgColor
+    |> \.layer.shadowOpacity .~ 0.12
+    |> \.layer.shadowOffset .~ CGSize(width: 0, height: -1.0)
+    |> \.layer.shadowRadius .~ CGFloat(1.0)
+}
+
+private let continueButtonStyle: ButtonStyle = { button in
+  button
+    |> greyButtonStyle
+    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
+}
+
+private let collectionViewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .white
+}
+
+private let navigationBarStyle: NavigationBarStyle = { navBar in
+  navBar
+    ?|> \.backgroundColor .~ .clear
+    ?|> \.shadowImage .~ UIImage()
+    ?|> \.isTranslucent .~ true
 }

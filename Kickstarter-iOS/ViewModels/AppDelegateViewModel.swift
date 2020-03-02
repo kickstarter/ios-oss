@@ -149,6 +149,7 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits a URL when we should open it in the safari browser.
   var goToMobileSafari: Signal<URL, Never> { get }
 
+  /// Emits when the root view controller should navigate to the onboarding flow
   var goToOnboarding: Signal<Void, Never> { get }
 
   /// Emits when the root view controller should navigate to search.
