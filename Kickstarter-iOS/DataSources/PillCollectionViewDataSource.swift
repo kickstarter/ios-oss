@@ -3,7 +3,7 @@ import Library
 import UIKit
 
 final class PillCollectionViewDataSource: ValueCellDataSource {
-  func load(_ values: [String]) {
+  func load(_ values: [(String, PillCellStyle)]) {
     self.set(
       values: values,
       cellClass: PillCell.self,
@@ -13,7 +13,7 @@ final class PillCollectionViewDataSource: ValueCellDataSource {
 
   override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as PillCell, value as String):
+    case let (cell as PillCell, value as (String, PillCellStyle)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, value) combo.")

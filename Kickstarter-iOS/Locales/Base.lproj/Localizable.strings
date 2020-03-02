@@ -454,6 +454,7 @@
 "Select_this_instead" = "Select this instead";
 "Select_this_reward" = "Select this reward";
 "Select_this_reward_instead" = "Select this reward instead";
+"Select_up_to_five" = "Select up to five from the options below.";
 "Selected" = "Selected";
 "Selected_reward" = "Selected reward";
 "Send" = "Send";
@@ -581,6 +582,7 @@
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "When you save a project we’ll send you a reminder 48 hours before it ends";
+"Which_categories_interest_you" = "Which categories interest you?";
 "Write_a_bio" = "Write a short bio. Just a sentence or two is great.";
 "Yes_cancel_it" = "Yes, cancel it";
 "Yes_cancel_my_pledge" = "Yes, cancel my pledge";

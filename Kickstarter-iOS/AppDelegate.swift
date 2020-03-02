@@ -249,6 +249,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.window?.tintColor = .ksr_green_700
 
+    self.viewModel.outputs.goToOnboarding
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        let categorySelectionViewController = CategorySelectionViewController.instantiate()
+        let navController = NavigationController(rootViewController: categorySelectionViewController)
+        navController.modalPresentationStyle = .fullScreen
+
+        self?.rootTabBarController?.present(navController, animated: true)
+      }
+
     self.viewModel.inputs.applicationDidFinishLaunching(
       application: application,
       launchOptions: launchOptions

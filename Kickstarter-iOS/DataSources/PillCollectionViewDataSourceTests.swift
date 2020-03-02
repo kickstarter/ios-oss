@@ -10,7 +10,7 @@ final class PillCollectionViewDataSourceTests: XCTestCase {
   )
 
   func testLoadValues() {
-    self.dataSource.load(["one", "two", "three"])
+    self.dataSource.load([("one", .grey), ("two", .grey), ("three", .grey)])
 
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.collectionView))
     XCTAssertEqual(3, self.dataSource.collectionView(self.collectionView, numberOfItemsInSection: 0))

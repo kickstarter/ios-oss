@@ -7378,6 +7378,23 @@ daring ideas."
     )
   }
   /**
+   "Select up to five from the options below."
+
+   - **en**: "Select up to five from the options below."
+   - **de**: "Wähle bis zu fünf aus den unten stehenden Optionen aus."
+   - **es**: "Selecciona hasta cinco de las opciones que aparecen a continuación."
+   - **fr**: "Select up to five from the options below."
+   - **ja**: "Select up to five from the options below."
+  */
+  public static func Select_up_to_five() -> String {
+    return localizedString(
+      key: "Select_up_to_five",
+      defaultValue: "Select up to five from the options below.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Selected"
 
    - **en**: "Selected"
@@ -7938,6 +7955,23 @@ catch your eye?"
       defaultValue: "Stay updated on this project?",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Step %{current_step} of %{total_steps}"
+
+   - **en**: "Step %{current_step} of %{total_steps}"
+   - **de**: "Schritt %{current_step} von %{total_steps}"
+   - **es**: "Paso %{current_step} de %{total_steps}"
+   - **fr**: "Étape %{current_step} de%{total_steps}"
+   - **ja**: "Step %{current_step} of %{total_steps}"
+  */
+  public static func Step_number(current_step: String, total_steps: String) -> String {
+    return localizedString(
+      key: "Step_number",
+      defaultValue: "Step %{current_step} of %{total_steps}",
+      count: nil,
+      substitutions: ["current_step": current_step, "total_steps": total_steps]
     )
   }
   /**
@@ -9540,6 +9574,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "When_you_save_a_project_we_ll_send_you_a_reminder",
       defaultValue: "When you save a project we’ll send you a reminder 48 hours before it ends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Which categories interest you?"
+
+   - **en**: "Which categories interest you?"
+   - **de**: "Welche Kategorien interessieren dich?"
+   - **es**: "¿Qué categorías te interesan?"
+   - **fr**: "Quelles sont les catégories qui vous intéressent ?"
+   - **ja**: "Which categories interest you?"
+  */
+  public static func Which_categories_interest_you() -> String {
+    return localizedString(
+      key: "Which_categories_interest_you",
+      defaultValue: "Which categories interest you?",
       count: nil,
       substitutions: [:]
     )
