@@ -27,7 +27,7 @@ internal final class LandingPageViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
-  func testUserDefaultsUpdates_OnButtonTap() {
+  func testUserDefaultsUpdates_OnViewDidLoad() {
     let userDefaults = MockKeyValueStore()
 
     withEnvironment(currentUser: nil, userDefaults: userDefaults) {
@@ -35,7 +35,7 @@ internal final class LandingPageViewModelTests: TestCase {
 
       XCTAssertFalse(userDefaults.bool(forKey: hasSeenLandingPageKey))
 
-      self.viewModel.inputs.ctaButtonTapped()
+      self.viewModel.inputs.viewDidLoad()
 
       XCTAssertTrue(userDefaults.bool(forKey: hasSeenLandingPageKey))
     }

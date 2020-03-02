@@ -25,13 +25,17 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
       .skipNil()
 
     self.dismissViewController = self.ctaButtonTappedSignal
-      .on(value: { _ in
-        AppEnvironment.current.ubiquitousStore.hasSeenLandingPage = true
-        AppEnvironment.current.userDefaults.hasSeenLandingPage = true
-      })
 
     self.numberOfPages = self.landingPageCards
       .map(\.count)
+
+    // Koala
+
+    self.viewDidLoadSignal
+      .observeValues { _ in
+        AppEnvironment.current.ubiquitousStore.hasSeenLandingPage = true
+        AppEnvironment.current.userDefaults.hasSeenLandingPage = true
+      }
   }
 
   private let (ctaButtonTappedSignal, ctaButtonTappedObserver) = Signal<(), Never>.pipe()
