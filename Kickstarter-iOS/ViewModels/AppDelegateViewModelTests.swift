@@ -27,6 +27,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToActivity = TestObserver<(), Never>()
   private let goToDashboard = TestObserver<Param?, Never>()
   private let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
+  private let goToLandingPage = TestObserver<(), Never>()
   private let goToProjectActivities = TestObserver<Param, Never>()
   private let goToLogin = TestObserver<(), Never>()
   private let goToProfile = TestObserver<(), Never>()
@@ -60,6 +61,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
+    self.vm.outputs.goToLandingPage.observe(self.goToLandingPage.observer)
     self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
@@ -2110,6 +2112,70 @@ final class AppDelegateViewModelTests: TestCase {
       self.displayQualtricsSurvey.assertDidNotEmitValue()
       self.evaluateQualtricsTargetingLogic.assertValueCount(1)
       XCTAssertEqual(mockQualtricsPropertiesType.values[firstAppSessionKey], 0)
+    }
+  }
+
+  func testGoToLandingPage_EmitsIf_OptimizelyIsNotControl_HasNotSeenLandingPage() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.goToLandingPage.assertDidNotEmitValue()
+
+      self.vm.inputs.optimizelyUpdatedInEnvironment()
+
+      self.goToLandingPage.assertValueCount(1)
+    }
+  }
+
+  func testGoToLandingPage_DoesNotEmitIf_OptimizelyIsControl_UserHasNotSeenLandingPage() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.control.rawValue]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.vm.inputs.optimizelyUpdatedInEnvironment()
+
+      self.goToLandingPage.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToLandingPage_DoesNotEmitIf_OptimizelyIsNotControl_UserHasSeenLandingPage() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant2.rawValue]
+
+    let userDefaults = MockKeyValueStore()
+      |> \.hasSeenLandingPage .~ true
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient, userDefaults: userDefaults) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.vm.inputs.optimizelyUpdatedInEnvironment()
+
+      self.goToLandingPage.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToLandingPage_DoesNotEmitIf_UserIsLoggedIn() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
+
+    let userDefaults = MockKeyValueStore()
+      |> \.hasSeenLandingPage .~ false
+
+    withEnvironment(currentUser: .template, optimizelyClient: optimizelyClient, userDefaults: userDefaults) {
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+      self.vm.inputs.optimizelyUpdatedInEnvironment()
+
+      self.goToLandingPage.assertDidNotEmitValue()
     }
   }
 }

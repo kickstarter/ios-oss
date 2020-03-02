@@ -69,6 +69,12 @@ public final class LandingPageViewController: UIViewController {
         self?.configureCards(with: cards)
       }
 
+    self.viewModel.outputs.dismissViewController
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true)
+      }
+
     self.viewModel.outputs.numberOfPages
       .observeForUI()
       .observeValues { [weak self] count in
@@ -168,7 +174,7 @@ public final class LandingPageViewController: UIViewController {
   }
 
   @objc private func ctaButtonTapped() {
-    self.dismiss(animated: true)
+    self.viewModel.inputs.ctaButtonTapped()
   }
 
   private func configureCards(with cards: [LandingPageCardType]) {

@@ -2,10 +2,12 @@ import ReactiveSwift
 import UIKit
 
 public protocol LandingPageViewModelInputs {
+  func ctaButtonTapped()
   func viewDidLoad()
 }
 
 public protocol LandingPageViewModelOutputs {
+  var dismissViewController: Signal<(), Never> { get }
   var landingPageCards: Signal<[LandingPageCardType], Never> { get }
   var numberOfPages: Signal<Int, Never> { get }
 }
@@ -22,8 +24,20 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
       .map(cards)
       .skipNil()
 
+    self.dismissViewController = self.ctaButtonTappedSignal
+
     self.numberOfPages = self.landingPageCards
       .map(\.count)
+
+    self.viewDidLoadSignal
+      .observeValues { _ in
+        AppEnvironment.current.userDefaults.hasSeenLandingPage = true
+      }
+  }
+
+  private let (ctaButtonTappedSignal, ctaButtonTappedObserver) = Signal<(), Never>.pipe()
+  public func ctaButtonTapped() {
+    self.ctaButtonTappedObserver.send(value: ())
   }
 
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
@@ -31,6 +45,7 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
     self.viewDidLoadObserver.send(value: ())
   }
 
+  public let dismissViewController: Signal<(), Never>
   public let landingPageCards: Signal<[LandingPageCardType], Never>
   public let numberOfPages: Signal<Int, Never>
 

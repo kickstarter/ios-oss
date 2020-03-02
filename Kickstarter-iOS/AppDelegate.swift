@@ -340,6 +340,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       if let shouldUpdateClient = shouldUpdateClient, shouldUpdateClient {
         print("🔮 Optimizely SDK Successfully Configured")
         AppEnvironment.updateOptimizelyClient(optimizelyClient)
+        self?.viewModel.inputs.optimizelyUpdatedInEnvironment()
       }
     }
   }
