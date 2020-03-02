@@ -157,6 +157,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .map(OptimizelyExperiment.projectCampaignExperiment)
       .skipNil()
 
+    self.configureCreatorByLineView = project.map { $0 }
+
     self.readMoreButtonStyle = projectCampaignExperimentVariant.map(projectCampaignButtonStyleForVariant)
     self.readMoreButtonTitle = projectCampaignExperimentVariant.map {
       $0 == .control ? Strings.Read_more_about_the_campaign_arrow()
