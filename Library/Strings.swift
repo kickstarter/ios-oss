@@ -450,6 +450,23 @@ public enum Strings {
     )
   }
   /**
+   "All-or-nothing"
+
+   - **en**: "All-or-nothing"
+   - **de**: "All-or-nothing"
+   - **es**: "Todo o nada"
+   - **fr**: "Tout ou rien"
+   - **ja**: "All-or-nothing 方式"
+  */
+  public static func All_or_nothing() -> String {
+    return localizedString(
+      key: "All_or_nothing",
+      defaultValue: "All-or-nothing",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Almost there!"
 
    - **en**: "Almost there!"
@@ -832,6 +849,23 @@ contributeurs"
       defaultValue: "%{backers_count}\nbackers",
       count: nil,
       substitutions: ["backers_count": backers_count]
+    )
+  }
+  /**
+   "Backers have signed up to help Kickstarter creators bring their ideas to life."
+
+   - **en**: "Backers have signed up to help Kickstarter creators bring their ideas to life."
+   - **de**: "Backers have signed up to help Kickstarter creators bring their ideas to life."
+   - **es**: "Patrocinadores se han registrado para ayudar a los creadores de Kickstarter a hacer realidad sus ideas."
+   - **fr**: "Backers have signed up to help Kickstarter creators bring their ideas to life."
+   - **ja**: "Backers have signed up to help Kickstarter creators bring their ideas to life."
+  */
+  public static func Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life() -> String {
+    return localizedString(
+      key: "Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life",
+      defaultValue: "Backers have signed up to help Kickstarter creators bring their ideas to life.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -2286,6 +2320,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Discover creative projects"
+
+   - **en**: "Discover creative projects"
+   - **de**: "Discover creative projects"
+   - **es**: "Descubre proyectos creativos"
+   - **fr**: "Découvrez des projets créatifs"
+   - **ja**: "Discover creative projects"
+  */
+  public static func Discover_creative_projects() -> String {
+    return localizedString(
+      key: "Discover_creative_projects",
+      defaultValue: "Discover creative projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Discover more projects."
 
    - **en**: "Discover more projects."
@@ -2689,6 +2740,23 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Explore",
       defaultValue: "Explore",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Explore and support the latest creative ideas created by our vast global community."
+
+   - **en**: "Explore and support the latest creative ideas created by our vast global community."
+   - **de**: "Explore and support the latest creative ideas created by our vast global community."
+   - **es**: "Explora y apoya las más recientes ideas creativas de nuestra vasta comunidad global."
+   - **fr**: "Explorez et participez aux dernières idées créatives de nos créateurs à travers le monde."
+   - **ja**: "Explore and support the latest creative ideas created by our vast global community."
+  */
+  public static func Explore_and_support_the_latest_creative_ideas() -> String {
+    return localizedString(
+      key: "Explore_and_support_the_latest_creative_ideas",
+      defaultValue: "Explore and support the latest creative ideas created by our vast global community.",
       count: nil,
       substitutions: [:]
     )
@@ -3697,6 +3765,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Get started"
+
+   - **en**: "Get started"
+   - **de**: "Jetzt loslegen"
+   - **es**: "¡Manos a la obra!"
+   - **fr**: "Démarrer"
+   - **ja**: "はじめよう"
+  */
+  public static func Get_started() -> String {
+    return localizedString(
+      key: "Get_started",
+      defaultValue: "Get started",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Go to project page"
 
    - **en**: "Go to project page"
@@ -3760,6 +3845,23 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Got_it_your_survey_response_has_been_submitted",
       defaultValue: "Got it! Your survey response has been submitted.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Guide creators to success"
+
+   - **en**: "Guide creators to success"
+   - **de**: "Guide creators to success"
+   - **es**: "Conduce a los creadores al éxito"
+   - **fr**: "Accompagnez un créateur vers le succès"
+   - **ja**: "Guide creators to success"
+  */
+  public static func Guide_creators_to_success() -> String {
+    return localizedString(
+      key: "Guide_creators_to_success",
+      defaultValue: "Guide creators to success",
       count: nil,
       substitutions: [:]
     )
@@ -4154,6 +4256,23 @@ with friends."
     return localizedString(
       key: "Its_our_birthday",
       defaultValue: "It's our birthday! More than 160,000 creative projects have come to life on Kickstarter over the past decade, with support from over 16,000,000 backers.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Join a fruitful community"
+
+   - **en**: "Join a fruitful community"
+   - **de**: "Join a fruitful community"
+   - **es**: "Únete a una comunidad fructífera"
+   - **fr**: "Join a fruitful community"
+   - **ja**: "活気あるコミュニティに参加しましょう"
+  */
+  public static func Join_a_fruitful_community() -> String {
+    return localizedString(
+      key: "Join_a_fruitful_community",
+      defaultValue: "Join a fruitful community",
       count: nil,
       substitutions: [:]
     )
@@ -4904,6 +5023,23 @@ with friends."
       defaultValue: "Messages",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "%{total_amount} million+"
+
+   - **en**: "%{total_amount} million+"
+   - **de**: "%{total_amount} million+"
+   - **es**: "Más de %{total_amount} millones"
+   - **fr**: "%{total_amount} million+"
+   - **ja**: "%{total_amount},000,000 以上"
+  */
+  public static func Million_plus(total_amount: String) -> String {
+    return localizedString(
+      key: "Million_plus",
+      defaultValue: "%{total_amount} million+",
+      count: nil,
+      substitutions: ["total_amount": total_amount]
     )
   }
   /**
@@ -7924,6 +8060,23 @@ catch your eye?"
     )
   }
   /**
+   "Stay updated on the projects you've backed and learn about how these creative works are produced."
+
+   - **en**: "Stay updated on the projects you've backed and learn about how these creative works are produced."
+   - **de**: "Stay updated on the projects you've backed and learn about how these creative works are produced."
+   - **es**: "Mantente al tanto de los proyectos que has patrocinado y conoce cómo se producen estos trabajos creativos."
+   - **fr**: "Stay updated on the projects you've backed and learn about how these creative works are produced."
+   - **ja**: "Stay updated on the projects you've backed and learn about how these creative works are produced."
+  */
+  public static func Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced() -> String {
+    return localizedString(
+      key: "Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced",
+      defaultValue: "Stay updated on the projects you've backed and learn about how these creative works are produced.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Stay updated on this project?"
 
    - **en**: "Stay updated on this project?"
@@ -7987,6 +8140,40 @@ catch your eye?"
     return localizedString(
       key: "Subscribes_to_upcoming_lives_streams",
       defaultValue: "Subscribes to upcoming live streams.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Successful projects have been created on Kickstarter."
+
+   - **en**: "Successful projects have been created on Kickstarter."
+   - **de**: "Successful projects have been created on Kickstarter."
+   - **es**: "Proyectos exitosos se han creado en Kickstarter."
+   - **fr**: "Successful projects have been created on Kickstarter."
+   - **ja**: "Successful projects have been created on Kickstarter."
+  */
+  public static func Successful_projects_have_been_created_on_kickstarter() -> String {
+    return localizedString(
+      key: "Successful_projects_have_been_created_on_kickstarter",
+      defaultValue: "Successful projects have been created on Kickstarter.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Support creative independence"
+
+   - **en**: "Support creative independence"
+   - **de**: "Support creative independence"
+   - **es**: "Apoya la independencia creativa"
+   - **fr**: "Support creative independence"
+   - **ja**: "Support creative independence"
+  */
+  public static func Support_creative_independence() -> String {
+    return localizedString(
+      key: "Support_creative_independence",
+      defaultValue: "Support creative independence",
       count: nil,
       substitutions: [:]
     )
@@ -8672,6 +8859,40 @@ catch your eye?"
     )
   }
   /**
+   "Total amount (USD) backers have pledged to projects."
+
+   - **en**: "Total amount (USD) backers have pledged to projects."
+   - **de**: "Total amount (USD) backers have pledged to projects."
+   - **es**: "El monto total (USD) que los patrocinadores han contribuido a proyectos."
+   - **fr**: "Total amount (USD) backers have pledged to projects."
+   - **ja**: "Total amount (USD) backers have pledged to projects."
+  */
+  public static func Total_amount_backers_have_pledged_to_projects() -> String {
+    return localizedString(
+      key: "Total_amount_backers_have_pledged_to_projects",
+      defaultValue: "Total amount (USD) backers have pledged to projects.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "%{total_amount} billion+"
+
+   - **en**: "%{total_amount} billion+"
+   - **de**: "%{total_amount} Milliarden+"
+   - **es**: "%{total_amount} mil millones+"
+   - **fr**: "%{total_amount} billion+"
+   - **ja**: "%{total_amount} 十億+"
+  */
+  public static func Total_amount_billion_plus(total_amount: String) -> String {
+    return localizedString(
+      key: "Total_amount_billion_plus",
+      defaultValue: "%{total_amount} billion+",
+      count: nil,
+      substitutions: ["total_amount": total_amount]
+    )
+  }
+  /**
    "Total pledged"
 
    - **en**: "Total pledged"
@@ -8684,6 +8905,40 @@ catch your eye?"
     return localizedString(
       key: "Total_pledged",
       defaultValue: "Total pledged",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "%{total}+"
+
+   - **en**: "%{total}+"
+   - **de**: "%{total}+"
+   - **es**: "Más de %{total}"
+   - **fr**: "%{total}+"
+   - **ja**: "%{total}以上"
+  */
+  public static func Total_plus(total: String) -> String {
+    return localizedString(
+      key: "Total_plus",
+      defaultValue: "%{total}+",
+      count: nil,
+      substitutions: ["total": total]
+    )
+  }
+  /**
+   "Track your backings"
+
+   - **en**: "Track your backings"
+   - **de**: "Track your backings"
+   - **es**: "Sigue los proyectos que has patrocinado"
+   - **fr**: "Track your backings"
+   - **ja**: "Track your backings"
+  */
+  public static func Track_your_backings() -> String {
+    return localizedString(
+      key: "Track_your_backings",
+      defaultValue: "Track your backings",
       count: nil,
       substitutions: [:]
     )
@@ -9829,6 +10084,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "You_saved_this_project",
       defaultValue: "You saved this project.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You won't be charged for backing a project unless it reaches its funding goal."
+
+   - **en**: "You won't be charged for backing a project unless it reaches its funding goal."
+   - **de**: "You won't be charged for backing a project unless it reaches its funding goal."
+   - **es**: "No se te cobrará por patrocinar un proyecto a menos que alcance su meta de financiamiento."
+   - **fr**: "You won't be charged for backing a project unless it reaches its funding goal."
+   - **ja**: "プロジェクトをバックした場合、プロジェクトがファンディングゴールに到達しない限り、課金されることはありません。"
+  */
+  public static func You_wont_be_charged_for_backing_a_project() -> String {
+    return localizedString(
+      key: "You_wont_be_charged_for_backing_a_project",
+      defaultValue: "You won't be charged for backing a project unless it reaches its funding goal.",
       count: nil,
       substitutions: [:]
     )

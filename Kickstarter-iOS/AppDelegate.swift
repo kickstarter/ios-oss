@@ -127,6 +127,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { UIApplication.shared.open($0) }
 
+    self.viewModel.outputs.goToLandingPage
+      .observeForUI()
+      .observeValues { [weak self] in
+        let landingPage = LandingPageViewController()
+          |> \.modalPresentationStyle .~ .fullScreen
+        self?.rootTabBarController?.present(landingPage, animated: true)
+      }
+
     self.viewModel.outputs.applicationIconBadgeNumber
       .observeForUI()
       .observeValues { UIApplication.shared.applicationIconBadgeNumber = $0 }
@@ -332,6 +340,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       if let shouldUpdateClient = shouldUpdateClient, shouldUpdateClient {
         print("🔮 Optimizely SDK Successfully Configured")
         AppEnvironment.updateOptimizelyClient(optimizelyClient)
+        self?.viewModel.inputs.optimizelyUpdatedInEnvironment()
       }
     }
   }
