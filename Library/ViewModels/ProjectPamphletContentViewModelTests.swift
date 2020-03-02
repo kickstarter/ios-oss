@@ -398,6 +398,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
   }
 
+  // swiftlint:disable line_length
   func testLoadProjectIntoDataSource_CreatorDetailsLoaded_ExperimentalVariant() {
     let project = Project.template
 
@@ -696,4 +697,6 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       self.loadMinimalProjectIntoDataSource.assertValues([])
     }
   }
+
+  // swiftlint:enable line_length
 }
