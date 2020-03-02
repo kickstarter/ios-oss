@@ -76,8 +76,15 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   }
 
   internal func configureWith(value project: Project) {
-    _ = ([self.creatorByLineView], self.contentStackView)
+    _ = ([self.creatorByLineView], self.projectNameAndCreatorStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    // todo: removing this
+    _ = self.creatorByLineView
+      |> \.isHidden .~ true
+
+//    _ = self.creatorStackView
+//      |> \.isHidden .~ true
 
     self.viewModel.inputs.configureWith(project: project)
   }

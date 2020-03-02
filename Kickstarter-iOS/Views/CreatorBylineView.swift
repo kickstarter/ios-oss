@@ -58,23 +58,23 @@ final class CreatorByLineView: UIView {
       |> ignoresInvertColorsImageViewStyle
 
     _ = self.creatorImageView
-      |> UIImageView.lens.clipsToBounds .~ true
-      |> UIImageView.lens.contentMode .~ .scaleAspectFit
+      |> \.clipsToBounds .~ true
+      |> \.contentMode .~ .scaleAspectFit
 
     _ = self.verifiedCheckmarkImageView.layer
       |> \.masksToBounds .~ false
 
     _ = self.verifiedCheckmarkImageView
-      |> UIImageView.lens.clipsToBounds .~ true
-      |> UIImageView.lens.contentMode .~ .scaleToFill
+      |> \.clipsToBounds .~ true
+      |> \.contentMode .~ .scaleToFill
 
     _ = self.creatorLabel
-      |> UILabel.lens.textColor .~ .ksr_soft_black
-      |> UILabel.lens.font .~ .ksr_headline(size: 13)
+      |> \.textColor .~ .ksr_soft_black
+      |> \.font .~ .ksr_headline(size: 13)
 
     _ = self.creatorStatsLabel
-      |> UILabel.lens.textColor .~ .ksr_blue_500
-      |> UILabel.lens.font .~ .ksr_headline(size: 13)
+      |> \.textColor .~ .ksr_blue_500
+      |> \.font .~ .ksr_headline(size: 13)
       |> \.text %~ { _ in "First-time creator • 12 projects backed" }
 
     _ = self.creatorInfoStackView
@@ -114,7 +114,7 @@ final class CreatorByLineView: UIView {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.creatorImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Styles.grid(3)),
+      self.creatorImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Styles.grid(1)),
       self.creatorImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
       self.creatorInfoStackView.topAnchor.constraint(equalTo: self.topAnchor),
       self.creatorInfoStackView.leadingAnchor.constraint(
