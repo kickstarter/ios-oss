@@ -61,7 +61,7 @@ public func optimizelyUserAttributes(
   refTag: RefTag?
 ) -> [String: Any] {
   let properties: [String: Any] = [
-    "user_distinct_id": debugAdminDeviceIdentifier(with: user),
+    "user_distinct_id": debugAdminDeviceIdentifier(),
     "user_backed_projects_count": user?.stats.backedProjectsCount,
     "user_launched_projects_count": user?.stats.createdProjectsCount,
     "user_country": (user?.location?.country ?? AppEnvironment.current.config?.countryCode)?.lowercased(),
@@ -80,11 +80,10 @@ public func optimizelyUserAttributes(
   return properties
 }
 
-private func debugAdminDeviceIdentifier(with user: User?) -> String? {
+private func debugAdminDeviceIdentifier() -> String? {
   guard
     AppEnvironment.current.environmentType != .production,
-    AppEnvironment.current.mainBundle.isRelease == false,
-    user?.isAdmin == true
+    AppEnvironment.current.mainBundle.isRelease == false
   else { return nil }
 
   return deviceIdentifier(uuid: UUID())

@@ -3783,13 +3783,12 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testTrackingEvents_PledgeScreenViewed_LoggedIn_IsAdmin_Beta_Staging() {
+  func testTrackingEvents_PledgeScreenViewed_DistinctID_LoggedIn_Beta_Staging() {
     let user = User.template
       |> \.location .~ Location.template
       |> \.stats.backedProjectsCount .~ 50
       |> \.stats.createdProjectsCount .~ 25
       |> \.facebookConnected .~ true
-      |> \.isAdmin .~ true
 
     let mockBundle = MockBundle(
       bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue,
@@ -3819,13 +3818,12 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testTrackingEvents_PledgeScreenViewed_LoggedIn_IsAdmin_Release_Production() {
+  func testTrackingEvents_PledgeScreenViewed_DistinctID_LoggedIn_Release_Production() {
     let user = User.template
       |> \.location .~ Location.template
       |> \.stats.backedProjectsCount .~ 50
       |> \.stats.createdProjectsCount .~ 25
       |> \.facebookConnected .~ true
-      |> \.isAdmin .~ true
 
     let mockBundle = MockBundle(
       bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
