@@ -5,13 +5,18 @@ import UIKit
 
 private enum Layout {
   enum ImageView {
-    static let minHeight: CGFloat = 36.0
     static let minWidth: CGFloat = 36.0
   }
 }
 
 final class CreatorByLineView: UIView {
   // MARK: - Properties
+
+  private lazy var creatorImageStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.axis .~ .vertical
+  }()
 
   private lazy var creatorInfoStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -23,8 +28,19 @@ final class CreatorByLineView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var creatorLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var creatorStatsLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var creatorLabel: UILabel = {
+    UILabel(frame: .zero)
+      |> \.numberOfLines .~ 0
+  }()
+  private lazy var creatorStatsLabel: UILabel = {
+    UILabel(frame: .zero)
+      |> \.numberOfLines .~ 0
+  }()
+
+  private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var verifiedCheckmarkImageView: UIImageView = {
     UIImageView(image: image(named: "verified-checkmark-icon", inBundle: Bundle.framework))
@@ -54,6 +70,9 @@ final class CreatorByLineView: UIView {
 
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
+    _ = self.rootStackView
+      |> \.spacing .~ Styles.gridHalf(3)
+
     _ = self.creatorImageView
       |> ignoresInvertColorsImageViewStyle
 
@@ -66,7 +85,6 @@ final class CreatorByLineView: UIView {
 
     _ = self.verifiedCheckmarkImageView
       |> \.clipsToBounds .~ true
-      |> \.contentMode .~ .scaleToFill
 
     _ = self.creatorLabel
       |> \.textColor .~ .ksr_soft_black
@@ -99,11 +117,15 @@ final class CreatorByLineView: UIView {
   // MARK: Functions
 
   private func configureSubviews() {
-    _ = (self.creatorInfoStackView, self)
+    _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
-    _ = (self.creatorImageView, self)
-      |> ksr_addSubviewToParent()
+    _ = ([self.creatorImageStackView, self.creatorInfoStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.creatorImageView, UIView()], self.creatorImageStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.verifiedCheckmarkImageView, self)
       |> ksr_addSubviewToParent()
@@ -114,20 +136,13 @@ final class CreatorByLineView: UIView {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.creatorImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Styles.grid(1)),
-      self.creatorImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-      self.creatorInfoStackView.topAnchor.constraint(equalTo: self.topAnchor),
-      self.creatorInfoStackView.leadingAnchor.constraint(
-        equalTo: self.creatorImageView.trailingAnchor,
-        constant: Styles.gridHalf(2)
-      ),
-      self.creatorInfoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-      self.creatorInfoStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
       self.creatorImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.minWidth),
-      self.creatorImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.minHeight),
-      self.creatorImageView.bottomAnchor.constraint(equalTo: self.verifiedCheckmarkImageView.bottomAnchor),
-      self.creatorImageView.trailingAnchor.constraint(
-        equalTo: self.verifiedCheckmarkImageView.trailingAnchor, constant: 1.0
+      self.creatorImageView.heightAnchor.constraint(equalTo: self.creatorImageView.widthAnchor),
+      self.verifiedCheckmarkImageView.trailingAnchor.constraint(
+        equalTo: self.creatorImageView.trailingAnchor, constant: Styles.gridHalf(1)
+      ),
+      self.verifiedCheckmarkImageView.bottomAnchor.constraint(
+        equalTo: self.creatorImageView.bottomAnchor, constant: Styles.gridHalf(1)
       )
     ])
   }
