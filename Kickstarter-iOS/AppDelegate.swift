@@ -252,8 +252,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToOnboarding
       .observeForControllerAction()
       .observeValues { [weak self] in
-
-        let navController = NavigationController(rootViewController: CategorySelectionViewController())
+        let categorySelectionViewController = CategorySelectionViewController.instantiate()
+        let navController = NavigationController(rootViewController: categorySelectionViewController)
         navController.modalPresentationStyle = .fullScreen
 
         self?.rootTabBarController?.present(navController, animated: true)

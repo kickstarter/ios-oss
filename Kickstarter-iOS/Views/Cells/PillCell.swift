@@ -57,9 +57,6 @@ final class PillCell: UICollectionViewCell, ValueCell {
   // MARK: - Functions
 
   private func configureSubviews() {
-    _ = self.contentView
-      |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
-
     _ = (self.label, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
@@ -71,6 +68,7 @@ final class PillCell: UICollectionViewCell, ValueCell {
 private let contentViewStyle: ViewStyle = { view in
   view
     |> checkoutRoundedCornersStyle
+    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
 }
 
 private let labelStyle: LabelStyle = { label in

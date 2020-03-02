@@ -3,6 +3,8 @@ import Library
 import Prelude
 
 final class CategorySelectionHeaderView: UIView {
+  // MARK: - Properties
+
   private lazy var imageView = { UIImageView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -34,37 +36,19 @@ final class CategorySelectionHeaderView: UIView {
       |> \.backgroundColor .~ UIColor.ksr_trust_700
 
     _ = self.rootStackView
-      |> verticalStackViewStyle
-      |> \.distribution .~ .fill
-      |> \.alignment .~ .fill
-      |> \.spacing .~ Styles.grid(2)
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ .init(topBottom: Styles.grid(0), leftRight: Styles.grid(3))
+      |> rootStackViewStyle
 
     _ = self.titleLabel
-      |> \.font .~ UIFont.ksr_title3().bolded
-      |> \.textColor .~ .white
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 0
-      |> \.text .~ "Which categories interest you?"
+      |> titleLabelStyle
 
     _ = self.subtitleLabel
-      |> \.font .~ UIFont.ksr_subhead()
-      |> \.textColor .~ .white
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 0
-      |> \.text .~ "Select up to five from the list below."
+      |> subtitleLabelStyle
 
     _ = self.stepLabel
-      |> \.font .~ UIFont.ksr_footnote()
-      |> \.textColor .~ .white
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 0
-      |> \.text .~ "Step 1 of 2"
+      |> stepLabelStyle
 
     _ = self.imageView
-      |> UIImageView.lens.contentMode .~ .scaleAspectFill
-      |> UIImageView.lens.image .~ UIImage(named: "shapes")
+      |> imageViewStyle
   }
 
   private func setupViews() {
@@ -86,5 +70,53 @@ final class CategorySelectionHeaderView: UIView {
       self.imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
       self.imageView.topAnchor.constraint(equalTo: self.rootStackView.bottomAnchor)
     ])
+
+    _ = (self.stepLabel, self.rootStackView)
+      |> ksr_setCustomSpacing(Styles.grid(1))
   }
+}
+
+// MARK: - Styles
+
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> verticalStackViewStyle
+    |> \.distribution .~ .fill
+    |> \.alignment .~ .fill
+    |> \.spacing .~ Styles.grid(2)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ .init(topBottom: Styles.grid(0), leftRight: Styles.grid(3))
+}
+
+private let titleLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_title3().bolded
+    |> \.textColor .~ .white
+    |> \.lineBreakMode .~ .byTruncatingTail
+    |> \.numberOfLines .~ 2
+    |> \.text %~ { _ in Strings.Which_categories_interest_you() }
+}
+
+private let subtitleLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_subhead()
+    |> \.textColor .~ .white
+    |> \.lineBreakMode .~ .byTruncatingTail
+    |> \.numberOfLines .~ 2
+    |> \.text %~ { _ in Strings.Select_up_to_five() }
+}
+
+private let stepLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_footnote()
+    |> \.textColor .~ .white
+    |> \.lineBreakMode .~ .byTruncatingTail
+    |> \.numberOfLines .~ 1
+    |> \.text %~ { _ in Strings.Step_number(current_step: "1", total_steps: "2") }
+}
+
+private let imageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> UIImageView.lens.contentMode .~ .scaleAspectFill
+    |> UIImageView.lens.image .~ image(named: "shapes")
 }
