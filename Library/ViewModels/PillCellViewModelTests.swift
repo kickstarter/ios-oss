@@ -21,11 +21,18 @@ final class PillCellViewModelTests: TestCase {
     self.vm.outputs.textColor.observe(self.textColor.observer)
   }
 
-  func testBackgroundColor() {
+  func testBackgroundColor_GreyCase() {
     self.backgroundColor.assertDidNotEmitValue()
     self.vm.inputs.configure(with: ("hi", .grey))
 
     self.backgroundColor.assertValues([UIColor.ksr_grey_400.withAlphaComponent(0.8)])
+  }
+
+  func testBackgroundColor_GreenCase() {
+    self.backgroundColor.assertDidNotEmitValue()
+    self.vm.inputs.configure(with: ("hi", .green))
+
+    self.backgroundColor.assertValues([UIColor.ksr_green_500.withAlphaComponent(0.06)])
   }
 
   func testText() {
@@ -35,10 +42,17 @@ final class PillCellViewModelTests: TestCase {
     self.text.assertValues(["hi"])
   }
 
-  func testTextColor() {
+  func testTextColor_GreyCase() {
     self.textColor.assertDidNotEmitValue()
     self.vm.inputs.configure(with: ("hi", .grey))
 
     self.textColor.assertValues([UIColor.ksr_soft_black])
+  }
+
+  func testTextColor_GreenCase() {
+    self.textColor.assertDidNotEmitValue()
+    self.vm.inputs.configure(with: ("hi", .green))
+
+    self.textColor.assertValues([UIColor.ksr_green_500])
   }
 }
