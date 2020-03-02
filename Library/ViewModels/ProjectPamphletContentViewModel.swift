@@ -263,7 +263,7 @@ private func projectPageConversionCreatorDetailsExperiment(
 
   let optimizelyVariant = AppEnvironment.current.optimizelyClient?
     .variant(
-      for: OptimizelyExperiment.Key.projectPageConversionCreatorDetails,
+      for: OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails,
       userId: deviceIdentifier(uuid: UUID()),
       isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
       userAttributes: userAttributes

@@ -407,7 +407,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.projectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
     withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
@@ -485,7 +485,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.projectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
       ]
 
     withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
@@ -630,7 +630,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.projectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
     withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
