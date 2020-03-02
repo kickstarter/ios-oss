@@ -33,7 +33,6 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
 
     self.viewDidLoadSignal
       .observeValues { _ in
-        AppEnvironment.current.ubiquitousStore.hasSeenLandingPage = true
         AppEnvironment.current.userDefaults.hasSeenLandingPage = true
       }
   }
