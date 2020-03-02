@@ -63,7 +63,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   public var outputs: CategorySelectionViewModelOutputs { return self }
 }
 
-private enum CategoryById: Int, CaseIterable {
+private enum CategoryById: Int {
   case games = 12
   case design = 7
   case technology = 16
