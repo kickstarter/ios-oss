@@ -95,13 +95,14 @@ final class CreatorBylineView: UIView {
     super.bindViewModel()
 
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
+    self.creatorStatsLabel.rac.text = self.viewModel.outputs.creatorStatsText
     self.creatorImageView.rac.imageUrl = self.viewModel.outputs.creatorImageUrl
   }
 
   // MARK: - Configuration
 
-  func configureWith(value project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
+  func configureWith(project: Project, creatorDetails: ProjectCreatorDetailsData) {
+    self.viewModel.inputs.configureWith(project: project, creatorDetails: creatorDetails)
   }
 
   // MARK: Functions
