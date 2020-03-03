@@ -292,13 +292,21 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .map { _ in token }
       }
 
+    // Onboarding
+
+    self.goToCategoryPersonalizationOnboarding = Signal.combineLatest(
+      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+      self.didUpdateOptimizelyClientProperty.signal.skipNil().ignoreValues()
+    ).ignoreValues()
+    .filter(shouldSeeCategoryPersonalization)
+
+    // Deep links
+
     let deepLinkFromNotification = self.remoteNotificationProperty.signal.skipNil()
       .map(decode)
       .map { $0.value }
       .skipNil()
       .map(navigation(fromPushEnvelope:))
-
-    // Deep links
 
     let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
 
@@ -332,13 +340,16 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let deepLinkFromShortcut = performShortcutItem
       .switchMap(navigation(fromShortcutItem:))
 
-    let deepLink = Signal
+    let deeplinkActivated = Signal
       .merge(
         deepLinkFromUrl,
         deepLinkFromNotification,
         deepLinkFromShortcut
       )
       .skipNil()
+
+    let deepLink = deeplinkActivated
+      .filter { _ in shouldSeeCategoryPersonalization() == false }
 
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
@@ -452,10 +463,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         return .some(param)
       }
       .skipNil()
-
-    self.goToCategoryPersonalizationOnboarding = self.applicationDidFinishLaunchingReturnValueProperty.signal
-      .ignoreValues()
-      .filter(shouldSeeCategoryPersonalization)
 
     let projectRootLink = projectLink
       .filter { _, subpage, _ in subpage == .root }
@@ -1089,7 +1096,7 @@ private func qualtricsConfigData() -> QualtricsConfigData {
 }
 
 private func shouldSeeCategoryPersonalization() -> Bool {
-  let isLoggedIn = AppEnvironment.current.currentUser == nil
+  let isLoggedIn = AppEnvironment.current.currentUser != nil
   let hasSeenCategoryPersonalization = AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow
 
   if isLoggedIn || hasSeenCategoryPersonalization {
@@ -1110,6 +1117,6 @@ private func shouldSeeCategoryPersonalization() -> Bool {
   case .variant1:
     return true
   default:
-    false
+    return false
   }
 }
