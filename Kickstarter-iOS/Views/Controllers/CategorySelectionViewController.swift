@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import Library
 import Prelude
-import SpriteKit
 import UIKit
 
 public final class CategorySelectionViewController: UIViewController {
@@ -79,6 +78,11 @@ public final class CategorySelectionViewController: UIViewController {
       CategoryCollectionViewSectionHeaderView.self,
       forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
       withReuseIdentifier: CategoryCollectionViewSectionHeaderView.defaultReusableId
+    )
+
+    self.continueButton.addTarget(
+      self, action: #selector(CategorySelectionViewController.continueButtonTapped),
+      for: .touchUpInside
     )
 
     self.configureSubviews()
@@ -169,6 +173,11 @@ public final class CategorySelectionViewController: UIViewController {
 
   @objc func skipButtonTapped() {
     self.dismiss(animated: true)
+  }
+
+  @objc func continueButtonTapped() {
+    let vc = CuratedProjectsViewController()
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 }
 
