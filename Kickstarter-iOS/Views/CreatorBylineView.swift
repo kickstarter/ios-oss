@@ -84,6 +84,7 @@ final class CreatorBylineView: UIView {
     _ = self.creatorStatsLabel
       |> \.textColor .~ .ksr_cobalt_500
       |> \.font .~ .ksr_headline(size: 13)
+|> UILabel.lens.numberOfLines .~ 0
 
     _ = self.creatorInfoStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
