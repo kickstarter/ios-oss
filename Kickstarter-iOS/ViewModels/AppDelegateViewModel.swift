@@ -298,7 +298,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.didUpdateOptimizelyClientProperty.signal.skipNil().ignoreValues()
     ).ignoreValues()
-    .filter(shouldSeeCategoryPersonalization)
+      .filter(shouldSeeCategoryPersonalization)
 
     // Deep links
 
@@ -1106,10 +1106,12 @@ private func shouldSeeCategoryPersonalization() -> Bool {
     return false
   }
 
-  let variant = AppEnvironment.current.optimizelyClient?.variant(for: .categoryPersonalization,
-                                                                 userId: deviceIdentifier(uuid: UUID()),
-                                                                 isAdmin: false,
-                                                                 userAttributes: optimizelyUserAttributes())
+  let variant = AppEnvironment.current.optimizelyClient?.variant(
+    for: .categoryPersonalization,
+    userId: deviceIdentifier(uuid: UUID()),
+    isAdmin: false,
+    userAttributes: optimizelyUserAttributes()
+  )
 
   switch variant {
   case .control:

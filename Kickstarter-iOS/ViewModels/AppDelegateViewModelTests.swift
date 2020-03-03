@@ -900,8 +900,10 @@ final class AppDelegateViewModelTests: TestCase {
     )
 
     let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.categoryPersonalization.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
       let result = self.vm.inputs.applicationOpenUrl(
@@ -1236,8 +1238,10 @@ final class AppDelegateViewModelTests: TestCase {
     ]
 
     let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.categoryPersonalization.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
       self.vm.inputs.didReceive(remoteNotification: pushData)
@@ -1287,8 +1291,10 @@ final class AppDelegateViewModelTests: TestCase {
     userActivity.webpageURL = URL(string: "https://www.kickstarter.com/activity")
 
     let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.categoryPersonalization.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
       self.vm.inputs.applicationDidFinishLaunching(application: .shared, launchOptions: [:])
@@ -1473,15 +1479,17 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testPerformShortcutItem_WhenOnboardingFlowIsActive() {
     let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.categoryPersonalization.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
       self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
       )
-    self.vm.inputs.applicationPerformActionForShortcutItem(ShortcutItem.search.applicationShortcutItem)
+      self.vm.inputs.applicationPerformActionForShortcutItem(ShortcutItem.search.applicationShortcutItem)
 
       self.goToSearch.assertValueCount(0)
     }
@@ -1501,8 +1509,10 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testLaunchShortcutItem_WhenOnboardingFlowIsActive() {
     let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.categoryPersonalization.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
       self.vm.inputs.applicationDidFinishLaunching(
@@ -1776,8 +1786,10 @@ final class AppDelegateViewModelTests: TestCase {
   func testEmailDeepLinking_WhenOnboardingFlowIsActive() {
     let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
     let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.categoryPersonalization.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
       // The application launches.
@@ -2256,17 +2268,21 @@ final class AppDelegateViewModelTests: TestCase {
   func testGoToCategoriesPersonalizationOnboarding_WhenLoggedIn() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments
-      .~ [OptimizelyExperiment.Key.categoryPersonalization.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+      .~ [
+        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
 
     self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-    let _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
-    withEnvironment(currentUser: .template,
-                    optimizelyClient: mockOptimizelyClient,
-                    userDefaults: MockKeyValueStore()) {
+    withEnvironment(
+      currentUser: .template,
+      optimizelyClient: mockOptimizelyClient,
+      userDefaults: MockKeyValueStore()
+    ) {
       self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
 
       self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
@@ -2276,19 +2292,23 @@ final class AppDelegateViewModelTests: TestCase {
   func testGoToCategoriesPersonalizationOnboarding_WhenPreviouslySeen() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments
-      .~ [OptimizelyExperiment.Key.categoryPersonalization.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+      .~ [
+        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
     let mockValueStore = MockKeyValueStore()
     mockValueStore.hasSeenCategoryPersonalizationFlow = true
 
     self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
 
     self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-    let _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
-    withEnvironment(currentUser: nil,
-                    optimizelyClient: mockOptimizelyClient,
-                    userDefaults: mockValueStore) {
+    withEnvironment(
+      currentUser: nil,
+      optimizelyClient: mockOptimizelyClient,
+      userDefaults: mockValueStore
+    ) {
       self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
 
       self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
@@ -2298,18 +2318,22 @@ final class AppDelegateViewModelTests: TestCase {
   func testGoToCategoriesPersonalizationOnboarding_Variant1() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments
-      .~ [OptimizelyExperiment.Key.categoryPersonalization.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+      .~ [
+        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
     let mockValueStore = MockKeyValueStore()
 
     self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
 
     self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-    let _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
-    withEnvironment(currentUser: nil,
-                    optimizelyClient: mockOptimizelyClient,
-                    userDefaults: mockValueStore) {
+    withEnvironment(
+      currentUser: nil,
+      optimizelyClient: mockOptimizelyClient,
+      userDefaults: mockValueStore
+    ) {
       self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
 
       self.goToCategoriesPersonalizationOnboarding.assertValueCount(1)
@@ -2319,18 +2343,22 @@ final class AppDelegateViewModelTests: TestCase {
   func testGoToCategoriesPersonalizationOnboarding_Control() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments
-      .~ [OptimizelyExperiment.Key.categoryPersonalization.rawValue:
-        OptimizelyExperiment.Variant.control.rawValue]
+      .~ [
+        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+          OptimizelyExperiment.Variant.control.rawValue
+      ]
     let mockValueStore = MockKeyValueStore()
 
     self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
 
     self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-    let _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
-    withEnvironment(currentUser: nil,
-                    optimizelyClient: mockOptimizelyClient,
-                    userDefaults: mockValueStore) {
+    withEnvironment(
+      currentUser: nil,
+      optimizelyClient: mockOptimizelyClient,
+      userDefaults: mockValueStore
+    ) {
       self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
 
       self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
@@ -2340,18 +2368,22 @@ final class AppDelegateViewModelTests: TestCase {
   func testGoToCategoriesPersonalizationOnboarding_Variant2() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments
-      .~ [OptimizelyExperiment.Key.categoryPersonalization.rawValue:
-        OptimizelyExperiment.Variant.variant2.rawValue]
+      .~ [
+        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+          OptimizelyExperiment.Variant.variant2.rawValue
+      ]
     let mockValueStore = MockKeyValueStore()
 
     self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
 
     self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
-    let _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
-    withEnvironment(currentUser: nil,
-                    optimizelyClient: mockOptimizelyClient,
-                    userDefaults: mockValueStore) {
+    withEnvironment(
+      currentUser: nil,
+      optimizelyClient: mockOptimizelyClient,
+      userDefaults: mockValueStore
+    ) {
       self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
 
       self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
