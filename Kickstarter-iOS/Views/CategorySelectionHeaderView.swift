@@ -18,7 +18,7 @@ final class CategorySelectionHeaderView: UIView {
   private lazy var subtitleLabel = { UILabel(frame: .zero) }()
   private lazy var titleLabel = { UILabel(frame: .zero) }()
 
-  override init(frame: CGRect) {
+  init(frame: CGRect, context: HeaderViewContext) {
     super.init(frame: frame)
 
     self.setupViews()

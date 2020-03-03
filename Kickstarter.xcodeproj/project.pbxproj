@@ -1138,6 +1138,7 @@
 		D65BF353233023E500B15B25 /* ManagePledgeSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65BF352233023E400B15B25 /* ManagePledgeSummaryViewModelTests.swift */; };
 		D65BF3552334050100B15B25 /* ManagePledgePaymentMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65BF3542334050100B15B25 /* ManagePledgePaymentMethodView.swift */; };
 		D6600786240EFD6300AC1EDB /* CuratedProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6600785240EFD6300AC1EDB /* CuratedProjectsViewController.swift */; };
+		D6600788240F0BE400AC1EDB /* CategorySelectionHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6600787240F0BE400AC1EDB /* CategorySelectionHeaderViewModel.swift */; };
 		D667C2BC2305F03300EC094A /* ExperimentName+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D667C2BB2305F03300EC094A /* ExperimentName+HelpersTests.swift */; };
 		D668509F236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D668509E236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift */; };
 		D66850A1236CA44C00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66850A0236CA44C00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModel.swift */; };
@@ -2482,6 +2483,7 @@
 		D65BF3542334050100B15B25 /* ManagePledgePaymentMethodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgePaymentMethodView.swift; sourceTree = "<group>"; };
 		D65E8F8821821EF500AB9412 /* PaymentMethodsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsDataSourceTests.swift; sourceTree = "<group>"; };
 		D6600785240EFD6300AC1EDB /* CuratedProjectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedProjectsViewController.swift; sourceTree = "<group>"; };
+		D6600787240F0BE400AC1EDB /* CategorySelectionHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionHeaderViewModel.swift; sourceTree = "<group>"; };
 		D667C2BB2305F03300EC094A /* ExperimentName+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExperimentName+HelpersTests.swift"; sourceTree = "<group>"; };
 		D668509E236B38E000EE9AC2 /* ProjectPamphletCreatorHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletCreatorHeaderCell.swift; sourceTree = "<group>"; };
 		D66850A0236CA44C00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPamphletCreatorHeaderCellViewModel.swift; sourceTree = "<group>"; };
@@ -3458,6 +3460,7 @@
 		A7E06C701C5A6EB300EBDCC2 = {
 			isa = PBXGroup;
 			children = (
+				D6600787240F0BE400AC1EDB /* CategorySelectionHeaderViewModel.swift */,
 				A7C795C71C873B800081977F /* Kickstarter-iOS.playground */,
 				802800561C88F62500141235 /* Configs */,
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
@@ -4740,6 +4743,7 @@
 				8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */,
 				D04AAC2E218BB70D00CF713E /* SettingsViewModel.swift in Sources */,
 				D0247A961DF9F29100D7A7C1 /* ProjectPamphletSubpageCellViewModel.swift in Sources */,
+				D6600788240F0BE400AC1EDB /* CategorySelectionHeaderViewModel.swift in Sources */,
 				0156B3751D0F7524000C4252 /* ActivityFriendFollowCellViewModel.swift in Sources */,
 				013F2FDC1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift in Sources */,
 				A79BF81F1D11F6AF004C0445 /* Strings.swift in Sources */,

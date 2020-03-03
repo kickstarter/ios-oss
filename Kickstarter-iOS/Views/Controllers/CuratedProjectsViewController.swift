@@ -39,9 +39,14 @@ final class CuratedProjectsViewController: UIViewController {
       withReuseIdentifier: CategoryCollectionViewSectionHeaderView.defaultReusableId
     )
 
+    self.navigationItem.setRightBarButton(self.doneButton, animated: false)
+    self.navigationItem.hidesBackButton = true
+
     self.configureSubviews()
     self.setupConstraints()
   }
+
+  // MARK: - Configuration
 
   private func configureSubviews() {
     _ = (self.headerView, self.view)
@@ -62,6 +67,21 @@ final class CuratedProjectsViewController: UIViewController {
       self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
     ])
+  }
+
+  // MARK: - Styles
+
+  public override func bindStyles() {
+    super.bindStyles()
+
+    _ = self.collectionView
+      |> collectionViewStyle
+
+    _ = self.doneButton
+      |> doneButtonStyle
+
+    _ = self.headerView
+      |> headerViewStyle
   }
 
   // MARK: - Accessors
