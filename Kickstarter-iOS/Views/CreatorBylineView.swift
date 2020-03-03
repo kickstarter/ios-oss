@@ -9,8 +9,13 @@ private enum Layout {
   }
 }
 
-final class CreatorByLineView: UIView {
+final class CreatorBylineView: UIView {
   // MARK: - Properties
+
+  private lazy var checkmarkContainerView: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var creatorImageStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -47,7 +52,7 @@ final class CreatorByLineView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel: CreatorByLineViewViewModelType = CreatorByLineViewViewModel()
+  private let viewModel: CreatorBylineViewModelType = CreatorBylineViewModel()
 
   // MARK: - Lifecycle
 
@@ -70,6 +75,10 @@ final class CreatorByLineView: UIView {
 
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
+    _ = self.checkmarkContainerView
+      |> \.backgroundColor .~ .white
+      |> \.layer.cornerRadius .~ 8
+
     _ = self.rootStackView
       |> \.spacing .~ Styles.gridHalf(3)
 
@@ -91,7 +100,7 @@ final class CreatorByLineView: UIView {
       |> \.font .~ .ksr_headline(size: 13)
 
     _ = self.creatorStatsLabel
-      |> \.textColor .~ .ksr_blue_500
+      |> \.textColor .~ .ksr_cobalt_500
       |> \.font .~ .ksr_headline(size: 13)
       |> \.text %~ { _ in "First-time creator • 12 projects backed" }
 
@@ -127,8 +136,12 @@ final class CreatorByLineView: UIView {
     _ = ([self.creatorImageView, UIView()], self.creatorImageStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.verifiedCheckmarkImageView, self)
+    _ = (self.checkmarkContainerView, self)
       |> ksr_addSubviewToParent()
+
+    _ = (self.verifiedCheckmarkImageView, self.checkmarkContainerView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.creatorLabel, self.creatorStatsLabel], self.creatorInfoStackView)
       |> ksr_addArrangedSubviewsToStackView()
