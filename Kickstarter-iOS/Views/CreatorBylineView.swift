@@ -8,10 +8,19 @@ private enum Layout {
     static let minHeight: CGFloat = 36.0
     static let minWidth: CGFloat = 36.0
   }
+
+  enum View {
+    static let minHeight: CGFloat = 16.0
+    static let minWidth: CGFloat = 16.0
+  }
 }
 
-final class CreatorByLineView: UIView {
+final class CreatorBylineView: UIView {
   // MARK: - Properties
+  private lazy var checkmarkContainerView: UIView = {
+     UIView(frame: .zero)
+       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+   }()
 
   private lazy var creatorInfoStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -31,7 +40,7 @@ final class CreatorByLineView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel: CreatorByLineViewViewModelType = CreatorByLineViewViewModel()
+  private let viewModel: CreatorBylineViewModelType = CreatorBylineViewModel()
 
   // MARK: - Lifecycle
 
@@ -54,6 +63,10 @@ final class CreatorByLineView: UIView {
 
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
+    _ = self.checkmarkContainerView
+      |> \.backgroundColor .~ .white
+      |> \.layer.cornerRadius .~ 8
+
     _ = self.creatorImageView
       |> ignoresInvertColorsImageViewStyle
 
@@ -73,7 +86,7 @@ final class CreatorByLineView: UIView {
       |> \.font .~ .ksr_headline(size: 13)
 
     _ = self.creatorStatsLabel
-      |> \.textColor .~ .ksr_blue_500
+      |> \.textColor .~ .ksr_cobalt_500
       |> \.font .~ .ksr_headline(size: 13)
       |> \.text %~ { _ in "First-time creator • 12 projects backed" }
 
@@ -105,8 +118,12 @@ final class CreatorByLineView: UIView {
     _ = (self.creatorImageView, self)
       |> ksr_addSubviewToParent()
 
-    _ = (self.verifiedCheckmarkImageView, self)
+    _ = (self.checkmarkContainerView, self)
       |> ksr_addSubviewToParent()
+
+    _ = (self.verifiedCheckmarkImageView, self.checkmarkContainerView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.creatorLabel, self.creatorStatsLabel], self.creatorInfoStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -114,7 +131,7 @@ final class CreatorByLineView: UIView {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.creatorImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Styles.grid(1)),
+      self.creatorImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
       self.creatorImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
       self.creatorInfoStackView.topAnchor.constraint(equalTo: self.topAnchor),
       self.creatorInfoStackView.leadingAnchor.constraint(
@@ -125,10 +142,8 @@ final class CreatorByLineView: UIView {
       self.creatorInfoStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
       self.creatorImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.minWidth),
       self.creatorImageView.heightAnchor.constraint(equalToConstant: Layout.ImageView.minHeight),
-      self.creatorImageView.bottomAnchor.constraint(equalTo: self.verifiedCheckmarkImageView.bottomAnchor),
-      self.creatorImageView.trailingAnchor.constraint(
-        equalTo: self.verifiedCheckmarkImageView.trailingAnchor, constant: 1.0
-      )
+      self.creatorImageView.bottomAnchor.constraint(equalTo: self.checkmarkContainerView.bottomAnchor),
+      self.creatorImageView.trailingAnchor.constraint(equalTo: self.checkmarkContainerView.trailingAnchor)
     ])
   }
 }

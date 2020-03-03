@@ -2,11 +2,11 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol CreatorByLineViewViewModelInputs {
+public protocol CreatorBylineViewModelInputs {
   func configureWith(project: Project)
 }
 
-public protocol CreatorByLineViewViewModelOutputs {
+public protocol CreatorBylineViewModelOutputs {
   /// Emits an image url to be loaded into the creator's image view.
   var creatorImageUrl: Signal<URL?, Never> { get }
 
@@ -14,13 +14,13 @@ public protocol CreatorByLineViewViewModelOutputs {
   var creatorLabelText: Signal<String, Never> { get }
 }
 
-public protocol CreatorByLineViewViewModelType {
-  var inputs: CreatorByLineViewViewModelInputs { get }
-  var outputs: CreatorByLineViewViewModelOutputs { get }
+public protocol CreatorBylineViewModelType {
+  var inputs: CreatorBylineViewModelInputs { get }
+  var outputs: CreatorBylineViewModelOutputs { get }
 }
 
-public final class CreatorByLineViewViewModel: CreatorByLineViewViewModelType,
-  CreatorByLineViewViewModelInputs, CreatorByLineViewViewModelOutputs {
+public final class CreatorBylineViewModel: CreatorBylineViewModelType,
+  CreatorBylineViewModelInputs, CreatorBylineViewModelOutputs {
   public init() {
     let project = self.projectProperty.signal.skipNil()
 
@@ -39,6 +39,6 @@ public final class CreatorByLineViewViewModel: CreatorByLineViewViewModelType,
   public let creatorImageUrl: Signal<URL?, Never>
   public let creatorLabelText: Signal<String, Never>
 
-  public var inputs: CreatorByLineViewViewModelInputs { return self }
-  public var outputs: CreatorByLineViewViewModelOutputs { return self }
+  public var inputs: CreatorBylineViewModelInputs { return self }
+  public var outputs: CreatorBylineViewModelOutputs { return self }
 }

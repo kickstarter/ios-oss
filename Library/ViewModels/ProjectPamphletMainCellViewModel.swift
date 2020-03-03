@@ -36,7 +36,7 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   var categoryNameLabelText: Signal<String, Never> { get }
 
   /// Emits a project when the creator by line view should be configured.
-  var configureCreatorByLineView: Signal<Project, Never> { get }
+  var configureCreatorBylineView: Signal<Project, Never> { get }
 
   /// Emits a project when the video player controller should be configured.
   var configureVideoPlayerController: Signal<Project, Never> { get }
@@ -157,7 +157,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .map(OptimizelyExperiment.projectCampaignExperiment)
       .skipNil()
 
-    self.configureCreatorByLineView = project.map { $0 }
+    self.configureCreatorBylineView = project.map { $0 }
 
     self.readMoreButtonStyle = projectCampaignExperimentVariant.map(projectCampaignButtonStyleForVariant)
     self.readMoreButtonTitle = projectCampaignExperimentVariant.map {
@@ -341,7 +341,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let backersTitleLabelText: Signal<String, Never>
   public let blurbAndReadMoreStackViewSpacing: Signal<CGFloat, Never>
   public let categoryNameLabelText: Signal<String, Never>
-  public let configureCreatorByLineView: Signal<Project, Never>
+  public let configureCreatorBylineView: Signal<Project, Never>
   public let configureVideoPlayerController: Signal<Project, Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
