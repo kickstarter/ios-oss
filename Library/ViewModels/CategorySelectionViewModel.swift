@@ -39,13 +39,13 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
         sectionTitles.append(category.name)
 
-        var subcategoriesData = subcategories.map { ($0.name, PillCellStyle.grey) }
-        let allCategoryProjects = (Strings.All_category_name_Projects(category_name: category.name),
-                                PillCellStyle.grey)
+        let subcategoriesData = subcategories.map { ($0.name, PillCellStyle.grey) }
+        let allCategoryProjects = (
+          Strings.All_category_name_Projects(category_name: category.name),
+          PillCellStyle.grey
+        )
 
-        subcategoriesData.insert(allCategoryProjects, at: 0)
-
-        return subcategoriesData
+        return [allCategoryProjects] + subcategoriesData
       }
 
       return (sectionTitles, categoriesData)
@@ -63,7 +63,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   public var outputs: CategorySelectionViewModelOutputs { return self }
 }
 
-private enum CategoryById: Int {
+private enum CategoryById: Int, CaseIterable {
   case games = 12
   case design = 7
   case technology = 16
@@ -82,29 +82,17 @@ private enum CategoryById: Int {
 }
 
 private func categoriesOrderedByPopularity(_ categories: [KsApi.Category]) -> [KsApi.Category] {
-  let categoryIdAndIndex: [CategoryById: Int] = [
-    .games: 0,
-    .design: 1,
-    .technology: 2,
-    .art: 3,
-    .comics: 4,
-    .fashion: 5,
-    .publishing: 6,
-    .food: 7,
-    .filmAndVideo: 8,
-    .music: 9,
-    .crafts: 10,
-    .photography: 11,
-    .journalism: 12,
-    .theater: 13,
-    .dance: 14
-  ]
-
+  let allCategoriesById = CategoryById.allCases
+  let categoryIdAndIndex: [CategoryById: Int] = Dictionary(
+    uniqueKeysWithValues: zip(allCategoriesById, 0...allCategoriesById.count)
+  )
   let categoryIdAndIndexCount = categoryIdAndIndex.keys.count
 
   // Pre-create an array of the correct size
-  var orderedRootCategories: [KsApi.Category?] = [KsApi.Category?](repeating: nil,
-                                                                   count: categoryIdAndIndexCount)
+  var orderedRootCategories: [KsApi.Category?] = [KsApi.Category?](
+    repeating: nil,
+    count: categoryIdAndIndexCount
+  )
   // Any categories returned whose order is unknown will get appended at the end
   var unknownOrderCategories: [KsApi.Category] = []
 
