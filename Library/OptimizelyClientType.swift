@@ -56,9 +56,9 @@ public func optimizelyTrackingAttributesAndEventTags(
 }
 
 public func optimizelyUserAttributes(
-  with user: User?,
-  project: Project?,
-  refTag: RefTag?
+  with user: User? = nil,
+  project: Project? = nil,
+  refTag: RefTag? = nil
 ) -> [String: Any] {
   let properties: [String: Any] = [
     "user_backed_projects_count": user?.stats.backedProjectsCount,

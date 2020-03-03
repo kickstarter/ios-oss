@@ -69,6 +69,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the config has been updated the AppEnvironment
   func didUpdateConfig(_ config: Config)
 
+  /// Call when the Optimizely client has been updated in the AppEnvironment
+  func didUpdateOptimizelyClient(_ client: OptimizelyClientType)
+
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
@@ -733,6 +736,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let didUpdateConfigProperty = MutableProperty<Config?>(nil)
   public func didUpdateConfig(_ config: Config) {
     self.didUpdateConfigProperty.value = config
+  }
+
+  fileprivate let didUpdateOptimizelyClientProperty = MutableProperty<OptimizelyClientType?>(nil)
+  public func didUpdateOptimizelyClient(_ client: OptimizelyClientType) {
+    self.didUpdateOptimizelyClientProperty.value = client
   }
 
   private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
