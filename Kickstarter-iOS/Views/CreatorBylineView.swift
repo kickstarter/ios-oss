@@ -84,7 +84,7 @@ final class CreatorBylineView: UIView {
     _ = self.creatorStatsLabel
       |> \.textColor .~ .ksr_cobalt_500
       |> \.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.numberOfLines .~ 0
+      |> \.numberOfLines .~ 0
       |> \.text %~ { _ in "12 created • 122 backed" }
 
     _ = self.creatorInfoStackView
