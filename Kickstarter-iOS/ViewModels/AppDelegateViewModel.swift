@@ -69,14 +69,14 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the config has been updated the AppEnvironment
   func didUpdateConfig(_ config: Config)
 
+  /// Call when the Optimizely client has been updated in the AppEnvironment
+  func didUpdateOptimizelyClient(_ client: OptimizelyClientType)
+
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
   /// Call when Optimizely has been configured with the given result
   func optimizelyConfigured(with result: OptimizelyResultType) -> Bool
-
-  /// Call when Optimizely has been updated in AppEnvironment
-  func optimizelyUpdatedInEnvironment()
 
   /// Call with the result from initializing Qualtrics
   func qualtricsInitialized(with result: QualtricsResultType)
@@ -376,7 +376,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .ignoreValues()
 
     self.goToLandingPage = self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      .takeWhen(self.optimizelyUpdatedInEnvironmentProperty.signal.ignoreValues())
+      .takeWhen(self.didUpdateOptimizelyClientProperty.signal.ignoreValues())
       .filter(shouldGoToLandingPage)
 
     self.goToLogin = deepLink
@@ -738,6 +738,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.didUpdateConfigProperty.value = config
   }
 
+  fileprivate let didUpdateOptimizelyClientProperty = MutableProperty<OptimizelyClientType?>(nil)
+  public func didUpdateOptimizelyClient(_ client: OptimizelyClientType) {
+    self.didUpdateOptimizelyClientProperty.value = client
+  }
+
   private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
   public func foundRedirectUrl(_ url: URL) {
     self.foundRedirectUrlProperty.value = url
@@ -795,11 +800,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.optimizelyConfiguredWithResultProperty.value = result
 
     return self.optimizelyConfigurationReturnValue.value
-  }
-
-  fileprivate let optimizelyUpdatedInEnvironmentProperty = MutableProperty(())
-  public func optimizelyUpdatedInEnvironment() {
-    self.optimizelyUpdatedInEnvironmentProperty.value = ()
   }
 
   public let applicationIconBadgeNumber: Signal<Int, Never>

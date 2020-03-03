@@ -2125,7 +2125,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.goToLandingPage.assertDidNotEmitValue()
 
-      self.vm.inputs.optimizelyUpdatedInEnvironment()
+      self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
 
       self.goToLandingPage.assertValueCount(1)
     }
@@ -2139,7 +2139,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.vm.inputs.optimizelyUpdatedInEnvironment()
+      self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
 
       self.goToLandingPage.assertDidNotEmitValue()
     }
@@ -2156,7 +2156,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient, userDefaults: userDefaults) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.vm.inputs.optimizelyUpdatedInEnvironment()
+      self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
 
       self.goToLandingPage.assertDidNotEmitValue()
     }
@@ -2173,7 +2173,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(currentUser: .template, optimizelyClient: optimizelyClient, userDefaults: userDefaults) {
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-      self.vm.inputs.optimizelyUpdatedInEnvironment()
+      self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
 
       self.goToLandingPage.assertDidNotEmitValue()
     }
