@@ -17,10 +17,11 @@ private enum Layout {
 
 final class CreatorBylineView: UIView {
   // MARK: - Properties
+
   private lazy var checkmarkContainerView: UIView = {
-     UIView(frame: .zero)
-       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-   }()
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var creatorInfoStackView: UIStackView = {
     UIStackView(frame: .zero)
