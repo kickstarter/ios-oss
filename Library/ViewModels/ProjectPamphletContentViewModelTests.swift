@@ -398,14 +398,20 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
   }
 
-  func testLoadProjectIntoDataSource_CreatorDetailsLoaded() {
+  // swiftlint:disable line_length
+  func testLoadProjectIntoDataSource_CreatorDetailsLoaded_ExperimentalVariant() {
     let project = Project.template
 
     let envelope = ProjectCreatorDetailsEnvelope(backingsCount: 25, id: "123", launchedProjectsCount: 50)
 
     let mockService = MockService(fetchProjectCreatorDetailsResult: .success(envelope))
 
-    withEnvironment(apiService: mockService) {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
       self.vm.inputs.configureWith(value: (project, .discovery))
       self.vm.inputs.viewDidLoad()
 
@@ -464,6 +470,84 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       )
       self.loadProjectIntoDataSourceCreatorDetailsEnvelope.assertValues(
         [nil, nil, envelope], "ProjectCreatorDetailsEnvelope is returned"
+      )
+      self.loadProjectIntoDataSourceProject.assertValues([project, project, project])
+      self.loadProjectIntoDataSourceRefTag.assertValues([.discovery, .discovery, .discovery])
+      self.loadMinimalProjectIntoDataSource.assertValues([])
+    }
+  }
+
+  func testLoadProjectIntoDataSource_CreatorDetailsLoaded_ControlVariant() {
+    let project = Project.template
+
+    let envelope = ProjectCreatorDetailsEnvelope(backingsCount: 25, id: "123", launchedProjectsCount: 50)
+
+    let mockService = MockService(fetchProjectCreatorDetailsResult: .success(envelope))
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
+      ]
+
+    withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.viewDidLoad()
+
+      self.loadProjectIntoDataSourceCreatorDetailsIsLoading.assertValues([], "Nothing emits immediately.")
+      self.loadProjectIntoDataSourceCreatorDetailsEnvelope.assertValues([], "Nothing emits immediately.")
+      self.loadProjectIntoDataSourceProject.assertValues([], "Nothing emits immediately.")
+      self.loadProjectIntoDataSourceRefTag.assertValues([], "Nothing emits immediately.")
+      self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing emits immediately.")
+
+      // Begin presentation. When presenting the project `animated` will be false since it is embedded in the
+      // navigator controller.
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.loadProjectIntoDataSourceCreatorDetailsIsLoading.assertValues([true], "Starts loading.")
+      self.loadProjectIntoDataSourceCreatorDetailsEnvelope.assertValues([nil], "Emits nil as view appears")
+      self.loadProjectIntoDataSourceProject
+        .assertValues([project], "Load the full project into the data source.")
+      self.loadProjectIntoDataSourceRefTag.assertValues(
+        [.discovery], "Load the refTag into the data source."
+      )
+      self.loadMinimalProjectIntoDataSource.assertValues(
+        [], "Do not load the minimal version of the project."
+      )
+
+      // End presentation.
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.loadProjectIntoDataSourceCreatorDetailsIsLoading.assertValues([true])
+      self.loadProjectIntoDataSourceCreatorDetailsEnvelope.assertValues([nil])
+      self.loadProjectIntoDataSourceProject
+        .assertValues([project], "Nothing new emits when the view is done.")
+      self.loadProjectIntoDataSourceRefTag.assertValues(
+        [.discovery], "Nothing new emits when the view is done."
+      )
+      self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
+
+      // Simulate a new version of the project coming through
+      self.vm.inputs.configureWith(value: (project, .discovery))
+
+      self.loadProjectIntoDataSourceCreatorDetailsIsLoading.assertValues([true, true])
+      self.loadProjectIntoDataSourceCreatorDetailsEnvelope.assertValues([nil, nil])
+      self.loadProjectIntoDataSourceProject.assertValues(
+        [project, project], "The new project is loaded into data source"
+      )
+      self.loadProjectIntoDataSourceRefTag.assertValues(
+        [.discovery, .discovery], "The new refTag is loaded into data source"
+      )
+      self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
+
+      self.scheduler.advance()
+
+      self.loadProjectIntoDataSourceCreatorDetailsIsLoading.assertValues(
+        [true, true, false], "isLoading is false"
+      )
+      self.loadProjectIntoDataSourceCreatorDetailsEnvelope.assertValues(
+        [nil, nil, nil], "nil is returned for control group"
       )
       self.loadProjectIntoDataSourceProject.assertValues([project, project, project])
       self.loadProjectIntoDataSourceRefTag.assertValues([.discovery, .discovery, .discovery])
@@ -539,4 +623,80 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       self.loadMinimalProjectIntoDataSource.assertValues([])
     }
   }
+
+  func testLoadProjectIntoDataSource_CreatorDetailsFailure_ExperimentalVariant() {
+    let project = Project.template
+
+    let mockService = MockService(fetchProjectCreatorDetailsResult: .failure(.invalidInput))
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.viewDidLoad()
+
+      self.loadProjectIntoDataSourceCreatorDetailsIsLoading.assertValues([], "Nothing emits immediately.")
+      self.loadProjectIntoDataSourceCreatorDetailsEnvelope.assertValues([], "Nothing emits immediately.")
+      self.loadProjectIntoDataSourceProject.assertValues([], "Nothing emits immediately.")
+      self.loadProjectIntoDataSourceRefTag.assertValues([], "Nothing emits immediately.")
+      self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing emits immediately.")
+
+      // Begin presentation. When presenting the project `animated` will be false since it is embedded in the
+      // navigator controller.
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.loadProjectIntoDataSourceCreatorDetailsIsLoading.assertValues([true], "Starts loading.")
+      self.loadProjectIntoDataSourceCreatorDetailsEnvelope.assertValues([nil], "Emits nil as view appears")
+      self.loadProjectIntoDataSourceProject
+        .assertValues([project], "Load the full project into the data source.")
+      self.loadProjectIntoDataSourceRefTag.assertValues([.discovery], "Load the refTag into the data source.")
+      self.loadMinimalProjectIntoDataSource.assertValues(
+        [], "Do not load the minimal version of the project."
+      )
+
+      // End presentation.
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.loadProjectIntoDataSourceCreatorDetailsIsLoading.assertValues([true])
+      self.loadProjectIntoDataSourceCreatorDetailsEnvelope.assertValues([nil])
+      self.loadProjectIntoDataSourceProject
+        .assertValues([project], "Nothing new emits when the view is done.")
+      self.loadProjectIntoDataSourceRefTag.assertValues(
+        [.discovery], "Nothing new emits when the view is done."
+      )
+      self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
+
+      // Simulate a new version of the project coming through
+      self.vm.inputs.configureWith(value: (project, .discovery))
+
+      self.loadProjectIntoDataSourceCreatorDetailsIsLoading.assertValues([true, true])
+      self.loadProjectIntoDataSourceCreatorDetailsEnvelope.assertValues([nil, nil])
+      self.loadProjectIntoDataSourceProject.assertValues(
+        [project, project], "The new project is loaded into data source"
+      )
+      self.loadProjectIntoDataSourceRefTag.assertValues(
+        [.discovery, .discovery], "The new refTag is loaded into data source"
+      )
+      self.loadMinimalProjectIntoDataSource.assertValues([], "Nothing new emits when the view is done.")
+
+      self.scheduler.advance()
+
+      self.loadProjectIntoDataSourceCreatorDetailsIsLoading.assertValues(
+        [true, true, false], "isLoading is false"
+      )
+      self.loadProjectIntoDataSourceCreatorDetailsEnvelope.assertValues(
+        [nil, nil, nil], "nil is returned"
+      )
+      self.loadProjectIntoDataSourceProject.assertValues([project, project, project])
+      self.loadProjectIntoDataSourceRefTag.assertValues([.discovery, .discovery, .discovery])
+      self.loadMinimalProjectIntoDataSource.assertValues([])
+    }
+  }
+
+  // swiftlint:enable line_length
 }
