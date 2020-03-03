@@ -8,11 +8,6 @@ private enum Layout {
     static let minHeight: CGFloat = 36.0
     static let minWidth: CGFloat = 36.0
   }
-
-  enum View {
-    static let minHeight: CGFloat = 16.0
-    static let minWidth: CGFloat = 16.0
-  }
 }
 
 final class CreatorBylineView: UIView {
