@@ -303,7 +303,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] project, creatorDetails in
         self?.creatorBylineView.configureWith(project: project, creatorDetails: creatorDetails)
-    }
+      }
 
     self.viewModel.outputs.creatorImageUrl
       .observeForUI()

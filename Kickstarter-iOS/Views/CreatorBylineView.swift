@@ -38,6 +38,7 @@ final class CreatorBylineView: UIView {
     UILabel(frame: .zero)
       |> \.numberOfLines .~ 0
   }()
+
   private lazy var creatorStatsLabel: UILabel = {
     UILabel(frame: .zero)
       |> \.numberOfLines .~ 0
@@ -160,7 +161,7 @@ final class CreatorBylineView: UIView {
       ),
       self.verifiedCheckmarkImageView.bottomAnchor.constraint(
         equalTo: self.creatorImageView.bottomAnchor, constant: Styles.gridHalf(1)
-      )      
+      )
     ])
   }
 }

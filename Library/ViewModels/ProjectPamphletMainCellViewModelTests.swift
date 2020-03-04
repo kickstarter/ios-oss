@@ -274,7 +274,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrencyRate .~ 1.3
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
 
-
     withEnvironment(countryCode: "CA") {
       self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
       self.vm.inputs.awakeFromNib()
@@ -518,7 +517,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.opacityForViews.assertValues([0.0])
 
-   self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
 
     self.opacityForViews.assertValues([0.0, 1.0], "Fade in views after project comes in.")
   }
@@ -532,7 +531,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-     self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
       self.vm.inputs.awakeFromNib()
 
       self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(0)])
@@ -551,7 +550,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-     self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
       self.vm.inputs.awakeFromNib()
 
       self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(4)])
@@ -570,7 +569,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-     self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
       self.vm.inputs.awakeFromNib()
 
       self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(4)])

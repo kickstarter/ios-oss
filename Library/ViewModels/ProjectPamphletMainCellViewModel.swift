@@ -140,9 +140,10 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     )
     .map(first)
 
-    let projectAndRefTag = projectAndRefTagAndCreatorDetails.map { project, refTag, _ in (project,refTag) }
+    let projectAndRefTag = projectAndRefTagAndCreatorDetails.map { project, refTag, _ in (project, refTag) }
     let projectAndCreatorDetails = projectAndRefTagAndCreatorDetails.map { project, _, creatorDetails in
-      (project, creatorDetails) }
+      (project, creatorDetails)
+    }
     let creatorDetails = projectAndCreatorDetails.map { _, creatorDetails in creatorDetails.0 }.skipNil()
 
     let project = projectAndRefTag.map(first)
@@ -313,7 +314,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   }
 
   fileprivate let projectAndRefTagAndCreatorDetailsProperty = MutableProperty
-    <(Project, RefTag?, ProjectCreatorDetailsData)?>(nil)
+  <(Project, RefTag?, ProjectCreatorDetailsData)?>(nil)
   public func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData)) {
     self.projectAndRefTagAndCreatorDetailsProperty.value = value
   }

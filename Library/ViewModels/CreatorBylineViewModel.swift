@@ -15,7 +15,6 @@ public protocol CreatorBylineViewModelOutputs {
 
   /// Emits number of projects launched by creator.
   var creatorStatsText: Signal<String, Never> { get }
-
 }
 
 public protocol CreatorBylineViewModelType {
@@ -25,7 +24,6 @@ public protocol CreatorBylineViewModelType {
 
 public final class CreatorBylineViewModel: CreatorBylineViewModelType,
   CreatorBylineViewModelInputs, CreatorBylineViewModelOutputs {
-
   public init() {
     let project = self.projectProperty.signal.skipNil()
     let creatorDetails = self.creatorDetailsProperty.signal.skipNil()
@@ -39,7 +37,9 @@ public final class CreatorBylineViewModel: CreatorBylineViewModelType,
     self.creatorStatsText = creatorDetails.map { creatorDetails in
       Strings.projects_launched_count_created_projects_backed_count_backed(
         projects_launched_count: Format.wholeNumber(creatorDetails.launchedProjectsCount),
-        projects_backed_count: Format.wholeNumber(creatorDetails.backingsCount)) }
+        projects_backed_count: Format.wholeNumber(creatorDetails.backingsCount)
+      )
+    }
   }
 
   fileprivate let creatorDetailsProperty = MutableProperty<ProjectCreatorDetailsEnvelope?>(nil)
