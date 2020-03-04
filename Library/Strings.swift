@@ -1192,6 +1192,23 @@ contributeurs"
     )
   }
   /**
+   "Check out these handpicked projects just for you."
+
+   - **en**: "Check out these handpicked projects just for you."
+   - **de**: "Sieh dir dieses speziell für dich ausgesuchten Projekte an."
+   - **es**: "Echa un vistazo a estos proyectos seleccionados exclusivamente para ti."
+   - **fr**: "Voici quelques projets sélectionnés rien que pour vous."
+   - **ja**: "Check out these handpicked projects just for you."
+  */
+  public static func Check_out_these_handpicked_projects() -> String {
+    return localizedString(
+      key: "Check_out_these_handpicked_projects",
+      defaultValue: "Check out these handpicked projects just for you.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Check your payment details"
 
    - **en**: "Check your payment details"
