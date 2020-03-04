@@ -65,7 +65,7 @@ final class CuratedProjectsViewController: UIViewController {
       self.collectionView.topAnchor.constraint(equalTo: self.headerView.bottomAnchor),
       self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor)
     ])
   }
 

@@ -176,7 +176,7 @@ public final class CategorySelectionViewController: UIViewController {
   }
 
   @objc func continueButtonTapped() {
-    let vc = CuratedProjectsViewController()
+    let vc = CuratedProjectsViewController.instantiate()
     self.navigationController?.pushViewController(vc, animated: true)
   }
 }

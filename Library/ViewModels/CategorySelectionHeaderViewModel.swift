@@ -21,22 +21,22 @@ public protocol CategorySelectionHeaderViewModelType {
   var outputs: CategorySelectionHeaderViewModelOutputs { get }
 }
 
-final public class CategorySelectionHeaderViewModel: CategorySelectionHeaderViewModelType,
-CategorySelectionHeaderViewModelInputs, CategorySelectionHeaderViewModelOutputs {
+public final class CategorySelectionHeaderViewModel: CategorySelectionHeaderViewModelType,
+  CategorySelectionHeaderViewModelInputs, CategorySelectionHeaderViewModelOutputs {
   public init() {
     self.stepLabelText = self.contextSignal
-      .map(stepLabelText(for:))
+      .map(self.stepLabelText(for:))
 
     self.subtitleLabelText = self.contextSignal
-      .map(subtitleLabelText(for:))
+      .map(self.subtitleLabelText(for:))
       .skipNil()
 
     self.titleLabelText = self.contextSignal
-    .map(titleLabelText(for:))
+      .map(self.titleLabelText(for:))
   }
 
   private let (contextSignal, contextObserver) = Signal<HeaderViewContext, Never>.pipe()
-  public func configure(with context: HeaderViewContext)  {
+  public func configure(with context: HeaderViewContext) {
     self.contextObserver.send(value: context)
   }
 
@@ -48,7 +48,7 @@ CategorySelectionHeaderViewModelInputs, CategorySelectionHeaderViewModelOutputs 
   public var outputs: CategorySelectionHeaderViewModelOutputs { return self }
 }
 
-private func stepLabelText(`for` context: HeaderViewContext) -> String {
+private func stepLabelText(for context: HeaderViewContext) -> String {
   switch context {
   case .categorySelection:
     return Strings.Step_number(current_step: "1", total_steps: "2")
@@ -57,7 +57,7 @@ private func stepLabelText(`for` context: HeaderViewContext) -> String {
   }
 }
 
-private func subtitleLabelText(`for` context: HeaderViewContext) -> String? {
+private func subtitleLabelText(for context: HeaderViewContext) -> String? {
   switch context {
   case .categorySelection:
     return Strings.Select_up_to_five()
@@ -66,7 +66,7 @@ private func subtitleLabelText(`for` context: HeaderViewContext) -> String? {
   }
 }
 
-private func titleLabelText(`for` context: HeaderViewContext) -> String {
+private func titleLabelText(for context: HeaderViewContext) -> String {
   switch context {
   case .categorySelection:
     return Strings.Which_categories_interest_you()
