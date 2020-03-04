@@ -28,7 +28,7 @@ internal final class CreatorBylineViewModelTests: TestCase {
       |> Project.lens.creator.name .~ "Creator Blob"
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ "hello.jpg"
 
-    self.vm.inputs.configureWith(project: project, creatorDetails: (creatorDetails, false))
+    self.vm.inputs.configureWith(project: project, creatorDetails: creatorDetails)
     self.creatorImageUrl.assertValues(["hello.jpg"])
     self.creatorLabelText.assertValues(["by Creator Blob"])
     self.creatorStatsText.assertValues(["2 created • 10 backed"])

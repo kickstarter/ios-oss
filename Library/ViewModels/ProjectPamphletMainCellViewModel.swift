@@ -36,7 +36,7 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   var categoryNameLabelText: Signal<String, Never> { get }
 
   /// Emits a project when the creator by line view should be configured.
-  var configureCreatorBylineView: Signal<(Project, ProjectCreatorDetailsData), Never> { get }
+  var configureCreatorBylineView: Signal<(Project, ProjectCreatorDetailsEnvelope), Never> { get }
 
   /// Emits a project when the video player controller should be configured.
   var configureVideoPlayerController: Signal<Project, Never> { get }
@@ -142,6 +142,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     let projectAndRefTag = projectAndRefTagAndCreatorDetails.map { project, refTag, _ in (project,refTag) }
     let projectAndCreatorDetails = projectAndRefTagAndCreatorDetails.map { project, _, creatorDetails in (project, creatorDetails) }
+    let creatorDetails = projectAndCreatorDetails.map { _, creatorDetails in creatorDetails.0 }.skipNil()
 
     let project = projectAndRefTag.map(first)
 
@@ -160,7 +161,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .map(OptimizelyExperiment.projectCampaignExperiment)
       .skipNil()
 
-    self.configureCreatorBylineView = projectAndCreatorDetails
+    self.configureCreatorBylineView = Signal.combineLatest(project, creatorDetails)
 
     self.readMoreButtonStyle = projectCampaignExperimentVariant.map(projectCampaignButtonStyleForVariant)
     self.readMoreButtonTitle = projectCampaignExperimentVariant.map {
@@ -344,7 +345,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let backersTitleLabelText: Signal<String, Never>
   public let blurbAndReadMoreStackViewSpacing: Signal<CGFloat, Never>
   public let categoryNameLabelText: Signal<String, Never>
-  public let configureCreatorBylineView: Signal<(Project, ProjectCreatorDetailsData), Never>
+  public let configureCreatorBylineView: Signal<(Project, ProjectCreatorDetailsEnvelope), Never>
   public let configureVideoPlayerController: Signal<Project, Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>

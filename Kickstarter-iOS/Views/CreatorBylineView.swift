@@ -123,7 +123,7 @@ final class CreatorBylineView: UIView {
 
   // MARK: - Configuration
 
-  func configureWith(project: Project, creatorDetails: ProjectCreatorDetailsData) {
+  func configureWith(project: Project, creatorDetails: ProjectCreatorDetailsEnvelope) {
     self.viewModel.inputs.configureWith(project: project, creatorDetails: creatorDetails)
   }
 

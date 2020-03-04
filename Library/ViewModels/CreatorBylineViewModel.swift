@@ -3,7 +3,7 @@ import Prelude
 import ReactiveSwift
 
 public protocol CreatorBylineViewModelInputs {
-  func configureWith(project: Project, creatorDetails: ProjectCreatorDetailsData)
+  func configureWith(project: Project, creatorDetails: ProjectCreatorDetailsEnvelope)
 }
 
 public protocol CreatorBylineViewModelOutputs {
@@ -29,8 +29,7 @@ public final class CreatorBylineViewModel: CreatorBylineViewModelType,
   public init() {
     let project = self.projectProperty.signal.skipNil()
     let creatorDetails = self.creatorDetailsProperty.signal.skipNil()
-      .map { $0.0 }
-      .skipNil()
+      .map { $0 }
 
     self.creatorLabelText = project.map {
       Strings.project_creator_by_creator(creator_name: $0.creator.name)
@@ -42,9 +41,9 @@ public final class CreatorBylineViewModel: CreatorBylineViewModelType,
       projects_backed_count: "\(creatorDetails.backingsCount)") }
   }
 
-  fileprivate let creatorDetailsProperty = MutableProperty<ProjectCreatorDetailsData?>(nil)
+  fileprivate let creatorDetailsProperty = MutableProperty<ProjectCreatorDetailsEnvelope?>(nil)
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project, creatorDetails: ProjectCreatorDetailsData) {
+  public func configureWith(project: Project, creatorDetails: ProjectCreatorDetailsEnvelope) {
     self.projectProperty.value = project
     self.creatorDetailsProperty.value = creatorDetails
   }
