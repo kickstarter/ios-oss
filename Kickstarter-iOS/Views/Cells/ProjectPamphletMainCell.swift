@@ -94,10 +94,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     // todo: removing this
     _ = self.creatorBylineView
-      |> \.isHidden .~ false
-
-    _ = self.creatorStackView
       |> \.isHidden .~ true
+
+//    _ = self.creatorStackView
+//      |> \.isHidden .~ true
 
     self.viewModel.inputs.configureWith(value: value)
   }
