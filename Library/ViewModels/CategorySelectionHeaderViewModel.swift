@@ -25,14 +25,14 @@ public final class CategorySelectionHeaderViewModel: CategorySelectionHeaderView
   CategorySelectionHeaderViewModelInputs, CategorySelectionHeaderViewModelOutputs {
   public init() {
     self.stepLabelText = self.contextSignal
-      .map(self.stepLabelText(for:))
+      .map(stepLabelText(for:))
 
     self.subtitleLabelText = self.contextSignal
-      .map(self.subtitleLabelText(for:))
+      .map(subtitleLabelText(for:))
       .skipNil()
 
     self.titleLabelText = self.contextSignal
-      .map(self.titleLabelText(for:))
+      .map(titleLabelText(for:))
   }
 
   private let (contextSignal, contextObserver) = Signal<HeaderViewContext, Never>.pipe()

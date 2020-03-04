@@ -46,6 +46,14 @@ final class CuratedProjectsViewController: UIViewController {
     self.setupConstraints()
   }
 
+  public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    return .portrait
+  }
+
+  public override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+
   // MARK: - Configuration
 
   private func configureSubviews() {
