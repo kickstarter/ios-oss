@@ -106,7 +106,6 @@ final class CreatorBylineView: UIView {
       |> \.textColor .~ .ksr_cobalt_500
       |> \.font .~ .ksr_headline(size: 13)
       |> \.numberOfLines .~ 0
-      |> \.text %~ { _ in "12 created • 122 backed" }
 
     _ = self.creatorInfoStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
