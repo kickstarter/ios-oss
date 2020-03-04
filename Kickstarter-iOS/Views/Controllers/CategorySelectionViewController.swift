@@ -28,7 +28,7 @@ public final class CategorySelectionViewController: UIViewController {
   private let dataSource = CategorySelectionDataSource()
 
   private lazy var headerView: UIView = {
-    CategorySelectionHeaderView(frame: .zero)
+    CategorySelectionHeaderView(frame: .zero, context: .categorySelection)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 

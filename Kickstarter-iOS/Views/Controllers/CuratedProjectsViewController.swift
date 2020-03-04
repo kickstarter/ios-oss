@@ -24,7 +24,7 @@ final class CuratedProjectsViewController: UIViewController {
   }()
 
   private lazy var headerView: UIView = {
-    CategorySelectionHeaderView(frame: .zero)
+    CategorySelectionHeaderView(frame: .zero, context: .curatedProjects)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 

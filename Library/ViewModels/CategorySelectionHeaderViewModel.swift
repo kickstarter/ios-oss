@@ -12,7 +12,7 @@ public protocol CategorySelectionHeaderViewModelInputs {
 
 public protocol CategorySelectionHeaderViewModelOutputs {
   var stepLabelText: Signal<String, Never> { get }
-  var subtitleLabelText: Signal<String?, Never> { get }
+  var subtitleLabelText: Signal<String, Never> { get }
   var titleLabelText: Signal<String, Never> { get }
 }
 
@@ -21,24 +21,27 @@ public protocol CategorySelectionHeaderViewModelType {
   var outputs: CategorySelectionHeaderViewModelOutputs { get }
 }
 
-final class CategorySelectionHeaderViewModel: CategorySelectionHeaderViewModelType,
+final public class CategorySelectionHeaderViewModel: CategorySelectionHeaderViewModelType,
 CategorySelectionHeaderViewModelInputs, CategorySelectionHeaderViewModelOutputs {
-  init() {
+  public init() {
     self.stepLabelText = self.contextSignal
       .map(stepLabelText(for:))
+
     self.subtitleLabelText = self.contextSignal
-    .map(subtitleLabelText(for:))
+      .map(subtitleLabelText(for:))
+      .skipNil()
+
     self.titleLabelText = self.contextSignal
     .map(titleLabelText(for:))
   }
 
   private let (contextSignal, contextObserver) = Signal<HeaderViewContext, Never>.pipe()
-  func configure(with context: HeaderViewContext)  {
+  public func configure(with context: HeaderViewContext)  {
     self.contextObserver.send(value: context)
   }
 
   public let stepLabelText: Signal<String, Never>
-  public let subtitleLabelText: Signal<String?, Never>
+  public let subtitleLabelText: Signal<String, Never>
   public let titleLabelText: Signal<String, Never>
 
   public var inputs: CategorySelectionHeaderViewModelInputs { return self }
@@ -68,6 +71,6 @@ private func titleLabelText(`for` context: HeaderViewContext) -> String {
   case .categorySelection:
     return Strings.Which_categories_interest_you()
   case .curatedProjects:
-    return Strings.Which_categories_interest_you()
+    return Strings.Check_out_these_handpicked_projects()
   }
 }
