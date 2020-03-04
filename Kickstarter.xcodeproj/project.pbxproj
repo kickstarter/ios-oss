@@ -1261,6 +1261,8 @@
 		D7ADDFE722E0DAFA00157D83 /* RewardCellProjectBackingStateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ADDFE522E0DAEB00157D83 /* RewardCellProjectBackingStateType.swift */; };
 		D7B468F023469F98003D5A51 /* STPCardBrand+CreditCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B468EF23469F98003D5A51 /* STPCardBrand+CreditCardType.swift */; };
 		D7B9C7581E453FBF00EA3A22 /* UILabel+IsTruncated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */; };
+		D7D13C332405B89A00B6E929 /* CreatorBylineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D13C322405B89A00B6E929 /* CreatorBylineView.swift */; };
+		D7D13C3524070B7E00B6E929 /* CreatorBylineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D13C3424070B7E00B6E929 /* CreatorBylineViewModel.swift */; };
 		D7E20E6D2284A3BD00BA61A0 /* PledgeCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */; };
 		D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -2604,6 +2606,8 @@
 		D7B962AA23888A0B003AA616 /* Optimizely.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Optimizely.framework; path = Carthage/Build/iOS/Optimizely.framework; sourceTree = "<group>"; };
 		D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyExperiment.swift; sourceTree = "<group>"; };
 		D7B9C7571E453FBF00EA3A22 /* UILabel+IsTruncated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+IsTruncated.swift"; sourceTree = "<group>"; };
+		D7D13C322405B89A00B6E929 /* CreatorBylineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorBylineView.swift; sourceTree = "<group>"; };
+		D7D13C3424070B7E00B6E929 /* CreatorBylineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorBylineViewModel.swift; sourceTree = "<group>"; };
 		D7E20EA5228B4AC200BA61A0 /* PledgeCTAContainerViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeCTAContainerViewViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2934,11 +2938,15 @@
 			children = (
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
+				A751A51C1C85EAD8009C5DEA /* Cells */,
+				A751A51D1C85EAD8009C5DEA /* Controllers */,
+				D7D13C322405B89A00B6E929 /* CreatorBylineView.swift */,
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
 				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
 				A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */,
+				3742036B22DD41A0007AA86E /* Layouts */,
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
 				77BF99B622652C9500513CE3 /* MultiLineButton.swift */,
@@ -2958,13 +2966,10 @@
 				37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */,
 				7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */,
 				777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */,
-				8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */,
-				A751A51C1C85EAD8009C5DEA /* Cells */,
-				A751A51D1C85EAD8009C5DEA /* Controllers */,
-				3742036B22DD41A0007AA86E /* Layouts */,
 				8A14E09523971BD000387824 /* ShimmerLoadingViews */,
 				A73923AA1D272242004524C3 /* Storyboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
+				8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3622,6 +3627,7 @@
 				A7ED1F5F1E831C5C00BFFA01 /* CommentsViewModelTests.swift */,
 				373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */,
 				373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */,
+				D7D13C3424070B7E00B6E929 /* CreatorBylineViewModel.swift */,
 				D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */,
 				D6B6876D21937182005F5DA7 /* CreditCardCellViewModelTests.swift */,
 				59B0E0051D1207070081D2DC /* DashboardActionCellViewModel.swift */,
@@ -3807,8 +3813,6 @@
 				D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */,
 				D796867B20FE655300E54C61 /* SettingsFollowCellViewModel.swift */,
 				D7237095211A1593001EA4CA /* SettingsFollowCellViewModelTests.swift */,
-				D79970B223EB6FF800584911 /* ThanksCategoryCellViewModel.swift */,
-				D79970B523EC88BB00584911 /* ThanksCategoryCellViewModelTests.swift */,
 				D6B6766420FE85000082717D /* SettingsNewslettersCellViewModel.swift */,
 				D6B4EFFF21079F750079159D /* SettingsNewslettersCellViewModelTests.swift */,
 				D6B4EFC5210686270079159D /* SettingsNewslettersViewModel.swift */,
@@ -3841,6 +3845,8 @@
 				A7ED1F631E831C5C00BFFA01 /* SortPagerViewModelTests.swift */,
 				9D7536CE1D78D88D00A7623B /* SurveyResponseViewModel.swift */,
 				A7ED1F6A1E831C5C00BFFA01 /* SurveyResponseViewModelTests.swift */,
+				D79970B223EB6FF800584911 /* ThanksCategoryCellViewModel.swift */,
+				D79970B523EC88BB00584911 /* ThanksCategoryCellViewModelTests.swift */,
 				A7F441AB1D005A9400FE6FC5 /* ThanksViewModel.swift */,
 				A7ED1FA61E831C5C00BFFA01 /* ThanksViewModelTests.swift */,
 				A7F441AC1D005A9400FE6FC5 /* TwoFactorViewModel.swift */,
@@ -4862,6 +4868,7 @@
 				D6534D3C22E7898B00E9D279 /* PledgePaymentMethodsViewModel.swift in Sources */,
 				9DEE3B561D1D819D0020C2BE /* ProjectActivityBackingCellViewModel.swift in Sources */,
 				A78537F81CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,
+				D7D13C3524070B7E00B6E929 /* CreatorBylineViewModel.swift in Sources */,
 				D63BBD37217FC224007E01F0 /* CreditCardCellViewModel.swift in Sources */,
 				7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */,
 				9D89B7E51D6B8DB90021F6FF /* WebModalViewModel.swift in Sources */,
@@ -5227,6 +5234,7 @@
 				9D14FF901D133351005F4ABB /* ProjectActivityNegativeStateChangeCell.swift in Sources */,
 				3742036D22DD41BA007AA86E /* PillLayout.swift in Sources */,
 				015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */,
+				D7D13C332405B89A00B6E929 /* CreatorBylineView.swift in Sources */,
 				7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */,
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
 				8AD7953423A2C95000998C79 /* QualtricsTypes.swift in Sources */,

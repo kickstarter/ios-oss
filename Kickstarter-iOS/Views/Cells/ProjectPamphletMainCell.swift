@@ -29,6 +29,11 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   fileprivate weak var videoController: VideoViewController?
 
+  private lazy var creatorBylineView: CreatorBylineView = {
+    CreatorBylineView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate var backersTitleLabel: UILabel!
   @IBOutlet fileprivate var blurbAndReadMoreStackView: UIStackView!
@@ -84,6 +89,16 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   }
 
   internal func configureWith(value: (Project, RefTag?)) {
+    _ = ([self.creatorBylineView], self.projectNameAndCreatorStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    // todo: removing this
+    _ = self.creatorBylineView
+      |> \.isHidden .~ true
+
+//    _ = self.creatorStackView
+//      |> \.isHidden .~ true
+
     self.viewModel.inputs.configureWith(value: value)
   }
 
@@ -283,6 +298,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.configureVideoPlayerController
       .observeForUI()
       .observeValues { [weak self] in self?.configureVideoPlayerController(forProject: $0) }
+
+    self.viewModel.outputs.configureCreatorBylineView
+      .observeForUI()
+      .observeValues { [weak self] in self?.creatorBylineView.configureWith(value: $0) }
 
     self.viewModel.outputs.creatorImageUrl
       .observeForUI()
