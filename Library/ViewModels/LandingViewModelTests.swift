@@ -25,4 +25,3 @@ final class LandingViewModelTests: TestCase {
     self.goToCategorySelection.assertValueCount(1)
   }
 }
-

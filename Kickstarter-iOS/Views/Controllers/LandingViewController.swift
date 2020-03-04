@@ -1,19 +1,22 @@
 import Library
-import UIKit
 import Prelude
+import UIKit
 
 public final class LandingViewController: UIViewController {
   // MARK: - Properties
+
   private lazy var backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var getStartedButton: UIButton = {
     UIButton(type: .custom)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var logoImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
@@ -22,7 +25,7 @@ public final class LandingViewController: UIViewController {
 
   // MARK: - Lifecycle
 
-  override public func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     self.configureSubviews()
@@ -30,12 +33,14 @@ public final class LandingViewController: UIViewController {
 
     self.navigationController?.setNavigationBarHidden(true, animated: false)
 
-    self.getStartedButton.addTarget(self,
-                                    action: #selector(LandingViewController.getStartedButtonTapped),
-                                    for: .touchUpInside)
+    self.getStartedButton.addTarget(
+      self,
+      action: #selector(LandingViewController.getStartedButtonTapped),
+      for: .touchUpInside
+    )
   }
 
-  override public func bindViewModel() {
+  public override func bindViewModel() {
     super.bindViewModel()
 
     self.viewModel.outputs.goToCategorySelection
@@ -44,10 +49,10 @@ public final class LandingViewController: UIViewController {
         let categorySelectionVC = CategorySelectionViewController.instantiate()
 
         self?.navigationController?.pushViewController(categorySelectionVC, animated: true)
-    }
+      }
   }
 
-  override public func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self.titleLabel
@@ -72,7 +77,7 @@ public final class LandingViewController: UIViewController {
       |> scrollViewStyle
   }
 
-  override public func viewDidLayoutSubviews() {
+  public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
     self.updateScrollViewInsets()
@@ -110,12 +115,18 @@ public final class LandingViewController: UIViewController {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.getStartedButton.bottomAnchor.constraint(equalTo: self.view.layoutMarginsGuide.bottomAnchor,
-                                                    constant: -Styles.grid(3)),
-      self.getStartedButton.leftAnchor.constraint(equalTo: self.view.leftAnchor,
-                                                  constant: Styles.grid(3)),
-      self.getStartedButton.rightAnchor.constraint(equalTo: self.view.rightAnchor,
-                                                   constant: -Styles.grid(3)),
+      self.getStartedButton.bottomAnchor.constraint(
+        equalTo: self.view.layoutMarginsGuide.bottomAnchor,
+        constant: -Styles.grid(3)
+      ),
+      self.getStartedButton.leftAnchor.constraint(
+        equalTo: self.view.leftAnchor,
+        constant: Styles.grid(3)
+      ),
+      self.getStartedButton.rightAnchor.constraint(
+        equalTo: self.view.rightAnchor,
+        constant: -Styles.grid(3)
+      ),
       self.getStartedButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
@@ -140,6 +151,7 @@ public final class LandingViewController: UIViewController {
   }
 
   // MARK: - Accessors
+
   @objc func getStartedButtonTapped() {
     self.viewModel.inputs.getStartedButtonTapped()
   }
@@ -184,7 +196,7 @@ private let subtitleLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ .center
     |> \.text %~ { _ in
       Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
-  }
+    }
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
