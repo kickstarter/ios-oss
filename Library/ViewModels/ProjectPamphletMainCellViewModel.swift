@@ -141,7 +141,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     .map(first)
 
     let projectAndRefTag = projectAndRefTagAndCreatorDetails.map { project, refTag, _ in (project,refTag) }
-    let projectAndCreatorDetails = projectAndRefTagAndCreatorDetails.map { project, _, creatorDetails in (project, creatorDetails) }
+    let projectAndCreatorDetails = projectAndRefTagAndCreatorDetails.map { project, _, creatorDetails in
+      (project, creatorDetails) }
     let creatorDetails = projectAndCreatorDetails.map { _, creatorDetails in creatorDetails.0 }.skipNil()
 
     let project = projectAndRefTag.map(first)
@@ -311,7 +312,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.awakeFromNibProperty.value = ()
   }
 
-  fileprivate let projectAndRefTagAndCreatorDetailsProperty = MutableProperty<(Project, RefTag?, ProjectCreatorDetailsData)?>(nil)
+  fileprivate let projectAndRefTagAndCreatorDetailsProperty = MutableProperty
+    <(Project, RefTag?, ProjectCreatorDetailsData)?>(nil)
   public func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData)) {
     self.projectAndRefTagAndCreatorDetailsProperty.value = value
   }

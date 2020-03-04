@@ -36,9 +36,10 @@ public final class CreatorBylineViewModel: CreatorBylineViewModelType,
     }
 
     self.creatorImageUrl = project.map { URL(string: $0.creator.avatar.small) }
-    self.creatorStatsText = creatorDetails.map { creatorDetails in Strings.projects_launched_count_created_projects_backed_count_backed(
-      projects_launched_count: "\(creatorDetails.launchedProjectsCount)",
-      projects_backed_count: "\(creatorDetails.backingsCount)") }
+    self.creatorStatsText = creatorDetails.map { creatorDetails in
+      Strings.projects_launched_count_created_projects_backed_count_backed(
+        projects_launched_count: Format.wholeNumber(creatorDetails.launchedProjectsCount),
+        projects_backed_count: Format.wholeNumber(creatorDetails.backingsCount)) }
   }
 
   fileprivate let creatorDetailsProperty = MutableProperty<ProjectCreatorDetailsEnvelope?>(nil)
