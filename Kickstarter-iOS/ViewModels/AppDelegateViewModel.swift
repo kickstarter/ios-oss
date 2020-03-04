@@ -421,19 +421,20 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         AppEnvironment.current.apiService.fetchProject(param: param)
           .demoteErrors()
           .observeForUI()
-          .map { project -> (Project, Navigation.Project, [UIViewController]) in
+          .map { project -> (Project, Navigation.Project, [UIViewController], RefTag?) in
             (
               project, subpage,
-              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)]
+              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)],
+              refTag
             )
           }
       }
 
     let projectLink = projectLinkValues
-      .filter { project, _, _ in project.prelaunchActivated != true }
+      .filter { project, _, _, _ in project.prelaunchActivated != true }
 
     let projectPreviewLink = projectLinkValues
-      .filter { project, _, _ in project.prelaunchActivated == true }
+      .filter { project, _, _, _ in project.prelaunchActivated == true }
 
     let resolvedRedirectUrl = deepLinkUrl
       .filter { Navigation.deepLinkMatch($0) == nil }
@@ -451,12 +452,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
 
     let projectRootLink = projectLink
-      .filter { _, subpage, _ in subpage == .root }
-      .map { _, _, vcs in vcs }
+      .filter { _, subpage, _, _ in subpage == .root }
+      .map { _, _, vcs, _ in vcs }
 
     let projectCommentsLink = projectLink
-      .filter { _, subpage, _ in subpage == .comments }
-      .map { project, _, vcs in vcs + [CommentsViewController.configuredWith(project: project, update: nil)] }
+      .filter { _, subpage, _, _ in subpage == .comments }
+      .map { project, _, vcs, _ in
+        vcs + [CommentsViewController.configuredWith(project: project, update: nil)]
+      }
 
     let surveyResponseLink = deepLink
       .map { link -> Int? in
@@ -475,15 +478,17 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
 
     let campaignFaqLink = projectLink
-      .filter { _, subpage, _ in subpage == .faqs }
-      .map { project, _, vcs in vcs + [ProjectDescriptionViewController.configuredWith(project: project)] }
+      .filter { _, subpage, _, _ in subpage == .faqs }
+      .map { project, _, vcs, refTag in
+        vcs + [ProjectDescriptionViewController.configuredWith(value: (project, refTag))]
+      }
 
     let updatesLink = projectLink
-      .filter { _, subpage, _ in subpage == .updates }
-      .map { project, _, vcs in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
+      .filter { _, subpage, _, _ in subpage == .updates }
+      .map { project, _, vcs, _ in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
 
     let updateLink = projectLink
-      .map { project, subpage, vcs -> (Project, Int, Navigation.Project.Update, [UIViewController])? in
+      .map { project, subpage, vcs, _ -> (Project, Int, Navigation.Project.Update, [UIViewController])? in
         guard case let .update(id, updateSubpage) = subpage else { return nil }
         return (project, id, updateSubpage, vcs)
       }
