@@ -341,6 +341,7 @@
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
 		8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */; };
 		8A14E09723971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */; };
+		8A1E3CE6240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1E3CE5240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift */; };
 		8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */; };
 		8A213CEC239EAEA400BBB4C7 /* TrackingClientConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */; };
 		8A213CEF239EAEA400BBB4C7 /* Koala.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE8239EAEA400BBB4C7 /* Koala.swift */; };
@@ -1747,6 +1748,7 @@
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardIntent.swift; sourceTree = "<group>"; };
 		8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationShimmerLoadingView.swift; sourceTree = "<group>"; };
+		8A1E3CE5240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreatorDetailsShimmerLoadingView.swift; sourceTree = "<group>"; };
 		8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientType.swift; sourceTree = "<group>"; };
 		8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientConfiguration.swift; sourceTree = "<group>"; };
 		8A213CE6239EAEA400BBB4C7 /* TrackingClientConfigurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientConfigurationTests.swift; sourceTree = "<group>"; };
@@ -2819,6 +2821,7 @@
 			isa = PBXGroup;
 			children = (
 				8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */,
+				8A1E3CE5240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift */,
 			);
 			path = ShimmerLoadingViews;
 			sourceTree = "<group>";
@@ -2938,15 +2941,12 @@
 			children = (
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
-				A751A51C1C85EAD8009C5DEA /* Cells */,
-				A751A51D1C85EAD8009C5DEA /* Controllers */,
 				D7D13C322405B89A00B6E929 /* CreatorBylineView.swift */,
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
 				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
 				A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */,
-				3742036B22DD41A0007AA86E /* Layouts */,
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
 				77BF99B622652C9500513CE3 /* MultiLineButton.swift */,
@@ -2966,10 +2966,13 @@
 				37653F81220A07710016E7F9 /* SettingsGroupedHeaderView.swift */,
 				7793B16C21077AEB007857C0 /* SettingsHeaderView.swift */,
 				777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */,
+				8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */,
+				A751A51C1C85EAD8009C5DEA /* Cells */,
+				A751A51D1C85EAD8009C5DEA /* Controllers */,
+				3742036B22DD41A0007AA86E /* Layouts */,
 				8A14E09523971BD000387824 /* ShimmerLoadingViews */,
 				A73923AA1D272242004524C3 /* Storyboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
-				8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5295,6 +5298,7 @@
 				D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */,
 				D6A45DB72319A7E1006DDB01 /* ManagePledgeViewController.swift in Sources */,
 				01940B2B1D46814E0074FCE3 /* HelpWebViewModel.swift in Sources */,
+				8A1E3CE6240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift in Sources */,
 				D0A787BD2204D865006AE4F4 /* SelectCurrencyTableViewHeader.swift in Sources */,
 				598D96B61D426D80003F3F66 /* ActivitySampleFollowCell.swift in Sources */,
 				D0971E16221E083100DFEF9B /* SelectCurrencyCell.swift in Sources */,

@@ -34,6 +34,11 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var creatorBylineShimmerLoadingView: ProjectCreatorDetailsShimmerLoadingView = {
+    ProjectCreatorDetailsShimmerLoadingView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate var backersTitleLabel: UILabel!
   @IBOutlet fileprivate var blurbAndReadMoreStackView: UIStackView!
@@ -89,7 +94,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   }
 
   internal func configureWith(value: (Project, RefTag?)) {
-    _ = ([self.creatorBylineView], self.projectNameAndCreatorStackView)
+    _ = ([self.creatorBylineView, self.creatorBylineShimmerLoadingView], self.projectNameAndCreatorStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     // todo: removing this
