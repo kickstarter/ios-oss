@@ -102,7 +102,8 @@ final class CreatorBylineView: UIView {
     _ = self.creatorStatsLabel
       |> \.textColor .~ .ksr_cobalt_500
       |> \.font .~ .ksr_headline(size: 13)
-      |> \.text %~ { _ in "First-time creator • 12 projects backed" }
+      |> \.numberOfLines .~ 0
+      |> \.text %~ { _ in "12 created • 122 backed" }
 
     _ = self.creatorInfoStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
