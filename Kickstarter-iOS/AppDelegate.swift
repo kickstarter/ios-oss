@@ -252,9 +252,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToOnboarding
       .observeForControllerAction()
       .observeValues { [weak self] in
+        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
         let categorySelectionViewController = LandingViewController.instantiate()
         let navController = NavigationController(rootViewController: categorySelectionViewController)
-        navController.modalPresentationStyle = .fullScreen
+        navController.modalPresentationStyle = isIpad ? .formSheet : .fullScreen
 
         self?.rootTabBarController?.present(navController, animated: true)
       }

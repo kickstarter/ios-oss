@@ -10,7 +10,11 @@ public final class LandingViewController: UIViewController {
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
   private lazy var logoImageView: UIImageView = { UIImageView(frame: .zero) }()
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+  private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
@@ -63,6 +67,15 @@ public final class LandingViewController: UIViewController {
 
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.scrollView
+      |> scrollViewStyle
+  }
+
+  override public func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.updateScrollViewInsets()
   }
 
   public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -76,9 +89,13 @@ public final class LandingViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = (self.rootStackView, self.view)
+    _ = (self.scrollView, self.view)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToCenterInParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.rootStackView, self.scrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.logoImageView, self.titleLabel, self.subtitleLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -102,6 +119,24 @@ public final class LandingViewController: UIViewController {
       self.getStartedButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
+  }
+
+  private func updateScrollViewInsets() {
+    self.rootStackView.layoutIfNeeded()
+
+    let stackViewHeight = self.rootStackView.bounds.height
+    let viewHeight = self.view.bounds.height
+    let buttonHeight = self.getStartedButton.bounds.height + Styles.grid(3) // padding
+
+    if stackViewHeight > viewHeight {
+      self.scrollView.contentInset.top = 0
+    } else {
+      let inset = (viewHeight - stackViewHeight) / 2
+
+      self.scrollView.contentInset.top = inset
+    }
+
+    self.scrollView.contentInset.bottom = buttonHeight
   }
 
   // MARK: - Accessors
@@ -160,4 +195,9 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.alignment .~ .center
     |> \.distribution .~ .equalSpacing
     |> \.spacing .~ Styles.grid(2)
+}
+
+private let scrollViewStyle: ScrollStyle = { scrollView in
+  scrollView
+    |> \.alwaysBounceVertical .~ true
 }

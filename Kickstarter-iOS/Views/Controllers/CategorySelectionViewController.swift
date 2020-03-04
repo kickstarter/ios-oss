@@ -73,6 +73,7 @@ public final class CategorySelectionViewController: UIViewController {
     self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
     self.navigationItem.setRightBarButton(self.skipButton, animated: false)
     self.navigationItem.setHidesBackButton(true, animated: false)
+    
     self.navigationController?.setNavigationBarHidden(false, animated: false)
 
     self.collectionView.registerCellClass(PillCell.self)
