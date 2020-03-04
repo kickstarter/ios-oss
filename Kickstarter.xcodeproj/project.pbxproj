@@ -231,6 +231,7 @@
 		773452FA2384477D00E6B6A3 /* DiscoveryEditorialCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773452F92384477D00E6B6A3 /* DiscoveryEditorialCell.swift */; };
 		773452FD2384B6BF00E6B6A3 /* DiscoveryEditorialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773452FB2384AD9300E6B6A3 /* DiscoveryEditorialViewModel.swift */; };
 		773BFCB0241013D60078A79A /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BFCAF241013D60078A79A /* LandingViewController.swift */; };
+		773BFCB2241049510078A79A /* LandingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BFCB1241049510078A79A /* LandingViewModel.swift */; };
 		774527DE21B1E0480072E590 /* MessageBannerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774527DD21B1E0480072E590 /* MessageBannerViewController.xib */; };
 		7748438022D8DA3800508C9B /* Instantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7748437F22D8DA3800508C9B /* Instantiable.swift */; };
 		7748438422D8DE8200508C9B /* PledgeContinueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7748438322D8DE8200508C9B /* PledgeContinueViewController.swift */; };
@@ -1652,6 +1653,7 @@
 		773452F92384477D00E6B6A3 /* DiscoveryEditorialCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEditorialCell.swift; sourceTree = "<group>"; };
 		773452FB2384AD9300E6B6A3 /* DiscoveryEditorialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEditorialViewModel.swift; sourceTree = "<group>"; };
 		773BFCAF241013D60078A79A /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
+		773BFCB1241049510078A79A /* LandingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewModel.swift; sourceTree = "<group>"; };
 		774527DD21B1E0480072E590 /* MessageBannerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageBannerViewController.xib; sourceTree = "<group>"; };
 		7748437F22D8DA3800508C9B /* Instantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instantiable.swift; sourceTree = "<group>"; };
 		7748438322D8DE8200508C9B /* PledgeContinueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeContinueViewController.swift; sourceTree = "<group>"; };
@@ -3722,6 +3724,7 @@
 				A7ED1F521E831C5C00BFFA01 /* FindFriendsViewModelTests.swift */,
 				01940B251D42DC1A0074FCE3 /* HelpViewModel.swift */,
 				A7ED1F8E1E831C5C00BFFA01 /* HelpViewModelTests.swift */,
+				773BFCB1241049510078A79A /* LandingViewModel.swift */,
 				D04AAC18218BB70B00CF713E /* LoadingBarButtonItemViewModel.swift */,
 				D04AAC14218BB70A00CF713E /* LoadingBarButtonItemViewModelTests.swift */,
 				370C8B6523590CA500DE75DD /* LoadingButtonViewModel.swift */,
@@ -5018,6 +5021,7 @@
 				A7F6F0C11DC7EBF7002C118C /* DateProtocol.swift in Sources */,
 				8A297910234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift in Sources */,
 				77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */,
+				773BFCB2241049510078A79A /* LandingViewModel.swift in Sources */,
 				018422C01D2C486900CA7566 /* DashboardProjectsDrawerCellViewModel.swift in Sources */,
 				D706479023A2BF4B00B33C20 /* OptimizelyClientType.swift in Sources */,
 				8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */,

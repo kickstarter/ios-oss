@@ -14,8 +14,10 @@ public final class LandingViewController: UIViewController {
   private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private let viewModel: LandingViewModelType = LandingViewModel()
+
   // MARK: - Lifecycle
-  
+
   override public func viewDidLoad() {
     super.viewDidLoad()
 
@@ -23,10 +25,22 @@ public final class LandingViewController: UIViewController {
     self.setupConstraints()
 
     self.navigationController?.setNavigationBarHidden(true, animated: false)
+
+    self.getStartedButton.addTarget(self,
+                                    action: #selector(LandingViewController.getStartedButtonTapped),
+                                    for: .touchUpInside)
   }
 
   override public func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.goToCategorySelection
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in
+        let categorySelectionVC = CategorySelectionViewController.instantiate()
+
+        self?.navigationController?.pushViewController(categorySelectionVC, animated: true)
+    }
   }
 
   override public func bindStyles() {
@@ -89,6 +103,11 @@ public final class LandingViewController: UIViewController {
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
   }
+
+  // MARK: - Accessors
+  @objc func getStartedButtonTapped() {
+    self.viewModel.inputs.getStartedButtonTapped()
+  }
 }
 
 // MARK: - Styles
@@ -102,7 +121,7 @@ private let backgroundImageViewStyle: ImageViewStyle = { imageView in
 private let getStartedButtonStyle: ButtonStyle = { button in
   button
     |> greenButtonStyle
-    |> UIButton.lens.title(for: .normal) %~ { _ in "Get started" }
+    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Get_started() }
 }
 
 private let logoImageViewStyle: ImageViewStyle = { imageView in
