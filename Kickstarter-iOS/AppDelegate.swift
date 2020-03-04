@@ -252,7 +252,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToOnboarding
       .observeForControllerAction()
       .observeValues { [weak self] in
-        let categorySelectionViewController = CategorySelectionViewController.instantiate()
+        let categorySelectionViewController = LandingViewController.instantiate()
         let navController = NavigationController(rootViewController: categorySelectionViewController)
         navController.modalPresentationStyle = .fullScreen
 
