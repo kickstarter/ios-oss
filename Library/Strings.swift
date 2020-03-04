@@ -3697,6 +3697,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Get started"
+
+   - **en**: "Get started"
+   - **de**: "Jetzt loslegen"
+   - **es**: "¡Manos a la obra!"
+   - **fr**: "Démarrer"
+   - **ja**: "はじめよう"
+  */
+  public static func Get_started() -> String {
+    return localizedString(
+      key: "Get_started",
+      defaultValue: "Get started",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Go to project page"
 
    - **en**: "Go to project page"
