@@ -901,7 +901,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
           OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
@@ -1239,7 +1239,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
           OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
@@ -1292,7 +1292,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
           OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
@@ -1480,7 +1480,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testPerformShortcutItem_WhenOnboardingFlowIsActive() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
           OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
@@ -1510,7 +1510,7 @@ final class AppDelegateViewModelTests: TestCase {
   func testLaunchShortcutItem_WhenOnboardingFlowIsActive() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
           OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
@@ -1787,7 +1787,7 @@ final class AppDelegateViewModelTests: TestCase {
     let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
           OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
@@ -2269,7 +2269,7 @@ final class AppDelegateViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments
       .~ [
-        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
           OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
@@ -2293,7 +2293,7 @@ final class AppDelegateViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments
       .~ [
-        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
           OptimizelyExperiment.Variant.variant1.rawValue
       ]
     let mockValueStore = MockKeyValueStore()
@@ -2319,7 +2319,7 @@ final class AppDelegateViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments
       .~ [
-        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
           OptimizelyExperiment.Variant.variant1.rawValue
       ]
     let mockValueStore = MockKeyValueStore()
@@ -2344,7 +2344,7 @@ final class AppDelegateViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments
       .~ [
-        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
           OptimizelyExperiment.Variant.control.rawValue
       ]
     let mockValueStore = MockKeyValueStore()
@@ -2369,7 +2369,7 @@ final class AppDelegateViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments
       .~ [
-        OptimizelyExperiment.Key.categoryPersonalization.rawValue:
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
           OptimizelyExperiment.Variant.variant2.rawValue
       ]
     let mockValueStore = MockKeyValueStore()

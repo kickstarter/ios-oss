@@ -1107,7 +1107,7 @@ private func shouldSeeCategoryPersonalization() -> Bool {
   }
 
   let variant = AppEnvironment.current.optimizelyClient?.variant(
-    for: .categoryPersonalization,
+    for: .onboardingCategoryPersonalizationFlow,
     userId: deviceIdentifier(uuid: UUID()),
     isAdmin: false,
     userAttributes: optimizelyUserAttributes()
