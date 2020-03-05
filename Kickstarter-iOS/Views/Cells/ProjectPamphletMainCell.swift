@@ -34,6 +34,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var tapGesture: UITapGestureRecognizer = {
+    UITapGestureRecognizer(target: self, action: #selector(creatorBylineTapped))
+  }()
+
   @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate var backersTitleLabel: UILabel!
   @IBOutlet fileprivate var blurbAndReadMoreStackView: UIStackView!
@@ -85,19 +89,14 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.readMoreButton.heightAnchor
       .constraint(greaterThanOrEqualToConstant: Layout.Button.height).isActive = true
 
+    self.creatorBylineView.addGestureRecognizer(self.tapGesture)
+
     self.viewModel.inputs.awakeFromNib()
   }
 
   internal func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData)) {
     _ = ([self.creatorBylineView], self.projectNameAndCreatorStackView)
       |> ksr_addArrangedSubviewsToStackView()
-
-    // todo: removing this
-    _ = self.creatorBylineView
-      |> \.isHidden .~ true
-
-//    _ = self.creatorStackView
-//      |> \.isHidden .~ true
 
     self.viewModel.inputs.configureWith(value: value)
   }
@@ -269,6 +268,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.creatorButton.rac.accessibilityLabel = self.viewModel.outputs.creatorLabelText
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
+    self.creatorButton.rac.hidden = self.viewModel.outputs.creatorButtonAndStackViewIsHidden
+    self.creatorBylineView.rac.hidden = self.viewModel.outputs.creatorBylineViewIsHidden
+    self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorButtonAndStackViewIsHidden
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.deadlineTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
@@ -338,6 +340,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
         self.delegate?.projectPamphletMainCell(self, goToCreatorForProject: $0)
       }
 
+    self.viewModel.outputs.notifyDelegateToGoToCreatorFromByline
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.projectPamphletMainCell(self, goToCreatorForProject: $0)
+      }
+
     self.viewModel.outputs.opacityForViews
       .observeForUI()
       .observeValues { [weak self] alpha in
@@ -383,6 +392,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   @objc fileprivate func readMoreButtonTapped() {
     self.viewModel.inputs.readMoreButtonTapped()
+  }
+
+  @objc fileprivate func creatorBylineTapped() {
+    self.viewModel.inputs.creatorBylineTapped()
   }
 
   @objc fileprivate func creatorButtonTapped() {

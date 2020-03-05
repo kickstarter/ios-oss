@@ -14,6 +14,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let blurbAndReadMoreStackViewSpacing = TestObserver<CGFloat, Never>()
   private let conversionLabelHidden = TestObserver<Bool, Never>()
   private let conversionLabelText = TestObserver<String, Never>()
+  private let creatorButtonAndStackViewIsHidden = TestObserver<Bool, Never>()
+  private let creatorBylineViewIsHidden = TestObserver<Bool, Never>()
   private let creatorImageUrl = TestObserver<String?, Never>()
   private let creatorLabelText = TestObserver<String, Never>()
   private let deadlineSubtitleLabelText = TestObserver<String, Never>()
@@ -22,6 +24,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let notifyDelegateToGoToCampaignWithProject = TestObserver<Project, Never>()
   private let notifyDelegateToGoToCampaignWithRefTag = TestObserver<RefTag?, Never>()
   private let notifyDelegateToGoToCreator = TestObserver<Project, Never>()
+  private let notifyDelegateToGoToCreatorFromByline = TestObserver<Project, Never>()
   private let opacityForViews = TestObserver<CGFloat, Never>()
   private let pledgedSubtitleLabelText = TestObserver<String, Never>()
   private let pledgedTitleLabelText = TestObserver<String, Never>()
@@ -49,6 +52,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.blurbAndReadMoreStackViewSpacing.observe(self.blurbAndReadMoreStackViewSpacing.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
+    self.vm.outputs.creatorButtonAndStackViewIsHidden.observe(self.creatorButtonAndStackViewIsHidden.observer)
+    self.vm.outputs.creatorBylineViewIsHidden.observe(self.creatorBylineViewIsHidden.observer)
     self.vm.outputs.creatorImageUrl.map { $0?.absoluteString }.observe(self.creatorImageUrl.observer)
     self.vm.outputs.creatorLabelText.observe(self.creatorLabelText.observer)
     self.vm.outputs.deadlineSubtitleLabelText.observe(self.deadlineSubtitleLabelText.observer)
@@ -60,6 +65,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateToGoToCampaignWithProjectAndRefTag.map(second)
       .observe(self.notifyDelegateToGoToCampaignWithRefTag.observer)
     self.vm.outputs.notifyDelegateToGoToCreator.observe(self.notifyDelegateToGoToCreator.observer)
+    self.vm.outputs.notifyDelegateToGoToCreatorFromByline
+      .observe(self.notifyDelegateToGoToCreatorFromByline.observer)
     self.vm.outputs.opacityForViews.observe(self.opacityForViews.observer)
     self.vm.outputs.pledgedSubtitleLabelText.observe(self.pledgedSubtitleLabelText.observer)
     self.vm.outputs.pledgedTitleLabelText.observe(self.pledgedTitleLabelText.observer)
@@ -615,6 +622,63 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.notifyDelegateToGoToCreator.assertValues([project])
   }
 
+  func testOptimizelyTrackingCreatorBylineTapped_LiveProject_LoggedIn_NonBacked() {
+     let creatorDetails = ProjectCreatorDetailsEnvelope.template
+
+     let user = User.template
+       |> \.location .~ Location.template
+       |> \.stats.backedProjectsCount .~ 50
+
+     let project = Project.template
+       |> Project.lens.state .~ .live
+       |> Project.lens.personalization.isBacking .~ false
+
+     withEnvironment(currentUser: user) {
+       self.vm.inputs.configureWith(value: (project, .discovery, (creatorDetails, false)))
+       self.vm.inputs.awakeFromNib()
+
+       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
+       XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+       XCTAssertNil(self.optimizelyClient.trackedAttributes)
+       XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
+       self.vm.inputs.creatorBylineTapped()
+
+       self.notifyDelegateToGoToCreatorFromByline.assertValues([project])
+
+       XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
+       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Creator Details Clicked")
+
+       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, 50)
+       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, nil)
+       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
+       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
+       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
+
+       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
+       XCTAssertEqual(
+         self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String,
+         "discovery"
+       )
+       XCTAssertEqual(
+         self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
+         "MockSystemVersion"
+       )
+       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, true)
+       XCTAssertEqual(
+         self.optimizelyClient.trackedAttributes?["session_app_release_version"] as? String,
+         "1.2.3.4.5.6.7.8.9.0"
+       )
+       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
+       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+
+       XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
+       XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, nil)
+       XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
+       XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
+     }
+   }
+
   func testOptimizelyTrackingCampaignDetailsButtonTapped_NonLiveProject_LoggedIn_Backed() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let user = User.template
@@ -702,6 +766,36 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   }
 
   // swiftlint:disable line_length
+  func testCreatorBylineIsShown_Control() {
+     let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+            OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
+        ]
+
+     withEnvironment(optimizelyClient: optimizelyClient) {
+       self.vm.inputs.configureWith(value: (.template, nil, (nil, true)))
+       self.vm.inputs.awakeFromNib()
+
+       self.creatorButtonAndStackViewIsHidden.assertValues([false])
+       self.creatorBylineViewIsHidden.assertValues([true])
+     }
+   }
+
+  func testCreatorBylineIsShown_Variant1() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+           OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      self.vm.inputs.configureWith(value: (.template, nil, (.template, true)))
+      self.vm.inputs.awakeFromNib()
+
+      self.creatorButtonAndStackViewIsHidden.assertValues([true])
+      self.creatorBylineViewIsHidden.assertValues([false])
+    }
+  }
+
   func testReadMoreButtonIsLoading_Control() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
 
