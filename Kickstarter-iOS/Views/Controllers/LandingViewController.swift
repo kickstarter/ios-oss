@@ -63,6 +63,12 @@ public final class LandingViewController: UIViewController {
 
     _ = self.backgroundImageView
       |> backgroundImageViewStyle
+      |> \.image %~ { _ in image(
+        named: "landing-page-background",
+        inBundle: AppEnvironment.current.mainBundle,
+        compatibleWithTraitCollection: self.view.traitCollection
+      )
+      }
 
     _ = self.logoImageView
       |> logoImageViewStyle
@@ -72,6 +78,11 @@ public final class LandingViewController: UIViewController {
 
     _ = self.rootStackView
       |> rootStackViewStyle
+      |> \.layoutMargins %~ { _ in
+        self.view.traitCollection.userInterfaceIdiom == .pad
+          ? .init(leftRight: Styles.grid(10))
+          : .init(leftRight: Styles.grid(3))
+      }
 
     _ = self.scrollView
       |> scrollViewStyle
@@ -161,7 +172,6 @@ public final class LandingViewController: UIViewController {
 
 private let backgroundImageViewStyle: ImageViewStyle = { imageView in
   imageView
-    |> \.image .~ image(named: "landing-page-background")
     |> \.contentMode .~ .scaleAspectFill
 }
 
@@ -203,7 +213,6 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> verticalStackViewStyle
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ .init(leftRight: Styles.grid(3))
     |> \.alignment .~ .center
     |> \.distribution .~ .equalSpacing
     |> \.spacing .~ Styles.grid(2)
