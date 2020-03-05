@@ -5,7 +5,6 @@ import UIKit
 
 private enum Layout {
   enum ImageView {
-    static let minHeight: CGFloat = 36.0
     static let minWidth: CGFloat = 36.0
   }
 }
@@ -96,7 +95,6 @@ final class CreatorBylineView: UIView {
 
     _ = self.verifiedCheckmarkImageView
       |> \.clipsToBounds .~ true
-      |> \.contentMode .~ .scaleToFill
 
     _ = self.creatorLabel
       |> \.textColor .~ .ksr_soft_black
