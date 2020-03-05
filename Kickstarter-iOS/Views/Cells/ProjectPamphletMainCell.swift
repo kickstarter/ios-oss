@@ -101,6 +101,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.creatorBylineView
       |> \.isHidden .~ true
 
+    _ = self.creatorBylineShimmerLoadingView
+      |> \.isHidden .~ true
+
 //    _ = self.creatorStackView
 //      |> \.isHidden .~ true
 
