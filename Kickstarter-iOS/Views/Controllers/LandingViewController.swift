@@ -65,7 +65,7 @@ public final class LandingViewController: UIViewController {
       |> backgroundImageViewStyle
       |> \.image %~ { _ in image(
         named: "landing-page-background",
-        inBundle: AppEnvironment.current.mainBundle,
+        inBundle: Bundle.framework,
         compatibleWithTraitCollection: self.view.traitCollection
       )
       }
