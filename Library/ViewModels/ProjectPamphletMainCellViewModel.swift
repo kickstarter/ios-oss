@@ -7,7 +7,7 @@ public protocol ProjectPamphletMainCellViewModelInputs {
   func awakeFromNib()
 
   /// Call with the project and refTag provided to the view controller.
-  func configureWith(value: (Project, RefTag?))
+  func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData))
 
   /// Call when the creator button is tapped.
   func creatorButtonTapped()
@@ -36,7 +36,7 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   var categoryNameLabelText: Signal<String, Never> { get }
 
   /// Emits a project when the creator by line view should be configured.
-  var configureCreatorBylineView: Signal<Project, Never> { get }
+  var configureCreatorBylineView: Signal<(Project, ProjectCreatorDetailsEnvelope), Never> { get }
 
   /// Emits a project when the video player controller should be configured.
   var configureVideoPlayerController: Signal<Project, Never> { get }
@@ -134,11 +134,17 @@ public protocol ProjectPamphletMainCellViewModelType {
 public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellViewModelType,
   ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs {
   public init() {
-    let projectAndRefTag = Signal.combineLatest(
-      self.projectAndRefTagProperty.signal.skipNil(),
+    let projectAndRefTagAndCreatorDetails = Signal.combineLatest(
+      self.projectAndRefTagAndCreatorDetailsProperty.signal.skipNil(),
       self.awakeFromNibProperty.signal
     )
     .map(first)
+
+    let projectAndRefTag = projectAndRefTagAndCreatorDetails.map { project, refTag, _ in (project, refTag) }
+    let projectAndCreatorDetails = projectAndRefTagAndCreatorDetails.map { project, _, creatorDetails in
+      (project, creatorDetails)
+    }
+    let creatorDetails = projectAndCreatorDetails.map { _, creatorDetails in creatorDetails.0 }.skipNil()
 
     let project = projectAndRefTag.map(first)
 
@@ -157,7 +163,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .map(OptimizelyExperiment.projectCampaignExperiment)
       .skipNil()
 
-    self.configureCreatorBylineView = project.map { $0 }
+    self.configureCreatorBylineView = Signal.combineLatest(project, creatorDetails)
 
     self.readMoreButtonStyle = projectCampaignExperimentVariant.map(projectCampaignButtonStyleForVariant)
     self.readMoreButtonTitle = projectCampaignExperimentVariant.map {
@@ -262,7 +268,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .take(first: 1)
 
     self.opacityForViews = Signal.merge(
-      self.projectAndRefTagProperty.signal.skipNil().mapConst(1.0),
+      self.projectAndRefTagAndCreatorDetailsProperty.signal.skipNil().mapConst(1.0),
       self.awakeFromNibProperty.signal.mapConst(0.0)
     )
 
@@ -307,9 +313,10 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.awakeFromNibProperty.value = ()
   }
 
-  fileprivate let projectAndRefTagProperty = MutableProperty<(Project, RefTag?)?>(nil)
-  public func configureWith(value: (Project, RefTag?)) {
-    self.projectAndRefTagProperty.value = value
+  fileprivate let projectAndRefTagAndCreatorDetailsProperty = MutableProperty
+  <(Project, RefTag?, ProjectCreatorDetailsData)?>(nil)
+  public func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData)) {
+    self.projectAndRefTagAndCreatorDetailsProperty.value = value
   }
 
   fileprivate let creatorButtonTappedProperty = MutableProperty(())
@@ -341,7 +348,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let backersTitleLabelText: Signal<String, Never>
   public let blurbAndReadMoreStackViewSpacing: Signal<CGFloat, Never>
   public let categoryNameLabelText: Signal<String, Never>
-  public let configureCreatorBylineView: Signal<Project, Never>
+  public let configureCreatorBylineView: Signal<(Project, ProjectCreatorDetailsEnvelope), Never>
   public let configureVideoPlayerController: Signal<Project, Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>

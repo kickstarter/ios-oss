@@ -39,7 +39,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     }
 
     self.set(
-      values: [(project, refTag)],
+      values: [(project, refTag, creatorDetails)],
       cellClass: ProjectPamphletMainCell.self,
       inSection: Section.main.rawValue
     )
@@ -72,7 +72,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as ProjectPamphletCreatorHeaderCell, value as Project):
       cell.configureWith(value: value)
-    case let (cell as ProjectPamphletMainCell, value as (Project, RefTag?)):
+    case let (cell as ProjectPamphletMainCell, value as (Project, RefTag?, ProjectCreatorDetailsData)):
       cell.configureWith(value: value)
     case let (cell as ProjectPamphletMinimalCell, value as Project):
       cell.configureWith(value: value)

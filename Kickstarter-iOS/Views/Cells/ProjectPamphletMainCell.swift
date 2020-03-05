@@ -93,7 +93,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.awakeFromNib()
   }
 
-  internal func configureWith(value: (Project, RefTag?)) {
+  internal func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData)) {
     _ = ([self.creatorBylineView, self.creatorBylineShimmerLoadingView], self.projectNameAndCreatorStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -309,7 +309,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.configureCreatorBylineView
       .observeForUI()
-      .observeValues { [weak self] in self?.creatorBylineView.configureWith(value: $0) }
+      .observeValues { [weak self] project, creatorDetails in
+        self?.creatorBylineView.configureWith(project: project, creatorDetails: creatorDetails)
+      }
 
     self.viewModel.outputs.creatorImageUrl
       .observeForUI()
