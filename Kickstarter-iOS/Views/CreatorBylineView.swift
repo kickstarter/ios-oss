@@ -37,6 +37,7 @@ final class CreatorBylineView: UIView {
     UILabel(frame: .zero)
       |> \.numberOfLines .~ 0
   }()
+
   private lazy var creatorStatsLabel: UILabel = {
     UILabel(frame: .zero)
       |> \.numberOfLines .~ 0
@@ -103,7 +104,6 @@ final class CreatorBylineView: UIView {
       |> \.textColor .~ .ksr_cobalt_500
       |> \.font .~ .ksr_headline(size: 13)
       |> \.numberOfLines .~ 0
-      |> \.text %~ { _ in "12 created • 122 backed" }
 
     _ = self.creatorInfoStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
@@ -115,13 +115,14 @@ final class CreatorBylineView: UIView {
     super.bindViewModel()
 
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
+    self.creatorStatsLabel.rac.text = self.viewModel.outputs.creatorStatsText
     self.creatorImageView.rac.imageUrl = self.viewModel.outputs.creatorImageUrl
   }
 
   // MARK: - Configuration
 
-  func configureWith(value project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
+  func configureWith(project: Project, creatorDetails: ProjectCreatorDetailsEnvelope) {
+    self.viewModel.inputs.configureWith(project: project, creatorDetails: creatorDetails)
   }
 
   // MARK: Functions
