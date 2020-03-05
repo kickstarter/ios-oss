@@ -47,11 +47,20 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string for the conversion label.
   var conversionLabelText: Signal<String, Never> { get }
 
+  /// Emits whether the CreatorBylineView should be hidden.
+  var creatorBylineViewHidden: Signal<Bool, Never> { get }
+
+  /// Emits whether the CreatorBylineView loading shimmer view should be hidden.
+  var creatorBylineShimmerViewHidden: Signal<Bool, Never> { get }
+
   /// Emits an image url to be loaded into the creator's image view.
   var creatorImageUrl: Signal<URL?, Never> { get }
 
   /// Emits text to be put into the creator label.
   var creatorLabelText: Signal<String, Never> { get }
+
+  /// Emits whether the creator stack view should be hidden.
+  var creatorStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits the text for the deadline subtitle label.
   var deadlineSubtitleLabelText: Signal<String, Never> { get }
@@ -145,6 +154,25 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       (project, creatorDetails)
     }
     let creatorDetails = projectAndCreatorDetails.map { _, creatorDetails in creatorDetails.0 }.skipNil()
+
+    self.creatorBylineViewHidden = projectAndCreatorDetails
+      .map(second)
+      .map { creatorDetails, isLoading in
+        creatorDetails == nil || isLoading
+      }
+
+    self.creatorBylineShimmerViewHidden = projectAndCreatorDetails
+      .map(second)
+      .map(second >>> isFalse)
+
+    self.creatorStackViewHidden = Signal.combineLatest(
+      self.creatorBylineViewHidden,
+      self.creatorBylineShimmerViewHidden
+    )
+    .map { creatorBylineViewHidden, creatorBylineShimmerViewHidden in
+      creatorBylineViewHidden && creatorBylineShimmerViewHidden
+    }
+    .negate()
 
     let project = projectAndRefTag.map(first)
 
@@ -352,8 +380,11 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let configureVideoPlayerController: Signal<Project, Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
+  public let creatorBylineViewHidden: Signal<Bool, Never>
+  public let creatorBylineShimmerViewHidden: Signal<Bool, Never>
   public let creatorImageUrl: Signal<URL?, Never>
   public let creatorLabelText: Signal<String, Never>
+  public let creatorStackViewHidden: Signal<Bool, Never>
   public let deadlineSubtitleLabelText: Signal<String, Never>
   public let deadlineTitleLabelText: Signal<String, Never>
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
