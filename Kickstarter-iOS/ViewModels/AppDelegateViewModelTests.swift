@@ -1850,6 +1850,155 @@ final class AppDelegateViewModelTests: TestCase {
     self.presentViewController.assertValues([1])
   }
 
+  func testDeeplink_WhenLandingPageExperiment_IsActive() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeOnboarding.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: "https://www.kickstarter.com/search")!,
+        options: [:]
+      )
+
+      XCTAssertTrue(result)
+
+      self.goToSearch.assertValueCount(0)
+    }
+  }
+
+  func testOpenPushNotification_WhenLandingPageExperiment_IsActive() {
+    let pushData: [String: Any] = [
+      "aps": [
+        "alert": "Blob liked your update: Important message..."
+      ],
+      "post": [
+        "id": 1,
+        "project_id": 2
+      ]
+    ]
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeOnboarding.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.didReceive(remoteNotification: pushData)
+
+      self.presentViewController.assertValueCount(0)
+    }
+  }
+
+  func testContinueUserActivity_WhenLandingPageExperiment_IsActive() {
+    let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
+    userActivity.webpageURL = URL(string: "https://www.kickstarter.com/activity")
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeOnboarding.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.applicationDidFinishLaunching(application: .shared, launchOptions: [:])
+
+      self.goToActivity.assertValueCount(0)
+      XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
+
+      let result = self.vm.inputs.applicationContinueUserActivity(userActivity)
+      XCTAssertTrue(result)
+
+      XCTAssertTrue(self.vm.outputs.continueUserActivityReturnValue.value)
+      self.goToActivity.assertValueCount(0)
+    }
+  }
+
+  func testPerformShortcutItem_WhenLandingPageExperiment_IsActive() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeOnboarding.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+      self.vm.inputs.applicationPerformActionForShortcutItem(ShortcutItem.search.applicationShortcutItem)
+
+      self.goToSearch.assertValueCount(0)
+    }
+  }
+
+  func testLaunchShortcutItem_WhenLandingPageExperiment_IsActive() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeOnboarding.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [
+          UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.search.applicationShortcutItem
+        ]
+      )
+
+      self.goToSearch.assertValueCount(0)
+      XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
+    }
+  }
+
+  func testEmailDeepLinking_WhenLandingPageExperiment_IsActive() {
+    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeOnboarding.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      // The application launches.
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      // We deep-link to an email url.
+      self.vm.inputs.applicationDidEnterBackground()
+      self.vm.inputs.applicationWillEnterForeground()
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: emailUrl,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
+      self.presentViewController.assertValues([], "No view controller is presented yet.")
+      self.goToMobileSafari.assertValues([])
+
+      // We find the redirect to be a project url.
+      self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
+
+      self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
+      self.presentViewController.assertValueCount(0, "Nothing is presented")
+      self.goToMobileSafari.assertValues([])
+    }
+  }
+
   func testShowAlertEmitsIf_CanShowDialog() {
     let notification = Notification(
       name: Notification.Name(rawValue: "deadbeef"),
