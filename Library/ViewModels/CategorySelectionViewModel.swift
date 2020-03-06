@@ -20,6 +20,9 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   CategorySelectionViewModelInputs, CategorySelectionViewModelOutputs {
   public init() {
     let categoriesEvent = self.viewDidLoadProperty.signal
+      .on { _ in
+        AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow = true
+      }
       .switchMap { _ in
         AppEnvironment.current.apiService
           .fetchGraphCategories(query: rootCategoriesQuery)

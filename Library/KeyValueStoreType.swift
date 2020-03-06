@@ -5,6 +5,8 @@ public enum AppKeys: String {
   case closedFindFriendsInActivity = "com.kickstarter.KeyValueStoreType.closedFindFriendsInActivity"
   case deniedNotificationContexts = "com.kickstarter.KeyValueStoreType.deniedNotificationContexts"
   case favoriteCategoryIds = "favorite_category_ids"
+  // swiftlint:disable line_length
+  case hasSeenCategoryPersonalizationFlow = "com.kickstarter.KeyValueStoreType.hasSeenCategoryPersonalizationFlow"
   case hasSeenFavoriteCategoryAlert = "com.kickstarter.KeyValueStoreType.hasSeenFavoriteCategoryAlert"
   case hasSeenSaveProjectAlert = "com.kickstarter.KeyValueStoreType.hasSeenSaveProjectAlert"
   case lastSeenActivitySampleId = "com.kickstarter.KeyValueStoreType.lastSeenActivitySampleId"
@@ -30,6 +32,7 @@ public protocol KeyValueStoreType: AnyObject {
   var hasClosedFacebookConnectInActivity: Bool { get set }
   var hasClosedFindFriendsInActivity: Bool { get set }
   var hasSeenAppRating: Bool { get set }
+  var hasSeenCategoryPersonalizationFlow: Bool { get set }
   var hasSeenFavoriteCategoryAlert: Bool { get set }
   var hasSeenGamesNewsletterPrompt: Bool { get set }
   var hasSeenSaveProjectAlert: Bool { get set }
@@ -52,6 +55,15 @@ extension KeyValueStoreType {
     }
     set {
       self.set(newValue, forKey: AppKeys.deniedNotificationContexts.rawValue)
+    }
+  }
+
+  public var hasSeenCategoryPersonalizationFlow: Bool {
+    get {
+      return self.object(forKey: AppKeys.hasSeenCategoryPersonalizationFlow.rawValue) as? Bool ?? false
+    }
+    set {
+      self.set(newValue, forKey: AppKeys.hasSeenCategoryPersonalizationFlow.rawValue)
     }
   }
 
