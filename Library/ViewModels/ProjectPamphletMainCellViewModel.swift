@@ -170,9 +170,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
         creatorDetails == nil || isLoading
       }
 
-    self.creatorButtonIsHidden = projectAndCreatorDetails.map { _, creatorDetails in
-      creatorDetails.0 != nil ? true : false
-    }
 
     self.creatorBylineShimmerViewHidden = projectAndCreatorDetails
       .map(second)
@@ -186,6 +183,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       creatorBylineViewHidden && creatorBylineShimmerViewHidden
     }
     .negate()
+
+    self.creatorButtonIsHidden = self.creatorStackViewHidden
 
     let project = projectAndRefTag.map(first)
 

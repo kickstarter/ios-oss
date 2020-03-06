@@ -770,20 +770,6 @@ self.vm.outputs.creatorButtonIsHidden.observe(self.creatorButtonIsHidden.observe
   }
 
   // swiftlint:disable line_length
-  func testCreatorButtonHidden_Control() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.template, nil, (nil, true)))
-      self.vm.inputs.awakeFromNib()
-
-      self.creatorButtonIsHidden.assertValues([false])
-    }
-  }
-
   func testCreatorBylineIsShown_Variant1() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
@@ -888,6 +874,7 @@ self.vm.outputs.creatorButtonIsHidden.observe(self.creatorButtonIsHidden.observe
     self.creatorBylineViewHidden.assertDidNotEmitValue()
     self.creatorBylineShimmerViewHidden.assertDidNotEmitValue()
     self.creatorStackViewHidden.assertDidNotEmitValue()
+    self.creatorButtonIsHidden.assertDidNotEmitValue()
 
     self.vm.inputs.configureWith(value: (.template, .discovery, (nil, true)))
     self.vm.inputs.awakeFromNib()
@@ -895,18 +882,21 @@ self.vm.outputs.creatorButtonIsHidden.observe(self.creatorButtonIsHidden.observe
     self.creatorBylineViewHidden.assertValues([true])
     self.creatorBylineShimmerViewHidden.assertValues([false])
     self.creatorStackViewHidden.assertValues([true])
+    self.creatorButtonIsHidden.assertValues([true])
 
     self.vm.inputs.configureWith(value: (.template, .discovery, (nil, false)))
 
     self.creatorBylineViewHidden.assertValues([true, true])
     self.creatorBylineShimmerViewHidden.assertValues([false, true])
     self.creatorStackViewHidden.assertValues([true, true, false])
+    self.creatorButtonIsHidden.assertValues([true, true, false])
   }
 
   func testCreatorDetailsVisibility_NonNilCreatorDetails() {
     self.creatorBylineViewHidden.assertDidNotEmitValue()
     self.creatorBylineShimmerViewHidden.assertDidNotEmitValue()
     self.creatorStackViewHidden.assertDidNotEmitValue()
+    self.creatorButtonIsHidden.assertDidNotEmitValue()
 
     self.vm.inputs.configureWith(value: (.template, .discovery, (.template, true)))
     self.vm.inputs.awakeFromNib()
@@ -914,12 +904,14 @@ self.vm.outputs.creatorButtonIsHidden.observe(self.creatorButtonIsHidden.observe
     self.creatorBylineViewHidden.assertValues([true])
     self.creatorBylineShimmerViewHidden.assertValues([false])
     self.creatorStackViewHidden.assertValues([true])
+    self.creatorButtonIsHidden.assertValues([true])
 
     self.vm.inputs.configureWith(value: (.template, .discovery, (.template, false)))
 
     self.creatorBylineViewHidden.assertValues([true, false])
     self.creatorBylineShimmerViewHidden.assertValues([false, true])
     self.creatorStackViewHidden.assertValues([true, true, true])
+    self.creatorButtonIsHidden.assertValues([true, true, true])
   }
 
   // swiftlint:enable line_length
