@@ -12,6 +12,9 @@ public protocol ProjectPamphletMainCellViewModelInputs {
   /// Call when the creator button is tapped.
   func creatorButtonTapped()
 
+  /// Call when the creatorByline is tapped.
+  func creatorBylineTapped()
+
   /// Call when the delegate has been set on the cell.
   func delegateDidSet()
 
@@ -47,6 +50,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string for the conversion label.
   var conversionLabelText: Signal<String, Never> { get }
 
+  /// Emits a bool to determine that creatorButton should be hidden.
+  var creatorButtonIsHidden: Signal<Bool, Never> { get }
+
   /// Emits whether the CreatorBylineView should be hidden.
   var creatorBylineViewHidden: Signal<Bool, Never> { get }
 
@@ -79,6 +85,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits the project when we should go to the creator's view for the project.
   var notifyDelegateToGoToCreator: Signal<Project, Never> { get }
+
+  /// Emits the project when we should go to the creator's view from creatorByline for the project.
+  var notifyDelegateToGoToCreatorFromByline: Signal<Project, Never> { get }
 
   /// Emits an alpha value for views to create transition after full project loads.
   var opacityForViews: Signal<CGFloat, Never> { get }
@@ -173,6 +182,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       creatorBylineViewHidden && creatorBylineShimmerViewHidden
     }
     .negate()
+
+    self.creatorButtonIsHidden = self.creatorStackViewHidden
 
     let project = projectAndRefTag.map(first)
 
@@ -291,6 +302,9 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.notifyDelegateToGoToCreator = project
       .takeWhen(self.creatorButtonTappedProperty.signal)
 
+    self.notifyDelegateToGoToCreatorFromByline = project
+      .takeWhen(self.creatorBylineTappedProperty.signal)
+
     self.configureVideoPlayerController = Signal.combineLatest(project, self.delegateDidSetProperty.signal)
       .map(first)
       .take(first: 1)
@@ -334,6 +348,24 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
             eventTags: eventTags
           )
       }
+
+    projectAndRefTag
+      .takeWhen(self.creatorBylineTappedProperty.signal)
+      .observeValues { projectAndRefTag in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: projectAndRefTag.0,
+          refTag: projectAndRefTag.1
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Creator Details Clicked",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
   }
 
   private let awakeFromNibProperty = MutableProperty(())
@@ -350,6 +382,11 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   fileprivate let creatorButtonTappedProperty = MutableProperty(())
   public func creatorButtonTapped() {
     self.creatorButtonTappedProperty.value = ()
+  }
+
+  fileprivate let creatorBylineTappedProperty = MutableProperty(())
+  public func creatorBylineTapped() {
+    self.creatorBylineTappedProperty.value = ()
   }
 
   fileprivate let delegateDidSetProperty = MutableProperty(())
@@ -380,6 +417,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let configureVideoPlayerController: Signal<Project, Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
+  public let creatorButtonIsHidden: Signal<Bool, Never>
   public let creatorBylineViewHidden: Signal<Bool, Never>
   public let creatorBylineShimmerViewHidden: Signal<Bool, Never>
   public let creatorImageUrl: Signal<URL?, Never>
@@ -391,6 +429,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let locationNameLabelText: Signal<String, Never>
   public let notifyDelegateToGoToCampaignWithProjectAndRefTag: Signal<(Project, RefTag?), Never>
   public let notifyDelegateToGoToCreator: Signal<Project, Never>
+  public let notifyDelegateToGoToCreatorFromByline: Signal<Project, Never>
   public let opacityForViews: Signal<CGFloat, Never>
   public let pledgedSubtitleLabelText: Signal<String, Never>
   public let pledgedTitleLabelText: Signal<String, Never>

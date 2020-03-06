@@ -34,6 +34,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var creatorBylineTapGesture: UITapGestureRecognizer = {
+    UITapGestureRecognizer(target: self, action: #selector(creatorBylineTapped))
+  }()
+
   private lazy var creatorBylineShimmerLoadingView: ProjectCreatorDetailsShimmerLoadingView = {
     ProjectCreatorDetailsShimmerLoadingView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -92,6 +96,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = ([self.creatorBylineView, self.creatorBylineShimmerLoadingView], self.projectNameAndCreatorStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
 
     self.viewModel.inputs.awakeFromNib()
   }
@@ -267,6 +273,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.creatorButton.rac.accessibilityLabel = self.viewModel.outputs.creatorLabelText
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
+    self.creatorButton.rac.hidden = self.viewModel.outputs.creatorButtonIsHidden
     self.creatorBylineView.rac.hidden = self.viewModel.outputs.creatorBylineViewHidden
     self.creatorBylineShimmerLoadingView.rac.hidden = self.viewModel.outputs.creatorBylineShimmerViewHidden
     self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorStackViewHidden
@@ -339,6 +346,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
         self.delegate?.projectPamphletMainCell(self, goToCreatorForProject: $0)
       }
 
+    self.viewModel.outputs.notifyDelegateToGoToCreatorFromByline
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.projectPamphletMainCell(self, goToCreatorForProject: $0)
+      }
+
     self.viewModel.outputs.opacityForViews
       .observeForUI()
       .observeValues { [weak self] alpha in
@@ -384,6 +398,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   @objc fileprivate func readMoreButtonTapped() {
     self.viewModel.inputs.readMoreButtonTapped()
+  }
+
+  @objc fileprivate func creatorBylineTapped() {
+    self.viewModel.inputs.creatorBylineTapped()
   }
 
   @objc fileprivate func creatorButtonTapped() {
