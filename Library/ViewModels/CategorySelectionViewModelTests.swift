@@ -125,4 +125,23 @@ final class CategorySelectionViewModelTests: TestCase {
       )
     }
   }
+
+  func testHasSeenCategoryPersonalizationFlowPropertyIsSet() {
+    let mockKVStore = MockKeyValueStore()
+    let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [
+      .art,
+      .games,
+      .filmAndVideo
+    ])
+
+    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+
+    withEnvironment(apiService: mockService, userDefaults: mockKVStore) {
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      XCTAssertTrue(mockKVStore.hasSeenCategoryPersonalizationFlow)
+    }
+  }
 }
