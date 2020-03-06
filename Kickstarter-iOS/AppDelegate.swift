@@ -231,9 +231,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToCategoryPersonalizationOnboarding
       .observeForControllerAction()
       .observeValues { [weak self] in
-        let categorySelectionViewController = CategorySelectionViewController.instantiate()
+        let categorySelectionViewController = LandingViewController.instantiate()
         let navController = NavigationController(rootViewController: categorySelectionViewController)
-        navController.modalPresentationStyle = .fullScreen
+        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
+        navController.modalPresentationStyle = isIpad ? .formSheet : .fullScreen
 
         self?.rootTabBarController?.present(navController, animated: true)
       }
