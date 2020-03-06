@@ -33,8 +33,8 @@ internal final class CategorySelectionDataSource: ValueCellDataSource {
         withReuseIdentifier: CategoryCollectionViewSectionHeaderView.defaultReusableId,
         for: indexPath
       ) as? CategoryCollectionViewSectionHeaderView else {
-        assertionFailure("Unknown supplementary view type")
-        return UICollectionReusableView(frame: .zero)
+      assertionFailure("Unknown supplementary view type")
+      return UICollectionReusableView(frame: .zero)
     }
 
     view.configure(with: self.categorySectionTitles[indexPath.section])
