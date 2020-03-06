@@ -276,7 +276,7 @@ jobs:
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
-  code_coverage_report:
+  kickstarter-ios-tests-and-code-coverage:
     <<: *base_job
     steps:
       - restore_cache:
@@ -314,6 +314,9 @@ jobs:
       - run:
           name: Kickstarter-iOS Tests
           command: SCHEME=Kickstarter-iOS make test
+      - run:
+          name: Send coverage to codecov
+          command: bash <(curl -s https://codecov.io/bash) -J Kickstarter
 
   deploy_beta:
     <<: *base_job
@@ -581,6 +584,7 @@ workflows:
       - kickstarter-ui-tests
       - library-tests
       - ksapi-tests
+      - kickstarter-ios-tests-and-code-coverage
       - refresh_app_store_dsyms:
           filters:
             branches:
