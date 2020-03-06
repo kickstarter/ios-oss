@@ -14,8 +14,11 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let blurbAndReadMoreStackViewSpacing = TestObserver<CGFloat, Never>()
   private let conversionLabelHidden = TestObserver<Bool, Never>()
   private let conversionLabelText = TestObserver<String, Never>()
+  private let creatorBylineViewHidden = TestObserver<Bool, Never>()
+  private let creatorBylineShimmerViewHidden = TestObserver<Bool, Never>()
   private let creatorImageUrl = TestObserver<String?, Never>()
   private let creatorLabelText = TestObserver<String, Never>()
+  private let creatorStackViewHidden = TestObserver<Bool, Never>()
   private let deadlineSubtitleLabelText = TestObserver<String, Never>()
   private let deadlineTitleLabelText = TestObserver<String, Never>()
   private let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, Never>()
@@ -49,8 +52,11 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.blurbAndReadMoreStackViewSpacing.observe(self.blurbAndReadMoreStackViewSpacing.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
+    self.vm.outputs.creatorBylineViewHidden.observe(self.creatorBylineViewHidden.observer)
+    self.vm.outputs.creatorBylineShimmerViewHidden.observe(self.creatorBylineShimmerViewHidden.observer)
     self.vm.outputs.creatorImageUrl.map { $0?.absoluteString }.observe(self.creatorImageUrl.observer)
     self.vm.outputs.creatorLabelText.observe(self.creatorLabelText.observer)
+    self.vm.outputs.creatorStackViewHidden.observe(self.creatorStackViewHidden.observer)
     self.vm.outputs.deadlineSubtitleLabelText.observe(self.deadlineSubtitleLabelText.observer)
     self.vm.outputs.deadlineTitleLabelText.observe(self.deadlineTitleLabelText.observer)
     self.vm.outputs.fundingProgressBarViewBackgroundColor
@@ -786,6 +792,44 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       self.readMoreButtonIsLoading.assertValues([false])
     }
+  }
+
+  func testCreatorDetailsVisibility_NilCreatorDetails() {
+    self.creatorBylineViewHidden.assertDidNotEmitValue()
+    self.creatorBylineShimmerViewHidden.assertDidNotEmitValue()
+    self.creatorStackViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(value: (.template, .discovery, (nil, true)))
+    self.vm.inputs.awakeFromNib()
+
+    self.creatorBylineViewHidden.assertValues([true])
+    self.creatorBylineShimmerViewHidden.assertValues([false])
+    self.creatorStackViewHidden.assertValues([true])
+
+    self.vm.inputs.configureWith(value: (.template, .discovery, (nil, false)))
+
+    self.creatorBylineViewHidden.assertValues([true, true])
+    self.creatorBylineShimmerViewHidden.assertValues([false, true])
+    self.creatorStackViewHidden.assertValues([true, true, false])
+  }
+
+  func testCreatorDetailsVisibility_NonNilCreatorDetails() {
+    self.creatorBylineViewHidden.assertDidNotEmitValue()
+    self.creatorBylineShimmerViewHidden.assertDidNotEmitValue()
+    self.creatorStackViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(value: (.template, .discovery, (.template, true)))
+    self.vm.inputs.awakeFromNib()
+
+    self.creatorBylineViewHidden.assertValues([true])
+    self.creatorBylineShimmerViewHidden.assertValues([false])
+    self.creatorStackViewHidden.assertValues([true])
+
+    self.vm.inputs.configureWith(value: (.template, .discovery, (.template, false)))
+
+    self.creatorBylineViewHidden.assertValues([true, false])
+    self.creatorBylineShimmerViewHidden.assertValues([false, true])
+    self.creatorStackViewHidden.assertValues([true, true, true])
   }
 
   // swiftlint:enable line_length

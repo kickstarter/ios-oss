@@ -53,9 +53,14 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
+    let mockService = MockService(
+      fetchProjectResponse: backedProject,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchProjectResponse: backedProject),
+        apiService: mockService,
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
@@ -82,9 +87,14 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
+    let mockService = MockService(
+      fetchProjectResponse: backedProject,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchProjectResponse: backedProject),
+        apiService: mockService,
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
@@ -113,9 +123,14 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.state .~ .live
 
+    let mockService = MockService(
+      fetchProjectResponse: backedProject,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchProjectResponse: backedProject),
+        apiService: mockService,
         config: config, currentUser: currentUser, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
@@ -144,9 +159,14 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.state .~ .successful
 
+    let mockService = MockService(
+      fetchProjectResponse: backedProject,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchProjectResponse: backedProject),
+        apiService: mockService,
         config: config, currentUser: currentUser, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
@@ -172,9 +192,14 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
+    let mockService = MockService(
+      fetchProjectResponse: backedProject,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchProjectResponse: backedProject),
+        apiService: mockService,
         config: config, currentUser: .template, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
@@ -199,9 +224,14 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     let liveProject = self.project
       |> Project.lens.stats.convertedPledgedAmount .~ 1_964
 
+    let mockService = MockService(
+      fetchProjectResponse: liveProject,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchProjectResponse: liveProject),
+        apiService: mockService,
         config: config, currentUser: nil, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(liveProject), refTag: nil)
@@ -225,9 +255,14 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
+    let mockService = MockService(
+      fetchProjectResponse: backedProject,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchProjectResponse: backedProject),
+        apiService: mockService,
         config: config, currentUser: nil, language: language
       ) {
         let vc = ProjectPamphletViewController.configuredWith(
@@ -249,9 +284,14 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
   func testProjectPamphletViewController_ErrorFetchingProject() {
     let config = Config.template
 
+    let mockService = MockService(
+      fetchProjectError: .couldNotParseJSON,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchProjectError: .couldNotParseJSON),
+        apiService: mockService,
         config: config,
         language: language
       ) {
