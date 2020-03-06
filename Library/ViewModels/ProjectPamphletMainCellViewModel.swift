@@ -51,10 +51,7 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   var conversionLabelText: Signal<String, Never> { get }
 
   /// Emits a bool to determine that creatorButton and creatorStackView should be hidden.
-  var creatorButtonAndStackViewIsHidden: Signal<Bool, Never> { get }
-
-  /// Emits a bool to determine that creatorByLineView should be hidden.
-  var creatorBylineViewIsHidden: Signal<Bool, Never> { get }
+  var creatorButtonIsHidden: Signal<Bool, Never> { get }
 
   /// Emits an image url to be loaded into the creator's image view.
   var creatorImageUrl: Signal<URL?, Never> { get }
@@ -160,11 +157,9 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     let project = projectAndRefTag.map(first)
 
-    self.creatorButtonAndStackViewIsHidden = projectAndCreatorDetails.map { _, creatorDetails in
+    self.creatorButtonIsHidden = projectAndCreatorDetails.map { _, creatorDetails in
       creatorDetails.0 != nil ? true : false
     }
-
-    self.creatorBylineViewIsHidden = creatorButtonAndStackViewIsHidden.negate()
 
     self.projectNameLabelText = project.map(Project.lens.name.view)
     self.projectBlurbLabelText = project.map(Project.lens.blurb.view)
@@ -395,8 +390,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let configureVideoPlayerController: Signal<Project, Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
-  public let creatorButtonAndStackViewIsHidden: Signal<Bool, Never>
-  public let creatorBylineViewIsHidden: Signal<Bool, Never>
+  public let creatorButtonIsHidden: Signal<Bool, Never>
   public let creatorImageUrl: Signal<URL?, Never>
   public let creatorLabelText: Signal<String, Never>
   public let deadlineSubtitleLabelText: Signal<String, Never>

@@ -14,8 +14,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let blurbAndReadMoreStackViewSpacing = TestObserver<CGFloat, Never>()
   private let conversionLabelHidden = TestObserver<Bool, Never>()
   private let conversionLabelText = TestObserver<String, Never>()
-  private let creatorButtonAndStackViewIsHidden = TestObserver<Bool, Never>()
-  private let creatorBylineViewIsHidden = TestObserver<Bool, Never>()
+  private let creatorButtonIsHidden = TestObserver<Bool, Never>()
   private let creatorImageUrl = TestObserver<String?, Never>()
   private let creatorLabelText = TestObserver<String, Never>()
   private let deadlineSubtitleLabelText = TestObserver<String, Never>()
@@ -52,8 +51,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.blurbAndReadMoreStackViewSpacing.observe(self.blurbAndReadMoreStackViewSpacing.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
-    self.vm.outputs.creatorButtonAndStackViewIsHidden.observe(self.creatorButtonAndStackViewIsHidden.observer)
-    self.vm.outputs.creatorBylineViewIsHidden.observe(self.creatorBylineViewIsHidden.observer)
+    self.vm.outputs.creatorButtonIsHidden.observe(self.creatorButtonIsHidden.observer)
     self.vm.outputs.creatorImageUrl.map { $0?.absoluteString }.observe(self.creatorImageUrl.observer)
     self.vm.outputs.creatorLabelText.observe(self.creatorLabelText.observer)
     self.vm.outputs.deadlineSubtitleLabelText.observe(self.deadlineSubtitleLabelText.observer)
@@ -766,7 +764,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   }
 
   // swiftlint:disable line_length
-  func testCreatorBylineIsShown_Control() {
+  func testCreatorButtonHidden_Control() {
      let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
             OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
@@ -776,8 +774,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
        self.vm.inputs.configureWith(value: (.template, nil, (nil, true)))
        self.vm.inputs.awakeFromNib()
 
-       self.creatorButtonAndStackViewIsHidden.assertValues([false])
-       self.creatorBylineViewIsHidden.assertValues([true])
+       self.creatorButtonIsHidden.assertValues([false])
      }
    }
 
@@ -791,8 +788,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (.template, nil, (.template, true)))
       self.vm.inputs.awakeFromNib()
 
-      self.creatorButtonAndStackViewIsHidden.assertValues([true])
-      self.creatorBylineViewIsHidden.assertValues([false])
+      self.creatorButtonIsHidden.assertValues([true])
     }
   }
 

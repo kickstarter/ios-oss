@@ -34,7 +34,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var tapGesture: UITapGestureRecognizer = {
+  private lazy var creatorBylineTapGesture: UITapGestureRecognizer = {
     UITapGestureRecognizer(target: self, action: #selector(creatorBylineTapped))
   }()
 
@@ -89,7 +89,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.readMoreButton.heightAnchor
       .constraint(greaterThanOrEqualToConstant: Layout.Button.height).isActive = true
 
-    self.creatorBylineView.addGestureRecognizer(self.tapGesture)
+    self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
 
     self.viewModel.inputs.awakeFromNib()
   }
@@ -268,9 +268,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.creatorButton.rac.accessibilityLabel = self.viewModel.outputs.creatorLabelText
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
-    self.creatorButton.rac.hidden = self.viewModel.outputs.creatorButtonAndStackViewIsHidden
-    self.creatorBylineView.rac.hidden = self.viewModel.outputs.creatorBylineViewIsHidden
-    self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorButtonAndStackViewIsHidden
+    self.creatorButton.rac.hidden = self.viewModel.outputs.creatorButtonIsHidden
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.deadlineTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
