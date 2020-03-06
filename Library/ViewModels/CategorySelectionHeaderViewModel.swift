@@ -4,6 +4,33 @@ import ReactiveSwift
 public enum HeaderViewContext {
   case categorySelection
   case curatedProjects
+
+  var stepLabelText: String {
+    switch self {
+    case .categorySelection:
+      return Strings.Step_number(current_step: "1", total_steps: "2")
+    case .curatedProjects:
+      return Strings.Step_number(current_step: "2", total_steps: "2")
+    }
+  }
+
+  var subtitleLabelText: String? {
+    switch self {
+    case .categorySelection:
+      return Strings.Select_up_to_five()
+    case .curatedProjects:
+      return nil
+    }
+  }
+
+  var titleLabelText: String {
+    switch self {
+    case .categorySelection:
+      return Strings.Which_categories_interest_you()
+    case .curatedProjects:
+      return Strings.Check_out_these_handpicked_projects()
+    }
+  }
 }
 
 public protocol CategorySelectionHeaderViewModelInputs {
@@ -25,14 +52,14 @@ public final class CategorySelectionHeaderViewModel: CategorySelectionHeaderView
   CategorySelectionHeaderViewModelInputs, CategorySelectionHeaderViewModelOutputs {
   public init() {
     self.stepLabelText = self.contextSignal
-      .map(stepLabelText(for:))
+      .map(\.stepLabelText)
 
     self.subtitleLabelText = self.contextSignal
-      .map(subtitleLabelText(for:))
+      .map(\.subtitleLabelText)
       .skipNil()
 
     self.titleLabelText = self.contextSignal
-      .map(titleLabelText(for:))
+      .map(\.titleLabelText)
   }
 
   private let (contextSignal, contextObserver) = Signal<HeaderViewContext, Never>.pipe()
@@ -46,31 +73,4 @@ public final class CategorySelectionHeaderViewModel: CategorySelectionHeaderView
 
   public var inputs: CategorySelectionHeaderViewModelInputs { return self }
   public var outputs: CategorySelectionHeaderViewModelOutputs { return self }
-}
-
-private func stepLabelText(for context: HeaderViewContext) -> String {
-  switch context {
-  case .categorySelection:
-    return Strings.Step_number(current_step: "1", total_steps: "2")
-  case .curatedProjects:
-    return Strings.Step_number(current_step: "2", total_steps: "2")
-  }
-}
-
-private func subtitleLabelText(for context: HeaderViewContext) -> String? {
-  switch context {
-  case .categorySelection:
-    return Strings.Select_up_to_five()
-  case .curatedProjects:
-    return nil
-  }
-}
-
-private func titleLabelText(for context: HeaderViewContext) -> String {
-  switch context {
-  case .categorySelection:
-    return Strings.Which_categories_interest_you()
-  case .curatedProjects:
-    return Strings.Check_out_these_handpicked_projects()
-  }
 }

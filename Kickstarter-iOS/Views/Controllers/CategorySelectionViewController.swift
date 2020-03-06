@@ -74,11 +74,6 @@ public final class CategorySelectionViewController: UIViewController {
     self.navigationItem.setRightBarButton(self.skipButton, animated: false)
 
     self.collectionView.registerCellClass(PillCell.self)
-    self.collectionView.register(
-      CategoryCollectionViewSectionHeaderView.self,
-      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-      withReuseIdentifier: CategoryCollectionViewSectionHeaderView.defaultReusableId
-    )
 
     self.continueButton.addTarget(
       self, action: #selector(CategorySelectionViewController.continueButtonTapped),
@@ -136,6 +131,13 @@ public final class CategorySelectionViewController: UIViewController {
         self?.dataSource.load(sectionTitles, categories: categories)
         self?.collectionView.reloadData()
       }
+
+    self.viewModel.outputs.goToCuratedProjects
+      .observeForUI()
+      .observeValues { [weak self] in
+        let vc = CuratedProjectsViewController.instantiate()
+        self?.navigationController?.pushViewController(vc, animated: true)
+      }
   }
 
   private func configureSubviews() {
@@ -176,8 +178,7 @@ public final class CategorySelectionViewController: UIViewController {
   }
 
   @objc func continueButtonTapped() {
-    let vc = CuratedProjectsViewController.instantiate()
-    self.navigationController?.pushViewController(vc, animated: true)
+    self.viewModel.inputs.continueButtonTapped()
   }
 }
 
@@ -193,27 +194,6 @@ extension CategorySelectionViewController: UICollectionViewDelegate {
 
     _ = pillCell.label
       |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
-  }
-}
-
-extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
-  public func collectionView(
-    _ collectionView: UICollectionView,
-    layout _: UICollectionViewLayout,
-    referenceSizeForHeaderInSection section: Int
-  ) -> CGSize {
-    let indexPath = IndexPath.init(item: 0, section: section)
-    let headerView = collectionView.dataSource?
-      .collectionView?(
-        collectionView,
-        viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
-        at: indexPath
-      )
-    headerView?.layoutIfNeeded()
-
-    let height = headerView?.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize).height ?? 0
-
-    return CGSize(width: collectionView.bounds.width, height: height)
   }
 }
 
