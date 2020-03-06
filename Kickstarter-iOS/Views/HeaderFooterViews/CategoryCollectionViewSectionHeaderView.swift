@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-public final class CategoryCollectionViewSectionHeaderView: UIView {
+public final class CategoryCollectionViewSectionHeaderView: UICollectionReusableView {
   // MARK: - Properties
 
   private lazy var label: UILabel = { UILabel(frame: .zero) }()

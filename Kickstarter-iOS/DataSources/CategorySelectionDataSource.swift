@@ -21,4 +21,24 @@ internal final class CategorySelectionDataSource: ValueCellDataSource {
       assertionFailure("Unrecognized (cell, value) combo.")
     }
   }
+
+  public func collectionView(
+    _ collectionView: UICollectionView,
+    viewForSupplementaryElementOfKind kind: String,
+    at indexPath: IndexPath
+  ) -> UICollectionReusableView {
+    guard let view = collectionView
+      .dequeueReusableSupplementaryView(
+        ofKind: kind,
+        withReuseIdentifier: CategoryCollectionViewSectionHeaderView.defaultReusableId,
+        for: indexPath
+      ) as? CategoryCollectionViewSectionHeaderView else {
+        assertionFailure("Unknown supplementary view type")
+        return UICollectionReusableView(frame: .zero)
+    }
+
+    view.configure(with: self.categorySectionTitles[indexPath.section])
+
+    return view
+  }
 }
