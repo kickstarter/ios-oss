@@ -98,6 +98,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = ([self.creatorBylineView], self.projectNameAndCreatorStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    // todo: removing this
+        _ = self.creatorBylineView
+          |> \.isHidden .~ true
+
+    //    _ = self.creatorStackView
+    //      |> \.isHidden .~ true
+
     self.viewModel.inputs.configureWith(value: value)
   }
 

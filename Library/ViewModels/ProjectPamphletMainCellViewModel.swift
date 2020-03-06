@@ -357,6 +357,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public func creatorButtonTapped() {
     self.creatorButtonTappedProperty.value = ()
   }
+
   fileprivate let creatorBylineTappedProperty = MutableProperty(())
   public func creatorBylineTapped() {
     self.creatorBylineTappedProperty.value = ()
