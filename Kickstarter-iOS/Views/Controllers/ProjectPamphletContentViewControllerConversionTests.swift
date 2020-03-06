@@ -34,20 +34,34 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
   }
 
   func test_UKProject_USUser_USLocation() {
-    withEnvironment(countryCode: "US") {
+    let mockService = MockService(
+      fetchProjectResponse: self.cosmicSurgery,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
+    withEnvironment(apiService: mockService, countryCode: "US") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
+
+      self.scheduler.run()
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_US_userLocation_US")
     }
   }
 
   func test_UKProject_USUser_NonUSLocation() {
-    withEnvironment(countryCode: "AU") {
+    let mockService = MockService(
+      fetchProjectResponse: self.cosmicSurgery,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
+    withEnvironment(apiService: mockService, countryCode: "AU") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
+
+      self.scheduler.run()
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_US_userLocation_AU")
     }
@@ -59,10 +73,17 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currency .~ "USD"
       |> Project.lens.stats.currentCurrencyRate .~ 1.0
 
-    withEnvironment(countryCode: "US") {
+    let mockService = MockService(
+      fetchProjectResponse: self.cosmicSurgery,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
+    withEnvironment(apiService: mockService, countryCode: "US") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
+
+      self.scheduler.run()
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_US_userLocation_US")
     }
@@ -74,10 +95,17 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currency .~ "USD"
       |> Project.lens.stats.currentCurrencyRate .~ 1.0
 
-    withEnvironment(countryCode: "CA") {
+    let mockService = MockService(
+      fetchProjectResponse: self.cosmicSurgery,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
+    withEnvironment(apiService: mockService, countryCode: "CA") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
+
+      self.scheduler.run()
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_US_userLocation_CA")
     }
@@ -101,10 +129,17 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrencyRate .~ 1.0
       |> Project.lens.personalization.backing .~ backing
 
-    withEnvironment(countryCode: "CA") {
+    let mockService = MockService(
+      fetchProjectResponse: self.cosmicSurgery,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
+    withEnvironment(apiService: mockService, countryCode: "CA") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
+
+      self.scheduler.run()
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_US_userLocation_CA")
     }
@@ -122,10 +157,17 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrencyRate .~ 3.0
       |> Project.lens.stats.convertedPledgedAmount .~ 49_500
 
-    withEnvironment(countryCode: "SE") {
+    let mockService = MockService(
+      fetchProjectResponse: self.cosmicSurgery,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
+    withEnvironment(apiService: mockService, countryCode: "SE") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
+
+      self.scheduler.run()
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_US_userCurrency_SEK_userLocation_SE")
     }
@@ -138,10 +180,17 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
 
-    withEnvironment(countryCode: "US") {
+    let mockService = MockService(
+      fetchProjectResponse: self.cosmicSurgery,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
+    withEnvironment(apiService: mockService, countryCode: "US") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
+
+      self.scheduler.run()
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_nil_userLocation_US")
     }
@@ -154,10 +203,17 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
 
-    withEnvironment(countryCode: "CA") {
+    let mockService = MockService(
+      fetchProjectResponse: self.cosmicSurgery,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
+    withEnvironment(apiService: mockService, countryCode: "CA") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
+
+      self.scheduler.run()
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_nil_userLocation_SE")
     }
@@ -170,10 +226,17 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Project.lens.stats.currentCurrency .~ nil
       |> Project.lens.stats.currentCurrencyRate .~ nil
 
-    withEnvironment(countryCode: "XX") {
+    let mockService = MockService(
+      fetchProjectResponse: self.cosmicSurgery,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
+    withEnvironment(apiService: mockService, countryCode: "XX") {
       let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(cosmicSurgery), refTag: nil)
       let (parent, _) = traitControllers(device: Device.phone4_7inch, orientation: .portrait, child: vc)
       parent.view.frame.size.height = 900
+
+      self.scheduler.run()
 
       FBSnapshotVerifyView(vc.view, identifier: "projectLocation_UK_userCurrency_nil_userLocation_SE")
     }

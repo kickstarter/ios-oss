@@ -34,8 +34,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var creatorBylineTapGesture: UITapGestureRecognizer = {
+ private lazy var creatorBylineTapGesture: UITapGestureRecognizer = {
     UITapGestureRecognizer(target: self, action: #selector(creatorBylineTapped))
+  }()
+
+  private lazy var creatorBylineShimmerLoadingView: ProjectCreatorDetailsShimmerLoadingView = {
+    ProjectCreatorDetailsShimmerLoadingView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
@@ -89,22 +94,15 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.readMoreButton.heightAnchor
       .constraint(greaterThanOrEqualToConstant: Layout.Button.height).isActive = true
 
-    self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
+    _ = ([self.creatorBylineView, self.creatorBylineShimmerLoadingView], self.projectNameAndCreatorStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
 
     self.viewModel.inputs.awakeFromNib()
   }
 
   internal func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData)) {
-    _ = ([self.creatorBylineView], self.projectNameAndCreatorStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    // todo: removing this
-        _ = self.creatorBylineView
-          |> \.isHidden .~ true
-
-    //    _ = self.creatorStackView
-    //      |> \.isHidden .~ true
-
     self.viewModel.inputs.configureWith(value: value)
   }
 
@@ -276,6 +274,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.creatorButton.rac.accessibilityLabel = self.viewModel.outputs.creatorLabelText
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
     self.creatorButton.rac.hidden = self.viewModel.outputs.creatorButtonIsHidden
+    self.creatorBylineView.rac.hidden = self.viewModel.outputs.creatorBylineViewHidden
+    self.creatorBylineShimmerLoadingView.rac.hidden = self.viewModel.outputs.creatorBylineShimmerViewHidden
+    self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorStackViewHidden
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.deadlineTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
