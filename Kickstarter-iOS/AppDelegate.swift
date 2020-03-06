@@ -228,6 +228,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ = Qualtrics.shared.display(viewController: vc)
       }
 
+    self.viewModel.outputs.goToCategoryPersonalizationOnboarding
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        let categorySelectionViewController = CategorySelectionViewController.instantiate()
+        let navController = NavigationController(rootViewController: categorySelectionViewController)
+        navController.modalPresentationStyle = .fullScreen
+
+        self?.rootTabBarController?.present(navController, animated: true)
+      }
+
     // swiftlint:disable discarded_notification_center_observer
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -248,17 +258,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     // swiftlint:enable discarded_notification_center_observer
 
     self.window?.tintColor = .ksr_green_700
-
-    self.viewModel.outputs.goToOnboarding
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
-        let categorySelectionViewController = LandingViewController.instantiate()
-        let navController = NavigationController(rootViewController: categorySelectionViewController)
-        navController.modalPresentationStyle = isIpad ? .formSheet : .fullScreen
-
-        self?.rootTabBarController?.present(navController, animated: true)
-      }
 
     self.viewModel.inputs.applicationDidFinishLaunching(
       application: application,
