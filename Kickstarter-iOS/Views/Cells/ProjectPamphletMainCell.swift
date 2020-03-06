@@ -34,7 +34,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
- private lazy var creatorBylineTapGesture: UITapGestureRecognizer = {
+  private lazy var creatorBylineTapGesture: UITapGestureRecognizer = {
     UITapGestureRecognizer(target: self, action: #selector(creatorBylineTapped))
   }()
 
@@ -97,7 +97,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = ([self.creatorBylineView, self.creatorBylineShimmerLoadingView], self.projectNameAndCreatorStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
+    self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
 
     self.viewModel.inputs.awakeFromNib()
   }

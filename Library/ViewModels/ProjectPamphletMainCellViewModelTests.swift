@@ -54,7 +54,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.blurbAndReadMoreStackViewSpacing.observe(self.blurbAndReadMoreStackViewSpacing.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
-self.vm.outputs.creatorButtonIsHidden.observe(self.creatorButtonIsHidden.observer)
+    self.vm.outputs.creatorButtonIsHidden.observe(self.creatorButtonIsHidden.observer)
     self.vm.outputs.creatorBylineViewHidden.observe(self.creatorBylineViewHidden.observer)
     self.vm.outputs.creatorBylineShimmerViewHidden.observe(self.creatorBylineShimmerViewHidden.observer)
     self.vm.outputs.creatorImageUrl.map { $0?.absoluteString }.observe(self.creatorImageUrl.observer)

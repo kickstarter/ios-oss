@@ -170,7 +170,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
         creatorDetails == nil || isLoading
       }
 
-
     self.creatorBylineShimmerViewHidden = projectAndCreatorDetails
       .map(second)
       .map(second >>> isFalse)
@@ -419,7 +418,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
   public let creatorButtonIsHidden: Signal<Bool, Never>
- public let creatorBylineViewHidden: Signal<Bool, Never>
+  public let creatorBylineViewHidden: Signal<Bool, Never>
   public let creatorBylineShimmerViewHidden: Signal<Bool, Never>
   public let creatorImageUrl: Signal<URL?, Never>
   public let creatorLabelText: Signal<String, Never>
