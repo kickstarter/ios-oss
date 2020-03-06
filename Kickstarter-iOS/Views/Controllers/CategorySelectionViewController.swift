@@ -20,6 +20,7 @@ public final class CategorySelectionViewController: UIViewController {
       collectionViewLayout: self.pillLayout
     )
       |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
+      |> \.contentInset .~ .init(top: Styles.grid(2))
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -70,8 +71,10 @@ public final class CategorySelectionViewController: UIViewController {
       ?|> navigationBarStyle
 
     self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-
     self.navigationItem.setRightBarButton(self.skipButton, animated: false)
+    self.navigationItem.setHidesBackButton(true, animated: false)
+
+    self.navigationController?.setNavigationBarHidden(false, animated: false)
 
     self.collectionView.registerCellClass(PillCell.self)
     self.collectionView.register(
