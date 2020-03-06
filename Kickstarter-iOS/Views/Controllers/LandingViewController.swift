@@ -153,7 +153,7 @@ public final class LandingViewController: UIViewController {
     if stackViewHeight > viewHeight {
       self.scrollView.contentInset.top = 0
     } else {
-      let inset = (viewHeight - stackViewHeight) / 2
+      let inset = (viewHeight / 2) - stackViewHeight
 
       self.scrollView.contentInset.top = inset
     }
