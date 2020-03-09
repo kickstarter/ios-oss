@@ -7,6 +7,12 @@ public enum PillCellStyle {
   case green
   case grey
 
+  var allowSelection: Bool {
+    switch self {
+      case .green: return false
+      case .grey: return true
+    }
+  }
   var backgroundColor: UIColor {
     switch self {
     case .green:
@@ -63,7 +69,8 @@ public enum PillCellStyle {
 }
 
 public protocol PillCellViewModelInputs {
-  func configure(with value: (String, PillCellStyle))
+  func configure(with value: (String, PillCellStyle, IndexPath))
+  func pillCellTapped()
   func setIsSelected(selected: Bool)
 }
 
@@ -71,6 +78,8 @@ public protocol PillCellViewModelOutputs {
   var backgroundColor: Signal<UIColor, Never> { get }
   var cornerRadius: Signal<CGFloat, Never> { get }
   var layoutMargins: Signal<UIEdgeInsets, Never> { get }
+  var notifyDelegatePillCellTapped: Signal<IndexPath, Never> { get }
+  var tapGestureRecognizerIsEnabled: Signal<Bool, Never> { get }
   var text: Signal<String, Never> { get }
   var textColor: Signal<UIColor, Never> { get }
 }
@@ -83,6 +92,10 @@ public protocol PillCellViewModelType {
 public final class PillCellViewModel: PillCellViewModelType, PillCellViewModelInputs,
   PillCellViewModelOutputs {
   public init() {
+    self.tapGestureRecognizerIsEnabled = self.configureWithValueProperty.signal.skipNil()
+      .map(second)
+      .map { $0.allowSelection }
+
     let defaultBackgroundColor = self.configureWithValueProperty.signal.skipNil()
       .map(second)
       .map(\.backgroundColor)
@@ -100,6 +113,11 @@ public final class PillCellViewModel: PillCellViewModelType, PillCellViewModelIn
     .takePairWhen(self.isSelectedProperty.signal)
     .map { style, isSelected in isSelected ? style.textColorSelected : style.textColor }
 
+    self.notifyDelegatePillCellTapped = self.configureWithValueProperty.signal
+      .skipNil()
+      .map(third)
+      .takeWhen(self.pillCellTappedProperty.signal)
+
     self.textColor = Signal.merge(defaultTextColor, selectedTextColor)
 
     self.text = self.configureWithValueProperty.signal.skipNil()
@@ -114,9 +132,14 @@ public final class PillCellViewModel: PillCellViewModelType, PillCellViewModelIn
       .map(\.layoutMargins)
   }
 
-  private let configureWithValueProperty = MutableProperty<(String, PillCellStyle)?>(nil)
-  public func configure(with value: (String, PillCellStyle)) {
+  private let configureWithValueProperty = MutableProperty<(String, PillCellStyle, IndexPath)?>(nil)
+  public func configure(with value: (String, PillCellStyle, IndexPath)) {
     self.configureWithValueProperty.value = value
+  }
+
+  private let pillCellTappedProperty = MutableProperty(())
+  public func pillCellTapped() {
+    self.pillCellTappedProperty.value = ()
   }
 
   private let isSelectedProperty = MutableProperty<Bool>(false)
@@ -127,6 +150,8 @@ public final class PillCellViewModel: PillCellViewModelType, PillCellViewModelIn
   public let backgroundColor: Signal<UIColor, Never>
   public let cornerRadius: Signal<CGFloat, Never>
   public let layoutMargins: Signal<UIEdgeInsets, Never>
+  public let notifyDelegatePillCellTapped: Signal<IndexPath, Never>
+  public let tapGestureRecognizerIsEnabled: Signal<Bool, Never>
   public let text: Signal<String, Never>
   public let textColor: Signal<UIColor, Never>
 
