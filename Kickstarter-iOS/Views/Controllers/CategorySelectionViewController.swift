@@ -188,6 +188,13 @@ extension CategorySelectionViewController: UICollectionViewDelegate {
     _ = pillCell.label
       |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
   }
+
+  public func collectionView(_ collectionView: UICollectionView,
+                      didSelectItemAt indexPath: IndexPath) {
+    guard let pillCell = collectionView.cellForItem(at: indexPath) as? PillCell else { return }
+
+    pillCell.setIsSelected(pillCell.isSelected)
+  }
 }
 
 extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {

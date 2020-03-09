@@ -31,9 +31,6 @@ final class PillCell: UICollectionViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.contentView
-      |> contentViewStyle
-
     _ = self.label
       |> labelStyle
   }
@@ -46,6 +43,20 @@ final class PillCell: UICollectionViewCell, ValueCell {
     self.contentView.rac.backgroundColor = self.viewModel.outputs.backgroundColor
     self.label.rac.text = self.viewModel.outputs.text
     self.label.rac.textColor = self.viewModel.outputs.textColor
+
+    self.viewModel.outputs.layoutMargins
+      .observeForUI()
+      .observeValues { [weak self] layoutMargins in
+        _ = self?.contentView
+          ?|> \.layoutMargins .~ layoutMargins
+    }
+
+    self.viewModel.outputs.cornerRadius
+      .observeForUI()
+      .observeValues { [weak self] cornerRadius in
+        _ = self?.contentView.layer
+          ?|> \.cornerRadius .~ cornerRadius
+    }
   }
 
   // MARK: - Configuration
@@ -61,15 +72,15 @@ final class PillCell: UICollectionViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
   }
+
+  // MARK: - Accessors
+
+  public func setIsSelected(_ isSelected: Bool) {
+    self.viewModel.inputs.setIsSelected(selected: isSelected)
+  }
 }
 
 // MARK: - Styles
-
-private let contentViewStyle: ViewStyle = { view in
-  view
-    |> checkoutRoundedCornersStyle
-    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
-}
 
 private let labelStyle: LabelStyle = { label in
   label
