@@ -130,8 +130,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.goToLandingPage
       .observeForUI()
       .observeValues { [weak self] in
+        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
+
         let landingPage = LandingPageViewController()
-          |> \.modalPresentationStyle .~ .fullScreen
+          |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
         self?.rootTabBarController?.present(landingPage, animated: true)
       }
 

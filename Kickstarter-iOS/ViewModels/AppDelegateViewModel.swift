@@ -332,13 +332,16 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let deepLinkFromShortcut = performShortcutItem
       .switchMap(navigation(fromShortcutItem:))
 
-    let deepLink = Signal
+    let deeplinkActivated = Signal
       .merge(
         deepLinkFromUrl,
         deepLinkFromNotification,
         deepLinkFromShortcut
       )
       .skipNil()
+
+    let deepLink = deeplinkActivated
+      .filter { _ in shouldGoToLandingPage() == false }
 
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
